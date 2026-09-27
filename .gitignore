@@ -10,3 +10,10 @@ docs/reviews/*/*.stdout
 .dolt/
 *.db
 .beads-credential-key
+lanes/*/stdout.log
+lanes/*/stderr.log
+lanes/*/events.jsonl
+lanes/*/sessions/
+lanes/*/session.id
+lanes/STOP
+refs/src/
