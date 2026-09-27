@@ -13,7 +13,7 @@ while [ $attempt -le "${MAXRETRY:-3}" ]; do
   echo "$(date -Is) attempt $attempt start ($MODEL $THINK)" >> "$LOG"
   if [ $attempt -eq 1 ]; then MSG="$PROMPT"; C=""; else MSG="You stopped before writing $D/report.md. Keep what is written, read $D/brief.md again, continue from the first unfinished item, and finish with $D/report.md."; C="-c"; fi
   timeout "${LANE_TIMEOUT:-5400}" pi -p $C --mode json --session-dir "$D/sessions" -nc --model "$MODEL" --thinking "$THINK" "$MSG" \
-    >> "$D/events.jsonl" 2>> "$D/stderr.log"; rc=$?
+    >> "$D/events.jsonl" 2>> "$D/stderr.log" < /dev/null; rc=$?
   echo "$(date -Is) attempt $attempt exit $rc" >> "$LOG"
   if [ -s "$D/report.md" ]; then echo "$(date -Is) DONE" >> "$LOG"; exit 0; fi
   attempt=$((attempt+1)); sleep 30

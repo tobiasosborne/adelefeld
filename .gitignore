@@ -17,3 +17,5 @@ lanes/*/sessions/
 lanes/*/session.id
 lanes/STOP
 refs/src/
+bench/bench_word
+bench/build/

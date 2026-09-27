@@ -13,11 +13,11 @@ while [ $attempt -le "${MAXRETRY:-4}" ]; do
   echo "$(date -Is) attempt $attempt start ($MODEL $EFFORT)" >> "$LOG"
   if [ ! -s "$SID" ]; then
     codex exec -m "$MODEL" -c "model_reasoning_effort=\"$EFFORT\"" -s workspace-write --skip-git-repo-check \
-      -o "$D/last.md" "$PROMPT" >> "$OUT" 2>&1; rc=$?
+      -o "$D/last.md" "$PROMPT" >> "$OUT" 2>&1 < /dev/null; rc=$?
     grep -oE 'session id: [0-9a-f-]{36}' "$OUT" | tail -1 | awk '{print $3}' > "$SID" 2>/dev/null || true
   else
     codex exec resume -c "model_reasoning_effort=\"$EFFORT\"" -c 'sandbox_mode="workspace-write"' --skip-git-repo-check \
-      -o "$D/last.md" "$(cat "$SID")" "You were interrupted. Keep what is written, read $D/brief.md and your files again, continue from the first unfinished item, and finish with $D/report.md." >> "$OUT" 2>&1; rc=$?
+      -o "$D/last.md" "$(cat "$SID")" "You were interrupted. Keep what is written, read $D/brief.md and your files again, continue from the first unfinished item, and finish with $D/report.md." >> "$OUT" 2>&1 < /dev/null; rc=$?
   fi
   echo "$(date -Is) attempt $attempt exit $rc" >> "$LOG"
   if [ $rc -eq 0 ] && [ -s "$D/report.md" ]; then echo "$(date -Is) DONE" >> "$LOG"; exit 0; fi
