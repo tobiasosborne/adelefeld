@@ -5,11 +5,9 @@ All arithmetic is exact. Quotient checks are finite evidence, not proofs of infi
 The cutoffs are proved in the companion file; a longer exact series is the numerical oracle.
 """
 
-import traceback
 from fractions import Fraction as F
 from functools import lru_cache
-from math import comb, factorial, gcd, inf
-from pathlib import Path
+from math import factorial, gcd, inf
 
 PRIMES = (2, 3, 5, 13)
 FAMILY = ("exp", "sin", "sinh", "cos", "cosh")
@@ -47,24 +45,8 @@ def cutoffs(p, v, n):
     return answer
 
 
-def ilog(k, p):
-    """The largest e with p^e <= k; an integer logarithm, no floating point."""
-    e = 0
-    while p**(e+1) <= k:
-        e += 1
-    return e
-
-
-def tight_log_count(p, v, n):
-    """Tight log count of Proposition 7b: T = J-1 with J the least k >= 1 such that k v - e(k) >= n."""
-    j = 1
-    while j*v - ilog(j, p) < n:
-        j += 1
-    return j - 1
-
-
 def check_truncation():
-    scenarios = comparisons = tight_comparisons = 0
+    scenarios = comparisons = 0
     for p in PRIMES:
         # Independent denominator oracle: accumulate factors, not Legendre's formula.
         den = [0]
@@ -89,16 +71,7 @@ def check_truncation():
                     assert k*v - logden[k] >= n, (p, v, n, "log", k)
                     comparisons += 1
                 scenarios += 1
-                # Proposition 7b, tight count: safe by its own bound, and never longer than the safe count.
-                tight = tight_log_count(p, v, n)
-                assert 0 <= tight <= cutoffs(p, v, n)["log"], (p, v, n, tight)
-                for k in range(tight+1, 4097):
-                    assert k*v - ilog(k, p) >= n, (p, v, n, "log-tight-e(k)", k)
-                    assert k*v - logden[k] >= n, (p, v, n, "log-tight", k)
-                    tight_comparisons += 1
-                scenarios += 1
-    return (f"scenarios={scenarios} omitted_terms={comparisons+tight_comparisons} "
-            f"max_degree=4096 max_n=40 tight_log_terms={tight_comparisons}")
+    return f"scenarios={scenarios} omitted_terms={comparisons} max_degree=4096 max_n=40"
 
 
 def residue(x, p, n):
@@ -257,28 +230,8 @@ def check_decomposition():
     return f"decompositions={cases} valuations=-2,0,2 two_adic_sign_examples=2"
 
 
-def modular_partial(fn, point, degrees, denoms, p, w):
-    """Partial sum by the literal algorithm of Proposition 8: powers modulo p^W, exact division by p^e.
-
-    Returns None when a division by the p-part of a denominator is not exact or the exponent W is
-    invalid. Exactness is the precondition of fmpz_divexact and is proved in repair R-1.
-    """
-    if w < 1:
-        return None
-    total = F(0)
-    for k, den in zip(degrees, denoms):
-        sign = (-1)**(k-1) if fn == "log" else (-1)**(k//2) if fn in ("sin", "cos") else 1
-        num = 1 if k == 0 else pow(point, k, p**w)
-        e = int(vp(den, p))
-        if num % p**e:
-            return None
-        total += sign*F(num, den)
-    return total
-
-
 def check_working_precision():
-    cases = exact_divisions = 0
-    wrong_minus1 = wrong_noD = 0
+    cases = 0
     for p in PRIMES:
         for fn in FAMILY + ("log",):
             for v in range(1 if fn == "log" else cdisc(p), cdisc(p)+3):
@@ -288,39 +241,21 @@ def check_working_precision():
                     denoms = [k if fn == "log" else factorial(k) for k in degrees]
                     d = max([0] + [int(vp(den, p)) for den in denoms])
                     w = max(v, n+d)
-                    for x in (F(-p**v, p+1), F(p**v), F(3*p**v, 2*p+1)):
-                        for t in (0, 1, p+1):
-                            # The rule keeps W >= v, so every representative is in the certified domain
-                            # p^v Z_p. Repair R-1 uses v(y) >= v to make the division by p^e exact.
-                            assert vp(x+F(p)**w*t, p) >= v, (p, fn, v, n, "W >= v", w)
-                        # A representative modulo p^W and two further allowed lifts.
-                        y = residue(x, p, w)
-                        for point in (y, y+p**w, y+(p+1)*p**w):
-                            assert vp(point-x, p) >= w, (p, fn, v, n, "lift")
-                            assert vp(partial(fn, x, count)-partial(fn, point, count), p) >= n
-                            modular = F(0)
-                            for k, den in zip(degrees, denoms):
-                                sign = ((-1)**(k-1) if fn == "log"
-                                        else (-1)**(k//2) if fn in ("sin", "cos") else 1)
-                                num = 1 if k == 0 else pow(point, k, p**w)
-                                e = int(vp(den, p))
-                                assert num % p**e == 0, (p, fn, v, n, k, "exact division")
-                                exact_divisions += 1
-                                modular += sign*F(num, den)
-                            truth = partial(fn, x, count)
-                            assert vp(modular-truth, p) >= n
-                            cases += 1
-                            if degrees:
-                                got = modular_partial(fn, point, degrees, denoms, p, max(v, n+d-1))
-                                wrong_minus1 += (got is None) or vp(got-truth, p) < n
-                                got = modular_partial(fn, point, degrees, denoms, p, max(v, n))
-                                wrong_noD += (got is None) or vp(got-truth, p) < n
+                    x = F(-p**v, p+1)
+                    # A representative modulo p^W and a second allowed lift.
+                    y = residue(x, p, w)
+                    for point in (y, y+p**w):
+                        assert vp(partial(fn, x, count)-partial(fn, point, count), p) >= n
+                        modular = F(0)
+                        for k, den in zip(degrees, denoms):
+                            sign = (-1)**(k-1) if fn == "log" else (-1)**(k//2) if fn in ("sin", "cos") else 1
+                            modular += sign*F(pow(point, k, p**w), den)
+                        assert vp(modular-partial(fn, x, count), p) >= n
+                        cases += 1
                     if n > 0:
                         arg = x+1 if fn == "log" else x
                         assert residue(partial(fn, x, count), p, n) == series(fn, arg, p, n)
-    assert wrong_minus1 > 0 and wrong_noD > 0, "the W-1 and W-without-D probes found no counterexample"
-    return (f"rounded_partial_sums={cases} exact_divisions={exact_divisions} inputs=3 lifts=3 "
-            f"target_exponents=-2,0,1,7,20,40 W-1_wrong={wrong_minus1} W_without_D_wrong={wrong_noD}")
+    return f"rounded_partial_sums={cases} target_exponents=-2,0,1,7,20,40"
 
 
 def check_series_identities():
@@ -502,57 +437,18 @@ def check_root_criteria():
     return f"unit_classes={cases} solvable_fibers={fibers_checked} signed_valuation_roots=120 square_examples=2"
 
 
-def poly_at(coeffs, t, q):
-    """Evaluate sum c_i t^i (i starting at 1) modulo q, with coefficients already reduced modulo q."""
-    value = 0
-    power = 1
-    for c in coeffs:
-        power = power*t % q
-        value += c*power
-    return value % q
-
-
-def branch_image_check(p, n, b, j, relative_in, e):
-    """Proposition 15's output exponent at modulus p^3, both directions, from the exact expansion.
-
-    root = p^j b is the branch centre, nin = n*j+relative_in the input exponent, and the output
-    exponent under test is computed below from nin, e, n and j: that is the rule line of
-    Proposition 15. For every offset t modulo p^3 the image offset ((root + p^nout t)^n - root^n)
-    divided by p^nin is computed from the exact binomial coefficients. Each coefficient must be
-    p-integral (containment, for every t at once), and the map on offsets must be a bijection modulo
-    p^3 (image equality, both directions). Four offsets are recomputed from raw powers as a
-    cross-check of the expansion.
-    """
-    root = F(p)**j*b
-    nin = n*j+relative_in
-    nout = nin-e-(n-1)*j
-    q = p**3
-    coeffs = []
-    for i in range(1, n+1):
-        coeff = F(comb(n, i))*root**(n-i)*F(p)**(nout*i)/F(p)**nin
-        assert vp(coeff, p) >= 0, (p, n, b, j, i, coeff)
-        coeffs.append(residue(coeff, p, 3))
-    assert len({poly_at(coeffs, t, q) for t in range(q)}) == q, (p, n, b, j, relative_in, nout)
-    for t in (0, 1, 2, p+1):
-        direct = (root+F(p)**nout*t)**n-root**n
-        assert vp(direct, p) >= nin, (p, n, b, j, t)
-        assert residue(direct/F(p)**nin, p, 3) == poly_at(coeffs, t, q), (p, n, b, j, t)
-    return 1
-
-
 def check_root_precision():
-    images = preimages = scaled = relaxed = unique_roots = 0
+    images = preimages = scaled = 0
     for p in PRIMES:
         c = cdisc(p)
-        roots = list(dict.fromkeys(x for x in (1, 2, 3, 5, 7, p+2, 2*p+1, 3*p+4) if x % p))[:5]
-        for n in (1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 25):
+        for n in (1, 2, 3, 4, 5, 6):
             e = int(vp(n, p))
             for extra in (0, 1):
                 relative_out = c+extra
                 relative_in = relative_out+e
                 k = relative_in+2
                 q = p**k
-                for b in roots:
+                for b in (1, 3 if p == 2 else 2):
                     a = b**n
                     candidates = range(b % p**relative_out, q, p**relative_out)
                     image = {pow(y, n, q) for y in candidates}
@@ -561,25 +457,21 @@ def check_root_precision():
                     images += 1
                     preimage = {y for y in range(b % p**c, q, p**c)
                                 if (pow(y, n, q)-a) % p**relative_in == 0}
-                    assert preimage == set(candidates), (p, n, relative_in, b)
+                    assert preimage == set(candidates)
                     preimages += 1
                     for j in (-2, 0, 1):
-                        scaled += branch_image_check(p, n, b, j, relative_in, e)
-    # Remark on Proposition 15: at 2 with odd n the guard r >= 1 suffices. SPEC 9.3.3 keeps r >= 2.
-    for n in (1, 3, 5, 7, 9, 11, 25):
-        for b in (1, 3, 5, 7, 9, 11, 13):
-            for j in (-2, -1, 0, 1, 2):
-                relaxed += branch_image_check(2, n, b, j, 1, 0)
-    q2 = 2**6
-    for n in (1, 3, 5, 7, 9, 11, 25):
-        for y in range(1, q2, 4):
-            assert sum(1 for z in range(q2) if pow(z, n, q2) == y) == 1, (n, y)
-            unique_roots += 1
+                        root = F(p)**j*b
+                        nin = n*j+relative_in
+                        nout = nin-e-(n-1)*j
+                        # Check the formula by actual rational powers, including negative exponents N.
+                        actual = {residue(((root+F(p)**nout*t)**n-root**n)/F(p)**nin, p, 2)
+                                  for t in range(p**2)}
+                        assert actual == set(range(p**2))
+                        scaled += 1
     assert {x*x % 8 for x in range(1, 8, 2)} == {1}
     assert 5 not in {x*x % 8 for x in range(8)}
     assert 4 not in {x**3 % 9 for x in range(9)}
-    return (f"branch_images={images} branch_preimages={preimages} scaled_images_p3={scaled} "
-            f"guard_r1_at_2={relaxed} unique_roots_at_2={unique_roots} guard_failures=2")
+    return f"branch_images={images} branch_preimages={preimages} rational_scaled_images={scaled} guard_failures=2"
 
 
 def check_global_roots():
@@ -648,18 +540,16 @@ def quotient_ball(center, p, radius, precision):
 
 
 def check_power_precision():
-    uncertain = exact = zero_centres = uncapped = 0
-    uncapped_by_p = {}
+    uncertain = exact = zero_centres = 0
     for p in PRIMES:
         c = cdisc(p)
-        k = 5 if p == 2 else 3
+        k = 5 if p == 2 else 2 if p == 13 else 3
         q = p**k
-        # u0 with alpha = v_p(log u0) equal to c and strictly above c, and alpha = infinity at u0 = 1.
-        for u0 in (1, 1+p**c, 1+2*p**c, 1+p**(c+1), 1+3*p**(c+1)):
+        for u0 in (1, 1+p**c, 1+2*p**c):
             alpha = vp(series("log", u0, p, k), p)
             for a in range(c, min(c+2, k)+1):
                 bases = quotient_ball(u0, p, a, k)
-                for s0 in (0, 1, -1, p, p*p):
+                for s0 in (0, 1, -1, p):
                     center = pow(u0, s0, q)
                     beta = vp(s0, p)
                     for b in range(0, min(2, k-c)+1):
@@ -668,9 +558,6 @@ def check_power_precision():
                         actual = {pow(u, s, q) for u in bases for s in exponents}
                         r = min(a+beta, b+alpha, a+b, k)
                         assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r)
-                        if min(a+beta, b+alpha, a+b) < k:
-                            uncapped += 1
-                            uncapped_by_p[p] = uncapped_by_p.get(p, 0) + 1
                         uncertain += 1
                         zero_centres += (u0 == 1 or s0 == 0)
                     actual = {pow(u, s0, q) for u in bases}
@@ -684,7 +571,7 @@ def check_power_precision():
                     assert actual == quotient_ball(1, p, min(b+alpha, k), k)
                     exact += 1
     return (f"independent_uncertain_images={uncertain} one_exact_input_images={exact} "
-            f"zero_product_centres={zero_centres} uncapped_radii={uncapped} by_p={uncapped_by_p}")
+            f"zero_product_centres={zero_centres}")
 
 
 def fractional_part(x, p):
@@ -791,10 +678,9 @@ def check_typed_and_projection():
                     assert {vp(x, p) for x in values} == {vp(a, p)}
                     assert all(F(p)**(-int(vp(x, p))) == F(p)**(-int(vp(a, p))) for x in values)
                 else:
-                    # The ball is p^n Z_p and contains 0 and p^n, of two different valuations. The grid
-                    # must exhibit at least two valuations: this branch certifies NOT_DETERMINED.
-                    vals = {vp(x, p) for x in values}
-                    assert len(vals) >= 2 and vp(-a, p) >= n, (p, a, n, vals)
+                    # Both points are in the ball, even when the finite positive grid omits cancellation.
+                    assert vp(-a, p) >= n
+                    assert vp(0, p) != vp(F(p)**n, p)
                 valuations += 1
     from math import ceil, floor
     sign = lambda x: (x > 0)-(x < 0)
@@ -817,128 +703,30 @@ def check_typed_and_projection():
     return f"valuation_balls={valuations} real_jump_balls={real_balls} named_projections={projections}"
 
 
-def run_mutant(source, anchor, new, check):
-    """Plant `new` for `anchor` in a copy of `source` and run `check` on the copy; rejection demanded."""
-    if source.count(anchor) != 1:
-        return "skipped(anchor not present exactly once)", ""
-    mutated = source.replace(anchor, new)
-    ns = {"__name__": "functions_checks_mutant"}
-    exec(compile(mutated, "functions_checks_mutant", "exec"), ns)
-    try:
-        ns[check]()
-    except AssertionError as err:
-        detail = ""
-        frames = traceback.extract_tb(err.__traceback__)
-        if frames:
-            line = mutated.splitlines()[frames[-1].lineno-1].strip()
-            detail = f"(assert at line {frames[-1].lineno}: {line})"
-        return "killed", detail
-    except Exception as ex:  # noqa: BLE001  a crash is detection too, but is reported as such
-        return f"killed(crash:{type(ex).__name__})", ""
-    return "SURVIVED", ""
-
-
-# Each mutant is (name, anchor pieces, replacement, check under test). Anchors are given as pieces and
-# joined at run time, so that every full anchor occurs exactly once in this file: at the rule under test.
-# Two replacements that extend an anchor are split into pieces for the same reason. This keeps the
-# literal-anchor mutant table in the review's checks working unchanged.
-A_K = ("k = max(1, ceildiv((p-1)*n-1, ", "(p-1)*v-1))")
-A_SIN = ("sin=k//2, ", "sinh=k//2")
-A_COS = ("cos=(k+1)//2, ", "cosh=(k+1)//2")
-A_LOG = ('answer = {"log": max(1, ceildiv(2*n, 2*v-1)) - ', '1}')
-A_W = ("w = max(v, ", "n+d)")
-A_HULL = ("output_n = 2*exponent-", "(p == 2)")
-A_OUTR = ("out_r = 2 if p == 2 and r == 1 else ", "r")
-A_CRIT = (">= cdisc(p)", "+vp(n, p)")
-A_NOUT = ("nout = nin-e-", "(n-1)*j")
-A_GUARD = ("relative_in = relative_out+", "e")
-A_R = ("r = min(a+beta, b+", "alpha, a+b, k)")
-A_ALPHA = ("alpha = vp(series(", '"log", u0, p, k), p)')
-A_VAL = ("if vp(a, p) < n", ":")
-A_TIGHT_RETURN = ("return j ", "- 1")
-A_TIGHT_LOOP = ("while j*v - ilog(j, p)", " < n:")
-
-# The eleven anchors that docs/reviews/m0-proofs/functions_review_checks.py matches literally in this
-# file. They must stay unique, or that review's section M stops working.
-REVIEW_ANCHORS = (A_K, A_SIN, A_COS, A_LOG, A_W, A_HULL, A_OUTR, A_CRIT, A_NOUT, A_GUARD, A_R)
-
-MUTANTS = (
-    ("K-1 for the factorial series", A_K, "k = max(1, ceildiv((p-1)*n-1, (p-1)*v-1)-1)", "check_truncation"),
-    ("d=(p-1)v instead of (p-1)v-1", A_K, "k = max(1, ceildiv((p-1)*n-1, (p-1)*v))", "check_truncation"),
-    ("T_sin = floor((K-1)/2)", A_SIN, "sin=(k-1)//2, sinh=(k-1)//2", "check_truncation"),
-    ("T_cos = floor(K/2)", A_COS, "cos=k//2, cosh=k//2", "check_truncation"),
-    ("T_log = J-2", A_LOG, 'answer = {"log": max(1, ceildiv(2*n, 2*v-1)) - 2}', "check_truncation"),
-    ("T_log with 2v instead of 2v-1", A_LOG, 'answer = {"log": max(1, ceildiv(2*n, 2*v)) - 1}',
-     "check_truncation"),
-    ("tight T_log = J*-2", A_TIGHT_RETURN, "return j - 2", "check_truncation"),
-    ("tight log rule drops the e(k) bound", A_TIGHT_LOOP, "while j*v < n:", "check_truncation"),
-    ("W = max(v, n+D-1)", A_W, "w = max(v, n+d-1)", "check_working_precision"),
-    ("W = max(v, n) (no D)", A_W, "w = max(v, n)", "check_working_precision"),
-    ("W = n+D (drop v, clamped at 1)", A_W, "w = max(1, n+d)", "check_working_precision"),
-    ("W = n+D (no maximum at all)", A_W, "w = n+d", "check_working_precision"),
-    ("cos hull 2N (drop v_p(2))", A_HULL, "output_n = 2*exponent", "check_series_radii"),
-    ("cos hull 2N-1 everywhere", A_HULL, "output_n = 2*exponent-1", "check_series_radii"),
-    ("Log r=1 at 2 gives Log(a)+2Z_2", A_OUTR, "out_r = r", "check_log_radii"),
-    ("Log image r+1", A_OUTR, ("out_r = 2 if p == 2 and r == 1 else ", "r+1"), "check_log_radii"),
-    ("root log condition c+v(n) -> 1+v(n)", A_CRIT, ">= 1+vp(n, p)", "check_root_criteria"),
-    ("root log condition drops v(n)", A_CRIT, ">= cdisc(p)", "check_root_criteria"),
-    ("root out exponent -n j", A_NOUT, "nout = nin-e-n*j", "check_root_precision"),
-    ("root out exponent without v(n)", A_NOUT, "nout = nin-(n-1)*j", "check_root_precision"),
-    ("root out exponent caps the p-power loss at 1 digit at odd p", A_NOUT,
-     "nout = nin-(e if p == 2 else min(e, 1))-(n-1)*j", "check_root_precision"),
-    ("root guard one digit lower", A_GUARD, ("relative_in = relative_out+", "e-1"), "check_root_precision"),
-    ("power R drops A+B", A_R, "r = min(a+beta, b+alpha, k)", "check_power_precision"),
-    ("power R drops B+alpha", A_R, "r = min(a+beta, a+b, k)", "check_power_precision"),
-    ("power R = A+B+1 term", A_R, "r = min(a+beta, b+alpha, a+b+1, k)", "check_power_precision"),
-    ("power R uses alpha+1", A_R, "r = min(a+beta, b+alpha+1, a+b, k)", "check_power_precision"),
-    ("log u0 exponent alpha capped at c", A_ALPHA,
-     'alpha = cdisc(p) if vp(series("log", u0, p, k), p) < inf else inf', "check_power_precision"),
-    ("valuation determined one digit earlier", A_VAL, "if vp(a, p) < n-1:", "check_typed_and_projection"),
-)
-
-
-def run_mutation_tests(target=None):
-    """Plant every wrong rule of MUTANTS in a copy of the target source and run the named check.
-
-    Returns (lines, killed, survivors, skipped). check_mutation_testing runs it on this file (the green
-    half of the red-green record); lanes/m0-repair-functions/run_red.py runs it on the snapshot taken
-    before this lane's strengthening (the red half).
-    """
-    path = Path(target).resolve() if target else Path(__file__).resolve()
-    source = path.read_text()
-    for anchor in REVIEW_ANCHORS:
-        text = "".join(anchor)
-        assert source.count(text) == 1, ("review anchor must stay unique", text, source.count(text))
-    lines, killed, survivors, skipped = [], 0, [], []
-    for name, anchor, new, check in MUTANTS:
-        old_text = "".join(anchor)
-        new_text = new if isinstance(new, str) else "".join(new)
-        outcome, detail = run_mutant(source, old_text, new_text, check)
-        if outcome.startswith("skipped"):
-            skipped.append(name)
-        elif outcome == "SURVIVED":
-            survivors.append(name)
-        else:
-            killed += 1
-        lines.append(f"mutant {name!r} -> {check}: {outcome} {detail}".rstrip())
-    return lines, killed, survivors, skipped
-
-
-def check_mutation_testing(target=None):
-    """Real mutation tests: plant each wrong rule in a copy of the rule under test and demand rejection.
-
-    Wrong truncation counts (safe and tight), wrong working precision W including the variant
-    W = n+D without the maximum, wrong radius and root rules, wrong power radius, the wrong
-    valuation-determination digit and the wrong log(u0) exponent must all be rejected by an assertion
-    of the named check. The fixed-value regression list this check replaces could not do that.
-    """
-    lines, killed, survivors, skipped = run_mutation_tests(target)
-    for line in lines:
-        print("     " + line, flush=True)
-    assert not survivors, ("wrong rules not rejected", survivors)
-    assert not skipped, ("anchors missing in the source under test", skipped)
-    return (f"planted_wrong_rules={len(MUTANTS)} rejected={killed} survivors=0 "
-            f"review_anchors_unique={len(REVIEW_ANCHORS)}")
+def check_regression_mutations():
+    """Concrete independent witnesses against tempting wrong precision/series rules."""
+    rejected = []
+    rejected.append(series("sin", 3, 3, 2) != 0)  # Constant fake sine.
+    rejected.append(series("cos", 4, 2, 4) != 1)  # Constant fake cosine.
+    for p, v, n in ((2, 2, 4), (3, 1, 4)):
+        first = ceildiv(n, v)  # Incorrect cutoff omitting factorial valuations.
+        rejected.append(vp(F(p)**(v*first)/factorial(first), p) < n)
+    rejected.append(vp(F(2)**2/2, 2) < 2)  # Incorrect log cutoff omitting v_p(k).
+    count = cutoffs(3, 1, 3)["exp"]
+    rounded_without_guard = sum((F(pow(3, k, 27), factorial(k)) for k in range(count)), F(0))
+    rejected.append(vp(rounded_without_guard-partial("exp", 3, count), 3) < 3)
+    rejected.append(vp(iwasawa(12, 3, 8)-iwasawa(3, 3, 8), 3) < vp(12-3, 3))
+    rejected.append(vp(series("cos", 4, 2, 6)-1, 2) < 4)  # Missing the division by 2.
+    rejected.append({series("log", a, 2, 5) for a in range(1, 32, 2)} != set(range(0, 32, 2)))
+    rejected.append(5 not in {x*x % 8 for x in range(8)})  # Removing the root guard.
+    # A square-root ball of exponent 3 requires exponent 2, not 3, on its selected branch.
+    rejected.append({b for b in range(1, 16, 4) if b*b % 8 == 1} != {1, 9})
+    # Exponent uncertainty alone: fixed base 4, s in Z_3 produces 1 and 4, not one ball mod 9.
+    rejected.append(vp(pow(4, 1, 27)-pow(4, 0, 27), 3) < 2)
+    # Cross uncertainty with zero log and exponent centres: (1+9)^3 differs from 1 mod 3^4.
+    rejected.append(vp(10**3-1, 3) == 3)
+    assert all(rejected)
+    return f"incorrect_rules_rejected={len(rejected)} witnesses={len(rejected)}"
 
 
 def main():
@@ -946,7 +734,7 @@ def main():
               check_truncation, check_working_precision, check_series_identities, check_series_radii,
               check_log_radii, check_global, check_root_criteria, check_root_precision, check_global_roots,
               check_powers, check_power_precision, check_fractional_parts, check_real_and_character,
-              check_no_order, check_typed_and_projection, check_mutation_testing)
+              check_no_order, check_typed_and_projection, check_regression_mutations)
     for check in checks:
         print(f"{check.__name__}: {check()}", flush=True)
 

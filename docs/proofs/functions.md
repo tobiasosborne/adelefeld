@@ -1,9 +1,9 @@
 # Proofs for functions at named places and at all places
 
 These proofs cover SPEC 9.3.1 to 9.3.6 and PLAN 0.3, 1F.3 to 1F.8. They include the repairs called N1 to
-N7, N10 and R4 in the two reviews. The reviews are task inputs; the arguments below are written out here.
-No external convention is attributed to a source not present in refs. Pending sources are stated explicitly.
-The specification is unchanged.
+N7, N10 and R4 in the two reviews, and R-1, R-2, O-1, O-2 of `docs/reviews/m0-proofs/functions-review.md`.
+The reviews are task inputs; the arguments below are written out here. No external convention is attributed
+to a source not present in refs. Pending sources are stated explicitly. The specification is unchanged.
 
 Run `python3 -B proto/functions_checks.py`. Each Check names a function in that file. A finite computation
 checks examples or finite quotients of an infinite statement; it does not replace the proof.
@@ -195,6 +195,35 @@ Proof.
 Check: `check_truncation` (p = 2,3,5,13; four v values; every n from -3 to 40; degrees through 4096).
 Used by: SPEC 9.3.2 and PLAN 1F.7.
 
+## Proposition 7b (tight count for log).
+
+The safe count T_log of Proposition 7 is correct but about twice what is needed. For log(1+z) under the
+same hypotheses (v(z) >= v, an integer v >= 1, any integer n, even at 2), let e(k) be the largest e with
+p^e <= k, and let J be the least integer k >= 1 with k v - e(k) >= n. Put T_tight = J-1 and take degrees
+1 through T_tight. Then:
+
+1. The omitted tail has valuation >= n, as with the safe count.
+2. T_tight <= T_log, so this count is never longer than the safe count.
+
+The C code of PLAN 1F.7 uses this tight count by default; its proof below is complete. The safe count of
+Proposition 7 remains proved and is the fallback. Both counts are checked by enumeration. As in
+Proposition 7, J is found by a loop over integers, with no floating point logarithm.
+
+Proof.
+
+1. v_p(k) <= e(k): if e = v_p(k) then p^e divides k, so p^e <= k and e <= e(k). The degree k term
+   therefore has valuation at least k v - e(k). This quantity is nondecreasing in k: it grows by
+   v >= 1 per step, and e(k) grows by at most 1 per step. J exists because k v - e(k) tends to
+   infinity. Every omitted degree k >= J thus has valuation >= n, and Lemma 3 bounds the whole tail as in
+   Proposition 7 step 3. For n <= 0 the value k = 1 already works and the sum is empty.
+2. Lemma 5 gives e(k) <= k/2: for e = e(k) >= 1, p^e >= 2^e >= 2e and p^e <= k, and e = 0 is immediate.
+   Hence k v - e(k) >= k(2v-1)/2 for every k. Every k >= max(1, ceildiv(2n, 2v-1)) satisfies
+   k >= 2n/(2v-1), so its quantity is at least n. The least k with k v - e(k) >= n therefore satisfies
+   J <= max(1, ceildiv(2n, 2v-1)), which is exactly Proposition 7's J for log. Hence T_tight <= T_log.
+
+Check: `check_truncation` (both counts enumerated side by side; p = 2,3,5,13; four v values; every n from
+-3 to 40; degrees through 4096). Used by: SPEC 9.3.2 and PLAN 1F.7 (the default count).
+
 ## Proposition 8 (working precision with denominators).
 
 Under Proposition 7, a sufficient absolute working exponent for a direct partial sum is
@@ -215,10 +244,16 @@ Proof.
 1. All inputs and their chosen representatives are integral. If they differ by p^W Z_p, the factorisation
    x^k-y^k = (x-y) sum i=0..k-1 x^(k-1-i)y^i shows their numerator powers differ by p^W Z_p.
    Integer products and sums modulo p^W preserve that fact, without loss from the number of terms.
-2. Dividing by d_k loses exactly e absolute digits. The remaining error lies in p^(W-e) Z_p, contained
-   in p^n Z_p because e <= D. Multiplication by a unit inverse loses no precision. Taking W >= v
-   also preserves the input's certified domain. This explains why rounding each numerator at n before
-   dividing is not a valid substitute.
+2. Since W >= v, the representative y satisfies v(y) >= v, so for k >= 1 one has
+   v(y^k) >= k v > v_p(k!) >= e by the
+   estimate in Proposition 7 step 1 (for log, k v > v_p(k) >= e). The constant term needs no division.
+   A nonconstant term is retained only
+   when n >= 1: for the factorial series K >= 2 forces (p-1)n - 1 > (p-1)v - 1, i.e. n > v, and for log
+   J >= 2 forces n >= v. Hence W >= n + D > e, and the integer residue y^k mod p^W is divisible by p^e;
+   the division is exact. Dividing by d_k then loses exactly e absolute digits. The remaining error lies
+   in p^(W-e) Z_p, contained in p^n Z_p because e <= D. Multiplication by a unit inverse loses no
+   precision. The same argument shows that max(v, .) in W never binds when a nonconstant term is kept.
+   This explains why rounding each numerator at n before dividing is not a valid substitute.
 3. For factorial denominators, v_p(k!) is nondecreasing with k. For denominators 1,...,L of log, the
    greatest v_p(k) is the exponent of the largest power p^e <= L. These prove the stated choices of D.
 4. Add the error of Proposition 7 to the partial-sum error. The ultrametric inequality still gives
@@ -364,10 +399,11 @@ Proof.
 3. A nonzero rational has valuation zero outside the finite set of prime divisors of its numerator and
    denominator. At an odd prime outside this set it fails the defining condition of D. Zero satisfies
    every condition. Notice that a ball can meet D without certifying that all its points are in D.
-4. Proposition 11 puts every local Log in p^c Z_p, independently of the valuation or torsion of its
-   input. These values form an integral finite adele in D. At 2 it is divisible by 4, and at odd p,
-   4 Z_p = Z_p, so D is contained in 4 Zhat. This proves the conservative enclosure. The assertions
-   about the real coordinate use Lemma 2.
+4. Proposition 4 writes each nonzero coordinate as p^m w u with u in 1+p^c Z_p, and Lemma 9 maps
+   1+p^c Z_p onto p^c Z_p. Hence every local Log(x_p) = log(u) lies in p^c Z_p, independently of the
+   valuation or torsion of x_p. These values form an integral finite adele in D. At 2 it is divisible
+   by 4, and at odd p, 4 Z_p = Z_p, so D is contained in 4 Zhat. This proves the conservative enclosure.
+   The assertions about the real coordinate use Lemma 2.
 
 Check: `check_global`. Used by: SPEC 9.3.2 and PLAN 1F.8.
 
@@ -462,6 +498,42 @@ Proof.
    only 1 and 8. These exhibit the need to split or return NOT_DETERMINED rather than apply the formula.
 
 Check: `check_root_precision`. Used by: SPEC 9.3.3 and PLAN 1F.5.
+
+## Remark 15r (odd degree roots at 2 need only r >= 1). Not part of SPEC 9.3.3.
+
+In Proposition 15 let p = 2 and let n be odd, and replace the guard r >= c + v_p(n) = 2 by r >= 1. Keep
+all other hypotheses and notations. Then every point of the input ball a+2^N Z_2 has exactly one n-th
+root in Q_2, the branch map is a bijection from the input ball onto
+
+    b+2^(N-v_p(n)-(n-1)j) Z_2 = b+2^(N-(n-1)j) Z_2,
+
+and this displayed ball is the smallest enclosing ball of the image. For r >= 2 the formula is the one
+of Proposition 15 with v_2(n) = 0. SPEC 9.3.3 keeps the stronger guard N - m >= c + v(n), and the main
+statement of Proposition 15 is unchanged. This remark is an optional refinement: it turns
+NOT_DETERMINED results at 2 into values. Degree 1 is included.
+
+Proof.
+
+1. r = N - m = 1 gives a+2^N Z_2 = a(1+2 Z_2), and 1+2 Z_2 is the group Z_2^x of all odd units.
+2. The map x -> x^n is a bijection of Z_2^x for odd n. By Proposition 4 every odd unit is uniquely w u
+   with w in {1,-1} and u in 1+4 Z_2. On the w factor the map is the identity, since n is odd. On the u
+   factor it is exp(n log(u)) by Lemma 9, and multiplication by n is a bijection of 4 Z_2 because
+   v_2(n) = 0. Lemma 9 maps back bijectively. The two factors are independent, being cosets.
+3. The torsion of Q_2^x is exactly {1,-1}. Let w u be torsion, so (w u)^m = 1 for some m >= 1. Then
+   u^m = w^(-m), whose left side lies in 1+4 Z_2 and whose right side is 1 or -1. So u^m = 1, w^m = 1,
+   and m log(u) = log(1) = 0 (Lemma 9). The characteristic is zero, so log(u) = 0 and u = 1 by Lemma 9.
+   Hence w u = w is 1 or -1. For odd n the only n-th root of unity is 1, since (-1)^n = -1.
+4. Let y be any point of the input ball. By step 1, y = a u with u in Z_2^x, and step 2 gives exactly one
+   w in Z_2^x with w^n = u. Then (b w)^n = a u = y, so a root exists. If also z^n = y, then
+   (z/(b w))^n = 1, so z = b w by step 3. The root is unique in Q_2 and lies in b Z_2^x.
+5. The image of the branch is therefore b Z_2^x. Writing b = 2^j times an odd unit, this set is exactly
+   b+2^(j+1) Z_2. Since a = b^n has m = n j and N = m+1, the exponent of the statement is
+   N-(n-1)j = n j+1-(n-1)j = j+1.
+   By step 4 the branch map is injective and its image is exactly this set. Equality of sets follows,
+   and the displayed ball is the smallest enclosing ball of the image.
+
+Check: `check_root_precision` (the blocks counting guard_r1_at_2 and unique_roots_at_2). Used by: not by
+SPEC 9.3.3, which keeps the stronger guard; optional for PLAN 1F.5.
 
 ## Proposition 16 (all places and the rational-root contract).
 
@@ -708,6 +780,7 @@ in Propositions 4 and 11 do not affect the proved formulas. No statement below i
 | 5 | Factorial valuation and denominator bounds | proved here | check_legendre |
 | 6 | Exact domains, including excluded boundary shells | proved here | check_domains |
 | 7 | Literal six-series term counts at any integer target | proved here | check_truncation |
+| 7b | Tight count for log from k v - e(k) >= n; the default for 1F.7 | proved here | check_truncation |
 | 8 | Denominator guard precision | proved here | check_working_precision |
 | 9 | Convergent identities and exp/log inverse discs | proved here | check_series_identities |
 | 10 | Isometries, safe cosine radii, exact centred hull | proved here | check_series_radii |
@@ -716,6 +789,7 @@ in Propositions 4 and 11 do not affect the proved formulas. No statement below i
 | 13 | Local root existence, counts, square tests | proved here | check_root_criteria |
 | 14 | Real roots | proved modulo Lemma 2 (intermediate value theorem) | check_real_and_character |
 | 15 | Exact guarded branch image and failure outside guard | proved here | check_root_precision |
+| 15r | Remark: at 2, odd degree roots need only r >= 1; not in SPEC 9.3.3 | proved here | check_root_precision |
 | 16 | Global roots and rational contract | proved modulo Lemma 2 (real clause) | check_global_roots |
 | 17 | Four power operations | proved modulo Lemma 2 (complex clause) | check_powers |
 | 18 | Exact independent base/exponent image ball | proved here | check_power_precision |
@@ -723,3 +797,28 @@ in Propositions 4 and 11 do not affect the proved formulas. No statement below i
 | 20 | Character and cosine | proved modulo Lemma 2 (complex exponential) | check_real_and_character |
 | 21 | No ordered-field structure at any prime | proved here | check_no_order |
 | 22 | Scalar outputs, invertibility, projections, ball domains | proved here | check_typed_and_projection |
+
+## Review record
+
+Date: 2026-09-27. Reviewer: Claude opus. Review file: `docs/reviews/m0-proofs/functions-review.md`, with
+the reviewer's checks in `docs/reviews/m0-proofs/functions_review_checks.py`. Verdict counts on the 22
+numbered statements of that review: 20 VALID, 2 MINOR, 0 INVALID.
+
+Changes applied, one line each:
+
+- R-1 (Proposition 8, proof step 2): the division by p^e is now proved exact (R-1 text, verbatim).
+- R-2 (Proposition 12, proof step 4): corrected citation: Proposition 4 and Lemma 9, not Proposition 11.
+- O-1: added Proposition 7b, the tight count for log, with proof; Proposition 7's safe count is kept.
+- O-1: the C code of PLAN 1F.7 uses the tight count by default (its proof is complete), safe is fallback.
+- O-2: added Remark 15r (odd degree roots at 2 need only r >= 1) with stepwise proof, marked as not part
+  of SPEC 9.3.3. (Not one line: this entry and the next were written as one item with a line break.)
+- O-2: the guard of Proposition 15 is unchanged; SPEC 9.3.3 keeps its stronger guard.
+- `check_truncation` now checks both log counts by enumeration and asserts T_tight <= T_log.
+- `check_working_precision` now uses three inputs and three lifts, asserts the exact division of R-1 and
+  the precondition W >= v, and records W-1 and W-without-D counterexample counts.
+- `check_power_precision` now covers alpha above c at every prime and real content at p = 13 (k = 3).
+- `check_root_precision` now uses five roots b and degrees 1 to 25 (including 9 and 25), tests the scaled
+  image in both directions at p^3 sample points, and checks Remark 15r.
+- `check_typed_and_projection` now exhibits two valuations in every NOT_DETERMINED ball.
+- `check_regression_mutations` is replaced by `check_mutation_testing`: 28 planted wrong rules, each
+  demanded rejected by the named check (red-green record in `lanes/m0-repair-functions/report.md`).
