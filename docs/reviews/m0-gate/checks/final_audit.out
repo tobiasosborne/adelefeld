@@ -1,0 +1,6 @@
+findings {'BLOCKER': 2, 'MAJOR': 8, 'MINOR': 6}
+decisions {'accept': 52, 'reject': 8}
+line_length_files=12 over_116=0
+hashed_inputs=40
+golden_vectors=713
+audit_failures=0

@@ -1,0 +1,15 @@
+{"K_left": 2, "K_right": 3, "check": "scaled_add_context", "contains": false, "result": "ScaledBall(1, 0, 2)", "true_sum": 1}
+{"check": "scaled_mul_context", "rejects": true}
+{"check": "reference_decisions", "endpoint_cases": 27, "exact_cap_cases": 12}
+{"actual": "adf1 Q modctx 6 2 2 3", "check": "missing_context_limit", "expected": "!LIMIT", "input": "adf1 Q modctx 6 2 2 3", "max_items": 1}
+{"actual": "adf1 Q fball l 1 6 2 2 3 0 0", "check": "missing_context_limit", "expected": "!LIMIT", "input": "adf1 Q fball l 1 6 2 2 3 0 0", "max_items": 1}
+{"actual": "adf1 Q scaled s 1 1 0 6 2 2 3", "check": "missing_context_limit", "expected": "!LIMIT", "input": "adf1 Q scaled s 1 1 0 6 2 2 3", "max_items": 1}
+{"actual": "adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0", "check": "missing_context_limit", "expected": "!LIMIT", "input": "adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0", "max_items": 1}
+{"accepted": true, "check": "mixed_context_dump", "contexts": [2, 3], "input": "adf1 Q qclass pieces 2 1 1 -2 0 0 l 1 2 1 2 0 1 3 -2 0 0 l 1 3 1 3 0"}
+{"accepted": true, "canonical_d": 1, "check": "raw_piece_predicate", "input": "adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0", "stored_d": 2}
+{"accepted": true, "check": "rfun_zero_top", "input": "rfun(term(P=[(0) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))"}
+{"accepted": true, "check": "rfun_zero_top", "input": "rfun(term(P=[(1) + (0)*i, (0) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))"}
+{"check": "log_count_name", "n": 5, "note": "k-v_3(k) >= 5 for every k >= 5; at k=5 the floor-log bound is only 4", "p": 3, "prescribed_terms": 5, "sufficient_terms": 4, "v": 1}
+{"check": "G_parentheses", "conventional_precedence": true, "intended": false, "witness": "A=1,H=0,d=-1"}
+{"check": "quotient_midpoint_print", "input": "union((0.99 +/- 100 ; 0 mod 1)) + Q", "output": "union((0 +/- 110 ; 0 mod 1)) + Q", "reread": "union((0 +/- 110 ; 0 mod 1)) + Q"}
+contract_records=14

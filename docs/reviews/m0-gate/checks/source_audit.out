@@ -1,0 +1,247 @@
+FILE refs/src/hertogh-thesis/thesis.txt sha256=f51e3575f101ba9852346d8b956c25549d65720d506cde09768844c222b06693
+RANGE 231-233
+231:      The ring of profinite K-integers, denoted O, b is the projective limit lim O/I
+232:                                                                             ←−I
+233: where I runs over all non-zero ideals of O. Note that this is a topological ring and
+RANGE 374-394
+374: be the unique representations of K-integers with smallest represented subsets
+375: (with respect to inclusion) satisfying
+376: 
+377:   R(a) + R(b) ⊆ R(a + b),     R(a) − R(b) ⊆ R(a − b),      R(a)R(b) ⊆ R(ab).
+378: 
+379: Note that we do addition, subtraction and multiplication of sets on the left hand
+380: side of these equations, so for example
+381: 
+382:                     R(a)R(b) = {αβ | α ∈ R(a), β ∈ R(b)}.
+383: 
+384: Explicitly a + b can be given as
+385: 
+386:                   a + b = (v(a) + v(b)) mod gcd(m(a), m(b)),
+387: 
+388: a − b can be given as
+389: 
+390:                   a − b = (v(a) − v(b)) mod gcd(m(a), m(b))
+391: 
+392: and ab can be given as
+393: 
+394:             ab = v(a)v(b) mod gcd(v(a)m(b), v(b)m(a), m(a)m(b)).
+RANGE 849-866
+849:     We define a representation of multiplicative p-adics to be a pair a = (x, n) ∈
+850: K ∗ ×Z≥0 such that x is HNF-reduced modulo pmax(1,n)+ordp (x) (cf. Section 3.1).
+851: The open and closed subset xUpn of Kp∗ is called the represented subset of a and
+852: denoted by R(a). We refer to x as the center of a, denoted c(a), and we call n
+853: the precision of a, denoted p(a). All α ∈ R(a) have the same valuation at p and
+854: we call this unique valuation the valuation of a, denoted ordp (a). Note that a is
+855: not uniquely determined by its represented subset: if n = 0, there exist N (p)−1
+856: representations b of multiplicative p-adics such that R(a) = R(b), where N (p)
+857: denotes the norm of p. The set of representations of multiplicative p-adics is
+858: denoted R(Kp∗ ).
+859:     For any (x, n) ∈ K ∗ × Z≥0 we define the representation of multiplicative p-
+860: adics associated to (x, n) to be the a ∈ R(Kp∗ ) with precision n and with center
+861: the HNF-reduction of x modulo pmax(1,n)+ordp (x) .
+862: 
+863: Arithmetic. Let a, b ∈ R(Kp∗ ). We define the product ab of a and b to be the
+864: representation of multiplicative p-adics associated to
+865: 
+866:                            (c(a)c(b), min(p(a), p(b))).
+RANGE 1525-1538
+1525:     We call a and b loosely equivalent if R(a) ∩ R(b) 6= ∅, i.e. there exists an
+1526:      element α ∈ A that a and b both represent.
+1527: Strict equivalence implies represented subset equivalence and represented subset
+1528: equivalence implies loose equivalence. Strict and represented subset equivalence
+1529: define equivalence relations, while loose equivalence fails to be transitive in gen-
+1530: eral. The implementations of R(R) and R(C) in SageMath use strict equivalence
+1531: for the == operator. On the other hand, the implementation of p-adic numbers
+1532: in SageMath, for p a prime number, uses loose equivalence for comparison us-
+1533: ing ==. Hence a consistent choice throughout SageMath was not possible. We
+1534: did however want a single choice for all our own representations. When working
+1535: with these representations during development, the question whether or not two
+1536: representations could represent the same element came up more often than the
+1537: question whether or not they certainly did represent the same element. Hence
+1538: we ended up implementing loose equivalence for == comparison of our own rep-
+FILE refs/src/milne-cft/CFT.txt sha256=1835bfac5bede49898b29307a49fdd538940c7c9436b14131e6040aa41bc6510
+RANGE 9373-9376
+9373: restricted product of the family, .Vv ; Uv /, is the subset of Vv consistingQof the families .av /
+9374: such that av 2 Uv for almost all v:It is equipped with the topologyQfor which Uv is Q   open and has
+9375: the product topology. Sometimes the restricted product is written 0 Vv . NowQ   AK D v .Kv ; Uv /,
+9376: where Uv D Ov if v is finite and Uv D Kv otherwise. Similarly, A        K D
+RANGE 9853-9858
+9853: P ROOF. Any idèle a D .a1 ; a2 ; : : : ; ap ; : : :/ can be written
+9854: 
+9855:                   a D a.t; u2 ; u3 ; u5 ; : : :/;     a 2 Q ;        t 2 R>0 ;   up 2 Z
+9856:                                                                                         pI
+9857: 
+9858: —take a D . sign.a1 // p ordp .ap / , t D a1 =a, up D ap =a. Moreover, the expression
+RANGE 9883-9886
+9883: In this case, the global reciprocity map is the reciprocal of
+9884:                                      W IQ ! ZO  ! Gal.Qcyc =Q/;
+9885: where IQ ! ZO  is the above projection map, and ZO  ! Gal.Q cyc =Q/ is the canonical
+9886: isomorphism (see I A.5c).
+RANGE 9904-9908
+9904:   (b) For every prime v of K unramified in L, the idèle
+9905:                         ˛ D .1; : : : ; 1;  ; 1; : : :/;      a prime element of Ov ;
+9906:                                             v
+9907: 
+9908:       maps to the Frobenius element .pv ; L=K/ in Gal.L=K/:
+RANGE 1307-1308
+1307: such that  ˛  ˛ q mod mL for all ˛ 2 OL . This  is called the Frobenius element of
+1308: Gal.L=K/, and is denoted by FrobL=K . See ANT, 7.54.
+RANGE 3162-3166
+3162: u D a0 C a1 p C a2 p C    ; 0  ai  p 1, and define
+3163:                                    a Ca1 pCCas p s
+3164:                            pur D p0r                  , every s  r   1:
+3165: This defines an action of Z
+3166:                            p on ˝p , and in fact an isomorphism of topological groups
+FILE refs/src/tate-poonen/notes.txt sha256=821bea156df8bb33bb02b41cdafadb3d0af8a84d36d24af1e1a9886fd17bf61e
+RANGE 693-701
+693:      • If F = R, let ψ(x) := e−2πix . (The minus sign is there so that a global product
+694:        formula later on will hold.)
+695:      • If F = Qp , let ψ be the composition
+696:                                        Qp ∼ Z[1/p]   R
+697:                                Qp ↠       ←        ,→ ≃ T,
+698:                                        Zp     Z      Z
+699:                                                                    n
+700:        which is characterized by ψ|Zp = 1 and ψ(1/pn ) = e2πi/p for all n ≥ 1.
+701:      • If F = Fp ((t)), define ψ( ai ti ) := e2πia−1 /p (lift a−1 ∈ Fp to Z to make sense of this).
+RANGE 733-740
+733: Definition 4.7. Fix a local field F , a nontrivial additive character ψ on F , and a Haar
+734: measure dx on F . Given f ∈ S , define the Fourier transform fb by
+735:                                          Z
+736:                                 f (y) :=
+737:                                 b          f (x) ψ(xy) dx.
+738:                                                              F
+739: 
+740: (Tate originally took the complex conjugate of the additive character, but many references since then have not done so.)   It turns
+RANGE 933-937
+933: (e) Fix choices of ψ and dx (to define Fourier transforms). There exists a nonvanishing
+934:     holomorphic function ϵ(χ, ψ, dx) of χ ∈ X(F × ) such that
+935:                                 Z(fb, χ∨ )               Z(f, χ)
+936:                                            = ϵ(χ, ψ, dx)                                     (5)
+937:                                  L(χ∨ )                   L(χ)
+RANGE 1014-1016
+1014:                               = π −s/2     e−u us/2          (we let u = πx2 )
+1015:                                         0            u
+1016:                               = π −s/2 Γ(s/2)
+RANGE 1053-1055
+1053: Proposition 4.21. Given unitary characters ω : O× → T and ψ : O → T, define the Gauss
+1054: sum                                   Z
+1055:                                     g(ω, ψ) :=        ω(x) ψ(x) d× x.
+RANGE 1720-1725
+1720: (a) The integral Z(f, χ) converges for idèle-class characters χ of exponent σ > 1.
+1721: (b) The function Z(f, χ) of χ extends to a meromorphic function on X . In fact, it is
+1722:     holomorphic except for
+1723:        • a simple pole at | |0 with residue −V f (0), and
+1724:        • a simple pole at | |1 with residue V fb(0).
+1725: (c) We have Z(f, χ) = Z(fb, χ∨ ) as meromorphic functions of χ ∈ X .
+RANGE 1733-1733
+1733: For all but finitely many v, the function fv is 1Ov and Z(fv , | |σv ) = (1 − qv−σ )−1 , so we need
+FILE refs/src/tate-kudla/kudla-1.txt sha256=3999c14c7d2ad8a500af0b388f7765ef45fc94bfee6dbffb78d85ae245f94e54
+RANGE 705-706
+705: The Fourier transform                       Z
+706:                                   fˆ(x) =        f (y) ψ(xy) dy
+RANGE 900-905
+900: global eigendistributions.
+901: 
+902: Fourier transforms and the global functional equation. We fix a global additive
+903: character ψ of A, trivial on k. By resticting to local components, we can write
+904:                                                Y
+905:                                       ψ(x) =         ψv (xv ).
+FILE refs/src/tate-warwick/tatesthesis_notes.txt sha256=5daf47d77f453b999970a42a078a36568c78cfbf9bffd31d1d2907ecacafb9be
+RANGE 493-512
+493:   Let K = Q, χ be the trivial character and f : AQ → C be defined by
+494:                                                      Y
+495:                        f ((x∞ ) × (xp )p ) = e−πx∞ ·
+496:                                                  2
+497:                                                        1Zp (xp )
+498:                                                                        p
+499: 
+500:     Then
+501:                                 Z
+502:                  ζ(f, χ, s) =            f (x)χ(x)|x|s d× x
+503:                                 A×
+504:                                  Q
+505:                                     Z ∞                        YZ
+506:                            =2              e−x∞ xs−1
+507:                                                  ∞ dx∞ ·                        1Zp |xp |sp d× xp
+508:                                      0                             p       Q×
+509:                                                                             p
+510:                                                       Y
+511:                                     −s/2                           −s −1
+512:                            =π              Γ(s/2) ·       (1 − p       )
+RANGE 518-521
+518:   By the adelic functional equation,
+519: 
+520:                                     ζ(f, χ, s) = ζ(fb, χ−1 , 1 − s).
+521: 
+FILE refs/src/flint-3.0.1/ulong_extras.rst sha256=65d6805bd89f8d66bf87f459d4f604b19499e5c9129896a07c72e11d4f773468
+RANGE 456-458
+456: .. function:: int n_jacobi(mp_limb_signed_t x, ulong y)
+457: 
+458:     Computes the Jacobi symbol `\left(\frac{x}{y}\right)` for any `x` and odd `y`.
+FILE refs/src/flint-3.0.1/arb.rst sha256=2296237bf12759a183eb7e73e5d5e478c13a70ca465c16134193fbfe7cbaf973
+RANGE 285-298
+285: .. function:: char * arb_dump_str(const arb_t x)
+286: 
+287:     Returns a serialized representation of *x* as a null-terminated
+288:     ASCII string that can be read by :func:`arb_load_str`. The format consists
+289:     of four hexadecimal integers representing the midpoint mantissa,
+290:     midpoint exponent, radius mantissa and radius exponent (with special
+291:     values to indicate zero, infinity and NaN values),
+292:     separated by single spaces. The returned string needs to be deallocated
+293:     with *flint_free*.
+294: 
+295: .. function:: int arb_load_str(arb_t x, const char * str)
+296: 
+297:     Sets *x* to the serialized representation given in *str*. Returns a
+298:     nonzero value if *str* is not formatted correctly (see :func:`arb_dump_str`).
+FILE refs/src/flint-3.0.1/acb_dirichlet.rst sha256=549186a1a53b61bc5f8c668703526a30e2a08e2335e9d0b4daa8b242d173bce3
+RANGE 360-365
+360:    .. math::
+361: 
+362:       G_q(a) = \sum_{x \bmod q} \chi_q(a, x) e^{\frac{2i\pi x}q}
+363: 
+364:    - the *naive* version computes the sum as defined.
+365: 
+FILE refs/src/pari-doc/usersch3.tex sha256=5fda898f532e87189eea0f2b7cab9f4e88dbde3a92d025256ffe6d7d7e11737f
+RANGE 9266-9271
+9266: \item $(x|0) = 1$ if $|x| = 1$ and $0$ otherwise.
+9267: 
+9268: \item $(x|-1) = 1$ if $x \geq 0$ and $-1$ otherwise.
+9269: 
+9270: \item $(x|2) = 0$ if $x$ is even and $1$ if $x = 1,-1 \mod 8$ and $-1$
+9271: if $x=3,-3 \mod 8$.
+RANGE 19478-19485
+19478: \misctitle{Warning} Make sure you understand the above! By default, most of
+19479: the \kbd{bnf} routines depend on the correctness of the GRH. In particular,
+19480: any of the class number, class group structure, class group generators,
+19481: regulator and fundamental units may be wrong, independently of each other.
+19482: Any result computed from such a \kbd{bnf} may be wrong. The only guarantee is
+19483: that the units given generate a subgroup of finite index in the full unit
+19484: group. You must use \kbd{bnfcertify} to certify the computations
+19485: unconditionally.
+RANGE 19556-19558
+19556: \kbd{bnfinit}, checks whether the result is correct, i.e.~whether it is
+19557: possible to remove the assumption of the Generalized Riemann
+19558: Hypothesis\sidx{GRH}. It is correct if and only if the answer is 1. If it is
+FILE refs/src/hilbert-bristol/lecture19.txt sha256=3fb896ff7da7bd4f82e390febe13f32c6f5627549039c4a35c0a549af62038b4
+RANGE 7-9
+7: Definition. For any a, b ∈ k ∗ , the Hilbert symbol of a and b relative to Qv is defined as
+8:                      (
+9:                       +1 if z 2 − ax − by 2 = 0 has a nontrivial solution in k 3 ,
+RANGE 46-56
+46: If k = Qp and if we write a = pα u, b = pβ w, with u, w ∈ Z∗p , we have
+47:                                    α  β
+48:                             (p−1)
+49:                          αβ 2       u         w
+50:            (a, b)p = (−1)                                               if p > 2,
+51:                                     p         p
+52:                                                      α  β
+53:                           u−1 w−1
+54:                                   +α w2 −1
+55:                                            +β u2 −1  u    w
+56:            (a, b)2 = (−1) 2 2          8        8             .
+RANGE 89-91
+89: Theorem 3. If a, b ∈ Q∗ , we have (a, b)p = 1 for almost all primes p and
+90:                                      Y
+91:                                          (a, b)p = 1.
+source_files=10 opened_ranges=30

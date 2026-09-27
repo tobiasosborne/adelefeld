@@ -22,3 +22,5 @@ bench/build/
 docs/reviews/m0-proofs/__pycache__/
 proto/__pycache__/
 lanes/*/last.md
+docs/reviews/m0-gate/checks/flint_probe
+docs/reviews/m0-gate/checks/add_immediate_probe

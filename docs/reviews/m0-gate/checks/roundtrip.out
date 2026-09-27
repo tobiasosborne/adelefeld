@@ -1,0 +1,3 @@
+read_decimal_1 dump=1 0 10a3d70b -1f printed=1 +/- 0.14
+read_decimal_2 dump=1 0 23d70a3f -20 printed=1 +/- 0.15
+C_read_print_fixed_point_failures=2

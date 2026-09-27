@@ -1,0 +1,41 @@
+$ /usr/bin/python3 -B proto/seams_checks.py
+--- K = Q(sqrt(-5)) ---
+PASS  K1 P = (2, 1+w) in HNF: P = (1, 2, 1, 1) (lattice Z(2,0) + Z(1,1)), N(P) = 2
+PASS  K1 P^2 = (2): P^2 = (1, 2, 0, 2), (2) = (1, 2, 0, 2)
+PASS  K1 P not principal: x^2 + 5 y^2 = 2 has 0 integer solutions
+PASS  K1 factorisations of 1+w, 3, 5, 7: {'(1+w) = P Q3a': True, '3 = Q3a Q3b': True, 'Q3a != Q3b': True, '5 = Q5^2': True, '7 = Q7a Q7b': True, 'Q3a, Q3b, Q7a, Q7b not principal': True, 'Q5 = (w) principal': True}
+PASS  K1 units of O_K: x^2 + 5 y^2 = 1: [(-1, 0), (1, 0)]
+PASS  K2 N(alpha O) = N_{K/Q}(alpha): 300 random alpha, 0 mismatches
+PASS  K2 N(IJ) = N(I)N(J) and I * conj(I)/N(I) = O: 200 random pairs, 0 failures
+PASS  K2 ideals of norm <= 60 lie in two classes: {'principal': 42, 'class of P': 41, 'neither': 0}
+PASS  K3 2 Ohat + (1+w) Ohat = P Ohat (a sum of principal radii is not principal): sum = (1, 2, 1, 1)
+PASS  K3 Q example (3 mod 12)(5 mod 18) in K: radius (1, 6, 0, 6) = 6 O_K
+PASS  K3 sum rule (a+b) + (I+J): enclosure and tight: 400 random cases, 0 failures
+PASS  K3 product rule ab + (aJ + bI + IJ): enclosure and tight: 400 random cases, 0 failures
+PASS  K3 mutant (rule without IJ) is detected: 118 of 400 cases fail
+PASS  K3 (0 + P)(0 + P) = 0 + 2 Ohat tightly; (1 + P)(1 + P) inside 1 + P: 
+PASS  K4 canonical form independent of representation; gcd(x, y, A, B, C, d) = 1: 300 random balls, 0 failures
+PASS  K5 equal_set, overlaps, contains with ideals vs enumeration: 120 of 120 pairs agree; true outcomes (equal, overlap, contained) = [17, 108, 45]
+PASS  K6 U(P n) = U(n) for n prime to P; U(2n) != U(n) (the Q rule 'halve 2 x odd' is wrong in K): {'phi(P)': 1, 'phi(P^2)': 2, 'phi(3)': 4, 'phi(3P)': 4, 'phi(6)': 8, 'phi(Q7a)': 6, 'phi(Q7a P)': 6, 'phi(Q5)': 4, 'phi(Q5 P)': 4}
+PASS  K7 different: dual of O under the trace is (2w)^-1 O; N(D) = 20 = |disc|: dual(O) = (10, 5, 0, 1), D = (1, 10, 0, 2)
+PASS  K7 trace dual of I equals I^-1 D^-1: 45 ideals, 0 failures
+PASS  K7 psi_K is trivial on (1/2) Ohat although 1/2 is not integral: Tr((1/2) O) = Z
+PASS  K8 pieces of a + (P/2) Ohat: [I : I cap O] = [I + O : O]: 2 pieces, I cap O = (1, 1, 0, 1)
+PASS  K9 lambda_1(sigma(P))^2 = min N(x), x in P nonzero: min norm 4, lambda_1 = 2
+PASS  K10 scaled sum 2(u+3O) + (1+w)(v+3O): tight radius 3P not principal; enclosures 3PQ^-1 incomparable: generators {'P': '3 + 0 w', 'Q3a': '1 + -1 w', 'Q3b': '-1 + -1 w', 'Q7a': '9/7 + -3/7 w', 'Q7b': '-9/7 + -3/7 w'}
+--- F = F_3(T) ---
+PASS  F1 v_T(T) = 1 and v_inf(T) = -1: v_T = 1, v_inf = -1: a polynomial radius cannot record the loss at infinity
+PASS  F2 affine product rule ab + gcd(aM, bN, NM) (monic gcd): enclosure and tight: 300 random cases, 0 failures
+PASS  F2 mutant (without NM) is detected: 142 of 300 cases fail
+PASS  F3 product at infinity: radius s^min(v(a)+m, v(b)+n, n+m), enclosure and tight: 300 random cases, 0 failures
+PASS  F4 no non-zero polynomial has v_inf >= 1 (uniqueness of the fundamental domain): 250 polynomials, 0 counterexamples
+PASS  F4 a ball at infinity with radius s^n, n <= 0, splits into q^(1-n) pieces: n = -2..1
+PASS  F5 residue theorem: sum over all places of Res(f dT) = 0: 300 random f (154 with a non-zero residue at a place of degree 2), 0 failures
+PASS  F5 mutant (wrong sign of Res_inf) is detected: 72 of 300 fail
+PASS  F6 psi_inf is constant on c + s^n O_inf exactly when n >= 2 = -v_inf(dT); else all 3 values: n = -1..3
+PASS  F7 reconstruction count 0, 1 (n + deg N >= 1) or q^(1-n-deg N): 60 cases (40 non-empty, 24 with several solutions), 0 failures
+PASS  F8 every divisor of degree 0 is div(prod P^n_P): Pic^0(P^1) = 0: 200 divisors, 0 failures
+PASS  F9 idele class (t monic at infinity, u' = u / sgn) invariant under F^x: 200 random ideles and multipliers, 0 failures
+PASS  F10 |(F_3[T]/N)^x|: U(P N) != U(N) always for q = 3: {'T': 2, 'T^2': 6, 'T(T+1)': 4}
+0 failures
+exit=0 seconds=10.532

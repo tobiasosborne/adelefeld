@@ -1,0 +1,5 @@
+$ /usr/bin/python3 -B tests/ref/mutants.py
+baseline: 58 tests, failures 0, errors 0
+mutants killed: 18
+mutants survived: 0
+exit=0 seconds=5.486

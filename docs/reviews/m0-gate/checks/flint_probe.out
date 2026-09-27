@@ -1,0 +1,8 @@
+flint=3.0.1
+input_nonzero=1 product_nonzero=0
+input=1 0 3fffffff -1e
+product=1 0 30000001 -1c
+read_decimal_1=1 0 10a3d70b -1f
+read_decimal_2=1 0 23d70a3f -20
+zero_polynomial_length=0
+trailing_zero_polynomial_length=1

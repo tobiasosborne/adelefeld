@@ -1,0 +1,13 @@
+catalogue_P9: checks=17 max_residue_error=2.268058839e-20
+analysis_L6: checks=108 max_sample_to_bound=1.0 failures=0
+analysis_L14: checks=72 max_sample_to_bound=0.9711010642 failures=0
+analysis_P12_grid: checks=72 max_sample_to_bound=0.9946208754 failures=0
+analysis_P15_sum: checks=72 max_sample_to_bound=0.5469584311 failures=0
+analysis_P15_integral: checks=72 max_sample_to_bound=0.7164913782 failures=0
+analysis_P15_midpoint: checks=18 max_sample_to_bound=0.1143523626 failures=0
+general_splitting comparison=1 relative_error=1.34561344753e-56 tolerance=1.0e-27
+general_splitting comparison=2 relative_error=4.34259156292e-56 tolerance=1.0e-27
+general_splitting comparison=3 relative_error=4.15162935797e-15 tolerance=1.0e-12
+general_splitting comparison=4 relative_error=2.81379739307e-14 tolerance=1.0e-12
+general_splitting comparison=5 relative_error=1.01456050167 tolerance=1.0e-27
+general_splitting swapped_pole_residues: killed=1 survived=0

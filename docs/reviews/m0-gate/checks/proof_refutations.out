@@ -1,0 +1,16 @@
+S26_full_triple_counterexample: raw=(9,4,1) displayed=(9,4,1) canonical=(1,4,1)
+functions_7b: checks=711625 failures=0
+functions_15r: checks=240 failures=0
+policies_P24: checks=3200 failures=0
+policies_S26: checks=4800 failures=0
+policies_L6: checks=1600 failures=0
+policies_P10: checks=1600 failures=0
+policies_P14: checks=1600 failures=0
+policies_P14_exact_exception: checks=3200 failures=0
+policies_P25: checks=18560 failures=0
+policies_P24_blocks: checks=2907 failures=0
+ideles_P19: checks=512 failures=0
+catalogue_P13: checks=504 failures=0
+catalogue_P15: checks=1600 failures=0
+catalogue_P7: checks=784 failures=0
+total=752732 failures=0

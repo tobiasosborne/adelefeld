@@ -1,0 +1,7 @@
+affinity_status=0 cpu=2
+trial=0 imm0_ns=0.074809 imm1_ns=0.056842 reg1_ns=0.264892 imm1_over_imm0=0.760
+trial=1 imm0_ns=0.045429 imm1_ns=0.045736 reg1_ns=0.264325 imm1_over_imm0=1.007
+trial=2 imm0_ns=0.045428 imm1_ns=0.045765 reg1_ns=0.264951 imm1_over_imm0=1.007
+trial=3 imm0_ns=0.045415 imm1_ns=0.046009 reg1_ns=0.264459 imm1_over_imm0=1.013
+trial=4 imm0_ns=0.045398 imm1_ns=0.045943 reg1_ns=0.264163 imm1_over_imm0=1.012
+checksum=1
