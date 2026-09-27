@@ -4,3 +4,4 @@ build/
 *.o
 *.a
 docs/reviews/*/astra.stdout
+docs/reviews/*/*.stdout
