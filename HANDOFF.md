@@ -18,8 +18,14 @@ in `lanes/<lane>/report.md`). `tools/orch/codex_lane.sh <lane> <model> [effort]`
 `tools/orch/pi_lane.sh <lane> <provider/model> [thinking]` run a lane from `lanes/<lane>/brief.md`, with resume.
 `touch lanes/STOP` stops new attempts. Tracker: `bd ready`.
 
-**State.** See `docs/worklog/` for the day's log and `bd list` for the work packages. Nothing of the C library is
-implemented. The public header stays empty until the milestone-0 gate (proofs, conventions, seams reviewed).
+**State (2026-09-28 00:40).** Milestone 0: all work packages landed and committed (scaffold, sources, four proof
+packages each reviewed by a different model family and repaired, conventions 0.2, benchmark harness, seams
+sketch); SPEC, PLAN and PERF are version 1.1. The gate review (codex `gpt-6-astra`, lane `m0-gate`) is running.
+The Python reference for the ring (`tests/ref/`) exists. Nothing of the C library is implemented; the public
+header is empty until the gate passes. TJO: actual code is C, Python for tests only, a Julia layer later.
 
-**Next.** Collect the lane reports; cross-family review of each proof file; WP 0.4 (`docs/conventions.md`, golden
-vectors) from the proofs and sources; milestone-0 gate review by codex `gpt-6-astra`; then milestone 1 in C.
+**Next.** Read `docs/reviews/m0-gate/review.md`; apply its edits; then milestone 1 in C: first the header for the
+milestone-1 types (per-module headers under `include/adelefeld/`, so that parallel lanes own disjoint files), then
+WP 1.2 to 1.8 in parallel lanes, tests against `tests/ref/vectors/` and `tests/golden/`; a code review round when
+the ring has landed. Still open from milestone 0: a quiet-machine benchmark run; `docs/sources.md` row for
+`uops-intel`; `ideles.md` Definition 8 against CV-16; four sources pending (`lanes/m0-sources/report.md`).
