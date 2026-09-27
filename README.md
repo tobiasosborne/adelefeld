@@ -1,9 +1,11 @@
 # adelefeld
 
 A programming surface for mathematics in which the adeles are an ordinary number type: C on FLINT, arbitrary
-precision, ball arithmetic. **Status (2026-09-27): specification, plan and performance floors drafted; nothing is implemented.** Licence: AGPL-3.0.
+precision, ball arithmetic. **Status (2026-09-27): specification, plan and performance floors written and reviewed; nothing is implemented.
+Next: milestone 0 of the plan.** Licence: AGPL-3.0.
 
-- `docs/SPEC.md`: scope and specification (current draft: 2).
+- `docs/SPEC.md`: scope and specification.
+- `CLAUDE.md`: the rules of work.
 - `docs/proofs/precision.md`: proofs of the arithmetic rules.
 - `docs/reviews/`: design reviews by a second model family.
 - `docs/PLAN.md`: work packages and acceptance tests.

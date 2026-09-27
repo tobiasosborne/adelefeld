@@ -1,6 +1,8 @@
-# adelefeld: scope and specification, draft 4
+# adelefeld: scope and specification, version 1.0
 
-Date: 2026-09-27. Authors: TJO with Claude (Fable). Status: **draft; nothing is implemented.** Companion documents:
+Date: 2026-09-27. Authors: TJO with Claude (Fable). Status: **the basis of milestone 0; nothing is implemented.** Three
+review rounds and a closure check by a second model family (verdict: ratify after minor edits, which are applied).
+The contracts marked as milestone-0 gates (proofs, sources, conventions, seams) are still open. Companion documents:
 `PLAN.md` (work packages), `PERF.md` (floors), `proofs/precision.md` (proofs of the arithmetic rules).
 
 Draft 2 applied the design review `reviews/astra-2026-09-27/review.md` (codex `gpt-6-astra`, 28 findings); draft 3
@@ -503,7 +505,7 @@ solvability modulo a prime power at 2, 3, 5), the criterion for the profinite po
 | binomial coefficient `binom(x, k)` | `x` a profinite integer `a mod N`, `k` a non-negative integer | the polynomial `x (x-1) ... (x-k+1) / k!`, which maps `Zhat` to `Zhat` | conservative: modulo `N / gcd(N, k!)`. Smallest ball: centre `binom(a, k)`, radius `gcd` of `binom(a + N j, k) - binom(a, k)` for `j = 1, ..., k` (radius 0, the exact 1, for `k = 0`). **[proved]** (R3 review, section on binomials) **[checked]** |
 | content of an idele | ideles | the positive rational `r` of section 5 (the fractional ideal) | exact |
 | theta series of a test function | an idele `x` | `sum over rational q of f(q x)`; Poisson summation gives `Theta_f(x) = |x|^(-1) Theta_{hat f}(1/x)` | with milestone 4 |
-| cyclotomic action (reciprocity map for `Q`) | idele classes | the class `(t, u')` acts on a root of unity `z` of order `n`; `t` acts trivially. Two conventions: arithmetic, `z -> z^(1/u')`, and geometric, `z -> z^(u')` (both in J. S. Milne's notes, as read by the reviewer **[unverified]**). The choice is made in milestone 0 and is part of the function's name. Test vector: the idele with `p` at the place `p` and 1 elsewhere has `u' = 1/p` away from `p`, so under the arithmetic convention `z -> z^p` | determined when the modulus of the unit coset, in canonical form, is divisible by `n` |
+| cyclotomic action (reciprocity map for `Q`) | idele classes | the class `(t, u')` acts on a root of unity `z` of order `n`; `t` acts trivially. Two conventions: arithmetic, `z -> z^(1/u')`, and geometric, `z -> z^(u')` (both in J. S. Milne's notes, as read by the reviewer **[unverified]**). The choice is made in milestone 0 and is part of the function's name. Test vector: the idele with `p` at the place `p` and 1 elsewhere has `u' = 1/p` away from `p`, so under the arithmetic convention `z -> z^p` for `n` prime to `p` (on roots of order a power of `p` this idele acts trivially) | determined exactly when `U(N)` is inside `U(n)`, that is, when the canonical form of `n` divides the canonical form of `N` (`[2 mod 3]` determines the action on sixth roots) |
 
 **Notes on the Hilbert symbol.** (R2)
 
@@ -516,8 +518,9 @@ solvability modulo a prime power at 2, 3, 5), the criterion for the profinite po
   `(3,3)_2 = -1`.
 - The product formula holds for rationals. It does not hold for arbitrary pairs of ideles.
 - The prototype tests the formula against solvability modulo `16`, `9`, `25`, for coefficients of valuation 0 or 1.
-  That this finite test decides solvability in `Q_p` is proved in the review (R2); it would not be valid for other
-  moduli or for coefficients that are not reduced.
+  That this finite test decides solvability in `Q_p` is proved in the review (R2) for such coefficients; higher
+  powers of the same primes also suffice; other precisions, or coefficients that are not reduced, need their own
+  justification.
 
 **Tier B: later, named so that the interface leaves room.** Morita's p-adic Gamma function; the Artin-Hasse
 exponential; p-adic polylogarithms; p-adic L-functions; Dwork's exponential (needs an extension of `Q_p`);

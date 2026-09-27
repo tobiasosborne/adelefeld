@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Closure check of round 3: resume the same codex session.
+cd "$(dirname "$0")/../../.." || exit 1
+D=docs/reviews/astra-2026-09-27-r3
+codex exec resume -m gpt-6-astra -c 'model_reasoning_effort="xhigh"' -c 'sandbox_mode="workspace-write"' \
+  -o "$D/closure-last.md" 01a0e42b-1265-7981-b6ae-a7357f88eea3 "The authors applied your six edits R1 to R6 (SPEC.md is now draft 4, PLAN.md draft 3; proto/precision_rules.py has new checks at the end, run it). Check the text as written, only the places that changed: SPEC 9.3.3 (paragraph 'At all places'), SPEC 9.3.7 (all rows and the notes on the Hilbert symbol), PLAN section 1 item 1, PLAN 1F.8 and 1F.9, PLAN section 8. For each of R1 to R6 and for N5 give RESOLVED, PARTLY, NOT RESOLVED or RESOLVED WRONGLY with one line of reason; check that your formulas were transcribed correctly (Kronecker moduli, D = gcd(N, c^M - 1), the binomial smallest-ball radius, the cyclotomic test vector, the local functional equation defining gamma). Report any new error introduced by the edits. Write the result to docs/reviews/astra-2026-09-27-r3/closure.md (do not edit any other file; do not overwrite review.md), brief, ending with a section titled exactly 'Ratification' with one of: RATIFY, RATIFY AFTER MINOR EDITS (list them), DO NOT RATIFY (list blockers)." < /dev/null >> "$D/closure.stdout" 2>&1
+echo "codex exit: $?" >> "$D/closure.stdout"

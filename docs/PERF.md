@@ -1,4 +1,4 @@
-# adelefeld: performance floors, draft 2
+# adelefeld: performance floors, version 1.0
 
 Date: 2026-09-27. Method: the user-level skill `perf-bounds`. Draft 1 applied findings F1 to F6 of the design review
 (`reviews/astra-2026-09-27/review.md`); draft 2 applies round 2 (`reviews/astra-2026-09-27-r2/review.md`: F1 to F4,

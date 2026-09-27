@@ -1,0 +1,969 @@
+OpenAI Codex v0.157.1
+--------
+workdir: /home/tobiasosborne/Projects/adelefeld
+model: gpt-6-astra
+provider: openai
+approval: on-request
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 01a0e42b-1265-7981-b6ae-a7357f88eea3
+--------
+user
+The authors applied your six edits R1 to R6 (SPEC.md is now draft 4, PLAN.md draft 3; proto/precision_rules.py has new checks at the end, run it). Check the text as written, only the places that changed: SPEC 9.3.3 (paragraph 'At all places'), SPEC 9.3.7 (all rows and the notes on the Hilbert symbol), PLAN section 1 item 1, PLAN 1F.8 and 1F.9, PLAN section 8. For each of R1 to R6 and for N5 give RESOLVED, PARTLY, NOT RESOLVED or RESOLVED WRONGLY with one line of reason; check that your formulas were transcribed correctly (Kronecker moduli, D = gcd(N, c^M - 1), the binomial smallest-ball radius, the cyclotomic test vector, the local functional equation defining gamma). Report any new error introduced by the edits. Write the result to docs/reviews/astra-2026-09-27-r3/closure.md (do not edit any other file; do not overwrite review.md), brief, ending with a section titled exactly 'Ratification' with one of: RATIFY, RATIFY AFTER MINOR EDITS (list them), DO NOT RATIFY (list blockers).
+codex
+I’ll check the changed passages against R1–R6, run the updated prototype, and write the result only to `closure.md`.
+exec
+/bin/bash -lc "git status --short; rg --files --hidden -g AGENTS.md -g '"'!'"\\.git/**'; rg -n '"'^#|At all places|1F'"\\.8|1F\\.9|Contracts before code' docs/SPEC.md docs/PLAN.md; sed -n '415,580p' docs/SPEC.md" in /home/tobiasosborne/Projects/adelefeld
+ succeeded in 0ms:
+?? docs/reviews/astra-2026-09-27-r3/closure-run.sh
+?? docs/reviews/astra-2026-09-27-r3/closure.stdout
+docs/PLAN.md:1:# adelefeld: implementation plan, draft 3
+docs/PLAN.md:10:## 1. Principles
+docs/PLAN.md:12:1. **Contracts before code.** Milestone 0 fixes the mathematics, the conventions and the storage invariants in
+docs/PLAN.md:25:## 2. Repository layout
+docs/PLAN.md:40:## 3. Layers
+docs/PLAN.md:53:## 4. Types and contexts (proposal, not approved; to be frozen in work package 0.4)
+docs/PLAN.md:102:## 5. Text forms (proposal, frozen in 0.4)
+docs/PLAN.md:119:## 6. Work packages
+docs/PLAN.md:125:### Milestone 0: contracts (gate: reviewed by a second model family, no open blocker)
+docs/PLAN.md:136:### Milestone 1: the ring (L)
+docs/PLAN.md:149:### Milestone 1F: functions (L; split as the reviewer recommends)
+docs/PLAN.md:160:| 1F.8 | All-places forms: the five series on values with finite part exactly 0; `Log` on ideles as the enclosure `4 Zhat` refined at named primes; the rational root of an exact rational (by integer root tests; both signs optional for even degree; 0; degree 1); `NOT_DETERMINED` for roots of degree at least 2 of ideles; branches are listed only over named places | after milestone 2. 1 has rational square roots `1` and `-1` and the function does not claim to list the adelic ones; 8 has the cube root 2; 2 has no square root |
+docs/PLAN.md:161:| 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power; binomial coefficients; content; cyclotomic action. (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | `(1/2) = +1` against `(3/2) = -1`; Hilbert symbol: product formula on rationals, solvability modulo 16, 9, 25 on reduced coefficients, all 64 pairs of square classes at 2, undetermined cases for ideles; profinite power: the criterion, the coarsening to `D`, negative exponents, canonical moduli; binomials: enclosure and the smallest ball by enumeration, `(a, N, k) = (0, 8, 4)` gives radius 2; cyclotomic action: the test vector of the specification; local factors at and near their poles |
+docs/PLAN.md:163:### Milestone 2: ideles (M)
+docs/PLAN.md:172:### Milestone 3: quotient and characters (M)
+docs/PLAN.md:181:### Milestone 4: functions on the adeles (L)
+docs/PLAN.md:191:### Milestone 5: Tate integrals (gate)
+docs/PLAN.md:200:### Milestone S: solvers (optional for version 1; gate)
+docs/PLAN.md:208:### Milestone 6: the second field (after version 1)
+docs/PLAN.md:213:## 7. Acceptance tests: what counts
+docs/PLAN.md:235:## 8. Review protocol
+docs/PLAN.md:246:## 9. Risks
+docs/PLAN.md:260:## 10. Out of scope for version 1
+docs/SPEC.md:1:# adelefeld: scope and specification, draft 4
+docs/SPEC.md:20:## 1. Goal
+docs/SPEC.md:36:## 2. The picture, in elementary terms
+docs/SPEC.md:76:## 3. What is more general than the adeles of Q
+docs/SPEC.md:98:## 4. The additive types
+docs/SPEC.md:100:### 4.1 Values
+docs/SPEC.md:139:### 4.2 Set predicates
+docs/SPEC.md:154:### 4.3 Precision rules (tight)
+docs/SPEC.md:173:### 4.4 Precision policies
+docs/SPEC.md:195:### 4.5 What the additive types cannot do
+docs/SPEC.md:204:## 5. Ideles and idele classes
+docs/SPEC.md:238:## 6. The quotient by Q and the additive character
+docs/SPEC.md:270:## 7. Functions, Fourier transform
+docs/SPEC.md:297:## 8. Tate integrals: the acceptance test
+docs/SPEC.md:322:## 9. Solving equations, reconstruction, functions
+docs/SPEC.md:324:### 9.1 Solving
+docs/SPEC.md:339:### 9.2 Rational reconstruction
+docs/SPEC.md:354:### 9.3 Functions (in the basic package; TJO, 2026-09-27)
+docs/SPEC.md:365:#### 9.3.1 How functions are applied
+docs/SPEC.md:383:#### 9.3.2 Power series at a prime
+docs/SPEC.md:418:#### 9.3.3 Roots
+docs/SPEC.md:441:**At all places.** A unit coset leaves every unit possible at the primes outside its modulus, and some of those
+docs/SPEC.md:452:#### 9.3.4 Powers: four different operations
+docs/SPEC.md:462:#### 9.3.5 Characters are not sine and cosine
+docs/SPEC.md:469:#### 9.3.6 Other functions of one variable, with their types
+docs/SPEC.md:483:#### 9.3.7 Functions special to arithmetic (catalogue, added after a survey on 2026-09-27)
+docs/SPEC.md:526:## 10. Constraints from the interaction plane (deferred)
+docs/SPEC.md:538:## 11. Performance discipline
+docs/SPEC.md:544:## 12. Milestones
+docs/SPEC.md:561:## 13. Limits
+docs/SPEC.md:573:## 14. Prior art
+docs/SPEC.md:583:## 15. Decisions (TJO, 2026-09-27)
+output precision; removal of `p^m` and of `w` before calling FLINT; branches of roots. FLINT is called only for the
+centre, after these checks. **[design]** (N4)
+
+#### 9.3.3 Roots
+
+Fix a degree `n >= 1` and `a = p^m w u` non-zero. **[proved]** (N5)
+
+| Place | `a` has an n-th root exactly when |
+|---|---|
+| odd `p` | `n` divides `m`; `w` is an n-th power among the `(p-1)`-th roots of unity; `v(log u) >= 1 + v(n)` |
+| `p = 2` | `n` divides `m`; `w` is an n-th power in `{1, -1}`; `v(log u) >= 2 + v(n)` |
+| real | `n` odd: always, one real root. `n` even: `a >= 0`, and the non-negative root is returned |
+
+Square roots: at odd `p`, `m` even and the unit part a square modulo `p`; at 2, `m` even and the unit part 1 modulo
+8. (3 is a unit and not a square in `Q_2`; 9 is a square although the derivative `2x` is not a unit, so simple
+Hensel lifting alone would miss it.) When roots exist there are `gcd(n, p-1)` of them at odd `p` and `gcd(n, 2)`
+at 2.
+
+**Branches.** There is no "positive" p-adic root. The function returns all roots with identifiers, or takes a seed
+(a residue) that selects one. "Whatever the library returns" is not a branch.
+
+**Precision.** If `b^n = a` and the input ball `a + p^N Z_p` satisfies `N - m >= c + v(n)`, the branch near `b` has
+image exactly `b + p^(N - v(n) - (n-1) v(b)) Z_p`. Outside this guard the input is split or the status
+`NOT_DETERMINED` is returned. Unit square roots lose nothing at odd `p` and one digit at 2; unit p-th roots lose one
+digit.
+
+**At all places.** A unit coset leaves every unit possible at the primes outside its modulus, and some of those
+units are not squares. So an idele of finite precision can never be certified to have a square root at all places;
+the all-places root of degree `n >= 2` returns `NOT_DETERMINED` for ideles (degree 1 is the identity). Use `root_at`.
+
+For an exact rational the all-places root returns the **rational** root: for odd `n` the one real root, for even `n`
+the non-negative one (optionally both), found by testing numerator and denominator for n-th powers; no
+factorisation is needed. It does not list all adelic roots, and cannot: the rational 1 has the square roots `+1` or
+`-1` chosen freely at every place, continuum many. All branches are listed only over a finite named set of places.
+Nothing is lost for existence: a non-zero rational with an n-th root at every place has all valuations divisible by
+`n` and the right sign, so it has a rational root. Exact 0 has the single root 0. **[proved]** (R4)
+
+#### 9.3.4 Powers: four different operations
+
+**[proved]** (N6) `exp(s Log x)` is not a power: it gives 1 for `x = p`. The package offers separately:
+
+1. **Integer powers**, by ring or idele arithmetic; negative exponents need an invertible base.
+2. **Rational powers**, through the roots of 9.3.3 with their branches.
+3. **Powers of principal units**: `u^s = exp(s log u)` for `u` in `1 + p^c Z_p` and `s` in `Z_p`; on all odd 2-adic
+   units, `w^(s mod 2) exp(s log u)`. The uncertainty of `s` and of `log u` both enter.
+4. **The quasi-character** `t^s chi(u')` on idele classes, `s` complex: the result is a complex ball, not an idele.
+
+#### 9.3.5 Characters are not sine and cosine
+
+The additive character `psi : A/Q -> C^x` (section 6) plays on `A/Q` the part that `exp(2 pi i x)` plays on the
+circle `R/Z`. It is not an extension of the ordinary cosine: `psi` is 1 on every rational, so at the rational `1/4`
+it is 1, while `cos(2 pi / 4) = 0`. It is offered under its own name, with named real and imaginary parts.
+**[proved]** (N2)
+
+#### 9.3.6 Other functions of one variable, with their types
+
+(N10) No blanket "everywhere".
+
+| Function | Domain | Result |
+|---|---|---|
+| absolute value | real, complex, local, idele | non-negative real ball (exact rational at a prime) |
+| valuation at `p` | `Q_p`, adeles at a named prime | an integer or infinity; `NOT_DETERMINED` when the ball contains elements of different valuation |
+| sign, floor, ceiling | real place only | `-1, 0, 1`; an integer; `NOT_DETERMINED` on a ball that crosses the jump. There is no sign or floor on `Q_p` (`Q_5` contains a square root of `-1`, so it has no order) |
+| p-primary fractional part `{x}_p` | `Q_p` | a rational with denominator a power of `p`, in `[0,1)`; the complement `x - {x}_p` lies in `Z_p` and is in general not an ordinary integer |
+| unit part, root-of-unity part, Teichmüller representative | non-zero local values; unit cosets | the factors `p^m`, `w`, `u` above |
+| rational functions | denominator certified non-zero at the named places; at all places: exact non-zero rational or idele | |
+| real and complex functions of `arb`/`acb` (Gamma, error function, Bessel, zeta, ...) | the archimedean place, through `f_at` | real or complex ball; on the complex place, branch cuts follow `acb` and a ball meeting a cut returns the enclosure `acb` gives, with a status |
+
+#### 9.3.7 Functions special to arithmetic (catalogue, added after a survey on 2026-09-27)
+
+These are natural on adeles and ideles. They are implemented as their types and algorithms arrive; their cost
+depends on precision, conductor, support, and on any factorisation they need. (R5) **[standard]** throughout, from memory; each
+formula is to be quoted from a source on disk before it is implemented (work package 0.2). **[checked]** in
+`proto/precision_rules.py`: the Hilbert symbol formulas (product formula on 2000 pairs of rationals; agreement with
+solvability modulo a prime power at 2, 3, 5), the criterion for the profinite power, the binomial enclosure.
+
+**Tier A: in version 1.**
+
+| Function | On | What it is | Precision needed |
+|---|---|---|---|
+| Legendre symbol `(a/p)`, Jacobi symbol `(a/b)` | `p` an odd prime; `b` positive and odd; `a` an integer or a unit coset | quadratic residue symbols (FLINT has them) | `a` modulo the lower entry |
+| Kronecker symbol `(a/b)` | `b = 2^t m` positive, `m` odd | the Jacobi symbol modulo `m` times `(a/2)^t`, where `(a/2)` is 0 for even `a` and `(-1)^((a^2-1)/8)` for odd `a` | `a` modulo `m` if `t = 0`; modulo `lcm(m, 8)` if `t > 0` (sufficient, not always necessary). Not the residue modulo `b`: `(1/2) = +1`, `(3/2) = -1`. Negative or zero `b`: exact integers `a` only. Otherwise the set of possible values or `NOT_DETERMINED` (R1) |
+| Hilbert symbol `(a, b)_v` | two non-zero values at a place; two ideles | `+1` if `a x^2 + b y^2 = z^2` has a non-zero solution at `v`, else `-1`. For rationals the product over all places is 1 | the parity of the valuations and the square class of the unit parts: unit parts modulo `p` at odd `p`, modulo 8 at 2, signs at the real place. For a ball `a + p^A Z_p`: `A - v(a) >= 1` at odd `p`, `>= 3` at 2 suffices. See the notes below (R2) |
+| local zeta factor (trivial character) | a place and complex `s` | `(1 - p^(-s))^(-1)`; `pi^(-s/2) Gamma(s/2)` at the real place | complex ball. Poles at `s = 2 pi i k / log p`, and at `s = 0, -2, -4, ...` for the real place: a ball containing a pole returns a status, never a finite ball |
+| Gauss sums | a Dirichlet character with its conductor, extended by 0; the additive character of section 6 | needed for section 8 | complex ball |
+| local constants | a quasi-character at a place and `s` | defined by the local functional equation `Z(hat f, chi^-1, 1-s) = gamma(s, chi) Z(f, chi, s)` with the transform and measure of sections 6 and 7; the epsilon factor in addition needs the normalisation of the L-factor. Fixed in work packages 0.3 and 0.4 | complex ball |
+| Haar volume of a finite ball | finite balls | `1/N` for radius `N > 0`; 0 for a point | exact |
+| profinite power `a^x` | `a` a unit coset `c U(N)`, `x` a profinite integer `e mod M`, `N, M >= 1` | the power in the group of units of `Zhat`; negative exponents through inverses | the result is determined **modulo `N`** exactly when `c^M = 1 mod N`. Otherwise: `NOT_DETERMINED`, or the coarser coset `c^e U(D)` with `D = gcd(N, c^M - 1)`, the largest divisor of `N` at which it is determined (no factorisation). `D` is not claimed to be the finest modulus overall. Exact integer exponent: always determined modulo `N`; exponent 0 gives the exact 1 (R3) |
+| binomial coefficient `binom(x, k)` | `x` a profinite integer `a mod N`, `k` a non-negative integer | the polynomial `x (x-1) ... (x-k+1) / k!`, which maps `Zhat` to `Zhat` | conservative: modulo `N / gcd(N, k!)`. Smallest ball: centre `binom(a, k)`, radius `gcd` of `binom(a + N j, k) - binom(a, k)` for `j = 1, ..., k` (radius 0, the exact 1, for `k = 0`). **[proved]** (R3 review, section on binomials) **[checked]** |
+| content of an idele | ideles | the positive rational `r` of section 5 (the fractional ideal) | exact |
+| theta series of a test function | an idele `x` | `sum over rational q of f(q x)`; Poisson summation gives `Theta_f(x) = |x|^(-1) Theta_{hat f}(1/x)` | with milestone 4 |
+| cyclotomic action (reciprocity map for `Q`) | idele classes | the class `(t, u')` acts on a root of unity `z` of order `n`; `t` acts trivially. Two conventions: arithmetic, `z -> z^(1/u')`, and geometric, `z -> z^(u')` (both in J. S. Milne's notes, as read by the reviewer **[unverified]**). The choice is made in milestone 0 and is part of the function's name. Test vector: the idele with `p` at the place `p` and 1 elsewhere has `u' = 1/p` away from `p`, so under the arithmetic convention `z -> z^p` | determined when the modulus of the unit coset, in canonical form, is divisible by `n` |
+
+**Notes on the Hilbert symbol.** (R2)
+
+- For two ideles with scales `r`, `s`: at an odd prime where both valuations are even the symbol is `+1`. The places
+  that can matter are the real place, 2, and the primes at which `r` or `s` has odd valuation. Finding them may need
+  the factorisation of the scales, or a supplied list.
+- At each such place the function reports a sign only if it is the same for all values in the input; otherwise
+  `NOT_DETERMINED`. The family over all places is determined exactly when every one of these is.
+- Finite precision need not determine it: two ideles of scale 1 with unknown units at 2 allow `(1,1)_2 = +1` and
+  `(3,3)_2 = -1`.
+- The product formula holds for rationals. It does not hold for arbitrary pairs of ideles.
+- The prototype tests the formula against solvability modulo `16`, `9`, `25`, for coefficients of valuation 0 or 1.
+  That this finite test decides solvability in `Q_p` is proved in the review (R2); it would not be valid for other
+  moduli or for coefficients that are not reduced.
+
+**Tier B: later, named so that the interface leaves room.** Morita's p-adic Gamma function; the Artin-Hasse
+exponential; p-adic polylogarithms; p-adic L-functions; Dwork's exponential (needs an extension of `Q_p`);
+functions on `Q_p(i)` and other extensions (with number fields).
+
+## 10. Constraints from the interaction plane (deferred)
+
+**[design]** The plane itself is a separate document. From the first commit the core provides:
+
+1. A C interface with no hidden global state; contexts are explicit and immutable; rules for ownership, aliasing of
+   arguments, the state of outputs after a failure, and thread safety are written down.
+2. Two text forms. The *value form* is canonical and does not depend on the backend. The *dump* is versioned, keeps
+   backend and context, and writes real balls as exact dyadic numbers (`arb_dump_str`). A decimal `+/-` string is an
+   enclosure on input, not a lossless form.
+3. Status codes that distinguish: not certified to be a unit; proved not a unit; value not determined at this
+   precision; needs splitting; several candidates; resource limit reached; parse error; domain error.
+
+## 11. Performance discipline
+
+**[design]** A measured time or size is reported as a ratio to a derived lower bound, and only when the measurement
+and the bound are of the same kind (a chain against a latency bound, a batch against a throughput bound) and for the
+same stated problem. The method is the skill `perf-bounds`. Floors and reference measurements: `PERF.md`.
+
+## 12. Milestones
+
+One map, shared with `PLAN.md`. **[design]** (P1)
+
+| # | Content | Gate |
+|---|---|---|
+| 0 | Provisional build scaffold; sources on disk; proofs of all rules; conventions fixed; storage invariants; benchmark contracts; seams sketch. No public representation is frozen before the proofs, the conventions and the seams sketch are reviewed | reviewed by a second model family |
+| 1 | Finite balls (tight, global), exact rationals, adeles, text forms, command-line driver; then scaled policy; then local backend | section 4 reproduced in C; policies against each other |
+| 1F | Functions (section 9.3): archimedean wrappers; local `exp`, `log`; roots and powers with branches; `sin`, `cos`, `sinh`, `cosh`; partial balls; Tier A of 9.3.7 as its types arrive | independent oracles with stated output precision; the domain and precision cases of 9.3 |
+| 2 | Unit cosets, ideles, idele classes, division | exact coset identities; norm and product formula |
+| 3 | Quotient by `Q`, additive character, class-group characters | wrapping and fractional radius cases; non-trivial phases |
+| 4 | Test functions, weighted Fourier transform, Poisson summation | section 7 identities with certified tails |
+| 5 | Tate integrals and continuation | section 8 acceptance |
+| R | Rational reconstruction from a full ball (small; may ship with milestone 1) | section 9.2 |
+| S | Solvers (optional for version 1) | section 9.1 |
+| 6 | Second field: `F_q(T)`; number fields after that | after version 1 |
+
+## 13. Limits
+
+- Equality of unknown points inside overlapping balls is not decided; equality of the sets is.
+- Any operation that needs the primes of a radius costs a factorisation, unless one is supplied. Ring operations in
+  the global backend never do.
+- FLINT 3.0.1 has number field elements (`nf`, `nf_elem`), unramified p-adic extensions (`qadic`) and quadratic
+  forms (`qfb`). It has no maximal orders, fractional ideals, class groups or unit groups. **[checked]** (A2) Number
+  fields therefore need a backend to be chosen.
+- Fast class group computations are conditional on the generalised Riemann hypothesis by default; unconditional
+  certification exists (PARI's `bnfcertify`) at extra cost. The guarantee obtained is to be recorded with the
+  result. **[unverified]** (A2; the reviewer read PARI's documentation.)
+
+## 14. Prior art
+
+A directly relevant implementation is M. Hertogh's Sage package `adeles`, with the Leiden master's thesis "Computing
+with adèles and idèles" (2021): adeles and ideles over number fields, multiplicative p-adic numbers, ray class
+groups. Its documented rules for sum and product of profinite numbers agree with section 4.3, and it keeps separate
+multiplicative precision for ideles. **[unverified]** (A1: the reviewer read the package documentation; the thesis
+itself is still to be fetched and read, work package 0.2.) Its equality is an overlap test, which is not transitive;
+we do not adopt that. We have made no complete survey. A list of what other systems offer, from memory, is in
+
+exec
+/bin/bash -lc "sed -n '1,28p' docs/PLAN.md; sed -n '145,185p' docs/PLAN.md; sed -n '231,258p' docs/PLAN.md; tail -n 135 proto/precision_rules.py; cat docs/reviews/astra-2026-09-27-r3/review.md" in /home/tobiasosborne/Projects/adelefeld
+ succeeded in 0ms:
+# adelefeld: implementation plan, draft 3
+
+Date: 2026-09-27. Status: **plan; nothing is implemented.** Read `SPEC.md` first (what is built) and `PERF.md` (how
+speed and size are judged). Draft 1 applies the design review `reviews/astra-2026-09-27/review.md` (findings P1-P3,
+D1-D4, and the consequences of M1-M13 and F1-F6), and TJO's decision that elementary functions belong to the basic
+package. Draft 2 applies review round 2 (`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of
+functions (`SPEC.md` 9.3.7). Draft 3 applies review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its
+draft 4.
+
+## 1. Principles
+
+1. **Contracts before code.** Milestone 0 fixes the mathematics, the conventions and the storage invariants in
+   writing, and has them reviewed. Until then, production C is limited to a provisional build scaffold with no
+   public types; disposable probes of mathematics or of library behaviour, and the benchmark harness, are allowed.
+   The public header is frozen after work packages 0.3, 0.4 and 0.6 are reviewed.
+2. **Vertical slices.** Each later milestone ends with something a user can type and see.
+3. **Tests.** A new behaviour gets a test that defines it; a defect gets a regression test that fails before the
+   fix. Corrections of text need no test. Mutation testing is measured by surviving mutants, fuzzing by coverage.
+4. **Every formula in `src/` cites a proof in `docs/proofs/` or a source on disk** by file and line.
+5. **Enclosure is the contract.** If the inputs contain the true values, the output contains the true result.
+   Tightness is a quality measure with its own tests.
+6. **A row in `PERF.md` before "finished"**, under the benchmark contract of `PERF.md` section 7.
+7. **No hidden state.** Contexts are explicit and immutable.
+
+## 2. Repository layout
+
+    include/adelefeld.h       the public interface (one header)
+    src/                      one file per type or kernel
+| 1.6 | Rational reconstruction from a full ball (milestone R) | progression cases; none, one, several candidates | one row |
+| 1.7 | Scaled policy and absolute cap | same expression in all policies, containment after every step; the loss cases | add, mul |
+| 1.8 | Local backend: `adf_modctx`, conversion both ways, batch kernels | represented set unchanged by conversion, denominators included | conversions; batch add and mul |
+
+### Milestone 1F: functions (L; split as the reviewer recommends)
+
+| WP | Content | Tests |
+|---|---|---|
+| 1F.1 | `adf_sball` and `f_at`: partial balls over named places, with the real or complex tag; projection from adeles | the result names its places; failure at one place is reported with that place and no value |
+| 1F.2 | Archimedean wrappers around `arb`/`acb`: `exp`, `log`, `log_abs`, trigonometric and hyperbolic functions, roots (odd and even degree), special functions | wrapper tests only: projection, guard digits, translation of statuses, balls crossing 0 or a branch cut. Not a test of `arb` |
+| 1F.3 | `adf_lball`: arithmetic; decomposition `p^m w u`; valuation, absolute value, fractional part | enumeration modulo small prime powers |
+| 1F.4 | Local `exp`, `log`, `Log`: our wrapper around FLINT's centre evaluation | the regression of review N4 (`exp 3` and `exp 12` at precision 8); the precision cases of `SPEC.md` 9.3.2 including the losses at `x = 3, 12` (`p = 3`) and `x = 2, 10` (`p = 2`); `log(-1) = 0` at 2; balls at the edge of the domain; uncertain zero |
+| 1F.5 | Local roots: existence conditions, all branches with identifiers or a seed, precision formula and its guard; square roots at 2; degree divisible by `p` | 3 has no square root in `Q_2`, 9 has; counts `gcd(n, p-1)`; loss of one digit at 2; input balls outside the guard |
+| 1F.6 | Powers: integer; rational through roots; principal units; (the quasi-character comes with milestone 3) | `exp(Log p) = 1` is not `p`; compatibility of principal-unit powers with integer powers |
+| 1F.7 | `sin`, `cos`, `sinh`, `cosh` at a prime by power series with proved truncation | comparison with `exp` at `p = 5` and `13` (where `sqrt(-1)` is in `Q_p`); `sinh`, `cosh` against `exp` at every prime; independent exact truncations with tail bounds at `p = 2, 3`: `cos 4 = 9 mod 16`, `sin 3 = 3 mod 9`; a stated output precision is required, identities alone do not count |
+| 1F.8 | All-places forms: the five series on values with finite part exactly 0; `Log` on ideles as the enclosure `4 Zhat` refined at named primes; the rational root of an exact rational (by integer root tests; both signs optional for even degree; 0; degree 1); `NOT_DETERMINED` for roots of degree at least 2 of ideles; branches are listed only over named places | after milestone 2. 1 has rational square roots `1` and `-1` and the function does not claim to list the adelic ones; 8 has the cube root 2; 2 has no square root |
+| 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power; binomial coefficients; content; cyclotomic action. (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | `(1/2) = +1` against `(3/2) = -1`; Hilbert symbol: product formula on rationals, solvability modulo 16, 9, 25 on reduced coefficients, all 64 pairs of square classes at 2, undetermined cases for ideles; profinite power: the criterion, the coarsening to `D`, negative exponents, canonical moduli; binomials: enclosure and the smallest ball by enumeration, `(a, N, k) = (0, 8, 4)` gives radius 2; cyclotomic action: the test vector of the specification; local factors at and near their poles |
+
+### Milestone 2: ideles (M)
+
+| WP | Content | Tests |
+|---|---|---|
+| 2.1 | `adf_ucoset`, `adf_idele`, `adf_idclass`: multiply, invert, power | exact coset identities at a fixed modulus; `gcd` rule at mixed moduli; the point 1 is in `x * x^-1` |
+| 2.2 | Absolute values, valuations at a named prime (by divisibility, no factorisation), norm | negative rationals; norm exact before rounding |
+| 2.3 | Maps: rational to idele; idele to class (with the sign on the unit); idele to adele, both hulls | containment; tightness of the small hull |
+| 2.4 | Division of an adele by an idele or an exact rational | against multiplication by the inverse; status when the divisor is only an adele |
+
+### Milestone 3: quotient and characters (M)
+
+| WP | Content | Tests |
+|---|---|---|
+| 3.1 | `adf_qclass`: reduction with splitting, piece limit | wrapping across an integer; fractional radii; equality of the sets after translation by a rational |
+| 3.2 | The additive character | a non-trivial phase at `(0 ; 1/3)`; ambiguity on a fractional radius; additivity; width of the result |
+| 3.3 | `adf_char`: `t^s chi` with conductor and parity | conductor not dividing the modulus gives an enclosure or a status |
+| 3.4 | Gauss sums | against `acb_dirichlet_gauss_sum` |
+
+### Milestone 4: functions on the adeles (L)
+
+| WP | Content | Tests |
+|---|---|---|
+| 4.1 | `adf_ffun`: arrays with `D`, `M`; sum, product with common refinement, exact translation and dilation | delta functions with `D` different from `M` |
+| Unit cosets | `[5 mod 6]` and `[2 mod 3]` are equal and print identically |
+| Solvers | the equation is verified; the kernel is complete on small cases |
+| Text | golden vectors; malformed and oversized input |
+
+## 8. Review protocol
+
+1. Documents: reviewed by a second model family (codex `gpt-6-astra`) before implementation; each round in
+   `docs/reviews/`. Round 1: 2026-09-27, 28 findings, applied in draft 2 of the specification and draft 1 of this
+   plan and of `PERF.md`. Round 2: 12 new findings and 11 remainders, applied in draft 3 of the specification and
+   draft 2 of this plan and of `PERF.md`; verdict "milestone 0 may begin". Round 3: all round-2 items closed but one;
+   six new findings (R1 to R6, two major), applied in draft 4 of the specification and draft 3 of this plan.
+2. Each milestone: proofs to a second model family; code to an adversarial reviewer whose task is an input that
+   breaks enclosure.
+3. Statements about other people's work keep their label until quoted from a source on disk.
+
+## 9. Risks
+
+| Risk | Mitigation |
+|---|---|
+| Contracts frozen wrongly | milestone 0 is reviewed; the seams sketch (0.6) precedes the header |
+| Rational normalisation and gcds dominate | measured on whole kernels (hypotheses of `PERF.md` section 5) before any redesign |
+| Two backends and three policies multiply the test surface | one reference; the tight global ball is the oracle for all others |
+| p-adic `sin`, `cos` are new code with no library to compare with | comparison with `exp` at `p = 5, 13`; independent exact truncations with tail bounds at other primes; stated output precision |
+| FLINT's p-adic functions evaluate centres, on a smaller domain for `log` | our wrapper owns domain, precision and branches (1F.4, 1F.5) |
+| The catalogue grows without limit | Tier A is fixed in `SPEC.md` 9.3.7; anything else is Tier B until a decision |
+| Certified continuation of the Tate integral is research-grade work | milestone 5 is a gate, not an estimate; version 1 may ship `Re(s) > 1` first |
+| Hertogh's rules differ from ours in detail | work package 0.2 precedes 1.2 |
+| The interaction plane wants something the core cannot give | value text, dump and status codes are tested from milestone 1 |
+def legendre(a, p):
+    a %= p
+    return 0 if a == 0 else (1 if pow(a, (p - 1) // 2, p) == 1 else -1)
+
+def val_unit(a, p):             # a non-zero rational -> (valuation, unit part as a Fraction)
+    a = F(a); m = 0
+    while a.numerator % p == 0: a /= p; m += 1
+    while a.denominator % p == 0: a *= p; m -= 1
+    return m, a
+
+def hilbert(a, b, p):           # p a prime, or 0 for the real place
+    if p == 0:
+        return -1 if (a < 0 and b < 0) else 1
+    al, u = val_unit(a, p); be, w = val_unit(b, p)
+    if p == 2:
+        U = u.numerator * pow(u.denominator, -1, 8) % 8; W = w.numerator * pow(w.denominator, -1, 8) % 8
+        eps = lambda x: ((x - 1) // 2) % 2
+        om = lambda x: ((x * x - 1) // 8) % 2
+        return (-1) ** ((eps(U) * eps(W) + al * om(W) + be * om(U)) % 2)
+    U = u.numerator * pow(u.denominator, -1, p) % p; W = w.numerator * pow(w.denominator, -1, p) % p
+    return (-1) ** ((al * be * ((p - 1) // 2)) % 2) * legendre(U, p) ** (be % 2) * legendre(W, p) ** (al % 2)
+
+def primes_of(*xs):
+    ps = set()
+    for x in xs:
+        for n in (abs(F(x).numerator), F(x).denominator):
+            d = 2
+            while d * d <= n:
+                while n % d == 0: ps.add(d); n //= d
+                d += 1
+            if n > 1: ps.add(n)
+    return ps
+
+def hilbert_has_solution(a, b, p, k=3):
+    """brute force: a, b p-adic unit or p times unit integers; is a x^2 + b y^2 = z^2 solvable primitively mod p^k?"""
+    q = p ** k
+    return any((a * x * x + b * y * y - z * z) % q == 0
+               for x in range(q) for y in range(q) for z in range(q) if (x % p or y % p or z % p))
+
+def draft3_checks():
+    random.seed(3)
+    # predicates with zero radii
+    assert overlaps(F(1), F(0), F(1), F(0)) and contains(F(1), F(0), F(1), F(0)) and equal_set(F(1), F(0), F(1), F(0))
+    assert contains(F(7), F(0), F(1), F(3)) and not contains(F(1), F(3), F(1), F(0)) and not overlaps(F(1), F(0), F(2), F(0))
+    assert overlaps(F(7), F(0), F(1), F(3)) and not overlaps(F(8), F(0), F(1), F(3))
+    print("predicates with zero radii: ok")
+    # binomial coefficient on a ball a + N Zhat: result known modulo N / gcd(N, k!)
+    n = 0
+    for _ in range(3000):
+        N = random.randint(1, 400); a = random.randrange(N); k = random.randint(0, 9)
+        R = N // gcd(N, factorial(k))
+        ref = comb(a, k) if a >= k else 0
+        def binom(x):           # polynomial value, also for negative x
+            num = 1
+            for i in range(k): num *= (x - i)
+            assert num % factorial(k) == 0
+            return num // factorial(k)
+        assert all((binom(a + N * t) - binom(a)) % R == 0 for t in range(-8, 9)); n += 1
+    print(f"binomial enclosure modulo N/gcd(N,k!): {n} checks passed")
+    # profinite power: c^x for x = e mod M is determined modulo N exactly when c^M = 1 mod N
+    n = 0
+    for _ in range(3000):
+        N = random.randint(2, 300); c = random.randrange(1, N)
+        if gcd(c, N) != 1: continue
+        M = random.randint(1, 60); e = random.randrange(M)
+        vals = {pow(c, e + M * t, N) for t in range(0, 40)}
+        assert (len(vals) == 1) == (pow(c, M, N) == 1); n += 1
+    print(f"profinite power criterion: {n} checks passed")
+    # Hilbert symbol: product formula over all places, and the definition by brute force at small primes
+    n = 0
+    for _ in range(2000):
+        a = F(random.choice([-1, 1]) * random.randint(1, 200), random.randint(1, 30))
+        b = F(random.choice([-1, 1]) * random.randint(1, 200), random.randint(1, 30))
+        prod = hilbert(a, b, 0)
+        for p in primes_of(a, b) | {2}:
+            prod *= hilbert(a, b, p)
+        assert prod == 1; n += 1
+    print(f"Hilbert symbol product formula: {n} rational pairs passed")
+    m = 0
+    for p, k in ((2, 4), (3, 2), (5, 2)):
+        for a in range(1, 2 * p * 4):
+            for b in range(1, 2 * p * 4):
+                if val_unit(a, p)[0] > 1 or val_unit(b, p)[0] > 1: continue
+                assert (hilbert(a, b, p) == 1) == hilbert_has_solution(a, b, p, k), (a, b, p); m += 1
+    print(f"Hilbert symbol against the definition (solvability modulo p^k, k = 4, 2, 2): {m} pairs passed")
+
+def kronecker2(a):               # the factor (a/2)
+    return 0 if a % 2 == 0 else (-1) ** (((a * a - 1) // 8) % 2)
+
+def draft4_checks():
+    """after review round 3"""
+    random.seed(4)
+    assert kronecker2(1) == 1 and kronecker2(3) == -1 and 1 % 2 == 3 % 2
+    assert all(kronecker2(a) == kronecker2(a + 8) for a in range(-40, 40))
+    print("(1/2) = +1, (3/2) = -1 although 1 = 3 mod 2; (a/2) depends on a mod 8: ok")
+    n = 0
+    for _ in range(3000):       # profinite power: coarsening to D = gcd(N, c^M - 1)
+        N = random.randint(2, 300); c = random.randrange(1, N)
+        if gcd(c, N) != 1: continue
+        M = random.randint(1, 40); e = random.randrange(M)
+        D = gcd(N, pow(c, M, N) - 1)
+        vals = [pow(c, e + M * t, N) for t in range(0, 30)]
+        assert len({v % D for v in vals}) == 1
+        for L in range(D + 1, N + 1):
+            if N % L == 0 and L % D == 0 and L != D:
+                assert len({v % L for v in vals}) > 1, (N, c, M, L)     # no finer divisor of N is determined
+        n += 1
+    print(f"profinite power, largest determined divisor of N: {n} checks passed")
+    n = 0
+    for _ in range(2000):       # binomial: smallest ball
+        N = random.randint(1, 60); a = random.randrange(N); k = random.randint(1, 7)
+        def binom(x):
+            num = 1
+            for i in range(k): num *= (x - i)
+            return num // factorial(k)
+        R = reduce(gcd, [abs(binom(a + N * j) - binom(a)) for j in range(1, k + 1)])
+        diffs = [binom(a + N * t) - binom(a) for t in range(-12, 13)]
+        assert all(d % R == 0 for d in diffs) if R else all(d == 0 for d in diffs)
+        assert R % (N // gcd(N, factorial(k))) == 0
+        n += 1
+    def binom4(x): return x * (x - 1) * (x - 2) * (x - 3) // 24
+    print(f"binomial smallest ball: {n} checks passed; (a,N,k) = (0,8,4): radius",
+          reduce(gcd, [abs(binom4(8 * j)) for j in range(1, 5)]))
+    from math import isqrt
+    def rational_root2(q):
+        q = F(q)
+        if q < 0: return None
+        a, b = isqrt(q.numerator), isqrt(q.denominator)
+        return F(a, b) if a * a == q.numerator and b * b == q.denominator else None
+    print("rational square roots: 9/4 ->", rational_root2(F(9, 4)), "; 2 ->", rational_root2(2), "; 1 ->", rational_root2(1))
+
+if __name__ == "__main__":
+    draft2_checks()
+    draft3_checks()
+    draft4_checks()
+# Third review of adelefeld — 2026-09-27
+
+Evidence labels apply to the paragraph or table row they introduce: **[proved here]** for deductions, counterexamples and justified recommendations; **[checked by a run]** for inspected text/source or recorded executions; **[from memory]** for external facts not established here. A source inspected through a tool is labelled **[checked by a run]**, not claimed as a new proof. Ratification concerns the basis for milestone 0, not completion of its proof gates.
+
+## 1. Closure table
+
+**[checked by a run]** The brief lists twelve round-1 remainders, despite calling them eleven. All twelve and N1–N12 are covered below. RESOLVED means the specified repair is present; it does not certify future implementation.
+
+| ID | Status | Evidence / reason |
+|---|---|---|
+| M6 | RESOLVED | **[checked by a run]** SPEC 6 now specifies multiple wraps, closed pieces with gluing, authoritative lifts and a piece limit. |
+| M9 | RESOLVED | **[checked by a run]** SPEC 7 restricts dilation to nonzero rational scalars or certified ideles. |
+| M10 | RESOLVED | **[checked by a run]** SPEC 8 exempts conductor 1 and specifies absolute convergence. |
+| M12 | RESOLVED | **[checked by a run]** SPEC 9.2 has the zero-radius branch, reduced fractions and invertible denominators. |
+| D2 | RESOLVED | **[checked by a run]** SPEC 4.1 / PLAN 4 specify whole-value fallback, unused local `A`, and new contexts after cancellation. |
+| P1 | RESOLVED | **[checked by a run]** PLAN 1 / 0.1 permit only a provisional scaffold before the contract reviews. |
+| P2 | RESOLVED | **[checked by a run]** PLAN 1F.7 / 7 require independent oracles and output precision, and identify wrapper tests. |
+| F1 | RESOLVED | **[checked by a run]** PERF 1 labels allocator estimates MODEL and records the limited counter probe. |
+| F2 | RESOLVED | **[checked by a run]** PERF 2 withdraws the mismatched 80/37 ratio and labels the entropy denominator. |
+| F3 | RESOLVED | **[checked by a run]** PERF specifies compulsory I/O and implementation-restricted dependency bounds. |
+| F4 | RESOLVED | **[checked by a run]** Current baseline source and commit `4b143d9` both hash to `690ca1b22ab95fa5895c9dd264a47ebd46b750233eac2adc34ea79df536908b1`. |
+| F6 | RESOLVED | **[checked by a run]** PERF 4 now qualifies worst cases, layouts, padding and information counts. |
+| N1 | RESOLVED | **[checked by a run]** SPEC 9.3.2 separates series domains, all-place existence and finite-data certification. |
+| N2 | RESOLVED | **[checked by a run]** SPEC 9.3.1 / 9.3.5 require named projections and separate the additive character. |
+| N3 | RESOLVED | **[proved here]** The radius, extended-Log and 2-adic exception formulas are correctly transcribed; see audit below. |
+| N4 | RESOLVED | **[checked by a run]** SPEC 9.3.2 / PLAN 1F.4 make ball uncertainty and domain handling the wrapper's responsibility. |
+| N5 | PARTLY | **[proved here]** Local existence, counts and guarded precision are correct; the all-place exact-rational result still needs the restriction in R4. |
+| N6 | RESOLVED | **[checked by a run]** SPEC 9.3.4 separates integer, rational, principal-unit and quasi-character powers. |
+| N7 | RESOLVED | **[checked by a run]** PLAN 1F.7 uses 5/13 for trigonometric exp comparisons and independent truncations at 2/3. |
+| N8 | RESOLVED | **[proved here; checked by a run]** Zero cases, explicit CRT moduli and scaled conversion are valid; zero-predicate regressions pass. |
+| N9 | RESOLVED | **[checked by a run]** SPEC 4.1 / PLAN 4 explicitly describe the archimedean enlargement and partial-place tag. |
+| N10 | RESOLVED | **[checked by a run]** SPEC 9.3.3 / 9.3.6 separate real root parity, scalar outputs, fractional parts and complex branches. |
+| N11 | RESOLVED | **[checked by a run]** PERF 4 uses materialised output contracts instead of equating requested precision with output size. |
+| N12 | RESOLVED | **[proved here]** SPEC 5 / PLAN 5,7 remove exactly one redundant factor 2 when its valuation is 1. |
+
+## 2. New findings table
+
+**[proved here]** Severities reflect the contracts demonstrated below. MAJOR means a wrong or unfulfillable public mathematical contract; MINOR means a bounded clarification with a concrete repair.
+
+| ID | Location | Severity | Finding |
+|---|---|---|---|
+| R1 | SPEC 9.3.7, symbols; PLAN 1F.9 | MAJOR | **[proved here]** Kronecker symbols are not determined by the numerator modulo the denominator. |
+| R2 | SPEC 9.3.7, Hilbert; prototype oracle | MINOR | **[proved here]** Specify valuation parity plus relative unit precision, finite ambiguous places, and why the finite solvability test lifts. |
+| R3 | SPEC 9.3.7, profinite power; PLAN 1F.9 | MINOR | **[proved here]** The criterion is correct modulo the supplied N; state that target and the coarsening contract explicitly. |
+| R4 | SPEC 9.3.3; PLAN 1F.8 | MAJOR | **[proved here]** All-place roots of an exact rational cannot generally be returned as a finite list of branches. |
+| R5 | SPEC 9.3.7, analytic rows and introductory cost claim | MINOR | **[proved here]** Fix local-constant normalisations, pole statuses and cyclotomic convention; remove the blanket claim of cheapness. |
+| R6 | PLAN 1 versus milestone 0.5 | MINOR | **[proved here]** The ban on C beyond the scaffold needs an exception for milestone-0 benchmark/proof probes. |
+
+## 3. Findings in full
+
+### R1 — separate Kronecker precision from Jacobi precision
+
+**Quote [checked by a run].** “Legendre, Jacobi, Kronecker symbol”; “residue modulo the lower entry”.
+
+**Failure and evidence [proved here; checked by a run].** `(1/2)=+1`, `(3/2)=-1`, although `1=3 mod 2`; the installed FLINT routine confirms this in [checks.txt](checks/checks.txt). At denominator `-1`, the symbol records the sign of the numerator, which a profinite unit coset does not contain. At denominator 0 it is 1 precisely for numerator ±1, so it is not a finite-residue operation either. This is a wrong precision guarantee, not merely a loose enclosure.
+
+**Replacement [proved here].** “Legendre takes an odd prime denominator; Jacobi takes a positive odd denominator, and both depend on the numerator modulo that denominator. For positive Kronecker denominator `b=2^t m`, `m` odd, use the Jacobi factor modulo `m` and, if `t>0`, the factor `(a/2)^t`, where `(a/2)=0` for even `a` and `(-1)^((a^2-1)/8)` for odd `a`. Thus `lcm(m,8)` is a sufficient modulus when `t>0`; `m` suffices when `t=0`. Negative or zero denominators are supported for exact integer inputs only, with the sign/±1 cases explicit. On insufficient coset data return the possible symbols or `NOT_DETERMINED`.” Add `(1/2)` versus `(3/2)` to 1F.9. The modulus above is deliberately sufficient, not minimal when `t` is even.
+
+### R2 — the Hilbert formulas and oracle are sound; complete the finite-data contract
+
+**Quote [checked by a run].** “`p = 2`: modulo 8”; “for ideles only finitely many places need data”; the prototype describes its comparison as “against the definition”.
+
+**Formula audit [proved here].** Write `a=p^alpha u`, `b=p^beta w`, with unit parts `u,w`. The implemented formulas are
+
+```
+odd p: (-1)^(alpha*beta*(p-1)/2) (u/p)^beta (w/p)^alpha
+p=2:  (-1)^(eps(u)*eps(w) + alpha*om(w) + beta*om(u))
+eps(u)=(u-1)/2 mod 2; om(u)=(u^2-1)/8 mod 2.
+```
+
+**[proved here]** Negative valuations cause no difficulty: only parity enters. At odd `p`, remove squares to make `alpha,beta` either 0 or 1. When both are 0, the sets `{u x^2+w}` and `{z^2}` in `F_p`, each of size `(p+1)/2`, intersect; this gives a solution with `y=1` and a unit derivative. When only `alpha=1`, solvability is equivalent to `w` being a square modulo `p`: otherwise `y,z` are divisible by `p` and primitivity makes the equation impossible modulo `p^2`. When both are 1, solvability is equivalent to `-uw` being a square modulo `p`, by dividing the equation by `p` with `z` divisible by `p`. These are exactly the formula's four cases. At the real place the form is anisotropic precisely when both entries are negative.
+
+**Oracle audit [proved here].** The code restricts the integer coefficients to valuations 0 or 1. A local nonzero solution can be rescaled to a primitive integral one, so reduction is necessary. Conversely, for odd `p`, a primitive solution modulo `p^2` either has a unit coordinate with unit coefficient (simple Hensel lifting), or both `a,b` have valuation 1, `x,y` are units and `z` is divisible by `p`. In the latter case solve `u x^2+w y^2=0` by simple lifting and set `z=0`. At 2, a primitive solution modulo 16 with an odd coordinate of odd coefficient has derivative valuation 1 and residual valuation at least 4. Otherwise both coefficients have valuation 1, `x,y` are odd and `z=2z'`; divide by 2 to get `u x^2+w y^2-2z'^2=0 mod 8`, again with derivative valuation 1. Strong Hensel applies because `v(F)>2v(F')`: Newton correction strictly increases this valuation gap and converges, preserving the unit coordinate. Thus the prototype's precisions `(16,9,25)` really test the definition on its stated inputs. This would not be valid for arbitrary `k` or unnormalised coefficient valuations.
+
+**[proved here; checked by a run]** Each 2-adic square class has a representative in `{1,3,5,7,2,6,10,14}`: odd squares are 1 modulo 8, and every unit 1 modulo 8 is a square by the same Hensel criterion. The independent check covers all 64 pairs and agrees with the formula. Modulo 8 alone is insufficient for the code's unreduced two-even-coefficient form: `(2,6)_2=-1` but `(1,1,0)` is a primitive modular solution. See [checks.py](checks/checks.py).
+
+**Product formula [checked by a run].** For nonzero *diagonal rationals*, the product is 1, including infinity and 2. The prototype's 2,000 cases pass. A source proving the general statement is [Sutherland, Lecture 10, Theorem 10.11](https://math.mit.edu/classes/18.782/2023sp/LectureNotes10.pdf): bilinearity reduces to pairs of `-1` and primes, then the supplementary laws and quadratic reciprocity finish the proof. This is source verification, not a proof by random tests.
+
+**Precision and replacement [proved here].** “For local nonzero balls, certify valuation parity and unit square class: unit parts modulo `p` at odd `p`, modulo 8 at 2, and signs at infinity. In additive-ball notation `a+p^A Z_p`, sufficient relative precision is `A-v(a)>=1` at odd `p` and `>=3` at 2; these are worst-case sufficient requirements, not always necessary. For two ideles with scales `r,s`, every odd place outside the supports of `r,s` is identically +1. Compute the finite exceptional set `{infinity,2} union supp(r) union supp(s)`; at those places report a sign only if constant on all input square classes, otherwise `{±1}` or `NOT_DETERMINED`. The all-place family is determined exactly when every exceptional entry is determined.” Extracting the support may require factoring the scales, or supplied certified support.
+
+**[proved here]** The smaller necessary candidate set at odd primes uses only *odd* valuations of either scale. If both valuations are even, the symbol is already +1. If only alpha is odd, only the second unit's Legendre symbol is needed; interchange the roles for beta odd. At 2, the displayed parity formula can likewise require less than all three relative digits in special cases. The real signs are already certified by the idele type.
+
+**[proved here]** Finite support does **not** mean finite precision always determines the family: two positive ideles of scale 1 and unrestricted unit cosets allow `(1,1)_2=+1` and `(3,3)_2=-1`, with every odd symbol +1. Nor is their product forced to 1: choose both 2-components equal to 3, all other finite components 1 and positive real components. The rational product formula does not extend to arbitrary pairs of ideles. The catalogue's definition correctly says a nonzero *triple*, not that all three coordinates must be nonzero.
+
+### R3 — profinite powers need a target modulus and a fallback
+
+**Quote [checked by a run].** “determined exactly when `c^M = 1 mod N`”; “always for an exact integer exponent”.
+
+**Well-definedness and criterion [proved here].** For a fixed profinite unit `a`, its image in each finite group `(Z/L)^x` has finite order `h_L`. Define `a^x mod L` using `x mod h_L`. These values are compatible under reduction, so define a unique profinite unit, continuously in both arguments. Negative integer exponents are included through modular inverses. For the independent enclosures `a in c U(N)`, `x in e+M Zhat`, the image modulo **N** is `c^e` times the subgroup generated by `c^M`. Hence the criterion is necessary (compare exponents `e,e+M`) and sufficient (integer exponents are dense). It does not assert that the whole profinite output is exact.
+
+**Replacement [proved here].** “For `N,M>=1`, the output is determined **modulo N** iff `powmod(c,M,N)=1`. On failure a strict target-N interface returns `NOT_DETERMINED`; an enclosure interface returns `c^e U(D)`, where `D=gcd(N,powmod(c,M,N)-1)`, and reports the loss. This is the largest determined divisor of N, computed without factorisation. For an exact signed integer exponent, compute modulo N directly, using inversion when negative; exponent 0 returns exact 1. Canonicalise the output unit coset as in section 5.” Add coarsening, negative exponents and canonical-modulus cases to 1F.9, not just successful criteria.
+
+**Maximality and canonical form [proved here].** For every divisor `L` of `N`, constancy is equivalent to `L | c^M-1`; their largest is D. If odd N is replaced by 2N with an odd unit lift of c, D is replaced by 2D, which is the same unit coset. Thus the rule respects `U(2N)=U(N)`; it must not identify the unit coset with the additive ball. The run verifies 9,288 cases and negative exponent choices.
+
+**Unrestricted maximal modulus [proved here].** D is not necessarily the largest modulus among *all* integers: every profinite unit square is 1 modulo 24. For example `N=5,c=2,e=0,M=2` fails the target-5 criterion and gives D=1, but the output is still 1 modulo 24. For finite M a greatest unrestricted modulus exists. To specify it precisely, take canonical N, `g=gcd(e,M)>0`, and `v_p(0)=infinity`; its exponent at each prime is:
+
+| Prime | Largest determined exponent |
+|---|---|
+| p dividing N | **[proved here]** `min(v_p(N)+v_p(g), v_p(c^M-1))` (canonical N ensures `v_2(N)>=2` if even). |
+| Odd p not dividing N | **[proved here]** `1+v_p(g)` if p-1 divides g, otherwise 0. |
+| `p=2` not dividing N | **[proved here]** 1 if g is odd; `2+v_2(g)` if g is even. |
+
+**[proved here]** For `p|N`, variation in the base forces the principal-unit subgroup raised to both e and M, equivalently to g; log gives precisely `p^(v_p(N)+v_p(g))` as its congruence depth. Variation in the exponent additionally forces `c^M=1`. Outside N, the base ranges over all units, including 1: constancy means that the exponent of `(Z/p^k)^x` divides g. Its torsion/principal-unit decomposition gives the last two rows. Only primes dividing N or at most g+1 can occur, proving finiteness. These same formulas handle an exact nonzero integer exponent by setting M=0 and g=|e|; exact exponent 0 has no largest finite modulus, since the result is exactly 1.
+
+**[proved here]** This unrestricted maximum is computable without factoring, but no cheap algorithm follows. For example it divides `B=8 N g (g+1)!` by the table. Enumerate the residues b modulo B satisfying `gcd(b,B)=1` and `b=c mod N`, choose one b0, and take the gcd of B and all `b^e-b0^e` and `b^M-1`, using modular powers. Constancy for exponents e and e+M is necessary and sufficient for all exponents in the coset, so this finite algorithm gives the maximum. It can be enormous. Promise only the cheap divisor-of-N fallback unless tighter precision is separately implemented and costed.
+
+**[checked by a run]** The local maximum table agrees with the exhaustive gcd algorithm in 138 small input cases, including negative representatives of the exponent.
+
+### R4 / N5 — restrict the all-place exact-rational root operation
+
+**Quote [checked by a run].** “The function returns all roots with identifiers, or takes a seed”; “the all-places root ... is available for exact rationals”; PLAN 1F.8: “roots on exact rationals”.
+
+**Failure [proved here].** For the exact rational 1, every independent choice of ±1 at each finite prime, together with a real choice ±1, is an adelic square root. There are continuum many. A finite list of local branch identifiers does not specify these, and a rational singleton cannot express an arbitrary such branch. An enclosing idele coset can contain all the roots, but also contains nonroots; it is not an enumeration of the roots. Round 2 correctly repaired local branches but left this global result contract incomplete.
+
+**Replacement [proved here].** “The all-place exact-rational API returns a **diagonal rational** n-th root, with the nonnegative branch for even n and the unique real branch for odd n; optionally return both diagonal rational roots for even n. Test numerator and denominator for integer n-th powers, with the real sign condition. This API does not enumerate all adelic branches. Enumeration of all branches is supported only over a finite named set of places. Exact 0 has the single root 0. Degree 1 is the identity, including on idele enclosures; the all-place `NOT_DETERMINED` restriction is for nontrivial root degrees.” This can be implemented with integer root tests and does not require prime factorisation.
+
+**[proved here]** This restriction loses no existence certificate for a nonzero rational: if a root exists in every `Q_p`, all valuations of the rational are divisible by n, so its absolute value is a rational n-th power. The real condition supplies the permissible sign. What it restricts is the set of branches returned, not the local-to-global existence test for this special equation.
+
+### R5 — state the normalisations and limits of the analytic catalogue
+
+**Quote [checked by a run].** “cheap once the types exist”; “Gauss sums, local constants ... a character at a place”; “complex ball”; cyclotomic direction “a convention to be fixed from a source”.
+
+**Assessment and replacement [proved here].** “The displayed local zeta factors are for the trivial character. They are meromorphic: at finite p exclude `s=2 pi i k/log(p)` from finite-ball evaluation; at infinity exclude `s=0,-2,-4,...`. A ball containing a pole returns a pole/domain status or an explicitly unbounded enclosure, never a finite complex ball. Gauss sums specify the modulus/conductor, the multiplicative character extended by zero, and the additive character/sign. Local constants specify whether the result is epsilon or gamma, the quasi-character and s, SPEC 6's additive character and Fourier kernel, and the self-dual additive Haar measure. Fix their defining functional equation in 0.3/0.4 before implementing them.” For example defining gamma by `Z(hat f,chi^-1,1-s)=gamma(s,chi) Z(f,chi,s)` with the project's exact transform removes the otherwise ambiguous Fourier sign; epsilon additionally requires an explicit L-factor normalisation.
+
+**Evidence [proved here].** The finite factor is the geometric series over nonnegative valuations for `Re(s)>0`; the real factor is `2 integral_0^infinity exp(-pi x^2) x^(s-1) dx`, evaluated by `t=pi x^2`. The displayed formulas follow and their poles prohibit a universally finite ball. A finite sum `sum_j chi(j) exp(2 pi i j/C)` can change when its additive character is replaced by its inverse; “a character” alone does not state that choice. These are missing conventions rather than reasons to reject these functions.
+
+**Cyclotomic conventions [checked by a run].** With SPEC 5's `(t,u')`, arithmetic reciprocity (uniformisers map to arithmetic Frobenius) acts by `zeta_n -> zeta_n^(u'^-1 mod n)`; geometric reciprocity acts by `zeta_n -> zeta_n^(u' mod n)`. The first convention and the inverse of the unit projection are explicit in [Milne, Class Field Theory, V §5, pp. 180–182](https://www.jmilne.org/math/CourseNotes/CFT.pdf). The second is explicit in [Milne, Points on Shimura Varieties mod p, p. 8](https://www.jmilne.org/math/articles/1992aP.pdf). These sources were inspected; neither attribution is invented from memory. Keep the convention choice as a milestone-0 gate and record it in the API name/documentation and golden vector.
+
+**[proved here]** A useful vector is the idele with p-component p and all other components 1: away from p its class unit is `p^-1`; arithmetic reciprocity must therefore send `zeta_n` to `zeta_n^p` for `p` coprime to n. The positive real coordinate acts trivially because a continuous map from a connected group to a finite group is constant. For a unit coset, the action on `mu_n` is determined exactly when its reduction there is fixed, equivalently `U(N) subset U(n)`; after the redundant factor-2 normalisation this is divisibility of canonical moduli.
+
+**Tier placement [proved here; recommendation].** Keep every listed function in Tier A **with the stated Q/Dirichlet scope and staged delivery**: local constants at milestone 5 and theta at milestone 4 are already necessary for the Tate/Poisson promises. General local-field representations or arbitrary test-function oracles would belong in Tier B, but are not needed here. Replace “cheap” by “implemented as the prerequisite types and analytic algorithms arrive; costs depend on precision, conductor, support and any required factorisation”. All-place Hilbert support can require factoring scales; a directly summed Gauss sum has conductor-many terms; theta needs certified tails. The short useful omission is an explicit `haar_volume` for a finite ball: `1/N` for positive radius, 0 for a singleton, already justified by SPEC 7's measure. It uses only rational arithmetic and makes existing Fourier normalisation accessible.
+
+### R6 — allow the validation code needed by milestone 0
+
+**Quote [checked by a run].** PLAN 1: “Until then the only C is a provisional build scaffold”; 0.5: “Benchmark harness ... matched rows for the word kernels”.
+
+**Issue and replacement [proved here].** A C/FLINT benchmark harness cannot remain an empty scaffold. Say “Until milestone 0 is reviewed, production C is limited to a provisional scaffold with no public types; disposable mathematical/API probes and benchmark harnesses are allowed.” The contract-first ordering and public-header freeze stay intact. This is a small scheduling contradiction, not an objection to performing the milestone-0 work.
+
+### Verification of the remaining catalogue and proofs
+
+**Binomial integrality and current enclosure [proved here].** For fixed k, the rational polynomial `binom(x,k)` is continuous on each `Q_p`; its integer values on the dense nonnegative integers imply that it maps `Z_p` into `Z_p`, hence `Zhat` into `Zhat`. The falling-factorial numerator changes by a multiple of N under `x -> x+Nt`, so division by `k!`, combined with integrality, gives exactly the claimed conservative modulus `N/gcd(N,k!)`. It is valid, including negative integer lifts, and is not tight in general. At k=0 return exact 1.
+
+**Tighter and tight rules [proved here].** A stronger centre-independent enclosure is `N/gcd(N,lcm(1,...,k))` for k>=1: Vandermonde gives the difference as `sum_(j=1)^k binom(x,k-j) binom(Nt,j)`, and `j binom(Nt,j)=Nt binom(Nt-1,j-1)` loses at most `max_(j<=k) v_p(j)`, rather than `v_p(k!)`. The exact smallest enclosing additive ball for the specified centre has centre `binom(a,k)` and radius
+
+```
+R = gcd( binom(a+N*j,k)-binom(a,k) : j=1,...,k ).
+```
+
+**[proved here]** To see tightness, let `h(t)=binom(a+Nt,k)`. Its Newton expansion uses the integer coefficients `Delta^j h(0)` multiplying `binom(t,j)`. The gcd of the nonconstant coefficients equals the displayed gcd by triangular integer changes of basis. It divides every difference for all integral t, then all profinite t by continuity. Conversely the first k sampled differences must belong to any enclosing radius ideal. This proves both enclosure and minimality, without factoring. The gcd of an empty list is 0, handling k=0. This is an optional quality improvement, not a defect in the advertised conservative rule.
+
+**[checked by a run]** The new check covers 9,020 binomial cases. For `(a,N,k)=(0,8,4)`, R=2 whereas the advertised rule gives 1. Precision can depend on the centre: `(0,8,3)` gives R=8, `(1,8,3)` gives R=4. These corroborate, rather than replace, the proof.
+
+**Content [proved here].** The idele's finite valuations give the fractional ideal `product p^(v_p(x_p)) Z = r Z`. Since r is an exact field of the idele representation, returning its positive generator requires no new factorisation. It is distinct from the finite multiplicative absolute value `1/r` and the full norm `|x_inf|/r`.
+
+**Theta identity and hypotheses [proved here].** For a Schwartz–Bruhat test function from SPEC 7 and an exact idele x, put `g(y)=f(xy)`. Change of Haar variable gives `hat g(z)=|x|^-1 hat f(z/x)`. Applying Poisson summation to g gives exactly `Theta_f(x)=|x|^-1 Theta_hat_f(1/x)` with the project's signs and self-dual measure; no additional minus sign or constant is needed. This deduction uses the Poisson theorem that milestone 0.3 explicitly requires proving for the implemented class; it does not assert that gate is already complete. Invertibility of x and the Schwartz–Bruhat hypothesis are essential. For example, at x=0 and f(0) nonzero, the sum diverges.
+
+**[proved here]** For enclosure evaluation, require `Re(A)` bounded positively for the Gaussian parameters and `|x_inf|` bounded away from zero. If the finite support is `(1/D) Zhat` and the idele scale is r, contributing rationals lie in `(1/(Dr)) Z`; the Gaussian bound therefore gives summable, uniform tails. Finite-coordinate uncertainty must enclose every possible coefficient across jumps. SPEC 7 / PLAN 4 already assign these enclosure and tail obligations. The catalogue identity is correct under those hypotheses, not a pointwise evaluation rule for an unknown centre alone.
+
+**SPEC 9.3.2–9.3.4 transcription audit [proved here].** The five series discs use `c=1` at odd p and 2 at 2; the log-series disc is `1+p Z_p` also at 2. The exp/sin/sinh linear terms strictly dominate their differences, while cos/cosh may contract; the stated centred hull exponent `2N-v_p(2)` is correct. For a nonzero ball, divide by a to obtain `1+p^(N-m) Z_p`: log/exp are inverse isometries there for `N-m>=c`, giving exactly `Log(a)+p^(N-m) Z_p`. At 2 with `N-m=1`, removing the sign maps the full odd-unit group onto `1+4 Z_2`; its log image is `4 Z_2`. This also proves the conservative all-place `4 Zhat` enclosure.
+
+**[proved here]** Roots require valuation divisibility, an n-th root of the torsion factor, and `log(u)/n in p^c Z_p`, exactly the conditions printed. The principal-unit root is then unique; the cyclic torsion kernels have sizes `gcd(n,p-1)` and `gcd(n,2)`. On the printed guard `N-m>=c+v_p(n)`, the branch is `b exp(log(1+h/a)/n)`. Log, division by n and exp give a relative root radius `p^(N-m-v_p(n))`; multiplying by b gives `N-v_p(n)-(n-1)v_p(b)`, exactly the printed exponent. The guard ensures the inverse remains on its isometry disc. Integer powers retain valuation and torsion; principal-unit powers use exp/log, and odd 2-adic units additionally need the parity factor `w^(s mod 2)`. All these local formulas are correct. R4 concerns only the global branch contract.
+
+**Proposition 3 zero cases [proved here].** Two singletons coincide/intersect/contain one another iff their rational points agree. If only the inner radius is zero, Lemma 1 gives membership by the integral quotient `(a-b)/M`. The symmetric case gives overlap in the other order. A positive-radius ball contains two distinct rationals, a and a+N, so cannot be contained in a singleton. These handle every zero/nonzero combination before division. The prototype now implements those branches.
+
+**Proposition 4, step by step [proved here].** (1) The chosen e_p makes `d c_p` integral and `e_p+n_p>=0`. (2) Its residue modulo the *integer* power `p^(e_p+n_p)` has an integer representative; modulus 1 is harmless. (3) These powers are pairwise coprime, so CRT gives A. (4) Dividing by d yields `v_p(A/d-c_p)>=n_p`, and `v_p(N)=n_p` identifies the entire local ball. (5) Outside S, d and N are units and A/d is integral, giving exactly `Z_p`. Thus the product sets agree even for nonrational centres, negative exponents and empty S. The example's CRT moduli are 8, 3 and 25, and `a=101/90,N=20/3` satisfies them.
+
+**Proposition 6, step by step [proved here].** (1) R/K is positive, so `s=gcd(a,R/K)>0` even when a=0. (2) `a/s` is integral, and reducing it modulo K changes the centre by a multiple of sK. (3) `R/(sK)` is integral, proving containment by Proposition 3; no coprimality assumption is missing. (4) For nonzero q, `q Zhat=|q| Zhat`, so multiplication gives exactly the claimed scale and signed residue; canonical residue reduction may follow. (5) Multiplication by zero is exact zero. The potential conversion loss is correctly stated. Exact scalar addition and mixed-context rules remain explicitly assigned proof work, not claimed consequences of this proposition.
+
+**Runs and milestone-0 assessment [checked by a run; proved here].** [prototype.txt](checks/prototype.txt) records all supplied tests passing: 6,000 arithmetic, 40,000 scaled, 3,000 binomial, 1,815 power, 2,000 Hilbert-product and 2,029 modular-solvability checks. [checks.txt](checks/checks.txt) records the additional finite checks, including Proposition 6 and root-guard boundaries. No performance timings were rerun; the restored baseline hash was verified. PERF's remaining floors are conditional models, not impossible speed promises. Apart from R6, the milestone-0 exits can be evaluated as proof/source/convention/benchmark/seam deliverables; future proof obligations need not be complete to ratify their plan. The two major contract issues above must nevertheless be removed before ratifying the documents as written.
+
+## Ratification
+
+**[proved here] DO NOT RATIFY — R1 (wrong Kronecker precision) and R4/N5 (unspecified, potentially infinite all-place branch output) block ratification as written.**
+
+1. **[proved here]** Apply R1's separate symbol domains/precision rules and its counterexample regression.
+2. **[proved here]** Apply R4's diagonal-rational all-place root contract, local-only branch enumeration, and zero/degree-1 cases in SPEC and PLAN.
+3. **[proved here]** Apply R2's finite exceptional-place/status contract and record the valid modular-oracle lifting argument.
+4. **[proved here]** Apply R3's explicit modulo-N target, coarsening/status rule, signed powers and canonicalisation tests; do not claim D is the unrestricted tight modulus.
+5. **[proved here]** Apply R5's normalisation/pole/cost wording and select the sourced reciprocity convention during milestone 0; keep the present Tier A staging.
+6. **[proved here]** Apply R6's exception for validation and benchmark C. Retain the existing proof and review gates. The stronger binomial rule and explicit Haar-volume helper are optional improvements, not ratification conditions.
+
+exec
+/bin/bash -lc "sed -n '10,23p' docs/PLAN.md; sed -n '149,162p' docs/PLAN.md; sed -n '235,245p' docs/PLAN.md; sed -n '240,400p' proto/precision_rules.py; sha256sum docs/reviews/astra-2026-09-27-r3/review.md" in /home/tobiasosborne/Projects/adelefeld
+ succeeded in 0ms:
+## 1. Principles
+
+1. **Contracts before code.** Milestone 0 fixes the mathematics, the conventions and the storage invariants in
+   writing, and has them reviewed. Until then, production C is limited to a provisional build scaffold with no
+   public types; disposable probes of mathematics or of library behaviour, and the benchmark harness, are allowed.
+   The public header is frozen after work packages 0.3, 0.4 and 0.6 are reviewed.
+2. **Vertical slices.** Each later milestone ends with something a user can type and see.
+3. **Tests.** A new behaviour gets a test that defines it; a defect gets a regression test that fails before the
+   fix. Corrections of text need no test. Mutation testing is measured by surviving mutants, fuzzing by coverage.
+4. **Every formula in `src/` cites a proof in `docs/proofs/` or a source on disk** by file and line.
+5. **Enclosure is the contract.** If the inputs contain the true values, the output contains the true result.
+   Tightness is a quality measure with its own tests.
+6. **A row in `PERF.md` before "finished"**, under the benchmark contract of `PERF.md` section 7.
+7. **No hidden state.** Contexts are explicit and immutable.
+### Milestone 1F: functions (L; split as the reviewer recommends)
+
+| WP | Content | Tests |
+|---|---|---|
+| 1F.1 | `adf_sball` and `f_at`: partial balls over named places, with the real or complex tag; projection from adeles | the result names its places; failure at one place is reported with that place and no value |
+| 1F.2 | Archimedean wrappers around `arb`/`acb`: `exp`, `log`, `log_abs`, trigonometric and hyperbolic functions, roots (odd and even degree), special functions | wrapper tests only: projection, guard digits, translation of statuses, balls crossing 0 or a branch cut. Not a test of `arb` |
+| 1F.3 | `adf_lball`: arithmetic; decomposition `p^m w u`; valuation, absolute value, fractional part | enumeration modulo small prime powers |
+| 1F.4 | Local `exp`, `log`, `Log`: our wrapper around FLINT's centre evaluation | the regression of review N4 (`exp 3` and `exp 12` at precision 8); the precision cases of `SPEC.md` 9.3.2 including the losses at `x = 3, 12` (`p = 3`) and `x = 2, 10` (`p = 2`); `log(-1) = 0` at 2; balls at the edge of the domain; uncertain zero |
+| 1F.5 | Local roots: existence conditions, all branches with identifiers or a seed, precision formula and its guard; square roots at 2; degree divisible by `p` | 3 has no square root in `Q_2`, 9 has; counts `gcd(n, p-1)`; loss of one digit at 2; input balls outside the guard |
+| 1F.6 | Powers: integer; rational through roots; principal units; (the quasi-character comes with milestone 3) | `exp(Log p) = 1` is not `p`; compatibility of principal-unit powers with integer powers |
+| 1F.7 | `sin`, `cos`, `sinh`, `cosh` at a prime by power series with proved truncation | comparison with `exp` at `p = 5` and `13` (where `sqrt(-1)` is in `Q_p`); `sinh`, `cosh` against `exp` at every prime; independent exact truncations with tail bounds at `p = 2, 3`: `cos 4 = 9 mod 16`, `sin 3 = 3 mod 9`; a stated output precision is required, identities alone do not count |
+| 1F.8 | All-places forms: the five series on values with finite part exactly 0; `Log` on ideles as the enclosure `4 Zhat` refined at named primes; the rational root of an exact rational (by integer root tests; both signs optional for even degree; 0; degree 1); `NOT_DETERMINED` for roots of degree at least 2 of ideles; branches are listed only over named places | after milestone 2. 1 has rational square roots `1` and `-1` and the function does not claim to list the adelic ones; 8 has the cube root 2; 2 has no square root |
+| 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power; binomial coefficients; content; cyclotomic action. (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | `(1/2) = +1` against `(3/2) = -1`; Hilbert symbol: product formula on rationals, solvability modulo 16, 9, 25 on reduced coefficients, all 64 pairs of square classes at 2, undetermined cases for ideles; profinite power: the criterion, the coarsening to `D`, negative exponents, canonical moduli; binomials: enclosure and the smallest ball by enumeration, `(a, N, k) = (0, 8, 4)` gives radius 2; cyclotomic action: the test vector of the specification; local factors at and near their poles |
+
+## 8. Review protocol
+
+1. Documents: reviewed by a second model family (codex `gpt-6-astra`) before implementation; each round in
+   `docs/reviews/`. Round 1: 2026-09-27, 28 findings, applied in draft 2 of the specification and draft 1 of this
+   plan and of `PERF.md`. Round 2: 12 new findings and 11 remainders, applied in draft 3 of the specification and
+   draft 2 of this plan and of `PERF.md`; verdict "milestone 0 may begin". Round 3: all round-2 items closed but one;
+   six new findings (R1 to R6, two major), applied in draft 4 of the specification and draft 3 of this plan.
+2. Each milestone: proofs to a second model family; code to an adversarial reviewer whose task is an input that
+   breaks enclosure.
+3. Statements about other people's work keep their label until quoted from a source on disk.
+
+
+def kronecker2(a):               # the factor (a/2)
+    return 0 if a % 2 == 0 else (-1) ** (((a * a - 1) // 8) % 2)
+
+def draft4_checks():
+    """after review round 3"""
+    random.seed(4)
+    assert kronecker2(1) == 1 and kronecker2(3) == -1 and 1 % 2 == 3 % 2
+    assert all(kronecker2(a) == kronecker2(a + 8) for a in range(-40, 40))
+    print("(1/2) = +1, (3/2) = -1 although 1 = 3 mod 2; (a/2) depends on a mod 8: ok")
+    n = 0
+    for _ in range(3000):       # profinite power: coarsening to D = gcd(N, c^M - 1)
+        N = random.randint(2, 300); c = random.randrange(1, N)
+        if gcd(c, N) != 1: continue
+        M = random.randint(1, 40); e = random.randrange(M)
+        D = gcd(N, pow(c, M, N) - 1)
+        vals = [pow(c, e + M * t, N) for t in range(0, 30)]
+        assert len({v % D for v in vals}) == 1
+        for L in range(D + 1, N + 1):
+            if N % L == 0 and L % D == 0 and L != D:
+                assert len({v % L for v in vals}) > 1, (N, c, M, L)     # no finer divisor of N is determined
+        n += 1
+    print(f"profinite power, largest determined divisor of N: {n} checks passed")
+    n = 0
+    for _ in range(2000):       # binomial: smallest ball
+        N = random.randint(1, 60); a = random.randrange(N); k = random.randint(1, 7)
+        def binom(x):
+            num = 1
+            for i in range(k): num *= (x - i)
+            return num // factorial(k)
+        R = reduce(gcd, [abs(binom(a + N * j) - binom(a)) for j in range(1, k + 1)])
+        diffs = [binom(a + N * t) - binom(a) for t in range(-12, 13)]
+        assert all(d % R == 0 for d in diffs) if R else all(d == 0 for d in diffs)
+        assert R % (N // gcd(N, factorial(k))) == 0
+        n += 1
+    def binom4(x): return x * (x - 1) * (x - 2) * (x - 3) // 24
+    print(f"binomial smallest ball: {n} checks passed; (a,N,k) = (0,8,4): radius",
+          reduce(gcd, [abs(binom4(8 * j)) for j in range(1, 5)]))
+    from math import isqrt
+    def rational_root2(q):
+        q = F(q)
+        if q < 0: return None
+        a, b = isqrt(q.numerator), isqrt(q.denominator)
+        return F(a, b) if a * a == q.numerator and b * b == q.denominator else None
+    print("rational square roots: 9/4 ->", rational_root2(F(9, 4)), "; 2 ->", rational_root2(2), "; 1 ->", rational_root2(1))
+
+if __name__ == "__main__":
+    draft2_checks()
+    draft3_checks()
+    draft4_checks()
+af73fdaf8efae26cb7b079f6d31b2734e50c7005c7d70f9135074e9b68e4f12d  docs/reviews/astra-2026-09-27-r3/review.md
+
+exec
+/bin/bash -lc 'python3 -B proto/precision_rules.py' in /home/tobiasosborne/Projects/adelefeld
+ succeeded in 8632ms:
+add: (3 mod 12) , (5 mod 18)  ->  8 mod 6   [centre reduced: 2]
+mul: (3 mod 12) , (5 mod 18)  ->  15 mod 6   [centre reduced: 3]
+mul by exact 12: (12 mod 0) , (5 mod 18)  ->  60 mod 216   [centre reduced: 60]
+mul by exact 1/3: (1/3 mod 0) , (5 mod 18)  ->  5/3 mod 6   [centre reduced: 5/3]
+mul, rational centres: (1/2 mod 8) , (2/3 mod 9)  ->  1/3 mod 1/6   [centre reduced: 0]
+random checks passed: 6000
+x^2 = x mod 30: 8 solutions, e.g. [0, 1, 6, 10, 15, 16]
+x^2 = x mod 210: 16 solutions, e.g. [0, 1, 15, 21, 36, 70]
+x^2 = x mod 2310: 32 solutions, e.g. [0, 1, 210, 231, 330, 385]
+(Z/36)^x has 12 elements; 5*29 mod 36 = 1
+scaled residue policy: 40000 checks passed
+(1 mod 2) * 1/2 = 1/2 mod 1; contained in 1/2 mod 2: False
+0 mod 2 ~ 0 mod 1: True ; 0 mod 1 ~ 1 mod 2: True ; 0 mod 2 ~ 1 mod 2: False
+1/3 mod 3/2 splits into 2 disjoint balls of radius 3
+psi_f on 0 mod 1/2 takes the values [-1.0, 1.0]
+1/5 in 5 + 6 Zhat: False ; 5*5 mod 6 = 1
+weighted transform twice = reflection: error 7.9e-16; Plancherel error 4.4e-16 (floating point, not certified)
+predicates with zero radii: ok
+binomial enclosure modulo N/gcd(N,k!): 3000 checks passed
+profinite power criterion: 1815 checks passed
+Hilbert symbol product formula: 2000 rational pairs passed
+Hilbert symbol against the definition (solvability modulo p^k, k = 4, 2, 2): 2029 pairs passed
+(1/2) = +1, (3/2) = -1 although 1 = 3 mod 2; (a/2) depends on a mod 8: ok
+profinite power, largest determined divisor of N: 1882 checks passed
+binomial smallest ball: 2000 checks passed; (a,N,k) = (0,8,4): radius 2
+rational square roots: 9/4 -> 3/2 ; 2 -> None ; 1 -> 1
+
+codex
+The main repairs are in place. Two minor wording issues remain: the cyclotomic test vector needs `gcd(p,n)=1`, and its precision rule must canonicalise both moduli. The Hilbert note also overstates its warning—higher powers such as modulus 32 remain valid tests. I’m checking the prototype result before recording the verdict.
+exec
+/bin/bash -lc "python3 -B - <<'PY'
+from math import gcd
+units_mod_6=[a for a in range(6) if gcd(a,6)==1]
+assert all(a % 3 == 2 for a in units_mod_6 if a % 6 == 5)
+assert 3 % 6 "'!= 0
+p,n=3,3
+assert gcd(p,n)!=1 and p % n == 0
+print('"'Cyclotomic precision: c=2 mod canonical N=3 fixes c=5 mod n=6 for unit lifts, despite 6 not dividing 3.')
+print('Cyclotomic vector: p=n=3 would send a primitive third root to 1; this cannot be an automorphism.')
+print('For p coprime to n, pow(p,-1,n) has inverse p modulo n, as required:')
+for p,n in ((2,3),(3,5),(5,6)):
+    assert pow(pow(p,-1,n),-1,n)==p%n
+    print(p,n,pow(p,-1,n),p%n)
+PY" in /home/tobiasosborne/Projects/adelefeld
+ succeeded in 0ms:
+Cyclotomic precision: c=2 mod canonical N=3 fixes c=5 mod n=6 for unit lifts, despite 6 not dividing 3.
+Cyclotomic vector: p=n=3 would send a primitive third root to 1; this cannot be an automorphism.
+For p coprime to n, pow(p,-1,n) has inverse p modulo n, as required:
+2 3 2 2
+3 5 2 3
+5 6 5 5
+
+apply patch
+patch: completed
+/home/tobiasosborne/Projects/adelefeld/docs/reviews/astra-2026-09-27-r3/closure.md
+diff --git a/docs/reviews/astra-2026-09-27-r3/closure.md b/docs/reviews/astra-2026-09-27-r3/closure.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..78d58988d8b91fa43f01feaec507b5a3c166ba9e
+--- /dev/null
++++ b/docs/reviews/astra-2026-09-27-r3/closure.md
+@@ -0,0 +1,37 @@
++# Round-3 closure — 2026-09-27
++
++**[checked by a run]** Scope: the requested changed passages in SPEC draft 4 and PLAN draft 3, against R1–R6. `python3 -B proto/precision_rules.py` exits successfully: all previous assertions pass, plus the Kronecker checks, 1,882 power-coarsening cases and 2,000 binomial cases. The rational-root examples print the expected results; they are diagnostics, not assertions.
++
++## Closure
++
++| ID | Status | Reason |
++|---|---|---|
++| R1 | RESOLVED | **[proved here]** The separate Kronecker moduli `m` and `lcm(m,8)` are sufficient; negative/zero denominators require exact integer inputs. |
++| R2 | PARTLY | **[proved here]** Hilbert precision, exceptional places and ambiguity are correct; the last note wrongly excludes every other testing modulus (C2 below). |
++| R3 | RESOLVED | **[proved here]** The target is explicitly N, and `D=gcd(N,c^M-1)` correctly gives the largest determined divisor of N, with signed/exact exponents distinguished. |
++| R4 | RESOLVED | **[checked by a run]** SPEC and PLAN 1F.8 now return diagonal rational roots, restrict branch enumeration to named places, and handle zero and degree 1. |
++| R5 | PARTLY | **[proved here]** Costs, poles and the gamma convention are repaired; the cyclotomic precision rule and test vector need C1's qualifications. |
++| R6 | RESOLVED | **[checked by a run]** PLAN 1 explicitly permits disposable probes and benchmark C before production contracts are frozen. |
++| N5 | RESOLVED | **[proved here]** The remaining global branch problem is closed by the rational-root restriction; local formulas were already approved. |
++
++## Formula checks and remaining minor edits
++
++**[proved here]** The binomial smallest-ball formula is correctly transcribed: centre `binom(a,k)` and radius `gcd(binom(a+Nj,k)-binom(a,k): 1<=j<=k)`, with exact 1 for k=0. Newton differences prove enclosure and tightness as in the review. The conservative factorial rule remains sound. For power coarsening, `gcd(N,powmod(c,M,N)-1)` equals the printed D; no factorisation or full integer power is required.
++
++**[proved here]** The defining equation `Z(hat f,chi^-1,1-s)=gamma(s,chi) Z(f,chi,s)` has the correct inverse character and argument, using the project's transform and measure. Epsilon normalisation remains an explicit milestone-0 obligation. The local zeta formulas/poles, Gauss-sum sign reference, Haar volume, content and theta identity introduce no new mathematical defect; theta retains SPEC 7's test-function and tail requirements. **[checked by a run]** PLAN 1F.9 assigns the requested regression cases, and section 8 correctly records round 3's two major findings and one unclosed earlier item.
++
++**C1 — cyclotomic action, MINOR [proved here].** The arithmetic/geometric exponents are correctly transcribed, but “the modulus ... in canonical form, is divisible by `n`” canonicalises only one side. Replace it with: “determined exactly when `canon(n)` divides `canon(N)`, equivalently `U(N) subset U(n)`.” For example, `[2 mod 3]` fixes `[5 mod 6]` among unit lifts, so the action on sixth roots is determined although 6 does not divide 3. The current condition is sufficient but unnecessarily restrictive.
++
++**[proved here]** In the same row, add **`gcd(p,n)=1`** to the uniformiser test vector. Its away-from-p unit is indeed `1/p`, giving arithmetic action `z -> z^p` on roots of order prime to p. Without that guard, p=n=3 would send a primitive third root to 1, which is not an automorphism. On p-power roots this particular idele instead acts trivially, since its class unit at p is 1. **[checked by a run]** Small modular probes confirm these precision and exponent examples.
++
++**C2 — Hilbert oracle note, MINOR [proved here].** Replace “would not be valid for other moduli or for coefficients that are not reduced” with: “These thresholds are proved for coefficients of valuation 0 or 1; arbitrary precisions or unreduced coefficients require separate justification. Higher powers of the same primes also suffice.” A primitive solution modulo 32 reduces to one modulo 16 and hence lifts; conversely a local solution reduces modulo 32. The same argument applies above 9 and 25. The implementation's actual tests remain valid.
++
++## Ratification
++
++**[proved here] RATIFY AFTER MINOR EDITS — no major defect remains in the reviewed changes.**
++
++1. **[proved here]** Canonicalise both N and n in the cyclotomic precision condition.
++2. **[proved here]** Restrict the cyclotomic uniformiser test vector to `gcd(p,n)=1`.
++3. **[proved here]** Replace the Hilbert note's categorical exclusion with C2's qualified statement.
++
++**[proved here]** These edits need no further design review; the existing milestone-0 proof, source and convention gates still apply.
+
+exec
+/bin/bash -lc "git diff --exit-code; sha256sum docs/reviews/astra-2026-09-27-r3/review.md; git status --short; python3 -B - <<'PY'
+from pathlib import Path
+p=Path('docs/reviews/astra-2026-09-27-r3/closure.md')
+s=p.read_text()
+assert all(s.count('| '+i+' |') == 1 for i in ('R1','R2','R3','R4','R5','R6','N5'))
+assert s.rsplit('\\n## ',1)[1].startswith('Ratification\\n')
+assert not any(line.rstrip() "'!= line for line in s.splitlines())
+print('"'Closure has all seven requested statuses and the final Ratification section.')
+PY" in /home/tobiasosborne/Projects/adelefeld
+ succeeded in 0ms:
+af73fdaf8efae26cb7b079f6d31b2734e50c7005c7d70f9135074e9b68e4f12d  docs/reviews/astra-2026-09-27-r3/review.md
+?? docs/reviews/astra-2026-09-27-r3/closure-run.sh
+?? docs/reviews/astra-2026-09-27-r3/closure.md
+?? docs/reviews/astra-2026-09-27-r3/closure.stdout
+Closure has all seven requested statuses and the final Ratification section.
+
+diff --git a/docs/reviews/astra-2026-09-27-r3/closure.md b/docs/reviews/astra-2026-09-27-r3/closure.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..78d58988d8b91fa43f01feaec507b5a3c166ba9e
+--- /dev/null
++++ b/docs/reviews/astra-2026-09-27-r3/closure.md
+@@ -0,0 +1,37 @@
++# Round-3 closure — 2026-09-27
++
++**[checked by a run]** Scope: the requested changed passages in SPEC draft 4 and PLAN draft 3, against R1–R6. `python3 -B proto/precision_rules.py` exits successfully: all previous assertions pass, plus the Kronecker checks, 1,882 power-coarsening cases and 2,000 binomial cases. The rational-root examples print the expected results; they are diagnostics, not assertions.
++
++## Closure
++
++| ID | Status | Reason |
++|---|---|---|
++| R1 | RESOLVED | **[proved here]** The separate Kronecker moduli `m` and `lcm(m,8)` are sufficient; negative/zero denominators require exact integer inputs. |
++| R2 | PARTLY | **[proved here]** Hilbert precision, exceptional places and ambiguity are correct; the last note wrongly excludes every other testing modulus (C2 below). |
++| R3 | RESOLVED | **[proved here]** The target is explicitly N, and `D=gcd(N,c^M-1)` correctly gives the largest determined divisor of N, with signed/exact exponents distinguished. |
++| R4 | RESOLVED | **[checked by a run]** SPEC and PLAN 1F.8 now return diagonal rational roots, restrict branch enumeration to named places, and handle zero and degree 1. |
++| R5 | PARTLY | **[proved here]** Costs, poles and the gamma convention are repaired; the cyclotomic precision rule and test vector need C1's qualifications. |
++| R6 | RESOLVED | **[checked by a run]** PLAN 1 explicitly permits disposable probes and benchmark C before production contracts are frozen. |
++| N5 | RESOLVED | **[proved here]** The remaining global branch problem is closed by the rational-root restriction; local formulas were already approved. |
++
++## Formula checks and remaining minor edits
++
++**[proved here]** The binomial smallest-ball formula is correctly transcribed: centre `binom(a,k)` and radius `gcd(binom(a+Nj,k)-binom(a,k): 1<=j<=k)`, with exact 1 for k=0. Newton differences prove enclosure and tightness as in the review. The conservative factorial rule remains sound. For power coarsening, `gcd(N,powmod(c,M,N)-1)` equals the printed D; no factorisation or full integer power is required.
++
++**[proved here]** The defining equation `Z(hat f,chi^-1,1-s)=gamma(s,chi) Z(f,chi,s)` has the correct inverse character and argument, using the project's transform and measure. Epsilon normalisation remains an explicit milestone-0 obligation. The local zeta formulas/poles, Gauss-sum sign reference, Haar volume, content and theta identity introduce no new mathematical defect; theta retains SPEC 7's test-function and tail requirements. **[checked by a run]** PLAN 1F.9 assigns the requested regression cases, and section 8 correctly records round 3's two major findings and one unclosed earlier item.
++
++**C1 — cyclotomic action, MINOR [proved here].** The arithmetic/geometric exponents are correctly transcribed, but “the modulus ... in canonical form, is divisible by `n`” canonicalises only one side. Replace it with: “determined exactly when `canon(n)` divides `canon(N)`, equivalently `U(N) subset U(n)`.” For example, `[2 mod 3]` fixes `[5 mod 6]` among unit lifts, so the action on sixth roots is determined although 6 does not divide 3. The current condition is sufficient but unnecessarily restrictive.
++
++**[proved here]** In the same row, add **`gcd(p,n)=1`** to the uniformiser test vector. Its away-from-p unit is indeed `1/p`, giving arithmetic action `z -> z^p` on roots of order prime to p. Without that guard, p=n=3 would send a primitive third root to 1, which is not an automorphism. On p-power roots this particular idele instead acts trivially, since its class unit at p is 1. **[checked by a run]** Small modular probes confirm these precision and exponent examples.
++
++**C2 — Hilbert oracle note, MINOR [proved here].** Replace “would not be valid for other moduli or for coefficients that are not reduced” with: “These thresholds are proved for coefficients of valuation 0 or 1; arbitrary precisions or unreduced coefficients require separate justification. Higher powers of the same primes also suffice.” A primitive solution modulo 32 reduces to one modulo 16 and hence lifts; conversely a local solution reduces modulo 32. The same argument applies above 9 and 25. The implementation's actual tests remain valid.
++
++## Ratification
++
++**[proved here] RATIFY AFTER MINOR EDITS — no major defect remains in the reviewed changes.**
++
++1. **[proved here]** Canonicalise both N and n in the cyclotomic precision condition.
++2. **[proved here]** Restrict the cyclotomic uniformiser test vector to `gcd(p,n)=1`.
++3. **[proved here]** Replace the Hilbert note's categorical exclusion with C2's qualified statement.
++
++**[proved here]** These edits need no further design review; the existing milestone-0 proof, source and convention gates still apply.
+
+codex
+[checked by a run] Wrote [closure.md](/home/tobiasosborne/Projects/adelefeld/docs/reviews/astra-2026-09-27-r3/closure.md). The updated prototype passes; `review.md` is unchanged.
+
+[proved here] **RATIFY AFTER MINOR EDITS**: three corrections concerning cyclotomic precision, its test-vector guard, and the Hilbert oracle caveat.
+diff --git a/docs/reviews/astra-2026-09-27-r3/closure.md b/docs/reviews/astra-2026-09-27-r3/closure.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..78d58988d8b91fa43f01feaec507b5a3c166ba9e
+--- /dev/null
++++ b/docs/reviews/astra-2026-09-27-r3/closure.md
+@@ -0,0 +1,37 @@
++# Round-3 closure — 2026-09-27
++
++**[checked by a run]** Scope: the requested changed passages in SPEC draft 4 and PLAN draft 3, against R1–R6. `python3 -B proto/precision_rules.py` exits successfully: all previous assertions pass, plus the Kronecker checks, 1,882 power-coarsening cases and 2,000 binomial cases. The rational-root examples print the expected results; they are diagnostics, not assertions.
++
++## Closure
++
++| ID | Status | Reason |
++|---|---|---|
++| R1 | RESOLVED | **[proved here]** The separate Kronecker moduli `m` and `lcm(m,8)` are sufficient; negative/zero denominators require exact integer inputs. |
++| R2 | PARTLY | **[proved here]** Hilbert precision, exceptional places and ambiguity are correct; the last note wrongly excludes every other testing modulus (C2 below). |
++| R3 | RESOLVED | **[proved here]** The target is explicitly N, and `D=gcd(N,c^M-1)` correctly gives the largest determined divisor of N, with signed/exact exponents distinguished. |
++| R4 | RESOLVED | **[checked by a run]** SPEC and PLAN 1F.8 now return diagonal rational roots, restrict branch enumeration to named places, and handle zero and degree 1. |
++| R5 | PARTLY | **[proved here]** Costs, poles and the gamma convention are repaired; the cyclotomic precision rule and test vector need C1's qualifications. |
++| R6 | RESOLVED | **[checked by a run]** PLAN 1 explicitly permits disposable probes and benchmark C before production contracts are frozen. |
++| N5 | RESOLVED | **[proved here]** The remaining global branch problem is closed by the rational-root restriction; local formulas were already approved. |
++
++## Formula checks and remaining minor edits
++
++**[proved here]** The binomial smallest-ball formula is correctly transcribed: centre `binom(a,k)` and radius `gcd(binom(a+Nj,k)-binom(a,k): 1<=j<=k)`, with exact 1 for k=0. Newton differences prove enclosure and tightness as in the review. The conservative factorial rule remains sound. For power coarsening, `gcd(N,powmod(c,M,N)-1)` equals the printed D; no factorisation or full integer power is required.
++
++**[proved here]** The defining equation `Z(hat f,chi^-1,1-s)=gamma(s,chi) Z(f,chi,s)` has the correct inverse character and argument, using the project's transform and measure. Epsilon normalisation remains an explicit milestone-0 obligation. The local zeta formulas/poles, Gauss-sum sign reference, Haar volume, content and theta identity introduce no new mathematical defect; theta retains SPEC 7's test-function and tail requirements. **[checked by a run]** PLAN 1F.9 assigns the requested regression cases, and section 8 correctly records round 3's two major findings and one unclosed earlier item.
++
++**C1 — cyclotomic action, MINOR [proved here].** The arithmetic/geometric exponents are correctly transcribed, but “the modulus ... in canonical form, is divisible by `n`” canonicalises only one side. Replace it with: “determined exactly when `canon(n)` divides `canon(N)`, equivalently `U(N) subset U(n)`.” For example, `[2 mod 3]` fixes `[5 mod 6]` among unit lifts, so the action on sixth roots is determined although 6 does not divide 3. The current condition is sufficient but unnecessarily restrictive.
++
++**[proved here]** In the same row, add **`gcd(p,n)=1`** to the uniformiser test vector. Its away-from-p unit is indeed `1/p`, giving arithmetic action `z -> z^p` on roots of order prime to p. Without that guard, p=n=3 would send a primitive third root to 1, which is not an automorphism. On p-power roots this particular idele instead acts trivially, since its class unit at p is 1. **[checked by a run]** Small modular probes confirm these precision and exponent examples.
++
++**C2 — Hilbert oracle note, MINOR [proved here].** Replace “would not be valid for other moduli or for coefficients that are not reduced” with: “These thresholds are proved for coefficients of valuation 0 or 1; arbitrary precisions or unreduced coefficients require separate justification. Higher powers of the same primes also suffice.” A primitive solution modulo 32 reduces to one modulo 16 and hence lifts; conversely a local solution reduces modulo 32. The same argument applies above 9 and 25. The implementation's actual tests remain valid.
++
++## Ratification
++
++**[proved here] RATIFY AFTER MINOR EDITS — no major defect remains in the reviewed changes.**
++
++1. **[proved here]** Canonicalise both N and n in the cyclotomic precision condition.
++2. **[proved here]** Restrict the cyclotomic uniformiser test vector to `gcd(p,n)=1`.
++3. **[proved here]** Replace the Hilbert note's categorical exclusion with C2's qualified statement.
++
++**[proved here]** These edits need no further design review; the existing milestone-0 proof, source and convention gates still apply.
+
+tokens used
+227,759
+[checked by a run] Wrote [closure.md](/home/tobiasosborne/Projects/adelefeld/docs/reviews/astra-2026-09-27-r3/closure.md). The updated prototype passes; `review.md` is unchanged.
+
+[proved here] **RATIFY AFTER MINOR EDITS**: three corrections concerning cyclotomic precision, its test-vector guard, and the Hilbert oracle caveat.
+codex exit: 0

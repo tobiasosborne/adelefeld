@@ -1,4 +1,4 @@
-# adelefeld: implementation plan, draft 3
+# adelefeld: implementation plan, version 1.0
 
 Date: 2026-09-27. Status: **plan; nothing is implemented.** Read `SPEC.md` first (what is built) and `PERF.md` (how
 speed and size are judged). Draft 1 applies the design review `reviews/astra-2026-09-27/review.md` (findings P1-P3,
@@ -238,7 +238,8 @@ class groups and units, with its guarantee recorded.
    `docs/reviews/`. Round 1: 2026-09-27, 28 findings, applied in draft 2 of the specification and draft 1 of this
    plan and of `PERF.md`. Round 2: 12 new findings and 11 remainders, applied in draft 3 of the specification and
    draft 2 of this plan and of `PERF.md`; verdict "milestone 0 may begin". Round 3: all round-2 items closed but one;
-   six new findings (R1 to R6, two major), applied in draft 4 of the specification and draft 3 of this plan.
+   six new findings (R1 to R6, two major), applied; closure check (`reviews/astra-2026-09-27-r3/closure.md`):
+   ratify after three minor edits, applied. Design review of the documents is closed; the milestone-0 gates remain.
 2. Each milestone: proofs to a second model family; code to an adversarial reviewer whose task is an input that
    breaks enclosure.
 3. Statements about other people's work keep their label until quoted from a source on disk.
