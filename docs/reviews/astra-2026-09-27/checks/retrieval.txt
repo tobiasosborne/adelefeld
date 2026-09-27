@@ -1,0 +1,6 @@
+FAILED tate1950.pdf URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+FAILED mul_r64.html URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+FAILED adc_r64.html URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+FAILED vpmuludq.html URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+FAILED hertogh_profinite.html URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+FAILED hertogh_index.html URLError: <urlopen error [Errno -3] Temporary failure in name resolution>

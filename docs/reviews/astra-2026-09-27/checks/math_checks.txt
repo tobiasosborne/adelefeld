@@ -1,0 +1,10 @@
+scaled-policy enclosures passed: 20000
+fixed absolute cap failure: tight (1/2 mod 1), attempted (1/2 mod 2), contains = False
+modular reconstruction mismatch: (1/5-5)/6 = -4/5
+DFT D=2 M=3 double-transform max error: 1.5543122344752192e-15
+DFT weighted Plancherel error: 8.881784197001252e-16
+ramified mod-3 unit-character average: 0.0
+20! bits: 61.07738392090622
+20! tuple separately packed bits: 65
+heap arithmetic 528/512: 1.03125
+information bits own radius 1<=N<2^62: 123.0

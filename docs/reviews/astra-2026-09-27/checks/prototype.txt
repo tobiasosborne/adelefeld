@@ -1,0 +1,10 @@
+add: (3 mod 12) , (5 mod 18)  ->  8 mod 6   [centre reduced: 2]
+mul: (3 mod 12) , (5 mod 18)  ->  15 mod 6   [centre reduced: 3]
+mul by exact 12: (12 mod 0) , (5 mod 18)  ->  60 mod 216   [centre reduced: 60]
+mul by exact 1/3: (1/3 mod 0) , (5 mod 18)  ->  5/3 mod 6   [centre reduced: 5/3]
+mul, rational centres: (1/2 mod 8) , (2/3 mod 9)  ->  1/3 mod 1/6   [centre reduced: 0]
+random checks passed: 6000
+x^2 = x mod 30: 8 solutions, e.g. [0, 1, 6, 10, 15, 16]
+x^2 = x mod 210: 16 solutions, e.g. [0, 1, 15, 21, 36, 70]
+x^2 = x mod 2310: 32 solutions, e.g. [0, 1, 210, 231, 330, 385]
+(Z/36)^x has 12 elements; 5*29 mod 36 = 1

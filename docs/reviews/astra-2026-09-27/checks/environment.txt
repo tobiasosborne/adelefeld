@@ -1,0 +1,310 @@
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Linux Spiral 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           48 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  64
+On-line CPU(s) list:                     0-63
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD Ryzen Threadripper 3970X 32-Core Processor
+CPU family:                              23
+Model:                                   49
+Thread(s) per core:                      2
+Core(s) per socket:                      32
+Socket(s):                               1
+Stepping:                                0
+BogoMIPS:                                7386.13
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm rep_good nopl cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext ssbd ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr virt_ssbd arat umip rdpid
+Hypervisor vendor:                       Microsoft
+Virtualization type:                     full
+L1d cache:                               1 MiB (32 instances)
+L1i cache:                               1 MiB (32 instances)
+L2 cache:                                16 MiB (32 instances)
+L3 cache:                                16 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-63
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Mitigation; untrained return thunk; SMT enabled with STIBP protection
+Vulnerability Spec rstack overflow:      Vulnerable: Safe RET, no microcode
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+#endif
+
+#define PADIC_DEFAULT_PREC WORD(20)
+
+#define PADIC_TEST_PREC_MIN WORD(-100)
+#define PADIC_TEST_PREC_MAX  WORD(100)
+
+typedef struct {
+    fmpz u;
+    slong v;
+    slong N;
+} padic_struct;
+
+typedef padic_struct padic_t[1];
+
+#define padic_val(x)   ((x)->v)
+#define padic_prec(x)  ((x)->N)
+
+PADIC_INLINE
+fmpz * padic_unit(const padic_t x)
+{
+   return (fmpz *)(&(x->u));
+}
+
+PADIC_INLINE
+slong padic_get_val(const padic_t x)
+{
+   return x->v;
+}
+
+PADIC_INLINE
+slong padic_get_prec(const padic_t x)
+{
+   return x->N;
+}
+
+enum padic_print_mode
+{
+    PADIC_TERSE,
+    PADIC_SERIES,
+    PADIC_VAL_UNIT
+};
+
+typedef struct {
+
+    fmpz_t p;
+
+    double pinv;
+
+    fmpz *pow;
+    slong min;
+    slong max;
+
+    enum padic_print_mode mode;
+
+} padic_ctx_struct;
+
+typedef padic_ctx_struct padic_ctx_t[1];
+
+typedef struct {
+    slong n;
+    fmpz *pow;
+} padic_inv_struct;
+
+typedef padic_inv_struct padic_inv_t[1];
+
+/* Context *******************************************************************/
+
+void padic_ctx_init(padic_ctx_t ctx, const fmpz_t p, slong min, slong max,
+                    enum padic_print_mode mode);
+
+void padic_ctx_clear(padic_ctx_t ctx);
+
+typedef struct fmpz_mod_ctx
+{
+    fmpz_t n;
+    void (* add_fxn)(fmpz_t, const fmpz_t, const fmpz_t, const struct fmpz_mod_ctx *);
+    void (* sub_fxn)(fmpz_t, const fmpz_t, const fmpz_t, const struct fmpz_mod_ctx *);
+    void (* mul_fxn)(fmpz_t, const fmpz_t, const fmpz_t, const struct fmpz_mod_ctx *);
+    nmod_t mod;
+    ulong n_limbs[3];
+    ulong ninv_limbs[3];
+    fmpz_preinvn_struct * ninv_huge;
+}
+fmpz_mod_ctx_struct;
+
+typedef fmpz_mod_ctx_struct fmpz_mod_ctx_t[1];
+
+typedef struct
+{
+    fmpz_mat_t mat;
+    fmpz_t mod;
+}
+fmpz_mod_mat_struct;
+
+typedef fmpz_mod_mat_struct fmpz_mod_mat_t[1];
+
+typedef struct
+{
+    fmpz * coeffs;
+    slong alloc;
+    slong length;
+}
+/* crt ***********************************************************************/
+
+void _fmpz_CRT_ui_precomp(fmpz_t out, const fmpz_t r1, const fmpz_t m1, ulong r2, ulong m2, mp_limb_t m2inv, const fmpz_t m1m2, mp_limb_t c, int sign);
+void fmpz_CRT_ui(fmpz_t out, const fmpz_t r1, const fmpz_t m1, ulong r2, ulong m2, int sign);
+void fmpz_CRT(fmpz_t out, const fmpz_t r1, const fmpz_t m1, fmpz_t r2, fmpz_t m2, int sign);
+
+/* multi CRT *****************************************************************/
+
+typedef struct
+{
+    slong a_idx; /* index of A */
+    slong b_idx; /* index of B */
+    slong c_idx; /* index of C */
+    fmpz_t b_modulus;
+    fmpz_t c_modulus;
+} _fmpz_multi_CRT_instr;
+
+typedef struct
+{
+    _fmpz_multi_CRT_instr * prog; /* straight line program */
+    fmpz * moduli, * fracmoduli;
+    fmpz_t final_modulus;
+    slong moduli_count;
+    flint_bitcnt_t min_modulus_bits;
+    slong length; /* length of prog */
+    slong alloc;  /* alloc of prog */
+    slong localsize; /* length of outputs required in fmpz_multi_CRT_run */
+    slong temp1loc, temp2loc, temp3loc, temp4loc;
+    int good;   /* the moduli are good for CRT, essentially relatively prime */
+} fmpz_multi_CRT_struct;
+
+typedef fmpz_multi_CRT_struct fmpz_multi_CRT_t[1];
+
+void fmpz_multi_CRT_init(fmpz_multi_CRT_t CRT);
+void fmpz_multi_CRT_clear(fmpz_multi_CRT_t P);
+
+void _fmpz_multi_CRT_precomp(fmpz * outputs, const fmpz_multi_CRT_t P, const fmpz * inputs, int sign);
+void fmpz_multi_CRT_precomp(fmpz_t output, const fmpz_multi_CRT_t P, const fmpz * inputs, int sign);
+int fmpz_multi_CRT_precompute(fmpz_multi_CRT_t CRT, const fmpz * moduli, slong len);
+int fmpz_multi_CRT(fmpz_t output, const fmpz * moduli, const fmpz * values, slong len, int sign);
+
+/* multi mod *****************************************************************/
+
+typedef struct
+{
+    slong in_idx;
+    slong out_idx;
+    fmpz_t modulus;
+} _fmpz_multi_mod_instr;
+
+typedef struct
+{
+    _fmpz_multi_mod_instr * prog; /* straight line program */
+    fmpz * moduli;
+    slong moduli_count;
+    flint_bitcnt_t min_modulus_bits;
+    slong length; /* length of prog */
+    slong alloc;  /* alloc of prog */
+    slong localsize; /* length of tmp required in _fmpz_multi_mod_precomp */
+    slong temp1loc;
+    int good;   /* the moduli are good for MOD, none are zero */
+} fmpz_multi_mod_struct;
+
+typedef fmpz_multi_mod_struct fmpz_multi_mod_t[1];
+
+
+void fmpz_multi_mod_init(fmpz_multi_mod_t P);
+void fmpz_multi_mod_clear(fmpz_multi_mod_t P);
+
+int fmpz_multi_mod_precompute(fmpz_multi_mod_t P, const fmpz * f, slong r);
+
+void _fmpz_multi_mod_precomp(fmpz * outputs, const fmpz_multi_mod_t P, const fmpz_t input, int sign, fmpz * tmp);
+void fmpz_multi_mod_precomp(fmpz * outputs, const fmpz_multi_mod_t P, const fmpz_t input, int sign);
+
+/* multi mod/multi CRT ui ****************************************************/
+
+typedef struct {
+    nmod_t mod;
+    mp_limb_t i0, i1, i2;
+} crt_lut_entry;
+
+typedef struct {
+    nmod_t mod;
+    nmod_t mod0, mod1, mod2;
+} mod_lut_entry;
+
+typedef struct {
+    fmpz_multi_CRT_t crt_P;
+    fmpz_multi_mod_t mod_P;
+    mp_limb_t * packed_multipliers;
+    slong * step;
+    slong * crt_offsets;
+    slong crt_offsets_alloc;
+    slong * mod_offsets;
+    slong mod_offsets_alloc;
+    crt_lut_entry * crt_lu;
+    slong crt_lu_alloc;
+    slong crt_klen;
+    mod_lut_entry * mod_lu;
+    slong mod_lu_alloc;
+    slong mod_klen;
+    slong num_primes;
+} fmpz_comb_struct;
+
+typedef fmpz_comb_struct fmpz_comb_t[1];
+
+typedef struct {
+    slong Alen, Tlen;
+    fmpz * A, * T;
+} fmpz_comb_temp_struct;
+
+typedef fmpz_comb_temp_struct fmpz_comb_temp_t[1];
+
+void fmpz_comb_temp_init(fmpz_comb_temp_t CT, const fmpz_comb_t C);
+void fmpz_comb_temp_clear(fmpz_comb_temp_t CT);
+
+void fmpz_comb_init(fmpz_comb_t C, mp_srcptr primes, slong num_primes);
+void fmpz_comb_clear(fmpz_comb_t C);
+
+void fmpz_multi_mod_ui(mp_limb_t * out, const fmpz_t in, const fmpz_comb_t C, fmpz_comb_temp_t CT);
+void fmpz_multi_CRT_ui(fmpz_t output, mp_srcptr residues, const fmpz_comb_t comb, fmpz_comb_temp_t temp, int sign);
+
+/*****************************************************************************/
+#endif
+
+void fmpz_mat_multi_mod_ui(nmod_mat_t * residues, slong nres, const fmpz_mat_t mat);
+void fmpz_mat_multi_CRT_ui(fmpz_mat_t mat, nmod_mat_t * const residues, slong nres, int sign);
+
+/* HNF and SNF **************************************************************/
+
+void fmpz_mat_hnf(fmpz_mat_t H, const fmpz_mat_t A);
+void fmpz_mat_hnf_transform(fmpz_mat_t H, fmpz_mat_t U, const fmpz_mat_t A);
+void fmpz_mat_hnf_classical(fmpz_mat_t H, const fmpz_mat_t A);
+void fmpz_mat_hnf_xgcd(fmpz_mat_t H, const fmpz_mat_t A);
+void fmpz_mat_hnf_minors(fmpz_mat_t H, const fmpz_mat_t A);
+void fmpz_mat_hnf_minors_transform(fmpz_mat_t H, fmpz_mat_t U, const fmpz_mat_t A);
+void fmpz_mat_hnf_modular(fmpz_mat_t H, const fmpz_mat_t A, const fmpz_t D);
+void fmpz_mat_hnf_modular_eldiv(fmpz_mat_t A, const fmpz_t D);
+void fmpz_mat_hnf_pernet_stein(fmpz_mat_t H, const fmpz_mat_t A, flint_rand_t state);
+int fmpz_mat_is_in_hnf(const fmpz_mat_t A);
+
+void fmpz_mat_snf(fmpz_mat_t S, const fmpz_mat_t A);
+void fmpz_mat_snf_diagonal(fmpz_mat_t S, const fmpz_mat_t A);
+void fmpz_mat_snf_kannan_bachem(fmpz_mat_t S, const fmpz_mat_t A);
+void fmpz_mat_snf_iliopoulos(fmpz_mat_t S, const fmpz_mat_t A,
+        const fmpz_t mod);
+int fmpz_mat_is_in_snf(const fmpz_mat_t A);
+
+/* Special matrices **********************************************************/
+
+int fmpz_mat_is_hadamard(const fmpz_mat_t A);
+/usr/include/flint/fmpq.h:265:int _fmpq_reconstruct_fmpz(fmpz_t num, fmpz_t den, const fmpz_t a, const fmpz_t m);
+/usr/include/flint/fmpq.h:266:int fmpq_reconstruct_fmpz(fmpq_t res, const fmpz_t a, const fmpz_t m);
+/usr/include/flint/fmpq.h:268:int _fmpq_reconstruct_fmpz_2_naive(fmpz_t n, fmpz_t d, const fmpz_t a, const fmpz_t m, const fmpz_t N, const fmpz_t D);
+/usr/include/flint/fmpq.h:269:int _fmpq_reconstruct_fmpz_2(fmpz_t n, fmpz_t d, const fmpz_t a, const fmpz_t m, const fmpz_t N, const fmpz_t D);
+/usr/include/flint/fmpq.h:270:int fmpq_reconstruct_fmpz_2(fmpq_t res, const fmpz_t a, const fmpz_t m, const fmpz_t N, const fmpz_t D);
+/usr/include/flint/arb.h:1087:int arb_load_str(arb_t res, const char * data);
+/usr/include/flint/arb.h:1088:char * arb_dump_str(const arb_t x);

@@ -1,0 +1,12 @@
+FLINT 3.0.1 sizes fmpz=8 fmpq=16 arb=48 acb=96 nmod=24 padic=24 tight_ball=32 adele=80
+arb(1/3) exact=0 contains_q=1 finite=1
+arb(1/3) dump=55555555555555555555555555555555 -80 1 -81
+s=3 xi overlaps completed_zeta=0 xi overlaps 3*completed_zeta=1
+baseline initial x=1902044648664698058 b=1435230217217414037 p=4611686018427387847 b<p=1 gcd_inputs=2750193513973053039,2920165044282757376
+baseline actual bit lengths A=4096 B=4096 M=4096 product=8191
+malloc request=1 usable=24
+malloc request=24 usable=24
+malloc request=25 usable=40
+malloc request=48 usable=56
+malloc request=512 usable=520
+RDTSCP executable=1 ticks_monotone=1 (not core-cycle calibration)
