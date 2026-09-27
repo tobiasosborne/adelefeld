@@ -1,0 +1,50 @@
+[ok] L  Lemma 5 (Legendre, v_p(k) bounds, oracle cutoff bound): 15000 cases, 0 bad
+[ok] D1 Prop 6 boundary shells (p=2 v=1 diverges; v=c converges): 0 bad
+[ok] D2 Prop 4 unique p^m w u (odd p: mu_(p-1); p=2: w by x/2^m mod 4): 1084 units, 0 bad
+[ok] T1 Prop 7 every omitted term (to 4T+40) has valuation >= n: 28260 (p,fn,v,n) cases, p in 2,3,5,7,13, v in c..c+5, n in -6..150, 2352855 omitted terms, bad=0
+[ok] T2 Prop 7 slack: max surplus terms over the least safe count (info): 2/cos:2, 2/cosh:2, 2/exp:5, 2/log:149, 2/sin:3, 2/sinh:3, 3/cos:4, 3/cosh:4, 3/exp:7, 3/log:149, 3/sin:4, 3/sinh:4, 5/cos:2, 5/cosh:2, 5/exp:4, 5/log:149, 5/sin:2, 5/sinh:2, 7/cos:2, 7/cosh:2, 7/exp:3, 7/log:150, 7/sin:2, 7/sinh:2, 13/cos:1, 13/cosh:1, 13/exp:2, 13/log:150, 13/sin:1, 13/sinh:1
+[ok] T3 Prop 7 cases where the count is exactly minimal (info): exp=2310, sin=3006, sinh=3006, cos=3071, cosh=3071, log=325
+[ok] T5 optional log count J* (least k with k v - floor(log_p k) >= n) is safe: 3925 cases, bad=0, max terms saved against Prop 7's T_log: 149
+[ok] T4 Prop 7 n <= 0 gives K=1 (constant only) and empty log/sin sums
+[ok] W1 Prop 8 W=max(v,n+D): modular partial sum + tail = f(x) mod p^n: 6912 evaluations (p 2,3,5,7; 6 functions; v in c,c+1,c+3; n up to 34; random x and lifts), bad=0, undefined divisions=0
+[ok] W2 Prop 8 necessity probes (info): W-1 wrong in: 2007 of 6912; W=max(v,n) (no D) wrong in 1914 of 6912
+[ok] R1 Prop 10: exp/sin/sinh image = f(a)+p^N exactly; cos/cosh within N+1; centred hull 2N-v(2): 210 balls (p 2,3,5; N=c..c+2; all centres mod p^N), bad=0
+[ok] R2 cos/cosh non-centred hull vs min(N+v(a), 2N-v(2)) (info, not claimed by the proof): 6 deviations (hull exponent E != prediction), 0 with E < prediction; (p, fn, N, a, E, pred) e.g. [(2, 'cos', 3, 4, 6, 5), (2, 'cos', 3, 4, 6, 5), (2, 'cos', 4, 8, 8, 7)]
+[ok] R3 cos 4 = 9 mod 16 at 2; v_3(cos 3 - 1) = 2; sin 3 = 3 mod 9
+[ok] G1 Prop 11 series log: image of a+p^N (N>=1) is log(a)+p^N, at 2 with N=1 it is 4Z_2: 64 balls, bad=0
+[ok] G2 Prop 11 Iwasawa Log(a+p^N) = Log(a)+p^(N-m) (r>=c); 4Z_2 at p=2, r=1; m in -3..2: 360 balls, bad=0
+[ok] G3 log(-1)=0, v_2(log 3)=2, Log losses at 3,12 (p=3) and 2,10 (p=2), Log(p)=0
+[ok] Q1 Prop 13 criterion: true => explicit root verified; false => not an n-th power mod p^K: 5216 unit classes, p 2,3,5,7, n up to 25 incl. 4,8,16 at 2 and 9 at 3, bad=0
+[ok] Q2 Prop 13 count gcd(n,p-1) / gcd(n,2) (residues mod p^(c+e+1) with z^n=a mod p^(c+2e+1)): bad=0
+[ok] Q3 square tests: 1 mod 8 at 2; quadratic residue at odd p; 3 not a 2-adic square, 9 is
+[ok] P1 Prop 15 at the guard and one above: branch image = beta + p^(r-v(n)), both directions: 660 (p,n,beta,r) cases, torsion and non-torsion beta, bad=0
+[ok] P2 Prop 15 literal exponent N - v(n) - (n-1)j with j in -2..2 (Fractions, minimal N): 150 cases, bad=0
+[ok] P3 guard - 1 with p | n: input ball 1 + p^(c+v(n)-1) contains a non-n-th power: 7 (p,n) pairs, bad=0
+[ok] P4 (info) p=2, n odd, r=1: unique root image is b + 2^(j+1) (guard is conservative there): 25 cases, bad=0
+[ok] X1 Prop 18 image of (u0+p^A)^(s0+p^B) = u0^s0 + p^min(A+beta, B+alpha, A+B): 1680 exhaustive images (2^8, 3^5, 5^4), bad=0; cases where each term is the strict minimum below k: {'A+beta': 592, 'B+alpha': 421, 'A+B': 134}
+[ok] X2 Prop 17 u^s = exp(s log u) agrees with integer powers (s in -7..10); exp(Log p) = 1
+[ok] X3 Prop 17/18 at 2 for odd units: pointwise formula; ball rule for A>=2,B>=1: 180 cases, bad=0; A=1 or B=0 cases whose image has both classes mod 4: 64
+     mutant 'K-1 for factorial series' -> check_truncation: killed (0.0s)
+     mutant 'd=(p-1)v instead of (p-1)v-1' -> check_truncation: killed (0.0s)
+     mutant 'T_sin = floor((K-1)/2)' -> check_truncation: killed (0.0s)
+     mutant 'T_cos = floor(K/2)' -> check_truncation: killed (0.0s)
+     mutant 'T_log = J-2' -> check_truncation: killed (0.1s)
+     mutant 'T_log with 2v instead of 2v-1' -> check_truncation: killed (0.1s)
+     mutant 'W = max(v, n+D-1)' -> check_working_precision: killed (0.0s)
+     mutant 'W = max(v, n) (no D)' -> check_working_precision: killed (0.0s)
+     mutant 'W = n+D (drop v)' -> check_working_precision: killed (0.0s)
+     mutant 'cos hull 2N (drop v_p(2))' -> check_series_radii: killed (0.0s)
+     mutant 'cos hull 2N-1 everywhere' -> check_series_radii: killed (0.0s)
+     mutant 'Log r=1 at 2 gives Log(a)+2Z_2' -> check_log_radii: killed (0.0s)
+     mutant 'Log image r+1' -> check_log_radii: killed (0.0s)
+     mutant 'root log condition c+v(n) -> 1+v(n)' -> check_root_criteria: killed (0.0s)
+     mutant 'root log condition drops v(n)' -> check_root_criteria: killed (0.0s)
+     mutant 'root out exponent -n j' -> check_root_precision: killed (0.0s)
+     mutant 'root out exponent without v(n)' -> check_root_precision: killed (0.0s)
+     mutant 'root guard c+v(n)-1' -> check_root_precision: killed (0.0s)
+     mutant 'power R drops A+B' -> check_power_precision: killed (0.0s)
+     mutant 'power R drops B+alpha' -> check_power_precision: killed (0.0s)
+     mutant 'power R = A+B+1 term' -> check_power_precision: killed (0.0s)
+     mutant 'power R uses alpha+1' -> check_power_precision: killed (0.0s)
+[ok] M  author's checks against wrong formulas (info: survivors are weak checks): 22 of 22 killed; survivors: []
+total 9.1s; failures: []

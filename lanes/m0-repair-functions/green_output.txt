@@ -1,0 +1,48 @@
+check_legendre: factorials=4100 max_k=1024 exact_factorials=484
+check_domains: term_cases=2169 zero_values=24 boundary_subsequence_pairs=9
+check_lifting_and_groups: unique_lifts=76 finite_power_maps=32
+check_decomposition: decompositions=6462 valuations=-2,0,2 two_adic_sign_examples=2
+check_truncation: scenarios=4928 omitted_terms=14377224 max_degree=4096 max_n=40 tight_log_terms=2876715
+check_working_precision: rounded_partial_sums=3942 exact_divisions=24759 inputs=3 lifts=3 target_exponents=-2,0,1,7,20,40 W-1_wrong=852 W_without_D_wrong=1155
+check_series_identities: certified_series_comparisons=182 precision=8 golden_residues=2
+check_series_radii: distance_pairs=240 cosine_hulls=16 exp_3_12_precision=8 difference_valuation=2
+check_log_radii: distance_pairs=884 exact_quotient_images=60 special_cases=4
+check_global: rational_point_witnesses=300 excluded_ball_witnesses=900 Log_coordinates=16
+check_root_criteria: unit_classes=13436 solvable_fibers=7133 signed_valuation_roots=120 square_examples=2
+check_root_precision: branch_images=418 branch_preimages=418 scaled_images_p3=1254 guard_r1_at_2=245 unique_roots_at_2=112 guard_failures=2
+check_global_roots: rational_existence_cases=1200 unrestricted_prime_witnesses=9 sign_tuples=256
+check_powers: integer_compatibility=84 two_adic_sign_powers=49 Log_and_torsion_obstructions=7
+check_power_precision: independent_uncertain_images=900 one_exact_input_images=480 zero_product_centres=324 uncapped_radii=635 by_p={2: 202, 3: 141, 5: 146, 13: 146}
+check_fractional_parts: unique_sections=1500 digit_oracles=1500 ball_witnesses=6000
+check_real_and_character: real_integer_root_sets=136 rational_triviality_phases=528 additive_phase_cases=36
+check_no_order: Q5_root_quotients=5 sum_of_squares_quotients=11
+check_typed_and_projection: valuation_balls=120 real_jump_balls=15 named_projections=3
+     mutant 'K-1 for the factorial series' -> check_truncation: killed (assert at line 82: assert k*v - den[k] >= n, (p, v, n, fn, k))
+     mutant 'd=(p-1)v instead of (p-1)v-1' -> check_truncation: killed (assert at line 82: assert k*v - den[k] >= n, (p, v, n, fn, k))
+     mutant 'T_sin = floor((K-1)/2)' -> check_truncation: killed (assert at line 82: assert k*v - den[k] >= n, (p, v, n, fn, k))
+     mutant 'T_cos = floor(K/2)' -> check_truncation: killed (assert at line 82: assert k*v - den[k] >= n, (p, v, n, fn, k))
+     mutant 'T_log = J-2' -> check_truncation: killed (assert at line 94: assert 0 <= tight <= cutoffs(p, v, n)["log"], (p, v, n, tight))
+     mutant 'T_log with 2v instead of 2v-1' -> check_truncation: killed (assert at line 89: assert k*v - logden[k] >= n, (p, v, n, "log", k))
+     mutant 'tight T_log = J*-2' -> check_truncation: killed (assert at line 94: assert 0 <= tight <= cutoffs(p, v, n)["log"], (p, v, n, tight))
+     mutant 'tight log rule drops the e(k) bound' -> check_truncation: killed (assert at line 96: assert k*v - ilog(k, p) >= n, (p, v, n, "log-tight-e(k)", k))
+     mutant 'W = max(v, n+D-1)' -> check_working_precision: killed (assert at line 300: assert vp(partial(fn, x, count)-partial(fn, point, count), p) >= n)
+     mutant 'W = max(v, n) (no D)' -> check_working_precision: killed (assert at line 311: assert vp(modular-truth, p) >= n)
+     mutant 'W = n+D (drop v, clamped at 1)' -> check_working_precision: killed (assert at line 295: assert vp(x+F(p)**w*t, p) >= v, (p, fn, v, n, "W >= v", w))
+     mutant 'W = n+D (no maximum at all)' -> check_working_precision: killed (assert at line 295: assert vp(x+F(p)**w*t, p) >= v, (p, fn, v, n, "W >= v", w))
+     mutant 'cos hull 2N (drop v_p(2))' -> check_series_radii: killed (assert at line 382: assert min(vals) == output_n)
+     mutant 'cos hull 2N-1 everywhere' -> check_series_radii: killed (assert at line 382: assert min(vals) == output_n)
+     mutant 'Log r=1 at 2 gives Log(a)+2Z_2' -> check_log_radii: killed (assert at line 420: assert values == expected, (p, m, aunit, r))
+     mutant 'Log image r+1' -> check_log_radii: killed (assert at line 420: assert values == expected, (p, m, aunit, r))
+     mutant 'root log condition c+v(n) -> 1+v(n)' -> check_root_criteria: killed (assert at line 483: assert (a in fibers) == root_unit_criterion(a, p, n, precision), (p, n, a))
+     mutant 'root log condition drops v(n)' -> check_root_criteria: killed (assert at line 483: assert (a in fibers) == root_unit_criterion(a, p, n, precision), (p, n, a))
+     mutant 'root out exponent -n j' -> check_root_precision: killed (assert at line 535: assert len({poly_at(coeffs, t, q) for t in range(q)}) == q, (p, n, b, j, relative_in, nout))
+     mutant 'root out exponent without v(n)' -> check_root_precision: killed (assert at line 535: assert len({poly_at(coeffs, t, q) for t in range(q)}) == q, (p, n, b, j, relative_in, nout))
+     mutant 'root out exponent caps the p-power loss at 1 digit at odd p' -> check_root_precision: killed (assert at line 535: assert len({poly_at(coeffs, t, q) for t in range(q)}) == q, (p, n, b, j, relative_in, nout))
+     mutant 'root guard one digit lower' -> check_root_precision: killed (assert at line 560: assert image == expected, (p, n, relative_in, b))
+     mutant 'power R drops A+B' -> check_power_precision: killed (assert at line 670: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+     mutant 'power R drops B+alpha' -> check_power_precision: killed (assert at line 670: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+     mutant 'power R = A+B+1 term' -> check_power_precision: killed (assert at line 670: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+     mutant 'power R uses alpha+1' -> check_power_precision: killed (assert at line 670: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+     mutant 'log u0 exponent alpha capped at c' -> check_power_precision: killed (assert at line 684: assert actual == quotient_ball(1, p, min(b+alpha, k), k))
+     mutant 'valuation determined one digit earlier' -> check_typed_and_projection: killed (assert at line 797: assert len(vals) >= 2 and vp(-a, p) >= n, (p, a, n, vals))
+check_mutation_testing: planted_wrong_rules=28 rejected=28 survivors=0 review_anchors_unique=11

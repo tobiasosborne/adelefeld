@@ -21,3 +21,4 @@ bench/bench_word
 bench/build/
 docs/reviews/m0-proofs/__pycache__/
 proto/__pycache__/
+lanes/*/last.md

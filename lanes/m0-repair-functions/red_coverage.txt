@@ -1,0 +1,4 @@
+pre: check_truncation -> scenarios=4224 omitted_terms=11500509 max_degree=4096 max_n=40
+pre: check_working_precision -> rounded_partial_sums=876 target_exponents=-2,0,1,7,20,40
+pre: check_power_precision -> independent_uncertain_images=372 one_exact_input_images=231 zero_product_centres=186
+pre: check_root_precision -> branch_images=96 branch_preimages=96 rational_scaled_images=288 guard_failures=2

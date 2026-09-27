@@ -1,11 +1,21 @@
-# adelefeld: implementation plan, version 1.0
+# adelefeld: implementation plan, version 1.1
 
-Date: 2026-09-27. Status: **plan; nothing is implemented.** Read `SPEC.md` first (what is built) and `PERF.md` (how
-speed and size are judged). Draft 1 applies the design review `reviews/astra-2026-09-27/review.md` (findings P1-P3,
-D1-D4, and the consequences of M1-M13 and F1-F6), and TJO's decision that elementary functions belong to the basic
-package. Draft 2 applies review round 2 (`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of
-functions (`SPEC.md` 9.3.7). Draft 3 applies review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its
-draft 4.
+Date: 2026-09-28 (version 1.0: 2026-09-27). Status: **milestone 0 work packages landed, gate review pending;
+nothing of the C library is implemented.** Read `SPEC.md` first (what is built) and `PERF.md` (how speed and size
+are judged). Draft 1 applies the design review `reviews/astra-2026-09-27/review.md` (findings P1-P3, D1-D4, and the
+consequences of M1-M13 and F1-F6), and TJO's decision that elementary functions belong to the basic package. Draft 2
+applies review round 2 (`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of functions (`SPEC.md`
+9.3.7). Draft 3 applies review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its version 1.1.
+
+**Change log of version 1.1** (2026-09-28): status of milestone 0 per work package (section 6); types of section 4
+updated for the exact unit (decision M0-D1), the opaque place handle and the content (M0-D8, seams R1 and R5) and
+the scaled value with an exact field; rows 1.4, 1.6, 1.7, 1.8, 1F.9, 2.1, 2.3, 2.4, 3.1 adjusted to the decisions
+M0-D1 to M0-D12 of `SPEC.md` section 15.2; new row 1.9 for the Julia-friendly interface (M0-D12); section 8 records
+the four cross-family proof reviews with their verdict counts; section 9 has two new risks. After `conventions.md`
+0.2: the local backend holds raw data (finding F7, CV-55), the residue range of unit cosets follows the conventions
+(F8, CV-16), and section 5 agrees with `conventions.md` sections 9 and 10 (exact units `[1]`, `[-1]`; place label
+`inf`; dump header `adf1 Q` with the archimedean count). The ids M0-D1 to M0-D11 are the orchestrator's decisions D1
+to D11 of 2026-09-27 and M0-D12 is TJO's decision D12 (`SPEC.md` 15.2 says why the prefix).
 
 ## 1. Principles
 
@@ -21,6 +31,9 @@ draft 4.
    Tightness is a quality measure with its own tests.
 6. **A row in `PERF.md` before "finished"**, under the benchmark contract of `PERF.md` section 7.
 7. **No hidden state.** Contexts are explicit and immutable.
+8. **C for the library, Python for checking, Julia later.** Production code is C. Python is used for tests,
+   reference oracles and proof checks only. The public C interface stays callable from Julia's `ccall` without C
+   glue (`conventions.md` section 12). (TJO, 2026-09-27; `SPEC.md` M0-D12)
 
 ## 2. Repository layout
 
@@ -30,7 +43,8 @@ draft 4.
     bench/                    benchmarks; one dated output file per run, with the compiled hot loop where needed
     proto/                    Python prototypes that fix the mathematics before the C is written
     docs/                     SPEC.md, PLAN.md, PERF.md, proofs/, seams.md, conventions.md, sources.md, reviews/
-    refs/                     fetch script and hashes for cited sources (the sources are not committed)
+    refs/                     fetch scripts and hashes for cited sources (the sources are not committed)
+    lanes/                    briefs and reports of the parallel work lanes
     tools/                    the command-line driver `adf`
     Makefile                  all, check, fuzz, mutate, bench
 
@@ -53,25 +67,34 @@ Naming: public symbols `adf_<type>_<verb>`; FLINT's conventions for argument ord
 ## 4. Types and contexts (proposal, not approved; to be frozen in work package 0.4)
 
 Semantic value and physical storage are separate. The value carries its own radius and a tag for its backend.
+Version 1.1 applies decisions M0-D1 (exact unit), M0-D8 (seams R1: opaque place handle; R5: the idele scale is read
+through an accessor named "content") and the exact field of the scaled value (`SPEC.md` 4.4; `conventions.md` CV-14,
+CV-15, CV-18, which the conventions draft states in full).
 
     typedef struct { fmpq_t q; } adf_rat_struct;                        /* exact global rational */
 
     typedef struct {                                                    /* (A + H Zhat)/d */
-        fmpz_t A, H, d;                  /* d > 0; H >= 0; H > 0: 0 <= A < H, gcd(A,H,d) = 1 */
-        int backend;                     /* ADF_GLOBAL: A is the value. ADF_LOCAL: res is the value, A is unused */
+        fmpz_t A, H, d;                  /* d > 0; H >= 0. ADF_GLOBAL, H > 0: 0 <= A < H, gcd(A,H,d) = 1.
+                                            ADF_LOCAL: raw data, no gcd condition (CV-55, proposed) */
+        int backend;                     /* ADF_GLOBAL: A is the value. ADF_LOCAL: res is the value, A = 0 */
         const adf_modctx_struct *mctx;   /* ADF_LOCAL: word-sized coprime blocks q_i with product H; else NULL */
         ulong *res;                      /* ADF_LOCAL: residues modulo the blocks */
     } adf_fball_struct;                  /* a radius with a block above one word is ADF_GLOBAL as a whole */
 
-    typedef struct {                                                    /* s (u + K Zhat), K from the context */
-        fmpq_t s; fmpz_t u; const adf_modctx_struct *mctx;
+    typedef struct {                                   /* exact = 0: s (u + K Zhat), K from the context */
+        fmpq_t s; fmpz_t u;                            /* exact = 0: s > 0, 0 <= u < K */
+        const adf_modctx_struct *mctx;                 /* exact = 1: the exact rational s (0 included), u = 0 */
+        int exact;
     } adf_scaled_struct;
 
     typedef struct { arb_t inf; adf_fball_struct fin; } adf_adele_struct;
     typedef struct { acb_t inf; adf_fball_struct fin; } adf_cadele_struct;   /* the ring C x A_f */
-    typedef struct { fmpz_t c, N; } adf_ucoset_struct;                       /* c U(N), gcd(c,N) = 1, N >= 1 */
-    typedef struct { arb_t inf; fmpq_t r; adf_ucoset_struct u; } adf_idele_struct;   /* inf excludes 0; r > 0 */
+    typedef struct { fmpz_t c, N; } adf_ucoset_struct;   /* c U(N): N >= 1, 1 <= c <= N, gcd(c,N) = 1; or N = 0,
+                                                            c = +1 or -1: the exact unit (U(0) = {1}) */
+    typedef struct { arb_t inf; fmpq_t r; adf_ucoset_struct u; } adf_idele_struct;   /* inf excludes 0; r > 0,
+                                                                                         accessor "content" */
     typedef struct { arb_t t; adf_ucoset_struct u; } adf_idclass_struct;             /* t > 0 */
+    typedef struct { ulong opaque; } adf_place_t;        /* a place; created and read only through functions */
 
 Further types whose contracts are written in 0.4 and implemented in their milestones: `adf_lball` (one prime),
 `adf_sball` (a finite set of places), `adf_qclass` (union of pieces modulo `Q`), `adf_ffun` (finite function: `D`,
@@ -86,9 +109,26 @@ field of the modulus context.
 state of the output after a failure; behaviour on invalid input (a non-finite real ball, a zero denominator);
 limits on the size of parsed input; thread safety (values are not shared between threads; contexts may be).
 
-A partial ball (`adf_sball`) carries the tag real or complex for its archimedean place. An operation whose result
-changes `H` or `d` (tight arithmetic, cancellation to canonical form) returns a global value or a value in a new
-context; it never writes into a context.
+A partial ball (`adf_sball`) carries the tag real or complex for its archimedean place. An operation whose raw
+result needs other blocks than those of its context returns a global value; it never writes into
+a context, and in version 1 it creates none (`SPEC.md` 4.1; `proofs/policies.md` Proposition 24, Summary 26).
+Equality and printing go through the canonical triple, never through raw residues.
+
+**The local backend holds raw data** (finding F7 of `conventions.md`). Version 1.0 of this plan put the invariant
+`gcd(A, H, d) = 1` in the struct comment for both backends. `proofs/policies.md` Proposition 24 shows that
+cancellation keeps the *set* of a local value in its context while its canonical triple leaves it, and Summary 26
+that the canonical modulus can change after a sum. The struct comment now follows the proposed decision CV-55 of
+`conventions.md` 5.3: a local value `(d; r_1, ..., r_k)` need not satisfy the gcd condition; its canonical triple is
+derived when needed (the gcd blockwise, `policies.md` Lemma 18), and equality and printing go through it. A local
+sum stays local with the denominator `lcm(d, e)`; a result whose raw form needs other blocks (a tight product with
+`h` not dividing `d e`, an exact scalar `m/n` with `|m|` not dividing `d`) or that combines two different context
+pointers is global. This is pending the gate review of milestone 0; if the gate keeps canonical data instead, every
+local result with `gcd > 1` converts to the global backend (P24.4).
+
+**Residues of unit cosets.** The header follows `conventions.md` 5.6 (CV-16, proposed): residues are stored and
+printed in `1..N`, so the whole unit group is `[1 mod 1]`. `proofs/ideles.md` Definition 8 reduces them into
+`[0, Nbar)` and writes the whole group `(0, 1)`. The sets and the equality test are the same (ideles Proposition
+9.2); only the representative differs (finding F8 of `conventions.md`; the proof file is not changed here).
 
 **Status codes.** `ADF_OK`; `ADF_UNIT_NOT_CERTIFIED` (the enclosure does not prove invertibility);
 `ADF_NOT_UNIT` (proved not invertible); `ADF_NOT_DETERMINED` (the value is not fixed at this precision);
@@ -109,12 +149,21 @@ still constrains all primes; one place alone is `adf_lball`.
     [p=5: 3 + O(5^4)]                    local ball
     (2.5 +/- 1e-9 ; 3/2 * [5 mod 36])    idele: real part ; scale times unit coset
     <1.25 +/- 1e-30 ; [5 mod 36]>        idele class
+    {inf: 2.5 +/- 1e-9; p=5: 3 + O(5^4)} partial ball over the places inf and 5
 
 Unit cosets are printed in canonical form: a modulus that is twice an odd number is halved (`[5 mod 6]` prints as
-`[2 mod 3]`), then the residue is reduced. The dump keeps the modulus as supplied.
+`[2 mod 3]`), then the residue is reduced. The dump keeps the modulus as supplied. The exact units (stored with
+modulus 0, M0-D1) print as `[1]` and `[-1]`; residues are printed in `1..N`, so the whole unit group is `[1 mod 1]`
+(`conventions.md` 9.4, 9.8). Places are labelled `p=5` and `inf` (seams R9, M0-D8). The value form is canonical
+after one printing: printing rounds the radius of a real ball, so a text read and printed again can change once
+(`conventions.md` finding F6).
 
 A decimal real ball is read as an enclosure. **Dump form**: versioned; real balls as exact dyadic numbers
-(`arb_dump_str`); backend and context recorded. Reading a dump gives back the identical object.
+(`arb_dump_str`); backend and context recorded. Every dump starts `adf1 Q `: the version and the field (seams R9);
+types with an archimedean part write the number of archimedean components before the real balls (1 for `Q`, seams
+R3). A local finite ball is dumped with its raw data (`conventions.md` section 10). Reading a dump gives back the
+identical object. The loader validates the whole text before any FLINT load function sees it, since
+`arb_load_str` aborts the process on some malformed strings (M0-D9).
 
 ## 6. Work packages
 
@@ -133,6 +182,19 @@ marked **gate** have an exit criterion instead of an estimate.
 | 0.5 | Benchmark harness under the contract of `PERF.md` section 7; matched rows for the word kernels | `bench/` reproduces the word rows with saved compiled loops |
 | 0.6 | `docs/seams.md`: the interface tested on paper against a non-principal ideal (a field of class number 2) and against the place at infinity of `F_q(T)` | each public type is marked "unchanged", "generalises by ...", or "special to `Q`" |
 
+**Status of milestone 0 on 2026-09-28** (from `git log` and the lane reports in `lanes/`):
+
+| WP | State | Record |
+|---|---|---|
+| 0.1 | done | `7004de8`: Makefile, header-only test runner, one FLINT link test, empty public header |
+| 0.2 | done, four sources pending | `c9d2cde`: 17 keys under `refs/src/` with hashes, `docs/sources.md` with 57 verbatim quotations; all 7 labelled statements of `SPEC.md` quoted in version 1.1, one attribution kept (Tate's thesis, section 2.2). Pending: Tate's thesis; a source for the names "arithmetic" and "geometric" (made unnecessary by M0-D10); a text with proofs for p-adic `sin`, `cos`, `sinh`, `cosh`; the uops.info register forms, now fetched by `refs/fetch_intel.sh` (`PERF.md` 1.1) |
+| 0.3 | written, reviewed, repaired; new parts await the gate | functions `c070e75`, review `679fd48`, repair `08c63da`; policies, ideles, quotient `6168857`, review `6e32478`, repair `e18f8d5`; analysis `65aeea9`, review `1b8a199`, repair `e932a3d`; catalogue `c4f02b3`, review `46dabbe`, repair `6bcc1f3`. Verdicts in section 8. Added in repair, no second reader yet: functions Proposition 7b and Remark 15r |
+| 0.4 | landed as a draft for the gate; not frozen | part A `1db7dad`: conventions draft 0.1 (reference parser and printer `proto/text_grammar.py` with 23 tests); part B `d599959`: conventions 0.2 (signs, measures, Gauss sum and root number, local gamma factors, class-group characters, reciprocity by exponent, raw local values, exact unit cosets, quotient invariant, opaque place handle, dump header with the field; 12 decisions decided, 48 proposed; 713 golden vectors; findings F7 to F10, applied in version 1.1 of `SPEC.md` and of this plan) |
+| 0.5 | done | `5ae05db`: harness, six word rows, saved chain loops; first run `bench/results/2026-09-27T202944Z_word.txt`, second run `2026-09-27T221654Z_word.txt` (both `quiet_machine: no`) |
+| 0.6 | done | `9f4be67`: 38 rows with verdicts, recommendations R1 to R9 (adopted, M0-D8), three findings on `SPEC.md` 3 (applied) |
+| 1.1 | done early | `5ae05db`: Python reference, 59 tests, 18 of 18 mutants killed |
+| gate | pending | brief `e1ceee8` (`lanes/m0-gate/brief.md`): review of conventions, of version 1.1 of the three documents, and of what was added in the repairs, by codex `gpt-6-astra` |
+
 ### Milestone 1: the ring (L)
 
 | WP | Content | Tests (see section 7) | PERF rows |
@@ -140,11 +202,12 @@ marked **gate** have an exit criterion instead of an estimate.
 | 1.1 | Python reference `tests/ref/`, written from the proofs, not from the C | enumeration of small cases | none |
 | 1.2 | `adf_rat`; `adf_fball`, tight, global: set, add, sub, neg, mul, scale by exact rationals; `equal_set`, `overlaps`, `contains` | enclosure, tightness witnesses, predicates | add, mul: chain and batch, word and 4096 bit |
 | 1.3 | `adf_adele`, `adf_cadele`; conversion of `adf_rat` at a requested precision | exact arithmetic of tags; containment after conversion, including `1/3` and negatives | add, mul |
-| 1.4 | Value text and dump, parser, printer | golden vectors; invalid and huge inputs; coverage-guided fuzzing | print, parse |
+| 1.4 | Value text and dump, parser, printer | golden vectors; invalid and huge inputs; coverage-guided fuzzing; the dump loader validates the whole text before any FLINT load function (M0-D9), and the fuzzer never reaches `arb_load_str` with raw text | print, parse |
 | 1.5 | Driver `adf`: evaluates expressions in the value form | the tables of `SPEC.md` typed at the prompt | none |
-| 1.6 | Rational reconstruction from a full ball (milestone R) | progression cases; none, one, several candidates | one row |
-| 1.7 | Scaled policy and absolute cap | same expression in all policies, containment after every step; the loss cases | add, mul |
-| 1.8 | Local backend: `adf_modctx`, conversion both ways, batch kernels | represented set unchanged by conversion, denominators included | conversions; batch add and mul |
+| 1.6 | Rational reconstruction from a full ball (milestone R) | progression cases; none, one, several candidates; end points of the closed real interval included (M0-D3) | one row |
+| 1.7 | Scaled policy and absolute cap; the exact case of scaled values; the tight scaled product as a separately named operation (M0-D5) | same expression in all policies, containment after every step; the loss cases (factor `h = gcd(u, v, K)` of the default product); exact values untouched by the cap (M0-D2); conversion between contexts and the lossless `lcm` | add, mul |
+| 1.8 | Local backend: `adf_modctx`, conversion both ways, batch kernels. Storage rules of `proofs/policies.md` Propositions 24, 25: numerator residues and `d` once per value; `d` inverted modulo a block only when coprime; results whose canonical triple leaves the context are global | represented set unchanged by conversion, denominators included; a denominator sharing a factor with a block (`A = d = 2`, block 4); cancellation that keeps the set but not the canonical triple (`(2; 2)` in context `(4)`); the canonical `H` changing after a sum; equality and printing through the canonical triple | conversions; batch add and mul |
+| 1.9 | Julia-friendly interface check (M0-D12): every public operation exported, no variadic functions, `adf_sizeof_<type>`, `adf_version_check`, `adf_str_free` | `nm -D` of the library against the declarations of the header; the sizes against the documented layouts; a program that loads the library with `dlopen` and calls a few functions through `dlsym` without the header's inline functions; a Julia `ccall` smoke test where Julia is installed | none |
 
 ### Milestone 1F: functions (L; split as the reviewer recommends)
 
@@ -158,22 +221,22 @@ marked **gate** have an exit criterion instead of an estimate.
 | 1F.6 | Powers: integer; rational through roots; principal units; (the quasi-character comes with milestone 3) | `exp(Log p) = 1` is not `p`; compatibility of principal-unit powers with integer powers |
 | 1F.7 | `sin`, `cos`, `sinh`, `cosh` at a prime by power series with proved truncation | comparison with `exp` at `p = 5` and `13` (where `sqrt(-1)` is in `Q_p`); `sinh`, `cosh` against `exp` at every prime; independent exact truncations with tail bounds at `p = 2, 3`: `cos 4 = 9 mod 16`, `sin 3 = 3 mod 9`; a stated output precision is required, identities alone do not count |
 | 1F.8 | All-places forms: the five series on values with finite part exactly 0; `Log` on ideles as the enclosure `4 Zhat` refined at named primes; the rational root of an exact rational (by integer root tests; both signs optional for even degree; 0; degree 1); `NOT_DETERMINED` for roots of degree at least 2 of ideles; branches are listed only over named places | after milestone 2. 1 has rational square roots `1` and `-1` and the function does not claim to list the adelic ones; 8 has the cube root 2; 2 has no square root |
-| 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power; binomial coefficients; content; cyclotomic action. (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | `(1/2) = +1` against `(3/2) = -1`; Hilbert symbol: product formula on rationals, solvability modulo 16, 9, 25 on reduced coefficients, all 64 pairs of square classes at 2, undetermined cases for ideles; profinite power: the criterion, the coarsening to `D`, negative exponents, canonical moduli; binomials: enclosure and the smallest ball by enumeration, `(a, N, k) = (0, 8, 4)` gives radius 2; cyclotomic action: the test vector of the specification; local factors at and near their poles |
+| 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power, and its finest-modulus variant as a separately named operation; binomial coefficients; content; cyclotomic action as two functions named by their formula, `z -> z^(1/u')` and `z -> z^(u')` (M0-D10). (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | `(1/2) = +1` against `(3/2) = -1`; Hilbert symbol: product formula on rationals, solvability modulo 16, 9, 25 on reduced coefficients, all 64 pairs of square classes at 2, undetermined cases for ideles, the unit part with the cofactor of the scale (`r = s = 3`, unit 1: `(3,3)_2 = -1`); profinite power: the criterion, the coarsening to `D`, negative exponents, canonical moduli, exponent 0 gives the exact unit, the finest modulus `canon(F)` with its CRT centre (`N = 5, c = 2, e = 2, M = 4`: `F = 120`, centre 49, not `c^e`); binomials: enclosure and the smallest ball by enumeration, `(a, N, k) = (0, 8, 4)` gives radius 2; cyclotomic action: the test vector of the specification; local factors at and near their poles: a ball containing a pole returns the pole status, never a finite or unbounded ball |
 
 ### Milestone 2: ideles (M)
 
 | WP | Content | Tests |
 |---|---|---|
-| 2.1 | `adf_ucoset`, `adf_idele`, `adf_idclass`: multiply, invert, power | exact coset identities at a fixed modulus; `gcd` rule at mixed moduli; the point 1 is in `x * x^-1` |
+| 2.1 | `adf_ucoset` with the exact units (modulus 0; printed `[1]`, `[-1]`; M0-D1), `adf_idele`, `adf_idclass`: multiply, invert, power. Power: the default enclosure `c^k U(N)`, and the smallest coset `chat^k U(M_k)` of `proofs/ideles.md` Proposition 13 as a separately named operation (M0-D6); exponent 0 gives the exact unit | exact coset identities at a fixed modulus; `gcd` rule at mixed moduli, including an exact factor (`gcd(0, N) = N`); the point 1 is in `x * x^-1`; powers against enumeration modulo small `M_k` (squares: `M_2 = 24` for `N = 1`); `k = 1, -1` give `M_k = N` |
 | 2.2 | Absolute values, valuations at a named prime (by divisibility, no factorisation), norm | negative rationals; norm exact before rounding |
-| 2.3 | Maps: rational to idele; idele to class (with the sign on the unit); idele to adele, both hulls | containment; tightness of the small hull |
-| 2.4 | Division of an adele by an idele or an exact rational | against multiplication by the inverse; status when the divisor is only an adele |
+| 2.3 | Maps: rational to idele (exact unit `sign(q)`, M0-D1); idele to class (with the sign on the unit); idele to adele, both hulls | containment; tightness of the small hull; an exact unit gives the exact rational `r c` |
+| 2.4 | Division of an adele by an idele (the smallest ball of `proofs/ideles.md` Proposition 19, M0-D7) or an exact rational | against multiplication by the inverse; the radius `gcd(|a| lcm(N, 2), M)/r` against enumeration, with `a = 0`, `M = 0`, odd `N`; status when the divisor is only an adele |
 
 ### Milestone 3: quotient and characters (M)
 
 | WP | Content | Tests |
 |---|---|---|
-| 3.1 | `adf_qclass`: reduction with splitting, piece limit | wrapping across an integer; fractional radii; equality of the sets after translation by a rational |
+| 3.1 | `adf_qclass`: reduction with splitting, piece limit; `k` integers crossed give `k + 1` closed pieces (M0-D4); pieces are closed real balls that may exceed `[0,1]` by the rounding of the enclosure, with the invariant on the midpoint (`conventions.md` CV-45) | wrapping across an integer; several wraps; fractional radii; equality of the sets after translation by a rational; the piece count `k + 1`, one piece for a point; an end point that is not dyadic (`[0.9, 1]`), whose enclosure exceeds 1 |
 | 3.2 | The additive character | a non-trivial phase at `(0 ; 1/3)`; ambiguity on a fractional radius; additivity; width of the result |
 | 3.3 | `adf_char`: `t^s chi` with conductor and parity | conductor not dividing the modulus gives an enclosure or a status |
 | 3.4 | Gauss sums | against `acb_dirichlet_gauss_sum` |
@@ -241,7 +304,22 @@ class groups and units, with its guarantee recorded.
    six new findings (R1 to R6, two major), applied; closure check (`reviews/astra-2026-09-27-r3/closure.md`):
    ratify after three minor edits, applied. Design review of the documents is closed; the milestone-0 gates remain.
 2. Each milestone: proofs to a second model family; code to an adversarial reviewer whose task is an input that
-   breaks enclosure.
+   breaks enclosure. Milestone 0, work package 0.3: four cross-family reviews in refute mode, in
+   `docs/reviews/m0-proofs/`, each with the reviewer's own checks; all repairs applied (the review record at the end
+   of each proof file lists them):
+
+   | Proof files | Author | Reviewer | Valid | Minor | Invalid | Repair |
+   |---|---|---|---|---|---|---|
+   | `functions.md` (22 statements) | codex `gpt-6-astra` | Claude opus | 20 | 2 | 0 | `08c63da` |
+   | `catalogue.md` (15) | codex `gpt-6-sol` | Claude opus | 11 | 4 | 0 | `6bcc1f3` |
+   | `analysis.md` (15) | codex `gpt-6-astra` | Claude fable | 9 | 6 | 0 | `e932a3d` |
+   | `policies.md`, `ideles.md`, `quotient.md` (51) | Claude opus | codex `gpt-6-astra` | 46 | 3 | 2 | `e18f8d5` |
+
+   Total: 103 statements, 86 valid, 15 minor, 2 invalid. The two invalid verdicts (policies P24, P25, both claims
+   about storage in the local backend, not about an enclosure radius) were agreed by the author and restated; no
+   counterexample to an enclosure radius, sign, constant or formula was found in any review. Statements added in the
+   repairs (functions Proposition 7b, Remark 15r) and the repaired statements go to the gate review of milestone 0
+   (`lanes/m0-gate/brief.md`), which also reviews `conventions.md` and version 1.1 of the three documents.
 3. Statements about other people's work keep their label until quoted from a source on disk.
 
 ## 9. Risks
@@ -257,6 +335,8 @@ class groups and units, with its guarantee recorded.
 | Certified continuation of the Tate integral is research-grade work | milestone 5 is a gate, not an estimate; version 1 may ship `Re(s) > 1` first |
 | Hertogh's rules differ from ours in detail | work package 0.2 precedes 1.2 |
 | The interaction plane wants something the core cannot give | value text, dump and status codes are tested from milestone 1 |
+| Development runs on a laptop that is not the baseline machine | `PERF.md` keeps one set of model floors per hardware profile (Zen 2 baseline; Intel laptop, provisional); a measurement is compared only with the floors of its own profile; harness runs on a shared machine carry `quiet_machine: no` |
+| A FLINT routine aborts on malformed input (`arb_load_str`) | our loaders validate first (M0-D9); fuzzing targets our validators, never FLINT's loaders with raw text |
 
 ## 10. Out of scope for version 1
 

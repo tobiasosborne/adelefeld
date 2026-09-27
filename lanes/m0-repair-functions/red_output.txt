@@ -1,0 +1,31 @@
+mutant 'K-1 for the factorial series' -> check_truncation: killed (assert at line 64: assert k*v - den[k] >= n, (p, v, n, fn, k))
+mutant 'd=(p-1)v instead of (p-1)v-1' -> check_truncation: killed (assert at line 64: assert k*v - den[k] >= n, (p, v, n, fn, k))
+mutant 'T_sin = floor((K-1)/2)' -> check_truncation: killed (assert at line 64: assert k*v - den[k] >= n, (p, v, n, fn, k))
+mutant 'T_cos = floor(K/2)' -> check_truncation: killed (assert at line 64: assert k*v - den[k] >= n, (p, v, n, fn, k))
+mutant 'T_log = J-2' -> check_truncation: killed (assert at line 71: assert k*v - logden[k] >= n, (p, v, n, "log", k))
+mutant 'T_log with 2v instead of 2v-1' -> check_truncation: killed (assert at line 71: assert k*v - logden[k] >= n, (p, v, n, "log", k))
+mutant 'tight T_log = J*-2' -> check_truncation: skipped(anchor not present exactly once)
+mutant 'tight log rule drops the e(k) bound' -> check_truncation: skipped(anchor not present exactly once)
+mutant 'W = max(v, n+D-1)' -> check_working_precision: killed (assert at line 248: assert vp(partial(fn, x, count)-partial(fn, point, count), p) >= n)
+mutant 'W = max(v, n) (no D)' -> check_working_precision: killed (assert at line 253: assert vp(modular-partial(fn, x, count), p) >= n)
+mutant 'W = n+D (drop v, clamped at 1)' -> check_working_precision: SURVIVED
+mutant 'W = n+D (no maximum at all)' -> check_working_precision: killed (assert at line 80: assert n >= 1 and x.denominator % p)
+mutant 'cos hull 2N (drop v_p(2))' -> check_series_radii: killed (assert at line 317: assert min(vals) == output_n)
+mutant 'cos hull 2N-1 everywhere' -> check_series_radii: killed (assert at line 317: assert min(vals) == output_n)
+mutant 'Log r=1 at 2 gives Log(a)+2Z_2' -> check_log_radii: killed (assert at line 355: assert values == expected, (p, m, aunit, r))
+mutant 'Log image r+1' -> check_log_radii: killed (assert at line 355: assert values == expected, (p, m, aunit, r))
+mutant 'root log condition c+v(n) -> 1+v(n)' -> check_root_criteria: killed (assert at line 418: assert (a in fibers) == root_unit_criterion(a, p, n, precision), (p, n, a))
+mutant 'root log condition drops v(n)' -> check_root_criteria: killed (assert at line 418: assert (a in fibers) == root_unit_criterion(a, p, n, precision), (p, n, a))
+mutant 'root out exponent -n j' -> check_root_precision: killed (assert at line 469: assert actual == set(range(p**2)))
+mutant 'root out exponent without v(n)' -> check_root_precision: killed (assert at line 469: assert actual == set(range(p**2)))
+mutant 'root out exponent caps the p-power loss at 1 digit at odd p' -> check_root_precision: SURVIVED
+mutant 'root guard one digit lower' -> check_root_precision: killed (assert at line 456: assert image == expected, (p, n, relative_in, b))
+mutant 'power R drops A+B' -> check_power_precision: killed (assert at line 560: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+mutant 'power R drops B+alpha' -> check_power_precision: killed (assert at line 560: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+mutant 'power R = A+B+1 term' -> check_power_precision: killed (assert at line 560: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+mutant 'power R uses alpha+1' -> check_power_precision: killed (assert at line 560: assert actual == quotient_ball(center, p, r, k), (p, a, b, u0, s0, r))
+mutant 'log u0 exponent alpha capped at c' -> check_power_precision: killed (assert at line 571: assert actual == quotient_ball(1, p, min(b+alpha, k), k))
+mutant 'valuation determined one digit earlier' -> check_typed_and_projection: killed (assert at line 682: assert vp(-a, p) >= n)
+red target: lanes/m0-repair-functions/functions_checks_pre.py
+planted_wrong_rules=28 rejected=24 survived=2 ['W = n+D (drop v, clamped at 1)', 'root out exponent caps the p-power loss at 1 digit at odd p']
+skipped=2 ['tight T_log = J*-2', 'tight log rule drops the e(k) bound']
