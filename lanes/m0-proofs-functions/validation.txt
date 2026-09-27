@@ -1,0 +1,5 @@
+docs/proofs/functions.md: lines=725 over_116=0 positions=[]
+proto/functions_checks.py: lines=743 over_116=0 positions=[]
+lanes/m0-proofs-functions/report.md: lines=130 over_116=0 positions=[]
+lanes/m0-proofs-functions/validate.py: lines=29 over_116=0 positions=[]
+statements=22 check_labels=22 used_by_labels=22 linked_functions=19 index_rows=22

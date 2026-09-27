@@ -1,0 +1,20 @@
+check_legendre: factorials=4100 max_k=1024 exact_factorials=484
+check_domains: term_cases=2169 zero_values=24 boundary_subsequence_pairs=9
+check_lifting_and_groups: unique_lifts=76 finite_power_maps=32
+check_decomposition: decompositions=6462 valuations=-2,0,2 two_adic_sign_examples=2
+check_truncation: scenarios=4224 omitted_terms=11500509 max_degree=4096 max_n=40
+check_working_precision: rounded_partial_sums=876 target_exponents=-2,0,1,7,20,40
+check_series_identities: certified_series_comparisons=182 precision=8 golden_residues=2
+check_series_radii: distance_pairs=240 cosine_hulls=16 exp_3_12_precision=8 difference_valuation=2
+check_log_radii: distance_pairs=884 exact_quotient_images=60 special_cases=4
+check_global: rational_point_witnesses=300 excluded_ball_witnesses=900 Log_coordinates=16
+check_root_criteria: unit_classes=13436 solvable_fibers=7133 signed_valuation_roots=120 square_examples=2
+check_root_precision: branch_images=96 branch_preimages=96 rational_scaled_images=288 guard_failures=2
+check_global_roots: rational_existence_cases=1200 unrestricted_prime_witnesses=9 sign_tuples=256
+check_powers: integer_compatibility=84 two_adic_sign_powers=49 Log_and_torsion_obstructions=7
+check_power_precision: independent_uncertain_images=372 one_exact_input_images=231 zero_product_centres=186
+check_fractional_parts: unique_sections=1500 digit_oracles=1500 ball_witnesses=6000
+check_real_and_character: real_integer_root_sets=136 rational_triviality_phases=528 additive_phase_cases=36
+check_no_order: Q5_root_quotients=5 sum_of_squares_quotients=11
+check_typed_and_projection: valuation_balls=120 real_jump_balls=15 named_projections=3
+check_regression_mutations: incorrect_rules_rejected=13 witnesses=13
