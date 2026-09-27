@@ -68,3 +68,77 @@ if __name__ == "__main__":
     N = 36
     units = [c for c in range(N) if gcd(c, N) == 1]
     print(f"(Z/{N})^x has {len(units)} elements; 5*29 mod 36 = {5*29 % 36}")
+
+
+# ---------------------------------------------------------------------------------------------
+# Added for draft 2 of the specification (after the design review of 2026-09-27).
+# ---------------------------------------------------------------------------------------------
+def is_int(x):
+    return F(x).denominator == 1
+
+def equal_set(a, N, b, M):      # N, M > 0
+    return N == M and is_int((a - b) / N)
+
+def overlaps(a, N, b, M):
+    return is_int((a - b) / qgcd(N, M))
+
+def contains(a, N, b, M):       # is a + N Zhat inside b + M Zhat ?
+    return is_int(N / M) and is_int((a - b) / M)
+
+def scaled_add(s, u, t, v, K):
+    g = qgcd(s, t); A, B = s / g, t / g
+    return g, int(A * u + B * v) % K
+
+def scaled_mul(s, u, t, v, K):
+    return s * t, (u * v) % K
+
+def draft2_checks():
+    random.seed(2)
+    # scaled residue policy: result (scale g, residue w) is the ball g*w + g*K*Zhat; it must contain the tight result
+    n = 0
+    for _ in range(20000):
+        K = random.randint(1, 60)
+        s = F(random.randint(1, 30), random.randint(1, 12)); t = F(random.randint(1, 30), random.randint(1, 12))
+        u = random.randrange(K); v = random.randrange(K)
+        a, N, b, M = s * u, s * K, t * v, t * K
+        g, w = scaled_add(s, u, t, v, K); c, R = add_rule(a, N, b, M)
+        assert equal_set(c, R, g * w, g * K), "scaled sum is not the tight sum"
+        g, w = scaled_mul(s, u, t, v, K); c, R = mul_rule(a, N, b, M)
+        assert contains(c, R, g * w, g * K), "scaled product does not enclose"
+        assert R == s * t * K * gcd(gcd(u, v), K), "tight radius formula"
+        n += 2
+    print(f"scaled residue policy: {n} checks passed")
+    # a fixed radius is not a policy: (1 mod 2) * (1/2) = 1/2 mod 1, and 1/2 mod 2 does not contain it
+    c, R = mul_rule(F(1), F(2), F(1, 2), F(0))
+    print(f"(1 mod 2) * 1/2 = {c} mod {R}; contained in 1/2 mod 2: {contains(c, R, F(1,2), F(2))}")
+    assert not contains(c, R, F(1, 2), F(2))
+    # overlap is not transitive
+    print("0 mod 2 ~ 0 mod 1:", overlaps(F(0), F(2), F(0), F(1)), "; 0 mod 1 ~ 1 mod 2:", overlaps(F(0), F(1), F(1), F(2)),
+          "; 0 mod 2 ~ 1 mod 2:", overlaps(F(0), F(2), F(1), F(2)))
+    # fractional radius splits into B integer-radius balls: a + (A/B) Zhat = union of a + k A/B + A Zhat
+    a, N = F(1, 3), F(3, 2)
+    A, B = N.numerator, N.denominator
+    pieces = [(a + k * N, F(A)) for k in range(B)]
+    assert all(contains(c, r, a, N) for c, r in pieces)
+    assert all(not overlaps(pieces[i][0], pieces[i][1], pieces[j][0], pieces[j][1]) for i in range(B) for j in range(i))
+    assert all(any(contains(a + N * k, F(0) + A * 10**6, c, r) for c, r in pieces) for k in range(-20, 21))
+    print(f"{a} mod {N} splits into {B} disjoint balls of radius {A}")
+    # the additive character on a fractional radius is not determined: 0 mod 1/2 contains 0 and 1/2
+    import cmath
+    vals = {complex(round(cmath.exp(2j * cmath.pi * float(x)).real, 12), 0) for x in (F(0), F(1, 2))}
+    print("psi_f on 0 mod 1/2 takes the values", sorted(v.real for v in vals))
+    # rationals in a full ball: (a + N Zhat) meet Q = a + N Z ; 1/5 = 5 mod 6 as a residue but is not in 5 + 6 Zhat
+    print("1/5 in 5 + 6 Zhat:", is_int((F(1, 5) - 5) / 6), "; 5*5 mod 6 =", 5 * 5 % 6)
+    # weighted finite Fourier transform, D = 2, M = 3
+    D, M = 2, 3; L = D * M
+    f = [complex(random.random(), random.random()) for _ in range(L)]
+    w = lambda x: cmath.exp(-2j * cmath.pi * x)
+    g = [sum(f[j] * w(F(j * k, L)) for j in range(L)) / M for k in range(L)]
+    h = [sum(g[k] * w(F(j * k, L)) for k in range(L)) / D for j in range(L)]
+    err = max(abs(h[j] - f[(-j) % L]) for j in range(L))
+    pl = abs(sum(abs(x) ** 2 for x in f) / M - sum(abs(x) ** 2 for x in g) / D)
+    print(f"weighted transform twice = reflection: error {err:.1e}; Plancherel error {pl:.1e} (floating point, not certified)")
+    assert err < 1e-12 and pl < 1e-12
+
+if __name__ == "__main__":
+    draft2_checks()

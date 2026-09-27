@@ -1,5 +1,9 @@
-/* bench/baseline.c: cost of the FLINT/GMP primitives that adelfeld's milestone-1 types will be built from.
-   These are reference measurements of existing code, not of adelfeld. Floors and ratios: docs/PERF.md.
+/* HISTORICAL REFERENCE (2026-09-27). Predates the benchmark contract of docs/PERF.md section 7: the nmod rows are
+   dependent chains, the n_gcd row is a chain mixed with input generation, the fmpz and arb rows are call rates on
+   fixed operands. Replaced by work package 0.5. Changes after the review: the unused seed argument is removed and
+   the constant b is kept below p.
+   bench/baseline.c: cost of the FLINT/GMP primitives that adelefeld's milestone-1 types will be built from.
+   These are reference measurements of existing code, not of adelefeld. Floors and ratios: docs/PERF.md.
    Build: gcc -O2 bench/baseline.c -o build/baseline -lflint -lmpfr -lgmp ; run: taskset -c 2 build/baseline
    Harness after ~/.claude/skills/perf-bounds/references/measurement.md. */
 #include <stdio.h>
@@ -28,10 +32,10 @@ static double now(void) { struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t);
 int main(int argc, char **argv)
 {
     flint_rand_t st; flint_randinit(st);
-    ulong seed = (argc > 1) ? strtoul(argv[1], NULL, 10) : 12345; (void) seed;
+    (void) argc; (void) argv;
     ulong p = (UWORD(1) << 62) - 57;
     nmod_t mod; nmod_init(&mod, p);
-    ulong x = n_randint(st, p), b = n_randint(st, p) | 1, acc = 0;
+    ulong x = n_randint(st, p), b = (n_randint(st, p - 2) | 1), acc = 0;
 
     TIME_KERNEL("nmod_add chain (62-bit)", 15, 20000000, x = nmod_add(x, b, mod));
     acc += x;
