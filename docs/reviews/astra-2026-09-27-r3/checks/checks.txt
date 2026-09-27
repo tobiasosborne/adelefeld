@@ -1,0 +1,15 @@
+FLINT Kronecker: (1/2)=1, (3/2)=-1 despite 1=3 mod 2; (1/-1)=1, (-1/-1)=-1
+Hilbert: all 64 Q_2 square-class pairs agree with primitive solvability modulo 16
+Insufficient precision example: (2,6)_2=-1, but (x,y,z)=(1,1,0) solves modulo 8
+Two arbitrary unit ideles: the 2-adic symbol can be +1 or -1
+Profinite power: largest divisor D=gcd(N,c^M-1), 9288 (N,c,M) cases with signed exponents
+Canonical U(2N)=U(N) is respected; all unit squares are 1 modulo 24 (canonical modulus 24)
+Unrestricted power precision: 138 table comparisons with the exhaustive gcd algorithm
+Binomial fixed-divisor formula and both enclosures: 9020 cases, including negative lifts and k=0
+Binomial examples: (a,N,k)=(0,8,4): tight R=2 versus factorial bound 1
+Centre dependence: (0,8,3) has R=8; (1,8,3) has R=4
+Proposition 6: 36 scaled conversions and signed/zero scalar cases
+Proposition 4: p=2, CRT modulus=8, v(a-c_p)=2, n_p=2
+Proposition 4: p=3, CRT modulus=3, v(a-c_p)=2, n_p=-1
+Proposition 4: p=5, CRT modulus=25, v(a-c_p)=1, n_p=1
+Root guard boundary: 18 exact finite branch-image checks; valuations scaled by -2, 0, 1

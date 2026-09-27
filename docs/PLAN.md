@@ -1,16 +1,18 @@
-# adelefeld: implementation plan, draft 2
+# adelefeld: implementation plan, draft 3
 
 Date: 2026-09-27. Status: **plan; nothing is implemented.** Read `SPEC.md` first (what is built) and `PERF.md` (how
 speed and size are judged). Draft 1 applies the design review `reviews/astra-2026-09-27/review.md` (findings P1-P3,
 D1-D4, and the consequences of M1-M13 and F1-F6), and TJO's decision that elementary functions belong to the basic
 package. Draft 2 applies review round 2 (`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of
-functions (`SPEC.md` 9.3.7). Section numbers of `SPEC.md` refer to its draft 3.
+functions (`SPEC.md` 9.3.7). Draft 3 applies review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its
+draft 4.
 
 ## 1. Principles
 
 1. **Contracts before code.** Milestone 0 fixes the mathematics, the conventions and the storage invariants in
-   writing, and has them reviewed. Until then the only C is a provisional build scaffold with no public types; the
-   public header is frozen after work packages 0.3, 0.4 and 0.6 are reviewed.
+   writing, and has them reviewed. Until then, production C is limited to a provisional build scaffold with no
+   public types; disposable probes of mathematics or of library behaviour, and the benchmark harness, are allowed.
+   The public header is frozen after work packages 0.3, 0.4 and 0.6 are reviewed.
 2. **Vertical slices.** Each later milestone ends with something a user can type and see.
 3. **Tests.** A new behaviour gets a test that defines it; a defect gets a regression test that fails before the
    fix. Corrections of text need no test. Mutation testing is measured by surviving mutants, fuzzing by coverage.
@@ -155,8 +157,8 @@ marked **gate** have an exit criterion instead of an estimate.
 | 1F.5 | Local roots: existence conditions, all branches with identifiers or a seed, precision formula and its guard; square roots at 2; degree divisible by `p` | 3 has no square root in `Q_2`, 9 has; counts `gcd(n, p-1)`; loss of one digit at 2; input balls outside the guard |
 | 1F.6 | Powers: integer; rational through roots; principal units; (the quasi-character comes with milestone 3) | `exp(Log p) = 1` is not `p`; compatibility of principal-unit powers with integer powers |
 | 1F.7 | `sin`, `cos`, `sinh`, `cosh` at a prime by power series with proved truncation | comparison with `exp` at `p = 5` and `13` (where `sqrt(-1)` is in `Q_p`); `sinh`, `cosh` against `exp` at every prime; independent exact truncations with tail bounds at `p = 2, 3`: `cos 4 = 9 mod 16`, `sin 3 = 3 mod 9`; a stated output precision is required, identities alone do not count |
-| 1F.8 | All-places forms: the five series on values with finite part exactly 0; `Log` on ideles as the enclosure `4 Zhat` refined at named primes; roots on exact rationals; `NOT_DETERMINED` for roots of ideles | after milestone 2 |
-| 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power; binomial coefficients; content; cyclotomic action. (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | product formula of the Hilbert symbol on rationals and its definition by solvability at small primes; the criterion `c^M = 1 mod N`; enclosure of binomials by enumeration |
+| 1F.8 | All-places forms: the five series on values with finite part exactly 0; `Log` on ideles as the enclosure `4 Zhat` refined at named primes; the rational root of an exact rational (by integer root tests; both signs optional for even degree; 0; degree 1); `NOT_DETERMINED` for roots of degree at least 2 of ideles; branches are listed only over named places | after milestone 2. 1 has rational square roots `1` and `-1` and the function does not claim to list the adelic ones; 8 has the cube root 2; 2 has no square root |
+| 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power; binomial coefficients; content; cyclotomic action. (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | `(1/2) = +1` against `(3/2) = -1`; Hilbert symbol: product formula on rationals, solvability modulo 16, 9, 25 on reduced coefficients, all 64 pairs of square classes at 2, undetermined cases for ideles; profinite power: the criterion, the coarsening to `D`, negative exponents, canonical moduli; binomials: enclosure and the smallest ball by enumeration, `(a, N, k) = (0, 8, 4)` gives radius 2; cyclotomic action: the test vector of the specification; local factors at and near their poles |
 
 ### Milestone 2: ideles (M)
 
@@ -235,7 +237,8 @@ class groups and units, with its guarantee recorded.
 1. Documents: reviewed by a second model family (codex `gpt-6-astra`) before implementation; each round in
    `docs/reviews/`. Round 1: 2026-09-27, 28 findings, applied in draft 2 of the specification and draft 1 of this
    plan and of `PERF.md`. Round 2: 12 new findings and 11 remainders, applied in draft 3 of the specification and
-   draft 2 of this plan and of `PERF.md`; verdict "milestone 0 may begin".
+   draft 2 of this plan and of `PERF.md`; verdict "milestone 0 may begin". Round 3: all round-2 items closed but one;
+   six new findings (R1 to R6, two major), applied in draft 4 of the specification and draft 3 of this plan.
 2. Each milestone: proofs to a second model family; code to an adversarial reviewer whose task is an input that
    breaks enclosure.
 3. Statements about other people's work keep their label until quoted from a source on disk.

@@ -238,6 +238,52 @@ def draft3_checks():
                 assert (hilbert(a, b, p) == 1) == hilbert_has_solution(a, b, p, k), (a, b, p); m += 1
     print(f"Hilbert symbol against the definition (solvability modulo p^k, k = 4, 2, 2): {m} pairs passed")
 
+def kronecker2(a):               # the factor (a/2)
+    return 0 if a % 2 == 0 else (-1) ** (((a * a - 1) // 8) % 2)
+
+def draft4_checks():
+    """after review round 3"""
+    random.seed(4)
+    assert kronecker2(1) == 1 and kronecker2(3) == -1 and 1 % 2 == 3 % 2
+    assert all(kronecker2(a) == kronecker2(a + 8) for a in range(-40, 40))
+    print("(1/2) = +1, (3/2) = -1 although 1 = 3 mod 2; (a/2) depends on a mod 8: ok")
+    n = 0
+    for _ in range(3000):       # profinite power: coarsening to D = gcd(N, c^M - 1)
+        N = random.randint(2, 300); c = random.randrange(1, N)
+        if gcd(c, N) != 1: continue
+        M = random.randint(1, 40); e = random.randrange(M)
+        D = gcd(N, pow(c, M, N) - 1)
+        vals = [pow(c, e + M * t, N) for t in range(0, 30)]
+        assert len({v % D for v in vals}) == 1
+        for L in range(D + 1, N + 1):
+            if N % L == 0 and L % D == 0 and L != D:
+                assert len({v % L for v in vals}) > 1, (N, c, M, L)     # no finer divisor of N is determined
+        n += 1
+    print(f"profinite power, largest determined divisor of N: {n} checks passed")
+    n = 0
+    for _ in range(2000):       # binomial: smallest ball
+        N = random.randint(1, 60); a = random.randrange(N); k = random.randint(1, 7)
+        def binom(x):
+            num = 1
+            for i in range(k): num *= (x - i)
+            return num // factorial(k)
+        R = reduce(gcd, [abs(binom(a + N * j) - binom(a)) for j in range(1, k + 1)])
+        diffs = [binom(a + N * t) - binom(a) for t in range(-12, 13)]
+        assert all(d % R == 0 for d in diffs) if R else all(d == 0 for d in diffs)
+        assert R % (N // gcd(N, factorial(k))) == 0
+        n += 1
+    def binom4(x): return x * (x - 1) * (x - 2) * (x - 3) // 24
+    print(f"binomial smallest ball: {n} checks passed; (a,N,k) = (0,8,4): radius",
+          reduce(gcd, [abs(binom4(8 * j)) for j in range(1, 5)]))
+    from math import isqrt
+    def rational_root2(q):
+        q = F(q)
+        if q < 0: return None
+        a, b = isqrt(q.numerator), isqrt(q.denominator)
+        return F(a, b) if a * a == q.numerator and b * b == q.denominator else None
+    print("rational square roots: 9/4 ->", rational_root2(F(9, 4)), "; 2 ->", rational_root2(2), "; 1 ->", rational_root2(1))
+
 if __name__ == "__main__":
     draft2_checks()
     draft3_checks()
+    draft4_checks()

@@ -1,11 +1,12 @@
-# adelefeld: scope and specification, draft 3
+# adelefeld: scope and specification, draft 4
 
 Date: 2026-09-27. Authors: TJO with Claude (Fable). Status: **draft; nothing is implemented.** Companion documents:
 `PLAN.md` (work packages), `PERF.md` (floors), `proofs/precision.md` (proofs of the arithmetic rules).
 
 Draft 2 applied the design review `reviews/astra-2026-09-27/review.md` (codex `gpt-6-astra`, 28 findings); draft 3
 applies round 2, `reviews/astra-2026-09-27-r2/review.md` (12 new findings N1 to N12, and the remainders of round 1),
-and adds the catalogue of section 9.3.7. Finding ids (M3, D1, N4, ...) are cited where a statement was changed.
+and adds the catalogue of section 9.3.7; draft 4 applies round 3, `reviews/astra-2026-09-27-r3/review.md` (findings R1
+to R6, all in sections 9.3.3 and 9.3.7). Finding ids (M3, D1, N4, ...) are cited where a statement was changed.
 
 Labels used in this document:
 
@@ -439,7 +440,14 @@ digit.
 
 **At all places.** A unit coset leaves every unit possible at the primes outside its modulus, and some of those
 units are not squares. So an idele of finite precision can never be certified to have a square root at all places;
-the all-places root returns `NOT_DETERMINED` for ideles, and is available for exact rationals. Use `root_at`.
+the all-places root of degree `n >= 2` returns `NOT_DETERMINED` for ideles (degree 1 is the identity). Use `root_at`.
+
+For an exact rational the all-places root returns the **rational** root: for odd `n` the one real root, for even `n`
+the non-negative one (optionally both), found by testing numerator and denominator for n-th powers; no
+factorisation is needed. It does not list all adelic roots, and cannot: the rational 1 has the square roots `+1` or
+`-1` chosen freely at every place, continuum many. All branches are listed only over a finite named set of places.
+Nothing is lost for existence: a non-zero rational with an n-th root at every place has all valuations divisible by
+`n` and the right sign, so it has a rational root. Exact 0 has the single root 0. **[proved]** (R4)
 
 #### 9.3.4 Powers: four different operations
 
@@ -474,7 +482,8 @@ it is 1, while `cos(2 pi / 4) = 0`. It is offered under its own name, with named
 
 #### 9.3.7 Functions special to arithmetic (catalogue, added after a survey on 2026-09-27)
 
-These are natural on adeles and ideles and cheap once the types exist. **[standard]** throughout, from memory; each
+These are natural on adeles and ideles. They are implemented as their types and algorithms arrive; their cost
+depends on precision, conductor, support, and on any factorisation they need. (R5) **[standard]** throughout, from memory; each
 formula is to be quoted from a source on disk before it is implemented (work package 0.2). **[checked]** in
 `proto/precision_rules.py`: the Hilbert symbol formulas (product formula on 2000 pairs of rationals; agreement with
 solvability modulo a prime power at 2, 3, 5), the criterion for the profinite power, the binomial enclosure.
@@ -483,15 +492,32 @@ solvability modulo a prime power at 2, 3, 5), the criterion for the profinite po
 
 | Function | On | What it is | Precision needed |
 |---|---|---|---|
-| Legendre, Jacobi, Kronecker symbol | integers; unit cosets | quadratic residue symbols (FLINT has them) | residue modulo the lower entry |
-| Hilbert symbol `(a, b)_v` | two non-zero values at a place; two ideles | `+1` if `a x^2 + b y^2 = z^2` has a non-zero solution at `v`, else `-1`. For rationals the product over all places is 1 | odd `p`: valuations and unit parts modulo `p`; `p = 2`: modulo 8; real: signs. At an odd prime where both entries are units the symbol is 1, so for ideles only finitely many places need data |
-| local zeta factor | a place and complex `s` | `(1 - p^(-s))^(-1)`; `pi^(-s/2) Gamma(s/2)` at the real place | complex ball |
-| Gauss sums, local constants of Tate's local functional equation | a character at a place | needed for section 8 in any case | complex ball |
-| profinite power `a^x` | `a` a unit coset `c U(N)`, `x` a profinite integer `e mod M` | the power in the group of units of `Zhat` | determined exactly when `c^M = 1 mod N` (one modular power, no factorisation); always for an exact integer exponent |
-| binomial coefficient `binom(x, k)` | `x` a profinite integer `a mod N`, `k` a non-negative integer | the polynomial `x (x-1) ... (x-k+1) / k!`, which maps `Zhat` to `Zhat` | the result is known modulo `N / gcd(N, k!)` **[checked]** (enclosure; tightness not claimed) |
+| Legendre symbol `(a/p)`, Jacobi symbol `(a/b)` | `p` an odd prime; `b` positive and odd; `a` an integer or a unit coset | quadratic residue symbols (FLINT has them) | `a` modulo the lower entry |
+| Kronecker symbol `(a/b)` | `b = 2^t m` positive, `m` odd | the Jacobi symbol modulo `m` times `(a/2)^t`, where `(a/2)` is 0 for even `a` and `(-1)^((a^2-1)/8)` for odd `a` | `a` modulo `m` if `t = 0`; modulo `lcm(m, 8)` if `t > 0` (sufficient, not always necessary). Not the residue modulo `b`: `(1/2) = +1`, `(3/2) = -1`. Negative or zero `b`: exact integers `a` only. Otherwise the set of possible values or `NOT_DETERMINED` (R1) |
+| Hilbert symbol `(a, b)_v` | two non-zero values at a place; two ideles | `+1` if `a x^2 + b y^2 = z^2` has a non-zero solution at `v`, else `-1`. For rationals the product over all places is 1 | the parity of the valuations and the square class of the unit parts: unit parts modulo `p` at odd `p`, modulo 8 at 2, signs at the real place. For a ball `a + p^A Z_p`: `A - v(a) >= 1` at odd `p`, `>= 3` at 2 suffices. See the notes below (R2) |
+| local zeta factor (trivial character) | a place and complex `s` | `(1 - p^(-s))^(-1)`; `pi^(-s/2) Gamma(s/2)` at the real place | complex ball. Poles at `s = 2 pi i k / log p`, and at `s = 0, -2, -4, ...` for the real place: a ball containing a pole returns a status, never a finite ball |
+| Gauss sums | a Dirichlet character with its conductor, extended by 0; the additive character of section 6 | needed for section 8 | complex ball |
+| local constants | a quasi-character at a place and `s` | defined by the local functional equation `Z(hat f, chi^-1, 1-s) = gamma(s, chi) Z(f, chi, s)` with the transform and measure of sections 6 and 7; the epsilon factor in addition needs the normalisation of the L-factor. Fixed in work packages 0.3 and 0.4 | complex ball |
+| Haar volume of a finite ball | finite balls | `1/N` for radius `N > 0`; 0 for a point | exact |
+| profinite power `a^x` | `a` a unit coset `c U(N)`, `x` a profinite integer `e mod M`, `N, M >= 1` | the power in the group of units of `Zhat`; negative exponents through inverses | the result is determined **modulo `N`** exactly when `c^M = 1 mod N`. Otherwise: `NOT_DETERMINED`, or the coarser coset `c^e U(D)` with `D = gcd(N, c^M - 1)`, the largest divisor of `N` at which it is determined (no factorisation). `D` is not claimed to be the finest modulus overall. Exact integer exponent: always determined modulo `N`; exponent 0 gives the exact 1 (R3) |
+| binomial coefficient `binom(x, k)` | `x` a profinite integer `a mod N`, `k` a non-negative integer | the polynomial `x (x-1) ... (x-k+1) / k!`, which maps `Zhat` to `Zhat` | conservative: modulo `N / gcd(N, k!)`. Smallest ball: centre `binom(a, k)`, radius `gcd` of `binom(a + N j, k) - binom(a, k)` for `j = 1, ..., k` (radius 0, the exact 1, for `k = 0`). **[proved]** (R3 review, section on binomials) **[checked]** |
 | content of an idele | ideles | the positive rational `r` of section 5 (the fractional ideal) | exact |
 | theta series of a test function | an idele `x` | `sum over rational q of f(q x)`; Poisson summation gives `Theta_f(x) = |x|^(-1) Theta_{hat f}(1/x)` | with milestone 4 |
-| cyclotomic action (reciprocity map for `Q`) | idele classes | the class `(t, u')` acts on roots of unity of order `n` through `u'` modulo `n`; `t` acts trivially. The direction (`u'` or its inverse) is a convention to be fixed from a source | unit coset modulo `n` |
+| cyclotomic action (reciprocity map for `Q`) | idele classes | the class `(t, u')` acts on a root of unity `z` of order `n`; `t` acts trivially. Two conventions: arithmetic, `z -> z^(1/u')`, and geometric, `z -> z^(u')` (both in J. S. Milne's notes, as read by the reviewer **[unverified]**). The choice is made in milestone 0 and is part of the function's name. Test vector: the idele with `p` at the place `p` and 1 elsewhere has `u' = 1/p` away from `p`, so under the arithmetic convention `z -> z^p` | determined when the modulus of the unit coset, in canonical form, is divisible by `n` |
+
+**Notes on the Hilbert symbol.** (R2)
+
+- For two ideles with scales `r`, `s`: at an odd prime where both valuations are even the symbol is `+1`. The places
+  that can matter are the real place, 2, and the primes at which `r` or `s` has odd valuation. Finding them may need
+  the factorisation of the scales, or a supplied list.
+- At each such place the function reports a sign only if it is the same for all values in the input; otherwise
+  `NOT_DETERMINED`. The family over all places is determined exactly when every one of these is.
+- Finite precision need not determine it: two ideles of scale 1 with unknown units at 2 allow `(1,1)_2 = +1` and
+  `(3,3)_2 = -1`.
+- The product formula holds for rationals. It does not hold for arbitrary pairs of ideles.
+- The prototype tests the formula against solvability modulo `16`, `9`, `25`, for coefficients of valuation 0 or 1.
+  That this finite test decides solvability in `Q_p` is proved in the review (R2); it would not be valid for other
+  moduli or for coefficients that are not reduced.
 
 **Tier B: later, named so that the interface leaves room.** Morita's p-adic Gamma function; the Artin-Hasse
 exponential; p-adic polylogarithms; p-adic L-functions; Dwork's exponential (needs an extension of `Q_p`);
