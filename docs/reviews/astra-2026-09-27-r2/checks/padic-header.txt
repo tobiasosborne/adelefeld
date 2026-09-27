@@ -1,0 +1,138 @@
+FLINT 3.0.1 installed /usr/include/flint/padic.h
+28: 
+29: #define PADIC_TEST_PREC_MIN WORD(-100)
+30: #define PADIC_TEST_PREC_MAX  WORD(100)
+31: 
+32: typedef struct {
+33:     fmpz u;
+34:     slong v;
+35:     slong N;
+36: } padic_struct;
+37: 
+38: typedef padic_struct padic_t[1];
+39: 
+40: #define padic_val(x)   ((x)->v)
+41: #define padic_prec(x)  ((x)->N)
+42: 
+43: PADIC_INLINE
+44: fmpz * padic_unit(const padic_t x)
+45: {
+46:    return (fmpz *)(&(x->u));
+47: }
+48: 
+49: PADIC_INLINE
+50: slong padic_get_val(const padic_t x)
+51: {
+52:    return x->v;
+53: }
+54: 
+55: PADIC_INLINE
+56: slong padic_get_prec(const padic_t x)
+57: {
+58:    return x->N;
+59: }
+60: 
+61: enum padic_print_mode
+62: {
+63:     PADIC_TERSE,
+64:     PADIC_SERIES,
+65:     PADIC_VAL_UNIT
+66: };
+67: 
+68: typedef struct {
+69: 
+70:     fmpz_t p;
+71: 
+72:     double pinv;
+73: 
+74:     fmpz *pow;
+75:     slong min;
+76:     slong max;
+77: 
+78:     enum padic_print_mode mode;
+79: 
+80: } padic_ctx_struct;
+81: 
+82: typedef padic_ctx_struct padic_ctx_t[1];
+240: }
+241: 
+242: PADIC_INLINE int padic_is_one(const padic_t op)
+243: {
+244:     return fmpz_is_one(padic_unit(op)) && (padic_val(op) == 0);
+245: }
+246: 
+247: PADIC_INLINE int padic_equal(const padic_t op1, const padic_t op2)
+248: {
+249:     return (padic_val(op1) == padic_val(op2)) &&
+250:            (fmpz_equal(padic_unit(op1), padic_unit(op2)));
+251: }
+252: 
+253: /* Arithmetic operations *****************************************************/
+254: 
+255: slong * _padic_lifts_exps(slong *n, slong N);
+256: 
+257: void _padic_lifts_pows(fmpz *pow, const slong *a, slong n, const fmpz_t p);
+258: 
+259: void padic_add(padic_t rop, const padic_t op1, const padic_t op2,
+260:                const padic_ctx_t ctx);
+261: 
+262: void padic_sub(padic_t rop, const padic_t op1, const padic_t op2,
+263:                const padic_ctx_t ctx);
+264: 
+265: void padic_neg(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+266: 
+267: void padic_mul(padic_t rop, const padic_t op1, const padic_t op2,
+268:                const padic_ctx_t ctx);
+269: 
+270: void padic_shift(padic_t rop, const padic_t op, slong v, const padic_ctx_t ctx);
+271: 
+272: void padic_div(padic_t rop, const padic_t op1, const padic_t op2,
+273:                const padic_ctx_t ctx);
+274: 
+275: void _padic_inv_precompute(padic_inv_t S, const fmpz_t p, slong N);
+276: 
+277: void _padic_inv_clear(padic_inv_t S);
+278: 
+279: void _padic_inv_precomp(fmpz_t rop, const fmpz_t op, const padic_inv_t S);
+280: 
+281: void _padic_inv(fmpz_t rop, const fmpz_t op, const fmpz_t p, slong N);
+282: 
+283: void padic_inv(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+284: 
+285: int padic_sqrt(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+286: 
+287: void padic_pow_si(padic_t rop, const padic_t op, slong e,
+288:                   const padic_ctx_t ctx);
+289: 
+290: /* Exponential ***************************************************************/
+291: 
+292: slong _padic_exp_bound(slong v, slong N, const fmpz_t p);
+293: 
+294: void _padic_exp(fmpz_t rop, const fmpz_t u, slong v, const fmpz_t p, slong N);
+295: void _padic_exp_rectangular(fmpz_t rop, const fmpz_t u, slong v, const fmpz_t p, slong N);
+296: void _padic_exp_balanced(fmpz_t rop, const fmpz_t u, slong v, const fmpz_t p, slong N);
+297: 
+298: int padic_exp(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+299: int padic_exp_rectangular(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+300: int padic_exp_balanced(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+301: 
+302: /* Logarithm *****************************************************************/
+303: 
+304: slong _padic_log_bound(slong v, slong N, const fmpz_t p);
+305: 
+306: void _padic_log(fmpz_t z, const fmpz_t y, slong v, const fmpz_t p, slong N);
+307: void _padic_log_rectangular(fmpz_t z, const fmpz_t y, slong v, const fmpz_t p, slong N);
+308: void _padic_log_satoh(fmpz_t z, const fmpz_t y, slong v, const fmpz_t p, slong N);
+309: void _padic_log_balanced(fmpz_t z, const fmpz_t y, slong v, const fmpz_t p, slong N);
+310: 
+311: int padic_log(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+312: int padic_log_rectangular(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+313: int padic_log_satoh(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+314: int padic_log_balanced(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+315: 
+316: /* Special functions *********************************************************/
+317: 
+318: void _padic_teichmuller(fmpz_t rop, const fmpz_t op, const fmpz_t p, slong N);
+319: 
+320: void padic_teichmuller(padic_t rop, const padic_t op, const padic_ctx_t ctx);
+321: 

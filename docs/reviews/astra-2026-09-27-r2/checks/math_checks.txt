@@ -1,0 +1,32 @@
+p=2 exp: v(f(a+h)-f(a))=3 = v(h)
+p=2 sin: v(f(a+h)-f(a))=3 = v(h)
+p=2 sinh: v(f(a+h)-f(a))=3 = v(h)
+p=2 cos: v(f(p^2)-1)=3
+p=2 cosh: v(f(p^2)-1)=3
+p=3 exp: v(f(a+h)-f(a))=2 = v(h)
+p=3 sin: v(f(a+h)-f(a))=2 = v(h)
+p=3 sinh: v(f(a+h)-f(a))=2 = v(h)
+p=3 cos: v(f(p^1)-1)=2
+p=3 cosh: v(f(p^1)-1)=2
+p=5 exp: v(f(a+h)-f(a))=2 = v(h)
+p=5 sin: v(f(a+h)-f(a))=2 = v(h)
+p=5 sinh: v(f(a+h)-f(a))=2 = v(h)
+p=5 cos: v(f(p^1)-1)=2
+p=5 cosh: v(f(p^1)-1)=2
+log series: p=2 x=3 mod p^16 = 59636, valuation=2
+log series: p=2 x=-1 mod p^16 = 0, valuation=inf
+log series: p=2 x=5 mod p^16 = 9852, valuation=2
+log series: p=3 x=4 mod p^16 = 17309910, valuation=1
+Iwasawa radius counterexamples:
+p=3: x=3,y=12, v(y-x)=2, v(log(y)-log(x))= 1
+p=2: x=2,y=10, v(y-x)=3, v(log(y)-log(x))= 2
+2-adic boundary: degree 4: exp/cos term v=1; degree 5: sin term v=2
+2-adic boundary: degree 8: exp/cos term v=1; degree 9: sin term v=2
+2-adic boundary: degree 16: exp/cos term v=1; degree 17: sin term v=2
+2-adic boundary: degree 32: exp/cos term v=1; degree 33: sin term v=2
+principal/unit n-th power residues: p=2, n=2, modulus=8: [1]
+principal/unit n-th power residues: p=3, n=3, modulus=9: [1]
+CRT neighbourhood: moduli={2: 8, 3: 3, 5: 25}, residues={2: 5, 3: 2, 5: 1}, A=101, a=101/90, N=20/3
+prototype exact-point edge: overlaps ZeroDivisionError (not exercised by its main checks)
+prototype exact-point edge: contains ZeroDivisionError (not exercised by its main checks)
+all exact series, boundary, power-residue and CRT assertions passed

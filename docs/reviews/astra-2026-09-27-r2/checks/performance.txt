@@ -1,0 +1,10 @@
+add: conditional ratio [2.738000, 3.330000]
+mul-high-half: conditional ratio [4.615750, 5.613750]
+mul-compiled-path: conditional ratio [1.318786, 1.603929]
+log2(20!)=61.077383920906
+64/log2(20!)=1.047851036
+64/ceil(log2(20!))=1.032258065
+80/37=2.162162162 (unlike feature sets)
+528/512=1.03125
+(528+16+8)/512=1.078125
+max(1024/64,520/32)=16.25 cycles; 17 needs per-result issue rounding

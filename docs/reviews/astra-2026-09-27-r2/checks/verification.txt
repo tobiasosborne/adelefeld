@@ -1,0 +1,7 @@
+Closure IDs: 28 unique; statuses: {'RESOLVED': 16, 'PARTLY': 12}
+New findings: 12 unique; severities: {'MAJOR': 7, 'BLOCKER': 2, 'MINOR': 3}
+Review words: 7519; round-1 words: 16760
+All recorded input hashes unchanged.
+All local links in review resolve.
+No ELF executables remain in the round-2 directory.
+Required closing heading is present.
