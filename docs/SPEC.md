@@ -1,10 +1,11 @@
-# adelefeld: scope and specification, draft 2
+# adelefeld: scope and specification, draft 3
 
 Date: 2026-09-27. Authors: TJO with Claude (Fable). Status: **draft; nothing is implemented.** Companion documents:
 `PLAN.md` (work packages), `PERF.md` (floors), `proofs/precision.md` (proofs of the arithmetic rules).
 
-Draft 2 applies the design review `reviews/astra-2026-09-27/review.md` (codex `gpt-6-astra`, 28 findings). Finding
-ids (M3, D1, ...) are cited where a statement was changed because of them.
+Draft 2 applied the design review `reviews/astra-2026-09-27/review.md` (codex `gpt-6-astra`, 28 findings); draft 3
+applies round 2, `reviews/astra-2026-09-27-r2/review.md` (12 new findings N1 to N12, and the remainders of round 1),
+and adds the catalogue of section 9.3.7. Finding ids (M3, D1, N4, ...) are cited where a statement was changed.
 
 Labels used in this document:
 
@@ -26,7 +27,7 @@ printed, computed with, solved for and drawn with the same ease as the reals. Th
    for later instances are fixed on paper before the first public header; concrete structs are not promised to stay
    unchanged (D4).
 
-Version 1 covers the adeles of `Q`: arithmetic, elementary functions (section 9.3), ideles, characters, Fourier
+Version 1 covers the adeles of `Q`: arithmetic, functions of one variable (section 9.3), ideles, characters, Fourier
 analysis, and the Tate integral for the zeta function and Dirichlet L-functions. The
 interaction plane and the visualisation are a separate problem, treated only through the constraints they place on
 the core (section 10).
@@ -112,22 +113,27 @@ under arithmetic with other exact values, and is converted to an `adf_adele` at 
 it meets an inexact value. The exact tag also keeps the fact that both ends are the same number, which a pair of
 balls forgets. **[proved]** (M3)
 
-**The type `adf_cadele`.** Replacing the real coordinate by a complex one gives the ring `C x A_f`. This is not the
-adele ring of `Q`, and not the adele ring of a number field. It is offered because it is useful (complex shifts of
-the real coordinate) and is named for what it is. Complex *values* of functions on the adeles are plain `acb` balls
-and have nothing to do with this type. **[design]** (D3; TJO decided that a complex type is wanted; its meaning is
-fixed here and may be revised by TJO.)
+**The type `adf_cadele`: the complex archimedean adele.** Replacing the real coordinate by a complex one gives the
+ring `C x A_f`. It contains the adeles. It is an enlargement of the archimedean place only: the number `i` exists in
+the first coordinate and not in the finite part, so `(i ; 0)` squares to `(-1 ; 0)`, which is not the `-1` of the
+ring, and the ring is not an algebra over `C`. It is not the adele ring of `Q` and not that of `Q(i)`; adjoining `i`
+at all places is the adele ring of `Q(i)` and belongs to the later work on number fields. Complex *values* of
+functions on the adeles are plain `acb` balls and have nothing to do with this type. Operations defined only for a
+real coordinate reject a complex one unless their complex branch is specified. **[design]** (D3, N9; confirmed by
+TJO on 2026-09-27.)
 
 **Canonical form of a finite ball.** For `H > 0`: `0 <= A < H` and `gcd(A, H, d) = 1`. For `H = 0`: `A/d` in lowest
 terms. One denominator serves centre and radius. The precision at the prime `p` is `v_p(H/d)`. **[design]** (D2)
 
 **Two storage backends for the same value.** (i) **Global**: `A, H, d` as FLINT integers. No factorisation is needed
 for ring operations. (ii) **Local**: the same `d`, and the residues of `A` modulo pairwise coprime blocks `q_i` whose
-product is `H`. The blocks need not be prime powers for ring arithmetic; operations that name a prime need certified
-prime powers. A block too large for a machine word uses an integer fallback. The denominator is applied after
+product is `H`. In this backend the residues are the value; `A` is not stored. The blocks need not be prime powers
+for ring arithmetic; operations that name a prime need certified prime powers. Every block fits a machine word; a
+value whose radius has a larger block is stored in the global backend as a whole. The denominator is applied after
 recombination; it is never inverted modulo a block it shares a factor with. The modulus data (blocks, reduction
-constants, recombination tree) live in an immutable context that values refer to. A tight operation can change `H`,
-and then the result falls back to the global backend or needs a new context. **[design]** (D2)
+constants, recombination tree) live in an immutable context that values refer to. A tight operation, and
+the cancellation that brings a value to canonical form, can change `H` and `d`; the result then falls back to the
+global backend or is given a new context. **[design]** (D2)
 
 ### 4.2 Set predicates
 
@@ -200,7 +206,10 @@ invertible: the adele with coordinate `p` at each prime `p` has none, and its in
 **[proved]** (M5) The scale `r` is exact and is part of the precision.
 
 **Unit precision.** For an integer `N >= 1` let `U(N)` be the units of `Zhat` that are 1 modulo `N`. A unit to finite
-precision is a coset `c U(N)`, `gcd(c, N) = 1`. This is not the additive ball `c + N Zhat`.
+precision is a coset `c U(N)`, `gcd(c, N) = 1`, where `c` stands for any unit of `Zhat` with that residue (the
+integer `c` itself need not be a unit of `Zhat`). This is not the additive ball `c + N Zhat`. Every unit is 1 modulo
+2, so `U(2N) = U(N)` for odd `N`: `5 mod 6` and `2 mod 3` are the same coset. The canonical form removes the factor 2
+from a modulus that is exactly twice an odd number; equality of cosets compares the sets. **[proved]** (N12)
 
 | Type | Data | Product |
 |---|---|---|
@@ -236,9 +245,13 @@ possible values or a status. **[proved]** (M5)
 - A fractional radius `N = A/B` (lowest terms) splits into the `B` balls `a + k N + A Zhat`, `0 <= k < B`, each of
   integer radius. A fractional radius is therefore not an obstacle, only a multiplication of cases.
 
-The result type `adf_qclass` is a finite union of pieces, or an unreduced lift with the meaning "modulo `Q`". A
-function that may return only one piece returns the status `NEEDS_SPLIT` otherwise. A limit on the number of pieces
-is an argument.
+A real ball that spans several integers gives one piece for each integer it crosses. A closed real ball cannot
+describe the half-open interval `[0,1)`; pieces are therefore closed intervals inside `[0,1]` together with the
+gluing rule: the point `(1 ; z)` is the point `(0 ; z - 1)`.
+
+The result type `adf_qclass` is either an unreduced lift with the meaning "modulo `Q`" (always available, always
+exact as a set), or a finite union of pieces with the gluing rule. A function that may return only one piece
+returns the status `NEEDS_SPLIT` otherwise. A limit on the number of pieces is an argument. (M6)
 
 **The additive character.** Convention of Tate's thesis, section 2.2 **[unverified]** (read by the reviewer in a
 scan; to be quoted from a copy on disk, work package 0.2):
@@ -275,8 +288,9 @@ draft 1, is not closed under translation.) **[proved]** (M9) Uncertain parameter
 not folded into the coefficients.
 
 **Operations.** Evaluation at an adele (on a ball that crosses a jump of the finite part: an enclosure of all
-values); sum and product (after bringing `D`, `M` to common values, whose cost is charged); translation and dilation
-by exact values, or by balls precise enough to fix the array operation uniquely; `D_a f(x) = f(a x)`, with
+values); sum and product (after bringing `D`, `M` to common values, whose cost is charged); translation by exact
+values and dilation by exact non-zero rationals or certified ideles (dilation by 0 leaves the class), or by balls
+precise enough to fix the array operation uniquely; `D_a f(x) = f(a x)`, with
 `hat(D_a f)(y) = |a|^(-1) hat f(y/a)`; Fourier transform; Haar integral; Poisson summation with certified tails.
 
 ## 8. Tate integrals: the acceptance test
@@ -287,13 +301,14 @@ with `d^x x = dx/|x|` at infinity and, at each prime, the measure that gives `Z_
 
 - **Zeta.** `f = exp(-pi x^2)` times the indicator of `Zhat`, `omega` trivial, `Re(s) > 1`: the value is
   `pi^(-s/2) Gamma(s/2) zeta(s)`. **[proved]** (M10)
-- **Dirichlet L-functions.** For a primitive character `chi` of conductor `C` and parity `e`: the same test function
-  gives zero (at a ramified prime the character averages to zero over the units). The correct choice is, at ramified
+- **Dirichlet L-functions.** For a non-trivial primitive character `chi` of conductor `C` and parity `e` (conductor 1
+  is the zeta case above): the same test function gives zero (at a ramified prime the character averages to zero
+  over the units). The correct choice is, at ramified
   primes, the inverse local character on `Z_p^x`; at the other primes the indicator of `Z_p`; at infinity
   `x^e exp(-pi x^2)`. The result is `pi^(-(s+e)/2) Gamma((s+e)/2) L(s, chi)`; multiplied by `C^((s+e)/2)` it is the
   completed L-function. The idele character is `conj(chi(u'))`, so that the Euler factors carry `chi(p)`.
   **[proved]** (M10)
-- **Outside `Re(s) > 1`** the defining integral diverges. A separate algorithm (splitting the integral and using
+- **Outside `Re(s) > 1`** the defining integral is not absolutely convergent. A separate algorithm (splitting the integral and using
   Poisson summation, with proved tail bounds) computes the continuation and states its behaviour at the poles.
   The functional equation, with Gauss sum, conductor and conjugate character, is a proof obligation of work package
   0.3. **[standard]**
@@ -303,7 +318,7 @@ zeta and L values, completed by hand (FLINT's `xi` is normalised differently **[
 must shrink as the precision grows; both parities and a non-real character are tested; points at and near the poles
 are tested.
 
-## 9. Solving equations, reconstruction, elementary functions
+## 9. Solving equations, reconstruction, functions
 
 ### 9.1 Solving
 
@@ -322,59 +337,165 @@ Optional for version 1, outside the Tate acceptance gate.
 
 ### 9.2 Rational reconstruction
 
-- **From a full adelic ball.** `(a + N Zhat)` meets `Q` in the arithmetic progression `a + N Z`. Intersect it with
-  the real interval. If the interval is shorter than `N` there is at most one rational. No lattice reduction is
-  needed. **[proved]** (M12)
-- **From partial data** (a residue modulo `m`, nothing known at other primes): the classical bounded problem, with
-  bounds `|n| <= A`, `0 < d <= B`; `2 A B < m` is sufficient for uniqueness. A separate function on a separate type.
+- **From a full adelic ball.** For `N > 0`, `(a + N Zhat)` meets `Q` in the arithmetic progression `a + N Z`.
+  Intersect it with the real interval. If the interval is shorter than `N` there is at most one rational. For
+  `N = 0` the only candidate is `a`, tested against the real interval. No lattice reduction is needed. **[proved]**
+  (M12)
+- **From partial data** (a residue modulo `m`, nothing known at other primes): the classical bounded problem: given `m > 0`
+  and `c`, find a reduced fraction `n/d` with `gcd(d, m) = 1`, `n = c d mod m`, `|n| <= A`, `0 < d <= B`;
+  `2 A B < m` is sufficient for uniqueness. A separate function on a separate type.
   `1/5` is `5 mod 6` in this sense, and yet `1/5` is not in the adelic ball `5 + 6 Zhat`.
 - Results: one verified candidate; none; several; or "uniqueness not certified".
 
 This is not a local-to-global principle. `(x^2 - 13)(x^2 - 17)(x^2 - 221)` has a root in `R` and in every `Q_p`,
 and no rational root. **[proved]** (M12)
 
-### 9.3 Elementary functions (in the basic package; TJO, 2026-09-27)
+### 9.3 Functions (in the basic package; TJO, 2026-09-27)
 
-Elementary functions are part of version 1 and arrive with milestone 1, not after the analysis.
+Functions of one variable are part of version 1. This section was rewritten after review round 2 (findings N1 to
+N7, N10); the proofs cited are in that review and are to be rewritten stepwise in `proofs/functions.md` (work package
+0.3).
 
-**Where each function is defined.** **[standard]** for the convergence statements; to be quoted from a source on
-disk (work package 0.2).
+**Notation.** `v = v_p` is the valuation at `p`. Put `c = 1` for odd `p` and `c = 2` for `p = 2`. Every non-zero
+`x` in `Q_p` is uniquely `p^m w u` with `m` an integer, `w` a root of unity (`w^(p-1) = 1` for odd `p`; `w = 1` or
+`-1` for `p = 2`, fixed by `x / 2^m` modulo 4), and `u` in `1 + p^c Z_p`. At `p = 2` the factor `w` is not the
+Teichmüller representative, which is 1 for every odd unit. **[proved]** (N1)
 
-| Function | Real place | Prime `p` | Several places at once |
+#### 9.3.1 How functions are applied
+
+**[design]** (N2) Three forms, with different types:
+
+| Form | Meaning | Result |
+|---|---|---|
+| `f_at(x, S)`, `S` a finite set of places, mandatory | `f` at each place of `S` | a partial ball over `S` (for one place: a local or real ball). The other coordinates of `x` are not part of the result |
+| `project(x, S)` then `f` | the same in two steps | the same |
+| `f(x)` with no places | `f` at all places at once | an adele or idele; requires that the whole input is certified to lie in the domain, otherwise a status |
+
+There is no default set of places. A partial ball carries, for its archimedean place, the tag real or complex. If
+one place fails, the function returns the status with that place and no value; an optional variant returns a
+per-place map of results and statuses.
+
+Every function is an enclosure of the image of the whole input ball. Domain checks inspect the whole ball: a stored
+centre 0 with finite precision is not the exact 0. A requested output precision is an argument; an exact input does
+not give an exactly representable output.
+
+#### 9.3.2 Power series at a prime
+
+| Function | Converges exactly on | Radius of the result for an input ball `a + p^N Z_p` inside the domain |
+|---|---|---|
+| `exp`, `sin`, `sinh` | `p^c Z_p` | `p^N`; these maps preserve distances |
+| `cos`, `cosh` | `p^c Z_p` | `p^N` is safe; not tight (on `p^N Z_p` the smallest ball is `1 + p^(2N - v_p(2)) Z_p`) |
+| `log` (series) | `1 + p Z_p`, for every `p` including 2 | `p^N` is safe. It preserves distances on `1 + p^c Z_p`. On `1 + 2 Z_2` it is not injective: `log(-1) = 0` |
+| `Log` (Iwasawa: `Log(p^m w u) = log u`) | all non-zero `x` | for a ball not containing 0, `m = v(a)`, `N > m`: the image is `Log(a) + p^(N-m) Z_p` (at `p = 2` for `N - m >= 2`; for `N - m = 1` the image is `4 Z_2`). Absolute precision drops by `m` digits when `m > 0` |
+
+**[proved]** (N1, N3) **[checked]** (`cos 4 = 9 mod 16` at 2; `v_3(cos 3 - 1) = 2`; `v_2(log 3) = 2`.) The rule
+"keep the input radius" is the default safe policy, not a claim of tightness.
+
+**On all primes at once.** The common domain of `exp`, `sin`, `cos`, `sinh`, `cosh` in the finite adeles is
+
+    D  =  4 Z_2  x  product over odd p of  p Z_p.
+
+It is not empty (it contains the adele with coordinate 4 at 2 and `p` at each odd `p`), and on it the functions
+give adeles. They are partial functions on `A`, with domain `R x D`. But `D` contains no finite ball of positive
+radius, and the only rational in it is 0. So with our types the all-places form applies only to a value whose
+finite part is exactly 0 (any real part). This is partly a limit of finite data, not a statement that the functions
+do not exist. **[proved]** (N1) For everything else, use `f_at`.
+
+`Log` at all places: the finite image of any idele lies in `4 Zhat`, which is the conservative result; it is
+refined at finitely many named primes by the table above. The real coordinate needs a positive input, or the
+separately named `log_abs`. **[proved]** (N5)
+
+**Implementation.** FLINT's `padic` has `exp`, `log`, `sqrt`, Teichmüller lift and integer powers
+**[checked]**; it has no `sin`, `cos`, `sinh`, `cosh`, no n-th roots, no general powers. It evaluates at a centre to
+the precision of the output variable: it does not propagate the uncertainty of a ball, its `log` accepts a smaller
+domain than the series has, and its equality ignores precision **[checked]** (probe in the review: at precision 8,
+`exp 3` and `exp 12` differ at the 3-adic digit 2, although 3 and 12 lie in the same ball of radius 9). Therefore
+our wrapper owns: validation of the prime; exact and uncertain zero; domain certification for the whole ball;
+output precision; removal of `p^m` and of `w` before calling FLINT; branches of roots. FLINT is called only for the
+centre, after these checks. **[design]** (N4)
+
+#### 9.3.3 Roots
+
+Fix a degree `n >= 1` and `a = p^m w u` non-zero. **[proved]** (N5)
+
+| Place | `a` has an n-th root exactly when |
+|---|---|
+| odd `p` | `n` divides `m`; `w` is an n-th power among the `(p-1)`-th roots of unity; `v(log u) >= 1 + v(n)` |
+| `p = 2` | `n` divides `m`; `w` is an n-th power in `{1, -1}`; `v(log u) >= 2 + v(n)` |
+| real | `n` odd: always, one real root. `n` even: `a >= 0`, and the non-negative root is returned |
+
+Square roots: at odd `p`, `m` even and the unit part a square modulo `p`; at 2, `m` even and the unit part 1 modulo
+8. (3 is a unit and not a square in `Q_2`; 9 is a square although the derivative `2x` is not a unit, so simple
+Hensel lifting alone would miss it.) When roots exist there are `gcd(n, p-1)` of them at odd `p` and `gcd(n, 2)`
+at 2.
+
+**Branches.** There is no "positive" p-adic root. The function returns all roots with identifiers, or takes a seed
+(a residue) that selects one. "Whatever the library returns" is not a branch.
+
+**Precision.** If `b^n = a` and the input ball `a + p^N Z_p` satisfies `N - m >= c + v(n)`, the branch near `b` has
+image exactly `b + p^(N - v(n) - (n-1) v(b)) Z_p`. Outside this guard the input is split or the status
+`NOT_DETERMINED` is returned. Unit square roots lose nothing at odd `p` and one digit at 2; unit p-th roots lose one
+digit.
+
+**At all places.** A unit coset leaves every unit possible at the primes outside its modulus, and some of those
+units are not squares. So an idele of finite precision can never be certified to have a square root at all places;
+the all-places root returns `NOT_DETERMINED` for ideles, and is available for exact rationals. Use `root_at`.
+
+#### 9.3.4 Powers: four different operations
+
+**[proved]** (N6) `exp(s Log x)` is not a power: it gives 1 for `x = p`. The package offers separately:
+
+1. **Integer powers**, by ring or idele arithmetic; negative exponents need an invertible base.
+2. **Rational powers**, through the roots of 9.3.3 with their branches.
+3. **Powers of principal units**: `u^s = exp(s log u)` for `u` in `1 + p^c Z_p` and `s` in `Z_p`; on all odd 2-adic
+   units, `w^(s mod 2) exp(s log u)`. The uncertainty of `s` and of `log u` both enter.
+4. **The quasi-character** `t^s chi(u')` on idele classes, `s` complex: the result is a complex ball, not an idele.
+
+#### 9.3.5 Characters are not sine and cosine
+
+The additive character `psi : A/Q -> C^x` (section 6) plays on `A/Q` the part that `exp(2 pi i x)` plays on the
+circle `R/Z`. It is not an extension of the ordinary cosine: `psi` is 1 on every rational, so at the rational `1/4`
+it is 1, while `cos(2 pi / 4) = 0`. It is offered under its own name, with named real and imaginary parts.
+**[proved]** (N2)
+
+#### 9.3.6 Other functions of one variable, with their types
+
+(N10) No blanket "everywhere".
+
+| Function | Domain | Result |
+|---|---|---|
+| absolute value | real, complex, local, idele | non-negative real ball (exact rational at a prime) |
+| valuation at `p` | `Q_p`, adeles at a named prime | an integer or infinity; `NOT_DETERMINED` when the ball contains elements of different valuation |
+| sign, floor, ceiling | real place only | `-1, 0, 1`; an integer; `NOT_DETERMINED` on a ball that crosses the jump. There is no sign or floor on `Q_p` (`Q_5` contains a square root of `-1`, so it has no order) |
+| p-primary fractional part `{x}_p` | `Q_p` | a rational with denominator a power of `p`, in `[0,1)`; the complement `x - {x}_p` lies in `Z_p` and is in general not an ordinary integer |
+| unit part, root-of-unity part, Teichmüller representative | non-zero local values; unit cosets | the factors `p^m`, `w`, `u` above |
+| rational functions | denominator certified non-zero at the named places; at all places: exact non-zero rational or idele | |
+| real and complex functions of `arb`/`acb` (Gamma, error function, Bessel, zeta, ...) | the archimedean place, through `f_at` | real or complex ball; on the complex place, branch cuts follow `acb` and a ball meeting a cut returns the enclosure `acb` gives, with a status |
+
+#### 9.3.7 Functions special to arithmetic (catalogue, added after a survey on 2026-09-27)
+
+These are natural on adeles and ideles and cheap once the types exist. **[standard]** throughout, from memory; each
+formula is to be quoted from a source on disk before it is implemented (work package 0.2). **[checked]** in
+`proto/precision_rules.py`: the Hilbert symbol formulas (product formula on 2000 pairs of rationals; agreement with
+solvability modulo a prime power at 2, 3, 5), the criterion for the profinite power, the binomial enclosure.
+
+**Tier A: in version 1.**
+
+| Function | On | What it is | Precision needed |
 |---|---|---|---|
-| polynomials | everywhere | everywhere | full adeles |
-| rational functions | denominator not 0 | denominator not 0 | denominators must be exact non-zero rationals or ideles |
-| `exp`, `sin`, `cos`, `sinh`, `cosh` | everywhere | the power series converges exactly for `x` in `p Z_p` (`4 Z_2` for `p = 2`) | partial adeles: the real place and a finite set of primes. **Not on full adeles** (see below) |
-| `log` | positive reals | units of `Z_p`, and all of `Q_p^x` after fixing `log p = 0` (Iwasawa's convention) | ideles: all places at once |
-| `sqrt`, n-th roots | non-negative reals | where Hensel's lemma gives a root; the choice of root is stated | partial adeles; on ideles where every local root exists |
-| `x^s` | positive reals | through `log` and `exp` where both converge | on idele classes: the quasi-character `t^s chi` of section 5 |
-| `exp(2 pi i x)`, hence `cos(2 pi x)`, `sin(2 pi x)` | everywhere | the local character `psi_p` | full adeles, and `A/Q`: the character `psi` of section 6 |
-| absolute value, valuation, sign, floor and fractional part | everywhere | everywhere | ideles (norm); full adeles (fractional part, through section 6) |
-| Teichmüller representative | none | units of `Z_p` | unit cosets, prime by prime |
-| Gamma, zeta, L-functions | `arb`, `acb_dirichlet` | later | through the Tate integrals of section 8 |
+| Legendre, Jacobi, Kronecker symbol | integers; unit cosets | quadratic residue symbols (FLINT has them) | residue modulo the lower entry |
+| Hilbert symbol `(a, b)_v` | two non-zero values at a place; two ideles | `+1` if `a x^2 + b y^2 = z^2` has a non-zero solution at `v`, else `-1`. For rationals the product over all places is 1 | odd `p`: valuations and unit parts modulo `p`; `p = 2`: modulo 8; real: signs. At an odd prime where both entries are units the symbol is 1, so for ideles only finitely many places need data |
+| local zeta factor | a place and complex `s` | `(1 - p^(-s))^(-1)`; `pi^(-s/2) Gamma(s/2)` at the real place | complex ball |
+| Gauss sums, local constants of Tate's local functional equation | a character at a place | needed for section 8 in any case | complex ball |
+| profinite power `a^x` | `a` a unit coset `c U(N)`, `x` a profinite integer `e mod M` | the power in the group of units of `Zhat` | determined exactly when `c^M = 1 mod N` (one modular power, no factorisation); always for an exact integer exponent |
+| binomial coefficient `binom(x, k)` | `x` a profinite integer `a mod N`, `k` a non-negative integer | the polynomial `x (x-1) ... (x-k+1) / k!`, which maps `Zhat` to `Zhat` | the result is known modulo `N / gcd(N, k!)` **[checked]** (enclosure; tightness not claimed) |
+| content of an idele | ideles | the positive rational `r` of section 5 (the fractional ideal) | exact |
+| theta series of a test function | an idele `x` | `sum over rational q of f(q x)`; Poisson summation gives `Theta_f(x) = |x|^(-1) Theta_{hat f}(1/x)` | with milestone 4 |
+| cyclotomic action (reciprocity map for `Q`) | idele classes | the class `(t, u')` acts on roots of unity of order `n` through `u'` modulo `n`; `t` acts trivially. The direction (`u'` or its inverse) is a convention to be fixed from a source | unit coset modulo `n` |
 
-**Why `exp`, `sin`, `cos` are not functions on full adeles.** A finite ball with positive radius is all of `Z_p` at
-almost every prime, and the series does not converge on all of `Z_p`. A non-zero exact rational is divisible by only
-finitely many primes. So in the finite adeles the only point of our types in the domain is 0. **[proved]** (from the
-convergence statement.) This is a fact about the adeles, not a gap in the software. The function that plays the part
-of `cos` and `sin` on the adeles as a whole is the character `psi`: it is to `A/Q` what `exp(2 pi i x)` is to the
-circle `R/Z`.
-
-**How the package offers them. [design]**
-
-- One generic entry per function, `adf_<type>_<fn>`, for the types real ball, local ball, partial ball, idele and
-  adele, whenever the row above allows it.
-- Applied to a full adele, `exp`, `sin`, `cos` act on the places the caller names (by default the real place
-  only) and return a partial ball over those places. The result type says which places it covers; nothing is
-  silently dropped.
-- Outside the domain the function returns the status `DOMAIN` with the place at which it failed. A ball that is only
-  partly inside the domain returns `NOT_DETERMINED`.
-- Every function is an enclosure: the image of the input ball is inside the output ball. For a p-adic power series
-  `f` with `f(x + h) - f(x)` in `h Z_p` on its disc (true for `exp`, `sin`, `cos`, and for `log` on `1 + p Z_p`), the
-  output radius equals the input radius; this is to be proved for each function in work package 0.3.
-- Implementation: the real place by `arb`/`acb`; `exp`, `log`, square root and Teichmüller lift at a prime by
-  FLINT's `padic` module, which has them **[checked]** (declared in `padic.h` of FLINT 3.0.1); p-adic `sin`, `cos`,
-  `sinh`, `cosh` are not in FLINT and are written here, by their power series with a proved truncation bound.
+**Tier B: later, named so that the interface leaves room.** Morita's p-adic Gamma function; the Artin-Hasse
+exponential; p-adic polylogarithms; p-adic L-functions; Dwork's exponential (needs an extension of `Q_p`);
+functions on `Q_p(i)` and other extensions (with number fields).
 
 ## 10. Constraints from the interaction plane (deferred)
 
@@ -400,9 +521,9 @@ One map, shared with `PLAN.md`. **[design]** (P1)
 
 | # | Content | Gate |
 |---|---|---|
-| 0 | Sources on disk; proofs of all rules; conventions fixed; storage invariants; benchmark contracts; seams sketch | reviewed by a second model family |
+| 0 | Provisional build scaffold; sources on disk; proofs of all rules; conventions fixed; storage invariants; benchmark contracts; seams sketch. No public representation is frozen before the proofs, the conventions and the seams sketch are reviewed | reviewed by a second model family |
 | 1 | Finite balls (tight, global), exact rationals, adeles, text forms, command-line driver; then scaled policy; then local backend | section 4 reproduced in C; policies against each other |
-| 1F | Elementary functions (section 9.3): real place, local and partial balls; with milestone 2, `log` and roots on ideles | enclosure on random balls; agreement with `arb` and `padic`; domain statuses |
+| 1F | Functions (section 9.3): archimedean wrappers; local `exp`, `log`; roots and powers with branches; `sin`, `cos`, `sinh`, `cosh`; partial balls; Tier A of 9.3.7 as its types arrive | independent oracles with stated output precision; the domain and precision cases of 9.3 |
 | 2 | Unit cosets, ideles, idele classes, division | exact coset identities; norm and product formula |
 | 3 | Quotient by `Q`, additive character, class-group characters | wrapping and fractional radius cases; non-trivial phases |
 | 4 | Test functions, weighted Fourier transform, Poisson summation | section 7 identities with certified tails |
@@ -440,7 +561,9 @@ we do not adopt that. We have made no complete survey. A list of what other syst
 | Name and licence | `adelefeld`; AGPL-3.0 |
 | May a radius be a fraction? | Yes |
 | Default modulus family | None imposed: user-chosen (arbitrary integer, list of coprime blocks, prime-power list, factorial, primorial power, exact) |
-| Complex type | Wanted. Meaning fixed in section 4.1 as the ring `C x A_f`, pending TJO's confirmation |
+| Complex type | Kept as the complex archimedean adele `C x A_f` (section 4.1), as the reviewer recommends |
+| Functions applied to adeles | Places are always named (`f_at`); no default place (section 9.3.1), as the reviewer recommends |
+| Review round 2 | Apply all findings (draft 3) |
 | Review of draft 1 | Apply all findings (this draft) |
 | Elementary functions (`sin`, `cos`, `exp`, `log`, ...) | In the basic package (section 9.3, milestone 1F) |
 | Folder and project name | `adelefeld` |

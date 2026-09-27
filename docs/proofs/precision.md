@@ -1,8 +1,10 @@
 # Proofs of the arithmetic rules for finite balls
 
-Status: proofs taken from the design review of 2026-09-27 (findings M1, M2, M3, D1), rewritten here stepwise. They
-have been read by us and checked numerically by `proto/precision_rules.py`; they have not yet been reviewed by a
-third party (work package 0.3).
+Status: proofs taken from the design review of 2026-09-27 (findings M1, M2, M3, D1), rewritten here stepwise, and
+audited step by step in review round 2 (finding N8: all propositions valid; its clarifications are applied here).
+Checked numerically by `proto/precision_rules.py`. The statements on functions (domains, radius rules, roots,
+powers) are proved in review round 2, findings N1 to N6, and are to be rewritten stepwise in `functions.md` (work
+package 0.3).
 
 Notation. `Zhat` is the ring of profinite integers. A finite ball is `a + N Zhat`, `a` rational, `N` a rational,
 `N >= 0`. For rationals `x_1, ..., x_k`, `gcd(x_1, ..., x_k)` is the non-negative generator of the subgroup of `Q`
@@ -34,6 +36,9 @@ smallest ball containing them.
 Let `G = gcd(a M, b N, N M)`. Then every product of an element of `a + N Zhat` with an element of `b + M Zhat` lies
 in `a b + G Zhat`, and no ball with a radius `R` such that `R Zhat` is properly inside `G Zhat` contains all of them.
 
+*The case `G = 0`.* Then `a M = b N = N M = 0`, the expansion below shows that every product equals `a b`, and the
+product set is the single point `a b`. From here on `G > 0`.
+
 *Enclosure.* For `u, v` in `Zhat`,
 
     (a + N u)(b + M v) - a b  =  a M v + b N u + N M u v.
@@ -45,7 +50,6 @@ Each of the three coefficients is an integer multiple of `G`, so the right side 
 `a b + R Zhat`, and `R Zhat` contains `a M`, `b N` and `N M`. By Lemma 1 these three are integer multiples of `R`
 (if `R = 0` they vanish), hence so is `G`. So `G Zhat` is inside `R Zhat`.
 
-If `G = 0` all three coefficients vanish and the product set is the single point `a b`.
 
 No sign or positivity of `a`, `b` was used; rational radii are covered by the definition of `gcd`.
 
@@ -53,6 +57,10 @@ No sign or positivity of `a`, `b` was used; rational radii are covered by the de
 twice.
 
 ## Proposition 3 (set predicates). For `N, M > 0`:
+
+(Radius zero: a ball of radius 0 is a point. Two points overlap, are equal, or contain one another exactly when
+they are the same rational. A point `a` lies in `b + M Zhat`, `M > 0`, exactly when `(a - b)/M` is an integer, by
+Lemma 1. A ball of positive radius is never inside a point.)
 
 1. `a + N Zhat = b + M Zhat` exactly when `N = M` and `(a - b)/N` is an integer.
 2. The two balls meet exactly when `(a - b)/gcd(N, M)` is an integer.
@@ -69,11 +77,19 @@ Let `S` be a finite set of primes, and for each `p` in `S` let a ball `c_p + p^(
 other primes take `Z_p`. Then the product of these sets is `a + N Zhat` with `N = product of p^(n_p)` and a rational
 `a`.
 
-*Proof.* Choose an integer `d`, a product of powers of primes in `S`, such that `d c_p` and `d p^(n_p)` are p-adic
-integers for every `p` in `S`. For each `p` in `S` choose an integer `A_p` congruent to `d c_p` modulo
-`d p^(n_p) Z_p`. By the Chinese remainder theorem there is one integer `A` congruent to `A_p` modulo the power of
-`p` in question for all `p` in `S`. Put `a = A/d`. At `p` in `S`, `a` lies in the given ball. At the other primes
-`d` is a unit, so `a` is a p-adic integer. Hence the product set is `a + N Zhat`.
+The exponents `n_p` may be negative and the centres `c_p` need not be rational.
+
+*Proof.* For `p` in `S` choose an integer `e_p >= max(0, -v_p(c_p), -n_p)` (omit `-v_p(c_p)` when `c_p = 0`), and
+put `d = product of p^(e_p)`. Then `d c_p` is a p-adic integer and `e_p + n_p >= 0`. Since the integers are dense in
+`Z_p`, there is an integer `A_p` congruent to `d c_p` modulo `p^(e_p + n_p)`. The moduli `p^(e_p + n_p)`, `p` in `S`,
+are pairwise coprime (a modulus 1 imposes no condition), so by the Chinese remainder theorem there is one integer
+`A` congruent to `A_p` modulo `p^(e_p + n_p)` for all `p` in `S`. Put `a = A/d` and `N = product of p^(n_p)`.
+
+At `p` in `S`: `v_p(a - c_p) = v_p(A - d c_p) - e_p >= n_p`, so `a` lies in the given ball, and since
+`v_p(N) = n_p` the sets `a + N Z_p` and `c_p + p^(n_p) Z_p` are equal. At `p` outside `S`: `d` and `N` are units, so
+`a` is a p-adic integer and `a + N Z_p = Z_p`. Hence the product set is `a + N Zhat`.
+
+Example: centres `1/2, 2/9, 7/5` and exponents `2, -1, 1` at the primes `2, 3, 5` give `a = 101/90`, `N = 20/3`.
 
 ## Proposition 5 (scaled residues).
 
@@ -87,6 +103,20 @@ Let `g = gcd(s, t)`, `A = s/g`, `B = t/g`.
 apply Lemma 2. (2) By Proposition 2 the tight radius of `x y` is `gcd(s u t K, t v s K, s K t K) = s t K gcd(u, v, K)`,
 an integer multiple of `s t K`; apply Proposition 3(3).
 
+## Proposition 6 (conversion to the scaled form, and exact scalars).
+
+1. Let `a + R Zhat`, `R > 0`, and an integer `K >= 1` be given. Put `s = gcd(a, R/K)` and `u = (a/s) mod K`. Then
+   `s (u + K Zhat)` contains `a + R Zhat`.
+2. For an exact rational `q` not 0, `q * s (u + K Zhat) = |q| s (sign(q) u + K Zhat)`. For `q = 0` the result is the
+   exact 0.
+
+*Proof.* (1) `a/s` is an integer by the definition of `s`, and `s (u + K Zhat) = a + s K Zhat` because `s u` and `a`
+differ by a multiple of `s K`. `R/K` is an integer multiple of `s`, so `R` is an integer multiple of `s K`; apply
+Proposition 3(3). (2) Multiplication by `q` is a bijection of the finite adeles taking `Zhat` to `|q| Zhat`, and
+`-Zhat = Zhat`.
+
+The conversion in (1) can lose precision (its radius is `s K`, which may properly divide into `R`); it never gains.
+
 ## Counterexample (a fixed radius is not a policy).
 
 `1 + 2 Zhat` multiplied by the exact rational `1/2` is `1/2 + Zhat` (Proposition 2 with `N = 0` for the scalar).
@@ -95,6 +125,6 @@ fixed radius 2 can exclude true values.
 
 ## Still to be proved here (work package 0.3)
 
-Rules for exact zero and exact scalars in the scaled policy; conversion between tight and scaled values and between
-contexts; the unit-coset statements of `SPEC.md` section 5; the splitting of a fractional radius (section 6); the
+Addition of an exact scalar in the scaled policy; conversion between contexts; the absolute cap applied to exact
+values; the unit-coset statements of `SPEC.md` section 5; the splitting of a fractional radius (section 6); the
 weighted finite Fourier transform (section 7); the functional equation with the chosen signs (section 8).
