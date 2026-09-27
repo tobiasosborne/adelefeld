@@ -1,0 +1,7 @@
+statements=15 check_labels=15 used_by_labels=15
+check_names=19 missing=0
+docs/proofs/analysis.md: lines=691 overlength=0
+proto/analysis_checks.py: lines=600 overlength=0
+lanes/m0-proofs-analysis/mutation_checks.py: lines=43 overlength=0
+lanes/m0-proofs-analysis/structure_checks.py: lines=30 overlength=0
+lanes/m0-proofs-analysis/report.md: lines=168 overlength=0

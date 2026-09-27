@@ -1,0 +1,3 @@
+check_finite_fourier: count=0 failures=1 NotImplementedError: weighted transform not implemented yet
+check_real_transform: count=0 failures=1 NotImplementedError: positive-sign recurrence not implemented yet
+TOTAL checks=0 failed_groups=2 seconds=0.145

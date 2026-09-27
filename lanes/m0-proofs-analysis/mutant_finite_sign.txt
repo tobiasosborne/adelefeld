@@ -1,0 +1,2 @@
+check_finite_fourier: count=2 failures=1 AssertionError: check_finite_fourier: assertion 2, error=2.252491994585270454311014969335982398559323654984444751
+TOTAL checks=2 failed_groups=1 seconds=0.003

@@ -1,0 +1,2 @@
+check_functional_equation: count=9 failures=1 AssertionError: check_functional_equation: assertion 9, error=0.354369396556508081897302295078561214883851128936635679
+TOTAL checks=9 failed_groups=1 seconds=0.112

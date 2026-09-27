@@ -1,0 +1,2 @@
+check_local_gamma: count=5 failures=1 AssertionError: check_local_gamma: assertion 5, error=2.0
+TOTAL checks=5 failed_groups=1 seconds=0.008

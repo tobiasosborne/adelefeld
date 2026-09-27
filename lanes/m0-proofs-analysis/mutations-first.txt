@@ -1,0 +1,9 @@
+finite_sign: substitution_matches=2 expected=1
+finite_weight: killed=1 returncode=1
+real_sign: killed=1 returncode=1
+ramified_sign: killed=1 returncode=1
+root_parity: killed=1 returncode=1
+conjugate: killed=1 returncode=1
+conductor: killed=1 returncode=1
+pole_sign: killed=1 returncode=1
+TOTAL mutations=8 killed=7 survivors=1

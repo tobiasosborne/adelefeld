@@ -1,0 +1,2 @@
+check_functional_equation: count=5 failures=1 AssertionError: check_functional_equation: assertion 5, error=0.3917265608314836115595687079289167018381647347112006829
+TOTAL checks=5 failed_groups=1 seconds=0.037
