@@ -1,19 +1,40 @@
-# adelefeld
+# Agent Instructions
 
-Adeles as a first-class number type: C on FLINT, arbitrary precision, ball arithmetic. What is built: `docs/SPEC.md`.
-In what order: `docs/PLAN.md`. How speed is judged: `docs/PERF.md`.
+This project uses **bd** (beads) for issue tracking. Run `bd prime` for full workflow context.
 
-## Rules
+## Quick Reference
 
-1. **Red-green TDD.** Write the failing test first, see it fail, then write the code that makes it pass.
-2. **Mutation testing and fuzzing where appropriate.** Mutation testing for arithmetic and precision rules; fuzzing
-   for parsers and anything that reads untrusted input.
-3. **Read the ground truth before coding.** Every formula, convention and algorithm is read in its source before it
-   is implemented, and cited in the code by file and line.
-4. **Ground truth is a local copy of the source document**, preferably its TeX source, under `refs/`. Memory, a
-   summary, a web page read once, or another model's report is not ground truth. If the source is not on disk,
-   fetch it first.
+```bash
+bd ready              # Find available work
+bd show <id>          # View issue details
+bd update <id> --claim  # Claim work atomically
+bd close <id>         # Complete work
+bd dolt push          # Push beads data to remote
+```
 
+## Non-Interactive Shell Commands
+
+**ALWAYS use non-interactive flags** with file operations to avoid hanging on confirmation prompts.
+
+Shell commands like `cp`, `mv`, and `rm` may be aliased to include `-i` (interactive) mode on some systems, causing the agent to hang indefinitely waiting for y/n input.
+
+**Use these forms instead:**
+```bash
+# Force overwrite without prompting
+cp -f source dest           # NOT: cp source dest
+mv -f source dest           # NOT: mv source dest
+rm -f file                  # NOT: rm file
+
+# For recursive operations
+rm -rf directory            # NOT: rm -r directory
+cp -rf source dest          # NOT: cp -r source dest
+```
+
+**Other commands that may prompt:**
+- `scp` - use `-o BatchMode=yes` for non-interactive
+- `ssh` - use `-o BatchMode=yes` to fail instead of prompting
+- `apt-get` - use `-y` flag
+- `brew` - use `HOMEBREW_NO_AUTO_UPDATE=1` env var
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
 ## Beads Issue Tracker

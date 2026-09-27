@@ -5,3 +5,8 @@ build/
 *.a
 docs/reviews/*/astra.stdout
 docs/reviews/*/*.stdout
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
