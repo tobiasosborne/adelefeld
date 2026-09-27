@@ -180,22 +180,26 @@ def check_real_closure():
         close(name, direct, gaussian_transform(coeffs, A, B, C, y/h)/abs(h))
 
 
-def series_bound(j, c, T):
+def series_bound(j, c, T, beta=0):
     K = math.floor(T)+1
     prefix = mp.mpf(0)
     while True:
-        rho = mp.exp(mp.mpf(j)/K-c*(2*K+1))
-        if rho < 1:
-            return prefix+K**j*mp.exp(-c*K*K)/(1-rho)
-        prefix += K**j*mp.exp(-c*K*K)
+        rho = mp.exp(mp.mpf(j)/K-c*(2*K+1)+beta)
+        term = K**j*mp.exp(-c*K*K+beta*K)
+        if rho <= mp.mpf('.5'):
+            return prefix+term/(1-rho)
+        prefix += term
         K += 1
 
 
 def integral_bound(r, b, R):
     rp = max(r, 0)
-    R0 = max(mp.mpf(R), 1+2*rp/b)
-    prefix = (R0-R)*max(R**r, R0**r)*mp.exp(-b*R)
-    return prefix+R0**r*mp.exp(-b*R0)/(b-rp/R0)
+    R = mp.mpf(R)
+    if b >= 2*rp/R:
+        return 2*R**r*mp.exp(-b*R)/b
+    R0 = 2*rp/b
+    peak = min(max(r/b, R), R0)
+    return (R0-R)*peak**r*mp.exp(-b*peak)+2*R0**r*mp.exp(-b*R0)/b
 
 
 def shifted_coeffs(coeffs, a, h):
@@ -208,8 +212,8 @@ def lattice_bound(coeffs, A, B, C, a, h, T):
     alpha = mp.pi*mp.re(A*h*h)
     beta = abs(mp.re(h*(B-2*mp.pi*A*a)))
     Cp = C+B*a-mp.pi*A*a*a
-    scale = mp.exp(mp.re(Cp)+beta*beta/(2*alpha))
-    return 2*scale*sum(abs(v)*series_bound(j, alpha/2, T) for j,v in enumerate(q))
+    scale = mp.exp(mp.re(Cp))
+    return 2*scale*sum(abs(v)*series_bound(j, alpha, T, beta) for j,v in enumerate(q))
 
 
 def check_tail_bounds():
@@ -232,6 +236,10 @@ def check_tail_bounds():
             observed = sum(abs(poly(coeffs,a+h*n)*mp.exp(-mp.pi*A*(a+h*n)**2+B*(a+h*n)+C))
                            for n in range(-80,81) if abs(n)>T)
             verify(name, observed <= lattice_bound(coeffs,A,B,C,a,h,T))
+    # T=0 is close enough to the bound to require both sides of the lattice.
+    slow_a = mp.mpf('.2')
+    observed = 2*sum(mp.exp(-mp.pi*slow_a*n*n) for n in range(1, 30))
+    verify(name, observed < lattice_bound([1],slow_a,0,0,0,1,0))
 
 
 def check_poisson():
@@ -257,13 +265,22 @@ def check_poisson():
 def character(C, exponent=1):
     if C == 1:
         return lambda n: mp.mpc(1)
+    if C == 15:
+        c3, c5 = character(3), character(5, exponent)
+        return lambda n: c3(n)*c5(n)
     if C == 4:
         table = {1:1, 3:-1}
     elif C == 8:
         table = {1:1, 3:-1, 5:-1, 7:1} if exponent == 0 else {1:1, 3:1, 5:-1, 7:-1}
+    elif C == 16:
+        table = {((-1)**sign*pow(5,j,16))%16:
+                 (-1)**sign*phase(mp.mpf(exponent*j)/4)
+                 for sign in range(2) for j in range(4)}
     else:
-        generator = next(g for g in range(2,C) if len({pow(g,k,C) for k in range(C-1)})==C-1)
-        table = {pow(generator,k,C):phase(mp.mpf(exponent*k)/(C-1)) for k in range(C-1)}
+        order = sum(math.gcd(j,C)==1 for j in range(C))
+        generator = next(g for g in range(2,C)
+                         if math.gcd(g,C)==1 and len({pow(g,k,C) for k in range(order)})==order)
+        table = {pow(generator,k,C):phase(mp.mpf(exponent*k)/order) for k in range(order)}
     return lambda n: mp.mpc(table.get(n % C, 0))
 
 
@@ -337,8 +354,9 @@ def check_local_integrals():
 def check_local_gamma():
     name = 'check_local_gamma'
     for p,a,eta in [(2,0,lambda n:1),(3,0,lambda n:1),(2,2,character(4)),
-                    (2,3,character(8,0)),(3,1,character(3)),(5,1,character(5,1)),
-                    (7,1,character(7,2))]:
+                    (2,3,character(8,0)),(2,4,character(16)),
+                    (3,1,character(3)),(3,2,character(9)),(3,3,character(27)),
+                    (5,1,character(5,1)),(5,2,character(25)),(7,1,character(7,2))]:
         d,m = 1,max(1,a)
         D,M = p**d,p**m
         vals = [mp.mpc((j*j+3*j)%11-4, (2*j+1)%7-2) for j in range(D*M)]
@@ -468,12 +486,12 @@ def continued(s,chi,C,N=24,R=420):
 
 def continuation_error(s,chi,C,N=24,R=420):
     e=parity(chi)
-    b=mp.pi/(2*C)
+    b=mp.pi/C
     total=0
     for z in [(s+e)/2,(1-s+e)/2]:
         r=mp.re(z)-1
-        total+=series_bound(e,b,N)*integral_bound(r,b,mp.mpf(1))
-        total+=series_bound(e,b,0)*integral_bound(r,b,mp.mpf(R))
+        total+=mp.exp(b)*series_bound(e,b,N)*integral_bound(r,b,mp.mpf(1))
+        total+=mp.exp(b)*series_bound(e,b,0)*integral_bound(r,b,mp.mpf(R))
     return total
 
 
@@ -489,7 +507,16 @@ def check_continuation():
             close(name,result,expected)
             bound=continuation_error(s,chi,C)
             verify(name,bound<mp.mpf('1e-33'))
-            verify(name,abs(result-expected)<bound+mp.mpf('1e-44')*max(1,abs(expected)))
+    # Here the omitted terms are much larger than rounding of the reference.
+    # No tolerance is added to the analytic bound.
+    for C,k in [(1,0),(5,1),(9,1),(16,1),(25,1),(27,1),(15,1)]:
+        chi=character(C,k)
+        for s in [mp.mpc('.25','1.2'),mp.mpc('-1.4','.7'),mp.mpc('.5','7')]:
+            expected=completed_reference(s,chi,C)
+            for N,R in [(2,3),(5,10)]:
+                error=abs(continued(s,chi,C,N,R)-expected)
+                bound=continuation_error(s,chi,C,N,R)
+                verify(name,error<=bound,error/bound)
     # Independent ordinary quadrature of the actual split-integral integrand.
     for C,k,s in [(1,0,mp.mpc('.3','.4')),(5,1,mp.mpc('-.4','.7'))]:
         chi=character(C,k)
@@ -549,7 +576,7 @@ def check_poles():
 
 def check_continuation_bounds():
     name='check_continuation_bounds'
-    for C in [1,5,7]:
+    for C in [1,5,7,9,16,25,27,15]:
         a=mp.pi/C
         for e in [0,1]:
             for z in [mp.mpf('-.7'),mp.mpf('.4'),mp.mpf('3.2')]:
@@ -558,19 +585,235 @@ def check_continuation_bounds():
                               for n in range(N+1,30))
                 omitted_t=sum(n**e*(a*n*n)**(-z)*mp.gammainc(z,a*n*n*R,mp.inf)
                               for n in range(1,30))
-                bn=series_bound(e,a/2,N)*integral_bound(z-1,a/2,mp.mpf(1))
-                bt=series_bound(e,a/2,0)*integral_bound(z-1,a/2,R)
+                bn=mp.exp(a)*series_bound(e,a,N)*integral_bound(z-1,a,mp.mpf(1))
+                bt=mp.exp(a)*series_bound(e,a,0)*integral_bound(z-1,a,R)
                 verify(name,omitted_n<=bn)
                 verify(name,omitted_t<=bt)
-                verify(name,series_bound(e,a/2,2*N)<series_bound(e,a/2,N))
-                verify(name,integral_bound(z-1,a/2,2*R)<integral_bound(z-1,a/2,R))
+                verify(name,series_bound(e,a,2*N)<series_bound(e,a,N))
+                verify(name,integral_bound(z-1,a,2*R)<integral_bound(z-1,a,R))
+
+
+def ball_series_bound(j, c, T, beta=0):
+    """Lemma 6 with outward ball operations; a comparison must be certain."""
+    from flint import arb
+    K = math.floor(T)+1
+    prefix = arb(0)
+    while True:
+        rho = (arb(j)/K-c*(2*K+1)+beta).exp()
+        term = arb(K)**j*(-c*K*K+beta*K).exp()
+        if rho <= arb(1)/2:
+            return prefix+term/(1-rho)
+        prefix += term
+        K += 1
+
+
+def ball_integral_bound(r, b, R):
+    from flint import arb
+    rp = r if r > 0 else arb(0)
+    if b >= 2*rp/R:
+        return 2*R**r*(-b*R).exp()/b
+    R0 = 2*rp/b
+    peak = r/b
+    if peak < R:
+        peak = R
+    elif peak > R0:
+        peak = R0
+    return (R0-R)*peak**r*(-b*peak).exp()+2*R0**r*(-b*R0).exp()/b
+
+
+def flint_character(chi, C):
+    """Identify the small character table by its values on every residue."""
+    from flint import dirichlet_char
+    if C == 1:
+        return dirichlet_char(1,1)
+    for index in range(1,C):
+        if math.gcd(index,C) != 1:
+            continue
+        candidate = dirichlet_char(C,index)
+        if all(abs(complex(candidate(n).mid())-complex(chi(n))) < 1e-12 for n in range(C)):
+            return candidate
+    raise AssertionError(f'no FLINT character of conductor {C} matches the finite table')
+
+
+def check_certified_continuation():
+    """Compare the exact term integrals and the analytic bound to FLINT balls."""
+    from flint import acb, arb, ctx
+    name = 'check_certified_continuation'
+    old_prec = ctx.prec
+    ctx.prec = 300
+    try:
+        pi = arb.pi()
+        for C,k in [(1,0),(5,1),(9,1),(16,1),(25,1),(27,1),(15,1)]:
+            chi = character(C,k)
+            d = flint_character(chi,C)
+            e = parity(chi)
+            a0 = pi/C
+            tau = acb(1) if C == 1 else sum(
+                (d(n)*(acb(0,2)*pi*n/C).exp() for n in range(C)), acb(0))
+            W = tau/(acb(0,1)**e*arb(C).sqrt())
+            for s in [acb('0.25','1.2'),acb('-1.4','0.7'),acb('0.5','7')]:
+                z,zp = (s+e)/2,(1-s+e)/2
+                reference = (arb(C)/pi)**z*z.gamma()*d.l_function(s)
+                for N,R in [(2,3),(5,10)]:
+                    value = acb(0)
+                    bound = arb(0)
+                    for power,char,weight in [(z,d,acb(1)),(zp,flint_character(
+                            lambda n: mp.conj(chi(n)),C),W)]:
+                        for n in range(1,N+1):
+                            if math.gcd(n,C)>1:
+                                continue
+                            x = a0*n*n
+                            term = acb(x)**(-power)*(acb(x).gamma_upper(power)
+                                   -acb(x*R).gamma_upper(power))
+                            value += weight*char(n)*arb(n)**e*term
+                        r = power.real-1
+                        bound += a0.exp()*(ball_series_bound(e,a0,N)
+                                              *ball_integral_bound(r,a0,arb(1))
+                                              +ball_series_bound(e,a0,0)
+                                              *ball_integral_bound(r,a0,arb(R)))
+                    if C == 1:
+                        value += 1/(s-1)-1/s
+                    difference = abs(value-reference)
+                    verify(name,difference <= bound)
+    finally:
+        ctx.prec = old_prec
+
+
+def check_poisson_right_and_idele():
+    from flint import acb, arb, ctx
+    name = 'check_poisson_right_and_idele'
+    old_prec = ctx.prec
+    ctx.prec = 256
+    try:
+        D,M = 2,3
+        L = D*M
+        values = [1,2,3,4,5,6]
+        pi = arb.pi()
+        A = arb(1)/5
+        g = [sum((acb(values[j])*(acb(0,-2)*pi*j*k/L).exp()
+                  for j in range(L)),acb(0))/M for k in range(L)]
+        max_g = max(abs(v).upper() for v in g)
+        decay = pi/(A*M*M)
+        for T in [0,1,2]:
+            partial = sum((g[n%L]*A**(-arb(1)/2)*(-decay*n*n).exp()
+                           for n in range(-20,21) if abs(n)>T),acb(0))
+            omitted = max_g*2*A**(-arb(1)/2)*ball_series_bound(0,decay,20)
+            bound = max_g*2*A**(-arb(1)/2)*ball_series_bound(0,decay,T)
+            verify(name,abs(partial)+omitted <= bound)
+    finally:
+        ctx.prec = old_prec
+
+    values = [mp.mpc(j-2,j*j+1) for j in range(L)]
+    g = finite_transform(values,D,M)
+    xinf,r,u = mp.mpf('-.7'),Fraction(3,2),5
+    rin = mp.mpf(r.numerator)/r.denominator
+    ui = pow(u,-1,L)
+    left = sum(values[(n*u)%L]*mp.exp(-mp.pi*mp.mpf('.8')*(n*xinf/(D*rin))**2)
+               for n in range(-80,81))
+    right = sum(g[(n*ui)%L]*gaussian_transform([1],mp.mpf('.8'),0,0,n*rin/(M*xinf))
+                for n in range(-80,81))
+    close(name,left,right/(abs(xinf)/rin))
+
+
+def check_general_splitting():
+    """General Proposition 12 vector with distinct f(0) and F f(0)."""
+    name = 'check_general_splitting'
+    D,M = 2,3
+    L = D*M
+    values = [mp.mpc(j+1,2*j-3) for j in range(L)]
+    transformed = finite_transform(values,D,M)
+    coeffs,A,B,Cg = [1,mp.mpf('.3')],mp.mpf('.8'),mp.mpf('.6'),mp.mpf('.1')
+    phi = lambda x: poly(coeffs,x)*mp.exp(-mp.pi*A*x*x+B*x+Cg)
+    phihat = lambda x: gaussian_transform(coeffs,A,B,Cg,x)
+    units = [u for u in range(L) if math.gcd(u,L)==1]
+    c1 = [sum(values[(n*u)%L] for u in units)/len(units) for n in range(L)]
+    c2 = [sum(transformed[(n*u)%L] for u in units)/len(units) for n in range(L)]
+    a,b = values[0]*phi(0),transformed[0]*phihat(0)
+    verify(name,abs(a-b)>mp.mpf('.1'))
+
+    def H(fun,c,den,t):
+        return sum(c[n%L]*fun(t*n/den) for n in range(-30,31) if n)
+
+    grid = [1,2,4,8,16,40]
+
+    def split(s):
+        return (mp.quad(lambda t:H(phi,c1,D,t)*t**(s-1),grid)
+                +mp.quad(lambda t:H(phihat,c2,M,t)*t**(-s),grid)
+                +b/(s-1)-a/s)
+
+    def direct(fun,c,den,s):
+        real = mp.quad(lambda t:(fun(t)+fun(-t))*t**(s-1),
+                       [0,mp.mpf('.5'),1,2,4,8,mp.inf])
+        series = (mp.mpf(den)/L)**s*sum(
+            c[j%L]*mp.zeta(s,mp.mpf(j)/L) for j in range(1,L+1))
+        return real*series
+
+    s = mp.mpc('2.4','.7')
+    close(name,split(s),direct(phi,c1,D,s),tol=mp.mpf('1e-27'))
+    close(name,split(1-s),direct(phihat,c2,M,s),tol=mp.mpf('1e-27'))
+    eps = mp.mpf('1e-14')
+    close(name,eps*split(1+eps),b,tol=mp.mpf('1e-12'))
+    close(name,eps*split(eps),-a,tol=mp.mpf('1e-12'))
+
+
+def check_general_adelic_bound():
+    """Certified omitted n and t regions with an odd polynomial and conductor 3."""
+    from flint import acb, arb, ctx
+    name = 'check_general_adelic_bound'
+    old_prec = ctx.prec
+    ctx.prec = 256
+    try:
+        pi = arb.pi()
+        A,p1,F0 = arb(1)/5,arb(3)/10,arb(3)
+        a,c = pi*A,pi*A/2
+        K1 = 2*F0*p1
+        v = acb('0.6','1.3')
+        w = (v+1)/2
+        r = v.real
+
+        def coeff(n):
+            return arb(0) if n%3==0 else (arb(-1)/2 if n%3==1 else arb(1)/2)
+
+        def term(n,lo):
+            x = a*n*n
+            return coeff(n)*p1*n*acb(x)**(-w)*acb(x*lo*lo).gamma_upper(w)
+
+        for N in [1,3]:
+            partial = sum((term(n,1) for n in range(N+1,26)),acb(0))
+            remainder = K1*c.exp()*ball_series_bound(1,c,25)*ball_integral_bound(r,c,arb(1))
+            bound = K1*c.exp()*ball_series_bound(1,c,N)*ball_integral_bound(r,c,arb(1))
+            verify(name,abs(partial)+remainder <= bound)
+        for R in [2,4]:
+            partial = sum((term(n,R) for n in range(1,26)),acb(0))
+            remainder = K1*c.exp()*ball_series_bound(1,c,25)*ball_integral_bound(r,c,arb(R))
+            bound = K1*c.exp()*ball_series_bound(1,c,0)*ball_integral_bound(r,c,arb(R))
+            verify(name,abs(partial)+remainder <= bound)
+    finally:
+        ctx.prec = old_prec
+
+
+def check_composite_conductor():
+    name = 'check_composite_conductor'
+    C = 15
+    chi3,chi5 = character(3),character(5)
+    chi = character(C)
+    e = parity(chi)
+    s = mp.mpc('.35','1.7')
+    G3 = sum(chi3(u)*phase(-mp.mpf(u)/3) for u in range(3))
+    G5 = sum(chi5(u)*phase(-mp.mpf(u)/5) for u in range(5))
+    product = (1j)**e*chi5(3)*3**(-s)*G3*chi3(5)*5**(-s)*G5
+    expected = (1j)**(-e)*gauss(chi,C)*C**(-s)
+    close(name,product,expected)
+    close(name,abs(gauss(chi,C))**2,C)
 
 CHECKS = [check_characters, check_local_fourier, check_finite_fourier,
           check_real_transform, check_real_closure, check_tail_bounds, check_poisson,
           check_gauss_sums, check_local_integrals, check_local_gamma, check_real_local,
           check_idele_character, check_global_integral, check_theta,
           check_functional_equation, check_continuation, check_quadrature_bound,
-          check_continuation_bounds, check_poles]
+          check_continuation_bounds, check_certified_continuation,
+          check_poisson_right_and_idele, check_general_splitting,
+          check_general_adelic_bound, check_composite_conductor, check_poles]
 
 
 
@@ -586,7 +829,7 @@ def main():
         try:
             check()
             print(f'{check.__name__}: count={COUNTS[check.__name__]} failures=0 '
-                  f'max_relative_error={mp.nstr(ERRORS[check.__name__], 5)}', flush=True)
+                  f'max_recorded_error={mp.nstr(ERRORS[check.__name__], 5)}', flush=True)
         except Exception as exc:
             failures += 1
             print(f'{check.__name__}: count={COUNTS.get(check.__name__, 0)} '

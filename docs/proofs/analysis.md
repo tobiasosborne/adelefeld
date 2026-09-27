@@ -2,7 +2,9 @@
 
 This file implements the conventions of SPEC sections 5 to 8 and the analysis rows of section 9.3.7.
 It does not change the specification. Checks are in `proto/analysis_checks.py`.
-Numerical checks are evidence for the formulas, not proofs or interval certificates.
+Numerical checks are evidence for the formulas. The checks that use FLINT balls are interval certificates
+for their stated finite cases, not proofs of the general statements
+[source pending: FLINT/Arb ball arithmetic enclosure guarantee].
 The convention is a project definition here. Its attribution to Tate remains
 [source pending: Tate thesis section 2.2, local copy with readable line references].
 
@@ -214,29 +216,43 @@ Let c>0, j a nonnegative integer, and T>=0 real. Define K=floor(T)+1 and
 
     rho_j(c,K)=exp(j/K-c(2K+1)).
 
-If rho<1, set S_j(c,T)=K^j exp(-c K^2)/(1-rho). If rho>=1, increment K to the first K0 with
-rho_j(c,K0)<1, add the explicit terms for floor(T)+1<=n<K0, and use that geometric bound at K0.
-Then sum_(n>T) n^j exp(-c n^2) <= S_j(c,T). This terminates for every c>0.
+If rho_j(c,K)<=1/2, set S_j(c,T)=K^j exp(-c K^2)/(1-rho_j(c,K)). Otherwise increment K to
+the first K0 with rho_j(c,K0)<=1/2, add the explicit terms for floor(T)+1<=n<K0, and use that
+geometric bound at K0. Then sum_(n>T) n^j exp(-c n^2) <= S_j(c,T). This terminates for every c>0.
+For certified balls, compare an upper bound for rho with 1/2; increase K if the comparison is undecided.
+Similarly, define S_j(alpha,beta,T) for alpha>0 and beta>=0 by the same rule with
+
+    rho_j(alpha,beta,K)=exp(j/K-alpha(2K+1)+beta),
+    first term K^j exp(-alpha K^2+beta K).
+
+It bounds sum_(n>T) n^j exp(-alpha n^2+beta n).
 For phi as in Proposition 5, a real, h real and nonzero, expand
 
     P(a+hn)=sum_j q_j n^j,
     A'=Ah^2, B'=h(B-2 pi A a), C'=C+Ba-pi A a^2,
-    alpha=pi Re(A'), beta=|Re(B')|, Kappa=exp(Re(C')+beta^2/(2 alpha)).
+    alpha=pi Re(A'), beta=|Re(B')|.
 
 A proved bound for the two-sided lattice tail, including negative n, is
 
-    |sum_(|n|>T) phi(a+hn)| <= B_phi(a,h,T)
-    B_phi(a,h,T)=2 Kappa sum_j |q_j| S_j(alpha/2,T).
+    sum_(|n|>T) |phi(a+hn)| <= B_phi(a,h,T),
+    B_phi(a,h,T)=2 exp(Re(C')) sum_j |q_j| S_j(alpha,beta,T).
 
-T need not be integral. The zero polynomial gives zero. Finite sums are bounded by summing these bounds.
+The same bound holds for |sum_(|n|>T) phi(a+hn)|. T need not be integral. The zero polynomial gives
+zero. Finite sums are bounded by summing these bounds. The former bound with
+Kappa=exp(Re(C')+beta^2/(2 alpha)) and S_j(alpha/2,T) remains valid as a looser corollary.
 
 Proof.
-1. For n>=K the ratio of successive positive terms is at most exp(j/K-c(2K+1)), since
-   log(1+1/n)<=1/n. Sum the geometric majorant. Eventually its exponent is negative.
-2. beta |n| <= alpha n^2/2 + beta^2/(2 alpha), by squaring
-   sqrt(alpha)|n|-beta/sqrt(alpha). Thus |phi(a+hn)| is at most
-   Kappa sum_j |q_j| |n|^j exp(-alpha n^2/2).
-3. Sum this bound on positive and negative n using step 1. Absolute convergence follows at once.
+1. For n>=K the ratio of successive terms n^j exp(-alpha n^2+beta n) is at most
+   exp(j/n-alpha(2n+1)+beta), since log(1+1/n)<=1/n. This upper bound decreases in n.
+   Thus all later ratios are at most rho_j(alpha,beta,K). Once rho<=1/2, a geometric sum bounds
+   the remaining tail. Its exponent tends to minus infinity, so the search terminates. Taking
+   beta=0 gives the rule for S_j(c,T).
+2. The expansion above gives |phi(a+hn)| <= exp(Re(C')) sum_j |q_j| |n|^j
+   exp(-alpha n^2+beta |n|): use Re(B')n<=beta |n| for either sign of n.
+3. Sum the last bound separately for positive and negative n by step 1. This proves the bound on
+   the sum of absolute values and hence on the absolute value of the sum. It proves convergence.
+   Finally beta |n| <= alpha n^2/2+beta^2/(2 alpha), by completing the square. Applying the
+   first series bound with c=alpha/2 proves the older corollary.
 
 Check: `check_tail_bounds`.
 Used by: SPEC 7 Poisson tails; SPEC 9.3.7 theta; PLAN 4.5.
@@ -282,6 +298,9 @@ Let chi be a primitive Dirichlet character of conductor C>=1. For C>1 extend chi
 nonunits; for C=1 set chi(n)=1 for every integer n, including zero. Define e in {0,1} by
 chi(-1)=(-1)^e. The additive character in the following definition has a positive finite sign:
 
+Primitive of conductor C means that chi is a character modulo C and, for every divisor C'<C of C,
+there is a unit u modulo C with u=1 mod C' and chi(u)!=1. For C=1 this condition is empty.
+
     tau(chi)=sum_(a mod C) chi(a) E(a/C).
 
 Then, for every integer m, including zero and negative integers,
@@ -295,11 +314,11 @@ assumption is needed in these formulas.
 
 Proof.
 1. For gcd(m,C)=1 substitute b=ma. The resulting coefficient is chi(m)^(-1)=conj(chi(m)).
-2. Suppose d=gcd(m,C)>1. Reduction of units modulo C onto units modulo C/d is surjective:
-   lift prime by prime, choosing a unit at every prime lost from the modulus, and combine by CRT.
-   Primitivity means chi is nontrivial on its kernel, so choose u=1 mod C/d with chi(u)!=1.
-   Multiplication by u leaves E(ma/C) unchanged. It multiplies the sum by chi(u), forcing zero.
-   This also covers m=0 and C>1. C=1 is a one-term sum and is checked directly.
+2. Suppose d=gcd(m,C)>1. Then C'=C/d is a proper divisor. By primitivity choose a unit
+   u=1 mod C' with chi(u)!=1. Since d divides m and C' divides u-1, C divides m(u-1).
+   Thus E(mua/C)=E(ma/C). Substitution a -> ua permutes the residues and makes the sum equal
+   to conj(chi(u)) times itself, so it vanishes. This includes m=0 for C>1, when C'=1.
+   For C=1 direct evaluation gives the one-term sum 1.
 3. Expand the sum over m of the squared absolute values of these finite sums. The geometric
    orthogonality calculation in Proposition 4 gives C sum_a |chi(a)|^2=C phi(C).
    Steps 1 and 2 give phi(C)|tau|^2 on the other side. Divide by phi(C)>0.
@@ -498,8 +517,21 @@ Proof.
    With t=|x_inf|/r, set q=sign(x_inf)r in Q^x and replace u by sign(x_inf)u.
    Each local valuation shell has multiplicative measure 1 and dx_inf/|x_inf|=dt/t.
    Thus unfolding gives integral_0^infinity (H_f,chi(t)-a)t^s dt/t, without a factor 2.
-   The rational sum itself contains both signs. Absolute convergence for Re(s)>1 follows as in
-   Proposition 11, using bounded finite data and Schwartz decay for general f.
+   The rational sum itself contains both signs. To justify unfolding, consider one tensor, let
+   F0=max_j |f_j|, and use the Gaussian majorant of Lemma 6 step 3. Uniformly in u,
+
+       sum_(q != 0) |f(q(t,u))|
+       <= 2 F0 Kappa sum_j |p_j| sum_(n>=1) (t n/D)^j
+                            exp(-alpha t^2 n^2/(2 D^2)),
+
+   where alpha=pi Re(A), beta=|Re(B)|, and Kappa=exp(Re(C)+beta^2/(2 alpha)). For each j,
+   g_j(x)=x^j exp(-alpha x^2/2) is nonnegative, rises to one maximum m_j, then falls, and has
+   finite integral I_j on [0,infinity). A sum of g_j over points spaced t/D is at most
+   m_j+(D/t) I_j: compare the terms on each side of the maximum with their adjacent intervals.
+   Hence the displayed sum is at most c1+c2/t for t>0, for constants independent of u.
+   Step 4 gives rapid decay for t>=1. The integral of (c1+c2/t)t^(Re(s)-1) over (0,1)
+   is finite for Re(s)>1; the rapid bound handles (1,infinity). Apply Fubini first to the
+   absolute values, then to the original integrand. Finite sums of tensors follow by addition.
 2. Proposition 7, then u -> u^(-1), gives
 
        H_f,chi(t)=t^(-1) H_(F f),conj(chi)(1/t).
@@ -519,7 +551,9 @@ Proof.
 
    This bound also holds for nontrivial chi because it bounds the nonzero rational terms before
    averaging. Here C in the exponential is the Gaussian parameter, not the character conductor.
-   Lemma 6 and Lemma 15 below give uniform summable majorants, including on compact s sets.
+   For n,t>=1, n^2 t^2 >= (n^2+t^2)/2. Split the exponential accordingly: the n-series is
+   summable by Lemma 6, and t^j exp(-alpha t^2/(4D^2)) decreases faster than every power.
+   Lemma 14 and Proposition 15 below give explicit integral majorants, also on compact s sets.
    Holomorphic parameter integration from Definition 1 makes the two integrals entire.
 5. Apply the same formula to F f and conjugate chi at 1-s. Double transform is reflection by
    Proposition 3, and Theta_(f(-.))=Theta_f by q -> -q. The two integrals and pole terms interchange.
@@ -567,7 +601,9 @@ Proof.
                     +delta [1/(s-1)-1/s].
 
    At C=1, e=0, W=1, the constant terms are (1/2)/(z-1/2) and -(1/2)/z,
-   which are precisely the two displayed pole terms. Lemma 15 proves both integrals entire.
+   which are precisely the two displayed pole terms. Proposition 15 step 1 gives a majorant
+   integrable locally uniformly in z. Holomorphic parameter integration from Definition 1
+   makes both integrals entire.
 4. Lemma 8 gives W_chi W_conj(chi)=1. Exchange z and z' in step 3 to prove the functional
    equation everywhere by continuation. The pole residues follow from the explicit rational terms.
 5. This is also Proposition 12's splitting for the prescribed adelic vectors. In fact
@@ -585,18 +621,24 @@ Used by: SPEC 8, 9.3.7 Gauss sums and theta; PLAN 5.3, 5.4.
 ## Lemma 14. An exponential integral bound for every real power
 
 For b>0, real r, and R>=1, let J(r,b,R)=integral_R^infinity t^r exp(-b t)dt and rplus=max(r,0).
-If b>rplus/R then
+If b>=2 rplus/R then
 
-    J(r,b,R) <= R^r exp(-b R)/(b-rplus/R) = J_bound(r,b,R).
+    J(r,b,R) <= R^r exp(-b R)/(b-rplus/R)
+             <= 2 R^r exp(-b R)/b = J_bound(r,b,R).
 
-For arbitrary R>=1 a valid bound is obtained by choosing R0>=R with b>rplus/R0, adding
-(R0-R) max(R^r,R0^r) exp(-b R), and then the preceding bound at R0. Thus this is an
-explicit finite algorithm even for negative r. Zero-length finite pieces contribute zero.
+Otherwise r>0. Put R0=2 rplus/b>R and t*=min(max(r/b,R),R0). Then
+
+    J(r,b,R) <= (R0-R) (t*)^r exp(-b t*) + 2 R0^r exp(-b R0)/b = J_bound(r,b,R).
+
+For r<=0 the first case always applies. Both branches are finite and cover equality at the threshold.
 
 Proof.
 1. Write t=R+u. If r>=0, log(1+u/R)<=u/R bounds t^r by R^r exp(ru/R).
    If r<0, t^r<=R^r. In both cases integrate the resulting exponential in u>=0.
-2. On [R,R0], t^r<=max(R^r,R0^r) and exp(-bt)<=exp(-bR). Add this finite-interval bound.
+2. The derivative of r log t-bt is r/t-b. Since r>0 in the second branch, the integrand rises
+   up to r/b and falls thereafter. Its maximum on [R,R0] is at t*. The interval integral is
+   bounded by its length times this maximum. At R0, b-rplus/R0=b/2, so step 1 supplies the
+   remaining term. In the first branch, b-rplus/R>=b/2, proving its second inequality.
 
 Check: `check_tail_bounds`.
 Used by: SPEC 8 continuation; PLAN 5.3.
@@ -607,14 +649,18 @@ For Proposition 13 let a0=pi/C, e in {0,1}, z any complex number, r=Re(z)-1, N>=
 and R>=1. Approximate integral_1^infinity V_chi(t)t^(z-1)dt by integrating only 1<=n<=N
 and 1<=t<=R. The two omitted regions have absolute bounds
 
-    E_sum <= S_e(a0/2,N) J_bound(r,a0/2,1),
-    E_integral <= S_e(a0/2,0) J_bound(r,a0/2,R).
+    E_sum <= exp(a0) S_e(a0,N) J_bound(r,a0,1),
+    E_integral <= exp(a0) S_e(a0,0) J_bound(r,a0,R).
 
-Use the general algorithm of Lemma 14 wherever its direct bound has a nonpositive denominator.
+Use the two branches of Lemma 14 for J_bound.
 The same formulas apply to conjugate chi and z'. Add the errors with multiplier |W_chi|=1.
 For a uniform pointwise theta bound at any t>=1, the omitted positive terms are bounded by
 S_e(a0 t,N); for the full two-sided theta multiply by 2. All bounds tend to zero as the
 corresponding cutoffs tend to infinity. Error estimates are absolute, also near the poles.
+They do not depend on Im(s). On a fixed vertical strip the Gamma factor of Lambda has the
+exponential factor exp(-pi |Im(s)|/4), up to powers of |Im(s)|
+[source pending: a vertical-strip Stirling bound for Gamma]. Away from zeros, relative accuracy
+can therefore need roughly 0.34 |Im(s)| extra decimal digits; near zeros it can need more.
 
 For a composite midpoint rule on [1,R] with K>=1 equal subintervals, h=(R-1)/K, put
 
@@ -624,22 +670,36 @@ For a composite midpoint rule on [1,R] with K>=1 equal subintervals, h=(R-1)/K, 
 
 Then its absolute quadrature error on the finite integrand is at most (R-1)h^2 M2/24.
 If each midpoint value is enclosed with absolute error epsilon_k, add h sum_k epsilon_k.
-R=1 gives a zero interval and zero quadrature error. Terms n divisible by the conductor may
-be omitted, but keeping them in the majorant is valid.
+R=1 gives a zero interval and zero quadrature error. Terms with gcd(n,C)>1 vanish and may be
+omitted, but keeping them in the majorant is valid. The midpoint rule has order h^2 and is a
+fallback. The main method integrates each term exactly:
+
+    integral_1^R exp(-a0 n^2 t)t^(z-1)dt
+      = (a0 n^2)^(-z) [Gamma(z,a0 n^2)-Gamma(z,a0 n^2 R)],
+
+where Gamma(z,x)=integral_x^infinity exp(-u)u^(z-1)du is the upper incomplete Gamma function.
+For R=infinity, the second Gamma term and E_integral vanish. Ball evaluation of this function
+is [source pending: FLINT documentation for upper incomplete Gamma enclosure].
 
 For the general adelic bound of Proposition 12 put c=alpha/(2D^2) and
 K_j=2F0 exp(Re(C)+beta^2/(2alpha)) |p_j|D^(-j). For a Mellin exponent v (s or 1-s), put
 r_j=Re(v)+j-1. Omitting |n|>N in the unit-averaged nonconstant theta integral costs at most
 
-    sum_j K_j S_j(c/2,N) J_bound(r_j,c/2,1).
+    sum_j K_j exp(c) S_j(c,N) J_bound(r_j,c,1).
 
-Omitting t>R costs at most sum_j K_j S_j(c/2,0) J_bound(r_j,c/2,R).
-These deliberately loose bounds also cover a finite sum of tensors by addition.
+Omitting t>R costs at most sum_j K_j exp(c) S_j(c,0) J_bound(r_j,c,R).
+These bounds also cover a finite sum of tensors by addition.
 
 Proof.
-1. For n>=1 and t>=1, n^2 t >= (n^2+t)/2. Split exp(-a0 n^2 t) into the two majorants
-   exp(-a0 n^2/2) exp(-a0 t/2), then use Lemmas 6 and 14. Overcounting the corner where
-   n>N and t>R is harmless. Both majorants decay to zero in the required cutoff.
+1. For n>=1 and t>=1, (n^2-1)(t-1)>=0, so n^2 t>=n^2+t-1. Thus
+   exp(-a0 n^2 t)<=exp(a0) exp(-a0 n^2) exp(-a0 t). Lemmas 6 and 14 bound the two
+   omitted regions. Overcounting their intersection is harmless. The same majorant on compact
+   z sets proves locally uniform convergence of the integrals in Proposition 13. For the
+   general adelic estimate, (n^2-1)(t^2-1)>=0 gives n^2 t^2>=n^2+t^2-1>=n^2+t-1.
+   Substitute c for a0, include
+   t^j in the power r_j, and apply the same two bounds. Each term tends to zero as its
+   cutoff grows. For exact term integration, put u=a0 n^2 t. Then dt=du/(a0 n^2) and
+   t^(z-1)dt=(a0 n^2)^(-z)u^(z-1)du, which gives the upper incomplete Gamma difference.
 2. Differentiate the finite integrand twice. The nth term, without chi(n), is
 
        n^e exp(-a0 n^2 t)
@@ -650,8 +710,8 @@ Proof.
 3. Taylor's integral remainder about a midpoint bounds the remainder by M2 |t-midpoint|^2/2.
    The linear term integrates to zero. Integrating this majorant gives M2 h^3/24 per interval.
    Summing proves the quadrature bound; the evaluation-error bound follows by the triangle inequality.
-4. For Proposition 12 use n^2 t^2 >= (n^2+t)/2 for n,t>=1 and apply the same argument termwise.
-   To certify its finite-interval quadrature, unit averages reduce to a finite quotient and hence a
+4. For Proposition 12 use the inequality in step 1 termwise. To certify its finite-interval
+   quadrature, unit averages reduce to a finite quotient and hence a
    finite sum of polynomial-Gaussians phi(t n/D). Their second derivatives follow by the product
    rule; polynomial and exponential absolute bounds on [1,R] give M2 exactly as in steps 2 and 3.
 5. On parameter balls, replace each real exponent and coefficient by an outward upper bound,
@@ -689,3 +749,16 @@ The status column lists new imports in that argument; dependencies on earlier st
 | 13 | Completed primitive functional equation | proved modulo AT | check_functional_equation |
 | 14 | Exponential integral tail for any real power | proved here | check_tail_bounds |
 | 15 | Series, integral and quadrature errors | proved modulo Taylor theorem | check_quadrature_bound |
+
+## Review record
+
+Date: 2026-09-27. Reviewer: Claude fable. Review: `docs/reviews/m0-proofs/analysis-review.md`.
+Verdicts: 9 VALID, 6 MINOR, 0 INVALID.
+
+- R1: Lemma 6 now bounds the sum of absolute values with a ratio cutoff of 1/2; the old bound is a corollary.
+- R2: Lemma 8 defines primitive conductor and uses that definition in the zero Gauss-sum case.
+- R3: Proposition 12 now estimates the small-norm sum before unfolding and cites existing bounds.
+- R4: Proposition 13 cites Proposition 15 and states the locally uniform convergence needed for entire integrals.
+- R5: Lemma 14 chooses its split point and bounds the finite interval by the true maximum.
+- R6: Proposition 15 uses the sharper split, exact incomplete Gamma integrals, and corrected omission rules.
+- R7: The checks kill all three surviving mutants and cover the cases listed as untested in the review.
