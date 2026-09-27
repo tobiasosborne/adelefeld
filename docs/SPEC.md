@@ -1,6 +1,7 @@
-# adelfeld: scope and specification, draft 0
+# adelfeld: scope and specification, draft 1
 
-Date: 2026-09-27. Authors: TJO with Claude (Fable). Status: **draft for discussion; nothing is implemented.**
+Date: 2026-09-27. Authors: TJO with Claude (Fable). Status: **draft for discussion; nothing is implemented.** Companion
+documents: `PLAN.md` (work packages), `PERF.md` (floors).
 
 Labels used in this document:
 
@@ -199,8 +200,8 @@ and lattice reduction recovers it. **[standard]**
 
 **[design]** A measured time or size is reported as a ratio to a derived lower bound, with the assumptions stated;
 an improvement is a reduction of that ratio. The method is the user-level skill `perf-bounds` (in preparation
-alongside this draft). For each core operation the repository will carry a row: object, operation, size, floor and
-its model, measured, ratio. No floor is quoted in this draft because none has been derived yet.
+installed at `~/.claude/skills/perf-bounds`). The floors derived so far, with reference measurements of the FLINT
+primitives, are in `PERF.md`.
 
 ## 11. Milestones
 
@@ -231,10 +232,23 @@ the ring and the ideles over number fields with the precision rules of section 4
 the rules compared, before milestone 1 is fixed. A survey of what other systems offer is in the parent project,
 `riemann-channel/notes/adeles/software-and-algorithmic-scope.md` (also from memory).
 
-## 14. Open decisions
+## 14. Decisions (TJO, 2026-09-27)
 
-1. Name of the project (`adelfeld` is a placeholder) and licence.
-2. Whether the radius may be a fraction (section 4.2, last row) or is restricted to integers with a separate
-   denominator. This draft allows fractions because the rules are then uniform.
-3. Default modulus family for the local form: factorials, primorial powers, or user-chosen.
-4. Whether version 1 includes the complex-valued adele type or adds it at milestone 3.
+| Question | Decision |
+|---|---|
+| Name and licence | `adelfeld`; AGPL-3.0 |
+| May a radius be a fraction? | Yes. The ball `a + N Zhat` with `N = 1/6` is the set of finite adeles with denominator dividing 6, shifted by `a`. One rule then covers integers and fractions (section 4.2) |
+| Default modulus family | None imposed: user-chosen, with as many families offered as practical (arbitrary integer, prime-power list, factorial, primorial power, exact) |
+| Complex-valued adele type | In from the start, with the real one |
+
+## 15. Precision policies (added in draft 1, from `PERF.md` section 4)
+
+**[design]** Two policies, chosen per context:
+
+- **Tight.** Each value carries its own radius; section 4.2 is applied exactly. Costs a gcd per multiplication.
+- **Capped.** The context holds one modulus `N`; every value is a residue modulo `N` times a rational scale, and the
+  result of an operation is widened to the context's radius. This is a valid enclosure, not the smallest one. It is
+  the counterpart of FLINT's `padic` type, which caps the precision in its context.
+
+A capped result always contains the tight result. This is a test, not only a statement: the two policies are run
+against each other in the test suite.

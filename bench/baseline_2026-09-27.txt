@@ -1,0 +1,11 @@
+nmod_add chain (62-bit)            min      0.74 ns  median      0.74 ns  max      0.77 ns
+nmod_mul chain (62-bit)            min      4.99 ns  median      5.07 ns  max      5.19 ns
+n_gcd (62-bit, fresh inputs)       min     90.78 ns  median     92.03 ns  max     96.40 ns
+fmpz_add 4096 bit                  min     26.93 ns  median     27.04 ns  max     28.18 ns
+fmpz_mul 4096 x 4096 bit           min   1559.07 ns  median   1566.48 ns  max   1756.20 ns
+fmpz_mod 8192 by 4096 bit          min   2840.18 ns  median   2869.45 ns  max   3355.22 ns
+fmpz_gcd 4096 bit                  min  16480.15 ns  median  16769.99 ns  max  18215.10 ns
+arb_add 128 bit                    min     36.76 ns  median     37.21 ns  max     40.03 ns
+arb_mul 128 bit                    min     20.94 ns  median     22.18 ns  max     34.89 ns
+checksum 3573964763668071740
+FLINT 3.0.1, sizeof: fmpz 8, arb 48, acb 96, nmod_t 24
