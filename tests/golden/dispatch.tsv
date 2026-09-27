@@ -1,0 +1,32 @@
+# adf_text_classify: syntax only (docs/conventions.md 9.7)
+7/3	rat
+-7	rat
+(* ; 2 mod 6)	fball
+2 mod 6	fball
+(3.14159 +/- 1e-5 ; 5/3 mod 6)	adele
+((1) + (0)*i ; 2 mod 6)	cadele
+[5 mod 6]	ucoset
+[1]	ucoset
+(2.5 +/- 1e-9 ; 3/2 * [5 mod 36])	idele
+<1.25 +/- 1e-30 ; [5 mod 36]>	idclass
+[p=5: 3 + O(5^4)]	lball
+{}	sball
+{R: 1}	sball
+(0.5 ; 0) + Q	qclass
+union((0.5 ; 0 mod 1)) + Q	qclass
+ffun(D=1, M=1; (0) + (0)*i)	ffun
+rfun()	rfun
+char(q=1, n=1, s=(0) + (0)*i)	char
+# syntax is enough: semantic errors are found by the typed parser
+(1 ; 1/0)	adele
+[2 mod 4]	ucoset
+[p=4: 1]	lball
+(1e100001 ; 0)	adele
+(0 ; 1 * [1])	idele
+<0 ; [1]>	idclass
+# no type
+	!PARSE
+hello	!PARSE
+(* ; 2 mod 6	!PARSE
+7\x00	!PARSE
+@gen:|0|1048577|	!LIMIT

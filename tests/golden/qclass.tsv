@@ -1,0 +1,34 @@
+# adf_qclass: lift (any adele) and pieces (docs/conventions.md 5.10; PENDING part B)
+(0.5 ; 1/3 mod 2) + Q	(0.5 ; 1/3 mod 2) + Q
+(3.14159 +/- 1e-5 ; 5/3 mod 6) + Q	(3.14159 +/- 1e-5 ; 5/3 mod 6) + Q
+(1 +/- 0.1 ; 0 mod 2) + Q	(1 +/- 0.1 ; 0 mod 2) + Q
+union((0.5 ; 0 mod 1)) + Q	union((0.5 ; 0 mod 1)) + Q
+union((0.5 ; 7)) + Q	union((0.5 ; 7)) + Q
+union((0.5 +/- 0.5 ; 0 mod 1)) + Q	union((0.5 +/- 0.5 ; 0 mod 1)) + Q
+union((1 +/- 0.5 ; 0 mod 1)) + Q	union((1 +/- 0.5 ; 0 mod 1)) + Q
+# SPEC 6: real part [0.9, 1.1] with 0 mod 2 wraps into two pieces
+union((0.05 +/- 0.05 ; 1 mod 2), (0.95 +/- 0.05 ; 0 mod 2)) + Q	union((0.05 +/- 0.05 ; 1 mod 2), (0.95 +/- 0.05 ; 0 mod 2)) + Q
+# valid, non-canonical (order, duplicates, reduction)
+union((0.95 +/- 0.05 ; 0 mod 2), (0.05 +/- 0.05 ; -1 mod 2)) + Q	union((0.05 +/- 0.05 ; 1 mod 2), (0.95 +/- 0.05 ; 0 mod 2)) + Q
+union((0.5 ; 3 mod 1)) + Q	union((0.5 ; 0 mod 1)) + Q
+union((0.5 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q	union((0.5 ; 0 mod 1)) + Q
+union((0.25 ; 1 mod 3), (0.25 ; 0 mod 3)) + Q	union((0.25 ; 0 mod 3), (0.25 ; 1 mod 3)) + Q
+union((0.25 ; 1 mod 6), (0.25 ; 0 mod 3)) + Q	union((0.25 ; 0 mod 3), (0.25 ; 1 mod 6)) + Q
+union((0.6 +/- 0.2 ; 0 mod 1), (0.5 +/- 0.1 ; 0 mod 1)) + Q	union((0.5 +/- 0.1 ; 0 mod 1), (0.6 +/- 0.2 ; 0 mod 1)) + Q
+# the order is that of the printed real parts; pieces that print alike are written once (conventions 9.4)
+union((0.5 +/- 0.125 ; 0 mod 1), (0.625 +/- 0.25 ; 0 mod 1)) + Q	union((0.62 +/- 0.26 ; 0 mod 1), (0.5 +/- 0.13 ; 0 mod 1)) + Q
+union((0.5 +/- 0.0999 ; 0 mod 1), (0.5 +/- 0.1 ; 0 mod 1)) + Q	union((0.5 +/- 0.1 ; 0 mod 1)) + Q
+(0.5;1/3mod2)+Q	(0.5 ; 1/3 mod 2) + Q
+# invalid
+union((1.5 ; 0 mod 1)) + Q	!DOMAIN
+union((-0.25 ; 0 mod 1)) + Q	!DOMAIN
+union((0.5 ; 1/2 mod 1)) + Q	!DOMAIN
+union((0.5 ; 0 mod 1/2)) + Q	!DOMAIN
+union((0.5 ; 1/2)) + Q	!DOMAIN
+(0.5 ; 1/0) + Q	!DOMAIN
+union() + Q	!PARSE
+union((0.5 ; 0 mod 1))	!PARSE
+(0.5 ; 0) + q	!PARSE
+(0.5 ; 0) - Q	!PARSE
+(* ; 1 mod 2) + Q	!PARSE
+(0.5 ; 0)	!PARSE

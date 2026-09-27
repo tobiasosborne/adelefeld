@@ -1,0 +1,42 @@
+# adf_ucoset: canonical (normal form)
+[2 mod 3]	[2 mod 3]
+[5 mod 36]	[5 mod 36]
+[1 mod 1]	[1 mod 1]
+[3 mod 4]	[3 mod 4]
+[1]	[1]
+[-1]	[-1]
+# SPEC 5: 5 mod 6 and 2 mod 3 are the same coset
+[5 mod 6]	[2 mod 3]
+# valid, non-canonical
+[0 mod 1]	[1 mod 1]
+[1 mod 2]	[1 mod 1]
+[3 mod 2]	[1 mod 1]
+[1 mod 0]	[1]
+[-1 mod 0]	[-1]
+[-1 mod 6]	[2 mod 3]
+[7 mod 10]	[2 mod 5]
+[13 mod 12]	[1 mod 12]
+[-5 mod 12]	[7 mod 12]
+[5 mod 18]	[5 mod 9]
+[11 mod 30]	[11 mod 15]
+[ 5 mod 6 ]	[2 mod 3]
+[5mod6]	[2 mod 3]
+[007 mod 010]	[2 mod 5]
+[1 mod 2000000000000000000000000000002]	[1 mod 1000000000000000000000000000001]
+# invalid
+[2 mod 4]	!DOMAIN
+[0 mod 6]	!DOMAIN
+[3 mod 6]	!DOMAIN
+[2 mod 6]	!DOMAIN
+[5 mod 0]	!DOMAIN
+[0]	!DOMAIN
+[2]	!DOMAIN
+[-2]	!DOMAIN
+[5 mod -6]	!PARSE
+[5 mod 6/1]	!PARSE
+[1/2 mod 3]	!PARSE
+[5 mod 6	!PARSE
+5 mod 6	!PARSE
+[]	!PARSE
+[p=5: 3]	!PARSE
+[1 mod 1]\x00	!PARSE

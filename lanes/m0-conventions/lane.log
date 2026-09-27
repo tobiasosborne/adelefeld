@@ -1,0 +1,4 @@
+2026-09-27T22:45:27+02:00 lane m0-conventions started (Claude Opus 5.5 subagent). Read COMMON.md, SPEC.md, PLAN.md, proofs/precision.md, FLINT headers; probed arb_dump_str/arb_load_str via scratch C program.
+2026-09-27T22:56:09+02:00 docs/conventions.md drafted (sections 1-14).
+2026-09-27T23:05:54+02:00 red run: see red.txt
+2026-09-27T23:39:12+02:00 golden vectors (666), reference parser/printer, tests green (23 OK), mutation check (24/25 killed, 1 equivalent), report written.

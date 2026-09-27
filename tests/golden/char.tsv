@@ -1,0 +1,22 @@
+# adf_char (Conrey labels as in FLINT's dirichlet module; stored primitive)
+char(q=1, n=1, s=(0) + (0)*i)	char(q=1, n=1, s=(0) + (0)*i)
+char(q=5, n=2, s=(0) + (0)*i)	char(q=5, n=2, s=(0) + (0)*i)
+char(q=4, n=3, s=(0) + (14.134725 +/- 1e-6)*i)	char(q=4, n=3, s=(0) + (14.134725 +/- 1e-6)*i)
+char(q=12, n=11, s=(1) + (0)*i)	char(q=12, n=11, s=(1) + (0)*i)
+# valid, non-canonical: reduction of n, lowering to the primitive character
+char(q=1, n=0, s=(0) + (0)*i)	char(q=1, n=1, s=(0) + (0)*i)
+char(q=5, n=7, s=(0) + (0)*i)	char(q=5, n=2, s=(0) + (0)*i)
+char(q=10, n=3, s=(0) + (0)*i)	char(q=5, n=3, s=(0) + (0)*i)
+char(q=3, n=1, s=(1) + (0)*i)	char(q=1, n=1, s=(1) + (0)*i)
+char(q=16, n=9, s=(0) + (0)*i)	char(q=8, n=5, s=(0) + (0)*i)
+char(q=6, n=5, s=(0.5) + (0)*i)	char(q=3, n=2, s=(0.5) + (0)*i)
+char( q = 5 , n = 2 , s = (0) + (0)*i )	char(q=5, n=2, s=(0) + (0)*i)
+# invalid
+char(q=0, n=1, s=(0) + (0)*i)	!DOMAIN
+char(q=6, n=2, s=(0) + (0)*i)	!DOMAIN
+char(q=6, n=0, s=(0) + (0)*i)	!DOMAIN
+char(q=18446744073709551616, n=1, s=(0) + (0)*i)	!UNSUPPORTED
+char(q=5, n=2)	!PARSE
+char(q=5, n=2, s=0)	!PARSE
+char(n=2, q=5, s=(0) + (0)*i)	!PARSE
+char(q=5, n=-2, s=(0) + (0)*i)	!PARSE
