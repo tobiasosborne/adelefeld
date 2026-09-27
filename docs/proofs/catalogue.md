@@ -45,7 +45,9 @@ Check: `check_symbols`. Used by: `docs/SPEC.md` 9.3.7, symbol precision column (
 `N>=1`, the exact possible symbols are those of unit residues `r mod lcm(N,K)` satisfying `r=c mod N`. For an
 additive ball `a+N Zhat` with integer `a`, `N>=1`, they are those of all residues `r mod lcm(N,K)` satisfying
 `r=a mod N`. Return their unique value if the set is a singleton, or the set/status otherwise. If `K | N`, the
-value is determined. Negative and zero lower entries require an exact integer numerator.
+value is determined. Negative and zero lower entries require an exact integer numerator. For `x` in `Zhat` and
+`b>0`, `(x/b)` means `(r/b)` for any integer `r = x mod K`; this is well defined by Proposition 2. For a unit
+coset, `x` ranges over `c U(N)`.
 
 Proof. (1) The projections of `c U(N)` to `Z/lcm(N,K)` are exactly the unit residues stated: prime by prime,
 any allowed unit residue lifts to a profinite unit. (2) The projection of the additive ball is exactly its stated
@@ -132,18 +134,29 @@ Check: `check_hilbert`. Used by: `docs/SPEC.md` 9.3.7, 2-adic Hilbert row and R2
 
 **Proposition 7 (Hilbert precision and exceptional places).** Let `p` be prime, `a,b` nonzero in `Q_p`, and
 `A,B` integers. Let the local inputs be balls `a+p^A Z_p` and `b+p^B Z_p` that exclude zero. If
-`A-v_p(a)>=1` and `B-v_p(b)>=1` for odd `p`, or both are at least 3 for
-`p=2`, the symbol is determined by the centre formula. At infinity, known signs suffice. For ideles with exact
-positive rational scales `r,s`, only infinity, 2, and odd primes where `v_p(r)` or `v_p(s)` is odd can have a
-nontrivial symbol. At each candidate place return one sign only if it is constant on all permitted square
-classes; otherwise return `{+1,-1}` or `NOT_DETERMINED`. The whole family is determined exactly when every
-candidate is determined. Finding the candidate primes may require factoring `r,s` or a certified support list.
+`A-v_p(a)>=1` and `B-v_p(b)>=1` (for odd `p` this is the same as the ball excluding zero), or both are at least 3
+for `p=2` (2 is not enough: `1+4 Z_2` against 2 gives both signs), the symbol is determined by the centre
+formula. At infinity, known signs suffice. For ideles with exact positive rational scales `r,s`, only infinity,
+2, and odd primes where `v_p(r)` or `v_p(s)` is odd can have a nontrivial symbol.
+
+The component at a prime `p` of an idele with scale `r` and unit coset `c U(N)` is `r u_p`, where `u_p` is a unit
+with `u_p = c mod p^n`, `n = v_p(canon(N))`, and is otherwise arbitrary. Its valuation is `v_p(r)`. Its unit part
+is `r' u_p` with `r' = r p^(-v_p(r))`; the cofactor `r'` is part of the square class. At odd `p` the unit residue
+modulo `p` is `r' c mod p` if `n >= 1`, and ranges over all of `(Z/p)^x` if `n = 0`. At `p = 2` the unit residue
+modulo 8 ranges over the odd residues congruent to `r' c` modulo `2^min(n,3)`. The permitted square classes are
+these (valuation parity, unit residue) pairs. Example: `r = s = 3` with unit exactly 1 gives `(3,3)_2 = -1`; the
+unit parts without `r'` would give `(1,1)_2 = +1`.
+
+At each candidate place return one sign only if it is constant on all permitted square classes; otherwise return
+`{+1,-1}` or `NOT_DETERMINED`. The whole family is determined exactly when every candidate is determined. Finding
+the candidate primes may require factoring `r,s` or a certified support list.
 
 Proof. (1) Under the relative precision bounds, every element of a ball has the centre's valuation and unit
 residue modulo `p`, or modulo 8 at 2. Apply Propositions 5 and 6. (2) The bounds are sufficient, not necessary:
 the displayed formulas can ignore a missing unit digit if its coefficient parity vanishes. (3) An idele of scale
-`r` has local valuation `v_p(r)` because its unit factor has valuation 0. If both valuations are even at odd `p`,
-the odd-prime formula is 1 for all units. (4) At each remaining place finite precision gives a finite set of
+`r` has local valuation `v_p(r)` because its unit factor has valuation 0. Its unit part is
+`r p^(-v_p(r)) u_p`, so the cofactor of the scale is part of the square class. If both valuations are even at odd
+`p`, the odd-prime formula is 1 for all units. (4) At each remaining place finite precision gives a finite set of
 square classes. Evaluating all allowed pairs gives exactly the stated possible signs. (5) A scale-1 unit coset
 with no 2-adic unit digits permits `1` and `3`; `(1,1)_2=1` and `(3,3)_2=-1` by the table. Thus finite support
 does not imply a determined family. Choosing both 2-components as 3, all other finite components as 1, and
@@ -172,8 +185,8 @@ Check: `check_hilbert_product`. Used by: `docs/SPEC.md` 9.3.7, Hilbert product f
 factor is `sum_(j>=0) p^(-js) = (1-p^(-s))^-1`. Its meromorphic continuation has simple poles exactly at
 `s=2 pi i k/log p`, `k in Z`. For complex `s` with `Re(s)>0`, the real local factor from the Gaussian integral
 `2 integral_0^infinity exp(-pi x^2) x^(s-1) dx` is `pi^(-s/2) Gamma(s/2)`. Its meromorphic continuation has
-simple poles exactly at `s=0,-2,-4,...`. A complex input ball containing any pole returns a pole/domain status
-or an explicitly unbounded enclosure, never a finite complex ball.
+simple poles exactly at `s=0,-2,-4,...`. A complex input ball containing any pole returns a pole status and
+never a finite complex ball (`docs/SPEC.md` 9.3.7).
 
 Proof. (1) The finite factor is a convergent geometric series for `Re(s)>0`; its ratio is `p^-s` and its tail
 after `J` terms is `p^(-Js)/(1-p^-s)`. The denominator vanishes precisely at the listed points, and its
@@ -181,7 +194,8 @@ derivative there is `log p`, so each pole is simple. (2) At infinity substitute 
 `pi^(-s/2) integral_0^infinity exp(-t)t^(s/2-1)dt`, the defining Gamma integral. (3) Gamma is meromorphic with
 simple poles at the nonpositive integers and no zeros. [source pending: a complex-analysis text stating Gamma's
 continuation and pole set] The factor `pi^(-s/2)` is entire and nonzero. (4) Near a pole, values are unbounded;
-therefore no finite complex ball encloses the value set of an input ball containing that pole.
+therefore no finite complex ball encloses the value set of an input ball containing that pole, and the API
+returns a pole status for such an input.
 
 Check: `check_zeta`. Used by: `docs/SPEC.md` 9.3.7, local zeta row (R5).
 
@@ -239,6 +253,11 @@ The largest integer modulus `F` on which all output powers are determined has th
 | odd `p` not dividing `N` | `1+v_p(g)` if `p-1|g`, else 0 |
 | `p=2` not dividing `N` | 1 if `g` is odd, else `2+v_2(g)` |
 
+All outputs lie in the coset `r U(F)`, where `r` is the solution, by the Chinese remainder theorem, of
+`r = c^e mod p^(v_p(F))` for `p | N` and `r = 1 mod p^(v_p(F))` for `p` not dividing `N` (`c^e` by a modular
+inverse when `e < 0`). In general `r` is not `c^e`: for `N=5,c=2,e=2,M=4`, `F=120` and `r=49`. The returned
+modulus is `canon(F)`: `v_2(F)=1` occurs, for example when 2 does not divide `N` and `g` is odd.
+
 In particular `D` need not be the finest modulus: for `N=5,c=2,e=0,M=2`, `D=1` but `F=24`.
 For exact nonzero integer `e`, use the same table with `M=0,g=|e|` and `v_p(c^0-1)=infinity`.
 For exact `e=0`, the output is exact 1 and has no largest finite modulus.
@@ -246,18 +265,22 @@ For exact `e=0`, the output is exact 1 and has no largest finite modulus.
 Proof. (1) Every profinite unit is 1 modulo 2. For odd `m`, the conditions modulo `m` and `2m` are therefore
 the same on units. (2) At `p|N`, the base ranges over `c U(p^n)`, `n=v_p(N)`. Constancy of exponents requires
 `c^M=1 mod p^k`. Constancy under base variation requires every member of `U(p^n)` raised to both `e` and `M`
-to be 1 modulo `p^k`, equivalently every member raised to `g` is 1. The principal-unit logarithm gives the
-depth `n+v_p(g)` for odd `p`, and for `p=2` because canonical even `N` has `n>=2`. The standard theorem used
+to be 1 modulo `p^k`, equivalently every member raised to `g` is 1. Conversely, if `c^M=1` and `w^g=1` modulo
+`p^k` for all `w` in `U(p^n)`, then `(c w)^(e+Mt) = c^e (c^M)^t w^e (w^M)^t = c^e` modulo `p^k` for all `t`.
+The principal-unit logarithm gives the depth `n+v_p(g)` for odd `p`, and for `p=2` because canonical even `N`
+has `n>=2`. The standard theorem used
 here states: for odd `p,n>=1`, or `p=2,n>=2`, `log` maps `1+p^n Z_p` isomorphically to `p^n Z_p`, with
 `v_p(log u)=v_p(u-1)` for `u != 1`. [source pending: a local-fields text stating this logarithm theorem]
 Combining the two bounds gives the first row. (3) At `p` outside `N`, the base ranges over
 all `Z_p^x`. Since the base 1 is allowed, constancy holds exactly when the exponent of
 `(Z/p^k)^x` divides both `e` and `M`, hence `g`. For odd `p` that exponent is `(p-1)p^(k-1)`. At 2 it is 1
 for `k=1`, 2 for `k=2`, and `2^(k-2)` for `k>=3`. [source pending: a finite-unit-group reference stating
-these exponents] This gives the other rows. (4) Only primes dividing `N` or satisfying `p<=g+1` occur, so `F`
+these exponents] At `p` not dividing `N` every output is 1 modulo `p^(v_p(F))`, since the base 1 is allowed.
+This gives the other rows. (4) Only primes dividing `N` or satisfying `p<=g+1` occur, so `F`
 is finite. For the example the table gives `v_2(F)=3`, `v_3(F)=1`, and all other exponents 0. (5) Exact signed
 exponents use the same base-variation argument with `M=0`; `e=0` gives the constant unit 1.
-(6) An independent finite algorithm takes `B=8 N g (g+1)!`, which is divisible by `F` by the table.
+(6) A finite cross-check (its level `B` is bounded using the table) takes `B=8 N g (g+1)!`, which is
+divisible by `F` by the table.
 Enumerate unit residues `b mod B` with `b=c mod N`, choose one `b_0`, and take the gcd of `B`, all
 `b^e-b_0^e`, and all `b^M-1`, using modular powers for negative `e`. The result is `F`: the first differences
 test base variation, and the second test exponent variation. The code compares this enumeration with the
@@ -306,8 +329,13 @@ Proof. (1) The two exponent rules are the two conventions specified in the catal
 external reciprocity sources remains pending; this proposition proves their consequences as definitions.
 (2) A connected group has no nonconstant continuous map to the finite group `(Z/n)^x`, so `t` acts trivially.
 (3) Reduction of `c U(N)` modulo `n` is a singleton exactly when `U(N) subset U(n)`. Inversion is a bijection,
-so both conventions have the same precision. Since `U(2m)=U(m)` for odd `m` by Proposition 13, containment is
-equivalent to divisibility after canonicalising both moduli. Thus `[2 mod 3]` determines action on sixth roots.
+so both conventions have the same precision. Conversely let `a = canon(N)`, `b = canon(n)`, and suppose `b` does
+not divide `a`. Take a prime `q` with `k = v_q(b) > j = v_q(a)`. Let `u` be the unit of `Zhat` equal to 1 at every
+prime other than `q` and to `u_q = 1 + q^j` at `q` if `j >= 1` or `q` odd, and `u_q = 3` if `q = 2` and `j = 0`.
+Then `u` is in `U(a)`. Since `b` is canonical, `q = 2` implies `k >= 2`, and `u_q - 1` has valuation `j < k` (or
+`u_q = 3` is not 1 mod 4); so `u` is not in `U(b)`, and `U(a)` is not inside `U(b)`. Since `U(2m)=U(m)` for odd
+`m` by Proposition 13, containment is equivalent to divisibility after canonicalising both moduli. Without
+canonical form the claim fails: `U(3)` is inside `U(6)`. Thus `[2 mod 3]` determines action on sixth roots.
 (4) For the test idele, take scale `r=p`. The finite unit is 1 at `p` and `p^-1` at every other prime.
 When `p` is invertible modulo `n`, its reduction is `p^-1`, whose inverse is `p`. At `p` the unit is 1, so its
 action on `p`-power roots is trivial. The coprimality guard is essential: `zeta_p -> zeta_p^p` would not be an
@@ -338,3 +366,25 @@ Check: `check_cyclotomic`. Used by: `docs/SPEC.md` section 5 and 9.3.7, cyclotom
 
 No statement is left open as a mathematical implication. The external convention attributions and named standard
 theorems remain source obligations; their pending status is not evidence that the cited texts have been checked.
+
+## Review record
+
+Date: 2026-09-27. Reviewer: Claude opus. Review file: `docs/reviews/m0-proofs/catalogue-review.md`.
+Verdict counts: VALID 11, MINOR 4, INVALID 0. All four MINOR items are repaired; statements 9 and 13 were changed
+to agree with `docs/SPEC.md` 9.3.7 (a ball containing a pole returns a status; the output centre is the CRT coset,
+not `c^e`, and the returned modulus is `canon(F)`).
+
+- R3 (Proposition 3): appended the use of `(x/b)` for `x` in `Zhat` and the range `c U(N)` for a unit coset.
+- R7 (Proposition 7): replaced the centre bound by the per-place statement with `1+4 Z_2` against 2 as the
+  counterexample at relative precision 2, and inserted the idele component `r u_p`, its unit part `r' u_p` with
+  `r' = r p^(-v_p(r))`, the permitted square classes, and the example `(3,3)_2 = -1`.
+- R9 (Proposition 9): the statement now returns only a pole status for an input ball containing a pole, never an
+  unbounded or finite ball.
+- R13 (Proposition 13): added the CRT centre `r = c^e` at `p|N` and `r = 1` at the other primes of the finest
+  modulus, the example `F=120`, `r=49`, the return `canon(F)`, the missing converse of step (2), the value 1 at
+  primes outside `N` in step (3), and renamed the step (6) cross-check.
+- R15 (Proposition 15): added the missing converse of step (3), including the unit `u` and the failure `U(3)`
+  inside `U(6)` for non-canonical moduli.
+
+The checks in `proto/catalogue_checks.py` now include a self-test that plants the nine wrong formulas named by the
+review and requires the checks to reject them; all nine are rejected.
