@@ -1,0 +1,3 @@
+Completed: [report](/home/tobias/Projects/adelefeld/lanes/m0-review-ideles/report.md), [review](/home/tobias/Projects/adelefeld/docs/reviews/m0-proofs/ideles-review.md), and [checks](/home/tobias/Projects/adelefeld/docs/reviews/m0-proofs/ideles_review_checks.py).
+
+**46 VALID / 3 MINOR / 2 INVALID.** Independent checks passed 113,317 assertions and reproduced two false representation claims. One incorrect mixed-modulus formula survives the author’s tests. Replacement texts are included.

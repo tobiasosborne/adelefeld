@@ -1,0 +1,24 @@
+KILLED  policies_checks.py check_best_scaled: FAIL check_best_scaled (P7): 120 balls; 572 containing candidates all contain the best
+KILLED  policies_checks.py check_scalar_add: FAIL check_scalar_add (P8): 150 cases (26 tight exactly when s | q); 837 candidates
+KILLED  policies_checks.py check_conversion: FAIL check_conversion (P11, C12): 200 conversions (30 exact, as predicted), 2371 candidate
+KILLED  policies_checks.py check_hull: FAIL check_hull (L1): 3000 cases: sampled hull radius equals the tight radius
+KILLED  policies_checks.py check_scaled_product: FAIL check_scaled_product (P10): 1500 cases, 229 with h > 1; variant equals the tight prod
+KILLED  policies_checks.py check_cap: FAIL check_cap (P14, P15): 400 balls (both readings for exact values), 2400 chained operat
+KILLED  policies_checks.py check_local_ops: FAIL check_local_ops (P19-P25): p19=100, p20=100, p21=600, p22=600, p22_left=118, p23=437,
+KILLED  policies_checks.py check_local_ops: FAIL check_local_ops (P19-P25): p19=100, p20=100, p21=600, p22=600, p22_left=118, p23=437,
+KILLED  ideles_checks.py check_canonical: FAIL check_canonical (L7, P9): 6400 ordered pairs of cosets (moduli <= 16); U(2N) = U(N) f
+KILLED  ideles_checks.py check_power: FAIL check_power (P13): 640 (coset, k) cases: hull modulus = M_k; 456 with P_k strictly in
+KILLED  ideles_checks.py check_power: FAIL check_power (P13): 640 (coset, k) cases: hull modulus = M_k; 456 with P_k strictly in
+KILLED  ideles_checks.py check_products: FAIL check_products (P10, P11): 400 pairs; 19200 candidate moduli: one coset iff Kbar | gb
+KILLED  ideles_checks.py check_idele_to_adele: FAIL check_idele_to_adele (P16): 490 cosets: additive hull radius = lcm(N,2); 0 with N odd
+KILLED  ideles_checks.py check_division: FAIL check_division (P18, P19): 2883 cases: hull radius = gcd(|a| L, M); simple ball coars
+KILLED  ideles_checks.py check_class_map: FAIL check_class_map (P15): 2000 ideles: invariant under Q^x, homomorphism, kernel; withou
+KILLED  quotient_checks.py check_reduction: FAIL check_reduction (P5, P6): 250 balls, 20376 grid points: brute force = half-open = clo
+KILLED  quotient_checks.py check_reduction: FAIL check_reduction (P5, P6): 250 balls, 20376 grid points: brute force = half-open = clo
+KILLED  quotient_checks.py check_full_image: FAIL check_full_image (P7): 300 balls (143 with full image): full iff hi - lo >= N
+KILLED  quotient_checks.py check_split: FAIL check_split (P8): 194 splits (disjoint cover), 1940 integer-radius balls meet <= 1 pi
+KILLED  quotient_checks.py check_translation: FAIL check_translation (P9, P10): 186 balls translated: identical pieces and canonical for
+KILLED  quotient_checks.py check_reconstruct_full: FAIL check_reconstruct_full (P11): 400 balls; candidates 0/1/2/3+: 282/48/30/40
+KILLED  quotient_checks.py check_partial: FAIL check_partial (P13): 193529 (m, A, B, c) with 2AB < m: at most one solution; sharp at
+22 of 22 mutants killed
+exit=0; elapsed_seconds=63.448

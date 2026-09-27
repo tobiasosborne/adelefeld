@@ -1,0 +1,10 @@
+PASS check_fundamental_domain (L1, P2, P3, C4): 500 points; gluing on 441 pairs; discreteness
+PASS check_reduction (P5, P6): 250 balls, 21192 grid points: brute force = half-open = closed
+PASS check_full_image (P7): 300 balls (152 with full image): full iff hi - lo >= N
+PASS check_split (P8): 186 splits (disjoint cover), 1860 integer-radius balls meet <= 1 piece; 14496 grid points of fractional reductions
+PASS check_translation (P9, P10): 205 balls translated: identical pieces and canonical forms; 164 different balls told apart
+PASS check_reconstruct_full (P11): 400 balls; candidates 0/1/2/3+: 147/130/49/74
+PASS check_local_global (P12): roots at 46 primes p < 200 (mod p^4, p^2, 2^12); no rational root among 18 candidates
+PASS check_partial (P13): 189631 (m, A, B, c) with 2AB < m: at most one solution; sharp at 2AB = m; 1/5
+all checks passed
+exit=0; elapsed_seconds=13.750

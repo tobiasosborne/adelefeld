@@ -1,0 +1,14 @@
+PASS check_hull (L1): 3000 cases: sampled hull radius equals the tight radius
+PASS check_monotone (L2): 3000 nested pairs: T(X,Y) inside T(X',Y')
+PASS check_expressions (T3): 2800 nodes: true value in tight ball, tight ball inside both policies
+PASS check_scaled_basics (L5, L6): 600 pairs for uniqueness, 400 balls for the criterion
+PASS check_best_scaled (P7): 120 balls; 543 containing candidates all contain the best
+PASS check_scalar_add (P8): 150 cases (32 tight exactly when s | q); 702 candidates
+PASS check_scalar_mul (P9): 1000 cases: equal to the sampled hull
+PASS check_scaled_product (P10): 1500 cases, 244 with h > 1; variant equals the tight product
+PASS check_conversion (P11, C12): 200 conversions (75 exact, as predicted), 1878 candidates; 500 lcm cases lossless
+PASS check_cap (P14, P15): 400 balls (both readings for exact values), 2400 chained operations
+PASS check_local_repr (L17, L18): 600 local values: CRT set, injectivity, blockwise gcd
+PASS check_local_ops (P19-P25): p19=104, p20=104, p21=600, p22=600, p22_left=109, p23=450, p24=159
+all checks passed
+exit=0; elapsed_seconds=7.522

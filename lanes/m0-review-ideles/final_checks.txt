@@ -1,0 +1,39 @@
+CHECK backend_L17_L18: 2250 assertions passed
+CHECK backend_P19_P20: 6760 assertions passed
+CHECK backend_P21: 2250 assertions passed
+CHECK backend_P22: 3825 assertions passed
+CHECK backend_P23: 8633 assertions passed
+CHECK backend_P24_repaired: 581 assertions passed
+CHECK backend_P25_repaired: 449 assertions passed
+CHECK ideles_L12: 165 assertions passed
+CHECK ideles_L2_P3_P14: 1400 assertions passed
+CHECK ideles_L5_P6_L7: 138 assertions passed
+CHECK ideles_P10_P11: 6348 assertions passed
+CHECK ideles_P13: 3917 assertions passed
+CHECK ideles_P13_zero: 12 assertions passed
+CHECK ideles_P15: 64 assertions passed
+CHECK ideles_P16: 184 assertions passed
+CHECK ideles_P17: 69 assertions passed
+CHECK ideles_P18_P19: 632 assertions passed
+CHECK ideles_P9: 6348 assertions passed
+CHECK negative_controls: 6 assertions passed
+CHECK policies_L1_L2: 7056 assertions passed
+CHECK policies_L5_L6_P7: 1056 assertions passed
+CHECK policies_P10: 936 assertions passed
+CHECK policies_P11_C12: 2340 assertions passed
+CHECK policies_P14_P15: 1757 assertions passed
+CHECK policies_P8_P9: 3276 assertions passed
+CHECK policies_T3: 600 assertions passed
+CHECK proof_repairs: 5 assertions passed
+CHECK quotient_L1_P2_P3_C4: 437 assertions passed
+CHECK quotient_P11: 15969 assertions passed
+CHECK quotient_P12: 55 assertions passed
+CHECK quotient_P13: 4965 assertions passed
+CHECK quotient_P5_P6_P8_P10: 26952 assertions passed
+CHECK quotient_P7: 192 assertions passed
+CHECK quotient_P8_minimal: 210 assertions passed
+CHECK quotient_P9: 3480 assertions passed
+REFUTED policies P24: (A,H,d)=(2,4,2), g=2: both old and cancelled data give 1+2 Zhat
+REFUTED policies P25: A=2,d=2,q=4: A/d=1 reduces mod 4; 2*x=2 has solutions [1,3]
+TOTAL assertions=113317; refuted_claims=2
+exit=1; elapsed_seconds=3.208

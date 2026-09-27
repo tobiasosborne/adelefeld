@@ -1,0 +1,5 @@
+line_width: files=5; over_116=0
+python_parse: files=3; errors=0
+verdicts: total=51; VALID=46; MINOR=3; INVALID=2; files=22/16/13
+review_log: assertions=113317; refuted_claims=2; exit=1
+independent_imports: modules=6; author_modules=0

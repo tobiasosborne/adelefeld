@@ -1,0 +1,13 @@
+PASS check_decomposition (L2, P3): 800 ideles and rationals decomposed; (p)_p has v_p = 1 at all p
+PASS check_unit_cosets (L5, P6): 490 cosets: local description, coset property, not the ball; 5U(6)=2U(3)
+PASS check_canonical (L7, P9): 6400 ordered pairs of cosets (moduli <= 16); U(2N) = U(N) for odd N < 200
+PASS check_products (P10, P11): 400 pairs; 19200 candidate moduli: one coset iff Kbar | gbar
+PASS check_lte (L12): 3600 cases of v_p(x^k - 1) = v_p(x - 1) + v_p(k)
+PASS check_power (P13): 640 (coset, k) cases: hull modulus = M_k; 432 with P_k strictly inside
+PASS check_norm (P14): 500 scales with product of |r|_p = 1/r; 500 rationals with |q| = 1
+PASS check_class_map (P15): 2000 ideles: invariant under Q^x, homomorphism, kernel; without sign fails
+PASS check_idele_to_adele (P16): 490 cosets: additive hull radius = lcm(N,2); 317 with N odd
+PASS check_noninvertible (P17): 1965 (ball, prime) cases with a coordinate 0 mod p^k, k <= 2
+PASS check_division (P18, P19): 2899 cases: hull radius = gcd(|a| L, M); simple ball coarser in 571
+all checks passed
+exit=0; elapsed_seconds=46.876

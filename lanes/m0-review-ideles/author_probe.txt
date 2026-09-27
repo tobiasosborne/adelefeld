@@ -1,0 +1,6 @@
+SURVIVED: drop mixed-modulus residue refinements
+PASS check_translation (P9, P10): 186 balls translated: identical pieces and canonical forms; 148 different balls told apart
+KILLED: wrong boundary glue sign
+FAIL check_translation (P9, P10): 186 balls translated: identical pieces and canonical forms; 148 different balls told apart
+TOTAL mutants=2; survived=1; killed=1
+exit=0; elapsed_seconds=6.863
