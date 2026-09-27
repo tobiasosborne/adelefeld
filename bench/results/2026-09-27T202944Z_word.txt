@@ -1,0 +1,41 @@
+run_id: 2026-09-27T202944Z
+tag: word
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+cores_online: 12
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+tsc_present: yes
+tsc_invariant: yes
+cycles_per_ns_trials: 9
+cycles_per_ns_min: 2.68798
+cycles_per_ns_median: 2.68800
+cycles_per_ns_max: 2.68800
+cycles_per_ns_spread: 0.00001
+seed: 20260928
+modulus_bits: 62
+modulus: 4611686018427387847
+trials_per_case: 15
+batch_length: 1024
+asm_dir: bench/asm
+asm_files: chain_add_run.s,chain_mul_run.s,chain_mul2_run.s
+warm: yes
+allocating: no
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+nmod_add_chain	latency_chain	nmod_add; second operand fixed, first operand is previous result	modulus 62 bit; b 62 bit; x0 62 bit	20260928	yes	no	20000000	20000000	3336677108620488694	0.8107	0.8115	0.8130
+nmod_mul_chain	latency_chain	nmod_mul; second operand fixed, first operand is previous result	modulus 62 bit; b 62 bit; x0 62 bit	20260928	yes	no	10000000	10000000	2932566140152198714	4.9603	4.9691	4.9733
+n_mulmod2_preinv_chain	latency_chain	n_mulmod2_preinv; second operand fixed, first operand is previous result	modulus 62 bit; b 62 bit; x0 62 bit	20260928	yes	no	5000000	5000000	3949451791638253285	5.9530	5.9571	5.9744
+nmod_add_batch	independent_batch	nmod_add; independent pairs a[i],b[i]; arrays L1 resident	modulus 62 bit; a 62 bit; b 62 bit (max over arrays)	20260928	yes	no	4096	4194304	2358427073605433804	0.5343	0.5345	0.6940
+nmod_mul_batch	independent_batch	nmod_mul; independent pairs a[i],b[i]; arrays L1 resident	modulus 62 bit; a 62 bit; b 62 bit (max over arrays)	20260928	yes	no	2048	2097152	1243198434307059424	1.4520	1.4720	1.4820
+n_mulmod2_preinv_batch	independent_batch	n_mulmod2_preinv; independent pairs a[i],b[i]; arrays L1 resident	modulus 62 bit; a 62 bit; b 62 bit (max over arrays)	20260928	yes	no	2048	2097152	2605467441109996527	2.9141	2.9170	2.9274
+
+# checksum of all case results, computed outside the timed region
+checksum: 2729610574065456106

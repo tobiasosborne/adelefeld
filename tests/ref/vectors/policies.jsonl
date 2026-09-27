@@ -1,0 +1,1260 @@
+{"K": 1, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 2, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 3, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 6, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 12, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 1, "ball": {"A": 5, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 5}}}
+{"K": 2, "ball": {"A": 5, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 5}}}
+{"K": 3, "ball": {"A": 5, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 5}}}
+{"K": 6, "ball": {"A": 5, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 5}}}
+{"K": 12, "ball": {"A": 5, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 5}}}
+{"K": 1, "ball": {"A": 3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": 3}}}
+{"K": 2, "ball": {"A": 3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": 3}}}
+{"K": 3, "ball": {"A": 3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": 3}}}
+{"K": 6, "ball": {"A": 3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": 3}}}
+{"K": 12, "ball": {"A": 3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": 3}}}
+{"K": 1, "ball": {"A": -3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": -3}}}
+{"K": 2, "ball": {"A": -3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": -3}}}
+{"K": 3, "ball": {"A": -3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": -3}}}
+{"K": 6, "ball": {"A": -3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": -3}}}
+{"K": 12, "ball": {"A": -3, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": -3}}}
+{"K": 1, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}}
+{"K": 2, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 3, "num": 2}, "u": 0}}
+{"K": 6, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}}
+{"K": 2, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 3, "num": 2}, "u": 0}}
+{"K": 6, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 9, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 3}, "u": 0}}
+{"K": 2, "ball": {"A": 9, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}}
+{"K": 3, "ball": {"A": 9, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 9, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 12, "ball": {"A": 9, "H": 12, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 1, "num": 1}, "u": 9}}
+{"K": 1, "ball": {"A": 3, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 3}, "u": 0}}
+{"K": 2, "ball": {"A": 3, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}}
+{"K": 3, "ball": {"A": 3, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 3, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 12, "ball": {"A": 3, "H": 12, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 1, "ball": {"A": 2, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 2, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 2, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 1, "num": 1}, "u": 2}}
+{"K": 6, "ball": {"A": 2, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 2, "num": 1}, "u": 4}}
+{"K": 12, "ball": {"A": 2, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 4, "num": 1}, "u": 8}}
+{"K": 1, "ball": {"A": 1, "H": 3, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 1, "H": 3, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 1, "H": 3, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 2, "num": 1}, "u": 1}}
+{"K": 6, "ball": {"A": 1, "H": 3, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 4, "num": 1}, "u": 2}}
+{"K": 12, "ball": {"A": 1, "H": 3, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 8, "num": 1}, "u": 4}}
+{"K": 1, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 12, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 12, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 24, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 9, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 12, "ball": {"A": 4, "H": 5, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 72, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 2, "H": 3, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 60, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 8, "H": 12, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 15, "num": 4}, "u": 0}}
+{"K": 5, "ball": {"A": 5, "H": 12, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 30, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 0, "H": 5, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 24, "H": 30, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 1, "num": 3}, "u": 8}}
+{"K": 12, "ball": {"A": 0, "H": 1, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 48, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 23, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 23}}}
+{"K": 6, "ball": {"A": 5, "H": 18, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 3, "num": 1}, "u": 5}}
+{"K": 10, "ball": {"A": 6, "H": 15, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 2, "num": 3}, "u": 4}}
+{"K": 6, "ball": {"A": -6, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -6}}}
+{"K": 9, "ball": {"A": 1, "H": 12, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 1}, "u": 3}}
+{"K": 7, "ball": {"A": 4, "H": 10, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 7, "num": 2}, "u": 0}}
+{"K": 3, "ball": {"A": 7, "H": 8, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 18, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 5, "H": 8, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 9, "ball": {"A": 1, "H": 5, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 1, "H": 12, "d": 6}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 6, "num": 1}, "u": 1}}
+{"K": 5, "ball": {"A": 1, "H": 5, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 3, "num": 1}, "u": 1}}
+{"K": 5, "ball": {"A": 1, "H": 15, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 3, "num": 1}, "u": 1}}
+{"K": 5, "ball": {"A": 1, "H": 9, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 15, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 11, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 5}}
+{"K": 1, "ball": {"A": 1, "H": 2, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": 17, "H": 23, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 32, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 2, "H": 3, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 8, "num": 1}, "u": 8}}
+{"K": 12, "ball": {"A": -3, "H": 0, "d": 5}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 5, "num": -3}}}
+{"K": 4, "ball": {"A": 5, "H": 6, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 2, "num": 1}, "u": 2}}
+{"K": 12, "ball": {"A": 5, "H": 15, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 4, "num": 5}, "u": 4}}
+{"K": 11, "ball": {"A": -33, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -33}}}
+{"K": 4, "ball": {"A": 1, "H": 2, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 6, "num": 1}, "u": 2}}
+{"K": 1, "ball": {"A": 2, "H": 3, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 5, "H": 6, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": 7, "H": 8, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 3, "num": 1}, "u": 7}}
+{"K": 6, "ball": {"A": 3, "H": 6, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 12, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 3, "H": 6, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 3}, "u": 1}}
+{"K": 8, "ball": {"A": 1, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 4, "num": 1}, "u": 4}}
+{"K": 6, "ball": {"A": 2, "H": 9, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 8, "num": 1}, "u": 4}}
+{"K": 7, "ball": {"A": 14, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 7, "num": 2}, "u": 0}}
+{"K": 5, "ball": {"A": 0, "H": 1, "d": 11}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 55, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 4, "H": 8, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}}
+{"K": 8, "ball": {"A": 9, "H": 24, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 2, "num": 3}, "u": 3}}
+{"K": 4, "ball": {"A": -4, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -4}}}
+{"K": 11, "ball": {"A": 3, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 11, "num": 3}, "u": 0}}
+{"K": 2, "ball": {"A": 0, "H": 8, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 4}, "u": 0}}
+{"K": 8, "ball": {"A": 2, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 8, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 1, "H": 3, "d": 6}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 6, "num": 1}, "u": 1}}
+{"K": 10, "ball": {"A": 1, "H": 2, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 10, "num": 1}, "u": 5}}
+{"K": 2, "ball": {"A": 0, "H": 6, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 3}, "u": 0}}
+{"K": 2, "ball": {"A": -19, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": -19}}}
+{"K": 10, "ball": {"A": 1, "H": 2, "d": 12}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 60, "num": 1}, "u": 5}}
+{"K": 9, "ball": {"A": 4, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 3, "num": 4}, "u": 3}}
+{"K": 5, "ball": {"A": 7, "H": 8, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 30, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 4, "H": 5, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 72, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": -39, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": -39}}}
+{"K": 8, "ball": {"A": 3, "H": 4, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 8, "num": 1}, "u": 6}}
+{"K": 8, "ball": {"A": 0, "H": 9, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 16, "num": 9}, "u": 0}}
+{"K": 4, "ball": {"A": 2, "H": 6, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 2, "H": 5, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 28, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 29, "H": 30, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 1, "num": 1}, "u": 2}}
+{"K": 5, "ball": {"A": 2, "H": 3, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 15, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 10, "num": 1}, "u": 0}}
+{"K": 9, "ball": {"A": 3, "H": 4, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 8, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 5, "num": 2}, "u": 0}}
+{"K": 10, "ball": {"A": 7, "H": 15, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 12, "num": 1}, "u": 4}}
+{"K": 5, "ball": {"A": 1, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 1}}}
+{"K": 1, "ball": {"A": 1, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 1, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 48, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 4, "num": 1}, "u": 0}}
+{"K": 4, "ball": {"A": 1, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 2, "num": 1}, "u": 2}}
+{"K": 4, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 12, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 5, "H": 24, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 4, "num": 1}, "u": 5}}
+{"K": 2, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 9, "ball": {"A": -19, "H": 0, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 2, "num": -19}}}
+{"K": 8, "ball": {"A": 2, "H": 5, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 24, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 3, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 4, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 13, "H": 15, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 2, "num": 1}, "u": 6}}
+{"K": 7, "ball": {"A": 0, "H": 1, "d": 6}, "lost": false, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 42, "num": 1}, "u": 0}}
+{"K": 4, "ball": {"A": 5, "H": 12, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 2, "num": 1}, "u": 1}}
+{"K": 9, "ball": {"A": 7, "H": 30, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 18, "num": 1}, "u": 3}}
+{"K": 8, "ball": {"A": 23, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 23}}}
+{"K": 1, "ball": {"A": 25, "H": 30, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 4, "num": 5}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 36, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 1, "H": 5, "d": 11}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 77, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 20, "H": 24, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 15, "num": 4}, "u": 0}}
+{"K": 10, "ball": {"A": 0, "H": 8, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 5, "num": 4}, "u": 0}}
+{"K": 4, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 4, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 12, "ball": {"A": 2, "H": 3, "d": 11}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 44, "num": 1}, "u": 8}}
+{"K": 2, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 7, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 7}}}
+{"K": 4, "ball": {"A": -9, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -9}}}
+{"K": 1, "ball": {"A": 40, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 40}}}
+{"K": 3, "ball": {"A": 1, "H": 16, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 12, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 1, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 5, "num": 1}, "u": 5}}
+{"K": 11, "ball": {"A": 17, "H": 18, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 33, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 16, "H": 0, "d": 5}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 5, "num": 16}}}
+{"K": 9, "ball": {"A": -16, "H": 0, "d": 9}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 9, "num": -16}}}
+{"K": 9, "ball": {"A": 1, "H": 6, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 6, "num": 1}, "u": 3}}
+{"K": 8, "ball": {"A": 2, "H": 3, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 24, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 3, "H": 5, "d": 11}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 11, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 13, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 1}, "u": 1}}
+{"K": 3, "ball": {"A": 5, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 5}}}
+{"K": 7, "ball": {"A": 23, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 23}}}
+{"K": 12, "ball": {"A": 2, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 3, "num": 1}, "u": 6}}
+{"K": 8, "ball": {"A": 1, "H": 6, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 8, "num": 1}, "u": 4}}
+{"K": 1, "ball": {"A": -10, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -10}}}
+{"K": 1, "ball": {"A": 21, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 21}}}
+{"K": 12, "ball": {"A": 3, "H": 10, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 6, "num": 1}, "u": 6}}
+{"K": 7, "ball": {"A": 7, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 7}}}
+{"K": 1, "ball": {"A": 0, "H": 1, "d": 6}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 11, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 33, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": -30, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -30}}}
+{"K": 5, "ball": {"A": 1, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 5, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": -9, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -9}}}
+{"K": 10, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 30, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 11, "H": 12, "d": 8}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 8, "num": 1}, "u": 5}}
+{"K": 2, "ball": {"A": 1, "H": 6, "d": 8}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 8, "num": 1}, "u": 1}}
+{"K": 8, "ball": {"A": 2, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 8, "num": 1}, "u": 0}}
+{"K": 9, "ball": {"A": 1, "H": 3, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 1}, "u": 3}}
+{"K": 11, "ball": {"A": 13, "H": 24, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 22, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 4, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 5, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 2, "H": 5, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 28, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 0, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 3, "num": 4}, "u": 0}}
+{"K": 10, "ball": {"A": 5, "H": 6, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 20, "num": 1}, "u": 5}}
+{"K": 7, "ball": {"A": 2, "H": 3, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 21, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": 17, "H": 24, "d": 5}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 5, "num": 1}, "u": 1}}
+{"K": 9, "ball": {"A": 1, "H": 3, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 12, "num": 1}, "u": 3}}
+{"K": 8, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 24, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": 0, "H": 1, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 32, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 3, "H": 4, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 10, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 10}}}
+{"K": 3, "ball": {"A": 4, "H": 5, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 3, "H": 0, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 2, "num": 3}}}
+{"K": 9, "ball": {"A": 11, "H": 18, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 6, "num": 1}, "u": 2}}
+{"K": 10, "ball": {"A": -39, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -39}}}
+{"K": 12, "ball": {"A": 4, "H": 8, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 3, "num": 2}, "u": 6}}
+{"K": 7, "ball": {"A": 15, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 7, "num": 3}, "u": 0}}
+{"K": 8, "ball": {"A": 14, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 14}}}
+{"K": 6, "ball": {"A": 1, "H": 30, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 1}}
+{"K": 6, "ball": {"A": 4, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 4}}
+{"K": 7, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 7, "num": 1}, "u": 0}}
+{"K": 9, "ball": {"A": 29, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 29}}}
+{"K": 1, "ball": {"A": 20, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 4}, "u": 0}}
+{"K": 1, "ball": {"A": 1, "H": 3, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 4, "H": 15, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 2, "num": 1}, "u": 1}}
+{"K": 2, "ball": {"A": 1, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 1}, "u": 1}}
+{"K": 5, "ball": {"A": 1, "H": 5, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 1, "num": 1}, "u": 1}}
+{"K": 1, "ball": {"A": 4, "H": 5, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": 11, "H": 23, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 48, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 0, "H": 9, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 5, "num": 9}, "u": 0}}
+{"K": 1, "ball": {"A": 4, "H": 6, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}}
+{"K": 11, "ball": {"A": 4, "H": 8, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 33, "num": 4}, "u": 0}}
+{"K": 2, "ball": {"A": 1, "H": 4, "d": 7}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 7, "num": 1}, "u": 1}}
+{"K": 2, "ball": {"A": 4, "H": 5, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": -25, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": -25}}}
+{"K": 3, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 9, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 10, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 11, "H": 18, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 3, "num": 1}, "u": 5}}
+{"K": 11, "ball": {"A": 0, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 11, "num": 4}, "u": 0}}
+{"K": 12, "ball": {"A": 3, "H": 12, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 7, "ball": {"A": 5, "H": 12, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 28, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 5, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 5}}}
+{"K": 12, "ball": {"A": 6, "H": 8, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 3, "num": 2}, "u": 9}}
+{"K": 2, "ball": {"A": 6, "H": 8, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 2}, "u": 1}}
+{"K": 9, "ball": {"A": 17, "H": 19, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 18, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 8, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 8}}}
+{"K": 8, "ball": {"A": 0, "H": 6, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 4, "num": 3}, "u": 0}}
+{"K": 1, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 9, "ball": {"A": 14, "H": 35, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 7}, "u": 0}}
+{"K": 12, "ball": {"A": -1, "H": 0, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 2, "num": -1}}}
+{"K": 9, "ball": {"A": 8, "H": 24, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 3, "num": 8}, "u": 3}}
+{"K": 10, "ball": {"A": 1, "H": 12, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 10, "num": 1}, "u": 5}}
+{"K": 4, "ball": {"A": 2, "H": 6, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 13, "H": 15, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 2, "num": 1}, "u": 2}}
+{"K": 10, "ball": {"A": 2, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 5, "num": 2}, "u": 5}}
+{"K": 3, "ball": {"A": 0, "H": 1, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 12, "num": 1}, "u": 0}}
+{"K": 8, "ball": {"A": 8, "H": 9, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 8, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 6, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 7, "num": 6}, "u": 0}}
+{"K": 9, "ball": {"A": 1, "H": 5, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 1}, "u": 0}}
+{"K": 11, "ball": {"A": 1, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 11, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 1, "H": 12, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 4, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 16, "H": 19, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 24, "num": 1}, "u": 0}}
+{"K": 4, "ball": {"A": 4, "H": 5, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 12, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 0, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 2}, "u": 0}}
+{"K": 9, "ball": {"A": 1, "H": 2, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 1}, "u": 0}}
+{"K": 4, "ball": {"A": 3, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 4, "ball": {"A": -28, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -28}}}
+{"K": 7, "ball": {"A": 2, "H": 3, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 14, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 0, "H": 1, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 18, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 9, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 7, "num": 3}, "u": 0}}
+{"K": 6, "ball": {"A": 23, "H": 27, "d": 12}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 24, "num": 1}, "u": 4}}
+{"K": 2, "ball": {"A": 15, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}}
+{"K": 2, "ball": {"A": 2, "H": 6, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 0, "H": 1, "d": 7}, "lost": false, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 49, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 8, "H": 9, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 4, "num": 1}, "u": 8}}
+{"K": 9, "ball": {"A": 0, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 17, "H": 24, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 1}, "u": 1}}
+{"K": 5, "ball": {"A": 27, "H": 0, "d": 8}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 8, "num": 27}}}
+{"K": 3, "ball": {"A": 10, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 10}}}
+{"K": 6, "ball": {"A": 9, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 3}}
+{"K": 6, "ball": {"A": 16, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 1}, "u": 4}}
+{"K": 7, "ball": {"A": 20, "H": 26, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 7, "num": 2}, "u": 0}}
+{"K": 2, "ball": {"A": 3, "H": 6, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}}
+{"K": 5, "ball": {"A": 0, "H": 1, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 10, "num": 1}, "u": 0}}
+{"K": 4, "ball": {"A": 1, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 1, "num": 1}, "u": 1}}
+{"K": 10, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 10, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 3, "num": 2}, "u": 0}}
+{"K": 10, "ball": {"A": 0, "H": 9, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 10, "num": 9}, "u": 0}}
+{"K": 9, "ball": {"A": 1, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 3, "num": 1}, "u": 3}}
+{"K": 4, "ball": {"A": 11, "H": 12, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 6, "num": 1}, "u": 3}}
+{"K": 2, "ball": {"A": 8, "H": 9, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 3, "H": 18, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 10, "num": 3}, "u": 0}}
+{"K": 3, "ball": {"A": 8, "H": 18, "d": 5}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 5, "num": 2}, "u": 1}}
+{"K": 12, "ball": {"A": 4, "H": 5, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 24, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 0, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 3}, "u": 0}}
+{"K": 5, "ball": {"A": 1, "H": 5, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 4, "num": 1}, "u": 1}}
+{"K": 8, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 8, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 1, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 5, "num": 1}, "u": 5}}
+{"K": 9, "ball": {"A": 1, "H": 3, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 9, "num": 1}, "u": 3}}
+{"K": 3, "ball": {"A": 19, "H": 24, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 1, "num": 1}, "u": 1}}
+{"K": 8, "ball": {"A": 5, "H": 6, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 16, "num": 1}, "u": 4}}
+{"K": 10, "ball": {"A": 7, "H": 8, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 10, "num": 1}, "u": 5}}
+{"K": 5, "ball": {"A": -20, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": -20}}}
+{"K": 2, "ball": {"A": 2, "H": 10, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 4, "ball": {"A": 37, "H": 0, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 2, "num": 37}}}
+{"K": 5, "ball": {"A": 0, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 5, "num": 2}, "u": 0}}
+{"K": 4, "ball": {"A": -5, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -5}}}
+{"K": 9, "ball": {"A": 15, "H": 0, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 2, "num": 15}}}
+{"K": 4, "ball": {"A": 0, "H": 3, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 8, "num": 3}, "u": 0}}
+{"K": 3, "ball": {"A": 1, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 1, "num": 1}, "u": 1}}
+{"K": 10, "ball": {"A": -13, "H": 0, "d": 11}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 11, "num": -13}}}
+{"K": 10, "ball": {"A": 31, "H": 0, "d": 6}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 6, "num": 31}}}
+{"K": 8, "ball": {"A": 0, "H": 2, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 12, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": 2, "H": 5, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 2, "H": 4, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 15, "num": 2}, "u": 0}}
+{"K": 10, "ball": {"A": 2, "H": 3, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 30, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 1, "H": 3, "d": 11}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 22, "num": 1}, "u": 0}}
+{"K": 11, "ball": {"A": 1, "H": 3, "d": 5}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 55, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 8, "H": 18, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}}
+{"K": 8, "ball": {"A": 10, "H": 15, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 24, "num": 5}, "u": 0}}
+{"K": 10, "ball": {"A": 14, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 14}}}
+{"K": 10, "ball": {"A": 17, "H": 0, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 4, "num": 17}}}
+{"K": 10, "ball": {"A": 0, "H": 5, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 8, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 1, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 5, "num": 1}, "u": 5}}
+{"K": 10, "ball": {"A": 13, "H": 18, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 30, "num": 1}, "u": 5}}
+{"K": 5, "ball": {"A": 0, "H": 5, "d": 6}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 6, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 0, "H": 1, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 28, "num": 1}, "u": 0}}
+{"K": 10, "ball": {"A": 11, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 11}}}
+{"K": 11, "ball": {"A": -19, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -19}}}
+{"K": 7, "ball": {"A": 2, "H": 3, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 28, "num": 1}, "u": 0}}
+{"K": 5, "ball": {"A": 0, "H": 1, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 5, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 3, "H": 15, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 4, "num": 3}, "u": 0}}
+{"K": 2, "ball": {"A": 1, "H": 2, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 1}, "u": 1}}
+{"K": 6, "ball": {"A": 3, "H": 8, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 6, "num": 1}, "u": 3}}
+{"K": 5, "ball": {"A": 6, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 6}}}
+{"K": 9, "ball": {"A": 5, "H": 6, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 6, "num": 1}, "u": 6}}
+{"K": 10, "ball": {"A": 29, "H": 30, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 10, "s": {"den": 3, "num": 1}, "u": 9}}
+{"K": 9, "ball": {"A": 0, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": -16, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -16}}}
+{"K": 11, "ball": {"A": 27, "H": 30, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 11, "num": 3}, "u": 0}}
+{"K": 6, "ball": {"A": 0, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 3, "num": 2}, "u": 0}}
+{"K": 2, "ball": {"A": 1, "H": 2, "d": 6}, "lost": false, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 6, "num": 1}, "u": 1}}
+{"K": 6, "ball": {"A": 10, "H": 30, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 1, "num": 5}, "u": 2}}
+{"K": 9, "ball": {"A": 6, "H": 8, "d": 3}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 27, "num": 2}, "u": 0}}
+{"K": 5, "ball": {"A": 3, "H": 6, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 10, "num": 3}, "u": 0}}
+{"K": 5, "ball": {"A": 1, "H": 2, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 5, "s": {"den": 20, "num": 1}, "u": 0}}
+{"K": 9, "ball": {"A": 3, "H": 5, "d": 10}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 90, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 1, "H": 2, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 3, "num": 1}, "u": 3}}
+{"K": 3, "ball": {"A": 15, "H": 18, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 2, "num": 3}, "u": 2}}
+{"K": 8, "ball": {"A": 0, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 8, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 1, "ball": {"A": 1, "H": 2, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": 2, "H": 8, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 1, "num": 2}, "u": 1}}
+{"K": 1, "ball": {"A": 1, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 3, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 16, "num": 1}, "u": 0}}
+{"K": 3, "ball": {"A": -23, "H": 0, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 2, "num": -23}}}
+{"K": 1, "ball": {"A": 0, "H": 4, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 4}, "u": 0}}
+{"K": 9, "ball": {"A": 0, "H": 8, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 27, "num": 8}, "u": 0}}
+{"K": 1, "ball": {"A": 2, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"K": 2, "ball": {"A": -4, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": -4}}}
+{"K": 2, "ball": {"A": 2, "H": 3, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 2, "s": {"den": 2, "num": 1}, "u": 0}}
+{"K": 6, "ball": {"A": 0, "H": 5, "d": 2}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 12, "num": 5}, "u": 0}}
+{"K": 7, "ball": {"A": 1, "H": 8, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 42, "num": 1}, "u": 0}}
+{"K": 11, "ball": {"A": 37, "H": 38, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 11, "s": {"den": 66, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 1, "H": 12, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 4, "num": 1}, "u": 1}}
+{"K": 7, "ball": {"A": 0, "H": 2, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 21, "num": 2}, "u": 0}}
+{"K": 9, "ball": {"A": 9, "H": 12, "d": 1}, "lost": true, "op": "convert_from_tight", "value": {"K": 9, "s": {"den": 3, "num": 1}, "u": 0}}
+{"K": 12, "ball": {"A": 0, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 4, "num": 1}, "u": 0}}
+{"K": 7, "ball": {"A": 27, "H": 30, "d": 4}, "lost": true, "op": "convert_from_tight", "value": {"K": 7, "s": {"den": 28, "num": 3}, "u": 0}}
+{"K": 3, "ball": {"A": 23, "H": 30, "d": 6}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 6, "num": 1}, "u": 2}}
+{"K": 12, "ball": {"A": 5, "H": 6, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 6, "num": 1}, "u": 10}}
+{"K": 4, "ball": {"A": 0, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 4, "s": {"den": 4, "num": 3}, "u": 0}}
+{"K": 7, "ball": {"A": 17, "H": 0, "d": 3}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 3, "num": 17}}}
+{"K": 12, "ball": {"A": 2, "H": 3, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"K": 12, "s": {"den": 4, "num": 1}, "u": 8}}
+{"K": 7, "ball": {"A": 4, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 4}}}
+{"K": 6, "ball": {"A": 2, "H": 3, "d": 4}, "lost": false, "op": "convert_from_tight", "value": {"K": 6, "s": {"den": 8, "num": 1}, "u": 4}}
+{"K": 3, "ball": {"A": 1, "H": 2, "d": 2}, "lost": true, "op": "convert_from_tight", "value": {"K": 3, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 1, "num": 10}, "u": 2}, "b": {"K": 11, "s": {"den": 1, "num": 3}, "u": 1}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 1, "num": 1}, "u": 1}}
+{"a": {"K": 11, "s": {"den": 1, "num": 10}, "u": 2}, "b": {"K": 11, "s": {"den": 1, "num": 3}, "u": 1}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 30}, "u": 2}}
+{"a": {"K": 6, "s": {"den": 6, "num": 1}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 6, "num": 1}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 6, "num": 1}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 1, "num": 15}, "u": 4}, "b": {"K": 6, "s": {"den": 3, "num": 11}, "u": 3}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 1, "num": 15}, "u": 4}, "b": {"K": 6, "s": {"den": 3, "num": 11}, "u": 3}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 55}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 7}, "u": 3}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 7}, "u": 3}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 9, "num": 35}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 3, "num": 5}, "u": 1}, "b": {"K": 7, "s": {"den": 3, "num": 2}, "u": 3}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 3, "num": 1}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 3, "num": 5}, "u": 1}, "b": {"K": 7, "s": {"den": 3, "num": 2}, "u": 3}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 9, "num": 10}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 1, "num": 14}, "u": 1}, "b": {"K": 7, "s": {"den": 3, "num": 14}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 3, "num": 14}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 1, "num": 14}, "u": 1}, "b": {"K": 7, "s": {"den": 3, "num": 14}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 3, "num": 196}, "u": 1}}
+{"a": {"K": 11, "s": {"den": 1, "num": 2}, "u": 10}, "b": {"K": 11, "s": {"den": 4, "num": 17}, "u": 1}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 4, "num": 1}, "u": 9}}
+{"a": {"K": 11, "s": {"den": 1, "num": 2}, "u": 10}, "b": {"K": 11, "s": {"den": 4, "num": 17}, "u": 1}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 2, "num": 17}, "u": 10}}
+{"a": {"K": 6, "s": {"den": 1, "num": 15}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 17}, "u": 2}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 6, "s": {"den": 1, "num": 15}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 17}, "u": 2}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 85}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 5, "num": 3}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 5, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 5, "num": 3}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 25, "num": 48}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 5, "num": 1}, "u": 4}, "b": {"K": 7, "s": {"den": 4, "num": 19}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 20, "num": 1}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 5, "num": 1}, "u": 4}, "b": {"K": 7, "s": {"den": 4, "num": 19}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 20, "num": 19}, "u": 2}}
+{"a": {"K": 8, "s": {"den": 3, "num": 1}, "u": 5}, "b": {"K": 8, "s": {"den": 1, "num": 1}, "u": 2}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 3, "num": 1}, "u": 5}, "b": {"K": 8, "s": {"den": 1, "num": 1}, "u": 2}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 3, "num": 1}, "u": 2}}
+{"a": {"K": 11, "s": {"den": 1, "num": 15}, "u": 5}, "b": {"K": 11, "s": {"den": 2, "num": 15}, "u": 10}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 2, "num": 15}, "u": 9}}
+{"a": {"K": 11, "s": {"den": 1, "num": 15}, "u": 5}, "b": {"K": 11, "s": {"den": 2, "num": 15}, "u": 10}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 2, "num": 225}, "u": 6}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 2, "num": 3}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 2, "num": 27}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 3, "num": 1}, "u": 6}, "b": {"K": 9, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 3, "num": 1}, "u": 6}}
+{"a": {"K": 9, "s": {"den": 3, "num": 1}, "u": 6}, "b": {"K": 9, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 3, "num": 11}, "u": 9}, "b": {"K": 12, "s": {"den": 4, "num": 1}, "u": 1}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 12, "num": 1}, "u": 3}}
+{"a": {"K": 12, "s": {"den": 3, "num": 11}, "u": 9}, "b": {"K": 12, "s": {"den": 4, "num": 1}, "u": 1}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 12, "num": 11}, "u": 9}}
+{"a": {"K": 12, "s": {"den": 5, "num": 7}, "u": 8}, "b": {"K": 12, "s": {"den": 5, "num": 3}, "u": 6}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 5, "num": 1}, "u": 2}}
+{"a": {"K": 12, "s": {"den": 5, "num": 7}, "u": 8}, "b": {"K": 12, "s": {"den": 5, "num": 3}, "u": 6}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 25, "num": 21}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 2, "num": 3}, "u": 3}, "b": {"K": 5, "s": {"den": 5, "num": 16}, "u": 2}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 10, "num": 1}, "u": 4}}
+{"a": {"K": 5, "s": {"den": 2, "num": 3}, "u": 3}, "b": {"K": 5, "s": {"den": 5, "num": 16}, "u": 2}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 5, "num": 24}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 6, "num": 7}, "u": 9}, "b": {"K": 12, "s": {"den": 2, "num": 1}, "u": 7}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 6, "num": 7}, "u": 9}, "b": {"K": 12, "s": {"den": 2, "num": 1}, "u": 7}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 12, "num": 7}, "u": 3}}
+{"a": {"K": 10, "s": {"den": 3, "num": 1}, "u": 1}, "b": {"K": 10, "s": {"den": 2, "num": 3}, "u": 1}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 10, "s": {"den": 3, "num": 1}, "u": 1}, "b": {"K": 10, "s": {"den": 2, "num": 3}, "u": 1}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 2, "num": 1}, "u": 1}}
+{"a": {"K": 1, "s": {"den": 2, "num": 19}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 4}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 2, "num": 19}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 4}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 38}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 2, "num": 5}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 7}, "u": 2}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 2, "num": 5}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 7}, "u": 2}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 6, "num": 35}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 3, "num": 2}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 7}, "u": 2}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 3, "num": 1}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 3, "num": 2}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 7}, "u": 2}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 3, "num": 14}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 1, "num": 5}, "u": 2}, "b": {"K": 11, "s": {"den": 5, "num": 14}, "u": 7}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 5, "num": 1}, "u": 5}}
+{"a": {"K": 11, "s": {"den": 1, "num": 5}, "u": 2}, "b": {"K": 11, "s": {"den": 5, "num": 14}, "u": 7}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 14}, "u": 3}}
+{"a": {"K": 12, "s": {"den": 1, "num": 4}, "u": 8}, "b": {"K": 12, "s": {"den": 4, "num": 5}, "u": 4}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 4, "num": 1}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 1, "num": 4}, "u": 8}, "b": {"K": 12, "s": {"den": 4, "num": 5}, "u": 4}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 1, "num": 5}, "u": 8}}
+{"a": {"K": 5, "s": {"den": 6, "num": 13}, "u": 1}, "b": {"K": 5, "s": {"den": 2, "num": 5}, "u": 2}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 6, "num": 1}, "u": 3}}
+{"a": {"K": 5, "s": {"den": 6, "num": 13}, "u": 1}, "b": {"K": 5, "s": {"den": 2, "num": 5}, "u": 2}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 12, "num": 65}, "u": 2}}
+{"a": {"K": 10, "s": {"den": 2, "num": 19}, "u": 1}, "b": {"K": 10, "s": {"den": 1, "num": 2}, "u": 7}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 2, "num": 1}, "u": 7}}
+{"a": {"K": 10, "s": {"den": 2, "num": 19}, "u": 1}, "b": {"K": 10, "s": {"den": 1, "num": 2}, "u": 7}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 19}, "u": 7}}
+{"a": {"K": 12, "s": {"den": 2, "num": 7}, "u": 6}, "b": {"K": 12, "s": {"den": 4, "num": 17}, "u": 7}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 4, "num": 1}, "u": 11}}
+{"a": {"K": 12, "s": {"den": 2, "num": 7}, "u": 6}, "b": {"K": 12, "s": {"den": 4, "num": 17}, "u": 7}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 8, "num": 119}, "u": 6}}
+{"a": {"K": 6, "s": {"den": 1, "num": 6}, "u": 2}, "b": {"K": 6, "s": {"den": 3, "num": 16}, "u": 4}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 2}, "u": 2}}
+{"a": {"K": 6, "s": {"den": 1, "num": 6}, "u": 2}, "b": {"K": 6, "s": {"den": 3, "num": 16}, "u": 4}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 32}, "u": 2}}
+{"a": {"K": 3, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 3, "s": {"den": 4, "num": 3}, "u": 1}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 3, "s": {"den": 4, "num": 3}, "u": 1}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 4, "num": 3}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 3, "num": 4}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 1}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 4, "s": {"den": 3, "num": 4}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 1}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 3, "num": 4}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 1, "num": 3}, "u": 9}, "b": {"K": 10, "s": {"den": 2, "num": 13}, "u": 8}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 2, "num": 1}, "u": 8}}
+{"a": {"K": 10, "s": {"den": 1, "num": 3}, "u": 9}, "b": {"K": 10, "s": {"den": 2, "num": 13}, "u": 8}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 2, "num": 39}, "u": 2}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 0}, "b": {"K": 2, "s": {"den": 5, "num": 7}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 10, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 0}, "b": {"K": 2, "s": {"den": 5, "num": 7}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 10, "num": 63}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 2, "num": 1}, "u": 2}, "b": {"K": 12, "s": {"den": 5, "num": 2}, "u": 1}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 10, "num": 1}, "u": 2}}
+{"a": {"K": 12, "s": {"den": 2, "num": 1}, "u": 2}, "b": {"K": 12, "s": {"den": 5, "num": 2}, "u": 1}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 5, "num": 1}, "u": 2}}
+{"a": {"K": 1, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 14}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 5, "num": 2}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 14}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 5, "num": 224}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 14}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 20}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 2}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 14}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 20}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 280}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 2, "num": 11}, "u": 8}, "b": {"K": 9, "s": {"den": 1, "num": 8}, "u": 2}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 2, "num": 1}, "u": 3}}
+{"a": {"K": 9, "s": {"den": 2, "num": 11}, "u": 8}, "b": {"K": 9, "s": {"den": 1, "num": 8}, "u": 2}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 44}, "u": 7}}
+{"a": {"K": 10, "s": {"den": 1, "num": 3}, "u": 9}, "b": {"K": 10, "s": {"den": 3, "num": 10}, "u": 5}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 10, "s": {"den": 1, "num": 3}, "u": 9}, "b": {"K": 10, "s": {"den": 3, "num": 10}, "u": 5}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 10}, "u": 5}}
+{"a": {"K": 6, "s": {"den": 6, "num": 19}, "u": 3}, "b": {"K": 6, "s": {"den": 5, "num": 12}, "u": 1}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 30, "num": 1}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 6, "num": 19}, "u": 3}, "b": {"K": 6, "s": {"den": 5, "num": 12}, "u": 1}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 5, "num": 38}, "u": 3}}
+{"a": {"K": 5, "s": {"den": 1, "num": 9}, "u": 2}, "b": {"K": 5, "s": {"den": 1, "num": 5}, "u": 2}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 1, "num": 1}, "u": 3}}
+{"a": {"K": 5, "s": {"den": 1, "num": 9}, "u": 2}, "b": {"K": 5, "s": {"den": 1, "num": 5}, "u": 2}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 1, "num": 45}, "u": 4}}
+{"a": {"K": 1, "s": {"den": 1, "num": 9}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 9}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 45}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 3, "num": 1}, "u": 0}, "b": {"K": 7, "s": {"den": 3, "num": 10}, "u": 5}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 7, "s": {"den": 3, "num": 1}, "u": 0}, "b": {"K": 7, "s": {"den": 3, "num": 10}, "u": 5}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 9, "num": 10}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 2, "num": 7}, "u": 1}, "b": {"K": 11, "s": {"den": 2, "num": 5}, "u": 5}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 2, "num": 1}, "u": 10}}
+{"a": {"K": 11, "s": {"den": 2, "num": 7}, "u": 1}, "b": {"K": 11, "s": {"den": 2, "num": 5}, "u": 5}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 4, "num": 35}, "u": 5}}
+{"a": {"K": 12, "s": {"den": 1, "num": 18}, "u": 7}, "b": {"K": 12, "s": {"den": 4, "num": 19}, "u": 7}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 1, "num": 18}, "u": 7}, "b": {"K": 12, "s": {"den": 4, "num": 19}, "u": 7}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 2, "num": 171}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 8}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 3, "num": 2}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 8}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 3, "num": 112}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 2, "s": {"den": 2, "num": 13}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 2, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 2, "s": {"den": 2, "num": 13}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 39}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 5, "num": 4}, "u": 1}, "b": {"K": 10, "s": {"den": 6, "num": 19}, "u": 1}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 30, "num": 1}, "u": 9}}
+{"a": {"K": 10, "s": {"den": 5, "num": 4}, "u": 1}, "b": {"K": 10, "s": {"den": 6, "num": 19}, "u": 1}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 15, "num": 38}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 6, "num": 17}, "u": 6}, "b": {"K": 8, "s": {"den": 2, "num": 5}, "u": 7}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 6, "num": 1}, "u": 7}}
+{"a": {"K": 8, "s": {"den": 6, "num": 17}, "u": 6}, "b": {"K": 8, "s": {"den": 2, "num": 5}, "u": 7}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 12, "num": 85}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 1, "num": 1}, "u": 2}, "b": {"K": 4, "s": {"den": 5, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 5, "num": 1}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 1, "num": 1}, "u": 2}, "b": {"K": 4, "s": {"den": 5, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 5, "num": 17}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 5}, "u": 10}, "b": {"K": 12, "s": {"den": 4, "num": 13}, "u": 10}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 4, "num": 1}, "u": 6}}
+{"a": {"K": 12, "s": {"den": 1, "num": 5}, "u": 10}, "b": {"K": 12, "s": {"den": 4, "num": 13}, "u": 10}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 4, "num": 65}, "u": 4}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 0}, "b": {"K": 6, "s": {"den": 1, "num": 1}, "u": 5}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 0}, "b": {"K": 6, "s": {"den": 1, "num": 1}, "u": 5}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 5}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 2, "num": 7}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 2, "num": 7}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 6, "num": 7}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 12, "s": {"den": 3, "num": 10}, "u": 6}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 3, "num": 2}, "u": 6}}
+{"a": {"K": 12, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 12, "s": {"den": 3, "num": 10}, "u": 6}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 3, "num": 140}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 8}, "u": 7}, "b": {"K": 8, "s": {"den": 3, "num": 10}, "u": 2}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 3, "num": 2}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 1, "num": 8}, "u": 7}, "b": {"K": 8, "s": {"den": 3, "num": 10}, "u": 2}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 3, "num": 80}, "u": 6}}
+{"a": {"K": 11, "s": {"den": 1, "num": 4}, "u": 10}, "b": {"K": 11, "s": {"den": 2, "num": 9}, "u": 1}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 2, "num": 1}, "u": 1}}
+{"a": {"K": 11, "s": {"den": 1, "num": 4}, "u": 10}, "b": {"K": 11, "s": {"den": 2, "num": 9}, "u": 1}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 18}, "u": 10}}
+{"a": {"K": 4, "s": {"den": 3, "num": 10}, "u": 2}, "b": {"K": 4, "s": {"den": 1, "num": 3}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 3, "num": 10}, "u": 2}, "b": {"K": 4, "s": {"den": 1, "num": 3}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 10}, "u": 2}}
+{"a": {"K": 10, "s": {"den": 3, "num": 8}, "u": 8}, "b": {"K": 10, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 3, "num": 2}, "u": 2}}
+{"a": {"K": 10, "s": {"den": 3, "num": 8}, "u": 8}, "b": {"K": 10, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 3, "num": 16}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 5, "num": 13}, "u": 8}, "b": {"K": 10, "s": {"den": 5, "num": 9}, "u": 0}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 5, "num": 1}, "u": 4}}
+{"a": {"K": 10, "s": {"den": 5, "num": 13}, "u": 8}, "b": {"K": 10, "s": {"den": 5, "num": 9}, "u": 0}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 25, "num": 117}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 1}, "b": {"K": 2, "s": {"den": 3, "num": 2}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 1}, "b": {"K": 2, "s": {"den": 3, "num": 2}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}}
+{"a": {"K": 6, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 6, "s": {"den": 5, "num": 4}, "u": 0}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 5, "num": 2}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 6, "s": {"den": 5, "num": 4}, "u": 0}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 5, "num": 8}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 5, "num": 19}, "u": 6}, "b": {"K": 11, "s": {"den": 5, "num": 11}, "u": 5}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 5, "num": 1}, "u": 4}}
+{"a": {"K": 11, "s": {"den": 5, "num": 19}, "u": 6}, "b": {"K": 11, "s": {"den": 5, "num": 11}, "u": 5}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 25, "num": 209}, "u": 8}}
+{"a": {"K": 12, "s": {"den": 4, "num": 13}, "u": 3}, "b": {"K": 12, "s": {"den": 2, "num": 7}, "u": 0}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 4, "num": 1}, "u": 3}}
+{"a": {"K": 12, "s": {"den": 4, "num": 13}, "u": 3}, "b": {"K": 12, "s": {"den": 2, "num": 7}, "u": 0}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 8, "num": 91}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 4, "num": 9}, "u": 3}, "b": {"K": 7, "s": {"den": 1, "num": 4}, "u": 6}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 4, "num": 1}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 4, "num": 9}, "u": 3}, "b": {"K": 7, "s": {"den": 1, "num": 4}, "u": 6}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 1, "num": 9}, "u": 4}}
+{"a": {"K": 4, "s": {"den": 4, "num": 3}, "u": 3}, "b": {"K": 4, "s": {"den": 3, "num": 13}, "u": 0}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 12, "num": 1}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 4, "num": 3}, "u": 3}, "b": {"K": 4, "s": {"den": 3, "num": 13}, "u": 0}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 4, "num": 13}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 19}, "u": 0}, "b": {"K": 1, "s": {"den": 4, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 19}, "u": 0}, "b": {"K": 1, "s": {"den": 4, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 4, "num": 323}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 5, "num": 9}, "u": 1}, "b": {"K": 8, "s": {"den": 5, "num": 9}, "u": 5}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 5, "num": 9}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 5, "num": 9}, "u": 1}, "b": {"K": 8, "s": {"den": 5, "num": 9}, "u": 5}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 25, "num": 81}, "u": 5}}
+{"a": {"K": 4, "s": {"den": 2, "num": 3}, "u": 1}, "b": {"K": 4, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 2, "num": 1}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 2, "num": 3}, "u": 1}, "b": {"K": 4, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 2, "num": 3}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 2, "num": 19}, "u": 6}, "b": {"K": 10, "s": {"den": 5, "num": 1}, "u": 3}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 10, "num": 1}, "u": 6}}
+{"a": {"K": 10, "s": {"den": 2, "num": 19}, "u": 6}, "b": {"K": 10, "s": {"den": 5, "num": 1}, "u": 3}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 10, "num": 19}, "u": 8}}
+{"a": {"K": 12, "s": {"den": 1, "num": 1}, "u": 8}, "b": {"K": 12, "s": {"den": 3, "num": 14}, "u": 5}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 3, "num": 1}, "u": 10}}
+{"a": {"K": 12, "s": {"den": 1, "num": 1}, "u": 8}, "b": {"K": 12, "s": {"den": 3, "num": 14}, "u": 5}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 3, "num": 14}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 6, "num": 5}, "u": 4}, "b": {"K": 7, "s": {"den": 1, "num": 6}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 6, "num": 5}, "u": 4}, "b": {"K": 7, "s": {"den": 1, "num": 6}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 1, "num": 5}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 1, "num": 2}, "u": 4}, "b": {"K": 7, "s": {"den": 2, "num": 3}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 2, "num": 1}, "u": 5}}
+{"a": {"K": 7, "s": {"den": 1, "num": 2}, "u": 4}, "b": {"K": 7, "s": {"den": 2, "num": 3}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 1, "num": 3}, "u": 4}}
+{"a": {"K": 1, "s": {"den": 1, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 18}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 18}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 288}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 1}, "u": 1}, "b": {"K": 2, "s": {"den": 6, "num": 5}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 1}, "u": 1}, "b": {"K": 2, "s": {"den": 6, "num": 5}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 6, "num": 5}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 3, "num": 16}, "u": 0}, "b": {"K": 3, "s": {"den": 1, "num": 9}, "u": 1}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 3, "num": 16}, "u": 0}, "b": {"K": 3, "s": {"den": 1, "num": 9}, "u": 1}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 1, "num": 48}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 3, "num": 5}, "u": 7}, "b": {"K": 10, "s": {"den": 1, "num": 19}, "u": 1}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 3, "num": 1}, "u": 2}}
+{"a": {"K": 10, "s": {"den": 3, "num": 5}, "u": 7}, "b": {"K": 10, "s": {"den": 1, "num": 19}, "u": 1}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 3, "num": 95}, "u": 7}}
+{"a": {"K": 5, "s": {"den": 5, "num": 18}, "u": 1}, "b": {"K": 5, "s": {"den": 1, "num": 10}, "u": 4}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 5, "num": 2}, "u": 4}}
+{"a": {"K": 5, "s": {"den": 5, "num": 18}, "u": 1}, "b": {"K": 5, "s": {"den": 1, "num": 10}, "u": 4}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 1, "num": 36}, "u": 4}}
+{"a": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 25}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 3, "s": {"den": 4, "num": 19}, "u": 1}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 3, "s": {"den": 4, "num": 19}, "u": 1}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 4, "num": 57}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 1, "num": 1}, "u": 1}, "b": {"K": 3, "s": {"den": 1, "num": 6}, "u": 1}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 1, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 1, "num": 1}, "u": 1}, "b": {"K": 3, "s": {"den": 1, "num": 6}, "u": 1}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 1, "num": 6}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 3, "num": 4}, "u": 11}, "b": {"K": 12, "s": {"den": 1, "num": 5}, "u": 7}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 3, "num": 1}, "u": 5}}
+{"a": {"K": 12, "s": {"den": 3, "num": 4}, "u": 11}, "b": {"K": 12, "s": {"den": 1, "num": 5}, "u": 7}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 3, "num": 20}, "u": 5}}
+{"a": {"K": 10, "s": {"den": 1, "num": 2}, "u": 3}, "b": {"K": 10, "s": {"den": 5, "num": 7}, "u": 3}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 10, "s": {"den": 1, "num": 2}, "u": 3}, "b": {"K": 10, "s": {"den": 5, "num": 7}, "u": 3}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 5, "num": 14}, "u": 9}}
+{"a": {"K": 3, "s": {"den": 2, "num": 19}, "u": 1}, "b": {"K": 3, "s": {"den": 5, "num": 8}, "u": 2}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 10, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 2, "num": 19}, "u": 1}, "b": {"K": 3, "s": {"den": 5, "num": 8}, "u": 2}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 5, "num": 76}, "u": 2}}
+{"a": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}, "b": {"K": 1, "s": {"den": 2, "num": 3}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}, "b": {"K": 1, "s": {"den": 2, "num": 3}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 4, "num": 3}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 1, "num": 6}, "u": 3}, "b": {"K": 5, "s": {"den": 3, "num": 20}, "u": 4}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 3, "num": 2}, "u": 2}}
+{"a": {"K": 5, "s": {"den": 1, "num": 6}, "u": 3}, "b": {"K": 5, "s": {"den": 3, "num": 20}, "u": 4}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 1, "num": 40}, "u": 2}}
+{"a": {"K": 11, "s": {"den": 5, "num": 19}, "u": 3}, "b": {"K": 11, "s": {"den": 2, "num": 13}, "u": 6}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 10, "num": 1}, "u": 9}}
+{"a": {"K": 11, "s": {"den": 5, "num": 19}, "u": 3}, "b": {"K": 11, "s": {"den": 2, "num": 13}, "u": 6}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 10, "num": 247}, "u": 7}}
+{"a": {"K": 8, "s": {"den": 1, "num": 20}, "u": 0}, "b": {"K": 8, "s": {"den": 5, "num": 16}, "u": 5}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 5, "num": 4}, "u": 4}}
+{"a": {"K": 8, "s": {"den": 1, "num": 20}, "u": 0}, "b": {"K": 8, "s": {"den": 5, "num": 16}, "u": 5}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 1, "num": 64}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 4, "num": 17}, "u": 2}, "b": {"K": 7, "s": {"den": 1, "num": 10}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 4, "num": 1}, "u": 5}}
+{"a": {"K": 7, "s": {"den": 4, "num": 17}, "u": 2}, "b": {"K": 7, "s": {"den": 1, "num": 10}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 2, "num": 85}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 1, "num": 1}, "u": 6}, "b": {"K": 9, "s": {"den": 6, "num": 5}, "u": 3}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 6, "num": 1}, "u": 6}}
+{"a": {"K": 9, "s": {"den": 1, "num": 1}, "u": 6}, "b": {"K": 9, "s": {"den": 6, "num": 5}, "u": 3}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 6, "num": 5}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 16}, "u": 2}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 16}, "u": 2}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 80}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 4, "num": 1}, "u": 4}, "b": {"K": 6, "s": {"den": 3, "num": 11}, "u": 3}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 12, "num": 1}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 4, "num": 1}, "u": 4}, "b": {"K": 6, "s": {"den": 3, "num": 11}, "u": 3}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 12, "num": 11}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 1, "num": 5}, "u": 4}, "b": {"K": 11, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 3, "num": 1}, "u": 5}}
+{"a": {"K": 11, "s": {"den": 1, "num": 5}, "u": 4}, "b": {"K": 11, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 3, "num": 85}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 3, "s": {"den": 1, "num": 13}, "u": 2}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 3, "s": {"den": 1, "num": 13}, "u": 2}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 5, "num": 208}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 1, "num": 16}, "u": 9}, "b": {"K": 10, "s": {"den": 2, "num": 7}, "u": 3}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 2, "num": 1}, "u": 9}}
+{"a": {"K": 10, "s": {"den": 1, "num": 16}, "u": 9}, "b": {"K": 10, "s": {"den": 2, "num": 7}, "u": 3}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 56}, "u": 7}}
+{"a": {"K": 5, "s": {"den": 5, "num": 17}, "u": 4}, "b": {"K": 5, "s": {"den": 4, "num": 11}, "u": 0}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 20, "num": 1}, "u": 2}}
+{"a": {"K": 5, "s": {"den": 5, "num": 17}, "u": 4}, "b": {"K": 5, "s": {"den": 4, "num": 11}, "u": 0}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 20, "num": 187}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 28}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 3, "num": 20}, "u": 0}, "b": {"K": 9, "s": {"den": 3, "num": 19}, "u": 8}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 3, "num": 1}, "u": 8}}
+{"a": {"K": 9, "s": {"den": 3, "num": 20}, "u": 0}, "b": {"K": 9, "s": {"den": 3, "num": 19}, "u": 8}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 9, "num": 380}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 9}, "u": 1}, "b": {"K": 2, "s": {"den": 6, "num": 13}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 9}, "u": 1}, "b": {"K": 2, "s": {"den": 6, "num": 13}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 2, "num": 39}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 3, "num": 7}, "u": 4}, "b": {"K": 8, "s": {"den": 6, "num": 19}, "u": 5}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 6, "num": 1}, "u": 7}}
+{"a": {"K": 8, "s": {"den": 3, "num": 7}, "u": 4}, "b": {"K": 8, "s": {"den": 6, "num": 19}, "u": 5}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 18, "num": 133}, "u": 4}}
+{"a": {"K": 2, "s": {"den": 2, "num": 3}, "u": 1}, "b": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 2, "num": 3}, "u": 1}, "b": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 8, "num": 3}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 4, "num": 13}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 1}, "u": 4}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 4, "num": 1}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 4, "num": 13}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 1}, "u": 4}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 4, "num": 13}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 3, "num": 10}, "u": 7}, "b": {"K": 12, "s": {"den": 1, "num": 14}, "u": 9}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 3, "num": 2}, "u": 8}}
+{"a": {"K": 12, "s": {"den": 3, "num": 10}, "u": 7}, "b": {"K": 12, "s": {"den": 1, "num": 14}, "u": 9}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 3, "num": 140}, "u": 3}}
+{"a": {"K": 9, "s": {"den": 1, "num": 12}, "u": 2}, "b": {"K": 9, "s": {"den": 1, "num": 14}, "u": 4}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 1, "num": 2}, "u": 4}}
+{"a": {"K": 9, "s": {"den": 1, "num": 12}, "u": 2}, "b": {"K": 9, "s": {"den": 1, "num": 14}, "u": 4}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 168}, "u": 8}}
+{"a": {"K": 9, "s": {"den": 5, "num": 18}, "u": 1}, "b": {"K": 9, "s": {"den": 2, "num": 1}, "u": 7}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 10, "num": 1}, "u": 8}}
+{"a": {"K": 9, "s": {"den": 5, "num": 18}, "u": 1}, "b": {"K": 9, "s": {"den": 2, "num": 1}, "u": 7}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 5, "num": 9}, "u": 7}}
+{"a": {"K": 6, "s": {"den": 1, "num": 18}, "u": 1}, "b": {"K": 6, "s": {"den": 1, "num": 3}, "u": 0}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 1, "num": 3}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 18}, "u": 1}, "b": {"K": 6, "s": {"den": 1, "num": 3}, "u": 0}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 54}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 4, "num": 13}, "u": 0}, "b": {"K": 2, "s": {"den": 4, "num": 19}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 4, "num": 13}, "u": 0}, "b": {"K": 2, "s": {"den": 4, "num": 19}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 16, "num": 247}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 2}, "u": 4}, "b": {"K": 6, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 1, "num": 2}, "u": 5}}
+{"a": {"K": 6, "s": {"den": 1, "num": 2}, "u": 4}, "b": {"K": 6, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 4}, "u": 4}}
+{"a": {"K": 4, "s": {"den": 2, "num": 11}, "u": 0}, "b": {"K": 4, "s": {"den": 6, "num": 17}, "u": 2}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 6, "num": 1}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 2, "num": 11}, "u": 0}, "b": {"K": 4, "s": {"den": 6, "num": 17}, "u": 2}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 12, "num": 187}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 15}, "u": 7}, "b": {"K": 12, "s": {"den": 6, "num": 1}, "u": 5}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 6, "num": 1}, "u": 11}}
+{"a": {"K": 12, "s": {"den": 1, "num": 15}, "u": 7}, "b": {"K": 12, "s": {"den": 6, "num": 1}, "u": 5}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 2, "num": 5}, "u": 11}}
+{"a": {"K": 8, "s": {"den": 1, "num": 4}, "u": 5}, "b": {"K": 8, "s": {"den": 1, "num": 4}, "u": 3}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 1, "num": 4}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 4}, "u": 5}, "b": {"K": 8, "s": {"den": 1, "num": 4}, "u": 3}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 1, "num": 16}, "u": 7}}
+{"a": {"K": 6, "s": {"den": 2, "num": 9}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 6}, "u": 4}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 2, "num": 3}, "u": 1}}
+{"a": {"K": 6, "s": {"den": 2, "num": 9}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 6}, "u": 4}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 27}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 15}, "u": 6}, "b": {"K": 12, "s": {"den": 1, "num": 7}, "u": 8}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 1, "num": 1}, "u": 2}}
+{"a": {"K": 12, "s": {"den": 1, "num": 15}, "u": 6}, "b": {"K": 12, "s": {"den": 1, "num": 7}, "u": 8}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 1, "num": 105}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 4, "num": 13}, "u": 4}, "b": {"K": 9, "s": {"den": 6, "num": 19}, "u": 8}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 12, "num": 1}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 4, "num": 13}, "u": 4}, "b": {"K": 9, "s": {"den": 6, "num": 19}, "u": 8}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 24, "num": 247}, "u": 5}}
+{"a": {"K": 5, "s": {"den": 3, "num": 11}, "u": 4}, "b": {"K": 5, "s": {"den": 2, "num": 7}, "u": 0}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 6, "num": 1}, "u": 3}}
+{"a": {"K": 5, "s": {"den": 3, "num": 11}, "u": 4}, "b": {"K": 5, "s": {"den": 2, "num": 7}, "u": 0}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 6, "num": 77}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 2, "num": 3}, "u": 4}, "b": {"K": 9, "s": {"den": 2, "num": 5}, "u": 7}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 2, "num": 1}, "u": 2}}
+{"a": {"K": 9, "s": {"den": 2, "num": 3}, "u": 4}, "b": {"K": 9, "s": {"den": 2, "num": 5}, "u": 7}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 4, "num": 15}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 1, "num": 17}, "u": 4}, "b": {"K": 8, "s": {"den": 6, "num": 19}, "u": 6}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 6, "num": 1}, "u": 2}}
+{"a": {"K": 8, "s": {"den": 1, "num": 17}, "u": 4}, "b": {"K": 8, "s": {"den": 6, "num": 19}, "u": 6}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 6, "num": 323}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 4, "num": 7}, "u": 7}, "b": {"K": 9, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 4, "num": 1}, "u": 3}}
+{"a": {"K": 9, "s": {"den": 4, "num": 7}, "u": 7}, "b": {"K": 9, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 2, "num": 7}, "u": 7}}
+{"a": {"K": 11, "s": {"den": 1, "num": 12}, "u": 9}, "b": {"K": 11, "s": {"den": 1, "num": 16}, "u": 3}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 1, "num": 4}, "u": 6}}
+{"a": {"K": 11, "s": {"den": 1, "num": 12}, "u": 9}, "b": {"K": 11, "s": {"den": 1, "num": 16}, "u": 3}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 192}, "u": 5}}
+{"a": {"K": 11, "s": {"den": 1, "num": 1}, "u": 4}, "b": {"K": 11, "s": {"den": 4, "num": 13}, "u": 6}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 4, "num": 1}, "u": 6}}
+{"a": {"K": 11, "s": {"den": 1, "num": 1}, "u": 4}, "b": {"K": 11, "s": {"den": 4, "num": 13}, "u": 6}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 4, "num": 13}, "u": 2}}
+{"a": {"K": 3, "s": {"den": 4, "num": 5}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 10}, "u": 2}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 12, "num": 5}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 4, "num": 5}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 10}, "u": 2}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 6, "num": 25}, "u": 2}}
+{"a": {"K": 1, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 3, "num": 238}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 5, "num": 17}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 3}, "u": 0}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 5, "num": 1}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 5, "num": 17}, "u": 3}, "b": {"K": 6, "s": {"den": 1, "num": 3}, "u": 0}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 5, "num": 51}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 1}, "b": {"K": 6, "s": {"den": 1, "num": 3}, "u": 1}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 2}}
+{"a": {"K": 6, "s": {"den": 3, "num": 5}, "u": 1}, "b": {"K": 6, "s": {"den": 1, "num": 3}, "u": 1}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 5}, "u": 1}}
+{"a": {"K": 7, "s": {"den": 3, "num": 13}, "u": 5}, "b": {"K": 7, "s": {"den": 2, "num": 17}, "u": 3}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 6, "num": 1}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 3, "num": 13}, "u": 5}, "b": {"K": 7, "s": {"den": 2, "num": 17}, "u": 3}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 6, "num": 221}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 1, "num": 3}, "u": 5}, "b": {"K": 12, "s": {"den": 6, "num": 19}, "u": 11}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 6, "num": 1}, "u": 11}}
+{"a": {"K": 12, "s": {"den": 1, "num": 3}, "u": 5}, "b": {"K": 12, "s": {"den": 6, "num": 19}, "u": 11}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 2, "num": 19}, "u": 7}}
+{"a": {"K": 3, "s": {"den": 4, "num": 17}, "u": 2}, "b": {"K": 3, "s": {"den": 4, "num": 19}, "u": 1}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 4, "num": 1}, "u": 2}}
+{"a": {"K": 3, "s": {"den": 4, "num": 17}, "u": 2}, "b": {"K": 3, "s": {"den": 4, "num": 19}, "u": 1}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 16, "num": 323}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 1, "num": 15}, "u": 1}, "b": {"K": 4, "s": {"den": 4, "num": 1}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 4, "num": 1}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 1, "num": 15}, "u": 1}, "b": {"K": 4, "s": {"den": 4, "num": 1}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 4, "num": 15}, "u": 3}}
+{"a": {"K": 3, "s": {"den": 3, "num": 7}, "u": 1}, "b": {"K": 3, "s": {"den": 2, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 6, "num": 1}, "u": 2}}
+{"a": {"K": 3, "s": {"den": 3, "num": 7}, "u": 1}, "b": {"K": 3, "s": {"den": 2, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 6, "num": 119}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 3}, "u": 9}, "b": {"K": 12, "s": {"den": 1, "num": 6}, "u": 2}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 1, "num": 3}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 1, "num": 3}, "u": 9}, "b": {"K": 12, "s": {"den": 1, "num": 6}, "u": 2}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 1, "num": 18}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 1, "num": 16}, "u": 2}, "b": {"K": 8, "s": {"den": 1, "num": 13}, "u": 4}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 1, "num": 1}, "u": 4}}
+{"a": {"K": 8, "s": {"den": 1, "num": 16}, "u": 2}, "b": {"K": 8, "s": {"den": 1, "num": 13}, "u": 4}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 1, "num": 208}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 11}, "u": 0}, "b": {"K": 2, "s": {"den": 4, "num": 13}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 11}, "u": 0}, "b": {"K": 2, "s": {"den": 4, "num": 13}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 4, "num": 143}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 8, "s": {"den": 5, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 5, "num": 1}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 8, "s": {"den": 5, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 5, "num": 51}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 2}, "u": 4}, "b": {"K": 6, "s": {"den": 2, "num": 3}, "u": 5}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 2, "num": 1}, "u": 1}}
+{"a": {"K": 6, "s": {"den": 1, "num": 2}, "u": 4}, "b": {"K": 6, "s": {"den": 2, "num": 3}, "u": 5}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 3}, "u": 2}}
+{"a": {"K": 6, "s": {"den": 5, "num": 9}, "u": 2}, "b": {"K": 6, "s": {"den": 1, "num": 20}, "u": 1}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 5, "num": 1}, "u": 4}}
+{"a": {"K": 6, "s": {"den": 5, "num": 9}, "u": 2}, "b": {"K": 6, "s": {"den": 1, "num": 20}, "u": 1}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 36}, "u": 2}}
+{"a": {"K": 2, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 2, "s": {"den": 6, "num": 5}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 14}, "u": 0}, "b": {"K": 2, "s": {"den": 6, "num": 5}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 3, "num": 35}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 10}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 4}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 2}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 10}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 4}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 40}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 3, "num": 5}, "u": 0}, "b": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 3, "num": 5}, "u": 0}, "b": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 18, "num": 5}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 4, "num": 5}, "u": 2}, "b": {"K": 3, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 4, "num": 5}, "u": 2}, "b": {"K": 3, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 2, "num": 5}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 2, "num": 3}, "u": 4}, "b": {"K": 7, "s": {"den": 1, "num": 5}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 2, "num": 1}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 2, "num": 3}, "u": 4}, "b": {"K": 7, "s": {"den": 1, "num": 5}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 2, "num": 15}, "u": 2}}
+{"a": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 1, "s": {"den": 6, "num": 7}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 1, "s": {"den": 6, "num": 7}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 6, "num": 7}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 4, "num": 3}, "u": 3}, "b": {"K": 11, "s": {"den": 1, "num": 8}, "u": 2}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 4, "num": 1}, "u": 7}}
+{"a": {"K": 11, "s": {"den": 4, "num": 3}, "u": 3}, "b": {"K": 11, "s": {"den": 1, "num": 8}, "u": 2}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 6}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 3, "num": 10}, "u": 1}, "b": {"K": 8, "s": {"den": 4, "num": 5}, "u": 1}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 12, "num": 5}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 3, "num": 10}, "u": 1}, "b": {"K": 8, "s": {"den": 4, "num": 5}, "u": 1}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 6, "num": 25}, "u": 1}}
+{"a": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 3, "num": 17}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 5, "num": 1}, "u": 2}, "b": {"K": 3, "s": {"den": 1, "num": 1}, "u": 2}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 5, "num": 1}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 5, "num": 1}, "u": 2}, "b": {"K": 3, "s": {"den": 1, "num": 1}, "u": 2}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 3, "num": 7}, "u": 0}, "b": {"K": 9, "s": {"den": 1, "num": 3}, "u": 2}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 3, "num": 7}, "u": 0}, "b": {"K": 9, "s": {"den": 1, "num": 3}, "u": 2}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 7}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 5, "num": 9}, "u": 3}, "b": {"K": 11, "s": {"den": 3, "num": 4}, "u": 2}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 15, "num": 1}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 5, "num": 9}, "u": 3}, "b": {"K": 11, "s": {"den": 3, "num": 4}, "u": 2}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 5, "num": 12}, "u": 6}}
+{"a": {"K": 2, "s": {"den": 1, "num": 17}, "u": 1}, "b": {"K": 2, "s": {"den": 5, "num": 14}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 17}, "u": 1}, "b": {"K": 2, "s": {"den": 5, "num": 14}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 5, "num": 238}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 3, "num": 1}, "u": 1}, "b": {"K": 3, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 3, "num": 1}, "u": 1}, "b": {"K": 3, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 3, "num": 2}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 4, "num": 19}, "u": 3}, "b": {"K": 4, "s": {"den": 4, "num": 5}, "u": 1}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 4, "num": 1}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 4, "num": 19}, "u": 3}, "b": {"K": 4, "s": {"den": 4, "num": 5}, "u": 1}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 16, "num": 95}, "u": 3}}
+{"a": {"K": 11, "s": {"den": 2, "num": 11}, "u": 8}, "b": {"K": 11, "s": {"den": 3, "num": 17}, "u": 8}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 6, "num": 1}, "u": 8}}
+{"a": {"K": 11, "s": {"den": 2, "num": 11}, "u": 8}, "b": {"K": 11, "s": {"den": 3, "num": 17}, "u": 8}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 6, "num": 187}, "u": 9}}
+{"a": {"K": 5, "s": {"den": 5, "num": 3}, "u": 4}, "b": {"K": 5, "s": {"den": 4, "num": 7}, "u": 1}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 20, "num": 1}, "u": 3}}
+{"a": {"K": 5, "s": {"den": 5, "num": 3}, "u": 4}, "b": {"K": 5, "s": {"den": 4, "num": 7}, "u": 1}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 20, "num": 21}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 2, "num": 1}, "u": 1}, "b": {"K": 7, "s": {"den": 4, "num": 15}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 4, "num": 1}, "u": 6}}
+{"a": {"K": 7, "s": {"den": 2, "num": 1}, "u": 1}, "b": {"K": 7, "s": {"den": 4, "num": 15}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 8, "num": 15}, "u": 4}}
+{"a": {"K": 11, "s": {"den": 1, "num": 15}, "u": 4}, "b": {"K": 11, "s": {"den": 3, "num": 19}, "u": 1}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 11, "s": {"den": 1, "num": 15}, "u": 4}, "b": {"K": 11, "s": {"den": 3, "num": 19}, "u": 1}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 95}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 3, "num": 19}, "u": 11}, "b": {"K": 12, "s": {"den": 2, "num": 5}, "u": 0}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 6, "num": 1}, "u": 10}}
+{"a": {"K": 12, "s": {"den": 3, "num": 19}, "u": 11}, "b": {"K": 12, "s": {"den": 2, "num": 5}, "u": 0}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 6, "num": 95}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 2, "num": 15}, "u": 0}, "b": {"K": 2, "s": {"den": 5, "num": 7}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 10, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 2, "num": 15}, "u": 0}, "b": {"K": 2, "s": {"den": 5, "num": 7}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 2, "num": 21}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 2, "num": 3}, "u": 3}, "b": {"K": 7, "s": {"den": 2, "num": 9}, "u": 2}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 2, "num": 3}, "u": 2}}
+{"a": {"K": 7, "s": {"den": 2, "num": 3}, "u": 3}, "b": {"K": 7, "s": {"den": 2, "num": 9}, "u": 2}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 4, "num": 27}, "u": 6}}
+{"a": {"K": 6, "s": {"den": 6, "num": 11}, "u": 4}, "b": {"K": 6, "s": {"den": 1, "num": 2}, "u": 4}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 6, "num": 1}, "u": 2}}
+{"a": {"K": 6, "s": {"den": 6, "num": 11}, "u": 4}, "b": {"K": 6, "s": {"den": 1, "num": 2}, "u": 4}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 11}, "u": 4}}
+{"a": {"K": 1, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 8}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 1, "num": 4}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 8}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 32}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 11, "s": {"den": 2, "num": 5}, "u": 6}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 2, "num": 1}, "u": 8}}
+{"a": {"K": 11, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 11, "s": {"den": 2, "num": 5}, "u": 6}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 10}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 2, "num": 3}, "u": 0}, "b": {"K": 8, "s": {"den": 5, "num": 19}, "u": 7}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 10, "num": 1}, "u": 2}}
+{"a": {"K": 8, "s": {"den": 2, "num": 3}, "u": 0}, "b": {"K": 8, "s": {"den": 5, "num": 19}, "u": 7}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 10, "num": 57}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 1, "num": 2}, "u": 8}, "b": {"K": 10, "s": {"den": 5, "num": 19}, "u": 3}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 5, "num": 1}, "u": 7}}
+{"a": {"K": 10, "s": {"den": 1, "num": 2}, "u": 8}, "b": {"K": 10, "s": {"den": 5, "num": 19}, "u": 3}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 5, "num": 38}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 5, "num": 13}, "u": 0}, "b": {"K": 12, "s": {"den": 1, "num": 2}, "u": 4}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 5, "num": 1}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 5, "num": 13}, "u": 0}, "b": {"K": 12, "s": {"den": 1, "num": 2}, "u": 4}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 5, "num": 26}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 4, "num": 11}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 4}, "u": 1}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 4, "s": {"den": 4, "num": 11}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 4}, "u": 1}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 11}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 5, "num": 16}, "u": 6}, "b": {"K": 7, "s": {"den": 2, "num": 1}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 10, "num": 1}, "u": 2}}
+{"a": {"K": 7, "s": {"den": 5, "num": 16}, "u": 6}, "b": {"K": 7, "s": {"den": 2, "num": 1}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 5, "num": 8}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 1, "num": 8}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 14}, "u": 0}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 2}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 8}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 14}, "u": 0}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 112}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 20}, "u": 7}, "b": {"K": 12, "s": {"den": 6, "num": 1}, "u": 9}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 6, "num": 1}, "u": 9}}
+{"a": {"K": 12, "s": {"den": 1, "num": 20}, "u": 7}, "b": {"K": 12, "s": {"den": 6, "num": 1}, "u": 9}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 3, "num": 10}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 3, "num": 14}, "u": 3}, "b": {"K": 8, "s": {"den": 5, "num": 7}, "u": 1}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 15, "num": 7}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 3, "num": 14}, "u": 3}, "b": {"K": 8, "s": {"den": 5, "num": 7}, "u": 1}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 15, "num": 98}, "u": 3}}
+{"a": {"K": 2, "s": {"den": 1, "num": 7}, "u": 1}, "b": {"K": 2, "s": {"den": 5, "num": 9}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 7}, "u": 1}, "b": {"K": 2, "s": {"den": 5, "num": 9}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 5, "num": 63}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 3}, "u": 1}, "b": {"K": 6, "s": {"den": 5, "num": 8}, "u": 1}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 5, "num": 1}, "u": 5}}
+{"a": {"K": 6, "s": {"den": 1, "num": 3}, "u": 1}, "b": {"K": 6, "s": {"den": 5, "num": 8}, "u": 1}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 5, "num": 24}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 1, "num": 14}, "u": 5}, "b": {"K": 9, "s": {"den": 2, "num": 5}, "u": 0}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 2, "num": 1}, "u": 5}}
+{"a": {"K": 9, "s": {"den": 1, "num": 14}, "u": 5}, "b": {"K": 9, "s": {"den": 2, "num": 5}, "u": 0}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 35}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 3, "num": 19}, "u": 1}, "b": {"K": 7, "s": {"den": 5, "num": 19}, "u": 3}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 15, "num": 19}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 3, "num": 19}, "u": 1}, "b": {"K": 7, "s": {"den": 5, "num": 19}, "u": 3}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 15, "num": 361}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 5, "num": 17}, "u": 2}, "b": {"K": 4, "s": {"den": 2, "num": 15}, "u": 0}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 10, "num": 1}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 5, "num": 17}, "u": 2}, "b": {"K": 4, "s": {"den": 2, "num": 15}, "u": 0}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 2, "num": 51}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 9}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 9}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 144}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 8}, "u": 2}, "b": {"K": 12, "s": {"den": 4, "num": 13}, "u": 8}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 8}, "u": 2}, "b": {"K": 12, "s": {"den": 4, "num": 13}, "u": 8}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 1, "num": 26}, "u": 4}}
+{"a": {"K": 5, "s": {"den": 1, "num": 13}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 9}, "u": 4}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 1, "num": 1}, "u": 1}}
+{"a": {"K": 5, "s": {"den": 1, "num": 13}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 9}, "u": 4}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 1, "num": 117}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 1, "num": 12}, "u": 2}, "b": {"K": 10, "s": {"den": 2, "num": 11}, "u": 0}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 2, "num": 1}, "u": 8}}
+{"a": {"K": 10, "s": {"den": 1, "num": 12}, "u": 2}, "b": {"K": 10, "s": {"den": 2, "num": 11}, "u": 0}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 66}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 3, "num": 10}, "u": 4}, "b": {"K": 7, "s": {"den": 3, "num": 17}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 7, "s": {"den": 3, "num": 10}, "u": 4}, "b": {"K": 7, "s": {"den": 3, "num": 17}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 9, "num": 170}, "u": 4}}
+{"a": {"K": 2, "s": {"den": 3, "num": 2}, "u": 0}, "b": {"K": 2, "s": {"den": 4, "num": 9}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 12, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 3, "num": 2}, "u": 0}, "b": {"K": 2, "s": {"den": 4, "num": 9}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 2, "num": 3}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 10}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 1}, "u": 1}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 6, "s": {"den": 1, "num": 10}, "u": 3}, "b": {"K": 6, "s": {"den": 3, "num": 1}, "u": 1}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 10}, "u": 3}}
+{"a": {"K": 11, "s": {"den": 1, "num": 14}, "u": 6}, "b": {"K": 11, "s": {"den": 3, "num": 2}, "u": 5}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 3, "num": 2}, "u": 10}}
+{"a": {"K": 11, "s": {"den": 1, "num": 14}, "u": 6}, "b": {"K": 11, "s": {"den": 3, "num": 2}, "u": 5}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 3, "num": 28}, "u": 8}}
+{"a": {"K": 5, "s": {"den": 6, "num": 19}, "u": 4}, "b": {"K": 5, "s": {"den": 4, "num": 5}, "u": 2}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 12, "num": 1}, "u": 2}}
+{"a": {"K": 5, "s": {"den": 6, "num": 19}, "u": 4}, "b": {"K": 5, "s": {"den": 4, "num": 5}, "u": 2}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 24, "num": 95}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 6, "num": 19}, "u": 1}, "b": {"K": 8, "s": {"den": 3, "num": 10}, "u": 7}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 6, "num": 1}, "u": 7}}
+{"a": {"K": 8, "s": {"den": 6, "num": 19}, "u": 1}, "b": {"K": 8, "s": {"den": 3, "num": 10}, "u": 7}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 9, "num": 95}, "u": 7}}
+{"a": {"K": 6, "s": {"den": 1, "num": 3}, "u": 5}, "b": {"K": 6, "s": {"den": 2, "num": 5}, "u": 4}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 2, "num": 1}, "u": 2}}
+{"a": {"K": 6, "s": {"den": 1, "num": 3}, "u": 5}, "b": {"K": 6, "s": {"den": 2, "num": 5}, "u": 4}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 2, "num": 15}, "u": 2}}
+{"a": {"K": 6, "s": {"den": 3, "num": 14}, "u": 1}, "b": {"K": 6, "s": {"den": 1, "num": 18}, "u": 3}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 2}, "u": 4}}
+{"a": {"K": 6, "s": {"den": 3, "num": 14}, "u": 1}, "b": {"K": 6, "s": {"den": 1, "num": 18}, "u": 3}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 1, "num": 84}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 3, "num": 11}, "u": 6}, "b": {"K": 8, "s": {"den": 1, "num": 1}, "u": 4}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 3, "num": 1}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 3, "num": 11}, "u": 6}, "b": {"K": 8, "s": {"den": 1, "num": 1}, "u": 4}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 3, "num": 11}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 2, "num": 11}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 3}, "u": 4}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 2, "num": 1}, "u": 4}}
+{"a": {"K": 5, "s": {"den": 2, "num": 11}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 3}, "u": 4}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 2, "num": 33}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 1, "num": 6}, "u": 6}, "b": {"K": 9, "s": {"den": 2, "num": 7}, "u": 7}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 2, "num": 1}, "u": 4}}
+{"a": {"K": 9, "s": {"den": 1, "num": 6}, "u": 6}, "b": {"K": 9, "s": {"den": 2, "num": 7}, "u": 7}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 21}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 5, "num": 7}, "u": 7}, "b": {"K": 8, "s": {"den": 3, "num": 11}, "u": 6}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 15, "num": 1}, "u": 5}}
+{"a": {"K": 8, "s": {"den": 5, "num": 7}, "u": 7}, "b": {"K": 8, "s": {"den": 3, "num": 11}, "u": 6}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 15, "num": 77}, "u": 2}}
+{"a": {"K": 2, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 13}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 13}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 26}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 7}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 7}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 21}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 6, "num": 17}, "u": 9}, "b": {"K": 10, "s": {"den": 1, "num": 6}, "u": 3}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 10, "s": {"den": 6, "num": 17}, "u": 9}, "b": {"K": 10, "s": {"den": 1, "num": 6}, "u": 3}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 17}, "u": 7}}
+{"a": {"K": 7, "s": {"den": 1, "num": 19}, "u": 3}, "b": {"K": 7, "s": {"den": 2, "num": 3}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 2, "num": 1}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 1, "num": 19}, "u": 3}, "b": {"K": 7, "s": {"den": 2, "num": 3}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 2, "num": 57}, "u": 5}}
+{"a": {"K": 7, "s": {"den": 1, "num": 12}, "u": 0}, "b": {"K": 7, "s": {"den": 2, "num": 5}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 2, "num": 1}, "u": 6}}
+{"a": {"K": 7, "s": {"den": 1, "num": 12}, "u": 0}, "b": {"K": 7, "s": {"den": 2, "num": 5}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 1, "num": 30}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 3, "num": 8}, "u": 2}, "b": {"K": 7, "s": {"den": 4, "num": 7}, "u": 2}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 12, "num": 1}, "u": 1}}
+{"a": {"K": 7, "s": {"den": 3, "num": 8}, "u": 2}, "b": {"K": 7, "s": {"den": 4, "num": 7}, "u": 2}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 3, "num": 14}, "u": 4}}
+{"a": {"K": 9, "s": {"den": 6, "num": 17}, "u": 8}, "b": {"K": 9, "s": {"den": 1, "num": 3}, "u": 6}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 6, "num": 17}, "u": 8}, "b": {"K": 9, "s": {"den": 1, "num": 3}, "u": 6}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 2, "num": 17}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 3, "num": 20}, "u": 1}, "b": {"K": 4, "s": {"den": 2, "num": 15}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 6, "num": 5}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 3, "num": 20}, "u": 1}, "b": {"K": 4, "s": {"den": 2, "num": 15}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 50}, "u": 3}}
+{"a": {"K": 2, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 5}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 5}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 20}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 7, "s": {"den": 4, "num": 9}, "u": 2}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 4, "num": 3}, "u": 6}}
+{"a": {"K": 7, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 7, "s": {"den": 4, "num": 9}, "u": 2}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 2, "num": 27}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 1, "s": {"den": 4, "num": 3}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 1, "s": {"den": 4, "num": 3}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 2, "num": 3}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 3, "num": 1}, "u": 10}, "b": {"K": 11, "s": {"den": 2, "num": 7}, "u": 9}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 3, "num": 1}, "u": 10}, "b": {"K": 11, "s": {"den": 2, "num": 7}, "u": 9}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 6, "num": 7}, "u": 2}}
+{"a": {"K": 9, "s": {"den": 4, "num": 15}, "u": 5}, "b": {"K": 9, "s": {"den": 1, "num": 5}, "u": 7}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 4, "num": 5}, "u": 7}}
+{"a": {"K": 9, "s": {"den": 4, "num": 15}, "u": 5}, "b": {"K": 9, "s": {"den": 1, "num": 5}, "u": 7}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 4, "num": 75}, "u": 8}}
+{"a": {"K": 7, "s": {"den": 1, "num": 2}, "u": 2}, "b": {"K": 7, "s": {"den": 5, "num": 17}, "u": 6}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 5, "num": 1}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 1, "num": 2}, "u": 2}, "b": {"K": 7, "s": {"den": 5, "num": 17}, "u": 6}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 5, "num": 34}, "u": 5}}
+{"a": {"K": 4, "s": {"den": 1, "num": 5}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 1, "num": 1}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 1, "num": 5}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 10}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 5}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 2, "num": 19}, "u": 5}, "b": {"K": 6, "s": {"den": 1, "num": 5}, "u": 3}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 2, "num": 1}, "u": 5}}
+{"a": {"K": 6, "s": {"den": 2, "num": 19}, "u": 5}, "b": {"K": 6, "s": {"den": 1, "num": 5}, "u": 3}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 2, "num": 95}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 1, "num": 4}, "u": 4}, "b": {"K": 6, "s": {"den": 5, "num": 7}, "u": 4}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 5, "num": 1}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 4}, "u": 4}, "b": {"K": 6, "s": {"den": 5, "num": 7}, "u": 4}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 5, "num": 28}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 2, "num": 7}, "u": 6}, "b": {"K": 12, "s": {"den": 1, "num": 10}, "u": 10}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 2, "num": 1}, "u": 2}}
+{"a": {"K": 12, "s": {"den": 2, "num": 7}, "u": 6}, "b": {"K": 12, "s": {"den": 1, "num": 10}, "u": 10}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 1, "num": 35}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 1, "num": 6}, "u": 5}, "b": {"K": 9, "s": {"den": 1, "num": 5}, "u": 7}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 1, "num": 1}, "u": 2}}
+{"a": {"K": 9, "s": {"den": 1, "num": 6}, "u": 5}, "b": {"K": 9, "s": {"den": 1, "num": 5}, "u": 7}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 30}, "u": 8}}
+{"a": {"K": 9, "s": {"den": 1, "num": 10}, "u": 7}, "b": {"K": 9, "s": {"den": 2, "num": 1}, "u": 6}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 2, "num": 1}, "u": 2}}
+{"a": {"K": 9, "s": {"den": 1, "num": 10}, "u": 7}, "b": {"K": 9, "s": {"den": 2, "num": 1}, "u": 6}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 5}, "u": 6}}
+{"a": {"K": 7, "s": {"den": 1, "num": 1}, "u": 2}, "b": {"K": 7, "s": {"den": 1, "num": 20}, "u": 0}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 1, "num": 1}, "u": 2}}
+{"a": {"K": 7, "s": {"den": 1, "num": 1}, "u": 2}, "b": {"K": 7, "s": {"den": 1, "num": 20}, "u": 0}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 1, "num": 20}, "u": 0}}
+{"a": {"K": 3, "s": {"den": 1, "num": 7}, "u": 2}, "b": {"K": 3, "s": {"den": 2, "num": 13}, "u": 0}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 2, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 1, "num": 7}, "u": 2}, "b": {"K": 3, "s": {"den": 2, "num": 13}, "u": 0}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 2, "num": 91}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 14}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 2, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 2, "num": 9}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 14}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 63}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 1, "num": 16}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 2}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 1, "num": 2}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 1, "num": 16}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 2}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 32}, "u": 1}}
+{"a": {"K": 5, "s": {"den": 3, "num": 13}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 8}, "u": 4}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 5, "s": {"den": 3, "num": 13}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 8}, "u": 4}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 3, "num": 104}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 2, "num": 17}, "u": 1}, "b": {"K": 5, "s": {"den": 2, "num": 3}, "u": 3}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 2, "num": 1}, "u": 1}}
+{"a": {"K": 5, "s": {"den": 2, "num": 17}, "u": 1}, "b": {"K": 5, "s": {"den": 2, "num": 3}, "u": 3}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 4, "num": 51}, "u": 3}}
+{"a": {"K": 1, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 16}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 3}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 16}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 1, "num": 16}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 2, "num": 13}, "u": 1}, "b": {"K": 6, "s": {"den": 4, "num": 19}, "u": 3}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 4, "num": 1}, "u": 5}}
+{"a": {"K": 6, "s": {"den": 2, "num": 13}, "u": 1}, "b": {"K": 6, "s": {"den": 4, "num": 19}, "u": 3}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 8, "num": 247}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 2, "num": 3}, "u": 7}, "b": {"K": 8, "s": {"den": 5, "num": 3}, "u": 5}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 10, "num": 3}, "u": 5}}
+{"a": {"K": 8, "s": {"den": 2, "num": 3}, "u": 7}, "b": {"K": 8, "s": {"den": 5, "num": 3}, "u": 5}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 10, "num": 9}, "u": 3}}
+{"a": {"K": 6, "s": {"den": 3, "num": 10}, "u": 4}, "b": {"K": 6, "s": {"den": 1, "num": 10}, "u": 4}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 10}, "u": 4}}
+{"a": {"K": 6, "s": {"den": 3, "num": 10}, "u": 4}, "b": {"K": 6, "s": {"den": 1, "num": 10}, "u": 4}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 100}, "u": 4}}
+{"a": {"K": 8, "s": {"den": 5, "num": 16}, "u": 4}, "b": {"K": 8, "s": {"den": 6, "num": 17}, "u": 2}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 30, "num": 1}, "u": 2}}
+{"a": {"K": 8, "s": {"den": 5, "num": 16}, "u": 4}, "b": {"K": 8, "s": {"den": 6, "num": 17}, "u": 2}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 15, "num": 136}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 1, "num": 5}, "u": 8}, "b": {"K": 11, "s": {"den": 1, "num": 9}, "u": 8}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 1, "num": 1}, "u": 2}}
+{"a": {"K": 11, "s": {"den": 1, "num": 5}, "u": 8}, "b": {"K": 11, "s": {"den": 1, "num": 9}, "u": 8}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 45}, "u": 9}}
+{"a": {"K": 2, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 10}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 2}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 10}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 60}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 4, "num": 15}, "u": 7}, "b": {"K": 12, "s": {"den": 1, "num": 3}, "u": 5}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 4, "num": 3}, "u": 7}}
+{"a": {"K": 12, "s": {"den": 4, "num": 15}, "u": 7}, "b": {"K": 12, "s": {"den": 1, "num": 3}, "u": 5}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 4, "num": 45}, "u": 11}}
+{"a": {"K": 4, "s": {"den": 5, "num": 18}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 5}, "u": 1}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 4, "s": {"den": 5, "num": 18}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 5}, "u": 1}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 18}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 1, "num": 16}, "u": 0}, "b": {"K": 10, "s": {"den": 1, "num": 3}, "u": 3}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 1, "num": 1}, "u": 9}}
+{"a": {"K": 10, "s": {"den": 1, "num": 16}, "u": 0}, "b": {"K": 10, "s": {"den": 1, "num": 3}, "u": 3}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 48}, "u": 0}}
+{"a": {"K": 6, "s": {"den": 1, "num": 7}, "u": 4}, "b": {"K": 6, "s": {"den": 3, "num": 7}, "u": 4}, "op": "scaled_add", "result": {"K": 6, "s": {"den": 3, "num": 7}, "u": 4}}
+{"a": {"K": 6, "s": {"den": 1, "num": 7}, "u": 4}, "b": {"K": 6, "s": {"den": 3, "num": 7}, "u": 4}, "op": "scaled_mul", "result": {"K": 6, "s": {"den": 3, "num": 49}, "u": 4}}
+{"a": {"K": 11, "s": {"den": 1, "num": 3}, "u": 4}, "b": {"K": 11, "s": {"den": 1, "num": 3}, "u": 9}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 1, "num": 3}, "u": 2}}
+{"a": {"K": 11, "s": {"den": 1, "num": 3}, "u": 4}, "b": {"K": 11, "s": {"den": 1, "num": 3}, "u": 9}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 9}, "u": 3}}
+{"a": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 2}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 3, "num": 2}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 2}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 3, "num": 4}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 3, "num": 4}, "u": 2}, "b": {"K": 5, "s": {"den": 2, "num": 3}, "u": 3}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 6, "num": 1}, "u": 3}}
+{"a": {"K": 5, "s": {"den": 3, "num": 4}, "u": 2}, "b": {"K": 5, "s": {"den": 2, "num": 3}, "u": 3}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 1, "num": 2}, "u": 1}}
+{"a": {"K": 1, "s": {"den": 2, "num": 9}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 2, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 2, "num": 9}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 2, "num": 9}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 3, "num": 10}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 11}, "u": 2}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 5, "s": {"den": 3, "num": 10}, "u": 0}, "b": {"K": 5, "s": {"den": 1, "num": 11}, "u": 2}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 3, "num": 110}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 2, "num": 11}, "u": 2}, "b": {"K": 8, "s": {"den": 6, "num": 1}, "u": 4}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 6, "num": 1}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 2, "num": 11}, "u": 2}, "b": {"K": 8, "s": {"den": 6, "num": 1}, "u": 4}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 12, "num": 11}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 2, "num": 9}, "u": 8}, "b": {"K": 10, "s": {"den": 2, "num": 19}, "u": 9}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 2, "num": 1}, "u": 3}}
+{"a": {"K": 10, "s": {"den": 2, "num": 9}, "u": 8}, "b": {"K": 10, "s": {"den": 2, "num": 19}, "u": 9}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 4, "num": 171}, "u": 2}}
+{"a": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 1}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 3}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 3}, "u": 0}}
+{"a": {"K": 9, "s": {"den": 2, "num": 3}, "u": 8}, "b": {"K": 9, "s": {"den": 4, "num": 17}, "u": 5}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 4, "num": 1}, "u": 7}}
+{"a": {"K": 9, "s": {"den": 2, "num": 3}, "u": 8}, "b": {"K": 9, "s": {"den": 4, "num": 17}, "u": 5}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 8, "num": 51}, "u": 4}}
+{"a": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 8}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}}
+{"a": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}, "b": {"K": 2, "s": {"den": 1, "num": 8}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 32}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 1, "num": 2}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 18}, "u": 1}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 1, "num": 2}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 2}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 18}, "u": 1}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 1, "num": 36}, "u": 7}}
+{"a": {"K": 8, "s": {"den": 3, "num": 1}, "u": 4}, "b": {"K": 8, "s": {"den": 4, "num": 19}, "u": 0}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 12, "num": 1}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 3, "num": 1}, "u": 4}, "b": {"K": 8, "s": {"den": 4, "num": 19}, "u": 0}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 12, "num": 19}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 6, "num": 5}, "u": 5}, "b": {"K": 7, "s": {"den": 3, "num": 20}, "u": 2}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 6, "num": 5}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 6, "num": 5}, "u": 5}, "b": {"K": 7, "s": {"den": 3, "num": 20}, "u": 2}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 9, "num": 50}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 2, "num": 11}, "u": 3}, "b": {"K": 7, "s": {"den": 3, "num": 19}, "u": 2}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 2, "num": 11}, "u": 3}, "b": {"K": 7, "s": {"den": 3, "num": 19}, "u": 2}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 6, "num": 209}, "u": 6}}
+{"a": {"K": 7, "s": {"den": 1, "num": 11}, "u": 3}, "b": {"K": 7, "s": {"den": 4, "num": 7}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 4, "num": 1}, "u": 6}}
+{"a": {"K": 7, "s": {"den": 1, "num": 11}, "u": 3}, "b": {"K": 7, "s": {"den": 4, "num": 7}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 4, "num": 77}, "u": 3}}
+{"a": {"K": 9, "s": {"den": 3, "num": 20}, "u": 2}, "b": {"K": 9, "s": {"den": 6, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 6, "num": 1}, "u": 8}}
+{"a": {"K": 9, "s": {"den": 3, "num": 20}, "u": 2}, "b": {"K": 9, "s": {"den": 6, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 9, "num": 10}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 3, "num": 16}, "u": 1}, "b": {"K": 7, "s": {"den": 4, "num": 5}, "u": 4}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 12, "num": 1}, "u": 5}}
+{"a": {"K": 7, "s": {"den": 3, "num": 16}, "u": 1}, "b": {"K": 7, "s": {"den": 4, "num": 5}, "u": 4}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 3, "num": 20}, "u": 4}}
+{"a": {"K": 3, "s": {"den": 6, "num": 19}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 3, "s": {"den": 6, "num": 19}, "u": 1}, "b": {"K": 3, "s": {"den": 3, "num": 1}, "u": 0}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 18, "num": 19}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 5, "num": 13}, "u": 2}, "b": {"K": 12, "s": {"den": 1, "num": 8}, "u": 8}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 5, "num": 1}, "u": 10}}
+{"a": {"K": 12, "s": {"den": 5, "num": 13}, "u": 2}, "b": {"K": 12, "s": {"den": 1, "num": 8}, "u": 8}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 5, "num": 104}, "u": 4}}
+{"a": {"K": 1, "s": {"den": 1, "num": 20}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 20}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 3, "num": 20}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 20}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 20}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 3, "num": 400}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 1}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 3}, "u": 7}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 1, "num": 1}, "u": 4}}
+{"a": {"K": 8, "s": {"den": 1, "num": 1}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 3}, "u": 7}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 1, "num": 3}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 1, "num": 7}, "u": 2}, "b": {"K": 8, "s": {"den": 5, "num": 18}, "u": 4}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 5, "num": 1}, "u": 6}}
+{"a": {"K": 8, "s": {"den": 1, "num": 7}, "u": 2}, "b": {"K": 8, "s": {"den": 5, "num": 18}, "u": 4}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 5, "num": 126}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 1, "num": 18}, "u": 3}, "b": {"K": 10, "s": {"den": 2, "num": 1}, "u": 9}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 2, "num": 1}, "u": 7}}
+{"a": {"K": 10, "s": {"den": 1, "num": 18}, "u": 3}, "b": {"K": 10, "s": {"den": 2, "num": 1}, "u": 9}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 9}, "u": 7}}
+{"a": {"K": 4, "s": {"den": 5, "num": 7}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 3}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 4, "s": {"den": 5, "num": 7}, "u": 0}, "b": {"K": 4, "s": {"den": 1, "num": 3}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 5, "num": 21}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 3, "num": 4}, "u": 3}, "b": {"K": 5, "s": {"den": 1, "num": 4}, "u": 2}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 3, "num": 4}, "u": 4}}
+{"a": {"K": 5, "s": {"den": 3, "num": 4}, "u": 3}, "b": {"K": 5, "s": {"den": 1, "num": 4}, "u": 2}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 3, "num": 16}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 1, "num": 2}, "u": 1}, "b": {"K": 12, "s": {"den": 5, "num": 9}, "u": 10}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 5, "num": 1}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 1, "num": 2}, "u": 1}, "b": {"K": 12, "s": {"den": 5, "num": 9}, "u": 10}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 5, "num": 18}, "u": 10}}
+{"a": {"K": 10, "s": {"den": 1, "num": 8}, "u": 1}, "b": {"K": 10, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 3, "num": 1}, "u": 4}}
+{"a": {"K": 10, "s": {"den": 1, "num": 8}, "u": 1}, "b": {"K": 10, "s": {"den": 3, "num": 17}, "u": 0}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 3, "num": 136}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 1, "num": 1}, "u": 6}, "b": {"K": 7, "s": {"den": 5, "num": 4}, "u": 6}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 5, "num": 1}, "u": 5}}
+{"a": {"K": 7, "s": {"den": 1, "num": 1}, "u": 6}, "b": {"K": 7, "s": {"den": 5, "num": 4}, "u": 6}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 5, "num": 4}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 3, "num": 13}, "u": 6}, "b": {"K": 9, "s": {"den": 1, "num": 1}, "u": 6}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 3, "num": 1}, "u": 6}}
+{"a": {"K": 9, "s": {"den": 3, "num": 13}, "u": 6}, "b": {"K": 9, "s": {"den": 1, "num": 1}, "u": 6}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 3, "num": 13}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 3, "num": 19}, "u": 0}, "b": {"K": 1, "s": {"den": 6, "num": 13}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 6, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 3, "num": 19}, "u": 0}, "b": {"K": 1, "s": {"den": 6, "num": 13}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 18, "num": 247}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 3, "num": 4}, "u": 1}, "b": {"K": 4, "s": {"den": 3, "num": 1}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 3, "num": 4}, "u": 1}, "b": {"K": 4, "s": {"den": 3, "num": 1}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 9, "num": 4}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 1, "num": 5}, "u": 2}, "b": {"K": 7, "s": {"den": 4, "num": 15}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 4, "num": 5}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 1, "num": 5}, "u": 2}, "b": {"K": 7, "s": {"den": 4, "num": 15}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 4, "num": 75}, "u": 2}}
+{"a": {"K": 1, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 5, "num": 2}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 5, "num": 16}, "u": 0}, "b": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 5, "num": 32}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 2, "num": 9}, "u": 5}, "b": {"K": 8, "s": {"den": 4, "num": 19}, "u": 5}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 2, "num": 9}, "u": 5}, "b": {"K": 8, "s": {"den": 4, "num": 19}, "u": 5}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 8, "num": 171}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 5, "num": 11}, "u": 7}, "b": {"K": 12, "s": {"den": 1, "num": 2}, "u": 8}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 5, "num": 1}, "u": 1}}
+{"a": {"K": 12, "s": {"den": 5, "num": 11}, "u": 7}, "b": {"K": 12, "s": {"den": 1, "num": 2}, "u": 8}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 5, "num": 22}, "u": 8}}
+{"a": {"K": 8, "s": {"den": 2, "num": 19}, "u": 1}, "b": {"K": 8, "s": {"den": 1, "num": 2}, "u": 6}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 2, "num": 1}, "u": 3}}
+{"a": {"K": 8, "s": {"den": 2, "num": 19}, "u": 1}, "b": {"K": 8, "s": {"den": 1, "num": 2}, "u": 6}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 1, "num": 19}, "u": 6}}
+{"a": {"K": 11, "s": {"den": 6, "num": 17}, "u": 0}, "b": {"K": 11, "s": {"den": 4, "num": 1}, "u": 7}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 12, "num": 1}, "u": 10}}
+{"a": {"K": 11, "s": {"den": 6, "num": 17}, "u": 0}, "b": {"K": 11, "s": {"den": 4, "num": 1}, "u": 7}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 24, "num": 17}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 1, "num": 2}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 1, "num": 8}, "u": 0}}
+{"a": {"K": 12, "s": {"den": 1, "num": 14}, "u": 1}, "b": {"K": 12, "s": {"den": 2, "num": 5}, "u": 10}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 2, "num": 1}, "u": 6}}
+{"a": {"K": 12, "s": {"den": 1, "num": 14}, "u": 1}, "b": {"K": 12, "s": {"den": 2, "num": 5}, "u": 10}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 1, "num": 35}, "u": 10}}
+{"a": {"K": 11, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 11, "s": {"den": 3, "num": 7}, "u": 9}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 3, "num": 1}, "u": 8}}
+{"a": {"K": 11, "s": {"den": 1, "num": 4}, "u": 0}, "b": {"K": 11, "s": {"den": 3, "num": 7}, "u": 9}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 3, "num": 28}, "u": 0}}
+{"a": {"K": 11, "s": {"den": 4, "num": 9}, "u": 10}, "b": {"K": 11, "s": {"den": 5, "num": 2}, "u": 4}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 20, "num": 1}, "u": 9}}
+{"a": {"K": 11, "s": {"den": 4, "num": 9}, "u": 10}, "b": {"K": 11, "s": {"den": 5, "num": 2}, "u": 4}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 10, "num": 9}, "u": 7}}
+{"a": {"K": 11, "s": {"den": 4, "num": 15}, "u": 5}, "b": {"K": 11, "s": {"den": 1, "num": 4}, "u": 1}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 4, "num": 1}, "u": 3}}
+{"a": {"K": 11, "s": {"den": 4, "num": 15}, "u": 5}, "b": {"K": 11, "s": {"den": 1, "num": 4}, "u": 1}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 1, "num": 15}, "u": 5}}
+{"a": {"K": 2, "s": {"den": 3, "num": 7}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 10}, "u": 1}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 3, "num": 7}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 10}, "u": 1}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 9, "num": 70}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 4, "num": 17}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 8}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 12, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 4, "num": 17}, "u": 0}, "b": {"K": 2, "s": {"den": 3, "num": 8}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 3, "num": 34}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 2, "num": 13}, "u": 0}, "b": {"K": 4, "s": {"den": 6, "num": 11}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 4, "s": {"den": 2, "num": 13}, "u": 0}, "b": {"K": 4, "s": {"den": 6, "num": 11}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 12, "num": 143}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 5}, "u": 0}, "op": "scaled_add", "result": {"K": 1, "s": {"den": 3, "num": 1}, "u": 0}}
+{"a": {"K": 1, "s": {"den": 1, "num": 2}, "u": 0}, "b": {"K": 1, "s": {"den": 3, "num": 5}, "u": 0}, "op": "scaled_mul", "result": {"K": 1, "s": {"den": 3, "num": 10}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 1, "num": 10}, "u": 0}, "b": {"K": 4, "s": {"den": 4, "num": 19}, "u": 3}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 4, "s": {"den": 1, "num": 10}, "u": 0}, "b": {"K": 4, "s": {"den": 4, "num": 19}, "u": 3}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 2, "num": 95}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 2, "num": 17}, "u": 0}, "b": {"K": 7, "s": {"den": 5, "num": 11}, "u": 5}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 10, "num": 1}, "u": 5}}
+{"a": {"K": 7, "s": {"den": 2, "num": 17}, "u": 0}, "b": {"K": 7, "s": {"den": 5, "num": 11}, "u": 5}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 10, "num": 187}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 5, "num": 1}, "u": 9}, "b": {"K": 10, "s": {"den": 1, "num": 5}, "u": 6}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 5, "num": 1}, "u": 9}}
+{"a": {"K": 10, "s": {"den": 5, "num": 1}, "u": 9}, "b": {"K": 10, "s": {"den": 1, "num": 5}, "u": 6}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 1}, "u": 4}}
+{"a": {"K": 3, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 3, "s": {"den": 1, "num": 7}, "u": 2}, "op": "scaled_add", "result": {"K": 3, "s": {"den": 1, "num": 1}, "u": 2}}
+{"a": {"K": 3, "s": {"den": 1, "num": 6}, "u": 0}, "b": {"K": 3, "s": {"den": 1, "num": 7}, "u": 2}, "op": "scaled_mul", "result": {"K": 3, "s": {"den": 1, "num": 42}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 6, "num": 5}, "u": 5}, "b": {"K": 10, "s": {"den": 5, "num": 18}, "u": 7}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 30, "num": 1}, "u": 1}}
+{"a": {"K": 10, "s": {"den": 6, "num": 5}, "u": 5}, "b": {"K": 10, "s": {"den": 5, "num": 18}, "u": 7}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 1, "num": 3}, "u": 5}}
+{"a": {"K": 8, "s": {"den": 6, "num": 7}, "u": 3}, "b": {"K": 8, "s": {"den": 1, "num": 11}, "u": 6}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 6, "num": 1}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 6, "num": 7}, "u": 3}, "b": {"K": 8, "s": {"den": 1, "num": 11}, "u": 6}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 6, "num": 77}, "u": 2}}
+{"a": {"K": 8, "s": {"den": 2, "num": 17}, "u": 7}, "b": {"K": 8, "s": {"den": 3, "num": 13}, "u": 1}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 6, "num": 1}, "u": 7}}
+{"a": {"K": 8, "s": {"den": 2, "num": 17}, "u": 7}, "b": {"K": 8, "s": {"den": 3, "num": 13}, "u": 1}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 6, "num": 221}, "u": 7}}
+{"a": {"K": 11, "s": {"den": 5, "num": 1}, "u": 10}, "b": {"K": 11, "s": {"den": 1, "num": 12}, "u": 3}, "op": "scaled_add", "result": {"K": 11, "s": {"den": 5, "num": 1}, "u": 3}}
+{"a": {"K": 11, "s": {"den": 5, "num": 1}, "u": 10}, "b": {"K": 11, "s": {"den": 1, "num": 12}, "u": 3}, "op": "scaled_mul", "result": {"K": 11, "s": {"den": 5, "num": 12}, "u": 8}}
+{"a": {"K": 7, "s": {"den": 5, "num": 12}, "u": 6}, "b": {"K": 7, "s": {"den": 1, "num": 2}, "u": 3}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 5, "num": 2}, "u": 2}}
+{"a": {"K": 7, "s": {"den": 5, "num": 12}, "u": 6}, "b": {"K": 7, "s": {"den": 1, "num": 2}, "u": 3}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 5, "num": 24}, "u": 4}}
+{"a": {"K": 4, "s": {"den": 1, "num": 10}, "u": 1}, "b": {"K": 4, "s": {"den": 1, "num": 7}, "u": 2}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 1, "num": 1}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 1, "num": 10}, "u": 1}, "b": {"K": 4, "s": {"den": 1, "num": 7}, "u": 2}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 70}, "u": 2}}
+{"a": {"K": 5, "s": {"den": 1, "num": 3}, "u": 4}, "b": {"K": 5, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 1, "num": 1}, "u": 4}}
+{"a": {"K": 5, "s": {"den": 1, "num": 3}, "u": 4}, "b": {"K": 5, "s": {"den": 1, "num": 2}, "u": 1}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 1, "num": 6}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 5, "num": 6}, "u": 10}, "b": {"K": 12, "s": {"den": 4, "num": 13}, "u": 3}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 20, "num": 1}, "u": 3}}
+{"a": {"K": 12, "s": {"den": 5, "num": 6}, "u": 10}, "b": {"K": 12, "s": {"den": 4, "num": 13}, "u": 3}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 10, "num": 39}, "u": 6}}
+{"a": {"K": 12, "s": {"den": 1, "num": 10}, "u": 0}, "b": {"K": 12, "s": {"den": 1, "num": 1}, "u": 4}, "op": "scaled_add", "result": {"K": 12, "s": {"den": 1, "num": 1}, "u": 4}}
+{"a": {"K": 12, "s": {"den": 1, "num": 10}, "u": 0}, "b": {"K": 12, "s": {"den": 1, "num": 1}, "u": 4}, "op": "scaled_mul", "result": {"K": 12, "s": {"den": 1, "num": 10}, "u": 0}}
+{"a": {"K": 10, "s": {"den": 3, "num": 11}, "u": 8}, "b": {"K": 10, "s": {"den": 5, "num": 18}, "u": 3}, "op": "scaled_add", "result": {"K": 10, "s": {"den": 15, "num": 1}, "u": 2}}
+{"a": {"K": 10, "s": {"den": 3, "num": 11}, "u": 8}, "b": {"K": 10, "s": {"den": 5, "num": 18}, "u": 3}, "op": "scaled_mul", "result": {"K": 10, "s": {"den": 5, "num": 66}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 6, "num": 1}, "u": 0}, "b": {"K": 7, "s": {"den": 5, "num": 14}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 30, "num": 1}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 6, "num": 1}, "u": 0}, "b": {"K": 7, "s": {"den": 5, "num": 14}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 15, "num": 7}, "u": 0}}
+{"a": {"K": 4, "s": {"den": 1, "num": 5}, "u": 1}, "b": {"K": 4, "s": {"den": 3, "num": 17}, "u": 2}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 3, "num": 1}, "u": 1}}
+{"a": {"K": 4, "s": {"den": 1, "num": 5}, "u": 1}, "b": {"K": 4, "s": {"den": 3, "num": 17}, "u": 2}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 3, "num": 85}, "u": 2}}
+{"a": {"K": 4, "s": {"den": 1, "num": 2}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 6}, "u": 0}, "op": "scaled_add", "result": {"K": 4, "s": {"den": 1, "num": 2}, "u": 3}}
+{"a": {"K": 4, "s": {"den": 1, "num": 2}, "u": 3}, "b": {"K": 4, "s": {"den": 1, "num": 6}, "u": 0}, "op": "scaled_mul", "result": {"K": 4, "s": {"den": 1, "num": 12}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 4, "num": 19}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 9}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 4, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 4, "num": 19}, "u": 0}, "b": {"K": 2, "s": {"den": 1, "num": 9}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 4, "num": 171}, "u": 0}}
+{"a": {"K": 7, "s": {"den": 4, "num": 19}, "u": 6}, "b": {"K": 7, "s": {"den": 1, "num": 5}, "u": 1}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 7, "s": {"den": 4, "num": 19}, "u": 6}, "b": {"K": 7, "s": {"den": 1, "num": 5}, "u": 1}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 4, "num": 95}, "u": 6}}
+{"a": {"K": 9, "s": {"den": 3, "num": 4}, "u": 3}, "b": {"K": 9, "s": {"den": 1, "num": 7}, "u": 0}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 3, "num": 1}, "u": 3}}
+{"a": {"K": 9, "s": {"den": 3, "num": 4}, "u": 3}, "b": {"K": 9, "s": {"den": 1, "num": 7}, "u": 0}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 3, "num": 28}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 8, "s": {"den": 2, "num": 5}, "u": 2}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 2, "num": 1}, "u": 2}}
+{"a": {"K": 8, "s": {"den": 1, "num": 1}, "u": 0}, "b": {"K": 8, "s": {"den": 2, "num": 5}, "u": 2}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 2, "num": 5}, "u": 0}}
+{"a": {"K": 8, "s": {"den": 1, "num": 10}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 6}, "u": 2}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 1, "num": 2}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 1, "num": 10}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 6}, "u": 2}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 1, "num": 60}, "u": 6}}
+{"a": {"K": 9, "s": {"den": 4, "num": 9}, "u": 8}, "b": {"K": 9, "s": {"den": 5, "num": 12}, "u": 8}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 20, "num": 3}, "u": 5}}
+{"a": {"K": 9, "s": {"den": 4, "num": 9}, "u": 8}, "b": {"K": 9, "s": {"den": 5, "num": 12}, "u": 8}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 5, "num": 27}, "u": 1}}
+{"a": {"K": 9, "s": {"den": 5, "num": 17}, "u": 8}, "b": {"K": 9, "s": {"den": 1, "num": 5}, "u": 8}, "op": "scaled_add", "result": {"K": 9, "s": {"den": 5, "num": 1}, "u": 3}}
+{"a": {"K": 9, "s": {"den": 5, "num": 17}, "u": 8}, "b": {"K": 9, "s": {"den": 1, "num": 5}, "u": 8}, "op": "scaled_mul", "result": {"K": 9, "s": {"den": 1, "num": 17}, "u": 1}}
+{"a": {"K": 7, "s": {"den": 1, "num": 16}, "u": 6}, "b": {"K": 7, "s": {"den": 1, "num": 1}, "u": 6}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 1, "num": 1}, "u": 4}}
+{"a": {"K": 7, "s": {"den": 1, "num": 16}, "u": 6}, "b": {"K": 7, "s": {"den": 1, "num": 1}, "u": 6}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 1, "num": 16}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 4, "num": 3}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 11}, "u": 5}, "op": "scaled_add", "result": {"K": 8, "s": {"den": 4, "num": 1}, "u": 1}}
+{"a": {"K": 8, "s": {"den": 4, "num": 3}, "u": 7}, "b": {"K": 8, "s": {"den": 1, "num": 11}, "u": 5}, "op": "scaled_mul", "result": {"K": 8, "s": {"den": 4, "num": 33}, "u": 3}}
+{"a": {"K": 7, "s": {"den": 5, "num": 9}, "u": 4}, "b": {"K": 7, "s": {"den": 3, "num": 5}, "u": 3}, "op": "scaled_add", "result": {"K": 7, "s": {"den": 15, "num": 1}, "u": 1}}
+{"a": {"K": 7, "s": {"den": 5, "num": 9}, "u": 4}, "b": {"K": 7, "s": {"den": 3, "num": 5}, "u": 3}, "op": "scaled_mul", "result": {"K": 7, "s": {"den": 1, "num": 3}, "u": 5}}
+{"a": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}, "b": {"K": 2, "s": {"den": 5, "num": 3}, "u": 0}, "op": "scaled_add", "result": {"K": 2, "s": {"den": 5, "num": 1}, "u": 0}}
+{"a": {"K": 2, "s": {"den": 1, "num": 4}, "u": 1}, "b": {"K": 2, "s": {"den": 5, "num": 3}, "u": 0}, "op": "scaled_mul", "result": {"K": 2, "s": {"den": 5, "num": 12}, "u": 0}}
+{"a": {"K": 5, "s": {"den": 6, "num": 13}, "u": 3}, "b": {"K": 5, "s": {"den": 1, "num": 6}, "u": 0}, "op": "scaled_add", "result": {"K": 5, "s": {"den": 6, "num": 1}, "u": 4}}
+{"a": {"K": 5, "s": {"den": 6, "num": 13}, "u": 3}, "b": {"K": 5, "s": {"den": 1, "num": 6}, "u": 0}, "op": "scaled_mul", "result": {"K": 5, "s": {"den": 1, "num": 13}, "u": 0}}
+{"C": {"den": 1, "num": 8}, "ball": {"A": 0, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 3, "num": 19}, "ball": {"A": 7, "H": 18, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 22}, "ball": {"A": 0, "H": 1, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 5, "num": 18}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 15}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 7, "H": 17, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 2, "num": 3}, "ball": {"A": 1, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 2}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 6, "H": 18, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 1}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 6, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 6, "H": 0, "d": 1}}
+{"C": {"den": 6, "num": 1}, "ball": {"A": -6, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -6, "H": 0, "d": 1}}
+{"C": {"den": 4, "num": 3}, "ball": {"A": 0, "H": 12, "d": 7}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 28}}
+{"C": {"den": 4, "num": 17}, "ball": {"A": 1, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 1, "H": 12, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 12, "d": 3}}
+{"C": {"den": 4, "num": 15}, "ball": {"A": 16, "H": 0, "d": 3}, "op": "absolute_cap", "result": {"A": 16, "H": 0, "d": 3}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 1, "H": 8, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 1, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 2, "H": 4, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 1}}
+{"C": {"den": 1, "num": 2}, "ball": {"A": 29, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 29, "H": 0, "d": 1}}
+{"C": {"den": 2, "num": 13}, "ball": {"A": 23, "H": 30, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 6}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 1, "H": 2, "d": 2}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 2}}
+{"C": {"den": 2, "num": 27}, "ball": {"A": 12, "H": 18, "d": 1}, "op": "absolute_cap", "result": {"A": 6, "H": 9, "d": 2}}
+{"C": {"den": 2, "num": 5}, "ball": {"A": 0, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 2, "num": 19}, "ball": {"A": 20, "H": 24, "d": 9}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 18}}
+{"C": {"den": 2, "num": 7}, "ball": {"A": 2, "H": 15, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 21, "H": 24, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 4, "d": 4}}
+{"C": {"den": 3, "num": 25}, "ball": {"A": 11, "H": 31, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 4, "num": 13}, "ball": {"A": 3, "H": 12, "d": 5}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 20}}
+{"C": {"den": 1, "num": 8}, "ball": {"A": 0, "H": 3, "d": 8}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 8}}
+{"C": {"den": 3, "num": 17}, "ball": {"A": 5, "H": 8, "d": 7}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 21}}
+{"C": {"den": 3, "num": 7}, "ball": {"A": 18, "H": 24, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 5, "num": 24}, "ball": {"A": 0, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 6, "d": 5}}
+{"C": {"den": 3, "num": 8}, "ball": {"A": 0, "H": 1, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 4, "num": 5}, "ball": {"A": 1, "H": 2, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 12}}
+{"C": {"den": 5, "num": 2}, "ball": {"A": 1, "H": 2, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 30}}
+{"C": {"den": 5, "num": 6}, "ball": {"A": 7, "H": 24, "d": 9}, "op": "absolute_cap", "result": {"A": 5, "H": 6, "d": 45}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 16, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 16, "H": 0, "d": 1}}
+{"C": {"den": 2, "num": 9}, "ball": {"A": 1, "H": 2, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 4}}
+{"C": {"den": 3, "num": 28}, "ball": {"A": 0, "H": 1, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 3, "num": 2}, "ball": {"A": 16, "H": 24, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 3}}
+{"C": {"den": 3, "num": 8}, "ball": {"A": 13, "H": 38, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 3}}
+{"C": {"den": 2, "num": 3}, "ball": {"A": -17, "H": 0, "d": 3}, "op": "absolute_cap", "result": {"A": -17, "H": 0, "d": 3}}
+{"C": {"den": 3, "num": 22}, "ball": {"A": -36, "H": 0, "d": 11}, "op": "absolute_cap", "result": {"A": -36, "H": 0, "d": 11}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 7, "H": 30, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 2, "num": 3}, "ball": {"A": 3, "H": 12, "d": 4}, "op": "absolute_cap", "result": {"A": 3, "H": 6, "d": 4}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 11, "H": 18, "d": 3}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 3}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 0, "H": 1, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 2, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 4, "d": 1}}
+{"C": {"den": 3, "num": 29}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 25}, "ball": {"A": 2, "H": 9, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 4, "H": 9, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 3}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 3, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 3, "num": 7}, "ball": {"A": 1, "H": 13, "d": 11}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 33}}
+{"C": {"den": 1, "num": 20}, "ball": {"A": 0, "H": 1, "d": 11}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 11}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 1, "H": 9, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 3}}
+{"C": {"den": 4, "num": 19}, "ball": {"A": 0, "H": 1, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 12}}
+{"C": {"den": 2, "num": 9}, "ball": {"A": 11, "H": 18, "d": 6}, "op": "absolute_cap", "result": {"A": 2, "H": 9, "d": 6}}
+{"C": {"den": 2, "num": 23}, "ball": {"A": 8, "H": 15, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 2, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 1}}
+{"C": {"den": 3, "num": 20}, "ball": {"A": 0, "H": 1, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 3, "num": 1}, "ball": {"A": 0, "H": 1, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 1, "H": 18, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 4}}
+{"C": {"den": 4, "num": 15}, "ball": {"A": 1, "H": 4, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 3, "num": 8}, "ball": {"A": 1, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 3}}
+{"C": {"den": 4, "num": 13}, "ball": {"A": 1, "H": 5, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 3, "num": 17}, "ball": {"A": 1, "H": 2, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 12}}
+{"C": {"den": 2, "num": 13}, "ball": {"A": 0, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 5, "num": 18}, "ball": {"A": 0, "H": 1, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 10}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 5, "H": 6, "d": 2}, "op": "absolute_cap", "result": {"A": 5, "H": 6, "d": 2}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 20, "H": 30, "d": 3}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 3}}
+{"C": {"den": 2, "num": 15}, "ball": {"A": 2, "H": 3, "d": 4}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 4}}
+{"C": {"den": 3, "num": 28}, "ball": {"A": -35, "H": 0, "d": 6}, "op": "absolute_cap", "result": {"A": -35, "H": 0, "d": 6}}
+{"C": {"den": 3, "num": 10}, "ball": {"A": 1, "H": 2, "d": 2}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 3, "num": 10}, "ball": {"A": 6, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 3}}
+{"C": {"den": 5, "num": 23}, "ball": {"A": 1, "H": 6, "d": 2}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 10}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": -27, "H": 0, "d": 4}, "op": "absolute_cap", "result": {"A": -27, "H": 0, "d": 4}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 5, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 1}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 0, "H": 1, "d": 8}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 8}}
+{"C": {"den": 3, "num": 7}, "ball": {"A": 1, "H": 3, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 12}}
+{"C": {"den": 5, "num": 6}, "ball": {"A": 4, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 6, "d": 5}}
+{"C": {"den": 1, "num": 2}, "ball": {"A": 10, "H": 15, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 3}}
+{"C": {"den": 3, "num": 10}, "ball": {"A": 1, "H": 7, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 3, "num": 8}, "ball": {"A": 0, "H": 2, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 3}}
+{"C": {"den": 4, "num": 1}, "ball": {"A": 0, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 23}, "ball": {"A": 8, "H": 30, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 2, "num": 21}, "ball": {"A": -1, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -1, "H": 0, "d": 1}}
+{"C": {"den": 3, "num": 16}, "ball": {"A": 1, "H": 12, "d": 2}, "op": "absolute_cap", "result": {"A": 3, "H": 4, "d": 6}}
+{"C": {"den": 4, "num": 11}, "ball": {"A": 0, "H": 1, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 1, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 3, "num": 1}, "ball": {"A": 1, "H": 2, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 3, "num": 2}, "ball": {"A": 8, "H": 12, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 3}}
+{"C": {"den": 2, "num": 13}, "ball": {"A": 1, "H": 4, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 4, "num": 29}, "ball": {"A": 0, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 26}, "ball": {"A": 2, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 1}}
+{"C": {"den": 3, "num": 10}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 2, "num": 27}, "ball": {"A": 2, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 2}}
+{"C": {"den": 4, "num": 27}, "ball": {"A": 0, "H": 4, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 12}}
+{"C": {"den": 5, "num": 19}, "ball": {"A": 1, "H": 2, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 20}}
+{"C": {"den": 5, "num": 9}, "ball": {"A": -17, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -17, "H": 0, "d": 1}}
+{"C": {"den": 5, "num": 24}, "ball": {"A": 0, "H": 1, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 20}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 0, "H": 4, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 5, "num": 13}, "ball": {"A": 1, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 5}}
+{"C": {"den": 6, "num": 1}, "ball": {"A": 11, "H": 12, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 2, "num": 3}, "ball": {"A": 18, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 18, "H": 0, "d": 1}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 2, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 1}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 19, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 19, "H": 0, "d": 1}}
+{"C": {"den": 3, "num": 1}, "ball": {"A": 4, "H": 33, "d": 8}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 24}}
+{"C": {"den": 3, "num": 4}, "ball": {"A": 4, "H": 18, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 3}}
+{"C": {"den": 2, "num": 7}, "ball": {"A": 3, "H": 4, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 3, "num": 5}, "ball": {"A": 0, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 5, "num": 13}, "ball": {"A": 20, "H": 30, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 5}}
+{"C": {"den": 2, "num": 7}, "ball": {"A": -20, "H": 0, "d": 3}, "op": "absolute_cap", "result": {"A": -20, "H": 0, "d": 3}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 3, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 0, "H": 5, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 5, "num": 21}, "ball": {"A": 2, "H": 30, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 5}}
+{"C": {"den": 5, "num": 13}, "ball": {"A": 0, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 5}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 2, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 11}, "ball": {"A": 3, "H": 8, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 4, "num": 29}, "ball": {"A": 0, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 13}, "ball": {"A": -40, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -40, "H": 0, "d": 1}}
+{"C": {"den": 3, "num": 5}, "ball": {"A": 0, "H": 10, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 5, "d": 3}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 0, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 1, "num": 12}, "ball": {"A": 23, "H": 0, "d": 4}, "op": "absolute_cap", "result": {"A": 23, "H": 0, "d": 4}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 0, "H": 1, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 6, "num": 23}, "ball": {"A": 1, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 1, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 1}}
+{"C": {"den": 4, "num": 27}, "ball": {"A": -1, "H": 0, "d": 4}, "op": "absolute_cap", "result": {"A": -1, "H": 0, "d": 4}}
+{"C": {"den": 3, "num": 7}, "ball": {"A": 5, "H": 8, "d": 11}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 33}}
+{"C": {"den": 3, "num": 5}, "ball": {"A": 4, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 3, "num": 8}, "ball": {"A": 0, "H": 1, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 6, "num": 29}, "ball": {"A": 4, "H": 8, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 1, "H": 3, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 9, "H": 18, "d": 4}, "op": "absolute_cap", "result": {"A": 3, "H": 6, "d": 4}}
+{"C": {"den": 2, "num": 5}, "ball": {"A": 1, "H": 8, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 4}}
+{"C": {"den": 1, "num": 16}, "ball": {"A": -19, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -19, "H": 0, "d": 1}}
+{"C": {"den": 1, "num": 17}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 3, "num": 19}, "ball": {"A": 0, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 11, "H": 18, "d": 3}, "op": "absolute_cap", "result": {"A": 2, "H": 9, "d": 3}}
+{"C": {"den": 6, "num": 5}, "ball": {"A": 3, "H": 8, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 25}, "ball": {"A": 21, "H": 30, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 10, "d": 4}}
+{"C": {"den": 2, "num": 5}, "ball": {"A": 2, "H": 3, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 6}}
+{"C": {"den": 3, "num": 7}, "ball": {"A": -11, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": -11, "H": 0, "d": 2}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": -35, "H": 0, "d": 6}, "op": "absolute_cap", "result": {"A": -35, "H": 0, "d": 6}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 5, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": 5, "H": 0, "d": 2}}
+{"C": {"den": 1, "num": 29}, "ball": {"A": 0, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 6, "num": 7}, "ball": {"A": 4, "H": 8, "d": 9}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 18}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 0, "H": 1, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 6, "num": 1}, "ball": {"A": 1, "H": 8, "d": 11}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 66}}
+{"C": {"den": 2, "num": 3}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 3, "num": 5}, "ball": {"A": 0, "H": 5, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 5, "d": 6}}
+{"C": {"den": 4, "num": 3}, "ball": {"A": 0, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 4}}
+{"C": {"den": 3, "num": 4}, "ball": {"A": 5, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 3, "H": 4, "d": 3}}
+{"C": {"den": 3, "num": 10}, "ball": {"A": 3, "H": 5, "d": 4}, "op": "absolute_cap", "result": {"A": 4, "H": 5, "d": 12}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 1, "H": 6, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 3}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": -15, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": -15, "H": 0, "d": 2}}
+{"C": {"den": 4, "num": 3}, "ball": {"A": 0, "H": 1, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 11}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 2, "num": 5}, "ball": {"A": 5, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 2, "num": 9}, "ball": {"A": 0, "H": 1, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 0, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 1}}
+{"C": {"den": 4, "num": 27}, "ball": {"A": 13, "H": 24, "d": 6}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 12}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 10, "H": 15, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 4}}
+{"C": {"den": 3, "num": 8}, "ball": {"A": 7, "H": 12, "d": 6}, "op": "absolute_cap", "result": {"A": 3, "H": 4, "d": 6}}
+{"C": {"den": 1, "num": 25}, "ball": {"A": 22, "H": 35, "d": 6}, "op": "absolute_cap", "result": {"A": 2, "H": 5, "d": 6}}
+{"C": {"den": 6, "num": 1}, "ball": {"A": 19, "H": 29, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 4, "num": 7}, "ball": {"A": 5, "H": 24, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 6, "num": 29}, "ball": {"A": 33, "H": 0, "d": 4}, "op": "absolute_cap", "result": {"A": 33, "H": 0, "d": 4}}
+{"C": {"den": 1, "num": 28}, "ball": {"A": 2, "H": 12, "d": 3}, "op": "absolute_cap", "result": {"A": 2, "H": 12, "d": 3}}
+{"C": {"den": 1, "num": 2}, "ball": {"A": 2, "H": 3, "d": 5}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 5}}
+{"C": {"den": 1, "num": 12}, "ball": {"A": 24, "H": 35, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 5, "num": 3}, "ball": {"A": 1, "H": 5, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 30}}
+{"C": {"den": 1, "num": 22}, "ball": {"A": 7, "H": 24, "d": 6}, "op": "absolute_cap", "result": {"A": 7, "H": 12, "d": 6}}
+{"C": {"den": 5, "num": 4}, "ball": {"A": 0, "H": 5, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 15}}
+{"C": {"den": 2, "num": 29}, "ball": {"A": 1, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 4, "num": 3}, "ball": {"A": 7, "H": 8, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 12}}
+{"C": {"den": 2, "num": 9}, "ball": {"A": 3, "H": 6, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 2}}
+{"C": {"den": 4, "num": 3}, "ball": {"A": -38, "H": 0, "d": 3}, "op": "absolute_cap", "result": {"A": -38, "H": 0, "d": 3}}
+{"C": {"den": 3, "num": 14}, "ball": {"A": 23, "H": 24, "d": 4}, "op": "absolute_cap", "result": {"A": 5, "H": 8, "d": 12}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 1, "H": 2, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 3, "num": 20}, "ball": {"A": 1, "H": 6, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 5, "num": 12}, "ball": {"A": 1, "H": 5, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 10}}
+{"C": {"den": 5, "num": 21}, "ball": {"A": 4, "H": 5, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 5}}
+{"C": {"den": 5, "num": 13}, "ball": {"A": 0, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 5}}
+{"C": {"den": 6, "num": 29}, "ball": {"A": 0, "H": 2, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 8, "H": 12, "d": 3}, "op": "absolute_cap", "result": {"A": 2, "H": 6, "d": 3}}
+{"C": {"den": 4, "num": 17}, "ball": {"A": 0, "H": 1, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 6, "num": 5}, "ball": {"A": 4, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 2, "H": 3, "d": 3}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 3}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 0, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 1}}
+{"C": {"den": 2, "num": 13}, "ball": {"A": -38, "H": 0, "d": 3}, "op": "absolute_cap", "result": {"A": -38, "H": 0, "d": 3}}
+{"C": {"den": 1, "num": 26}, "ball": {"A": 0, "H": 1, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 3, "num": 25}, "ball": {"A": 13, "H": 18, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 12}}
+{"C": {"den": 3, "num": 16}, "ball": {"A": 16, "H": 18, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 3}}
+{"C": {"den": 2, "num": 15}, "ball": {"A": 4, "H": 12, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 2}}
+{"C": {"den": 1, "num": 29}, "ball": {"A": 1, "H": 2, "d": 2}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 2}}
+{"C": {"den": 5, "num": 23}, "ball": {"A": 26, "H": 0, "d": 3}, "op": "absolute_cap", "result": {"A": 26, "H": 0, "d": 3}}
+{"C": {"den": 3, "num": 11}, "ball": {"A": 1, "H": 6, "d": 2}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 1, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 1, "H": 8, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 1}}
+{"C": {"den": 3, "num": 2}, "ball": {"A": 1, "H": 2, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 3}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 0, "H": 1, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 2, "num": 17}, "ball": {"A": -16, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -16, "H": 0, "d": 1}}
+{"C": {"den": 4, "num": 23}, "ball": {"A": 24, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 24, "H": 0, "d": 1}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 3, "H": 6, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 4}}
+{"C": {"den": 1, "num": 14}, "ball": {"A": 3, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 1}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 1, "H": 3, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 5, "num": 16}, "ball": {"A": 5, "H": 6, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 20}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 0, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 2}}
+{"C": {"den": 2, "num": 13}, "ball": {"A": 1, "H": 2, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 0, "H": 1, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 0, "H": 1, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 0, "H": 1, "d": 9}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 9}}
+{"C": {"den": 1, "num": 2}, "ball": {"A": 1, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 1}}
+{"C": {"den": 2, "num": 11}, "ball": {"A": -1, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -1, "H": 0, "d": 1}}
+{"C": {"den": 3, "num": 11}, "ball": {"A": 2, "H": 5, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 2, "H": 12, "d": 1}, "op": "absolute_cap", "result": {"A": 2, "H": 6, "d": 1}}
+{"C": {"den": 2, "num": 15}, "ball": {"A": 4, "H": 5, "d": 2}, "op": "absolute_cap", "result": {"A": 4, "H": 5, "d": 2}}
+{"C": {"den": 4, "num": 15}, "ball": {"A": 7, "H": 24, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 12}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 2, "H": 3, "d": 6}, "op": "absolute_cap", "result": {"A": 2, "H": 3, "d": 6}}
+{"C": {"den": 6, "num": 5}, "ball": {"A": 0, "H": 2, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 3, "num": 29}, "ball": {"A": 2, "H": 3, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 2, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 6, "num": 7}, "ball": {"A": 3, "H": 4, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 3, "num": 4}, "ball": {"A": 2, "H": 5, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 12}}
+{"C": {"den": 1, "num": 25}, "ball": {"A": 0, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 1, "num": 14}, "ball": {"A": 1, "H": 2, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 4}}
+{"C": {"den": 5, "num": 9}, "ball": {"A": 0, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 10}}
+{"C": {"den": 2, "num": 1}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 8, "H": 9, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 1, "num": 16}, "ball": {"A": -1, "H": 0, "d": 5}, "op": "absolute_cap", "result": {"A": -1, "H": 0, "d": 5}}
+{"C": {"den": 5, "num": 3}, "ball": {"A": 1, "H": 2, "d": 11}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 55}}
+{"C": {"den": 5, "num": 19}, "ball": {"A": -1, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": -1, "H": 0, "d": 2}}
+{"C": {"den": 3, "num": 2}, "ball": {"A": 5, "H": 9, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 3, "num": 2}, "ball": {"A": 0, "H": 1, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 12}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 5, "H": 24, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 3, "num": 14}, "ball": {"A": -15, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": -15, "H": 0, "d": 2}}
+{"C": {"den": 3, "num": 10}, "ball": {"A": -24, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -24, "H": 0, "d": 1}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 1, "H": 5, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 28}, "ball": {"A": 1, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 8}, "ball": {"A": 5, "H": 8, "d": 2}, "op": "absolute_cap", "result": {"A": 5, "H": 8, "d": 2}}
+{"C": {"den": 1, "num": 24}, "ball": {"A": 17, "H": 19, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 4, "num": 9}, "ball": {"A": 5, "H": 8, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 3, "num": 11}, "ball": {"A": 1, "H": 3, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 5, "num": 3}, "ball": {"A": 3, "H": 5, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 20}}
+{"C": {"den": 3, "num": 4}, "ball": {"A": 0, "H": 5, "d": 9}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 9}}
+{"C": {"den": 5, "num": 24}, "ball": {"A": 11, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": 11, "H": 0, "d": 2}}
+{"C": {"den": 1, "num": 21}, "ball": {"A": 8, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 8, "H": 0, "d": 1}}
+{"C": {"den": 4, "num": 5}, "ball": {"A": 0, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 3, "num": 11}, "ball": {"A": 1, "H": 4, "d": 2}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 5, "num": 3}, "ball": {"A": 0, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 0, "d": 1}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 2, "num": 29}, "ball": {"A": 6, "H": 10, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 3, "H": 8, "d": 4}, "op": "absolute_cap", "result": {"A": 3, "H": 8, "d": 4}}
+{"C": {"den": 3, "num": 23}, "ball": {"A": 0, "H": 1, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 13, "H": 18, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 4}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 7, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": 7, "H": 0, "d": 2}}
+{"C": {"den": 1, "num": 21}, "ball": {"A": 1, "H": 6, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 6, "d": 6}}
+{"C": {"den": 6, "num": 5}, "ball": {"A": 7, "H": 8, "d": 4}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 12}}
+{"C": {"den": 1, "num": 30}, "ball": {"A": 2, "H": 5, "d": 3}, "op": "absolute_cap", "result": {"A": 2, "H": 5, "d": 3}}
+{"C": {"den": 2, "num": 13}, "ball": {"A": 7, "H": 30, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 6}}
+{"C": {"den": 1, "num": 8}, "ball": {"A": 14, "H": 24, "d": 9}, "op": "absolute_cap", "result": {"A": 14, "H": 24, "d": 9}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 5, "H": 30, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 1}}
+{"C": {"den": 1, "num": 22}, "ball": {"A": 3, "H": 5, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 1, "H": 18, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 1}}
+{"C": {"den": 1, "num": 25}, "ball": {"A": 14, "H": 18, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 3, "num": 4}, "ball": {"A": 0, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 3, "num": 10}, "ball": {"A": 22, "H": 30, "d": 1}, "op": "absolute_cap", "result": {"A": 6, "H": 10, "d": 3}}
+{"C": {"den": 1, "num": 5}, "ball": {"A": 0, "H": 1, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 27}, "ball": {"A": 0, "H": 3, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 2}}
+{"C": {"den": 5, "num": 8}, "ball": {"A": 3, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 5}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 1, "H": 3, "d": 3}, "op": "absolute_cap", "result": {"A": 1, "H": 3, "d": 3}}
+{"C": {"den": 1, "num": 21}, "ball": {"A": 3, "H": 12, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 3, "d": 1}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": -1, "H": 0, "d": 2}, "op": "absolute_cap", "result": {"A": -1, "H": 0, "d": 2}}
+{"C": {"den": 3, "num": 22}, "ball": {"A": 15, "H": 24, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 3}}
+{"C": {"den": 6, "num": 13}, "ball": {"A": 1, "H": 6, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 1}, "ball": {"A": 1, "H": 8, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 2, "d": 6}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 1, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 5, "num": 13}, "ball": {"A": 0, "H": 1, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 5}}
+{"C": {"den": 6, "num": 13}, "ball": {"A": 6, "H": 8, "d": 3}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 3, "num": 26}, "ball": {"A": -18, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -18, "H": 0, "d": 1}}
+{"C": {"den": 1, "num": 6}, "ball": {"A": 1, "H": 12, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 12, "d": 6}}
+{"C": {"den": 4, "num": 13}, "ball": {"A": 11, "H": 12, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 5, "num": 12}, "ball": {"A": 5, "H": 8, "d": 6}, "op": "absolute_cap", "result": {"A": 1, "H": 8, "d": 30}}
+{"C": {"den": 1, "num": 12}, "ball": {"A": -6, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -6, "H": 0, "d": 1}}
+{"C": {"den": 2, "num": 25}, "ball": {"A": 17, "H": 40, "d": 1}, "op": "absolute_cap", "result": {"A": 4, "H": 5, "d": 2}}
+{"C": {"den": 4, "num": 7}, "ball": {"A": 24, "H": 30, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 3}, "ball": {"A": 0, "H": 2, "d": 7}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 7}}
+{"C": {"den": 1, "num": 4}, "ball": {"A": 9, "H": 12, "d": 2}, "op": "absolute_cap", "result": {"A": 1, "H": 4, "d": 2}}
+{"C": {"den": 3, "num": 7}, "ball": {"A": 0, "H": 11, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 3}}
+{"C": {"den": 1, "num": 11}, "ball": {"A": -16, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": -16, "H": 0, "d": 1}}
+{"C": {"den": 4, "num": 5}, "ball": {"A": 12, "H": 13, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 3, "num": 14}, "ball": {"A": 4, "H": 6, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 2, "d": 3}}
+{"C": {"den": 2, "num": 21}, "ball": {"A": 23, "H": 25, "d": 6}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 2, "num": 29}, "ball": {"A": 1, "H": 9, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 2}}
+{"C": {"den": 1, "num": 7}, "ball": {"A": 2, "H": 3, "d": 1}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 1}}
+{"C": {"den": 3, "num": 29}, "ball": {"A": 4, "H": 9, "d": 2}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 6}}
+{"C": {"den": 1, "num": 9}, "ball": {"A": 17, "H": 30, "d": 4}, "op": "absolute_cap", "result": {"A": 5, "H": 6, "d": 4}}
+{"C": {"den": 2, "num": 19}, "ball": {"A": -5, "H": 0, "d": 6}, "op": "absolute_cap", "result": {"A": -5, "H": 0, "d": 6}}
+{"C": {"den": 1, "num": 8}, "ball": {"A": 0, "H": 5, "d": 4}, "op": "absolute_cap", "result": {"A": 0, "H": 1, "d": 4}}
+{"C": {"den": 1, "num": 28}, "ball": {"A": 1, "H": 0, "d": 1}, "op": "absolute_cap", "result": {"A": 1, "H": 0, "d": 1}}
