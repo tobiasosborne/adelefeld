@@ -28,10 +28,13 @@ stated:
 - (S3) `A_f` is the restricted product of the `Q_p` with respect to the `Z_p`; `A = R x A_f`; `Q` is embedded
   diagonally. `A^x` and `A_f^x` carry the restricted product topology with respect to the `Z_p^x`. Sources:
   `tate-kudla:kudla-1.txt:93` (adeles) and `:115` (ideles); `milne-cft:CFT.txt:9373` (restricted product and its
-  topology); `tate-warwick:tatesthesis_notes.txt:414` (the ideles are the units of `A`, with a topology that is not
-  the subspace topology).
-- (S4) A positive rational is the finite product of `p^(v_p(r))`; it is an integer exactly when all `v_p(r) >= 0`
-  (unique factorisation). `[source pending: a statement of the fundamental theorem of arithmetic in refs/]`
+  topology, the citation for the topology); `tate-warwick:tatesthesis_notes.txt:414` (the ideles are the units of
+  `A`, with a topology that is not the subspace topology).
+- (S4) A positive rational is the finite product of `p^(v_p(r))`; it is an integer exactly when all `v_p(r) >= 0`.
+  Source: `milne-ant:ANT.txt:321`, "The fundamental theorem of arithmetic says that every nonzero integer m can be
+  written in the form, m = +-p1 ... pn, pi a prime number, and that this factorization is essentially unique" (lines
+  321 to 323, symbols as extracted by pdftotext). Applied to the numerator and the denominator of `r` in lowest
+  terms, it gives both statements.
 - (S5) Fermat: `w^(p-1) = 1` modulo `p` for `w` in `Z_p^x` (via `Z_p/p Z_p = Z/p`). Source:
   `baker-padic:padicnotes.txt:462` (Theorem 1.26).
 - (S6) A polynomial of degree `g > 0` over a field has at most `g` roots. Source: `baker-padic:padicnotes.txt:454`
@@ -331,7 +334,8 @@ Claim:
 Consequence for the specification: a power operation on unit cosets needs this rule to be tight; the rule `c^k U(N)`
 is an enclosure. The exponent 0 cannot be represented exactly by the coset type (item 6). See the report.
 
-Check: `check_power`.
+Check: `check_power` (cosets modulo 16, `|k| <= 4`), `check_power_local` (each row prime by prime, `|k| <= 30`, and
+`k = 0`).
 Used by: `PLAN.md` 2.1 ("multiply, invert, power"); `SPEC.md` 9.3.4 item 1.
 
 ## 4. Absolute values, norm, class map (M5)
@@ -491,10 +495,13 @@ coarser by the factor 2. The real part is `I / Y_inf`, rounded as usual.
    balls to balls (`a (b + R Zhat) = a b + |a| R Zhat`), and Proposition 16 with `r = 1`. For `a = 0`, `T = {0}`.
 4. *Smallest ball of `T + M Zhat`.* Let `t_0 + L' Zhat` be the smallest ball containing `T` (`L' = |a| L`,
    `t_0 = a e`; for `a = 0`, `L' = 0`, `t_0 = 0`). Then `T + M Zhat` is inside `t_0 + gcd(L', M) Zhat`
-   (`precision.md` Lemma 2). Conversely let a ball `B` contain `T + M Zhat`. It contains `T` (as `0` is in
-   `M Zhat`), hence `t_0 + L' Zhat` by the minimality; so `B = t_0 + R Zhat`. If `R = 0` then `L' = M = 0`.
-   Otherwise `t_0 + M` and `t_0 + L'` are in `B`, so `R | M` and `R | L'` (`precision.md` Lemma 1), so
-   `R | gcd(L', M)` (G2 of `policies.md`) and `B` contains `t_0 + gcd(L', M) Zhat`.
+   (`precision.md` Lemma 2). Conversely let a ball `B` contain `T + M Zhat`. `T` is not empty; choose `t` in `T`
+   (`t_0` itself need not lie in `T`: the integer `e` need not be a unit of `Zhat`). `B` contains `t` and `t + M`.
+   `B` also contains `T` (as `0` is in `M Zhat`), hence `t_0 + L' Zhat` by the minimality in step 3; so `t_0` is in
+   `B` and `B = t_0 + R Zhat`. If `R = 0`, `B` is one point, so `t = t + M` gives `M = 0` and `t_0 + L' Zhat` being
+   one point gives `L' = 0`. Otherwise `M = (t + M) - t` and `L' = (t_0 + L') - t_0` are rational differences of
+   elements of `B`, so `R | M` and `R | L'` (`precision.md` Lemma 1), so `R | gcd(L', M)` (G2 of `policies.md`), and
+   `B` contains `t_0 + gcd(L', M) Zhat`.
 5. Multiplication by `1/r` gives the claim.
 6. *Agreement with the product rule.* `precision.md` Proposition 2 for `(a + M Zhat)(e + L Zhat)` gives the radius
    `gcd(a L, e M, M L)`. As `e` is odd and coprime to `N`, `gcd(e, L) = 1`, so `gcd(e M, L M) = M` (G1) and the
@@ -523,10 +530,22 @@ Used by: `SPEC.md` 4.5, 5; `PLAN.md` 2.4 ("against multiplication by the inverse
 | P10 | product and inverse at one modulus, exact | proved here | `check_products` |
 | P11 | product at different moduli is `U(gcd)`; best modulus | proved here | `check_products` |
 | L12 | lifting the exponent | proved here | `check_lte` |
-| P13 | tight power rule `M_k`; `k = 0` not representable | proved modulo (S5), (S6) | `check_power` |
+| P13 | tight power rule `M_k`; `k = 0` not representable | proved modulo (S5), (S6) | `check_power_local` |
 | P14 | absolute values, norm, product formula | proved modulo (S4) | `check_norm` |
 | P15 | class map with the sign; `A^x/Q^x = R_{>0} x Zhat^x` | proved; topology modulo (S3) | `check_class_map` |
 | P16 | simple ball; smallest ball `r lcm(N, 2)`, minimal | proved mod (S1), (S2), (S4) | `check_idele_to_adele` |
 | P17 | no finite ball of positive radius certifies invertibility | proved here | `check_noninvertible` |
 | P18 | division by an exact rational | proved here | `check_division` |
 | P19 | division by an idele, smallest ball `gcd(abs(a) L, M)/r` | proved here | `check_division` |
+
+## Review record
+
+Date 2026-09-27. Reviewer: codex gpt-6-astra, `docs/reviews/m0-proofs/ideles-review.md` (checks
+`docs/reviews/m0-proofs/ideles_review_checks.py`). Verdicts on this file: 15 VALID, 1 MINOR (P19), 0 INVALID.
+
+- P19: the minimality step used `t_0 + M` in `B` before showing it; now a point `t` of `T` gives `t, t + M` in `B`,
+  and the zero cases `R = 0`, `M = 0`, `a = 0` are treated.
+- (S4): the pending source is replaced by `milne-ant:ANT.txt:321` (read and quoted).
+- (S3): `milne-cft:CFT.txt:9373` is named as the citation for the topology.
+- Checks: `check_power_local` added (every row of the table of Proposition 13 prime by prime, `|k| <= 30`, `k = 0`);
+  `check_division` now covers `a = M = 0` and division by negative exact rationals.

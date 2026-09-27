@@ -6,7 +6,8 @@ Independent computations used here:
     in the image of a ball X = I x (a + N Zhat) is decided from the definition: search rationals q on a grid
     finer than needed and test s + q in I and w + q - a in N Zhat prime by prime (v_p(w+q-a) >= v_p(N));
   * sets of finite balls are compared by projection to Z/M (see policies_checks.py);
-  * p-adic roots are found by exhaustive search modulo p^k.
+  * p-adic roots: at 2 by exhaustive search modulo 2^12; at odd p a root modulo p is found by exhaustive search
+    and lifted by the formula of the proof, and the lift is verified modulo p^k (k = 4 for p < 50, else 2).
 The real coordinate s runs over a rational grid that contains all endpoints and all midpoints between them,
 which decides equality of finite unions of intervals exactly.
 Each check prints one line with counts; the script exits non-zero on any failure.
@@ -360,6 +361,59 @@ def check_translation():
            f"{neg} different balls told apart")
 
 
+def image_member_brute(fam, s, w):
+    """(s, w), 0 <= s < 1, w an integer class, is in the image of the pieces: directly, or glued (Proposition 3)."""
+    for (al, be), m0, Ni in fam:
+        if al <= s <= be and (w - m0) % Ni == 0:
+            return True
+        if s == 0 and be == 1 and (w + 1 - m0) % Ni == 0:
+            return True
+    return False
+
+
+def rand_family():
+    fam = []
+    for _ in range(random.randint(1, 4)):
+        al = F(random.randint(0, 12), 12)
+        be = random.choice([F(1), al + F(random.randint(0, 12), 12)])
+        fam.append(((al, min(be, F(1))), random.randint(-6, 6), random.randint(1, 6)))
+    return fam
+
+
+def check_mixed_families():
+    """Proposition 9 on arbitrary families with different moduli (the review found the homogeneous families of
+    check_translation too weak: a wrong refinement survived)."""
+    ok = True
+    n = pts = 0
+    fams = [[((F(1, 4), F(1, 2)), 0, 2), ((F(0), F(0)), 0, 3)]]  # the reviewer's witness
+    fams += [rand_family() for _ in range(300)]
+    for fam in fams:
+        Np = reduce(lcm, [Ni for _, _, Ni in fam], 1)
+        T = canonical(fam, Np)
+        grid = sorted(set(critical_points(list(T.values()))) | {F(j, 24) for j in range(24)})
+        for w in range(Np):
+            for s in grid:
+                if s < 1:
+                    ok &= T_member(T[w], s) == image_member_brute(fam, s, w)
+                    pts += 1
+        # a family and its refinement to the common modulus have the same image
+        ref = [(J, m0 + j * Ni, Np) for J, m0, Ni in fam for j in range(Np // Ni)]
+        ok &= same_image(fam, ref)
+        n += 1
+    ok &= T_member(canonical(fams[0], 6)[2], F(1, 3))
+    # pairs of random families: same_image agrees with brute force on all endpoints and gap midpoints
+    agree = 0
+    for _ in range(300):
+        f1, f2 = rand_family(), rand_family()
+        Np = reduce(lcm, [Ni for _, _, Ni in f1 + f2], 1)
+        T1, T2 = canonical(f1, Np), canonical(f2, Np)
+        brute = all(image_member_brute(f1, s, w) == image_member_brute(f2, s, w)
+                    for w in range(Np) for s in critical_points([T1[w], T2[w]]) if s < 1)
+        ok &= brute == same_image(f1, f2)
+        agree += 1
+    report("check_mixed_families (P9)", ok, f"{n} mixed-modulus families on {pts} points; {agree} pairs compared")
+
+
 # ---------------------------------------------------------------- Section 5
 
 def check_reconstruct_full():
@@ -458,6 +512,7 @@ if __name__ == "__main__":
     check_full_image()
     check_split()
     check_translation()
+    check_mixed_families()
     check_reconstruct_full()
     check_local_global()
     check_partial()

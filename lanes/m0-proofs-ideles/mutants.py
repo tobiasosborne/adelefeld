@@ -52,6 +52,19 @@ MUTANTS = [
      "k0, k1 = ceil((lo - a) / N), floor((hi - a) / N) - 1", "check_reconstruct_full"),
     ("proto/quotient_checks.py", "                if 2 * A * B >= m:\n",
      "                if 2 * A * B > m:\n", "check_partial"),
+    # added after review (docs/reviews/m0-proofs/ideles-review.md): the two refuted claims as they were stated,
+    # and the reviewer's surviving mutant
+    ("proto/policies_checks.py",
+     "    value of the original context (it is the same set as the original value).\"\"\"\n    return True\n",
+     "    value of the original context (it is the same set as the original value).\"\"\"\n"
+     "    return gcd(gcd(A, H), d) == 1\n", "check_backend_repairs"),
+    ("proto/policies_checks.py", "    g = gcd(d, q)\n    return g if A % g == 0 else 0\n",
+     "    return 1 if gcd(d, q) == 1 else 0\n", "check_backend_repairs"),
+    ("proto/quotient_checks.py", "        for j in range(Np // Ni):", "        for j in range(1):",
+     "check_mixed_families"),
+    ("proto/ideles_checks.py", "    return 1 + e if k % (p - 1) == 0 else 0\n\n\ndef check_power_local",
+     "    return 1 + e if k % p == 0 else 0\n\n\ndef check_power_local", "check_power_local"),
+    ("proto/policies_checks.py", "== H * h // gcd(gcd(A * B, H * h), d * e)", "== H * h", "check_backend_repairs"),
 ]
 
 

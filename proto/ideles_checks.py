@@ -258,6 +258,45 @@ def check_power():
     report("check_power (P13)", ok, f"{n} (coset, k) cases: hull modulus = M_k; {strict} with P_k strictly inside")
 
 
+def b_formula(a, p, k):
+    """Exponent b_p of Proposition 13 for a = v_p(Nbar) (a != 1 at p = 2)."""
+    e = vp(k, p) if k % p == 0 else 0
+    if p == 2:
+        return a + e if a >= 2 else (2 + e if k % 2 == 0 else 0)
+    if a >= 1:
+        return a + e
+    return 1 + e if k % (p - 1) == 0 else 0
+
+
+def check_power_local():
+    """Proposition 13, prime by prime, for exponents with high valuations (the review found k in [-4, 4] thin):
+    the largest b with w^k = 1 mod p^b for all w in V_p(p^a), computed by enumeration modulo p^(b+2)."""
+    ok = True
+    n = 0
+    for p in PRIMES[:11]:
+        for a in ([0, 2, 3] if p == 2 else [0, 1, 2]):
+            for k in list(range(-30, 0)) + list(range(1, 31)):
+                b = b_formula(a, p, k)
+                top = b + 2
+                if p ** top > 300000:
+                    continue
+                m = p ** top
+                V = [w for w in range(1, m) if w % p and (w - 1) % (p ** a) == 0]
+                vals = {pow(w, k, m) for w in V}
+                bb = 0
+                while bb < top and all((x - 1) % p ** (bb + 1) == 0 for x in vals):
+                    bb += 1
+                # canonical at 2: b = 0 and b = 1 give the same group
+                ok &= (bb == b) or (p == 2 and b == 0 and bb == 1)
+                n += 1
+    # k = 0: the image is {1}; every U(M) has more than one element (Proposition 13.6)
+    for M in range(1, 40):
+        p = next(q for q in PRIMES if q > 2 and M % q)
+        c0 = max((c for c in range(M) if gcd(c, M) == 1), default=0)
+        ok &= len(img(1, M, M * p)) > 1 and {pow(u, 0, M * p) for u in img(c0, M, M * p)} == {1}
+    report("check_power_local (P13)", ok, f"{n} (p, a, k) cases with |k| <= 30; k = 0 on 39 moduli")
+
+
 # ---------------------------------------------------------------- Section 4
 
 def check_norm():
@@ -372,6 +411,7 @@ def check_division():
         c = random.choice(units(N))
         r = F(random.randint(1, 9), random.randint(1, 9))
         if a == 0 and M == 0:
+            ok &= qgcd(*[F(0) * w for w in range(1, 5)]) == 0  # S = {0}: the rule gives radius gcd(0, 0) = 0
             continue
         cs = pow(c, -1, N) if N > 1 else 0
         L = lcm(N, 2)
@@ -396,9 +436,10 @@ def check_division():
         simple = qgcd(abs(a) * N, M)
         ok &= (pred / simple) in (1, 2)
         coarser += pred != simple
-        # division by r: exact scaling of the ball (sampled points)
-        pts = [(a + M * z) / r for z in range(-3, 4)]
-        ok &= qgcd(*[x - pts[0] for x in pts]) == M / r
+        # Proposition 18: division by an exact rational q (both signs) is an exact scaling of the ball
+        q = r * random.choice([1, -1])
+        pts = [(a + M * z) / q for z in range(-3, 4)]
+        ok &= qgcd(*[x - pts[0] for x in pts]) == M / abs(q) and pts[3] == a / q
         n += 1
     report("check_division (P18, P19)", ok,
            f"{n} cases: hull radius = gcd(|a| L, M); simple ball coarser in {coarser}")
@@ -411,6 +452,7 @@ if __name__ == "__main__":
     check_products()
     check_lte()
     check_power()
+    check_power_local()
     check_norm()
     check_class_map()
     check_idele_to_adele()

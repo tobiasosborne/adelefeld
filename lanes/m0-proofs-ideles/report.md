@@ -44,3 +44,24 @@ Tychonoff (quotient.md Corollary 4.2); fundamental theorem of arithmetic (ideles
 Confirmed as stated: SPEC 2 fact 2; 4.5; 5 (decomposition, U(2N) = U(N), canonical form, gcd rule, norm, class
 map, both idele-to-adele balls); 6 (domain, gluing, splitting); 9.2. On the brief's question: gcd(N, N') is the
 best modulus for a product of independent cosets, up to the factor 2 of U(2N) = U(N).
+
+## Repair after review (2026-09-27, added by the orchestrator from the agent's final message)
+
+Review: `docs/reviews/m0-proofs/ideles-review.md` (codex gpt-6-astra): 46 valid, 3 minor, 2 invalid. The author
+reproduced both counterexamples and agrees with both INVALID verdicts.
+
+- policies P24: the set stays in the context; only the canonical triple needs the derived context. A backend
+  holding canonical data moves to the derived context or to the global backend; equality and printing go through
+  the canonical triple.
+- policies P25: `d x = A mod q_i` is solvable exactly when `gcd(d, q_i)` divides `A`, with that many solutions;
+  the ball fixes one residue modulo `q_i` exactly when `gcd(d, q_i) = 1`. The C code stores numerator residues and
+  `d` once per value, applies `d` after recombination, inverts only coprime pairs, and never stores or reports a
+  solution of `d x = A` as a residue of the value.
+- L6, P10, ideles P19 repaired; Summary 26 is now a table of raw result against canonical modulus; P14: exact
+  results keep their tag (SPEC 4.1), the cap applies only to positive radii; the two pending sources are quoted
+  from disk.
+- Findings: 3 withdrawn (settled by SPEC 4.1); 6 restated; 2 is an optional extension; 1, 4, 5, 7 stand.
+- Checks: policies 13 groups, ideles 12, quotient 9, all pass; 27 of 27 mutants killed, among them the reviewer's
+  surviving mutant and the two refuted claims, which the old checks had let pass.
+  `docs/reviews/m0-proofs/ideles_review_checks.py` still exits 1 by construction: it hard-codes the two refuted
+  literal claims and does not read the proof files.

@@ -26,8 +26,8 @@ stated:
   `Zhat = lim Z/N Z`, `tate-poonen:notes.txt:1603` (the class of `z` modulo `N` is its component in `Z/N Z`).
 - (T) `Zhat` is compact; `A` carries the product of the real topology and the restricted product topology, and the
   quotient map `A -> A/Q` is continuous. Sources: `Z_p` is compact, `baker-padic:padicnotes.txt:1914` (Theorem
-  4.20); the product of compact spaces is compact (Tychonoff) `[source pending: a topology text]`; the topology of
-  `A`, `tate-warwick:tatesthesis_notes.txt:386`.
+  4.20); Tychonoff, `milne-cft:CFT.txt:9214`, "Tychonoff's theorem says that a product of compact spaces is compact"
+  (lines 9214 to 9215); the restricted product topology of `A`, `milne-cft:CFT.txt:9373`.
 - (E) Euler's criterion in the form used: for an odd prime `p` and integers `b, b'` prime to `p`, if neither `b` nor
   `b'` is a square modulo `p`, then `b b'` is. This follows from the cyclicity of `(Z/p)^x`,
   `baker-padic:padicnotes.txt:473` (Theorem 1.28): with a generator `g`, the squares are the even powers of `g`, and
@@ -145,9 +145,10 @@ Claim:
    `k = ceil(hi') - floor(lo') - 1`, and the number of pieces `ceil(hi') - floor(lo')` is `k + 1`. If `lo' = hi'`,
    Proposition 5 gives one piece.
 
-Remark: the wording of `SPEC.md` 6, "gives one piece for each integer it crosses", should read "one piece more than
-the number of integers it crosses". Pieces with the same finite part (`n = n'` modulo `N`) can sometimes be merged;
-this is not required for correctness.
+Remark: the wording of `SPEC.md` 6, "gives one piece for each integer it crosses", should read: splitting at the `k`
+integers strictly inside the shifted interval gives `k + 1` closed pieces with the gluing rule; a one-point interval
+gives one piece. This counts the construction, not a minimum: pieces with the same finite part (`n = n'` modulo `N`)
+can merge afterwards (with `N = 1` and `I = [0, 2]` the two pieces together are the whole quotient).
 
 Check: `check_reduction`.
 Used by: `SPEC.md` 6 ("pieces are therefore closed intervals inside `[0,1]` together with the gluing rule").
@@ -224,7 +225,8 @@ union of intervals; with rational (or dyadic) endpoints the comparison is exact.
    interior point of each gap between consecutive endpoints, because membership is constant on each such open gap.
    With exact endpoints this is a finite exact comparison.
 
-Check: `check_translation`.
+Check: `check_mixed_families` (arbitrary families with different moduli `N_i`, against membership read off
+Proposition 3; the review's witness `[1/4, 1/2] x (0 + 2 Zhat)` with a modulus-3 piece), `check_translation`.
 Used by: `SPEC.md` 6 (`adf_qclass` as a union of pieces); `PLAN.md` 3.1.
 
 ### Proposition 10 (translation by a rational changes nothing).
@@ -300,8 +302,9 @@ rational root. The family of these roots is an adele `x` (all finite coordinates
    `2^n (1 + x_n) = 0` modulo `2^(n+1)` because `x_n` is odd and `2n - 2 >= n + 1`. The sequence converges in `Z_2`.
 7. All roots chosen are in `Z_p` (they are limits of integers), so the family is in `R x Zhat`, inside `A`.
 
-Check: `check_local_global` (roots modulo `p^4` for all primes `p < 200`, modulo `2^12` at 2; no rational root among
-the divisors of the constant term).
+Check: `check_local_global` finds roots modulo `2^12` at 2 (exhaustive search), modulo `p^4` for odd `p < 50` and
+modulo `p^2` for `50 <= p < 200` (a root modulo `p` found by search, lifted by the formula of step 3, and verified).
+It checks the absence of rational roots among the signed divisors of the constant term.
 Used by: `SPEC.md` 9.2 (last paragraph).
 
 ### Proposition 13 (partial data: uniqueness when `2 A B < m`).
@@ -335,13 +338,26 @@ Used by: `SPEC.md` 9.2 (second item).
 | L1 | `A_f = Q + Zhat`, `q` unique modulo `Z` | proved modulo (S1), (S2) | `check_fundamental_domain` |
 | P2 | unique representative in `[0,1) x Zhat` | proved here | `check_fundamental_domain` |
 | P3 | gluing `(1, z) = (0, z - 1)`, and nothing else | proved here | `check_fundamental_domain` |
-| C4 | `Q` discrete, `A/Q` compact | proved modulo (T) | `check_fundamental_domain` |
+| C4 | `Q` discrete, `A/Q` compact | proved modulo (T), cited | `check_fundamental_domain` |
 | P5 | reduction of a ball, one half-open piece per integer part | proved here | `check_reduction` |
 | P6 | closed pieces add nothing; `k + 1` pieces for `k` integers crossed | proved here | `check_reduction` |
 | P7 | image is all of `A/Q` exactly when `hi - lo >= N` | proved here | `check_full_image` |
 | P8 | splitting `A/B` into `B` balls of radius `A`; `B` is minimal | proved modulo (D) | `check_split` |
-| P9 | canonical form of a union of pieces; decidable equality | proved here | `check_translation` |
+| P9 | canonical form of a union of pieces; decidable equality | proved here | `check_mixed_families` |
 | P10 | translation by a rational: same pieces | proved here | `check_translation` |
 | P11 | reconstruction from a full ball, including `N = 0` | proved here | `check_reconstruct_full` |
 | P12 | `(x^2-13)(x^2-17)(x^2-221)`: local roots, none in `Q` | proved mod (S1), (E) | `check_local_global` |
 | P13 | partial data: unique when `2 A B < m`; sharp; not the full ball | proved here | `check_partial` |
+
+## Review record
+
+Date 2026-09-27. Reviewer: codex gpt-6-astra, `docs/reviews/m0-proofs/ideles-review.md` (checks
+`docs/reviews/m0-proofs/ideles_review_checks.py`). Verdicts on this file: 13 VALID, 0 MINOR, 0 INVALID.
+
+- (T): the pending Tychonoff source is replaced by `milne-cft:CFT.txt:9214` (read and quoted); the topology of `A`
+  is cited from `milne-cft:CFT.txt:9373` instead of `tate-warwick:tatesthesis_notes.txt:386`, which the review found
+  too narrow read literally.
+- P6: the remark on the wording of `SPEC.md` 6 now says it counts the construction, not a minimum after merging.
+- P9: `check_mixed_families` added; the review's surviving mutant (refinement over `N'/N_i` reduced to one class)
+  now fails it.
+- P12: the Check line states the actual depth (`p^4` below 50, `p^2` from 50 to 200) and method.

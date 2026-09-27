@@ -523,6 +523,24 @@ def in_context_brute(X, qs, dmax=40):
     return cont, eq
 
 
+def p24_canonical_set_in_old_context(A, H, d, qs):
+    """policies.md P24 (repaired): the set of the canonical triple (A/g, H/g, d/g) is still the set of a local
+    value of the original context (it is the same set as the original value)."""
+    return True
+
+
+def p25_centre_solution_count(A, d, q):
+    """policies.md P25.1 (repaired): number of residues x modulo q with d x = A modulo q."""
+    g = gcd(d, q)
+    return g if A % g == 0 else 0
+
+
+def p25_ball_has_single_residue(d, q):
+    """policies.md P25.2 (repaired): the ball (A + H Zhat)/d, q a block of H, has all its elements p-integral at
+    the primes of q and congruent modulo q exactly when gcd(d, q) = 1."""
+    return gcd(d, q) == 1
+
+
 def check_local_ops():
     ok = True
     bad = set()
@@ -628,6 +646,94 @@ def check_local_ops():
     report("check_local_ops (P19-P25)", ok, detail)
 
 
+def check_backend_repairs():
+    """P24 and P25 as repaired after review, against brute force; includes the reviewer's witnesses."""
+    ok = True
+    n24 = n251 = n252 = 0
+    # P24: the canonical set is still a local value of the original context (search all (d', A'))
+    witnesses = [([4], 2, [2])]
+    for _ in range(400):
+        qs = rand_blocks()
+        H = reduce(lambda a, b: a * b, qs)
+        if H > 40:
+            continue
+        d = random.randint(1, 12)
+        # residues divisible by gcd(q_i, d), so that cancellation occurs often
+        witnesses.append((qs, d, [(random.randrange(q) * gcd(q, d)) % q for q in qs]))
+    for qs, d, r in witnesses:
+        H = reduce(lambda a, b: a * b, qs)
+        A, _ = crt(r, qs)
+        g = gcd(gcd(A, H), d)
+        if g == 1:
+            continue
+        canon = (F(A // g, d // g), F(H // g, d // g))
+        ok &= 0 <= A // g < H // g
+        brute = any(equal(canon, (F(A2, d2), F(H, d2))) for d2 in range(1, 2 * d + 1) for A2 in range(H))
+        ok &= brute == p24_canonical_set_in_old_context(A, H, d, qs)
+        n24 += 1
+    # P25.1: d x = A modulo q, all small cases
+    for q in range(1, 25):
+        for d in range(1, 25):
+            for A in range(q):
+                sols = [x for x in range(q) if (d * x - A) % q == 0]
+                ok &= len(sols) == p25_centre_solution_count(A, d, q)
+                n251 += 1
+    ok &= p25_centre_solution_count(1, 2, 4) == 0 and p25_centre_solution_count(2, 2, 4) == 2
+    # P25.2: does the ball determine one residue modulo the block?
+    for _ in range(600):
+        qs = rand_blocks()
+        d = random.randint(1, 12)
+        r = [random.randrange(q) for q in qs]
+        c, R = local_set(d, r, qs)
+        for q in qs:
+            if q == 1:
+                continue
+            pts = [c + R * k for k in range(0, 2 * q * d)]
+            integral = all(gcd(x.denominator, q) == 1 for x in pts)
+            single = integral and len({(x.numerator * pow(x.denominator, -1, q)) % q for x in pts}) == 1
+            ok &= single == p25_ball_has_single_residue(d, q)
+            n252 += 1
+    # Summary 26: canonical numerator modulus of sum, tight product and exact scalar, against an independent
+    # canonicalisation of the set (least denominator d with a ball (A + d R Zhat)/d equal to the set)
+    def canon_H(X, dmax):
+        c, R = X
+        for dd in range(1, dmax + 1):
+            if is_int(dd * R) and is_int(dd * c):
+                Y = (F(int(dd * c) % int(dd * R), dd), R)
+                if equal(X, Y):
+                    return int(dd * R)
+        return None
+    n26 = 0
+    for _ in range(300):
+        qs = rand_blocks()
+        H = reduce(lambda a, b: a * b, qs)
+        if H > 60:
+            continue
+        d, e = random.randint(1, 12), random.randint(1, 12)
+        r = [(random.randrange(q) * gcd(q, d)) % q for q in qs]
+        t = [(random.randrange(q) * gcd(q, e)) % q for q in qs]
+        A, _ = crt(r, qs)
+        B, _ = crt(t, qs)
+        X, Y = local_set(d, r, qs), local_set(e, t, qs)
+        L = lcm(d, e)
+        ok &= canon_H(T_add(X, Y), L) == H // gcd(gcd(A * L // d + B * L // e, H), L)
+        h = gcd(gcd(A, B), H)
+        ok &= canon_H(sampled_hull(X, Y, lambda u, v: u * v), d * e) == H * h // gcd(gcd(A * B, H * h), d * e)
+        m, nn = random.choice([(1, 2), (-2, 3), (3, 1), (-4, 5), (6, 1)])
+        ok &= canon_H((F(m, nn) * X[0], abs(F(m, nn)) * X[1]), nn * d) == \
+            abs(m) * H // gcd(gcd(m * A, abs(m) * H), nn * d)
+        n26 += 1
+    # the review's two examples: canonical H changes although the raw H does not
+    ok &= T_add((F(1, 2), F(1)), (F(1, 2), F(1))) == (F(1), F(1)) and canon_H((F(1), F(1)), 2) == 1
+    P = sampled_hull((F(1, 2), F(3)), (F(2, 3), F(2)), lambda u, v: u * v)
+    ok &= equal(P, (F(1, 3), F(1))) and canon_H(P, 6) == 3
+    # the reviewer's lifts: A = 2 and A = 6 of the residue 2 modulo 4, d = 2, give centres 1 and 3 modulo 4
+    ok &= equal(local_set(2, [2], [4]), (F(1), F(2))) and contains((F(3), F(0)), (F(1), F(2)))
+    report("check_backend_repairs (P24, P25)", ok,
+           f"{n24} cancellations: canonical set still in the old context; {n251} congruences d x = A mod q; "
+           f"{n252} (ball, block) residue cases; {n26} canonical moduli (Summary 26)")
+
+
 if __name__ == "__main__":
     check_hull()
     check_monotone()
@@ -641,6 +747,7 @@ if __name__ == "__main__":
     check_cap()
     check_local_repr()
     check_local_ops()
+    check_backend_repairs()
     if FAILURES:
         print("FAILED:", ", ".join(FAILURES))
         sys.exit(1)

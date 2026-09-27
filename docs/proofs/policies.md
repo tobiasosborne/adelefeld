@@ -127,8 +127,9 @@ Hypotheses: `K >= 1`, a ball `c + R Zhat` with `R > 0`. Claim: it equals a scale
 `c K / R` is an integer; then `s = R/K` and `u = (c K / R) mod K`.
 
 *Proof.*
-1. If `c + R Zhat = s (u + K Zhat) = s u + s K Zhat`, then `R = s K` (Proposition 3(1)), so `s = R/K`, and
-   `(c - s u)/(s K) = c K/R - u` is an integer. As `u` is an integer, `c K/R` is an integer and `u` is its residue.
+1. If `c + R Zhat = s (u + K Zhat) = s u + s K Zhat`, then `R = s K` (Proposition 3(1)), so `s = R/K`, and by
+   Proposition 3(1) `(c - s u)/(s K) = (c K/R - u)/K` is an integer. So `c K/R - u` is an integer multiple of `K`;
+   as `u` is an integer, `c K/R` is an integer and `u = c K/R mod K`.
 2. Conversely, with these `s, u`: `s K = R` and `(c - s u)/(s K) = (c K/R - u)/K`, an integer because
    `u = c K/R mod K`. By Proposition 3(1) the sets are equal.
 
@@ -205,7 +206,9 @@ since `K >= 1`). Claim:
 3. Lemma 6 with `c = s t u v`, `R = s t K h`: `c K/R = u v/h`, an integer because `h | u`. So `s = R/K = s t h` and
    the residue is `(u v / h) mod K`.
 
-The specification's rule is therefore correct (an enclosure) but not tight; the tight variant costs one word gcd.
+The specification's rule is therefore correct (an enclosure with loss factor `h`) but not tight. The tight variant
+requires the integer gcd `h = gcd(u, v, K)`, the exact division of `u v` by `h`, and the scale update to `s t h`;
+this is a word gcd only when `K` and its residues fit a machine word, which the context does not guarantee.
 Example: `K = 4`, `x = y = 2 + 4 Zhat`: tight product `4 + 8 Zhat`; the rule gives `0 + 4 Zhat`; the variant gives
 `2 (2 + 4 Zhat) = 4 + 8 Zhat`. With `u = v = 0` the rule loses the full factor `K`.
 
@@ -257,20 +260,22 @@ result `c + R Zhat`, `R > 0`, the radius is replaced by `gcd(R, C)`.
 Hypotheses: `C > 0`, a ball `c + R Zhat`, `R >= 0`. Claim:
 
 1. `c + R Zhat` is inside `c + gcd(R, C) Zhat`.
-2. For `R = 0` (an exact value) the literal rule gives `c + C Zhat`, which contains `c`: sound, but the exactness is
-   lost. Keeping the exact tag (radius 0) is also sound and is tight.
+2. For `R = 0` (an exact result of exact inputs) the cap is not applied: the exact value keeps its tag. This is
+   required by `SPEC.md` 4.1 (`docs/SPEC.md:114`): the exact rational "stays exact under arithmetic with other exact
+   values". The literal formula `gcd(0, C) = C` would give `c + C Zhat`, which contains `c` and so is an enclosure,
+   but it breaks that requirement. The cap acts on every result of positive radius, including the product of an
+   exact scalar with a ball.
 3. `gcd(R, C)` is the finest radius `R'` with `R' | R` and `R' | C`: the cap is the best enclosure among balls whose
    radius is nowhere finer than `C`.
 
 *Proof.*
 1. `gcd(R, C) | R` (the generator divides each generator of the group, R being one of them); if `R = 0`,
    `gcd(0, C) = C`. Apply Proposition 3(3) (both balls contain `c`).
-2. As in 1.
+2. The exact result is its own tight result; the literal formula gives a ball containing it by item 1.
 3. If `R' | R` and `R' | C` then `R' | gcd(R, C)` by (G2).
 
-The specification says "after a tight operation"; it does not say which of the two readings of item 2 holds for
-exact results (for example the product of two exact values). This is reported as an ambiguity, not an error: both
-readings are enclosures.
+The specification says only "after a tight operation"; with the requirement of `SPEC.md` 4.1 the reading of item 2
+is the only compliant one. A clarifying sentence in `SPEC.md` 4.4 is proposed in the review (R8).
 
 Check: `check_cap`.
 Used by: `SPEC.md` 4.4 (item 3).
@@ -383,8 +388,8 @@ Used by: `SPEC.md` 4.1; `PLAN.md` 1.8 (conversion both ways).
 Hypotheses: `x = (d; r_i)`, `y = (e; s_i)` in the same block context. Put `L = lcm(d, e)`. Claim:
 
 1. `-x = (d; (-r_i) mod q_i)`, exactly.
-2. `x + y = (L; (r_i L/d + s_i L/e) mod q_i)`, exactly; this is the tight sum. `H` never changes; the denominator
-   becomes `L`.
+2. `x + y = (L; (r_i L/d + s_i L/e) mod q_i)`, exactly; this is the tight sum. The raw representation keeps `H`; the
+   denominator becomes `L`.
 3. The result is in canonical form exactly when `gcd(A L/d + B L/e, H, L) = 1`; otherwise canonical cancellation
    leaves the context (Proposition 24).
 
@@ -449,56 +454,121 @@ then `(n d/|m|; (sign(m) r_i) mod q_i)`. For `q = 0` the result is the exact 0.
 Check: `check_local_ops`.
 Used by: `SPEC.md` 4.1.
 
-### Proposition 24 (canonical cancellation gives a derived context).
+### Proposition 24 (canonical cancellation: the set stays in the context, the canonical triple does not).
 
-Hypotheses: `x = (d; r_i)`, `g = gcd(A, H, d)` (computed by Lemma 18), `g > 1`, `g_i = gcd(g, q_i)`. Claim: the
-canonical form `(A/g, H/g, d/g)` is not a local value of the original context (its `H` differs), and it is the local
-value `(d/g; (r_i/g_i) w_i mod (q_i/g_i))` of the derived context with blocks `q_i/g_i`, where `w_i` is the inverse
-of `g/g_i` modulo `q_i/g_i`. That inverse exists because `g/g_i` is coprime to `q_i`.
+Hypotheses: `x = (d; r_i)` in a block context with product `H`; `A` the lift with `0 <= A < H`; `g = gcd(A, H, d)`
+(computed by Lemma 18) with `g > 1`; `g_i = gcd(g, q_i)`. Claim:
+
+1. The set of `x` is the set of the triple `(A/g, H/g, d/g)`, and this triple is canonical in the sense of `SPEC.md`
+   4.1: `0 <= A/g < H/g` and `gcd(A/g, H/g, d/g) = 1`.
+2. The set is a local value of the original context, namely `x` itself; Proposition 19 holds for it with `H/R = d`
+   and `c H/R = A`. Cancellation does not force the *set* out of the context.
+3. The canonical *triple* is not the data of any local value of the original context: its numerator modulus is
+   `H/g != H`. It is the local value `(d/g; (r_i/g_i) w_i mod (q_i/g_i))` of the derived context with blocks
+   `q_i/g_i`, where `w_i` is the inverse of `g/g_i` modulo `q_i/g_i`. That inverse exists because `g/g_i` is coprime
+   to `q_i`. A block reduced to 1 carries the residue 0 and can be dropped.
+4. Consequence for storage: a backend that keeps raw data may leave `x` as it is (same set, same context); a backend
+   whose invariant is canonical data, as the struct comment `docs/PLAN.md:60` requires
+   (`H > 0: 0 <= A < H, gcd(A,H,d) = 1`), must move to the derived context of item 3 or to the global backend.
+   Either way, equality and printing must use the canonical triple (or compare sets), never the raw data.
 
 *Proof.*
-1. `g | H`, and `g = product of g_i` since the `q_i` are pairwise coprime (as in Lemma 18). So `g/g_i` is a product
-   of divisors of the other blocks, coprime to `q_i`, and invertible modulo `q_i/g_i`.
-2. The blocks `q_i/g_i` are pairwise coprime with product `H/g`.
-3. `g_i` divides `A` and `q_i`, hence it divides `r_i = A - q_i k`. Write `A = g A'`. Then
-   `(g/g_i) A' = A/g_i = r_i/g_i` modulo `q_i/g_i`, so `A' = (r_i/g_i) w_i` modulo `q_i/g_i`.
+1. `(A + H Zhat)/d = (g (A/g) + g (H/g) Zhat)/(g (d/g)) = (A/g + (H/g) Zhat)/(d/g)`. From `0 <= A < H` and `g | A`,
+   `g | H`: `0 <= A/g < H/g`. And `gcd(A/g, H/g, d/g) = gcd(A, H, d)/g = 1`.
+2. `x` is a local value of the context by definition, and its set is the set of item 1. For Proposition 19: the
+   radius is `R = H/d`, so `H/R = d` and `c H/R = (A/d) d = A`, both integers.
+3. `g | H`, and `g = product of g_i` since the `q_i` are pairwise coprime (as in Lemma 18). So `g/g_i` is a product
+   of divisors of the other blocks, coprime to `q_i`, and invertible modulo `q_i/g_i`. The blocks `q_i/g_i` are
+   pairwise coprime with product `H/g`. `g_i` divides `A` and `q_i`, hence it divides `r_i = A - q_i k`. Write
+   `A = g A'`. Then `(g/g_i) A' = A/g_i = r_i/g_i` modulo `q_i/g_i`, so `A' = (r_i/g_i) w_i` modulo `q_i/g_i`.
+4. Items 1 to 3.
 
-Check: `check_local_ops`.
-Used by: `SPEC.md` 4.1 ("the cancellation that brings a value to canonical form").
+Example (from the review): blocks `(4)`, `(d; r) = (2; 2)`, `A = 2`, `g = 2`. The set is
+`(2 + 4 Zhat)/2 = 1 + 2 Zhat`; it is the local value `(2; 2)` of the context `(4)`, and its canonical triple
+`(1, 2, 1)` lives in the derived context `(2)` as `(1; 1)`.
 
-### Proposition 25 (the denominator is never inverted; what is done instead).
+Check: `check_local_ops` (derived context), `check_backend_repairs` (item 2, by a search over all `(d', A')` of the
+original context).
+Used by: `SPEC.md` 4.1 ("the cancellation that brings a value to canonical form"); `PLAN.md` 1.8.
 
-Claim:
+### Proposition 25 (the denominator and a block with a common factor).
 
-1. In Lemma 17, Propositions 20 to 24 the denominator `d` (or `e`, `L`, `n`) is only multiplied or divided exactly
-   as an integer outside the residues. The only modular inversions are of `h/h_i` modulo `q_i` (Proposition 22.3)
-   and of `g/g_i` modulo `q_i/g_i` (Proposition 24); in both the two numbers are coprime.
-2. The alternative storage "residue of the rational centre `A/d` modulo `q_i`" is impossible when `gcd(d, q_i) > 1`:
-   for blocks `(4)` the value `1/2 + 2 Zhat = (1 + 4 Zhat)/2` has numerator residue 1 modulo 4, and no `x` modulo 4
-   has `2 x = 1 mod 4`.
-3. What is done instead: the residues are those of the integer numerator `A`; `d` is stored once per value and
-   applied after recombination.
+Hypotheses: a local value `(d; r_i)` in a block context with product `H`, numerator `A` (any lift), a block
+`q = q_i`, `g = gcd(d, q)`. Claim:
 
-*Proof.* 1 by inspection of the proofs cited. 2: `2 x` is even and 1 is odd modulo 4. 3 is Definition 16.
+1. `d` is invertible modulo `q` exactly when `g = 1`. The congruence `d x = A` modulo `q` has a solution exactly
+   when `g | A`, and then exactly `g` solutions modulo `q`.
+2. If `g = 1`, every element of the ball `(A + H Zhat)/d` lies in `Z_p` for each prime `p | q`, and all its elements
+   are congruent modulo `q` to `A d*`, `d*` the inverse of `d` modulo `q`. If `g > 1`, the ball determines no
+   residue modulo `q`: for a prime `p | g`, `v_p(H/d) < v_p(q)`, so the elements `A/d` and `A/d + H/d` differ by an
+   element of `p`-valuation below `v_p(q)`.
+3. A solution of `d x = A` modulo `q` computed from one lift `A` is therefore not a property of the value when
+   `g > 1`: the lifts `A = 2` and `A = 6` of the residue 2 modulo `H = q = 4`, with `d = 2`, have centres 1 and 3,
+   both in the ball `1 + 2 Zhat`, and `2 x = 2` modulo 4 has the two solutions 1 and 3.
+4. In Lemma 17 and Propositions 20 to 24 the denominators `d, e, L, n` are only multiplied, or divided exactly, as
+   integers outside the residues. The only modular inversions there are of `h/h_i` modulo `q_i` (Proposition 22.3)
+   and of `g/g_i` modulo `q_i/g_i` (Proposition 24); in both cases the two numbers are coprime.
 
-Check: `check_local_ops` (the example of item 2).
-Used by: `SPEC.md` 4.1 ("never inverted modulo a block it shares a factor with").
+*Proof.*
+1. If `g = 1`, Bezout gives `d*`. If `g > 1` and `d x - 1 = q y`, then `g | 1`, impossible. If `d x - A = q y`, then
+   `g | A`. Conversely write `A = g A'`, `d = g d'`, `q = g q'` with `gcd(d', q') = 1`; `d x = A` modulo `q` is
+   equivalent to `d' x = A'` modulo `q'`, which has exactly one solution modulo `q'`, that is `g` solutions modulo
+   `q`.
+2. `v_p(H) = v_p(q)` for `p | q`, as the other blocks are coprime to `q`. If `g = 1`, `d` is a unit of `Z_p` for
+   `p | q`, so `A/d` is in `Z_p` and `H/d` is in `q Z_p`; and `A/d - A d* = A (1 - d d*)/d` is in `q Z_p`. So every
+   element of the ball is `A d*` modulo `q Z_p` at each `p | q`, which is congruence modulo `q` (S2 of `ideles.md`).
+   If `g > 1`, take `p | g`: `v_p(H/d) = v_p(q) - v_p(d) <= v_p(q) - 1`.
+3. `2/2 = 1`, `6/2 = 3`, and `(3 - 1)/2 = 1` is an integer, so both lie in `1 + 2 Zhat` (Lemma 1 of `precision.md`);
+   `2 * 1 = 2 * 3 = 2` modulo 4.
+4. By inspection of the proofs cited; the coprimality of `h/h_i` and `q_i` is shown in Proposition 22, that of
+   `g/g_i` and `q_i/g_i` in Proposition 24.
 
-### Summary 26 (when an operation leaves the context).
+Rules for the C code of the local backend (`PLAN.md` 1.8), from Propositions 21 to 25:
 
-In a block context with product `H` (the context fixes `H`; `d` belongs to the value):
+- Store the residues of the integer numerator `A` modulo each block and the denominator `d` once per value
+  (Definition 16). Apply `d` only after recombination, as the denominator of `(A + H Zhat)/d`.
+- Compute modular inverses only of integers coprime to the modulus: `h/h_i` modulo `q_i`, `g/g_i` modulo `q_i/g_i`,
+  and `d` modulo `q_i` only when `gcd(d, q_i) = 1` (for example to print the residue that item 2 shows the ball
+  determines).
+- Never compute an inverse of `d` modulo a block with `gcd(d, q_i) > 1`; never replace a numerator residue by a
+  solution of `d x = A` modulo `q_i`; never report such a solution as a residue of the value (items 1 to 3).
+- Compare and print values through their canonical triples (Proposition 24.4), not through raw residues.
 
-| Operation | `d` | `H` |
+Check: `check_backend_repairs` (item 1 for all `q, d <= 24` and all `A`; item 2 on 947 balls and blocks by sampling;
+the example of item 3), `check_local_ops`.
+Used by: `SPEC.md` 4.1 ("never inverted modulo a block it shares a factor with"); `PLAN.md` 1.8.
+
+### Summary 26 (raw representation and canonical form).
+
+In a block context with product `H` (the context fixes `H`; `d` belongs to the value). "Raw" is the representation
+produced by the operation before canonical cancellation; "canonical" is the triple of `SPEC.md` 4.1. Inputs are
+`x = (A + H Zhat)/d`, `y = (B + H Zhat)/e`, `L = lcm(d, e)`, `h = gcd(A, B, H)`.
+
+| Operation | raw result | canonical numerator modulus |
 |---|---|---|
-| negation | unchanged | unchanged |
-| sum | becomes `lcm(d, e)` | unchanged |
-| product, blockwise rule | becomes `d e` | unchanged (enclosure, loses factor `h`) |
-| product, tight | `d e/h` if `h` divides `d e` | unchanged if `h` divides `d e`; else `H h` (blocks `q_i h_i`) |
-| exact scalar `m/n` | `n d/abs(m)` if `abs(m)` divides `d` | unchanged if `abs(m)` divides `d`; else changes |
-| canonical cancellation by `g > 1` | becomes `d/g` | becomes `H/g` (derived context `q_i/g_i`) |
-| conversion of a global ball | Proposition 20 | unchanged (enclosure unless `d0 = H/R`) |
+| negation | `d`, `H` unchanged (P21) | unchanged, as `gcd(-A mod H, H, d) = gcd(A, H, d)` |
+| sum | denominator `L`, `H` unchanged (P21) | `H/g_s`, `g_s = gcd(A L/d + B L/e, H, L)` |
+| product, blockwise | denominator `d e`, `H` unchanged; an enclosure losing `h` (P22.2) | not the tight set |
+| product, tight | `(d e/h; A B/h)` if `h` divides `d e`; else blocks `q_i h_i` (P22) | `H h/gcd(A B, H h, d e)` |
+| scalar `m/n` | `(n d/abs(m); sign(m) A)` if `abs(m)` divides `d`; else new `H` | `abs(m)H/gcd(mA, abs(m)H, nd)` |
+| cancellation by `g > 1` | set unchanged, still in the context (P24.2) | `H/g`, derived blocks `q_i/g_i` (P24.3) |
+| conversion of a global ball | Proposition 20 | as for the set |
 
-A block of a derived context that no longer fits a machine word forces the global backend (`SPEC.md` 4.1).
+So the raw representation keeps `H` for negation, sum and blockwise product, but the canonical form can change `H`
+after any of them. Examples: `(1 + 2 Zhat)/2 + (1 + 2 Zhat)/2` has raw form `(2 + 2 Zhat)/2` and canonical form
+`(0 + 1 Zhat)/1`, so `H` goes from 2 to 1; the tight product of `(1 + 6 Zhat)/2` and `(2 + 6 Zhat)/3` has `h = 1`,
+raw form `(2 + 6 Zhat)/6`, canonical form `(1 + 3 Zhat)/3`. A canonical triple may need a new context although its
+set is still representable in the old one (P24). Every derived context is computed without factorisation. A block of
+a derived context that no longer fits a machine word forces the global backend (`SPEC.md` 4.1).
+
+*Proof of the canonical column.* A raw triple `(A', H', d')` has the canonical triple `(A'/g', H'/g', d'/g')` with
+`g' = gcd(A', H', d')` (Proposition 24.1, which uses only the triple). The raw triples are those of Propositions 21
+to 23; for the tight product the raw triple is `(A B, H h, d e)` (Proposition 22.1), for the scalar
+`(m A, abs(m) H, n d)` (Proposition 23.1), and the gcd does not depend on the lift of the numerator because the
+modulus is among its arguments.
+
+Check: `check_backend_repairs` (canonical moduli against an independent canonicalisation of the set; the two
+examples).
 
 ## Table of statements
 
@@ -517,7 +587,7 @@ A block of a derived context that no longer fits a machine word forces the globa
 | P11 | conversion between contexts, exactness criterion | proved here | `check_conversion` |
 | C12 | common context `lcm(K, K')` is lossless | proved here | `check_conversion` |
 | D13 | absolute cap | definition | |
-| P14 | cap is sound; exact values; best among radii dividing `C` | proved here | `check_cap` |
+| P14 | cap is sound; exact results keep their tag; best among radii dividing `C` | proved here | `check_cap` |
 | P15 | invariant: `R` divides `C`; sums need no cap | proved here | `check_cap` |
 | D16 | block context and local value | definition | |
 | L17 | local value is the global set; injective; CRT recombination | proved modulo (CRT) | `check_local_repr` |
@@ -527,5 +597,27 @@ A block of a derived context that no longer fits a machine word forces the globa
 | P21 | negation and sum blockwise, `H` unchanged | proved here | `check_local_ops` |
 | P22 | product: blockwise enclosure, tight iff `h = 1`, derived context | proved here | `check_local_ops` |
 | P23 | exact scalar in the local backend | proved here | `check_local_ops` |
-| P24 | canonical cancellation, derived context `q_i/g_i` | proved here | `check_local_ops` |
-| P25 | the denominator is never inverted | proved here | `check_local_ops` |
+| P24 | cancellation: set stays; canonical triple needs `q_i/g_i` | proved here | `check_backend_repairs` |
+| P25 | `d x = A mod q_i`; a residue of the ball iff `gcd(d, q_i) = 1` | proved here | `check_backend_repairs` |
+| S26 | raw representation against canonical modulus, per operation | proved here | `check_backend_repairs` |
+
+## Review record
+
+Date 2026-09-27. Reviewer: codex gpt-6-astra, `docs/reviews/m0-proofs/ideles-review.md` (checks
+`docs/reviews/m0-proofs/ideles_review_checks.py`). Verdicts on this file: 18 VALID (L1, L2, T3, L5, P7 to P9, P11,
+C12, P14, P15, L17 to P23), 2 MINOR (L6, P10), 2 INVALID (P24, P25); Summary 26 MINOR (not counted).
+
+- L6: proof step 1 had a dropped factor `K`; now `(c - s u)/(s K) = (c K/R - u)/K` with the congruence step.
+- P10: the claim "costs one word gcd" is replaced by the operations needed; a word gcd only for word-sized `K`.
+- P14: exact results keep their exact tag, as `SPEC.md` 4.1 requires; the cap acts on positive radii only.
+- P21: "`H` never changes" restated as "the raw representation keeps `H`".
+- P24 (INVALID, agreed): the claim "the canonical form is not a local value of the original context" was false for
+  the set (witness `(A, H, d) = (2, 4, 2)`, reproduced). Replaced by: the set stays representable; the canonical
+  triple needs the derived context; the lift `0 <= A < H` is fixed; storage rule for the C code.
+- P25 (INVALID, agreed): "impossible when `gcd(d, q_i) > 1`" was false in general (witness `A = d = 2`, `q = 4`,
+  reproduced). Replaced by the solvability count of `d x = A mod q_i`, the fact that the ball determines a residue
+  modulo `q_i` exactly when `gcd(d, q_i) = 1`, and explicit rules for the C code.
+- Summary 26: separated raw representation from canonical modulus, with a proof of the canonical column and the
+  review's two examples in which canonical `H` changes.
+- Checks: `check_backend_repairs` added; the two refuted claims, as stated, are mutants in
+  `lanes/m0-proofs-ideles/mutants.py` and are killed.
