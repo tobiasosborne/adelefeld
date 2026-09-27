@@ -2,3 +2,5 @@
 2026-09-27T22:56:09+02:00 docs/conventions.md drafted (sections 1-14).
 2026-09-27T23:05:54+02:00 red run: see red.txt
 2026-09-27T23:39:12+02:00 golden vectors (666), reference parser/printer, tests green (23 OK), mutation check (24/25 killed, 1 equivalent), report written.
+2026-09-28T00:16:35+02:00 part B: red run after updating golden vectors (D8, raw local, phases, gauss): see red-partB.txt
+2026-09-28T00:30:50+02:00 part B done: conventions 0.2, 713 vectors, 26 tests OK, mutants 30/31 killed (1 equivalent).

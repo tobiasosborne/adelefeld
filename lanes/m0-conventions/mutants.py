@@ -49,11 +49,23 @@ MUTANTS = [
      "        _check_limits(tree, limits)\n        _check_unsupported(tree)\n        return _build_and_print(type_name, tree)",
      "        _build_and_print(type_name, tree)\n        _check_limits(tree, limits)\n        _check_unsupported(tree)\n"
      "        return _build_and_print(type_name, tree)"),
+    # part B (version 0.2)
+    ("dump field other than Q accepted (10.1, D8)", 'if f.group(1) != "Q":', 'if f.group(1) not in ("Q", "K"):'),
+    ("archimedean count not checked (10.1, seams R3)", "    if len(arch) != 1:\n        _domain()",
+     "    if len(arch) < 1:\n        _domain()"),
+    ("phases over B - 1 roots only (6.1)", "for k in range(B)}", "for k in range(max(B - 1, 1))}"),
+    ("raw local: gcd condition reinstated (5.3, CV-55)", "    g = gcd(gcd(A, H), d)\n    return (A // g, H // g, d // g)",
+     "    _v_G(A, H, d)\n    return (A, H, d)"),
+    ("local denominator 0 accepted (5.3)", "    if d < 1:\n        _domain()\n    for r, m in zip(res, q):",
+     "    for r, m in zip(res, q):"),
+    ("complex ball under inf read as real (9.2)", 'if self.peek("("):\n                return ("C", self.complex())',
+     'if False:\n                return ("C", self.complex())'),
 ]
 
 SUBSET = ["test_text_grammar.TestGoldenVectors.test_types", "test_text_grammar.TestGoldenVectors.test_dump",
           "test_text_grammar.TestGoldenVectors.test_realball_print",
           "test_text_grammar.TestGoldenVectors.test_realball_read", "test_text_grammar.TestGoldenVectors.test_dispatch",
+          "test_text_grammar.TestGoldenVectors.test_psi_phases",
           "test_text_grammar.TestRealPrinting", "test_text_grammar.TestCrossChecks"]
 
 

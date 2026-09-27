@@ -401,29 +401,33 @@ FILES["lball"] = r"""
 FILES["sball"] = r"""
 # adf_sball
 {} ==> {}
-{R: 1.5 +/- 1e-9} ==> {R: 1.5 +/- 1e-9}
-{C: (1) + (2)*i} ==> {C: (1) + (2)*i}
+{inf: 1.5 +/- 1e-9} ==> {inf: 1.5 +/- 1e-9}
+{inf: (1) + (2)*i} ==> {inf: (1) + (2)*i}
 {p=5: 3 + O(5^4)} ==> {p=5: 3 + O(5^4)}
 {p=5: 1/3} ==> {p=5: 1/3}
-{R: 1.5 +/- 1e-9; p=2: 1 + O(2^3); p=5: 3 + O(5^4)} ==> {R: 1.5 +/- 1e-9; p=2: 1 + O(2^3); p=5: 3 + O(5^4)}
+{inf: 1.5 +/- 1e-9; p=2: 1 + O(2^3); p=5: 3 + O(5^4)} ==> {inf: 1.5 +/- 1e-9; p=2: 1 + O(2^3); p=5: 3 + O(5^4)}
 # valid, non-canonical
-{p=5: 3 + O(5^4); R: 1.5 +/- 1e-9; p=2: 1 + O(2^3)} ==> {R: 1.5 +/- 1e-9; p=2: 1 + O(2^3); p=5: 3 + O(5^4)}
+{p=5: 3 + O(5^4); inf: 1.5 +/- 1e-9; p=2: 1 + O(2^3)} ==> {inf: 1.5 +/- 1e-9; p=2: 1 + O(2^3); p=5: 3 + O(5^4)}
 { p=5 : 28 + O(5^2) ; p=3 : 1/3 } ==> {p=3: 1/3; p=5: 3 + O(5^2)}
-{p=7: 50 + O(7^2); C: (0) + (-1)*i} ==> {C: (0) + (-1)*i; p=7: 1 + O(7^2)}
+{p=7: 50 + O(7^2); inf: (0) + (-1)*i} ==> {inf: (0) + (-1)*i; p=7: 1 + O(7^2)}
 { } ==> {}
 # invalid
-{R: 1; C: (1) + (0)*i} ==> !DOMAIN
-{R: 1; R: 2} ==> !DOMAIN
+{inf: 1; inf: (1) + (0)*i} ==> !DOMAIN
+{inf: 1; inf: 2} ==> !DOMAIN
 {p=5: 1; p=5: 2} ==> !DOMAIN
 {p=4: 1} ==> !DOMAIN
 {p=5: 1;} ==> !PARSE
 {;} ==> !PARSE
 {p=5: 1, p=7: 1} ==> !PARSE
-{R 1} ==> !PARSE
+{inf 1} ==> !PARSE
 {I: 1} ==> !PARSE
+# the labels of version 0.1 are gone (seams R9: place labels p=5 and inf)
+{R: 1} ==> !PARSE
+{C: (1) + (0)*i} ==> !PARSE
+{inf : 1 ; p = 2 : 1} ==> {inf: 1; p=2: 1}
 [p=5: 1] ==> !PARSE
 {p=18446744073709551617: 1} ==> !UNSUPPORTED
-{R: 1e100001} ==> !LIMIT
+{inf: 1e100001} ==> !LIMIT
 """
 
 FILES["qclass"] = r"""
@@ -546,7 +550,7 @@ FILES["dispatch"] = r"""
 <1.25 +/- 1e-30 ; [5 mod 36]> ==> idclass
 [p=5: 3 + O(5^4)] ==> lball
 {} ==> sball
-{R: 1} ==> sball
+{inf: 1} ==> sball
 (0.5 ; 0) + Q ==> qclass
 union((0.5 ; 0 mod 1)) + Q ==> qclass
 ffun(D=1, M=1; (0) + (0)*i) ==> ffun
@@ -626,168 +630,205 @@ FILES["realball_print"] = r"""
 10715086071862673209484250490600018105614048117055336074437503883703510511249361224931983788156958581275946729175531468251871452856923140435984577574698574803934567774824230985421074605062371141877954182153046474983581941267398767559165543946077062914571196477686542167660429831652624386837205668069376 0 5 ==> 1.0715e301 +/- 8.7e295
 """
 
+FILES["psi_phases"] = r"""
+# finite phases of the additive character on a finite ball (conventions 6.1; analysis.md Lemma 2):
+# the set of psi_f on a + N Zhat is {E(t)}; expected: the angles t in [0, 1), increasing, in lowest terms
+(* ; 0) ==> 0
+(* ; 1/3) ==> 1/3
+(* ; -1/3) ==> 2/3
+(* ; 7/3) ==> 1/3
+(* ; 5/3 mod 6) ==> 2/3
+(* ; 2 mod 6) ==> 0
+(* ; 0 mod 1) ==> 0
+(* ; 5/2 mod 4) ==> 1/2
+# SPEC 6: 0 mod 1/2 gives +1 and -1
+(* ; 0 mod 1/2) ==> 0 1/2
+(* ; 1/2 mod 1/2) ==> 0 1/2
+(* ; 1/4 mod 1/3) ==> 1/4 7/12 11/12
+(* ; 1/10 mod 3/4) ==> 1/10 7/20 3/5 17/20
+(* ; 0 mod 1/6) ==> 0 1/6 1/3 1/2 2/3 5/6
+(* ; 1/2 mod 2/3) ==> 1/6 1/2 5/6
+(* ; -5/7 mod 0) ==> 2/7
+(* ; 1/0) ==> !DOMAIN
+7/3 ==> !PARSE
+"""
+
 FILES["dump"] = r"""
 # dump form, version 1 (docs/conventions.md 10); a valid dump is its own expected output
-adf1 rat 7 3 ==> adf1 rat 7 3
-adf1 rat -7 3 ==> adf1 rat -7 3
-adf1 rat 0 1 ==> adf1 rat 0 1
-adf1 rat 1f 1 ==> adf1 rat 1f 1
-adf1 rat 2 4 ==> !DOMAIN
-adf1 rat 7 0 ==> !DOMAIN
-adf1 rat 7 -3 ==> !DOMAIN
-adf1 rat 07 3 ==> !PARSE
-adf1 rat 7 3\x20 ==> !PARSE
+adf1 Q rat 7 3 ==> adf1 Q rat 7 3
+adf1 Q rat -7 3 ==> adf1 Q rat -7 3
+adf1 Q rat 0 1 ==> adf1 Q rat 0 1
+adf1 Q rat 1f 1 ==> adf1 Q rat 1f 1
+adf1 Q rat 2 4 ==> !DOMAIN
+adf1 Q rat 7 0 ==> !DOMAIN
+adf1 Q rat 7 -3 ==> !DOMAIN
+adf1 Q rat 07 3 ==> !PARSE
+adf1 Q rat 7 3\x20 ==> !PARSE
 adf1  rat 7 3 ==> !PARSE
-\x20adf1 rat 7 3 ==> !PARSE
-adf1 rat 7 3\n ==> !PARSE
-adf1 rat 7 ==> !PARSE
-adf1 rat 7 3 1 ==> !PARSE
-adf1 rat A 3 ==> !PARSE
-adf1 rat -0 1 ==> !PARSE
-adf1 rat 0x7 3 ==> !PARSE
+\x20adf1 Q rat 7 3 ==> !PARSE
+adf1 Q rat 7 3\n ==> !PARSE
+adf1 Q rat 7 ==> !PARSE
+adf1 Q rat 7 3 1 ==> !PARSE
+adf1 Q rat A 3 ==> !PARSE
+adf1 Q rat -0 1 ==> !PARSE
+adf1 Q rat 0x7 3 ==> !PARSE
 adf1\trat 7 3 ==> !PARSE
-adf2 rat 7 3 ==> !UNSUPPORTED
-adf0 rat 7 3 ==> !UNSUPPORTED
+adf2 Q rat 7 3 ==> !UNSUPPORTED
+adf0 Q rat 7 3 ==> !UNSUPPORTED
 adf2 anything at all ==> !UNSUPPORTED
 adf01 rat 7 3 ==> !PARSE
 ADF1 rat 7 3 ==> !PARSE
-adf1 real 7 3 ==> !PARSE
-@gen:adf1 rat 1|0|1048576| 1 ==> !LIMIT
+# the header names the field (seams R9, decision D8): Q in version 1; another field is UNSUPPORTED
+adf1 rat 7 3 ==> !PARSE
+adf1 K rat 7 3 ==> !UNSUPPORTED
+adf1 F3(T) rat 7 3 ==> !UNSUPPORTED
+adf1 q rat 7 3 ==> !PARSE
+adf1 Q real 7 3 ==> !PARSE
+@gen:adf1 Q rat 1|0|1048576| 1 ==> !LIMIT
 # finite balls, global and local
-adf1 fball g 2 6 1 ==> adf1 fball g 2 6 1
-adf1 fball g 5 12 3 ==> adf1 fball g 5 12 3
-adf1 fball g 0 0 1 ==> adf1 fball g 0 0 1
-adf1 fball g 7 0 3 ==> adf1 fball g 7 0 3
-adf1 fball g 8 6 1 ==> !DOMAIN
-adf1 fball g 2 6 2 ==> !DOMAIN
-adf1 fball g 0 0 2 ==> !DOMAIN
-adf1 fball g -1 6 1 ==> !DOMAIN
-adf1 fball g 1 -6 1 ==> !DOMAIN
-adf1 fball g 1 6 0 ==> !DOMAIN
-adf1 fball x 1 6 1 ==> !PARSE
-adf1 fball l 1 6 2 2 3 0 2 ==> adf1 fball l 1 6 2 2 3 0 2
-adf1 fball l 1 6 2 3 2 2 0 ==> adf1 fball l 1 6 2 3 2 2 0
-adf1 fball l 1 6 2 2 3 2 0 ==> !DOMAIN
-adf1 fball l 1 6 2 2 4 0 2 ==> !DOMAIN
-adf1 fball l 1 8 2 2 4 0 2 ==> !DOMAIN
-adf1 fball l 2 6 2 2 3 0 0 ==> !DOMAIN
-adf1 fball l 1 1 0 ==> !DOMAIN
-adf1 fball l 1 6 2 2 3 0 ==> !PARSE
-adf1 fball l 1 6 2 2 3 0 2 1 ==> !PARSE
+adf1 Q fball g 2 6 1 ==> adf1 Q fball g 2 6 1
+adf1 Q fball g 5 12 3 ==> adf1 Q fball g 5 12 3
+adf1 Q fball g 0 0 1 ==> adf1 Q fball g 0 0 1
+adf1 Q fball g 7 0 3 ==> adf1 Q fball g 7 0 3
+adf1 Q fball g 8 6 1 ==> !DOMAIN
+adf1 Q fball g 2 6 2 ==> !DOMAIN
+adf1 Q fball g 0 0 2 ==> !DOMAIN
+adf1 Q fball g -1 6 1 ==> !DOMAIN
+adf1 Q fball g 1 -6 1 ==> !DOMAIN
+adf1 Q fball g 1 6 0 ==> !DOMAIN
+adf1 Q fball x 1 6 1 ==> !PARSE
+adf1 Q fball l 1 6 2 2 3 0 2 ==> adf1 Q fball l 1 6 2 2 3 0 2
+adf1 Q fball l 1 6 2 3 2 2 0 ==> adf1 Q fball l 1 6 2 3 2 2 0
+adf1 Q fball l 1 6 2 2 3 2 0 ==> !DOMAIN
+adf1 Q fball l 1 6 2 2 4 0 2 ==> !DOMAIN
+adf1 Q fball l 1 8 2 2 4 0 2 ==> !DOMAIN
+# raw local values (conventions 5.3, policies P24): the triple (0, 6, 2) is not canonical, the set 0 + 3 Zhat is
+adf1 Q fball l 2 6 2 2 3 0 0 ==> adf1 Q fball l 2 6 2 2 3 0 0
+adf1 Q fball l 2 4 1 4 2 ==> adf1 Q fball l 2 4 1 4 2
+adf1 Q fball l 0 6 2 2 3 0 0 ==> !DOMAIN
+adf1 Q fball l 1 1 0 ==> !DOMAIN
+adf1 Q fball l 1 6 2 2 3 0 ==> !PARSE
+adf1 Q fball l 1 6 2 2 3 0 2 1 ==> !PARSE
 # contexts
-adf1 modctx 6 2 2 3 ==> adf1 modctx 6 2 2 3
-adf1 modctx 6 2 3 2 ==> adf1 modctx 6 2 3 2
-adf1 modctx 1 0 ==> adf1 modctx 1 0
-adf1 modctx 6 1 6 ==> adf1 modctx 6 1 6
-adf1 modctx 10000000000000000 0 ==> adf1 modctx 10000000000000000 0
-adf1 modctx ffffffffffffffff 1 ffffffffffffffff ==> adf1 modctx ffffffffffffffff 1 ffffffffffffffff
-adf1 modctx 0 0 ==> !DOMAIN
-adf1 modctx 6 2 2 2 ==> !DOMAIN
-adf1 modctx 7 2 2 3 ==> !DOMAIN
-adf1 modctx 1 1 1 ==> !DOMAIN
-adf1 modctx 10000000000000000 1 10000000000000000 ==> !DOMAIN
-adf1 modctx 6 2 2 3 5 ==> !PARSE
-adf1 modctx 6 2 2 ==> !PARSE
+adf1 Q modctx 6 2 2 3 ==> adf1 Q modctx 6 2 2 3
+adf1 Q modctx 6 2 3 2 ==> adf1 Q modctx 6 2 3 2
+adf1 Q modctx 1 0 ==> adf1 Q modctx 1 0
+adf1 Q modctx 6 1 6 ==> adf1 Q modctx 6 1 6
+adf1 Q modctx 10000000000000000 0 ==> adf1 Q modctx 10000000000000000 0
+adf1 Q modctx ffffffffffffffff 1 ffffffffffffffff ==> adf1 Q modctx ffffffffffffffff 1 ffffffffffffffff
+adf1 Q modctx 0 0 ==> !DOMAIN
+adf1 Q modctx 6 2 2 2 ==> !DOMAIN
+adf1 Q modctx 7 2 2 3 ==> !DOMAIN
+adf1 Q modctx 1 1 1 ==> !DOMAIN
+adf1 Q modctx 10000000000000000 1 10000000000000000 ==> !DOMAIN
+adf1 Q modctx 6 2 2 3 5 ==> !PARSE
+adf1 Q modctx 6 2 2 ==> !PARSE
 # adeles: real balls as arb_dump_str writes them
-adf1 adele 1 -1 0 0 g 0 0 1 ==> adf1 adele 1 -1 0 0 g 0 0 1
-adf1 adele c90fcf80dc337 -32 a7c5ac5 -2c g 5 12 3 ==> adf1 adele c90fcf80dc337 -32 a7c5ac5 -2c g 5 12 3
-adf1 adele 0 0 0 0 g 0 0 1 ==> adf1 adele 0 0 0 0 g 0 0 1
-adf1 adele -3 -2 0 0 g 1 2 1 ==> adf1 adele -3 -2 0 0 g 1 2 1
-adf1 adele 1 0 3fffffff 0 g 0 0 1 ==> adf1 adele 1 0 3fffffff 0 g 0 0 1
-adf1 adele 1 7fffffffffffffffffff 1 7fffffffffffffffffff g 0 0 1 ==> adf1 adele 1 7fffffffffffffffffff 1 7fffffffffffffffffff g 0 0 1
-adf1 adele 1 0 0 0 l 1 6 2 2 3 0 2 ==> adf1 adele 1 0 0 0 l 1 6 2 2 3 0 2
-adf1 adele 2 0 0 0 g 0 0 1 ==> !DOMAIN
-adf1 adele 0 -1 0 0 g 0 0 1 ==> !DOMAIN
-adf1 adele 0 -3 0 -1 g 0 0 1 ==> !DOMAIN
-adf1 adele 0 0 0 -1 g 0 0 1 ==> !DOMAIN
-adf1 adele 0 5 0 0 g 0 0 1 ==> !DOMAIN
-adf1 adele 1 0 -1 0 g 0 0 1 ==> !DOMAIN
-adf1 adele 1 0 40000000 0 g 0 0 1 ==> !DOMAIN
-adf1 adele 1 0 40000001 0 g 0 0 1 ==> !DOMAIN
-adf1 adele 1 0 0 1 g 0 0 1 ==> !DOMAIN
-adf1 adele 1 0 0 0 5 g 0 0 1 ==> !PARSE
-adf1 adele 1 0 0 g 0 0 1 ==> !PARSE
-adf1 adele A 0 0 0 g 0 0 1 ==> !PARSE
-adf1 adele 1 0 0 0 g 0 0 2 ==> !DOMAIN
-adf1 cadele 1 0 0 0 1 -1 0 0 g 2 6 1 ==> adf1 cadele 1 0 0 0 1 -1 0 0 g 2 6 1
-adf1 cadele 1 0 0 0 0 -1 0 0 g 2 6 1 ==> !DOMAIN
+adf1 Q adele 1 1 -1 0 0 g 0 0 1 ==> adf1 Q adele 1 1 -1 0 0 g 0 0 1
+adf1 Q adele 1 c90fcf80dc337 -32 a7c5ac5 -2c g 5 12 3 ==> adf1 Q adele 1 c90fcf80dc337 -32 a7c5ac5 -2c g 5 12 3
+adf1 Q adele 1 0 0 0 0 g 0 0 1 ==> adf1 Q adele 1 0 0 0 0 g 0 0 1
+adf1 Q adele 1 -3 -2 0 0 g 1 2 1 ==> adf1 Q adele 1 -3 -2 0 0 g 1 2 1
+adf1 Q adele 1 1 0 3fffffff 0 g 0 0 1 ==> adf1 Q adele 1 1 0 3fffffff 0 g 0 0 1
+adf1 Q adele 1 1 7fffffffffffffffffff 1 7fffffffffffffffffff g 0 0 1 ==> adf1 Q adele 1 1 7fffffffffffffffffff 1 7fffffffffffffffffff g 0 0 1
+adf1 Q adele 1 1 0 0 0 l 1 6 2 2 3 0 2 ==> adf1 Q adele 1 1 0 0 0 l 1 6 2 2 3 0 2
+adf1 Q adele 1 2 0 0 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 0 -1 0 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 0 -3 0 -1 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 0 0 0 -1 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 0 5 0 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 1 0 -1 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 1 0 40000000 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 1 0 40000001 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 1 0 0 1 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 1 1 0 0 0 5 g 0 0 1 ==> !PARSE
+adf1 Q adele 1 1 0 0 g 0 0 1 ==> !PARSE
+adf1 Q adele 1 A 0 0 0 g 0 0 1 ==> !PARSE
+adf1 Q adele 1 1 0 0 0 g 0 0 2 ==> !DOMAIN
+# the count of archimedean components (seams R3) is 1 for Q
+adf1 Q adele 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele 2 1 0 0 0 1 0 0 0 g 0 0 1 ==> !DOMAIN
+adf1 Q adele g 0 0 1 ==> !PARSE
+adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1 ==> adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1
+adf1 Q cadele 1 1 0 0 0 0 -1 0 0 g 2 6 1 ==> !DOMAIN
 # unit cosets, ideles, classes
-adf1 ucoset 5 6 ==> adf1 ucoset 5 6
-adf1 ucoset 1 0 ==> adf1 ucoset 1 0
-adf1 ucoset -1 0 ==> adf1 ucoset -1 0
-adf1 ucoset 1 1 ==> adf1 ucoset 1 1
-adf1 ucoset 0 1 ==> !DOMAIN
-adf1 ucoset b 6 ==> !DOMAIN
-adf1 ucoset 2 4 ==> !DOMAIN
-adf1 ucoset 2 0 ==> !DOMAIN
-adf1 ucoset -1 6 ==> !DOMAIN
-adf1 ucoset 1 -1 ==> !DOMAIN
-adf1 idele 5 -1 1 -1e 3 2 5 24 ==> adf1 idele 5 -1 1 -1e 3 2 5 24
-adf1 idele 1 0 1 -1 1 1 1 0 ==> adf1 idele 1 0 1 -1 1 1 1 0
-adf1 idele 0 0 0 0 1 1 1 0 ==> !DOMAIN
-adf1 idele 1 0 1 0 1 1 1 0 ==> !DOMAIN
-adf1 idele 1 0 0 0 0 1 1 0 ==> !DOMAIN
-adf1 idele 1 0 0 0 -1 1 1 0 ==> !DOMAIN
-adf1 idele 1 0 0 0 2 2 1 0 ==> !DOMAIN
-adf1 idclass 5 -2 0 0 5 24 ==> adf1 idclass 5 -2 0 0 5 24
-adf1 idclass -1 0 0 0 1 0 ==> !DOMAIN
-adf1 idclass 1 0 1 0 1 0 ==> !DOMAIN
+adf1 Q ucoset 5 6 ==> adf1 Q ucoset 5 6
+adf1 Q ucoset 1 0 ==> adf1 Q ucoset 1 0
+adf1 Q ucoset -1 0 ==> adf1 Q ucoset -1 0
+adf1 Q ucoset 1 1 ==> adf1 Q ucoset 1 1
+adf1 Q ucoset 0 1 ==> !DOMAIN
+adf1 Q ucoset b 6 ==> !DOMAIN
+adf1 Q ucoset 2 4 ==> !DOMAIN
+adf1 Q ucoset 2 0 ==> !DOMAIN
+adf1 Q ucoset -1 6 ==> !DOMAIN
+adf1 Q ucoset 1 -1 ==> !DOMAIN
+adf1 Q idele 1 5 -1 1 -1e 3 2 5 24 ==> adf1 Q idele 1 5 -1 1 -1e 3 2 5 24
+adf1 Q idele 1 1 0 1 -1 1 1 1 0 ==> adf1 Q idele 1 1 0 1 -1 1 1 1 0
+adf1 Q idele 1 0 0 0 0 1 1 1 0 ==> !DOMAIN
+adf1 Q idele 1 1 0 1 0 1 1 1 0 ==> !DOMAIN
+adf1 Q idele 1 1 0 0 0 0 1 1 0 ==> !DOMAIN
+adf1 Q idele 1 1 0 0 0 -1 1 1 0 ==> !DOMAIN
+adf1 Q idele 1 1 0 0 0 2 2 1 0 ==> !DOMAIN
+adf1 Q idclass 5 -2 0 0 5 24 ==> adf1 Q idclass 5 -2 0 0 5 24
+adf1 Q idclass -1 0 0 0 1 0 ==> !DOMAIN
+adf1 Q idclass 1 0 1 0 1 0 ==> !DOMAIN
 # local balls
-adf1 lball 5 b 3 0 4 ==> adf1 lball 5 b 3 0 4
-adf1 lball 5 x 1 3 0 ==> adf1 lball 5 x 1 3 0
-adf1 lball 5 x 1 3 1 ==> adf1 lball 5 x 1 3 1
-adf1 lball 5 x 0 1 0 ==> adf1 lball 5 x 0 1 0
-adf1 lball 5 b 0 0 4 ==> adf1 lball 5 b 0 0 4
-adf1 lball 5 b 1 -1 2 ==> adf1 lball 5 b 1 -1 2
-adf1 lball 5 b 1c 0 2 ==> !DOMAIN
-adf1 lball 5 b 5 0 4 ==> !DOMAIN
-adf1 lball 5 b 3 4 4 ==> !DOMAIN
-adf1 lball 5 b 3 0 -1 ==> !DOMAIN
-adf1 lball 4 b 3 0 4 ==> !DOMAIN
-adf1 lball 5 x 5 1 0 ==> !DOMAIN
-adf1 lball 5 x 0 1 1 ==> !DOMAIN
-adf1 lball 5 b 3 0 186a1 ==> !LIMIT
-adf1 lball 10000000000000000 b 1 0 1 ==> !UNSUPPORTED
-adf1 lball 5 y 3 0 4 ==> !PARSE
+adf1 Q lball 5 b 3 0 4 ==> adf1 Q lball 5 b 3 0 4
+adf1 Q lball 5 x 1 3 0 ==> adf1 Q lball 5 x 1 3 0
+adf1 Q lball 5 x 1 3 1 ==> adf1 Q lball 5 x 1 3 1
+adf1 Q lball 5 x 0 1 0 ==> adf1 Q lball 5 x 0 1 0
+adf1 Q lball 5 b 0 0 4 ==> adf1 Q lball 5 b 0 0 4
+adf1 Q lball 5 b 1 -1 2 ==> adf1 Q lball 5 b 1 -1 2
+adf1 Q lball 5 b 1c 0 2 ==> !DOMAIN
+adf1 Q lball 5 b 5 0 4 ==> !DOMAIN
+adf1 Q lball 5 b 3 4 4 ==> !DOMAIN
+adf1 Q lball 5 b 3 0 -1 ==> !DOMAIN
+adf1 Q lball 4 b 3 0 4 ==> !DOMAIN
+adf1 Q lball 5 x 5 1 0 ==> !DOMAIN
+adf1 Q lball 5 x 0 1 1 ==> !DOMAIN
+adf1 Q lball 5 b 3 0 186a1 ==> !LIMIT
+adf1 Q lball 10000000000000000 b 1 0 1 ==> !UNSUPPORTED
+adf1 Q lball 5 y 3 0 4 ==> !PARSE
 # partial balls
-adf1 sball n 0 ==> adf1 sball n 0
-adf1 sball r 3 -1 0 0 2 3 x 1 1 0 5 b 3 0 4 ==> adf1 sball r 3 -1 0 0 2 3 x 1 1 0 5 b 3 0 4
-adf1 sball c 1 0 0 0 0 0 0 0 0 ==> adf1 sball c 1 0 0 0 0 0 0 0 0
-adf1 sball r 3 -1 0 0 2 5 b 3 0 4 3 x 1 1 0 ==> !DOMAIN
-adf1 sball r 3 -1 0 0 2 5 b 3 0 4 5 b 3 0 4 ==> !DOMAIN
-adf1 sball r 1 0 0 0 1 5 b 3 0 4 5 b 3 0 4 ==> !PARSE
+adf1 Q sball n 0 ==> adf1 Q sball n 0
+adf1 Q sball r 3 -1 0 0 2 3 x 1 1 0 5 b 3 0 4 ==> adf1 Q sball r 3 -1 0 0 2 3 x 1 1 0 5 b 3 0 4
+adf1 Q sball c 1 0 0 0 0 0 0 0 0 ==> adf1 Q sball c 1 0 0 0 0 0 0 0 0
+adf1 Q sball r 3 -1 0 0 2 5 b 3 0 4 3 x 1 1 0 ==> !DOMAIN
+adf1 Q sball r 3 -1 0 0 2 5 b 3 0 4 5 b 3 0 4 ==> !DOMAIN
+adf1 Q sball r 1 0 0 0 1 5 b 3 0 4 5 b 3 0 4 ==> !PARSE
 # quotient by Q
-adf1 qclass lift 1 -1 0 0 g 1 3 3 ==> adf1 qclass lift 1 -1 0 0 g 1 3 3
-adf1 qclass pieces 2 1 -4 1 -4 g 1 2 1 f -4 1 -4 g 0 2 1 ==> adf1 qclass pieces 2 1 -4 1 -4 g 1 2 1 f -4 1 -4 g 0 2 1
-adf1 qclass pieces 2 f -4 1 -4 g 0 2 1 1 -4 1 -4 g 1 2 1 ==> !DOMAIN
-adf1 qclass pieces 1 3 -1 0 0 g 0 1 1 ==> !DOMAIN
-adf1 qclass pieces 1 1 -1 0 0 g 1 2 2 ==> !DOMAIN
-adf1 qclass pieces 0 ==> !DOMAIN
+adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3 ==> adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3
+adf1 Q qclass pieces 2 1 1 -4 1 -4 g 1 2 1 1 f -4 1 -4 g 0 2 1 ==> adf1 Q qclass pieces 2 1 1 -4 1 -4 g 1 2 1 1 f -4 1 -4 g 0 2 1
+# a piece may reach beyond [0, 1] by the rounding of its enclosure (D4); only its midpoint must lie in [0, 1]
+adf1 Q qclass pieces 1 1 1 0 1 -1 g 0 1 1 ==> adf1 Q qclass pieces 1 1 1 0 1 -1 g 0 1 1
+adf1 Q qclass pieces 2 1 f -4 1 -4 g 0 2 1 1 1 -4 1 -4 g 1 2 1 ==> !DOMAIN
+adf1 Q qclass pieces 1 1 3 -1 0 0 g 0 1 1 ==> !DOMAIN
+adf1 Q qclass pieces 1 1 1 -1 0 0 g 1 2 2 ==> !DOMAIN
+adf1 Q qclass pieces 0 ==> !DOMAIN
 # test functions and characters
-adf1 ffun 1 1 0 0 0 0 0 0 0 0 ==> adf1 ffun 1 1 0 0 0 0 0 0 0 0
-adf1 ffun 1 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> adf1 ffun 1 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-adf1 ffun 1 2 1 0 0 0 0 0 0 0 ==> !PARSE
-adf1 ffun 0 1 ==> !DOMAIN
-adf1 rfun 0 ==> adf1 rfun 0
-adf1 rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> adf1 rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-adf1 rfun 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
-adf1 rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
-adf1 char 1 1 0 0 0 0 0 0 0 0 ==> adf1 char 1 1 0 0 0 0 0 0 0 0
-adf1 char 5 2 0 0 0 0 0 0 0 0 ==> adf1 char 5 2 0 0 0 0 0 0 0 0
-adf1 char 4 3 0 0 0 0 0 0 0 0 ==> adf1 char 4 3 0 0 0 0 0 0 0 0
-adf1 char a 3 0 0 0 0 0 0 0 0 ==> !DOMAIN
-adf1 char 6 5 0 0 0 0 0 0 0 0 ==> !DOMAIN
-adf1 char 5 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
-adf1 char 5 5 0 0 0 0 0 0 0 0 ==> !DOMAIN
-adf1 char 10000000000000000 1 0 0 0 0 0 0 0 0 ==> !UNSUPPORTED
+adf1 Q ffun 1 1 0 0 0 0 0 0 0 0 ==> adf1 Q ffun 1 1 0 0 0 0 0 0 0 0
+adf1 Q ffun 1 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> adf1 Q ffun 1 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+adf1 Q ffun 1 2 1 0 0 0 0 0 0 0 ==> !PARSE
+adf1 Q ffun 0 1 ==> !DOMAIN
+adf1 Q rfun 0 ==> adf1 Q rfun 0
+adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
+adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
+adf1 Q char 1 1 0 0 0 0 0 0 0 0 ==> adf1 Q char 1 1 0 0 0 0 0 0 0 0
+adf1 Q char 5 2 0 0 0 0 0 0 0 0 ==> adf1 Q char 5 2 0 0 0 0 0 0 0 0
+adf1 Q char 4 3 0 0 0 0 0 0 0 0 ==> adf1 Q char 4 3 0 0 0 0 0 0 0 0
+adf1 Q char a 3 0 0 0 0 0 0 0 0 ==> !DOMAIN
+adf1 Q char 6 5 0 0 0 0 0 0 0 0 ==> !DOMAIN
+adf1 Q char 5 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
+adf1 Q char 5 5 0 0 0 0 0 0 0 0 ==> !DOMAIN
+adf1 Q char 10000000000000000 1 0 0 0 0 0 0 0 0 ==> !UNSUPPORTED
 # scaled values
-adf1 scaled x 0 1 6 2 2 3 ==> adf1 scaled x 0 1 6 2 2 3
-adf1 scaled s 1 2 5 6 2 2 3 ==> adf1 scaled s 1 2 5 6 2 2 3
-adf1 scaled x 1 2 1 0 ==> adf1 scaled x 1 2 1 0
-adf1 scaled s 1 2 6 6 2 2 3 ==> !DOMAIN
-adf1 scaled s 0 1 0 6 1 6 ==> !DOMAIN
-adf1 scaled s -1 2 1 6 1 6 ==> !DOMAIN
-adf1 scaled x 1 2 5 6 1 0 ==> !PARSE
+adf1 Q scaled x 0 1 6 2 2 3 ==> adf1 Q scaled x 0 1 6 2 2 3
+adf1 Q scaled s 1 2 5 6 2 2 3 ==> adf1 Q scaled s 1 2 5 6 2 2 3
+adf1 Q scaled x 1 2 1 0 ==> adf1 Q scaled x 1 2 1 0
+adf1 Q scaled s 1 2 6 6 2 2 3 ==> !DOMAIN
+adf1 Q scaled s 0 1 0 6 1 6 ==> !DOMAIN
+adf1 Q scaled s -1 2 1 6 1 6 ==> !DOMAIN
+adf1 Q scaled x 1 2 5 6 1 0 ==> !PARSE
 """
 
 

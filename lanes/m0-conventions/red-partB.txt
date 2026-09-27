@@ -1,0 +1,7 @@
+ERROR: test_psi_phases (proto.test_text_grammar.TestGoldenVectors.test_psi_phases)
+FAIL: test_dispatch (proto.test_text_grammar.TestGoldenVectors.test_dispatch)
+FAIL: test_dump (proto.test_text_grammar.TestGoldenVectors.test_dump)
+FAIL: test_fixed_points (proto.test_text_grammar.TestGoldenVectors.test_fixed_points)
+FAIL: test_types (proto.test_text_grammar.TestGoldenVectors.test_types) (type='sball')
+Ran 26 tests in 12.579s
+FAILED (failures=4, errors=1)

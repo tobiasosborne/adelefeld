@@ -98,7 +98,7 @@ class TestGoldenFiles(unittest.TestCase):
     """The golden files themselves: format, statuses, coverage of the three classes, and the required examples."""
 
     def test_files_exist_and_parse(self):
-        for name in TYPES + ["dispatch", "realball_read", "realball_print", "dump"]:
+        for name in TYPES + ["dispatch", "realball_read", "realball_print", "dump", "psi_phases", "gauss"]:
             vs = read_golden(name)
             self.assertGreater(len(vs), 5, name)
             for lineno, inp, data, exp in vs:
@@ -213,6 +213,64 @@ class TestGoldenVectors(unittest.TestCase):
     def test_dump(self):
         self.check_file("dump", tg.dump_roundtrip)
 
+    def test_psi_phases(self):
+        self.check_file("psi_phases", tg.psi_phases)
+
+    def test_psi_phases_definition(self):
+        """The phase set equals psi_f of sampled points of the ball, computed from the p-primary fractional parts
+        of analysis.md Definition 1 (independent of text_grammar.psi_phases)."""
+        rng = random.Random(8)
+        for lineno, inp, data, exp in read_golden("psi_phases"):
+            if is_status(exp):
+                continue
+            text = tg.canonical("fball", data)[4:-1]          # "a" or "a mod N"
+            a = Fraction(text.split(" mod ")[0])
+            N = Fraction(text.split(" mod ")[1]) if " mod " in text else Fraction(0)
+            angles = {Fraction(t) for t in exp.split()}
+            seen = set()
+            for _ in range(200):
+                x = a + N * rng.randrange(-50, 50)            # rational points of the ball: a + N Z
+                seen.add(sum_fp(x) % 1)
+            self.assertEqual(seen, angles, inp)
+
+    def test_gauss(self):
+        """tests/golden/gauss.tsv: the balls contain tau and W recomputed at 90 digits, |tau|^2 = C, and the
+        texts are fixed points of the complex-ball printer."""
+        import flint
+        import mpmath
+        from math import gcd as igcd
+        mpmath.mp.dps = 90
+        for lineno, inp, data, exp in read_golden("gauss"):
+            canon = tg.canonical("char", data)
+            q = int(canon.split("q=")[1].split(",")[0])
+            n = int(canon.split("n=")[1].split(",")[0])
+            parts = dict(item.split("=", 1) for item in exp.split(" ", 1)[:1])
+            e = int(parts["e"])
+            tau_text = exp.split(" tau=")[1].split(" W=")[0]
+            w_text = exp.split(" W=")[1]
+            if q == 1:
+                tau = mpmath.mpc(1)
+                self.assertEqual(e, 0)
+            else:
+                c = flint.dirichlet_char(q, n)
+                self.assertEqual(int(c.parity()), e)
+                ex = int(flint.dirichlet_group(q).exponent())
+                tau = mpmath.mpc(0)
+                for x in range(1, q + 1):
+                    if igcd(x, q) == 1:
+                        t = Fraction(int(c.chi_exponent(x)), ex) + Fraction(x, q)
+                        tau += mpmath.expjpi(2 * mpmath.mpf(t.numerator) / t.denominator)
+            w = tau / (mpmath.mpc(0, 1) ** e * mpmath.sqrt(q))
+            for text, z in ((tau_text, tau), (w_text, w)):
+                re_t, im_t = text[1:-3].split(") + (")
+                for part, val in ((re_t, z.real), (im_t, z.imag)):
+                    lo, hi = tg.read_real(part.encode())
+                    v = Fraction(mpmath.nstr(val, 80))
+                    self.assertTrue(lo - Fraction(1, 10 ** 70) <= v <= hi + Fraction(1, 10 ** 70), (inp, part))
+                    self.assertLess(hi - lo, Fraction(1, 10 ** 18))
+                    self.assertEqual(tg.print_real((lo + hi) / 2, (hi - lo) / 2, 20), part)
+            self.assertLess(abs(abs(tau) ** 2 - q), mpmath.mpf(10) ** -80)
+
 
 class TestStatus(unittest.TestCase):
     def test_values(self):
@@ -224,6 +282,27 @@ class TestStatus(unittest.TestCase):
         self.assertEqual(tg.combine([]), ("OK", None))
         self.assertEqual(tg.combine([(3, "NOT_DETERMINED"), (0, "DOMAIN"), (5, "DOMAIN")]), ("DOMAIN", 0))
         self.assertEqual(tg.combine([(2, "OK"), (3, "NOT_DETERMINED")]), ("NOT_DETERMINED", 3))
+
+
+def sum_fp(x):
+    """Sum over p of the p-primary fractional parts {x}_p of a rational x (analysis.md Definition 1)."""
+    x = Fraction(x)
+    total = Fraction(0)
+    den = x.denominator
+    p = 2
+    while den > 1:
+        if den % p == 0:
+            k = 0
+            while den % p == 0:
+                den //= p
+                k += 1
+            pk = p ** k
+            rest = x.denominator // pk
+            # {x}_p = t / p^k with t = numerator * rest^-1 mod p^k
+            t = (x.numerator * pow(rest, -1, pk)) % pk
+            total += Fraction(t, pk)
+        p += 1
+    return total
 
 
 def random_dyadic(rng, maxbits=60, maxexp=80):

@@ -1,28 +1,45 @@
-# adelefeld: conventions, version 0.1 (work package 0.4, part A)
+# adelefeld: conventions, version 0.2 (work package 0.4, parts A and B)
 
-Date: 2026-09-27. Status: **draft for review; nothing is frozen.** Written by the lane `m0-conventions`. Read
-`SPEC.md` first. This document fixes, as a contract, what `PLAN.md` section 4 and 5 leave as a proposal: canonical
-forms and storage invariants, naming, aliasing and ownership, status codes, the text grammar, and the rules of the
-foreign-function interface. Two programmers who follow it should write interchangeable code.
+Date: 2026-09-28. Status: **draft for the milestone-0 gate review; nothing is frozen.** Written by the lane
+`m0-conventions`. Read `SPEC.md` first. This document fixes, as a contract, what `PLAN.md` section 4 and 5 leave as
+a proposal: canonical forms and storage invariants, naming, aliasing and ownership, status codes, signs and
+normalisations, the text grammar, and the rules of the foreign-function interface. Two programmers who follow it
+should write interchangeable code.
+
+## Change log
+
+- **0.2 (2026-09-28), part B.** Filled from the reviewed proofs (`docs/proofs/analysis.md`, `policies.md`,
+  `ideles.md`, `quotient.md`, `catalogue.md`, `functions.md`), the seams sketch (`docs/seams.md` section 5) and the
+  sources on disk (`docs/sources.md`, `refs/src/`). Sections 6.1 to 6.8 written (additive character with the
+  conversion to the unconjugated transform of the expositions on disk, measures, finite transform, Gauss sum and
+  root number, local gamma factors, class-group characters, reciprocity by formula, the seams recommendations,
+  operations fixed by decisions); 5.3 rewritten to agree with `policies.md` P24, P25 and Summary 26 (raw local
+  values); 5.4 and the cap from `policies.md` P8 to P15; 5.10 from `quotient.md` (the invariant that replaces
+  "inside `[0, 1]`"); section 7 makes the place an opaque handle; the value form labels the archimedean place `inf`;
+  the dump header names the field and counts archimedean components; the orchestrator's decisions D1 to D11 are
+  written as **DECISION** (section 13 has a column "decided / proposed"); FLINT documentation now on disk settles
+  four points that were `[source pending]`. New golden files `psi_phases.tsv` and `gauss.tsv`.
+- **0.1 (2026-09-27), part A.** First draft: everything except the signs and normalisations.
 
 How to read it:
 
-- **DECISION (proposed) CV-nn**: a choice the specification leaves open, made here with a one-line reason. All are
-  collected in section 13 for review.
-- **PENDING (part B): lane**: a section that depends on a proof or source written by another lane. It contains
-  exactly what `SPEC.md` already fixes, and nothing more.
-- FLINT's own conventions are cited from the installed headers of FLINT 3.0.1 as
-  `/usr/include/flint/<file>:<line>` (version: `/usr/include/flint/flint.h:94-97`). Where the headers are silent
-  and only FLINT's documentation would settle a point, the statement is marked `[source pending: ...]`. Behaviour
-  observed by a probe program against `libflint.so.18.0.1` is marked **[probed]**; the probe is described in
-  `lanes/m0-conventions/report.md`.
+- **DECISION CV-nn** (decided by the orchestrator, with the decision number `D1` to `D11`) and **DECISION
+  (proposed) CV-nn** (a choice made here, open for the gate review), each with a one-line reason. All are collected
+  in section 13.
+- Quotations are verbatim from the files on disk except that leading indentation and long runs of spaces from the
+  PDF extraction are shortened, and control characters are written `\xNN`; " / " marks a line break.
+- FLINT's conventions are cited from the installed headers of FLINT 3.0.1 as `/usr/include/flint/<file>:<line>`
+  (version: `/usr/include/flint/flint.h:94-97`) and from its documentation on disk as
+  `flint-3.0.1:<file>:<line>` (under `refs/src/`). Other sources are cited as `key:file:line` of `docs/sources.md`,
+  and only what was read there is quoted. Behaviour observed by a probe program against `libflint.so.18.0.1` is
+  marked **[probed]**; the probes are described in `lanes/m0-conventions/report.md`.
 - The reference implementation of the value form and of the dump form is `proto/text_grammar.py`, with its tests in
   `proto/test_text_grammar.py`; the golden vectors are in `tests/golden/` (section 11).
 
 Contents: 1 FLINT conventions we follow; 2 naming and argument order; 3 status codes; 4 aliasing, ownership, outputs
-after a status, invalid input, threads, contexts; 5 canonical forms and storage invariants; 6 signs, measures and
-normalisations (stubs); 7 places; 8 text: general rules; 9 value form; 10 dump form; 11 golden vectors;
-12 foreign-function interface; 13 table of decisions; 14 findings.
+after a status, invalid input, threads, contexts; 5 canonical forms and storage invariants; 6 signs, measures,
+normalisations, and operations fixed by decisions; 7 places; 8 text: general rules; 9 value form; 10 dump form;
+11 golden vectors; 12 foreign-function interface; 13 table of decisions; 14 findings.
 
 ## 1. FLINT conventions we follow
 
@@ -50,9 +67,12 @@ Two points where we deliberately differ:
    codes are ordered integers combined by maximum; reason: one code per result, and a cheap, deterministic
    combination.
 
-The FLINT documentation states the general aliasing rule (outputs may alias inputs unless stated otherwise)
-[source pending: FLINT 3.0.1 documentation, section on aliasing]. We state our own rule in section 4.1 and do not
-rely on FLINT's wording.
+FLINT's documentation on disk states aliasing function by function (for example `flint-3.0.1:padic.rst:549`,
+"Supports aliasing between ``rop`` and ``op``.", and `:492`, "Does not support aliasing between `y` and `z`."), and
+says of underscore functions that they "may impose limitations on aliasing between the input and output variables"
+(`flint-3.0.1:fmpq.rst:31-32`). A general rule for all modules is not among the files on disk
+[source pending: FLINT 3.0.1 documentation, general section on aliasing]. We state our own rule in section 4.1 and
+do not rely on FLINT's wording.
 
 ## 2. Naming, argument order, life cycle
 
@@ -313,6 +333,9 @@ Predicate `G(A, H, d)` (`SPEC.md` 4.1, D2), for `backend == ADF_GLOBAL`:
 - Exact zero: `(0, 0, 1)`. Radius zero: `H = 0`, a single rational `A/d` in lowest terms.
 - Signs: `d > 0`, `H >= 0`. For `H > 0` the stored centre is non-negative; for `H = 0` the sign is on `A`.
 - Stored representative: for `H > 0`, the centre `a = A/d` is the unique element of `(a + N Z)` in `[0, N)`.
+- The radius `N = H/d` is documented as the positive generator of the radius ideal `N Z`; radii are compared by
+  inclusion (`contains`), never by size, and the precision is read per place, `v_p(N)` through a place handle
+  (seams R2, adopted by D8). No public function needs a scalar radius beyond the constructors and getters of `Q`.
 
 **Lemma 5.2 (uniqueness).** Two triples satisfying `G` that describe the same set are equal.
 
@@ -327,23 +350,52 @@ minimality of `d0`. With `H` and `d` fixed, `A` runs through `d a' + H Z`, and `
 
 ### 5.3 `adf_fball`, local backend
 
-Meaning: the same set as the global triple `(A*, H, d)`, where `A*` is not stored (`SPEC.md` 4.1).
+Source: `docs/proofs/policies.md`, Definition 16 to Summary 26 (reviewed and repaired; P24 and P25 were the
+repaired statements).
 
-Predicate `L(x)`, for `backend == ADF_LOCAL`, with `k = mctx->nblocks` and blocks `q_1, ..., q_k` of the context:
+Meaning: the value `(d; r_1, ..., r_k)` in a context with pairwise coprime blocks `q_1, ..., q_k` of product `K`
+is the set `(A + K Zhat)/d`, where `A` is any integer with `A = r_i mod q_i` for all `i` (policies Definition 16,
+Lemma 17). The numerator `A` is not stored (`SPEC.md` 4.1).
 
-    mctx != NULL and k >= 1 and H = q_1 ... q_k and A = 0 and res != NULL and
-    0 <= res[i] < q_i for all i and G(A*, H, d),
-    where A* is the unique integer in [0, H) with A* = res[i] mod q_i for all i.
+Predicate `L(x)`, for `backend == ADF_LOCAL`, with `k = mctx->nblocks`:
 
-- `A` is kept 0 so that `clear` and `swap` need no case distinction. DECISION (proposed) CV-22; reason: an unused
-  field with a fixed value cannot be read by mistake as the centre.
-- `H` is stored although the context determines it; reading `H` needs no context. `res` has length `k`, owned by
-  the value.
-- Established by: the conversion `adf_fball_set_local(y, x, ctx)`, which returns `ADF_DOMAIN` if `H != K` (the set
-  would change; `PLAN.md` section 7, "the set is unchanged by conversion"); the local kernels when the result keeps
-  `H` and the context. Any result that changes `H`, or combines different context pointers, is global
-  (CV-11, CV-12).
-- The denominator is applied after recombination; it is never inverted modulo a block (`SPEC.md` 4.1).
+    mctx != NULL and k >= 1 and H = K = q_1 ... q_k and A = 0 and res != NULL and d >= 1 and
+    0 <= res[i] < q_i for all i
+
+- **Raw local values; no gcd condition.** The predicate does not ask `gcd(A*, K, d) = 1` for the lift
+  `0 <= A* < K`. In a fixed context distinct data give distinct sets (policies Lemma 17.2), so the local data are
+  unique for their set without that condition. The canonical triple of `SPEC.md` 4.1, `(A*/g, K/g, d/g)` with
+  `g = gcd(A*, K, d)`, is derived when needed; `g` is computed blockwise, `g = gcd(product of gcd(r_i, q_i), d)`
+  (policies Lemma 18), without recombination. DECISION (proposed) CV-55; reason: policies P24 shows that
+  cancellation keeps the *set* in the context while the canonical *triple* leaves it, and Summary 26 that the
+  canonical modulus can change after a sum; a canonical-data invariant would force a conversion after most local
+  sums, which is the operation the local backend exists to make cheap. (Version 0.1 had the gcd condition.)
+- **Comparison and printing go through the canonical triple, never through raw residues** (policies P24.4).
+  `adf_fball_equal_set` of a local and a global value compares sets; `adf_fball_identical` compares raw data.
+  The value form prints the canonical triple (it does not show the backend); the dump writes the raw data.
+- `A` is kept 0 so that `clear` and `swap` need no case distinction (CV-22). `H` is stored and equals `K`.
+- **Which balls live in a context** (policies P19): `c + R Zhat`, `R > 0`, is a local value of a context of product
+  `K` exactly when `K/R` and `c K/R` are integers; then `d = K/R`, `r_i = (c K/R) mod q_i`. Exact values (`R = 0`)
+  are never local (policies Definition 16).
+- **Conversion into a context** `adf_fball_set_local(y, x, ctx)`: `ADF_DOMAIN` unless P19 holds (the set would
+  change; `PLAN.md` section 7); the best enclosure of policies P20 is a separately named operation,
+  `adf_fball_set_local_enclose(y, lost, x, ctx)`, which reports loss. Conversion to global is recombination by CRT
+  followed by canonical cancellation (policies Lemma 17.3, P24.1).
+- **Operations at one context pointer** (policies P21 to P23, Summary 26), in the tight policy:
+
+  | Operation | Result |
+  |---|---|
+  | negation | local, `(d; -r_i mod q_i)`, exact (P21.1) |
+  | sum | local, `(L; (r_i L/d + s_i L/e) mod q_i)`, `L = lcm(d, e)`, exact and tight (P21.2) |
+  | product | with `h = product of gcd(r_i, s_i, q_i)`: if `h = 1`, the blockwise product `(d e; r_i s_i mod q_i)` is tight and local; if `h > 1` and `h` divides `d e`, local `(d e/h; ...)` by the formula of P22.3; otherwise the tight product needs the derived blocks `q_i h_i` (P22.4) and is returned global (CV-11), or in a derived context passed by the caller. The blockwise product with `h > 1` is only an enclosure (P22.2) and is not the tight product |
+  | exact scalar `m/n` | local `(n d/abs(m); sign(m) r_i mod q_i)` if `abs(m)` divides `d` (P23); otherwise global; `0` gives the exact 0 |
+
+- **Inverses modulo blocks** (policies P25 and its rules for the C code): a modular inverse is computed only of an
+  integer coprime to the modulus (`h/h_i` modulo `q_i`, `g/g_i` modulo `q_i/g_i`, and `d` modulo `q_i` only when
+  `gcd(d, q_i) = 1`). The denominator is applied after recombination and never inverted modulo a block it shares a
+  factor with (`SPEC.md` 4.1). A residue of the ball modulo `q_i` exists and may be reported only when
+  `gcd(d, q_i) = 1` (P25.2); a solution of `d x = A mod q_i` is never reported as a residue of the value.
+- Results that leave the context (a changed `K`, or two different context pointers) are global (CV-11, CV-12).
 
 ### 5.4 Scaled value (policy 2 of `SPEC.md` 4.4)
 
@@ -362,12 +414,36 @@ Predicate `L(x)`, for `backend == ADF_LOCAL`, with `k = mctx->nblocks` and block
 - Uniqueness: for `exact = 0` the set determines its radius `s K`, hence `s`, and then `u` modulo `K`; the stored
   `(s, u)` is unique without a normalisation step.
 - Init: `adf_scaled_init(x, ctx)` gives the exact 0 in `ctx`.
-- PENDING (part B): `docs/proofs/policies.md` (lane m0-proofs-ideles). The rules for exact zero, exact scalars,
-  addition of an exact scalar and conversion between contexts. Only the storage is fixed here.
+- The scale is not promised to be canonical beyond `Q`: the tightness of the scaled sum rests on the gcd of two
+  scales being a scale, which holds for `Q` (and `F_q[T]`) but not for number fields; no function returns "the
+  canonical scale" of a result as part of the contract (seams R7, adopted by D8).
+
+Operations (source: `docs/proofs/policies.md` section 2; `s, t > 0`, context `K`):
+
+| Operation | Result | Source |
+|---|---|---|
+| sum | `g ((A u + B v) mod K + K Zhat)`, `g = gcd(s, t)`, `A = s/g`, `B = t/g`; tight | `SPEC.md` 4.4; precision P5(1) |
+| product, default | `s t ((u v mod K) + K Zhat)`; an enclosure that loses the factor `h = gcd(u, v, K)` | `SPEC.md` 4.4; policies P10.2 |
+| product, tight | `adf_scaled_mul_tight`: `(s t h) (((u v / h) mod K) + K Zhat)`, equal to the tight product | policies P10.3 |
+| exact scalar `q` added | `q = 0`: unchanged; else `g = gcd(s, q)`, `g ((q/g + (s/g) u) mod K + K Zhat)`, the best scaled enclosure; `lost` set when `s` does not divide `q` | policies P8 |
+| exact scalar `q` multiplied | `q != 0`: `abs(q) s ((sign(q) u mod K) + K Zhat)`, exact; `q = 0`: the exact 0 | policies P9 |
+| two exact values | the exact result, `exact = 1` (the tag is kept) | policies Definition 4 |
+| conversion from a tight ball `c + R Zhat` | `s* = gcd(c, R/K)`, `u* = (c/s*) mod K`; best enclosure; `lost` when `c K/R` is not an integer | policies P7, L6 |
+| conversion to context `K'` | `s' = s gcd(u, K/K')`, `u' = (s u/s') mod K'`; best; exact when `u K'/K` is an integer, always when `K` divides `K'` | policies P11 |
+| two contexts `K`, `K'` | convert both to `lcm(K, K')` (lossless), then operate | policies C12 |
+
+DECISION CV-48 (D5): the product of `SPEC.md` 4.4 is the default `adf_scaled_mul`; the tight variant of policies
+P10 is the separately named `adf_scaled_mul_tight`; reason (orchestrator): the specification's rule stays, and the
+tight rule needs a gcd and an exact division that the default kernel avoids.
 
 The absolute cap (policy 3) stores plain `adf_fball` values; the cap `C`, a positive rational, is an argument of the
-capped operations, not a field. DECISION (proposed) CV-23; reason: `SPEC.md` 4.4 says "the radius stays with each
-value"; nothing else is per value. PENDING (part B): `docs/proofs/policies.md` for the cap applied to exact values.
+capped operations, not a field (CV-23, proposed; reason: `SPEC.md` 4.4 says "the radius stays with each value").
+After a tight operation with result radius `R > 0` the radius becomes `gcd(R, C)` (policies Definition 13, P14.1).
+**An exact result keeps its exact tag; the cap never touches it.** DECISION CV-47 (D2); reason: `SPEC.md` 4.1
+requires that an exact rational "stays exact under arithmetic with other exact values", and policies P14.2 shows
+the literal `gcd(0, C) = C` would break it. The cap does act on every result of positive radius, including the
+product of an exact scalar with a ball (P14.2). Invariant of capped values: `R` divides `C` (P15.1); the sum of two
+capped values needs no cap (P15.3).
 
 ### 5.5 `adf_adele` and `adf_cadele`
 
@@ -382,6 +458,9 @@ value"; nothing else is per value. PENDING (part B): `docs/proofs/policies.md` f
 - Radius zero at infinity: `arb_is_exact(inf)` (`arb.h:61`).
 - The real ball is never normalised beyond what `arb` does; its midpoint and radius are whatever the operation
   produced.
+- Archimedean operations are reached through the place (`f_at(..., place)`, `SPEC.md` 9.3.1); the field `inf` is a
+  convenience special to `Q` (seams R3). `adf_cadele` is special to `Q`: its shape coincides with the adele ring of
+  an imaginary quadratic field, and it is not that ring (seams R4; `SPEC.md` 4.1).
 
 ### 5.6 `adf_ucoset` (unit coset)
 
@@ -394,20 +473,34 @@ Predicate:
     ( N >= 1 and 1 <= c <= N and gcd(c, N) = 1 )  or  ( N = 0 and c in {1, -1} )
 
 - **Exact units.** `N = 0` is admitted, with `U(0) = {1}` ("congruent modulo 0" is equality), so `[1 mod 0]` is the
-  exact unit 1 and `[-1 mod 0]` the exact unit -1. DECISION (proposed) CV-15; reason: `proofs/catalogue.md`
-  Proposition 12 and `SPEC.md` 9.3.7 return "the exact 1", and the idele of an exact rational `q` has the exact unit
-  `sign(q)`; `SPEC.md` 5 and `PLAN.md` 4 say `N >= 1` (finding F1, section 14). The product rule
-  `c c' mod gcd(N, N')` of `SPEC.md` 5 holds unchanged with `gcd(0, N') = N'`.
+  exact unit 1 and `[-1 mod 0]` the exact unit -1. DECISION CV-15 (D1); reason: three lanes needed it independently:
+  `proofs/catalogue.md` Proposition 12 and `SPEC.md` 9.3.7 return "the exact 1" for exponent 0; `proofs/ideles.md`
+  Proposition 13.6 shows that `P_0 = {1}` equals no coset with `N >= 1`; and the idele of an exact rational `q` has
+  the exact unit `sign(q)`. The product rule `c c' mod gcd(N, N')` of `SPEC.md` 5 (ideles P11) holds unchanged with
+  `gcd(0, N') = N'`; the inverse of an exact unit is itself; any power of an exact unit is exact.
 - **Residue range 1 to `N`.** DECISION (proposed) CV-16; reason: a unit has no residue 0 except modulo 1, and the
-  range `1..N` makes the whole unit group `[1 mod 1]` rather than `[0 mod 1]`.
+  range `1..N` makes the whole unit group `[1 mod 1]` rather than `[0 mod 1]`. Note: `proofs/ideles.md` Definition 8
+  reduces into `[0, Nbar)` and writes the whole group `(0, 1)`. The two choices describe the same sets (ideles P9.2:
+  the canonical form is a complete invariant either way); only the stored and printed representative differs
+  (finding F8).
 - **Stored modulus as supplied.** The stored `N` is the one supplied to the constructor, parser or loader; it need
   not be normal. DECISION (proposed) CV-17; reason: `PLAN.md` 5 says the dump keeps the modulus as supplied, which
   is void if constructors normalise it.
-- **Normal form** (used by the printer of the value form and by `equal_set`): `N' = N/2` if `N = 2 mod 4`,
-  else `N' = N`; `c'` is `c` reduced into `1..N'`; exact units unchanged. `U(2m) = U(m)` for odd `m`
-  (`SPEC.md` 5, N12; `proofs/catalogue.md` Proposition 13). `adf_ucoset_is_normal(x)` tests it.
+- **Normal form** (used by the printer of the value form and by `equal_set`): remove from the modulus each prime
+  whose residue field is `F_2` and which divides the modulus exactly once (seams R6, adopted by D8); for `Q` this is
+  `N' = N/2` if `N = 2 mod 4`, else `N' = N`. Then `c'` is `c` reduced into `1..N'`; exact units are unchanged.
+  `c U(N) = c U(N/2)` when `v_2(N) = 1` (`proofs/ideles.md` Lemma 7), and equal normal forms are equivalent to equal
+  sets (ideles P9.2). `adf_ucoset_is_normal(x)` tests it.
 - Init: the exact unit 1, `(c, N) = (1, 0)`.
-- Equality of cosets compares the normal forms (`SPEC.md` 5).
+- Containment, equality, overlap (ideles P9): `c U(N)` is inside `c' U(N')` exactly when `N'bar` divides `Nbar` and
+  `c = c'` modulo `N'bar`; they meet exactly when `c = c'` modulo `gcd(N, N')`. For exact units: `[e mod 0]` is
+  inside `c' U(N')` when `e = c'` modulo `N'bar` (`N' >= 1`), and two exact units are equal when equal.
+- Product at moduli `N`, `N'`: `c c' U(gcd(N, N'))`, the smallest coset containing the product set (ideles P11).
+- **Power.** `adf_ucoset_pow(y, x, k)` returns the enclosure `c^k U(N)` (`c^k` modulo the normal modulus, the
+  inverse for `k < 0`), and the exact unit 1 for `k = 0`; `adf_ucoset_pow_tight(y, x, k)` returns the smallest coset
+  `chat^k U(M_k)` of `proofs/ideles.md` Proposition 13 (both coincide for `k = 1` and `k = -1`, P13.4).
+  DECISION CV-49 (D6); reason (orchestrator): the simple rule is the default; the tight modulus `M_k` needs the
+  table of P13, including the primes `p` with `p - 1` dividing `k`, and is offered under its own name.
 
 ### 5.7 `adf_idele` and `adf_idclass`
 
@@ -421,6 +514,19 @@ Predicate:
   unit. The real sign is in `inf`. The class of an idele is `t = |x_inf| / r`, `u' = sign(x_inf) u`.
 - The idele of an exact rational `q != 0`: `inf` an enclosure of `q` at `prec`, `r = |q|`, `u = [sign(q) mod 0]`.
 - Init: the exact idele 1: `inf = 1` exact, `r = 1`, `u = [1 mod 0]`. Class init: `<1 ; [1 mod 0]>`.
+- **Names** (seams R5, adopted by D8): the positive rational `r` is the **content** of the idele (for `Q` the
+  positive generator of the content ideal); its accessor is `adf_idele_content`, never "scale". The class
+  coordinates `(t, u')` and the sign rule are accessors special to `Q` (`adf_idclass_t_get`,
+  `adf_idclass_unit_get`); class-level operations (multiply, norm, character value) do not expose them. The struct
+  field keeps the short name `r`; the field name is not part of the contract.
+- Idele to adele (`proofs/ideles.md` P16): the simple ball `r c + r N Zhat`, and the smallest ball
+  `r c' + r lcm(N, 2) Zhat` with `c'` odd; the smallest depends only on the set.
+- **Division of an adele by an idele** `adf_adele_div_idele(z, x, y, prec)` returns, for `x = I x (a + M Zhat)` and
+  `y = (Y, r, c U(N))`, the real part `I / Y` rounded as usual and the finite part
+  `(a e)/r + (gcd(abs(a) lcm(N, 2), M) / r) Zhat`, with `e` odd and `e = c^-1` modulo `N`; this is the smallest ball
+  containing all quotients (`proofs/ideles.md` P19). For an exact unit (`N = 0`, `c = +-1`) the finite part is
+  `(a c)/r + (M/r) Zhat`, as for division by the exact rational `c r` (ideles P18). DECISION CV-50 (D7); reason
+  (orchestrator): the smallest ball of P19 costs one gcd more than the simple ball and can be finer by a factor 2.
 
 ### 5.8 `adf_lball` (local ball at one prime)
 
@@ -449,12 +555,15 @@ Predicate:
   one point. A ball containing 0 has `c = 0`, stored as `u = 0, v = 0`.
 - Exact 0 (`exact = 1, u = 0`) and the ball `O(p^N)` around 0 (`exact = 0, u = 0`) are different values
   (`SPEC.md` 9.3.1: a stored centre 0 with finite precision is not the exact 0).
-- Primes are one word in version 1. DECISION (proposed) CV-18; reason: primality is then certified by `n_is_prime`
+- Primes are one word in version 1 (part of DECISION CV-18, D8); reason: primality is then certified by `n_is_prime`
   (`ulong_extras.h:335`) and places fit a `ulong` (section 7). Larger primes: `ADF_UNSUPPORTED`.
 - Init: `p = 2`, exact 0. DECISION (proposed) CV-19; reason: some prime must be chosen; 2 is the first.
-- Whether FLINT's own reduced form of a `padic` uses the same range `0 <= u < p^(N - v)` is
-  [source pending: FLINT 3.0.1 `padic` documentation, "canonical" and "reduced"]; the headers show only the fields
-  and `_padic_reduce` (`padic.h:163-165`).
+- FLINT's reduced form of a `padic` is the same: "we consider a `p`-adic number `x = u p^v` to be in canonical form
+  whenever either `p \nmid u` or `u = v = 0`, and we say it is reduced if, in addition, for non-zero `u`,
+  `u \in (0, p^{N-v})`" (`flint-3.0.1:padic.rst:15-18`). So the centre of a ball can be passed to FLINT as a reduced
+  `padic` with the same `u, v, N`.
+- The prime is read through the place (section 7): `adf_lball_place(x)` returns the handle; the field `p` is not
+  part of the contract (seams R1, D8).
 
 ### 5.9 `adf_sball` (partial ball over a finite set of places)
 
@@ -468,7 +577,8 @@ Predicate:
 - Predicate: `arch` in `{0, 1, 2}`; `acb_is_finite(inf)`; `arch = 1` implies the imaginary part is exact 0;
   `arch = 0` implies `inf` is exact 0; `len >= 0`; each `loc[i]` satisfies 5.8; `loc[i].p < loc[i+1].p`.
 - The set of places is `{infinity}` (if `arch != 0`) together with the primes `loc[i].p`. The archimedean place
-  carries the tag real or complex (`SPEC.md` 9.3.1).
+  carries the tag real or complex (`SPEC.md` 9.3.1); in the value form both are labelled `inf` and told apart by
+  the syntax of the ball (9.2). Places are read through handles (section 7).
 - Init: the empty set of places (`arch = 0`, `len = 0`).
 
 ### 5.10 `adf_qclass` (element or set modulo `Q`)
@@ -476,22 +586,40 @@ Predicate:
     typedef struct { int form; slong len; adf_adele_struct * piece; } adf_qclass_struct;
                                           /* form: ADF_QCLASS_LIFT = 0, ADF_QCLASS_PIECES = 1 */
 
-Fixed by `SPEC.md` 6 and used here:
+Source: `docs/proofs/quotient.md` (reviewed) and `docs/proofs/analysis.md` Lemma 2.
 
 - LIFT: `len = 1`; `piece[0]` is any adele (5.5); the value is its class modulo `Q` ("always available, always
-  exact as a set").
-- PIECES: `len >= 1`; each piece has the midpoint of its real part in `[0, 1]` and a finite part inside `Zhat`
-  with integer radius: `d = 1` (the centre is an integer in `[0, H)`, or `H = 0` and the centre an integer). The
-  gluing rule: `(1 ; z)` is the point `(0 ; z - 1)`. `SPEC.md` 6 asks for pieces that are closed intervals inside
-  `[0, 1]`; an `arb` enclosure of such an interval is in general slightly larger (its end points are rounded
-  outward), so the stored invariant can only be asked of the midpoint (finding F2, section 14). The parser checks
-  the midpoint of the exact decimal interval (section 9.3). DECISION (proposed) CV-45; reason: an invariant that
-  outward rounding cannot keep would make every quotient operation fail at the ends of `[0, 1]`.
-- Canonical order of pieces (proposed): increasing by the exact lower end of the real part, then its upper end, then
-  `H`, then `A`; no two pieces identical. DECISION (proposed) CV-24; reason: any fixed order makes the printed form
-  unique; this one is cheap.
-- PENDING (part B): `docs/proofs/quotient.md`. Whether pieces may overlap or must be merged; whether a piece that
-  touches 1 is glued to one that touches 0; the default piece limit.
+  exact as a set", `SPEC.md` 6).
+- PIECES: `len >= 1`; the value is the union of the images in `A/Q` of the pieces. Each piece is an adele
+  `J x (m + N Zhat)` with a finite part inside `Zhat` of integer radius: `d = 1`, `N = H >= 1` and `0 <= m < N`, or
+  `N = 0` and `m` an integer (quotient P5, P10 remark). The gluing rule: `(1 ; z)` is the point `(0 ; z - 1)`
+  (quotient P3).
+- **The invariant that replaces "inside `[0, 1]`".** DECISION CV-45 (D4): a piece's real part is a closed real ball
+  whose **midpoint lies in `[0, 1]`**; the ball itself may reach beyond `[0, 1]` by the outward rounding of the
+  enclosure. Its meaning is unchanged: every point `(s, z)` of a piece denotes its class in `A/Q`, which is defined
+  for every real `s`, so a point with `s` slightly below 0 or above 1 is the class of `(s + 1, z + 1)` or
+  `(s - 1, z - 1)`, a point near the other end of the domain; the enclosure stays an enclosure. What the invariant
+  guarantees is that the stored piece encloses an exact closed piece `C_n` inside `[0, 1]` of quotient P6 (its
+  midpoint is rounded to nearest, and 0 and 1 are representable). Reason (orchestrator): `SPEC.md` 6 asks for pieces
+  "inside `[0, 1]`", which an `arb` enclosure of an interval with a non-dyadic end point cannot keep (probed: the
+  enclosure of `[0.9, 1]` exceeds 1 at `prec` 20, 53 and 128; finding F2).
+- **Number of pieces** (D4, quotient P5, P6): reduction of `I x (a + N Zhat)` with integer `N` and shifted interval
+  `[lo', hi'] = I - a` gives one closed piece `C_n` for each `n` with `floor(lo') <= n <= ceil(hi') - 1`, that is
+  `k + 1` pieces when the open interval `(lo', hi')` contains `k` integers, and one piece when `lo' = hi'`. A
+  fractional radius `A/B` is first split into the `B` balls `a + j A/B + A Zhat` (quotient P8, `B` is minimal). The
+  count is that of the construction; pieces with the same finite class may merge afterwards (quotient P6 remark).
+  When `hi - lo >= N` the image is all of `A/Q` (quotient P7).
+- **Piece limit.** An argument of every function that produces pieces (`SPEC.md` 6); no default. More pieces than
+  the limit: `ADF_LIMIT` (3.1). A function that may return one piece only returns `ADF_NEEDS_SPLIT` when the image
+  needs more than one piece.
+- **Canonical order of pieces** (storage and printing): increasing by the exact lower end of the real part, then
+  its upper end, then `N`, then `m`; no two pieces identical (CV-24, proposed; reason: any fixed order makes the
+  printed form unique, this one is cheap). The value form orders by the printed real parts (9.4).
+- **Equality of two unions** is decided by the canonical form of quotient P9 (common modulus `N'`, the sets `T_m` in
+  `[0, 1)`), exactly when the end points are exact; for balls the function returns `ADF_CMP_UNDECIDED` unless the
+  sets are certainly equal or certainly different.
+- Translation by a rational changes nothing (quotient P10); the constructions of P5 and P8 give literally the same
+  pieces for `X` and `X + q0`.
 - Init: LIFT of the adele `(0 ; 0)`.
 
 ### 5.11 `adf_ffun` (finite test function)
@@ -521,7 +649,9 @@ Fixed by `SPEC.md` 6 and used here:
 
 Meaning: `t^s chi(u')` on `R_{>0} x Zhat^x` (`SPEC.md` 5), `chi` the Dirichlet character with Conrey label `n`
 modulo `q`, as numbered by FLINT's `dirichlet` module (`dirichlet.h:37`, "conrey generator"; `dirichlet.h:114`
-`dirichlet_char_log`) [source pending: FLINT 3.0.1 `dirichlet` documentation of the numbering].
+`dirichlet_char_log`). FLINT's documentation calls this label the "Conrey number"
+(`flint-3.0.1:acb_dirichlet.rst:380`, "the *ui* version only takes the Conrey number *a* as parameter"); the
+`dirichlet` module's own documentation is not on disk [source pending: FLINT 3.0.1 `dirichlet.rst`].
 
 - Predicate: `q >= 1`; `1 <= n <= q`; `gcd(n, q) = 1`; the character is primitive, i.e. its conductor
   (`dirichlet_conductor_char`, `dirichlet.h:111`) equals `q`; `parity` equals `dirichlet_parity_char`
@@ -531,8 +661,15 @@ modulo `q`, as numbered by FLINT's `dirichlet` module (`dirichlet.h:37`, "conrey
   Note **[probed]** with python-flint 0.8.0: the label of the primitive character is not always `n mod f`:
   `(16, 9)` has conductor 8, and `(8, 1)` is the principal character.
 - Init: the principal character, `q = 1, n = 1`, `s = 0`.
-- PENDING (part B): `docs/proofs/analysis.md`. Whether the idele class character is `chi(u')` or `conj(chi(u'))`
-  (`SPEC.md` 8 fixes `conj(chi(u'))` for the Tate integral of `L(s, chi)`), and the sign convention of `s`.
+- **Value.** The stored `(chi, s)` is the quasi-character `omega(t, u') = t^s chi(u')` of `SPEC.md` 5, with
+  `t = |x_inf| / r` the norm of the idele and `u' = sign(x_inf) u` (ideles P15); it is unitary when `Re(s) = 0`.
+  DECISION (proposed) CV-58; reason: this is the family as `SPEC.md` 5 writes it, with no hidden conjugation.
+- **The Tate integral of `L(s, chi)`** uses the character `omega_chi(x) = conj(chi(u'))` (`proofs/analysis.md`
+  Proposition 11; `SPEC.md` 8), whose uniformizer value at `p` not dividing the conductor is `chi(p)`. In terms of
+  this type it is the `adf_char` of `conj(chi)` with `s = 0`, the variable `s` of the integral being separate. The
+  Conrey label of `conj(chi)` modulo `q` is `n^-1 mod q` (**[probed]** with python-flint on every character of
+  modulus below 60: the exponents of `chi_q(n, x)` and `chi_q(n^-1, x)` add to 0 modulo the group exponent).
+  Functions that compute `L(s, chi)` by the Tate integral take `chi` and form `omega_chi` themselves.
 
 ### 5.14 `adf_modctx` (modulus context)
 
@@ -550,66 +687,218 @@ recombination data. Constructors:
 
 The local backend needs `k >= 1`; conversion into a context with `k = 0` returns `ADF_UNSUPPORTED`.
 
-## 6. Signs, measures, normalisations
+## 6. Signs, measures, normalisations, and operations fixed by decisions
 
-All of this section is PENDING (part B). Each subsection states only what `SPEC.md` fixes today.
+Sources: `docs/proofs/analysis.md` (reviewed and repaired: 9 VALID, 6 MINOR repaired, 0 INVALID),
+`docs/proofs/catalogue.md`, `docs/sources.md` and the texts under `refs/src/`. `E(t) = exp(2 pi i t)`.
 
 ### 6.1 Additive character and Fourier transform
 
-PENDING (part B): `docs/sources.md` and `refs/` (lane m0-sources: quotation of Tate's thesis section 2.2 or its
-substitutes), `docs/proofs/analysis.md` (lane m0-proofs-analysis). Fixed by `SPEC.md` 6 (**[unverified]** there):
+**The character** (`proofs/analysis.md` Definition 1). For every prime `p`, including 2, `fp_p(x)` is the unique
+element of `Z[1/p]` in `[0, 1)` with `x - fp_p(x)` in `Z_p` (the p-primary fractional part `{x}_p` of `SPEC.md`
+9.3.6). Then
 
-    psi(x) = exp( 2 pi i ( - x_inf + sum over p of {x_p}_p ) )
-    hat f(y) = integral of f(x) conj(psi(x y)) dx
+    psi_p(x) = E(fp_p(x)),    psi_inf(x) = E(-x),    psi(x) = psi_inf(x_inf) * product over p of psi_p(x_p).
 
-The real kernel is `exp(+2 pi i x y)`, the finite kernel `exp(-2 pi i x y)`; `psi` is 1 on `Q`. `{x_p}_p` is the
-p-primary fractional part, a rational in `[0, 1)` with denominator a power of `p` (`SPEC.md` 9.3.6).
+`psi` is a continuous character of `A`, trivial on `Q` (analysis Lemma 2); for a rational `a`, `psi_f(a) = E(a)`.
+This is the standard character of the exposition on disk: "If F = R, let ψ(x) := e−2πix . (The minus sign is there
+so that a global product" / "formula later on will hold.)" (`tate-poonen:notes.txt:693-694`), and at `Q_p`
+"which is characterized by ψ|Zp = 1 and ψ(1/pn ) = e2πi/p for all n ≥ 1" (`tate-poonen:notes.txt:700`; the
+extraction flattens the exponent `e^(2 pi i / p^n)`).
+
+**The transform.** DECISION CV-54 (D11): the transform of `SPEC.md` 6 is kept,
+
+    F f(y) = integral of f(x) conj(psi(x y)) dx,
+
+with the self-dual measures of 6.2, so that `F F f(x) = f(-x)` (analysis Proposition 3). Reason (orchestrator):
+it is Tate's original convention and the one the proofs use. The expositions on disk define the transform
+**without** the conjugate: `tate-poonen:notes.txt:733-737`, "Definition 4.7. Fix a local field F , a nontrivial
+additive character ψ on F , and a Haar / measure dx on F . Given f ∈ S , define the Fourier transform fb by / ... /
+f (x) ψ(xy) dx." with the remark "(Tate originally took the complex conjugate of the additive character, but many
+references since then have not done so.)" (`tate-poonen:notes.txt:740`); the adelic transform is the same,
+"fb(y) :=   f (x) ψ(xy) dx," (`tate-poonen:notes.txt:1400`); and `tate-kudla:kudla-1.txt:705-706`, "The Fourier
+transform / fˆ(x) =        f (y) ψ(xy) dy".
+
+**Conversion between the two conventions.** Write `F_c` for ours and `F_u` for the unconjugated transform, with the
+same `psi` and the same measure. Since `conj(psi(x y)) = psi(-x y)`:
+
+    F_c f(y) = F_u f(-y) = F_u (f o (-1)) (y),        F_c = F_u^(-1),        F_u f(y) = F_c f(-y).
+
+(Own calculation: substitute `x -> -x` in the integral; the last two follow from `F_u F_u f = f o (-1)`, which is
+the self-duality of the measure for `F_u`, the same measure as for `F_c`.) The two agree on even functions and
+differ by a reflection otherwise; the shifted Gaussians of `PLAN.md` 4.3 tell them apart. Every formula of this
+document is in the convention `F_c`. The kernels are then `exp(+2 pi i x y)` at the real place and
+`exp(-2 pi i fp(x y))` at the primes (`SPEC.md` 6).
+
+**Phases on a ball** (analysis Lemma 2). On `a + N Zhat`: `N = 0` gives `{E(a)}`; `N = A/B > 0` in lowest terms
+gives `{E(a) E(k/B) : 0 <= k < B}`, the `B`-th roots of unity times `E(a)`; an integer radius gives one phase. On
+`I x (a + N Zhat)` the image is that finite set times `E(-I)`. The golden file `tests/golden/psi_phases.tsv` lists
+the angles `t` with phase `E(t)` for finite balls.
+
+**Criterion by duality** (seams R8, adopted by D8): the phase of a ball is determined exactly when the character is
+trivial on its radius group; for `Q`, exactly when the finite radius is an integer (then only the real part adds
+uncertainty). The functions carry the convention in their names: `adf_adele_psi_tate(z, x, prec)` returns an
+enclosure of all phases (`ADF_OK`); `adf_adele_psi_tate_strict` returns `ADF_NOT_DETERMINED` when the finite radius
+is not an integer (CV-07). DECISION (proposed) CV-59; reason: seams R8 asks for a named convention, and "tate" names
+the convention of `SPEC.md` 6 without the unsourced section number. `psi` is constant on classes modulo `Q`, so the
+same functions exist for `adf_qclass`.
 
 ### 6.2 Measures
 
-PENDING (part B): `docs/proofs/analysis.md`. Fixed by `SPEC.md` 7 and 8: `Z_p` has volume 1, so `N Zhat` has
-volume `1/N`; Lebesgue measure at infinity; `A/Q` has volume 1. Multiplicative: `d^x x = dx/|x|` at infinity, and at
-each prime the measure giving `Z_p^x` volume 1.
+(`proofs/analysis.md` Definition 1, Proposition 3, Lemma 2, Proposition 12.)
+
+- Additive: `vol(Z_p) = 1` at every prime, Lebesgue measure at the real place, and their restricted product. So
+  `vol(N Zhat) = 1/N` for `N > 0`, `vol` of a point is 0 (`SPEC.md` 9.3.7, Haar volume), and `A/Q` has volume 1
+  with the fundamental domain `[0, 1) x Zhat`.
+- These measures are self-dual for `psi` and `F_c`: `F_c F_c f(x) = f(-x)` (analysis P3; a rescaling `c` of one
+  measure multiplies the double transform by `c^2`).
+- Multiplicative: `d*x_p = (1 - 1/p)^(-1) dx_p / |x_p|_p`, so `vol*(Z_p^x) = 1`; `d*x_inf = dx / |x|`.
+- On the units `Zhat^x`, the probability measure `du` (every finite quotient uniformly weighted) (analysis P12).
 
 ### 6.3 Finite Fourier transform
 
-PENDING (part B): `docs/proofs/analysis.md`. Fixed by `SPEC.md` 7:
-`hat f(k/M) = (1/M) sum_{j=0}^{L-1} f_j exp(-2 pi i j k / L)`, `L = D M`, stored as `f_j = f(j/D)`.
+(`proofs/analysis.md` Proposition 4.) For `adf_ffun` with `D, M >= 1`, `L = D M`, `f_j = f(j/D)`:
+
+    g_k = g(k/M) = (1/M) sum_(j=0)^(L-1) f_j E(-j k/L),    integral f = (1/M) sum_j f_j,
+    integral |f|^2 = (1/M) sum_j |f_j|^2 = (1/D) sum_k |g_k|^2.
+
+The transform `g = F_c f` is zero off `(1/M) Zhat` and constant modulo `D Zhat`, so it is stored as the
+`adf_ffun` with `(D, M)` exchanged: `D' = M`, `M' = D`, `g_k = g(k/D')` for `0 <= k < L`. The second transform
+has the weight `1/D` and returns `f(-x)`. These are inclusions of support and period, not minimality claims.
 
 ### 6.4 Gauss sums, root numbers, local constants
 
-PENDING (part B): `docs/proofs/analysis.md`, `docs/proofs/functions.md`. Fixed by `SPEC.md` 9.3.7: Gauss sums use a
-Dirichlet character with its conductor, extended by 0, and the additive character of 6.1; local constants are
-defined by `Z(hat f, chi^-1, 1-s) = gamma(s, chi) Z(f, chi, s)` with the transform and measure of 6.1 and 6.2; the
-epsilon factor needs the normalisation of the L-factor. Tests compare with `acb_dirichlet_gauss_sum`
-(`acb_dirichlet.h:126`), whose normalisation is [source pending: FLINT `acb_dirichlet` documentation].
+(`proofs/analysis.md` Lemma 8, Propositions 9, 10, 13.) Let `chi` be primitive of conductor `C`, extended by 0 on
+non-units (for `C = 1`, `chi(n) = 1` for every `n`), and `chi(-1) = (-1)^e`.
+
+- **Gauss sum, positive finite sign:** `tau(chi) = sum_(a mod C) chi(a) E(a/C)`. Then
+  `sum_(a mod C) chi(a) E(m a/C) = conj(chi(m)) tau(chi)` for every integer `m`, `|tau(chi)| = sqrt(C)`,
+  `tau(chi) tau(conj(chi)) = (-1)^e C`, and `tau = 1` for `C = 1`.
+- It equals FLINT's Gauss sum for the primitive character: "G_q(a) = \sum_{x \bmod q} \chi_q(a, x)
+  e^{\frac{2i\pi x}q}" (`flint-3.0.1:acb_dirichlet.rst:362`), with the same positive sign. **[probed]** for the 17
+  characters of `tests/golden/gauss.tsv`, `acb_dirichlet_gauss_sum` at 256 bits lies in the golden balls.
+- **Root number:** `W_chi = tau(chi) / (i^e sqrt(C))`, with `Lambda(s, chi) = W_chi Lambda(1 - s, conj(chi))`,
+  `Lambda(s, chi) = C^((s+e)/2) pi^(-(s+e)/2) Gamma((s+e)/2) L(s, chi)`, `|W_chi| = 1`,
+  `W_chi W_conj(chi) = 1` (analysis P13). The root number uses the positive finite Gauss sum although the finite
+  Fourier kernel is negative (analysis P13, last sentence). For a real character `W_chi = 1` (the golden vectors
+  include `(3, 2)`, `(4, 3)`, `(5, 4)`, `(7, 6)`, `(8, 3)`, `(8, 5)`, `(8, 7)`, `(12, 11)`).
+- **Local constants at a prime** (analysis P9) for a quasi-character `eta` of `Q_p^x` with `alpha = eta(p)`, unit
+  restriction `eta_0` and conductor exponent `a`, with the local functional equation
+  `Z_p(F_c f, eta^(-1), 1 - s) = gamma_p(s, eta) Z_p(f, eta, s)`:
+
+      a = 0:  gamma_p(s, eta) = (1 - alpha p^(-s)) / (1 - alpha^(-1) p^(s-1)),
+              L_p(s, eta) = (1 - alpha p^(-s))^(-1)
+      a > 0:  gamma_p(s, eta) = alpha^a p^(-a s) G_minus(eta_0^(-1)),    L_p(s, eta) = 1
+              G_minus(eta_0^(-1)) = sum_(u mod p^a, p not dividing u) eta_0(u)^(-1) E(-u/p^a)
+      epsilon_p = gamma_p L_p(s, eta) / L_p(1 - s, eta^(-1))
+
+  The local sum `G_minus` has the **negative** sign of the finite kernel; it is not `tau`. At `p = 2` the ramified
+  case needs `a >= 2`.
+- **Real place** (analysis P10), `eta(x) = sign(x)^e`, `phi_e(x) = x^e exp(-pi x^2)`:
+  `Z_inf(phi_e, eta, s) = pi^(-(s+e)/2) Gamma((s+e)/2)`,
+  `gamma_inf(s, eta) = i^e pi^(s-1/2) Gamma((1-s+e)/2) / Gamma((s+e)/2)`, `L_inf(s, eta) = pi^(-(s+e)/2)
+  Gamma((s+e)/2)`, `epsilon_inf = i^e`. Poles of the trivial factors: `s = 0, -2, -4, ...` at the real place,
+  `s = 2 pi i k / log p` at `p`; a ball meeting a pole returns a status, never a finite ball (`SPEC.md` 9.3.7).
+- Names: `adf_char_gauss_sum` (returns `tau` of the stored primitive character), `adf_char_root_number` (`W`),
+  `adf_local_gamma_at`, `adf_local_epsilon_at`, `adf_local_zeta_factor_at`. DECISION (proposed) CV-60; reason: the
+  names say which object is meant; `tau` and `G_minus` differ in sign and must not share a name. The golden file
+  `tests/golden/gauss.tsv` holds `e`, `tau` and `W` as balls.
 
 ### 6.5 Class-group characters
 
-PENDING (part B): `docs/proofs/analysis.md`. Fixed by `SPEC.md` 5 and 8: quasi-characters `t^s chi(u')`, unitary
-when `Re(s) = 0`; in the Tate integral for `L(s, chi)` the idele character is `conj(chi(u'))`, so that the Euler
-factors carry `chi(p)`. The value on a coset `c U(N)` is one number only when the conductor divides `N` (5.13 and
-4.3 for the two function variants).
+(`proofs/analysis.md` Proposition 11, 13; `proofs/ideles.md` Proposition 15; `SPEC.md` 5, 8.) The type is 5.13: the
+stored `(chi, s)` is `t^s chi(u')`. For the Tate integral of `L(s, chi)` the idele class character is
+`omega_chi = conj(chi(u'))`; its uniformizer value at `p` not dividing `C` is `chi(p)`, at `p` dividing `C` it is
+`alpha_p = product over primes l dividing C, l != p, of chi_l(p)` (CRT factorisation `chi = product of chi_l`), its
+unit restriction at `p | C` is `conj(chi_p)`, its real restriction `sign(x)^e`. The test vector: real part `phi_e`,
+`eta_p^(-1) 1_(Z_p^x)` at ramified `p`, `1_(Z_p)` elsewhere; for `Re(s) > 1`,
+`Z(f_chi, omega_chi, s) = pi^(-(s+e)/2) Gamma((s+e)/2) L(s, chi)`; `1_(Z_p)` at a ramified prime gives 0.
+The value of a character on a unit coset `c U(N)` is one number exactly when the conductor divides `N`, or `N = 0`
+(an exact unit); otherwise the default function returns an enclosure of all values and the `_strict` variant
+`ADF_NOT_DETERMINED` (4.3, CV-07).
 
 ### 6.6 Reciprocity (cyclotomic action)
 
-PENDING (part B): `docs/sources.md` (Milne's notes on disk), `docs/proofs/catalogue.md`. Fixed by `SPEC.md` 9.3.7:
-two conventions, arithmetic `z -> z^(1/u')` and geometric `z -> z^(u')`; the choice is part of the function's
-name. Proposed names, pending the choice: `adf_idclass_cyclo_arith`, `adf_idclass_cyclo_geom`. Test vector: the
-idele with `p` at the place `p` and 1 elsewhere has `u' = 1/p` away from `p`; under the arithmetic convention
-`z -> z^p` for `n` prime to `p`.
+DECISION CV-53 (D10): both conventions are offered, as two functions named by their formula:
+
+| Function | Action of the class `(t, u')` on a root of unity `z` of order `n` | Source |
+|---|---|---|
+| `adf_idclass_cyclo_exp_u(j, x, n)` | `z -> z^(u' mod n)`; returns `j = u' mod n` | the canonical isomorphism `Zhat^x -> Gal(Q^cyc/Q)` |
+| `adf_idclass_cyclo_exp_uinv(j, x, n)` | `z -> z^(u'^(-1) mod n)`; returns `j = u'^(-1) mod n` | the global reciprocity map of Milne's notes |
+
+Quotations (control characters of the extraction written `\xNN`, as in `docs/sources.md`): "In this case, the global
+reciprocity map is the reciprocal of" / "\x1eW IQ ! ZO \x02 ! Gal.Qcyc =Q/;" / "where IQ ! ZO \x02 is the above
+projection map, and ZO \x02 ! Gal.Q cyc =Q/ is the canonical" / "isomorphism (see I A.5c)."
+(`milne-cft:CFT.txt:9883-9886`; the extraction drops the Greek letters and the superscripts); the canonical
+isomorphism acts by `u`-th powers: "u D a0 C a1 p C a2 p C \x01 \x01 \x01 ; 0 \x14 ai \x14 p 1, and define" / ... /
+"This defines an action of Z\x02" / "p on ˝p , and in fact an isomorphism of topological groups"
+(`milne-cft:CFT.txt:3162-3166`, read as `zeta_(p^r)^u = zeta_(p^r)^(a_0 + a_1 p + ... + a_s p^s)`). Reason
+(orchestrator): `SPEC.md` 9.3.7 asks for the convention in the name; the words "arithmetic" and "geometric" of
+`SPEC.md` have no source on disk (`docs/sources.md`, sources pending, item 2), so the names give the exponent
+instead, and this document does not use those words for them. `t` acts trivially. The action on all `n`-th roots is
+determined exactly when the normal form of `n` divides the normal form of `N` (`proofs/catalogue.md` Proposition
+15), always for an exact unit; otherwise `ADF_NOT_DETERMINED`. Test vector (catalogue P15;
+`milne-cft:CFT.txt:9904-9908` with the Frobenius of `milne-cft:CFT.txt:1307`, "such that \x1b ˛ \x11 ˛ q mod mL for
+all ˛ 2 OL . This \x1b is called the Frobenius element of"): the class of the idele with `p` at the place `p` and 1
+elsewhere has `u' = p^(-1)` away from `p`, so for `gcd(p, n) = 1` `adf_idclass_cyclo_exp_uinv` returns `j = p` (`z
+-> z^p`) and `adf_idclass_cyclo_exp_u` returns `j = p^(-1) mod n`.
 
 ### 6.7 Recommendations of the seams sketch
 
-PENDING (part B): `docs/seams.md` (lane m0-seams), section 5 there. Nothing in this document is frozen before those
-recommendations are merged (`PLAN.md` section 1, principle 1).
+All nine recommendations of `docs/seams.md` section 5 are adopted: DECISION CV-57 (D8); reason (orchestrator): cheap
+decisions now that avoid a break later (seams section 5). Where each is applied:
+
+| Rec. | Content | Here |
+|---|---|---|
+| R1 | a place is an opaque handle | section 7 (CV-18 revised, CV-56); 5.8, 5.9; the place of `ADF_DOMAIN` |
+| R2 | the radius is a rational documented as the positive generator of the radius ideal; compared by inclusion only | 5.2 |
+| R3 | archimedean operations go through the place; the dump counts archimedean components | 10.1 |
+| R4 | `adf_cadele` is special to `Q` | 5.5 |
+| R5 | the idele scale is called the content | 5.7 |
+| R6 | coset normal form stated by residue fields | 5.6 |
+| R7 | the context holds an integer; no canonical scale is promised | 5.4 |
+| R8 | the additive character is a named convention; its criterion by duality | 6.1 |
+| R9 | the dump names the field; the value form has place labels as tokens (`p=5`, `inf`) | 9.2, 10.1 |
+
+### 6.8 Operations fixed by decisions
+
+- **Rational reconstruction from a full ball** intersects the finite progression with the **closed** real interval:
+  for `I x (a + N Zhat)`, `I = [lo, hi]`, the candidates are `a + N k` with
+  `ceil((lo - a)/N) <= k <= floor((hi - a)/N)` for `N > 0`, and `a` if `lo <= a <= hi` for `N = 0`
+  (`proofs/quotient.md` P11); for an `arb` the interval is `[mid - rad, mid + rad]` with its exact dyadic end
+  points. Statuses: one candidate `ADF_OK`; none `ADF_NO_SOLUTION`; several `ADF_NOT_UNIQUE`. From partial data
+  (quotient P13), "uniqueness not certified" (`2 A B >= m` and no search) is `ADF_NOT_DETERMINED`.
+  DECISION CV-51 (D3); reason (orchestrator): a real ball is a closed set, and an end point of it may be the answer.
+- Scaled product: 5.4 (CV-48, D5). Power of a unit coset: 5.6 (CV-49, D6). Division by an idele: 5.7 (CV-50, D7).
+  Complete validation of dump text before FLINT: 10.2 (CV-52, D9).
 
 ## 7. Places
 
-- A place is a `ulong`: `0` is the archimedean place, any other value is a prime `p < 2^64` (CV-18).
-  `typedef ulong adf_place_t;`
-- **Canonical order of places:** the archimedean place first, then the primes in increasing order. It is the order
-  of printing (9.4), of `adf_sball` storage (5.9), of per-place reports and of the tie-break of section 3.3.
+DECISION CV-18 (D8, seams R1), revised from version 0.1: **a place is an opaque handle.**
+
+    typedef struct { ulong opaque; } adf_place_t;          /* 8 bytes, passed by value; the field is private */
+
+    adf_place_t adf_place_inf(void);                        /* the archimedean place of Q */
+    int         adf_place_prime(adf_place_t * v, ulong p);  /* ADF_DOMAIN unless p is prime (n_is_prime) */
+    int         adf_place_is_archimedean(adf_place_t v);
+    ulong       adf_place_prime_get(adf_place_t v);         /* 0 for the archimedean place */
+    int         adf_place_cmp(adf_place_t v, adf_place_t w);   /* -1, 0, 1 in the canonical order */
+    int         adf_place_equal(adf_place_t v, adf_place_t w);
+
+- Every function that names a place takes an `adf_place_t`: `f_at`, `adf_lball`, `adf_sball`, valuation, absolute
+  value, fractional part, Hilbert symbol, and the place reported with `ADF_DOMAIN` (3.3). User code creates and
+  reads places only through these functions; the integer inside is not part of the contract, and no arithmetic or
+  comparison on it is offered. Reason (orchestrator, from seams R1): in a number field the prime 3 can have two
+  places, and in `F_q(T)` the infinite place is non-archimedean.
+- The handle is a struct, not a bare `ulong`, so that C code cannot compare or compute with it by accident; its
+  layout (one `ulong`) is fixed for the foreign-function interface (section 12). DECISION (proposed) CV-56; reason:
+  the compiler then enforces "not an integer" at no run-time cost.
+- In version 1 the primes of places are one word (CV-18 of version 0.1, kept): `adf_place_prime` with `p >= 2^64`
+  is impossible by the type; larger primes in text are `ADF_UNSUPPORTED` (9.3).
+- **Canonical order of places:** the archimedean place first, then the primes in increasing order
+  (`adf_place_cmp`). It is the order of printing (9.4), of `adf_sball` storage (5.9), of per-place reports and of
+  the tie-break of section 3.3. For fields with several places above one prime this order will need a tie-break
+  among them (seams R1); version 1 has none to make.
 - A set of places (`adf_places_t`) is stored sorted in this order, without repetition; constructors sort and reject
   repetitions with `ADF_DOMAIN`.
 
@@ -649,7 +938,7 @@ object.
 ### 8.3 Tokens of the value form
 
 A token is one of: a number (section 9.1), a keyword (a maximal run of ASCII letters that must equal the keyword the
-grammar expects: `mod O p R C i Q union ffun rfun term char D M P A B q n s`), `+/-`, or one of the single
+grammar expects: `mod O p inf i Q union ffun rfun term char D M P A B C q n s`), `+/-`, or one of the single
 characters `( ) [ ] < > { } ; , : * + = ^`. The longest match is taken, so `+/-` is one token. A number starts with
 a digit or with `-` directly followed by a digit. A letter directly after a number ends the number (`5mod6` is the
 three tokens `5 mod 6`; `1 e5` is `1` followed by the unknown keyword `e`).
@@ -720,7 +1009,7 @@ There is no `+` sign on a number (only in an exponent), no `.5`, no `5.`, no hex
     idele_v   = "(" , real , ";" , urat , "*" , ucoset , ")" ;
     idclass_v = "<" , real , ";" , ucoset , ">" ;
     lball_v   = "[" , "p" , "=" , uint , ":" , lcoord , "]" ;
-    sentry    = "R" , ":" , real  |  "C" , ":" , complex  |  "p" , "=" , uint , ":" , lcoord ;
+    sentry    = "inf" , ":" , ( real | complex )  |  "p" , "=" , uint , ":" , lcoord ;
     sball_v   = "{" , [ sentry , { ";" , sentry } ] , "}" ;
     qclass_v  = adele_v , "+" , "Q"  |  "union" , "(" , adele_v , { "," , adele_v } , ")" , "+" , "Q" ;
     ffun_v    = "ffun" , "(" , "D" , "=" , uint , "," , "M" , "=" , uint , ";" , complex , { "," , complex } , ")" ;
@@ -752,7 +1041,7 @@ union of pieces with the gluing rule; `ffun(D=, M=; f_0, ..., f_{L-1})` has `f_j
 | `lball_v`, `sentry` with `p=` | `p < 2^64` | `UNSUPPORTED` |
 | | `p` prime (`n_is_prime`, `ulong_extras.h:335`) | `DOMAIN` |
 | | the base inside `O(...)` equals `p`; `abs(N) <= max_prec` (the latter is stage 4: `LIMIT`) | `DOMAIN` |
-| `sball_v` | at most one of `R`, `C`; no prime twice | `DOMAIN` |
+| `sball_v` | at most one `inf` entry; no prime twice | `DOMAIN` |
 | `qclass_v`, form `union` | each piece: the midpoint of `real` in `[0, 1]` (5.10, CV-45); the finite part is an integer with `mod` an integer (or no `mod`) | `DOMAIN` |
 | `ffun_v` | `D >= 1`, `M >= 1`; `D M <= max_items` (stage 4: `LIMIT`); number of values `= D M` | `DOMAIN` |
 | `rterm` | the exact interval of the real part of `A` lies in `(0, infinity)` | `DOMAIN` |
@@ -789,7 +1078,7 @@ numerator, `0` for zero. `r(x)` prints a real ball by 9.5, `z(x)` a complex ball
 | `adf_idclass` | `<r(t) ; U>` |
 | local coordinate `L` | exact: `q(p^v u)`; ball: `q(c) + O(p^N)` with `c = p^v u` and `N` in signed decimal (`O(5^-2)`, `O(5^0)`, `O(5^1)`) |
 | `adf_lball` | `[p=P: L]` |
-| `adf_sball` | `{E; E; ...}` in canonical place order; `E` is `R: r(x)`, `C: z(x)` or `p=P: L`; no places: `{}` |
+| `adf_sball` | `{E; E; ...}` in canonical place order; `E` is `inf: r(x)` (real tag), `inf: z(x)` (complex tag) or `p=P: L`; no places: `{}` |
 | `adf_qclass` | lift: `(r ; F) + Q`; pieces: `union(X, X, ...) + Q`, `X = (r ; F)`, sorted like 5.10 but by the exact end points of the *printed* real parts, each distinct printed piece once (printing can make two pieces equal or change their order; this keeps the text a fixed point) |
 | `adf_ffun` | `ffun(D=D, M=M; z(f_0), z(f_1), ...)` |
 | `adf_rfun` | `rfun(T, T, ...)`, `T = term(P=[z(c_0), ...], A=z(A), B=z(B), C=z(C))`; zero function `rfun()` |
@@ -893,7 +1182,7 @@ hide an exact/inexact confusion.
 | A9 | Local ball: which centre; how is `N` printed; exact local values | centre in `Z[1/p] ∩ [0, p^N)` (5.8); `O(p^N)` always with the exponent; exact value without `O`-term (CV-34) |
 | A10 | Whitespace and case | 8.2, 8.3 |
 | A11 | Does the value form record the backend? | no (`PLAN.md` 5); the dump does |
-| A12 | Types without an example in `PLAN.md` 5 (`adf_cadele`, `adf_sball`, `adf_qclass`, `adf_ffun`, `adf_rfun`, `adf_char`) | forms of 9.2 (CV-35) |
+| A12 | Types without an example in `PLAN.md` 5 (`adf_cadele`, `adf_sball`, `adf_qclass`, `adf_ffun`, `adf_rfun`, `adf_char`) | forms of 9.2 (CV-35); places are labelled `p=5` and `inf` (seams R9, D8; version 0.1 used `R:` and `C:`) |
 | A13 | Does the parser keep the unit modulus as written? | yes; printed normal (CV-17) |
 | A14 | Negative radius, negative modulus, negative scale | excluded by the grammar (`udec`, `urat`, `uint`): `ADF_PARSE` |
 | A15 | Zero denominator, composite `p`, non-unit residue | `ADF_DOMAIN` (9.3) |
@@ -905,11 +1194,14 @@ hide an exact/inexact confusion.
 
 Tokens are separated by exactly one space `0x20`; no other whitespace anywhere; no leading or trailing space.
 
-    dump    = "adf" , version , " " , body ;     (* version "1"; any other version: UNSUPPORTED *)
+    dump    = "adf" , version , " " , field , " " , body ;   (* version "1"; any other version: UNSUPPORTED *)
+    field   = upper , { nonspace } ;                  (* "Q" in version 1; any other field: UNSUPPORTED *)
     h       = "0" | [ "-" ] , hnz , { hdig } ;           (* integer in lower-case hexadecimal, no leading zeros *)
     hnz     = "1" | ... | "9" | "a" | ... | "f" ;   hdig = "0" | hnz ;
     arb     = h , " " , h , " " , h , " " , h ;   (* mid mantissa, mid exponent, rad mantissa, rad exponent *)
     acb     = arb , " " , arb ;
+    arch    = h , { " " , arb } ;                       (* count of archimedean components, then real balls *)
+    carch   = h , { " " , acb } ;                       (* count, then complex balls *)
     ctx     = h , " " , h , { " " , h } ;                (* K, k, then q_1 ... q_k *)
     fb      = "g" , " " , h , " " , h , " " , h          (* A H d *)
             | "l" , " " , h , " " , ctx , { " " , h } ;  (* d, context, then res_1 ... res_k *)
@@ -918,47 +1210,57 @@ Tokens are separated by exactly one space `0x20`; no other whitespace anywhere; 
     body    = "rat" , " " , h , " " , h
             | "fball" , " " , fb
             | "scaled" , " " , ( "x" , " " , h , " " , h | "s" , " " , h , " " , h , " " , h ) , " " , ctx
-            | "adele" , " " , arb , " " , fb
-            | "cadele" , " " , acb , " " , fb
+            | "adele" , " " , arch , " " , fb
+            | "cadele" , " " , carch , " " , fb
             | "ucoset" , " " , h , " " , h                          (* c N *)
-            | "idele" , " " , arb , " " , h , " " , h , " " , h , " " , h    (* inf, num(r) den(r), c N *)
+            | "idele" , " " , arch , " " , h , " " , h , " " , h , " " , h   (* inf, num(r) den(r), c N *)
             | "idclass" , " " , arb , " " , h , " " , h
             | "lball" , " " , lb
             | "sball" , " " , ( "n" | "r" , " " , arb | "c" , " " , acb ) , " " , h , { " " , lb }
-            | "qclass" , " " , ( "lift" , " " , arb , " " , fb | "pieces" , " " , h , { " " , arb , " " , fb } )
+            | "qclass" , " " , ( "lift" , " " , arch , " " , fb | "pieces" , " " , h , { " " , arch , " " , fb } )
             | "ffun" , " " , h , " " , h , { " " , acb }             (* D M, then D M values *)
             | "rfun" , " " , h , { " " , h , { " " , acb } , " " , acb , " " , acb , " " , acb }
             | "char" , " " , h , " " , h , " " , acb               (* q n s *)
             | "modctx" , " " , ctx ;
 
-A count fixes the number of repetitions that follow it (`k` in `ctx` and in `fb`; the number of primes in `sball`;
+A count fixes the number of repetitions that follow it (the archimedean count in `arch` and `carch`; `k` in `ctx`
+and in `fb`; the number of primes in `sball`;
 of pieces in `qclass` (form `pieces`); `D M` values in `ffun`; the number of terms in `rfun`, and in each term the
-length of `P`); a mismatch is `ADF_PARSE`. DECISION (proposed) CV-37: this dump grammar; reason: one token per
-struct field, so that load and dump are a direct transcription and identity is easy to test.
+length of `P`); a mismatch is `ADF_PARSE`. For `Q` the archimedean count must be 1 (`ADF_DOMAIN` otherwise).
+The field descriptor and the archimedean count follow seams R9 and R3 (D8): a later field (`K`, `F3(T)`) can be
+added without breaking version-1 files, and version 1 rejects it with `ADF_UNSUPPORTED`. `idclass` has no count (the
+type is special to `Q`); `sball` keeps its tag `n`, `r`, `c`. DECISION (proposed) CV-37: this dump grammar; reason:
+one token per struct field, so that load and dump are a direct transcription and identity is easy to test.
 
 ### 10.2 Rules
 
 - **Strict.** The loader accepts only canonical text: the fields must satisfy the predicates of section 5
-  (`ADF_DOMAIN` otherwise; the loader never canonicalises). Dumping a loaded value gives back the same text,
-  byte for byte. DECISION (proposed) CV-38; reason: `PLAN.md` 5 requires "the identical object", and a loader that
-  repaired input would make two texts denote one dump.
+  (`ADF_DOMAIN` otherwise; the loader never canonicalises). For a local `fball` the predicate is `L` of 5.3 (raw
+  data, no gcd condition): `adf1 Q fball l 2 6 2 2 3 0 0` is valid and denotes `(0 + 6 Zhat)/2 = 3 Zhat`. Dumping a
+  loaded value gives back the same text, byte for byte. DECISION (proposed) CV-38; reason: `PLAN.md` 5 requires "the
+  identical object", and a loader that repaired input would make two texts denote one dump.
 - **Real balls** are written as `arb_dump_str` (`arb.h:1088`) writes them. **[probed]** on FLINT 3.0.1: four
   lower-case hexadecimal integers, midpoint mantissa and exponent, radius mantissa and exponent, the value being
   `mantissa * 2^exponent`, each mantissa odd (or `0 0` for zero); `arb_dump_str` of 0.5 is `1 -1 0 0`, of -0.75 is
-  `-3 -2 0 0`. Non-finite values use a zero mantissa with a non-zero exponent (`+inf` as `0 -1`, `nan` as
-  `0 -3`). [source pending: FLINT 3.0.1 documentation of `arb_dump_str`.] Our loader accepts an `arb` field only if
-  both mantissas are odd or the pair is `0 0`, and the radius mantissa is positive and below `2^30` (`mag.h:117`);
-  anything else is `ADF_DOMAIN` (non-finite or not canonical).
-- **The loader never passes unchecked text to `arb_load_str`** (`arb.h:1087`). **[probed]** In FLINT 3.0.1
-  `arb_load_str` aborts the process (`SIGABRT`) on `"1 0 0 0 5"` (a fifth token), on a zero midpoint mantissa
-  with an exponent other than `0, -1, -2, -3` (`"0 5 0 0"`, `"0 1 0 0"`, `"0 -4 0 0"`), on a zero radius mantissa
-  with an exponent other than `0, -1` (`"1 0 0 1"`, `"1 0 0 -2"`), and on an odd radius mantissa of more than 30
-  bits (`"1 0 40000001 0"`, `"1 0 7fffffff 0"`). It accepts and silently changes `"2 0 0 0"` (to `1 1 0 0`),
-  `"A 0 0 0"` (to `5 1 0 0`), `"1 0 -1 0"` (a negative radius mantissa becomes positive) and
-  `"1 0 40000000 0"`, and accepts a trailing space. Every `arb` group of every valid vector in
-  `tests/golden/dump.tsv` loads and dumps back identically. A loader may build the `arb` from the validated tokens
-  directly, or pass exactly the four validated tokens; the validation of this section excludes every aborting
-  case found.
+  `-3 -2 0 0`. Non-finite values use a zero mantissa with a non-zero exponent (`+inf` as `0 -1`, `nan` as `0 -3`).
+  The documentation agrees and leaves the special values unspecified: "The format consists / of four hexadecimal
+  integers representing the midpoint mantissa, / midpoint exponent, radius mantissa and radius exponent (with
+  special / values to indicate zero, infinity and NaN values), / separated by single spaces. The returned string
+  needs to be deallocated / with *flint_free*." (`flint-3.0.1:arb.rst:288-293`). Our loader accepts an `arb` field
+  only if both mantissas are odd or the pair is `0 0`, and the radius mantissa is positive and below `2^30`
+  (`mag.h:117`); anything else is `ADF_DOMAIN` (non-finite or not canonical).
+- **The loader validates the whole text before any FLINT load function sees any of it.** DECISION CV-52 (D9); reason
+  (orchestrator; finding F5): FLINT's `arb_load_str` aborts the process on some malformed strings. `arb_load_str`
+  (`arb.h:1087`) "Returns a nonzero value if *str* is not formatted correctly" (`flint-3.0.1:arb.rst:297-298`), but
+  the probe below shows that it does not always return. **[probed]** In FLINT 3.0.1 `arb_load_str` aborts the
+  process (`SIGABRT`) on `"1 0 0 0 5"` (a fifth token), on a zero midpoint mantissa with an exponent other than `0,
+  -1, -2, -3` (`"0 5 0 0"`, `"0 1 0 0"`, `"0 -4 0 0"`), on a zero radius mantissa with an exponent other than `0,
+  -1` (`"1 0 0 1"`, `"1 0 0 -2"`), and on an odd radius mantissa of more than 30 bits (`"1 0 40000001 0"`, `"1 0
+  7fffffff 0"`). It accepts and silently changes `"2 0 0 0"` (to `1 1 0 0`), `"A 0 0 0"` (to `5 1 0 0`), `"1 0 -1
+  0"` (a negative radius mantissa becomes positive) and `"1 0 40000000 0"`, and accepts a trailing space. Every
+  `arb` group of every valid vector in `tests/golden/dump.tsv` loads and dumps back identically. A loader may build
+  the `arb` from the validated tokens directly, or pass exactly the four validated tokens; the validation of this
+  section excludes every aborting case found.
 - **Contexts.** A local `fball` (also inside `adele`, `cadele`, `qclass`) and a scaled value record their context
   (`ctx`). `adf_x_load_str(x, s, len, ctx, lim)` makes `x` refer to the caller's `ctx`, which must have the same
   `K` and the same blocks in the same order; otherwise, or if `ctx` is `NULL`, the status is `ADF_DOMAIN`.
@@ -966,8 +1268,9 @@ struct field, so that load and dump are a direct transcription and identity is e
   in any value dump. DECISION (proposed) CV-39; reason: the caller owns contexts (CV-10), so the loader cannot
   create one behind the caller's back.
 - **Unit moduli** are dumped as stored (as supplied, CV-17).
-- **Version.** This is version 1, written `adf1`. A reader of version 1 rejects any other version with
-  `ADF_UNSUPPORTED`. A later version must be able to read `adf1`.
+- **Version and field.** This is version 1, written `adf1`, for the field `Q`: every dump starts `adf1 Q `. A
+  reader of version 1 rejects any other version and any other field with `ADF_UNSUPPORTED`. A later version must be
+  able to read `adf1`.
 
 ## 11. Golden vectors
 
@@ -995,6 +1298,8 @@ with a few lines of code, and able to carry any byte string.
 | `realball_read.tsv` | a real ball in the value form | the exact interval as `lo hi` (two rationals in lowest terms), or a status |
 | `realball_print.tsv` | `mid rad digits`, `mid` and `rad` dyadic rationals | the text printed by 9.5 |
 | `dump.tsv` | a dump text | the same text if valid, or a status |
+| `psi_phases.tsv` | a finite ball in the value form | the angles `t` in `[0, 1)` of the finite phases `E(t)` of `psi` (6.1), increasing, or a status |
+| `gauss.tsv` | an `adf_char` in the value form | `e=<parity> tau=<complex ball> W=<complex ball>` (6.4); computed by `lanes/m0-conventions/gen_gauss.py` (mpmath, 60 digits), not by hand; the balls enclose the exact values |
 
 The counts are in `tests/golden/README.md`.
 
@@ -1011,6 +1316,11 @@ The counts are in `tests/golden/README.md`.
    mantissa below `2^30`) and compare the printed text.
 5. `dump.tsv`: load, then dump; the text must be identical; loading an invalid dump must leave the output
    untouched and return the status.
+6. `psi_phases.tsv`: the enclosure returned by `adf_adele_psi_tate` on `(0 ; F)` must contain `E(t)` for every
+   expected angle `t`, and its radius must be small (the phases are points); `adf_adele_psi_tate_strict` must
+   return `ADF_OK` exactly for the vectors with one angle.
+7. `gauss.tsv`: the balls computed by `adf_char_gauss_sum` and `adf_char_root_number` must overlap the expected
+   balls, have radius below `2^-60` at `prec = 128`, and the parity must agree.
 
 ## 12. Foreign-function interface
 
@@ -1034,20 +1344,22 @@ contract of the public interface. Python stays for tests and proof checks only.
    part of the interface; a binding allocates `adf_sizeof_modctx()` bytes and calls `init` and `clear`, or uses the
    exported `adf_modctx_t` in C. DECISION (proposed) CV-41; reason: the context holds internal tables (reduction
    constants, recombination tree) whose layout should be free to change.
-5. **Contexts are explicit; no hidden global state** (4.5, 4.6). A binding must keep a context alive as long as any
+5. **Places** are the 8-byte struct `adf_place_t` of section 7, passed by value; a binding treats it as an opaque
+   bits type and creates it only through `adf_place_inf` and `adf_place_prime`.
+6. **Contexts are explicit; no hidden global state** (4.5, 4.6). A binding must keep a context alive as long as any
    value refers to it (in Julia: the value object holds a reference to the context object).
-6. **No callbacks.** Version 1 has no function-pointer parameters. If a later function needs one (an integrand), it
+7. **No callbacks.** Version 1 has no function-pointer parameters. If a later function needs one (an integrand), it
    takes a plain C function pointer and a `void *` user-data argument, never a closure.
-7. **Strings.** Input: `(const char *, size_t)`, never retained (8.1). Output: `char *` from `flint_malloc`,
+8. **Strings.** Input: `(const char *, size_t)`, never retained (8.1). Output: `char *` from `flint_malloc`,
    freed by the caller with `flint_free` (`flint.h:204`) or with the exported `adf_str_free(char *)`, which calls
    it. DECISION (proposed) CV-43; reason: a binding need not locate FLINT's allocator.
-8. **Arrays.** An array output is either caller-allocated with its length as the next argument, or owned by an
+9. **Arrays.** An array output is either caller-allocated with its length as the next argument, or owned by an
    output value (5.9 to 5.12) and freed by that value's `clear`. No function returns a bare heap array.
-9. **Integer types.** `slong` and `ulong` are FLINT's `mp_limb_signed_t` and `mp_limb_t` (`flint.h:110-111`),
+10. **Integer types.** `slong` and `ulong` are FLINT's `mp_limb_signed_t` and `mp_limb_t` (`flint.h:110-111`),
    64 bits on the supported platforms (`FLINT_BITS 64`, `flint.h:193`). DECISION (proposed) CV-42: version 1
    supports 64-bit platforms only; reason: places, blocks and primes are one word (CV-18), and the layouts below
    are stated for 64 bits. `size_t` is used for byte lengths only.
-10. **FLINT types across the interface.** `fmpz`, `fmpq`, `arb`, `acb` and `padic` values may be passed by pointer,
+11. **FLINT types across the interface.** `fmpz`, `fmpq`, `arb`, `acb` and `padic` values may be passed by pointer,
     since Nemo.jl wraps the same types [unverified: Nemo.jl's FLINT version and layout were not read]. The interface
     assumes FLINT 3.0.1 (`flint.h:94-97`) and these layouts, measured on x86-64 Linux with the installed headers
     **[probed]**:
@@ -1066,79 +1378,124 @@ contract of the public interface. Python stays for tests and proof checks only.
     version; the library exports `const char * adf_flint_version_compiled(void)` and checks `flint_version` against
     it in `adf_version_check(void)`, which returns `ADF_OK` or `ADF_UNSUPPORTED`. DECISION (proposed) CV-44; reason:
     a FLINT of another minor version may change these layouts.
-11. **Memory of FLINT types inside our values** is FLINT's: our `clear` calls `fmpz_clear`, `arb_clear` and so on.
+12. **Memory of FLINT types inside our values** is FLINT's: our `clear` calls `fmpz_clear`, `arb_clear` and so on.
     A binding must not free the inner FLINT objects of an `adf` value itself.
 
-## 13. Decisions (proposed), for review
+## 13. Decisions, for review
 
-| Id | Section | Decision | Reason (short) |
-|---|---|---|---|
-| CV-01 | 1 | statuses are ordered integers, not bit flags | one code per result |
-| CV-02 | 2.1 | no `_equal` for ball types; `_identical` for representation | point equality is undecided |
-| CV-03 | 3.1 | numeric values `OK 0` ... `LIMIT 10` in order of precedence | combination is a maximum |
-| CV-04 | 3.3 | combined status is the maximum; place is the first in canonical order | proved failures dominate; deterministic place |
-| CV-05 | 4.1 | outputs may alias inputs of the same type | FLINT habit; cheap |
-| CV-06 | 4.3 | outputs untouched on every non-OK status | retry at higher precision |
-| CV-07 | 4.3 | "enclosure with status" only at branch cuts; otherwise default and `_strict` variants | a status never carries a value except where `SPEC.md` asks |
-| CV-08 | 4.4 | a non-finite result is never stored; `NOT_DETERMINED` | invariants need finite balls |
-| CV-09 | 4.4 | non-canonical input is a precondition violation; checked in debug builds | gcd checks would dominate the kernels |
-| CV-10 | 4.6 | contexts caller-owned with stated lifetime, no reference count | as FLINT; no shared writes; no hidden state |
-| CV-11 | 4.6 | no operation creates a context; results that leave a context are global | a created context would have no owner |
-| CV-12 | 4.6 | different context pointers give a global result | block comparison per operation is too costly |
-| CV-13 | 5.2 | init of a finite ball is the exact 0 | as `fmpq_init`, `arb_init` |
-| CV-14 | 5.4 | scaled value gets a field `exact` | the exact 0 of Proposition 6(2) must be stored |
-| CV-15 | 5.6 | unit coset with `N = 0`, `c = 1` or `-1`, is an exact unit | "the exact 1" of `SPEC.md` 9.3.7 |
-| CV-16 | 5.6 | unit residues in `1..N` | no residue 0 for units; `[1 mod 1]` |
-| CV-17 | 5.6 | unit modulus stored as supplied; normal form for printing and equality | the dump keeps the modulus as supplied |
-| CV-18 | 5.8 | primes and places are one word | certified primality; `ulong` places |
-| CV-19 | 5.8 | init of a local ball is the exact 0 at `p = 2` | some prime must be chosen |
-| CV-20 | 5.11 | no normal form for `adf_ffun`, `adf_rfun` | minimality is undecidable on balls |
-| CV-21 | 5.14 | family contexts use prime-power blocks, increasing prime | factorisation known; prime-named operations |
-| CV-22 | 5.3 | local backend keeps `A = 0` | an unused field cannot be misread |
-| CV-23 | 5.4 | the absolute cap is an argument | only the radius is per value |
-| CV-24 | 5.10 | order of quotient pieces | unique printed form |
-| CV-25 | 8.1 | inputs are `(pointer, length)`; NUL inside is `PARSE` | no silent truncation |
-| CV-26 | 8.2 | ASCII alphabet; everything else `PARSE` | no look-alike characters |
-| CV-27 | 8.4 | limits `max_len`, `max_exp10`, `max_prec`, `max_items` with defaults | short input cannot demand huge work |
-| CV-28 | 8.5 | fixed order of checks | status independent of parser internals |
-| CV-29 | 9.5 | real-ball printing algorithm, 20 digits by default | exact, enclosing, idempotent |
-| CV-30 | 9.7 | classification by syntax; typed parsers do not coerce | one text, one type |
-| CV-31 | 9.8 | exact finite ball prints `(* ; 7/3)` | no `mod 0` in output |
-| CV-32 | 9.8 | bare `a mod N` accepted as finite ball | natural input |
-| CV-33 | 9.8 | idele scale printed even when 1 | uniform template |
-| CV-34 | 9.8 | local ball printing: canonical centre, explicit exponent, exact without `O` | unique text |
-| CV-35 | 9.2 | forms for `cadele`, `sball`, `qclass`, `ffun`, `rfun`, `char` | not in `PLAN.md` 5 |
-| CV-36 | 9.8 | leading zeros accepted, never printed | friendly input, unique output |
-| CV-37 | 10.1 | dump grammar: one token per field, hexadecimal | direct transcription |
-| CV-38 | 10.2 | strict loader, never canonicalises | identical object |
-| CV-39 | 10.2 | loader uses the caller's context, checks its blocks | caller owns contexts |
-| CV-40 | 12 | value structs have fixed layout; `adf_sizeof_<type>` exported | inline allocation, checked layout |
-| CV-41 | 12 | the modulus context is opaque | internal tables may change |
-| CV-42 | 12 | 64-bit platforms only | word places and blocks |
-| CV-43 | 12 | `adf_str_free` exported | bindings need not find FLINT's allocator |
-| CV-44 | 12 | FLINT version check exported | layouts may change between minor versions |
-| CV-45 | 5.10 | quotient pieces: invariant on the midpoint of the real part | outward rounding |
-| CV-46 | 11.1 | golden file format | plain, escapable |
+"decided" means decided by the orchestrator on 2026-09-28 (D1 to D11); "proposed" means open for the milestone-0
+gate review. 60 decisions: 12 decided, 48 proposed.
 
-## 14. Findings against the specification and the plan
+| Id | Section | Decision | Reason (short) | Status |
+|---|---|---|---|---|
+| CV-01 | 1 | statuses are ordered integers, not bit flags | one code per result | proposed |
+| CV-02 | 2.1 | no `_equal` for ball types; `_identical` for representation | point equality is undecided | proposed |
+| CV-03 | 3.1 | numeric values `OK 0` ... `LIMIT 10` in order of precedence | combination is a maximum | proposed |
+| CV-04 | 3.3 | combined status is the maximum; place is the first in canonical order | proved failures dominate; deterministic place | proposed |
+| CV-05 | 4.1 | outputs may alias inputs of the same type | FLINT habit; cheap | proposed |
+| CV-06 | 4.3 | outputs untouched on every non-OK status | retry at higher precision | proposed |
+| CV-07 | 4.3 | "enclosure with status" only at branch cuts; otherwise default and `_strict` variants | a status never carries a value except where `SPEC.md` asks | proposed |
+| CV-08 | 4.4 | a non-finite result is never stored; `NOT_DETERMINED` | invariants need finite balls | proposed |
+| CV-09 | 4.4 | non-canonical input is a precondition violation; checked in debug builds | gcd checks would dominate the kernels | proposed |
+| CV-10 | 4.6 | contexts caller-owned with stated lifetime, no reference count | as FLINT; no shared writes; no hidden state | proposed |
+| CV-11 | 4.6 | no operation creates a context; results that leave a context are global | a created context would have no owner | proposed |
+| CV-12 | 4.6 | different context pointers give a global result | block comparison per operation is too costly | proposed |
+| CV-13 | 5.2 | init of a finite ball is the exact 0 | as `fmpq_init`, `arb_init` | proposed |
+| CV-14 | 5.4 | scaled value gets a field `exact` | the exact 0 of precision P6(2) must be stored; policies Definition 4 | proposed |
+| CV-15 | 5.6 | unit coset with `N = 0`, `c = 1` or `-1`, is an exact unit | needed by three lanes (catalogue P12, ideles P13.6, exact ideles) | **decided (D1)** |
+| CV-16 | 5.6 | unit residues in `1..N` | no residue 0 for units; `[1 mod 1]` | proposed |
+| CV-17 | 5.6 | unit modulus stored as supplied; normal form for printing and equality | the dump keeps the modulus as supplied | proposed |
+| CV-18 | 7 | a place is an opaque handle; primes of places are one word | seams R1 | **decided (D8)** |
+| CV-19 | 5.8 | init of a local ball is the exact 0 at `p = 2` | some prime must be chosen | proposed |
+| CV-20 | 5.11 | no normal form for `adf_ffun`, `adf_rfun` | minimality is undecidable on balls | proposed |
+| CV-21 | 5.14 | family contexts use prime-power blocks, increasing prime | factorisation known; prime-named operations | proposed |
+| CV-22 | 5.3 | local backend keeps `A = 0` | an unused field cannot be misread | proposed |
+| CV-23 | 5.4 | the absolute cap is an argument | only the radius is per value | proposed |
+| CV-24 | 5.10 | order of quotient pieces | unique printed form | proposed |
+| CV-25 | 8.1 | inputs are `(pointer, length)`; NUL inside is `PARSE` | no silent truncation | proposed |
+| CV-26 | 8.2 | ASCII alphabet; everything else `PARSE` | no look-alike characters | proposed |
+| CV-27 | 8.4 | limits `max_len`, `max_exp10`, `max_prec`, `max_items` with defaults | short input cannot demand huge work | proposed |
+| CV-28 | 8.5 | fixed order of checks | status independent of parser internals | proposed |
+| CV-29 | 9.5 | real-ball printing algorithm, 20 digits by default, constrained printing | exact, enclosing, idempotent | proposed |
+| CV-30 | 9.7 | classification by syntax; typed parsers do not coerce | one text, one type | proposed |
+| CV-31 | 9.8 | exact finite ball prints `(* ; 7/3)` | no `mod 0` in output | proposed |
+| CV-32 | 9.8 | bare `a mod N` accepted as finite ball | natural input | proposed |
+| CV-33 | 9.8 | idele content printed even when 1 | uniform template | proposed |
+| CV-34 | 9.8 | local ball printing: canonical centre, explicit exponent, exact without `O` | unique text | proposed |
+| CV-35 | 9.2 | forms for `cadele`, `sball`, `qclass`, `ffun`, `rfun`, `char` | not in `PLAN.md` 5 | proposed |
+| CV-36 | 9.8 | leading zeros accepted, never printed | friendly input, unique output | proposed |
+| CV-37 | 10.1 | dump grammar: one token per field, hexadecimal | direct transcription | proposed |
+| CV-38 | 10.2 | strict loader, never canonicalises | identical object | proposed |
+| CV-39 | 10.2 | loader uses the caller's context, checks its blocks | caller owns contexts | proposed |
+| CV-40 | 12 | value structs have fixed layout; `adf_sizeof_<type>` exported | inline allocation, checked layout | proposed |
+| CV-41 | 12 | the modulus context is opaque | internal tables may change | proposed |
+| CV-42 | 12 | 64-bit platforms only | word places and blocks | proposed |
+| CV-43 | 12 | `adf_str_free` exported | bindings need not find FLINT's allocator | proposed |
+| CV-44 | 12 | FLINT version check exported | layouts may change between minor versions | proposed |
+| CV-45 | 5.10 | quotient pieces: midpoint in `[0, 1]`; the ball may exceed it by rounding; `k + 1` pieces | outward rounding (finding F2); quotient P6 | **decided (D4)** |
+| CV-46 | 11.1 | golden file format | plain, escapable | proposed |
+| CV-47 | 5.4 | the cap never touches an exact value | `SPEC.md` 4.1; policies P14 | **decided (D2)** |
+| CV-48 | 5.4 | scaled product: `SPEC.md` rule by default, `adf_scaled_mul_tight` for policies P10 | the rule stays; the tight one needs a gcd | **decided (D5)** |
+| CV-49 | 5.6 | unit-coset power: `c^k U(N)` by default, `adf_ucoset_pow_tight` for ideles P13 | the tight modulus needs the table of P13 | **decided (D6)** |
+| CV-50 | 5.7 | division of an adele by an idele: the smallest ball of ideles P19 | finer by up to a factor 2 | **decided (D7)** |
+| CV-51 | 6.8 | reconstruction intersects with the closed real interval | a real ball is closed | **decided (D3)** |
+| CV-52 | 10.2 | the dump text is validated completely before any FLINT load function | `arb_load_str` aborts (F5) | **decided (D9)** |
+| CV-53 | 6.6 | reciprocity: two functions named by the exponent (`_exp_u`, `_exp_uinv`) | no source on disk for the words arithmetic and geometric | **decided (D10)** |
+| CV-54 | 6.1 | transform against `conj(psi)` kept; conversion to the unconjugated transform recorded | Tate's original; the proofs use it | **decided (D11)** |
+| CV-55 | 5.3 | raw local values: no gcd condition; comparison and printing through the canonical triple | policies P24, Summary 26: canonical data would force conversions after sums | proposed |
+| CV-56 | 7 | `adf_place_t` is a one-word struct, not a bare integer | the compiler enforces opacity | proposed |
+| CV-57 | 6.7 | seams R1 to R9 adopted: `inf` label, content, dump field `Q` and archimedean count, R6 wording, no canonical scale, named character convention | cheap now, avoids a break later | **decided (D8)** |
+| CV-58 | 5.13 | `adf_char` value is `t^s chi(u')`; the L-function integral forms `conj(chi)` itself | the family as `SPEC.md` 5 writes it | proposed |
+| CV-59 | 6.1 | additive character functions `adf_adele_psi_tate`, `_strict` | named convention (seams R8) | proposed |
+| CV-60 | 6.4 | names `adf_char_gauss_sum` (tau), `adf_char_root_number`, `adf_local_gamma_at`, ... | `tau` and `G_minus` differ in sign | proposed |
 
-- **F1** (`SPEC.md` 5, `PLAN.md` 4 against `SPEC.md` 9.3.7 and `proofs/catalogue.md` Proposition 12). The unit
-  coset is defined with `N >= 1`, but the profinite power with exponent 0 returns "the exact 1", and the idele of an
-  exact rational has an exact sign unit. With `N >= 1` neither is representable. Proposed: CV-15.
-- **F2** (`SPEC.md` 6). "Pieces are closed intervals inside `[0, 1]`" cannot hold for `arb` enclosures of such
-  intervals when an end point is not dyadic: **[probed]** the enclosure of `[0.9, 1]` built as
-  `arb_set_fmpq(19/20)` plus `arb_add_error(1/20)` has upper end above 1 at `prec` 20, 53 and 128 (the radius is a
-  30-bit number rounded up, `mag.h:117`).
-  Proposed: CV-45 (invariant on the midpoint), to be settled with `docs/proofs/quotient.md`.
-- **F3** (`PLAN.md` 4). `adf_scaled_struct` has no way to hold an exact value, which Proposition 6(2) of
-  `proofs/precision.md` produces (the exact 0). Proposed: CV-14.
-- **F4** (`SPEC.md` 4.1, "or is given a new context"). With caller-owned contexts (CV-10) no operation may create
-  a context; the option is not used in version 1 (CV-11). Not an error of the specification, a narrowing.
-- **F5** (FLINT 3.0.1, relevant to `PLAN.md` 1.4 "invalid and huge inputs"). `arb_load_str` aborts the process on
-  some malformed strings and silently changes others (**[probed]**, 10.2). The dump loader must validate first;
-  fuzzing the C loader must not reach `arb_load_str` with unvalidated text.
-- **F6** (`PLAN.md` 5, implicit). The value form of a real ball is not only lossy on input (as stated) but also on
-  output: printing rounds the radius up to two significant digits, so a text read and printed again can change
-  (`0.625 +/- 0.25` prints as `0.62 +/- 0.26`), and a printed idele could contain 0 unless the printer takes the
-  sign condition into account. Handled by 9.5 (constrained printing) and by the fixed-point property; recorded here
-  because `PLAN.md` 5 calls the value form "canonical" without saying that it is canonical only after one printing.
+Proposed decisions that most need the gate review: CV-55 (raw local values: a departure from the canonical-data
+comment of `PLAN.md` 4, with consequences for the C kernels), CV-06 (outputs untouched on failure: a cost in every
+function that can fail after writing), CV-10 and CV-11 (caller-owned contexts, and no implicit derived context,
+which turns every result that leaves a context into a global value), CV-16 (the residue range of unit cosets differs
+from `proofs/ideles.md` Definition 8), CV-29 (the printing algorithm of real balls, including constrained
+printing), CV-09 (undefined behaviour on non-canonical input), CV-58 (the value convention of `adf_char`).
+
+## 14. Findings against the specification, the plan and the proofs
+
+Status after part B. "Resolved" means a decision of the orchestrator settles it; the amendment of `SPEC.md` and
+`PLAN.md` is done by another lane.
+
+- **F1** (`SPEC.md` 5, `PLAN.md` 4 against `SPEC.md` 9.3.7, `proofs/catalogue.md` P12, `proofs/ideles.md` P13.6).
+  Unit cosets were defined with `N >= 1`, but the exponent 0 gives "the exact 1", and the idele of an exact rational
+  has an exact sign unit. Resolved by D1 (CV-15).
+- **F2** (`SPEC.md` 6). "Pieces are closed intervals inside `[0, 1]`" cannot hold for `arb` enclosures when an end
+  point is not dyadic: **[probed]** the enclosure of `[0.9, 1]` built as `arb_set_fmpq(19/20)` plus
+  `arb_add_error(1/20)` has upper end above 1 at `prec` 20, 53 and 128 (the radius is a 30-bit number rounded up,
+  `mag.h:117`). Resolved by D4 (CV-45). Also `SPEC.md` 6 "one piece for each integer it crosses" counts `k` pieces
+  where the construction gives `k + 1` (`proofs/quotient.md` P6 remark); resolved by D4.
+- **F3** (`PLAN.md` 4). `adf_scaled_struct` cannot hold an exact value, which `proofs/precision.md` P6(2) produces
+  and `proofs/policies.md` Definition 4 keeps as an exact tag. Proposed: CV-14.
+- **F4** (`SPEC.md` 4.1, "or is given a new context"). With caller-owned contexts no operation creates a context;
+  version 1 uses the global fallback (CV-11), or a derived context passed by the caller. `proofs/policies.md` P22.4
+  and P24.3 describe the derived contexts that this excludes by default.
+- **F5** (FLINT 3.0.1). `arb_load_str` aborts the process on some malformed strings and silently changes others
+  (**[probed]**, 10.2), although its documentation promises a nonzero return (`flint-3.0.1:arb.rst:297-298`).
+  Resolved by D9 (CV-52).
+- **F6** (`PLAN.md` 5). The value form of a real ball is lossy on output as well as input; printing an idele without
+  regard to its sign condition could produce a text that reads back as `DOMAIN`. Handled by 9.5 (constrained
+  printing) and the fixed-point property.
+- **F7** (`PLAN.md` 4, struct comment `docs/PLAN.md:60`: "`H > 0: 0 <= A < H, gcd(A,H,d) = 1`" for both backends).
+  For the local backend `proofs/policies.md` P24 shows that the set of a local value stays in its context after
+  cancellation while its canonical triple leaves it. This document proposes raw local values (CV-55); if the gate
+  review keeps the canonical-data comment instead, every local result with `gcd > 1` must convert to the global
+  backend (P24.4).
+- **F8** (`proofs/ideles.md` Definition 8 against CV-16). The proof reduces unit residues into `[0, Nbar)` and
+  writes the whole unit group `(0, 1)`; this document stores and prints residues in `1..N` and writes it `[1 mod
+  1]`. The sets and the equality test are the same; only the representative differs. One of the two should change
+  before the header is frozen.
+- **F9** (`proofs/catalogue.md` P15 and `SPEC.md` 9.3.7 against D10). Both use the names "arithmetic" and
+  "geometric" for the two cyclotomic conventions; no source on disk uses them (`docs/sources.md`, pending item 2).
+  The functions are named by their exponent (CV-53); the proofs' statements are unaffected.
+- **F10** (`SPEC.md` 5 against `proofs/analysis.md` P11). `SPEC.md` 5 writes the class-group quasi-characters as
+  `t^s chi(u')`; the Tate integral of `L(s, chi)` uses `conj(chi(u'))`. Not a contradiction (the latter is the
+  character of `conj(chi)`), but the specification should say which object the type stores; proposed CV-58.
+- No statement of the reviewed proofs contradicts a decided convention of this document. The sign conventions of
+  6.1 to 6.5 are those of `proofs/analysis.md`; `tau` has the positive finite sign and agrees with FLINT
+  (`flint-3.0.1:acb_dirichlet.rst:362`, probed on 17 characters), while the local `G_minus` of analysis P9 has the
+  negative sign; the two are named differently (CV-60).

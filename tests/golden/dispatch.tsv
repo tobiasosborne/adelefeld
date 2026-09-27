@@ -11,7 +11,7 @@
 <1.25 +/- 1e-30 ; [5 mod 36]>	idclass
 [p=5: 3 + O(5^4)]	lball
 {}	sball
-{R: 1}	sball
+{inf: 1}	sball
 (0.5 ; 0) + Q	qclass
 union((0.5 ; 0 mod 1)) + Q	qclass
 ffun(D=1, M=1; (0) + (0)*i)	ffun

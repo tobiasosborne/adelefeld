@@ -376,14 +376,13 @@ class Parser:
         return ("adele", r, f)
 
     def sentry(self):
-        if self.peek_kw("R"):
-            self.kw("R")
+        # place labels as tokens (seams R9): "inf" for the archimedean place, real or complex by the syntax
+        if self.peek_kw("inf"):
+            self.kw("inf")
             self.expect(":")
+            if self.peek("("):
+                return ("C", self.complex())
             return ("R", self.real())
-        if self.peek_kw("C"):
-            self.kw("C")
-            self.expect(":")
-            return ("C", self.complex())
         self.kw("p")
         self.expect("=")
         p = ("prime", self.num(RE_UINT))
@@ -823,7 +822,7 @@ def _build_and_print(type_name, node):
                 primes[lc[0]] = lc
         out = []
         if arch is not None:
-            out.append("R: " + _fmt_real(arch[1]) if arch[0] == "R" else "C: " + _fmt_complex(arch[1]))
+            out.append("inf: " + (_fmt_real(arch[1]) if arch[0] == "R" else _fmt_complex(arch[1])))
         for p in sorted(primes):
             out.append("p=%d: %s" % (p, _fmt_lcoord(primes[p])))
         return "{" + "; ".join(out) + "}"
@@ -960,6 +959,12 @@ def _d_arb(T):
     return ("arb", T.h(), T.h(), T.h(), T.h())
 
 
+def _d_arch(T, per):
+    """A count of archimedean components (seams R3), then that many balls of `per` tokens; 1 for Q."""
+    n = T.count(per)
+    return [(_d_arb(T) if per == 4 else _d_acb(T)) for _ in range(n)]
+
+
 def _d_acb(T):
     return ("acb", _d_arb(T), _d_arb(T))
 
@@ -1004,7 +1009,13 @@ def _dump_syntax(s, limits):
         raise TextError("PARSE")
     if ver != "1":
         raise TextError("UNSUPPORTED")
-    toks = s[m.end():].split(" ")
+    # the field descriptor (seams R9): an upper-case letter and further non-space characters; "Q" in version 1
+    f = re.match(r"([A-Z][^ ]*)( |\Z)", s[m.end():])
+    if f is None:
+        raise TextError("PARSE")
+    if f.group(1) != "Q":
+        raise TextError("UNSUPPORTED")
+    toks = s[m.end() + f.end():].split(" ")
     if any(t == "" for t in toks):
         raise TextError("PARSE")
     T = Tokens(toks)
@@ -1021,13 +1032,13 @@ def _dump_syntax(s, limits):
         else:
             node = (kind, "s", T.h(), T.h(), T.h(), _d_ctx(T))
     elif kind == "adele":
-        node = (kind, _d_arb(T), _d_fb(T))
+        node = (kind, _d_arch(T, 4), _d_fb(T))
     elif kind == "cadele":
-        node = (kind, _d_acb(T), _d_fb(T))
+        node = (kind, _d_arch(T, 8), _d_fb(T))
     elif kind == "ucoset":
         node = (kind, T.h(), T.h())
     elif kind == "idele":
-        node = (kind, _d_arb(T), T.h(), T.h(), T.h(), T.h())
+        node = (kind, _d_arch(T, 4), T.h(), T.h(), T.h(), T.h())
     elif kind == "idclass":
         node = (kind, _d_arb(T), T.h(), T.h())
     elif kind == "lball":
@@ -1040,10 +1051,10 @@ def _dump_syntax(s, limits):
     elif kind == "qclass":
         form = T.word("lift", "pieces")
         if form == "lift":
-            node = (kind, form, [(_d_arb(T), _d_fb(T))])
+            node = (kind, form, [(_d_arch(T, 4), _d_fb(T))])
         else:
             n = T.count(8)
-            node = (kind, form, [(_d_arb(T), _d_fb(T)) for _ in range(n)])
+            node = (kind, form, [(_d_arch(T, 4), _d_fb(T)) for _ in range(n)])
     elif kind == "ffun":
         D, M = T.h(), T.h()
         if D < 0 or M < 0 or D * M * 8 > T.left():
@@ -1113,6 +1124,13 @@ def _arb_sign(a):
     return 1 if mm > 0 else -1
 
 
+def _one(arch):
+    """Q has exactly one archimedean component."""
+    if len(arch) != 1:
+        _domain()
+    return arch[0]
+
+
 def _v_ctx(ctx, need_blocks):
     _, K, q = ctx
     if K < 1:
@@ -1160,12 +1178,16 @@ def _v_fb(fb):
     _, _, d, ctx, res = fb
     _v_ctx(ctx, True)
     q = ctx[2]
+    if d < 1:
+        _domain()
     for r, m in zip(res, q):
         if not 0 <= r < m:
             _domain()
-    A = _crt(res, q)
-    _v_G(A, ctx[1], d)
-    return (A, ctx[1], d)
+    # raw local value (docs/conventions.md 5.3; policies.md Lemma 17, Proposition 24): the data are unique in
+    # the context without the gcd condition; the canonical triple is derived
+    A, H = _crt(res, q), ctx[1]
+    g = gcd(gcd(A, H), d)
+    return (A // g, H // g, d // g)
 
 
 def _v_fmpq(num, den):
@@ -1244,17 +1266,18 @@ def _dump_validate(node, limits):
         if form == "s" and (num <= 0 or not 0 <= u < ctx[1]):
             _domain()
     elif kind == "adele":
-        _v_arb(node[1])
+        _v_arb(_one(node[1]))
         _v_fb(node[2])
     elif kind == "cadele":
-        _v_arb(node[1][1])
-        _v_arb(node[1][2])
+        z = _one(node[1])
+        _v_arb(z[1])
+        _v_arb(z[2])
         _v_fb(node[2])
     elif kind == "ucoset":
         _v_ucoset(node[1], node[2])
     elif kind == "idele":
-        _v_arb(node[1])
-        if _arb_sign(node[1]) == 0:
+        _v_arb(_one(node[1]))
+        if _arb_sign(_one(node[1])) == 0:
             _domain()
         _v_fmpq(node[2], node[3])
         if node[2] <= 0:
@@ -1283,13 +1306,14 @@ def _dump_validate(node, limits):
     elif kind == "qclass":
         _, form, pieces = node
         if form == "lift":
-            _v_arb(pieces[0][0])
+            _v_arb(_one(pieces[0][0]))
             _v_fb(pieces[0][1])
         else:
             if len(pieces) == 0:
                 _domain()
             keys = []
-            for arb, fb in pieces:
+            for arbs, fb in pieces:
+                arb = _one(arbs)
                 _v_arb(arb)
                 A, H, d = _v_fb(fb)
                 mid, rad = _arb_value(arb)
@@ -1334,6 +1358,10 @@ def _p_acb(z):
     return _p_arb(z[1]) + " " + _p_arb(z[2])
 
 
+def _p_arch(arch):
+    return " ".join([_hx(len(arch))] + [(_p_arb(a) if a[0] == "arb" else _p_acb(a)) for a in arch])
+
+
 def _p_ctx(ctx):
     return " ".join([_hx(ctx[1]), _hx(len(ctx[2]))] + [_hx(x) for x in ctx[2]])
 
@@ -1352,7 +1380,7 @@ def _p_lb(lb):
 
 def _dump_print(node):
     kind = node[0]
-    out = ["adf1", kind]
+    out = ["adf1", "Q", kind]
     if kind in ("rat", "ucoset"):
         out += [_hx(node[1]), _hx(node[2])]
     elif kind == "fball":
@@ -1360,12 +1388,10 @@ def _dump_print(node):
     elif kind == "scaled":
         _, form, num, den, u, ctx = node
         out += [form, _hx(num), _hx(den)] + ([] if form == "x" else [_hx(u)]) + [_p_ctx(ctx)]
-    elif kind == "adele":
-        out += [_p_arb(node[1]), _p_fb(node[2])]
-    elif kind == "cadele":
-        out += [_p_acb(node[1]), _p_fb(node[2])]
+    elif kind in ("adele", "cadele"):
+        out += [_p_arch(node[1]), _p_fb(node[2])]
     elif kind == "idele":
-        out += [_p_arb(node[1])] + [_hx(x) for x in node[2:]]
+        out += [_p_arch(node[1])] + [_hx(x) for x in node[2:]]
     elif kind == "idclass":
         out += [_p_arb(node[1]), _hx(node[2]), _hx(node[3])]
     elif kind == "lball":
@@ -1384,7 +1410,7 @@ def _dump_print(node):
         out.append(form)
         if form == "pieces":
             out.append(_hx(len(pieces)))
-        out += [_p_arb(a) + " " + _p_fb(f) for a, f in pieces]
+        out += [_p_arch(a) + " " + _p_fb(f) for a, f in pieces]
     elif kind == "ffun":
         out += [_hx(node[1]), _hx(node[2])] + [_p_acb(z) for z in node[3]]
     elif kind == "rfun":
@@ -1405,5 +1431,26 @@ def dump_roundtrip(data, limits=DEFAULT_LIMITS):
         node = _dump_syntax(data, limits)
         _dump_validate(node, limits)
         return _dump_print(node)
+    except TextError as e:
+        return "!" + e.status
+
+
+# ================================================================================================================
+# additive character on a finite ball (docs/conventions.md 6.1; docs/proofs/analysis.md Lemma 2)
+
+def psi_phases(data, limits=DEFAULT_LIMITS):
+    """The finite phases of psi on the finite ball `data` (value form of adf_fball): psi_f(a + N Zhat) is
+    {E(a)} for N = 0 and {E(a) E(k/B) : 0 <= k < B} for N = A/B in lowest terms. Returns the angles t in [0, 1)
+    of E(t), increasing, or "!STATUS"."""
+    try:
+        s = _prep(data, limits)
+        tree = _syntax("fball", s)
+        _check_limits(tree, limits)
+        a, N = _fin(tree[1])
+        B = N.denominator if N != 0 else 1
+        if B > limits.max_items:
+            raise TextError("LIMIT")
+        angles = sorted({(a + Fraction(k, B)) % 1 for k in range(B)})
+        return " ".join(fmt_rat(t) for t in angles)
     except TextError as e:
         return "!" + e.status
