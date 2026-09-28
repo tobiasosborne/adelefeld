@@ -87,7 +87,7 @@ get "https://msp.org/gtm/2000/03/gtm-2000-03-008p.pdf" src/hilbert-msp/explicit-
 get "https://people.maths.bris.ac.uk/~malab/PDFs/Algae_are_more_numb_19.pdf" src/hilbert-bristol/lecture19.pdf
 
 # ---------------------------------------------------------------- FLINT 3.0.1 documentation (.rst)
-for m in padic fmpz_mod nmod arb acb acb_dirichlet fmpq ulong_extras; do
+for m in padic fmpz_mod nmod arb acb acb_dirichlet fmpq ulong_extras fmpz arf mag flint fmpz_vec memory; do
   get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/$m.rst" "src/flint-3.0.1/$m.rst"
 done
 
