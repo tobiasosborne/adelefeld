@@ -1,0 +1,12 @@
+ok   the_real_balls_of_the_review_are_answered_limit
+ok   one_above_the_bound_gives_limit
+ok   at_the_bound_the_ball_is_computed
+ok   a_zero_midpoint_a_zero_radius_and_two_zeros
+4 tests, 778 checks, 0 failed checks, 0 failed tests
+0.00user 0.01system 0:00.01elapsed 86%CPU (0avgtext+0avgdata 6220maxresident)k
+0inputs+8outputs (0major+9728minor)pagefaults 0swaps
+exit=0
+
+real	0m0,017s
+user	0m0,005s
+sys	0m0,012s

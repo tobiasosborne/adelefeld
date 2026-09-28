@@ -1,0 +1,7 @@
+# docs/reviews/m1/arith/checks/recon_mut111.out repeated on the repaired src/recon.c: the fuzzer
+# checks/recon_fuzz.c linked against src/*.c as they are, and against a copy of src/recon.c
+# with the one mutant fmpq_canonicalise(q) removed (lanes/m1-repair-recon/recon_nocanon.c).
+# seeds 1, 2, 3, 20000 cases each, bits 8.
+seed 1: byte-identical (40000 lines)
+seed 2: byte-identical (40000 lines)
+seed 3: byte-identical (40000 lines)

@@ -1,0 +1,17 @@
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | 2^1048576 against 1: the status is NO_SOLUTION, expected LIMIT
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | 2^-1048576 against 1: the status is NO_SOLUTION, expected LIMIT
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | 2^-1048577 against 1: the status is NO_SOLUTION, expected LIMIT
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | 1 +/- 2^1048576 against 1: the status is OK, expected LIMIT
+FAIL /tmp/test_recon_limit_nohuge.c:238: one_above_the_bound_gives_limit: check failed: adf_rat_identical(q, mark) == 1 | 1 +/- 2^1048576 against 1: the output was written on OK
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | 1 +/- 2^-1048576 against 1: the status is OK, expected LIMIT
+FAIL /tmp/test_recon_limit_nohuge.c:238: one_above_the_bound_gives_limit: check failed: adf_rat_identical(q, mark) == 1 | 1 +/- 2^-1048576 against 1: the output was written on OK
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | 1 +/- 2^-1048577 against 1: the status is OK, expected LIMIT
+FAIL /tmp/test_recon_limit_nohuge.c:238: one_above_the_bound_gives_limit: check failed: adf_rat_identical(q, mark) == 1 | 1 +/- 2^-1048577 against 1: the output was written on OK
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | [0, 2^1048577] against 1: the status is OK, expected LIMIT
+FAIL /tmp/test_recon_limit_nohuge.c:238: one_above_the_bound_gives_limit: check failed: adf_rat_identical(q, mark) == 1 | [0, 2^1048577] against 1: the output was written on OK
+FAIL /tmp/test_recon_limit_nohuge.c:229: one_above_the_bound_gives_limit: check failed: got == want | [0, 2^1048577] against 1 + Zhat: the status is NOT_UNIQUE, expected LIMIT
+FAIL one_above_the_bound_gives_limit (/tmp/test_recon_limit_nohuge.c:336, 12 failed checks)
+ok   at_the_bound_the_ball_is_computed
+ok   a_zero_midpoint_a_zero_radius_and_two_zeros
+3 tests, 620 checks, 12 failed checks, 1 failed tests
+exit=1
