@@ -7,20 +7,24 @@
    ("Contexts"); docs/proofs/policies.md Definition 16 to Lemma 18 (blocks, residues,
    recombination). Statuses: docs/conventions.md 3.1, 3.2.
 
-   Ground truth for the FLINT calls. fmpz_multi_mod_t and fmpz_multi_CRT_t and their precompute
-   and precomp functions are declared in the installed header
-   `/usr/include/flint/fmpz.h:625-692`; the precomp functions take the program by `const`, so
-   they write no state of the context, which is what makes a context safe to share between
-   threads. The FLINT 3.0.1 documentation of these functions is not on disk under refs():
-   [source pending: refs/src/flint-3.0.1/fmpz.rst, "multi mod" and "multi CRT"]. n_is_prime
+   Ground truth for the FLINT calls.  fmpz_multi_mod_t, fmpz_multi_CRT_t and their init,
+   precompute and precomp functions are declared in the installed header
+   /usr/include/flint/fmpz.h:653-658 and :686-692 (fmpz_multi_CRT_init at 653,
+   fmpz_multi_CRT_precompute at 658, fmpz_multi_CRT_precomp at 657, fmpz_multi_mod_init at 686,
+   fmpz_multi_mod_precompute at 689, fmpz_multi_mod_precomp at 692); the public precomp
+   functions take the program by `const`, so they write no state of the context, which is what
+   makes a context safe to share between threads.  The FLINT 3.0.1 documentation on disk,
+   refs/src/flint-3.0.1/fmpz.rst:1350-1372, documents fmpz_multi_CRT_precompute and
+   fmpz_multi_CRT_precomp; it does not document the fmpz_multi_mod functions.  n_is_prime
    and n_nextprime are refs/src/flint-3.0.1/ulong_extras.rst:833 and :688 and
    /usr/include/flint/ulong_extras.h:335 and :345.
 
    A context is immutable after construction and has no mutable field and no lazy
-   initialisation (docs/conventions.md 4.5, 4.6; SPEC.md 10.1). Everything a reduction needs at
-   run time is built once, in the constructor: the blocks, their product K, and the fmpz_comb
-   tables. The per-call scratch of fmpz_comb (`fmpz_comb_temp_t`) is local to the kernel, so a
-   context may be read by any number of threads. */
+   initialisation (docs/conventions.md 4.5, 4.6; SPEC.md 10.1).  Everything a reduction needs at
+   run time is built once, in the constructor: the blocks, their product K, and the two
+   precomputed programs fmpz_multi_mod_t and fmpz_multi_CRT_t.  No fmpz_comb is used; the
+   fmpz_comb functions of fmpz.rst:1326-1348 are not called.  The precomp calls take their
+   scratch from local temporaries, so a context may be read by any number of threads. */
 
 #include <string.h>
 
@@ -104,6 +108,16 @@ adf_power_fits_word(ulong p, ulong e, ulong * out)
     return 1;
 }
 
+/* The smallest prime q with q^e >= 2^64, for e >= 2.  n_root(2^64 - 1, e) is the largest
+   integer b with b^e < 2^64 (refs/src/flint-3.0.1/ulong_extras.rst:1021-1027), so q is the
+   first prime above b (n_nextprime, refs/src/flint-3.0.1/ulong_extras.rst:688-692). */
+static ulong
+adf_overflow_prime(ulong e)
+{
+    ulong b = n_root((ulong) -1, e);
+    return n_nextprime(b, 0);
+}
+
 /* Allocate and fully initialise a context from already validated data. K is copied; the
    blocks q[0..k-1] are copied; the comb tables are built. The caller has checked the
    predicate of 5.14 (for k >= 1: pairwise coprime, 2 <= q[i] < 2^64, product = K). */
@@ -127,7 +141,7 @@ adf_modctx_alloc(const fmpz_t K, const ulong * q, slong k)
         /* The reduction and recombination programs are built once, here.  The `_precomp`
            calls take a `const` program and write nothing into it, so a context is immutable
            after construction and two threads may reduce against one context
-           (docs/conventions.md 4.5; fmpz.h:656 and :691). */
+           (docs/conventions.md 4.5; fmpz.h:657 and :692). */
         fmpz_multi_mod_init(ctx->mod_P);
         fmpz_multi_mod_precompute(ctx->mod_P, mods, k);
         fmpz_multi_CRT_init(ctx->crt_P);
@@ -180,6 +194,10 @@ adf_modctx_new_blocks(adf_modctx_struct ** out, const ulong * q, slong k)
     }
     if (q == NULL)
         return ADF_DOMAIN;
+    /* The size bound of decision M1-D5 is decided from k before q is read; a refused call
+       must not touch an array that is shorter than k. */
+    if (k > ADF_MODCTX_MAX_BLOCKS)
+        return ADF_UNSUPPORTED;
     for (i = 0; i < k; i++)
         if (q[i] < 2)
             return ADF_DOMAIN;
@@ -213,6 +231,10 @@ adf_modctx_new_prime_powers(adf_modctx_struct ** out, const ulong * p, const ulo
     }
     if (p == NULL || e == NULL)
         return ADF_DOMAIN;
+    /* The size bound of decision M1-D5 is decided from k before p and e are read; a refused
+       call must not touch arrays that are shorter than k. */
+    if (k > ADF_MODCTX_MAX_BLOCKS)
+        return ADF_UNSUPPORTED;
     for (i = 0; i < k; i++)
         if (e[i] == 0 || !n_is_prime(p[i]))
             return ADF_DOMAIN;
@@ -338,24 +360,24 @@ adf_modctx_new_primorial_pow(adf_modctx_struct ** out, ulong n, ulong e)
         *out = adf_modctx_alloc_from_blocks(NULL, 0);
         return ADF_OK;
     }
-    if (e >= 64)
-        return ADF_UNSUPPORTED;            /* the first block 2^e already reaches 2^64 */
-    /* e in 1..63. The number of blocks is pi(n); n is the caller's choice and can be large
-       for e = 1, where no p^e overflows. Version 1 has no LIMIT status for a raw context
-       constructor; the unbounded work for a huge n and e = 1 is recorded in the lane
-       report as a finding. */
+    /* Both UNSUPPORTED reasons are decided from n and e alone, before any prime is enumerated
+       or any table is built (decision M1-D5).  n >= ADF_MODCTX_MAX_PRIME means pi(n) >
+       ADF_MODCTX_MAX_BLOCKS blocks.  For e >= 2, adf_overflow_prime(e) is the smallest prime
+       whose e-th power reaches 2^64; n at or above it means some block overflows.  For e = 1
+       there is no such prime word and no overflow: every p^1 < 2^64. */
+    if (n >= ADF_MODCTX_MAX_PRIME)
+        return ADF_UNSUPPORTED;
+    if (e >= 2 && n >= adf_overflow_prime(e))
+        return ADF_UNSUPPORTED;
+    blocks = flint_malloc((size_t) n_prime_pi(n) * sizeof(ulong));
+    for (p = 2; p <= n; p = n_nextprime(p, 0))
     {
-        ulong pi = n_prime_pi(n);
-        blocks = flint_malloc((size_t) pi * sizeof(ulong));
-        for (p = 2; p <= n; p = n_nextprime(p, 0))
+        if (!adf_power_fits_word(p, e, &blocks[k]))
         {
-            if (!adf_power_fits_word(p, e, &blocks[k]))
-            {
-                flint_free(blocks);
-                return ADF_UNSUPPORTED;
-            }
-            k++;
+            flint_free(blocks);
+            return ADF_UNSUPPORTED;
         }
+        k++;
     }
     *out = adf_modctx_alloc_from_blocks(blocks, k);
     flint_free(blocks);
@@ -516,6 +538,11 @@ adf_modctx_recombine(fmpz_t out, const adf_modctx_struct * ctx, const ulong * re
     for (i = 0; i < k; i++)
         fmpz_set_ui(&ins[i], res[i]);
     fmpz_multi_CRT_precomp(out, ctx->crt_P, ins, 0);
+    /* The documentation of fmpz_multi_CRT_precomp (refs/src/flint-3.0.1/fmpz.rst:1362-1365)
+       says "an integer of smallest absolute value" and does not define the sign argument, so
+       the range [0, K) promised by src/modctx_internal.h is not documented.  Reduce once so the
+       promise holds by construction whatever sign does. */
+    fmpz_fdiv_r(out, out, ctx->K);
     _fmpz_vec_clear(ins, k);
 }
 

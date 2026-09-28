@@ -265,17 +265,18 @@ adf_scaled_set_context(adf_scaled_t y, int * lost, const adf_scaled_t x, const a
     fmpq_set_fmpz(uq, x->u);                  /* u */
     fmpq_gcd_cofactors(g, ubar, t, uq, kk);   /* g = gcd(u, K/K'), ubar = u/g */
     fmpq_mul(s2, x->s, g);                    /* s' = s gcd(u, K/K') (Proposition 11) */
-    fmpz_fdiv_r(t, ubar, Kp);                 /* u' = (s u/s') mod K' = (u/g) mod K' */
-    fmpq_set(y->s, s2);
-    fmpz_set(y->u, t);
-    y->mctx = ctx;
-    y->exact = 0;
-    /* *lost = 1 exactly when u K'/K is not an integer (Proposition 11(2)) */
+    /* *lost = 1 exactly when u K'/K is not an integer (Proposition 11(2)).  It is computed
+       from the input before any field of y is written, so that y may alias x. */
     if (lost != NULL)
     {
         fmpz_mul(t, x->u, Kp);
         *lost = fmpz_divisible(t, K) ? 0 : 1;
     }
+    fmpz_fdiv_r(t, ubar, Kp);                 /* u' = (s u/s') mod K' = (u/g) mod K' */
+    fmpq_set(y->s, s2);
+    fmpz_set(y->u, t);
+    y->mctx = ctx;
+    y->exact = 0;
     fmpz_clear(K);
     fmpz_clear(Kp);
     fmpz_clear(t);
