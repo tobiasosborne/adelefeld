@@ -1,0 +1,60 @@
+clang -Iinclude -Iinclude -Itests -std=c11 -O1 -g -fno-omit-frame-pointer -Wall -Wextra -fsanitize=fuzzer,address,undefined -fno-sanitize-recover=undefined -L/usr/lib/gcc/x86_64-linux-gnu/13/ \
+    -fprofile-instr-generate -fcoverage-mapping tests/fuzz/fuzz_text.c tests/support/golden.c tests/support/jsonl.c build/libadelefeld.a -lflint -lgmp -lm -o build/fuzz/text_cov
+== fuzz text for 170 s, 1 worker(s)
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 3025843518
+INFO: Loaded 1 modules   (1207 inline 8-bit counters): 1207 [0x5ef85b61aa10, 0x5ef85b61aec7), 
+INFO: Loaded 1 PC tables (1207 PCs): 1207 [0x5ef85b61aec8,0x5ef85b61fa38), 
+INFO:      282 files found in /home/tobias/Projects/adelefeld/.claude/worktrees/agent-af82b26834e0fd08b/build/fuzz/corpus/text
+INFO:      282 files found in /home/tobias/Projects/adelefeld/.claude/worktrees/agent-af82b26834e0fd08b/tests/fuzz/corpus/text
+INFO: -max_len is not provided; libFuzzer will not generate inputs larger than 4096 bytes
+INFO: seed corpus: files: 564 min: 1b max: 63b total: 7886b rss: 35Mb
+#565	INITED cov: 650 ft: 1488 corp: 131/1784b exec/s: 0 rss: 80Mb
+#1334484	DONE   cov: 795 ft: 2260 corp: 445/20Kb lim: 4096 exec/s: 7804 rss: 477Mb
+###### Recommended dictionary. ######
+"mod" # Uses: 7848
+"char" # Uses: 7692
+"rfun" # Uses: 7497
+"\000\011" # Uses: 7948
+"\000>\002\0000P\000\000" # Uses: 6987
+"union" # Uses: 7356
+"\000\000\000\000" # Uses: 7613
+"ffun" # Uses: 7539
+"\000\017" # Uses: 7765
+"\010\000\000\000" # Uses: 7538
+"\001\000\000\004" # Uses: 7333
+" \233\020\000`P\000\000" # Uses: 6719
+"\000\014" # Uses: 6462
+"ihar" # Uses: 5825
+"\001\015" # Uses: 5712
+"\001\000\000\003" # Uses: 3663
+"chau" # Uses: 1154
+"\000\000P\320\000\025S\016" # Uses: 357
+###### End of recommended dictionary. ######
+Done 1334484 runs in 171 second(s)
+stat::number_of_executed_units: 1334484
+stat::average_exec_per_sec:     7804
+stat::new_units_added:          1608
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              477
+-- coverage of text over its corpus: which parts of the reader are reached
+Filename                       Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover    Branches   Missed Branches     Cover
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+include/adelefeld/adele.h            4                 4     0.00%           4                 4     0.00%           4                 4     0.00%           0                 0         -
+include/adelefeld/fball.h            2                 2     0.00%           2                 2     0.00%           2                 2     0.00%           0                 0         -
+include/adelefeld/place.h            2                 2     0.00%           2                 2     0.00%           2                 2     0.00%           0                 0         -
+include/adelefeld/rat.h              2                 2     0.00%           2                 2     0.00%           2                 2     0.00%           0                 0         -
+include/adelefeld/status.h           1                 1     0.00%           1                 1     0.00%          17                17     0.00%           0                 0         -
+include/adelefeld/text.h             7                 2    71.43%           3                 2    33.33%           8                 2    75.00%           0                 0         -
+src/text.c                         796                13    98.37%          68                 0   100.00%        1011                11    98.91%         638                18    97.18%
+tests/fuzz/fuzz_text.c             252                30    88.10%           9                 0   100.00%         175                 3    98.29%         140                57    59.29%
+tests/support/golden.c             341               341     0.00%          20                20     0.00%         480               480     0.00%         246               246     0.00%
+tests/support/jsonl.c              830               830     0.00%          33                33     0.00%         812               812     0.00%         524               524     0.00%
+
+Files which contain no functions:
+tests/support/golden.h               0                 0         -           0                 0         -           0                 0         -           0                 0         -
+tests/support/jsonl.h                0                 0         -           0                 0         -           0                 0         -           0                 0         -
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                             2237              1227    45.15%         144                66    54.17%        2513              1335    46.88%        1548               845    45.41%
+fuzz passed: 1 target(s), no crash
+exit 0

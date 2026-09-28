@@ -1,0 +1,33 @@
+# lanes/m1-text/redgreen.log: red and green runs of lane m1-text (newest last).
+# Format: date time | test file | red/green | what failed or passed
+
+2026-09-28 | tests/test_text_rat.c | RED (link) | make build/test_text_rat: undefined reference to adf_rat_set_str,
+             adf_rat_get_str (src/text.c does not exist yet)
+2026-09-28 | tests/test_text_rat.c | GREEN | 13 tests, 18122 checks, 0 failed: adf_rat_set_str, adf_rat_get_str
+             (src/text.c: stages 1-3 and 6 for rat; the other entry points are stubs returning ADF_PARSE / "")
+2026-09-28 | tests/test_text_fball.c | RED (assertions) | 10 tests, 19427 checks, 9890 failed checks, 9 failed tests
+             (adf_fball_set_str is a stub returning ADF_PARSE, adf_fball_get_str returns "")
+2026-09-28 | tests/test_text_fball.c | GREEN | 10 tests, 21545 checks, 0 failed: adf_fball_set_str, adf_fball_get_str
+             (test_text_rat still green: 13 tests, 18122 checks)
+2026-09-28 | tests/test_text_adele.c | RED (assertions) | 20 tests, 46923 checks, 14235 failed checks, 20 failed tests
+             (adf_adele_set_str, adf_cadele_set_str are stubs returning ADF_PARSE; the printers return "")
+2026-09-28 | tests/test_text_adele.c | RED -> fixes | first implementation: 4 golden rows (radius 0.25, 1) and 95 dyadic
+             exactness checks failed: mag_set_fmpz_2exp_fmpz adds a unit to a 30-bit mantissa (replaced by
+             mag_set_ui_2exp_si), and the first midpoint exponent could be one too high for a non-reduced
+             decimal fraction (now e = floor(log2|m|) - p + 1). The test's own helper used arf_get_mag, which
+             is inexact at 30 bits; its self-check caught that (helper fixed). A random-arb test with
+             exponents of up to 60 bits did not finish (exact printing of 2^(2^59)); exponents bounded to 12
+             bits in the test, and the cost is reported as a finding.
+2026-09-28 | tests/test_text_adele.c | GREEN | 20 tests, 84400 checks, 0 failed (0.44 s)
+2026-09-28 | tests/test_text_classify.c | RED (assertions) | 7 tests, 20738 checks, 2411 failed, 6 failed tests
+             (adf_text_classify a stub returning ADF_PARSE)
+2026-09-28 | tests/test_text_classify.c | GREEN | after the classifier: 1 failed check, a wrong length (137 for 142) in
+             the test itself (the reference classifies the text as rfun); fixed; 7 tests, 20738 checks, 0 failed
+2026-09-28 | tests/test_text_classify.c | mutation survivor src/text.c:1328 (allow_den 0 -> 1 at the "p=" uint):
+             new test signs_and_denominators_of_the_other_literals; RED against the mutant (4 failed checks,
+             built by hand in the scratchpad), GREEN against src/text.c (8 tests, 20776 checks, 0 failed)
+2026-09-28 | mutation survivors src/text.c:374 and :377 (the "+ 1" of the NUL byte of the output buffer): the
+             mutants were built by hand with -fsanitize=address; tests/test_text_rat.c reports a
+             heap-buffer-overflow against each, so make check SAN=1 kills them (make mutate runs without SAN)
+2026-09-28 | all | GREEN | make check: 13 programs pass; make clean && make check SAN=1: pass, 0 sanitizer reports;
+             make clean && make check CC=clang: pass

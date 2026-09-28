@@ -1,0 +1,36 @@
+run_id: 2026-09-28T081844Z
+tag: text
+provisional: yes (lane m1-text; no floor derived)
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+cycles_per_ns_median: 2.68795
+seed: 20260928
+operand_family: value-form texts of adf_rat, adf_fball, adf_adele (prec 128, digits 20)
+trials_per_case: 9
+batch_length: 256
+warm: yes
+allocating: yes (the printed string, fmpz and fmpq temporaries)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+rat_print_word	independent_batch	adf_rat_get_str; A/d, A,d word sized	A,H,d up to 60 bit; mean text 36 bytes; n = 256	20260928	yes	yes	40	10240	377000	389.9246	401.4071	406.9184
+rat_parse_word	independent_batch	adf_rat_set_str; A/d, A,d word sized	A,H,d up to 60 bit; mean text 36 bytes; n = 256	20260928	yes	yes	40	10240	0	860.0663	878.7317	891.3545
+rat_print_4096	independent_batch	adf_rat_get_str; A/d, A,d 4096 bit	A,H,d up to 4096 bit; mean text 2466 bytes; n = 256	20260928	yes	yes	2	512	1262952	30169.3770	30791.7285	31828.4414
+rat_parse_4096	independent_batch	adf_rat_set_str; A/d, A,d 4096 bit	A,H,d up to 4096 bit; mean text 2466 bytes; n = 256	20260928	yes	yes	2	512	0	118259.2070	120695.4648	130929.4648
+fball_print_word	independent_batch	adf_fball_get_str; (A,H,d) word sized	A,H,d up to 60 bit; mean text 84 bytes; n = 256	20260928	yes	yes	20	5120	434760	1633.3758	1689.4627	1756.1654
+fball_parse_word	independent_batch	adf_fball_set_str; (A,H,d) word sized	A,H,d up to 60 bit; mean text 84 bytes; n = 256	20260928	yes	yes	20	5120	0	2513.0846	2591.2344	2660.4432
+fball_print_4096	independent_batch	adf_fball_get_str; (A,H,d) 4096 bit	A,H,d up to 4096 bit; mean text 4944 bytes; n = 256	20260928	yes	yes	1	256	1265784	244221.8281	250892.8281	253622.3281
+fball_parse_4096	independent_batch	adf_fball_set_str; (A,H,d) 4096 bit	A,H,d up to 4096 bit; mean text 4944 bytes; n = 256	20260928	yes	yes	1	256	0	345434.6211	348865.9336	356495.6211
+adele_print_word	independent_batch	adf_adele_get_str; arb 53 bit, fin word sized	A,H,d up to 60 bit; mean text 106 bytes; n = 256	20260928	yes	yes	4	1024	108868	12851.3975	13380.1152	14013.9199
+adele_parse_word	independent_batch	adf_adele_set_str at prec 128; fin word sized	A,H,d up to 60 bit; mean text 106 bytes; n = 256	20260928	yes	yes	4	1024	0	6221.9297	6551.5469	6981.1357
+
+# checksum of all case results, computed outside the timed region
+checksum: 188084
