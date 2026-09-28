@@ -94,3 +94,102 @@ ADF_TEST(gcd_is_the_greatest_common_divisor)
         }
     }
 }
+
+/* lcm(n, m) = n * m / gcd(n, m), and lcm(n, m) != gcd(n, m) for most pairs; this also kills the
+   gcd_lcm mutant of adf_example_sum_radius's call to adf_example_gcd, since that mutant calls
+   this function instead (tools/mutate/selftest.py: added for adf-obp). */
+ADF_TEST(lcm_is_the_least_common_multiple)
+{
+    long n;
+    long m;
+
+    for (n = 0; n <= MODULI; n++)
+    {
+        for (m = 0; m <= MODULI; m++)
+        {
+            long g = reference_gcd(n, m);
+            long want = (n == 0 || m == 0) ? 0 : (n / g) * m;
+
+            ADF_CHECK_MSG(adf_example_lcm(n, m) == want, "lcm(%ld, %ld) = %ld, expected %ld", n, m,
+                          adf_example_lcm(n, m), want);
+        }
+    }
+}
+
+/* adf_example_status(n): ADF_DOMAIN for n < 0, ADF_UNSUPPORTED for n == 0, ADF_OK for n > 0
+   (added for adf-obp, the `status` kind). */
+ADF_TEST(status_is_domain_unsupported_or_ok)
+{
+    long n;
+
+    for (n = -RANGE; n <= RANGE; n++)
+    {
+        int want = (n < 0) ? ADF_DOMAIN : (n == 0) ? ADF_UNSUPPORTED : ADF_OK;
+
+        ADF_CHECK_MSG(adf_example_status(n) == want, "status(%ld) = %d, expected %d", n,
+                      adf_example_status(n), want);
+    }
+}
+
+/* adf_example_box_init and adf_example_box_clear must each leave v at exactly 0: read v
+   straight after init/clear, before anything else can overwrite it, so that a mutant of the
+   literal 0 they assign (adf-obp: zero_one) is caught here and not hidden behind the
+   adf_example_box_set that every other test calls right after init. */
+ADF_TEST(box_init_and_clear_leave_v_at_zero)
+{
+    adf_example_box b;
+
+    adf_example_box_init(&b);
+    ADF_CHECK_MSG(adf_example_box_get(&b) == 0, "box_init: v = %ld, expected 0",
+                  adf_example_box_get(&b));
+    adf_example_box_set(&b, 5);
+    adf_example_box_clear(&b);
+    ADF_CHECK_MSG(adf_example_box_get(&b) == 0, "box_clear: v = %ld, expected 0",
+                  adf_example_box_get(&b));
+}
+
+/* x + y and x - y through the box type (added for adf-obp: swap_args never touches the output
+   argument of a FLINT-style call, call_swap, drop_call). Exchanging the two non-output
+   arguments of adf_example_box_add computes the same sum; that one surviving mutant is excused
+   in the EQUIVALENT text of tools/mutate/selftest.py, exactly as fball.c excuses its own
+   commutative swaps in tools/mutate/equivalent.txt. Subtraction is not commutative, so its
+   swap is caught here without an excuse. */
+ADF_TEST(box_sum_and_diff_match_plus_and_minus)
+{
+    long x;
+    long y;
+
+    for (x = -RANGE; x <= RANGE; x++)
+    {
+        for (y = -RANGE; y <= RANGE; y++)
+        {
+            ADF_CHECK_MSG(adf_example_box_sum(x, y) == x + y,
+                          "box_sum(%ld, %ld) = %ld, expected %ld", x, y,
+                          adf_example_box_sum(x, y), x + y);
+            ADF_CHECK_MSG(adf_example_box_diff(x, y) == x - y,
+                          "box_diff(%ld, %ld) = %ld, expected %ld", x, y,
+                          adf_example_box_diff(x, y), x - y);
+        }
+    }
+}
+
+/* value rounded down to a multiple of prec, prec == 0 leaving it unchanged, a negative prec
+   still scaling (added for adf-obp: the `prec` kind mutates the argument of the inner call,
+   not the parameter). */
+ADF_TEST(round_matches_the_reference)
+{
+    long value;
+    long prec;
+
+    for (value = -RANGE; value <= RANGE; value++)
+    {
+        for (prec = -2; prec <= 5; prec++)
+        {
+            long want = (prec == 0) ? value : (value / prec) * prec;
+
+            ADF_CHECK_MSG(adf_example_round(value, prec) == want,
+                          "round(%ld, %ld) = %ld, expected %ld", value, prec,
+                          adf_example_round(value, prec), want);
+        }
+    }
+}

@@ -10,8 +10,10 @@
 
 CC     ?= cc
 CFLAGS ?= -std=c11 -O1 -g -Wall -Wextra -Werror
-# src/ holds example.h, so that the test finds it with "example.h"
-CPPFLAGS ?= -Isrc
+# src/ holds example.h, so that the test finds it with "example.h"; include/ holds
+# adelefeld/status.h, in the shape of the real include/ (so mutate.py's status kind, which
+# reads <root>/include/adelefeld/status.h, has something to read here too).
+CPPFLAGS ?= -Isrc -Iinclude
 TEST   ?= tests/test_weak.c
 BIN     = build/example
 

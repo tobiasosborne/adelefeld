@@ -2,8 +2,8 @@
 
 # A line is `FILE:LINE:KIND | reason`, where FILE is the path as mutate.py names it, LINE is
 # the line of the file as it stands now, and KIND is one of op, cmp, logic, gcd_lcm, swap_args,
-# zero_one, drop_assign, negate_if. A `#` starts a comment. A survivor listed here is reported
-# as excused and does not make `make mutate` fail.
+# status, drop_call, call_swap, prec, zero_one, drop_assign, negate_if. A `#` starts a comment.
+# A survivor listed here is reported as excused and does not make `make mutate` fail.
 
 # Every line added here needs
 # the reason, and the reason has to say why the mutant computes the same thing as the original
