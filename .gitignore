@@ -31,3 +31,4 @@ build-*/
 /refs/src
 bench/bench_*
 !bench/bench_*.c
+.claude/worktrees/
