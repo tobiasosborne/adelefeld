@@ -88,22 +88,53 @@ some_primes(ulong * q, slong k, int small)
 /* The largest prime below 2^64 (18446744073709551557 = 2^64 - 59). */
 #define BIGP UWORD(18446744073709551557)
 
+/* A live context made for the purpose of being the "old" context of an output that a failed load must
+   leave untouched (M1-D2: a pointer field is NULL or a live object; under ADF_CHECK_INVARIANTS a
+   successful load releases the old context). One block 6, so that u = 2 is below K. No check: the
+   number of checks of the callers does not change. */
+static adf_modctx_struct *
+sentinel_ctx(void)
+{
+    adf_modctx_struct * c = NULL;
+    ulong q[1] = {6};
+
+    (void) adf_modctx_new_blocks(&c, q, 1);
+    return c;
+}
+
 /* ------------------------------------------------------------------ helpers: local fball */
 
-/* x (initialised) becomes the local value (d; res) of ctx (conventions 5.3). */
+/* x (initialised) becomes the local value (d; res) of ctx (conventions 5.3). It is made through the
+   public interface, so that the borrow count of ADF_CHECK_INVARIANTS sees it (conventions 4.6,
+   M1-D10): the global ball (A0, K, d) with A0 = the CRT lift of res (0 <= A0 < K) is the set
+   (A0 + K Zhat)/d of policies Definition 16, line 305; it is canonicalised (fball.h:138-141, raw global
+   input) and converted with adf_fball_set_local (modctx.h:145-153). The result is (d; res) because
+   K/R = d and c K/R = A0 (the gcd that canonicalisation removes cancels in both). */
 static void
 local_set(adf_fball_t x, const adf_modctx_struct * ctx, const fmpz_t d, const ulong * res)
 {
-    slong k = adf_modctx_nblocks(ctx);
+    slong i, k = adf_modctx_nblocks(ctx);
+    adf_fball_t g;
+    fmpz_t M, A0;
 
-    fmpz_zero(x->A);
-    adf_modctx_get_modulus(x->H, ctx);
-    fmpz_set(x->d, d);
-    flint_free(x->res);
-    x->res = flint_malloc((size_t) k * sizeof(ulong));
-    memcpy(x->res, res, (size_t) k * sizeof(ulong));
-    x->mctx = ctx;
-    x->backend = ADF_LOCAL;
+    adf_fball_init(g);
+    fmpz_init(M);
+    fmpz_init(A0);
+    fmpz_set_ui(A0, res[0]);
+    fmpz_set_ui(M, adf_modctx_block(ctx, 0));
+    for (i = 1; i < k; i++)
+    {
+        fmpz_CRT_ui(A0, A0, M, res[i], adf_modctx_block(ctx, i), 0);
+        fmpz_mul_ui(M, M, adf_modctx_block(ctx, i));
+    }
+    fmpz_set(g->A, A0);
+    fmpz_set(g->H, M);
+    fmpz_set(g->d, d);
+    (void) adf_fball_canonicalise(g);
+    (void) adf_fball_set_local(x, g, ctx);
+    fmpz_clear(M);
+    fmpz_clear(A0);
+    adf_fball_clear(g);
 }
 
 static void
@@ -164,20 +195,18 @@ local_is_L(const adf_fball_t x)
 
 /* ------------------------------------------------------------------ helpers: scaled */
 
+/* Through the public interface (scaled.h:63-68), so that the borrow count sees the value
+   (conventions 4.6, M1-D10). */
 static void
 sc_init(adf_scaled_t x, const adf_modctx_struct * ctx)
 {
-    fmpq_init(x->s);
-    fmpz_init(x->u);
-    x->mctx = ctx;
-    x->exact = 1;
+    adf_scaled_init(x, ctx);
 }
 
 static void
 sc_clear(adf_scaled_t x)
 {
-    fmpq_clear(x->s);
-    fmpz_clear(x->u);
+    adf_scaled_clear(x);
 }
 
 static int
@@ -209,7 +238,8 @@ sc_random(adf_scaled_t x, const adf_modctx_struct * ctx, flint_rand_t st, flint_
 {
     fmpz_t K;
 
-    x->mctx = ctx;
+    /* x has the context ctx from sc_init (scaled.h:63-65); the field is not written by hand
+       (conventions 4.6, M1-D10). */
     fmpq_randtest(x->s, st, bits);
     if (n_randint(st, 3) == 0)
     {
@@ -475,19 +505,21 @@ scaled_status(const char * s, size_t len, const adf_modctx_struct * ctx, const a
 {
     adf_scaled_t x;
     adf_scaled_struct copy;
+    adf_modctx_struct * sent = sentinel_ctx();
     int st;
 
     memset(x, 0, sizeof(x));             /* padding bytes defined for memcmp */
-    sc_init(x, (const adf_modctx_struct *) (void *) 0x10);
+    sc_init(x, sent);
     fmpq_set_si(x->s, 5, 3);
     fmpz_set_ui(x->u, 2);
     x->exact = 0;
     memcpy(&copy, x, sizeof(copy));
     st = adf_scaled_load_str(x, s, len, ctx, lim);
     if (st != ADF_OK)
-        ADF_CHECK_MSG(memcmp(&copy, x, sizeof(copy)) == 0 && fmpz_equal_ui(x->u, 2), "scaled written on %s",
-                      adf_status_str(st));
+        ADF_CHECK_MSG(memcmp(&copy, x, sizeof(copy)) == 0 && fmpz_equal_ui(x->u, 2) && x->mctx == sent,
+                      "scaled written on %s", adf_status_str(st));
     sc_clear(x);
+    adf_modctx_free(sent);
     return st;
 }
 
@@ -1021,7 +1053,8 @@ typed_check(const char * t, size_t len, const adf_text_limits_t * lim, int statu
     else if (body_is(t, len, "scaled"))
     {
         adf_scaled_t x;
-        sc_init(x, (const adf_modctx_struct *) (void *) 0x30);
+        adf_modctx_struct * sent = sentinel_ctx();
+        sc_init(x, sent);
         st = adf_scaled_dump_inspect(&n, d, t, len, lim);
         ADF_CHECK(adf_scaled_load_str_binds(x, t, len, binds, nocc, lim) == st);
         if (st == ADF_OK)
@@ -1030,8 +1063,9 @@ typed_check(const char * t, size_t len, const adf_text_limits_t * lim, int statu
             again = adf_scaled_dump_str(&dl, x);
         }
         else
-            ADF_CHECK(x->mctx == (const adf_modctx_struct *) (void *) 0x30 && x->exact == 1);
+            ADF_CHECK(x->mctx == sent && x->exact == 1);
         sc_clear(x);
+        adf_modctx_free(sent);
     }
     else if (body_is(t, len, "adele"))
     {

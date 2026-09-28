@@ -14,8 +14,20 @@
    The adele is built and cleared field by field (arb_init, adf_fball_init): the functions of
    adelefeld/adele.h are written by another lane at the same time and are not called here. */
 
+#ifdef ADF_CHECK_INVARIANTS
+#define _POSIX_C_SOURCE 200809L   /* fork, pipe: the test of M1-D11 below */
+#endif
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+#ifdef ADF_CHECK_INVARIANTS
+#include <signal.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
 
 #include <flint/arb.h>
 #include <flint/arf.h>
@@ -1298,18 +1310,74 @@ ADF_TEST(an_adele_with_operands_of_4096_bits)
     adf_rat_clear(N);
 }
 
+#ifdef ADF_CHECK_INVARIANTS
+/* M1-D11: a child process calls adf_adele_reconstruct(q, x) and must die by SIGABRT with the line of
+   src/invariants.h:55 ("adelefeld: ADF_CHECK_INVARIANTS: <function>: argument <arg> is not a
+   canonical <type>") on stderr. Returns 1 if it does. Pattern of tests/test_invariants.c. */
+static int
+reconstruct_aborts(const adf_adele_t x, const char * want)
+{
+    int fd[2], st = 0;
+    char err[512];
+    size_t n = 0;
+    pid_t pid;
+
+    fflush(stdout);
+    fflush(stderr);
+    if (pipe(fd) != 0)
+        abort();
+    pid = fork();
+    if (pid < 0)
+        abort();
+    if (pid == 0)
+    {
+        struct rlimit nocore = {0, 0};
+        adf_rat_t q;
+
+        setrlimit(RLIMIT_CORE, &nocore);   /* an abort must not write a core file */
+        close(fd[0]);
+        dup2(fd[1], 2);
+        close(fd[1]);
+        adf_rat_init(q);
+        (void) adf_adele_reconstruct(q, x);
+        _exit(0);
+    }
+    close(fd[1]);
+    for (;;)
+    {
+        ssize_t r = read(fd[0], err + n, sizeof err - 1 - n);
+        if (r <= 0)
+            break;
+        n += (size_t) r;
+    }
+    err[n] = 0;
+    close(fd[0]);
+    if (waitpid(pid, &st, 0) != pid)
+        abort();
+    return WIFSIGNALED(st) && WTERMSIG(st) == SIGABRT && strcmp(err, want) == 0;
+}
+#endif
+
 ADF_TEST(an_adele_with_an_infinite_real_ball_is_rejected)
 {
     adf_adele_t x;
 
-    /* Outside the contract: conventions 5.5 requires arb_is_finite(x->inf). The call is
-       nevertheless answered instead of aborting inside FLINT, because
+    /* Outside the contract: conventions 5.5 requires arb_is_finite(x->inf). Without the flag the call
+       is nevertheless answered instead of aborting inside FLINT, because
        arb_get_interval_fmpz_2exp aborts on an infinite or NaN ball
-       (refs/src/flint-3.0.1/arb.rst:468-470). */
+       (refs/src/flint-3.0.1/arb.rst:468-470). That answer is a courtesy of the release build and no
+       promise (M1-D11: recon.h does not exempt a non-canonical adele); the test of it is compiled
+       only without ADF_CHECK_INVARIANTS. With the flag the entry check comes first and the call
+       aborts (src/invariants.h:53-57); the test of the same name requires that. */
     adele_init_fields(x);
     set_ball(&x->fin, 0, 1, 6);
     arb_pos_inf(x->inf);
     ADF_CHECK(!arb_is_finite(x->inf));
+#ifndef ADF_CHECK_INVARIANTS
     run_adele(x, ADF_DOMAIN, "an infinite real ball");
+#else
+    ADF_CHECK(reconstruct_aborts(x, "adelefeld: ADF_CHECK_INVARIANTS: adf_adele_reconstruct: argument x is "
+                                    "not a canonical adf_adele\n"));
+#endif
     adele_clear_fields(x);
 }
