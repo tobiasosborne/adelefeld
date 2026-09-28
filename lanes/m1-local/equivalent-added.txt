@@ -1,0 +1,28 @@
+
+# src/fball_local.c, lane m1-local, 2026-09-28. Swaps of the two inputs of fmpz_mul and fmpz_gcd;
+# the outputs alias no input, and the product and the gcd of two integers do not depend on the order.
+src/fball_local.c:107:swap_args | fmpz_mul(u, K, d) against fmpz_mul(u, d, K): the product does not depend on the order
+src/fball_local.c:108:swap_args | fmpz_mul(v, K, A) against fmpz_mul(v, A, K): the product does not depend on the order
+src/fball_local.c:165:swap_args | fmpz_mul(e, K, d) against fmpz_mul(e, d, K): the product does not depend on the order
+src/fball_local.c:167:swap_args | fmpz_gcd(e, A, d) against fmpz_gcd(e, d, A): the gcd does not depend on the order
+src/fball_local.c:170:swap_args | fmpz_mul(A0, A, d0) against fmpz_mul(A0, d0, A): the product does not depend on the order
+
+# src/fball.c, lane m1-local, 2026-09-28 (line numbers of the file with the local backend; the three
+# src/fball.c keys of lane m1-fball above now name other lines and are stale, append-only file).
+src/fball.c:74:swap_args | fmpz_gcd(g, A, d) against fmpz_gcd(g, d, A): the gcd does not depend on the order
+src/fball.c:328:swap_args | fmpz_gcd(g, x->A, x->d) against its swap: the gcd does not depend on the order
+src/fball.c:637:swap_args | fmpq_add(c, a, b) against fmpq_add(c, b, a): the sum does not depend on the order
+src/fball.c:742:swap_args | fmpq_mul(c, a, b) against fmpq_mul(c, b, a): the product does not depend on the order
+src/fball.c:743:swap_args | fmpq_mul(t1, a, M) against its swap: the product does not depend on the order
+src/fball.c:744:swap_args | fmpq_mul(t2, b, N) against its swap: the product does not depend on the order
+src/fball.c:745:swap_args | fmpq_mul(t3, N, M) against its swap: the product does not depend on the order
+src/fball.c:785:swap_args | n_gcd(x->res[i], y->res[i]) against its swap: the gcd does not depend on the order
+src/fball.c:791:swap_args | fmpz_mul(de, x->d, y->d) against its swap: the product does not depend on the order
+src/fball.c:859:swap_args | fmpq_mul(c, a, q->q) against its swap: the product does not depend on the order
+src/fball.c:861:swap_args | fmpq_mul(r, r, N) against fmpq_mul(r, N, r): the product does not depend on the order
+src/fball.c:959:swap_args | fmpq_gcd(g, N, M) against its swap: the gcd does not depend on the order
+src/fball.c:243:drop_call | fmpz_zero(x->A) right after fmpz_init(x->A): fmpz_init already gives 0
+src/fball.c:186:cmp | the first == of fb_local_res as !=: the array is then resized in every case (same size when z is already local in ctx); realloc keeps the contents and the field of z is updated, so every result is the same
+src/fball.c:782:zero_one | h_is_one = 0 skips the blockwise path; the product then goes through the tight global product and adf_fball_set_local, which for h = 1 always succeeds (h | d e) and gives the unique local data of the set (policies P22.2: the blockwise product is tight for h = 1; Lemma 17.2), the same value
+src/fball.c:785:zero_one | == 1 as == 0 makes h_is_one always 0 (a gcd with q_i >= 2 is never 0): the same value, for the reason of 782
+src/fball.c:1020:drop_call | the second fmpq_sub(diff, a, b) in fb_contains_g recomputes the value diff already holds from the first

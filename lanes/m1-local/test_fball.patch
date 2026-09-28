@@ -1,0 +1,190 @@
+--- a/tests/test_fball.c
++++ b/tests/test_fball.c
+@@ -15,6 +15,7 @@
+ #include <string.h>
+ 
+ #include <adelefeld/fball.h>
++#include <adelefeld/modctx.h>
+ 
+ #include "test_runner.h"
+ 
+@@ -1021,11 +1022,14 @@
+ ADF_TEST(local_shaped_is_canonical)
+ {
+     adf_fball_t x;
+-    char dummy;
++    adf_modctx_struct * ctx = NULL;
++    ulong q[2] = {2, 3};
+     ulong * save;
+ 
++    /* A real context of the blocks (2, 3), K = 6 (work package 1.8): predicate L reads it. */
++    ADF_CHECK(adf_modctx_new_blocks(&ctx, q, 2) == ADF_OK);
+     adf_fball_init(x);
+-    make_local_shaped(x, 0, 6, 1, &dummy);
++    make_local_shaped(x, 0, 6, 1, ctx);
+     ADF_CHECK(adf_fball_is_canonical(x));
+ 
+     fmpz_set_si(x->A, 1);
+@@ -1042,7 +1046,7 @@
+ 
+     x->mctx = NULL;
+     ADF_CHECK(!adf_fball_is_canonical(x));
+-    x->mctx = (const adf_modctx_struct *) (const void *) &dummy;
++    x->mctx = ctx;
+ 
+     save = x->res;
+     x->res = NULL;
+@@ -1050,17 +1054,22 @@
+     x->res = save;
+ 
+     adf_fball_clear(x);
++    adf_modctx_free(ctx);
+ }
+ 
+ ADF_TEST(identical_local_guard)
+ {
+     adf_fball_t x, y;
+-    char d1, d2;
++    adf_modctx_struct * c1 = NULL;
++    adf_modctx_struct * c2 = NULL;
++    ulong q[2] = {2, 3};
+ 
++    ADF_CHECK(adf_modctx_new_blocks(&c1, q, 2) == ADF_OK);
++    ADF_CHECK(adf_modctx_new_blocks(&c2, q, 2) == ADF_OK);
+     adf_fball_init(x);
+     adf_fball_init(y);
+-    make_local_shaped(x, 0, 6, 1, &d1);
+-    make_local_shaped(y, 0, 6, 1, &d2);
++    make_local_shaped(x, 0, 6, 1, c1);
++    make_local_shaped(y, 0, 6, 1, c2);
+ 
+     /* same fields, different context pointers */
+     ADF_CHECK(!adf_fball_identical(x, y));
+@@ -1071,17 +1080,22 @@
+     /* different backend */
+     y->backend = ADF_GLOBAL;
+     ADF_CHECK(!adf_fball_identical(x, y));
++    y->backend = ADF_LOCAL;
+ 
+     adf_fball_clear(x);
+     adf_fball_clear(y);
++    adf_modctx_free(c1);
++    adf_modctx_free(c2);
+ }
+ 
+ ADF_TEST(predicates_local_and_radius_edges)
+ {
+     adf_fball_t x, y;
+-    char dummy;
++    adf_modctx_struct * ctx = NULL;
++    ulong qb[2] = {4, 3};
+     adf_rat_struct q;
+ 
++    ADF_CHECK(adf_modctx_new_blocks(&ctx, qb, 2) == ADF_OK);
+     adf_fball_init(x);
+     adf_fball_init(y);
+     fmpq_init(q.q);
+@@ -1104,59 +1118,81 @@
+     mkball_si(y, 0, 4, 1);
+     ADF_CHECK(!adf_fball_equal_set(x, y));
+ 
+-    /* a local-valued operand makes the set predicates fail closed and compare DISJOINT */
++    /* a local operand is compared through its set (work package 1.8, conventions 5.3): the
++       residues (0, 1) of the blocks (4, 3) with d = 1 are the set 4 + 12 Zhat */
++    mkball_si(x, 4, 12, 1);
++    make_local_shaped(y, 0, 12, 1, ctx);
++    ADF_CHECK(adf_fball_equal_set(x, y));
++    ADF_CHECK(adf_fball_overlaps(x, y));
++    ADF_CHECK(adf_fball_contains(x, y));
++    ADF_CHECK(adf_fball_compare(x, y) == ADF_CMP_UNDECIDED);
++    fmpq_set_si(q.q, 4, 1);
++    ADF_CHECK(adf_fball_contains_rat(y, &q));
++    fmpq_set_si(q.q, 3, 1);
++    ADF_CHECK(!adf_fball_contains_rat(y, &q));
+     mkball_si(x, 3, 12, 1);
+-    make_local_shaped(y, 3, 12, 1, &dummy);
+     ADF_CHECK(!adf_fball_equal_set(x, y));
+     ADF_CHECK(!adf_fball_overlaps(x, y));
+-    ADF_CHECK(!adf_fball_contains(x, y));
+     ADF_CHECK(adf_fball_compare(x, y) == ADF_CMP_DIFFERENT);
+-    fmpq_set_si(q.q, 3, 1);
+-    ADF_CHECK(!adf_fball_contains_rat(y, &q));
+ 
+     fmpq_clear(q.q);
+     adf_fball_clear(x);
+     adf_fball_clear(y);
++    adf_modctx_free(ctx);
+ }
+ 
+ /* --------------------------------- local inputs to the tight arithmetic */
+ 
+-ADF_TEST(arithmetic_local_input_untouched)
++ADF_TEST(arithmetic_local_input_as_set)
+ {
+-    adf_fball_t x, y, z, keep;
++    adf_fball_t x, y, g, z, e;
++    adf_modctx_struct * ctx = NULL;
++    ulong qb[2] = {4, 3};
+     adf_rat_struct q;
+-    char dummy;
+ 
++    ADF_CHECK(adf_modctx_new_blocks(&ctx, qb, 2) == ADF_OK);
+     adf_fball_init(x);
+     adf_fball_init(y);
++    adf_fball_init(g);
+     adf_fball_init(z);
+-    adf_fball_init(keep);
++    adf_fball_init(e);
+     fmpq_init(q.q);
+     mkball_si(x, 3, 12, 1);
+-    mkball_si(keep, 7, 5, 2);
+-    make_local_shaped(y, 3, 12, 1, &dummy);
++    make_local_shaped(y, 0, 12, 1, ctx);   /* the set 4 + 12 Zhat */
++    mkball_si(g, 4, 12, 1);
+     fmpq_set_si(q.q, 2, 3);
+-    adf_fball_set(z, keep);
+ 
+-    /* A local operand leaves the output untouched, in either position. */
++    /* A local operand with a global one: the global result of the sets, in either position
++       (fball.h: mixed backends give a global result). */
+     adf_fball_add(z, x, y);
+-    ADF_CHECK(adf_fball_identical(z, keep));
++    adf_fball_add(e, x, g);
++    ADF_CHECK(adf_fball_identical(z, e));
+     adf_fball_add(z, y, x);
+-    ADF_CHECK(adf_fball_identical(z, keep));
++    adf_fball_add(e, g, x);
++    ADF_CHECK(adf_fball_identical(z, e));
+     adf_fball_sub(z, x, y);
+-    ADF_CHECK(adf_fball_identical(z, keep));
++    adf_fball_sub(e, x, g);
++    ADF_CHECK(adf_fball_identical(z, e));
+     adf_fball_mul(z, x, y);
+-    ADF_CHECK(adf_fball_identical(z, keep));
++    adf_fball_mul(e, x, g);
++    ADF_CHECK(adf_fball_identical(z, e));
++    /* negation stays local (policies P21.1) */
+     adf_fball_neg(z, y);
+-    ADF_CHECK(adf_fball_identical(z, keep));
++    adf_fball_neg(e, g);
++    ADF_CHECK(z->backend == ADF_LOCAL && adf_fball_equal_set(z, e));
++    /* 2/3: |m| = 2 does not divide d = 1, global (policies P23) */
+     adf_fball_mul_rat(z, y, &q);
+-    ADF_CHECK(adf_fball_identical(z, keep));
+-    ADF_CHECK(adf_fball_div_rat(z, y, &q) == ADF_UNSUPPORTED);
+-    ADF_CHECK(adf_fball_identical(z, keep));
++    adf_fball_mul_rat(e, g, &q);
++    ADF_CHECK(adf_fball_identical(z, e));
++    ADF_CHECK(adf_fball_div_rat(z, y, &q) == ADF_OK);
++    ADF_CHECK(adf_fball_div_rat(e, g, &q) == ADF_OK);
++    ADF_CHECK(adf_fball_equal_set(z, e));
+ 
+     fmpq_clear(q.q);
+     adf_fball_clear(x);
+     adf_fball_clear(y);
++    adf_fball_clear(g);
+     adf_fball_clear(z);
+-    adf_fball_clear(keep);
++    adf_fball_clear(e);
++    adf_modctx_free(ctx);
+ }
