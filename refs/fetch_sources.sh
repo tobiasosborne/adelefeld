@@ -115,15 +115,56 @@ done
 # ---------------------------------------------------------------- Harvey -- van der Hoeven (HAL)
 get "https://hal.science/hal-02070778/file/nlogn.pdf" src/hvh-mult/nlogn.pdf
 
+# ================================================================ Milestone S (the solvers)
+# S.3 partial rational reconstruction: the extended Euclidean algorithm, the uniqueness bound and
+# its proof (Shoup 4.6: Theorems 4.8 and 4.9; Thue's lemma in 4.5). Author's free copy.
+get "https://shoup.net/ntb/ntb-v2.pdf" src/shoup-ntb/ntb-v2.pdf
+# S.1 linear systems modulo N: Hermite form, Howell form over a principal ideal ring, the Howell
+# transform, echelon forms over PIRs. Author's copy of the ETH dissertation.
+get "https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf" src/storjohann-thesis/diss2up.pdf
+# S.2 roots: Hensel's lemma, the basic version and the stronger versions, with proofs.
+get "https://kconrad.math.uconn.edu/blurbs/gradnumthy/hensel.pdf" src/conrad-hensel/hensel.pdf
+# FLINT 3.0.1 documentation (tag v3.0.1): matrices, modular linear algebra, polynomials, roots.
+for m in fmpz_mat fmpz_mod_mat nmod_mat padic_poly fmpz_poly arb_poly arb_calc arb_fmpz_poly; do
+  get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/$m.rst" "src/flint-3.0.1/$m.rst"
+done
+# FLINT 3.0.1 C sources (tag v3.0.1): what the functions of S.1, S.2 and S.3 actually do.
+FLINTSRC="fmpq/reconstruct_fmpz.c fmpq/reconstruct_fmpz_2.c fmpq/reconstruct_fmpz_2_naive.c
+fmpq/get_cfrac.c fmpq/get_cfrac_helpers.c fmpq/cfrac_bound.c
+fmpz_mat/hnf.c fmpz_mat/hnf_transform.c fmpz_mat/hnf_xgcd.c fmpz_mat/hnf_minors.c
+fmpz_mat/hnf_minors_transform.c fmpz_mat/hnf_modular.c fmpz_mat/hnf_classical.c
+fmpz_mat/hnf_pernet_stein.c fmpz_mat/howell_form_mod.c fmpz_mat/strong_echelon_form_mod.c
+fmpz_mat/snf.c fmpz_mat/nullspace.c fmpz_mat/solve.c fmpz_mat/can_solve.c
+fmpz_mat/is_in_hnf.c fmpz_mat/is_in_snf.c
+nmod_mat/howell_form.c nmod_mat/strong_echelon_form.c nmod_mat/nullspace.c nmod_mat/solve.c
+nmod_mat/can_solve.c nmod_mat/rank.c
+fmpz_mod_mat/howell_form.c fmpz_mod_mat/strong_echelon_form.c fmpz_mod_mat/nullspace.c
+fmpz_mod_mat/solve.c
+padic_poly/evaluate_padic.c padic_poly/inv_series.c padic_poly/get_fmpq_poly.c
+padic_poly/get_fmpz_poly.c padic_poly/set_fmpq.c padic_poly/set_fmpz.c
+fmpz_poly/hensel_lift.c fmpz_poly/hensel_lift_once.c fmpz_poly/hensel_lift_tree.c
+fmpz_poly/hensel_lift_tree_recursive.c fmpz_poly/hensel_start_lift.c fmpz_poly/hensel_build_tree.c
+fmpz_poly/hensel_continue_lift.c fmpz_poly/hensel_lift_without_inverse.c
+fmpz_poly/hensel_lift_only_inverse.c fmpz_poly/num_real_roots.c fmpz_poly/num_real_roots_sturm.c
+fmpz_poly/bound_roots.c fmpz_poly/product_roots_fmpq_vec.c fmpz_poly/product_roots_fmpz_vec.c
+fmpz_poly/div_root.c
+arb_fmpz_poly/complex_roots.c"
+# shellcheck disable=SC2086
+for f in $FLINTSRC; do
+  get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/$f" "src/flint-src-3.0.1/$f"
+done
+
 # ---------------------------------------------------------------- text extractions
 if command -v pdftotext >/dev/null 2>&1; then
-  find src -type f -name '*.pdf' | LC_ALL=C sort | while read -r f; do pdf2txt "$f"; done
+  # the trailing slash matters: refs/src is a symlink on some worktrees, and find does not
+  # descend into a symbolic link given as the starting point
+  find src/ -type f -name '*.pdf' | LC_ALL=C sort | while read -r f; do pdf2txt "$f"; done
 else
   echo "pdftotext not found: PDF text extractions skipped" >&2
 fi
 
 # ---------------------------------------------------------------- manifests
-find src -type f ! -path '*/.git/*' ! -name '*.txt' | LC_ALL=C sort | xargs sha256sum > manifest.sha256
-find src -type f ! -path '*/.git/*' -name '*.txt' | LC_ALL=C sort | xargs -r sha256sum > manifest-extra.sha256
+find src/ -type f ! -path '*/.git/*' ! -path 'src/tate-thesis/log/*' ! -name '*.txt' | LC_ALL=C sort | xargs sha256sum > manifest.sha256
+find src/ -type f ! -path '*/.git/*' -name '*.txt' | LC_ALL=C sort | xargs -r sha256sum > manifest-extra.sha256
 echo "== manifest.sha256: $(wc -l < manifest.sha256) files"
 echo "== manifest-extra.sha256: $(wc -l < manifest-extra.sha256) files"

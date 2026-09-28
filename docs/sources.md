@@ -82,6 +82,20 @@ may run past the limit. All 57 quotes were machine-checked against the files on 
 | uops-intel | uops.info instruction page `VMOVDQU_YMM_M256` | https://uops.info/html-instr/VMOVDQU_YMM_M256.html | uops-intel/VMOVDQU_YMM_M256.html | b988da3453bf53c2de0755b794b205634ad7545f9d5991099ce6c78e2f15cd69 | 2026-09-28 | HTML | PERF 1 |
 | uops-intel | uops.info instruction page `VPMULUDQ_YMM_YMM_YMM` | https://uops.info/html-instr/VPMULUDQ_YMM_YMM_YMM.html | uops-intel/VPMULUDQ_YMM_YMM_YMM.html | dafbbacebe29e23e00db9b8fa1b050ab3e288535ba290157b4db85009a632db2 | 2026-09-28 | HTML | PERF 1 |
 | hvh-mult | D. Harvey, J. van der Hoeven, Integer multiplication in time O(n log n), Ann. of Math. 193 (2021), 563-617 | https://hal.science/hal-02070778/file/nlogn.pdf | hvh-mult/nlogn.pdf | 23706afbca829df933be41754743bf760ed01ffe73d499ddb410774c4ee0bf1d | 2026-09-27 | PDF + txt | PERF 3 |
+| shoup-ntb | V. Shoup, A Computational Introduction to Number Theory and Algebra, version 2 (Cambridge University Press 2008; author's copy, free at the author's page) | https://shoup.net/ntb/ntb-v2.pdf | shoup-ntb/ntb-v2.pdf | 8e1abc54f4510c3f274dfbed07ea602a6a439ee24b2c916e61abe829b402ec06 | 2026-09-28 | PDF + txt | SPEC 9.2; milestone S.1, S.3 |
+| storjohann-thesis | A. Storjohann, Algorithms for Matrix Canonical Forms, Diss. ETH No. 13922 (2013); author's copy on his university page | https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf | storjohann-thesis/diss2up.pdf | ebe79b8c7c1c306d25426ef76b6972efe2c8143cf1924a0630b5e4c888bf18e8 | 2026-09-28 | PDF + txt | SPEC 9.1; milestone S.1 |
+| conrad-hensel | K. Conrad, Hensel's lemma (expository note) | https://kconrad.math.uconn.edu/blurbs/gradnumthy/hensel.pdf | conrad-hensel/hensel.pdf | 3243fe15855aa549d42ed96f476bfd9f5241cdeb8d33f72beee33fd2e6bfdebf | 2026-09-28 | PDF + txt | SPEC 9.3.3; milestone S.2 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `fmpz_mat.rst` (Hermite form with transformation, Smith form, Howell form modulo `mod`, kernel) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/fmpz_mat.rst | flint-3.0.1/fmpz_mat.rst | 882f69f7c17f0048854847e05248ac449b94eb1af41cd200fe48edc4a627d801 | 2026-09-28 | reST | SPEC 9.1; milestone S.1 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `nmod_mat.rst` (Howell form, strong echelon form, solving, nullspace) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/nmod_mat.rst | flint-3.0.1/nmod_mat.rst | 468e1693bb86d4df199b3ba99c30b7f134f83d793c24a7f937b102478064fc6f | 2026-09-28 | reST | SPEC 9.1; milestone S.1 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `fmpz_mod_mat.rst` (Howell form, strong echelon form, solving) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/fmpz_mod_mat.rst | flint-3.0.1/fmpz_mod_mat.rst | e277db5fe1d29e02e152faaf091937f77c964b35df3384d706940644b758ddbf | 2026-09-28 | reST | SPEC 9.1; milestone S.1 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `fmpz_poly.rst` (Hensel lifting of factors, counting real roots) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/fmpz_poly.rst | flint-3.0.1/fmpz_poly.rst | f72dc44920d7f69d213ceba3ee1c164d47b5399e7736f8d0439fd76209731c65 | 2026-09-28 | reST | SPEC 9.1, 9.3.3; milestone S.2 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `padic_poly.rst` (p-adic polynomials: integrality, evaluation) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/padic_poly.rst | flint-3.0.1/padic_poly.rst | 475dcbce062a98ba55b94be65d7620b9b821d5c9d8ab04ff48a22d09792afa56 | 2026-09-28 | reST | SPEC 9.3.3; milestone S.2 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `arb_calc.rst` (subdivision-based certified root isolation) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/arb_calc.rst | flint-3.0.1/arb_calc.rst | eb11bd5a91210629a3f972d0f66d4fa562834dc234e3303d4010e7d0e08807f4 | 2026-09-28 | reST | SPEC 9.1; milestone S.2 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `arb_fmpz_poly.rst` (all roots of an integer polynomial, isolated) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/arb_fmpz_poly.rst | flint-3.0.1/arb_fmpz_poly.rst | dc023312d774353403a44f52dc4894d277e2f67dec3fda52f7154ccde6ed5d5e | 2026-09-28 | reST | SPEC 9.1; milestone S.2 |
+| flint-3.0.1 | FLINT 3.0.1 documentation, `arb_poly.rst` (polynomials over balls) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/arb_poly.rst | flint-3.0.1/arb_poly.rst | 84149b60538df3709aa75f7c4283a2ebfd212e79cf3a5b2e785ce61248d26a5d | 2026-09-28 | reST | SPEC 9.3.3; milestone S.2 |
+| flint-src-3.0.1 | FLINT 3.0.1 C sources at the tag v3.0.1, the rational reconstruction of `fmpq` (`reconstruct_fmpz.c`, `reconstruct_fmpz_2.c`, `reconstruct_fmpz_2_naive.c`, `get_cfrac.c`, `get_cfrac_helpers.c`, `cfrac_bound.c`) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/fmpq/reconstruct_fmpz_2.c | flint-src-3.0.1/fmpq/ | see refs/manifest.sha256 | 2026-09-28 | C | milestone S.3 (what FLINT does) |
+| flint-src-3.0.1 | FLINT 3.0.1 C sources at the tag v3.0.1, the matrix modules: Hermite form and its transformation, Smith form, Howell form and strong echelon form modulo `mod`, nullspace, solving (`fmpz_mat/*.c`, `nmod_mat/*.c`, `fmpz_mod_mat/*.c`) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/fmpz_mat/howell_form_mod.c | flint-src-3.0.1/fmpz_mat/, flint-src-3.0.1/nmod_mat/, flint-src-3.0.1/fmpz_mod_mat/ | see refs/manifest.sha256 | 2026-09-28 | C | milestone S.1 (what FLINT does) |
+| flint-src-3.0.1 | FLINT 3.0.1 C sources at the tag v3.0.1, Hensel lifting of factors, counting real roots, p-adic polynomial evaluation (`fmpz_poly/hensel*.c`, `fmpz_poly/num_real_roots*.c`, `padic_poly/*.c`, `arb_fmpz_poly/complex_roots.c`) | https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/fmpz_poly/hensel_lift.c | flint-src-3.0.1/fmpz_poly/, flint-src-3.0.1/padic_poly/, flint-src-3.0.1/arb_fmpz_poly/ | see refs/manifest.sha256 | 2026-09-28 | C | milestone S.2 (what FLINT does) |
 
 Not fetched, recorded as local reference: the FLINT 3.0.1 headers matching these docs are on this machine
 under `/usr/include/flint` (161 files, e.g. `padic.h`, `arb.h`, `acb.h`).
@@ -234,6 +248,231 @@ representations carry their own precision n per prime and multiply with min of p
 "separate multiplicative precision for ideles" of the SPEC. (iii) The equality of the package is loose
 equivalence, i.e. the overlap test R(a) ∩ R(b) != empty, and the thesis itself says it fails to be
 transitive. The SPEC does not adopt it; the thesis chose it deliberately (thesis.txt:1534-1538).
+
+## Table 3: milestone S, which source settles which statement
+
+Added 2026-09-28 (lane `s-sources`). The rows are the statements the design of `PLAN.md` section 6, milestone S,
+needs. Every quote is verbatim from the extraction named in the third column, and every line number was produced
+by `lanes/s-sources/mk_table.py`, which slices the quote out of the file; `lanes/s-sources/check_quotes.py` reads
+the table back and checks every quote against the file on disk. Rows of the three sub-tables are independent:
+a row states what one source says, nothing else. Where two sources differ, the difference is written in the row
+and repeated in the notes after the tables. A pipe inside a cell is written `\|`, a break between two extraction
+lines is written " / ".
+
+The rows of the three sub-tables below carry 57 quotes, 9259 characters in all; they are a second set, the count
+of 57 in the paragraph at the top of this file belongs to the tables above. `check_quotes.py` reports
+`rows: 57, quoted characters: 9259, failures: 0`.
+
+Sources that are not on disk are listed at the end of this section; nothing in the tables is cited from memory.
+
+### S.3 partial rational reconstruction
+
+| Statement needed | Source key | File and line | Quote, verbatim |
+|---|---|---|---|
+| S.3: existence. For `m`, `c` and bounds with `m > A B` there is at least one `n/d` with `n = c d mod m`, `\|n\| < A`, `0 < \|d\| < B` (Thue's lemma) | shoup-ntb | ntb-v2.txt:2184, 2185 | "Theorem 2.33 (Thue’s lemma). Let n, b, r∗ , t∗ ∈ Z, with 0 < r ∗ ≤ n < r∗ t∗ . / Then there exist r, t ∈ Z with" |
+| S.3: the object of the problem is the ratio `n/d`, not the pair `(n, d)`: from one solution one gets all the others by a non-zero multiple | shoup-ntb | ntb-v2.txt:4152, 4153 | "if r ≡ bt (mod n), / and so we can only hope to guarantee that the ratio r/t is unique." |
+| S.3: uniqueness. If `2 A B < m` then the ratio is unique: `2 A B < m` is Shoup's `n > 2 r* t*` | shoup-ntb | ntb-v2.txt:4159, 4164 | "Theorem 4.8. Let n, b, r∗ , t∗ ∈ Z with r ∗ ≥ 0, t∗ > 0, and n > 2r∗ t∗ . Further, / Then r/t = r0 /t0 ." |
+| S.3: the key inequality of that proof: `\|n1 d2 - n2 d1\| <= 2 A B < m` | shoup-ntb | ntb-v2.txt:4170, 4171 | "However, we also have / \|rt0 − r0 t\| ≤ \|r\|\|t0 \| + \|r0 \|\|t\| ≤ 2r∗ t∗ < n." |
+| S.3: the bound is stated with `0 < \|t\| <= t*` for the denominator (a sign is allowed), while the SPEC asks for `0 < d <= B` | shoup-ntb | ntb-v2.txt:4161 | "r ≡ bt (mod n), \|r\| ≤ r∗ , 0 < \|t\| ≤ t∗ ,                    (4.7)" |
+| S.3: which row of the remainder sequence is the answer: the smallest index `j` with `rj <= r*`, and the answer is that row | shoup-ntb | ntb-v2.txt:4192, 4196 | "smallest index (among 0, . . . , λ + 1) such that rj ≤ r , and set / r 0 := rj , s0 := sj , and t0 := tj ." |
+| S.3: what that row gives: `0 < \|t0\| <= t*` in every case, and under `2 A B < m` the pair is the given one up to a common factor | shoup-ntb | ntb-v2.txt:4202, 4203, 4204 | "(i) 0 < \|t0 \| ≤ t∗ ; / (ii) if n > 2r∗ t∗ , then for some non-zero integer q, / r = r 0 q, s = s0 q, and t = t0 q." |
+| S.3: the denominator bound for the chosen row is the hard part of the theorem | shoup-ntb | ntb-v2.txt:4215 | "This is the hardest part of the proof. To this end, let" |
+| S.3: the same stopping rule for the non-reconstructive case: the first remainder below `r*` (existence) | shoup-ntb | ntb-v2.txt:4045, 4048 | "smallest index (among 0, . . . , λ + 1) such that rj < r . Then, setting r := rj and / t := tj" |
+| S.3: FLINT 3.0.1 `fmpq_reconstruct_fmpz_2` promises exactly the bounded problem with the condition `2 N D < m` and the reducedness of the answer | flint-3.0.1 | fmpq.rst:560, 562, 563, 564, 565, 566, 567 | "Reconstructs a rational number from its residue `a` modulo `m`. / Given a modulus `m > 2`, a residue `0 \le a < m`, and positive `N, D` / satisfying `2ND < m`, this function attempts to find a fraction `n/d` with / `0 \le \|n\| \le N` and `0 < d \le D` such that `\gcd(n,d) = 1` and / `n \equiv ad \pmod m`. If a solution exists, then it is also unique. / The function returns 1 if successful, and 0 to indicate that no solution / exists." |
+| S.3: FLINT 3.0.1 `fmpq_reconstruct_fmpz` has no bounds argument; the bounds are fixed at `N = D = floor(sqrt((m-1)/2))` | flint-3.0.1 | fmpq.rst:574 | "Uses the balanced bounds `N = D = \lfloor\sqrt{\frac{m-1}{2}}\rfloor`." |
+| S.3: what the FLINT code does: the extended Euclidean algorithm on `(m, a)`, the quotients accumulated into a 2x2 matrix, stopped at the first remainder `<= N` | flint-src-3.0.1 | fmpq/reconstruct_fmpz_2.c:980 | "/* We have A > B > N > 0; accumulate quotients into M until A > N >= B */" |
+| S.3: the answer of FLINT is the last remainder `B` with the denominator taken from the accumulated matrix, the sign fixed by the determinant | flint-src-3.0.1 | fmpq/reconstruct_fmpz_2.c:1024, 1026, 1027, 1031 | "FLINT_ASSERT(fmpz_cmp(A, N) > 0 && fmpz_cmp(N, B) >= 0); / fmpz_swap(n, B); / fmpz_swap(d, M->_11); / fmpz_neg(n, n);" |
+| S.3: FLINT accepts the row only if the denominator is within `D` and the fraction is reduced; otherwise it returns 0 | flint-src-3.0.1 | fmpq/reconstruct_fmpz_2.c:1036, 1037, 1039, 1040 | "FLINT_ASSERT(fmpz_sgn(d) > 0); / if (fmpz_cmp(d, D) <= 0) / fmpz_gcd(R, n, d); / success = fmpz_is_one(R);" |
+| S.3: FLINT tries the integers `a` and `a - m` with denominator 1 before the algorithm | flint-src-3.0.1 | fmpq/reconstruct_fmpz_2.c:940, 941, 949, 950 | "/* Quickly identify small integers */ / if (fmpz_cmp(a, N) <= 0) / fmpz_sub(n, a, m); / if (fmpz_cmpabs(n, N) <= 0)" |
+| S.3: the balanced bound of FLINT in the source: `N` is `m >> 1`, lowered by 1 when `m` is even, then `N = D = sqrt(N)` | flint-src-3.0.1 | fmpq/reconstruct_fmpz.c:22, 25, 26 | "fmpz_fdiv_q_2exp(N, m, 1); / fmpz_sqrt(N, N); / result = _fmpq_reconstruct_fmpz_2(n, d, a, m, N, N);" |
+
+### S.1 linear systems modulo `N`
+
+| Statement needed | Source key | File and line | Quote, verbatim |
+|---|---|---|---|
+| S.1: the ring of the problem: `Z/(N)` is handled as a principal ideal ring, and a residue class ring of a PID is a stable PIR | storjohann-thesis | diss2up.txt:224, 225, 226 | "For the other forms the most general ring we / work over is a principal ideal ring — a commutative ring with identity / in which every ideal is principal." |
+| S.1: the use of the form: it is the canonical form for solving systems of linear equations over the ring of entries | storjohann-thesis | diss2up.txt:221, 223 | "A primary use of the Howell form is to solve systems of linear equations / over the domain of entries." |
+| S.1: the transforming matrix is unimodular, that is invertible over the ring | storjohann-thesis | diss2up.txt:209, 210 | "The transforming matrix U is unimodular — this simply means that U / is invertible over R." |
+| S.1: the Hermite form is not canonical for left equivalence over a PIR (it is canonical only over a PID) | storjohann-thesis | diss2up.txt:887, 888 | "we may conclude that the Hermite form is not a canon- / ical form for left equivalence of matrices over a PIR." |
+| S.1: the four conditions an echelon form over a PIR may satisfy; the Howell form is an echelon form with a maximal number of rows | storjohann-thesis | diss2up.txt:417, 418 | "The Howell form of A is an echelon form with a maximal number / of rows." |
+| S.1: the conditions of the Howell form itself: (r1) echelon position of the first nonzero entry of each row | storjohann-thesis | diss2up.txt:2058, 2065, 2066 | "(r1) Let r be the number of nonzero rows of H. Then the first r rows / of H are nonzero. / entry in row i. Then 0 = j0 < j1 < j2 < . . . < jr ." |
+| S.1: (r2) each pivot generates an ideal, every entry above it is in the ring of multipliers of that ideal | storjohann-thesis | diss2up.txt:2068 | "(r2) H[i, ji ] ∈ A(R) and H[k, ji ] ∈ R(R, H[i, ji ]) for 1 ≤ k < i ≤ r." |
+| S.1: (r4) the Howell property: rows `i+1, ..., r` generate the rows of `A` whose first `j_i` entries are zero | storjohann-thesis | diss2up.txt:2070 | "(r4) Rows i + 1, i + 2, . . . , r of H generate Sji (A)." |
+| S.1: the name and the consequence: the first `r` rows of `H` are a canonical generating set for the row module `S(A)` | storjohann-thesis | diss2up.txt:2075, 2077 | "H is the Howell canonical form of A. The first r rows of H — the Howell / basis of A — give a canonical generating set for S(A)." |
+| S.1: the certificate: a Howell transform is the 5-tuple `(Q, U, C, W, r)`, with `U` unimodular and `W` a kernel of the remaining block `T` | storjohann-thesis | diss2up.txt:2078, 2084, 2094, 2099 | "A Howell transform for A is a tuple (Q, U, C, W, r) / which satisfies and can be written using a conformal block decomposition / with U ∈ Rn×n unimodular, H the Howell basis for A and W a kernel for / that is W ∈ Rn×n and S(W ) = {v ∈ Rn \| vA = 0}." |
+| S.1: a kernel of `A` is the product `W Q U C` (it may be dense; a factorisation is also given) | storjohann-thesis | diss2up.txt:2120 | "W QU C is a kernel for A" |
+| S.1: solving with the transform: `b` is in the row module exactly when the Howell form of the right-hand side has zero last block, and then `x` is read off the transform | storjohann-thesis | diss2up.txt:2112, 2114 | "with the right hand side in Howell form. Then b ∈ S(A) if and only if / b0 = 0. If b ∈ S(A), then xA = b where x ← [ y \| 0 ]U C." |
+| S.1: existence and uniqueness of the Howell form over `Z/(N)`: Howell (1986); over an arbitrary PIR: Buchmann and Neis (1996) | storjohann-thesis | diss2up.txt:2119, 2120, 2121, 2122 | "Existence and uniqueness of the Howell form was first proven by Howell / (1986) for matrices over Z/(N ). Howell (1986)’s proof is constructive / and leads to an O(n3 ) basic operations algorithm. Buchmann and Neis / (1996) give a proof of uniqueness" |
+| S.1: the one-equation case over `Z/(n)`: solvable iff `gcd(a, n)` divides `b`, and the solution is unique modulo `n / gcd(a, n)` | shoup-ntb | ntb-v2.txt:1221, 1222, 1223, 1224 | "Theorem 2.5. Let a, n ∈ Z with n > 0, and let d := gcd(a, n). / (i) For every b ∈ Z, the congruence az ≡ b (mod n) has a solution z ∈ Z if / and only if d \| b. / (ii) For every z ∈ Z, we have az ≡ 0 (mod n) if and only if z ≡ 0 (mod n/d)." |
+| S.1: FLINT 3.0.1 `fmpz_mat_hnf_transform` gives the Hermite form together with `U` such that `U A = H`: the certificate for the integral case | flint-3.0.1 | fmpz_mat.rst:1235, 1237, 1238, 1239 | ".. function:: void fmpz_mat_hnf_transform(fmpz_mat_t H, fmpz_mat_t U, const fmpz_mat_t A) / Computes an integer matrix ``H`` such that ``H`` is the unique (row) / Hermite normal form of ``A`` along with the transformation matrix / ``U`` such that `UA = H`. The algorithm used is selected from the" |
+| S.1: FLINT 3.0.1 `fmpz_mat_snf` takes and returns only `S` and `A`: the Smith form comes without a transformation matrix | flint-3.0.1 | fmpz_mat.rst:1314 | ".. function:: void fmpz_mat_snf(fmpz_mat_t S, const fmpz_mat_t A)" |
+| S.1: FLINT 3.0.1 `fmpz_mat_howell_form_mod` computes the Howell form modulo a given `mod`, in place, and returns the number of nonzero rows | flint-3.0.1 | fmpz_mat.rst:1168, 1170, 1171, 1172, 1176 | ".. function:: slong fmpz_mat_howell_form_mod(fmpz_mat_t A, const fmpz_t mod) / Transforms `A` such that `A` modulo ``mod`` is the Howell form of the / input matrix modulo ``mod``. / For a definition of the Howell form see [StoMul1998]_. The Howell form / `A` must have at least as many rows as columns." |
+| S.1: the same function for a prime modulus is `nmod_mat_howell_form`; the definition used is the one of [StoMul1998] | flint-3.0.1 | nmod_mat.rst:716, 718, 719, 720 | ".. function:: slong nmod_mat_howell_form(nmod_mat_t A) / Puts `A` into Howell form and returns the number of non-zero rows. / For a definition of the Howell form see [StoMul1998]_. The Howell form / is computed by first putting `A` into strong echelon form and then ordering" |
+| S.1: the strong echelon form of FLINT is the Howell form up to a permutation of the rows, but with the opposite orientation: upper right against lower left | flint-3.0.1 | nmod_mat.rst:707, 710, 711, 712 | "Puts `A` into strong echelon form. The Howell form and the strong echelon / Note that [FieHof2014]_ defines strong echelon form as a lower left normal form, / while the implemented version returns an upper right normal form, / agreeing with the definition of Howell form in [StoMul1998]_." |
+| S.1: the source of `nmod_mat_howell_form` works in place and returns only the count of the nonzero rows: no transformation matrix is produced | flint-src-3.0.1 | nmod_mat/howell_form.c:15, 26, 44 | "nmod_mat_howell_form(nmod_mat_t A) / nmod_mat_strong_echelon_form(A); / return k;" |
+| S.1: the modular Howell form of `fmpz_mat` is computed with gcds against `N`, not with inverses modulo a prime, so no primality of the modulus is assumed | flint-src-3.0.1 | fmpz_mat/strong_echelon_form_mod.c:67, 78, 80 | "_fmpz_stab(fmpz_t t, const fmpz_t a, const fmpz_t b, const fmpz_t N) / fmpz_gcd(gg, g, N); / fmpz_divexact(bb, N, gg);" |
+| S.1: the solving functions of FLINT 3.0.1 for a prime field: a solution is returned if one exists, `0` and a zeroed `X` otherwise; `A` may be singular | flint-3.0.1 | nmod_mat.rst:561, 562, 565, 566, 569 | "Solves the matrix-matrix equation `AX = B` over / is the modulus of `X` which must be a prime number. `X`, `A`, and `B` / Returns `1` if a solution exists; otherwise returns `0` and sets the / elements of `X` to zero. If more than one solution exists, one of the / There are no restrictions on the shape of `A` and it may be singular." |
+| S.1: `fmpz_mod_mat` is a prime-field module: its solving functions say so | flint-3.0.1 | fmpz_mod_mat.rst:376, 380, 388 | "The modulus is assumed to be prime. / Solves the matrix-matrix equation `AX = B` over `Fp`. / The modulus is assumed to be prime." |
+| S.1: the kernel over a prime field: `nmod_mat_nullspace` returns a maximal rank matrix with `A X = 0` | flint-3.0.1 | nmod_mat.rst:647, 649, 650, 651 | "Computes the nullspace of `A` and returns the nullity. / More precisely, this function sets `X` to a maximum rank matrix / such that `AX = 0` and returns the rank of `X`. The columns of / `X` will form a basis for the nullspace of `A`." |
+| S.1: the kernel over `Q`: `fmpz_mat_nullspace` returns a basis of the right nullspace, entries not minimal | flint-3.0.1 | fmpz_mat.rst:1185, 1186, 1187 | "Computes a basis for the right rational nullspace of `A` and returns / the dimension of the nullspace (or nullity). `B` is set to a matrix with / linearly independent columns and maximal rank such that `AB = 0`" |
+
+### S.2 roots
+
+| Statement needed | Source key | File and line | Quote, verbatim |
+|---|---|---|---|
+| S.2: Hensel's lemma for a simple root, with the uniqueness of the lifted root | conrad-hensel | hensel.txt:31, 32, 33 | "Theorem 2.1 (Hensel’s lemma). If f (X) ∈ Zp [X] and a ∈ Zp satisfies / f (a) ≡ 0 mod p, f 0 (a) 6≡ 0 mod p / then there is a unique α ∈ Zp such that f (α) = 0 in Zp and α ≡ a mod p." |
+| S.2: its proof, by induction on the exponent, digit by digit | conrad-hensel | hensel.txt:37, 38, 39 | "Proof. We will prove by induction that for each n ≥ 1 there is an an ∈ Zp such that / • f (an ) ≡ 0 mod pn , / • an ≡ a mod p." |
+| S.2: the stronger form `\|f(a)\| < \|f'(a)\|^2`, with the distance of the root and the uniqueness | conrad-hensel | hensel.txt:315, 316, 317, 318, 319 | "Theorem 4.1 (Hensel’s lemma). Let f (X) ∈ Zp [X] and a ∈ Zp satisfy / \|f (a)\|p < \|f 0 (a)\|2p . / There is a unique α ∈ Zp such that f (α) = 0 in Zp and \|α − a\|p < \|f 0 (a)\|p . Moreover, / (1) \|α − a\|p = \|f (a)/f 0 (a)\|p < \|f 0 (a)\|p , / (2) \|f 0 (α)\|p = \|f 0 (a)\|p ." |
+| S.2: the strong form is not a special case of the simple-root form: it also applies when `a mod p` is a multiple root | conrad-hensel | hensel.txt:310, 311 | "It can be applied to cases where a mod p is a multiple / root of f (X) mod p: f (a) ≡ 0 mod p and f 0 (a) ≡ 0 mod p." |
+| S.2: Hensel's lemma for `Z[X]` with the explicit lift formula (Baker, Theorem 1.33) | baker-padic | padicnotes.txt:572, 573, 574 | "Theorem 1.33 (Hensel’s Lemma: ﬁrst version). Let f (X) = dk=0 ak X k ∈ Z[X]and sup- / pose that x ∈ Z is a root of f modulo ps (with s ⩾ 1) and that f ′ (x) is a unit modulo p. Then / there is a unique root x′ ∈ Z/ps+1 of f modulo ps+1 satisfying x′ ≡s x; moreover, x′ is given by" |
+| S.2: a general version with the hypotheses `f (a) ≡ 0 mod p^(2r-1)` and `f' (a) ≢ 0 mod p^r` (Baker, Theorem 1.37); no uniqueness is stated there | baker-padic | padicnotes.txt:662, 670, 671, 672 | "Theorem 1.37 (Hensel’s Lemma: General Version). Let f (X) ∈ Z[X], r ⩾ 1 and a ∈ Z, / Then there exists a′ ∈ Z such that / f (a′ ) ≡ 0       and       a′ ≡r a. / p2r+1                  p" |
+| S.2: a different hypothesis shape over a local field: `\|f (x)\| < 1` and `\|f' (x)\| = 1` for a monic polynomial, with the weaker conclusion `\|y - x\| <= \|f (x)\|` (Thorne, Lemma 3.6) | thorne-padic | jackthornenotes.txt:567, 569, 570, 571, 572 | "Lemma 3.6. Let f (x) ∈ OK [x] be a monic polynomial, and suppose / (1) \|f (x)\| < 1; / (2) \|f 0 (x)\| = 1. / Then there exists a unique y ∈ OK such that f (y) = 0 and \|y − x\| ≤ / \|f (x)\|." |
+| S.2: the same note states the simple-root case over `Z_p` and proves it digit by digit (Thorne, Lemma 3.7) | thorne-padic | jackthornenotes.txt:574, 576, 577, 578, 579, 580 | "Lemma 3.7. Let f (x) ∈ Zp [x] be a monic polynomial, and suppose / (1) f (x) ≡ 0 mod p; / (2) f 0 (x) 6≡ 0 mod p. / Then there exists a unique y ∈ Zp such that f (y) = 0 and y ≡ x / mod p. / Proof. Let us prove the second version. We construct the p-adic ex-" |
+| S.2: FLINT 3.0.1 `fmpz_poly` lifts factors, not roots: `fmpz_poly_hensel_lift_once` lifts a squarefree product of local factors to `p^N` | flint-3.0.1 | fmpz_poly.rst:2993, 2995, 2997, 2998, 3000 | ".. function:: void fmpz_poly_hensel_lift_once(fmpz_poly_factor_t lifted_fac, const fmpz_poly_t f, const nmod_poly_factor_t local_fac, slong N) / This function does a Hensel lift. / It lifts local factors stored in ``local_fac`` of `f` to `p^N`, / where `N \geq 2`. The lifted factors will be stored in ``lifted_fac``. / intended for end users. The product of local factors must be squarefree." |
+| S.2: FLINT 3.0.1 counts real roots exactly by a Sturm sequence, for a squarefree input, and returns no isolating intervals | flint-3.0.1 | fmpz_poly.rst:3251, 3253, 3254, 3256 | ".. function:: slong fmpz_poly_num_real_roots_sturm(const fmpz_poly_t pol) / Returns the number of real roots of the squarefree polynomial ``pol`` / using Sturm sequence. / The polynomial is assumed to be squarefree." |
+| S.2: the certified isolation of real roots of a real analytic function: a flag of 1 means exactly one root, any other flag is undetermined, and completeness is read off the flags | flint-3.0.1 | arb_calc.rst:127, 129, 131, 132, 133 | "* Subintervals with a flag of 1 contain exactly one (single) root. / * Subintervals with any other flag may or may not contain roots. / If no flags other than 1 occur, all roots of the function on *interval* / have been isolated. If there are output subintervals on which the / existence or nonexistence of roots could not be determined," |
+| S.2: what the isolation cannot do: roots of multiplicity above one, and roots at the end points, are not isolated | flint-3.0.1 | arb_calc.rst:136, 137, 138 | "bounds for the breaking criteria). Note that roots of multiplicity / higher than one and roots located exactly at endpoints cannot be isolated / by the algorithm." |
+| S.2: FLINT 3.0.1 isolates all the roots of an integer polynomial at once: the enclosures are disjoint, so all roots are isolated, but the input must be squarefree | flint-3.0.1 | arb_fmpz_poly.rst:66, 68, 70, 71, 79 | ".. function:: void arb_fmpz_poly_complex_roots(acb_ptr roots, const fmpz_poly_t poly, int flags, slong prec) / Writes to *roots* all the real and complex roots of the polynomial *poly*, / The root enclosures are guaranteed to be disjoint, so that / all roots are isolated. / The input polynomial *must* be squarefree. For a general polynomial," |
+| S.2: FLINT's own remark on that function: adequate, but not competitive with the state of the art for real roots alone | flint-3.0.1 | arb_fmpz_poly.rst:103, 104, 105 | "This implementation should be adequate for general use, but it is not / currently competitive with state-of-the-art isolation / methods for finding real roots alone." |
+| S.2: the `p`-adic polynomial of FLINT 3.0.1 has no root finding; it offers the integrality test that a Hensel step needs | flint-3.0.1 | padic_poly.rst:198, 200, 201, 202 | ".. function:: int padic_poly_get_fmpz_poly(fmpz_poly_t rop, const padic_poly_t op, const padic_ctx_t ctx) / Sets the integer polynomial ``rop`` to the value of the `p`-adic / polynomial ``op`` and returns `1` if the polynomial is `p`-adically / integral.  Otherwise, returns `0`." |
+| S.2: the precision of an evaluation at a `p`-adic point, as FLINT states it | flint-3.0.1 | padic_poly.rst:438, 446, 447 | "Sets the `p`-adic number ``y`` to ``poly`` evaluated at `a`, / `y = F(a)` is defined to precision `N` when `a` is integral and / `N+(n-1)b` when `b < 0`." |
+
+### Notes for the design of milestone S
+
+Where two sources state the same theorem with different hypotheses or different constants, both are in the tables
+above. The differences that matter:
+
+1. **The denominator sign (S.3).** Shoup states the bounded problem with `0 < |t| <= t*` (row of
+   `shoup-ntb:ntb-v2.txt:4161`), so `t` may be negative; `docs/SPEC.md` 9.2 and
+   `proofs/quotient.md` Proposition 13 ask for `0 < d <= B`, and FLINT asserts `fmpz_sgn(d) > 0`. The EEA row of
+   Shoup's Theorem 4.9 can have `t0 < 0`; FLINT fixes the sign with the determinant of the accumulated 2x2 matrix
+   (`fmpq/reconstruct_fmpz_2.c:1031`). The design must state which sign convention it uses and must not quote
+   Shoup's `|t|` as if it were `d`.
+2. **The constant is the same (S.3).** `2 A B < m` in the SPEC is Shoup's `n > 2 r* t*`
+   (`ntb-v2.txt:4159`) and FLINT's `2ND < m` (`fmpq.rst:563`). No source on disk gives a different constant for
+   uniqueness. `2 A B = m` with two solutions (Proposition 13.2) is not contradicted by Shoup: his remark at
+   `ntb-v2.txt:4152-4153` says the pair is determined only up to a non-zero multiple, which is exactly what the
+   example `1/1` and `-1/1` for `m = 2` exhibits. The sharpness example itself is a project calculation, not a
+   quote.
+3. **What FLINT guarantees and what it does not (S.3).** The documentation says the answer is unique if it exists
+   (`fmpq.rst:565`) and that 0 means no solution. The code, however, accepts the EEA row only when `d <= D` and
+   `gcd(n, d) = 1` (`fmpq/reconstruct_fmpz_2.c:1037, 1040`). Under `2 N D < m` these two conditions cannot lose a
+   solution: by Shoup's Theorem 4.9(i) the row of the EEA has `|t0| <= t*` whenever a solution with `|t| <= t*`
+   exists, and the reduced form of a solution is again a solution inside the same bounds (own calculation). So the
+   return value 0 does mean "no solution" under the documented hypotheses, and a caller outside those hypotheses
+   (in particular with `2 N D >= m`) gets neither uniqueness nor the meaning of 0. The SPEC's fourth result,
+   "uniqueness not certified", is not a value FLINT can return; the design must produce it itself.
+4. **Existence is not the SPEC's hypothesis (S.3).** `proofs/quotient.md` Proposition 13 claims at most one
+   solution when `2 A B < m`; it does not claim that a solution exists. Existence is Thue's lemma
+   (`ntb-v2.txt:2184`) and needs `m > A B` with the strict bounds of that statement. A solver must therefore be
+   prepared to return "none" for `2 A B < m`.
+5. **The prime-field assumption (S.1).** `nmod_mat_can_solve` and `fmpz_mod_mat_can_solve` are documented for a
+   prime modulus (`nmod_mat.rst:562`, `fmpz_mod_mat.rst:388`), and `fmpz_mod_mat_solve` says "The modulus is
+   assumed to be prime". For a general `N` the entry point of FLINT 3.0.1 is `fmpz_mat_howell_form_mod(A, mod)`,
+   whose source computes gcds against `N` (`fmpz_mat/strong_echelon_form_mod.c:78, 80`), so no primality is used
+   there. The design of S.1 for a composite `N` cannot be built on `fmpz_mod_mat`.
+6. **The certificate is not where FLINT puts it (S.1).** `fmpz_mat_hnf_transform` returns `U` with `U A = H`
+   (`fmpz_mat.rst:1239`); `fmpz_mat_snf` has no such argument (`fmpz_mat.rst:1314`); and
+   `nmod_mat_howell_form` works in place and returns only the number of nonzero rows
+   (`nmod_mat/howell_form.c:15, 44`). The transformation for the Howell form is, in Storjohann's terms, the tuple
+   `(Q, U, C, W, r)` (`diss2up.txt:2078`), and the kernel is the product `W Q U C` (`diss2up.txt:2120`). In the
+   three fetched matrix modules the only documented output that is a transformation matrix is the `U` of
+   `fmpz_mat_hnf_transform` (`grep -n transform` on the three `.rst` files: `fmpz_mat.rst:1235` is the only
+   occurrence that is not about a similarity transform or a conversion to dense form). The design of the
+   certificate must therefore either track the row operations itself or take them from the HNF over the integers.
+7. **The orientation of the echelon form (S.1).** FLINT returns an upper right normal form and says so
+   (`nmod_mat.rst:711`); the strong echelon form of [FieHof2014] is a lower left normal form. Storjohann's
+   conditions (r1) to (r4) (`diss2up.txt:2058, 2068, 2070`) are the ones FLINT attributes to [StoMul1998]. A
+   design that writes its own row reduction must fix the orientation before it states a normal form.
+8. **Two shapes of Hensel's lemma (S.2).** Conrad's Theorem 2.1 (`hensel.txt:31`) is the simple-root form with
+   the unique lift; his Theorem 4.1 (`hensel.txt:315`) is the strong form `|f(a)| < |f'(a)|^2`, which also applies
+   when `a mod p` is a multiple root (`hensel.txt:310-311`), and it adds `|alpha - a| = |f(a)/f'(a)|`. Thorne's
+   Lemma 3.6 (`jackthornenotes.txt:567`) has different hypotheses: `f` monic, `|f(x)| < 1`, `|f'(x)| = 1`, and the
+   weaker conclusion `|y - x| <= |f(x)|`, not `|f(x)/f'(x)|`. Baker's Theorem 1.37 (`padicnotes.txt:662`) has a
+   third shape, `f(a) ≡ 0 mod p^(2r-1)` and `f'(a) ≢ 0 mod p^r`, and states no uniqueness. The square root of the
+   SPEC at 2 ("unit part 1 modulo 8") is the case `f = X^2 − u`, `a = 1`, `p = 2` of Theorem 4.1, in which
+   `|f(1)|_2 <= 1/8 <= 1/4 = |f'(1)|^2_2`; that reading is an own calculation, not a quotation. The
+   digit-by-digit proofs are in `hensel.txt:37` and `jackthornenotes.txt:580`.
+9. **What FLINT does not have (S.2).** `fmpz_poly` lifts factors, not roots (`fmpz_poly.rst:2997`), and
+   `padic_poly` has no root finding at all; the greps behind this statement are in the report of the lane. Simple
+   roots by Hensel lifting have to be written in the project. For real roots, FLINT 3.0.1 offers two things:
+   `fmpz_poly_num_real_roots_sturm` counts the real roots of a squarefree polynomial and returns no intervals
+   (`fmpz_poly.rst:3253`), while `arb_fmpz_poly_complex_roots` isolates all the roots of a squarefree integer
+   polynomial, real ones first in ascending order (`arb_fmpz_poly.rst:68, 70, 73`), and `arb_calc_isolate_roots`
+   isolates the roots of a real analytic function with an explicit completeness rule read off the flags
+   (`arb_calc.rst:127, 131`). A "completeness status" for the SPEC is therefore: complete when no flag other than
+   1 occurs, and incomplete otherwise, with the two cases that the algorithm cannot isolate at all (multiplicity
+   above one, roots at the end points) excluded by the input, not by the status.
+
+### Not on disk, and what it would settle
+
+Nothing below was fetched; no row of the tables above depends on any of it.
+
+1. **P. S. Wang, "Continued fraction expansions of rational numbers" (or the 1981 paper on rational
+   reconstruction), and P. S. Wang, R. K. Guy, H. Davenport, "On the determination of a rational number from
+   its modular residue" (1982).** Not offered lawfully free; both are cited by Monagan. They would settle the
+   attribution and the date of the EEA reconstruction method, and the sharper uniqueness statement with a
+   condition on `gcd(d, m)`. Shoup 4.6 already gives the theorem and its proof in full, so nothing in the design
+   depends on them. `[source pending: Wang 1981 and Wang-Guy-Davenport 1982, for the attribution only]`
+2. **M. Monagan, "Maximal quotient rational reconstruction", ISSAC 2004.** No copy on the author's page or on
+   arXiv was found. It would settle the *maximal quotient* variant, that is the largest bound pair for which a
+   solution is certified to exist, and the treatment of a bound `B` that is not reached by the EEA. Not needed for
+   the bounded problem of `SPEC.md` 9.2. `[source pending: Monagan, maximal quotient rational reconstruction]`
+3. **G. E. Collins and M. J. Encarnacion (1995), "Extending thecontinued fraction algorithm for computing
+   rational reconstructions".** Not lawfully free. It would settle the incremental (single precision) version of
+   the algorithm, which matters only for performance. `[source pending: Collins and Encarnacion 1995]`
+4. **J. von zur Gathen and J. Gerhard, "Modern Computer Algebra", Theorem 5.26.** A book, not lawfully free; TJO
+   may have a copy. It states the rational reconstruction theorem; Shoup 4.6 replaces it, with the same constant.
+   `[source pending: von zur Gathen and Gerhard 5.26, if the project's citation should name it]`
+5. **A. Storjohann and T. Mulders, "Fast algorithms for linear algebra modulo N", ESA 1998.** Not lawfully free
+   on the author's page (only the later dissertation was found). It is the paper FLINT cites as [StoMul1998] for
+   the definition of the Howell form (`nmod_mat.rst:719`). Storjohann's dissertation restates the definition and
+   the conditions (r1) to (r4), so the definition is settled; the complexity bounds of the ESA paper are not.
+   `[source pending: Storjohann and Mulders 1998, for the complexity bounds]`
+6. **M. Fiedler and T. Hofmann, the paper behind [FieHof2014].** The bibliography entry is not in the fetched
+   `.rst` files and no copy was found by the searches of this lane. It is the source of FLINT's strong echelon
+   form and of `fmpz_mat_hnf_modular_eldiv`. The definition FLINT uses is stated in `nmod_mat.rst:710-712` and the
+   algorithm is in `nmod_mat/strong_echelon_form.c`. `[source pending: Fiedler and Hofmann, [FieHof2014]]`
+7. **J. A. Howell (1986).** No open copy found. Existence and uniqueness of the Howell form over `Z/(N)` is
+   quoted from Storjohann's dissertation (`diss2up.txt:2119-2120`), which cites Howell for it. `[source pending:
+   Howell 1986, for the original proof]`
+8. **Keith Conrad, the note on the Smith normal form.** It is not in the current index of his expository notes
+   (`https://kconrad.math.uconn.edu/blurbs`, checked 2026-09-28: 265 entries, no entry on the Smith or Hermite
+   form); the old path `blurb/papers/smithnormalform.pdf` returns 404. Storjohann's dissertation and the FLINT
+   documentation are used instead. `[source pending: nothing; the note is not needed]`
+
+### URLs tried on 2026-09-28 that did not give a source
+
+Every fetch of this lane used `curl --max-time 180`; a URL that failed once was tried once more. These are the
+addresses that were tried and did not deliver a document (HTTP status in brackets; a document that arrived but
+was not the paper wanted is marked):
+
+- `https://kconrad.math.uconn.edu/blurb/papers/hensel.pdf` [404], `.../smithnormalform.pdf` [404],
+  `.../rationalcrt.pdf` [404], `https://kconrad.math.uconn.edu/blurb/papers/` [404],
+  `https://kconrad.math.uconn.edu/blurb/index.php` [404] (the site moved to `blurbs/`; the Hensel note was
+  found at `blurbs/gradnumthy/hensel.pdf`).
+- `https://kconrad.math.uconn.edu/blurbs/ugradnumthy/smith.pdf` [404],
+  `https://kconrad.math.uconn.edu/blurbs/ugradnumthy/smithnormalform.pdf` [404] (item 8 above).
+- `https://shoup.net/ntb/ntb.pdf` [404]; the book is at `https://shoup.net/ntb/ntb-v2.pdf`, which was fetched.
+- `http://www.cs.sfu.ca/~mmonagan/Research/papers/ISSAC2004.pdf` [404] (item 2 above; no other address of
+  Monagan's paper was tried, the arXiv API query for the title returned no hit).
+- `https://www.inf.ethz.ch/personal/astorjoh/PhDThesis.pdf` [an XML error page, 711 bytes] and
+  `https://www.algorism.com/~storjohann/PhDThesis.pdf` [an HTML error page, 114 bytes]; the dissertation was
+  fetched from `https://cs.uwaterloo.ca/~astorjoh/diss2up.pdf`.
+- `https://wstein.org/ent/ea.pdf` [404] (a candidate for a text with the Hermite form; not needed afterwards).
+- The arXiv API query `all:"Howell form"` returned 0 entries, so no arXiv copy of [StoMul1998] or [FieHof2014]
+  was found through it.
+- No address was tried for Wang 1981, Wang-Guy-Davenport 1982, Collins and Encarnacion 1995, Howell 1986 or
+  von zur Gathen and Gerhard: these are not offered free, and the brief asks for a lawful copy only.
+
+### Sources pending for milestone S
+
+1. A statement of the *maximal quotient* rational reconstruction, if the design of S.3 wants to certify existence
+   with a bound pair larger than `A B < m`: `[source pending: Monagan 2004, item 2 above]`.
+2. The complexity bounds of the modular linear algebra algorithms of [StoMul1998] and [FieHof2014], if the design
+   of S.1 needs them for `PERF.md`: `[source pending: Storjohann and Mulders 1998; Fiedler and Hofmann]`.
+3. Nothing is pending for S.2: Hensel's lemma in both forms is on disk with proofs, and the FLINT contract for
+   real root isolation is on disk.
 
 ## Sources pending
 

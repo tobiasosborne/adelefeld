@@ -54,6 +54,23 @@ expositions of the same conventions.
 | `uops-zen2` | uops.info instruction pages (Zen 2 measurements) |
 | `uops-intel` | uops.info instruction pages (all microarchitectures; Alder Lake-P column for the Intel profile), fetched by `fetch_intel.sh` |
 | `hvh-mult` | D. Harvey, J. van der Hoeven, Integer multiplication in time O(n log n) (HAL) |
+| `shoup-ntb` | V. Shoup, A Computational Introduction to Number Theory and Algebra, v2 (2008), author's copy |
+| `storjohann-thesis` | A. Storjohann, Algorithms for Matrix Canonical Forms, Diss. ETH No. 13922 (2013) |
+| `conrad-hensel` | K. Conrad, Hensel's lemma (expository note) |
+| `flint-src-3.0.1` | FLINT 3.0.1 C sources at the tag v3.0.1: the C behind the functions of S.1, S.2 and S.3 |
 
 The matching FLINT headers for version 3.0.1 are on this machine under `/usr/include/flint` and are not
 fetched; `docs/sources.md` records the paths.
+
+## Milestone S
+
+Added 2026-09-28 for the solvers of `docs/PLAN.md` section 6. `docs/sources.md` table 3 says which of these
+settles which statement of S.1, S.2 and S.3, and lists what is not on disk. Four keys were added:
+`shoup-ntb` (Section 4.6, Theorems 4.8 and 4.9, with the extended Euclidean algorithm and the bound `2 A B < m`),
+`storjohann-thesis` (the Howell form, its transform, the conditions (r1) to (r4)),
+`conrad-hensel` (Hensel's lemma, the simple-root form and the strong form `|f(a)| < |f'(a)|^2`) and
+`flint-src-3.0.1` (the C sources at the tag v3.0.1 of the functions of S.1, S.2 and S.3; the keys
+`flint-3.0.1` gains eight further `.rst` files). The references that are not offered lawfully free (Wang 1981,
+Wang-Guy-Davenport 1982, Collins and Encarnacion 1995, Monagan ISSAC 2004, von zur Gathen and Gerhard,
+Storjohann and Mulders 1998, Howell 1986, Fiedler and Hofmann) are listed in `docs/sources.md` with what each
+would settle; TJO may supply copies.
