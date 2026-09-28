@@ -46,8 +46,10 @@ write it into the memory `orchestration-model-tiers`.
 - `ADF_DUMP_QCLASS_EXP_MAX` is in `include/adelefeld/dump.h` and conventions 8.4. Only 60 of the 1012
   mutants of `src/dump.c` were run.
 
-**Waits for TJO.** As in the section below. For M1-D9 the row of SPEC 15 now says that the bound holds for the
-form `pieces` and not for `lift`; the row is still PROPOSED.
+**Waits for TJO.** Nothing. TJO ratified on 2026-09-28 (night session): M1-D9 as written (the bound holds for
+the form `pieces`, not for `lift`); the wording of M1-D1 and M1-D6; the driver keeps `equal`, `different`,
+`undecided` for `compare`, and M1-D1 maps them to the terms of SPEC 4.2. The list "Waits for TJO" of the
+section below is settled by this.
 
 **Order of work from here.** The comparison of effort levels (one hour, first thing); m1-invariants alone
 (adf-xk4; Sonnet at the level chosen, codex as reviewer); m1-repair-tools alone, overnight (adf-xf4, adf-4lj);
