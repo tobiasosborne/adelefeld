@@ -25,7 +25,21 @@
    - on a status other than OK the output value, *nctx, the descriptors and *out are untouched
      (conventions 4.3, closure C2);
    - on OK the value satisfies its predicate (conventions 5), and dumping it gives the input byte
-     for byte (CV-38); adf_scaled_get_str gives a value text that adf_fball_set_str reads. */
+     for byte (CV-38); adf_scaled_get_str gives a value text that adf_fball_set_str reads.
+
+   The length of a printed text is read in a statement of its own, after the call that writes it
+   (finding R3 of the review in docs/reviews/m1/dump/review.md: `same_bytes(adf_rat_dump_str(&tl,
+   x), tl, s, n)` reads tl as an argument of the call that writes it, which the order of
+   evaluation of the arguments of a call leaves open, and the seed "adf1 Q rat 1 1" then aborted
+   under valgrind with an uninitialised value).
+
+   The output of every type is zeroed with memset before its life cycle starts, so that the padding
+   between the fields of the struct is defined. The initialisers of the library do not write it
+   (adf_fball_init writes A, H, d, backend, mctx and res, and the struct has four padding bytes
+   after backend), and the check of an untouched output compares the whole struct byte for byte.
+   Without the memset that comparison reads undefined bytes: valgrind reported 120 errors from 36
+   contexts for the seed, in the four types with padding, and none for rat, whose struct is an fmpq
+   and has none. The check itself is kept as it is; only the bytes it reads become defined. */
 
 #include <stddef.h>
 #include <stdint.h>
@@ -105,7 +119,7 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
          size_t nb, const adf_modctx_struct * ctx)
 {
     int st;
-    size_t tl;
+    size_t tl = 0;
 
     switch (ty)
     {
@@ -113,6 +127,7 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
         {
             adf_rat_t x;
             adf_rat_struct copy;
+            memset(x, 0, sizeof(*x));
             adf_rat_init(x);
             fmpq_set_si(x->q, 12345, 7);
             memcpy(&copy, x, sizeof(copy));
@@ -122,7 +137,10 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
             else
             {
                 REQUIRE(adf_rat_is_canonical(x));
-                same_bytes(adf_rat_dump_str(&tl, x), tl, s, n);
+                {
+                    char * t = adf_rat_dump_str(&tl, x);
+                    same_bytes(t, tl, s, n);
+                }
             }
             adf_rat_clear(x);
             break;
@@ -131,6 +149,7 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
         {
             adf_fball_t x;
             adf_fball_struct copy;
+            memset(x, 0, sizeof(*x));
             adf_fball_init(x);
             fmpz_set_si(x->A, 5);
             fmpz_set_si(x->H, 18);
@@ -142,7 +161,10 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
             else
             {
                 REQUIRE(fball_ok(x));
-                same_bytes(adf_fball_dump_str(&tl, x), tl, s, n);
+                {
+                    char * t = adf_fball_dump_str(&tl, x);
+                    same_bytes(t, tl, s, n);
+                }
             }
             adf_fball_clear(x);
             break;
@@ -151,6 +173,7 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
         {
             adf_scaled_t x;
             adf_scaled_struct copy;
+            memset(x, 0, sizeof(*x));
             fmpq_init(x->s);
             fmpz_init(x->u);
             x->mctx = (const adf_modctx_struct *) (void *) 0x10;
@@ -174,7 +197,10 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
                 else
                     REQUIRE(fmpq_sgn(x->s) > 0 && fmpz_sgn(x->u) >= 0 && fmpz_cmp(x->u, K) < 0);
                 fmpz_clear(K);
-                same_bytes(adf_scaled_dump_str(&tl, x), tl, s, n);
+                {
+                    char * t = adf_scaled_dump_str(&tl, x);
+                    same_bytes(t, tl, s, n);
+                }
                 v = adf_scaled_get_str(&tl, x);
                 adf_fball_init(f);
                 REQUIRE(v != NULL && v[tl] == '\0' && adf_fball_set_str(f, v, tl, NULL) == ADF_OK);
@@ -189,6 +215,7 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
         {
             adf_adele_t x;
             adf_adele_struct copy;
+            memset(x, 0, sizeof(*x));
             adf_adele_init(x);
             arb_set_si(x->inf, 7);
             memcpy(&copy, x, sizeof(copy));
@@ -199,7 +226,10 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
             else
             {
                 REQUIRE(arb_is_finite(x->inf) && fball_ok(&x->fin));
-                same_bytes(adf_adele_dump_str(&tl, x), tl, s, n);
+                {
+                    char * t = adf_adele_dump_str(&tl, x);
+                    same_bytes(t, tl, s, n);
+                }
             }
             adf_adele_clear(x);
             break;
@@ -208,6 +238,7 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
         {
             adf_cadele_t x;
             adf_cadele_struct copy;
+            memset(x, 0, sizeof(*x));
             adf_cadele_init(x);
             acb_set_si(x->inf, 7);
             memcpy(&copy, x, sizeof(copy));
@@ -218,7 +249,10 @@ load_one(int ty, const char * s, size_t n, const adf_text_limits_t * lim, const 
             else
             {
                 REQUIRE(acb_is_finite(x->inf) && fball_ok(&x->fin));
-                same_bytes(adf_cadele_dump_str(&tl, x), tl, s, n);
+                {
+                    char * t = adf_cadele_dump_str(&tl, x);
+                    same_bytes(t, tl, s, n);
+                }
             }
             adf_cadele_clear(x);
             break;
@@ -315,7 +349,7 @@ from_dump_all(const char * p, size_t size, const adf_text_limits_t * lim)
         prev = st;
         if (st == ADF_OK)
         {
-            size_t tl;
+            size_t tl = 0;
             char * t = adf_modctx_dump_str(&tl, c);
             REQUIRE(t != NULL && t[tl] == '\0' && c != sentinel);
             flint_free(t);

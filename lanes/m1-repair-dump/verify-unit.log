@@ -1,0 +1,10 @@
+{"name": "test_dump", "command": "lanes/m1-repair-dump/verify/build/test_dump", "exit": 0, "seconds": 0.032468}
+{"name": "test_dump_ctx", "command": "lanes/m1-repair-dump/verify/build/test_dump_ctx", "exit": 0, "seconds": 0.065267}
+{"name": "test_dump_golden", "command": "lanes/m1-repair-dump/verify/build/test_dump_golden", "exit": 0, "seconds": 0.016328}
+{"name": "bridge", "command": "lanes/m1-repair-dump/verify/bridge", "exit": 0, "seconds": 0.004118}
+{"name": "roundtrip", "command": "lanes/m1-repair-dump/verify/roundtrip", "exit": 0, "seconds": 0.015931}
+{"name": "status", "command": "python3 -B lanes/m1-repair-dump/verify/status_findings.py", "exit": 0, "seconds": 0.064895}
+
+real	0m0,254s
+user	0m0,177s
+sys	0m0,036s

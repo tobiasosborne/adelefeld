@@ -255,11 +255,13 @@ ADF_TEST(golden_dump_every_row)
             ntyped++;
         }
     }
-    /* tests/golden/README.md: 165 vectors in dump.tsv. */
-    ADF_CHECK_MSG(nrows == 165, "%zu rows", nrows);
-    /* 76 rows with a body of dump.h (the @gen row counted, the row with a leading space not: its
+    /* tests/golden/README.md: 175 vectors in dump.tsv (165 before the rows of lane m1-repair-dump,
+       which add the whitespace of the body, the exponent bound of M1-D9 and the block cap of
+       M1-D5; tests/golden/README.md still says 165 and is not this lane's to change). */
+    ADF_CHECK_MSG(nrows == 175, "%zu rows", nrows);
+    /* 77 rows with a body of dump.h (the @gen row counted, the row with a leading space not: its
        third token is "Q"), 23 of them valid; counted in Python from the file */
-    ADF_CHECK_MSG(ntyped == 76 && nvalid == 23 && nstatus == 106, "%zu typed rows, %zu valid, %zu status", ntyped,
+    ADF_CHECK_MSG(ntyped == 77 && nvalid == 23 && nstatus == 115, "%zu typed rows, %zu valid, %zu status", ntyped,
                   nvalid, nstatus);
     golden_close(f);
 }

@@ -1,0 +1,80 @@
+mutate: src/dump.c: 1012 mutants
+mutate: 1012 mutants, 60 of them run (--limit 60, --seed 20260928)
+mutate: the baseline passes (38.9 s)
+
+SURVIVED src/dump.c:938:30 cmp: '==' -> '!='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -936,5 +936,5 @@
+                   if (!dp_count(c, 8, &L))
+                       return dp_parse_fail(st);
+  -                if (st->mode == DP_LIMITS && dp_over_items(L, st->lim))
+  +                if (st->mode != DP_LIMITS && dp_over_items(L, st->lim))
+                       return dp_fail(st, ADF_LIMIT);
+                   for (j = 0; j < L + 3; j++)
+
+
+SURVIVED src/dump.c:503:30 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -501,5 +501,5 @@
+           for (i = 0; ok && i < f->ctx.k; i++)
+           {
+  -            ulong q = 0, r = 0;
+  +            ulong q = 0, r = 1;
+               dp_span tq = dp_tok_at(c->s, c->len, &qpos);
+               dp_span tr = dp_tok_at(c->s, c->len, &rpos);
+
+
+SURVIVED src/dump.c:883:28 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -881,5 +881,5 @@
+               {
+                   if (!dp_w_arb(c, st, &tmp) || !dp_w_arb(c, st, &tmp))
+  -                    return 0;
+  +                    return 1;
+               }
+               else if (!dp_kw_is(t, "n"))
+
+
+NOT COMPILED src/dump.c:567:9 logic: '&&' -> '||'
+  src/dump.c:566:31: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:168:28 op: '*' -> '/'
+  src/dump.c:168:27: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1375:10 op: '*' -> '/'
+  src/dump.c:1375:10: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/dump.c:231:28 logic: '&&' -> '||'
+  src/dump.c:251:21: error: ‘t.n’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/dump.c:1080:5 negate_if: 'if(pos == len)' -> 'if(!(pos == len))'
+  src/dump.c:1686:15: error: ‘P.node.form’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/dump.c:746:26 logic: '||' -> '&&'
+  src/dump.c:746:26: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+TIMED OUT src/dump.c:1026:20 zero_one: '1' -> '0'
+  the tests did not finish in 120 s
+
+TIMED OUT src/dump.c:656:12 zero_one: '1' -> '0'
+  the tests did not finish in 120 s
+
+TIMED OUT src/dump.c:1008:13 negate_if: 'if(!dp_w_arch(c, st, kind == DP_ADELE ? 4 : 8, &nd->narch, nd->arb) || !dp_w_fb(c, st, &nd->fb))' -> 'if(!(!dp_w_arch(c, st, kind == DP_ADELE ? 4 : 8, &nd->narch, nd->arb) || !dp_w_fb(c, st, &nd->fb)))'
+  the tests did not finish in 120 s
+
+TIMED OUT src/dump.c:358:16 cmp: '==' -> '!='
+  the tests did not finish in 120 s
+
+mutate: 60 mutants in 1435.3 s: 47 killed, 3 survived, 6 not compiled, 4 timed out, 0 excused
+mutate: FAILED: 3 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1
+
+real	23m55,965s
+user	53m53,320s
+sys	3m33,356s

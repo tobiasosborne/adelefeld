@@ -1,0 +1,8 @@
+{"name": "build", "command": "make -j2 BUILD=lanes/m1-repair-dump/verify/build 'CFLAGS=-std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror' lanes/m1-repair-dump/verify/build/test_dump lanes/m1-repair-dump/verify/build/test_dump_ctx lanes/m1-repair-dump/verify/build/test_dump_golden", "exit": 0, "seconds": 4.381339}
+{"name": "compile-bridge.so", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude -fPIC -shared lanes/m1-repair-dump/verify/bridge.c lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/bridge.so", "exit": 0, "seconds": 0.316952}
+{"name": "compile-bridge", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude lanes/m1-repair-dump/verify/bridge.c lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/bridge", "exit": 0, "seconds": 0.316899}
+{"name": "compile-roundtrip", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude lanes/m1-repair-dump/verify/roundtrip.c lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/roundtrip", "exit": 0, "seconds": 0.367017}
+
+real	0m5,452s
+user	0m8,515s
+sys	0m0,920s

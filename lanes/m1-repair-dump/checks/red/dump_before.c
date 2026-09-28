@@ -345,7 +345,6 @@ typedef struct
     int mode;
     const adf_text_limits_t * lim;
     int st;                            /* ADF_OK, or the status of the first failure */
-    int arb_exp_limit;                 /* DP_LIMITS: bound the arb exponents (M1-D9) */
     dp_node * node;                    /* filled in every mode */
     size_t nocc;                       /* DP_OCC: the context occurrences met so far */
     adf_ctx_desc_t * descs;            /* DP_OCC: occurrence first + i is copied into descs[i] */
@@ -558,14 +557,6 @@ dp_w_arb(dp_cur * c, dp_state * st, dp_arb * a)
 {
     if (!dp_h(c, &a->m) || !dp_h(c, &a->e) || !dp_h(c, &a->rm) || !dp_h(c, &a->re))
         return dp_parse_fail(st);
-    /* The bound of M1-D9 on the exponents of a qclass piece is a limit of stage 4
-       (conventions 8.5 item 4), so it is decided here, on the digit strings, before any
-       semantic check: dp_abs_over reads a token of any length and calls a value of more than 16
-       hexadecimal digits, hence of more than 2^64, over the bound (M1-D7 is the pattern: no
-       hidden bound of a machine word).  The other bodies have no such bound. */
-    if (st->mode == DP_LIMITS && st->arb_exp_limit
-        && (dp_abs_over(a->e, ADF_DUMP_QCLASS_EXP_MAX) || dp_abs_over(a->re, ADF_DUMP_QCLASS_EXP_MAX)))
-        return dp_fail(st, ADF_LIMIT);
     return 1;
 }
 
@@ -594,11 +585,8 @@ dp_desc_set(adf_ctx_desc_t * d, const dp_cur * c, const dp_ctx * x)
 }
 
 /* ctx = h K, h k, then k blocks (conventions 10.1, line 1334). Stage 4: the block count of
-   every occurrence (8.5 item 4, gate finding G8). Stage 5: at most ADF_MODCTX_MAX_BLOCKS blocks
-   (decision M1-D5), decided from the count of the text alone, before the blocks are read into
-   integers, before the predicate of conventions 5.14 and before any allocation in proportion
-   to the count.  DP_OCC: the occurrence is counted and, if asked for, copied. Stage 6 is the
-   caller's (need_blocks differs). */
+   every occurrence (8.5 item 4, gate finding G8). DP_OCC: the occurrence is counted and, if
+   asked for, copied. Stage 6 is the caller's (need_blocks differs). */
 static int
 dp_w_ctx(dp_cur * c, dp_state * st, dp_ctx * x)
 {
@@ -613,8 +601,6 @@ dp_w_ctx(dp_cur * c, dp_state * st, dp_ctx * x)
             return dp_parse_fail(st);
     if (st->mode == DP_LIMITS && dp_over_items(x->k, st->lim))
         return dp_fail(st, ADF_LIMIT);
-    if (st->mode == DP_WORDS && x->k > (size_t) ADF_MODCTX_MAX_BLOCKS)
-        return dp_fail(st, ADF_UNSUPPORTED);
     if (st->mode == DP_OCC)
     {
         size_t o = st->nocc++;
@@ -715,7 +701,7 @@ static int
 dp_q_piece(const dp_cur * c, dp_state * st, size_t narch, const dp_arb * a, const dp_fb * f,
            dp_qkeys * keys)
 {
-    fmpz_t A, H, d, m, e;
+    fmpz_t A, H, d, m, e, lim20;
     arf_t mid, rad, lo, hi;
     int ok = 1;
 
@@ -733,18 +719,28 @@ dp_q_piece(const dp_cur * c, dp_state * st, size_t narch, const dp_arb * a, cons
     }
     fmpz_init(m);
     fmpz_init(e);
+    fmpz_init_set_ui(lim20, UWORD(1) << 20);
     arf_init(mid);
     arf_init(rad);
     arf_init(lo);
     arf_init(hi);
-    dp_fmpz(m, a->m);
-    dp_fmpz(e, a->e);
-    arf_set_fmpz_2exp(mid, m, e);
-    dp_fmpz(m, a->rm);
+    dp_fmpz(m, a->e);
     dp_fmpz(e, a->re);
-    arf_set_fmpz_2exp(rad, m, e);
-    if (arf_sgn(mid) < 0 || arf_cmp_si(mid, 1) > 0 || !fmpz_is_one(d))
-        ok = dp_fail(st, ADF_DOMAIN);
+    fmpz_abs(m, m);
+    fmpz_abs(e, e);
+    if (fmpz_cmp(m, lim20) > 0 || fmpz_cmp(e, lim20) > 0)
+        ok = dp_fail(st, ADF_LIMIT);
+    if (ok)
+    {
+        dp_fmpz(m, a->m);
+        dp_fmpz(e, a->e);
+        arf_set_fmpz_2exp(mid, m, e);
+        dp_fmpz(m, a->rm);
+        dp_fmpz(e, a->re);
+        arf_set_fmpz_2exp(rad, m, e);
+        if (arf_sgn(mid) < 0 || arf_cmp_si(mid, 1) > 0 || !fmpz_is_one(d))
+            ok = dp_fail(st, ADF_DOMAIN);
+    }
     if (ok)
     {
         int cmp;
@@ -773,6 +769,7 @@ dp_q_piece(const dp_cur * c, dp_state * st, size_t narch, const dp_arb * a, cons
     fmpz_clear(d);
     fmpz_clear(m);
     fmpz_clear(e);
+    fmpz_clear(lim20);
     arf_clear(mid);
     arf_clear(rad);
     arf_clear(lo);
@@ -801,8 +798,6 @@ dp_w_qclass(dp_cur * c, dp_state * st)
        (the range of a piece is formed, so that its end points are exact) is paid by the pieces
        only.  A lift is therefore read with its exponents as they are, as tests/ref/vectors/
        m1-dump/dump_ref.jsonl records; the reading is discussed in the lane report. */
-    if (st->mode == DP_LIMITS && pieces)
-        st->arb_exp_limit = 1;
     if (st->mode == DP_SEM && pieces && n == 0)
         return dp_fail(st, ADF_DOMAIN);
     arf_init(keys.lo);
@@ -1063,7 +1058,7 @@ dp_header(const char * s, size_t len, const adf_text_limits_t * lim, size_t * bo
     {
         unsigned char b = (unsigned char) s[i];
 
-        if ((b < 0x20 && b != 0x09 && b != 0x0a && b != 0x0d) || b > 0x7e)
+        if (b < 0x20 || b > 0x7e)
             return ADF_PARSE;
     }
     if (len < 3 || s[0] != 'a' || s[1] != 'd' || s[2] != 'f')
@@ -1178,7 +1173,6 @@ dp_copy_occurrences(const dp_parsed * P, adf_ctx_desc_t * d, size_t first, size_
     st.mode = DP_OCC;
     st.lim = NULL;                     /* not read in DP_OCC */
     st.st = ADF_OK;
-    st.arb_exp_limit = 0;              /* not read in DP_OCC */
     st.node = &nd;
     st.nocc = 0;
     st.descs = d;

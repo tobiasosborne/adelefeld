@@ -369,6 +369,86 @@ ADF_TEST(order_of_checks_two_faults)
     ADF_CHECK(AS("adf1 Q adele 2 1 0 0 0 1 0 0 0 g 8 6 1") == ADF_DOMAIN);
 }
 
+/* conventions 8.2 and 8.5: TAB, LF and CR are bytes of the alphabet, so stage 2 lets them past;
+   the header is judged next, and a version or a field other than "1" and "Q" is ADF_UNSUPPORTED
+   whatever the body holds (10.2 "Version and field"; dump.h: "adf_UNSUPPORTED (a version other
+   than 1, a field other than Q)"); with the header "adf1 Q " such a byte in the body is a
+   grammar failure of stage 3 (conventions 10.1: "Tokens are separated by exactly one space
+   0x20; no other whitespace anywhere").  A NUL and a byte above 0x7e are not bytes of the
+   alphabet at all, so stage 2 gives ADF_PARSE for them at every position, header included. */
+ADF_TEST(header_before_the_whitespace_of_the_body)
+{
+    static const char body[] = "rat 1 1";    /* 7 bytes */
+    static const int at[] = {0, 4, 6};    /* a first, a middle and the last position of the body */
+    static const char * const wname[] = {"TAB", "LF", "CR"};
+    const unsigned char ws[] = {0x09, 0x0a, 0x0d};
+    const unsigned char other[] = {0x00, 0x80};
+    char buf[64];
+    int w, j, p;
+
+    for (w = 0; w < 3; w++)
+    {
+        /* the two texts of the review: a version other than 1, a field other than Q */
+        memcpy(buf, "adf2 Q rat 1 1", 14);
+        buf[8] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s in the body of version 2",
+                      wname[w]);
+        memcpy(buf, "adf1 R rat 1 1", 14);
+        buf[8] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s in the body of field R",
+                      wname[w]);
+        ADF_CHECK_MSG(fball_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s, fball loader", wname[w]);
+        /* the byte in the body, with the header "adf1 Q ": a grammar failure */
+        for (p = 0; p < 3; p++)
+        {
+            memcpy(buf, "adf1 Q ", 7);
+            memcpy(buf + 7, body, sizeof(body) - 1);
+            buf[7 + at[p]] = (char) ws[w];
+            ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "%s at position %d of the body",
+                          wname[w], p);
+        }
+        /* inside the header: where the grammar wants the single space after the version, a
+           grammar failure; inside the field token, the field is the run of non-space bytes and
+           is not "Q", so ADF_UNSUPPORTED (conventions 10.1, `field = upper, {nonspace}`) */
+        /* inside the header: where the grammar wants the single space after the version, and
+           where the field token must begin with an upper-case letter (conventions 10.1,
+           `field = upper, {nonspace}`), a grammar failure; a byte after the field letter stays
+           inside the field token, which is then not "Q", so ADF_UNSUPPORTED (10.2) */
+        memcpy(buf, "adf1 Q rat 1 1", 14);
+        buf[4] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "%s after the version", wname[w]);
+        memcpy(buf, "adf1 Q rat 1 1", 14);
+        buf[5] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "%s instead of the field", wname[w]);
+        memcpy(buf, "adf1 Q rat 1 1", 14);
+        buf[6] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s inside the field", wname[w]);
+    }
+    /* a NUL and a byte above 0x7e are no bytes of the alphabet (8.2): ADF_PARSE at every
+       position of the body, whatever the header says */
+    for (j = 0; j < 2; j++)
+    {
+        for (p = 0; p < 3; p++)
+        {
+            memcpy(buf, "adf2 Q rat 1 1", 14);
+            buf[7 + at[p]] = (char) other[j];
+            ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "byte %02x at position %d",
+                          other[j], p);
+        }
+    }
+    /* a NUL inside the field token, and a byte above 0x7e after the version */
+    memcpy(buf, "adf1 Q rat 1 1", 14);
+    buf[5] = '\0';
+    ADF_CHECK(rat_status(buf, 14, NULL) == ADF_PARSE);
+    memcpy(buf, "adf1 Q rat 1 1", 14);
+    buf[4] = (char) 0x80;
+    ADF_CHECK(rat_status(buf, 14, NULL) == ADF_PARSE);
+    /* the version itself may not be followed by anything but a space, whatever it is */
+    memcpy(buf, "adf1 Q rat 1 1", 14);
+    buf[3] = '2';
+    ADF_CHECK(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED);
+}
+
 /* ------------------------------------------------------------------ adf_fball, global */
 
 ADF_TEST(fball_global_dump_text)

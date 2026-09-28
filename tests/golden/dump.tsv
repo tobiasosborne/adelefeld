@@ -180,3 +180,20 @@ adf1 Q scaled s 1 2 6 6 2 2 3	!DOMAIN
 adf1 Q scaled s 0 1 0 6 1 6	!DOMAIN
 adf1 Q scaled s -1 2 1 6 1 6	!DOMAIN
 adf1 Q scaled x 1 2 5 6 1 0	!PARSE
+# TAB, LF and CR are bytes of the alphabet (conventions.md 8.2), so stage 2 lets them past; the
+# header is judged next (8.5 item 3, 10.2 "Version and field"), and a byte in the body is then a
+# grammar failure (10.1: exactly one space between tokens, no other whitespace anywhere)
+adf2 Q rat\t1 1	!UNSUPPORTED
+adf1 R rat\n1 1	!UNSUPPORTED
+adf1 Q rat\t1 1	!PARSE
+adf1 Q rat 1 1\n	!PARSE
+adf1\tQ rat 1 1	!PARSE
+adf1 Q\trat 1 1	!UNSUPPORTED
+# the binary exponents of the real ball of a qclass piece (SPEC.md 15 row M1-D9): the bound
+# ADF_DUMP_QCLASS_EXP_MAX = 2^20 is a limit of stage 4, so it is decided before any predicate
+adf1 Q qclass pieces 1 1 1 -100000 0 0 l 1 2 1 2 0	adf1 Q qclass pieces 1 1 1 -100000 0 0 l 1 2 1 2 0
+adf1 Q qclass pieces 1 1 1 -100001 0 0 l 1 2 1 2 0	!LIMIT
+adf1 Q qclass pieces 1 1 1 -100001 0 0 l 0 2 1 2 0	!LIMIT
+adf1 Q qclass pieces 1 1 1 -ffffffffffffffffffffffffffffffffffffffff 0 0 l 1 2 1 2 0	!LIMIT
+# the cap of M1-D5 (at most 65536 blocks) needs a text of 65537 blocks, which is too long for
+# this file: tests/test_dump_limits.c builds it and checks the cap at every entry point
