@@ -1,0 +1,40 @@
+run_id: 2026-09-28T074850Z
+tag: adele
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+cores_online: 12
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+tsc_present: yes
+tsc_invariant: yes
+cycles_per_ns_trials: 9
+cycles_per_ns_min: 2.68798
+cycles_per_ns_median: 2.68800
+cycles_per_ns_max: 2.68800
+cycles_per_ns_spread: 0.00001
+seed: 20260928
+operand_family: adf_adele (arb real ball ; canonical global finite ball)
+trials_per_case: 3
+batch_length: 1
+warm: yes
+allocating: yes (arb and fmpq temporaries inside each call)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+adele_add_chain_53_word	latency_chain	adf_adele_add; x = x + (3 ; 3); real 53 bit, finite word	word; start real 53 bit, fin H 60 bit, d 1 bit; y = (3 ; 3); 20000 dependent calls	20260928	yes	yes	20000	20000	119	198.7260	199.3390	200.2913
+adele_mul_chain_53_word	latency_chain	adf_adele_mul; x = x * (3 ; 3); real 53 bit, finite word	word; start real 53 bit, fin H 60 bit, d 1 bit; y = (3 ; 3); 3000 dependent calls	20260928	yes	yes	3000	3000	38160	1727.1270	2461.3017	3171.8950
+adele_add_chain_53_4096	latency_chain	adf_adele_add; x = x + (3 ; 3); real 53 bit, finite 4096 bit	4096 bit; start real 53 bit, fin H 4096 bit, d 1 bit; y = (3 ; 3); 2000 dependent calls	20260928	yes	yes	2000	2000	8189	857.8110	863.5855	870.0670
+adele_mul_chain_53_4096	latency_chain	adf_adele_mul; x = x * (3 ; 3); real 53 bit, finite 4096 bit	4096 bit; start real 53 bit, fin H 4096 bit, d 1 bit; y = (3 ; 3); 300 dependent calls	20260928	yes	yes	300	300	11995	1293.2333	1355.8933	1421.3400
+adele_add_chain_4096_word	latency_chain	adf_adele_add; x = x + (3 ; 3); real 4096 bit, finite word	word; start real 4096 bit, fin H 60 bit, d 1 bit; y = (3 ; 3); 4000 dependent calls	20260928	yes	yes	4000	4000	120	251.5588	256.6393	259.5057
+adele_mul_chain_4096_word	latency_chain	adf_adele_mul; x = x * (3 ; 3); real 4096 bit, finite word	word; start real 4096 bit, fin H 60 bit, d 1 bit; y = (3 ; 3); 500 dependent calls	20260928	yes	yes	500	500	6460	585.6540	674.8560	767.5360
+adele_add_chain_4096_4096	latency_chain	adf_adele_add; x = x + (3 ; 3); real 4096 bit, finite 4096 bit	4096 bit; start real 4096 bit, fin H 4096 bit, d 1 bit; y = (3 ; 3); 800 dependent calls	20260928	yes	yes	800	800	8191	941.4450	948.8863	957.9688
+adele_mul_chain_4096_4096	latency_chain	adf_adele_mul; x = x * (3 ; 3); real 4096 bit, finite 4096 bit	4096 bit; start real 4096 bit, fin H 4096 bit, d 1 bit; y = (3 ; 3); 100 dependent calls	20260928	yes	yes	100	100	9459	1379.6800	1389.4400	1390.0300
+
+# checksum of all case results, computed outside the timed region
+checksum: 34313
