@@ -1,0 +1,7 @@
+piece within undocumented cap: expected=OK actual=OK untouched_errors=0 input='adf1 Q qclass pieces 1 1 1 -100000 0 0 l 1 2 1 2 0'
+piece above undocumented cap: expected=OK actual=LIMIT untouched_errors=0 input='adf1 Q qclass pieces 1 1 1 -100001 0 0 l 1 2 1 2 0'
+invalid denominator and large exponent: expected=DOMAIN actual=DOMAIN untouched_errors=0 input='adf1 Q qclass pieces 1 1 1 -100001 0 0 l 0 2 1 2 0'
+invalid midpoint and large exponent: expected=DOMAIN actual=LIMIT untouched_errors=0 input='adf1 Q qclass pieces 1 1 -1 -100001 0 0 l 1 2 1 2 0'
+unknown version with tab in body: expected=UNSUPPORTED actual=PARSE untouched_errors=0 input='adf2 Q rat\t1 1'
+unknown field with newline in body: expected=UNSUPPORTED actual=PARSE untouched_errors=0 input='adf1 R rat\n1 1'
+unknown version with forbidden NUL: expected=PARSE actual=PARSE untouched_errors=0 input='adf2 Q rat\x001 1'
