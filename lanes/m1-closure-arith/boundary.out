@@ -1,0 +1,25 @@
+midpoint e=-1048577 sign=1 status=10 expected=10 pass=1
+midpoint e=-1048577 sign=-1 status=10 expected=10 pass=1
+radius e=-1048577 sign=1 status=10 expected=10 pass=1
+radius e=-1048577 sign=-1 status=10 expected=10 pass=1
+midpoint e=-1048576 sign=1 status=5 expected=5 pass=1
+midpoint e=-1048576 sign=-1 status=5 expected=5 pass=1
+radius e=-1048576 sign=1 status=0 expected=0 pass=1
+radius e=-1048576 sign=-1 status=0 expected=0 pass=1
+midpoint e=-1048575 sign=1 status=5 expected=5 pass=1
+midpoint e=-1048575 sign=-1 status=5 expected=5 pass=1
+radius e=-1048575 sign=1 status=0 expected=0 pass=1
+radius e=-1048575 sign=-1 status=0 expected=0 pass=1
+midpoint e=1048575 sign=1 status=5 expected=5 pass=1
+midpoint e=1048575 sign=-1 status=5 expected=5 pass=1
+radius e=1048575 sign=1 status=0 expected=0 pass=1
+radius e=1048575 sign=-1 status=0 expected=0 pass=1
+midpoint e=1048576 sign=1 status=5 expected=5 pass=1
+midpoint e=1048576 sign=-1 status=5 expected=5 pass=1
+radius e=1048576 sign=1 status=0 expected=0 pass=1
+radius e=1048576 sign=-1 status=0 expected=0 pass=1
+midpoint e=1048577 sign=1 status=10 expected=10 pass=1
+midpoint e=1048577 sign=-1 status=10 expected=10 pass=1
+radius e=1048577 sign=1 status=10 expected=10 pass=1
+radius e=1048577 sign=-1 status=10 expected=10 pass=1
+cases=24 failures=0

@@ -1,0 +1,118 @@
+STALE src/fball.c:556:swap_args
+      reason names: fmpq_gcd
+      line now:     adf_fball_clear(t);
+STALE src/fball.c:584:swap_args
+      reason names: fmpq_mul
+      line now:     
+STALE src/fball.c:612:swap_args
+      reason names: fmpq_mul
+      line now:     }
+STALE src/recon.c:90:cmp
+      reason names: fmpz_sgn
+      line now:     {
+OK    src/recon.c:90:zero_one
+      reason names: None
+      line now:     {
+STALE src/recon.c:122:zero_one
+      reason names: fmpq_cmp
+      line now:     fmpz_abs(m, exp);
+STALE src/recon.c:176:swap_args
+      reason names: adf_rat_mul
+      line now:     /* Step 3: an empty interval has no candidate. */
+STALE src/recon.c:177:swap_args
+      reason names: adf_rat_add
+      line now:     if (fmpq_cmp(lo->q, hi->q) > 0)
+STALE src/fball.c:54:swap_args
+      reason names: fmpz_gcd
+      line now:     static void
+STALE src/fball.c:214:swap_args
+      reason names: fmpz_gcd
+      line now:     out = fb_local_res(z, ctx);
+STALE src/fball.c:552:swap_args
+      reason names: fmpq_mul
+      line now:     
+STALE src/fball.c:555:swap_args
+      reason names: fmpq_gcd
+      line now:     fmpz_set(d, g->d);
+STALE src/fball.c:684:swap_args
+      reason names: fmpq_gcd
+      line now:     fmpq_t a, N, c, r;
+OK    src/rat.c:222:swap_args
+      reason names: fmpq_add
+      line now:     fmpq_add(z->q, x->q, y->q);
+OK    src/rat.c:238:swap_args
+      reason names: fmpq_mul
+      line now:     fmpq_mul(z->q, x->q, y->q);
+STALE src/adele.c:201:swap_args
+      reason names: arb_add
+      line now:     void
+STALE src/adele.c:202:swap_args
+      reason names: adf_fball_add
+      line now:     adf_adele_get_fin(adf_fball_t f, const adf_adele_t x)
+STALE src/adele.c:223:swap_args
+      reason names: arb_mul
+      line now:     ball containing the difference (arb.rst:785); the finite difference is the tight set
+STALE src/adele.c:224:swap_args
+      reason names: adf_fball_mul
+      line now:     difference (precision.md Proposition 1 with negation). Aliasing: as add. */
+STALE src/adele.c:259:swap_args
+      reason names: arb_add
+      line now:     above: q is read into a temporary ball at prec (arb_set_fmpq, arb.rst:167) and added with
+STALE src/adele.c:260:swap_args
+      reason names: adf_fball_add
+      line now:     arb_add (arb.rst:767). Aliasing: z may be x. Cost: one fmpq copy, one arb_set_fmpq, one
+STALE src/adele.c:285:swap_args
+      reason names: arb_mul
+      line now:     }
+STALE src/adele.c:450:swap_args
+      reason names: acb_add
+      line now:     {
+STALE src/adele.c:451:swap_args
+      reason names: adf_fball_add
+      line now:     acb_set(z, x->inf);
+STALE src/adele.c:464:swap_args
+      reason names: acb_mul
+      line now:     operation plus the finite operation. */
+STALE src/adele.c:465:swap_args
+      reason names: adf_fball_mul
+      line now:     
+STALE src/adele.c:492:swap_args
+      reason names: acb_add
+      line now:     {
+STALE src/adele.c:493:swap_args
+      reason names: adf_fball_add
+      line now:     acb_neg(y->inf, x->inf);
+STALE src/adele.c:514:swap_args
+      reason names: acb_mul
+      line now:     
+STALE src/fball.c:141:drop_call
+      reason names: fmpz_zero
+      line now:     static int
+STALE src/fball.c:142:drop_call
+      reason names: fmpz_zero
+      line now:     fb_is_integer(const fmpq * q)
+STALE src/fball.c:468:swap_args
+      reason names: fmpq_add
+      line now:     if (fmpq_sgn(N->q) < 0)
+STALE src/fball.c:469:swap_args
+      reason names: fmpq_gcd
+      line now:     return ADF_DOMAIN;
+STALE src/fball.c:497:swap_args
+      reason names: fmpq_gcd
+      line now:     }
+STALE src/fball.c:551:swap_args
+      reason names: fmpq_mul
+      line now:     const adf_fball_struct * g;
+STALE src/fball.c:553:swap_args
+      reason names: fmpq_mul
+      line now:     adf_fball_init(t);
+STALE src/fball.c:554:swap_args
+      reason names: fmpq_mul
+      line now:     g = fb_glob(t, x);
+STALE src/fball.c:582:swap_args
+      reason names: fmpq_mul
+      line now:     return ADF_OK;
+STALE src/fball.c:610:swap_args
+      reason names: fmpq_mul
+      line now:     fb_local_addsub(z, x, y, 0);
+entries: 39, stale (the named call is not on the named line): 36

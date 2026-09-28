@@ -1,0 +1,3 @@
+prec 1: arb_set_fmpq(1/3) = 0.2500000000 +/- 0.25000; adele div_rat status OK, inf = 3.000000000 +/- 0, adf_adele_is_canonical = 1; cadele status OK, is_canonical = 1
+prec 2: arb_set_fmpq(1/3) = 0.2500000000 +/- 0.12500; adele div_rat status OK, inf = 3.000000000 +/- 0, adf_adele_is_canonical = 1; cadele status OK, is_canonical = 1
+prec 3: arb_set_fmpq(1/3) = 0.3125000000 +/- 0.062500; adele div_rat status OK, inf = 3.000000000 +/- 0, adf_adele_is_canonical = 1; cadele status OK, is_canonical = 1

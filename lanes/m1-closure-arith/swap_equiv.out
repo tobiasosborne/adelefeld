@@ -1,0 +1,19 @@
+arb_mul differs at prec 163:
+  x = -0.063636101649422016635 +/- 0.25219
+  y = 0.50000000000000000000 +/- 1.5172e-8
+  x*y rad = 0.12609679461456835270
+  y*x rad = 0.12609679438173770905
+  midpoints equal: 1
+arb_mul differs at prec 35:
+  x = 0.54873595200479030609 +/- 1.1642e-10
+  y = 0.52426910400390625000 +/- 2.2702e-16
+  x*y rad = 7.5584996703410844976e-11
+  y*x rad = 7.5584996594990627727e-11
+  midpoints equal: 1
+arb_mul differs at prec 63:
+  x = -0.99951171921566117629 +/- 0.50000
+  y = -3.4028236692093362776e+38 +/- 2.1176e-22
+  x*y rad = 1.7014118536194513207e+38
+  y*x rad = 1.7014118504503248202e+38
+  midpoints equal: 1
+cases 20000: arb_add differs 0, arb_mul differs 3856, acb_add differs 0, acb_mul differs 5536, adf_fball_add differs 0, adf_fball_mul differs 0

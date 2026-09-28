@@ -1,0 +1,2 @@
+case 2: arb_is_finite=1 adf_adele_is_canonical=1; calling adf_adele_reconstruct
+status = LIMIT
