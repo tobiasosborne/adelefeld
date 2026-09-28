@@ -11,8 +11,20 @@
    adf_fball_prec_at be exercised here; after the lanes are merged the real definitions of
    adf_place_* are used. */
 
+#ifdef ADF_CHECK_INVARIANTS
+#define _POSIX_C_SOURCE 200809L   /* fork, pipe: the tests of M1-D11 below */
+#endif
+
 #include <stdio.h>
 #include <string.h>
+
+#ifdef ADF_CHECK_INVARIANTS
+#include <signal.h>
+#include <stdlib.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
 
 #include <adelefeld/fball.h>
 #include <adelefeld/modctx.h>
@@ -108,20 +120,46 @@ get_radius_fmpq(fmpq_t r, const adf_fball_t x)
     fmpq_clear(s.q);
 }
 
-/* Give x the fields of a local-shaped value. The context pointer is never dereferenced; only
-   the structural parts of predicate L are exercised. The caller frees x with
-   adf_fball_clear, which releases the residue array. */
+/* x (initialised) becomes the local value of the real context ctx (two blocks) with the residues
+   (0, 1) and the denominator d. It is made through the public interface, so that the borrow count of
+   ADF_CHECK_INVARIANTS sees it (conventions 4.6, M1-D10): the global ball (A0, K, d), A0 = the CRT
+   lift of (0, 1), is the set (A0 + K Zhat)/d; adf_fball_set_fmpz3 (fball.h:118-124) canonicalises it
+   and adf_fball_set_local (modctx.h:145-153) converts it. A and H are what the caller expects to be
+   the fields (A = 0, H = K); with another value the program stops. The caller clears x with
+   adf_fball_clear. */
 static void
-make_local_shaped(adf_fball_t x, slong A, slong H, slong d, const void * fake_mctx)
+make_local_shaped(adf_fball_t x, slong A, slong H, slong d, const void * ctx_)
 {
-    fmpz_set_si(x->A, A);
-    fmpz_set_si(x->H, H);
-    fmpz_set_si(x->d, d);
-    x->backend = ADF_LOCAL;
-    x->mctx = (const adf_modctx_struct *) fake_mctx;
-    x->res = (ulong *) flint_malloc(2 * sizeof(ulong));
-    x->res[0] = 0;
-    x->res[1] = 1;
+    const adf_modctx_struct * ctx = (const adf_modctx_struct *) ctx_;
+    adf_fball_t g;
+    fmpz_t a0, k, m, dd;
+    int st;
+
+    adf_fball_init(g);
+    fmpz_init(a0);
+    fmpz_init(k);
+    fmpz_init(m);
+    fmpz_init(dd);
+    fmpz_set_ui(m, adf_modctx_block(ctx, 0));
+    fmpz_zero(a0);
+    fmpz_CRT_ui(a0, a0, m, 1, adf_modctx_block(ctx, 1), 0);
+    adf_modctx_get_modulus(k, ctx);
+    fmpz_set_si(dd, d);
+    st = adf_fball_set_fmpz3(g, a0, k, dd);
+    if (st == ADF_OK && (A != 0 || !fmpz_equal_si(k, H)))
+        st = ADF_DOMAIN;
+    if (st == ADF_OK)
+        st = adf_fball_set_local(x, g, ctx);
+    if (st != ADF_OK)
+    {
+        fprintf(stderr, "make_local_shaped: status %s\n", adf_status_str(st));
+        abort();
+    }
+    fmpz_clear(a0);
+    fmpz_clear(k);
+    fmpz_clear(m);
+    fmpz_clear(dd);
+    adf_fball_clear(g);
 }
 
 /* v_p of a nonzero rational, p a prime. */
@@ -1018,13 +1056,15 @@ ADF_TEST(canonicalise_raw_and_domains)
        adf_fball_is_canonical may read, fball.h:96); this fixture does, and a real context is
        used so that a conforming invariant-check build would accept it. */
     ADF_CHECK(adf_modctx_new_blocks(&ctx4, &q4, 1) == ADF_OK);
-    fmpz_set_si(x->A, 0);
+    /* The local value is made through the library (M1-D10: under ADF_CHECK_INVARIANTS the borrow count
+       sees only such values): the ball (2 + 4 Zhat)/2 = 1 + 2 Zhat is the local value (2; 2) of (4)
+       (adf_fball_set_local, modctx.h:145-153). Were the status not ADF_OK, x would stay global with
+       res = NULL and the checks below would fail. */
+    fmpz_set_si(x->A, 2);
     fmpz_set_si(x->H, 4);
     fmpz_set_si(x->d, 2);
-    x->backend = ADF_LOCAL;
-    x->mctx = ctx4;
-    x->res = (ulong *) flint_malloc(sizeof(ulong));
-    x->res[0] = 2;
+    (void) adf_fball_canonicalise(x);
+    (void) adf_fball_set_local(x, x, ctx4);
     ADF_CHECK(adf_fball_is_canonical(x));
     ADF_CHECK(adf_fball_canonicalise(x) == ADF_OK);
     ADF_CHECK(fmpz_equal_si(x->A, 0) && fmpz_equal_si(x->H, 4) && fmpz_equal_si(x->d, 2) &&
@@ -1075,6 +1115,52 @@ ADF_TEST(local_shaped_is_canonical)
     adf_modctx_free(ctx);
 }
 
+#ifdef ADF_CHECK_INVARIANTS
+/* M1-D11: a child process calls adf_fball_identical(x, y) and must die by SIGABRT with the line of
+   src/invariants.h:55 ("adelefeld: ADF_CHECK_INVARIANTS: <function>: argument <arg> is not a
+   canonical <type>") on stderr. Returns 1 if it does. Pattern of tests/test_invariants.c. */
+static int
+identical_aborts(const adf_fball_t x, const adf_fball_t y, const char * want)
+{
+    int fd[2], st = 0;
+    char err[512];
+    size_t n = 0;
+    pid_t pid;
+
+    fflush(stdout);
+    fflush(stderr);
+    if (pipe(fd) != 0)
+        abort();
+    pid = fork();
+    if (pid < 0)
+        abort();
+    if (pid == 0)
+    {
+        struct rlimit nocore = {0, 0};
+
+        setrlimit(RLIMIT_CORE, &nocore);   /* an abort must not write a core file */
+        close(fd[0]);
+        dup2(fd[1], 2);
+        close(fd[1]);
+        (void) adf_fball_identical(x, y);
+        _exit(0);
+    }
+    close(fd[1]);
+    for (;;)
+    {
+        ssize_t r = read(fd[0], err + n, sizeof err - 1 - n);
+        if (r <= 0)
+            break;
+        n += (size_t) r;
+    }
+    err[n] = 0;
+    close(fd[0]);
+    if (waitpid(pid, &st, 0) != pid)
+        abort();
+    return WIFSIGNALED(st) && WTERMSIG(st) == SIGABRT && strcmp(err, want) == 0;
+}
+#endif
+
 ADF_TEST(identical_local_guard)
 {
     adf_fball_t x, y;
@@ -1092,12 +1178,24 @@ ADF_TEST(identical_local_guard)
     /* same fields, different context pointers */
     ADF_CHECK(!adf_fball_identical(x, y));
 
-    y->mctx = x->mctx;
+    /* the same context pointer: y becomes a local value of c1 (through the library, M1-D10) */
+    make_local_shaped(y, 0, 6, 1, c1);
     ADF_CHECK(adf_fball_identical(x, y));
 
-    /* different backend */
+    /* different backend: the tag of y is changed by hand, and y (backend GLOBAL with a context and a
+       residue array) is not canonical. adf_fball_identical does not exempt such an input
+       (fball.h:100-104). */
     y->backend = ADF_GLOBAL;
+#ifndef ADF_CHECK_INVARIANTS
+    /* M1-D11: the status-free answer 0 for a non-canonical input is a courtesy of the release build
+       and no promise; with the flag the entry check aborts (the branch below). */
     ADF_CHECK(!adf_fball_identical(x, y));
+#else
+    /* M1-D11: with ADF_CHECK_INVARIANTS the entry check comes first and the call aborts
+       (src/invariants.h:53-57). */
+    ADF_CHECK(identical_aborts(x, y, "adelefeld: ADF_CHECK_INVARIANTS: adf_fball_identical: argument y is "
+                                     "not a canonical adf_fball\n"));
+#endif
     y->backend = ADF_LOCAL;
 
     adf_fball_clear(x);

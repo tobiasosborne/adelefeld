@@ -137,10 +137,17 @@ typed_row(const golden_record * r, int want, size_t * nvalid)
     {
         adf_scaled_t x;
         adf_scaled_struct copy;
+        adf_modctx_struct * sent = NULL;
+        fmpz_t sk;
+        /* The sentinel context of x is a live context (M1-D2: a pointer field is NULL or a live
+           object; under ADF_CHECK_INVARIANTS a load releases the old context of x). x is made by
+           adf_scaled_init and cleared by adf_scaled_clear, so that the borrow count sees it
+           (conventions 4.6, M1-D10). A failed load must leave x with this context. */
+        fmpz_init_set_ui(sk, 6);
+        (void) adf_modctx_new_fmpz(&sent, sk);
+        fmpz_clear(sk);
         memset(x, 0, sizeof(x));             /* padding bytes defined for memcmp */
-        fmpq_init(x->s);
-        fmpz_init(x->u);
-        x->mctx = (const adf_modctx_struct *) (void *) 0x40;
+        adf_scaled_init(x, sent);
         x->exact = 1;
         fmpq_set_si(x->s, -5, 2);
         memcpy(&copy, x, sizeof(copy));
@@ -148,9 +155,10 @@ typed_row(const golden_record * r, int want, size_t * nvalid)
         if (lst == ADF_OK)
             again = adf_scaled_dump_str(&dl, x);
         else
-            ADF_CHECK(memcmp(&copy, x, sizeof(copy)) == 0 && fmpz_equal_si(fmpq_numref(x->s), -5));
-        fmpq_clear(x->s);
-        fmpz_clear(x->u);
+            ADF_CHECK(memcmp(&copy, x, sizeof(copy)) == 0 && fmpz_equal_si(fmpq_numref(x->s), -5)
+                      && x->mctx == sent);
+        adf_scaled_clear(x);
+        adf_modctx_free(sent);
     }
     else if (body_is(t, len, "adele"))
     {

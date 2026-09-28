@@ -54,22 +54,47 @@ mkball_si(adf_fball_t x, slong A, slong H, slong d)
     fmpz_clear(dd);
 }
 
-/* x = the local value (d; res) of ctx, written field by field (predicate L of fball.h), without
-   any function under test. */
+/* x = the local value (d; res) of ctx. Made through the public interface, so that the borrow count of
+   ADF_CHECK_INVARIANTS sees it (conventions 4.6, M1-D10; a hand-written context field is not counted):
+   the global ball (A0, K, d), A0 = the CRT lift of res in [0, K), is the set (A0 + K Zhat)/d
+   (policies Definition 16, line 305); adf_fball_set_fmpz3 (fball.h:118-124) canonicalises it and
+   adf_fball_set_local (modctx.h:145-153) converts it, with K/R = d and c K/R = A0, hence to (d; res).
+   x may be a local value of another context (the output is then retargeted). No check is made here:
+   a failed status would show as a failed check of the caller, and is stopped by abort(). */
 static void
 mklocal_raw(adf_fball_t x, const adf_modctx_struct * ctx, const fmpz_t d, const ulong * res)
 {
     slong i, k = adf_modctx_nblocks(ctx);
+    adf_fball_t g;
+    fmpz_t M, A0, r, q;
+    int st;
 
-    flint_free(x->res);
-    x->res = (ulong *) flint_malloc(k * sizeof(ulong));
+    adf_fball_init(g);
+    fmpz_init(M);
+    fmpz_init(A0);
+    fmpz_init(r);
+    fmpz_init(q);
+    fmpz_one(M);
     for (i = 0; i < k; i++)
-        x->res[i] = res[i];
-    fmpz_zero(x->A);
-    adf_modctx_get_modulus(x->H, ctx);
-    fmpz_set(x->d, d);
-    x->backend = ADF_LOCAL;
-    x->mctx = ctx;
+    {
+        fmpz_set_ui(r, res[i]);
+        fmpz_set_ui(q, adf_modctx_block(ctx, i));
+        fmpz_CRT(A0, A0, M, r, q, 0);
+        fmpz_mul(M, M, q);
+    }
+    st = adf_fball_set_fmpz3(g, A0, M, d);
+    if (st == ADF_OK)
+        st = adf_fball_set_local(x, g, ctx);
+    if (st != ADF_OK)
+    {
+        fprintf(stderr, "mklocal_raw: status %s\n", adf_status_str(st));
+        abort();
+    }
+    fmpz_clear(M);
+    fmpz_clear(A0);
+    fmpz_clear(r);
+    fmpz_clear(q);
+    adf_fball_clear(g);
 }
 
 static void
@@ -412,6 +437,11 @@ ADF_TEST(set_local_enclose_prop20)
         ADF_CHECK(lost == 1 && fmpz_equal_si(y->d, 6) && y->res[0] == 0);
         adf_fball_set_global(g, y);
         ADF_CHECK(fields_are_si(g, 0, 1, 2));
+        /* y is a local value of c3 and is used again below: it leaves c3 (a global value overwrites
+           it; fball.h set_global, y may be x) before c3 is freed (conventions 4.6: a context is freed
+           only when no value borrows it; ADF_CHECK_INVARIANTS aborts otherwise). The test says
+           nothing about the freed context. */
+        adf_fball_set_global(y, y);
         adf_modctx_free(c3);
     }
 
@@ -1662,6 +1692,12 @@ ADF_TEST(is_canonical_rejects_a_context_without_blocks)
     ADF_CHECK(adf_modctx_new_fmpz(&c0, one) == ADF_OK);
     ADF_CHECK(adf_modctx_nblocks(c0) == 0);
     adf_fball_init(x);
+    /* A value that is NOT canonical (L needs k >= 1), so no function of the library can build it
+       (adf_fball_set_local returns ADF_UNSUPPORTED for a context without blocks, modctx.h:151). It
+       is written by hand from a fresh init and passed only to adf_fball_is_canonical, which the
+       header admits for any initialised object with valid pointer fields (fball.h:99-104, M1-D2);
+       adf_fball_clear does not touch the context. The context has no other borrower, so the
+       release of the count stays at zero (M1-D10). */
     x->res = (ulong *) flint_malloc(sizeof(ulong));
     x->res[0] = 0;
     fmpz_zero(x->A);

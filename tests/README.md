@@ -203,3 +203,14 @@ entry and aborts with one line on stderr, and a context counts the values that b
 they print that they were skipped and pass. The list of checked functions is
 `lanes/m1-invariants/functions.tsv`; `test_invariants.c` requires that its table agrees with it.
 `make clean` between builds with different flags. `INV=1 SAN=1` works.
+
+The whole suite passes under `INV=1`. Rules for a test that builds a local value (`adf_fball` with the
+local backend, `adf_scaled`): it is made and cleared through the library (`adf_fball_set_local`,
+`adf_scaled_init`, `adf_scaled_clear`), never by writing the context field, because the borrow count
+sees only such values (decision M1-D10); a sentinel context in a value is a live context made for the
+purpose and "untouched" is checked by comparing the field with it (M1-D2); a value that is not
+canonical and that no function of the library can make is built by hand from a fresh `init`, with a
+comment that names the header line that admits the call. A test of a status that a function returns
+for a non-canonical input outside its contract is compiled only without the flag; with the flag a test
+of the same name forks a child and requires the abort line (M1-D11: `test_fball.c`
+`identical_local_guard`, `test_recon.c` `an_adele_with_an_infinite_real_ball_is_rejected`).
