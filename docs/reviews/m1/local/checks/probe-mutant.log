@@ -1,0 +1,56 @@
+=================================================================
+==14==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x502000000018 at pc 0x632d8d8bcc24 bp 0x7ffcf6faf5c0 sp 0x7ffcf6faf5b0
+READ of size 8 at 0x502000000018 thread T0
+    #0 0x632d8d8bcc23 in adf_modctx_block src/modctx.c:417
+    #1 0x632d8d8b353d in adf_fball_mul /home/tobias/Projects/adelefeld-wt/m1-review-local/docs/reviews/m1/local/checks/fball-mutant.c:785
+    #2 0x632d8d8a85a5 in main /home/tobias/Projects/adelefeld-wt/m1-review-local/docs/reviews/m1/local/checks/probe.c:112
+    #3 0x7b5e8082a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #4 0x7b5e8082a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #5 0x632d8d8a6fb4 in _start (/home/tobias/Projects/adelefeld-wt/m1-review-local/docs/reviews/m1/local/checks/probe-mutant+0x1ffb4) (BuildId: dc41b40256f0b2be2b4544fb805da69a2fecb8c9)
+
+0x502000000018 is located 0 bytes after 8-byte region [0x502000000010,0x502000000018)
+allocated by thread T0 here:
+    #0 0x7b5e820fd9c7 in malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:69
+    #1 0x7b5e814e00d5 in flint_malloc (/lib/x86_64-linux-gnu/libflint.so.18+0xe00d5) (BuildId: bf51926aca5446d8712f308496fa75c0eef08977)
+    #2 0x632d8d8bab4e in adf_modctx_alloc src/modctx.c:140
+    #3 0x632d8d8bb421 in adf_modctx_alloc_from_blocks src/modctx.c:175
+    #4 0x632d8d8bb845 in adf_modctx_new_blocks src/modctx.c:208
+    #5 0x632d8d8a7ba9 in contexts /home/tobias/Projects/adelefeld-wt/m1-review-local/docs/reviews/m1/local/checks/probe.c:23
+    #6 0x632d8d8a7ba9 in main /home/tobias/Projects/adelefeld-wt/m1-review-local/docs/reviews/m1/local/checks/probe.c:67
+    #7 0x7b5e8082a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #8 0x7b5e8082a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #9 0x632d8d8a6fb4 in _start (/home/tobias/Projects/adelefeld-wt/m1-review-local/docs/reviews/m1/local/checks/probe-mutant+0x1ffb4) (BuildId: dc41b40256f0b2be2b4544fb805da69a2fecb8c9)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow src/modctx.c:417 in adf_modctx_block
+Shadow bytes around the buggy address:
+  0x501ffffffd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x501ffffffe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x501ffffffe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x501fffffff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x501fffffff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x502000000000: fa fa 00[fa]fa fa fd fa fa fa 00 00 fa fa 00 fa
+  0x502000000080: fa fa 00 fa fa fa 00 00 fa fa fd fa fa fa 00 00
+  0x502000000100: fa fa fd fd fa fa 00 00 fa fa 00 00 fa fa 00 00
+  0x502000000180: fa fa 00 00 fa fa 00 00 fa fa 00 00 fa fa 00 00
+  0x502000000200: fa fa 00 00 fa fa 00 00 fa fa 00 00 fa fa 00 00
+  0x502000000280: fa fa 00 00 fa fa 00 00 fa fa 00 00 fa fa 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==14==ABORTING

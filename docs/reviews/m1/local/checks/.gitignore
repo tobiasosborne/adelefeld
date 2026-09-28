@@ -1,0 +1,11 @@
+/build/
+/san/
+/invariants/
+/probe
+/probe-san
+/probe-mutant
+/cap_local
+/invariant_check
+/invalid_fixture
+/fball-mutant.c
+/fball-mutant.o
