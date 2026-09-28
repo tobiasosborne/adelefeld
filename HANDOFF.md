@@ -24,7 +24,7 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 01:25 on 2026-09-29 (two jobs; look at them first).**
+**RUNNING at 01:18 on 2026-09-29 (two jobs; look at them first).**
 
 | Job | Model | Where | State |
 |---|---|---|---|
@@ -51,7 +51,7 @@ Wang 1981, Monagan 2004, Collins and Encarnacion, von zur Gathen and Gerhard, St
 Fiedler and Hofmann, Howell 1986 (TJO may supply copies). The manifest now leaves out
 `refs/src/tate-thesis/log/` (orchestrator).
 
-**The closure check is complete (adf-igt closed at 01:25).** All six reviews are judged, NO BLOCKER OPEN in
+**The closure check is complete (adf-igt closed at 01:17).** All six reviews are judged, NO BLOCKER OPEN in
 any, no new finding against the code. `surface` (`1fdd494`): 13 CLOSED, 2 SETTLED BY DECISION; its judge
 showed that the reason given in M1-D1 for the cap of `prec` was false; the text is corrected in SPEC, the
 driver and its README (`a974d59`), the cap is unchanged. Left from the checks, all in one issue (the review
