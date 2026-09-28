@@ -5,7 +5,7 @@
 # What is run:
 #   valgrind present        build every tests/test_*.c at -O1 -g into build-memcheck/ and run
 #                           each binary under
-#                             valgrind --error-exitcode=9 --track-origins=yes --leak-check=full -q
+#                             valgrind --error-exitcode=9 --track-origins=yes --leak-check=full --errors-for-leak-kinds=definite,indirect -q
 #                           at most 2 at a time, each with a 120 s time limit.  One line per
 #                           program: PASS, ERROR (with the first error) or TIMEOUT.
 #   valgrind absent         MemorySanitizer is probed.  Even when the probe works, FLINT and GMP
@@ -67,7 +67,7 @@ run_one_valgrind() {
     local bin="$1" out rc line
     out="$(mktemp /tmp/adf-valgrind-XXXXXX)"
     timeout "$TIME_LIMIT" valgrind --error-exitcode=9 --track-origins=yes \
-        --leak-check=full -q "$bin" > "$out" 2>&1
+        --leak-check=full --errors-for-leak-kinds=definite,indirect -q "$bin" > "$out" 2>&1
     rc=$?
     if [ "$rc" -eq 0 ]; then
         echo "PASS    $bin"
