@@ -1,0 +1,150 @@
+mutate: src/fball.c: 184 mutants
+mutate: the baseline passes (3.0 s)
+
+SURVIVED src/fball.c:556:5 swap_args: 'fmpq_gcd(g, g, t3)' -> 'fmpq_gcd(g, t3, g)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -554,5 +554,5 @@
+       fmpq_mul(t3, N, M);
+       fmpq_gcd(g, t1, t2);
+  -    fmpq_gcd(g, g, t3);
+  +    fmpq_gcd(g, t3, g);
+       fb_set_cr(z, c, g);
+       fmpq_clear(a);
+
+
+SURVIVED src/fball.c:612:5 swap_args: 'fmpq_mul(r, r, N)' -> 'fmpq_mul(r, N, r)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -610,5 +610,5 @@
+       fmpq_mul(c, a, qq);
+       fmpq_abs(r, qq);
+  -    fmpq_mul(r, r, N);
+  +    fmpq_mul(r, N, r);
+       fb_set_cr(y, c, r);
+       fmpq_clear(a);
+
+
+SURVIVED src/fball.c:584:5 swap_args: 'fmpq_mul(r, r, N)' -> 'fmpq_mul(r, N, r)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -582,5 +582,5 @@
+       fmpq_mul(c, a, q->q);
+       fmpq_abs(r, q->q);
+  -    fmpq_mul(r, r, N);
+  +    fmpq_mul(r, N, r);
+       fb_set_cr(y, c, r);
+       fmpq_clear(a);
+
+
+NOT COMPILED src/fball.c:193:15 op: '*' -> '+'
+  src/fball.c:193:15: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/fball.c:128:26 op: '*' -> '+'
+  src/fball.c:128:26: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/fball.c:556:5 gcd_lcm: 'fmpq_gcd' -> 'lcm'
+  src/fball.c:556:5: error: implicit declaration of function ‘lcm’ [-Werror=implicit-function-declaration]
+
+NOT COMPILED src/fball.c:653:9 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:661:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:247:60 logic: '||' -> '&&'
+  src/fball.c:247:60: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/fball.c:54:9 gcd_lcm: 'fmpz_gcd' -> 'lcm'
+  src/fball.c:54:9: error: implicit declaration of function ‘lcm’ [-Werror=implicit-function-declaration]
+
+NOT COMPILED src/fball.c:764:9 drop_assign: 'res = fmpq_equal(q->q, a);' -> '' (the statement is removed)
+  src/fball.c:778:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:128:26 op: '*' -> '/'
+  src/fball.c:128:26: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/fball.c:247:33 logic: '||' -> '&&'
+  src/fball.c:247:33: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/fball.c:224:17 drop_assign: 'ok = fmpz_is_one(g);' -> '' (the statement is removed)
+  src/fball.c:228:16: error: ‘ok’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:414:25 op: '*' -> '+'
+  src/fball.c:414:25: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/fball.c:469:5 gcd_lcm: 'fmpq_gcd' -> 'lcm'
+  src/fball.c:469:5: error: implicit declaration of function ‘lcm’ [-Werror=implicit-function-declaration]
+
+NOT COMPILED src/fball.c:214:13 swap_args: 'fmpz_gcd(g, x->A, x->d)' -> 'fmpz_gcd(x->A, x->d, g)'
+  src/fball.c:214:23: error: passing argument 1 of ‘fmpz_gcd’ discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+
+NOT COMPILED src/fball.c:214:13 gcd_lcm: 'fmpz_gcd' -> 'lcm'
+  src/fball.c:214:13: error: implicit declaration of function ‘lcm’ [-Werror=implicit-function-declaration]
+
+NOT COMPILED src/fball.c:432:5 drop_assign: 'vd = fmpz_remove(t, x->d, p);' -> '' (the statement is removed)
+  src/fball.c:436:13: error: ‘vd’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:436:5 op: '*' -> '/'
+  src/fball.c:436:5: error: expected expression before ‘/’ token
+
+NOT COMPILED src/fball.c:88:37 op: '*' -> '/'
+  src/fball.c:88:37: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/fball.c:733:13 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:736:23: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:181:29 op: '*' -> '+'
+  src/fball.c:181:29: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/fball.c:431:5 drop_assign: 'vH = fmpz_remove(t, x->H, p);' -> '' (the statement is removed)
+  src/fball.c:436:13: error: ‘vH’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:691:9 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:700:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:497:5 gcd_lcm: 'fmpq_gcd' -> 'lcm'
+  src/fball.c:497:5: error: implicit declaration of function ‘lcm’ [-Werror=implicit-function-declaration]
+
+NOT COMPILED src/fball.c:555:5 gcd_lcm: 'fmpq_gcd' -> 'lcm'
+  src/fball.c:555:5: error: implicit declaration of function ‘lcm’ [-Werror=implicit-function-declaration]
+
+NOT COMPILED src/fball.c:181:29 op: '*' -> '/'
+  src/fball.c:181:29: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/fball.c:186:5 drop_assign: 'ib = x->backend;' -> '' (the statement is removed)
+  src/fball.c:188:16: error: ‘ib’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/fball.c:88:37 op: '*' -> '+'
+  src/fball.c:88:37: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/fball.c:193:15 op: '*' -> '/'
+  src/fball.c:193:15: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/fball.c:215:13 drop_assign: 'ok = fmpz_is_one(g);' -> '' (the statement is removed)
+  src/fball.c:228:16: error: ‘ok’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:414:25 op: '*' -> '/'
+  src/fball.c:414:25: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/fball.c:88:53 op: '*' -> '/'
+  src/fball.c:88:53: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/fball.c:772:9 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:778:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:189:5 drop_assign: 'im = x->mctx;' -> '' (the statement is removed)
+  src/fball.c:191:13: error: ‘im’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/fball.c:684:5 gcd_lcm: 'fmpq_gcd' -> 'lcm'
+  src/fball.c:684:5: error: implicit declaration of function ‘lcm’ [-Werror=implicit-function-declaration]
+
+NOT COMPILED src/fball.c:88:53 op: '*' -> '+'
+  src/fball.c:88:53: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/fball.c:436:5 op: '*' -> '+'
+  src/fball.c:436:5: error: wrong type argument to unary plus
+
+mutate: 184 mutants in 319.1 s: 146 killed, 3 survived, 35 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 3 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1
