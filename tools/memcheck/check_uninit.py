@@ -8,7 +8,8 @@ GMP follows a garbage limb pointer.  This tool reads the C source text instead a
 reports three things per function:
 
   use-before-init    a local of a FLINT or adelefeld type is used (read or passed to a
-                     function other than an init) before any init call with it
+                     function other than an init) at a place in the text that stands before
+                     the first init call with it, or with no init call at all
   clear-before-init  a clear call with the variable before any init
   init-without-clear an init with no matching clear before the variable leaves scope
 
@@ -22,6 +23,11 @@ A destructor is a call whose callee name contains `_clear`.
 A declaration that is never used and never initialised is not a finding: the compiler
 reports it as unused.  A pointer, a struct field or a function pointer is not a local
 of a target type and is ignored.
+
+The order is the order of the text.  The tool does not follow branches, array elements or
+jumps: an init on one branch of an `if` counts for the whole scope, `v[0]` and `v[1]` are the
+one variable `v`, and a `goto` over an init is not seen.  tools/memcheck/README.md lists these
+limits, and tools/memcheck/selftest.py pins them with the snippets of tools/memcheck/snippets/.
 
 Exit status is 0 when nothing was found and 1 when at least one finding was printed.
 Pass `--category CAT` to print only one of the three categories (used by the red-green
@@ -74,6 +80,10 @@ CONTROL_KEYWORDS = {
     "defined",
     "__attribute__",
 }
+
+# Calls whose first argument is only written as raw bytes: the tests memset a value before the
+# init so that its padding is defined for memcmp. It is not a read, and it is not an init either.
+WRITE_ONLY_FIRST_ARGUMENT = {"memset"}
 
 CATEGORIES = ("use-before-init", "clear-before-init", "init-without-clear")
 
@@ -493,16 +503,8 @@ class Analyzer:
     def pop(self):
         scope = self.scopes.pop()
         for var in scope.values():
-            if var.init_line is None and var.use_line is not None:
-                self.findings.append(
-                    Finding(
-                        self.path,
-                        var.use_line,
-                        var.name,
-                        "use-before-init",
-                        "first use `%s` (declared line %d)" % (var.use_text, var.line),
-                    )
-                )
+            # A use before the first init is reported where it happens (record_use), so that a
+            # use that stands before the init in the text is found too (surface R1).
             if var.init_line is not None and var.clear_line is None:
                 self.findings.append(
                     Finding(self.path, var.init_line, var.name, "init-without-clear", "precise")
@@ -525,8 +527,23 @@ class Analyzer:
         return None
 
     def record_use(self, name, line, text):
+        """A read of `name`, or `name` passed to a function that is not an init. The first use
+        that stands in the text before the first init of the variable is a finding: it does not
+        matter whether an init comes later (surface R1)."""
         var = self.lookup(name)
-        if var is not None and var.use_line is None:
+        if var is None:
+            return
+        if var.init_line is None and var.use_line is None:
+            self.findings.append(
+                Finding(
+                    self.path,
+                    line,
+                    var.name,
+                    "use-before-init",
+                    "first use `%s` (declared line %d)" % (text, var.line),
+                )
+            )
+        if var.use_line is None:
             var.use_line = line
             var.use_text = text
 
@@ -579,7 +596,9 @@ class Analyzer:
                 else:
                     self.record_use(base, line, base)
         else:
-            for arg in args:
+            for k, arg in enumerate(args):
+                if name in WRITE_ONLY_FIRST_ARGUMENT and k == 0:
+                    continue          # memset(x, 0, sizeof(x)) writes bytes; it reads nothing
                 base = argument_base(arg)
                 if base is not None:
                     self.record_use(base, line, base)

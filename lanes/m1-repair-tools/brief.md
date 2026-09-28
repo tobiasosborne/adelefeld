@@ -40,3 +40,55 @@ memory check), `lanes/m1-repair-tools/`. Python standard library only. Red-green
    `python3 tools/mutate/mutate.py --root . --files src/<f>.c --jobs 2 --seed 20260928 --limit 300 --san`
    (if one run exceeds 40 minutes stop it and lower the limit for that file; say so). Report the table of
    counts per file and every survivor with the missing test. Do not change `src/` or `tests/`.
+
+## Resume note of the orchestrator (2026-09-28, 15:50)
+
+This lane was stopped from outside when the machine ran low on memory. It was not your fault and nothing is
+lost: your files are in the worktree as you left them, uncommitted. Before anything else run `git status`
+and `git diff --stat`, read the logs in your lane directory, and find the first item of the brief that is
+not finished. Do not start again from the beginning and do not rewrite what works. Memory: never run two
+builds or two mutation runs at the same time; use `make -j2`; run a mutation run in the foreground, not
+with `nohup`; if `free -g` shows less than 6 GB available, wait. Finish with `report.md`.
+
+## Second resume note of the orchestrator (2026-09-28, 23:20)
+
+Master was merged into your worktree: the sources under `src/` and the tests are now the repaired ones
+(40 test programs). Your own files are as you left them. Convert `equivalent.txt` against the sources as
+they stand NOW; `equivalent.new.txt` of your first session was made against older sources, check every
+entry of it again. Further sources of entries and of stale lines, all to be read:
+`lanes/m1-repair-dump/report.md` (one equivalent mutant of `src/dump.c`, the declaration
+`ulong q = 0, r = 0;` in `dp_v_fb`), the sections on mutation of `lanes/m1-repair-recon/report.md`,
+`lanes/m1-repair-adele/report.md`, `lanes/m1-repair-ctx/report.md`, `lanes/m1-repair-text/report.md`.
+An entry is accepted only if you built the mutant and the reason is true of the code; do not copy a
+reason you did not check.
+
+Two additions (issue adf-4lj and an observation of the evening):
+- 6. `mutate.py` prints every survivor at the moment it is found (flushed), not only at the end: a run
+  that is stopped by a timeout must leave its survivors in the log.
+- 7. An option `--make "<command>"` that replaces `make check` as the judge of a mutant, and a mode in
+  which the mutated file is not under `src/`, so that `tools/adf/adf.c` can be mutated with
+  `sh tests/test_driver.sh` as the judge. Selftest first (red, then green). Document it in
+  `tests/README.md`. You do not own the `Makefile`.
+
+Item 5 (the sweep) is run by you in this session, after items 1 to 4, 6 and 7 are green. Another lane
+builds on this machine at the same time: `--jobs 2`, one run at a time, in the foreground; before each
+run `free -g` must show 6 GB or more available. Write the counts of each file into
+`lanes/m1-repair-tools/sweep.md` when its run ends, before you start the next file, so that an
+interruption loses one file at most. Order: the small files first (`status.c`, `place.c`, `rat.c`,
+`inlines.c`), `dump.c` and `text.c` last. Finish with `report.md`.
+
+## Third resume note of the orchestrator (2026-09-28, 23:30)
+
+Your provider ends a session every few minutes; nothing is wrong with your work. The orchestrator ran
+`python3 tools/mutate/selftest.py` at 23:28: it passes. Items 2, 3, 6 and 7 are taken as done.
+
+- Your notes of progress are now in `lanes/m1-repair-tools/progress.md` (the file you wrote as
+  `report.md`). Keep it up to date after every finished step. Do NOT create `report.md` before
+  everything below is done: the runner stops the lane as soon as that file exists.
+- Still to do, in this order: item 1 (the conversion of `tools/mutate/equivalent.txt`; read the second
+  resume note again for the sources of entries), item 4 (the memory checker and
+  `tools/memcheck/selftest.py`), the parts of `tests/README.md`.
+- Item 5 (the sweep) is NOT yours any more: the orchestrator runs it. Do not start a mutation run over
+  a file of `src/` except a run with `--list`, or a run of single mutants that you need to judge an
+  entry of `equivalent.txt` (`--limit` 5 or less).
+- Then write `report.md` as `lanes/COMMON.md` rule 8 says.

@@ -1,0 +1,23 @@
+mutate: tools/adf/adf.c: 563 mutants
+mutate: 563 mutants, 1 of them run (--limit 1, --seed 20260928)
+mutate: the baseline passes (2.7 s)
+
+SURVIVED tools/adf/adf.c:275:5 drop_call: 'adf_str_free(s);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/tools/adf/adf.c
+  +++ b/tools/adf/adf.c
+  @@ -273,5 +273,5 @@
+       (void) fwrite(s, 1, len, out);
+       fputc('\n', out);
+  -    adf_str_free(s);
+  +    
+       return ADF_OK;
+   }
+
+
+mutate: 1 mutants in 5.4 s: 0 killed, 1 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check
+
+real	0m5,624s
+user	0m4,771s
+sys	0m0,871s

@@ -1,0 +1,8 @@
+survived   21.0 s  src/adele.c:242:5 swap_args: 'arb_mul(z->inf, x->inf, y->inf, prec)' -> 'arb_mul(z->inf, y->inf, x->inf, prec)'
+          key: src/adele.c | swap_args | arb_mul(z->inf, x->inf, y->inf, prec); | arb_mul(z->inf, x->inf, y->inf, prec) -> arb_mul(z->inf, y->inf, x->inf, prec)
+survived   20.9 s  src/adele.c:218:5 swap_args: 'arb_add(z->inf, x->inf, y->inf, prec)' -> 'arb_add(z->inf, y->inf, x->inf, prec)'
+          key: src/adele.c | swap_args | arb_add(z->inf, x->inf, y->inf, prec); | arb_add(z->inf, x->inf, y->inf, prec) -> arb_add(z->inf, y->inf, x->inf, prec)
+
+real	0m41,971s
+user	0m53,775s
+sys	0m4,122s

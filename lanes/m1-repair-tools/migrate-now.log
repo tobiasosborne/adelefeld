@@ -1,0 +1,96 @@
+moved    src/fball.c:556:swap_args is now at line 737 (181 line(s) away)
+DROPPED (no mutant of kind swap_args of src/fball.c is left for the reason) src/fball.c:584:swap_args
+        reason: fmpq_mul(r, r, N) against fmpq_mul(r, N, r): the product does not depend on the order
+moved    src/fball.c:612:swap_args is now at line 851 (239 line(s) away)
+moved    src/recon.c:90:cmp is now at line 115 (19 line(s) away)
+moved    src/recon.c:90:zero_one is now at line 116 (20 line(s) away)
+moved    src/recon.c:122:zero_one is now at line 141 (45 line(s) away)
+moved    src/recon.c:176:swap_args is now at line 141 (45 line(s) away)
+moved    src/recon.c:177:swap_args is now at line 142 (46 line(s) away)
+moved    src/fball.c:54:swap_args is now at line 142 (46 line(s) away)
+moved    src/fball.c:214:swap_args is now at line 130 (40 line(s) away)
+moved    src/fball.c:552:swap_args is now at line 160 (70 line(s) away)
+moved    src/fball.c:555:swap_args is now at line 163 (73 line(s) away)
+moved    src/fball.c:684:swap_args is now at line 177 (87 line(s) away)
+moved    src/cap.c:78:swap_args is now at line 204 (114 line(s) away)
+moved    src/cap.c:112:swap_args is now at line 204 (114 line(s) away)
+moved    src/cap.c:148:swap_args is now at line 218 (128 line(s) away)
+DROPPED (no mutant of kind swap_args of src/rat.c is left for the reason) src/rat.c:222:swap_args
+        reason: fmpq_add(z->q, x->q, y->q) against fmpq_add(z->q, y->q, x->q): the sum of two rationals does not depend on their order, and "aliasing between any combination of the variables is allowed" (fmpq.rst:410)
+DROPPED (no mutant of kind swap_args of src/rat.c is left for the reason) src/rat.c:238:swap_args
+        reason: fmpq_mul(z->q, x->q, y->q) against fmpq_mul(z->q, y->q, x->q): the product of two rationals does not depend on their order, and "aliasing between any combination of the variables is allowed" (fmpq.rst:410)
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:201:swap_args
+        reason: arb_add(z->inf, x->inf, y->inf, prec) against arb_add(z->inf, y->inf, x->inf, prec): the sum of two real numbers does not depend on their order, and arb_add sets z to that sum rounded to prec bits (arb.rst:767-775), so the same value is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:202:swap_args
+        reason: adf_fball_add(&z->fin, &x->fin, &y->fin) against adf_fball_add(&z->fin, &y->fin, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:223:swap_args
+        reason: arb_mul(z->inf, x->inf, y->inf, prec) against arb_mul(z->inf, y->inf, x->inf, prec): the product of two real numbers does not depend on their order, and arb_mul sets z to that product rounded to prec bits (arb.rst:798-806), so the same value is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:224:swap_args
+        reason: adf_fball_mul(&z->fin, &x->fin, &y->fin) against adf_fball_mul(&z->fin, &y->fin, &x->fin): the tight set product is commutative, its radius gcd(a M, b N, N M) is symmetric in (a, N) and (b, M) (precision.md Proposition 2, line 34), so the same ball is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:259:swap_args
+        reason: arb_add(z->inf, x->inf, t, prec) against arb_add(z->inf, t, x->inf, prec): the sum of two real numbers does not depend on their order, and arb_add sets z to that sum rounded to prec bits (arb.rst:767-775), so the same value is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:260:swap_args
+        reason: adf_fball_add(&z->fin, &x->fin, fq) against adf_fball_add(&z->fin, fq, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:285:swap_args
+        reason: arb_mul(z->inf, x->inf, t, prec) against arb_mul(z->inf, t, x->inf, prec): the product of two real numbers does not depend on their order, and arb_mul sets z to that product rounded to prec bits (arb.rst:798-806), so the same value is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:450:swap_args
+        reason: acb_add(z->inf, x->inf, y->inf, prec) against acb_add(z->inf, y->inf, x->inf, prec): the sum of two complex numbers does not depend on their order, and acb_add sets z to that sum (acb.rst:429-431), so the same value is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:451:swap_args
+        reason: adf_fball_add(&z->fin, &x->fin, &y->fin) against adf_fball_add(&z->fin, &y->fin, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:464:swap_args
+        reason: acb_mul(z->inf, x->inf, y->inf, prec) against acb_mul(z->inf, y->inf, x->inf, prec): the product of two complex numbers does not depend on their order, and acb_mul sets z to that product (acb.rst:463-469); the note there about x and y being the same pointer concerns the squaring formula, which the exchange does not change
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:465:swap_args
+        reason: adf_fball_mul(&z->fin, &x->fin, &y->fin) against adf_fball_mul(&z->fin, &y->fin, &x->fin): the tight set product is commutative, its radius gcd(a M, b N, N M) is symmetric in (a, N) and (b, M) (precision.md Proposition 2, line 34), so the same ball is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:492:swap_args
+        reason: acb_add(z->inf, x->inf, t, prec) against acb_add(z->inf, t, x->inf, prec): the sum of two complex numbers does not depend on their order, and acb_add sets z to that sum (acb.rst:429-431), so the same value is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:493:swap_args
+        reason: adf_fball_add(&z->fin, &x->fin, fq) against adf_fball_add(&z->fin, fq, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+DROPPED (no mutant of kind swap_args of src/adele.c is left for the reason) src/adele.c:514:swap_args
+        reason: acb_mul(z->inf, x->inf, t, prec) against acb_mul(z->inf, t, x->inf, prec): the product of two complex numbers does not depend on their order, and acb_mul sets z to that product (acb.rst:463-469), so the same value is written
+DROPPED (no mutant of kind drop_call of src/fball.c is left for the reason) src/fball.c:141:drop_call
+        reason: fmpz_zero(x->A) in adf_fball_init: fmpz_init sets the value to zero ("The value is set to zero", refs/src/flint-3.0.1/fmpz.rst:181-184) and the three fmpz_init calls of lines 138 to 140 are the only other writes of A before this line, so the fmpz_zero changes nothing for every input
+moved    src/fball.c:142:drop_call is now at line 123 (1 line(s) away)
+moved    src/fball.c:468:swap_args is now at line 124 (2 line(s) away)
+moved    src/fball.c:469:swap_args is now at line 130 (8 line(s) away)
+moved    src/fball.c:497:swap_args is now at line 160 (38 line(s) away)
+moved    src/fball.c:551:swap_args is now at line 161 (39 line(s) away)
+moved    src/fball.c:553:swap_args is now at line 162 (40 line(s) away)
+moved    src/fball.c:554:swap_args is now at line 163 (41 line(s) away)
+moved    src/fball.c:582:swap_args is now at line 164 (42 line(s) away)
+moved    src/fball.c:610:swap_args is now at line 165 (43 line(s) away)
+moved    src/scaled.c:209:swap_args is now at line 166 (44 line(s) away)
+moved    src/scaled.c:220:swap_args is now at line 177 (55 line(s) away)
+moved    src/scaled.c:284:swap_args is now at line 204 (82 line(s) away)
+moved    src/scaled.c:358:swap_args is now at line 204 (82 line(s) away)
+moved    src/scaled.c:363:swap_args is now at line 218 (96 line(s) away)
+moved    src/scaled.c:364:swap_args is now at line 222 (100 line(s) away)
+moved    src/scaled.c:365:swap_args is now at line 290 (168 line(s) away)
+moved    src/scaled.c:386:swap_args is now at line 291 (169 line(s) away)
+moved    src/scaled.c:418:swap_args is now at line 231 (55 line(s) away)
+moved    src/scaled.c:447:swap_args is now at line 232 (55 line(s) away)
+moved    src/scaled.c:451:swap_args is now at line 68 (14 line(s) away)
+moved    src/scaled.c:454:swap_args is now at line 322 (108 line(s) away)
+moved    src/scaled.c:520:swap_args is now at line 733 (181 line(s) away)
+moved    src/scaled.c:524:swap_args is now at line 736 (181 line(s) away)
+moved    src/scaled.c:544:swap_args is now at line 949 (265 line(s) away)
+moved    src/scaled.c:609:swap_args is now at line 97 (19 line(s) away)
+moved    src/scaled.c:653:swap_args is now at line 127 (15 line(s) away)
+moved    src/scaled.c:675:swap_args is now at line 157 (9 line(s) away)
+moved    src/scaled.c:476:zero_one is now at line 218 (17 line(s) away)
+moved    src/scaled.c:547:cmp is now at line 219 (17 line(s) away)
+DROPPED (no mutant of kind zero_one of src/scaled.c is left for the reason) src/scaled.c:547:zero_one
+        reason: fmpq_sgn(q) < 0 as < 1: on the only possible values -1 and 1 of fmpq_sgn(q) the comparisons < 0 and < 1 agree
+moved    src/scaled.c:625:cmp is now at line 242 (19 line(s) away)
+moved    src/scaled.c:625:zero_one is now at line 243 (19 line(s) away)
+DROPPED (no mutant of kind drop_call of src/scaled.c is left for the reason) src/scaled.c:60:drop_call
+        reason: fmpq_zero(x->s) after fmpq_init(x->s): fmpq_init already stores the canonical 0 = 0/1
+moved    src/scaled.c:62:drop_call is now at line 279 (20 line(s) away)
+moved    src/scaled.c:466:drop_call is now at line 280 (20 line(s) away)
+DROPPED (no mutant of kind swap_args of src/fball_local.c is left for the reason) src/fball_local.c:107:swap_args
+        reason: fmpz_mul(u, K, d) against fmpz_mul(u, d, K): the product does not depend on the order
+moved    src/fball_local.c:108:swap_args is now at line 470 (20 line(s) away)
+DROPPED (no mutant of kind swap_args of src/fball_local.c is left for the reason) src/fball_local.c:165:swap_args
+        reason: fmpz_mul(e, K, d) against fmpz_mul(e, d, K): the product does not depend on the order
+moved    src/fball_local.c:167:swap_args is now at line 471 (20 line(s) away)
+moved    src/fball_local.c:170:swap_args is now at line 486 (22 line(s) away)
+kept 54, dropped 22, written to lanes/m1-repair-tools/equiv-now.txt

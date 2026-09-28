@@ -1,0 +1,15 @@
+/tmp/tmpwgxp63ht/equivalent.txt:1: not an entry (expected FILE | KIND | LINE | 'old' -> 'new'): src/example.c:43:swap_args
+/tmp/tmpwgxp63ht/equivalent.txt:1: not an entry (expected FILE | KIND | LINE | 'old' -> 'new'): src/example.c:43:swap_args
+ok   the example has the two adf_example_gcd swaps
+ok   an entry of the new form is read to the key of the mutant
+ok   the entry excuses that mutant and not the other one
+ok   an entry of the old line-number form excuses nothing
+ok   the same mutant is one line further down after an edit above it
+ok   its key does not mention the line number
+ok   two identical statements give two mutants with the same text
+ok   the two of them are told apart by an occurrence number
+ok   an entry with an occurrence number names that one mutant
+FAIL an entry with the occurrence number 1 names the first mutant: (['t.c | swap_args | return my_mul(a, b) + my_mul(a, b); | my_mul(a, b) -> my_mul(b, a)'], ['t.c | swap_args | return my_mul(a, b) + my_mul(a, b); | my_mul(a, b) -> my_mul(b, a) #1', 't.c | swap_args | return my_mul(a, b) + my_mul(a, b); | my_mul(a, b) -> my_mul(b, a) #2'])
+FAIL entry_text of every mutant is read back to its own key: (['t.c | swap_args | return my_mul(a, b) + my_mul(a, b); | my_mul(a, b) -> my_mul(b, a)', 't.c | swap_args | return my_mul(a, b) + my_mul(a, b); | my_mul(a, b) -> my_mul(b, a) #2'], ['t.c | swap_args | return my_mul(a, b) + my_mul(a, b); | my_mul(a, b) -> my_mul(b, a) #1', 't.c | swap_args | return my_mul(a, b) + my_mul(a, b); | my_mul(a, b) -> my_mul(b, a) #2'])
+ok   an entry without a number matches neither mutant of a group of two
+False
