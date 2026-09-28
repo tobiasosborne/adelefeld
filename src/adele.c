@@ -19,24 +19,39 @@
    check everything before the first write, so the output is untouched on ADF_DOMAIN or
    ADF_NOT_UNIT.
 
-   HEADER-FINDING (lanes/m1-adele/report.md). The comment blocks of adf_adele_add_rat,
-   adf_adele_mul_rat, adf_adele_div_rat and of the two cadele counterparts name the FLINT
-   functions arb_add_fmpq, arb_mul_fmpq, arb_div_fmpq, acb_add_fmpq, acb_mul_fmpq and
-   acb_div_fmpq. FLINT 3.0.1 exports none of the six (nm of libflint.so has no such symbol, and
-   arb.rst and acb.rst document no such function). The reading used here is the immediate one:
-   convert the exact rational q to a ball at prec with arb_set_fmpq (arb.rst:167) or acb_set_fmpq
-   (acb.rst:128), then use arb_add / arb_mul / arb_div (arb.rst:767, :798, :856) or acb_add /
-   acb_mul / acb_div (acb.rst:429, :463, :521). The conversion is an enclosure ("The result of
-   an (approximate) operation ... is a ball which contains the result of the mathematically
-   exact operation", arb.rst:11-14) and the following operation encloses the exact result, so
-   the composition encloses I + q, I q or I / q. The finite coordinate is exact and independent
-   of prec, as the header demands. */
+   Reading of the header for the functions with an exact rational q (include/adelefeld/adele.h,
+   decision M1-D4). FLINT 3.0.1 has no arb_add_fmpq, arb_mul_fmpq or arb_div_fmpq (nm of
+   libflint.so has no such symbol, and arb.rst and acb.rst document no such function). The
+   reading used here:
+   - add_rat converts the exact rational q to a ball at the clamped prec with arb_set_fmpq
+     (arb.rst:167) or acb_set_fmpq (acb.rst:128) and adds that ball with arb_add (arb.rst:767)
+     or acb_add (acb.rst:429). There is no exact sum of a ball with a rational in FLINT 3.0.1;
+     the conversion is an enclosure ("The result of an (approximate) operation ... is a ball
+     which contains the result of the mathematically exact operation", arb.rst:9-11), and the
+     following operation encloses the exact result, so the composition encloses I + q.
+   - mul_rat and div_rat never form a ball of q. With q = n/d in lowest terms they use the
+     exact integers: mul_rat is arb_mul_fmpz by n (arb.rst:806) then arb_div_fmpz by d
+     (arb.rst:864), and div_rat is arb_mul_fmpz by d then arb_div_fmpz by n; the sign of n is
+     carried by the integer, and n = 0 is ADF_NOT_UNIT before. The acb counterparts are
+     acb_mul_fmpz (acb.rst:457) and acb_div_fmpz (acb.rst:517). No division by a ball that may
+     contain 0 can occur (finding R3 of docs/reviews/m1/arith/review.md).
+   The finite coordinate is exact and independent of prec, as the header demands. */
 
 #include <adelefeld/adele.h>
 
 #include <flint/arb.h>
 #include <flint/acb.h>
 #include <flint/fmpq.h>
+
+/* A prec below 2 is taken as 2 (decision M1-D4, docs/SPEC.md 15.2 row M1-D4; a ball of one bit
+   of an exact non-zero rational may contain 0, and arb_div by such a ball gives a non-finite
+   result, finding R3 of docs/reviews/m1/arith/review.md). This is the only place the clamp is
+   made. */
+static slong
+adele_prec(slong prec)
+{
+    return prec < 2 ? 2 : prec;
+}
 
 /* ======================= adf_adele ======================= */
 
@@ -109,7 +124,7 @@ adf_adele_identical(const adf_adele_t x, const adf_adele_t y)
    precision only when it meets an inexact value" (docs/SPEC.md 4.1). arb_set_fmpq sets the ball
    containing q, rounded towards zero at prec (arb.rst:167); for a dyadic q that fits in prec
    bits the ball is exact ("Arithmetic operations done on exact input with exactly representable
-   output are always guaranteed to produce exact output", arb.rst:23-24). The finite coordinate
+   output are always guaranteed to produce exact output", arb.rst:25-26). The finite coordinate
    is exact and does not depend on prec. Aliasing: y and q are of different types. Cost: one
    fmpq copy, one arb_set_fmpq, and a copy of q into fin. */
 
@@ -118,6 +133,7 @@ adf_adele_set_rat(adf_adele_t y, const adf_rat_t q, slong prec)
 {
     fmpq_t t;
 
+    prec = adele_prec(prec);
     fmpq_init(t);
     adf_rat_get_fmpq(t, q);
     arb_set_fmpq(y->inf, t, prec);
@@ -198,6 +214,7 @@ adf_adele_get_fin(adf_fball_t f, const adf_adele_t x)
 void
 adf_adele_add(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong prec)
 {
+    prec = adele_prec(prec);
     arb_add(z->inf, x->inf, y->inf, prec);
     adf_fball_add(&z->fin, &x->fin, &y->fin);
 }
@@ -209,6 +226,7 @@ adf_adele_add(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong pre
 void
 adf_adele_sub(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong prec)
 {
+    prec = adele_prec(prec);
     arb_sub(z->inf, x->inf, y->inf, prec);
     adf_fball_sub(&z->fin, &x->fin, &y->fin);
 }
@@ -220,6 +238,7 @@ adf_adele_sub(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong pre
 void
 adf_adele_mul(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong prec)
 {
+    prec = adele_prec(prec);
     arb_mul(z->inf, x->inf, y->inf, prec);
     adf_fball_mul(&z->fin, &x->fin, &y->fin);
 }
@@ -236,10 +255,10 @@ adf_adele_neg(adf_adele_t y, const adf_adele_t x)
 
 /* adf_adele_add_rat(z, x, q, prec): z = x + q, q exact at every place:
    (I + q at prec ; F + q). The finite part is adf_fball_add with the exact ball q, radius 0
-   (precision.md Proposition 1 with radius 0). The real part follows the HEADER-FINDING above:
-   q is read into a temporary ball at prec (arb_set_fmpq, arb.rst:167) and added with arb_add
-   (arb.rst:767). Aliasing: z may be x. Cost: one fmpq copy, one arb_set_fmpq, one arb_add, one
-   finite set and add. */
+   (precision.md Proposition 1 with radius 0). The real part is the reading in the file comment
+   above: q is read into a temporary ball at prec (arb_set_fmpq, arb.rst:167) and added with
+   arb_add (arb.rst:767). Aliasing: z may be x. Cost: one fmpq copy, one arb_set_fmpq, one
+   arb_add, one finite set and add. */
 
 void
 adf_adele_add_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec)
@@ -248,6 +267,7 @@ adf_adele_add_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong p
     arb_t t;
     adf_fball_t fq;
 
+    prec = adele_prec(prec);
     fmpq_init(tq);
     arb_init(t);
     adf_fball_init(fq);
@@ -266,62 +286,60 @@ adf_adele_add_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong p
 
 /* adf_adele_mul_rat(z, x, q, prec): z = q x = (I q at prec ; q F). The finite part is the exact
    scaling by the rational q (precision.md Proposition 6(2), line 106; fball.h
-   adf_fball_mul_rat). The real part follows the HEADER-FINDING above (arb_set_fmpq,
-   arb.rst:167; arb_mul, arb.rst:798). Aliasing: z may be x. Cost: one fmpq copy, one
-   arb_set_fmpq, one arb_mul, one finite scaling. */
+   adf_fball_mul_rat). The real part is q = n/d in lowest terms applied as the exact integers:
+   arb_mul_fmpz by n then arb_div_fmpz by d (the reading of the header in the file comment
+   above). Aliasing: z may be x. Cost: one fmpq copy, one arb_mul_fmpz, one arb_div_fmpz, one
+   finite scaling. */
 
 void
 adf_adele_mul_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec)
 {
     fmpq_t tq;
-    arb_t t;
 
+    prec = adele_prec(prec);
     fmpq_init(tq);
-    arb_init(t);
 
     adf_rat_get_fmpq(tq, q);
-    arb_set_fmpq(t, tq, prec);
-
-    arb_mul(z->inf, x->inf, t, prec);
+    arb_mul_fmpz(z->inf, x->inf, fmpq_numref(tq), prec);
+    arb_div_fmpz(z->inf, z->inf, fmpq_denref(tq), prec);
     adf_fball_mul_rat(&z->fin, &x->fin, q);
 
     fmpq_clear(tq);
-    arb_clear(t);
 }
 
 /* adf_adele_div_rat(z, x, q, prec): z = x / q (docs/SPEC.md 4.5: one divides by an exact
    non-zero rational). Status: ADF_OK, z written; ADF_NOT_UNIT if q = 0, z untouched
    (conventions 3.2, 4.3). The finite division is computed into a temporary first, so that a
-   non-ADF_OK status from adf_fball_div_rat leaves z untouched; the real division follows the
-   HEADER-FINDING above (arb_set_fmpq, arb.rst:167; arb_div, arb.rst:856). Aliasing: z may be x.
-   Cost: one fmpq copy, one arb_set_fmpq, one arb_div, one finite division. */
+   non-ADF_OK status from adf_fball_div_rat leaves z untouched; the real part is q = n/d in
+   lowest terms applied as the exact integers: arb_mul_fmpz by d then arb_div_fmpz by n, with
+   the sign of n carried by the integer (the reading of the header in the file comment above).
+   Aliasing: z may be x. Cost: one fmpq copy, one arb_mul_fmpz, one arb_div_fmpz, one finite
+   division. */
 
 int
 adf_adele_div_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec)
 {
     fmpq_t tq;
-    arb_t t;
     adf_fball_t fq;
     int st;
 
     if (adf_rat_is_zero(q))
         return ADF_NOT_UNIT;
 
+    prec = adele_prec(prec);
     fmpq_init(tq);
-    arb_init(t);
     adf_fball_init(fq);
 
     adf_rat_get_fmpq(tq, q);
     st = adf_fball_div_rat(fq, &x->fin, q);
     if (st == ADF_OK)
     {
-        arb_set_fmpq(t, tq, prec);
-        arb_div(z->inf, x->inf, t, prec);
+        arb_mul_fmpz(z->inf, x->inf, fmpq_denref(tq), prec);
+        arb_div_fmpz(z->inf, z->inf, fmpq_numref(tq), prec);
         adf_fball_swap(&z->fin, fq);
     }
 
     fmpq_clear(tq);
-    arb_clear(t);
     adf_fball_clear(fq);
     return st;
 }
@@ -387,6 +405,7 @@ adf_cadele_set_rat(adf_cadele_t y, const adf_rat_t q, slong prec)
 {
     fmpq_t t;
 
+    prec = adele_prec(prec);
     fmpq_init(t);
     adf_rat_get_fmpq(t, q);
     acb_set_fmpq(y->inf, t, prec);
@@ -447,6 +466,7 @@ adf_cadele_get_fin(adf_fball_t f, const adf_cadele_t x)
 void
 adf_cadele_add(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong prec)
 {
+    prec = adele_prec(prec);
     acb_add(z->inf, x->inf, y->inf, prec);
     adf_fball_add(&z->fin, &x->fin, &y->fin);
 }
@@ -454,6 +474,7 @@ adf_cadele_add(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong
 void
 adf_cadele_sub(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong prec)
 {
+    prec = adele_prec(prec);
     acb_sub(z->inf, x->inf, y->inf, prec);
     adf_fball_sub(&z->fin, &x->fin, &y->fin);
 }
@@ -461,6 +482,7 @@ adf_cadele_sub(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong
 void
 adf_cadele_mul(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong prec)
 {
+    prec = adele_prec(prec);
     acb_mul(z->inf, x->inf, y->inf, prec);
     adf_fball_mul(&z->fin, &x->fin, &y->fin);
 }
@@ -481,6 +503,7 @@ adf_cadele_add_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slon
     acb_t t;
     adf_fball_t fq;
 
+    prec = adele_prec(prec);
     fmpq_init(tq);
     acb_init(t);
     adf_fball_init(fq);
@@ -497,56 +520,53 @@ adf_cadele_add_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slon
     adf_fball_clear(fq);
 }
 
-/* adf_cadele_mul_rat: as adf_adele_mul_rat, with acb_mul (acb.rst:463). */
+/* adf_cadele_mul_rat: as adf_adele_mul_rat, with acb_mul_fmpz by n and acb_div_fmpz by d
+   (acb.rst:457, :517). */
 
 void
 adf_cadele_mul_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slong prec)
 {
     fmpq_t tq;
-    acb_t t;
 
+    prec = adele_prec(prec);
     fmpq_init(tq);
-    acb_init(t);
 
     adf_rat_get_fmpq(tq, q);
-    acb_set_fmpq(t, tq, prec);
-
-    acb_mul(z->inf, x->inf, t, prec);
+    acb_mul_fmpz(z->inf, x->inf, fmpq_numref(tq), prec);
+    acb_div_fmpz(z->inf, z->inf, fmpq_denref(tq), prec);
     adf_fball_mul_rat(&z->fin, &x->fin, q);
 
     fmpq_clear(tq);
-    acb_clear(t);
 }
 
-/* adf_cadele_div_rat: as adf_adele_div_rat, with acb_div (acb.rst:521). Status: ADF_OK, z
-   written; ADF_NOT_UNIT if q = 0, z untouched (docs/SPEC.md 4.5; conventions 3.2, 4.3). */
+/* adf_cadele_div_rat: as adf_adele_div_rat, with acb_mul_fmpz by d and acb_div_fmpz by n
+   (acb.rst:457, :517). Status: ADF_OK, z written; ADF_NOT_UNIT if q = 0, z untouched
+   (docs/SPEC.md 4.5; conventions 3.2, 4.3). */
 
 int
 adf_cadele_div_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slong prec)
 {
     fmpq_t tq;
-    acb_t t;
     adf_fball_t fq;
     int st;
 
     if (adf_rat_is_zero(q))
         return ADF_NOT_UNIT;
 
+    prec = adele_prec(prec);
     fmpq_init(tq);
-    acb_init(t);
     adf_fball_init(fq);
 
     adf_rat_get_fmpq(tq, q);
     st = adf_fball_div_rat(fq, &x->fin, q);
     if (st == ADF_OK)
     {
-        acb_set_fmpq(t, tq, prec);
-        acb_div(z->inf, x->inf, t, prec);
+        acb_mul_fmpz(z->inf, x->inf, fmpq_denref(tq), prec);
+        acb_div_fmpz(z->inf, z->inf, fmpq_numref(tq), prec);
         adf_fball_swap(&z->fin, fq);
     }
 
     fmpq_clear(tq);
-    acb_clear(t);
     adf_fball_clear(fq);
     return st;
 }

@@ -46,12 +46,6 @@
 #include <flint/flint.h>
 #include <flint/ulong_extras.h>
 
-/* The place functions of lane m1-rat are not in this worktree. They are declared in
-   adelefeld/place.h; a weak reference lets this file compile and link alone and binds to the
-   real functions after the lanes are merged. prec_at checks for NULL. */
-#pragma weak adf_place_is_archimedean
-#pragma weak adf_place_prime_get
-
 /* --------------------------------------------------------------- helpers */
 
 /* Canonicalise a raw triple in place, d != 0, H >= 0. Source: docs/proofs/policies.md
@@ -571,10 +565,6 @@ adf_fball_prec_at(slong * e, const adf_fball_t x, adf_place_t v)
     fmpz_t p, t;
     slong vH, vd;
 
-    if (adf_place_is_archimedean == NULL)
-        return ADF_UNSUPPORTED;
-    if (adf_place_prime_get == NULL)
-        return ADF_UNSUPPORTED;
     if (adf_place_is_archimedean(v))
         return ADF_DOMAIN;
     if (fmpz_is_zero(x->H))

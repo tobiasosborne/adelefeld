@@ -36,3 +36,15 @@ only (no statement of those two files changes), `lanes/m1-repair-adele/`.
    the reason (do not edit `tools/mutate/equivalent.txt`). On finding R4: a mutant that exchanges the
    operands of `arb_mul` gives another ball that is also an enclosure; the library promises an enclosure,
    not a particular ball; list such mutants under that reason, which is the true one.
+
+## Resume note of the orchestrator (2026-09-28, 15:50)
+
+This lane was stopped from outside when the machine ran low on memory. It was not your fault and nothing is
+lost: your files are in the worktree as you left them, uncommitted. Before anything else run `git status`
+and `git diff --stat`, read the logs in your lane directory, and find the first item of the brief that is
+not finished. Do not start again from the beginning and do not rewrite what works. Memory: never run two
+builds or two mutation runs at the same time; use `make -j2`; run a mutation run in the foreground, not
+with `nohup`; if `free -g` shows less than 6 GB available, wait. Finish with `report.md`.
+You changed one record of `tests/ref/vectors/m1-adele/set_rat.jsonl` (3/4 at `prec = 1`, `exact` false to
+true). The orchestrator has seen it and accepts it as a consequence of decision M1-D4; say in the report
+why it is right (the odd mantissa 3 has 2 bits and `prec = 1` is taken as 2), and change no other record.

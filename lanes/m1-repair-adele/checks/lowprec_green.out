@@ -1,0 +1,459 @@
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_abi.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_abi
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_adele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_adele_lowprec.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele_lowprec
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_adele_prec.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele_prec
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_cadele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cadele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_cap.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_cap_chain.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_chain
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_cap_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_common.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_common
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dlopen.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dlopen
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_fball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_fball_local.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_local
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_fball_local_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_local_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_fball_overwrite.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_overwrite
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_fball_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_headers.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_headers
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_layouts.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_layouts
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_modctx.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_modctx
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_place.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_place
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_rat.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_rat
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_recon.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_recon_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_scaffold.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaffold
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_scaled.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_scaled_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_status.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_status
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_support.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_support
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_text_adele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_adele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_text_classify.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_classify
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_text_fball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_fball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_text_rat.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_rat
+== build/test_abi
+ok   sizeof_functions_agree_with_the_layouts
+ok   array_of_one_types
+2 tests, 13 checks, 0 failed checks, 0 failed tests
+== build/test_adele
+ok   adele_ops_vectors
+ok   adele_set_rat_vectors
+ok   init_is_the_exact_zero
+ok   set_si_is_exact_in_both_coordinates
+ok   set_and_swap_copy_both_coordinates
+ok   set_arb_fball_rejects_a_non_finite_real_ball
+ok   get_real_get_fin_and_get_arb_at
+ok   div_rat_by_zero_is_not_unit_and_leaves_z
+ok   aliasing_of_add_sub_mul
+ok   aliasing_of_neg_and_scale
+ok   identical_separates_midpoint_radius_and_finite_part
+ok   is_canonical_sees_a_non_finite_real_ball
+ok   the_finite_coordinate_does_not_depend_on_prec
+13 tests, 6712 checks, 0 failed checks, 0 failed tests
+== build/test_adele_lowprec
+ok   adele_add_rat_below_prec_two
+ok   adele_mul_rat_below_prec_two
+ok   adele_div_rat_below_prec_two
+ok   adele_add_below_prec_two
+ok   adele_sub_below_prec_two
+ok   adele_mul_below_prec_two
+ok   adele_set_rat_below_prec_two
+ok   cadele_add_rat_below_prec_two
+ok   cadele_mul_rat_below_prec_two
+ok   cadele_div_rat_below_prec_two
+ok   cadele_add_below_prec_two
+ok   cadele_sub_below_prec_two
+ok   cadele_mul_below_prec_two
+ok   cadele_set_rat_below_prec_two
+14 tests, 1426 checks, 0 failed checks, 0 failed tests
+== build/test_adele_prec
+ok   adele_add_computes_the_real_part_at_the_precision_asked_for
+ok   adele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   adele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_set_rat_converts_at_the_precision_asked_for
+ok   cadele_add_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_set_rat_converts_at_the_precision_asked_for
+ok   adele_swap_exchanges_the_finite_half
+ok   cadele_swap_exchanges_the_finite_half
+ok   get_arb_at_the_real_place_returns_ADF_OK
+17 tests, 148 checks, 0 failed checks, 0 failed tests
+== build/test_cadele
+ok   cadele_ops_vectors
+ok   cadele_set_rat_vectors
+ok   cadele_init_is_the_exact_zero
+ok   cadele_set_and_swap
+ok   cadele_set_rat_has_exact_zero_imaginary_part
+ok   cadele_set_adele_is_exact
+ok   i_squared_is_minus_one
+ok   cadele_set_acb_fball_rejects_a_non_finite_complex_ball
+ok   cadele_div_rat_by_zero_is_not_unit_and_leaves_z
+ok   cadele_aliasing_of_add_sub_mul
+ok   cadele_aliasing_of_neg_and_scale
+ok   cadele_is_canonical_needs_both_coordinates
+ok   cadele_identical_separates_the_parts
+ok   cadele_finite_coordinate_does_not_depend_on_prec
+ok   cadele_get_complex_and_get_fin
+15 tests, 6141 checks, 0 failed checks, 0 failed tests
+== build/test_cap
+ok   cap_basic
+ok   cap_exact_untouched
+ok   cap_invariant_and_idempotent
+ok   cap_domain_on_nonpositive_C
+ok   cap_unsupported_on_local_input
+ok   cap_aliasing
+ok   cap_huge_operands
+ok   add_cap_basic
+ok   add_cap_exact_untouched
+ok   add_cap_of_two_capped_needs_no_cap
+ok   add_cap_domain_on_nonpositive_C
+ok   add_cap_unsupported_on_local_input
+ok   add_cap_aliasing
+ok   sub_cap_basic
+ok   sub_cap_exact_untouched
+ok   sub_cap_domain_on_nonpositive_C
+ok   sub_cap_unsupported_on_local_input
+ok   sub_cap_aliasing
+ok   mul_cap_basic
+ok   mul_cap_exact_untouched
+ok   mul_cap_domain_on_nonpositive_C
+ok   mul_cap_unsupported_on_local_input
+ok   mul_cap_aliasing
+ok   mul_rat_cap_basic
+ok   mul_rat_cap_exact_untouched
+ok   mul_rat_cap_domain_on_nonpositive_C
+ok   mul_rat_cap_unsupported_on_local_input
+ok   mul_rat_cap_aliasing
+28 tests, 874 checks, 0 failed checks, 0 failed tests
+== build/test_cap_chain
+ok   chain_invariant
+ok   chain_contains_tight
+ok   enumeration_small_radii
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+== build/test_cap_vectors
+ok   vectors_cap_absolute_cap
+ok   vectors_add_cap
+ok   vectors_sub_cap
+ok   vectors_mul_cap
+ok   vectors_mul_rat_cap
+5 tests, 49930 checks, 0 failed checks, 0 failed tests
+== build/test_common
+ok   the_compiled_version_string_names_the_flint_of_the_headers
+ok   the_compiled_version_string_is_static
+ok   the_run_time_check_accepts_the_installed_flint
+ok   adf_str_free_releases_the_memory_of_flint_malloc
+ok   adf_str_free_of_null_does_nothing
+ok   the_version_comparison_reads_the_major_and_the_minor_number
+ok   the_version_comparison_of_the_installed_flint_says_the_versions_agree
+7 tests, 78 checks, 0 failed checks, 0 failed tests
+== build/test_dlopen
+   build/libadelefeld.so is not there (run sh tests/test_exports.sh first); nothing to load
+ok   the_shared_object_is_loaded
+   build/libadelefeld.so is not there; the names cannot be looked up
+ok   the_four_functions_are_found_by_name_in_the_loaded_object
+2 tests, 0 checks, 0 failed checks, 0 failed tests
+== build/test_fball
+ok   spec_4_3_rows
+ok   spec_4_2_rows
+ok   radius_zero_is_a_point
+ok   aliasing_binary
+ok   canonical_form
+ok   canonical_predicate
+ok   enclosure_by_enumeration
+ok   tightness_witnesses
+ok   valuation_formula_at_each_prime
+ok   accessors
+ok   precision_at_a_place
+ok   div_rat_status
+ok   big_operands_4096_bits
+ok   constructors
+ok   swap_and_set
+ok   canonicalise_raw_and_domains
+ok   local_shaped_is_canonical
+ok   identical_local_guard
+ok   predicates_local_and_radius_edges
+ok   arithmetic_local_input_as_set
+20 tests, 410 checks, 0 failed checks, 0 failed tests
+== build/test_fball_local
+ok   set_local_and_set_global_basic
+ok   prop25_denominator_shares_a_factor_with_the_block
+ok   set_local_statuses_leave_the_output_untouched
+ok   set_local_enclose_prop20
+ok   conversions_aliasing_and_other_contexts
+ok   round_trips_on_1_2_64_128_blocks
+ok   life_cycle_of_the_residue_array
+ok   is_canonical_predicate_L
+ok   identical_compares_raw_data
+ok   prop24_cancellation_keeps_the_set_not_the_triple
+ok   accessors_agree_with_the_global_form
+ok   predicates_through_the_canonical_triple
+ok   canonical_H_changes_after_a_sum
+ok   products_of_proposition_22
+ok   scalars_of_proposition_23
+ok   different_context_pointers_give_global_results
+ok   operations_against_the_global_forms
+ok   caller_reconstruct_with_a_local_ball
+ok   caller_printer_with_a_local_ball
+ok   caller_adele_add_with_local_finite_parts
+ok   no_growth_of_live_blocks
+ok   local_output_of_another_context_is_resized
+ok   is_canonical_rejects_a_context_without_blocks
+ok   constructors_over_a_value_with_other_data
+ok   no_growth_of_live_blocks_in_the_life_cycle
+25 tests, 20554 checks, 0 failed checks, 0 failed tests
+== build/test_fball_local_vectors
+local.jsonl: 967 local results, 632 global results, 154 statuses, 170 predicates
+ok   every_record_of_local_jsonl
+1 tests, 42682 checks, 0 failed checks, 0 failed tests
+== build/test_fball_overwrite
+ok   zero_writes_every_field_of_a_value_that_holds_other_data
+ok   one_writes_every_field_of_a_value_that_holds_other_data
+ok   set_si_writes_every_field_of_a_value_that_holds_other_data
+ok   set_fmpz_writes_every_field_of_a_value_that_holds_other_data
+ok   set_rat_writes_every_field_of_a_value_that_holds_other_data
+ok   set_fmpz3_writes_every_field_of_a_value_that_holds_other_data
+ok   set_center_radius_writes_every_field_of_a_value_that_holds_other_data
+ok   set_copies_every_field_over_a_value_that_holds_other_data
+ok   canonicalise_writes_every_field_of_a_raw_triple_over_other_data
+ok   swap_moves_every_field
+ok   the_constructors_do_not_depend_on_the_earlier_value
+11 tests, 44 checks, 0 failed checks, 0 failed tests
+== build/test_fball_vectors
+ok   vectors_canonical
+ok   vectors_add
+ok   vectors_sub
+ok   vectors_mul
+ok   vectors_neg
+ok   vectors_scale
+ok   vectors_predicates
+ok   vectors_compare
+ok   vectors_membership
+9 tests, 34229 checks, 0 failed checks, 0 failed tests
+== build/test_headers
+ok   status_values_are_those_of_conventions_3_1
+ok   status_names_are_those_of_the_golden_files
+ok   point_comparison_values_are_those_of_conventions_2_1
+ok   text_kinds_are_the_thirteen_start_symbols_in_order
+ok   text_limits_default_are_those_of_conventions_8_4
+ok   version_is_0_1_0
+ok   backend_tags_are_those_of_conventions_5_2
+ok   header_compiled_against_flint_3_0
+8 tests, 58 checks, 0 failed checks, 0 failed tests
+== build/test_layouts
+ok   alignments_left_out_by_test_abi_c
+1 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_modctx
+ok   vectors_modctx
+ok   golden_modctx_bodies
+ok   constructor_validations_touch_no_output
+ok   ctx_desc_and_match
+ok   two_threads_read_one_context
+ok   free_null_and_layout
+ok   from_dump_edge_cases
+ok   from_dump_many_blocks
+ok   dump_input_without_terminator
+ok   new_prime_powers_many_blocks
+ok   matches_desc_compares_the_first_block
+11 tests, 10197 checks, 0 failed checks, 0 failed tests
+== build/test_place
+ok   the_place_has_the_fixed_layout_of_the_interface
+ok   the_archimedean_place_is_not_a_prime
+ok   a_place_made_twice_from_the_same_prime_is_one_place
+ok   every_prime_gives_a_finite_place
+ok   the_largest_prime_below_two_to_the_sixty_four_is_a_place
+ok   a_composite_prime_argument_is_outside_the_domain
+ok   the_output_is_untouched_when_the_argument_is_not_prime
+ok   the_archimedean_place_comes_before_every_prime
+ok   the_canonical_order_is_the_increasing_order_of_the_primes
+ok   the_order_is_a_strict_total_order
+ok   a_place_survives_by_value
+11 tests, 797 checks, 0 failed checks, 0 failed tests
+== build/test_rat
+ok   the_vectors_of_the_constructors_from_raw_data
+ok   the_vectors_of_adf_rat_set_si
+ok   the_vectors_of_the_sum
+ok   the_vectors_of_the_difference
+ok   the_vectors_of_the_product
+ok   the_vectors_of_the_negation
+ok   the_vectors_of_the_quotient
+ok   the_vectors_of_the_inverse
+ok   the_vectors_of_the_predicates
+ok   the_life_cycle
+ok   the_zero_and_the_one
+ok   the_zero_keeps_its_canonical_form_under_arithmetic
+ok   a_copy_may_be_its_own_source
+ok   a_swap_exchanges_the_values
+ok   a_copy_owns_its_own_limbs
+ok   the_constructor_from_two_integers_reduces_and_moves_the_sign
+ok   the_constructor_from_two_integers_admits_aliased_arguments
+ok   the_constructor_from_an_fmpq_canonicalises
+ok   a_zero_denominator_is_outside_the_domain_and_writes_nothing
+ok   the_quotient_by_the_exact_zero_is_not_a_unit_and_writes_nothing
+ok   the_inverse_of_the_exact_zero_is_not_a_unit_and_writes_nothing
+ok   the_sign_of_every_value
+ok   the_equality_of_two_values
+ok   a_non_canonical_value_is_told_from_a_canonical_one
+ok   the_arithmetic_of_huge_operands_is_exact
+ok   the_layout_of_the_rational_is_the_documented_one
+26 tests, 41415 checks, 0 failed checks, 0 failed tests
+== build/test_recon
+ok   one_candidate_of_a_ball_of_radius_one_sixth
+ok   the_end_points_of_the_closed_interval_are_candidates
+ok   an_interval_of_the_width_of_the_radius
+ok   an_interval_just_below_the_width_of_the_radius
+ok   no_candidate_gives_no_solution
+ok   an_empty_interval_gives_no_solution
+ok   an_exact_finite_ball_gives_its_centre
+ok   negative_centres
+ok   a_radius_with_a_denominator
+ok   several_candidates_give_not_unique
+ok   the_output_may_be_one_of_the_interval_end_points
+ok   operands_of_4096_bits
+ok   the_enumeration_of_candidates_agrees_with_the_function
+ok   an_adele_with_a_real_ball_of_radius_zero
+ok   the_end_points_of_the_real_interval_are_candidates
+ok   the_adele_agrees_with_the_finite_ball_call_on_the_exact_interval
+ok   an_adele_with_an_exact_finite_ball
+ok   an_adele_with_operands_of_4096_bits
+ok   an_adele_with_an_infinite_real_ball_is_rejected
+19 tests, 52740 checks, 0 failed checks, 0 failed tests
+== build/test_recon_vectors
+ok   vectors_recon
+ok   vectors_recon_edges_of_the_lane
+ok   vectors_recon_adele
+3 tests, 21194 checks, 0 failed checks, 0 failed tests
+== build/test_scaffold
+ok   flint_is_version_3_x
+ok   fmpz_two_plus_three_is_five
+ok   public_header_version
+3 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_scaled
+ok   life_cycle_and_predicate
+ok   set_rat_stores_the_exact_rational
+ok   set_fball_loss_exactly_when_the_set_changes
+ok   set_context_examples
+ok   set_context_loss_grid_and_best
+ok   context_rule_add
+ok   context_rule_sub
+ok   context_rule_mul
+ok   context_rule_mul_tight
+ok   exact_values_keep_the_tag
+ok   literal_rows_of_the_specification
+ok   product_loses_the_factor_h
+ok   neg_and_mul_rat_are_exact_as_sets
+ok   add_rat_lost_and_best
+ok   lcm_contexts_meet_losslessly
+ok   equal_sets_equal_data
+ok   aliasing_binary_ops
+ok   aliasing_unary_and_scalar_ops
+ok   one_word_and_4096_bit_moduli
+ok   exact_zero_and_zero_residues
+ok   tight_and_scaled_policies_containment
+ok   set_fball_converts_a_local_value_as_its_set
+ok   exact_results_store_a_zero_residue
+23 tests, 88410 checks, 0 failed checks, 0 failed tests
+== build/test_scaled_vectors
+ok   vectors_policies_convert_from_tight
+ok   vectors_policies_scaled_add
+ok   vectors_policies_scaled_mul
+ok   vectors_lane_neg
+ok   vectors_lane_scale
+ok   vectors_lane_sub
+ok   vectors_lane_mul_exact
+ok   vectors_lane_mul_tight
+ok   vectors_lane_add_rat
+ok   vectors_lane_set_context
+ok   vectors_lane_to_fball
+11 tests, 62707 checks, 0 failed checks, 0 failed tests
+== build/test_status
+ok   the_numeric_values_of_the_status_codes
+ok   the_values_of_the_point_comparison
+ok   every_status_code_has_the_name_of_the_list
+ok   the_names_carry_no_prefix
+ok   the_names_are_distinct
+ok   a_code_outside_the_list_has_the_name_UNKNOWN
+ok   the_name_of_a_code_is_stable
+7 tests, 122 checks, 0 failed checks, 0 failed tests
+== build/test_support
+ok   jsonl_reads_every_vector_file
+ok   jsonl_reads_the_documented_records
+ok   jsonl_keeps_integers_as_text
+ok   jsonl_refuses_malformed_lines
+ok   jsonl_encodes_a_unicode_escape
+ok   jsonl_errors_name_the_line
+ok   jsonl_bounds_the_nesting
+ok   jsonl_refuses_a_value_of_the_wrong_kind
+ok   golden_reads_every_golden_file
+ok   golden_decodes_the_escapes
+ok   golden_decodes_the_hostile_inputs
+ok   golden_expands_generated_inputs
+ok   golden_refuses_malformed_lines
+ok   golden_bounds_a_generated_input
+ok   golden_reads_the_documented_vectors
+ok   golden_accepts_a_file_without_a_vector
+16 tests, 295152 checks, 0 failed checks, 0 failed tests
+== build/test_text_adele
+ok   every_row_of_the_golden_file_adele
+ok   every_row_of_the_golden_file_cadele
+ok   every_row_of_the_golden_file_realball_read
+ok   every_row_of_the_golden_file_realball_print
+ok   every_random_print_of_the_reference
+ok   every_random_adele_text_of_the_reference
+ok   every_random_cadele_text_of_the_reference
+ok   a_dyadic_ball_is_read_exactly_at_every_prec
+ok   the_radius_mantissa_bound_of_2_to_the_30
+ok   random_decimals_are_enclosed_at_small_prec
+ok   the_extreme_exponents_of_the_default_limits
+ok   the_printers_write_the_templates
+ok   the_digits_argument
+ok   print_then_parse_encloses_the_value
+ok   parse_print_parse_encloses_the_first_value
+ok   max_exp10_at_the_limit_and_one_above
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_bytes_and_ends_of_memory
+ok   the_earlier_stage_decides_the_status
+ok   the_grammar_of_real_and_complex
+20 tests, 84400 checks, 0 failed checks, 0 failed tests
+== build/test_text_classify
+ok   the_kinds_are_numbered_as_in_9_7
+ok   every_row_of_the_golden_file_dispatch
+ok   the_texts_of_every_type_file_are_of_that_type
+ok   every_text_of_the_reference
+ok   one_text_of_each_kind
+ok   signs_and_denominators_of_the_other_literals
+ok   limits_hostile_bytes_and_the_order_of_checks
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+8 tests, 20776 checks, 0 failed checks, 0 failed tests
+== build/test_text_fball
+ok   every_row_of_the_golden_file_fball
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template
+ok   random_balls_round_trip
+ok   the_parser_canonicalises
+ok   the_output_may_hold_any_value_before
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_and_forbidden_bytes
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+ok   the_earlier_stage_decides_the_status
+10 tests, 21545 checks, 0 failed checks, 0 failed tests
+== build/test_text_rat
+ok   every_row_of_the_golden_file_rat
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template_q
+ok   huge_operands_print_their_digits_and_come_back
+ok   random_values_round_trip
+ok   max_len_at_the_limit_and_one_above
+ok   empty_and_null_input
+ok   a_nul_byte_anywhere_is_a_parse_error
+ok   every_byte_outside_the_alphabet_is_a_parse_error
+ok   input_at_the_end_of_a_heap_block_of_exact_size
+ok   input_at_the_end_of_a_page
+ok   the_earlier_stage_decides_the_status
+ok   canonicalisation_on_input
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+check passed: all 31 test programs

@@ -12,7 +12,7 @@
    canonicalisation is needed after the arithmetic and one is needed only where raw data enter.
 
    Aliasing. conventions 4.1: an output may be any input of the same type, and inputs may alias
-   each other. FLINT states for fmpq_add, fmpq_sub, fmpq_mul and fmpq_div (fmpq.h:200, 209, 230,
+   each other. FLINT states for fmpq_add, fmpq_sub, fmpq_mul and fmpq_div (fmpq.h:200, 212, 230,
    248) "Aliasing between any combination of the variables is allowed" (fmpq.rst:409, and
    the same sentence for the underscore versions at :419-420). fmpq_set and fmpq_swap copy and
    exchange whole fields (fmpq.h:78-88), so they alias too. For fmpq_inv the documentation
@@ -222,7 +222,7 @@ adf_rat_add(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
     fmpq_add(z->q, x->q, y->q);
 }
 
-/* adf_rat_sub(z, x, y): z = x - y (fmpq_sub, fmpq.h:209; fmpq.rst:400-409). */
+/* adf_rat_sub(z, x, y): z = x - y (fmpq_sub, fmpq.h:212; fmpq.rst:400-409). */
 
 void
 adf_rat_sub(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
