@@ -583,8 +583,11 @@ def _check_limits(tree, limits):
         if tag == "dec":
             m = re.search(r"[eE]([+-]?)([0-9]+)$", node[1])
             if m:
+                # decision M1-D7 (finding R4): compare the exponent with max_exp10 as a number
+                # of any length; there is no hidden 18-digit bound. The exponent is non-negative,
+                # so a negative max_exp10 admits no literal with an exponent.
                 e = _strip_int(m.group(2))
-                if len(e) > 18 or int(e) > limits.max_exp10:
+                if int(e) > limits.max_exp10:
                     raise TextError("LIMIT")
         elif tag == "lcoord" and node[3] is not None and node[4] is not None:
             e = _strip_int(node[4].lstrip("-"))
@@ -632,6 +635,10 @@ def _dec(text):
     m = re.fullmatch(r"(-?)([0-9]+)(?:\.([0-9]+))?(?:[eE]([+-]?[0-9]+))?", text)
     sign, ip, fp, ex = m.group(1), m.group(2), m.group(3) or "", m.group(4)
     digits = _strip_int(ip + fp)
+    # A zero coefficient is the exact zero whatever the exponent (decision M1-D7, finding R4);
+    # the power of ten is not formed, so a huge exponent within max_exp10 costs nothing.
+    if digits == "0":
+        return Fraction(0)
     e = int(ex) if ex else 0
     e -= len(fp)
     v = Fraction(int(digits)) * _pow10(e)
