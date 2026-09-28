@@ -1,0 +1,25 @@
+equal
+different
+undecided
+undecided
+different
+error: DOMAIN
+error: UNSUPPORTED
+adf1 Q rat 7 3
+adf1 Q fball g 2 6 1
+adf1 Q adele 1 1 0 0 0 g 0 0 1
+adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1
+error: UNSUPPORTED
+error: DOMAIN
+7/3
+(* ; 2 mod 6)
+(0.5 ; 0)
+((1) + (0.5)*i ; 2 mod 6)
+adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: PARSE
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: DOMAIN
+error: PARSE

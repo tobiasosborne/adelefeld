@@ -1,0 +1,45 @@
+rc 1 lines 35 of 44
+'show (499501046507192253972016382165016...(30114) -> (4.9950104650719225397e30102 +/- 2.1e30082 ; 0)
+'show (999002093014384507944032764330033...(30114) -> error: LIMIT
+'show (0 +/- 499501046507192253972016382...(30120) -> (0 +/- 5e30102 ; 0)
+'show (0 +/- 999002093014384507944032764...(30120) -> error: LIMIT
+'show ((0) + (99900209301438450794403276...(30124) -> error: LIMIT
+'prec 100001'                                    -> error: LIMIT
+'div (1 ; 0) with 3'                             -> error: LIMIT
+'prec 100002'                                    -> (1.3333333333333333333 +/- 3.4e-20 ; 1/3)
+'div (1 ; 0) with 3'                             -> (1.3333333333333333333 +/- 3.4e-20 ; 1/3)
+'prec 100001'                                    -> error: LIMIT
+'add (1 ; 0) with 1/3'                           -> (0.33333333333333333333 +/- 3.4e-21 ; 0)
+'prec 100002'                                    -> error: LIMIT
+'add (1 ; 0) with 1/3'                           -> error: DOMAIN
+'prec 100100'                                    -> error: DOMAIN
+'div (1 ; 0) with 3'                             -> error: DOMAIN
+'prec 99000'                                     -> (1e20000 ; 0)
+'div (1 ; 0) with 3'                             -> error: LIMIT
+'prec 1000000'                                   -> error: DOMAIN
+'div (1 ; 0) with 3'                             -> error: DOMAIN
+'prec 1000001'                                   -> error: LIMIT
+'prec 0'                                         -> error: PARSE
+'prec -1'                                        -> error: PARSE
+'prec 100000'                                    -> error: DOMAIN
+'prec 100002'                                    -> error: PARSE
+'show (1e20000 ; 0)'                             -> error: PARSE
+'mul (1e20000 ; 0) with (1e20000 ; 0)'           -> error: PARSE
+'add [5 mod 6] with 1/0'                         -> 7/3
+'add 1/0 with [5 mod 6]'                         -> error: PARSE
+'add [5 mod 6] with (1e100001 ; 0)'              -> 7/3
+'reconstruct (* ; 1 mod 2) with [5 mod 6...(47)  -> error: PARSE
+'reconstruct (* ; 1 mod 2) with 0 with [...(47)  -> 7/3
+'cap (* ; 3 mod 12) with (* ; 1 mod 2)'          -> 7/3
+'reconstruct (* ; 1 mod 2) with (* ; 0 m...(51)  -> error: PARSE
+'reconstruct (* ; 1 mod 2) with (0 ; 0) ...(45)  -> error: PARSE
+'prec 64\r'                                      -> error: PARSE
+'show 7/3'                                       -> <none>
+'prec 64 '                                       -> <none>
+'show 7/3'                                       -> <none>
+'prec\t64\t'                                     -> <none>
+'show 7/3'                                       -> <none>
+'prec 64\nshow 7/3'                              -> <none>
+'compare (* ; 1 mod 2) with (* ; 3 mod 2)'       -> <none>
+'dump 7/3'                                       -> <none>
+'load adf1 Q rat 7 3'                            -> <none>

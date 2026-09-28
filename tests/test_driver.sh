@@ -91,6 +91,7 @@ run_case h3_line_65536       "$B/h3_line_65536.cmd"       "$H/h3_line_65536.out"
 run_case h4_line_65537       "$B/h4_line_65537.cmd"       "$H/h4_line_65537.out"       1
 run_case h5_no_final_newline "$B/h5_no_final_newline.cmd" "$H/h5_no_final_newline.out" 0
 run_case h6_empty            "$B/h6_empty.cmd"            "$H/h6_empty.out"            0
+run_case h9_settings_ws      "$B/h9_settings_ws.cmd"      "$H/h9_settings_ws.out"      1
 
 # h7: 100000 lines, timed.  The expected output is 100000 lines of "7/3".
 cases=$((cases + 1))
@@ -129,6 +130,39 @@ if ! cmp -s "$B/empty" "$B/h8.out"; then
 fi
 if [ ! -s "$B/h8.err" ]; then
     echo "test_driver: h8_directory: nothing was written to standard error"
+    exit 1
+fi
+
+# ---- the driver holds no bound of its own on printing (R7 of the review of milestone 1)
+#
+# A printer of a value with a real or complex part returns NULL with length 0 when a midpoint
+# or a radius has a binary exponent above ADF_PRINT_EXP_MAX in absolute value
+# (include/adelefeld/text.h:32-38, decision M1-D6).  The driver has no rule of its own: it
+# answers error: LIMIT for a NULL.  A second copy of the bound in the driver is a fault,
+# because the two copies can drift apart, which is what the review of milestone 1 found; the
+# check below fails when the code of the driver (its comments apart) writes the number down.
+# The driver may of course name ADF_PRINT_EXP_MAX: that is the rule of the library, read once.
+awk 'BEGIN { inc = 0 }
+     { line = $0
+       while (1) {
+         if (inc) {
+           i = index(line, "*/")
+           if (i == 0) { line = ""; break }
+           line = substr(line, i + 2)
+           inc = 0
+         } else {
+           i = index(line, "/*")
+           j = index(line, "//")
+           if (i > 0 && (j == 0 || i < j)) { line = substr(line, 1, i - 1); inc = 1 }
+           else { if (j > 0) line = substr(line, 1, j - 1); break }
+         }
+       }
+       if (line ~ /100000/) print FNR ": " line
+     }' tools/adf/adf.c > "$B/print_bound.txt"
+if [ -s "$B/print_bound.txt" ]; then
+    echo "test_driver: the driver names a bound of its own on printing; the rule of M1-D6 is"
+    echo "            the one of include/adelefeld/text.h, and the driver only reads it"
+    sed -n '1,10p' "$B/print_bound.txt"
     exit 1
 fi
 

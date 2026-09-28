@@ -1,7 +1,9 @@
 /* tests/test_place.c: the opaque place handle (conventions 7, DECISION CV-18 and CV-56; SPEC 4.1).
-   The primes tested: 2, 3, 5, 7, and the largest prime below 2^64, 18446744073709551557
-   = 2^64 - 59. The rejected arguments: 0, 1 and the composites 4, 6, 9, 100, 2^63,
-   2^64 - 1 and 2^64 (the last two are ULONG_MAX and its successor, which the type admits). */
+   The primes tested: 2, 3, 5, 7, 11, 13, 101, 65537, and the largest prime below 2^64,
+   18446744073709551557 = 2^64 - 59.  The rejected arguments: 0, 1 and the composites 4, 6, 9,
+   100, 10, 15, 49, 121, 1009^2, the product of the first six primes, 2^63, 2^64 - 1 and
+   2^64 - 2.  The last two are the two largest values a 64-bit ulong admits, so 2^64 itself is
+   not among them: it does not fit in the type (conventions 12.4: one ulong, 8 bytes). */
 
 #include <adelefeld.h>
 

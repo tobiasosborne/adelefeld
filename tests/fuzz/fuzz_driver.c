@@ -14,7 +14,11 @@
    3. every line that begins with "error: " is followed by a status name of adf_status_str
       (conventions 3.1): a line with any other text is a bug of the driver;
    4. the exit status 0 comes with no error line at all, and the exit status 1 comes with
-      at least one: the status counts the commands that failed. */
+      at least one: the status counts the commands that failed;
+   5. no line written is empty.  Every command answers a value text, "true", "false", one of
+      the three words of compare, a name of a kind, the dump form, or "error: <STATUS>"; a
+      line of length 0 would be a printer that returned nothing without a status, which is
+      what decision M1-D6 replaced by ADF_LIMIT. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -96,6 +100,12 @@ LLVMFuzzerTestOneInput(const uint8_t * data, size_t size)
         lines++;
         while (n > 0 && (buf[n - 1] == '\n' || buf[n - 1] == '\r'))
             buf[--n] = '\0';
+        if (n == 0)
+        {
+            fprintf(stderr, "fuzz_driver: line %lu of the output is empty\n",
+                    (unsigned long) lines);
+            abort();
+        }
         if (drv_looks_like_error(buf))
         {
             errors++;
