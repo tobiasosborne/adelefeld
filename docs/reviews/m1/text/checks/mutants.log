@@ -1,0 +1,10 @@
+{"mutant": "src/text.c:100:27 cmp: '<=' -> '<'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:100:53 cmp: '<=' -> '<'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:114:18 cmp: '<=' -> '<'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:713:14 zero_one: '0' -> '1'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:753:12 cmp: '>=' -> '>'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:753:15 zero_one: '0' -> '1'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:804:22 zero_one: '0' -> '1'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:889:11 cmp: '>=' -> '>'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:889:14 zero_one: '0' -> '1'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}
+{"mutant": "src/text.c:1096:16 zero_one: '0' -> '1'", "parser": 1011, "classifier": 1011, "printer": 270, "differences": 0}

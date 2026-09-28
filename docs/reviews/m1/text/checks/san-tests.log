@@ -1,0 +1,55 @@
+ok   every_row_of_the_golden_file_rat
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template_q
+ok   huge_operands_print_their_digits_and_come_back
+ok   random_values_round_trip
+ok   max_len_at_the_limit_and_one_above
+ok   empty_and_null_input
+ok   a_nul_byte_anywhere_is_a_parse_error
+ok   every_byte_outside_the_alphabet_is_a_parse_error
+ok   input_at_the_end_of_a_heap_block_of_exact_size
+ok   input_at_the_end_of_a_page
+ok   the_earlier_stage_decides_the_status
+ok   canonicalisation_on_input
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+ok   every_row_of_the_golden_file_fball
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template
+ok   random_balls_round_trip
+ok   the_parser_canonicalises
+ok   the_output_may_hold_any_value_before
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_and_forbidden_bytes
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+ok   the_earlier_stage_decides_the_status
+10 tests, 21545 checks, 0 failed checks, 0 failed tests
+ok   every_row_of_the_golden_file_adele
+ok   every_row_of_the_golden_file_cadele
+ok   every_row_of_the_golden_file_realball_read
+ok   every_row_of_the_golden_file_realball_print
+ok   every_random_print_of_the_reference
+ok   every_random_adele_text_of_the_reference
+ok   every_random_cadele_text_of_the_reference
+ok   a_dyadic_ball_is_read_exactly_at_every_prec
+ok   the_radius_mantissa_bound_of_2_to_the_30
+ok   random_decimals_are_enclosed_at_small_prec
+ok   the_extreme_exponents_of_the_default_limits
+ok   the_printers_write_the_templates
+ok   the_digits_argument
+ok   print_then_parse_encloses_the_value
+ok   parse_print_parse_encloses_the_first_value
+ok   max_exp10_at_the_limit_and_one_above
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_bytes_and_ends_of_memory
+ok   the_earlier_stage_decides_the_status
+ok   the_grammar_of_real_and_complex
+20 tests, 84400 checks, 0 failed checks, 0 failed tests
+ok   the_kinds_are_numbered_as_in_9_7
+ok   every_row_of_the_golden_file_dispatch
+ok   the_texts_of_every_type_file_are_of_that_type
+ok   every_text_of_the_reference
+ok   one_text_of_each_kind
+ok   signs_and_denominators_of_the_other_literals
+ok   limits_hostile_bytes_and_the_order_of_checks
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+8 tests, 20776 checks, 0 failed checks, 0 failed tests

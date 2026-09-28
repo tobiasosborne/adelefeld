@@ -1,0 +1,17 @@
+ok   every_row_of_the_golden_file_rat
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template_q
+ok   huge_operands_print_their_digits_and_come_back
+ok   random_values_round_trip
+ok   max_len_at_the_limit_and_one_above
+ok   empty_and_null_input
+ok   a_nul_byte_anywhere_is_a_parse_error
+ok   every_byte_outside_the_alphabet_is_a_parse_error
+ok   input_at_the_end_of_a_heap_block_of_exact_size
+ok   input_at_the_end_of_a_page
+ok   the_earlier_stage_decides_the_status
+ok   canonicalisation_on_input
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+==3==LeakSanitizer has encountered a fatal error.
+==3==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==3==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)

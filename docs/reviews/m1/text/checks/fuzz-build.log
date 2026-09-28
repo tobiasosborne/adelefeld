@@ -1,0 +1,3 @@
+mkdir -p docs/reviews/m1/text/checks/san/fuzz
+clang -Iinclude -Iinclude -Itests -std=c11 -O1 -g -fno-omit-frame-pointer -Wall -Wextra -fsanitize=fuzzer,address,undefined -fno-sanitize-recover=undefined -L/usr/lib/gcc/x86_64-linux-gnu/13/ \
+    tests/fuzz/fuzz_text.c docs/reviews/m1/text/checks/san/support/golden.o docs/reviews/m1/text/checks/san/support/jsonl.o docs/reviews/m1/text/checks/san/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/text/checks/san/fuzz/text

@@ -1,0 +1,19 @@
+predicate=0
+src/modctx.c:410:15: runtime error: member access within misaligned address 0x000000000001 for type 'const struct adf_modctx_struct', which requires 8 byte alignment
+0x000000000001: note: pointer points here
+<memory cannot be printed>
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==8==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000009 (pc 0x5bfaccbdbd83 bp 0x7ffdf84eb250 sp 0x7ffdf84eb240 T0)
+==8==The signal is caused by a READ memory access.
+==8==Hint: address points to the zero page.
+    #0 0x5bfaccbdbd83 in adf_modctx_nblocks src/modctx.c:410
+    #1 0x5bfaccbcb40a in adf_fball_is_canonical src/fball.c:358
+    #2 0x5bfaccbbd8a3 in main docs/reviews/m1/text/checks/probe.c:41
+    #3 0x733d2e62a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #4 0x733d2e62a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #5 0x5bfaccbbc744 in _start (/home/tobias/Projects/adelefeld-wt/m1-review-text/docs/reviews/m1/text/checks/probe-san+0x4b744) (BuildId: 4c87649ec75ef595e60598572f9ade2376b024df)
+
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV src/modctx.c:410 in adf_modctx_nblocks
+==8==ABORTING
