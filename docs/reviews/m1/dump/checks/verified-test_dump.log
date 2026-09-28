@@ -1,0 +1,16 @@
+ok   rat_dump_text
+ok   rat_round_trip_random
+ok   rat_statuses_and_strictness
+ok   order_of_checks_two_faults
+ok   fball_global_dump_text
+ok   fball_global_round_trip_random
+ok   fball_global_statuses
+ok   adele_round_trip_random
+ok   cadele_round_trip_random
+ok   adele_radius_edges
+ok   adele_statuses
+ok   inspect_without_contexts
+ok   hostile_bytes
+ok   input_at_the_end_of_a_page
+ok   load_over_a_value
+15 tests, 12165 checks, 0 failed checks, 0 failed tests

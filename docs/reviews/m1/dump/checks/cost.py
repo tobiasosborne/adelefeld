@@ -3,6 +3,7 @@ import ctypes as C
 import math
 from pathlib import Path
 import subprocess
+import sys
 import time
 
 HERE = Path(__file__).resolve().parent
@@ -21,6 +22,8 @@ def text(qs, body):
             " ".join(format(q, "x") for q in qs)).encode()
 
 for count, square in [(65537, 0), (65536, 32768), (83354, 0)]:
+    if len(sys.argv) > 1 and count != int(sys.argv[1]):
+        continue
     qs = [p*p if i < square else p for i, p in enumerate(primes[:count])]
     dump = text(qs, "modctx")
     assert len(qs) == count and len(dump) <= 1048576

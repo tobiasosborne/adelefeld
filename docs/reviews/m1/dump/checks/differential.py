@@ -23,6 +23,8 @@ lib = C.CDLL(str(HERE / "bridge.so"))
 lib.review_probe.argtypes = [C.c_char_p, C.c_size_t, C.c_int, C.c_size_t,
                             C.POINTER(Limits), C.POINTER(C.c_int)]
 lib.review_probe.restype = C.c_int
+lib.review_typed_status.argtypes = [C.c_char_p, C.c_size_t, C.c_int, C.POINTER(Limits)]
+lib.review_typed_status.restype = C.c_int
 NAMES = {0: "OK", 7: "DOMAIN", 8: "UNSUPPORTED", 9: "PARSE", 10: "LIMIT"}
 KINDS = "rat fball scaled adele cadele ucoset idele idclass lball sball qclass ffun rfun char modctx".split()
 rng = random.Random(2026092807)
@@ -141,6 +143,9 @@ counts = collections.Counter()
 mismatches = []
 contract = []
 own_count = 0
+own_bad = []
+typed_mismatches = []
+typed_counts = collections.Counter()
 for i in range(150000):
     kind = KINDS[i % 15]
     toks = ["adf1", "Q", kind] + body(kind)
@@ -169,14 +174,35 @@ for i in range(150000):
     counts[(kind, actual)] += 1
     if expected != actual: mismatches.append((i, text.decode(errors="backslashreplace"), expected, actual))
     if trouble.value: contract.append((i, trouble.value, text))
-    if kind in KINDS[:5] and mutation >= 6:
-        assert own_valid(text)
-        own_count += 1
+    if kind in KINDS[:5]:
+        typed = NAMES[lib.review_typed_status(text, len(text), KINDS.index(kind), C.byref(lim))]
+        typed_counts[(kind, typed)] += 1
+        try:
+            node = ref._dump_syntax(text, rlim)
+            if node[0] != kind:
+                expected_typed = "PARSE"
+            else:
+                expected_typed = ref.dump_contexts(text, rlim)
+                expected_typed = expected_typed[1:] if isinstance(expected_typed, str) else "OK"
+                if typed in ("OK", "DOMAIN"):
+                    good = own_valid(text)
+                    own_count += 1
+                    if good != (typed == "OK"):
+                        own_bad.append((i, text, good, typed))
+        except ref.TextError as e:
+            expected_typed = e.status
+        if typed != expected_typed:
+            typed_mismatches.append((i, text, expected_typed, typed))
 
 print("texts=150000 bodies=15 seed=2026092807")
 print(f"reference_mismatches={len(mismatches)} contract_failures={len(contract)} independent_predicates={own_count}")
+print(f"typed_mismatches={len(typed_mismatches)} independent_mismatches={len(own_bad)}")
 for kind in KINDS:
     print(kind, " ".join(f"{st}={counts[kind, st]}" for st in NAMES.values()))
 for row in mismatches: print("MISMATCH", row)
 for row in contract[:20]: print("CONTRACT", row)
-assert not mismatches and not contract
+for kind in KINDS[:5]:
+    print("TYPED", kind, " ".join(f"{st}={typed_counts[kind, st]}" for st in NAMES.values()))
+for row in typed_mismatches: print("TYPED_MISMATCH", row)
+for row in own_bad: print("INDEPENDENT_MISMATCH", row)
+assert not mismatches and not contract and not typed_mismatches and not own_bad

@@ -72,6 +72,18 @@ int review_inspect(const char *s, size_t len, const adf_text_limits_t *lim)
     return adf_scaled_dump_inspect(&n, NULL, s, len, lim);
 }
 
+int review_typed_status(const char *s, size_t len, int kind, const adf_text_limits_t *lim)
+{
+    size_t n = 17;
+    switch (kind) {
+    case 0: return adf_rat_dump_inspect(&n, NULL, s, len, lim);
+    case 1: return adf_fball_dump_inspect(&n, NULL, s, len, lim);
+    case 2: return adf_scaled_dump_inspect(&n, NULL, s, len, lim);
+    case 3: return adf_adele_dump_inspect(&n, NULL, s, len, lim);
+    default: return adf_cadele_dump_inspect(&n, NULL, s, len, lim);
+    }
+}
+
 static long live = 0, calls = 0;
 static void *count_malloc(size_t n) { void *p = malloc(n); calls++; if (p) live++; return p; }
 static void *count_calloc(size_t n, size_t m) { void *p = calloc(n, m); calls++; if (p) live++; return p; }

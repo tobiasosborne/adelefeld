@@ -1,0 +1,15 @@
+ok   local_fball_round_trip_1_2_64_128_blocks
+ok   local_fball_raw_example
+ok   adele_cadele_local_round_trip
+ok   scaled_round_trip_contexts
+ok   scaled_statuses
+ok   scaled_get_str
+ok   binding_rules
+ok   inspection_capacity
+ok   new_from_dump_every_body
+ok   reference_vectors
+ok   modctx_vectors_from_dump
+ok   local_dump_at_the_end_of_a_page
+ok   stage_edges_and_piece_order
+ok   binding_counts_of_every_type
+14 tests, 28587 checks, 0 failed checks, 0 failed tests

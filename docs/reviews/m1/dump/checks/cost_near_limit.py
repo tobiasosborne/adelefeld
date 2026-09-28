@@ -2,6 +2,7 @@
 import math
 from pathlib import Path
 import subprocess
+import sys
 
 HERE = Path(__file__).resolve().parent
 marks = bytearray(b"\1") * 821642
@@ -11,14 +12,23 @@ for p in range(2, math.isqrt(len(marks)-1)+1):
 primes = [p for p, yes in enumerate(marks) if yes]
 assert len(primes) == 65536
 
+def product_tree(qs):
+    # This is an exact product; grouping avoids repeated multiplication by a growing accumulator.
+    layer = [math.prod(qs[i:i+128]) for i in range(0, len(qs), 128)]
+    while len(layer) > 1:
+        layer = [math.prod(layer[i:i+2]) for i in range(0, len(layer), 2)]
+    return layer[0]
+
 def dump(prefix, quotient):
     qs = [p*p if i < prefix else p for i, p in enumerate(primes)]
     head = "adf1 Q qclass pieces 1 1 1 -1 0 0 l 1" if quotient else "adf1 Q modctx"
-    text = f"{head} {math.prod(qs):x} 10000 " + " ".join(format(q, "x") for q in qs)
+    text = f"{head} {product_tree(qs):x} 10000 " + " ".join(format(q, "x") for q in qs)
     if quotient: text += " 0" * len(qs)
     return text.encode()
 
 for quotient in (False, True):
+    if len(sys.argv) > 1 and ("qclass" if quotient else "modctx") != sys.argv[1]:
+        continue
     lo, hi = 0, 65536
     while lo < hi:
         mid = (lo+hi+1)//2
