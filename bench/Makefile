@@ -11,7 +11,7 @@
 
 CC      = gcc
 FLAGS  ?= -O2 -g
-LIBS   ?= -lflint -lmpfr -lgmp
+LIBS   ?= -lflint -lmpfr -lgmp -lm
 BIN     = bench_word
 # Every other bench_<name>.c is found by wildcard and links all of ../src/*.c, so a lane that adds
 # bench/bench_<name>.c does not edit this file (and parallel lanes do not conflict here).
