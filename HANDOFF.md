@@ -24,13 +24,13 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 02:05 on 2026-09-29 (three jobs; look at them first).**
+**RUNNING at 01:00 on 2026-09-29 (three jobs; look at them first).**
 
 | Job | Model | Where | State |
 |---|---|---|---|
 | the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | 14 files, small first, `--san`, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 10 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log` (survivors are printed as found). Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
 | m1-closure-surface (adf-igt) | codex gpt-6-sol xhigh | `../adelefeld-wt/m1-closure-surface` | the last of the six closure checks |
-| s-design | Claude Fable subagent, since 00:58 | a worktree under `.claude/worktrees/` from `0c80063`; brief `lanes/s-design/brief.md` | writes `docs/proofs/solvers.md`, `proto/solvers_checks.py`, `docs/api-s.md`; then review by codex `gpt-6-astra` (refute mode), brief not yet written |
+| s-design | Claude Fable subagent, since 00:50 | a worktree under `.claude/worktrees/` from `0c80063`; brief `lanes/s-design/brief.md` | writes `docs/proofs/solvers.md`, `proto/solvers_checks.py`, `docs/api-s.md`; then review by codex `gpt-6-astra` (refute mode), brief not yet written |
 
 **m1-repair-tools is landed** (`5baf3cb`; `lanes/m1-repair-tools/report.md`): keys of `equivalent.txt` without
 line numbers, `--san`, `--make`, `--keys`, `--keep`, `tools/mutate/check_equivalent.py`, the memory checker
@@ -41,7 +41,7 @@ wrote and judged them. To do after the sweep: a review of the reasons and of the
 build by construction: judge them again with `--make "make -s -j2 check INV=1"`.
 Still open of adf-4lj: a target `check-all` of the Makefile (suite, three scripts, the two selftests,
 `check_equivalent.py`).
-Master at 02:00: `make check` 42 programs in the five builds; the three scripts; both selftests;
+Master at 00:58: `make check` 42 programs in the five builds; the three scripts; both selftests;
 `check_equivalent.py`; `pytest proto` 35.
 
 **Landed: the sources of milestone S** (`90defed`, lane s-sources, space-bunny-alpha in 16 attempts):
