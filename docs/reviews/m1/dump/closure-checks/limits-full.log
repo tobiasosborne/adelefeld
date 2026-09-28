@@ -1,0 +1,10 @@
+ok   block_cap_refuses_65537_blocks_everywhere
+ok   block_cap_accepts_65536_blocks
+ok   block_count_of_a_short_text_is_a_grammar_failure
+ok   block_cap_and_max_items_in_that_order
+ok   block_cap_before_the_predicate_of_the_context
+ok   qclass_exponent_bound_at_and_above_the_bound
+ok   qclass_exponent_bound_is_a_limit_of_stage_four
+ok   no_exponent_bound_in_the_other_bodies
+ok   block_cap_accepts_65536_blocks_in_full
+9 tests, 261 checks, 0 failed checks, 0 failed tests

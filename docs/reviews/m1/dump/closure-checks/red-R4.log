@@ -1,0 +1,13 @@
+FAIL ./tests/test_dump.c:394: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | TAB in the body of version 2
+FAIL ./tests/test_dump.c:398: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | TAB in the body of field R
+FAIL ./tests/test_dump.c:400: header_before_the_whitespace_of_the_body: check failed: fball_status(buf, 14, NULL) == ADF_UNSUPPORTED | TAB, fball loader
+FAIL ./tests/test_dump.c:425: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | TAB inside the field
+FAIL ./tests/test_dump.c:394: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | LF in the body of version 2
+FAIL ./tests/test_dump.c:398: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | LF in the body of field R
+FAIL ./tests/test_dump.c:400: header_before_the_whitespace_of_the_body: check failed: fball_status(buf, 14, NULL) == ADF_UNSUPPORTED | LF, fball loader
+FAIL ./tests/test_dump.c:425: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | LF inside the field
+FAIL ./tests/test_dump.c:394: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | CR in the body of version 2
+FAIL ./tests/test_dump.c:398: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | CR in the body of field R
+FAIL ./tests/test_dump.c:400: header_before_the_whitespace_of_the_body: check failed: fball_status(buf, 14, NULL) == ADF_UNSUPPORTED | CR, fball loader
+FAIL ./tests/test_dump.c:425: header_before_the_whitespace_of_the_body: check failed: rat_status(buf, 14, NULL) == ADF_UNSUPPORTED | CR inside the field
+selected_tests=1 checks=72 failures=12

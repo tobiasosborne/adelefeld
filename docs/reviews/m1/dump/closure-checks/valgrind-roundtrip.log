@@ -1,0 +1,15 @@
+==3== Memcheck, a memory error detector
+==3== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==3== Command: docs/reviews/m1/dump/closure-checks/roundtrip
+==3== 
+roundtrips=6000 checks=27029 failures=0
+==3== 
+==3== HEAP SUMMARY:
+==3==     in use at exit: 0 bytes in 0 blocks
+==3==   total heap usage: 29,431 allocs, 29,431 frees, 1,437,207 bytes allocated
+==3== 
+==3== All heap blocks were freed -- no leaks are possible
+==3== 
+==3== For lists of detected and suppressed errors, rerun with: -s
+==3== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

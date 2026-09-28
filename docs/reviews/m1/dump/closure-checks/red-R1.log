@@ -1,0 +1,3 @@
+FAIL ./tests/test_dump_limits.c:479: block_cap_before_the_predicate_of_the_context: check failed: from_dump_status(t, len, NULL, &nb) == ADF_UNSUPPORTED
+FAIL ./tests/test_dump_limits.c:210: block_cap_before_the_predicate_of_the_context: check failed: r == want | inspector 2: DOMAIN, expected UNSUPPORTED
+selected_tests=1 checks=26 failures=2

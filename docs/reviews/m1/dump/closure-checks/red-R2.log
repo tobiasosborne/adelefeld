@@ -1,0 +1,6 @@
+FAIL ./tests/test_dump_limits.c:548: qclass_exponent_bound_is_a_limit_of_stage_four: check failed: QS(buf) == ADF_LIMIT | zero denominator: adf1 Q qclass pieces 1 1 1 -100001 0 0 l 0 2 1 2 0
+FAIL ./tests/test_dump_limits.c:554: qclass_exponent_bound_is_a_limit_of_stage_four: check failed: QS(buf) == ADF_LIMIT | blocks not coprime: adf1 Q qclass pieces 1 1 1 -100001 0 0 l 1 6 2 2 2 1 0
+FAIL ./tests/test_dump_limits.c:557: qclass_exponent_bound_is_a_limit_of_stage_four: check failed: QS(buf) == ADF_LIMIT | global triple: adf1 Q qclass pieces 1 1 1 -100001 0 0 g 8 6 1
+FAIL ./tests/test_dump_limits.c:568: qclass_exponent_bound_is_a_limit_of_stage_four: check failed: QS(buf) == ADF_LIMIT | second archimedean ball: adf1 Q qclass pieces 1 2 1 0 0 0 1 -100001 0 0 l 1 2 1 2 0
+FAIL ./tests/test_dump_limits.c:593: qclass_exponent_bound_is_a_limit_of_stage_four: check failed: from_dump_status(u, m, NULL, &nb) == ADF_LIMIT
+selected_tests=1 checks=19 failures=5

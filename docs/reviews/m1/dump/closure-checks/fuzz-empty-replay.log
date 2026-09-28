@@ -1,0 +1,11 @@
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 706906474
+INFO: Loaded 1 modules   (1656 inline 8-bit counters): 1656 [0x5e81b28e2a90, 0x5e81b28e3108), 
+INFO: Loaded 1 PC tables (1656 PCs): 1656 [0x5e81b28e3108,0x5e81b28e9888), 
+docs/reviews/m1/dump/closure-checks/build/fuzz/dump: Running 1 inputs 1 time(s) each.
+Running: docs/reviews/m1/dump/closure-checks/build/fuzz/artifacts/crash-da39a3ee5e6b4b0d3255bfef95601890afd80709
+Executed docs/reviews/m1/dump/closure-checks/build/fuzz/artifacts/crash-da39a3ee5e6b4b0d3255bfef95601890afd80709 in 1 ms
+***
+*** NOTE: fuzzing was not performed, you have only
+***       executed the target code on a fixed set of inputs.
+***
