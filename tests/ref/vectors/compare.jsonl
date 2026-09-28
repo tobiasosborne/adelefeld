@@ -1,444 +1,444 @@
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly equal"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly equal"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly equal"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly equal"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 6, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -7, "H": 0, "d": 6}, "b": {"A": -5, "H": 0, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 3, "d": 5}, "b": {"A": 0, "H": 6, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 10, "H": 12, "d": 1}, "b": {"A": 1, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 5, "d": 1}, "b": {"A": 1, "H": 3, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 15, "d": 1}, "b": {"A": 13, "H": 25, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 6, "d": 2}, "b": {"A": 2, "H": 6, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 3, "d": 1}, "b": {"A": 12, "H": 18, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 29, "H": 36, "d": 1}, "b": {"A": -15, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 6}, "b": {"A": -17, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 16, "H": 0, "d": 5}, "b": {"A": 3, "H": 6, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 22, "H": 24, "d": 1}, "b": {"A": 0, "H": 4, "d": 5}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 3, "d": 4}, "b": {"A": 21, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 5, "d": 6}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 12, "H": 0, "d": 1}, "b": {"A": 10, "H": 15, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 4}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 4, "H": 5, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 6, "d": 1}, "b": {"A": 10, "H": 24, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 3, "d": 1}, "b": {"A": 19, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 6, "d": 9}, "b": {"A": 0, "H": 5, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 4, "H": 5, "d": 12}, "b": {"A": 21, "H": 24, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 8, "H": 12, "d": 3}, "b": {"A": 4, "H": 9, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 2, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 8, "d": 1}, "b": {"A": 3, "H": 6, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 1}, "b": {"A": 1, "H": 2, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 5, "d": 1}, "b": {"A": 10, "H": 18, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 12, "H": 37, "d": 1}, "b": {"A": 19, "H": 24, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 4, "d": 1}, "b": {"A": 10, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -14, "H": 0, "d": 3}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 2, "H": 9, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 11, "H": 18, "d": 9}, "b": {"A": 1, "H": 6, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 5, "d": 6}, "b": {"A": 6, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 15, "d": 3}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 4, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 16, "H": 18, "d": 9}, "b": {"A": 1, "H": 4, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 6, "d": 1}, "b": {"A": 3, "H": 4, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 18, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 8, "d": 5}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": -4, "H": 0, "d": 1}, "b": {"A": 11, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 7, "H": 8, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 17, "H": 30, "d": 6}, "b": {"A": 9, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 18, "d": 1}, "b": {"A": 1, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 4, "H": 6, "d": 1}, "b": {"A": 8, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 7, "H": 18, "d": 4}, "b": {"A": 6, "H": 24, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": 5, "H": 15, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 9, "d": 2}, "b": {"A": 19, "H": 0, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -23, "H": 0, "d": 10}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 14, "H": 15, "d": 1}, "b": {"A": 0, "H": 3, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 9, "d": 1}, "b": {"A": 7, "H": 8, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 14, "H": 18, "d": 3}, "b": {"A": 4, "H": 24, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 20, "H": 24, "d": 3}, "b": {"A": 2, "H": 6, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 18, "H": 34, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 23, "H": 30, "d": 6}, "b": {"A": 19, "H": 0, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 6, "d": 4}, "b": {"A": 12, "H": 15, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 10}, "b": {"A": 0, "H": 1, "d": 6}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 4}, "b": {"A": -11, "H": 0, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -13, "H": 0, "d": 2}, "b": {"A": 1, "H": 3, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 8, "d": 6}, "b": {"A": 27, "H": 37, "d": 6}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 5, "d": 4}, "b": {"A": 10, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 18, "d": 4}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 12, "d": 2}, "b": {"A": 8, "H": 9, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 4, "H": 0, "d": 1}, "b": {"A": 9, "H": 30, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -32, "H": 0, "d": 3}, "b": {"A": 14, "H": 18, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 11, "H": 0, "d": 2}, "b": {"A": 2, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 15, "H": 24, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 34, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 3}, "b": {"A": 2, "H": 24, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 6, "d": 3}, "b": {"A": 0, "H": 2, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -11, "H": 0, "d": 1}, "b": {"A": 21, "H": 24, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 8, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 1, "H": 6, "d": 7}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 13, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -9, "H": 0, "d": 4}, "b": {"A": 4, "H": 5, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 8, "H": 12, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 6, "d": 3}, "b": {"A": 0, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 5, "d": 6}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 5}, "b": {"A": 1, "H": 2, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 10, "H": 12, "d": 1}, "b": {"A": 3, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 22, "H": 24, "d": 1}, "b": {"A": 13, "H": 15, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -40, "H": 0, "d": 1}, "b": {"A": -15, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 6, "d": 2}, "b": {"A": 7, "H": 8, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 8, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 31, "H": 0, "d": 3}, "b": {"A": 31, "H": 36, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 8, "d": 6}, "b": {"A": 2, "H": 3, "d": 5}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 5, "H": 6, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 15, "H": 24, "d": 10}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 2, "H": 3, "d": 9}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 10, "H": 15, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 4, "H": 15, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -1, "H": 0, "d": 1}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 7, "d": 1}, "b": {"A": 9, "H": 12, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 13, "d": 3}, "b": {"A": 0, "H": 8, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": -1, "H": 0, "d": 1}, "b": {"A": 4, "H": 5, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 12, "d": 2}, "b": {"A": 3, "H": 6, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 1, "H": 8, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 4, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 2, "d": 3}, "b": {"A": 1, "H": 3, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 6}, "op": "compare", "result": "undecided"}
-{"a": {"A": 14, "H": 18, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 22, "H": 30, "d": 1}, "b": {"A": 0, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 5, "H": 18, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -15, "H": 0, "d": 2}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 6, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -4, "H": 0, "d": 1}, "b": {"A": 11, "H": 15, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 23, "H": 24, "d": 6}, "b": {"A": 13, "H": 18, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 3, "d": 7}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 1, "H": 6, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 7}, "b": {"A": 8, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 16, "H": 24, "d": 1}, "b": {"A": 3, "H": 6, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 7, "H": 24, "d": 4}, "b": {"A": 0, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 12, "d": 1}, "b": {"A": 0, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 4, "d": 1}, "b": {"A": 3, "H": 18, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 1, "H": 3, "d": 7}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 8, "d": 4}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 34, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 2, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 5, "d": 4}, "b": {"A": 8, "H": 30, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 16, "H": 25, "d": 1}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 17, "H": 0, "d": 2}, "b": {"A": 4, "H": 9, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 12, "d": 4}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 12, "d": 2}, "b": {"A": 8, "H": 12, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 12, "d": 3}, "b": {"A": 3, "H": 4, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 3}, "b": {"A": 2, "H": 30, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 2, "H": 39, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 5, "d": 1}, "b": {"A": 3, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -4, "H": 0, "d": 3}, "b": {"A": 6, "H": 18, "d": 5}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 5, "d": 3}, "b": {"A": 34, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 14, "H": 18, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 8, "d": 1}, "b": {"A": -39, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 11, "H": 30, "d": 6}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 5, "d": 3}, "b": {"A": 1, "H": 24, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 12, "d": 11}, "b": {"A": 17, "H": 36, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 10, "H": 30, "d": 1}, "b": {"A": 1, "H": 8, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 4, "H": 5, "d": 6}, "b": {"A": 2, "H": 18, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 5, "d": 3}, "b": {"A": -13, "H": 0, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 8, "d": 1}, "b": {"A": 11, "H": 18, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 5, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 17, "H": 0, "d": 3}, "b": {"A": 30, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 9, "H": 27, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 16, "H": 24, "d": 3}, "b": {"A": 12, "H": 24, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -2, "H": 0, "d": 1}, "b": {"A": 38, "H": 0, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 6, "d": 6}, "b": {"A": 21, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 5, "d": 1}, "b": {"A": 0, "H": 1, "d": 4}, "op": "compare", "result": "undecided"}
-{"a": {"A": 11, "H": 30, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 17, "H": 18, "d": 4}, "b": {"A": 2, "H": 3, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 9}, "b": {"A": 20, "H": 30, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -1, "H": 0, "d": 11}, "b": {"A": 5, "H": 6, "d": 7}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 5, "d": 3}, "b": {"A": -39, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -37, "H": 0, "d": 1}, "b": {"A": 1, "H": 5, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 17, "H": 18, "d": 1}, "b": {"A": 0, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 12, "d": 1}, "b": {"A": 3, "H": 8, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 7, "H": 8, "d": 6}, "b": {"A": 13, "H": 24, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 6, "d": 1}, "b": {"A": 11, "H": 18, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 4, "H": 5, "d": 10}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": -1, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": -18, "H": 0, "d": 1}, "b": {"A": -31, "H": 0, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 6, "d": 4}, "b": {"A": 1, "H": 2, "d": 4}, "op": "compare", "result": "undecided"}
-{"a": {"A": 15, "H": 24, "d": 1}, "b": {"A": 3, "H": 12, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 28, "H": 30, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 3, "d": 3}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -12, "H": 0, "d": 1}, "b": {"A": 3, "H": 6, "d": 11}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 5, "d": 3}, "b": {"A": 0, "H": 1, "d": 4}, "op": "compare", "result": "undecided"}
-{"a": {"A": 4, "H": 12, "d": 1}, "b": {"A": 1, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 8, "d": 1}, "b": {"A": 20, "H": 24, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": -7, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 3}, "b": {"A": 5, "H": 6, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 5, "d": 2}, "b": {"A": 2, "H": 3, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": -34, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 6, "d": 7}, "b": {"A": 3, "H": 8, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 2, "H": 8, "d": 11}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 5, "H": 6, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 7, "H": 10, "d": 1}, "b": {"A": 5, "H": 6, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 4, "d": 2}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 8, "d": 2}, "b": {"A": 5, "H": 24, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 29, "H": 38, "d": 6}, "b": {"A": 1, "H": 3, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 18, "d": 2}, "b": {"A": 3, "H": 5, "d": 6}, "op": "compare", "result": "undecided"}
-{"a": {"A": 38, "H": 0, "d": 3}, "b": {"A": 0, "H": 5, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 4, "H": 6, "d": 9}, "b": {"A": 7, "H": 12, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 5, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 10, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 9, "d": 1}, "b": {"A": 0, "H": 10, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 8, "d": 4}, "b": {"A": 1, "H": 6, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 9}, "b": {"A": 1, "H": 3, "d": 6}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 6, "d": 1}, "b": {"A": 11, "H": 12, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 14, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": -5, "H": 0, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 6, "d": 7}, "b": {"A": 5, "H": 6, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 14, "H": 24, "d": 3}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 5, "d": 12}, "op": "compare", "result": "undecided"}
-{"a": {"A": 31, "H": 0, "d": 1}, "b": {"A": 1, "H": 24, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 19, "d": 3}, "b": {"A": 6, "H": 10, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 2, "d": 10}, "b": {"A": -1, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 27, "d": 3}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 3}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 5, "d": 1}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 6, "d": 3}, "b": {"A": 1, "H": 9, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 3}, "b": {"A": -7, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 11, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 6}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 11, "H": 12, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 29, "H": 30, "d": 1}, "b": {"A": 2, "H": 6, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 1, "H": 4, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 6, "d": 6}, "b": {"A": 0, "H": 2, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 22, "d": 1}, "b": {"A": 11, "H": 18, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 17, "H": 18, "d": 1}, "b": {"A": -29, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 5, "d": 6}, "b": {"A": 7, "H": 8, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 13, "d": 3}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 9, "d": 1}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 5, "d": 11}, "b": {"A": 4, "H": 24, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": -3, "H": 0, "d": 1}, "b": {"A": 9, "H": 30, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 11, "H": 13, "d": 1}, "b": {"A": -3, "H": 0, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 9, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 16, "H": 24, "d": 11}, "b": {"A": 5, "H": 6, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 0, "d": 1}, "b": {"A": 19, "H": 24, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 24, "d": 3}, "b": {"A": -2, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 5, "d": 3}, "b": {"A": 7, "H": 30, "d": 12}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 14, "H": 15, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 11, "H": 18, "d": 6}, "b": {"A": 13, "H": 20, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 6}, "b": {"A": 11, "H": 24, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -20, "H": 0, "d": 3}, "b": {"A": 5, "H": 12, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": -35, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 5, "d": 4}, "b": {"A": 22, "H": 30, "d": 7}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 30, "d": 1}, "b": {"A": 4, "H": 5, "d": 4}, "op": "compare", "result": "undecided"}
-{"a": {"A": 2, "H": 6, "d": 1}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": -28, "H": 0, "d": 1}, "b": {"A": -33, "H": 0, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 8, "H": 9, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 6, "H": 12, "d": 7}, "op": "compare", "result": "undecided"}
-{"a": {"A": 8, "H": 12, "d": 3}, "b": {"A": 4, "H": 6, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 1}, "b": {"A": 0, "H": 15, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 5, "d": 6}, "b": {"A": 1, "H": 3, "d": 4}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 3, "d": 3}, "b": {"A": 13, "H": 30, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 6, "d": 1}, "b": {"A": 3, "H": 6, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 36, "H": 0, "d": 1}, "b": {"A": 2, "H": 24, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 4, "d": 3}, "b": {"A": -1, "H": 0, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 21, "H": 30, "d": 1}, "b": {"A": 9, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 1, "H": 2, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 6, "d": 1}, "b": {"A": 4, "H": 9, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 6, "H": 8, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 0, "d": 6}, "b": {"A": 23, "H": 24, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 5, "d": 2}, "b": {"A": 1, "H": 2, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": -3, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 2, "d": 1}, "b": {"A": 9, "H": 18, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": 2, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 1, "H": 8, "d": 4}, "op": "compare", "result": "undecided"}
-{"a": {"A": 18, "H": 24, "d": 7}, "b": {"A": 0, "H": 8, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 4}, "b": {"A": 0, "H": 3, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -11, "H": 0, "d": 1}, "b": {"A": 15, "H": 18, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 4}, "b": {"A": 13, "H": 18, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 13, "H": 0, "d": 1}, "b": {"A": 2, "H": 15, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 18, "d": 1}, "b": {"A": 1, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 7, "H": 0, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 6, "d": 1}, "b": {"A": 5, "H": 30, "d": 9}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 18, "H": 24, "d": 1}, "b": {"A": 7, "H": 8, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 6, "H": 9, "d": 2}, "b": {"A": 0, "H": 1, "d": 4}, "op": "compare", "result": "undecided"}
-{"a": {"A": 7, "H": 9, "d": 1}, "b": {"A": 4, "H": 5, "d": 3}, "op": "compare", "result": "undecided"}
-{"a": {"A": 6, "H": 33, "d": 1}, "b": {"A": 5, "H": 10, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": -2, "H": 0, "d": 3}, "b": {"A": 6, "H": 30, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 13, "H": 21, "d": 1}, "b": {"A": 2, "H": 3, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 6, "d": 1}, "b": {"A": 14, "H": 18, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 8, "d": 5}, "b": {"A": 0, "H": 18, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 26, "H": 30, "d": 3}, "b": {"A": 1, "H": 4, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 6, "d": 10}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 3, "d": 6}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 6, "H": 8, "d": 1}, "b": {"A": 2, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 1, "H": 18, "d": 2}, "b": {"A": 2, "H": 4, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 6, "d": 6}, "b": {"A": 2, "H": 4, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 10, "H": 24, "d": 1}, "b": {"A": 37, "H": 39, "d": 2}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 5, "H": 8, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 10, "H": 0, "d": 3}, "b": {"A": 17, "H": 24, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 5, "H": 6, "d": 1}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 4, "H": 8, "d": 1}, "b": {"A": 1, "H": 2, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 3, "H": 16, "d": 8}, "b": {"A": 5, "H": 12, "d": 12}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 3, "H": 4, "d": 1}, "b": {"A": -5, "H": 0, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 2, "d": 6}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 3, "H": 6, "d": 4}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -13, "H": 0, "d": 1}, "b": {"A": 0, "H": 3, "d": 10}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 16, "H": 24, "d": 1}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 2, "H": 4, "d": 1}, "op": "compare", "result": "undecided"}
-{"a": {"A": 5, "H": 6, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": "undecided"}
-{"a": {"A": 11, "H": 0, "d": 2}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 2, "H": 3, "d": 3}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": -5, "H": 0, "d": 1}, "b": {"A": 13, "H": 38, "d": 1}, "op": "compare", "result": "certainly different"}
-{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 18, "H": 0, "d": 1}, "op": "compare", "result": "undecided"}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 0}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 0}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 0}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 0}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -3, "H": 0, "d": 4}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 9, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": -3, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 9, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 3, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 6, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -7, "H": 0, "d": 6}, "b": {"A": -5, "H": 0, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 3, "d": 5}, "b": {"A": 0, "H": 6, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 10, "H": 12, "d": 1}, "b": {"A": 1, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 5, "d": 1}, "b": {"A": 1, "H": 3, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 15, "d": 1}, "b": {"A": 13, "H": 25, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 6, "d": 2}, "b": {"A": 2, "H": 6, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 3, "d": 1}, "b": {"A": 12, "H": 18, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 29, "H": 36, "d": 1}, "b": {"A": -15, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 6}, "b": {"A": -17, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 16, "H": 0, "d": 5}, "b": {"A": 3, "H": 6, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 22, "H": 24, "d": 1}, "b": {"A": 0, "H": 4, "d": 5}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 3, "d": 4}, "b": {"A": 21, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 5, "d": 6}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 12, "H": 0, "d": 1}, "b": {"A": 10, "H": 15, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 4}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 4, "H": 5, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 6, "d": 1}, "b": {"A": 10, "H": 24, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 3, "d": 1}, "b": {"A": 19, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 6, "d": 9}, "b": {"A": 0, "H": 5, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 4, "H": 5, "d": 12}, "b": {"A": 21, "H": 24, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 8, "H": 12, "d": 3}, "b": {"A": 4, "H": 9, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 2, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 8, "d": 1}, "b": {"A": 3, "H": 6, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 1}, "b": {"A": 1, "H": 2, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 5, "d": 1}, "b": {"A": 10, "H": 18, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 12, "H": 37, "d": 1}, "b": {"A": 19, "H": 24, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 4, "d": 1}, "b": {"A": 10, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -14, "H": 0, "d": 3}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 2, "H": 9, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 11, "H": 18, "d": 9}, "b": {"A": 1, "H": 6, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 5, "d": 6}, "b": {"A": 6, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 15, "d": 3}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 4, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 16, "H": 18, "d": 9}, "b": {"A": 1, "H": 4, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 6, "d": 1}, "b": {"A": 3, "H": 4, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 18, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 8, "d": 5}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": -4, "H": 0, "d": 1}, "b": {"A": 11, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 7, "H": 8, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 17, "H": 30, "d": 6}, "b": {"A": 9, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 18, "d": 1}, "b": {"A": 1, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 4, "H": 6, "d": 1}, "b": {"A": 8, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 7, "H": 18, "d": 4}, "b": {"A": 6, "H": 24, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": 5, "H": 15, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 9, "d": 2}, "b": {"A": 19, "H": 0, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": -23, "H": 0, "d": 10}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 14, "H": 15, "d": 1}, "b": {"A": 0, "H": 3, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 9, "d": 1}, "b": {"A": 7, "H": 8, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 14, "H": 18, "d": 3}, "b": {"A": 4, "H": 24, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 20, "H": 24, "d": 3}, "b": {"A": 2, "H": 6, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 18, "H": 34, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 23, "H": 30, "d": 6}, "b": {"A": 19, "H": 0, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 6, "d": 4}, "b": {"A": 12, "H": 15, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 10}, "b": {"A": 0, "H": 1, "d": 6}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 4}, "b": {"A": -11, "H": 0, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": -13, "H": 0, "d": 2}, "b": {"A": 1, "H": 3, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 8, "d": 6}, "b": {"A": 27, "H": 37, "d": 6}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 5, "d": 4}, "b": {"A": 10, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 18, "d": 4}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 12, "d": 2}, "b": {"A": 8, "H": 9, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 4, "H": 0, "d": 1}, "b": {"A": 9, "H": 30, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -32, "H": 0, "d": 3}, "b": {"A": 14, "H": 18, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 11, "H": 0, "d": 2}, "b": {"A": 2, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 15, "H": 24, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 34, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 3}, "b": {"A": 2, "H": 24, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 6, "d": 3}, "b": {"A": 0, "H": 2, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": -11, "H": 0, "d": 1}, "b": {"A": 21, "H": 24, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 8, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 1, "H": 6, "d": 7}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 13, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": -9, "H": 0, "d": 4}, "b": {"A": 4, "H": 5, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 8, "H": 12, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 6, "d": 3}, "b": {"A": 0, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 5, "d": 6}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 5}, "b": {"A": 1, "H": 2, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 10, "H": 12, "d": 1}, "b": {"A": 3, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 22, "H": 24, "d": 1}, "b": {"A": 13, "H": 15, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": -40, "H": 0, "d": 1}, "b": {"A": -15, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 6, "d": 2}, "b": {"A": 7, "H": 8, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 8, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 31, "H": 0, "d": 3}, "b": {"A": 31, "H": 36, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 8, "d": 6}, "b": {"A": 2, "H": 3, "d": 5}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 5, "H": 6, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 15, "H": 24, "d": 10}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 2, "H": 3, "d": 9}, "op": "compare", "result": 1}
+{"a": {"A": 10, "H": 15, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 4, "H": 15, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -1, "H": 0, "d": 1}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 7, "d": 1}, "b": {"A": 9, "H": 12, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 13, "d": 3}, "b": {"A": 0, "H": 8, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": -1, "H": 0, "d": 1}, "b": {"A": 4, "H": 5, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 12, "d": 2}, "b": {"A": 3, "H": 6, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 4}, "b": {"A": 1, "H": 8, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 4, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 2, "d": 3}, "b": {"A": 1, "H": 3, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 0, "H": 1, "d": 6}, "op": "compare", "result": 2}
+{"a": {"A": 14, "H": 18, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 22, "H": 30, "d": 1}, "b": {"A": 0, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 5, "H": 18, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": -15, "H": 0, "d": 2}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 6, "d": 2}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -4, "H": 0, "d": 1}, "b": {"A": 11, "H": 15, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 23, "H": 24, "d": 6}, "b": {"A": 13, "H": 18, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 3, "d": 7}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 1, "H": 6, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 7}, "b": {"A": 8, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 16, "H": 24, "d": 1}, "b": {"A": 3, "H": 6, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 7, "H": 24, "d": 4}, "b": {"A": 0, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 12, "d": 1}, "b": {"A": 0, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 4, "d": 1}, "b": {"A": 3, "H": 18, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 0, "d": 1}, "b": {"A": 1, "H": 3, "d": 7}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 8, "d": 4}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 34, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 2, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 5, "d": 4}, "b": {"A": 8, "H": 30, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 16, "H": 25, "d": 1}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 17, "H": 0, "d": 2}, "b": {"A": 4, "H": 9, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 12, "d": 4}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 12, "d": 2}, "b": {"A": 8, "H": 12, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 12, "d": 3}, "b": {"A": 3, "H": 4, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 3}, "b": {"A": 2, "H": 30, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 2, "H": 39, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 5, "d": 1}, "b": {"A": 3, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -4, "H": 0, "d": 3}, "b": {"A": 6, "H": 18, "d": 5}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 5, "d": 3}, "b": {"A": 34, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 14, "H": 18, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 8, "d": 1}, "b": {"A": -39, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 11, "H": 30, "d": 6}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 5, "d": 3}, "b": {"A": 1, "H": 24, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 12, "d": 11}, "b": {"A": 17, "H": 36, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 10, "H": 30, "d": 1}, "b": {"A": 1, "H": 8, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 4, "H": 5, "d": 6}, "b": {"A": 2, "H": 18, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 5, "d": 3}, "b": {"A": -13, "H": 0, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 8, "d": 1}, "b": {"A": 11, "H": 18, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 5, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 17, "H": 0, "d": 3}, "b": {"A": 30, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 9, "H": 27, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 16, "H": 24, "d": 3}, "b": {"A": 12, "H": 24, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -2, "H": 0, "d": 1}, "b": {"A": 38, "H": 0, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 6, "d": 6}, "b": {"A": 21, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 5, "d": 1}, "b": {"A": 0, "H": 1, "d": 4}, "op": "compare", "result": 2}
+{"a": {"A": 11, "H": 30, "d": 4}, "b": {"A": 1, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 17, "H": 18, "d": 4}, "b": {"A": 2, "H": 3, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 9}, "b": {"A": 20, "H": 30, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -1, "H": 0, "d": 11}, "b": {"A": 5, "H": 6, "d": 7}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 5, "d": 3}, "b": {"A": -39, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": -37, "H": 0, "d": 1}, "b": {"A": 1, "H": 5, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 17, "H": 18, "d": 1}, "b": {"A": 0, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 12, "d": 1}, "b": {"A": 3, "H": 8, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 7, "H": 8, "d": 6}, "b": {"A": 13, "H": 24, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 6, "d": 1}, "b": {"A": 11, "H": 18, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 4, "H": 5, "d": 10}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": -1, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": -18, "H": 0, "d": 1}, "b": {"A": -31, "H": 0, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 6, "d": 4}, "b": {"A": 1, "H": 2, "d": 4}, "op": "compare", "result": 2}
+{"a": {"A": 15, "H": 24, "d": 1}, "b": {"A": 3, "H": 12, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 28, "H": 30, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 3, "d": 3}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -12, "H": 0, "d": 1}, "b": {"A": 3, "H": 6, "d": 11}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 5, "d": 3}, "b": {"A": 0, "H": 1, "d": 4}, "op": "compare", "result": 2}
+{"a": {"A": 4, "H": 12, "d": 1}, "b": {"A": 1, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 8, "d": 1}, "b": {"A": 20, "H": 24, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": -7, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 3}, "b": {"A": 5, "H": 6, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 5, "d": 2}, "b": {"A": 2, "H": 3, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": -34, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 6, "d": 7}, "b": {"A": 3, "H": 8, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 2, "H": 8, "d": 11}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 5, "H": 6, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 7, "H": 10, "d": 1}, "b": {"A": 5, "H": 6, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 4, "d": 2}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 8, "d": 2}, "b": {"A": 5, "H": 24, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 29, "H": 38, "d": 6}, "b": {"A": 1, "H": 3, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 18, "d": 2}, "b": {"A": 3, "H": 5, "d": 6}, "op": "compare", "result": 2}
+{"a": {"A": 38, "H": 0, "d": 3}, "b": {"A": 0, "H": 5, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 4, "H": 6, "d": 9}, "b": {"A": 7, "H": 12, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 5, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 10, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 9, "d": 1}, "b": {"A": 0, "H": 10, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 8, "d": 4}, "b": {"A": 1, "H": 6, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 9}, "b": {"A": 1, "H": 3, "d": 6}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 6, "d": 1}, "b": {"A": 11, "H": 12, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 14, "H": 0, "d": 1}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": -5, "H": 0, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 6, "d": 7}, "b": {"A": 5, "H": 6, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 14, "H": 24, "d": 3}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 5, "d": 12}, "op": "compare", "result": 2}
+{"a": {"A": 31, "H": 0, "d": 1}, "b": {"A": 1, "H": 24, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 19, "d": 3}, "b": {"A": 6, "H": 10, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 2, "d": 10}, "b": {"A": -1, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 27, "d": 3}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 3}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 5, "d": 1}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 6, "d": 3}, "b": {"A": 1, "H": 9, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 3}, "b": {"A": -7, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 11, "H": 12, "d": 1}, "b": {"A": 0, "H": 1, "d": 6}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 11, "H": 12, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 29, "H": 30, "d": 1}, "b": {"A": 2, "H": 6, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 1, "H": 4, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 6, "d": 6}, "b": {"A": 0, "H": 2, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 22, "d": 1}, "b": {"A": 11, "H": 18, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 17, "H": 18, "d": 1}, "b": {"A": -29, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 5, "d": 6}, "b": {"A": 7, "H": 8, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 13, "d": 3}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 9, "d": 1}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 5, "d": 11}, "b": {"A": 4, "H": 24, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": -3, "H": 0, "d": 1}, "b": {"A": 9, "H": 30, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 11, "H": 13, "d": 1}, "b": {"A": -3, "H": 0, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 9, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 16, "H": 24, "d": 11}, "b": {"A": 5, "H": 6, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 0, "d": 1}, "b": {"A": 19, "H": 24, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 24, "d": 3}, "b": {"A": -2, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 5, "d": 3}, "b": {"A": 7, "H": 30, "d": 12}, "op": "compare", "result": 1}
+{"a": {"A": 14, "H": 15, "d": 1}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 11, "H": 18, "d": 6}, "b": {"A": 13, "H": 20, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 6}, "b": {"A": 11, "H": 24, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": -20, "H": 0, "d": 3}, "b": {"A": 5, "H": 12, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 2}, "b": {"A": -35, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 5, "d": 4}, "b": {"A": 22, "H": 30, "d": 7}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 30, "d": 1}, "b": {"A": 4, "H": 5, "d": 4}, "op": "compare", "result": 2}
+{"a": {"A": 2, "H": 6, "d": 1}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": -28, "H": 0, "d": 1}, "b": {"A": -33, "H": 0, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 8, "d": 3}, "b": {"A": 8, "H": 9, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 6, "H": 12, "d": 7}, "op": "compare", "result": 2}
+{"a": {"A": 8, "H": 12, "d": 3}, "b": {"A": 4, "H": 6, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 1}, "b": {"A": 0, "H": 15, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 5, "d": 6}, "b": {"A": 1, "H": 3, "d": 4}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 3, "d": 3}, "b": {"A": 13, "H": 30, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 6, "d": 1}, "b": {"A": 3, "H": 6, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 36, "H": 0, "d": 1}, "b": {"A": 2, "H": 24, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 4, "d": 3}, "b": {"A": -1, "H": 0, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 21, "H": 30, "d": 1}, "b": {"A": 9, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 0, "d": 1}, "b": {"A": 1, "H": 2, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 6, "d": 1}, "b": {"A": 4, "H": 9, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 1}, "b": {"A": 6, "H": 8, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 0, "d": 6}, "b": {"A": 23, "H": 24, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 5, "d": 2}, "b": {"A": 1, "H": 2, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": -3, "H": 0, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 0, "H": 1, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 2, "d": 1}, "b": {"A": 9, "H": 18, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 3, "d": 2}, "b": {"A": 2, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 0, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 0, "H": 1, "d": 4}, "b": {"A": 1, "H": 8, "d": 4}, "op": "compare", "result": 2}
+{"a": {"A": 18, "H": 24, "d": 7}, "b": {"A": 0, "H": 8, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 4}, "b": {"A": 0, "H": 3, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": -11, "H": 0, "d": 1}, "b": {"A": 15, "H": 18, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 4}, "b": {"A": 13, "H": 18, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 13, "H": 0, "d": 1}, "b": {"A": 2, "H": 15, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 18, "d": 1}, "b": {"A": 1, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 7, "H": 0, "d": 2}, "b": {"A": 0, "H": 1, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 6, "d": 1}, "b": {"A": 5, "H": 30, "d": 9}, "op": "compare", "result": 1}
+{"a": {"A": 18, "H": 24, "d": 1}, "b": {"A": 7, "H": 8, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 6, "H": 9, "d": 2}, "b": {"A": 0, "H": 1, "d": 4}, "op": "compare", "result": 2}
+{"a": {"A": 7, "H": 9, "d": 1}, "b": {"A": 4, "H": 5, "d": 3}, "op": "compare", "result": 2}
+{"a": {"A": 6, "H": 33, "d": 1}, "b": {"A": 5, "H": 10, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": -2, "H": 0, "d": 3}, "b": {"A": 6, "H": 30, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 13, "H": 21, "d": 1}, "b": {"A": 2, "H": 3, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 6, "d": 1}, "b": {"A": 14, "H": 18, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 8, "d": 5}, "b": {"A": 0, "H": 18, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 26, "H": 30, "d": 3}, "b": {"A": 1, "H": 4, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 1}, "b": {"A": 0, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 2, "d": 1}, "b": {"A": 1, "H": 6, "d": 10}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 3, "d": 6}, "op": "compare", "result": 1}
+{"a": {"A": 6, "H": 8, "d": 1}, "b": {"A": 2, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 1, "H": 18, "d": 2}, "b": {"A": 2, "H": 4, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 5, "H": 6, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 6, "d": 6}, "b": {"A": 2, "H": 4, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 10, "H": 24, "d": 1}, "b": {"A": 37, "H": 39, "d": 2}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 5, "H": 8, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 10, "H": 0, "d": 3}, "b": {"A": 17, "H": 24, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 2}, "b": {"A": 2, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 5, "H": 6, "d": 1}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 4, "H": 8, "d": 1}, "b": {"A": 1, "H": 2, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": 3, "H": 16, "d": 8}, "b": {"A": 5, "H": 12, "d": 12}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 3, "H": 4, "d": 1}, "b": {"A": -5, "H": 0, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 2, "d": 6}, "b": {"A": 1, "H": 3, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 3}, "b": {"A": 3, "H": 6, "d": 4}, "op": "compare", "result": 1}
+{"a": {"A": -13, "H": 0, "d": 1}, "b": {"A": 0, "H": 3, "d": 10}, "op": "compare", "result": 1}
+{"a": {"A": 16, "H": 24, "d": 1}, "b": {"A": 1, "H": 2, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 1, "H": 3, "d": 2}, "b": {"A": 2, "H": 3, "d": 3}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 6}, "b": {"A": 2, "H": 4, "d": 1}, "op": "compare", "result": 2}
+{"a": {"A": 5, "H": 6, "d": 1}, "b": {"A": 0, "H": 1, "d": 2}, "op": "compare", "result": 2}
+{"a": {"A": 11, "H": 0, "d": 2}, "b": {"A": 4, "H": 5, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 2, "H": 3, "d": 3}, "b": {"A": 5, "H": 0, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": -5, "H": 0, "d": 1}, "b": {"A": 13, "H": 38, "d": 1}, "op": "compare", "result": 1}
+{"a": {"A": 0, "H": 1, "d": 1}, "b": {"A": 18, "H": 0, "d": 1}, "op": "compare", "result": 2}

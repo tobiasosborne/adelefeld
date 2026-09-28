@@ -15,10 +15,12 @@ from math import gcd
 from .rat import is_integer, qgcd
 
 
-class Comparison(enum.Enum):
-    EQUAL = "certainly equal"
-    DIFFERENT = "certainly different"
-    UNDECIDED = "undecided"
+class Comparison(enum.IntEnum):
+    """Point comparison returns int with the fixed values, not a status (docs/conventions.md 2.1, closure C1):
+    ADF_CMP_EQUAL = 0 (both exact and equal), ADF_CMP_DIFFERENT = 1 (disjoint), ADF_CMP_UNDECIDED = 2."""
+    EQUAL = 0
+    DIFFERENT = 1
+    UNDECIDED = 2
 
 
 EQUAL = Comparison.EQUAL
@@ -159,7 +161,8 @@ def contains(x, y):
 
 
 def compare(x, y):
-    """Three-valued comparison of the two unknown points: EQUAL, DIFFERENT or UNDECIDED."""
+    """Three-valued comparison of the two unknown points, as int codes: EQUAL = 0, DIFFERENT = 1,
+    UNDECIDED = 2 (docs/conventions.md 2.1, closure C1)."""
     if x.radius == 0 and y.radius == 0:
         return EQUAL if x.center == y.center else DIFFERENT
     if not overlaps(x, y):

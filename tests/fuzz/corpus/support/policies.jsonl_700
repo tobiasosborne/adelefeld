@@ -1,0 +1,5 @@
+{"K": 1, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 2, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 3, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 6, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}
+{"K": 12, "ball": {"A": 0, "H": 0, "d": 1}, "lost": false, "op": "convert_from_tight", "value": {"exact": {"den": 1, "num": 0}}}

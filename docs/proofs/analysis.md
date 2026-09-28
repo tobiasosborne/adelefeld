@@ -577,6 +577,12 @@ W_chi W_conj(chi)=1 and |W_chi|=1. The completed L-function is entire for C>1. F
 only poles are simple, with residue -1 at s=0 and +1 at s=1.
 The root number uses the positive finite Gauss sum in Lemma 8, despite the negative Fourier kernel.
 
+For real primitive chi, the identities above imply W_chi^2 = 1; they do not select its sign. The further
+assertion W_chi = 1 is
+[source pending: a local source or proof of the signed primitive quadratic Gauss sum evaluation].
+Until supplied, compute W_chi by the finite Gauss-sum formula, including for real characters.
+The real-character golden vectors check examples, not the universal signed evaluation.
+
 Proof.
 1. Periodize x^e exp(-pi t x^2/C) modulo C as in Proposition 7 and sum over residues weighted
    by chi. Proposition 5 gives its positive real transform
@@ -762,3 +768,7 @@ Verdicts: 9 VALID, 6 MINOR, 0 INVALID.
 - R5: Lemma 14 chooses its split point and bounds the finite interval by the true maximum.
 - R6: Proposition 15 uses the sharper split, exact incomplete Gamma integrals, and corrected omission rules.
 - R7: The checks kill all three surviving mutants and cover the cases listed as untested in the review.
+- E4: the gate closure check (`docs/reviews/m0-gate/closure.md`, 2026-09-28) added the scope note before the
+  proof of Proposition 13: for real primitive chi the identities give W_chi^2 = 1 and do not select its sign;
+  W_chi = 1 is [source pending: a local source or proof of the signed primitive quadratic Gauss sum
+  evaluation]; W_chi is computed by the finite Gauss-sum formula until it is supplied.

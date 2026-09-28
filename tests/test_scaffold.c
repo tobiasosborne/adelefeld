@@ -44,11 +44,11 @@ ADF_TEST(fmpz_two_plus_three_is_five)
     fmpz_clear(s);
 }
 
-/* The public header of work package 0.1 carries version macros and no types. */
+/* The public header carries the version macros; its types are tested in test_headers.c and test_abi.c. */
 
 ADF_TEST(public_header_version)
 {
     ADF_CHECK(ADF_VERSION_MAJOR == 0);
-    ADF_CHECK(ADF_VERSION_MINOR == 0);
+    ADF_CHECK(ADF_VERSION_MINOR == 1);
     ADF_CHECK(ADF_VERSION_PATCH == 0);
 }

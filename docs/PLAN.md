@@ -1,13 +1,23 @@
-# adelefeld: implementation plan, version 1.2
+# adelefeld: implementation plan, version 1.3
 
-Date: 2026-09-28 (version 1.0: 2026-09-27). Status: **milestone 0 work packages landed, gate review applied;
-the repaired contracts await re-review; nothing of the C library is implemented.** Read `SPEC.md` first (what is
-built) and `PERF.md` (how speed and size are judged). Version 1.2 applies the milestone 0 gate review
+Date: 2026-09-28 (version 1.0: 2026-09-27). Status: **milestone 0: gate passed after the listed edits, applied
+on 2026-09-28; nothing of the C library is implemented.** Read `SPEC.md` first (what is
+built) and `PERF.md` (how speed and size are judged). Version 1.3 applies the edits E1 to E4 and the findings
+C1 to C5 of the milestone 0 gate closure check (`reviews/m0-gate/closure.md`). Version 1.2 applies the milestone
+0 gate review
 (`reviews/m0-gate/review.md`); version 1.1 applied the milestone 0 proof and convention rounds. Draft 1 applies the
 design review `reviews/astra-2026-09-27/review.md` (findings P1-P3, D1-D4, and the consequences of M1-M13 and
 F1-F6), and TJO's decision that elementary functions belong to the basic package. Draft 2 applies review round 2
 (`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of functions (`SPEC.md` 9.3.7). Draft 3 applies
-review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its version 1.2.
+review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its version 1.3.
+
+**Change log of version 1.3** (2026-09-28): the milestone 0 gate closure check (`reviews/m0-gate/closure.md`) is
+applied. Section 4: the scaled shared-pointer check covers `adf_scaled_mul_tight` and unary and exact-scalar
+operations (E1); a context constructor overwrites only the pointer slot of `*out` and version 1 offers no inline
+context allocation (E2); the set predicates return `int` 0 or 1 and point comparison returns `ADF_CMP_EQUAL = 0`,
+`ADF_CMP_DIFFERENT = 1` or `ADF_CMP_UNDECIDED = 2` (C1); the `NOT_DETERMINED` summary covers a required result
+invariant that the computation cannot certify (C4). Section 8 records the gate review and the closure check; the
+status of milestone 0 is "gate passed after edits, applied on 2026-09-28".
 
 **Change log of version 1.2** (2026-09-28): the milestone 0 gate review (`reviews/m0-gate/review.md`) is applied.
 Section 4: contexts have explicit constructors and a free function (G2); the implicit global fallback is limited to
@@ -115,10 +125,12 @@ named `adf_modctx_new_*`, each taking `adf_modctx_struct **out` as its first arg
 `adf_modctx_free(adf_modctx_struct *ctx)`. A successful constructor allocates and fully initializes an immutable
 context (blocks, reduction constants, recombination tree) and writes its pointer to `*out`; on failure `*out` is
 untouched and no allocation is retained. The caller owns the returned context and frees it only after its borrowers
-are gone. Passing NULL to free does nothing, and a constructor does not free or replace a previous `*out`. No public
+are gone. Passing NULL to free does nothing. A constructor never frees, mutates or reuses the context previously
+pointed to by `*out`. On success it overwrites only the pointer slot; the caller must retain any previous owned
+pointer separately. No public
 by-value or array-of-one context type requires the layout of the incomplete struct. Value init functions stay
-non-failing and require successfully constructed contexts where stated. If inline context allocation is retained as
-an alternative, its size and alignment, signatures and initialization states must be stated explicitly. Real
+non-failing and require successfully constructed contexts where stated. Version 1 offers no inline context
+allocation. Real
 working precision is an argument of each operation (as in `arb`), not a field of the modulus context.
 
 **Rules written down in 0.4 for every function:** which arguments may alias; who owns arrays and scratch space; the
@@ -133,7 +145,10 @@ canonical triple, never through raw residues.
 
 **Scaled context rule.** A default binary operation on `adf_scaled` requires the same context pointer in both
 inputs; if the pointers differ it returns `ADF_DOMAIN` with its value output untouched. The check precedes every
-write, an aliased write included. The result borrows that input context; exact operands follow the same rule. To
+write, an aliased write included. The result borrows that input context; exact operands follow the same rule. The
+shared-pointer check also applies to `adf_scaled_mul_tight`, including exact operands. It compares the two scaled
+inputs, not the old context of the initialized output. Unary and exact-scalar operations borrow the scaled input's
+context; an `adf_rat` scalar has no context to compare. To
 combine different contexts the caller constructs a context with modulus `lcm(K, K')`, converts both operands to it
 without loss and then calls the ordinary operation. No operation creates that context. A separately named
 target-context operation may take an explicit caller-owned context; its conversion loss and output context are then
@@ -157,11 +172,13 @@ printed in `1..N`, so the whole unit group is `[1 mod 1]`. `proofs/ideles.md` De
 9.2); only the representative differs (finding F8 of `conventions.md`; the proof file is not changed here).
 
 **Status codes.** `ADF_OK`; `ADF_UNIT_NOT_CERTIFIED` (the enclosure does not prove invertibility);
-`ADF_NOT_UNIT` (proved not invertible); `ADF_NOT_DETERMINED` (the value is not fixed at this precision, for
-example a ball that meets a pole and also contains regular points); `ADF_NEEDS_SPLIT`; `ADF_NOT_UNIQUE`;
+`ADF_NOT_UNIT` (proved not invertible); `ADF_NOT_DETERMINED` (not fixed by the inputs, or a required result
+invariant not certified; for example a ball that meets a pole and also contains regular points); `ADF_NEEDS_SPLIT`;
+`ADF_NOT_UNIQUE`;
 `ADF_NO_SOLUTION`; `ADF_DOMAIN` (with the place; an exact input at a proved nonremovable pole); `ADF_LIMIT`
-(resource limit); `ADF_PARSE`; `ADF_UNSUPPORTED`. The set predicates (`equal_set`, `overlaps`, `contains`,
-`compare`) return `int` 0 or 1, not a status (`SPEC.md` 10.4; G6, G14).
+(resource limit); `ADF_PARSE`; `ADF_UNSUPPORTED`. The set predicates `equal_set`, `overlaps`, `contains` return
+`int` 0 or 1, not a status. Point comparison returns `ADF_CMP_EQUAL = 0`, `ADF_CMP_DIFFERENT = 1`, or
+`ADF_CMP_UNDECIDED = 2`.
 
 **Modulus families offered by constructors:** arbitrary integer; list of pairwise coprime blocks; list of prime
 powers; `k!`; powers of a primorial; exact (radius 0). A single prime power `p^k` as the radius of an `adf_fball`
@@ -225,7 +242,7 @@ marked **gate** have an exit criterion instead of an estimate.
 | 0.5 | done | `5ae05db`: harness, six word rows, saved chain loops; first run `bench/results/2026-09-27T202944Z_word.txt`, second run `2026-09-27T221654Z_word.txt` (both `quiet_machine: no`) |
 | 0.6 | done | `9f4be67`: 38 rows with verdicts, recommendations R1 to R9 (adopted, M0-D8), three findings on `SPEC.md` 3 (applied) |
 | 1.1 | done early | `5ae05db`: Python reference, 59 tests, 18 of 18 mutants killed |
-| gate | review returned; findings G1 to G16 applied in version 1.2, re-review pending | review `reviews/m0-gate/review.md`; application report `lanes/m0-gate-apply-docs/report.md` |
+| gate | gate passed after edits, applied on 2026-09-28 | review `reviews/m0-gate/review.md` (GATE NOT PASSED, 16 findings); closure check `reviews/m0-gate/closure.md` (GATE PASSED AFTER THE LISTED EDITS); application reports `lanes/m0-gate-apply-docs/report.md`, `lanes/m0-gate-apply-conv/report.md`, `lanes/m0-closure-apply/report.md` |
 
 ### Milestone 1: the ring (L)
 
@@ -352,7 +369,16 @@ class groups and units, with its guarantee recorded.
    counterexample to an enclosure radius, sign, constant or formula was found in any review. Statements added in the
    repairs (functions Proposition 7b, Remark 15r) and the repaired statements went to the gate review of milestone 0
    (`lanes/m0-gate/brief.md`), which also reviews `conventions.md` and version 1.1 of the three documents.
-3. Statements about other people's work keep their label until quoted from a source on disk.
+3. Milestone 0 gate and closure check (2026-09-28). The gate review (`reviews/m0-gate/review.md`) returned GATE
+   NOT PASSED: 16 findings (2 BLOCKER, 8 MAJOR, 6 MINOR) and 60 decisions of which 52 accepted, 8 rejected. The
+   closure check (`reviews/m0-gate/closure.md`) re-judged all 24 items and returned GATE PASSED AFTER THE LISTED
+   EDITS: G1-G16 9 CLOSED, 7 CLOSED WITH EDIT, 0 OPEN; rejected decisions 3 CLOSED, 5 CLOSED WITH EDIT; and
+   five new findings (C1 MINOR, C2 MAJOR, C3 MINOR, C4 MINOR, C5 MAJOR) with edits E1 to E4, each with full
+   replacement text. The edits and replacements are applied (`conventions.md` 0.4, `SPEC.md` 1.3, this plan 1.3,
+   `proofs/analysis.md` P13): milestone 0 is gate passed after edits, applied on 2026-09-28. The closure's own
+   checks (printing 15032 cases, contracts 878 checks, the reference and text suites) ran with 0 failures; they
+   run again after the application (lane `lanes/m0-closure-apply/report.md`).
+4. Statements about other people's work keep their label until quoted from a source on disk.
 
 ## 9. Risks
 

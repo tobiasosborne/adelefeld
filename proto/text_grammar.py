@@ -13,6 +13,7 @@ Entry points:
   dump_roundtrip(data)        -> the re-dumped text, or "!STATUS"         (section 10)
   dump_contexts(data)         -> [(K, (q_1, ..., q_k)), ...], or "!STATUS"  (section 10.2, gate G3)
   dump_load_check(data, binds) -> "OK", or "!STATUS"                       (section 10.2, gate G3)
+  modctx_new_from_dump(data, occurrence) -> (K, (q_1, ..., q_k)), or "!STATUS" (section 10.2, closure C3)
   combine(pairs)              -> (status, place)                          (section 3.3)
 
 Limitations of the reference (not of the specification): the primitive character of a Dirichlet character
@@ -1504,6 +1505,20 @@ def dump_load_check(data, binds, limits=DEFAULT_LIMITS):
         if b is None or len(b) != 2 or b[0] != desc[0] or tuple(b[1]) != desc[1]:
             return "!DOMAIN"
     return "OK"
+
+
+def modctx_new_from_dump(data, occurrence, limits=DEFAULT_LIMITS):
+    """docs/conventions.md 10.2 (closure C3): `adf_modctx_new_from_dump(out, s, len, occurrence, lim)`
+    constructs the context recorded at one occurrence of a dump and returns it as (K, (q_1, ..., q_k)), or
+    "!STATUS". `occurrence` is 0-based in dump traversal order (a `modctx` dump has exactly one). The whole
+    dump is validated in the order of 8.5 before the occurrence index is checked or a context is allocated;
+    statuses are OK, PARSE, LIMIT, UNSUPPORTED, DOMAIN (conventions 3.2)."""
+    occ = dump_contexts(data, limits)
+    if isinstance(occ, str):
+        return occ
+    if not 0 <= occurrence < len(occ):
+        return "!DOMAIN"
+    return occ[occurrence]
 
 
 # ================================================================================================================

@@ -500,11 +500,17 @@ rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i), term(P=
 # valid, non-canonical
 rfun( term( P = [ (1) + (0)*i ] , A=(1)+(0)*i , B=(0)+(0)*i , C=(0)+(0)*i ) ) ==> rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
 rfun(term(P=[(1) + (0)*i], A=(1 +/- 0.999999) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> rfun(term(P=[(1) + (0)*i], A=(1 +/- 0.999999) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+# P: length >= 0, trailing exact zero coefficients removed on input (conventions 5.12, gate finding G7)
+rfun(term(P=[(0) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> rfun(term(P=[], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+rfun(term(P=[(0) + (0)*i, (0) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> rfun(term(P=[], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+rfun(term(P=[], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> rfun(term(P=[], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+rfun(term(P=[(1) + (0)*i, (0) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+rfun(term(P=[(0) + (0)*i, (1) + (0)*i, (0) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> rfun(term(P=[(0) + (0)*i, (1) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+rfun(term(P=[(1) + (0)*i, (0 +/- 0.25) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> rfun(term(P=[(1) + (0)*i, (0 +/- 0.25) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
 # invalid
 rfun(term(P=[(1) + (0)*i], A=(0) + (1)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> !DOMAIN
 rfun(term(P=[(1) + (0)*i], A=(-1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> !DOMAIN
 rfun(term(P=[(1) + (0)*i], A=(0.5 +/- 0.5) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> !DOMAIN
-rfun(term(P=[], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i)) ==> !PARSE
 rfun(term(A=(1) + (0)*i, P=[(1) + (0)*i], B=(0) + (0)*i, C=(0) + (0)*i)) ==> !PARSE
 rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i)) ==> !PARSE
 rfun(,) ==> !PARSE
@@ -601,6 +607,9 @@ nan ==> !PARSE
 1e+ ==> !PARSE
 --1 ==> !PARSE
 1 +/- 1 +/- 1 ==> !PARSE
+# gate finding G4: the exact intervals of 1 +/- 0.13 and of its C rereading 1 +/- 0.14
+1 +/- 0.13 ==> 87/100 113/100
+1 +/- 0.14 ==> 43/50 57/50
 """
 
 FILES["realball_print"] = r"""
@@ -623,6 +632,12 @@ FILES["realball_print"] = r"""
 3/2 1/2 20 ==> 1.5 +/- 0.5
 -5/2 1/4 20 ==> -2.5 +/- 0.25
 100 1/8 2 ==> 100 +/- 0.13
+# gate finding G4: 1 +/- 0.13 prints the exactly representable ball 1 +/- 1/8, but the ball an arb parser at
+# prec 128 stores for the text 1 +/- 0.13 has the larger radius below (fields 1 0 10a3d70b -1f, recorded by
+# docs/reviews/m0-gate/checks/flint_probe.c) and prints 1 +/- 0.14; its rereading prints 1 +/- 0.15
+1 1/8 20 ==> 1 +/- 0.13
+1 279172875/2147483648 20 ==> 1 +/- 0.14
+1 601295423/4294967296 20 ==> 1 +/- 0.15
 12345 0 2 ==> 12000 +/- 350
 12500 0 2 ==> 12000 +/- 500
 13500 0 2 ==> 14000 +/- 500
@@ -800,6 +815,10 @@ adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3 ==> adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3
 adf1 Q qclass pieces 2 1 1 -4 1 -4 g 1 2 1 1 f -4 1 -4 g 0 2 1 ==> adf1 Q qclass pieces 2 1 1 -4 1 -4 g 1 2 1 1 f -4 1 -4 g 0 2 1
 # a piece may reach beyond [0, 1] by the rounding of its enclosure (D4); only its midpoint must lie in [0, 1]
 adf1 Q qclass pieces 1 1 1 0 1 -1 g 0 1 1 ==> adf1 Q qclass pieces 1 1 1 0 1 -1 g 0 1 1
+# raw local pieces: the predicate is on the canonical triple (conventions 5.10, gate findings G3, G13)
+# and one dump may record two contexts (G3)
+adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0 ==> adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0
+adf1 Q qclass pieces 2 1 1 -2 0 0 l 1 2 1 2 0 1 3 -2 0 0 l 1 3 1 3 0 ==> adf1 Q qclass pieces 2 1 1 -2 0 0 l 1 2 1 2 0 1 3 -2 0 0 l 1 3 1 3 0
 adf1 Q qclass pieces 2 1 f -4 1 -4 g 0 2 1 1 1 -4 1 -4 g 1 2 1 ==> !DOMAIN
 adf1 Q qclass pieces 1 1 3 -1 0 0 g 0 1 1 ==> !DOMAIN
 adf1 Q qclass pieces 1 1 1 -1 0 0 g 1 2 2 ==> !DOMAIN
@@ -812,7 +831,10 @@ adf1 Q ffun 0 1 ==> !DOMAIN
 adf1 Q rfun 0 ==> adf1 Q rfun 0
 adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
-adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
+# P length >= 0, last coefficient not the exact zero ball (conventions 5.12, gate finding G7)
+adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+adf1 Q rfun 1 2 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> adf1 Q rfun 1 2 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+adf1 Q rfun 1 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ==> !DOMAIN
 adf1 Q char 1 1 0 0 0 0 0 0 0 0 ==> adf1 Q char 1 1 0 0 0 0 0 0 0 0
 adf1 Q char 5 2 0 0 0 0 0 0 0 0 ==> adf1 Q char 5 2 0 0 0 0 0 0 0 0
 adf1 Q char 4 3 0 0 0 0 0 0 0 0 ==> adf1 Q char 4 3 0 0 0 0 0 0 0 0

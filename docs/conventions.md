@@ -1,6 +1,7 @@
-# adelefeld: conventions, version 0.3 (work package 0.4, parts A and B)
+# adelefeld: conventions, version 0.4 (work package 0.4, parts A and B)
 
-Date: 2026-09-29. Status: **draft with the milestone-0 gate review applied; nothing is frozen.** Written by the lane
+Date: 2026-09-28. Status: **draft with the milestone-0 gate review and its closure edits applied; nothing is
+frozen.** Written by the lane
 `m0-conventions`. Read `SPEC.md` first. This document fixes, as a contract, what `PLAN.md` section 4 and 5 leave as
 a proposal: canonical forms and storage invariants, naming, aliasing and ownership, status codes, signs and
 normalisations, the text grammar, and the rules of the foreign-function interface. Two programmers who follow it
@@ -8,6 +9,21 @@ should write interchangeable code.
 
 ## Change log
 
+- **0.4 (2026-09-28), closure edits applied.** The edits of the milestone-0 gate closure check
+  (`docs/reviews/m0-gate/closure.md`) are applied verbatim: E1 (4.6: the shared-pointer check covers
+  `adf_scaled_mul_tight`, unary and exact-scalar operations; contexts are immutable, matching blocks permit
+  explicit rebinding only), E2 (4.6, `SPEC.md` 10.4, `PLAN.md` 4: a constructor overwrites only the pointer slot),
+  E3 (5.10: the reduction operation, not the midpoint predicate, encloses the constructed exact closed piece),
+  C1 (`PLAN.md` 4: point comparison returns the three `ADF_CMP_*` values, it is not a Boolean predicate), C2
+  (10.2, 12.10: `adf_ctx_desc_init`/`_clear` return void; inspection with `descs=NULL` writes the occurrence
+  count only on `OK`; capacity in initialized descriptors; insufficient capacity is `ADF_LIMIT` with all outputs
+  untouched; `size_t` covers binding counts, descriptor capacities and occurrence indices), C3 (3.2, 10.2:
+  `adf_modctx_new_from_dump` may return `PARSE` and `LIMIT`, and validates the whole dump before the occurrence
+  index), C4 (3.1, 3.2: `NOT_DETERMINED` also covers a result invariant the computation cannot certify; the
+  adele-to-idele and inversion row carries it), C5 (3.2, 5.4: conversion between scaled contexts is the best
+  enclosure with loss in `int *lost`, word blocks optional; `adf_scaled_set_context`; the R=0 case of the
+  conversion from tight). The reference `proto/text_grammar.py`, its tests and the Python reference
+  `tests/ref/` gained the matching contracts (point-comparison codes, `modctx_new_from_dump` statuses).
 - **0.3 (2026-09-29), gate review applied.** The findings of `docs/reviews/m0-gate/review.md` that concern this
   document and its reference are applied: G1 (scaled arithmetic obeys the context rules; the implicit global
   fallback is limited to `adf_fball` and types containing it), G2 (the life cycle of `adf_modctx`: constructors
@@ -145,7 +161,7 @@ section 3.3 is then the maximum. `PLAN.md` section 4 gives the names; `SPEC.md` 
 | Code | Value | Exact meaning |
 |---|---|---|
 | `ADF_OK` | 0 | the output holds the result, which satisfies the function's contract (enclosure, exactness as stated) |
-| `ADF_NOT_DETERMINED` | 1 | the inputs are valid, but the requested quantity is not fixed by the inputs at their precision (a valuation, a sign, a symbol, a root that the ball does not fix); more precision in the inputs may resolve it |
+| `ADF_NOT_DETERMINED` | 1 | Valid inputs do not determine the requested quantity, or the computation cannot certify a required result invariant. More input or working precision, or a sharper enclosure algorithm, may resolve it |
 | `ADF_UNIT_NOT_CERTIFIED` | 2 | an invertible value was required and the enclosure does not prove invertibility (for example every additive ball of positive radius, `SPEC.md` 4.5) |
 | `ADF_NEEDS_SPLIT` | 3 | the true result is a union of several pieces and the function may return one piece only (`SPEC.md` 6); exceeding a piece limit given as argument is `ADF_LIMIT` |
 | `ADF_NOT_UNIQUE` | 4 | several candidates satisfy the problem (reconstruction, solving, `SPEC.md` 9.2) |
@@ -156,8 +172,8 @@ section 3.3 is then the maximum. `PLAN.md` section 4 gives the names; `SPEC.md` 
 | `ADF_PARSE` | 9 | the text is not a sentence of the grammar of section 9 or 10 |
 | `ADF_LIMIT` | 10 | a resource limit was reached: a limit of section 8.4, a piece limit given as argument, a size bound of an algorithm |
 
-`ADF_NOT_DETERMINED` and `ADF_UNIT_NOT_CERTIFIED` say "not proved either way"; `ADF_NO_SOLUTION`, `ADF_NOT_UNIT` and
-`ADF_DOMAIN` say "proved". A function never returns a "proved" code on the basis of an enclosure that merely fails
+`ADF_NOT_DETERMINED` lacks the requested result certificate; `ADF_UNIT_NOT_CERTIFIED` lacks an input unit
+certificate. `ADF_NO_SOLUTION`, `ADF_NOT_UNIT` and `ADF_DOMAIN` report proved failures. A function never returns a "proved" code on the basis of an enclosure that merely fails
 to prove the opposite.
 
 ### 3.2 Which functions may return which
@@ -165,22 +181,27 @@ to prove the opposite.
 | Class of function | Possible statuses |
 |---|---|
 | Ring arithmetic of `adf_rat`, `adf_fball`, `adf_adele`, `adf_cadele` (add, sub, neg, mul, scale by exact rational) | none: `void` |
-| Ring arithmetic of `adf_scaled` (add, sub, neg, mul, scale by exact rational) | `OK`, `DOMAIN` (the context-compatibility rule of 5.4, gate finding G1); the value output is untouched on `DOMAIN` |
+| Ring arithmetic of `adf_scaled` (add, sub, neg, mul, `adf_scaled_mul_tight`, scale by exact rational) | `OK`, `DOMAIN` (the context-compatibility rule of 4.6 and 5.4, gate finding G1); the value output is untouched on `DOMAIN` |
 | Set predicates (`equal_set`, `overlaps`, `contains`) | no status: they return `int` 0 or 1 (2.3; the other predicates likewise) |
 | Division of `adf_rat` by an `adf_rat`; scaling by the inverse of an exact rational | `OK`, `NOT_UNIT` (divisor exactly 0) |
 | Constructors from raw data (`_set_fmpz3`, `_set_arb_fball`, `adf_ucoset_set_fmpz2`, ...) | `OK`, `DOMAIN` |
-| Context constructors (`adf_modctx_new_*`, 5.14) | `OK`, `DOMAIN`, `UNSUPPORTED` (a prime power above one word) |
+| Raw context constructors (5.14) | `OK`, `DOMAIN`, `UNSUPPORTED` (a prime power above one word) |
+| `adf_modctx_new_from_dump` | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN` |
 | Parsers of the value form (`_set_str`) | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN`, `NOT_DETERMINED` (only the sign conditions of section 9.3 at the requested `prec`) |
 | Loaders of the dump form (`_load_str`) | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN` |
-| Conversion to the local backend or to a scaled context | `OK`, `DOMAIN` (the set is not representable there without loss), `UNSUPPORTED` (the context has no word blocks) |
+| Exact conversion to the local backend | `OK`, `DOMAIN` (unrepresentable), `UNSUPPORTED` (no word blocks) |
+| Conversion between scaled contexts | `OK`; best enclosure; loss reported through `int *lost` |
 | Conversion from tight to scaled | `OK` always; loss is reported in `int * lost` (`SPEC.md` 4.4: "says so") |
-| Adele to idele, inversion of an adele-like value | `OK`, `UNIT_NOT_CERTIFIED`, `NOT_UNIT` |
+| Adele to idele; inversion of an adele-like value | `OK`, `UNIT_NOT_CERTIFIED`, `NOT_UNIT`, `NOT_DETERMINED` |
 | Unit coset, idele, idele class arithmetic | `OK`, `NOT_DETERMINED` (the required real sign is not certified on the result, 5.7, gate finding G5); `NOT_UNIT` only for an exact zero input where one is accepted |
 | Functions at places (`_at`) and all-places functions (`SPEC.md` 9.3) | `OK`, `DOMAIN` (with place), `NOT_DETERMINED`, `NEEDS_SPLIT`, `UNSUPPORTED`, `LIMIT` |
 | Quotient by `Q` | `OK`, `NEEDS_SPLIT`, `LIMIT` |
 | Characters, Gauss sums, local factors | `OK`, `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `DOMAIN` (for an exact pole), `UNSUPPORTED` |
 | Reconstruction and solvers | `OK`, `NO_SOLUTION`, `NOT_UNIQUE`, `NOT_DETERMINED` ("uniqueness not certified", `SPEC.md` 9.2), `LIMIT` |
 | Integrals, Poisson summation | `OK`, `DOMAIN` (outside the stated half-plane, or at an exact pole), `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `LIMIT` |
+
+In conversion or inversion, NOT_DETERMINED covers failure to certify the required real sign on the result;
+UNIT_NOT_CERTIFIED and NOT_UNIT concern the input, as before. Failure leaves the value output untouched.
 
 A function documents its own subset; it may not return a code outside its class's row.
 
@@ -291,7 +312,9 @@ library exports explicit context constructors named `adf_modctx_new_*`, taking `
 first argument, and `adf_modctx_free(adf_modctx_struct *ctx)`. A successful constructor allocates and fully
 initializes an immutable context and writes its pointer to `*out`. On failure `*out` is untouched and no
 allocation is retained. The caller owns the returned context and frees it only after its borrowers are gone.
-Passing NULL to free does nothing. A constructor does not replace or free a previous `*out`.
+Passing NULL to free does nothing. A constructor never frees, mutates or reuses the context previously pointed
+to by `*out`. On success it overwrites only the pointer slot; the caller must retain any previous owned pointer
+separately.
 No public by-value or array-of-one context type requires the layout of the incomplete struct.
 Value init functions remain non-failing and require successfully constructed contexts where stated.
 Version 1 offers no inline allocation of a context: a size query without an alignment query and without an
@@ -325,8 +348,12 @@ context; its conversion loss and output context must be documented. DECISION CV-
 this rule (gate finding G1): their earlier wording sent such a result global, which `adf_scaled` cannot store
 (its context is never NULL), and referred to contexts that no operation may create.
 
-Other context rules: a context never changes after construction (`PLAN.md` section 4); two contexts with the same
-blocks in the same order are interchangeable for every operation except `adf_x_identical`. For `adf_fball` and
+The shared-pointer check also applies to `adf_scaled_mul_tight`, including exact operands. It compares
+the two scaled inputs, not the old context of the initialized output. Unary and exact-scalar operations
+borrow the scaled input's context; an `adf_rat` scalar has no context to compare.
+
+Contexts stay immutable after construction. Matching moduli and ordered blocks permit explicit rebinding;
+they do not waive pointer-compatibility checks or the different-pointer global fallback below. For `adf_fball` and
 types containing it, operations on two local values with different context pointers give a global result, even if
 the blocks agree (the fallback above); reason: comparing block lists on every operation costs more than the
 conversion it saves.
@@ -470,9 +497,17 @@ requires the same context pointer in both inputs, 4.6):
 | exact scalar `q` added | `q = 0`: unchanged; else `g = gcd(s, q)`, `g ((q/g + (s/g) u) mod K + K Zhat)`, the best scaled enclosure; `lost` set when `s` does not divide `q` | policies P8 |
 | exact scalar `q` multiplied | `q != 0`: `abs(q) s ((sign(q) u mod K) + K Zhat)`, exact; `q = 0`: the exact 0 | policies P9 |
 | two exact values | the exact result, `exact = 1` (the tag is kept) | policies Definition 4 |
-| conversion from a tight ball `c + R Zhat` | `s* = gcd(c, R/K)`, `u* = (c/s*) mod K`; best enclosure; `lost` when `c K/R` is not an integer | policies P7, L6 |
+| conversion from a tight ball `c + R Zhat` | `s* = gcd(c, R/K)`, `u* = (c/s*) mod K`; best enclosure; `lost` when `c K/R` is not an integer. For R=0, store exact=1, s=c, u=0 in the target context, with lost=0. | policies P7, L6 |
 | conversion to context `K'` | `s' = s gcd(u, K/K')`, `u' = (s u/s') mod K'`; best; exact when `u K'/K` is an integer, always when `K` divides `K'` | policies P11 |
 | two contexts `K`, `K'` | no default operation combines them; the caller rule of 4.6 (gate finding G1) applies | policies C12 |
+
+```c
+int adf_scaled_set_context(adf_scaled_t y, int *lost, const adf_scaled_t x, const adf_modctx_struct *ctx);
+```
+
+With initialized y and a successfully constructed ctx, this returns ADF_OK and stores the best enclosure
+in ctx. If lost is non-NULL, write *lost=1 exactly when the set changes. Word blocks are optional.
+Exact input keeps its rational s, exact=1 and u=0, with *lost=0 if requested. y may alias x; it borrows ctx.
 
 DECISION CV-48 (D5): the product of `SPEC.md` 4.4 is the default `adf_scaled_mul`; the tight variant of policies
 P10 is the separately named `adf_scaled_mul_tight`; reason (orchestrator): the specification's rule stays, and the
@@ -656,9 +691,9 @@ Source: `docs/proofs/quotient.md` (reviewed) and `docs/proofs/analysis.md` Lemma
   whose **midpoint lies in `[0, 1]`**; the ball itself may reach beyond `[0, 1]` by the outward rounding of the
   enclosure. Its meaning is unchanged: every point `(s, z)` of a piece denotes its class in `A/Q`, which is defined
   for every real `s`, so a point with `s` slightly below 0 or above 1 is the class of `(s + 1, z + 1)` or
-  `(s - 1, z - 1)`, a point near the other end of the domain; the enclosure stays an enclosure. What the invariant
-  guarantees is that the stored piece encloses an exact closed piece `C_n` inside `[0, 1]` of quotient P6 (its
-  midpoint is rounded to nearest, and 0 and 1 are representable). Reason (orchestrator): `SPEC.md` 6 asks for pieces
+  `(s - 1, z - 1)`, a point near the other end of the domain; the enclosure stays an enclosure. A reduction
+  operation must enclose its constructed exact closed piece `C_n` inside `[0, 1]`. The midpoint predicate alone
+  does not certify that construction or its rounding error. Reason (orchestrator): `SPEC.md` 6 asks for pieces
   "inside `[0, 1]`", which an `arb` enclosure of an interval with a non-dyadic end point cannot keep (probed: the
   enclosure of `[0.9, 1]` exceeds 1 at `prec` 20, 53 and 128; finding F2).
 - **Number of pieces** (D4, quotient P5, P6): reduction of `I x (a + N Zhat)` with integer `N` and shifted interval
@@ -751,7 +786,8 @@ returned. `adf_modctx_free` releases a context. Constructors:
 | `adf_modctx_new_fmpz(out, K)` | one block `K` if `2 <= K < 2^64`; none if `K = 1` or `K >= 2^64` (then only the scaled policy can use it) |
 | factorial `k!` (`adf_modctx_new_factorial`), powers of a primorial | the prime powers of `K` in increasing order of the prime. DECISION (proposed) CV-21; reason: the factorisation is known, and prime-power blocks serve operations that name a prime |
 
-The local backend needs `k >= 1`; conversion into a context with `k = 0` returns `ADF_UNSUPPORTED`.
+The local backend needs `k >= 1`; conversion to the local backend into a context with `k = 0` returns
+`ADF_UNSUPPORTED` (a scaled value may borrow a context with `k = 0`, 5.4).
 
 ## 6. Signs, measures, normalisations, and operations fixed by decisions
 
@@ -1376,11 +1412,17 @@ direct transcription and identity is easy to test.
         int adf_x_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs,
                                const char * s, size_t len, const adf_text_limits_t * lim);
 
-  With `descs == NULL` only `*nctx` is written; with `descs != NULL` the caller passes `*nctx` initialised
-  descriptors (`adf_ctx_desc_init`), which own their block arrays after the call (`adf_ctx_desc_clear`). The
-  statuses are those of a loader. `adf_modctx_new_from_dump(out, s, len, occurrence, lim)` constructs the context
+  `adf_ctx_desc_init(adf_ctx_desc_t *d)` and `adf_ctx_desc_clear(adf_ctx_desc_t *d)` return void;
+  init sets K=1, k=0, q=NULL; clear releases its owned integer and block array.
+  With descs=NULL, ignore the incoming *nctx and write the occurrence count only on OK.
+  Otherwise incoming *nctx is capacity in initialized descriptors. Validate the whole dump first;
+  insufficient capacity returns ADF_LIMIT with *nctx and every descriptor untouched.
+  On OK replace the first required descriptors, releasing their old contents, write that count to *nctx,
+  and leave the rest untouched. Other failures also leave all outputs untouched. Statuses are loader statuses.
+  `adf_modctx_new_from_dump(out, s, len, occurrence, lim)` constructs the context
   recorded at one occurrence: `occurrence` is 0-based in dump traversal order, a `modctx` dump has exactly one,
-  and an index out of range is `ADF_DOMAIN`. DECISION CV-39 is **replaced** by G3: the caller owns contexts
+  and an index out of range is `ADF_DOMAIN`. Validate the whole dump in the order of 8.5 before checking the
+  occurrence index or allocating a context. DECISION CV-39 is **replaced** by G3: the caller owns contexts
   (CV-10), so the loader cannot create one behind the caller's back, and one context does not cover all valid
   dumps.
 - **Unit moduli** are dumped as stored (as supplied, CV-17).
@@ -1479,7 +1521,8 @@ contract of the public interface. Python stays for tests and proof checks only.
 10. **Integer types.** `slong` and `ulong` are FLINT's `mp_limb_signed_t` and `mp_limb_t` (`flint.h:110-111`),
    64 bits on the supported platforms (`FLINT_BITS 64`, `flint.h:193`). DECISION (proposed) CV-42: version 1
    supports 64-bit platforms only; reason: places, blocks and primes are one word (CV-18), and the layouts below
-   are stated for 64 bits. `size_t` is used for byte lengths only.
+   are stated for 64 bits. `size_t` is used for byte lengths and for binding counts, descriptor capacities and
+   occurrence indices.
 11. **FLINT types across the interface.** `fmpz`, `fmpq`, `arb`, `acb` and `padic` values may be passed by pointer,
     since Nemo.jl wraps the same types [unverified: Nemo.jl's FLINT version and layout were not read]. The interface
     assumes FLINT 3.0.1 (`flint.h:94-97`) and these layouts, measured on x86-64 Linux with the installed headers
@@ -1506,7 +1549,8 @@ contract of the public interface. Python stays for tests and proof checks only.
 
 "decided" means decided by the orchestrator on 2026-09-28 (D1 to D11) and accepted by the milestone-0 gate
 review; "decided (gate)" means proposed here and accepted by that review; "replaced (Gn)" means rejected by it
-and replaced by finding `Gn` of `docs/reviews/m0-gate/review.md` (whose text is in force). 60 decisions: 52
+and replaced by finding `Gn` of `docs/reviews/m0-gate/review.md` (whose text is in force, as amended by the edits
+E1 to E4 and the findings C1 to C5 of the closure check `docs/reviews/m0-gate/closure.md`). 60 decisions: 52
 decided (12 of them as D1 to D11), 8 replaced.
 
 | Id | Section | Decision | Reason (short) | Status |

@@ -1,0 +1,4 @@
+{"ball": {"A": 0, "H": 0, "d": 1}, "hi": {"den": 1, "num": 5}, "lo": {"den": 1, "num": 0}, "op": "reconstruct", "solutions": [{"den": 1, "num": 0}], "status": "one"}
+{"ball": {"A": 0, "H": 0, "d": 1}, "hi": {"den": 1, "num": 1}, "lo": {"den": 1, "num": 1}, "op": "reconstruct", "solutions": [], "status": "none"}
+{"ball": {"A": 0, "H": 0, "d": 1}, "hi": {"den": 1, "num": 5}, "lo": {"den": 1, "num": 2}, "op": "reconstruct", "solutions": [], "status": "none"}
+{"ball": {"A": 0, "H": 0, "d": 1}, "hi": {"den": 1, "num": 3}, "lo": {"den": 1, "num": -3}, "op": "reconstruct", "solutions": [{"den": 1, "num": 0}], "status": "one"}

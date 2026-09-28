@@ -1,0 +1,15 @@
+# finite phases of the additive character on a finite ball (conventions 6.1; analysis.md Lemma 2):
+# the set of psi_f on a + N Zhat is {E(t)}; expected: the angles t in [0, 1), increasing, in lowest terms
+(* ; 0)	0
+(* ; 1/3)	1/3
+(* ; -1/3)	2/3
+(* ; 7/3)	1/3
+(* ; 5/3 mod 6)	2/3
+(* ; 2 mod 6)	0
+(* ; 0 mod 1)	0
+(* ; 5/2 mod 4)	1/2
+# SPEC 6: 0 mod 1/2 gives +1 and -1
+(* ; 0 mod 1/2)	0 1/2
+(* ; 1/2 mod 1/2)	0 1/2
+(* ; 1/4 mod 1/3)	1/4 7/12 11/12
+(* ; 1/10 mod 3/4)	1/10 7/20 3/5 17/20

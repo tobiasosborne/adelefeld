@@ -24,3 +24,6 @@ proto/__pycache__/
 lanes/*/last.md
 docs/reviews/m0-gate/checks/flint_probe
 docs/reviews/m0-gate/checks/add_immediate_probe
+crash-*
+lanes/*/golden_before/
+lanes/*/vectors_before/

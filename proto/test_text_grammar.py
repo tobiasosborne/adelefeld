@@ -272,6 +272,30 @@ class TestGoldenVectors(unittest.TestCase):
             self.assertLess(abs(abs(tau) ** 2 - q), mpmath.mpf(10) ** -80)
 
 
+class TestClosureFindings(unittest.TestCase):
+    """Regressions for the findings and edits of the gate closure check
+    (docs/reviews/m0-gate/closure.md) applied to the reference."""
+
+    def test_c3_modctx_new_from_dump_statuses(self):
+        """C3: the text constructor adf_modctx_new_from_dump consumes arbitrary text and may return OK, PARSE,
+        LIMIT, UNSUPPORTED or DOMAIN (conventions 3.2); the whole dump is validated in the order of 8.5 before
+        the occurrence index is checked (conventions 10.2)."""
+        two = "adf1 Q qclass pieces 2 1 1 -2 0 0 l 1 2 1 2 0 1 3 -2 0 0 l 1 3 1 3 0"
+        self.assertEqual(tg.modctx_new_from_dump(two.encode(), 0), (2, (2,)))
+        self.assertEqual(tg.modctx_new_from_dump(two.encode(), 1), (3, (3,)))
+        self.assertEqual(tg.modctx_new_from_dump(b"adf1 Q modctx 6 2 2 3", 0), (6, (2, 3)))
+        self.assertEqual(tg.modctx_new_from_dump(b"adf1 Q scaled x 1 2 1 0", 0), (1, ()))
+        # an out-of-range occurrence is DOMAIN, but only after the whole dump is valid
+        self.assertEqual(tg.modctx_new_from_dump(two.encode(), 2), "!DOMAIN")
+        self.assertEqual(tg.modctx_new_from_dump(two.encode(), -1), "!DOMAIN")
+        self.assertEqual(tg.modctx_new_from_dump(b"adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3", 0), "!DOMAIN")
+        self.assertEqual(tg.modctx_new_from_dump(b"adf2 Q rat 1 1", 5), "!UNSUPPORTED")
+        self.assertEqual(tg.modctx_new_from_dump(b"garbage", 5), "!PARSE")
+        self.assertEqual(tg.modctx_new_from_dump(b"adf1 Q rat 1", 5), "!PARSE")
+        self.assertEqual(tg.modctx_new_from_dump(b"adf1 Q modctx 6 2 2 3", 5, tg.Limits(max_items=1)), "!LIMIT")
+        self.assertEqual(tg.modctx_new_from_dump(b"adf1 Q rat 1 1", 5), "!DOMAIN")  # valid, no occurrence
+
+
 class TestGateFindings(unittest.TestCase):
     """Regressions for the milestone-0 gate review (docs/reviews/m0-gate/review.md) applied to the reference."""
 

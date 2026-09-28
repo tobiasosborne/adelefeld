@@ -1,26 +1,50 @@
-/* adelefeld.h: the public interface of adelefeld, version 0.0.0.
+/* adelefeld.h: the public interface of adelefeld, version 0.1.0.
 
-   Work package 0.1 is a provisional build scaffold. There is no public type and no public
-   function yet, and none is added here: the types and their storage invariants are fixed in
-   work package 0.4, and the header is frozen after 0.3, 0.4 and 0.6 are reviewed
-   (docs/PLAN.md section 1, principle 1; docs/PLAN.md section 6, milestone 0).
+   Milestone 1 (docs/PLAN.md section 6): the ring. This header includes every public header; each of
+   them can also be included alone, in C11 and in C++17 (tests/test_headers.c). Declarations only:
+   the library implements them in work packages 1.2 to 1.9. The contract is docs/conventions.md 0.4,
+   docs/SPEC.md 1.3 and the proofs cited function by function; docs/api-m1.md lists every function
+   with its header, work package and source.
 
-   So this header holds the include guard, the version macros, and nothing else. It must stay
-   includable from C11 without any FLINT header: a user of the library should not need the
-   include path of FLINT until a type from it appears. The test tests/test_scaffold.c includes
-   FLINT itself and then this header, which is the order the milestones will use. */
+   The public types embed FLINT 3.0.1 types (fmpz, fmpq, arb, acb), so a user needs the FLINT include
+   path; adelefeld/common.h refuses any FLINT other than 3.0.x at compile time, and
+   adf_version_check() compares at run time (conventions 12.11, CV-44).
+
+   Headers:
+     adelefeld/common.h   FLINT includes and version check, ADF_INLINE, adf_modctx_struct,
+                          adf_str_free, adf_flint_version_compiled, adf_version_check
+     adelefeld/status.h   ADF_OK ... ADF_LIMIT, ADF_CMP_*, adf_status_str
+     adelefeld/place.h    adf_place_t and its functions
+     adelefeld/rat.h      adf_rat
+     adelefeld/fball.h    adf_fball, tight policy
+     adelefeld/adele.h    adf_adele, adf_cadele
+     adelefeld/recon.h    rational reconstruction from a full ball
+     adelefeld/text.h     value form, limits, adf_text_classify
+     adelefeld/modctx.h   contexts, descriptors, local-backend conversions
+     adelefeld/scaled.h   adf_scaled (scaled policy), absolute cap
+     adelefeld/dump.h     dump form */
 
 #ifndef ADELEFELD_H
 #define ADELEFELD_H
 
 #define ADF_VERSION_MAJOR 0
-#define ADF_VERSION_MINOR 0
+#define ADF_VERSION_MINOR 1
 #define ADF_VERSION_PATCH 0
 
-/* ADF_VERSION as the number 0*10000 + 0*100 + 0, for comparisons. */
+/* ADF_VERSION as the number MAJOR*10000 + MINOR*100 + PATCH, for comparisons. */
 #define ADF_VERSION \
     (ADF_VERSION_MAJOR * 10000 + ADF_VERSION_MINOR * 100 + ADF_VERSION_PATCH)
 
-/* No public type, no public function, no public macro, before the review of milestone 0. */
+#include "adelefeld/common.h"
+#include "adelefeld/status.h"
+#include "adelefeld/place.h"
+#include "adelefeld/rat.h"
+#include "adelefeld/fball.h"
+#include "adelefeld/adele.h"
+#include "adelefeld/recon.h"
+#include "adelefeld/text.h"
+#include "adelefeld/modctx.h"
+#include "adelefeld/scaled.h"
+#include "adelefeld/dump.h"
 
 #endif /* ADELEFELD_H */

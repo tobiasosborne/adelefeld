@@ -159,6 +159,16 @@ class ThreeValuedComparison(unittest.TestCase):
         self.assertEqual(fball.compare(B(0, 2), B(0, 4)), fball.UNDECIDED)
         self.assertEqual(fball.compare(B(0, 2), B(2, 4)), fball.UNDECIDED)
 
+    def test_fixed_codes(self):
+        """docs/conventions.md 2.1 and closure C1: the comparison is not a Boolean predicate. It returns the
+        int codes ADF_CMP_EQUAL = 0, ADF_CMP_DIFFERENT = 1, ADF_CMP_UNDECIDED = 2; overlapping non-exact
+        balls need UNDECIDED = 2."""
+        self.assertEqual(int(fball.compare(B(1, 0), B(1, 0))), 0)
+        self.assertEqual(int(fball.compare(B(1, 0), B(2, 0))), 1)
+        self.assertEqual(int(fball.compare(B(0, 2), B(0, 4))), 2)
+        self.assertEqual(int(fball.compare(B(1, 0), B(1, 2))), 2)
+        self.assertEqual((int(fball.EQUAL), int(fball.DIFFERENT), int(fball.UNDECIDED)), (0, 1, 2))
+
 
 if __name__ == "__main__":
     unittest.main()

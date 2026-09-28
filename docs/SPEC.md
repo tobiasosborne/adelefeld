@@ -1,17 +1,20 @@
-# adelefeld: scope and specification, version 1.2
+# adelefeld: scope and specification, version 1.3
 
-Date: 2026-09-28 (version 1.0: 2026-09-27). Authors: TJO with Claude (Fable). Status: **milestone 0 work packages
-landed, gate review applied; the repaired contracts await re-review; nothing of the C library is implemented.**
-Version 1.2 applies the milestone 0 gate review (`reviews/m0-gate/review.md`), findings G1 to G16 and its findings
-against the specification. Version 1.1 applied the findings of milestone 0: the proofs in `proofs/` and their four
-cross-family reviews (`reviews/m0-proofs/`), the sources on disk (`sources.md`), the seams sketch (`seams.md`) and
-the conventions draft (`conventions.md`). Companion documents: `PLAN.md` (work packages), `PERF.md`
+Date: 2026-09-28 (version 1.0: 2026-09-27). Authors: TJO with Claude (Fable). Status: **milestone 0 passed its
+gate after the listed closure edits, applied on 2026-09-28; nothing of the C library is implemented.**
+Version 1.3 applies the edits E1 to E4 and the findings C1 to C5 of the gate closure check
+(`reviews/m0-gate/closure.md`). Version 1.2 applies the milestone 0 gate review (`reviews/m0-gate/review.md`),
+findings G1 to G16 and its findings against the specification. Version 1.1 applied the findings of milestone 0:
+the proofs in `proofs/` and their four cross-family reviews (`reviews/m0-proofs/`), the sources on disk
+(`sources.md`), the seams sketch (`seams.md`) and the conventions draft (`conventions.md`). Companion documents:
+`PLAN.md` (work packages), `PERF.md`
 (floors), `proofs/*.md` (proofs), `sources.md` (sources and quotations), `conventions.md` (conventions, draft).
 
 **Change log.**
 
 | Version | Date | Changes |
 |---|---|---|
+| 1.3 | 2026-09-28 | Gate closure edits applied (`reviews/m0-gate/closure.md`); no formula changed. E1 (4.4): the scaled shared-pointer check also applies to `adf_scaled_mul_tight`, including exact operands; it compares the two scaled inputs, and unary and exact-scalar operations borrow the scaled input's context. E2 (10.4): a context constructor never frees, mutates or reuses the context previously pointed to by `*out` and overwrites only the pointer slot. C4 (10.4): `NOT_DETERMINED` also covers a required result invariant that the computation cannot certify (the real sign of a conversion or inversion result). C5 (4.4 agrees): conversion between scaled contexts is the best enclosing conversion with loss reported through `int *lost`; the R=0 case of the conversion from a tight ball stores the exact rational. |
 | 1.2 | 2026-09-28 | Milestone 0 gate review applied. G1: a default binary operation on `adf_scaled` requires the same context pointer in both operands and otherwise returns `ADF_DOMAIN`; the implicit global fallback is limited to `adf_fball` and types containing it (4.1, 4.4). G2: context constructors `adf_modctx_new_*` and `adf_modctx_free`, incomplete public struct, caller ownership (10.4). G3: the dump loader takes an array of caller-owned context bindings, one per occurrence, in traversal order (10.2). G5: idele and idele-class arithmetic validates the real sign on its result and otherwise returns `NOT_DETERMINED`, never `NOT_UNIT` (5). G6: an exact input at a proved nonremovable pole is `DOMAIN`; a ball meeting a pole and regular points, or an undecided exclusion, is `NOT_DETERMINED` (9.3.7). G14: string results carry a length and an explicit terminator; `adf_text_classify` writes a kind enum on `OK`; set predicates return `int` (10.4). G16: the canonical triple reduces the numerator modulo `H` before cancellation (`proofs/policies.md` Summary 26). Section 15.2 states the D1 to D12 correspondence to M0-D1 to M0-D12. |
 | 1.1 | 2026-09-28 | Label **[quoted]** added; 7 of 7 **[unverified]**/**[standard]** statements quoted from `refs/src/` (one attribution, "section 2.2" of Tate's thesis, stays unverified); proved statements cite `proofs/*.md` by statement number. Section 1: C is the implementation, Python only for tests, oracles and checks, a Julia layer later (M0-D12). Section 3: rows `A_K`, `A_F` corrected; seams recommendations R1 to R9 adopted (M0-D8). Section 4.1: local backend stated as raw storage against canonical triple (`policies.md` P24, P25, S26). Section 4.4: exact tag in the scaled policy; tight scaled product a separate operation (M0-D5); the cap never touches an exact value (M0-D2). Section 5: exact units (M0-D1); power of a unit coset (M0-D6); division by an idele (M0-D7); the stored class-group character against the conjugate character of the Tate integral (section 8). Section 4.1: the local backend keeps raw data (`conventions.md` CV-55, proposed). Section 6: `k + 1` pieces, closed real balls that may exceed `[0,1]` by rounding (M0-D4); the Fourier convention against the expositions on disk (M0-D11). Section 8: continuation and functional equation proved. Section 9.2: closed real interval (M0-D3). Section 9.3.7: centre of the finest-modulus coset, unit part of an idele in the Hilbert symbol, status at a pole, reciprocity named by formula (M0-D10). Section 10: Julia-friendly interface (M0-D12), dump loader validates first (M0-D9). Section 15: decisions M0-D1 to M0-D12 |
 | 1.0 | 2026-09-27 | Draft 4 ratified after the closure check of review round 3 |
@@ -288,7 +291,10 @@ aliased write included. The result borrows that input context, so the caller kee
 Exact operands follow the same context rule. To combine different contexts the caller constructs a context with
 modulus `lcm(K, K')`, converts both operands to it without loss (Proposition 11, Corollary 12) and then calls the
 ordinary operation. No operation creates this context. A separately named target-context operation may take an
-explicit caller-owned context; its conversion loss and output context must then be documented. **[design]** (G1)
+explicit caller-owned context; its conversion loss and output context must then be documented. The
+shared-pointer check also applies to `adf_scaled_mul_tight`, including exact operands. It compares the two scaled
+inputs, not the old context of the initialized output. Unary and exact-scalar operations borrow the scaled input's
+context; an `adf_rat` scalar has no context to compare. **[design]** (G1, closure E1)
 
 ### 4.5 What the additive types cannot do
 
@@ -736,8 +742,9 @@ functions on `Q_p(i)` and other extensions (with number fields).
    correctly" (`flint-3.0.1:arb.rst:297-298`), but in FLINT 3.0.1 it aborts the process on some malformed strings
    and silently changes others **[checked]** (probe, `conventions.md` section 10.2 and finding F5). Fuzzing never
    passes raw text to it. **[design]** (M0-D9)
-3. Status codes that distinguish: not certified to be a unit; proved not a unit; value not determined at this
-   precision (a ball that meets a pole and also contains regular points, or an undecided exclusion of poles, among
+3. Status codes that distinguish: not certified to be a unit; proved not a unit; value not determined by the
+   inputs, or a required result invariant not certified (a ball that meets a pole and also contains regular
+   points, an undecided exclusion of poles, or a real sign on the result that the enclosure cannot certify, among
    other cases); needs splitting; several candidates; resource limit reached; parse error; domain error (an exact
    input at a proved nonremovable pole).
 4. A public C interface that a Julia layer can call through `ccall` without C glue: every public operation is an
@@ -747,8 +754,10 @@ functions on `Q_p(i)` and other extensions (with number fields).
    explicit constructors `adf_modctx_new_*`, each taking `adf_modctx_struct **out` as its first argument, and
    `adf_modctx_free(adf_modctx_struct *ctx)`. A successful constructor allocates and fully initializes an immutable
    context and writes its pointer to `*out`; on failure `*out` is untouched and no allocation is retained. The
-   caller owns the context and frees it only after its borrowers are gone. Passing NULL to free does nothing, and a
-   constructor does not free or replace a previous `*out`. Value init functions stay non-failing and require
+   caller owns the context and frees it only after its borrowers are gone. Passing NULL to free does nothing. A
+   constructor never frees, mutates or reuses the context previously pointed to by `*out`. On success it
+   overwrites only the pointer slot; the caller must retain any previous owned pointer separately. Value init
+   functions stay non-failing and require
    successfully constructed contexts where stated. `get_str` and `dump_str` take `size_t *len` as an output and
    return an allocated `char *`; the `len` bytes are ASCII with no embedded NUL, a terminating NUL is stored at
    `s[len]` and is not counted in `len`, and the caller frees the pointer with `adf_str_free`. `adf_text_classify`

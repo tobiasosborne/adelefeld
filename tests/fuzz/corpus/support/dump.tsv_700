@@ -1,0 +1,24 @@
+# dump form, version 1 (docs/conventions.md 10); a valid dump is its own expected output
+adf1 Q rat 7 3	adf1 Q rat 7 3
+adf1 Q rat -7 3	adf1 Q rat -7 3
+adf1 Q rat 0 1	adf1 Q rat 0 1
+adf1 Q rat 1f 1	adf1 Q rat 1f 1
+adf1 Q rat 2 4	!DOMAIN
+adf1 Q rat 7 0	!DOMAIN
+adf1 Q rat 7 -3	!DOMAIN
+adf1 Q rat 07 3	!PARSE
+adf1 Q rat 7 3\x20	!PARSE
+adf1  rat 7 3	!PARSE
+\x20adf1 Q rat 7 3	!PARSE
+adf1 Q rat 7 3\n	!PARSE
+adf1 Q rat 7	!PARSE
+adf1 Q rat 7 3 1	!PARSE
+adf1 Q rat A 3	!PARSE
+adf1 Q rat -0 1	!PARSE
+adf1 Q rat 0x7 3	!PARSE
+adf1\trat 7 3	!PARSE
+adf2 Q rat 7 3	!UNSUPPORTED
+adf0 Q rat 7 3	!UNSUPPORTED
+adf2 anything at all	!UNSUPPORTED
+adf01 rat 7 3	!PARSE
+ADF1 rat 7 3	!PARSE
