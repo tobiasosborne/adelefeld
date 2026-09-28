@@ -24,12 +24,25 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 01:18 on 2026-09-29 (two jobs; look at them first).**
+**RUNNING at 01:58 on 2026-09-29 (two jobs; look at them first).**
 
 | Job | Model | Where | State |
 |---|---|---|---|
 | the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | 14 files, small first, `--san`, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 10 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log` (survivors are printed as found). Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
-| s-design | Claude Fable subagent, since 00:50 | a worktree under `.claude/worktrees/` from `0c80063`; brief `lanes/s-design/brief.md` | writes `docs/proofs/solvers.md`, `proto/solvers_checks.py`, `docs/api-s.md`; then review by codex `gpt-6-astra` (refute mode), brief not yet written |
+| s-review | codex gpt-6-astra xhigh (deep work), since 01:56 | `../adelefeld-wt/s-review`; brief `lanes/s-review/brief.md` | refute review of the design of milestone S; writes `docs/reviews/s-design/review.md` |
+
+**QUOTA at 01:56: Claude weekly 90% used, 0.4 points behind pace; Fable weekly 90%, 0.4 behind** (reset
+2026-09-29 18:00); codex 42% (limit of TJO 50%). The Claude windows are ON pace: no further Claude subagent
+is launched until the meter shows them behind again or the window resets. Codex and the script go on.
+
+**The design of milestone S is landed as DRAFT 1** (`79b0e3c` and before; lane s-design, Claude Fable, 62
+minutes, 535k tokens; `lanes/s-design/report.md`): `docs/proofs/solvers.md` (33 statements, one open and
+not used), `proto/solvers_checks.py` (25 checks, 30 s, 0 failures when run by the orchestrator),
+`docs/api-s.md` (interface, decisions S-D1 to S-D15 for TJO, edits proposed for SPEC, PLAN, conventions,
+8 work packages). No proof was checked by the orchestrator. NO implementation lane starts before the review
+has judged it and TJO has taken the decisions. The design found table 3 of `docs/sources.md` wrong on
+Thue's lemma (inequality reversed); read in the source by the orchestrator and corrected. Its seven other
+corrections of table 3 (report 5.1) are not yet applied: the review judges them first.
 
 **m1-repair-tools is landed** (`5baf3cb`; `lanes/m1-repair-tools/report.md`): keys of `equivalent.txt` without
 line numbers, `--san`, `--make`, `--keys`, `--keep`, `tools/mutate/check_equivalent.py`, the memory checker
