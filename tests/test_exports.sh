@@ -20,7 +20,12 @@
 #   - an exported symbol that no header declares: a name that a binding could reach but not call
 #     through the interface, and a function that no public operation uses. The list must be empty
 #     (conventions 12.1: "Every public operation is an exported function", which says nothing about
-#     the other way round, so a symbol that is exported and not declared is a fault).
+#     the other way round, so a symbol that is exported and not declared is a fault). A name that
+#     begins with an underscore is judged when it begins with "_adf": conventions 4.1 item 5 gives
+#     the underscore functions a place in the interface ("Underscore functions state their aliasing
+#     rules"), so "_adf_*" is a name space of this library. The other underscore names are reserved
+#     to the implementation (C11 7.1.3), belong to the linker or to another library, and are
+#     printed and not judged.
 # The second list, declared and not exported, does not make the script fail while the library is
 # incomplete: the count is printed, and a name is listed so that the gap is visible. It will
 # become a failure when the milestone closes.
@@ -97,9 +102,12 @@ fi
 
 nm -D --defined-only "$so" | awk 'NF >= 3 { print $3 }' | sort -u > "$scratch/exported_all.txt"
 # A name that begins with an underscore is reserved to the implementation (C11 7.1.3) and belongs
-# to the linker or to a library, not to the interface of adelefeld. They are printed and not
-# judged.
-grep -v '^_' "$scratch/exported_all.txt" > "$scratch/exported.txt"
+# to the linker or to a library, not to the interface of adelefeld: those are printed and not
+# judged.  A name that begins with "_adf" is a name of this library (conventions 4.1, item 5), and
+# is judged like every other name.
+grep -v '^_' "$scratch/exported_all.txt" > "$scratch/exported_plain.txt"
+{ cat "$scratch/exported_plain.txt"; grep '^_adf' "$scratch/exported_all.txt"; } \
+    | sort -u > "$scratch/exported.txt"
 n_reserved=$(wc -l < "$scratch/exported_all.txt" | tr -d ' ')
 n_reserved=$((n_reserved - $(wc -l < "$scratch/exported.txt" | tr -d ' ')))
 n_exported=$(wc -l < "$scratch/exported.txt" | tr -d ' ')
@@ -134,8 +142,9 @@ else
 fi
 
 if [ "$n_reserved" -ne 0 ]; then
-    echo "== exported names that begin with an underscore, not judged"
-    grep '^_' "$scratch/exported_all.txt"
+    echo "== exported names that begin with an underscore and are not names of this library,"
+    echo "   not judged (the names that begin with _adf are judged, and are in the lists above)"
+    grep '^_' "$scratch/exported_all.txt" | grep -v '^_adf'
 fi
 
 # ---- 6. the summary ----
