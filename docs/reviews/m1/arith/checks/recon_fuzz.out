@@ -1,0 +1,7 @@
+cases: 60000 by (call, expected status): {('F', 0): 9009, ('F', 4): 6766, ('F', 5): 14225, ('R', 0): 11194, ('R', 4): 986, ('R', 5): 17820}
+failures: 0
+cases: 20000 by (call, expected status): {('F', 0): 2791, ('F', 4): 2375, ('F', 5): 4834, ('R', 0): 2883, ('R', 4): 330, ('R', 5): 6787}
+failures: 0
+cases: 40000 by (call, expected status): {('F', 0): 6375, ('F', 4): 4347, ('F', 5): 9278, ('R', 0): 8576, ('R', 4): 623, ('R', 5): 10801}
+failures: 0
+runs: recon_fuzz 30000 1 6; 10000 2 60; 20000 3 3 (each run prints two lines per case: F and R)

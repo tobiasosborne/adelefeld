@@ -1,0 +1,13 @@
+cases: 30000 stats: {'exact_x': 10932, 'exact_y': 10848, 'ov': 10201, 'eq': 1514, 'cxy': 3428, 'neg_ctr': 8335}
+#alias_failures 0
+failures: 0
+cases: 10000 stats: {'exact_x': 3074, 'exact_y': 3112, 'ov': 2845, 'eq': 341, 'cxy': 612, 'neg_ctr': 2631}
+#alias_failures 0
+failures: 0
+cases: 10000 stats: {'exact_x': 3954, 'exact_y': 3950, 'ov': 3775, 'eq': 671, 'cxy': 1540, 'neg_ctr': 2870}
+#alias_failures 0
+failures: 0
+cases: 5000 stats: {'exact_x': 1409, 'exact_y': 1372, 'ov': 1358, 'eq': 149, 'cxy': 243, 'neg_ctr': 1162}
+#alias_failures 0
+failures: 0
+runs: fball_fuzz 30000 1 6; 10000 2 80; 10000 3 3; 5000 4 200 (in this order)

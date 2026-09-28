@@ -1,0 +1,118 @@
+STALE src/fball.c:556:swap_args
+      reason names: fmpq_gcd
+      line now:     adf_fball_t t;
+STALE src/fball.c:584:swap_args
+      reason names: fmpq_mul
+      line now:     fmpz_init(t);
+STALE src/fball.c:612:swap_args
+      reason names: fmpq_mul
+      line now:     fmpq_t a, b, N, M, c, r;
+OK    src/recon.c:90:cmp
+      reason names: fmpz_sgn
+      line now:     if (fmpz_sgn(exp) >= 0)
+OK    src/recon.c:90:zero_one
+      reason names: None
+      line now:     if (fmpz_sgn(exp) >= 0)
+OK    src/recon.c:122:zero_one
+      reason names: fmpq_cmp
+      line now:     if (fmpq_cmp(lo->q, hi->q) > 0)
+OK    src/recon.c:176:swap_args
+      reason names: adf_rat_mul
+      line now:     adf_rat_mul(c, c, N);
+OK    src/recon.c:177:swap_args
+      reason names: adf_rat_add
+      line now:     adf_rat_add(c, c, a);
+STALE src/fball.c:54:swap_args
+      reason names: fmpz_gcd
+      line now:     
+STALE src/fball.c:214:swap_args
+      reason names: fmpz_gcd
+      line now:     fmpz_init(L);
+STALE src/fball.c:552:swap_args
+      reason names: fmpq_mul
+      line now:     raw d (policies P24: (2; 2) in (4) has the raw d = 2 and the canonical d = 1). */
+STALE src/fball.c:555:swap_args
+      reason names: fmpq_gcd
+      line now:     {
+STALE src/fball.c:684:swap_args
+      reason names: fmpq_gcd
+      line now:     fmpq_clear(M);
+OK    src/rat.c:222:swap_args
+      reason names: fmpq_add
+      line now:     fmpq_add(z->q, x->q, y->q);
+OK    src/rat.c:238:swap_args
+      reason names: fmpq_mul
+      line now:     fmpq_mul(z->q, x->q, y->q);
+OK    src/adele.c:201:swap_args
+      reason names: arb_add
+      line now:     arb_add(z->inf, x->inf, y->inf, prec);
+OK    src/adele.c:202:swap_args
+      reason names: adf_fball_add
+      line now:     adf_fball_add(&z->fin, &x->fin, &y->fin);
+OK    src/adele.c:223:swap_args
+      reason names: arb_mul
+      line now:     arb_mul(z->inf, x->inf, y->inf, prec);
+OK    src/adele.c:224:swap_args
+      reason names: adf_fball_mul
+      line now:     adf_fball_mul(&z->fin, &x->fin, &y->fin);
+OK    src/adele.c:259:swap_args
+      reason names: arb_add
+      line now:     arb_add(z->inf, x->inf, t, prec);
+OK    src/adele.c:260:swap_args
+      reason names: adf_fball_add
+      line now:     adf_fball_add(&z->fin, &x->fin, fq);
+OK    src/adele.c:285:swap_args
+      reason names: arb_mul
+      line now:     arb_mul(z->inf, x->inf, t, prec);
+OK    src/adele.c:450:swap_args
+      reason names: acb_add
+      line now:     acb_add(z->inf, x->inf, y->inf, prec);
+OK    src/adele.c:451:swap_args
+      reason names: adf_fball_add
+      line now:     adf_fball_add(&z->fin, &x->fin, &y->fin);
+OK    src/adele.c:464:swap_args
+      reason names: acb_mul
+      line now:     acb_mul(z->inf, x->inf, y->inf, prec);
+OK    src/adele.c:465:swap_args
+      reason names: adf_fball_mul
+      line now:     adf_fball_mul(&z->fin, &x->fin, &y->fin);
+OK    src/adele.c:492:swap_args
+      reason names: acb_add
+      line now:     acb_add(z->inf, x->inf, t, prec);
+OK    src/adele.c:493:swap_args
+      reason names: adf_fball_add
+      line now:     adf_fball_add(&z->fin, &x->fin, fq);
+OK    src/adele.c:514:swap_args
+      reason names: acb_mul
+      line now:     acb_mul(z->inf, x->inf, t, prec);
+STALE src/fball.c:141:drop_call
+      reason names: fmpz_zero
+      line now:     {
+STALE src/fball.c:142:drop_call
+      reason names: fmpz_zero
+      line now:     fmpq_set_fmpz_frac(N, x->H, x->d);
+STALE src/fball.c:468:swap_args
+      reason names: fmpq_add
+      line now:     return ADF_OK;
+STALE src/fball.c:469:swap_args
+      reason names: fmpq_gcd
+      line now:     }
+STALE src/fball.c:497:swap_args
+      reason names: fmpq_gcd
+      line now:     fb_canon(A, H, d);
+STALE src/fball.c:551:swap_args
+      reason names: fmpq_mul
+      line now:     /* The denominator of the canonical triple. For a local value it is d/g, g = gcd(A0, K, d), not the
+STALE src/fball.c:553:swap_args
+      reason names: fmpq_mul
+      line now:     void
+STALE src/fball.c:554:swap_args
+      reason names: fmpq_mul
+      line now:     adf_fball_get_den(fmpz_t d, const adf_fball_t x)
+STALE src/fball.c:582:swap_args
+      reason names: fmpq_mul
+      line now:     
+STALE src/fball.c:610:swap_args
+      reason names: fmpq_mul
+      line now:     adf_fball_add(adf_fball_t z, const adf_fball_t x, const adf_fball_t y)
+entries: 39, stale (the named call is not on the named line): 18

@@ -1,0 +1,13 @@
+case 1: arb_is_finite=1 adf_adele_is_canonical=1; calling adf_adele_reconstruct
+GNU MP: Cannot reallocate memory (old_size=16 new_size=8589934600)
+timeout: the monitored command dumped core
+/bin/bash: line 1: 1058159 Aborted                 timeout 60 docs/reviews/m1/arith/checks/recon_big_alloc $i 2>&1
+exit=134
+case 2: arb_is_finite=1 adf_adele_is_canonical=1; calling adf_adele_reconstruct
+GNU MP: Cannot reallocate memory (old_size=16 new_size=8589934600)
+timeout: the monitored command dumped core
+/bin/bash: line 1: 1058167 Aborted                 timeout 60 docs/reviews/m1/arith/checks/recon_big_alloc $i 2>&1
+exit=134
+case 3: arb_is_finite=1 adf_adele_is_canonical=1; calling adf_adele_reconstruct
+status = NO_SOLUTION
+exit=0
