@@ -311,6 +311,11 @@ marked **gate** have an exit criterion instead of an estimate.
 
 ### Milestone S: solvers (optional for version 1; gate)
 
+**Order (TJO, 2026-09-28):** milestone S is worked directly after milestone 1 is closed, before milestones 1F
+and 2 to 5. It depends on milestone 1 only (reconstruction, the local backend). Work package S.3 (partial
+rational reconstruction, with a bound on the denominator) is what a solver of rational linear systems needs
+first.
+
 | WP | Content |
 |---|---|
 | S.1 | Systems modulo `N`: particular solution, kernel, certificate (Hermite form with transformation; FLINT's Smith form returns no transformations) |

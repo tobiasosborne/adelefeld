@@ -2,63 +2,115 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-28 (day): milestone 1 implemented and reviewed; repairs of the review in progress
+## Session 2026-09-28 (day), paused at 16:10 by TJO (network down): START HERE
 
-**State (15:40).** All 193 declared functions of milestone 1 are on master (`make check`: 34 test programs,
-with gcc, clang and `SAN=1`; `tests/test_driver.sh`, `tests/test_julia.sh`, `tests/test_exports.sh` pass).
-Everything is pushed. The milestone is NOT closed: the code review found defects.
+**One line.** Milestone 1 is implemented (193 of 193 functions) and reviewed; the review found defects;
+six lanes of repair and review are paused with their work saved on branches; nothing is running.
 
-**Code review, round 1** (`docs/reviews/m1/<name>/review.md`, rules `lanes/m1-review/COMMON.md`):
+**Master** (`origin/master`, everything pushed): `make check` 34 test programs, with gcc, clang, `SAN=1`;
+`sh tests/test_driver.sh`, `sh tests/test_julia.sh`, `sh tests/test_exports.sh` pass. Run `make clean`
+between a `SAN=1` build and a plain one (stale objects give link errors).
 
-| Reviewer | Model | Findings | Repair |
+**First commands of the next session.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    make clean && make -j2 check 2>&1 | tail -1          # expect: check passed: all 34 test programs
+    git worktree list; git branch -r                      # the six lane branches below
+    free -g; ~/Projects/quota-app/target/release/quota    # memory and quota before launching anything
+
+**The six paused lanes.** Each has a worktree `../adelefeld-wt/<lane>/` on branch `lane/<lane>` (pushed to
+origin), with ONE commit "WIP <lane>" on top of its base. The work is unfinished, unreviewed, unmerged. None
+has a `report.md`. The briefs (`lanes/<lane>/brief.md` in the worktree) end with a resume note that tells the
+lane to continue from its files.
+
+| Lane | Task | Model used | What the WIP commit holds | Resume with |
+|---|---|---|---|---|
+| m1-repair-recon | review arith R1, R2: wrong result and abort of `adf_adele_reconstruct` for extreme exponents (M1-D3) | pi space-bunny-alpha | `src/recon.c` repaired, red and green logs, a mutation run with 10 survivors of 89 to deal with; `make check` passed at 15:35 | `tools/orch/wt_lane.sh m1-repair-recon pi openrouter/stealth/space-bunny-alpha high` |
+| m1-repair-ctx | review contexts R1 (wrong `lost` with `y = x`), R2 (primorial, M1-D5), R6 | pi deepseek (OpenRouter) | 25 minutes of work, 8 files; state not checked | `tools/orch/wt_lane.sh m1-repair-ctx pi "openrouter/~deepseek/deepseek-flash-latest" high` |
+| m1-repair-adele | review arith R3, R4, R6 (M1-D4) | pi deepseek (OpenRouter) | `src/adele.c`, comments in `rat.c`, `fball.c`, `tests/test_adele_lowprec.c`; one vector record changed (accepted, see its brief); `make check` passed | same command with `m1-repair-adele` |
+| m1-repair-text | review text R2, R3, R4, R9, R10 (M1-D6, M1-D7) | pi deepseek (OpenRouter) | `src/text.c`, `proto/text_grammar.py`, fuzz corpus prefixed (575 files); `make check` passed | same command with `m1-repair-text` |
+| m1-repair-tools | review surface R1 to R6; keys of `equivalent.txt` without line numbers; `--san`; then the mutation sweep over all of `src/` | pi space-bunny-alpha | `mutate.py`, `selftest.py`, `equivalent.new.txt`; `make check` passed | `LANE_TIMEOUT=14400 tools/orch/wt_lane.sh m1-repair-tools pi openrouter/stealth/space-bunny-alpha high`; run it ALONE |
+| m1-review-dump | review of the dump form (adf-8ju) | codex gpt-6-astra xhigh | 20 minutes of reading and reproducers, no review yet | `MAXRETRY=3 tools/orch/wt_lane.sh m1-review-dump codex gpt-6-astra xhigh` (no `session.id` was saved, so the runner starts the review again; its reproducers so far are in the WIP commit) |
+
+The runners `tools/orch/*.sh` refuse to start while `lanes/STOP` exists in the worktree; none exists now.
+Large files `lanes/<lane>/events.jsonl` are ignored by git and are not on the branches.
+
+**How to land a lane** (the orchestrator does this, never the lane): read `lanes/<lane>/report.md`; rerun
+`make clean && make -j2 check SAN=1` and `make clean && make -j2 check` in the worktree; read the diff of
+anything the lane did not own; `git add -A && git commit` in the worktree (delete binaries first);
+`git merge --no-ff lane/<lane>` on master; run all checks on master; `bd close`; push. Expect conflicts in
+`tools/mutate/equivalent.txt` (take the lines out of the lane commit and add them after the merge) and in
+`src/fball.c` comments between m1-repair-adele and later lanes.
+
+**Rules of this session that bind the next** (memory: `orchestration-model-tiers`, `claude-worktree-base`):
+- At most two or three lanes at once, never two mutation runs at once: at 15:30 the harness killed five
+  lanes because the laptop was low on memory.
+- Cheapest model that can do it. pi models for repairs (free or cents). Author and reviewer of different
+  model families. Claude subagents only while the quota app shows the weekly window behind pace (16:00: weekly
+  81%, 3 points behind; Fable weekly 75%, 9 behind; both reset 2026-09-29 18:00). Codex: TJO authorised up
+  to 48% of the weekly window (meter 32% at 15:25).
+- Claude subagents with worktree isolation start from the PUSHED commit: push first, paste the whole task
+  into the prompt, save their report from the final message (they cannot write `report.md`).
+- Never `pkill -f <pattern>`, and never `kill` from a command line that contains the pattern: it kills the
+  calling shell. Use `ps` first, then `kill <pid>` in a second command.
+
+**Decisions of 2026-09-28, all accepted by TJO** (`docs/SPEC.md` section 15): M1-D1 language of the driver;
+M1-D2 what `is_canonical` promises about pointers; M1-D3 `ADF_LIMIT` in `adf_adele_reconstruct`
+(`ADF_RECON_EXP_MAX = 2^20`); M1-D4 `prec` below 2 is 2, exact integers for rational factors; M1-D5 a
+context has at most 65536 blocks; M1-D6 a printer may return NULL (`ADF_PRINT_EXP_MAX = 100000`); M1-D7 no
+hidden bound on decimal exponents; M1-D8 milestone S comes directly after milestone 1. The headers carry
+M1-D2 to M1-D6 already; the code follows when the repair lanes land.
+
+**The review of milestone 1** (`docs/reviews/m1/<name>/review.md`, rules `lanes/m1-review/COMMON.md`):
+
+| Reviewer | Model | Findings | State |
 |---|---|---|---|
-| local | codex gpt-6-astra | 1 BLOCKER, 2 MAJOR, 1 MINOR | R2 settled by M1-D2; R1, R4 merged (`lanes/m1-repair-cap`); R3 open (adf-xk4) |
-| arith | Claude opus | 1 BLOCKER, 2 MAJOR, 3 MINOR | lanes m1-repair-recon, m1-repair-adele (stopped, see below) |
-| contexts | Claude opus | 1 BLOCKER, 2 MAJOR, 3 MINOR | lane m1-repair-ctx (stopped); R3, R4 done by lane m1-dump |
-| text | codex gpt-6-astra | 1 BLOCKER, 6 MAJOR, 3 MINOR | R1 by M1-D2; R5 by lane m1-dump; R6 merged; lane m1-repair-text (stopped) |
-| surface | Claude opus | 0 BLOCKER, 3 MAJOR, 12 MINOR | lane m1-repair-tools (stopped); lane m1-repair-driver (brief written, not started) |
+| local | codex gpt-6-astra | 1 BLOCKER, 2 MAJOR, 1 MINOR | R2 settled by M1-D2; R1, R4 merged (lane m1-repair-cap); R3 open: adf-xk4 |
+| arith | Claude opus | 1 BLOCKER, 2 MAJOR, 3 MINOR | lanes m1-repair-recon, m1-repair-adele (paused) |
+| contexts | Claude opus | 1 BLOCKER, 2 MAJOR, 3 MINOR | lane m1-repair-ctx (paused); R3, R4 done by lane m1-dump |
+| text | codex gpt-6-astra | 1 BLOCKER, 6 MAJOR, 3 MINOR | R1 by M1-D2; R5 by m1-dump; R6 merged; R7 is adf-xk4; R8 by the header edit; lane m1-repair-text (paused) |
+| surface | Claude opus | 0 BLOCKER, 3 MAJOR, 12 MINOR | lane m1-repair-tools (paused); lane m1-repair-driver: brief committed, never started |
+| dump | codex gpt-6-astra | none yet | lane m1-review-dump (paused) |
 
 No reviewer found a wrong enclosure in the tight arithmetic, the local backend, the scaled arithmetic or the
-reader of the value form. Decisions M1-D1 to M1-D7 of the orchestrator are in `docs/SPEC.md` section 15; TJO has
-not yet said whether he accepts M1-D2 to M1-D7 (M1-D6 changes the interface: a printer may return NULL).
+reader of the value form (about 600000 cases with their own oracles).
 
-**Five repair lanes were stopped at 15:30 by the harness because the machine ran low on memory** (not a
-failure of the lanes; do not restart without TJO's word). Their work is in the worktrees under
-`../adelefeld-wt/<lane>/`, uncommitted; in each of them `make check` passes as the lane left it:
+**Order of work to close milestone 1.**
+1. Resume m1-repair-recon and m1-repair-ctx (the two blockers); land them.
+2. Resume m1-repair-adele and m1-repair-text; land them. Resume m1-review-dump next to them (codex is light).
+3. Start m1-repair-driver (`tools/orch/wt_lane.sh m1-repair-driver pi openrouter/stealth/space-bunny-alpha
+   high`; its brief is on master) after m1-repair-text has landed (it uses the printer's new rule).
+4. `ADF_CHECK_INVARIANTS` (adf-xk4): write the brief; it touches every file of `src/`, so it runs alone after
+   the repairs have landed; add a way to run the suite with the flag.
+5. Repairs of what the dump review finds.
+6. m1-repair-tools alone (best overnight): new key format, then the mutation sweep over all of `src/`.
+   `tools/mutate/equivalent.txt` on master is stale for `src/fball.c` and `src/scaled.c`; entries proposed by
+   lanes wait in `lanes/m1-local/`, `lanes/m1-scaled/`, `lanes/m1-dump/` (`equivalent-added.txt`), in
+   `lanes/m1-repair-cap/report.md` (three lines) and in `lanes/m1-modctx-b/report.md` (two of its ten are
+   out-of-bounds reads, not equivalent).
+7. Closure check (adf-igt): each reviewer re-judges its findings against the repaired code; codex for the
+   code written by Claude (text, local, cap, dump), Claude opus for the rest. Briefs to be written on the
+   pattern of `docs/reviews/m0-gate/closure.md`.
+8. Benchmarks on a quiet machine (`make bench`, nothing else running); then mark milestone 1 done in
+   `docs/PLAN.md` section 6 and update the numbers there.
+9. Then milestone S (M1-D8): briefs for S.3 (partial rational reconstruction) and S.1 (systems modulo `N`,
+   Hermite form with transformation).
 
-| Lane | Model | What is there |
-|---|---|---|
-| m1-repair-recon | pi space-bunny-alpha | `src/recon.c` changed; red and green logs; a mutation run of the lane was still running at 15:35 (orphan, `nohup`) |
-| m1-repair-adele | pi deepseek (OpenRouter) | `src/adele.c`, comments in `rat.c`, `fball.c`; `tests/test_adele_lowprec.c`; it changed `tests/ref/vectors/m1-adele/set_rat.jsonl`, which it does not own: look at that first |
-| m1-repair-ctx | pi mimo-v2.6-pro | nothing written |
-| m1-repair-text | pi deepseek (OpenRouter) | `src/text.c`, `proto/text_grammar.py`, corpus prefixed (288 files) |
-| m1-repair-tools | pi space-bunny-alpha | `mutate.py`, `selftest.py`, a converted `equivalent.new.txt` |
-
-To resume a lane: `tools/orch/wt_lane.sh <lane> pi <model> high` starts a new first attempt in the same
-worktree (the files are kept; the brief tells the lane to read what is there). Run at most two or three
-lanes at once, and never two mutation runs at once: the memory pressure came with five lanes, each with its
-own build and mutation run, next to the desktop.
-
-**Next.**
-1. TJO: accept or change M1-D2 to M1-D7; say which budget the dump review and the closure check may use
-   (codex is at 32% of the 38% authorised; Claude weekly 81%, 3 points behind pace).
-2. Resume the five repair lanes, two at a time; then m1-repair-driver; then `ADF_CHECK_INVARIANTS` (adf-xk4).
-3. Review of the dump form (adf-8ju), by a model of another family than Claude opus.
-4. Closure check (adf-igt): each reviewer re-judges its findings against the repaired code.
-5. Mutation sweep with keys without line numbers (part of m1-repair-tools); `equivalent.txt` is stale for
-   `src/fball.c` and `src/scaled.c`; entries proposed by lanes are in `lanes/*/equivalent-added.txt`.
-6. Benchmarks on a quiet machine; then close milestone 1 in `docs/PLAN.md`.
+**Open issues** are in beads (`bd ready`, `bd list --status=in_progress`). In progress at the pause:
+adf-c43 (repairs arith), adf-rki (repairs contexts), adf-8ju (dump review), adf-gf1 (review round 1).
 
 **Things to know.**
-- Claude subagents with worktree isolation start from the pushed commit: push before launching; paste the
-  task into the prompt; they cannot write `report.md` (save it from the final message).
-- `pkill -f` with a pattern that matches the calling shell kills it: use `ps` and `kill <pid>`.
 - `deepseek/deepseek-flash` at its own provider has no credit; use `openrouter/~deepseek/deepseek-flash-latest`.
-- Valgrind 3.22 is in `~/.local/opt/valgrind` (wrapper `~/.local/bin/valgrind`), installed without root.
+  `openrouter/xiaomi/mimo-v2.6-pro` was slow twice (no report after two hours).
+- Valgrind 3.22: `~/.local/bin/valgrind` (unpacked into `~/.local/opt/valgrind`, no root).
 - Julia's bundled libgmp lacks a symbol that the system FLINT needs; `tests/test_julia.sh` uses `LD_PRELOAD`.
-- Tate's thesis: `refs/src/tate-thesis/` (not in git), two scans, TeX refereed twice, README there.
-  `docs/sources.md` has the rule: the scan is the ground truth, the TeX is not.
-
+- TJO's `~/.local/bin/codex-vision` was patched (one argument `errors="replace"`).
+- Tate's thesis: `refs/src/tate-thesis/` (not in git): two scans, TeX of 43 pages refereed twice, a README with
+  the state. Rule in `docs/sources.md`: the scan is the ground truth, the TeX is an aid. One edit is owed:
+  p331, the product for |d| runs over p NOT in S_infty (read in the second scan, recorded in the file, the
+  formula not yet changed).
+- Old worktrees of finished lanes under `../adelefeld-wt/` and `.claude/worktrees/` can be removed with
+  `git worktree remove` when disk space matters; their branches are merged.
 
 ## Session 2026-09-27 (evening) to 2026-09-28 (morning): orchestration set up, first wave of milestone 0 launched
 
