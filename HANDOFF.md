@@ -24,12 +24,11 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 01:00 on 2026-09-29 (three jobs; look at them first).**
+**RUNNING at 01:25 on 2026-09-29 (two jobs; look at them first).**
 
 | Job | Model | Where | State |
 |---|---|---|---|
 | the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | 14 files, small first, `--san`, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 10 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log` (survivors are printed as found). Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
-| m1-closure-surface (adf-igt) | codex gpt-6-sol xhigh | `../adelefeld-wt/m1-closure-surface` | the last of the six closure checks |
 | s-design | Claude Fable subagent, since 00:50 | a worktree under `.claude/worktrees/` from `0c80063`; brief `lanes/s-design/brief.md` | writes `docs/proofs/solvers.md`, `proto/solvers_checks.py`, `docs/api-s.md`; then review by codex `gpt-6-astra` (refute mode), brief not yet written |
 
 **m1-repair-tools is landed** (`5baf3cb`; `lanes/m1-repair-tools/report.md`): keys of `equivalent.txt` without
@@ -52,12 +51,14 @@ Wang 1981, Monagan 2004, Collins and Encarnacion, von zur Gathen and Gerhard, St
 Fiedler and Hofmann, Howell 1986 (TJO may supply copies). The manifest now leaves out
 `refs/src/tate-thesis/log/` (orchestrator).
 
-**Closure check (adf-igt):** `dump`, `arith`, `contexts`, `local`, `text` are landed, NO BLOCKER OPEN in any;
-open are arith R4, R5 and contexts R5 (all MINOR, all lines of `tools/mutate/equivalent.txt`). `surface` is
-to be started when m1-repair-tools has landed (`MAXRETRY=3 tools/orch/wt_lane.sh m1-closure-surface codex
-gpt-6-sol xhigh`; the brief is on master). Weak tests named by the judges, for the work after the sweep:
-`test_modctx_limits` (range pin passes without its line), the test of text R3 (passes on the old printer),
-text R9 (coverage only), the builders of `test_fball_local.c` now use `set_local`.
+**The closure check is complete (adf-igt closed at 01:25).** All six reviews are judged, NO BLOCKER OPEN in
+any, no new finding against the code. `surface` (`1fdd494`): 13 CLOSED, 2 SETTLED BY DECISION; its judge
+showed that the reason given in M1-D1 for the cap of `prec` was false; the text is corrected in SPEC, the
+driver and its README (`a974d59`), the cap is unchanged. Left from the checks, all in one issue (the review
+of `equivalent.txt` and of the survivors): arith R4, R5 and contexts R5 (MINOR; the file is rewritten, its
+reasons are not yet judged by another family); weak tests named by the judges: `test_modctx_limits` (range
+pin passes without its line), the test of text R3 (passes on the old printer), text R9 (coverage only), the
+builders of `test_fball_local.c` now use `set_local`.
 
 **m1-invariants and m1-inv-tests are landed** (`0418288`, `1743426`; adf-xk4, adf-6vy closed). Master at
 00:28: `make check` 42 test programs with gcc, clang, `SAN=1`, `INV=1`, `INV=1 SAN=1`; the three scripts.
