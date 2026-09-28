@@ -1,0 +1,193 @@
+red-green log of lane m1-cap-chain (issue adf-o9e)
+================================================================
+
+Test program: tests/test_cap_chain.c (3 tests).
+Source under test: src/cap.c, the five functions of the absolute cap. md5 of the file as the lane
+received it: da44dbd56ac5ece6c7650bc9a5415349. After every planting below the file is restored
+from the copy made before the first planting, and `git diff src/cap.c` is empty again
+(md5 da44dbd56ac5ece6c7650bc9a5415349).
+
+Baseline, no planted error:
+
+  $ make -j2 build/test_cap_chain
+  $ ./build/test_cap_chain
+  ok   chain_invariant
+  ok   chain_contains_tight
+  ok   enumeration_small_radii
+  3 tests, 320975 checks, 0 failed checks, 0 failed tests
+
+Each planted error below is written into src/cap.c, the library and the test are rebuilt, the
+test is run (red), the error is removed, everything is rebuilt, the test is run again (green).
+The test each error was planted for is named in its heading.
+
+
+================================================================
+planted error A, for chain_invariant: the cap is skipped in adf_fball_mul_cap
+----------------------------------------------------------------
+diff --git a/src/cap.c b/src/cap.c
+index eaa0d5b..7dc9758 100644
+--- a/src/cap.c
++++ b/src/cap.c
+@@ -146,7 +146,10 @@ adf_fball_mul_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const
+ 
+     adf_fball_init(t);
+     adf_fball_mul(t, x, y);
+-    status = adf_fball_cap(z, t, C);
++    /* PLANTED ERROR (lane m1-cap-chain, red-green): the cap is skipped. */
++    (void) C;
++    adf_fball_set(z, t);
++    status = ADF_OK;
+     adf_fball_clear(t);
+     return status;
+ }
+
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+--- first 6 lines, the per-test counts and the summary of the failing run (red):
+FAIL tests/test_cap_chain.c:332: chain_invariant: check failed: rat_divides(caps[ci], R) | cap 0 seed 2 step 28 op mul: radius 7/15552 does not divide C 1
+FAIL tests/test_cap_chain.c:339: chain_invariant: check failed: adf_fball_identical(z2, t) | cap 0 seed 2 step 28 op mul: not idempotent
+FAIL tests/test_cap_chain.c:363: chain_invariant: check failed: !adf_fball_identical(t2, t) | cap 0 seed 2 step 28 op mul: the cap did not act on radius 7/15552
+FAIL tests/test_cap_chain.c:332: chain_invariant: check failed: rat_divides(caps[ci], R) | cap 0 seed 2 step 29 op mul: radius 7/15552 does not divide C 1
+FAIL tests/test_cap_chain.c:339: chain_invariant: check failed: adf_fball_identical(z2, t) | cap 0 seed 2 step 29 op mul: not idempotent
+FAIL tests/test_cap_chain.c:363: chain_invariant: check failed: !adf_fball_identical(t2, t) | cap 0 seed 2 step 29 op mul: the cap did not act on radius 7/15552
+   [...]
+FAIL chain_invariant (tests/test_cap_chain.c:275, 12 failed checks)
+FAIL chain_contains_tight (tests/test_cap_chain.c:412, 22 failed checks)
+3 tests, 320977 checks, 34 failed checks, 2 failed tests
+
+$ cp <pristine> src/cap.c   # the planted error is removed
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+ok   chain_invariant
+ok   chain_contains_tight
+ok   enumeration_small_radii
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+
+================================================================
+planted error B, for chain_contains_tight: the exact case is capped (early return of P14.2 removed)
+----------------------------------------------------------------
+diff --git a/src/cap.c b/src/cap.c
+index eaa0d5b..ca94e5d 100644
+--- a/src/cap.c
++++ b/src/cap.c
+@@ -64,11 +64,8 @@ adf_fball_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t C)
+     if (fmpq_sgn(C->q) <= 0)
+         return ADF_DOMAIN;
+ 
+-    if (fmpz_is_zero(x->H))
+-    {
+-        adf_fball_set(y, x);
+-        return ADF_OK;
+-    }
++    /* PLANTED ERROR (lane m1-cap-chain, red-green): the early return of Proposition 14.2 is
++       gone, so an exact value is capped as well and takes the radius gcd(0, C) = C. */
+ 
+     fmpq_init(Cq);
+     fmpq_init(Nq);
+
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+--- first 6 lines, the per-test counts and the summary of the failing run (red):
+ok   chain_invariant
+FAIL tests/test_cap_chain.c:470: chain_contains_tight: check failed: adf_fball_is_exact(tc) | cap 0 seed 0 step 35 op mul_rat: the exact value 0 was widened
+FAIL tests/test_cap_chain.c:473: chain_contains_tight: check failed: adf_fball_identical(tc, t) | cap 0 seed 0 step 35 op mul_rat: the exact value 0 was changed
+FAIL tests/test_cap_chain.c:470: chain_contains_tight: check failed: adf_fball_is_exact(tc) | cap 0 seed 1 step 40 op mul_rat: the exact value 0 was widened
+FAIL tests/test_cap_chain.c:473: chain_contains_tight: check failed: adf_fball_identical(tc, t) | cap 0 seed 1 step 40 op mul_rat: the exact value 0 was changed
+FAIL tests/test_cap_chain.c:470: chain_contains_tight: check failed: adf_fball_is_exact(tc) | cap 0 seed 2 step 11 op mul: the exact value 0 was widened
+   [...]
+FAIL chain_contains_tight (tests/test_cap_chain.c:412, 42 failed checks)
+3 tests, 320964 checks, 42 failed checks, 1 failed tests
+
+$ cp <pristine> src/cap.c   # the planted error is removed
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+ok   chain_invariant
+ok   chain_contains_tight
+ok   enumeration_small_radii
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+
+================================================================
+planted error C, for enumeration_small_radii: the radius is taken from the centre, not from H/d
+----------------------------------------------------------------
+diff --git a/src/cap.c b/src/cap.c
+index eaa0d5b..4312696 100644
+--- a/src/cap.c
++++ b/src/cap.c
+@@ -74,7 +74,9 @@ adf_fball_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t C)
+     fmpq_init(Nq);
+     fmpq_init(gq);
+     fmpq_set(Cq, C->q);
+-    fmpq_set_fmpz_frac(Nq, x->H, x->d);
++    /* PLANTED ERROR (lane m1-cap-chain, red-green): the radius is taken from the centre A/d
++       instead of the radius H/d, so the cap can make the ball smaller. */
++    fmpq_set_fmpz_frac(Nq, x->A, x->d);
+     fmpq_gcd(gq, Nq, Cq);
+ 
+     adf_rat_init(c);
+
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+--- first 6 lines, the per-test counts and the summary of the failing run (red):
+FAIL tests/test_cap_chain.c:349: chain_invariant: check failed: adf_fball_identical(t2, t) | cap 0 seed 0 step 0 op sub: the sum of two capped values was changed
+FAIL tests/test_cap_chain.c:349: chain_invariant: check failed: adf_fball_identical(t2, t) | cap 0 seed 0 step 2 op sub: the sum of two capped values was changed
+FAIL tests/test_cap_chain.c:349: chain_invariant: check failed: adf_fball_identical(t2, t) | cap 0 seed 0 step 14 op add: the sum of two capped values was changed
+FAIL tests/test_cap_chain.c:349: chain_invariant: check failed: adf_fball_identical(t2, t) | cap 0 seed 0 step 20 op add: the sum of two capped values was changed
+FAIL tests/test_cap_chain.c:349: chain_invariant: check failed: adf_fball_identical(t2, t) | cap 0 seed 0 step 26 op sub: the sum of two capped values was changed
+FAIL tests/test_cap_chain.c:349: chain_invariant: check failed: adf_fball_identical(t2, t) | cap 0 seed 0 step 28 op add: the sum of two capped values was changed
+   [...]
+FAIL chain_invariant (tests/test_cap_chain.c:275, 146 failed checks)
+FAIL chain_contains_tight (tests/test_cap_chain.c:412, 1127 failed checks)
+FAIL enumeration_small_radii (tests/test_cap_chain.c:570, 88577 failed checks)
+3 tests, 321087 checks, 89850 failed checks, 3 failed tests
+
+$ cp <pristine> src/cap.c   # the planted error is removed
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+ok   chain_invariant
+ok   chain_contains_tight
+ok   enumeration_small_radii
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+
+================================================================
+planted error D, extra, named in the brief: fmpq_gcd replaced by fmpq_mul
+----------------------------------------------------------------
+diff --git a/src/cap.c b/src/cap.c
+index eaa0d5b..28a3b58 100644
+--- a/src/cap.c
++++ b/src/cap.c
+@@ -75,7 +75,8 @@ adf_fball_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t C)
+     fmpq_init(gq);
+     fmpq_set(Cq, C->q);
+     fmpq_set_fmpz_frac(Nq, x->H, x->d);
+-    fmpq_gcd(gq, Nq, Cq);
++    /* PLANTED ERROR (lane m1-cap-chain, red-green): fmpq_gcd replaced by fmpq_mul. */
++    fmpq_mul(gq, Nq, Cq);
+ 
+     adf_rat_init(c);
+     adf_rat_init(g);
+
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+--- first 6 lines, the per-test counts and the summary of the failing run (red):
+FAIL tests/test_cap_chain.c:332: chain_invariant: check failed: rat_divides(caps[ci], R) | cap 0 seed 0 step 5 op mul_rat: radius 5/24 does not divide C 1
+FAIL tests/test_cap_chain.c:363: chain_invariant: check failed: !adf_fball_identical(t2, t) | cap 0 seed 0 step 5 op mul_rat: the cap did not act on radius 5/24
+FAIL tests/test_cap_chain.c:332: chain_invariant: check failed: rat_divides(caps[ci], R) | cap 0 seed 0 step 6 op mul_rat: radius 5/8 does not divide C 1
+FAIL tests/test_cap_chain.c:363: chain_invariant: check failed: !adf_fball_identical(t2, t) | cap 0 seed 0 step 6 op mul_rat: the cap did not act on radius 5/8
+FAIL tests/test_cap_chain.c:332: chain_invariant: check failed: rat_divides(caps[ci], R) | cap 0 seed 0 step 8 op mul: radius 3/8 does not divide C 1
+FAIL tests/test_cap_chain.c:363: chain_invariant: check failed: !adf_fball_identical(t2, t) | cap 0 seed 0 step 8 op mul: the cap did not act on radius 3/8
+   [...]
+FAIL chain_invariant (tests/test_cap_chain.c:275, 1005 failed checks)
+FAIL chain_contains_tight (tests/test_cap_chain.c:412, 996 failed checks)
+FAIL enumeration_small_radii (tests/test_cap_chain.c:570, 110452 failed checks)
+3 tests, 321106 checks, 112453 failed checks, 3 failed tests
+
+$ cp <pristine> src/cap.c   # the planted error is removed
+$ make -j2 build/test_cap_chain
+$ ./build/test_cap_chain
+ok   chain_invariant
+ok   chain_contains_tight
+ok   enumeration_small_radii
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+
+================================================================
+end: src/cap.c is the file as the lane received it; git diff src/cap.c is empty.
