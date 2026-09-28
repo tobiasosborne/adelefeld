@@ -2,58 +2,92 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-28 (evening), from 17:25: START HERE
+## Session 2026-09-28 (evening), 17:25 to 21:05, closed by TJO for a restart: START HERE
 
-**One line.** Both blockers of the review of milestone 1 are repaired and merged; the dump form is reviewed
-(no blocker, 4 MAJOR); two repair lanes run (m1-repair-text, m1-repair-dump).
+**One line.** Five repair lanes and the review of the dump form are merged; lane m1-repair-dump has its code
+done and checked but no finished report and is NOT merged; nothing is running.
 
-**Master** (`origin/master`, pushed): `make check` 38 test programs with gcc, clang, `SAN=1`;
-`sh tests/test_driver.sh`, `sh tests/test_julia.sh`, `sh tests/test_exports.sh` pass (checked 18:42).
+**Master** (`origin/master` `c7743e1` plus this commit, pushed): `make check` 39 test programs with gcc, clang,
+`SAN=1`; `sh tests/test_driver.sh` (27 cases, also `SAN=1`), `sh tests/test_julia.sh`,
+`sh tests/test_exports.sh` pass (20:50).
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    make clean && make -j2 check 2>&1 | tail -1          # expect: check passed: all 39 test programs
+    free -g; ~/Projects/quota-app/target/release/quota
 
 | Lane | State |
 |---|---|
-| m1-repair-recon (arith R1, R2) | merged `d378c31`; header `recon.h` edited by the orchestrator (`9ea33b6`) |
+| m1-repair-recon (arith R1, R2) | merged `d378c31`; `recon.h` edited by the orchestrator (`9ea33b6`) |
 | m1-repair-adele (arith R3, R4, R6) | merged `df32c71`; adf-c43 closed |
 | m1-repair-ctx (contexts R1, R2, R6) | merged `2efa43f`; adf-rki closed |
-| m1-review-dump (codex) | merged `9d216fd`; adf-8ju closed; `docs/reviews/m1/dump/review.md` |
-| m1-repair-text | resumed 18:30, pi deepseek (OpenRouter); running at the time of writing |
-| m1-repair-dump (adf-tp2) | started 18:43, pi space-bunny-alpha; brief on master; running at the time of writing |
-| m1-repair-tools | paused as before (WIP commit on its branch); run it ALONE, last |
-| m1-repair-driver | brief on master, not started; start after m1-repair-text has landed |
-| m1-invariants (adf-xk4) | brief on master (`lanes/m1-invariants/brief.md`); runs alone after the repairs |
-| closure check (adf-igt) | rules and table of judges on master (`lanes/m1-closure/COMMON.md`) |
+| m1-review-dump (codex) | merged `9d216fd`; adf-8ju closed; no blocker, 4 MAJOR |
+| m1-repair-text (text R2 to R4, R9, R10) | merged `705a998`; adf-nhk, adf-b8l, adf-5qq closed |
+| m1-repair-driver (surface R7 to R15) | merged; adf-jvi closed; clang failure of `test_dlopen` repaired by the orchestrator (`c7743e1`) |
+| m1-repair-dump (adf-tp2, in progress) | NOT merged. Branch `lane/m1-repair-dump` `b942ac8` (pushed), worktree `../adelefeld-wt/m1-repair-dump`. See below |
+| m1-repair-tools (adf-xf4, adf-4lj) | paused as before (WIP commit on its branch); run it ALONE, overnight |
+| m1-invariants (adf-xk4) | brief on master; runs alone, after m1-repair-dump has landed |
+| closure check (adf-igt) | rules and table of judges in `lanes/m1-closure/COMMON.md` |
 
-If a lane is found dead (no `pi` process, no `DONE` in `lanes/<lane>/lane.log` of its worktree), start it again
-with the same command; it continues from its files.
+**To land m1-repair-dump** (the next step; about 30 minutes of the orchestrator, no lane needed).
+The pi model ended two sessions without finishing `report.md`: sections 1 to 3 are written (the stage of the
+cap; the bound applies to the form `pieces`, not to `lift`; the bytes of a field token), section 4 is an empty
+heading, and the first paragraph promises checks the file does not contain. The checks were run and their
+logs are in `lanes/m1-repair-dump/` of the worktree:
+- `check-gcc.log`, `check-san.log`, `check-clang.log`: 39 test programs each. The orchestrator ran
+  `make clean && make -j2 check` itself at 20:18: 39 pass.
+- `fuzz.log`, `fuzz2.log`: 748916 and 822202 runs in 121 s, no crash. `valgrind-seed2.log`: 0 errors.
+- `mutate.log`: 60 mutants, 47 killed, 3 survived (`src/dump.c:938:30`, `:503:30`, `:883:28`), 6 not
+  compiled, 4 timed out at 120 s (`:1026:20`, `:656:12`, `:1008:13`, `:358:16`). None is judged yet. A
+  mutant that times out may be a loop without end on hostile text: look at each.
+- Run by the orchestrator against the repaired library: the reviewer's `status_findings.py` (R4: both
+  inputs `UNSUPPORTED`; R2: `LIMIT` before `DOMAIN`, as M1-D9 says; the script still expects the old
+  contract there) and `cost.py 65537` (`UNSUPPORTED` in 0.013 s; it was `OK` after 65 CPU seconds).
+Still to do: write the rest of the report from the logs (as the orchestrator, and say so in it); item 5 of
+the brief (where the 60 CPU seconds of a valid 1 MB dump go) has no recorded numbers; judge the 3 survivors
+and 4 timeouts; put `ADF_DUMP_QCLASS_EXP_MAX` into `include/adelefeld/dump.h` and conventions 8.4 and remove
+the `#ifndef` in `src/dump.c`; delete `lanes/m1-repair-dump/checks/red/libadelefeld.a` from the branch;
+`make check SAN=1` and plain in the worktree; merge; all checks on master (also `CC=clang`, and the three
+scripts); close adf-tp2.
 
-**Waits for TJO.** Decision M1-D9 (`docs/SPEC.md` section 15), PROPOSED by the orchestrator: the bound `2^20`
-on the binary exponents of a `qclass` piece in the dump form is kept, named `ADF_DUMP_QCLASS_EXP_MAX`,
-documented, and applied at stage 4 of conventions 8.5. Lane m1-repair-dump follows it. When it lands, the
-constant goes into `include/adelefeld/dump.h` and conventions 8.4 (the lane's report gives the text).
+**Waits for TJO.**
+- M1-D9 (`docs/SPEC.md` section 15), PROPOSED: the bound `2^20` on the binary exponents of a `qclass` piece
+  in the dump form is kept, named, documented, applied at stage 4. The lane applies it to the form `pieces`
+  only (a `lift` forms no range; reference vectors hold lifts above the bound): the row should say so.
+- The wording of M1-D1 and M1-D6 was changed by the orchestrator to agree with `text.h` (the exponent is the
+  one FLINT stores, so `2^99999` is the largest power of two printed; a zero is exempt; `prec` of the driver
+  is 1 to `ADF_PRINT_EXP_MAX`). The reviewer `surface` read the bound the other way.
+- The driver prints `equal`, `different`, `undecided` for `compare`; SPEC 4.2 says "certainly equal".
 
-**Left open by the landed lanes** (none blocks; all go to the mutation sweep adf-xf4 or to adf-xrt):
-- Survivors of mutation: 10 in `src/recon.c`, 13 in `src/adele.c` (reasons in the lane reports). Lane
-  m1-repair-ctx ran only 40 mutants per file (`src/scaled.c`, `src/modctx.c`): the full run did not finish
-  in 40 minutes.
+**Left open by the landed lanes** (none blocks; adf-xf4, adf-xrt, adf-4lj):
+- Survivors of mutation: 10 in `src/recon.c`, 13 in `src/adele.c` (reasons in the lane reports). Only 40
+  mutants per file were run for `src/scaled.c`, `src/modctx.c`. The run of `src/text.c` (911 mutants, limit
+  300) was killed by the tool's timeout of 40 minutes and printed no survivors: `mutate.py` should print a
+  survivor when it finds it. The tool cannot mutate `tools/adf/adf.c`.
 - `tools/mutate/equivalent.txt` lines 52 to 65 (`src/adele.c`): stale lines, and the reason "same value" is
-  false for `arb_mul`, `acb_mul`. Also stale for `src/scaled.c` (lines 447, 547 are now 508, 540).
+  false for `arb_mul`, `acb_mul`. Also stale for `src/scaled.c` (447, 547 are now 508, 540).
 - `tests/ref/vectors/m1-adele/set_rat.jsonl`: one record edited by hand (M1-D4); the generator
   `lanes/m1-adele/gen_adele_vectors.py` still writes the old answer. Do not regenerate before it is changed.
 - `tests/test_modctx_limits.c` runs its three slow cases (about 5 minutes) only with
-  `ADF_MODCTX_LIMITS_FULL=1` (`lanes/m1-repair-ctx/run_limits.sh`); `make check` uses `k = 2000`.
+  `ADF_MODCTX_LIMITS_FULL=1` (`lanes/m1-repair-ctx/run_limits.sh`).
+- `make check` runs neither the driver tests nor `test_exports.sh` (adf-4lj). A lane brief must ask for the
+  clang build: the driver lane's did not, and the failure reached master's checks.
 - Sources pending: the code of `arb_get_interval_fmpz_2exp`; the documentation of `n_root` and of the
   `sign` argument of `fmpz_multi_CRT_precomp`.
-- HEADER-FINDING of m1-repair-ctx: for `k` above the cap, `adf_modctx_new_blocks` returns `UNSUPPORTED`
-  before the per-element `DOMAIN` checks (it may not read the array); the header's "DOMAIN first" needs a
-  clause.
+- HEADER-FINDING of m1-repair-ctx: for `k` above the cap `adf_modctx_new_blocks` returns `UNSUPPORTED` before
+  the per-element `DOMAIN` checks; the header's "DOMAIN first" needs a clause.
 
-**The clock.** The WIP commits of the pause carry the time 20:20 and the system clock read 17:27 when this
-session began (synchronised). Times of the afternoon in logs and in the section below are about three hours
-ahead.
+**About the lanes on pi.** A runner counts a lane as done when `report.md` exists, whatever it holds: read
+the end of the report before believing `DONE`. `space-bunny-alpha` twice returned after 18 to 90 seconds
+on its first attempt and worked on the second. The time limit of a lane is 90 minutes (`LANE_TIMEOUT`).
 
-**Order of work from here.** Land m1-repair-text and m1-repair-dump; start m1-repair-driver; then
-m1-invariants alone; m1-repair-tools alone (overnight); closure check; benchmarks on a quiet machine;
-milestone S. The rules of the section below still bind.
+**The clock.** The WIP commits of the afternoon pause carry the time 20:20 and the system clock read 17:27
+when this session began (synchronised). Times of the afternoon in logs and in the section below are about
+three hours ahead.
+
+**Order of work from here.** Land m1-repair-dump; m1-invariants alone; m1-repair-tools alone (overnight);
+closure check; benchmarks on a quiet machine; milestone S. The rules of the section below still bind.
 
 ## Session 2026-09-28 (day), paused at 16:10 by TJO (network down)
 
