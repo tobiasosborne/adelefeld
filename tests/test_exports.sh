@@ -35,7 +35,7 @@
 #
 #     sh tests/test_exports.sh && make -j2 check
 #
-# The environment: CC (default cc). Exit status 0 when nothing failed, 1 otherwise.
+# The environment: CC (default cc), AUX_CC (default gcc; step 2 needs gcc). Exit status 0 when nothing failed, 1 otherwise.
 
 set -u
 
@@ -70,8 +70,11 @@ printf '#include <adelefeld.h>\n' > "$scratch/aux.c"
 # -aux-info writes one line for every declaration with a prototype, prefixed by the file and the
 # line it stands at, and it writes a declaration again at every place where the header is read a
 # second time, so the lines are made unique. The lines of the FLINT and system headers are left
-# out: only the headers of this library are the interface.
-$CC -Iinclude -std=c11 -aux-info "$scratch/declared.aux" -c "$scratch/aux.c" -o "$scratch/aux.o" \
+# out: only the headers of this library are the interface. -aux-info is an option of gcc alone
+# (clang: "unknown argument"), so this one step uses AUX_CC (default gcc) whatever CC is; the
+# shared object above is built with CC.
+AUX_CC=${AUX_CC:-gcc}
+$AUX_CC -Iinclude -std=c11 -aux-info "$scratch/declared.aux" -c "$scratch/aux.c" -o "$scratch/aux.o" \
     || { echo "test_exports: the headers did not compile" >&2; exit 1; }
 
 grep '^/\* include/adelefeld/' "$scratch/declared.aux" \
