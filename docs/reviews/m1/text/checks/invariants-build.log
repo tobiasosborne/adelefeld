@@ -1,0 +1,15 @@
+mkdir -p docs/reviews/m1/text/checks/invariants
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o docs/reviews/m1/text/checks/invariants/adele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o docs/reviews/m1/text/checks/invariants/cap.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o docs/reviews/m1/text/checks/invariants/common.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o docs/reviews/m1/text/checks/invariants/fball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o docs/reviews/m1/text/checks/invariants/fball_local.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o docs/reviews/m1/text/checks/invariants/inlines.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o docs/reviews/m1/text/checks/invariants/modctx.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o docs/reviews/m1/text/checks/invariants/place.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o docs/reviews/m1/text/checks/invariants/rat.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o docs/reviews/m1/text/checks/invariants/recon.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o docs/reviews/m1/text/checks/invariants/scaled.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o docs/reviews/m1/text/checks/invariants/status.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o docs/reviews/m1/text/checks/invariants/text.o
+ar rcs docs/reviews/m1/text/checks/invariants/libadelefeld.a docs/reviews/m1/text/checks/invariants/adele.o docs/reviews/m1/text/checks/invariants/cap.o docs/reviews/m1/text/checks/invariants/common.o docs/reviews/m1/text/checks/invariants/fball.o docs/reviews/m1/text/checks/invariants/fball_local.o docs/reviews/m1/text/checks/invariants/inlines.o docs/reviews/m1/text/checks/invariants/modctx.o docs/reviews/m1/text/checks/invariants/place.o docs/reviews/m1/text/checks/invariants/rat.o docs/reviews/m1/text/checks/invariants/recon.o docs/reviews/m1/text/checks/invariants/scaled.o docs/reviews/m1/text/checks/invariants/status.o docs/reviews/m1/text/checks/invariants/text.o

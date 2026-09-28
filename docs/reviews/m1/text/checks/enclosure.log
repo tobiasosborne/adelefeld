@@ -1,0 +1,1 @@
+{"random_texts": 100000, "halfway_cases": 6120, "exponent_boundary_cases": 36, "total": 106156, "exact_cases": 3693, "complex_cases": 10000, "failures": 0, "seconds": 14.805}

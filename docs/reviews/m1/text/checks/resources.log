@@ -1,0 +1,17 @@
+{"args": ["print", "100000"], "returncode": 0, "seconds": 0.015, "peak_kib": 9256, "stdout": "constructor=0 finite=1 canonical=1\nlength=47 text=(9.9900209301438450794e30102 +/- 4.1e30082 ; 0)\n", "stderr": ""}
+{"args": ["print", "1000000"], "returncode": 0, "seconds": 0.273, "peak_kib": 9260, "stdout": "constructor=0 finite=1 canonical=1\nlength=49 text=(9.9006562292958982507e301029 +/- 2.1e301008 ; 0)\n", "stderr": ""}
+{"args": ["print", "10000000"], "returncode": 0, "seconds": 4.821, "peak_kib": 18924, "stdout": "constructor=0 finite=1 canonical=1\nlength=51 text=(9.0498173063608003014e3010299 +/- 3.6e3010278 ; 0)\n", "stderr": ""}
+{"args": ["print", "100000000"], "returncode": -9, "seconds": 20.009, "peak_kib": 129668, "stdout": "constructor=0 finite=1 canonical=1\n", "stderr": ""}
+{"args": ["print", "1073741824"], "returncode": -6, "seconds": 0.581, "peak_kib": 136320, "stdout": "constructor=0 finite=1 canonical=1\n", "stderr": "GNU MP: Cannot reallocate memory (old_size=16 new_size=134217744)\n"}
+{"args": ["print", "-100000"], "returncode": 0, "seconds": 0.017, "peak_kib": 9260, "stdout": "constructor=0 finite=1 canonical=1\nlength=49 text=(1.0009989037986941668e-30103 +/- 1.7e-30123 ; 0)\n", "stderr": ""}
+{"args": ["print", "-1000000"], "returncode": 0, "seconds": 0.28, "peak_kib": 9264, "stdout": "constructor=0 finite=1 canonical=1\nlength=51 text=(1.0100340591980302247e-301030 +/- 3.2e-301051 ; 0)\n", "stderr": ""}
+{"args": ["print", "-10000000"], "returncode": 0, "seconds": 2.042, "peak_kib": 34108, "stdout": "constructor=0 finite=1 canonical=1\nlength=53 text=(1.1049946823756706659e-3010300 +/- 6.8e-3010321 ; 0)\n", "stderr": ""}
+{"args": ["print", "-100000000"], "returncode": -6, "seconds": 2.749, "peak_kib": 166312, "stdout": "constructor=0 finite=1 canonical=1\n", "stderr": "GNU MP: Cannot allocate memory (size=29024632)\n"}
+{"args": ["print", "-1073741824"], "returncode": -6, "seconds": 0.616, "peak_kib": 136320, "stdout": "constructor=0 finite=1 canonical=1\n", "stderr": "GNU MP: Cannot reallocate memory (old_size=16 new_size=448790568)\n"}
+{"args": ["print", "18446744073709551616"], "returncode": -6, "seconds": 0.19, "peak_kib": 9268, "stdout": "constructor=0 finite=1 canonical=1\nadf_*_get_str: an arb exponent beyond a word cannot be printed exactly\n", "stderr": ""}
+{"args": ["predicate", "0"], "returncode": -11, "seconds": 0.118, "peak_kib": 9272, "stdout": "predicate=0\n", "stderr": ""}
+{"args": ["predicate", "1"], "returncode": -11, "seconds": 0.121, "peak_kib": 9272, "stdout": "predicate=1\n", "stderr": ""}
+{"args": ["predicate", "2"], "returncode": -11, "seconds": 0.105, "peak_kib": 9272, "stdout": "predicate=2\n", "stderr": ""}
+{"args": ["predicate", "3"], "returncode": -11, "seconds": 0.115, "peak_kib": 9276, "stdout": "predicate=3\n", "stderr": ""}
+{"args": ["roundtrip"], "returncode": 0, "seconds": 0.056, "peak_kib": 9276, "stdout": "input_status=0 text=(1e100001 +/- 1.1e99998 ; 0) reread_status=10\n", "stderr": ""}
+{"args": ["nested"], "returncode": 0, "seconds": 0.004, "peak_kib": 9276, "stdout": "nested_status=9 output_null=1\n", "stderr": ""}

@@ -1,0 +1,2 @@
+{"boundary_checks": 88, "failures": 0, "exponent_input": "(0e1000000000000000000 ; 0)", "permitted_exp": 1000000000000000000, "c_status": 10, "reference": "!LIMIT", "required_status": 0}
+{"fuzzer_success_prec": [11, 12, 15, 34, 42], "fuzzer_success_digits": [3, 10, 11, 12, 14]}
