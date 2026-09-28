@@ -24,12 +24,25 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 01:00 on 2026-09-29 (two lanes; look at them first).**
+**RUNNING at 02:05 on 2026-09-29 (three jobs; look at them first).**
 
-| Lane | Model | Where | State |
+| Job | Model | Where | State |
 |---|---|---|---|
-| m1-repair-tools (adf-xf4, adf-4lj) | Claude `sonnet-medium` subagent, since 23:56 | `../adelefeld-wt/m1-repair-tools` (master of 23:00 merged in, `d729768`; work uncommitted) | items 2, 3, 6, 7 done by space-bunny-alpha (selftest passes, run by the orchestrator); items 1, 4 and the README are with Sonnet; the sweep (item 5) is run by the ORCHESTRATOR as a script after the lane lands, on the master of that moment |
-| s-design | Claude Fable subagent (TJO: Fable for significant cognition), since 00:58 | a worktree under `.claude/worktrees/` from `0c80063`; brief `lanes/s-design/brief.md` | writes `docs/proofs/solvers.md`, `proto/solvers_checks.py`, `docs/api-s.md`; then review by codex `gpt-6-astra` (refute mode), brief not yet written |
+| the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | 14 files, small first, `--san`, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 10 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log` (survivors are printed as found). Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
+| m1-closure-surface (adf-igt) | codex gpt-6-sol xhigh | `../adelefeld-wt/m1-closure-surface` | the last of the six closure checks |
+| s-design | Claude Fable subagent, since 00:58 | a worktree under `.claude/worktrees/` from `0c80063`; brief `lanes/s-design/brief.md` | writes `docs/proofs/solvers.md`, `proto/solvers_checks.py`, `docs/api-s.md`; then review by codex `gpt-6-astra` (refute mode), brief not yet written |
+
+**m1-repair-tools is landed** (`5baf3cb`; `lanes/m1-repair-tools/report.md`): keys of `equivalent.txt` without
+line numbers, `--san`, `--make`, `--keys`, `--keep`, `tools/mutate/check_equivalent.py`, the memory checker
+with `tools/memcheck/selftest.py`. `equivalent.txt` has 108 entries (72 carried with new reasons, 4 dropped,
+36 added); each matches exactly one mutant on master. NOT checked: the truth of the 108 reasons; one model
+wrote and judged them. To do after the sweep: a review of the reasons and of the survivors by codex
+(`gpt-6-sol`), then tests for the survivors. Mutants on lines `ADF_INV_...` survive a sweep of the release
+build by construction: judge them again with `--make "make -s -j2 check INV=1"`.
+Still open of adf-4lj: a target `check-all` of the Makefile (suite, three scripts, the two selftests,
+`check_equivalent.py`).
+Master at 02:00: `make check` 42 programs in the five builds; the three scripts; both selftests;
+`check_equivalent.py`; `pytest proto` 35.
 
 **Landed: the sources of milestone S** (`90defed`, lane s-sources, space-bunny-alpha in 16 attempts):
 Shoup (rational reconstruction, Theorems 4.8, 4.9), Storjohann's thesis (Hermite and Howell form), Conrad
