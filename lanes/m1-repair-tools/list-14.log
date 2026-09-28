@@ -1,0 +1,14 @@
+list ok src/adele.c
+list ok src/cap.c
+list ok src/common.c
+list ok src/dump.c
+list ok src/fball.c
+list ok src/fball_local.c
+list ok src/inlines.c
+list ok src/modctx.c
+list ok src/place.c
+list ok src/rat.c
+list ok src/recon.c
+list ok src/scaled.c
+list ok src/status.c
+list ok src/text.c

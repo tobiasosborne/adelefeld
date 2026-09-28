@@ -140,6 +140,13 @@ def main(argv):
            "# `python3 tools/mutate/check_equivalent.py` to see which entries match no mutant.",
            ""]
     kept = dropped = 0
+    # Every entry names a mutant by its reason (the reason quotes the call or the pair `A as
+    # B`) and, where the source has moved on, by how far its old line is from a candidate that
+    # the reason describes. The pairs are sorted by that distance and taken greedily, so that
+    # two entries of the same call in one file do not both take the same mutant: each entry
+    # gets its own nearest candidate that no earlier entry has taken, and an entry with no
+    # candidate left is dropped and reported.
+    pairs = []
     for line in lines:
         if not line.strip() or line.lstrip().startswith("#"):
             continue
@@ -148,28 +155,40 @@ def main(argv):
             print("SKIP (not an old entry): %s" % line)
             continue
         path, number, kind = key
-        scored = candidates(muts.get(path, []), kind, reason, number, texts.get(path, ""))
-        best = scored[0][0] if scored else 0
-        tied = [m for score, m in scored if score == best]
-        on_line = [m for m in tied if m.line == number]
-        if len(on_line) == 1:
-            m = on_line[0]
-        elif len(tied) == 1 and best >= 3:
-            m = tied[0]
-        elif not scored:
-            print("DROPPED (no mutant of kind %s of %s is described by the reason) %s:%d:%s"
+        for score, m in candidates(muts.get(path, []), kind, reason, number, texts.get(path, "")):
+            if score >= 2:
+                pairs.append((abs(m.line - number), -score, len(pairs), m, line, reason))
+    pairs.sort(key=lambda p: (p[0], p[1], p[2]))
+    taken = set()
+    chosen = {}
+    for distance, negscore, index, m, line, reason in pairs:
+        if index in chosen or id(m) in taken:
+            continue
+        chosen[index] = (m, distance)
+        taken.add(id(m))
+    order = []
+    for position, line in enumerate(lines):
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        order.append(line)
+    for index, line in enumerate(order):
+        key, reason = old_key(line)
+        if key is None:
+            print("SKIP (not an old entry): %s" % line)
+            continue
+        path, number, kind = key
+        if index in chosen:
+            m, distance = chosen[index]
+            if distance:
+                print("moved    %s:%d:%s is now at line %d (%d line(s) away)"
+                      % (path, number, kind, m.line, distance))
+            out.append(m.entry_text(reason))
+            kept += 1
+        else:
+            print("DROPPED (no mutant of kind %s of %s is left for the reason) %s:%d:%s"
                   % (kind, path, path, number, kind))
             print("        reason: %s" % reason)
             dropped += 1
-            continue
-        else:
-            print("DROPPED (ambiguous: best score %d, %d candidates: %s) %s:%d:%s"
-                  % (best, len(tied), "; ".join(str(x) for x in tied[:4]), path, number, kind))
-            print("        reason: %s" % reason)
-            dropped += 1
-            continue
-        out.append(m.entry_text(reason))
-        kept += 1
     with open(dst, "w") as fh:
         fh.write("\n".join(out) + "\n")
     print("kept %d, dropped %d, written to %s" % (kept, dropped, dst))

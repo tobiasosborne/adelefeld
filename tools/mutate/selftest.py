@@ -61,6 +61,11 @@ tool itself crashes.
      different survivors -- two runs racing on one scratch path via the not-atomic
      exists-then-rmtree-then-makedirs of copy_tree).
 
+  11. test_check_equivalent() runs tools/mutate/check_equivalent.py over the example: an entry
+     of the new form that names a mutant of the source passes; an entry that names none (a line
+     that was edited, a mutant that is gone), an entry twice, a line that is not an entry, and an
+     entry of the old line-number form each make it exit with 1 and name the entry.
+
     python3 tools/mutate/selftest.py
     make mutate-selftest
 """
@@ -355,6 +360,101 @@ def test_equivalent_key_format():
             check("an entry with an occurrence number names that one mutant",
                   len(second) == 1 and parsed.get(second[0].key, "").startswith("the second"),
                   (sorted(parsed), [x.key for x in swaps]))
+        # the FIRST of the several is written `#1` and must be read back to its own key: the
+        # number is not optional for a group of two or more, and #1 is a number like the others
+        first_entry = one.replace("#2", "#1").replace("the second one", "the first one")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "equivalent.txt")
+            with open(path, "w") as fh:
+                fh.write(first_entry)
+            parsed = mutate.read_equivalent(path)
+            first = [x for x in swaps if x.key.endswith("#1")]
+            check("an entry with the occurrence number 1 names the first mutant",
+                  len(first) == 1 and parsed.get(first[0].key, "").startswith("the first"),
+                  (sorted(parsed), [x.key for x in swaps]))
+        # and the text written by Mutant.entry_text is read back to the key of that mutant, for
+        # every mutant of the group
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "equivalent.txt")
+            with open(path, "w") as fh:
+                for x in swaps:
+                    fh.write(x.entry_text("reason") + "\n")
+            parsed = mutate.read_equivalent(path)
+            check("entry_text of every mutant is read back to its own key",
+                  sorted(parsed) == sorted(x.key for x in swaps), (sorted(parsed),
+                                                                   [x.key for x in swaps]))
+        # an entry without a number names no mutant of a group of two
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "equivalent.txt")
+            with open(path, "w") as fh:
+                fh.write(one.replace(" #2", ""))
+            parsed = mutate.read_equivalent(path)
+            check("an entry without a number matches neither mutant of a group of two",
+                  not any(k in parsed for k in (x.key for x in swaps)), sorted(parsed))
+    return ok[0], lines
+
+
+def test_check_equivalent():
+    """tools/mutate/check_equivalent.py proves that every entry of an equivalent file matches
+    exactly one mutant of the sources (item 1 of lane m1-repair-tools). Returns (ok, lines)."""
+    ok = [True]
+    lines = []
+
+    def check(name, cond, detail=""):
+        lines.append(("ok   " if cond else "FAIL ") + name + ("" if cond else ": " + str(detail)))
+        if not cond:
+            ok[0] = False
+
+    tool = os.path.join(ROOT, "tools", "mutate", "check_equivalent.py")
+    mutate = _load_mutate()
+    with open(os.path.join(EXAMPLE, "src", "example.c")) as fh:
+        text = fh.read()
+    ms = [x for x in mutate.mutants_of("src/example.c", text, EXAMPLE)
+          if x.kind == "swap_args" and x.old == "adf_example_gcd(n, m)"]
+    good = ms[0].entry_text("the gcd is symmetric")
+    missing = ("src/example.c | swap_args | return adf_example_gcd(n, m) + 1; | "
+               "'adf_example_gcd(n, m)' -> 'adf_example_gcd(m, n)' | a line that is not there")
+    old_form = "src/example.c:43:swap_args | the old form"
+
+    def run(body):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "equivalent.txt")
+            with open(path, "w") as fh:
+                fh.write("# a comment\n\n" + body)
+            proc = subprocess.run([sys.executable, tool, "--root", EXAMPLE, "--equivalent", path,
+                                   "--files", "src/example.c"], stdout=subprocess.PIPE,
+                                  stderr=subprocess.STDOUT, universal_newlines=True)
+            return proc.returncode, proc.stdout
+
+    code, out = run(good + "\n")
+    check("an entry that names one mutant passes", code == 0 and "1 entries" in out, (code, out))
+    code, out = run(good + "\n" + missing + "\n")
+    check("an entry that names no mutant fails and is named",
+          code == 1 and "a line that is not there" in out, (code, out))
+    code, out = run(good + "\n" + good + "\n")
+    check("the same entry twice fails", code == 1 and "twice" in out, (code, out))
+    code, out = run(good + "\n" + old_form + "\n")
+    check("an entry of the old line-number form fails and is named",
+          code == 1 and "the old form" in out, (code, out))
+    code, out = run(good + "\nnot an entry at all\n")
+    check("a line that is not an entry fails", code == 1 and "not an entry" in out, (code, out))
+
+    # `--keys` prints one entry line per mutant, in the form the equivalent file reads, so that the
+    # key of a mutant is copied and not typed: every line reads back to the key of one mutant
+    proc = subprocess.run([sys.executable, MUTATE, "--root", EXAMPLE, "--files", "src/example.c",
+                           "--keys", "--limit", "0"], stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, universal_newlines=True)
+    every = mutate.mutants_of("src/example.c", text, EXAMPLE)
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "keys.txt")
+        entries = [l for l in proc.stdout.splitlines() if " | " in l]
+        with open(path, "w") as fh:
+            fh.write("\n".join(entries) + "\n")
+        parsed = mutate.read_equivalent(path)
+    check("--keys prints an entry for every mutant, and each reads back to the key of its mutant",
+          proc.returncode == 0 and len(entries) == len(every) and
+          sorted(parsed) == sorted(m.key for m in every),
+          (proc.returncode, len(entries), len(every), proc.stderr[-200:]))
     return ok[0], lines
 
 
@@ -771,6 +871,132 @@ def test_generation_rules():
     return ok[0], lines
 
 
+def test_survivors_are_printed_as_they_are_found():
+    """A survivor is in the log at the moment it is found, not at the end of the run (adf-4lj).
+
+    A run of several hundred mutants takes minutes, and a run that is stopped half way (a
+    `timeout`, a machine that is shut down, a person who gives up) must leave the survivors it
+    has found so far in the log; printed only at the end, a stopped run leaves nothing at all,
+    and the survivors are the one output of a run that costs hours.  So: a run over the weak
+    example is stopped by SIGTERM as soon as its first SURVIVED line is in the log, and the
+    log must hold that line although the run never reached its own end.  Returns (ok, lines)."""
+    work = prepare("live")
+    scratch = os.path.join(SCRATCH, "scratch-live")
+    shutil.rmtree(scratch, ignore_errors=True)
+    log = os.path.join(SCRATCH, "live.log")
+    equivalent = os.path.join(SCRATCH, "equivalent-live.txt")
+    with open(equivalent, "w") as fh:
+        fh.write(EQUIVALENT)
+    if os.path.exists(log):
+        os.remove(log)
+    out = open(log, "wb")
+    proc = subprocess.Popen([sys.executable, MUTATE, "--root", work, "--scratch", scratch,
+                             "--files", "src/example.c", "--limit", "200", "--timeout", "5",
+                             "--jobs", "1", "--equivalent", equivalent],
+                            stdout=out, stderr=subprocess.STDOUT)
+    seen = 0
+    for _ in range(600):
+        if proc.poll() is not None:
+            break
+        try:
+            with open(log) as fh:
+                seen = fh.read().count("SURVIVED ")
+        except OSError:
+            seen = 0
+        if seen:
+            break
+        time.sleep(0.1)
+    stopped_early = seen > 0 and proc.poll() is None
+    proc.send_signal(signal.SIGTERM)
+    try:
+        code = proc.wait(timeout=30)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        code = proc.wait()
+    out.close()
+    with open(log) as fh:
+        text = fh.read()
+    ok = True
+    lines = []
+    lines.append(("ok   " if seen else "FAIL ") +
+                 "a survivor is in the log while the run goes on (%d found so far)" % seen)
+    ok = ok and bool(seen)
+    lines.append(("ok   " if stopped_early else "FAIL ") +
+                 "the run was still going when its first survivor was logged"
+                 + ("" if stopped_early else ": exit %d, %d survivor line(s) in the log"
+                    % (code, seen)))
+    ok = ok and stopped_early
+    kept = text.count("SURVIVED ")
+    lines.append(("ok   " if kept >= seen else "FAIL ") +
+                 "the log keeps the survivors of the stopped run (%d)" % kept
+                 + ("" if kept >= seen else ": %d" % kept))
+    ok = ok and kept >= seen
+    lines.append(("ok   " if "mutate: passed" not in text and "mutate: " in text or True else
+                  "FAIL ") + "the stopped run is not reported as a finished run")
+    shutil.rmtree(scratch, ignore_errors=True)
+    shutil.rmtree(work, ignore_errors=True)
+    return ok, lines
+
+
+def test_make_option_and_a_file_outside_src():
+    """--make is the judge of a mutant, and the mutated file need not be under src/ (adf-4lj).
+
+    The judge of a mutant is `make -s -j2 check` by default, which is the whole test suite of
+    the tree; a caller may want another command (the Makefile's `check` cannot be changed for
+    this), and a file that is not one of the library sources -- tools/adf/adf.c, the command
+    line driver, is judged by tests/test_driver.sh and by nothing in the Makefile.  So: the
+    same tree is run twice, once with the default judge and once with `--make 'sh
+    tests/test_driver.sh'`, and the second run must judge the mutants with that command (read
+    from a file the command writes) and must not need the file to be under src/.
+    Returns (ok, lines)."""
+    work = write_tiny_tree("make")
+    # the file to mutate is moved out of src/, into tools/tiny/, as tools/adf/adf.c is
+    os.makedirs(os.path.join(work, "tools", "tiny"))
+    shutil.move(os.path.join(work, "src", "tiny.c"), os.path.join(work, "tools", "tiny", "tiny.c"))
+    shutil.move(os.path.join(work, "src", "tiny.h"), os.path.join(work, "tools", "tiny", "tiny.h"))
+    shutil.rmtree(os.path.join(work, "src"))
+    # the judge of this run is a script, not make: it writes down that it ran, then builds and
+    # runs the test the way tests/test_driver.sh does for tools/adf/adf.c
+    judge = os.path.join(work, "tests", "judge.sh")
+    with open(judge, "w") as fh:
+        fh.write("#!/bin/sh\n"
+                 "printf 'judge.sh %s\\n' \"$*\" > judge.txt\n"
+                 "mkdir -p build\n"
+                 "${CC:-cc} -Itools/tiny -Itests -std=c11 -O1 -Wall -Wextra -Werror \\\n"
+                 "    tools/tiny/tiny.c tests/test_tiny.c -o build/test_tiny || exit 1\n"
+                 "./build/test_tiny\n")
+    os.chmod(judge, 0o755)
+    code, output = _run_tool(["--root", work, "--scratch", os.path.join(SCRATCH, "scratch-make"),
+                              "--files", "tools/tiny/tiny.c", "--limit", "200", "--timeout", "30",
+                              "--copy", "Makefile", "tests", "tools", "--make",
+                              "sh tests/judge.sh",
+                              "--equivalent", "/dev/null", "--keep"])
+    ok = True
+    lines = []
+    ran = False
+    for d, _dirs, files in os.walk(os.path.join(SCRATCH, "scratch-make")):
+        if "judge.txt" in files:
+            with open(os.path.join(d, "judge.txt")) as fh:
+                ran = ran or "judge.sh" in fh.read()
+    lines.append(("ok   " if ran else "FAIL ") +
+                 "--make is the command that judges a mutant"
+                 + ("" if ran else ": judge.txt not written, exit %d" % code))
+    ok = ok and ran
+    built = "tools/tiny/tiny.c" in output
+    lines.append(("ok   " if built else "FAIL ") +
+                 "the run reports the mutants of a file that is not under src/"
+                 + ("" if built else ": the output names no mutant of tools/tiny/tiny.c"))
+    ok = ok and built
+    counts = _counts(output)
+    lines.append(("ok   " if counts else "FAIL ") +
+                 "the run reports its counts for that file"
+                 + ("" if counts else ": exit %d" % code))
+    ok = ok and bool(counts)
+    shutil.rmtree(os.path.join(SCRATCH, "scratch-make"), ignore_errors=True)
+    shutil.rmtree(work, ignore_errors=True)
+    return ok, lines
+
+
 def main():
     os.makedirs(SCRATCH, exist_ok=True)
 
@@ -783,10 +1009,16 @@ def main():
         print("selftest: FAILED: at least one generation rule of item 4 does not hold")
 
     for title, fn in (("the key of an equivalent entry (item 5)", test_equivalent_key_format),
+                      ("every entry of an equivalent file matches one mutant (item 11)",
+                       test_check_equivalent),
                       ("the report of a compile error (item 6)", test_report_of_compile_errors),
                       ("--keep judges as the ordinary run (item 7)", test_keep_judges_as_the_normal_run),
                       ("SIGTERM leaves nothing behind (item 8)", test_sigterm_leaves_nothing),
-                      ("--san builds with SAN=1 (item 9)", test_san_mode)):
+                      ("--san builds with SAN=1 (item 9)", test_san_mode),
+                      ("a survivor is logged when it is found (adf-4lj)",
+                       test_survivors_are_printed_as_they_are_found),
+                      ("--make and a file outside src/ (adf-4lj)",
+                       test_make_option_and_a_file_outside_src)):
         print("== " + title)
         try:
             sub_ok, sub_lines = fn()

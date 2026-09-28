@@ -1,0 +1,7 @@
+FAIL a survivor is in the log while the run goes on (0 found so far)
+FAIL the run was still going when its first survivor was logged: exit 1, 0 survivor line(s) in the log
+ok   the log keeps the survivors of the stopped run (34)
+ok   the stopped run is not reported as a finished run
+FAIL --make is the command that judges a mutant: judge.txt not written, exit 2
+ok   the run reports the mutants of a file that is not under src/
+FAIL the run reports its counts for that file: exit 2

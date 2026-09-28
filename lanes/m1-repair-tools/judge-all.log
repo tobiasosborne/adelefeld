@@ -1,0 +1,217 @@
+survived   21.2 s  src/adele.c:218:5 swap_args: 'arb_add(z->inf, x->inf, y->inf, prec)' -> 'arb_add(z->inf, y->inf, x->inf, prec)'
+          key: src/adele.c | swap_args | arb_add(z->inf, x->inf, y->inf, prec); | arb_add(z->inf, x->inf, y->inf, prec) -> arb_add(z->inf, y->inf, x->inf, prec)
+survived   23.5 s  src/adele.c:279:5 swap_args: 'arb_add(z->inf, x->inf, t, prec)' -> 'arb_add(z->inf, t, x->inf, prec)'
+          key: src/adele.c | swap_args | arb_add(z->inf, x->inf, t, prec); | arb_add(z->inf, x->inf, t, prec) -> arb_add(z->inf, t, x->inf, prec)
+survived   23.3 s  src/adele.c:470:5 swap_args: 'acb_add(z->inf, x->inf, y->inf, prec)' -> 'acb_add(z->inf, y->inf, x->inf, prec)'
+          key: src/adele.c | swap_args | acb_add(z->inf, x->inf, y->inf, prec); | acb_add(z->inf, x->inf, y->inf, prec) -> acb_add(z->inf, y->inf, x->inf, prec)
+survived   24.2 s  src/adele.c:515:5 swap_args: 'acb_add(z->inf, x->inf, t, prec)' -> 'acb_add(z->inf, t, x->inf, prec)'
+          key: src/adele.c | swap_args | acb_add(z->inf, x->inf, t, prec); | acb_add(z->inf, x->inf, t, prec) -> acb_add(z->inf, t, x->inf, prec)
+survived   24.7 s  src/adele.c:242:5 swap_args: 'arb_mul(z->inf, x->inf, y->inf, prec)' -> 'arb_mul(z->inf, y->inf, x->inf, prec)'
+          key: src/adele.c | swap_args | arb_mul(z->inf, x->inf, y->inf, prec); | arb_mul(z->inf, x->inf, y->inf, prec) -> arb_mul(z->inf, y->inf, x->inf, prec)
+survived   24.2 s  src/adele.c:486:5 swap_args: 'acb_mul(z->inf, x->inf, y->inf, prec)' -> 'acb_mul(z->inf, y->inf, x->inf, prec)'
+          key: src/adele.c | swap_args | acb_mul(z->inf, x->inf, y->inf, prec); | acb_mul(z->inf, x->inf, y->inf, prec) -> acb_mul(z->inf, y->inf, x->inf, prec)
+survived   25.7 s  src/adele.c:219:5 swap_args: 'adf_fball_add(&z->fin, &x->fin, &y->fin)' -> 'adf_fball_add(&z->fin, &y->fin, &x->fin)'
+          key: src/adele.c | swap_args | adf_fball_add(&z->fin, &x->fin, &y->fin); | adf_fball_add(&z->fin, &x->fin, &y->fin) -> adf_fball_add(&z->fin, &y->fin, &x->fin) #1
+survived   29.2 s  src/adele.c:280:5 swap_args: 'adf_fball_add(&z->fin, &x->fin, fq)' -> 'adf_fball_add(&z->fin, fq, &x->fin)'
+          key: src/adele.c | swap_args | adf_fball_add(&z->fin, &x->fin, fq); | adf_fball_add(&z->fin, &x->fin, fq) -> adf_fball_add(&z->fin, fq, &x->fin) #1
+survived   33.5 s  src/adele.c:471:5 swap_args: 'adf_fball_add(&z->fin, &x->fin, &y->fin)' -> 'adf_fball_add(&z->fin, &y->fin, &x->fin)'
+          key: src/adele.c | swap_args | adf_fball_add(&z->fin, &x->fin, &y->fin); | adf_fball_add(&z->fin, &x->fin, &y->fin) -> adf_fball_add(&z->fin, &y->fin, &x->fin) #2
+survived   29.1 s  src/adele.c:516:5 swap_args: 'adf_fball_add(&z->fin, &x->fin, fq)' -> 'adf_fball_add(&z->fin, fq, &x->fin)'
+          key: src/adele.c | swap_args | adf_fball_add(&z->fin, &x->fin, fq); | adf_fball_add(&z->fin, &x->fin, fq) -> adf_fball_add(&z->fin, fq, &x->fin) #2
+survived   32.6 s  src/adele.c:243:5 swap_args: 'adf_fball_mul(&z->fin, &x->fin, &y->fin)' -> 'adf_fball_mul(&z->fin, &y->fin, &x->fin)'
+          key: src/adele.c | swap_args | adf_fball_mul(&z->fin, &x->fin, &y->fin); | adf_fball_mul(&z->fin, &x->fin, &y->fin) -> adf_fball_mul(&z->fin, &y->fin, &x->fin) #1
+survived   35.4 s  src/adele.c:487:5 swap_args: 'adf_fball_mul(&z->fin, &x->fin, &y->fin)' -> 'adf_fball_mul(&z->fin, &y->fin, &x->fin)'
+          key: src/adele.c | swap_args | adf_fball_mul(&z->fin, &x->fin, &y->fin); | adf_fball_mul(&z->fin, &x->fin, &y->fin) -> adf_fball_mul(&z->fin, &y->fin, &x->fin) #2
+survived   35.7 s  src/adele.c:53:17 cmp: '<' -> '<='
+          key: src/adele.c | cmp | return prec < 2 ? 2 : prec; | < -> <=
+survived   33.7 s  src/cap.c:97:5 swap_args: 'fmpq_gcd(gq, Nq, Cq)' -> 'fmpq_gcd(gq, Cq, Nq)'
+          key: src/cap.c | swap_args | fmpq_gcd(gq, Nq, Cq); | fmpq_gcd(gq, Nq, Cq) -> fmpq_gcd(gq, Cq, Nq)
+survived   26.5 s  src/cap.c:127:5 swap_args: 'adf_fball_add(t, x, y)' -> 'adf_fball_add(t, y, x)'
+          key: src/cap.c | swap_args | adf_fball_add(t, x, y); | adf_fball_add(t, x, y) -> adf_fball_add(t, y, x)
+survived   29.5 s  src/cap.c:157:5 swap_args: 'adf_fball_mul(t, x, y)' -> 'adf_fball_mul(t, y, x)'
+          key: src/cap.c | swap_args | adf_fball_mul(t, x, y); | adf_fball_mul(t, x, y) -> adf_fball_mul(t, y, x)
+survived   32.1 s  src/common.c:96:14 op: '+' -> '-'
+          key: src/common.c | op | while (k + 1 < r.n && r.d[k] == '0') | + -> -
+survived   33.2 s  src/dump.c:151:13 op: '-' -> '+'
+          key: src/dump.c | op | if (t.n - j <= 15) | - -> +
+survived   29.8 s  src/dump.c:436:5 swap_args: 'fmpz_gcd(g, a, b)' -> 'fmpz_gcd(g, b, a)'
+          key: src/dump.c | swap_args | fmpz_gcd(g, a, b); | fmpz_gcd(g, a, b) -> fmpz_gcd(g, b, a)
+survived   23.9 s  src/dump.c:478:13 swap_args: 'fmpz_gcd(g, a, e)' -> 'fmpz_gcd(g, e, a)'
+          key: src/dump.c | swap_args | fmpz_gcd(g, a, e); | fmpz_gcd(g, a, e) -> fmpz_gcd(g, e, a)
+survived   22.7 s  src/dump.c:495:23 zero_one: '0' -> '1'
+          key: src/dump.c | zero_one | ulong q = 0, r = 0; | 0 -> 1 #1
+survived   29.3 s  src/dump.c:495:30 zero_one: '0' -> '1'
+          key: src/dump.c | zero_one | ulong q = 0, r = 0; | 0 -> 1 #2
+survived   32.5 s  src/dump.c:744:9 swap_args: 'arf_add(hi, mid, rad, ARF_PREC_EXACT, ARF_RND_DOWN)' -> 'arf_add(hi, rad, mid, ARF_PREC_EXACT, ARF_RND_DOWN)'
+          key: src/dump.c | swap_args | arf_add(hi, mid, rad, ARF_PREC_EXACT, ARF_RND_DOWN); | arf_add(hi, mid, rad, ARF_PREC_EXACT, ARF_RND_DOWN) -> arf_add(hi, rad, mid, ARF_PREC_EXACT, ARF_RND_DOWN)
+survived   31.1 s  src/dump.c:903:17 swap_args: 'fmpz_mul(D, D, M)' -> 'fmpz_mul(D, M, D)'
+          key: src/dump.c | swap_args | fmpz_mul(D, D, M); | fmpz_mul(D, D, M) -> fmpz_mul(D, M, D)
+survived   31.2 s  src/dump.c:1061:13 cmp: '<' -> '<='
+          key: src/dump.c | cmp | if (len < 3 || s[0] != 'a' || s[1] != 'd' || s[2] != 'f') | < -> <=
+survived   31.3 s  src/dump.c:1128:21 op: '+' -> '-'
+          key: src/dump.c | op | if (s[i + 1] == ' ')       /* i + 1 < len: s[len - 1] is not a space */ | + -> -
+survived   33.3 s  src/dump.c:1226:19 zero_one: '0' -> '1'
+          key: src/dump.c | zero_one | ulong q = 0; | 0 -> 1
+survived   29.9 s  src/dump.c:1382:26 cmp: '>' -> '>='
+          key: src/dump.c | cmp | if (b->n + extra + 1 > b->cap) | > -> >=
+survived   24.0 s  src/dump.c:1384:33 cmp: '>' -> '>='
+          key: src/dump.c | cmp | while (b->n + extra + 1 > b->cap) | > -> >=
+survived   24.3 s  src/dump.c:1437:16 zero_one: '1' -> '0'
+          key: src/dump.c | zero_one | if (b->n + 1 > b->cap) | 1 -> 0
+survived   23.7 s  src/fball.c:68:9 swap_args: 'fmpz_gcd(g, A, d)' -> 'fmpz_gcd(g, d, A)'
+          key: src/fball.c | swap_args | fmpz_gcd(g, A, d); | fmpz_gcd(g, A, d) -> fmpz_gcd(g, d, A)
+survived   23.1 s  src/fball.c:211:5 swap_args: 'fmpz_lcm(L, x->d, y->d)' -> 'fmpz_lcm(L, y->d, x->d)'
+          key: src/fball.c | swap_args | fmpz_lcm(L, x->d, y->d); | fmpz_lcm(L, x->d, y->d) -> fmpz_lcm(L, y->d, x->d)
+survived   28.7 s  src/fball.c:322:13 swap_args: 'fmpz_gcd(g, x->A, x->d)' -> 'fmpz_gcd(g, x->d, x->A)'
+          key: src/fball.c | swap_args | fmpz_gcd(g, x->A, x->d); | fmpz_gcd(g, x->A, x->d) -> fmpz_gcd(g, x->d, x->A)
+survived   27.4 s  src/fball.c:627:5 swap_args: 'fmpq_add(c, a, b)' -> 'fmpq_add(c, b, a)'
+          key: src/fball.c | swap_args | fmpq_add(c, a, b); | fmpq_add(c, a, b) -> fmpq_add(c, b, a)
+survived   23.9 s  src/fball.c:628:5 swap_args: 'fmpq_gcd(r, N, M)' -> 'fmpq_gcd(r, M, N)'
+          key: src/fball.c | swap_args | fmpq_gcd(r, N, M); | fmpq_gcd(r, N, M) -> fmpq_gcd(r, M, N) #1
+survived   23.0 s  src/fball.c:669:5 swap_args: 'fmpq_gcd(r, N, M)' -> 'fmpq_gcd(r, M, N)'
+          key: src/fball.c | swap_args | fmpq_gcd(r, N, M); | fmpq_gcd(r, N, M) -> fmpq_gcd(r, M, N) #2
+survived   23.1 s  src/fball.c:732:5 swap_args: 'fmpq_mul(c, a, b)' -> 'fmpq_mul(c, b, a)'
+          key: src/fball.c | swap_args | fmpq_mul(c, a, b); | fmpq_mul(c, a, b) -> fmpq_mul(c, b, a)
+survived   23.4 s  src/fball.c:733:5 swap_args: 'fmpq_mul(t1, a, M)' -> 'fmpq_mul(t1, M, a)'
+          key: src/fball.c | swap_args | fmpq_mul(t1, a, M); | fmpq_mul(t1, a, M) -> fmpq_mul(t1, M, a)
+survived   22.7 s  src/fball.c:734:5 swap_args: 'fmpq_mul(t2, b, N)' -> 'fmpq_mul(t2, N, b)'
+          key: src/fball.c | swap_args | fmpq_mul(t2, b, N); | fmpq_mul(t2, b, N) -> fmpq_mul(t2, N, b)
+survived   22.9 s  src/fball.c:735:5 swap_args: 'fmpq_mul(t3, N, M)' -> 'fmpq_mul(t3, M, N)'
+          key: src/fball.c | swap_args | fmpq_mul(t3, N, M); | fmpq_mul(t3, N, M) -> fmpq_mul(t3, M, N)
+survived   23.0 s  src/fball.c:736:5 swap_args: 'fmpq_gcd(g, t1, t2)' -> 'fmpq_gcd(g, t2, t1)'
+          key: src/fball.c | swap_args | fmpq_gcd(g, t1, t2); | fmpq_gcd(g, t1, t2) -> fmpq_gcd(g, t2, t1)
+survived   23.7 s  src/fball.c:737:5 swap_args: 'fmpq_gcd(g, g, t3)' -> 'fmpq_gcd(g, t3, g)'
+          key: src/fball.c | swap_args | fmpq_gcd(g, g, t3); | fmpq_gcd(g, g, t3) -> fmpq_gcd(g, t3, g)
+survived   29.9 s  src/fball.c:775:30 swap_args: 'n_gcd(x->res[i], y->res[i])' -> 'n_gcd(y->res[i], x->res[i])'
+          key: src/fball.c | swap_args | h_is_one = n_gcd(n_gcd(x->res[i], y->res[i]), adf_modctx_block(ctx, i)) == 1; | n_gcd(x->res[i], y->res[i]) -> n_gcd(y->res[i], x->res[i])
+survived   27.0 s  src/fball.c:781:13 swap_args: 'fmpz_mul(de, x->d, y->d)' -> 'fmpz_mul(de, y->d, x->d)'
+          key: src/fball.c | swap_args | fmpz_mul(de, x->d, y->d); | fmpz_mul(de, x->d, y->d) -> fmpz_mul(de, y->d, x->d)
+survived   23.0 s  src/fball.c:849:5 swap_args: 'fmpq_mul(c, a, q->q)' -> 'fmpq_mul(c, q->q, a)'
+          key: src/fball.c | swap_args | fmpq_mul(c, a, q->q); | fmpq_mul(c, a, q->q) -> fmpq_mul(c, q->q, a)
+survived   23.2 s  src/fball.c:851:5 swap_args: 'fmpq_mul(r, r, N)' -> 'fmpq_mul(r, N, r)'
+          key: src/fball.c | swap_args | fmpq_mul(r, r, N); | fmpq_mul(r, r, N) -> fmpq_mul(r, N, r)
+survived   22.9 s  src/fball.c:949:5 swap_args: 'fmpq_gcd(g, N, M)' -> 'fmpq_gcd(g, M, N)'
+          key: src/fball.c | swap_args | fmpq_gcd(g, N, M); | fmpq_gcd(g, N, M) -> fmpq_gcd(g, M, N)
+survived   22.8 s  src/fball.c:237:5 drop_call: 'fmpz_zero(x->A);' -> '' (the statement is removed)
+          key: src/fball.c | drop_call | fmpz_zero(x->A); | fmpz_zero(x->A); ->  #1
+survived   23.1 s  src/fball.c:238:5 drop_call: 'fmpz_zero(x->H);' -> '' (the statement is removed)
+          key: src/fball.c | drop_call | fmpz_zero(x->H); | fmpz_zero(x->H); ->  #1
+survived   23.3 s  src/fball.c:180:22 cmp: '==' -> '!='
+          key: src/fball.c | cmp | if (!(z->backend == ADF_LOCAL && z->mctx == ctx)) | == -> != #1
+survived   24.8 s  src/fball.c:1010:13 drop_call: 'fmpq_sub(diff, a, b);' -> '' (the statement is removed)
+          key: src/fball.c | drop_call | fmpq_sub(diff, a, b); | fmpq_sub(diff, a, b); ->  #4
+survived   23.2 s  src/fball_local.c:107:5 swap_args: 'fmpz_mul(u, K, d)' -> 'fmpz_mul(u, d, K)'
+          key: src/fball_local.c | swap_args | fmpz_mul(u, K, d);                    /* K/R = K d/H */ | fmpz_mul(u, K, d) -> fmpz_mul(u, d, K)
+survived   24.0 s  src/fball_local.c:108:5 swap_args: 'fmpz_mul(v, K, A)' -> 'fmpz_mul(v, A, K)'
+          key: src/fball_local.c | swap_args | fmpz_mul(v, K, A);                    /* c K/R = A K/H */ | fmpz_mul(v, K, A) -> fmpz_mul(v, A, K)
+survived   23.5 s  src/fball_local.c:165:5 swap_args: 'fmpz_mul(e, K, d)' -> 'fmpz_mul(e, d, K)'
+          key: src/fball_local.c | swap_args | fmpz_mul(e, K, d); | fmpz_mul(e, K, d) -> fmpz_mul(e, d, K)
+survived   22.9 s  src/fball_local.c:167:5 swap_args: 'fmpz_gcd(e, A, d)' -> 'fmpz_gcd(e, d, A)'
+          key: src/fball_local.c | swap_args | fmpz_gcd(e, A, d); | fmpz_gcd(e, A, d) -> fmpz_gcd(e, d, A)
+survived   23.0 s  src/fball_local.c:170:5 swap_args: 'fmpz_mul(A0, A, d0)' -> 'fmpz_mul(A0, d0, A)'
+          key: src/fball_local.c | swap_args | fmpz_mul(A0, A, d0); | fmpz_mul(A0, A, d0) -> fmpz_mul(A0, d0, A)
+survived   22.9 s  src/modctx.c:209:17 swap_args: 'n_gcd(q[i], q[j])' -> 'n_gcd(q[j], q[i])'
+          key: src/modctx.c | swap_args | if (n_gcd(q[i], q[j]) != 1) | n_gcd(q[i], q[j]) -> n_gcd(q[j], q[i])
+survived   23.1 s  src/modctx.c:339:13 zero_one: '0' -> '1'
+          key: src/modctx.c | zero_one | if (k < 0) | 0 -> 1 #3
+survived   22.8 s  src/modctx.c:543:50 zero_one: '0' -> '1'
+          key: src/modctx.c | zero_one | fmpz_multi_CRT_precomp(out, ctx->crt_P, ins, 0); | 0 -> 1
+survived   23.0 s  src/rat.c:222:5 swap_args: 'fmpq_add(z->q, x->q, y->q)' -> 'fmpq_add(z->q, y->q, x->q)'
+          key: src/rat.c | swap_args | fmpq_add(z->q, x->q, y->q); | fmpq_add(z->q, x->q, y->q) -> fmpq_add(z->q, y->q, x->q)
+survived   25.6 s  src/rat.c:238:5 swap_args: 'fmpq_mul(z->q, x->q, y->q)' -> 'fmpq_mul(z->q, y->q, x->q)'
+          key: src/rat.c | swap_args | fmpq_mul(z->q, x->q, y->q); | fmpq_mul(z->q, x->q, y->q) -> fmpq_mul(z->q, y->q, x->q)
+survived   23.2 s  src/recon.c:124:40 zero_one: '0' -> '1'
+          key: src/recon.c | zero_one | sh = ok ? (ulong) fmpz_get_si(m) : 0; | 0 -> 1
+survived   22.9 s  src/recon.c:130:27 cmp: '>=' -> '>'
+          key: src/recon.c | cmp | if (fmpz_sgn(exp) >= 0) | >= -> >
+survived   22.8 s  src/recon.c:130:30 zero_one: '0' -> '1'
+          key: src/recon.c | zero_one | if (fmpz_sgn(exp) >= 0) | 0 -> 1
+survived   23.2 s  src/recon.c:134:13 drop_call: 'fmpz_one(fmpq_denref(q));' -> '' (the statement is removed)
+          key: src/recon.c | drop_call | fmpz_one(fmpq_denref(q)); | fmpz_one(fmpq_denref(q)); -> 
+survived   22.9 s  src/recon.c:177:34 zero_one: '0' -> '1'
+          key: src/recon.c | zero_one | if (fmpq_cmp(lo->q, hi->q) > 0) | 0 -> 1
+survived   22.8 s  src/recon.c:230:13 drop_call: 'fmpz_one(fmpq_denref(c->q));' -> '' (the statement is removed)
+          key: src/recon.c | drop_call | fmpz_one(fmpq_denref(c->q)); | fmpz_one(fmpq_denref(c->q)); -> 
+survived   23.0 s  src/recon.c:231:13 swap_args: 'adf_rat_mul(c, c, N)' -> 'adf_rat_mul(c, N, c)'
+          key: src/recon.c | swap_args | adf_rat_mul(c, c, N); | adf_rat_mul(c, c, N) -> adf_rat_mul(c, N, c)
+survived   22.8 s  src/recon.c:232:13 swap_args: 'adf_rat_add(c, c, a)' -> 'adf_rat_add(c, a, c)'
+          key: src/recon.c | swap_args | adf_rat_add(c, c, a); | adf_rat_add(c, c, a) -> adf_rat_add(c, a, c)
+survived   22.9 s  src/scaled.c:201:9 swap_args: 'fmpz_mul(t, d, K)' -> 'fmpz_mul(t, K, d)'
+          key: src/scaled.c | swap_args | fmpz_mul(t, d, K); | fmpz_mul(t, d, K) -> fmpz_mul(t, K, d)
+survived   23.1 s  src/scaled.c:212:13 swap_args: 'fmpz_mul(t, A, K)' -> 'fmpz_mul(t, K, A)'
+          key: src/scaled.c | swap_args | fmpz_mul(t, A, K); | fmpz_mul(t, A, K) -> fmpz_mul(t, K, A)
+survived   24.1 s  src/scaled.c:272:9 swap_args: 'fmpz_mul(t, x->u, Kp)' -> 'fmpz_mul(t, Kp, x->u)'
+          key: src/scaled.c | swap_args | fmpz_mul(t, x->u, Kp); | fmpz_mul(t, x->u, Kp) -> fmpz_mul(t, Kp, x->u)
+survived   23.5 s  src/scaled.c:356:9 swap_args: 'fmpz_mul(r, ta, x->u)' -> 'fmpz_mul(r, x->u, ta)'
+          key: src/scaled.c | swap_args | fmpz_mul(r, ta, x->u); | fmpz_mul(r, ta, x->u) -> fmpz_mul(r, x->u, ta) #1
+survived   23.0 s  src/scaled.c:357:9 swap_args: 'fmpz_mul(ta, tb, y->u)' -> 'fmpz_mul(ta, y->u, tb)'
+          key: src/scaled.c | swap_args | fmpz_mul(ta, tb, y->u); | fmpz_mul(ta, tb, y->u) -> fmpz_mul(ta, y->u, tb)
+survived   22.7 s  src/scaled.c:379:13 swap_args: 'fmpz_mul(r, ta, w->u)' -> 'fmpz_mul(r, w->u, ta)'
+          key: src/scaled.c | swap_args | fmpz_mul(r, ta, w->u); | fmpz_mul(r, ta, w->u) -> fmpz_mul(r, w->u, ta)
+survived   23.1 s  src/scaled.c:444:9 swap_args: 'fmpz_mul(r, x->u, y->u)' -> 'fmpz_mul(r, y->u, x->u)'
+          key: src/scaled.c | swap_args | fmpz_mul(r, x->u, y->u); | fmpz_mul(r, x->u, y->u) -> fmpz_mul(r, y->u, x->u) #1
+survived   22.7 s  src/scaled.c:513:9 swap_args: 'fmpz_mul(r, x->u, y->u)' -> 'fmpz_mul(r, y->u, x->u)'
+          key: src/scaled.c | swap_args | fmpz_mul(r, x->u, y->u); | fmpz_mul(r, x->u, y->u) -> fmpz_mul(r, y->u, x->u) #2
+survived   22.8 s  src/scaled.c:668:9 swap_args: 'fmpz_mul(r, ta, x->u)' -> 'fmpz_mul(r, x->u, ta)'
+          key: src/scaled.c | swap_args | fmpz_mul(r, ta, x->u); | fmpz_mul(r, ta, x->u) -> fmpz_mul(r, x->u, ta) #2
+survived   22.9 s  src/scaled.c:358:9 swap_args: 'fmpz_add(r, r, ta)' -> 'fmpz_add(r, ta, r)'
+          key: src/scaled.c | swap_args | fmpz_add(r, r, ta); | fmpz_add(r, r, ta) -> fmpz_add(r, ta, r)
+survived   22.8 s  src/scaled.c:380:13 swap_args: 'fmpz_add(r, r, tb)' -> 'fmpz_add(r, tb, r)'
+          key: src/scaled.c | swap_args | fmpz_add(r, r, tb);                   /* q/g + (s/g) u */ | fmpz_add(r, r, tb) -> fmpz_add(r, tb, r)
+survived   22.7 s  src/scaled.c:669:9 swap_args: 'fmpz_add(r, r, tb)' -> 'fmpz_add(r, tb, r)'
+          key: src/scaled.c | swap_args | fmpz_add(r, r, tb);                      /* q/g + (s/g) u */ | fmpz_add(r, r, tb) -> fmpz_add(r, tb, r)
+survived   22.8 s  src/scaled.c:267:5 swap_args: 'fmpq_mul(s2, x->s, g)' -> 'fmpq_mul(s2, g, x->s)'
+          key: src/scaled.c | swap_args | fmpq_mul(s2, x->s, g);                    /* s' = s gcd(u, K/K') (Proposition 11) */ | fmpq_mul(s2, x->s, g) -> fmpq_mul(s2, g, x->s)
+survived   22.9 s  src/scaled.c:351:9 swap_args: 'fmpq_add(t.s, x->s, y->s)' -> 'fmpq_add(t.s, y->s, x->s)'
+          key: src/scaled.c | swap_args | fmpq_add(t.s, x->s, y->s); | fmpq_add(t.s, x->s, y->s) -> fmpq_add(t.s, y->s, x->s)
+survived   22.7 s  src/scaled.c:440:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+          key: src/scaled.c | swap_args | fmpq_mul(t.s, x->s, y->s); | fmpq_mul(t.s, x->s, y->s) -> fmpq_mul(t.s, y->s, x->s) #1
+survived   23.0 s  src/scaled.c:447:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+          key: src/scaled.c | swap_args | fmpq_mul(t.s, x->s, y->s); | fmpq_mul(t.s, x->s, y->s) -> fmpq_mul(t.s, y->s, x->s) #2
+survived   23.0 s  src/scaled.c:466:13 swap_args: 'fmpq_mul(t.s, aq, w->s)' -> 'fmpq_mul(t.s, w->s, aq)'
+          key: src/scaled.c | swap_args | fmpq_mul(t.s, aq, w->s); | fmpq_mul(t.s, aq, w->s) -> fmpq_mul(t.s, w->s, aq) #1
+survived   22.9 s  src/scaled.c:508:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+          key: src/scaled.c | swap_args | fmpq_mul(t.s, x->s, y->s); | fmpq_mul(t.s, x->s, y->s) -> fmpq_mul(t.s, y->s, x->s) #3
+survived   22.8 s  src/scaled.c:517:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+          key: src/scaled.c | swap_args | fmpq_mul(t.s, x->s, y->s); | fmpq_mul(t.s, x->s, y->s) -> fmpq_mul(t.s, y->s, x->s) #4
+survived   22.8 s  src/scaled.c:537:13 swap_args: 'fmpq_mul(t.s, aq, w->s)' -> 'fmpq_mul(t.s, w->s, aq)'
+          key: src/scaled.c | swap_args | fmpq_mul(t.s, aq, w->s); | fmpq_mul(t.s, aq, w->s) -> fmpq_mul(t.s, w->s, aq) #2
+survived   22.9 s  src/scaled.c:602:9 swap_args: 'fmpq_mul(y->s, q->q, x->s)' -> 'fmpq_mul(y->s, x->s, q->q)'
+          key: src/scaled.c | swap_args | fmpq_mul(y->s, q->q, x->s); | fmpq_mul(y->s, q->q, x->s) -> fmpq_mul(y->s, x->s, q->q)
+survived   22.9 s  src/scaled.c:616:9 swap_args: 'fmpq_mul(y->s, aq, x->s)' -> 'fmpq_mul(y->s, x->s, aq)'
+          key: src/scaled.c | swap_args | fmpq_mul(y->s, aq, x->s);   /* aq first: y may alias x */ | fmpq_mul(y->s, aq, x->s) -> fmpq_mul(y->s, x->s, aq)
+survived   22.8 s  src/scaled.c:646:9 swap_args: 'fmpq_add(t.s, x->s, q->q)' -> 'fmpq_add(t.s, q->q, x->s)'
+          key: src/scaled.c | swap_args | fmpq_add(t.s, x->s, q->q); | fmpq_add(t.s, x->s, q->q) -> fmpq_add(t.s, q->q, x->s)
+survived   22.9 s  src/scaled.c:411:14 swap_args: 'adf_scaled_add(z, x, &t)' -> 'adf_scaled_add(z, &t, x)'
+          key: src/scaled.c | swap_args | status = adf_scaled_add(z, x, &t); | adf_scaled_add(z, x, &t) -> adf_scaled_add(z, &t, x)
+survived   23.1 s  src/scaled.c:54:5 drop_call: 'fmpq_zero(x->s);' -> '' (the statement is removed)
+          key: src/scaled.c | drop_call | fmpq_zero(x->s); | fmpq_zero(x->s); -> 
+survived   22.9 s  src/scaled.c:56:5 drop_call: 'fmpz_zero(x->u);' -> '' (the statement is removed)
+          key: src/scaled.c | drop_call | fmpz_zero(x->u); | fmpz_zero(x->u); -> 
+survived   23.0 s  src/scaled.c:459:13 drop_call: 'fmpq_zero(t.s);' -> '' (the statement is removed)
+          key: src/scaled.c | drop_call | fmpq_zero(t.s); | fmpq_zero(t.s); ->  #1
+survived   22.8 s  src/scaled.c:530:13 drop_call: 'fmpq_zero(t.s);' -> '' (the statement is removed)
+          key: src/scaled.c | drop_call | fmpq_zero(t.s); | fmpq_zero(t.s); ->  #2
+survived   22.8 s  src/scaled.c:469:29 cmp: '<' -> '<='
+          key: src/scaled.c | cmp | if (fmpq_sgn(q) < 0) | < -> <= #1
+survived   23.2 s  src/scaled.c:469:31 zero_one: '0' -> '1'
+          key: src/scaled.c | zero_one | if (fmpq_sgn(q) < 0) | 0 -> 1 #1
+survived   23.0 s  src/scaled.c:540:29 cmp: '<' -> '<='
+          key: src/scaled.c | cmp | if (fmpq_sgn(q) < 0) | < -> <= #2
+survived   23.6 s  src/scaled.c:540:31 zero_one: '0' -> '1'
+          key: src/scaled.c | zero_one | if (fmpq_sgn(q) < 0) | 0 -> 1 #2
+survived   23.7 s  src/scaled.c:618:28 cmp: '<' -> '<='
+          key: src/scaled.c | cmp | if (fmpq_sgn(q->q) < 0) | < -> <=
+survived   23.1 s  src/scaled.c:618:30 zero_one: '0' -> '1'
+          key: src/scaled.c | zero_one | if (fmpq_sgn(q->q) < 0) | 0 -> 1
+survived   23.3 s  src/text.c:745:9 swap_args: 'fmpz_mul(num, num, p)' -> 'fmpz_mul(num, p, num)'
+          key: src/text.c | swap_args | fmpz_mul(num, num, p); | fmpz_mul(num, num, p) -> fmpz_mul(num, p, num)
+survived   23.4 s  src/text.c:857:9 swap_args: 'fmpq_add(R, R, err)' -> 'fmpq_add(R, err, R)'
+          key: src/text.c | swap_args | fmpq_add(R, R, err); | fmpq_add(R, R, err) -> fmpq_add(R, err, R)
+survived   23.4 s  src/text.c:917:9 swap_args: 'fmpz_mul(v, v, p)' -> 'fmpz_mul(v, p, v)'
+          key: src/text.c | swap_args | fmpz_mul(v, v, p); | fmpz_mul(v, v, p) -> fmpz_mul(v, p, v)
+survived   23.5 s  src/text.c:919:9 swap_args: 'fmpz_mul(u, u, p)' -> 'fmpz_mul(u, p, u)'
+          key: src/text.c | swap_args | fmpz_mul(u, u, p); | fmpz_mul(u, u, p) -> fmpz_mul(u, p, u)
+survived   23.0 s  src/text.c:1201:9 swap_args: 'fmpq_add(t, t, rad)' -> 'fmpq_add(t, rad, t)'
+          key: src/text.c | swap_args | fmpq_add(t, t, rad); | fmpq_add(t, t, rad) -> fmpq_add(t, rad, t)
+DONE

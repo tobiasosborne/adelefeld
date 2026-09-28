@@ -8,7 +8,8 @@
 #                             valgrind --error-exitcode=9 --track-origins=yes --leak-check=full --errors-for-leak-kinds=definite,indirect -q
 #                           at most 2 at a time, each with a 120 s time limit.  One line per
 #                           program: PASS, ERROR (with the first error) or TIMEOUT.
-#   valgrind absent         MemorySanitizer is probed.  Even when the probe works, FLINT and GMP
+#   valgrind absent         (looked for on PATH and at ~/.local/bin/valgrind, where it is installed on the
+#                           development machine)  MemorySanitizer is probed.  Even when the probe works, FLINT and GMP
 #                           are not instrumented, so every value that comes back from FLINT looks
 #                           uninitialised: a useful run is not possible, and none is faked.
 #   neither usable          the static checker tools/memcheck/check_uninit.py is run over src/ and
@@ -17,6 +18,7 @@
 # Usage:
 #   tools/memcheck/run.sh             auto: valgrind if present, else the checker
 #   tools/memcheck/run.sh --checker   force the static checker
+#   tools/memcheck/run.sh --valgrind-path   print the valgrind that would be used and exit 0, or exit 1
 #
 # Exit status: 0 when no problem was found, 1 when a finding or a valgrind error was reported.
 
@@ -29,6 +31,18 @@ cd "$root"
 JOBS=2
 TIME_LIMIT=120
 BUILD_DIR=build-memcheck
+
+# valgrind on PATH, else the one in ~/.local/bin (surface R1/R4: the README said there was none)
+find_valgrind() {
+    if command -v valgrind > /dev/null 2>&1; then
+        command -v valgrind
+    elif [ -x "$HOME/.local/bin/valgrind" ]; then
+        echo "$HOME/.local/bin/valgrind"
+    else
+        return 1
+    fi
+}
+VALGRIND="$(find_valgrind)"
 
 run_checker() {
     python3 "$here/check_uninit.py" src/*.c tests/*.c
@@ -66,7 +80,7 @@ EOF
 run_one_valgrind() {
     local bin="$1" out rc line
     out="$(mktemp /tmp/adf-valgrind-XXXXXX)"
-    timeout "$TIME_LIMIT" valgrind --error-exitcode=9 --track-origins=yes \
+    timeout "$TIME_LIMIT" "$VALGRIND" --error-exitcode=9 --track-origins=yes \
         --leak-check=full --errors-for-leak-kinds=definite,indirect -q "$bin" > "$out" 2>&1
     rc=$?
     if [ "$rc" -eq 0 ]; then
@@ -80,13 +94,18 @@ run_one_valgrind() {
     rm -f "$out"
 }
 
+if [ "${1:-}" = "--valgrind-path" ]; then
+    [ -n "$VALGRIND" ] && echo "$VALGRIND"
+    exit $?
+fi
+
 if [ "${1:-}" = "--checker" ]; then
     run_checker
     exit $?
 fi
 
-if command -v valgrind > /dev/null 2>&1; then
-    echo "valgrind $(valgrind --version), building at -O1 -g into $BUILD_DIR"
+if [ -n "$VALGRIND" ]; then
+    echo "valgrind $("$VALGRIND" --version) ($VALGRIND), building at -O1 -g into $BUILD_DIR"
     mapfile -t sources < <(ls tests/test_*.c 2> /dev/null)
     bins=()
     for src in "${sources[@]}"; do

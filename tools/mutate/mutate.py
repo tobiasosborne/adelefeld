@@ -35,10 +35,10 @@ A mutant is one source file with one token changed. The mutations are:
 drop_call and the sanitizer (adf-obp, decided here): dropping an `_init` call leaves a FLINT
 struct read before it is written, and dropping a `_clear` call only leaks it; neither is
 guaranteed to make `make -s -j2 check` (the tool's own default, no sanitizer) fail, so such a
-mutant would mostly report "survived" without saying anything about test quality. The tool has
-no sanitizer run of its own -- `--make` can be pointed at `make -s -j2 check SAN=1` by a caller
-who wants one, but that is not the default, because it roughly doubles every build in a budget
-of at most 2 cores and about 3 minutes per mutant. So drop_call does not generate the `_init`/
+mutant would mostly report "survived" without saying anything about test quality. The tool runs
+no sanitizer by default -- `--san` (or `--make` with `SAN=1`) asks for one, but that is not the
+default, because it roughly doubles every build in a budget of at most 2 cores and about 3 minutes
+per mutant. So drop_call does not generate the `_init`/
 `_clear` mutants at all, rather than generate them and let them survive by default.
 
 One mutant at a time. For each mutant the tool copies the sources into a scratch directory
@@ -54,7 +54,8 @@ reports the mutant as
 exactly as it is without it (surface R2, where a kept copy was reported as killed whatever had
 happened). `--san` builds and runs every mutant with `SAN=1` in its environment, so that a
 mutant that only reads or writes out of bounds, or only leaks, is killed (issue adf-pf5); it
-roughly doubles the time of a run.
+roughly doubles the time of a run. `--keys` prints, for every mutant, the line of equivalent.txt that
+would excuse it (the reason is the word REASON), and runs nothing.
 
 The source tree is never written to: the copy is the only place a mutant exists. The tool
 fails if a mutant survives, unless tools/mutate/equivalent.txt lists it with a reason. A key of
@@ -72,6 +73,7 @@ the entries that match no mutant of the tree as it stands.
     python3 tools/mutate/mutate.py --files src/a.c src/b.c --limit 50 --seed 7 --jobs 2
     python3 tools/mutate/mutate.py --files src/fball.c --timeout 120 --make 'make -s check'
     python3 tools/mutate/mutate.py --files src/dump.c --san --limit 30
+    python3 tools/mutate/mutate.py --files src/rat.c --limit 0 --keys      # the lines for equivalent.txt
 
 Options are listed by `python3 tools/mutate/mutate.py --help`. The self-test of the tool is
 `make mutate-selftest`, which runs it over tools/mutate/example/ with a deliberately weak test
@@ -204,15 +206,17 @@ class Mutant(object):
             <file> | <kind> | <the text of the line, stripped> | <old> -> <new> [#n]
 
         where `#n` is there only when the same line text with the same change stands more than
-        once in the file, and then n is the position of this mutant among them in the file."""
+        once in the file, and then n is the position of this mutant among them in the file, the
+        first of them numbered 1: a key with a number never means "the first of several", so a
+        key cannot excuse a different statement than the one its reason describes."""
         self.occurrence = occurrence
-        suffix = "" if occurrence <= 1 else " #%d" % occurrence
+        suffix = "" if occurrence <= 0 else " #%d" % occurrence
         self.key = "%s | %s | %s | %s -> %s%s" % (self.path, self.kind, self.line_text,
                                                   self.old, self.new, suffix)
 
     def entry_text(self, reason):
         """The line of tools/mutate/equivalent.txt that excuses this mutant."""
-        suffix = "" if self.occurrence <= 1 else " #%d" % self.occurrence
+        suffix = "" if self.occurrence <= 0 else " #%d" % self.occurrence
         return "%s | %s | %s | '%s' -> '%s'%s | %s" % (self.path, self.kind, self.line_text,
                                                       self.old, self.new, suffix, reason)
 
@@ -733,20 +737,22 @@ def split_entry(head):
         return None
     rest = m.group("rest")
     best = None
-    for cut in [x.end() for x in re.finditer(r"\s\|\s", rest)]:
-        c = ENTRY_CHANGE_RE.match(rest[cut:].strip())
+    for sep in re.finditer(r"\s\|\s", rest):
+        c = ENTRY_CHANGE_RE.match(rest[sep.end():].strip())
         if c is not None:
-            best = (rest[:cut].strip(), c)
+            best = (rest[:sep.start()].strip(), c)
     if best is None:
         return None
     line_text, change = best
-    occurrence = int(change.group("occ") or 1)
+    occurrence = int(change.group("occ") or 0)   # 0: no number written
     return (m.group("path").strip(), m.group("kind"), line_text, change.group("old"),
             change.group("new"), occurrence)
 
 
-def entry_key(path, kind, line_text, old, new, occurrence=1):
-    suffix = "" if occurrence <= 1 else " #%d" % occurrence
+def entry_key(path, kind, line_text, old, new, occurrence=0):
+    """The key of an entry; a number written in the entry, #1 included, is part of the key, as
+    Mutant.set_key writes it (a group of two or more numbers all of its members from 1)."""
+    suffix = "" if occurrence <= 0 else " #%d" % occurrence
     return "%s | %s | %s | %s -> %s%s" % (path, kind, line_text, old, new, suffix)
 
 
@@ -804,6 +810,14 @@ def copy_tree(root, entries, dest):
 _CHILDREN = []
 _CHILDREN_LOCK = threading.Lock()
 _CLEANUP = []
+_STOPPING = []
+
+
+def stopping():
+    """Whether a signal has asked the tool to stop. A signal handler may run in any thread's
+    place, so the flag is read under the lock (surface R6)."""
+    with _CHILDREN_LOCK:
+        return bool(_STOPPING)
 
 
 def run_make(directory, command, timeout, env=None):
@@ -864,12 +878,24 @@ def install_signal_handlers(remove_scratch):
     command still running, then remove the scratch directory -- and leaves through os._exit,
     which does not wait for the worker threads of the pool."""
     def handler(signum, _frame):
+        with _CHILDREN_LOCK:
+            _STOPPING.append(True)
         killed = kill_all_children()
-        for path in list(_CLEANUP):
-            try:
-                shutil.rmtree(path, ignore_errors=True)
-            except OSError:
-                pass
+        # The worker threads of the pool are copying the tree into the scratch directory while
+        # this runs, so one pass of rmtree can meet a file that is written after the removal has
+        # walked that part of the tree and leave it behind. The workers of a mutant already
+        # copying cannot be stopped, so the removal is repeated until the directory is gone or
+        # a second has passed; the self-test of surface R6 counts what is left.
+        deadline = time.time() + 2.0
+        while True:
+            for path in list(_CLEANUP):
+                try:
+                    shutil.rmtree(path, ignore_errors=True)
+                except OSError:
+                    pass
+            if not any(os.path.exists(p) for p in list(_CLEANUP)) or time.time() > deadline:
+                break
+            time.sleep(0.05)
         sys.stderr.write("mutate: stopped by signal %d: %d running command(s) killed, "
                          "scratch removed\n" % (signum, killed))
         sys.stderr.flush()
@@ -891,6 +917,13 @@ def check_mutant(mutant, root, scratch, entries, command, timeout, number, env=N
     keep the directory is left behind under <scratch>/keep/ and is not removed at the end; the
     build, the run and the judgement are the same either way (surface R2)."""
     workdir = os.path.join(scratch, "keep", "%05d" % number if keep else "w%05d" % number)
+    if stopping():
+        # A signal arrived. This worker must not start a new copy of the tree: the handler is
+        # removing the scratch directory now, and a file written into it while the removal
+        # walks it is a file left behind (one file was, in the self-test of surface R6).
+        mutant.status = "stopped"
+        mutant.detail = "a signal arrived before this mutant was built"
+        return mutant
     copy_tree(root, entries, workdir)
     path = os.path.join(workdir, mutant.path)
     with open(path, "r") as fh:
@@ -940,6 +973,9 @@ def main(argv):
     parser.add_argument("--equivalent", default=os.path.join(here, "equivalent.txt"),
                         help="the file of the excused survivors")
     parser.add_argument("--list", action="store_true", help="only list the mutants, run none")
+    parser.add_argument("--keys", action="store_true",
+                        help="only print the line of tools/mutate/equivalent.txt of every mutant "
+                             "(with the reason `REASON`), run none: the key is copied, not typed")
     parser.add_argument("--keep", action="store_true",
                         help="keep the scratch copy of every mutant under the scratch directory; "
                              "the judgement of a mutant is the same as without it")
@@ -984,10 +1020,20 @@ def main(argv):
 
 def run_mutate(args, root, scratch):
     mutants = []
+    copied = set(args.copy)
     for name in args.files:
         path = os.path.join(root, name)
         if not os.path.isfile(path):
             print("mutate: no such file: %s" % name, file=sys.stderr)
+            return 2
+        top = name.split("/")[0] if "/" in name else None
+        if top is not None and top not in copied:
+            # The mutant is written into the scratch copy, so the directory it stands in has to
+            # be one of the entries the copy holds.  Without this the copy has no such file and
+            # the run dies in copy of a file that is not there, which says nothing.
+            print("mutate: %s is not under any of the copied entries (%s); name its directory "
+                  "in --copy" % (name, " ".join(args.copy) if args.copy else "none"),
+                  file=sys.stderr)
             return 2
         with open(path, "r") as fh:
             text = fh.read()
@@ -1005,6 +1051,10 @@ def run_mutate(args, root, scratch):
     if args.list:
         for m in mutants:
             print(m)
+        return 0
+    if args.keys:
+        for m in mutants:
+            print(m.entry_text("REASON"))
         return 0
 
     start = time.time()
@@ -1033,30 +1083,42 @@ def run_mutate(args, root, scratch):
         return check_mutant(m, root, scratch, args.copy, args.command, args.timeout, number,
                             env=env, keep=args.keep)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, args.jobs)) as pool:
-        for _ in pool.map(run, range(len(mutants))):
-            pass
-
+    # A survivor is reported as soon as it is found, not at the end of the run (adf-4lj): a
+    # run of several hundred mutants takes minutes, and a run that is stopped half way (a
+    # `timeout`, a machine that is shut down, a person who gives up) must leave the survivors
+    # it has found in the log; printed only at the end, a stopped run leaves nothing. The
+    # report is written under a lock, because the workers of the pool print from their own
+    # threads, and it is flushed, so that the line is in the log before the next mutant starts.
+    report_lock = threading.Lock()
     equivalent = read_equivalent(args.equivalent)
+
+    def report(m):
+        with report_lock:
+            if m.status == "survived" and m.key in equivalent:
+                m.status = "excused"
+                m.detail = equivalent[m.key]
+                print("\nEXCUSED %s\n  %s" % (m, m.detail))
+            elif m.status == "survived":
+                print("\nSURVIVED %s\n  %s" % (m, m.detail))
+                print("".join("  " + l for l in m.diff_text.splitlines(True)))
+            elif m.status in ("not compiled", "timed out"):
+                print("\n%s %s\n  %s" % (m.status.upper(), m, m.detail))
+            sys.stdout.flush()
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, args.jobs)) as pool:
+        futures = [pool.submit(run, n) for n in range(len(mutants))]
+        for future in concurrent.futures.as_completed(futures):
+            report(future.result())
+
     counts = {"killed": 0, "survived": 0, "not compiled": 0, "timed out": 0, "excused": 0}
     survivors = []
     for m in mutants:
-        if m.status == "survived" and m.key in equivalent:
-            m.status = "excused"
-            m.detail = equivalent[m.key]
         counts[m.status] = counts.get(m.status, 0) + 1
         if m.status == "survived":
             survivors.append(m)
 
-    for m in mutants:
-        if m.status == "survived":
-            print("\nSURVIVED %s\n  %s" % (m, m.detail))
-            print("".join("  " + l for l in m.diff_text.splitlines(True)))
-    for status in ("not compiled", "timed out"):
-        for m in mutants:
-            if m.status == status:
-                print("\n%s %s\n  %s" % (status.upper(), m, m.detail))
-
+    # The survivors, the ones that did not build and the ones that timed out are already in the
+    # log: each was printed by report() as soon as it was judged. Only the counts are left.
     total = len(mutants)
     print("\nmutate: %d mutants in %.1f s: %d killed, %d survived, %d not compiled, %d timed out, "
           "%d excused" % (total, time.time() - start, counts["killed"], counts["survived"],

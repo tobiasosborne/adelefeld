@@ -1,0 +1,6 @@
+FAIL an entry that names one mutant passes: (2, "/usr/bin/python3: can't open file '/home/tobias/Projects/adelefeld-wt/m1-repair-tools/tools/mutate/check_equivalent.py': [Errno 2] No such file or directory\n")
+FAIL an entry that names no mutant fails and is named: (2, "/usr/bin/python3: can't open file '/home/tobias/Projects/adelefeld-wt/m1-repair-tools/tools/mutate/check_equivalent.py': [Errno 2] No such file or directory\n")
+FAIL the same entry twice fails: (2, "/usr/bin/python3: can't open file '/home/tobias/Projects/adelefeld-wt/m1-repair-tools/tools/mutate/check_equivalent.py': [Errno 2] No such file or directory\n")
+FAIL an entry of the old line-number form fails and is named: (2, "/usr/bin/python3: can't open file '/home/tobias/Projects/adelefeld-wt/m1-repair-tools/tools/mutate/check_equivalent.py': [Errno 2] No such file or directory\n")
+FAIL a line that is not an entry fails: (2, "/usr/bin/python3: can't open file '/home/tobias/Projects/adelefeld-wt/m1-repair-tools/tools/mutate/check_equivalent.py': [Errno 2] No such file or directory\n")
+False

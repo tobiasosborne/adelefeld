@@ -1,0 +1,7 @@
+ok   an entry that names one mutant passes
+ok   an entry that names no mutant fails and is named
+ok   the same entry twice fails
+ok   an entry of the old line-number form fails and is named
+ok   a line that is not an entry fails
+ok   --keys prints an entry for every mutant, and each reads back to the key of its mutant
+True

@@ -1,0 +1,118 @@
+src/fball.c        swap_args    n=fmpq_gcd(g, g, t3)           x1  lines=[556]
+      reason:  fmpq_gcd(g, g, t3) against fmpq_gcd(g, t3, g): the gcd of two rationals does not depend on their order
+src/fball.c        swap_args    n=fmpq_mul(r, r, N)            x2  lines=[584, 612]
+      reason:  fmpq_mul(r, r, N) against fmpq_mul(r, N, r): the product does not depend on the order
+src/common.c       op           n=None                         x1  lines=[96]
+      reason:  k - 1 < r.n for k + 1 < r.n: k = 0 gives the size_t 0 - 1, which is not below r.n, so no leading zero is dropped; the run keeps its zeros, stands for
+src/recon.c        cmp          n=None                         x1  lines=[90]
+      reason:  fmpz_sgn(exp) >= 0 as > 0: for exp = 0 both branches compute the rational mn/1
+src/recon.c        zero_one     n=None                         x2  lines=[90, 122]
+      reason:  the same token, >= 0 as >= 1: only exp = 0 changes branch, and both branches give mn/1 there
+src/recon.c        swap_args    n=adf_rat_mul(c, c, N)         x1  lines=[176]
+      reason:  adf_rat_mul(c, c, N) against adf_rat_mul(c, N, c): the product does not depend on the order
+src/recon.c        swap_args    n=adf_rat_add(c, c, a)         x1  lines=[177]
+      reason:  adf_rat_add(c, c, a) against adf_rat_add(c, a, c): the sum does not depend on the order
+src/fball.c        swap_args    n=fmpz_gcd(g, A, d)            x1  lines=[54]
+      reason:  fmpz_gcd(g, A, d) against fmpz_gcd(g, d, A): the greatest common divisor of two integers does not depend on their order (refs/src/flint-3.0.1/fmpz.rs
+src/fball.c        swap_args    n=fmpz_gcd(g, x->A, x->d)      x1  lines=[214]
+      reason:  fmpz_gcd(g, x->A, x->d) against fmpz_gcd(g, x->d, x->A): the greatest common divisor of two integers does not depend on their order (fmpz.rst:1040), 
+src/fball.c        swap_args    n=fmpq_mul(t1, a, M)           x1  lines=[552]
+      reason:  fmpq_mul(t1, a, M) against fmpq_mul(t1, M, a): a product of two rationals does not depend on their order (fmpq.rst:400), and t1 is a temporary, so ne
+src/fball.c        swap_args    n=fmpq_gcd(g, t1, t2)          x1  lines=[555]
+      reason:  fmpq_gcd(g, t1, t2) against fmpq_gcd(g, t2, t1): the gcd of two rationals does not depend on their order (fmpq.rst:519), and g is a temporary, so nei
+src/fball.c        swap_args    n=fmpq_gcd(g, N, M)            x1  lines=[684]
+      reason:  fmpq_gcd(g, N, M) against fmpq_gcd(g, M, N): the gcd of two rationals does not depend on their order (fmpq.rst:519), and g is a temporary, so neither
+src/cap.c          swap_args    n=fmpq_gcd(gq, Nq, Cq)         x1  lines=[78]
+      reason:  fmpq_gcd(gq, Nq, Cq) against fmpq_gcd(gq, Cq, Nq): the gcd of two rationals does not depend on their order (fmpq.rst:519), and gq is a temporary, so 
+src/cap.c          swap_args    n=adf_fball_add(t, x, y)       x1  lines=[112]
+      reason:  adf_fball_add(t, x, y) against adf_fball_add(t, y, x): the set sum is commutative, (a + N Zhat) + (b + M Zhat) = (b + M Zhat) + (a + N Zhat) (docs/pr
+src/cap.c          swap_args    n=adf_fball_mul(t, x, y)       x1  lines=[148]
+      reason:  adf_fball_mul(t, x, y) against adf_fball_mul(t, y, x): the tight set product is commutative: its radius gcd(a M, b N, N M) is unchanged by exchanging
+src/rat.c          swap_args    n=fmpq_add(z->q, x->q, y->q)   x1  lines=[222]
+      reason:  fmpq_add(z->q, x->q, y->q) against fmpq_add(z->q, y->q, x->q): the sum of two rationals does not depend on their order, and "aliasing between any com
+src/rat.c          swap_args    n=fmpq_mul(z->q, x->q, y->q)   x1  lines=[238]
+      reason:  fmpq_mul(z->q, x->q, y->q) against fmpq_mul(z->q, y->q, x->q): the product of two rationals does not depend on their order, and "aliasing between any
+src/adele.c        swap_args    n=arb_add(z->inf, x->inf, y->inf, prec) x1  lines=[201]
+      reason:  arb_add(z->inf, x->inf, y->inf, prec) against arb_add(z->inf, y->inf, x->inf, prec): the sum of two real numbers does not depend on their order, and 
+src/adele.c        swap_args    n=adf_fball_add(&z->fin, &x->fin, &y->fin) x2  lines=[202, 451]
+      reason:  adf_fball_add(&z->fin, &x->fin, &y->fin) against adf_fball_add(&z->fin, &y->fin, &x->fin): the set sum is commutative (precision.md Proposition 1, li
+src/adele.c        swap_args    n=arb_mul(z->inf, x->inf, y->inf, prec) x1  lines=[223]
+      reason:  arb_mul(z->inf, x->inf, y->inf, prec) against arb_mul(z->inf, y->inf, x->inf, prec): the product of two real numbers does not depend on their order, 
+src/adele.c        swap_args    n=adf_fball_mul(&z->fin, &x->fin, &y->fin) x2  lines=[224, 465]
+      reason:  adf_fball_mul(&z->fin, &x->fin, &y->fin) against adf_fball_mul(&z->fin, &y->fin, &x->fin): the tight set product is commutative, its radius gcd(a M, 
+src/adele.c        swap_args    n=arb_add(z->inf, x->inf, t, prec) x1  lines=[259]
+      reason:  arb_add(z->inf, x->inf, t, prec) against arb_add(z->inf, t, x->inf, prec): the sum of two real numbers does not depend on their order, and arb_add se
+src/adele.c        swap_args    n=adf_fball_add(&z->fin, &x->fin, fq) x2  lines=[260, 493]
+      reason:  adf_fball_add(&z->fin, &x->fin, fq) against adf_fball_add(&z->fin, fq, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so
+src/adele.c        swap_args    n=arb_mul(z->inf, x->inf, t, prec) x1  lines=[285]
+      reason:  arb_mul(z->inf, x->inf, t, prec) against arb_mul(z->inf, t, x->inf, prec): the product of two real numbers does not depend on their order, and arb_mu
+src/adele.c        swap_args    n=acb_add(z->inf, x->inf, y->inf, prec) x1  lines=[450]
+      reason:  acb_add(z->inf, x->inf, y->inf, prec) against acb_add(z->inf, y->inf, x->inf, prec): the sum of two complex numbers does not depend on their order, a
+src/adele.c        swap_args    n=acb_mul(z->inf, x->inf, y->inf, prec) x1  lines=[464]
+      reason:  acb_mul(z->inf, x->inf, y->inf, prec) against acb_mul(z->inf, y->inf, x->inf, prec): the product of two complex numbers does not depend on their orde
+src/adele.c        swap_args    n=acb_add(z->inf, x->inf, t, prec) x1  lines=[492]
+      reason:  acb_add(z->inf, x->inf, t, prec) against acb_add(z->inf, t, x->inf, prec): the sum of two complex numbers does not depend on their order, and acb_add
+src/adele.c        swap_args    n=acb_mul(z->inf, x->inf, t, prec) x1  lines=[514]
+      reason:  acb_mul(z->inf, x->inf, t, prec) against acb_mul(z->inf, t, x->inf, prec): the product of two complex numbers does not depend on their order, and acb
+src/fball.c        drop_call    n=None                         x2  lines=[141, 142]
+      reason:  fmpz_zero(x->A) in adf_fball_init: fmpz_init sets the value to zero ("The value is set to zero", refs/src/flint-3.0.1/fmpz.rst:181-184) and the three
+src/fball.c        swap_args    n=fmpq_add(c, a, b)            x1  lines=[468]
+      reason:  fmpq_add(c, a, b) against fmpq_add(c, b, a) in adf_fball_add: the sum of two rationals does not depend on their order (fmpq.rst:400), and c is a temp
+src/fball.c        swap_args    n=fmpq_gcd(r, N, M)            x2  lines=[469, 497]
+      reason:  fmpq_gcd(r, N, M) against fmpq_gcd(r, M, N) in adf_fball_add: the gcd of two rationals does not depend on their order (fmpq.rst:519), and r is a temp
+src/fball.c        swap_args    n=fmpq_mul(c, a, b)            x1  lines=[551]
+      reason:  fmpq_mul(c, a, b) against fmpq_mul(c, b, a) in adf_fball_mul: the product of two rationals does not depend on their order (fmpq.rst:400), and c is a 
+src/fball.c        swap_args    n=fmpq_mul(t2, b, N)           x1  lines=[553]
+      reason:  fmpq_mul(t2, b, N) against fmpq_mul(t2, N, b) in adf_fball_mul: a product does not depend on the order of its factors (fmpq.rst:400), and t2 is a tem
+src/fball.c        swap_args    n=fmpq_mul(t3, N, M)           x1  lines=[554]
+      reason:  fmpq_mul(t3, N, M) against fmpq_mul(t3, M, N) in adf_fball_mul: a product does not depend on the order of its factors (fmpq.rst:400), and t3 is a tem
+src/fball.c        swap_args    n=fmpq_mul(c, a, q->q)         x1  lines=[582]
+      reason:  fmpq_mul(c, a, q->q) against fmpq_mul(c, q->q, a) in adf_fball_mul_rat: a product does not depend on the order of its factors (fmpq.rst:400), and c i
+src/fball.c        swap_args    n=fmpq_mul(c, a, qq)           x1  lines=[610]
+      reason:  fmpq_mul(c, a, qq) against fmpq_mul(c, qq, a) in adf_fball_div_rat: a product does not depend on the order of its factors (fmpq.rst:400), and c is a 
+src/scaled.c       swap_args    n=fmpz_mul(t, d, K)            x1  lines=[209]
+      reason:  fmpz_mul(t, d, K) against fmpz_mul(t, K, d): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpz_mul(t, A, K)            x1  lines=[220]
+      reason:  fmpz_mul(t, A, K) against fmpz_mul(t, K, A): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpz_mul(t, x->u, Kp)        x1  lines=[284]
+      reason:  fmpz_mul(t, x->u, Kp) against fmpz_mul(t, Kp, x->u): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpq_add(t.s, x->s, y->s)    x1  lines=[358]
+      reason:  fmpq_add(t.s, x->s, y->s) against fmpq_add(t.s, y->s, x->s): the sum does not depend on the order
+src/scaled.c       swap_args    n=fmpz_mul(r, ta, x->u)        x2  lines=[363, 675]
+      reason:  fmpz_mul(r, ta, x->u) against fmpz_mul(r, x->u, ta): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpz_mul(ta, tb, y->u)       x1  lines=[364]
+      reason:  fmpz_mul(ta, tb, y->u) against fmpz_mul(ta, y->u, tb): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpz_add(r, r, ta)           x1  lines=[365]
+      reason:  fmpz_add(r, r, ta) against fmpz_add(r, ta, r): the sum does not depend on the order
+src/scaled.c       swap_args    n=fmpz_mul(r, ta, w->u)        x1  lines=[386]
+      reason:  fmpz_mul(r, ta, w->u) against fmpz_mul(r, w->u, ta): the product does not depend on the order
+src/scaled.c       swap_args    n=adf_scaled_add(z, x, &t)     x1  lines=[418]
+      reason:  adf_scaled_add(z, x, &t) against adf_scaled_add(z, &t, x): the sum rule of policies P5(1) is symmetric in its operands, the exact-operand rule select
+src/scaled.c       swap_args    n=fmpq_mul(t.s, x->s, y->s)    x3  lines=[447, 454, 524]
+      reason:  fmpq_mul(t.s, x->s, y->s) against fmpq_mul(t.s, y->s, x->s): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpz_mul(r, x->u, y->u)      x2  lines=[451, 520]
+      reason:  fmpz_mul(r, x->u, y->u) against fmpz_mul(r, y->u, x->u): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpq_mul(t.s, aq, w->s)      x1  lines=[544]
+      reason:  fmpq_mul(t.s, aq, w->s) against fmpq_mul(t.s, w->s, aq): the product does not depend on the order
+src/scaled.c       swap_args    n=fmpq_mul(y->s, q->q, x->s)   x1  lines=[609]
+      reason:  fmpq_mul(y->s, q->q, x->s) against fmpq_mul(y->s, x->s, q->q): the product does not depend on the order, also with y = x (both operands are read befo
+src/scaled.c       swap_args    n=fmpq_add(t.s, x->s, q->q)    x1  lines=[653]
+      reason:  fmpq_add(t.s, x->s, q->q) against fmpq_add(t.s, q->q, x->s): the sum does not depend on the order
+src/scaled.c       swap_args    n=fmpz_add(r, r, tb)           x1  lines=[676]
+      reason:  fmpz_add(r, r, tb) against fmpz_add(r, tb, r): the sum does not depend on the order
+src/scaled.c       cmp          n=None                         x3  lines=[476, 547, 625]
+      reason:  fmpq_sgn(q) < 0 as <= 0: the branch is reached only for q != 0, where fmpq_sgn(q) is -1 or 1, and both values answer the same to < 0 and <= 0
+src/scaled.c       zero_one     n=None                         x3  lines=[476, 547, 625]
+      reason:  fmpq_sgn(q) < 0 as < 1: on the only possible values -1 and 1 of fmpq_sgn(q) the comparisons < 0 and < 1 agree
+src/scaled.c       drop_call    n=None                         x3  lines=[60, 62, 466]
+      reason:  fmpq_zero(x->s) after fmpq_init(x->s): fmpq_init already stores the canonical 0 = 0/1
+src/fball_local.c  swap_args    n=fmpz_mul(u, K, d)            x1  lines=[107]
+      reason:  fmpz_mul(u, K, d) against fmpz_mul(u, d, K): the product does not depend on the order
+src/fball_local.c  swap_args    n=fmpz_mul(v, K, A)            x1  lines=[108]
+      reason:  fmpz_mul(v, K, A) against fmpz_mul(v, A, K): the product does not depend on the order
+src/fball_local.c  swap_args    n=fmpz_mul(e, K, d)            x1  lines=[165]
+      reason:  fmpz_mul(e, K, d) against fmpz_mul(e, d, K): the product does not depend on the order
+src/fball_local.c  swap_args    n=fmpz_gcd(e, A, d)            x1  lines=[167]
+      reason:  fmpz_gcd(e, A, d) against fmpz_gcd(e, d, A): the gcd does not depend on the order
+src/fball_local.c  swap_args    n=fmpz_mul(A0, A, d0)          x1  lines=[170]
+      reason:  fmpz_mul(A0, A, d0) against fmpz_mul(A0, d0, A): the product does not depend on the order

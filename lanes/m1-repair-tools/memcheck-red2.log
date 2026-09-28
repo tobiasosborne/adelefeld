@@ -1,0 +1,17 @@
+== a use before the first init in text order is reported (surface R1)
+ok   s0 (no init at all): one use-before-init
+ok   s1 (fmpz_add_ui before fmpz_init): one use-before-init, at the line of the use
+ok   s1: the exit status is 1
+ok   s4 (adf_fball_add before adf_fball_init): one use-before-init, at the line of the use
+== no false positive on correct code
+FAIL init, use, clear in order (also memset before the init): no finding, exit 0: (1, ['/tmp/tmpkxzm7l1x/ok.c:35: a: use-before-init: first use `a` (declared line 33)'])
+ok   a memset is not an init: the use after it is reported
+== the limits named in tools/memcheck/README.md are the limits of the code (surface R4)
+ok   s2_init_on_one_branch.c (an init on one branch only): no finding, as the README says
+ok   s3_array_element.c (an array element): no finding, as the README says
+ok   s5_goto_skips_init.c (a goto over the init): no finding, as the README says
+== the tree has no finding
+FAIL src/*.c tests/*.c tools/adf/adf.c (55 files): no finding: ['tests/test_dump.c:45: x: use-before-init: first use `x` (declared line 41)', 'tests/test_dump.c:67: x: use-before-init: first use `x` (declared line 63)', 'tests/test_dump.c:91: x: use-before-init: first use `x` (declared line 86)', 'tests/test_dump.c:121: x: use-before-init: first use `x` (declared line 116)', 'tests/test_dump_ctx.c:480: x: use-before-init: first use `x` (declared line 476)']
+== valgrind
+skip no valgrind (not installed, or --no-valgrind): run.sh and the snippets are not run under it
+selftest: FAILED: 2 check(s): init, use, clear in order (also memset before the init): no finding, exit 0; src/*.c tests/*.c tools/adf/adf.c (55 files): no finding
