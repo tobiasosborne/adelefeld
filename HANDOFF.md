@@ -24,29 +24,29 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 00:10 on 2026-09-29 (three lanes; look at them first).**
+**RUNNING at 00:35 on 2026-09-29 (three lanes; look at them first).**
 
 | Lane | Model | Where | State |
 |---|---|---|---|
-| m1-inv-tests (adf-6vy) | Claude `sonnet-medium` subagent, since 00:08 | a worktree under `.claude/worktrees/` from `66bfabf` | repairs the five test programs that fail under `INV=1`; owns five files of `tests/` only |
-| m1-repair-tools (adf-xf4, adf-4lj) | Claude `sonnet-medium` subagent, since 23:56 | `../adelefeld-wt/m1-repair-tools` (master of 23:00 merged in, `d729768`; work uncommitted) | items 2, 3, 6, 7 done by space-bunny-alpha (selftest passes, run by the orchestrator); items 1, 4 and the README are with Sonnet; the sweep (item 5) is run by the ORCHESTRATOR as a script after the lane lands |
-| m1-closure-contexts (adf-igt) | codex gpt-6-sol xhigh, since 23:53 | `../adelefeld-wt/m1-closure-contexts` | running |
+| m1-repair-tools (adf-xf4, adf-4lj) | Claude `sonnet-medium` subagent, since 23:56 | `../adelefeld-wt/m1-repair-tools` (master of 23:00 merged in, `d729768`; work uncommitted) | items 2, 3, 6, 7 done by space-bunny-alpha (selftest passes, run by the orchestrator); items 1, 4 and the README are with Sonnet; the sweep (item 5) is run by the ORCHESTRATOR as a script after the lane lands, on the master of that moment |
+| m1-closure-text (adf-igt) | codex gpt-6-sol xhigh, since 00:30 | `../adelefeld-wt/m1-closure-text` | running |
+| s-sources | pi space-bunny-alpha (answered 3 of 3 probes at 00:30), `MAXRETRY=60` | `../adelefeld-wt/s-sources`; fetched files go to `refs/src/` of the main tree through the link | fetches and indexes the sources of milestone S; no design |
 
-**m1-invariants is landed** (`0418288`, adf-xk4 closed; `lanes/m1-invariants/report.md`). `make check INV=1`
-builds the library with entry checks in 105 functions and a borrow count of contexts. Master: `make check`
-42 test programs with gcc, clang, `SAN=1`; the three scripts; `pytest proto` 35 (00:05). The release objects
-are identical to those before the lane (compared by the orchestrator against its own baseline).
-`make check INV=1` is NOT green: five older test programs step outside the contract (adf-6vy, lane
-m1-inv-tests). The code is Sonnet's: its judge is codex (closure of `local` R3 and `text` R7).
+**m1-invariants and m1-inv-tests are landed** (`0418288`, `1743426`; adf-xk4, adf-6vy closed). Master at
+00:28: `make check` 42 test programs with gcc, clang, `SAN=1`, `INV=1`, `INV=1 SAN=1`; the three scripts.
+The release objects are identical to those before m1-invariants. The code is Sonnet's; codex judged it in
+the closure of `local` (R3 CLOSED) and judges it in `text` (R7).
 
 **Waits for TJO** (adf-s04): M1-D10 (local values are made by the library; no raw setter that counts) and
 M1-D11 (a status for an input outside the contract is a courtesy of the release build; under the flag the
-call aborts), both PROPOSED in `docs/SPEC.md` section 15. Lane m1-inv-tests works by them. After they are
-accepted: one sentence each in `fball.h`, `scaled.h`, `recon.h` and conventions 4.6 (orchestrator).
+call aborts), both PROPOSED in `docs/SPEC.md` section 15. The tests follow them already. After they are
+accepted: one sentence each in `fball.h`, `scaled.h`, `recon.h` and conventions 4.6 (orchestrator; the
+judge of `local` asks for it). Also adf-xrt, adf-qs9.
 
 **Landed tonight.** Closure of `dump` (`fef212f`): 3 CLOSED, 1 SETTLED BY DECISION. Closure of `arith`
 (`9aa97c9`): R1, R2 settled by M1-D3, R3 and R6 CLOSED, R4 and R5 (both MINOR, stale and false lines of
-`equivalent.txt`) OPEN until m1-repair-tools lands. No blocker open in either. One check program of each
+`equivalent.txt`) OPEN until m1-repair-tools lands. Closure of `contexts` (`0cc92bd`): R5 OPEN for the same
+reason, the edit of R2 applied (`7e8f5f5`). Closure of `local` (`be32d8d`): nothing open. No blocker open in any. One check program of each
 was rebuilt and rerun by the orchestrator (8036 and 24 cases, 0 failures). Observations: adf-mds.
 
 **space-bunny-alpha tonight.** The provider returns "Provider returned an empty response" and pi ends the
