@@ -1,0 +1,43 @@
+# m1-repair-ctx red/green log
+
+## R1 set_context aliasing (tests/test_scaled_alias.c)
+
+red, before the fix of src/scaled.c (make -j2 build/test_scaled_alias && ./build/test_scaled_alias):
+FAIL tests/test_scaled_alias.c:181: set_context_alias_exhaustive: check failed: bad_alias == 0 | set_context aliased lost wrong in 29190 of 21600 (set changed but lost 0: 13737; set unchanged but lost 1: 858)
+FAIL set_context_alias_exhaustive
+FAIL tests/test_scaled_alias.c:293: set_context_alias_random: check failed: bad_alias == 0 | random aliased lost wrong in 5252 of 10000
+FAIL set_context_alias_random
+ok  add_rat_alias, binary_ops_alias, binary_domain_alias_untouched, neg_mul_rat_alias,
+    set_fball_overwrite_and_lost, cap_alias, set_context_alias_exact
+9 tests, 142938 checks, 2 failed checks, 2 failed tests
+
+## R2 modctx limits (tests/test_modctx_limits.c)
+
+red, against the committed (pre-repair) src/modctx.c built in a scratch copy
+(cc -std=c11 -O2 -Iinclude /tmp/redsrc/*.c tests/test_modctx_limits.c -lflint -lgmp -lm):
+FAIL refused_call_retains_no_primorial_memory: resident size grew by 134615040 bytes across a refused primorial call
+then SIGABRT: "Unable to allocate memory (4611686018427387904)." on the primorial n=2^64-1, e=2 case
+
+## R6 recombine [0, K) pin (added to tests/test_modctx_limits.c)
+
+green: ./build/test_modctx_limits -> 7 tests, 239 checks, 0 failed.  The pin is not red: with the
+fmpz_fdiv_r of src/modctx.c:548 temporarily removed, the same test still passes, because FLINT's
+fmpz_multi_CRT_precomp with sign = 0 already writes a representative in [0, K) on this machine.
+The fmpz_fdiv_r is kept as the construction that makes the promise in src/modctx_internal.h hold
+independently of the undocumented sign argument.
+
+## R2 NULL out: a surviving mutant killed by a new test
+
+The reduced mutation run of src/modctx.c left src/modctx.c:360
+('if (out == NULL) return ADF_DOMAIN;' -> ADF_OK) alive: no test called a raw constructor with
+out = NULL.  tests/test_modctx_limits.c gained null_out_is_a_domain_error for the five raw
+constructors.
+
+red, with src/modctx.c:360 changed ADF_DOMAIN -> ADF_OK by hand and rebuilt:
+FAIL tests/test_modctx_limits.c:341: null_out_is_a_domain_error: check failed:
+     adf_modctx_new_primorial_pow(NULL, 10, 1) == ADF_DOMAIN
+FAIL tests/test_modctx_limits.c:342: ... (NULL, 2^64-1, 2) == ADF_DOMAIN
+FAIL null_out_is_a_domain_error (2 failed checks)
+7 tests, 239 checks, 2 failed checks, 1 failed tests
+
+green, with the line restored: 7 tests, 239 checks, 0 failed checks, 0 failed tests.

@@ -1,0 +1,82 @@
+mutate: src/modctx.c: 323 mutants
+mutate: 323 mutants, 40 of them run (--limit 40, --seed 20260928)
+mutate: the baseline passes (6.5 s)
+
+SURVIVED src/modctx.c:548:5 drop_call: 'fmpz_fdiv_r(out, out, ctx->K);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -546,5 +546,5 @@
+          the range [0, K) promised by src/modctx_internal.h is not documented.  Reduce once so the
+          promise holds by construction whatever sign does. */
+  -    fmpz_fdiv_r(out, out, ctx->K);
+  +    
+       _fmpz_vec_clear(ins, k);
+   }
+
+
+SURVIVED src/modctx.c:543:50 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -541,5 +541,5 @@
+       for (i = 0; i < k; i++)
+           fmpz_set_ui(&ins[i], res[i]);
+  -    fmpz_multi_CRT_precomp(out, ctx->crt_P, ins, 0);
+  +    fmpz_multi_CRT_precomp(out, ctx->crt_P, ins, 1);
+       /* The documentation of fmpz_multi_CRT_precomp (refs/src/flint-3.0.1/fmpz.rst:1362-1365)
+          says "an integer of smallest absolute value" and does not define the sign argument, so
+
+
+SURVIVED src/modctx.c:360:16 status: 'ADF_DOMAIN' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -358,5 +358,5 @@
+   
+       if (out == NULL)
+  -        return ADF_DOMAIN;
+  +        return ADF_OK;
+       if (n < 2 || e == 0)
+       {
+
+
+SURVIVED src/modctx.c:339:13 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -337,5 +337,5 @@
+       blocks = flint_malloc((size_t) n * sizeof(ulong));
+       k = adf_factorial_blocks(n, blocks);
+  -    if (k < 0)
+  +    if (k < 1)
+       {
+           flint_free(blocks);
+
+
+NOT COMPILED src/modctx.c:445:5 drop_assign: 'pos = 0;' -> '' (the statement is removed)
+  src/modctx.c:446:16: error: ‘pos’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/modctx.c:439:5 drop_assign: 'nk = adf_hex_len((ulong) ctx->k);' -> '' (the statement is removed)
+  src/modctx.c:441:25: error: ‘nk’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/modctx.c:171:5 drop_call: 'fmpz_init_set_ui(K, 1);' -> '' (the statement is removed)
+  /usr/include/flint/fmpz.h:83:10: error: ‘K’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:526:5 drop_call: 'fmpz_multi_mod_precomp(outs, ctx->mod_P, a, 0);' -> '' (the statement is removed)
+  src/modctx.c:520:63: error: unused parameter ‘a’ [-Werror=unused-parameter]
+
+NOT COMPILED src/modctx.c:353:48 op: '*' -> '/'
+  src/modctx.c:366:5: error: "/*" within comment [-Werror=comment]
+
+NOT COMPILED src/modctx.c:222:11 op: '*' -> '/'
+  src/modctx.c:222:11: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:88:16 cmp: '>' -> '>='
+  src/modctx.c:88:16: error: comparison of unsigned expression in ‘>= 0’ is always true [-Werror=type-limits]
+
+TIMED OUT src/modctx.c:67:5 negate_if: 'while(v >= 16)' -> 'while(!(v >= 16))'
+  the tests did not finish in 45 s
+
+mutate: 40 mutants in 158.6 s: 28 killed, 4 survived, 7 not compiled, 1 timed out, 0 excused
+mutate: FAILED: 4 mutant(s) survived; each one is a claim the tests do not check
