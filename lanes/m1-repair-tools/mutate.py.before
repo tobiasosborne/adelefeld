@@ -50,28 +50,12 @@ reports the mutant as
     not compiled  the mutant does not build
     timed out     the tests do not finish in the time given
 
-`--keep` keeps the scratch copy of every mutant and changes nothing else: a mutant is judged
-exactly as it is without it (surface R2, where a kept copy was reported as killed whatever had
-happened). `--san` builds and runs every mutant with `SAN=1` in its environment, so that a
-mutant that only reads or writes out of bounds, or only leaks, is killed (issue adf-pf5); it
-roughly doubles the time of a run.
-
 The source tree is never written to: the copy is the only place a mutant exists. The tool
-fails if a mutant survives, unless tools/mutate/equivalent.txt lists it with a reason. A key of
-that file is
-
-    <file> | <kind> | <the text of the line the mutant changes, stripped> | <old> -> <new> |
-    <reason>
-
-with an occurrence number `#n` after the change when the same line text and the same change
-stand more than once in the file. There is no line number in a key, because a line number does
-not survive an edit above the mutant (surface R3); tools/mutate/check_equivalent.py reports
-the entries that match no mutant of the tree as it stands.
+fails if a mutant survives, unless tools/mutate/equivalent.txt lists it with a reason.
 
     python3 tools/mutate/mutate.py --files src/fball.c
     python3 tools/mutate/mutate.py --files src/a.c src/b.c --limit 50 --seed 7 --jobs 2
     python3 tools/mutate/mutate.py --files src/fball.c --timeout 120 --make 'make -s check'
-    python3 tools/mutate/mutate.py --files src/dump.c --san --limit 30
 
 Options are listed by `python3 tools/mutate/mutate.py --help`. The self-test of the tool is
 `make mutate-selftest`, which runs it over tools/mutate/example/ with a deliberately weak test
@@ -88,7 +72,6 @@ import shutil
 import signal
 import subprocess
 import sys
-import threading
 import time
 
 # The entries of the repository that a mutant is built from. The scratch copy needs the
@@ -160,16 +143,10 @@ CONTROL_KEYWORDS = frozenset(["if", "for", "while", "switch", "do", "else", "ret
                               "case", "default", "goto", "break", "continue", "typedef",
                               "struct", "union", "enum"])
 
-# What a build failure looks like, as opposed to a test that fails. Only a diagnostic the
-# compiler or the linker wrote itself is one: `<file>:<line>:<col>: error:` (gcc and clang),
-# `fatal error:` with or without a program name in front of it, and the linker's `undefined
-# reference`. The word `error:` anywhere in the output is not enough: tests/test_runner.h:86
-# prints a failing test as `FAIL <file>:<line>: <test name>: check failed: ...`, and a test whose
-# name ends in `error` (`a_non_digit_is_a_parse_error`) put `error:` in the middle of that line
-# (surface R5). "make: *** Error 1" is printed for both a failed build and a failed test, so it
-# is not in this list: a test that fails is a killed mutant, and a mutant that does not compile
-# is a separate report.
-COMPILE_ERROR = re.compile(r"(?m)^(?:\S+:\d+:\d+: |\S+: )?(?:fatal )?error:|undefined reference")
+# What a build failure looks like, as opposed to a test that fails. "make: *** Error 1" is
+# printed for both, so it is not in this list: a test that fails is a killed mutant, and a
+# mutant that does not compile is a separate report.
+COMPILE_ERROR = re.compile(r"(error:|undefined reference|collect2:|ld returned)")
 
 
 class Mutant(object):
@@ -188,33 +165,10 @@ class Mutant(object):
         self.note = note
         self.status = None
         self.detail = ""
-        # the text of the line the mutant changes, stripped, the text of the line before the
-        # change, and the occurrence number when the same line text and the same change stand
-        # more than once in the file; all three are set by annotate_keys, which every mutant of
-        # a file goes through.
-        self.line_text = ""
-        self.prefix = ""
-        self.occurrence = 0
-        self.key = None
 
-    def set_key(self, occurrence=0):
-        """Fix the key of this mutant. A key names the mutant by what it changes, never by the
-        line it stands on (surface R3):
-
-            <file> | <kind> | <the text of the line, stripped> | <old> -> <new> [#n]
-
-        where `#n` is there only when the same line text with the same change stands more than
-        once in the file, and then n is the position of this mutant among them in the file."""
-        self.occurrence = occurrence
-        suffix = "" if occurrence <= 1 else " #%d" % occurrence
-        self.key = "%s | %s | %s | %s -> %s%s" % (self.path, self.kind, self.line_text,
-                                                  self.old, self.new, suffix)
-
-    def entry_text(self, reason):
-        """The line of tools/mutate/equivalent.txt that excuses this mutant."""
-        suffix = "" if self.occurrence <= 1 else " #%d" % self.occurrence
-        return "%s | %s | %s | '%s' -> '%s'%s | %s" % (self.path, self.kind, self.line_text,
-                                                      self.old, self.new, suffix, reason)
+    @property
+    def key(self):
+        return (self.path, self.line, self.kind)
 
     def __str__(self):
         return "%s:%d:%d %s: %r -> %r%s" % (self.path, self.line, self.col, self.kind, self.old,
@@ -541,40 +495,6 @@ def statement_start(text, tokens, index):
     return i + 1
 
 
-def line_text_of(text, line):
-    """The text of line number `line` (1-based), stripped."""
-    lines = text.splitlines()
-    if 1 <= line <= len(lines):
-        return lines[line - 1].strip()
-    return ""
-
-
-def annotate_keys(mutants, text):
-    """Give every mutant the text of the line it changes and its key (surface R3).
-
-    Two mutants of one file get the same key fields when the text of the line they change and
-    the change itself are the same -- the same call written twice, the same constant twice on
-    one line. They are told apart by an occurrence number, which counts the mutants of that
-    group in the order they stand in the file. A group of one carries no number."""
-    groups = {}
-    starts = {}
-    offset = 0
-    for line in text.splitlines(True):
-        starts[len(starts) + 1] = offset
-        offset += len(line)
-    for m in mutants:
-        m.line_text = line_text_of(text, m.line)
-        m.prefix = text[starts.get(m.line, 0):m.start]
-        groups.setdefault((m.path, m.kind, m.line_text, m.old, m.new), []).append(m)
-    for members in groups.values():
-        members.sort(key=lambda m: m.start)
-        if len(members) == 1:
-            members[0].set_key(0)
-        else:
-            for n, m in enumerate(members, start=1):
-                m.set_key(n)
-
-
 def mutants_of(path, text, root="."):
     """Every mutant of one file, in the order the tokens stand in the file. root is the tree
     the file is read from, needed only to resolve the headers gcd_lcm, call_swap and status
@@ -712,74 +632,28 @@ def mutants_of(path, text, root="."):
                     out.append(Mutant(path, line, col, "negate_if", tok.text + "(%s)" % cond.strip(),
                                       tok.text + "(!(%s))" % cond.strip(), open_pos + 1, after - 1,
                                       "!(%s)" % cond.strip()))
-    annotate_keys(out, text)
     return out
 
 
-ENTRY_HEAD_RE = re.compile(r"^(?P<path>[^|]+?)\s*\|\s*(?P<kind>[A-Za-z_][A-Za-z0-9_]*)\s*\|\s*(?P<rest>.*)$")
-ENTRY_CHANGE_RE = re.compile(r"^'(?P<old>.*)'\s*->\s*'(?P<new>.*)'(?:\s*#(?P<occ>\d+))?$")
-
-
-def split_entry(head):
-    """The (path, kind, line text, old, new, occurrence) of one entry's head, or None.
-
-    The head is `<file> | <kind> | <the text of the line, stripped> | 'old' -> 'new' [#n]`.
-    The line text is the text of a line of a C file, and a C line may itself hold a `|` (the
-    bitwise or, `a | b`), and the old text of a mutant may hold one, so the two fields are
-    separated by the last ` | ` that leaves a well-formed change behind it. The reason, which
-    follows the head, must not hold a ` | ` of its own; the header of the file says so."""
-    m = ENTRY_HEAD_RE.match(head)
-    if not m:
-        return None
-    rest = m.group("rest")
-    best = None
-    for cut in [x.end() for x in re.finditer(r"\s\|\s", rest)]:
-        c = ENTRY_CHANGE_RE.match(rest[cut:].strip())
-        if c is not None:
-            best = (rest[:cut].strip(), c)
-    if best is None:
-        return None
-    line_text, change = best
-    occurrence = int(change.group("occ") or 1)
-    return (m.group("path").strip(), m.group("kind"), line_text, change.group("old"),
-            change.group("new"), occurrence)
-
-
-def entry_key(path, kind, line_text, old, new, occurrence=1):
-    suffix = "" if occurrence <= 1 else " #%d" % occurrence
-    return "%s | %s | %s | %s -> %s%s" % (path, kind, line_text, old, new, suffix)
-
-
 def read_equivalent(path):
-    """The excused survivors: one entry per line, `#` for a comment and a blank line for
-    nothing. An entry is
-
-        <file> | <kind> | <the text of the line the mutant changes, stripped> | <old> -> <new>
-        [#n] | <reason>
-
-    and excuses the mutant whose key that is (Mutant.set_key); #n is there only when the same
-    line text with the same change stands more than once in the file. Returns a dict from key
-    to reason; a line that does not parse is reported on stderr and skipped, so that a typo in
-    the file cannot silently excuse nothing and hide a survivor."""
+    """The excused survivors: `FILE:LINE:KIND | reason`, one per line, `#` for a comment."""
     out = {}
     if not os.path.isfile(path):
         return out
     with open(path, "r") as fh:
-        for number, raw in enumerate(fh, start=1):
+        for raw in fh:
             line = raw.strip()
             if not line or line.startswith("#"):
                 continue
-            head, sep, reason = line.rpartition(" | ")
-            if not sep:
-                print("%s:%d: not an entry (no ' | ' before the reason): %s"
-                      % (path, number, line), file=sys.stderr)
+            head, _, reason = line.partition("|")
+            parts = [p.strip() for p in head.split(":")]
+            if len(parts) != 3:
                 continue
-            parts = split_entry(head)
-            if parts is None:
-                print("%s:%d: not an entry (expected FILE | KIND | LINE | 'old' -> 'new'): %s"
-                      % (path, number, head), file=sys.stderr)
+            try:
+                key = (parts[0], int(parts[1]), parts[2])
+            except ValueError:
                 continue
-            out[entry_key(*parts)] = reason.strip()
+            out[key] = reason.strip()
     return out
 
 
@@ -798,38 +672,20 @@ def copy_tree(root, entries, dest):
             shutil.copy2(source, target)
 
 
-# The children of this process that are in a session of their own, and the directory to remove
-# when a signal arrives. A signal handler may run in any thread's place, so both are read under
-# the lock; see install_signal_handlers.
-_CHILDREN = []
-_CHILDREN_LOCK = threading.Lock()
-_CLEANUP = []
-
-
-def run_make(directory, command, timeout, env=None):
+def run_make(directory, command, timeout):
     """Run the command in the directory; return (exit code, output), the code None on timeout.
 
     The command runs in a session of its own, and on timeout the whole process group is
     killed: the shell, make, and the test program that make started. Killing the shell alone
-    leaves a mutant with an infinite loop running for ever (issue adf-98j). env is added to the
-    environment of the child (--san sets SAN=1 there)."""
-    child_env = None
-    if env:
-        child_env = dict(os.environ)
-        child_env.update(env)
+    leaves a mutant with an infinite loop running for ever (issue adf-98j)."""
     proc = subprocess.Popen(command, cwd=directory, shell=True, start_new_session=True,
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=child_env)
-    with _CHILDREN_LOCK:
-        _CHILDREN.append(proc)
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         output, _ = proc.communicate(timeout=timeout)
         code = proc.returncode
     except subprocess.TimeoutExpired:
         code = None
     finally:
-        with _CHILDREN_LOCK:
-            if proc in _CHILDREN:
-                _CHILDREN.remove(proc)
         # also when the run is interrupted, and for what a finished command left behind
         try:
             os.killpg(proc.pid, signal.SIGKILL)
@@ -840,57 +696,11 @@ def run_make(directory, command, timeout, env=None):
     return code, (output or b"").decode("utf-8", "replace")
 
 
-def kill_all_children():
-    """Kill the process group of every command this process started, and return how many were
-    still running. The groups are the children's own sessions, so nothing else is touched."""
-    with _CHILDREN_LOCK:
-        children = list(_CHILDREN)
-    for proc in children:
-        try:
-            os.killpg(proc.pid, signal.SIGKILL)
-        except OSError:
-            pass
-    return len(children)
-
-
-def install_signal_handlers(remove_scratch):
-    """SIGTERM and SIGINT stop the tool the way the try/finally in main() stops it (surface R6).
-
-    `timeout`, a CI runner and `kill` send SIGTERM; a SIGINT from a terminal arrives the same
-    way. A handler cannot run the finally of a try statement from another frame, and the test
-    programs of the mutants run in sessions of their own, so both were left behind: the review
-    found 12 files under the scratch directory and 2 looping programs after a SIGTERM. So the
-    handler does the two things the finally would have done -- kill the process group of every
-    command still running, then remove the scratch directory -- and leaves through os._exit,
-    which does not wait for the worker threads of the pool."""
-    def handler(signum, _frame):
-        killed = kill_all_children()
-        for path in list(_CLEANUP):
-            try:
-                shutil.rmtree(path, ignore_errors=True)
-            except OSError:
-                pass
-        sys.stderr.write("mutate: stopped by signal %d: %d running command(s) killed, "
-                         "scratch removed\n" % (signum, killed))
-        sys.stderr.flush()
-        os._exit(128 + signum)
-
-    _CLEANUP.append(remove_scratch)
-    for sig in (signal.SIGTERM, signal.SIGINT):
-        try:
-            signal.signal(sig, handler)
-        except (OSError, ValueError):   # not the main thread, or the platform says no
-            pass
-
-
-def check_mutant(mutant, root, scratch, entries, command, timeout, number, env=None,
-                 keep=False):
+def check_mutant(mutant, root, scratch, entries, command, timeout, number):
     """Build and run the tests with one mutant; return its status and a one-line reason.
 
-    Every mutant has its own directory, so that two runs at the same time never share one. With
-    keep the directory is left behind under <scratch>/keep/ and is not removed at the end; the
-    build, the run and the judgement are the same either way (surface R2)."""
-    workdir = os.path.join(scratch, "keep", "%05d" % number if keep else "w%05d" % number)
+    Every mutant has its own directory, so that two runs at the same time never share one."""
+    workdir = os.path.join(scratch, "w%05d" % number)
     copy_tree(root, entries, workdir)
     path = os.path.join(workdir, mutant.path)
     with open(path, "r") as fh:
@@ -899,7 +709,7 @@ def check_mutant(mutant, root, scratch, entries, command, timeout, number, env=N
         fh.write(mutant.apply(text))
     mutant.diff_text = mutant.diff(text, mutant.apply(text))
     del text
-    code, output = run_make(workdir, command, timeout, env)
+    code, output = run_make(workdir, command, timeout)
     if code is None:
         mutant.status = "timed out"
         mutant.detail = "the tests did not finish in %d s" % timeout
@@ -908,14 +718,13 @@ def check_mutant(mutant, root, scratch, entries, command, timeout, number, env=N
         mutant.detail = "the tests pass with the mutant"
     elif COMPILE_ERROR.search(output):
         mutant.status = "not compiled"
-        first = [l for l in output.splitlines() if COMPILE_ERROR.search(l)]
+        first = [l for l in output.splitlines() if "error:" in l or "undefined reference" in l]
         mutant.detail = first[0].strip() if first else "the build failed"
     else:
         mutant.status = "killed"
         lines = [l for l in output.splitlines() if l.startswith("FAIL")]
         mutant.detail = lines[0].strip() if lines else "a test failed"
-    if not keep:
-        shutil.rmtree(workdir, ignore_errors=True)
+    shutil.rmtree(workdir, ignore_errors=True)
     return mutant
 
 
@@ -941,12 +750,7 @@ def main(argv):
                         help="the file of the excused survivors")
     parser.add_argument("--list", action="store_true", help="only list the mutants, run none")
     parser.add_argument("--keep", action="store_true",
-                        help="keep the scratch copy of every mutant under the scratch directory; "
-                             "the judgement of a mutant is the same as without it")
-    parser.add_argument("--san", action="store_true",
-                        help="build and run every mutant with SAN=1 in its environment, so that "
-                             "a mutant that only reads or writes out of bounds, or only leaks, "
-                             "is killed (issue adf-pf5). It roughly doubles the time of a run.")
+                        help="keep the scratch copy of every mutant under the scratch directory")
     args = parser.parse_args(argv)
 
     root = os.path.abspath(args.root)
@@ -970,10 +774,6 @@ def main(argv):
     if os.path.exists(scratch):
         shutil.rmtree(scratch)
     os.makedirs(scratch)
-    # A SIGTERM (what `timeout`, a CI runner and `kill` send) or a SIGINT from a terminal must
-    # leave nothing behind: the process groups of the running mutants are killed and this run's
-    # scratch directory is removed, exactly as the finally below does for a normal end.
-    install_signal_handlers(scratch)
 
     try:
         return run_mutate(args, root, scratch)
@@ -1007,31 +807,36 @@ def run_mutate(args, root, scratch):
             print(m)
         return 0
 
+    originals = {}
+    for name in args.files:
+        with open(os.path.join(root, name), "r") as fh:
+            originals[name] = fh.read()
+
     start = time.time()
-    # --san puts SAN=1 into the environment of every command, so the Makefile's own
-    # `SAN ?= 0` / `ifeq ($(SAN),1)` turns the sanitizers on (the Makefile is not changed for
-    # this, and `make check SAN=1` is what the environment amounts to). A --make that sets SAN
-    # itself is left alone: the environment only says what is missing.
-    env = {}
-    if args.san and "SAN" not in args.command:
-        env["SAN"] = "1"
     base = os.path.join(scratch, "baseline")
     copy_tree(root, args.copy, base)
-    code, output = run_make(base, args.command, args.timeout, env)
+    code, output = run_make(base, args.command, args.timeout)
     if code != 0:
         print("mutate: the unmutated tree does not pass, so no mutant can be judged:", file=sys.stderr)
         print(output[-4000:], file=sys.stderr)
         shutil.rmtree(base, ignore_errors=True)
         return 2
     shutil.rmtree(base, ignore_errors=True)
-    if args.san:
-        print("mutate: every mutant is built and run with SAN=1")
     print("mutate: the baseline passes (%.1f s)" % (time.time() - start))
 
     def run(number):
         m = mutants[number]
-        return check_mutant(m, root, scratch, args.copy, args.command, args.timeout, number,
-                            env=env, keep=args.keep)
+        if args.keep:
+            workdir = os.path.join(scratch, "keep", "%05d" % number)
+            copy_tree(root, args.copy, workdir)
+            with open(os.path.join(workdir, m.path), "w") as fh:
+                fh.write(m.apply(originals[m.path]))
+            code, _ = run_make(workdir, args.command, args.timeout)
+            m.diff_text = m.diff(originals[m.path], m.apply(originals[m.path]))
+            m.status = "survived" if code == 0 else "killed"
+            m.detail = "the tests pass with the mutant" if code == 0 else "a test failed"
+            return m
+        return check_mutant(m, root, scratch, args.copy, args.command, args.timeout, number)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, args.jobs)) as pool:
         for _ in pool.map(run, range(len(mutants))):

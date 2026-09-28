@@ -40,3 +40,12 @@ memory check), `lanes/m1-repair-tools/`. Python standard library only. Red-green
    `python3 tools/mutate/mutate.py --root . --files src/<f>.c --jobs 2 --seed 20260928 --limit 300 --san`
    (if one run exceeds 40 minutes stop it and lower the limit for that file; say so). Report the table of
    counts per file and every survivor with the missing test. Do not change `src/` or `tests/`.
+
+## Resume note of the orchestrator (2026-09-28, 15:50)
+
+This lane was stopped from outside when the machine ran low on memory. It was not your fault and nothing is
+lost: your files are in the worktree as you left them, uncommitted. Before anything else run `git status`
+and `git diff --stat`, read the logs in your lane directory, and find the first item of the brief that is
+not finished. Do not start again from the beginning and do not rewrite what works. Memory: never run two
+builds or two mutation runs at the same time; use `make -j2`; run a mutation run in the foreground, not
+with `nohup`; if `free -g` shows less than 6 GB available, wait. Finish with `report.md`.
