@@ -20,6 +20,17 @@
    - Arrays passed in are copied (conventions 4.2). No operation of the library creates a context
      implicitly (conventions 4.6).
    - A context may be read by any number of threads (conventions 4.5).
+   - Size (decision M1-D5): a context has at most ADF_MODCTX_MAX_BLOCKS blocks. A constructor
+     whose arguments ask for more returns ADF_UNSUPPORTED, and it decides this from the arguments
+     before it builds a table or allocates in proportion to them: adf_modctx_new_blocks and
+     adf_modctx_new_prime_powers from k; adf_modctx_new_factorial and
+     adf_modctx_new_primorial_pow from n (the number of primes up to n is above the bound as soon
+     as n >= ADF_MODCTX_MAX_PRIME, the prime of index ADF_MODCTX_MAX_BLOCKS + 1). For
+     adf_modctx_new_primorial_pow with e >= 2 the status for "some p^e >= 2^64" is likewise
+     decided from n and e alone, by comparing n with the largest prime whose e-th power is below
+     2^64, before any prime is enumerated. The order of the checks is: ADF_DOMAIN first, then
+     ADF_UNSUPPORTED (conventions 3.3).
+
    Contents, not part of the interface (conventions 5.14): K >= 1; k >= 0 word blocks q_1..q_k,
    pairwise coprime, 2 <= q_i < 2^64, in the order supplied, with product K when k >= 1. */
 
@@ -30,6 +41,12 @@
 #include "adelefeld/status.h"
 #include "adelefeld/fball.h"
 #include "adelefeld/text.h"
+
+/* The largest number of blocks of a context, and the prime of index ADF_MODCTX_MAX_BLOCKS + 1
+   (decision M1-D5). 65536 blocks of one word are a modulus of about 4 million bits. The 65537th
+   prime is 821647 (the 65536th is 821641). */
+#define ADF_MODCTX_MAX_BLOCKS 65536
+#define ADF_MODCTX_MAX_PRIME 821647
 
 #ifdef __cplusplus
 extern "C" {
