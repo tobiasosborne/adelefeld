@@ -42,6 +42,7 @@ import os
 import random
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -419,12 +420,27 @@ def copy_tree(root, entries, dest):
 
 
 def run_make(directory, command, timeout):
+    """Run the command in the directory; return (exit code, output), the code None on timeout.
+
+    The command runs in a session of its own, and on timeout the whole process group is
+    killed: the shell, make, and the test program that make started. Killing the shell alone
+    leaves a mutant with an infinite loop running for ever (issue adf-98j)."""
+    proc = subprocess.Popen(command, cwd=directory, shell=True, start_new_session=True,
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
-        proc = subprocess.run(command, cwd=directory, shell=True, timeout=timeout,
-                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    except subprocess.TimeoutExpired as exc:
-        return None, (exc.output or b"").decode("utf-8", "replace")
-    return proc.returncode, proc.stdout.decode("utf-8", "replace")
+        output, _ = proc.communicate(timeout=timeout)
+        code = proc.returncode
+    except subprocess.TimeoutExpired:
+        code = None
+    finally:
+        # also when the run is interrupted, and for what a finished command left behind
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except OSError:
+            pass
+    if code is None:
+        output, _ = proc.communicate()
+    return code, (output or b"").decode("utf-8", "replace")
 
 
 def check_mutant(mutant, root, scratch, entries, command, timeout, number):

@@ -38,8 +38,7 @@ pass. 78 of the 193 declared functions are implemented. No lane is running. Ever
    reviews the headers, the 15 choices of `docs/api-m1.md`, and the closure edits E3, C3, C4.
 
 **Open items.**
-- `make mutate FILES=src/fball.c` takes about 320 s; the orchestrator's repeat after adding the three excused
-  mutants to `tools/mutate/equivalent.txt` was cut off and must be run once to the end.
+- Done (see below): the repeat of `make mutate FILES=src/fball.c` with the three excused mutants.
 - `ADF_CHECK_INVARIANTS` (conventions 4.4) is promised and not implemented (finding of lane m1-rat).
 - `fball.h` documents local-backend behaviour that `src/fball.c` does not implement (HEADER-FINDING 1 of lane
   m1-fball); it belongs to 1.8.
@@ -53,6 +52,14 @@ pass. 78 of the 193 declared functions are implemented. No lane is running. Ever
 the harness stopped the orchestrator's waiting loop, so lanes on pi or codex end without a signal: look at
 `lanes/<lane>/lane.log` in the worktree. Quota at 07:10: Claude weekly 69%, Fable weekly 67% (both reset
 2026-09-29 18:00), codex 19% of the week (11 of the 30 points TJO authorised are used; resets 2026-10-03).
+
+**Mutation tool fixed (2026-09-28, later session; issue adf-98j closed).** `run_make` of
+`tools/mutate/mutate.py` starts each run in a session of its own and kills the whole process group on timeout.
+`make mutate-selftest` now also fails if a process of a mutant is alive after the runs (seen failing before the
+fix, with two processes left). `make mutate` may be run again. `make mutate FILES=src/fball.c` was run to the
+end: 184 mutants, 146 killed, 0 survived, 35 not compiled, 0 timed out, 3 excused; no process left. The run
+took 4030 s of wall time and not 320 s; a `cargo build` of another project ran on the machine at the end (load
+average 16), the rest of the cause was not examined. The note below is kept for the record.
 
 **Found after the session (2026-09-28 10:45).** `tools/mutate/mutate.py` does not kill the test program of a
 mutant that times out: nine such processes ran for eight hours (load average 10) until killed by hand. Do not

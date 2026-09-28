@@ -13,14 +13,22 @@ Both runs are made on a copy of the example under build/mutate/, so the tree is 
 The run fails if the weak test leaves no survivor, or if the strong test leaves one, or if the
 tool itself crashes.
 
+  3. after both runs no process of a mutant may be alive. A mutant that loops forever is
+     stopped by the timeout of the tool, and the timeout must stop the test program and not
+     only the shell or the make that started it (issue adf-98j: nine such programs ran for
+     eight hours). Processes that are found are killed by the self-test, so a failing run
+     leaves nothing behind either.
+
     python3 tools/mutate/selftest.py
     make mutate-selftest
 """
 
 import os
 import shutil
+import signal
 import subprocess
 import sys
+import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 EXAMPLE = os.path.join(ROOT, "tools", "mutate", "example")
@@ -68,6 +76,27 @@ def run_mutations(work, test, label):
     return survivors, output, proc.returncode
 
 
+def processes_under(directory):
+    """The processes whose program or working directory lies under the directory: (pid, path).
+
+    Read from /proc. The program of a mutant whose directory is already removed is still
+    found: its link reads '<path> (deleted)'."""
+    found = []
+    prefix = os.path.realpath(directory) + os.sep
+    for name in os.listdir("/proc"):
+        if not name.isdigit() or int(name) == os.getpid():
+            continue
+        for link in ("exe", "cwd"):
+            try:
+                path = os.readlink(os.path.join("/proc", name, link))
+            except OSError:
+                continue
+            if path.startswith(prefix):
+                found.append((int(name), path))
+                break
+    return found
+
+
 def main():
     os.makedirs(SCRATCH, exist_ok=True)
 
@@ -103,8 +132,19 @@ def main():
         print("selftest: FAILED: no mutant timed out, so the timeout of the tool is not exercised")
         ok = False
 
+    time.sleep(0.5)
+    left = processes_under(SCRATCH)
+    for pid, path in left:
+        print("selftest: FAILED: process %d of a mutant is still running: %s" % (pid, path))
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except OSError:
+            pass
+        ok = False
+
     if ok:
-        print("selftest: passed: the weak test leaves a survivor, the strong test leaves none")
+        print("selftest: passed: the weak test leaves a survivor, the strong test leaves none, "
+              "and no process of a mutant is left")
         return 0
     return 1
 
