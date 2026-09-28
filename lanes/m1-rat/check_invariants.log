@@ -1,0 +1,20 @@
+   set: no abort
+   swap: no abort
+   identical: no abort
+   get_fmpq: no abort
+   is_zero: no abort
+   equal: no abort
+   sgn: no abort
+   add: no abort
+   sub: no abort
+   mul: no abort
+   neg: no abort
+   div: no abort
+   inv: no abort
+1. built with -DADF_CHECK_INVARIANTS: 0 of 14 functions abort on the input 8/2
+FINDING: the check of conventions 4.4 is not implemented for adf_rat; a non-canonical
+         input is a precondition violation whose behaviour is undefined, and today it is
+         silent. The code is in the report of the lane; it belongs in one place for every
+         type, together with a Makefile target that builds with the flag.
+2. adf_rat_is_canonical reports 0 for 8/2, with and without the flag
+check_invariants: demonstration finished (not a gate)

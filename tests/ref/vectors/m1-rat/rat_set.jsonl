@@ -1,0 +1,448 @@
+{"den": 1, "num": 0, "op": "set_fmpz2", "result": {"den": 1, "num": 0}}
+{"den": 1, "num": 0, "op": "set_fmpq", "result": {"den": 1, "num": 0}}
+{"a": {"den": 1, "num": 0}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"a": {"den": 1, "num": 0}, "op": "inv", "status": "NOT_UNIT"}
+{"den": 5, "num": 0, "op": "set_fmpz2", "result": {"den": 1, "num": 0}}
+{"den": 5, "num": 0, "op": "set_fmpq", "result": {"den": 1, "num": 0}}
+{"a": {"den": 1, "num": 0}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"a": {"den": 1, "num": 0}, "op": "inv", "status": "NOT_UNIT"}
+{"den": 1, "num": 1, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 1, "num": 1, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"a": {"den": 1, "num": 1}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 1, "num": -1, "op": "set_fmpz2", "result": {"den": 1, "num": -1}}
+{"den": 1, "num": -1, "op": "set_fmpq", "result": {"den": 1, "num": -1}}
+{"a": {"den": 1, "num": -1}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 3, "num": 6, "op": "set_fmpz2", "result": {"den": 1, "num": 2}}
+{"den": 3, "num": 6, "op": "set_fmpq", "result": {"den": 1, "num": 2}}
+{"a": {"den": 1, "num": 2}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": -3, "num": 6, "op": "set_fmpz2", "result": {"den": 1, "num": -2}}
+{"den": -3, "num": 6, "op": "set_fmpq", "result": {"den": 1, "num": -2}}
+{"a": {"den": 1, "num": -2}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 3, "num": -6, "op": "set_fmpz2", "result": {"den": 1, "num": -2}}
+{"den": 3, "num": -6, "op": "set_fmpq", "result": {"den": 1, "num": -2}}
+{"a": {"den": 1, "num": -2}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": -3, "num": -6, "op": "set_fmpz2", "result": {"den": 1, "num": 2}}
+{"den": -3, "num": -6, "op": "set_fmpq", "result": {"den": 1, "num": 2}}
+{"a": {"den": 1, "num": 2}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 18, "num": 12, "op": "set_fmpz2", "result": {"den": 3, "num": 2}}
+{"den": 18, "num": 12, "op": "set_fmpq", "result": {"den": 3, "num": 2}}
+{"a": {"den": 3, "num": 2}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 1, "num": 5, "op": "set_fmpz2", "result": {"den": 1, "num": 5}}
+{"den": 1, "num": 5, "op": "set_fmpq", "result": {"den": 1, "num": 5}}
+{"a": {"den": 1, "num": 5}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 1, "num": -5, "op": "set_fmpz2", "result": {"den": 1, "num": -5}}
+{"den": 1, "num": -5, "op": "set_fmpq", "result": {"den": 1, "num": -5}}
+{"a": {"den": 1, "num": -5}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 100000000000000000000000000000000000000000000000022, "num": 100000000000000000000000000000000000000000000000011, "op": "set_fmpz2", "result": {"den": 100000000000000000000000000000000000000000000000022, "num": 100000000000000000000000000000000000000000000000011}}
+{"den": 100000000000000000000000000000000000000000000000022, "num": 100000000000000000000000000000000000000000000000011, "op": "set_fmpq", "result": {"den": 100000000000000000000000000000000000000000000000022, "num": 100000000000000000000000000000000000000000000000011}}
+{"a": {"den": 100000000000000000000000000000000000000000000000022, "num": 100000000000000000000000000000000000000000000000011}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "num": 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "num": 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"a": {"den": 1, "num": 1}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "num": -2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "op": "set_fmpz2", "result": {"den": 1, "num": -1}}
+{"den": 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "num": -2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376, "op": "set_fmpq", "result": {"den": 1, "num": -1}}
+{"a": {"den": 1, "num": -1}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"den": -1000000000000000000000000000000, "num": 0, "op": "set_fmpz2", "result": {"den": 1, "num": 0}}
+{"den": -1000000000000000000000000000000, "num": 0, "op": "set_fmpq", "result": {"den": 1, "num": 0}}
+{"a": {"den": 1, "num": 0}, "b": {"den": 1, "num": 0}, "op": "div", "status": "NOT_UNIT"}
+{"a": {"den": 1, "num": 0}, "op": "inv", "status": "NOT_UNIT"}
+{"den": 0, "num": -5, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -5, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 6, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": 6, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": 0, "num": -1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -4, "num": -2, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": -4, "num": -2, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 5, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 5, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 11, "num": 3, "op": "set_fmpz2", "result": {"den": 11, "num": 3}}
+{"den": 11, "num": 3, "op": "set_fmpq", "result": {"den": 11, "num": 3}}
+{"den": 12, "num": -4, "op": "set_fmpz2", "result": {"den": 3, "num": -1}}
+{"den": 12, "num": -4, "op": "set_fmpq", "result": {"den": 3, "num": -1}}
+{"den": -6, "num": -4, "op": "set_fmpz2", "result": {"den": 3, "num": 2}}
+{"den": -6, "num": -4, "op": "set_fmpq", "result": {"den": 3, "num": 2}}
+{"den": 7, "num": -1, "op": "set_fmpz2", "result": {"den": 7, "num": -1}}
+{"den": 7, "num": -1, "op": "set_fmpq", "result": {"den": 7, "num": -1}}
+{"den": -9, "num": -1, "op": "set_fmpz2", "result": {"den": 9, "num": 1}}
+{"den": -9, "num": -1, "op": "set_fmpq", "result": {"den": 9, "num": 1}}
+{"den": 1, "num": -8, "op": "set_fmpz2", "result": {"den": 1, "num": -8}}
+{"den": 1, "num": -8, "op": "set_fmpq", "result": {"den": 1, "num": -8}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 24, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 24, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 12, "num": -34, "op": "set_fmpz2", "result": {"den": 6, "num": -17}}
+{"den": 12, "num": -34, "op": "set_fmpq", "result": {"den": 6, "num": -17}}
+{"den": 12, "num": -4, "op": "set_fmpz2", "result": {"den": 3, "num": -1}}
+{"den": 12, "num": -4, "op": "set_fmpq", "result": {"den": 3, "num": -1}}
+{"den": 0, "num": 7, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 7, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -11, "num": 32, "op": "set_fmpz2", "result": {"den": 11, "num": -32}}
+{"den": -11, "num": 32, "op": "set_fmpq", "result": {"den": 11, "num": -32}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 10, "num": 6, "op": "set_fmpz2", "result": {"den": 5, "num": 3}}
+{"den": 10, "num": 6, "op": "set_fmpq", "result": {"den": 5, "num": 3}}
+{"den": 7, "num": -1, "op": "set_fmpz2", "result": {"den": 7, "num": -1}}
+{"den": 7, "num": -1, "op": "set_fmpq", "result": {"den": 7, "num": -1}}
+{"den": -8, "num": 3, "op": "set_fmpz2", "result": {"den": 8, "num": -3}}
+{"den": -8, "num": 3, "op": "set_fmpq", "result": {"den": 8, "num": -3}}
+{"den": 9, "num": -27, "op": "set_fmpz2", "result": {"den": 1, "num": -3}}
+{"den": 9, "num": -27, "op": "set_fmpq", "result": {"den": 1, "num": -3}}
+{"den": 0, "num": -4, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -4, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 6, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": 6, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": 12, "num": 7, "op": "set_fmpz2", "result": {"den": 12, "num": 7}}
+{"den": 12, "num": 7, "op": "set_fmpq", "result": {"den": 12, "num": 7}}
+{"den": 6, "num": -2, "op": "set_fmpz2", "result": {"den": 3, "num": -1}}
+{"den": 6, "num": -2, "op": "set_fmpq", "result": {"den": 3, "num": -1}}
+{"den": 6, "num": 6, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 6, "num": 6, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": 6, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": 6, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": 7, "num": 7, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 7, "num": 7, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": -4, "num": -8, "op": "set_fmpz2", "result": {"den": 1, "num": 2}}
+{"den": -4, "num": -8, "op": "set_fmpq", "result": {"den": 1, "num": 2}}
+{"den": 12, "num": -1, "op": "set_fmpz2", "result": {"den": 12, "num": -1}}
+{"den": 12, "num": -1, "op": "set_fmpq", "result": {"den": 12, "num": -1}}
+{"den": -1, "num": 6, "op": "set_fmpz2", "result": {"den": 1, "num": -6}}
+{"den": -1, "num": 6, "op": "set_fmpq", "result": {"den": 1, "num": -6}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 1, "num": -1, "op": "set_fmpz2", "result": {"den": 1, "num": -1}}
+{"den": 1, "num": -1, "op": "set_fmpq", "result": {"den": 1, "num": -1}}
+{"den": -3, "num": 2, "op": "set_fmpz2", "result": {"den": 3, "num": -2}}
+{"den": -3, "num": 2, "op": "set_fmpq", "result": {"den": 3, "num": -2}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -8, "num": 26, "op": "set_fmpz2", "result": {"den": 4, "num": -13}}
+{"den": -8, "num": 26, "op": "set_fmpq", "result": {"den": 4, "num": -13}}
+{"den": 6, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": 6, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": -12, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": -1}}
+{"den": -12, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": -1}}
+{"den": 3, "num": -3, "op": "set_fmpz2", "result": {"den": 1, "num": -1}}
+{"den": 3, "num": -3, "op": "set_fmpq", "result": {"den": 1, "num": -1}}
+{"den": 0, "num": 35, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 35, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -5, "num": -2, "op": "set_fmpz2", "result": {"den": 5, "num": 2}}
+{"den": -5, "num": -2, "op": "set_fmpq", "result": {"den": 5, "num": 2}}
+{"den": 0, "num": 7, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 7, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 12, "num": -2, "op": "set_fmpz2", "result": {"den": 6, "num": -1}}
+{"den": 12, "num": -2, "op": "set_fmpq", "result": {"den": 6, "num": -1}}
+{"den": -2, "num": 1, "op": "set_fmpz2", "result": {"den": 2, "num": -1}}
+{"den": -2, "num": 1, "op": "set_fmpq", "result": {"den": 2, "num": -1}}
+{"den": 10, "num": 6, "op": "set_fmpz2", "result": {"den": 5, "num": 3}}
+{"den": 10, "num": 6, "op": "set_fmpq", "result": {"den": 5, "num": 3}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 8, "num": 36, "op": "set_fmpz2", "result": {"den": 2, "num": 9}}
+{"den": 8, "num": 36, "op": "set_fmpq", "result": {"den": 2, "num": 9}}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -10, "num": -30, "op": "set_fmpz2", "result": {"den": 1, "num": 3}}
+{"den": -10, "num": -30, "op": "set_fmpq", "result": {"den": 1, "num": 3}}
+{"den": -11, "num": -2, "op": "set_fmpz2", "result": {"den": 11, "num": 2}}
+{"den": -11, "num": -2, "op": "set_fmpq", "result": {"den": 11, "num": 2}}
+{"den": -12, "num": 36, "op": "set_fmpz2", "result": {"den": 1, "num": -3}}
+{"den": -12, "num": 36, "op": "set_fmpq", "result": {"den": 1, "num": -3}}
+{"den": -9, "num": 1, "op": "set_fmpz2", "result": {"den": 9, "num": -1}}
+{"den": -9, "num": 1, "op": "set_fmpq", "result": {"den": 9, "num": -1}}
+{"den": 0, "num": -29, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -29, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -12, "num": -3, "op": "set_fmpz2", "result": {"den": 4, "num": 1}}
+{"den": -12, "num": -3, "op": "set_fmpq", "result": {"den": 4, "num": 1}}
+{"den": 6, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": 6, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": 10, "num": 3, "op": "set_fmpz2", "result": {"den": 10, "num": 3}}
+{"den": 10, "num": 3, "op": "set_fmpq", "result": {"den": 10, "num": 3}}
+{"den": -3, "num": 2, "op": "set_fmpz2", "result": {"den": 3, "num": -2}}
+{"den": -3, "num": 2, "op": "set_fmpq", "result": {"den": 3, "num": -2}}
+{"den": 5, "num": 1, "op": "set_fmpz2", "result": {"den": 5, "num": 1}}
+{"den": 5, "num": 1, "op": "set_fmpq", "result": {"den": 5, "num": 1}}
+{"den": 10, "num": 21, "op": "set_fmpz2", "result": {"den": 10, "num": 21}}
+{"den": 10, "num": 21, "op": "set_fmpq", "result": {"den": 10, "num": 21}}
+{"den": -5, "num": -1, "op": "set_fmpz2", "result": {"den": 5, "num": 1}}
+{"den": -5, "num": -1, "op": "set_fmpq", "result": {"den": 5, "num": 1}}
+{"den": 0, "num": 2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -5, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -5, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -5, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -5, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -10, "num": 3, "op": "set_fmpz2", "result": {"den": 10, "num": -3}}
+{"den": -10, "num": 3, "op": "set_fmpq", "result": {"den": 10, "num": -3}}
+{"den": 0, "num": 5, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 5, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -4, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": -3}}
+{"den": -4, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": -3}}
+{"den": 0, "num": 14, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 14, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 5, "num": -34, "op": "set_fmpz2", "result": {"den": 5, "num": -34}}
+{"den": 5, "num": -34, "op": "set_fmpq", "result": {"den": 5, "num": -34}}
+{"den": 3, "num": 3, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 3, "num": 3, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": 9, "num": 3, "op": "set_fmpz2", "result": {"den": 3, "num": 1}}
+{"den": 9, "num": 3, "op": "set_fmpq", "result": {"den": 3, "num": 1}}
+{"den": 0, "num": -28, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -28, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 11, "num": 1, "op": "set_fmpz2", "result": {"den": 11, "num": 1}}
+{"den": 11, "num": 1, "op": "set_fmpq", "result": {"den": 11, "num": 1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -4, "num": -2, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": -4, "num": -2, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": -4, "num": -3, "op": "set_fmpz2", "result": {"den": 4, "num": 3}}
+{"den": -4, "num": -3, "op": "set_fmpq", "result": {"den": 4, "num": 3}}
+{"den": -6, "num": -2, "op": "set_fmpz2", "result": {"den": 3, "num": 1}}
+{"den": -6, "num": -2, "op": "set_fmpq", "result": {"den": 3, "num": 1}}
+{"den": -11, "num": -6, "op": "set_fmpz2", "result": {"den": 11, "num": 6}}
+{"den": -11, "num": -6, "op": "set_fmpq", "result": {"den": 11, "num": 6}}
+{"den": 7, "num": -27, "op": "set_fmpz2", "result": {"den": 7, "num": -27}}
+{"den": 7, "num": -27, "op": "set_fmpq", "result": {"den": 7, "num": -27}}
+{"den": -8, "num": 7, "op": "set_fmpz2", "result": {"den": 8, "num": -7}}
+{"den": -8, "num": 7, "op": "set_fmpq", "result": {"den": 8, "num": -7}}
+{"den": 0, "num": -3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -35, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -35, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 12, "num": 7, "op": "set_fmpz2", "result": {"den": 12, "num": 7}}
+{"den": 12, "num": 7, "op": "set_fmpq", "result": {"den": 12, "num": 7}}
+{"den": 10, "num": -10, "op": "set_fmpz2", "result": {"den": 1, "num": -1}}
+{"den": 10, "num": -10, "op": "set_fmpq", "result": {"den": 1, "num": -1}}
+{"den": 0, "num": 30, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 30, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -39, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -39, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -6, "num": 1, "op": "set_fmpz2", "result": {"den": 6, "num": -1}}
+{"den": -6, "num": 1, "op": "set_fmpq", "result": {"den": 6, "num": -1}}
+{"den": 4, "num": 1, "op": "set_fmpz2", "result": {"den": 4, "num": 1}}
+{"den": 4, "num": 1, "op": "set_fmpq", "result": {"den": 4, "num": 1}}
+{"den": -12, "num": 1, "op": "set_fmpz2", "result": {"den": 12, "num": -1}}
+{"den": -12, "num": 1, "op": "set_fmpq", "result": {"den": 12, "num": -1}}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -2, "num": -1, "op": "set_fmpz2", "result": {"den": 2, "num": 1}}
+{"den": -2, "num": -1, "op": "set_fmpq", "result": {"den": 2, "num": 1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -4, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": -3}}
+{"den": -4, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": -3}}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 6, "num": 1, "op": "set_fmpz2", "result": {"den": 6, "num": 1}}
+{"den": 6, "num": 1, "op": "set_fmpq", "result": {"den": 6, "num": 1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -2, "num": -7, "op": "set_fmpz2", "result": {"den": 2, "num": 7}}
+{"den": -2, "num": -7, "op": "set_fmpq", "result": {"den": 2, "num": 7}}
+{"den": 0, "num": 27, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 27, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -10, "num": -30, "op": "set_fmpz2", "result": {"den": 1, "num": 3}}
+{"den": -10, "num": -30, "op": "set_fmpq", "result": {"den": 1, "num": 3}}
+{"den": 0, "num": -7, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -7, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 6, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 6, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 1, "num": -12, "op": "set_fmpz2", "result": {"den": 1, "num": -12}}
+{"den": 1, "num": -12, "op": "set_fmpq", "result": {"den": 1, "num": -12}}
+{"den": -1, "num": 1, "op": "set_fmpz2", "result": {"den": 1, "num": -1}}
+{"den": -1, "num": 1, "op": "set_fmpq", "result": {"den": 1, "num": -1}}
+{"den": 11, "num": 1, "op": "set_fmpz2", "result": {"den": 11, "num": 1}}
+{"den": 11, "num": 1, "op": "set_fmpq", "result": {"den": 11, "num": 1}}
+{"den": -6, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": -1}}
+{"den": -6, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": -1}}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 7, "num": -33, "op": "set_fmpz2", "result": {"den": 7, "num": -33}}
+{"den": 7, "num": -33, "op": "set_fmpq", "result": {"den": 7, "num": -33}}
+{"den": -8, "num": 1, "op": "set_fmpz2", "result": {"den": 8, "num": -1}}
+{"den": -8, "num": 1, "op": "set_fmpq", "result": {"den": 8, "num": -1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -7, "num": 2, "op": "set_fmpz2", "result": {"den": 7, "num": -2}}
+{"den": -7, "num": 2, "op": "set_fmpq", "result": {"den": 7, "num": -2}}
+{"den": -1, "num": 3, "op": "set_fmpz2", "result": {"den": 1, "num": -3}}
+{"den": -1, "num": 3, "op": "set_fmpq", "result": {"den": 1, "num": -3}}
+{"den": 12, "num": 1, "op": "set_fmpz2", "result": {"den": 12, "num": 1}}
+{"den": 12, "num": 1, "op": "set_fmpq", "result": {"den": 12, "num": 1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 3, "num": 3, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 3, "num": 3, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -5, "num": -1, "op": "set_fmpz2", "result": {"den": 5, "num": 1}}
+{"den": -5, "num": -1, "op": "set_fmpq", "result": {"den": 5, "num": 1}}
+{"den": -5, "num": 6, "op": "set_fmpz2", "result": {"den": 5, "num": -6}}
+{"den": -5, "num": 6, "op": "set_fmpq", "result": {"den": 5, "num": -6}}
+{"den": -1, "num": 1, "op": "set_fmpz2", "result": {"den": 1, "num": -1}}
+{"den": -1, "num": 1, "op": "set_fmpq", "result": {"den": 1, "num": -1}}
+{"den": 0, "num": 7, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 7, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 4, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 4, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 10, "num": 3, "op": "set_fmpz2", "result": {"den": 10, "num": 3}}
+{"den": 10, "num": 3, "op": "set_fmpq", "result": {"den": 10, "num": 3}}
+{"den": 0, "num": 2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 8, "num": 3, "op": "set_fmpz2", "result": {"den": 8, "num": 3}}
+{"den": 8, "num": 3, "op": "set_fmpq", "result": {"den": 8, "num": 3}}
+{"den": -8, "num": 4, "op": "set_fmpz2", "result": {"den": 2, "num": -1}}
+{"den": -8, "num": 4, "op": "set_fmpq", "result": {"den": 2, "num": -1}}
+{"den": -7, "num": 40, "op": "set_fmpz2", "result": {"den": 7, "num": -40}}
+{"den": -7, "num": 40, "op": "set_fmpq", "result": {"den": 7, "num": -40}}
+{"den": -4, "num": -1, "op": "set_fmpz2", "result": {"den": 4, "num": 1}}
+{"den": -4, "num": -1, "op": "set_fmpq", "result": {"den": 4, "num": 1}}
+{"den": 10, "num": 3, "op": "set_fmpz2", "result": {"den": 10, "num": 3}}
+{"den": 10, "num": 3, "op": "set_fmpq", "result": {"den": 10, "num": 3}}
+{"den": -11, "num": -7, "op": "set_fmpz2", "result": {"den": 11, "num": 7}}
+{"den": -11, "num": -7, "op": "set_fmpq", "result": {"den": 11, "num": 7}}
+{"den": 9, "num": -18, "op": "set_fmpz2", "result": {"den": 1, "num": -2}}
+{"den": 9, "num": -18, "op": "set_fmpq", "result": {"den": 1, "num": -2}}
+{"den": -9, "num": -2, "op": "set_fmpz2", "result": {"den": 9, "num": 2}}
+{"den": -9, "num": -2, "op": "set_fmpq", "result": {"den": 9, "num": 2}}
+{"den": 9, "num": 28, "op": "set_fmpz2", "result": {"den": 9, "num": 28}}
+{"den": 9, "num": 28, "op": "set_fmpq", "result": {"den": 9, "num": 28}}
+{"den": -4, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": -3}}
+{"den": -4, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": -3}}
+{"den": -3, "num": 40, "op": "set_fmpz2", "result": {"den": 3, "num": -40}}
+{"den": -3, "num": 40, "op": "set_fmpq", "result": {"den": 3, "num": -40}}
+{"den": 9, "num": 1, "op": "set_fmpz2", "result": {"den": 9, "num": 1}}
+{"den": 9, "num": 1, "op": "set_fmpq", "result": {"den": 9, "num": 1}}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -8, "num": 3, "op": "set_fmpz2", "result": {"den": 8, "num": -3}}
+{"den": -8, "num": 3, "op": "set_fmpq", "result": {"den": 8, "num": -3}}
+{"den": 12, "num": -7, "op": "set_fmpz2", "result": {"den": 12, "num": -7}}
+{"den": 12, "num": -7, "op": "set_fmpq", "result": {"den": 12, "num": -7}}
+{"den": 4, "num": 12, "op": "set_fmpz2", "result": {"den": 1, "num": 3}}
+{"den": 4, "num": 12, "op": "set_fmpq", "result": {"den": 1, "num": 3}}
+{"den": -1, "num": -1, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": -1, "num": -1, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": -1, "num": -5, "op": "set_fmpz2", "result": {"den": 1, "num": 5}}
+{"den": -1, "num": -5, "op": "set_fmpq", "result": {"den": 1, "num": 5}}
+{"den": 0, "num": -4, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -4, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -6, "num": 2, "op": "set_fmpz2", "result": {"den": 3, "num": -1}}
+{"den": -6, "num": 2, "op": "set_fmpq", "result": {"den": 3, "num": -1}}
+{"den": 4, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": 3}}
+{"den": 4, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": 3}}
+{"den": 5, "num": 3, "op": "set_fmpz2", "result": {"den": 5, "num": 3}}
+{"den": 5, "num": 3, "op": "set_fmpq", "result": {"den": 5, "num": 3}}
+{"den": -1, "num": 3, "op": "set_fmpz2", "result": {"den": 1, "num": -3}}
+{"den": -1, "num": 3, "op": "set_fmpq", "result": {"den": 1, "num": -3}}
+{"den": 0, "num": 27, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 27, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 4, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": 3}}
+{"den": 4, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": 3}}
+{"den": 0, "num": 4, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 4, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -7, "num": -1, "op": "set_fmpz2", "result": {"den": 7, "num": 1}}
+{"den": -7, "num": -1, "op": "set_fmpq", "result": {"den": 7, "num": 1}}
+{"den": -3, "num": 35, "op": "set_fmpz2", "result": {"den": 3, "num": -35}}
+{"den": -3, "num": 35, "op": "set_fmpq", "result": {"den": 3, "num": -35}}
+{"den": 8, "num": -2, "op": "set_fmpz2", "result": {"den": 4, "num": -1}}
+{"den": 8, "num": -2, "op": "set_fmpq", "result": {"den": 4, "num": -1}}
+{"den": 4, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": 3}}
+{"den": 4, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": 3}}
+{"den": -8, "num": -1, "op": "set_fmpz2", "result": {"den": 8, "num": 1}}
+{"den": -8, "num": -1, "op": "set_fmpq", "result": {"den": 8, "num": 1}}
+{"den": 9, "num": 2, "op": "set_fmpz2", "result": {"den": 9, "num": 2}}
+{"den": 9, "num": 2, "op": "set_fmpq", "result": {"den": 9, "num": 2}}
+{"den": 12, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": 1}}
+{"den": 12, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": 1}}
+{"den": 12, "num": -1, "op": "set_fmpz2", "result": {"den": 12, "num": -1}}
+{"den": 12, "num": -1, "op": "set_fmpq", "result": {"den": 12, "num": -1}}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 3, "num": 3, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 3, "num": 3, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": 4, "num": -1, "op": "set_fmpz2", "result": {"den": 4, "num": -1}}
+{"den": 4, "num": -1, "op": "set_fmpq", "result": {"den": 4, "num": -1}}
+{"den": 7, "num": 16, "op": "set_fmpz2", "result": {"den": 7, "num": 16}}
+{"den": 7, "num": 16, "op": "set_fmpq", "result": {"den": 7, "num": 16}}
+{"den": 0, "num": -1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 3, "num": 3, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": 3, "num": 3, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": 0, "num": 5, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 5, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -6, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": -1}}
+{"den": -6, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": -1}}
+{"den": -4, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": -3}}
+{"den": -4, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": -3}}
+{"den": 0, "num": -21, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -21, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 12, "num": -1, "op": "set_fmpz2", "result": {"den": 12, "num": -1}}
+{"den": 12, "num": -1, "op": "set_fmpq", "result": {"den": 12, "num": -1}}
+{"den": 0, "num": 2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": -2, "num": -2, "op": "set_fmpz2", "result": {"den": 1, "num": 1}}
+{"den": -2, "num": -2, "op": "set_fmpq", "result": {"den": 1, "num": 1}}
+{"den": -10, "num": -2, "op": "set_fmpz2", "result": {"den": 5, "num": 1}}
+{"den": -10, "num": -2, "op": "set_fmpq", "result": {"den": 5, "num": 1}}
+{"den": -2, "num": 3, "op": "set_fmpz2", "result": {"den": 2, "num": -3}}
+{"den": -2, "num": 3, "op": "set_fmpq", "result": {"den": 2, "num": -3}}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 12, "num": 3, "op": "set_fmpz2", "result": {"den": 4, "num": 1}}
+{"den": 12, "num": 3, "op": "set_fmpq", "result": {"den": 4, "num": 1}}
+{"den": -7, "num": -11, "op": "set_fmpz2", "result": {"den": 7, "num": 11}}
+{"den": -7, "num": -11, "op": "set_fmpq", "result": {"den": 7, "num": 11}}
+{"den": 0, "num": 1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 1, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": 3, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -2, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 11, "num": 3, "op": "set_fmpz2", "result": {"den": 11, "num": 3}}
+{"den": 11, "num": 3, "op": "set_fmpq", "result": {"den": 11, "num": 3}}
+{"den": 0, "num": -21, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -21, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -20, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -20, "op": "set_fmpq", "status": "DOMAIN"}
+{"den": 0, "num": -1, "op": "set_fmpz2", "status": "DOMAIN"}
+{"den": 0, "num": -1, "op": "set_fmpq", "status": "DOMAIN"}
