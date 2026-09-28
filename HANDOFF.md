@@ -2,7 +2,65 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-27 (evening): orchestration set up, first wave of milestone 0 launched
+## Session 2026-09-28 (day): milestone 1 implemented and reviewed; repairs of the review in progress
+
+**State (15:40).** All 193 declared functions of milestone 1 are on master (`make check`: 34 test programs,
+with gcc, clang and `SAN=1`; `tests/test_driver.sh`, `tests/test_julia.sh`, `tests/test_exports.sh` pass).
+Everything is pushed. The milestone is NOT closed: the code review found defects.
+
+**Code review, round 1** (`docs/reviews/m1/<name>/review.md`, rules `lanes/m1-review/COMMON.md`):
+
+| Reviewer | Model | Findings | Repair |
+|---|---|---|---|
+| local | codex gpt-6-astra | 1 BLOCKER, 2 MAJOR, 1 MINOR | R2 settled by M1-D2; R1, R4 merged (`lanes/m1-repair-cap`); R3 open (adf-xk4) |
+| arith | Claude opus | 1 BLOCKER, 2 MAJOR, 3 MINOR | lanes m1-repair-recon, m1-repair-adele (stopped, see below) |
+| contexts | Claude opus | 1 BLOCKER, 2 MAJOR, 3 MINOR | lane m1-repair-ctx (stopped); R3, R4 done by lane m1-dump |
+| text | codex gpt-6-astra | 1 BLOCKER, 6 MAJOR, 3 MINOR | R1 by M1-D2; R5 by lane m1-dump; R6 merged; lane m1-repair-text (stopped) |
+| surface | Claude opus | 0 BLOCKER, 3 MAJOR, 12 MINOR | lane m1-repair-tools (stopped); lane m1-repair-driver (brief written, not started) |
+
+No reviewer found a wrong enclosure in the tight arithmetic, the local backend, the scaled arithmetic or the
+reader of the value form. Decisions M1-D1 to M1-D7 of the orchestrator are in `docs/SPEC.md` section 15; TJO has
+not yet said whether he accepts M1-D2 to M1-D7 (M1-D6 changes the interface: a printer may return NULL).
+
+**Five repair lanes were stopped at 15:30 by the harness because the machine ran low on memory** (not a
+failure of the lanes; do not restart without TJO's word). Their work is in the worktrees under
+`../adelefeld-wt/<lane>/`, uncommitted; in each of them `make check` passes as the lane left it:
+
+| Lane | Model | What is there |
+|---|---|---|
+| m1-repair-recon | pi space-bunny-alpha | `src/recon.c` changed; red and green logs; a mutation run of the lane was still running at 15:35 (orphan, `nohup`) |
+| m1-repair-adele | pi deepseek (OpenRouter) | `src/adele.c`, comments in `rat.c`, `fball.c`; `tests/test_adele_lowprec.c`; it changed `tests/ref/vectors/m1-adele/set_rat.jsonl`, which it does not own: look at that first |
+| m1-repair-ctx | pi mimo-v2.6-pro | nothing written |
+| m1-repair-text | pi deepseek (OpenRouter) | `src/text.c`, `proto/text_grammar.py`, corpus prefixed (288 files) |
+| m1-repair-tools | pi space-bunny-alpha | `mutate.py`, `selftest.py`, a converted `equivalent.new.txt` |
+
+To resume a lane: `tools/orch/wt_lane.sh <lane> pi <model> high` starts a new first attempt in the same
+worktree (the files are kept; the brief tells the lane to read what is there). Run at most two or three
+lanes at once, and never two mutation runs at once: the memory pressure came with five lanes, each with its
+own build and mutation run, next to the desktop.
+
+**Next.**
+1. TJO: accept or change M1-D2 to M1-D7; say which budget the dump review and the closure check may use
+   (codex is at 32% of the 38% authorised; Claude weekly 81%, 3 points behind pace).
+2. Resume the five repair lanes, two at a time; then m1-repair-driver; then `ADF_CHECK_INVARIANTS` (adf-xk4).
+3. Review of the dump form (adf-8ju), by a model of another family than Claude opus.
+4. Closure check (adf-igt): each reviewer re-judges its findings against the repaired code.
+5. Mutation sweep with keys without line numbers (part of m1-repair-tools); `equivalent.txt` is stale for
+   `src/fball.c` and `src/scaled.c`; entries proposed by lanes are in `lanes/*/equivalent-added.txt`.
+6. Benchmarks on a quiet machine; then close milestone 1 in `docs/PLAN.md`.
+
+**Things to know.**
+- Claude subagents with worktree isolation start from the pushed commit: push before launching; paste the
+  task into the prompt; they cannot write `report.md` (save it from the final message).
+- `pkill -f` with a pattern that matches the calling shell kills it: use `ps` and `kill <pid>`.
+- `deepseek/deepseek-flash` at its own provider has no credit; use `openrouter/~deepseek/deepseek-flash-latest`.
+- Valgrind 3.22 is in `~/.local/opt/valgrind` (wrapper `~/.local/bin/valgrind`), installed without root.
+- Julia's bundled libgmp lacks a symbol that the system FLINT needs; `tests/test_julia.sh` uses `LD_PRELOAD`.
+- Tate's thesis: `refs/src/tate-thesis/` (not in git), two scans, TeX refereed twice, README there.
+  `docs/sources.md` has the rule: the scan is the ground truth, the TeX is not.
+
+
+## Session 2026-09-27 (evening) to 2026-09-28 (morning): orchestration set up, first wave of milestone 0 launched
 
 **Mode of work** (TJO, 2026-09-27): wide, fast, rigorous; an orchestrator (Claude Fable) dispatches lanes and is
 the only one who commits. Model tiers: pi `openrouter/stealth/space-bunny-alpha` (generic code), pi
