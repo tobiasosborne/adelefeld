@@ -1,0 +1,35 @@
+run_id: 2026-09-28T105923Z
+tag: scaled
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+cores_online: 12
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+tsc_present: yes
+tsc_invariant: yes
+cycles_per_ns_trials: 9
+cycles_per_ns_min: 2.68795
+cycles_per_ns_median: 2.68797
+cycles_per_ns_max: 2.68798
+cycles_per_ns_spread: 0.00003
+seed: 20260928
+operand_family: scaled values s (u + K Zhat), s = 5/2, u of the full size of K; K = 2^61 + 3 and K = 2^4095 + 19; contexts without blocks
+trials_per_case: 15
+warm: yes
+allocating: yes (every call allocates its FLINT temporaries)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+scaled_add_word	call_rate	scaled add, one-word modulus	s 5/2, u 61 bit, K 62 bit; one add per call	20260928	yes	yes	20000	20000	24689	157.7949	162.1051	167.0786
+scaled_mul_word	call_rate	scaled mul (default product), one-word modulus	s 5/2, u 61 bit, K 62 bit; one mul per call	20260928	yes	yes	20000	20000	576460752455785487	133.3734	135.5950	137.6372
+scaled_add_4096	call_rate	scaled add, 4096-bit modulus	s 5/2, u 4095 bit, K 4096 bit; one add per call	20260928	yes	yes	20000	20000	108625	1332.5459	1416.9654	1453.0318
+scaled_mul_4096	call_rate	scaled mul (default product), 4096-bit modulus	s 5/2, u 4095 bit, K 4096 bit; one mul per call	20260928	yes	yes	20000	20000	2949739043	7222.1819	7596.8804	12131.6516
+
+# checksum of all case results, computed outside the timed region
+checksum: 576460755101312524

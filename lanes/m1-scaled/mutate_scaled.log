@@ -1,0 +1,464 @@
+mutate: src/scaled.c: 353 mutants
+mutate: 353 mutants, 300 of them run (--limit 300, --seed 20260928)
+mutate: the baseline passes (9.3 s)
+
+SURVIVED src/scaled.c:625:30 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -623,5 +623,5 @@
+           fmpq_mul(y->s, aq, x->s);   /* aq first: y may alias x */
+           fmpz_set(y->u, x->u);
+  -        if (fmpq_sgn(q->q) < 0)
+  +        if (fmpq_sgn(q->q) < 1)
+               fmpz_neg(y->u, y->u);
+           fmpz_fdiv_r(y->u, y->u, K);
+
+
+SURVIVED src/scaled.c:676:9 swap_args: 'fmpz_add(r, r, tb)' -> 'fmpz_add(r, tb, r)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -674,5 +674,5 @@
+           sc_gcd_cofactors(g, ta, tb, x->s, q->q); /* g = gcd(s, q), ta = s/g, tb = q/g */
+           fmpz_mul(r, ta, x->u);
+  -        fmpz_add(r, r, tb);                      /* q/g + (s/g) u */
+  +        fmpz_add(r, tb, r);                      /* q/g + (s/g) u */
+           fmpz_fdiv_r(r, r, K);
+           t.exact = 0;
+
+
+SURVIVED src/scaled.c:544:13 swap_args: 'fmpq_mul(t.s, aq, w->s)' -> 'fmpq_mul(t.s, w->s, aq)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -542,5 +542,5 @@
+               fmpq_init(aq);
+               fmpq_abs(aq, q);
+  -            fmpq_mul(t.s, aq, w->s);
+  +            fmpq_mul(t.s, w->s, aq);
+               fmpq_clear(aq);
+               fmpz_set(r, w->u);
+
+
+SURVIVED src/scaled.c:476:29 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -474,5 +474,5 @@
+               fmpq_clear(aq);
+               fmpz_set(r, w->u);
+  -            if (fmpq_sgn(q) < 0)
+  +            if (fmpq_sgn(q) <= 0)
+                   fmpz_neg(r, r);
+               fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:62:5 drop_call: 'fmpz_zero(x->u);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -60,5 +60,5 @@
+       fmpq_zero(x->s);
+       fmpz_init(x->u);
+  -    fmpz_zero(x->u);
+  +    
+       x->mctx = ctx;
+       x->exact = 1;
+
+
+SURVIVED src/scaled.c:451:9 swap_args: 'fmpz_mul(r, x->u, y->u)' -> 'fmpz_mul(r, y->u, x->u)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -449,5 +449,5 @@
+       else if (x->exact == 0 && y->exact == 0)
+       {
+  -        fmpz_mul(r, x->u, y->u);
+  +        fmpz_mul(r, y->u, x->u);
+           fmpz_fdiv_r(r, r, K);
+           t.exact = 0;
+
+
+SURVIVED src/scaled.c:284:9 swap_args: 'fmpz_mul(t, x->u, Kp)' -> 'fmpz_mul(t, Kp, x->u)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -282,5 +282,5 @@
+       if (lost != NULL)
+       {
+  -        fmpz_mul(t, x->u, Kp);
+  +        fmpz_mul(t, Kp, x->u);
+           *lost = fmpz_divisible(t, K) ? 0 : 1;
+       }
+
+
+SURVIVED src/scaled.c:610:9 drop_call: 'fmpz_zero(y->u);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -608,5 +608,5 @@
+       {
+           fmpq_mul(y->s, q->q, x->s);
+  -        fmpz_zero(y->u);
+  +        
+           y->mctx = x->mctx;
+           y->exact = 1;
+
+
+SURVIVED src/scaled.c:524:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -522,5 +522,5 @@
+           fmpz_fdiv_r(r, r, K);
+           t.exact = 0;
+  -        fmpq_mul(t.s, x->s, y->s);
+  +        fmpq_mul(t.s, y->s, x->s);
+           fmpq_mul_fmpz(t.s, t.s, h);         /* scale s t h (Proposition 10.3) */
+           fmpz_set(t.u, r);
+
+
+SURVIVED src/scaled.c:386:13 swap_args: 'fmpz_mul(r, ta, w->u)' -> 'fmpz_mul(r, w->u, ta)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -384,5 +384,5 @@
+           {
+               sc_gcd_cofactors(g, ta, tb, w->s, q); /* g = gcd(s, q), ta = s/g, tb = q/g */
+  -            fmpz_mul(r, ta, w->u);
+  +            fmpz_mul(r, w->u, ta);
+               fmpz_add(r, r, tb);                   /* q/g + (s/g) u */
+               fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:454:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -452,5 +452,5 @@
+           fmpz_fdiv_r(r, r, K);
+           t.exact = 0;
+  -        fmpq_mul(t.s, x->s, y->s);
+  +        fmpq_mul(t.s, y->s, x->s);
+           fmpz_set(t.u, r);
+       }
+
+
+SURVIVED src/scaled.c:520:9 swap_args: 'fmpz_mul(r, x->u, y->u)' -> 'fmpz_mul(r, y->u, x->u)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -518,5 +518,5 @@
+       {
+           fmpz_gcd3(h, x->u, y->u, K);        /* h = gcd(u, v, K) >= 1 */
+  -        fmpz_mul(r, x->u, y->u);
+  +        fmpz_mul(r, y->u, x->u);
+           fmpz_divexact(r, r, h);             /* h divides u, so it divides u v */
+           fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:209:9 swap_args: 'fmpz_mul(t, d, K)' -> 'fmpz_mul(t, K, d)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -207,5 +207,5 @@
+       {
+           /* s* = gcd(c, R/K) = gcd(A/d, H/(d K)); u* = (c/s*) mod K (Proposition 7) */
+  -        fmpz_mul(t, d, K);
+  +        fmpz_mul(t, K, d);
+           fmpq_set_fmpz_frac(rdivk, H, t);
+           sc_gcd_cofactors(g, abar, bbar, c, rdivk); /* abar = c/s*, the residue before mod K */
+
+
+SURVIVED src/scaled.c:625:28 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -623,5 +623,5 @@
+           fmpq_mul(y->s, aq, x->s);   /* aq first: y may alias x */
+           fmpz_set(y->u, x->u);
+  -        if (fmpq_sgn(q->q) < 0)
+  +        if (fmpq_sgn(q->q) <= 0)
+               fmpz_neg(y->u, y->u);
+           fmpz_fdiv_r(y->u, y->u, K);
+
+
+SURVIVED src/scaled.c:547:31 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -545,5 +545,5 @@
+               fmpq_clear(aq);
+               fmpz_set(r, w->u);
+  -            if (fmpq_sgn(q) < 0)
+  +            if (fmpq_sgn(q) < 1)
+                   fmpz_neg(r, r);
+               fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:466:13 drop_call: 'fmpq_zero(t.s);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -464,5 +464,5 @@
+           {
+               t.exact = 1; /* the exact 0 (precision.md Proposition 6(2)) */
+  -            fmpq_zero(t.s);
+  +            
+           }
+           else
+
+
+SURVIVED src/scaled.c:547:29 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -545,5 +545,5 @@
+               fmpq_clear(aq);
+               fmpz_set(r, w->u);
+  -            if (fmpq_sgn(q) < 0)
+  +            if (fmpq_sgn(q) <= 0)
+                   fmpz_neg(r, r);
+               fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:60:5 drop_call: 'fmpq_zero(x->s);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -58,5 +58,5 @@
+   {
+       fmpq_init(x->s);
+  -    fmpq_zero(x->s);
+  +    
+       fmpz_init(x->u);
+       fmpz_zero(x->u);
+
+
+SURVIVED src/scaled.c:220:13 swap_args: 'fmpz_mul(t, A, K)' -> 'fmpz_mul(t, K, A)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -218,5 +218,5 @@
+           if (lost != NULL)
+           {
+  -            fmpz_mul(t, A, K);
+  +            fmpz_mul(t, K, A);
+               *lost = fmpz_divisible(t, H) ? 0 : 1;
+           }
+
+
+SURVIVED src/scaled.c:363:9 swap_args: 'fmpz_mul(r, ta, x->u)' -> 'fmpz_mul(r, x->u, ta)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -361,5 +361,5 @@
+       {
+           sc_gcd_cofactors(g, ta, tb, x->s, y->s);  /* g, A = s/g, B = t/g */
+  -        fmpz_mul(r, ta, x->u);
+  +        fmpz_mul(r, x->u, ta);
+           fmpz_mul(ta, tb, y->u);
+           fmpz_add(r, r, ta);
+
+
+SURVIVED src/scaled.c:609:9 swap_args: 'fmpq_mul(y->s, q->q, x->s)' -> 'fmpq_mul(y->s, x->s, q->q)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -607,5 +607,5 @@
+       else if (x->exact == 1)
+       {
+  -        fmpq_mul(y->s, q->q, x->s);
+  +        fmpq_mul(y->s, x->s, q->q);
+           fmpz_zero(y->u);
+           y->mctx = x->mctx;
+
+
+SURVIVED src/scaled.c:358:9 swap_args: 'fmpq_add(t.s, x->s, y->s)' -> 'fmpq_add(t.s, y->s, x->s)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -356,5 +356,5 @@
+       {
+           t.exact = 1;
+  -        fmpq_add(t.s, x->s, y->s);
+  +        fmpq_add(t.s, y->s, x->s);
+       }
+       else if (x->exact == 0 && y->exact == 0)
+
+
+SURVIVED src/scaled.c:418:14 swap_args: 'adf_scaled_add(z, x, &t)' -> 'adf_scaled_add(z, &t, x)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -416,5 +416,5 @@
+       adf_scaled_init(&t, x->mctx);
+       adf_scaled_neg(&t, y);
+  -    status = adf_scaled_add(z, x, &t);
+  +    status = adf_scaled_add(z, &t, x);
+       adf_scaled_clear(&t);
+       return status;
+
+
+SURVIVED src/scaled.c:447:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -445,5 +445,5 @@
+       {
+           t.exact = 1;
+  -        fmpq_mul(t.s, x->s, y->s);
+  +        fmpq_mul(t.s, y->s, x->s);
+       }
+       else if (x->exact == 0 && y->exact == 0)
+
+
+SURVIVED src/scaled.c:364:9 swap_args: 'fmpz_mul(ta, tb, y->u)' -> 'fmpz_mul(ta, y->u, tb)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -362,5 +362,5 @@
+           sc_gcd_cofactors(g, ta, tb, x->s, y->s);  /* g, A = s/g, B = t/g */
+           fmpz_mul(r, ta, x->u);
+  -        fmpz_mul(ta, tb, y->u);
+  +        fmpz_mul(ta, y->u, tb);
+           fmpz_add(r, r, ta);
+           fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:476:31 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -474,5 +474,5 @@
+               fmpq_clear(aq);
+               fmpz_set(r, w->u);
+  -            if (fmpq_sgn(q) < 0)
+  +            if (fmpq_sgn(q) < 1)
+                   fmpz_neg(r, r);
+               fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:200:9 drop_call: 'fmpz_zero(y->u);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -198,5 +198,5 @@
+           /* the exact point (closure C5): exact = 1, s = c, u = 0, *lost = 0 */
+           fmpq_set(y->s, c);
+  -        fmpz_zero(y->u);
+  +        
+           y->mctx = ctx;
+           y->exact = 1;
+
+
+SURVIVED src/scaled.c:161:5 drop_call: 'fmpz_zero(y->u);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -159,5 +159,5 @@
+   {
+       fmpq_set(y->s, q->q);
+  -    fmpz_zero(y->u);
+  +    
+       y->mctx = ctx;
+       y->exact = 1;
+
+
+SURVIVED src/scaled.c:653:9 swap_args: 'fmpq_add(t.s, x->s, q->q)' -> 'fmpq_add(t.s, q->q, x->s)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -651,5 +651,5 @@
+       {
+           t.exact = 1;
+  -        fmpq_add(t.s, x->s, q->q);
+  +        fmpq_add(t.s, q->q, x->s);
+           if (lost != NULL)
+               *lost = 0;
+
+
+SURVIVED src/scaled.c:675:9 swap_args: 'fmpz_mul(r, ta, x->u)' -> 'fmpz_mul(r, x->u, ta)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -673,5 +673,5 @@
+           adf_modctx_get_modulus(K, x->mctx);
+           sc_gcd_cofactors(g, ta, tb, x->s, q->q); /* g = gcd(s, q), ta = s/g, tb = q/g */
+  -        fmpz_mul(r, ta, x->u);
+  +        fmpz_mul(r, x->u, ta);
+           fmpz_add(r, r, tb);                      /* q/g + (s/g) u */
+           fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:365:9 swap_args: 'fmpz_add(r, r, ta)' -> 'fmpz_add(r, ta, r)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -363,5 +363,5 @@
+           fmpz_mul(r, ta, x->u);
+           fmpz_mul(ta, tb, y->u);
+  -        fmpz_add(r, r, ta);
+  +        fmpz_add(r, ta, r);
+           fmpz_fdiv_r(r, r, K);
+           t.exact = 0;
+
+
+NOT COMPILED src/scaled.c:137:31 logic: '&&' -> '||'
+  src/scaled.c:137:81: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/scaled.c:663:13 op: '*' -> '+'
+  src/scaled.c:663:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/scaled.c:418:5 drop_assign: 'status = adf_scaled_add(z, x, &t);' -> '' (the statement is removed)
+  src/scaled.c:409:29: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:655:13 op: '*' -> '/'
+  src/scaled.c:655:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/scaled.c:160:5 drop_call: 'fmpq_set(y->s, q->q);' -> '' (the statement is removed)
+  src/scaled.c:158:52: error: unused parameter ‘q’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:258:13 op: '*' -> '+'
+  src/scaled.c:258:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/scaled.c:204:13 op: '*' -> '+'
+  src/scaled.c:204:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/scaled.c:126:5 drop_assign: 'ok = (fmpz_sgn(x->u) >= 0) && (fmpz_cmp(x->u, K) < 0);' -> '' (the statement is removed)
+  src/scaled.c:128:12: error: ‘ok’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/scaled.c:554:5 drop_call: 'adf_scaled_swap(z, &t);' -> '' (the statement is removed)
+  src/scaled.c:498:35: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:663:13 op: '*' -> '/'
+  src/scaled.c:663:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/scaled.c:50:5 drop_call: 'fmpq_gcd_cofactors(g, abar, bbar, a, b);' -> '' (the statement is removed)
+  src/scaled.c:48:25: error: unused parameter ‘g’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:96:5 drop_assign: 'm = x->mctx;' -> '' (the statement is removed)
+  src/scaled.c:98:13: error: ‘m’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/scaled.c:694:5 drop_call: 'adf_scaled_swap(y, &t);' -> '' (the statement is removed)
+  src/scaled.c:643:33: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:204:13 op: '*' -> '/'
+  src/scaled.c:204:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/scaled.c:137:55 logic: '&&' -> '||'
+  src/scaled.c:137:31: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/scaled.c:483:5 drop_call: 'adf_scaled_swap(z, &t);' -> '' (the statement is removed)
+  src/scaled.c:431:29: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:394:5 drop_call: 'adf_scaled_swap(z, &t);' -> '' (the statement is removed)
+  src/scaled.c:338:29: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:258:13 op: '*' -> '/'
+  src/scaled.c:258:13: error: expected expression before ‘/’ token
+
+mutate: 300 mutants in 1597.3 s: 251 killed, 31 survived, 18 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 31 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1

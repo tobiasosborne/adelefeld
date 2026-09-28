@@ -1,0 +1,60 @@
+mutate: src/scaled.c: 353 mutants
+mutate: 353 mutants, 300 of them run (--limit 300, --seed 20260928)
+mutate: the baseline passes (6.2 s)
+
+NOT COMPILED src/scaled.c:137:31 logic: '&&' -> '||'
+  src/scaled.c:137:81: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/scaled.c:663:13 op: '*' -> '+'
+  src/scaled.c:663:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/scaled.c:418:5 drop_assign: 'status = adf_scaled_add(z, x, &t);' -> '' (the statement is removed)
+  src/scaled.c:409:29: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:655:13 op: '*' -> '/'
+  src/scaled.c:655:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/scaled.c:160:5 drop_call: 'fmpq_set(y->s, q->q);' -> '' (the statement is removed)
+  src/scaled.c:158:52: error: unused parameter ‘q’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:258:13 op: '*' -> '+'
+  src/scaled.c:258:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/scaled.c:204:13 op: '*' -> '+'
+  src/scaled.c:204:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/scaled.c:126:5 drop_assign: 'ok = (fmpz_sgn(x->u) >= 0) && (fmpz_cmp(x->u, K) < 0);' -> '' (the statement is removed)
+  src/scaled.c:128:12: error: ‘ok’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/scaled.c:554:5 drop_call: 'adf_scaled_swap(z, &t);' -> '' (the statement is removed)
+  src/scaled.c:498:35: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:663:13 op: '*' -> '/'
+  src/scaled.c:663:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/scaled.c:50:5 drop_call: 'fmpq_gcd_cofactors(g, abar, bbar, a, b);' -> '' (the statement is removed)
+  src/scaled.c:48:25: error: unused parameter ‘g’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:96:5 drop_assign: 'm = x->mctx;' -> '' (the statement is removed)
+  src/scaled.c:98:13: error: ‘m’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/scaled.c:694:5 drop_call: 'adf_scaled_swap(y, &t);' -> '' (the statement is removed)
+  src/scaled.c:643:33: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:204:13 op: '*' -> '/'
+  src/scaled.c:204:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/scaled.c:137:55 logic: '&&' -> '||'
+  src/scaled.c:137:31: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/scaled.c:483:5 drop_call: 'adf_scaled_swap(z, &t);' -> '' (the statement is removed)
+  src/scaled.c:431:29: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:394:5 drop_call: 'adf_scaled_swap(z, &t);' -> '' (the statement is removed)
+  src/scaled.c:338:29: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:258:13 op: '*' -> '/'
+  src/scaled.c:258:13: error: expected expression before ‘/’ token
+
+mutate: 300 mutants in 1581.5 s: 254 killed, 0 survived, 18 not compiled, 0 timed out, 28 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt
