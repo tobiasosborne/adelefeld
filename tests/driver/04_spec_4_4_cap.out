@@ -1,0 +1,8 @@
+(* ; 3 mod 6)
+(* ; 0 mod 1/2)
+(* ; 7/3)
+(* ; 1/2 mod 1)
+true
+false
+error: DOMAIN
+error: DOMAIN

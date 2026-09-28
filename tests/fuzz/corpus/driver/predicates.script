@@ -1,0 +1,10 @@
+neg 1/2
+neg (* ; 3 mod 12)
+neg (1 ; 5 mod 18)
+neg ((1) + (2)*i ; 5 mod 18)
+equal 1/2 with 1/2
+contains 3/2 with (* ; 1/2 mod 1)
+overlaps (* ; 0 mod 2) with (* ; 1 mod 2)
+reconstruct (2 ; 2 mod 1)
+reconstruct (0 ; 3 mod 12)
+show 3 mod 12

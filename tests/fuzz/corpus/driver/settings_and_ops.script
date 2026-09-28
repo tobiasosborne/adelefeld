@@ -1,0 +1,7 @@
+prec 2
+digits 1
+show (1.625 ; 1)
+reconstruct (* ; 1 mod 2) with 0 with 10
+cap (* ; 3 mod 12) with 1/2
+mul ((1) + (2)*i ; 5 mod 18) with (1 ; 5 mod 18)
+div (* ; 5 mod 18) with 0
