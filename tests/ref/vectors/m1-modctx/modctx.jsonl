@@ -133,7 +133,7 @@
 {"max_items": 1048576, "max_len": 1048576, "occurrence": 0, "op": "from_dump", "status": "PARSE", "text": "adf1 Q modctx 6 1 06"}
 {"max_items": 1048576, "max_len": 1048576, "occurrence": 0, "op": "from_dump", "status": "PARSE", "text": "adf1 Q modctx 6 2 2 3 "}
 {"max_items": 1048576, "max_len": 1048576, "occurrence": 0, "op": "from_dump", "status": "PARSE", "text": "adf1  Q modctx 6 1 6"}
-{"max_items": 1048576, "max_len": 1048576, "occurrence": 0, "op": "from_dump", "status": "PARSE", "text": "adf1 Q fball g 1 6 1"}
+{"max_items": 1048576, "max_len": 1048576, "occurrence": 0, "op": "from_dump", "status": "DOMAIN", "text": "adf1 Q fball g 1 6 1"}
 {"max_items": 1048576, "max_len": 1048576, "occurrence": 1, "op": "from_dump", "status": "DOMAIN", "text": "adf1 Q modctx 6 2 2 3"}
 {"max_items": 1, "max_len": 1048576, "occurrence": 0, "op": "from_dump", "status": "LIMIT", "text": "adf1 Q modctx 6 2 2 3"}
 {"max_items": 1048576, "max_len": 5, "occurrence": 0, "op": "from_dump", "status": "LIMIT", "text": "adf1 Q modctx 6 2 2 3"}

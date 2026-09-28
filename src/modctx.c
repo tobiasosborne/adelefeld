@@ -55,24 +55,6 @@ struct adf_modctx_struct
 
 /* ------------------------------------------------------------------ small helpers */
 
-static int
-adf_is_hexdigit(char c)
-{
-    return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f');
-}
-
-static int
-adf_is_hexnonzero(char c)
-{
-    return (c >= '1' && c <= '9') || (c >= 'a' && c <= 'f');
-}
-
-static int
-adf_is_upper(char c)
-{
-    return c >= 'A' && c <= 'Z';
-}
-
 /* The length of the lower-case hexadecimal spelling of v (no leading zeros; "0" for 0). */
 static size_t
 adf_hex_len(ulong v)
@@ -537,281 +519,39 @@ adf_modctx_recombine(fmpz_t out, const adf_modctx_struct * ctx, const ulong * re
     _fmpz_vec_clear(ins, k);
 }
 
-/* ------------------------------------------------------------------ dump loader: body "modctx" */
+/* ------------------------------------------------------------------ dump loader: every body */
 
-/* A cursor is the byte string plus a position. The grammar of the dump form is conventions
-   10.1; a token `h` is `"0" | ["-"] , hnz , { hdig }`, lower-case hexadecimal, no leading
-   zeros. No function here relies on a NUL terminator, and no raw input is passed to a FLINT
-   string function: a validated token is copied into a buffer of its own (8.1, closure D9). */
-
-/* Parse the `h` token at *pos (which is not a space) and stop at the next space or at len.
-   The token must satisfy the grammar. On success writes its span and advances *pos. The span
-   is written before the validation so that a caller that ignores the return value never reads
-   an uninitialised span; the caller always checks the return value. */
-static int
-adf_dump_h(const char * s, size_t len, size_t * pos, const char ** start, size_t * n)
-{
-    size_t i = *pos, b = i, j;
-
-    while (i < len && s[i] != ' ')
-        i++;
-    if (i == b)
-        return 0;
-    *start = s + b;
-    *n = i - b;
-    *pos = i;
-    if (i - b == 1 && s[b] == '0')
-        return 1;                      /* the token "0" */
-    j = b;
-    if (s[j] == '-')
-        j++;
-    if (j >= i || !adf_is_hexnonzero(s[j]))
-        return 0;
-    for (j++; j < i; j++)
-        if (!adf_is_hexdigit(s[j]))
-            return 0;
-    return 1;
-}
-
-/* Parse a validated `h` token into a size_t count. The grammar allows a sign; a negative count
-   and one that does not fit are grammar failures (the reference T.count does the same). */
-static int
-adf_dump_count(const char * s, size_t n, size_t * out)
-{
-    size_t i, v = 0;
-
-    if (n == 0)
-        return 0;
-    if (s[0] == '-')
-        return 0;
-    for (i = 0; i < n; i++)
-    {
-        size_t d;
-        char c = s[i];
-        if (c >= '0' && c <= '9')
-            d = (size_t) (c - '0');
-        else
-            d = (size_t) (c - 'a' + 10);
-        if (v > ((size_t) -1 - d) / 16)
-            return 0;
-        v = v * 16 + d;
-    }
-    *out = v;
-    return 1;
-}
-
-/* Parse a validated `h` token into a word. A leading '-' or a value that does not fit a word
-   is reported through *bad (semantic DOMAIN at stage 6, not a grammar failure). */
-static int
-adf_dump_word(const char * s, size_t n, ulong * out, int * bad)
-{
-    size_t i;
-    ulong v = 0;
-
-    if (n == 0)
-        return 0;
-    if (s[0] == '-')
-    {
-        *bad = 1;
-        return 1;
-    }
-    for (i = 0; i < n; i++)
-    {
-        unsigned d;
-        char c = s[i];
-        if (c >= '0' && c <= '9')
-            d = (unsigned) (c - '0');
-        else
-            d = (unsigned) (c - 'a' + 10);
-        if (v > ((ulong) -1 - d) / 16)
-        {
-            *bad = 1;
-            return 1;
-        }
-        v = v * 16 + d;
-    }
-    *out = v;
-    return 1;
-}
-
-/* Copy a validated token and hand it to fmpz_set_str, so that no raw input reaches FLINT. */
-static void
-adf_dump_fmpz(fmpz_t v, const char * s, size_t n)
-{
-    char * buf = flint_malloc(n + 1);
-    memcpy(buf, s, n);
-    buf[n] = '\0';
-    fmpz_set_str(v, buf, 16);
-    flint_free(buf);
-}
+/* src/dump.c (lane m1-dump): validates any dump in the order of conventions 8.5 (every body of
+   10.1) and copies the context of one occurrence into a descriptor. Returns ADF_OK with *d
+   written, ADF_DOMAIN if the occurrence index is not below the number of occurrences (or the
+   body has none), or the status of the first failing stage; *d is untouched on every status
+   other than ADF_OK. Hidden: not part of the interface (tests/test_exports.sh). Declared here and
+   not in a header because the lane that extends this function owns no header. */
+ADF_HIDDEN int adf_dump_ctx_occurrence(adf_ctx_desc_t * d, const char * s, size_t len, size_t occurrence,
+                                       const adf_text_limits_t * lim);
 
 /* docs/conventions.md 10.2, closure C3: the context recorded at the occurrence-th context
-   occurrence of the dump text s. The body implemented here is "modctx" (10.1): the header
-   `adf1 Q ` is validated, then `modctx K k q_1 ... q_k`. The whole text is validated in the
-   order of 8.5 before the occurrence index is checked or a context is allocated. A `modctx`
-   body has exactly one context occurrence. Nested occurrences of other bodies are not handled
-   here; the dump loaders of lane m1-text own those (HEADER-FINDING, see the lane report). */
+   occurrence (0-based, dump traversal order) of the dump text s, for every body of 10.1: a
+   local fball (also inside adele, cadele, qclass), a scaled value, and the body modctx, which
+   has exactly one (proto/text_grammar.py modctx_new_from_dump, lines 1510-1521). The whole text
+   is validated in the order of 8.5 before the occurrence index is checked and before a context
+   is allocated (adf_dump_ctx_occurrence, src/dump.c); the block order of the occurrence is kept.
+   A dump whose body has no occurrence (rat, fball g, ucoset, ...) is ADF_DOMAIN once its earlier
+   stages pass. *out is written on ADF_OK only (conventions 4.6). The earlier HEADER-FINDING of
+   lane m1-modctx-b (only the body modctx) is resolved by this extension (lane m1-dump). */
 int
 adf_modctx_new_from_dump(adf_modctx_struct ** out, const char * s, size_t len, size_t occurrence,
                          const adf_text_limits_t * lim)
 {
-    adf_text_limits_t dflt;
-    const char * Ktext, * ktext;
-    size_t Klen, klen;
-    size_t pos, i, kcount, qblocks;
-    ulong k, * blocks;
-    int bad = 0;
-    fmpz_t K;
+    adf_ctx_desc_t d;
+    int st;
 
     if (out == NULL)
         return ADF_DOMAIN;
-    if (lim == NULL)
-    {
-        adf_text_limits_default(&dflt);
-        lim = &dflt;
-    }
-    /* stage 1: length, before any byte is read */
-    if (len > lim->max_len)
-        return ADF_LIMIT;
-    /* stage 2: the alphabet of 8.2. A dump uses exactly one space between tokens; TAB, LF
-       and CR are rejected with the same status, as they are forbidden here. */
-    if (s == NULL)
-        return ADF_PARSE;
-    for (i = 0; i < len; i++)
-        if ((unsigned char) s[i] < 0x20 || (unsigned char) s[i] > 0x7e)
-            return ADF_PARSE;
-    /* stage 3: the header and the grammar */
-    if (len < 3 || s[0] != 'a' || s[1] != 'd' || s[2] != 'f')
-        return ADF_PARSE;
-    pos = 3;
-    {
-        size_t v0 = pos;
-        while (pos < len && s[pos] >= '0' && s[pos] <= '9')
-            pos++;
-        if (pos == v0)
-            return ADF_PARSE;
-        if (pos - v0 > 1 && s[v0] == '0')
-            return ADF_PARSE;
-        if (!(pos - v0 == 1 && s[v0] == '1'))
-            return ADF_UNSUPPORTED;
-    }
-    if (pos >= len || s[pos] != ' ')
-        return ADF_PARSE;
-    pos++;
-    {
-        size_t f0 = pos;
-        if (pos >= len || !adf_is_upper(s[pos]))
-            return ADF_PARSE;
-        while (pos < len && s[pos] != ' ')
-            pos++;
-        if (!(pos - f0 == 1 && s[f0] == 'Q'))
-            return ADF_UNSUPPORTED;
-    }
-    if (pos >= len || s[pos] != ' ')
-        return ADF_PARSE;
-    pos++;
-    if (!(pos + 6 <= len && memcmp(s + pos, "modctx", 6) == 0 &&
-          (pos + 6 == len || s[pos + 6] == ' ')))
-        return ADF_PARSE;
-    pos += 6;
-    /* stage 3, continued: the ctx tokens. The grammar is validated in full first. */
-    if (pos >= len || s[pos] != ' ')
-        return ADF_PARSE;
-    pos++;
-    if (!adf_dump_h(s, len, &pos, &Ktext, &Klen))
-        return ADF_PARSE;
-    if (pos >= len || s[pos] != ' ')
-        return ADF_PARSE;
-    pos++;
-    if (!adf_dump_h(s, len, &pos, &ktext, &klen))
-        return ADF_PARSE;
-    if (!adf_dump_count(ktext, klen, &kcount))
-        return ADF_PARSE;
-    qblocks = pos;
-    for (i = 0; i < kcount; i++)
-    {
-        const char * btext;
-        size_t bn;
-        if (pos >= len || s[pos] != ' ')
-            return ADF_PARSE;
-        pos++;
-        if (!adf_dump_h(s, len, &pos, &btext, &bn))
-            return ADF_PARSE;
-    }
-    if (pos != len)
-        return ADF_PARSE;
-    /* stage 4: the block count of the context occurrence, before any semantic check */
-    if (lim->max_items < 0 || kcount > (size_t) lim->max_items)
-        return ADF_LIMIT;
-    /* stage 6: semantic validation. Extract the values now that the grammar holds and the
-       count is within the limit. */
-    fmpz_init(K);
-    adf_dump_fmpz(K, Ktext, Klen);
-    blocks = kcount > 0 ? flint_malloc(kcount * sizeof(ulong)) : NULL;
-    {
-        size_t q = qblocks;
-        for (i = 0; i < kcount; i++)
-        {
-            const char * btext;
-            size_t bn;
-            ulong v = 0;
-            q++;
-            if (!adf_dump_h(s, len, &q, &btext, &bn))
-            {                              /* cannot happen after the validating pass */
-                fmpz_clear(K);
-                flint_free(blocks);
-                return ADF_PARSE;
-            }
-            adf_dump_word(btext, bn, &v, &bad);
-            blocks[i] = v;
-        }
-    }
-    k = (ulong) kcount;
-    /* the predicate of 5.14 */
-    if (fmpz_sgn(K) < 1)
-        bad = 1;
-    if (!bad && k > 0)
-    {
-        size_t j;
-        for (i = 0; i < (size_t) k; i++)
-            if (blocks[i] < 2)
-            {
-                bad = 1;
-                break;
-            }
-        if (!bad)
-            for (i = 0; i < (size_t) k && !bad; i++)
-                for (j = 0; j < i; j++)
-                    if (n_gcd(blocks[i], blocks[j]) != 1)
-                    {
-                        bad = 1;
-                        break;
-                    }
-        if (!bad)
-        {
-            fmpz_t prod;
-            fmpz_init_set_ui(prod, 1);
-            for (i = 0; i < (size_t) k; i++)
-                fmpz_mul_ui(prod, prod, blocks[i]);
-            if (!fmpz_equal(prod, K))
-                bad = 1;
-            fmpz_clear(prod);
-        }
-    }
-    if (bad)
-    {
-        fmpz_clear(K);
-        flint_free(blocks);
-        return ADF_DOMAIN;
-    }
-    if (occurrence != 0)
-    {
-        fmpz_clear(K);
-        flint_free(blocks);
-        return ADF_DOMAIN;
-    }
-    *out = adf_modctx_alloc(K, blocks, (slong) k);
-    fmpz_clear(K);
-    flint_free(blocks);
-    return ADF_OK;
+    adf_ctx_desc_init(&d);
+    st = adf_dump_ctx_occurrence(&d, s, len, occurrence, lim);
+    if (st == ADF_OK)
+        *out = adf_modctx_alloc(d.K, d.q, d.k);
+    adf_ctx_desc_clear(&d);
+    return st;
 }

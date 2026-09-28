@@ -1,0 +1,495 @@
+mutate: src/dump.c: 1030 mutants
+mutate: 1030 mutants, 300 of them run (--limit 300, --seed 20260928)
+mutate: the baseline passes (3.1 s)
+
+SURVIVED src/dump.c:863:68 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -861,5 +861,5 @@
+               else if (dp_kw_is(t, "c"))
+               {
+  -                if (!dp_w_arb(c, st, &a[0]) || !dp_w_arb(c, st, &a[1]))
+  +                if (!dp_w_arb(c, st, &a[0]) || !dp_w_arb(c, st, &a[0]))
+                       return 0;
+               }
+
+
+SURVIVED src/dump.c:922:45 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -920,5 +920,5 @@
+                       return dp_fail(st, ADF_LIMIT);
+                   for (j = 0; j < L + 3; j++)
+  -                    if (!dp_w_arb(c, st, &a[0]) || !dp_w_arb(c, st, &a[1]))
+  +                    if (!dp_w_arb(c, st, &a[1]) || !dp_w_arb(c, st, &a[1]))
+                           return 0;
+               }
+
+
+SURVIVED src/dump.c:1747:43 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1745,5 +1745,5 @@
+                      const adf_text_limits_t * lim)
+   {
+  -    return dp_load_adele(x, s, len, &ctx, 0, 1, lim);
+  +    return dp_load_adele(x, s, len, &ctx, 1, 1, lim);
+   }
+   
+
+
+SURVIVED src/dump.c:1799:53 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1797,5 +1797,5 @@
+                             size_t nbinds, const adf_text_limits_t * lim)
+   {
+  -    return dp_load_cadele(x, s, len, binds, nbinds, 0, lim);
+  +    return dp_load_cadele(x, s, len, binds, nbinds, 1, lim);
+   }
+   
+
+
+SURVIVED src/dump.c:1039:65 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1037,5 +1037,5 @@
+           return ADF_PARSE;              /* only len = 0 is allowed with NULL (text.h) */
+       for (i = 0; i < len; i++)          /* stage 2: 0x20..0x7e; a dump has no TAB, LF, CR (8.2) */
+  -        if ((unsigned char) s[i] < 0x20 || (unsigned char) s[i] > 0x7e)
+  +        if ((unsigned char) s[i] < 0x20 || (unsigned char) s[i] >= 0x7e)
+               return ADF_PARSE;
+       if (len < 3 || s[0] != 'a' || s[1] != 'd' || s[2] != 'f')
+
+
+SURVIVED src/dump.c:1660:44 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1658,5 +1658,5 @@
+                       const adf_text_limits_t * lim)
+   {
+  -    return dp_load_scaled(x, s, len, &ctx, 0, 1, lim);
+  +    return dp_load_scaled(x, s, len, &ctx, 1, 1, lim);
+   }
+   
+
+
+SURVIVED src/dump.c:1352:26 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1350,5 +1350,5 @@
+   dp_sb_room(dp_sb * b, size_t extra)
+   {
+  -    if (b->n + extra + 1 > b->cap)
+  +    if (b->n + extra + 1 >= b->cap)
+       {
+           while (b->n + extra + 1 > b->cap)
+
+
+SURVIVED src/dump.c:870:26 cmp: '==' -> '!='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -868,5 +868,5 @@
+               if (!dp_count(c, 5, &n))
+                   return dp_parse_fail(st);
+  -            if (st->mode == DP_LIMITS && dp_over_items(n, st->lim))
+  +            if (st->mode != DP_LIMITS && dp_over_items(n, st->lim))
+                   return dp_fail(st, ADF_LIMIT);
+               for (i = 0; i < n; i++)
+
+
+SURVIVED src/dump.c:278:14 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -276,5 +276,5 @@
+       t.p = s + b;
+       t.n = *pos - b;
+  -    if (*pos < len)
+  +    if (*pos <= len)
+           (*pos)++;
+       return t;
+
+
+SURVIVED src/dump.c:1134:20 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1132,5 +1132,5 @@
+           st.nocc = 0;
+           st.descs = NULL;
+  -        st.first = 0;
+  +        st.first = 1;
+           st.ndescs = 0;
+           dp_cur_at(&c, P);
+
+
+SURVIVED src/dump.c:846:37 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -844,5 +844,5 @@
+               break;
+           case DP_IDCLASS:
+  -            if (!dp_w_arb(c, st, &a[0]) || !dp_h(c, &t) || !dp_h(c, &u))
+  +            if (!dp_w_arb(c, st, &a[1]) || !dp_h(c, &t) || !dp_h(c, &u))
+                   return dp_parse_fail(st);
+               break;
+
+
+SURVIVED src/dump.c:491:30 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -489,5 +489,5 @@
+           for (i = 0; ok && i < f->ctx.k; i++)
+           {
+  -            ulong q = 0, r = 0;
+  +            ulong q = 0, r = 1;
+               dp_span tq = dp_tok_at(c->s, c->len, &qpos);
+               dp_span tr = dp_tok_at(c->s, c->len, &rpos);
+
+
+SURVIVED src/dump.c:148:13 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -146,5 +146,5 @@
+       size_t j = dp_neg(t) ? 1 : 0;
+   
+  -    if (t.n - j <= 15)
+  +    if (t.n + j <= 15)
+       {
+           slong r = 0;
+
+
+SURVIVED src/dump.c:474:13 swap_args: 'fmpz_gcd(g, a, e)' -> 'fmpz_gcd(g, e, a)'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -472,5 +472,5 @@
+           else
+           {
+  -            fmpz_gcd(g, a, e);
+  +            fmpz_gcd(g, e, a);
+               ok = fmpz_is_one(g);
+           }
+
+
+SURVIVED src/dump.c:923:32 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -921,5 +921,5 @@
+                   for (j = 0; j < L + 3; j++)
+                       if (!dp_w_arb(c, st, &a[0]) || !dp_w_arb(c, st, &a[1]))
+  -                        return 0;
+  +                        return 1;
+               }
+               break;
+
+
+SURVIVED src/dump.c:664:5 negate_if: 'if(st->mode == DP_LIMITS)' -> 'if(!(st->mode == DP_LIMITS))'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -662,5 +662,5 @@
+           || !dp_h(c, &a) || !dp_h(c, &b) || !dp_h(c, &d))
+           return dp_parse_fail(st);
+  -    if (st->mode == DP_LIMITS)
+  +    if (!(st->mode == DP_LIMITS))
+       {
+           if (dp_abs_over(d, st->lim->max_prec) || (dp_kw_is(f, "b") && dp_abs_over(b, st->lim->max_prec)))
+
+
+SURVIVED src/dump.c:1560:44 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1558,5 +1558,5 @@
+                    const adf_text_limits_t * lim)
+   {
+  -    return dp_load_rat(x, s, len, &ctx, 0, 1, lim);
+  +    return dp_load_rat(x, s, len, &ctx, 0, 0, lim);
+   }
+   
+
+
+SURVIVED src/dump.c:491:23 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -489,5 +489,5 @@
+           for (i = 0; ok && i < f->ctx.k; i++)
+           {
+  -            ulong q = 0, r = 0;
+  +            ulong q = 1, r = 0;
+               dp_span tq = dp_tok_at(c->s, c->len, &qpos);
+               dp_span tr = dp_tok_at(c->s, c->len, &rpos);
+
+
+SURVIVED src/dump.c:1135:21 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1133,5 +1133,5 @@
+           st.descs = NULL;
+           st.first = 0;
+  -        st.ndescs = 0;
+  +        st.ndescs = 1;
+           dp_cur_at(&c, P);
+           if (!dp_w_body(&c, &st, kind))
+
+
+SURVIVED src/dump.c:1041:13 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1039,5 +1039,5 @@
+           if ((unsigned char) s[i] < 0x20 || (unsigned char) s[i] > 0x7e)
+               return ADF_PARSE;
+  -    if (len < 3 || s[0] != 'a' || s[1] != 'd' || s[2] != 'f')
+  +    if (len <= 3 || s[0] != 'a' || s[1] != 'd' || s[2] != 'f')
+           return ADF_PARSE;
+       pos = v0 = 3;
+
+
+SURVIVED src/dump.c:560:5 drop_call: 'flint_free(d->q);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -558,5 +558,5 @@
+   
+       dp_fmpz(d->K, x->K);
+  -    flint_free(d->q);
+  +    
+       d->q = NULL;
+       if (x->k > 0)
+
+
+SURVIVED src/dump.c:381:30 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -379,5 +379,5 @@
+       if (!dp_word(a->rm, &r))
+           return 0;                      /* negative, or far above 2^30 */
+  -    return (r & 1) == 1 && r < (UWORD(1) << MAG_BITS);
+  +    return (r & 1) == 1 && r <= (UWORD(1) << MAG_BITS);
+   }
+   
+
+
+SURVIVED src/dump.c:1364:5 drop_call: 'dp_sb_room(b, n);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1362,5 +1362,5 @@
+   {
+       size_t n = strlen(w);              /* w is a literal of this file */
+  -    dp_sb_room(b, n);
+  +    
+       memcpy(b->p + b->n, w, n);
+       b->n += n;
+
+
+SURVIVED src/dump.c:1376:26 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1374,5 +1374,5 @@
+       size_t room = fmpz_sizeinbase(x, 16) + 2;
+   
+  -    dp_sb_room(b, room + 1);
+  +    dp_sb_room(b, room + 0);
+       b->p[b->n++] = ' ';
+       fmpz_get_str(b->p + b->n, 16, x);
+
+
+SURVIVED src/dump.c:1560:41 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1558,5 +1558,5 @@
+                    const adf_text_limits_t * lim)
+   {
+  -    return dp_load_rat(x, s, len, &ctx, 0, 1, lim);
+  +    return dp_load_rat(x, s, len, &ctx, 1, 1, lim);
+   }
+   
+
+
+SURVIVED src/dump.c:1139:18 cmp: '==' -> '!='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1137,5 +1137,5 @@
+           if (!dp_w_body(&c, &st, kind))
+               return st.st;
+  -        if (mode == DP_SYNTAX && c.left != 0)
+  +        if (mode != DP_SYNTAX && c.left != 0)
+               return ADF_PARSE;          /* tokens after the body (proto line 1094) */
+       }
+
+
+NOT COMPILED src/dump.c:1802:6 op: '*' -> '+'
+  src/dump.c:1802:6: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/dump.c:1102:18 logic: '||' -> '&&'
+  src/dump.c:1102:18: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:1036:5 negate_if: 'if(s == NULL)' -> 'if(!(s == NULL))'
+  src/dump.c:1056:24: error: array subscript 0 is outside array bounds of ‘const char[0]’ [-Werror=array-bounds=]
+
+NOT COMPILED src/dump.c:547:64 logic: '||' -> '&&'
+  src/dump.c:547:64: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:381:39 zero_one: '1' -> '0'
+  src/dump.c:381:30: error: comparison of unsigned expression in ‘< 0’ is always false [-Werror=type-limits]
+
+NOT COMPILED src/dump.c:813:12 logic: '&&' -> '||'
+  src/dump.c:813:34: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:337:13 op: '*' -> '/'
+  src/dump.c:337:13: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1664:103 op: '*' -> '/'
+  src/dump.c:1664:103: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:157:28 op: '*' -> '/'
+  src/dump.c:157:27: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1609:101 op: '*' -> '/'
+  src/dump.c:1609:101: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1320:25 op: '*' -> '+'
+  src/dump.c:1320:25: error: expected ‘)’ before ‘+’ token
+
+NOT COMPILED src/dump.c:1041:32 logic: '||' -> '&&'
+  src/dump.c:1041:32: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:1796:103 op: '*' -> '+'
+  src/dump.c:1796:103: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/dump.c:661:22 logic: '||' -> '&&'
+  src/dump.c:661:22: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:1052:5 negate_if: 'if(pos == len)' -> 'if(!(pos == len))'
+  src/dump.c:1493:14: error: ‘P.nocc’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/dump.c:1488:5 drop_assign: 'r = dp_validate(&P, s, len, lim, kind);' -> '' (the statement is removed)
+  src/dump.c:1480:16: error: unused parameter ‘kind’ [-Werror=unused-parameter]
+
+NOT COMPILED src/dump.c:339:20 op: '*' -> '+'
+  src/dump.c:339:20: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/dump.c:1055:5 drop_assign: 'f0 = pos;' -> '' (the statement is removed)
+  src/dump.c:1060:15: error: ‘f0’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/dump.c:375:45 op: '&' -> '|'
+  src/dump.c:375:50: error: bitwise comparison always evaluates to false [-Werror=tautological-compare]
+
+NOT COMPILED src/dump.c:1585:90 op: '*' -> '/'
+  src/dump.c:1585:90: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1615:6 op: '*' -> '+'
+  src/dump.c:1615:6: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/dump.c:1206:5 drop_assign: 'ok = fmpz_equal(K, Kc) && adf_modctx_nblocks(ctx) == (slong) x->k;' -> '' (the statement is removed)
+  src/dump.c:1207:20: error: ‘ok’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/dump.c:1738:5 drop_call: 'adf_adele_swap(x, t);' -> '' (the statement is removed)
+  src/dump.c:1726:27: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/dump.c:220:28 logic: '&&' -> '||'
+  src/dump.c:240:21: error: ‘t.n’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/dump.c:1670:6 op: '*' -> '/'
+  src/dump.c:1670:6: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1320:25 op: '*' -> '/'
+  src/dump.c:1320:25: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:942:13 op: '*' -> '/'
+  src/dump.c:942:13: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/dump.c:942:13 op: '*' -> '+'
+  src/dump.c:942:13: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/dump.c:411:20 cmp: '>' -> '>='
+  src/dump.c:411:20: error: comparison of unsigned expression in ‘>= 0’ is always true [-Werror=type-limits]
+
+NOT COMPILED src/dump.c:1596:5 drop_call: 'adf_fball_swap(x, t);' -> '' (the statement is removed)
+  src/dump.c:1585:27: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/dump.c:1564:97 op: '*' -> '/'
+  src/dump.c:1564:97: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:964:34 logic: '||' -> '&&'
+  src/dump.c:964:34: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:1272:5 drop_call: 'fmpz_add_ui(MAG_EXPREF(r), e, b);' -> '' (the statement is removed)
+  src/dump.c:1267:49: error: unused parameter ‘e’ [-Werror=unused-parameter]
+
+NOT COMPILED src/dump.c:400:12 logic: '&&' -> '||'
+  src/dump.c:400:27: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:1356:22 op: '*' -> '/'
+  src/dump.c:1356:21: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:979:41 logic: '&&' -> '||'
+  src/dump.c:979:80: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:381:42 op: '<<' -> '>>'
+  src/dump.c:381:30: error: comparison of unsigned expression in ‘< 0’ is always false [-Werror=type-limits]
+
+NOT COMPILED src/dump.c:1243:5 drop_assign: 'occ = dp_the_occurrence(P);' -> '' (the statement is removed)
+  src/dump.c:1220:1: error: ‘dp_the_occurrence’ defined but not used [-Werror=unused-function]
+
+NOT COMPILED src/dump.c:782:5 drop_assign: 'pieces = dp_kw_is(t, "pieces");' -> '' (the statement is removed)
+  src/dump.c:783:8: error: ‘pieces’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/dump.c:1631:92 op: '*' -> '/'
+  src/dump.c:1631:92: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:927:30 logic: '||' -> '&&'
+  src/dump.c:927:30: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:732:30 logic: '||' -> '&&'
+  src/dump.c:732:30: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:662:9 logic: '||' -> '&&'
+  src/dump.c:662:9: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:411:24 logic: '&&' -> '||'
+  src/dump.c:411:12: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:1297:9 drop_call: 'dp_mag_set_exact(arb_radref(x), rm, e);' -> '' (the statement is removed)
+  src/dump.c:1267:1: error: ‘dp_mag_set_exact’ defined but not used [-Werror=unused-function]
+
+NOT COMPILED src/dump.c:379:5 negate_if: 'if(!dp_word(a->rm, &r))' -> 'if(!(!dp_word(a->rm, &r)))'
+  src/dump.c:381:15: error: ‘r’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/dump.c:596:49 logic: '&&' -> '||'
+  src/dump.c:596:31: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:1036:11 cmp: '==' -> '!='
+  src/dump.c:1056:24: error: array subscript 0 is outside array bounds of ‘const char[0]’ [-Werror=array-bounds=]
+
+NOT COMPILED src/dump.c:614:48 logic: '||' -> '&&'
+  src/dump.c:614:48: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/dump.c:964:54 logic: '||' -> '&&'
+  src/dump.c:964:54: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+mutate: 300 mutants in 636.4 s: 224 killed, 26 survived, 50 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 26 mutant(s) survived; each one is a claim the tests do not check
+exit=1
