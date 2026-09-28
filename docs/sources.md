@@ -269,7 +269,7 @@ Sources that are not on disk are listed at the end of this section; nothing in t
 
 | Statement needed | Source key | File and line | Quote, verbatim |
 |---|---|---|---|
-| S.3: existence. For `m`, `c` and bounds with `m > A B` there is at least one `n/d` with `n = c d mod m`, `\|n\| < A`, `0 < \|d\| < B` (Thue's lemma) | shoup-ntb | ntb-v2.txt:2184, 2185 | "Theorem 2.33 (Thue’s lemma). Let n, b, r∗ , t∗ ∈ Z, with 0 < r ∗ ≤ n < r∗ t∗ . / Then there exist r, t ∈ Z with" |
+| S.3: existence of a pair, not of a reduced fraction. For `0 < A <= m < A B` there are integers `n`, `d` with `n = c d mod m`, `\|n\| < A`, `0 < \|d\| < B` (Thue's lemma; the modulus is BELOW the product of the bounds; the pair need not be reduced and `d` need not be prime to `m`: `m = 8`, `c = 3`, `A = B = 2` has the pair and no solution of SPEC 9.2; row corrected 2026-09-29 after lane s-design, which read the source) | shoup-ntb | ntb-v2.txt:2184, 2185 | "Theorem 2.33 (Thue’s lemma). Let n, b, r∗ , t∗ ∈ Z, with 0 < r ∗ ≤ n < r∗ t∗ . / Then there exist r, t ∈ Z with" |
 | S.3: the object of the problem is the ratio `n/d`, not the pair `(n, d)`: from one solution one gets all the others by a non-zero multiple | shoup-ntb | ntb-v2.txt:4152, 4153 | "if r ≡ bt (mod n), / and so we can only hope to guarantee that the ratio r/t is unique." |
 | S.3: uniqueness. If `2 A B < m` then the ratio is unique: `2 A B < m` is Shoup's `n > 2 r* t*` | shoup-ntb | ntb-v2.txt:4159, 4164 | "Theorem 4.8. Let n, b, r∗ , t∗ ∈ Z with r ∗ ≥ 0, t∗ > 0, and n > 2r∗ t∗ . Further, / Then r/t = r0 /t0 ." |
 | S.3: the key inequality of that proof: `\|n1 d2 - n2 d1\| <= 2 A B < m` | shoup-ntb | ntb-v2.txt:4170, 4171 | "However, we also have / \|rt0 − r0 t\| ≤ \|r\|\|t0 \| + \|r0 \|\|t\| ≤ 2r∗ t∗ < n." |
@@ -363,9 +363,10 @@ above. The differences that matter:
    (in particular with `2 N D >= m`) gets neither uniqueness nor the meaning of 0. The SPEC's fourth result,
    "uniqueness not certified", is not a value FLINT can return; the design must produce it itself.
 4. **Existence is not the SPEC's hypothesis (S.3).** `proofs/quotient.md` Proposition 13 claims at most one
-   solution when `2 A B < m`; it does not claim that a solution exists. Existence is Thue's lemma
-   (`ntb-v2.txt:2184`) and needs `m > A B` with the strict bounds of that statement. A solver must therefore be
-   prepared to return "none" for `2 A B < m`.
+   solution when `2 A B < m`; it does not claim that a solution exists. Thue's lemma
+   (`ntb-v2.txt:2184`) gives a pair of integers under `0 < A <= m < A B` (the modulus below the product of the
+   bounds), not a reduced fraction. A solver must be prepared to return "none" in every range with `A < m`
+   (`docs/proofs/solvers.md` Proposition 1.8; this note said `m > A B` until 2026-09-29, which was wrong).
 5. **The prime-field assumption (S.1).** `nmod_mat_can_solve` and `fmpz_mod_mat_can_solve` are documented for a
    prime modulus (`nmod_mat.rst:562`, `fmpz_mod_mat.rst:388`), and `fmpz_mod_mat_solve` says "The modulus is
    assumed to be prime". For a general `N` the entry point of FLINT 3.0.1 is `fmpz_mat_howell_form_mod(A, mod)`,
