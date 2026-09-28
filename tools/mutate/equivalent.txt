@@ -5,6 +5,12 @@
 # zero_one, drop_assign, negate_if. A `#` starts a comment. A survivor listed here is reported
 # as excused and does not make `make mutate` fail.
 
-# The file is empty: no mutant of the C code is known to survive. Every line added here needs
+# Every line added here needs
 # the reason, and the reason has to say why the mutant computes the same thing as the original
 # for every input, not only that the tests do not notice.
+
+# src/fball.c, lane m1-fball, 2026-09-28. Three swaps of the two input arguments of a commutative FLINT function
+# whose output aliases one input; FLINT permits the aliasing, and gcd and product do not depend on the order.
+src/fball.c:556:swap_args | fmpq_gcd(g, g, t3) against fmpq_gcd(g, t3, g): the gcd of two rationals does not depend on their order
+src/fball.c:584:swap_args | fmpq_mul(r, r, N) against fmpq_mul(r, N, r): the product does not depend on the order
+src/fball.c:612:swap_args | fmpq_mul(r, r, N) against fmpq_mul(r, N, r): the product does not depend on the order
