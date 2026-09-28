@@ -1,0 +1,15 @@
+mkdir -p docs/reviews/m1/local/checks/build
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o docs/reviews/m1/local/checks/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o docs/reviews/m1/local/checks/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o docs/reviews/m1/local/checks/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o docs/reviews/m1/local/checks/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o docs/reviews/m1/local/checks/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o docs/reviews/m1/local/checks/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o docs/reviews/m1/local/checks/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o docs/reviews/m1/local/checks/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o docs/reviews/m1/local/checks/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o docs/reviews/m1/local/checks/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o docs/reviews/m1/local/checks/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o docs/reviews/m1/local/checks/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o docs/reviews/m1/local/checks/build/text.o
+ar rcs docs/reviews/m1/local/checks/build/libadelefeld.a docs/reviews/m1/local/checks/build/adele.o docs/reviews/m1/local/checks/build/cap.o docs/reviews/m1/local/checks/build/common.o docs/reviews/m1/local/checks/build/fball.o docs/reviews/m1/local/checks/build/fball_local.o docs/reviews/m1/local/checks/build/inlines.o docs/reviews/m1/local/checks/build/modctx.o docs/reviews/m1/local/checks/build/place.o docs/reviews/m1/local/checks/build/rat.o docs/reviews/m1/local/checks/build/recon.o docs/reviews/m1/local/checks/build/scaled.o docs/reviews/m1/local/checks/build/status.o docs/reviews/m1/local/checks/build/text.o

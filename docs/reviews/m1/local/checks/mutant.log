@@ -1,0 +1,2 @@
+probe-san exit= 0 asan_overflow= False
+probe-mutant exit= 1 asan_overflow= True

@@ -1,0 +1,2 @@
+local canonical=1; expected statuses=0,0,0,0,0; actual=8,8,8,8,8; untouched=5/5
+same sets global: statuses=0,0,0,0,0
