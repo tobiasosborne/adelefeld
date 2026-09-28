@@ -23,3 +23,58 @@ src/recon.c:90:zero_one | the same token, >= 0 as >= 1: only exp = 0 changes bra
 src/recon.c:122:zero_one | fmpq_cmp(lo, hi) > 0 as > 1 removes the early return for the empty interval; the rest of the function answers ADF_NO_SOLUTION for lo > hi in both cases N = 0 and N > 0
 src/recon.c:176:swap_args | adf_rat_mul(c, c, N) against adf_rat_mul(c, N, c): the product does not depend on the order
 src/recon.c:177:swap_args | adf_rat_add(c, c, a) against adf_rat_add(c, a, c): the sum does not depend on the order
+
+# src/fball.c, lane m1-testgaps, 2026-09-28. The five survivors of the run of lane tools-mutate that
+# are commutative swaps of two input arguments. In every case the output is a variable of its own,
+# so no input is written, and the operation does not depend on the order of the two arguments.
+src/fball.c:54:swap_args | fmpz_gcd(g, A, d) against fmpz_gcd(g, d, A): the greatest common divisor of two integers does not depend on their order (refs/src/flint-3.0.1/fmpz.rst:1040), and g is a temporary, so neither input is written
+src/fball.c:214:swap_args | fmpz_gcd(g, x->A, x->d) against fmpz_gcd(g, x->d, x->A): the greatest common divisor of two integers does not depend on their order (fmpz.rst:1040), and g is a temporary, so neither input is written
+src/fball.c:552:swap_args | fmpq_mul(t1, a, M) against fmpq_mul(t1, M, a): a product of two rationals does not depend on their order (fmpq.rst:400), and t1 is a temporary, so neither input is written
+src/fball.c:555:swap_args | fmpq_gcd(g, t1, t2) against fmpq_gcd(g, t2, t1): the gcd of two rationals does not depend on their order (fmpq.rst:519), and g is a temporary, so neither input is written
+src/fball.c:684:swap_args | fmpq_gcd(g, N, M) against fmpq_gcd(g, M, N): the gcd of two rationals does not depend on their order (fmpq.rst:519), and g is a temporary, so neither input is written
+
+# src/cap.c and src/rat.c, lane m1-testgaps, 2026-09-28. Three commutative swaps, same argument.
+src/cap.c:78:swap_args | fmpq_gcd(gq, Nq, Cq) against fmpq_gcd(gq, Cq, Nq): the gcd of two rationals does not depend on their order (fmpq.rst:519), and gq is a temporary, so neither input is written
+src/cap.c:112:swap_args | adf_fball_add(t, x, y) against adf_fball_add(t, y, x): the set sum is commutative, (a + N Zhat) + (b + M Zhat) = (b + M Zhat) + (a + N Zhat) (docs/proofs/precision.md Proposition 1, line 27, with Lemma 2, line 20), so the same ball is written; the output may be either input (include/adelefeld/fball.h:23)
+src/cap.c:148:swap_args | adf_fball_mul(t, x, y) against adf_fball_mul(t, y, x): the tight set product is commutative: its radius gcd(a M, b N, N M) is unchanged by exchanging (a, N) with (b, M) (docs/proofs/precision.md Proposition 2, line 34), so the same ball is written
+src/rat.c:222:swap_args | fmpq_add(z->q, x->q, y->q) against fmpq_add(z->q, y->q, x->q): the sum of two rationals does not depend on their order, and "aliasing between any combination of the variables is allowed" (fmpq.rst:410)
+src/rat.c:238:swap_args | fmpq_mul(z->q, x->q, y->q) against fmpq_mul(z->q, y->q, x->q): the product of two rationals does not depend on their order, and "aliasing between any combination of the variables is allowed" (fmpq.rst:410)
+
+# src/adele.c, lane m1-testgaps, 2026-09-28. Fourteen commutative swaps. Seven of them exchange the
+# two finite coordinates in a call of adf_fball_add or adf_fball_mul; the set sum and the tight
+# set product are commutative (docs/proofs/precision.md Proposition 1 line 27 and Proposition 2
+# line 34), and the output may be either input (include/adelefeld/fball.h:23), so the same ball is
+# written. The other seven exchange the two real or complex coordinates in a call of arb_add,
+# arb_mul, acb_add or acb_mul; each of those sets its output to the sum or the product of the two
+# inputs (arb.rst:767, arb.rst:798, acb.rst:429, acb.rst:463), the sum and the product of two
+# numbers do not depend on their order, and the exchange does not change which arguments the
+# output aliases.
+src/adele.c:201:swap_args | arb_add(z->inf, x->inf, y->inf, prec) against arb_add(z->inf, y->inf, x->inf, prec): the sum of two real numbers does not depend on their order, and arb_add sets z to that sum rounded to prec bits (arb.rst:767-775), so the same value is written
+src/adele.c:202:swap_args | adf_fball_add(&z->fin, &x->fin, &y->fin) against adf_fball_add(&z->fin, &y->fin, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+src/adele.c:223:swap_args | arb_mul(z->inf, x->inf, y->inf, prec) against arb_mul(z->inf, y->inf, x->inf, prec): the product of two real numbers does not depend on their order, and arb_mul sets z to that product rounded to prec bits (arb.rst:798-806), so the same value is written
+src/adele.c:224:swap_args | adf_fball_mul(&z->fin, &x->fin, &y->fin) against adf_fball_mul(&z->fin, &y->fin, &x->fin): the tight set product is commutative, its radius gcd(a M, b N, N M) is symmetric in (a, N) and (b, M) (precision.md Proposition 2, line 34), so the same ball is written
+src/adele.c:259:swap_args | arb_add(z->inf, x->inf, t, prec) against arb_add(z->inf, t, x->inf, prec): the sum of two real numbers does not depend on their order, and arb_add sets z to that sum rounded to prec bits (arb.rst:767-775), so the same value is written
+src/adele.c:260:swap_args | adf_fball_add(&z->fin, &x->fin, fq) against adf_fball_add(&z->fin, fq, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+src/adele.c:285:swap_args | arb_mul(z->inf, x->inf, t, prec) against arb_mul(z->inf, t, x->inf, prec): the product of two real numbers does not depend on their order, and arb_mul sets z to that product rounded to prec bits (arb.rst:798-806), so the same value is written
+src/adele.c:450:swap_args | acb_add(z->inf, x->inf, y->inf, prec) against acb_add(z->inf, y->inf, x->inf, prec): the sum of two complex numbers does not depend on their order, and acb_add sets z to that sum (acb.rst:429-431), so the same value is written
+src/adele.c:451:swap_args | adf_fball_add(&z->fin, &x->fin, &y->fin) against adf_fball_add(&z->fin, &y->fin, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+src/adele.c:464:swap_args | acb_mul(z->inf, x->inf, y->inf, prec) against acb_mul(z->inf, y->inf, x->inf, prec): the product of two complex numbers does not depend on their order, and acb_mul sets z to that product (acb.rst:463-469); the note there about x and y being the same pointer concerns the squaring formula, which the exchange does not change
+src/adele.c:465:swap_args | adf_fball_mul(&z->fin, &x->fin, &y->fin) against adf_fball_mul(&z->fin, &y->fin, &x->fin): the tight set product is commutative, its radius gcd(a M, b N, N M) is symmetric in (a, N) and (b, M) (precision.md Proposition 2, line 34), so the same ball is written
+src/adele.c:492:swap_args | acb_add(z->inf, x->inf, t, prec) against acb_add(z->inf, t, x->inf, prec): the sum of two complex numbers does not depend on their order, and acb_add sets z to that sum (acb.rst:429-431), so the same value is written
+src/adele.c:493:swap_args | adf_fball_add(&z->fin, &x->fin, fq) against adf_fball_add(&z->fin, fq, &x->fin): the set sum is commutative (precision.md Proposition 1, line 27), so the same ball is written
+src/adele.c:514:swap_args | acb_mul(z->inf, x->inf, t, prec) against acb_mul(z->inf, t, x->inf, prec): the product of two complex numbers does not depend on their order, and acb_mul sets z to that product (acb.rst:463-469), so the same value is written
+
+# src/fball.c, lane m1-testgaps, 2026-09-28. The survivors of the full run of 347 mutants (LIMIT=400),
+# which the run of 200 of lane tools-mutate had not drawn. Two of them are the fmpz_zero of adf_
+# fball_init, and eight are the commutative swaps of two input arguments of an FLINT rational
+# function whose output is a variable of its own, so no input is written.
+src/fball.c:141:drop_call | fmpz_zero(x->A) in adf_fball_init: fmpz_init sets the value to zero ("The value is set to zero", refs/src/flint-3.0.1/fmpz.rst:181-184) and the three fmpz_init calls of lines 138 to 140 are the only other writes of A before this line, so the fmpz_zero changes nothing for every input
+src/fball.c:142:drop_call | fmpz_zero(x->H) in adf_fball_init: fmpz_init sets the value to zero (fmpz.rst:181-184), and line 141 writes x->A and not x->H, so the fmpz_zero changes nothing for every input
+src/fball.c:468:swap_args | fmpq_add(c, a, b) against fmpq_add(c, b, a) in adf_fball_add: the sum of two rationals does not depend on their order (fmpq.rst:400), and c is a temporary, so neither input is written
+src/fball.c:469:swap_args | fmpq_gcd(r, N, M) against fmpq_gcd(r, M, N) in adf_fball_add: the gcd of two rationals does not depend on their order (fmpq.rst:519), and r is a temporary, so neither input is written
+src/fball.c:497:swap_args | fmpq_gcd(r, N, M) against fmpq_gcd(r, M, N) in adf_fball_sub: the gcd of two rationals does not depend on their order (fmpq.rst:519), and r is a temporary, so neither input is written
+src/fball.c:551:swap_args | fmpq_mul(c, a, b) against fmpq_mul(c, b, a) in adf_fball_mul: the product of two rationals does not depend on their order (fmpq.rst:400), and c is a temporary, so neither input is written
+src/fball.c:553:swap_args | fmpq_mul(t2, b, N) against fmpq_mul(t2, N, b) in adf_fball_mul: a product does not depend on the order of its factors (fmpq.rst:400), and t2 is a temporary, so neither input is written
+src/fball.c:554:swap_args | fmpq_mul(t3, N, M) against fmpq_mul(t3, M, N) in adf_fball_mul: a product does not depend on the order of its factors (fmpq.rst:400), and t3 is a temporary, so neither input is written
+src/fball.c:582:swap_args | fmpq_mul(c, a, q->q) against fmpq_mul(c, q->q, a) in adf_fball_mul_rat: a product does not depend on the order of its factors (fmpq.rst:400), and c is a temporary, so neither input is written
+src/fball.c:610:swap_args | fmpq_mul(c, a, qq) against fmpq_mul(c, qq, a) in adf_fball_div_rat: a product does not depend on the order of its factors (fmpq.rst:400), and c is a temporary, so neither input is written

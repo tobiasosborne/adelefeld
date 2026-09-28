@@ -1,0 +1,66 @@
+mutate: src/recon.c: 63 mutants
+mutate: the baseline passes (14.4 s)
+
+SURVIVED src/recon.c:111:5 drop_call: 'fmpq_canonicalise(q);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -109,5 +109,5 @@
+           fmpz_clear(den);
+       }
+  -    fmpq_canonicalise(q);
+  +    
+   }
+   
+
+
+SURVIVED src/recon.c:97:9 drop_call: 'fmpz_one(fmpq_denref(q));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -95,5 +95,5 @@
+           fmpz_mul_2exp(t, mn, (ulong) fmpz_get_ui(exp));
+           fmpz_set(fmpq_numref(q), t);
+  -        fmpz_one(fmpq_denref(q));
+  +        
+           fmpz_clear(t);
+       }
+
+
+SURVIVED src/recon.c:175:13 drop_call: 'fmpz_one(fmpq_denref(c->q));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -173,5 +173,5 @@
+               /* fmpz_set of kmin into a one-denominator fraction, then a + N k. */
+               fmpz_set(fmpq_numref(c->q), kmin);
+  -            fmpz_one(fmpq_denref(c->q));
+  +            
+               adf_rat_mul(c, c, N);
+               adf_rat_add(c, c, a);
+
+
+NOT COMPILED src/recon.c:219:5 drop_assign: 'status = adf_fball_reconstruct(q, &x->fin, lo, hi);' -> '' (the statement is removed)
+  src/recon.c:200:33: error: unused parameter ‘q’ [-Werror=unused-parameter]
+
+NOT COMPILED src/recon.c:73:5 drop_call: 'fmpz_fdiv_q(r, fmpq_numref(x), fmpq_denref(x));' -> '' (the statement is removed)
+  src/recon.c:71:24: error: unused parameter ‘r’ [-Werror=unused-parameter]
+
+NOT COMPILED src/recon.c:140:5 drop_assign: 'status = adf_rat_set_fmpz2(a, A, d);' -> '' (the statement is removed)
+  src/recon.c:141:8: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/recon.c:161:9 drop_call: 'fmpq_ceil_fmpz(kmin, clo->q);' -> '' (the statement is removed)
+  src/recon.c:77:1: error: ‘fmpq_ceil_fmpz’ defined but not used [-Werror=unused-function]
+
+NOT COMPILED src/recon.c:139:5 drop_call: 'adf_fball_get_fmpz3(A, H, d, x);' -> '' (the statement is removed)
+  src/recon.c:115:54: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/recon.c:79:5 drop_call: 'fmpz_cdiv_q(r, fmpq_numref(x), fmpq_denref(x));' -> '' (the statement is removed)
+  src/recon.c:77:23: error: unused parameter ‘r’ [-Werror=unused-parameter]
+
+NOT COMPILED src/recon.c:162:9 drop_call: 'fmpq_floor_fmpz(kmax, chi->q);' -> '' (the statement is removed)
+  src/recon.c:71:1: error: ‘fmpq_floor_fmpz’ defined but not used [-Werror=unused-function]
+
+mutate: 63 mutants in 357.5 s: 48 killed, 3 survived, 7 not compiled, 0 timed out, 5 excused
+mutate: FAILED: 3 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1

@@ -1,0 +1,23 @@
+mutate: src/cap.c: 48 mutants
+mutate: the baseline passes (12.8 s)
+
+NOT COMPILED src/cap.c:113:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:103:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:167:5 drop_call: 'adf_fball_mul_rat(t, x, q);' -> '' (the statement is removed)
+  src/cap.c:158:75: error: unused parameter ‘q’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:131:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:121:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:168:5 drop_assign: 'status = adf_fball_cap(y, t, C);' -> '' (the statement is removed)
+  src/cap.c:158:35: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:149:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:139:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:84:5 drop_assign: 'status = adf_fball_set_center_radius(y, c, g);' -> '' (the statement is removed)
+  src/cap.c:90:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+mutate: 48 mutants in 285.5 s: 39 killed, 0 survived, 6 not compiled, 0 timed out, 3 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

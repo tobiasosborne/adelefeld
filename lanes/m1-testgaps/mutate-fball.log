@@ -1,0 +1,393 @@
+mutate: src/fball.c: 347 mutants
+mutate: the baseline passes (8.3 s)
+
+SURVIVED src/fball.c:312:5 drop_call: 'flint_free(x->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -310,5 +310,5 @@
+       x->backend = ADF_GLOBAL;
+       x->mctx = NULL;
+  -    flint_free(x->res);
+  +    
+       x->res = NULL;
+   }
+
+
+SURVIVED src/fball.c:264:5 drop_call: 'flint_free(x->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -262,5 +262,5 @@
+       x->backend = ADF_GLOBAL;
+       x->mctx = NULL;
+  -    flint_free(x->res);
+  +    
+       x->res = NULL;
+   }
+
+
+SURVIVED src/fball.c:300:5 drop_call: 'flint_free(x->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -298,5 +298,5 @@
+       x->backend = ADF_GLOBAL;
+       x->mctx = NULL;
+  -    flint_free(x->res);
+  +    
+       x->res = NULL;
+   }
+
+
+SURVIVED src/fball.c:155:5 drop_call: 'flint_free(x->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -153,5 +153,5 @@
+       fmpz_clear(x->H);
+       fmpz_clear(x->d);
+  -    flint_free(x->res);
+  +    
+       x->res = NULL;
+       x->mctx = NULL;
+
+
+SURVIVED src/fball.c:276:5 drop_call: 'flint_free(x->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -274,5 +274,5 @@
+       x->backend = ADF_GLOBAL;
+       x->mctx = NULL;
+  -    flint_free(x->res);
+  +    
+       x->res = NULL;
+   }
+
+
+SURVIVED src/fball.c:142:5 drop_call: 'fmpz_zero(x->H);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -140,5 +140,5 @@
+       fmpz_init(x->d);
+       fmpz_zero(x->A);
+  -    fmpz_zero(x->H);
+  +    
+       fmpz_one(x->d);
+       x->backend = ADF_GLOBAL;
+
+
+SURVIVED src/fball.c:422:16 status: 'ADF_UNSUPPORTED' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -420,5 +420,5 @@
+           return ADF_UNSUPPORTED;
+       if (adf_place_prime_get == NULL)
+  -        return ADF_UNSUPPORTED;
+  +        return ADF_OK;
+       if (adf_place_is_archimedean(v))
+           return ADF_DOMAIN;
+
+
+SURVIVED src/fball.c:554:5 swap_args: 'fmpq_mul(t3, N, M)' -> 'fmpq_mul(t3, M, N)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -552,5 +552,5 @@
+       fmpq_mul(t1, a, M);
+       fmpq_mul(t2, b, N);
+  -    fmpq_mul(t3, N, M);
+  +    fmpq_mul(t3, M, N);
+       fmpq_gcd(g, t1, t2);
+       fmpq_gcd(g, g, t3);
+
+
+SURVIVED src/fball.c:734:13 drop_call: 'fmpq_sub(diff, a, b);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -732,5 +732,5 @@
+               fmpq_div(t, N, M);
+               res = fb_is_integer(t);
+  -            fmpq_sub(diff, a, b);
+  +            
+               fmpq_div(t, diff, M);
+               res = res && fb_is_integer(t);
+
+
+SURVIVED src/fball.c:582:5 swap_args: 'fmpq_mul(c, a, q->q)' -> 'fmpq_mul(c, q->q, a)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -580,5 +580,5 @@
+       fb_center(a, x);
+       fb_radius(N, x);
+  -    fmpq_mul(c, a, q->q);
+  +    fmpq_mul(c, q->q, a);
+       fmpq_abs(r, q->q);
+       fmpq_mul(r, r, N);
+
+
+SURVIVED src/fball.c:141:5 drop_call: 'fmpz_zero(x->A);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -139,5 +139,5 @@
+       fmpz_init(x->H);
+       fmpz_init(x->d);
+  -    fmpz_zero(x->A);
+  +    
+       fmpz_zero(x->H);
+       fmpz_one(x->d);
+
+
+SURVIVED src/fball.c:468:5 swap_args: 'fmpq_add(c, a, b)' -> 'fmpq_add(c, b, a)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -466,5 +466,5 @@
+       fb_center(b, y);
+       fb_radius(M, y);
+  -    fmpq_add(c, a, b);
+  +    fmpq_add(c, b, a);
+       fmpq_gcd(r, N, M);
+       fb_set_cr(z, c, r);
+
+
+SURVIVED src/fball.c:553:5 swap_args: 'fmpq_mul(t2, b, N)' -> 'fmpq_mul(t2, N, b)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -551,5 +551,5 @@
+       fmpq_mul(c, a, b);
+       fmpq_mul(t1, a, M);
+  -    fmpq_mul(t2, b, N);
+  +    fmpq_mul(t2, N, b);
+       fmpq_mul(t3, N, M);
+       fmpq_gcd(g, t1, t2);
+
+
+SURVIVED src/fball.c:75:5 drop_call: 'flint_free(x->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -73,5 +73,5 @@
+   fb_store(adf_fball_t x, const fmpz_t A, const fmpz_t H, const fmpz_t d)
+   {
+  -    flint_free(x->res);
+  +    
+       x->res = NULL;
+       fmpz_set(x->A, A);
+
+
+SURVIVED src/fball.c:469:5 swap_args: 'fmpq_gcd(r, N, M)' -> 'fmpq_gcd(r, M, N)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -467,5 +467,5 @@
+       fb_radius(M, y);
+       fmpq_add(c, a, b);
+  -    fmpq_gcd(r, N, M);
+  +    fmpq_gcd(r, M, N);
+       fb_set_cr(z, c, r);
+       fmpq_clear(a);
+
+
+SURVIVED src/fball.c:420:16 status: 'ADF_UNSUPPORTED' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -418,5 +418,5 @@
+   
+       if (adf_place_is_archimedean == NULL)
+  -        return ADF_UNSUPPORTED;
+  +        return ADF_OK;
+       if (adf_place_prime_get == NULL)
+           return ADF_UNSUPPORTED;
+
+
+SURVIVED src/fball.c:497:5 swap_args: 'fmpq_gcd(r, N, M)' -> 'fmpq_gcd(r, M, N)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -495,5 +495,5 @@
+       fb_radius(M, y);
+       fmpq_sub(c, a, b);
+  -    fmpq_gcd(r, N, M);
+  +    fmpq_gcd(r, M, N);
+       fb_set_cr(z, c, r);
+       fmpq_clear(a);
+
+
+SURVIVED src/fball.c:551:5 swap_args: 'fmpq_mul(c, a, b)' -> 'fmpq_mul(c, b, a)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -549,5 +549,5 @@
+       fb_center(b, y);
+       fb_radius(M, y);
+  -    fmpq_mul(c, a, b);
+  +    fmpq_mul(c, b, a);
+       fmpq_mul(t1, a, M);
+       fmpq_mul(t2, b, N);
+
+
+SURVIVED src/fball.c:288:5 drop_call: 'flint_free(x->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -286,5 +286,5 @@
+       x->backend = ADF_GLOBAL;
+       x->mctx = NULL;
+  -    flint_free(x->res);
+  +    
+       x->res = NULL;
+   }
+
+
+SURVIVED src/fball.c:168:5 drop_call: 'flint_free(y->res);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -166,5 +166,5 @@
+       if (x->backend != ADF_GLOBAL)
+           return;
+  -    flint_free(y->res);
+  +    
+       y->res = NULL;
+       fmpz_set(y->A, x->A);
+
+
+SURVIVED src/fball.c:610:5 swap_args: 'fmpq_mul(c, a, qq)' -> 'fmpq_mul(c, qq, a)'
+  the tests pass with the mutant
+  --- a/src/fball.c
+  +++ b/src/fball.c
+  @@ -608,5 +608,5 @@
+       fb_radius(N, x);
+       fmpq_inv(qq, q->q);
+  -    fmpq_mul(c, a, qq);
+  +    fmpq_mul(c, qq, a);
+       fmpq_abs(r, qq);
+       fmpq_mul(r, r, N);
+
+
+NOT COMPILED src/fball.c:327:5 drop_call: 'fmpz_set(tA, A);' -> '' (the statement is removed)
+  src/fball.c:317:49: error: unused parameter ‘A’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:79:5 drop_call: 'fmpz_set(x->d, d);' -> '' (the statement is removed)
+  src/fball.c:73:70: error: unused parameter ‘d’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:388:5 drop_call: 'fmpz_set(A, x->A);' -> '' (the statement is removed)
+  src/fball.c:384:28: error: unused parameter ‘A’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:193:15 op: '*' -> '+'
+  src/fball.c:193:15: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/fball.c:585:5 drop_call: 'fb_set_cr(y, c, r);' -> '' (the statement is removed)
+  src/fball.c:570:31: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:103:5 drop_call: 'fb_store(x, A, H, d);' -> '' (the statement is removed)
+  src/fball.c:88:23: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:398:5 drop_call: 'fmpq_set_fmpz_frac(c->q, x->A, x->d);' -> '' (the statement is removed)
+  src/fball.c:394:32: error: unused parameter ‘c’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:498:5 drop_call: 'fb_set_cr(z, c, r);' -> '' (the statement is removed)
+  src/fball.c:480:27: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:691:9 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:700:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:432:5 drop_assign: 'vd = fmpz_remove(t, x->d, p);' -> '' (the statement is removed)
+  src/fball.c:436:13: error: ‘vd’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:389:5 drop_call: 'fmpz_set(H, x->H);' -> '' (the statement is removed)
+  src/fball.c:384:38: error: unused parameter ‘H’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:115:5 drop_call: 'fmpq_set_fmpz_frac(a, x->A, x->d);' -> '' (the statement is removed)
+  src/fball.c:113:18: error: unused parameter ‘a’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:295:5 drop_call: 'fmpz_set(x->A, n);' -> '' (the statement is removed)
+  src/fball.c:293:48: error: unused parameter ‘n’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:764:9 drop_assign: 'res = fmpq_equal(q->q, a);' -> '' (the statement is removed)
+  src/fball.c:778:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:470:5 drop_call: 'fb_set_cr(z, c, r);' -> '' (the statement is removed)
+  src/fball.c:452:27: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:772:9 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:778:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:78:5 drop_call: 'fmpz_set(x->H, H);' -> '' (the statement is removed)
+  src/fball.c:73:54: error: unused parameter ‘H’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:522:5 drop_call: 'fb_set_cr(y, c, r);' -> '' (the statement is removed)
+  src/fball.c:508:27: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:733:13 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:736:23: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:431:5 drop_assign: 'vH = fmpz_remove(t, x->H, p);' -> '' (the statement is removed)
+  src/fball.c:436:13: error: ‘vH’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:77:5 drop_call: 'fmpz_set(x->A, A);' -> '' (the statement is removed)
+  src/fball.c:73:38: error: unused parameter ‘A’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:653:9 drop_assign: 'res = fb_is_integer(t);' -> '' (the statement is removed)
+  src/fball.c:661:12: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:557:5 drop_call: 'fb_set_cr(z, c, g);' -> '' (the statement is removed)
+  src/fball.c:532:27: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:224:17 drop_assign: 'ok = fmpz_is_one(g);' -> '' (the statement is removed)
+  src/fball.c:228:16: error: ‘ok’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:390:5 drop_call: 'fmpz_set(d, x->d);' -> '' (the statement is removed)
+  src/fball.c:384:48: error: unused parameter ‘d’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:247:33 logic: '||' -> '&&'
+  src/fball.c:247:33: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/fball.c:404:5 drop_call: 'fmpq_set_fmpz_frac(N->q, x->H, x->d);' -> '' (the statement is removed)
+  src/fball.c:402:32: error: unused parameter ‘N’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:283:5 drop_call: 'fmpz_set_si(x->A, n);' -> '' (the statement is removed)
+  src/fball.c:281:39: error: unused parameter ‘n’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:343:5 drop_call: 'fb_set_cr(x, c->q, N->q);' -> '' (the statement is removed)
+  src/fball.c:339:41: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:189:5 drop_assign: 'im = x->mctx;' -> '' (the statement is removed)
+  src/fball.c:191:13: error: ‘im’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/fball.c:122:5 drop_call: 'fmpq_set_fmpz_frac(N, x->H, x->d);' -> '' (the statement is removed)
+  src/fball.c:120:18: error: unused parameter ‘N’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:215:13 drop_assign: 'ok = fmpz_is_one(g);' -> '' (the statement is removed)
+  src/fball.c:228:16: error: ‘ok’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball.c:247:60 logic: '||' -> '&&'
+  src/fball.c:247:60: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/fball.c:193:15 op: '*' -> '/'
+  src/fball.c:193:15: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/fball.c:331:5 drop_call: 'fb_store(x, tA, tH, td);' -> '' (the statement is removed)
+  src/fball.c:317:33: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:186:5 drop_assign: 'ib = x->backend;' -> '' (the statement is removed)
+  src/fball.c:188:16: error: ‘ib’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/fball.c:613:5 drop_call: 'fb_set_cr(y, c, r);' -> '' (the statement is removed)
+  src/fball.c:593:31: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball.c:410:5 drop_call: 'fmpz_set(d, x->d);' -> '' (the statement is removed)
+  src/fball.c:408:26: error: unused parameter ‘d’ [-Werror=unused-parameter]
+
+mutate: 347 mutants in 1361.3 s: 280 killed, 21 survived, 38 not compiled, 0 timed out, 8 excused
+mutate: FAILED: 21 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1

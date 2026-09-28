@@ -1,0 +1,290 @@
+# lanes/m1-testgaps/redgreen.log: each mutation applied by hand in build/redgreen/, the
+# one new test program built there and run from the repository root. Red means the test
+# fails, which is what the mutation must achieve. Date: 2026-09-28.
+
+## tests/test_fball_overwrite.c against drop_call mutants of src/fball.c
+=== fball: drop fmpz_zero(x->A) in adf_fball_zero (line 259)
+--- src/fball.c:259 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: zero_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_zero the value is (1606938044258990275541962092341162602522202993782792835301376, 0, 1) backend 0 mctx NULL res NULL canonical 1
+FAIL zero_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:104, 1 failed checks)
+FAIL tests/test_fball_overwrite.c:90: the_constructors_do_not_depend_on_the_earlier_value: check failed: fields_match_the_expected_triple | after adf_fball_zero after a loaded value the value is (1606938044258990275541962092341162602522202993782792835301376, 0, 1) backend 0 mctx NULL res NULL canonical 1
+FAIL the_constructors_do_not_depend_on_the_earlier_value (tests/test_fball_overwrite.c:350, 1 failed checks)
+
+=== fball: drop fmpz_zero(x->H) in adf_fball_zero (line 260)
+--- src/fball.c:260 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: zero_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_zero the value is (0, 1645504557321206042154969182557350504982735865633579863348609024, 1) backend 0 mctx NULL res NULL canonical 1
+FAIL zero_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:104, 1 failed checks)
+FAIL tests/test_fball_overwrite.c:90: the_constructors_do_not_depend_on_the_earlier_value: check failed: fields_match_the_expected_triple | after adf_fball_zero after a loaded value the value is (0, 1645504557321206042154969182557350504982735865633579863348609024, 1) backend 0 mctx NULL res NULL canonical 1
+FAIL the_constructors_do_not_depend_on_the_earlier_value (tests/test_fball_overwrite.c:350, 1 failed checks)
+
+=== fball: drop fmpz_one(x->d) in adf_fball_zero (line 261)
+--- src/fball.c:261 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: zero_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_zero the value is (0, 0, 12157665459056928801) backend 0 mctx NULL res NULL canonical 0
+FAIL zero_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:104, 1 failed checks)
+FAIL tests/test_fball_overwrite.c:90: the_constructors_do_not_depend_on_the_earlier_value: check failed: fields_match_the_expected_triple | after adf_fball_zero after a loaded value the value is (0, 0, 12157665459056928801) backend 0 mctx NULL res NULL canonical 0
+FAIL the_constructors_do_not_depend_on_the_earlier_value (tests/test_fball_overwrite.c:350, 1 failed checks)
+
+=== fball: drop fmpz_one(x->A) in adf_fball_one (line 271)
+--- src/fball.c:271 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: one_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_one the value is (1606938044258990275541962092341162602522202993782792835301376, 0, 1) backend 0 mctx NULL res NULL canonical 1
+FAIL one_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:122, 1 failed checks)
+FAIL tests/test_fball_overwrite.c:90: the_constructors_do_not_depend_on_the_earlier_value: check failed: fields_match_the_expected_triple | after adf_fball_one after adf_fball_zero the value is (0, 0, 1) backend 0 mctx NULL res NULL canonical 1
+FAIL the_constructors_do_not_depend_on_the_earlier_value (tests/test_fball_overwrite.c:350, 1 failed checks)
+
+=== fball: drop fmpz_zero(x->H) in adf_fball_one (line 272)
+--- src/fball.c:272 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: one_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_one the value is (1, 1645504557321206042154969182557350504982735865633579863348609024, 1) backend 0 mctx NULL res NULL canonical 1
+FAIL one_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:122, 1 failed checks)
+
+=== fball: drop fmpz_one(x->d) in adf_fball_one (line 273)
+--- src/fball.c:273 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: one_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_one the value is (1, 0, 12157665459056928801) backend 0 mctx NULL res NULL canonical 1
+FAIL one_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:122, 1 failed checks)
+
+=== fball: drop fmpz_set_si(x->A, n) in adf_fball_set_si (line 283)
+--- src/fball.c:283 delete
+not compiled: the mutant does not build (mutate.py counts this as "not compiled",
+              so it is not a survivor); the reason:
+              src/fball.c:281:39: error: unused parameter ‘n’ [-Werror=unused-parameter]
+              cc1: all warnings being treated as errors
+
+=== fball: drop fmpz_zero(x->H) in adf_fball_set_si (line 284)
+--- src/fball.c:284 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_si_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set_si(-5) the value is (-5, 1645504557321206042154969182557350504982735865633579863348609024, 1) backend 0 mctx NULL res NULL canonical 0
+FAIL set_si_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:140, 1 failed checks)
+
+=== fball: drop fmpz_one(x->d) in adf_fball_set_si (line 285)
+--- src/fball.c:285 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_si_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set_si(-5) the value is (-5, 0, 12157665459056928801) backend 0 mctx NULL res NULL canonical 1
+FAIL set_si_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:140, 1 failed checks)
+
+=== fball: drop fmpz_set(x->A, n) in adf_fball_set_fmpz (line 295)
+--- src/fball.c:295 delete
+not compiled: the mutant does not build (mutate.py counts this as "not compiled",
+              so it is not a survivor); the reason:
+              src/fball.c:293:48: error: unused parameter ‘n’ [-Werror=unused-parameter]
+              cc1: all warnings being treated as errors
+
+=== fball: drop fmpz_zero(x->H) in adf_fball_set_fmpz (line 296)
+--- src/fball.c:296 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_fmpz_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set_fmpz(-(2^250 + 7)) the value is (-1809251394333065553493296640760748560207343510400633813116524750123642650631, 1645504557321206042154969182557350504982735865633579863348609024, 1) backend 0 mctx NULL res NULL canonical 0
+FAIL set_fmpz_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:158, 1 failed checks)
+
+=== fball: drop fmpz_one(x->d) in adf_fball_set_fmpz (line 297)
+--- src/fball.c:297 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_fmpz_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set_fmpz(-(2^250 + 7)) the value is (-1809251394333065553493296640760748560207343510400633813116524750123642650631, 0, 12157665459056928801) backend 0 mctx NULL res NULL canonical 1
+FAIL set_fmpz_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:158, 1 failed checks)
+
+=== fball: drop fmpz_set(x->A, num) in adf_fball_set_rat (line 307)
+--- src/fball.c:307 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_rat_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set_rat(-7/11) the value is (1606938044258990275541962092341162602522202993782792835301376, 0, 11) backend 0 mctx NULL res NULL canonical 1
+FAIL set_rat_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:183, 1 failed checks)
+
+=== fball: drop fmpz_zero(x->H) in adf_fball_set_rat (line 308)
+--- src/fball.c:308 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_rat_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set_rat(-7/11) the value is (-7, 1645504557321206042154969182557350504982735865633579863348609024, 11) backend 0 mctx NULL res NULL canonical 0
+FAIL set_rat_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:183, 1 failed checks)
+
+=== fball: drop fmpz_set(x->d, den) in adf_fball_set_rat (line 309)
+--- src/fball.c:309 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_rat_writes_every_field_of_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set_rat(-7/11) the value is (-7, 0, 12157665459056928801) backend 0 mctx NULL res NULL canonical 1
+FAIL set_rat_writes_every_field_of_a_value_that_holds_other_data (tests/test_fball_overwrite.c:183, 1 failed checks)
+
+=== fball: drop fmpz_set(y->A, x->A) in adf_fball_set (line 170)
+--- src/fball.c:170 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_copies_every_field_over_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set the value is (1606938044258990275541962092341162602522202993782792835301376, 9, 4) backend 0 mctx NULL res NULL canonical 0
+FAIL set_copies_every_field_over_a_value_that_holds_other_data (tests/test_fball_overwrite.c:256, 1 failed checks)
+
+=== fball: drop fmpz_set(y->H, x->H) in adf_fball_set (line 171)
+--- src/fball.c:171 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_copies_every_field_over_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set the value is (7, 1645504557321206042154969182557350504982735865633579863348609024, 4) backend 0 mctx NULL res NULL canonical 1
+FAIL set_copies_every_field_over_a_value_that_holds_other_data (tests/test_fball_overwrite.c:256, 1 failed checks)
+
+=== fball: drop fmpz_set(y->d, x->d) in adf_fball_set (line 172)
+--- src/fball.c:172 delete
+red: the test fails, as it must
+FAIL tests/test_fball_overwrite.c:90: set_copies_every_field_over_a_value_that_holds_other_data: check failed: fields_match_the_expected_triple | after adf_fball_set the value is (7, 9, 12157665459056928801) backend 0 mctx NULL res NULL canonical 1
+FAIL set_copies_every_field_over_a_value_that_holds_other_data (tests/test_fball_overwrite.c:256, 1 failed checks)
+
+=== fball: drop fmpz_set(x->A, A) in fb_store (line 77)
+--- src/fball.c:77 delete
+not compiled: the mutant does not build (mutate.py counts this as "not compiled",
+              so it is not a survivor); the reason:
+              src/fball.c:73:38: error: unused parameter ‘A’ [-Werror=unused-parameter]
+              cc1: all warnings being treated as errors
+
+=== fball: drop fmpz_set(x->H, H) in fb_store (line 78)
+--- src/fball.c:78 delete
+not compiled: the mutant does not build (mutate.py counts this as "not compiled",
+              so it is not a survivor); the reason:
+              src/fball.c:73:54: error: unused parameter ‘H’ [-Werror=unused-parameter]
+              cc1: all warnings being treated as errors
+
+=== fball: drop fmpz_set(x->d, d) in fb_store (line 79)
+--- src/fball.c:79 delete
+not compiled: the mutant does not build (mutate.py counts this as "not compiled",
+              so it is not a survivor); the reason:
+              src/fball.c:73:70: error: unused parameter ‘d’ [-Werror=unused-parameter]
+              cc1: all warnings being treated as errors
+
+
+## tests/test_adele_prec.c against prec mutants of src/adele.c
+=== adele: prec -> 2 in adf_adele_add_rat (line 256)
+--- src/adele.c:256 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:68: adele_add_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(r, 150) | adf_adele_add_rat at prec 200: the radius is not below 2^-150 times the midpoint (-2 bits of relative error)
+FAIL adele_add_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:383, 1 failed checks)
+
+=== adele: prec -> 2 in adf_adele_add_rat (line 259)
+--- src/adele.c:259 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:68: adele_add_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(r, 150) | adf_adele_add_rat at prec 200: the radius is not below 2^-150 times the midpoint (0 bits of relative error)
+FAIL adele_add_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:383, 1 failed checks)
+
+=== adele: prec -> 2 in adf_adele_mul_rat (line 283)
+--- src/adele.c:283 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:68: adele_mul_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(r, 150) | adf_adele_mul_rat at prec 200: the radius is not below 2^-150 times the midpoint (0 bits of relative error)
+FAIL adele_mul_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:412, 1 failed checks)
+
+=== adele: prec -> 2 in adf_adele_mul_rat (line 285)
+--- src/adele.c:285 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:68: adele_mul_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(r, 150) | adf_adele_mul_rat at prec 200: the radius is not below 2^-150 times the midpoint (0 bits of relative error)
+FAIL adele_mul_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:412, 1 failed checks)
+
+=== adele: prec -> 2 in adf_adele_div_rat (line 318)
+--- src/adele.c:318 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:68: adele_div_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(r, 150) | adf_adele_div_rat at prec 200: the radius is not below 2^-150 times the midpoint (0 bits of relative error)
+FAIL adele_div_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:441, 1 failed checks)
+
+=== adele: prec -> 2 in adf_adele_div_rat (line 319)
+--- src/adele.c:319 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:68: adele_div_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(r, 150) | adf_adele_div_rat at prec 200: the radius is not below 2^-150 times the midpoint (0 bits of relative error)
+FAIL adele_div_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:441, 1 failed checks)
+
+=== adele: prec -> 2 in adf_cadele_add_rat (line 489)
+--- src/adele.c:489 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:83: cadele_add_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_realref(z), 150) | adf_cadele_add_rat at prec 200: the real radius is not below 2^-150 times the real midpoint (-2 bits of relative error)
+FAIL cadele_add_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:616, 1 failed checks)
+
+=== adele: prec -> 2 in adf_cadele_add_rat (line 492)
+--- src/adele.c:492 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:83: cadele_add_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_realref(z), 150) | adf_cadele_add_rat at prec 200: the real radius is not below 2^-150 times the real midpoint (0 bits of relative error)
+FAIL cadele_add_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:616, 1 failed checks)
+
+=== adele: prec -> 2 in adf_cadele_mul_rat (line 512)
+--- src/adele.c:512 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:83: cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_realref(z), 150) | adf_cadele_mul_rat at prec 200: the real radius is not below 2^-150 times the real midpoint (0 bits of relative error)
+FAIL tests/test_adele_prec.c:91: cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_imagref(z), 150) | adf_cadele_mul_rat at prec 200: the imaginary radius is not below 2^-150 times the imaginary midpoint (0 bits of relative error)
+FAIL cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:653, 2 failed checks)
+
+=== adele: prec -> 2 in adf_cadele_mul_rat (line 514)
+--- src/adele.c:514 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:83: cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_realref(z), 150) | adf_cadele_mul_rat at prec 200: the real radius is not below 2^-150 times the real midpoint (0 bits of relative error)
+FAIL tests/test_adele_prec.c:91: cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_imagref(z), 150) | adf_cadele_mul_rat at prec 200: the imaginary radius is not below 2^-150 times the imaginary midpoint (0 bits of relative error)
+FAIL cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:653, 2 failed checks)
+
+=== adele: prec -> 2 in adf_cadele_div_rat (line 543)
+--- src/adele.c:543 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:83: cadele_div_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_realref(z), 150) | adf_cadele_div_rat at prec 200: the real radius is not below 2^-150 times the real midpoint (0 bits of relative error)
+FAIL tests/test_adele_prec.c:91: cadele_div_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_imagref(z), 150) | adf_cadele_div_rat at prec 200: the imaginary radius is not below 2^-150 times the imaginary midpoint (0 bits of relative error)
+FAIL cadele_div_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:690, 2 failed checks)
+
+=== adele: prec -> 2 in adf_cadele_div_rat (line 544)
+--- src/adele.c:544 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:83: cadele_div_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_realref(z), 150) | adf_cadele_div_rat at prec 200: the real radius is not below 2^-150 times the real midpoint (0 bits of relative error)
+FAIL tests/test_adele_prec.c:91: cadele_div_rat_computes_the_real_part_at_the_precision_asked_for: check failed: rel_radius_below(acb_imagref(z), 150) | adf_cadele_div_rat at prec 200: the imaginary radius is not below 2^-150 times the imaginary midpoint (0 bits of relative error)
+FAIL cadele_div_rat_computes_the_real_part_at_the_precision_asked_for (tests/test_adele_prec.c:690, 2 failed checks)
+
+=== adele: prec -> 2 in adf_adele_set_rat (line 123)
+--- src/adele.c:123 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:68: adele_set_rat_converts_at_the_precision_asked_for: check failed: rel_radius_below(r, 150) | adf_adele_set_rat at prec 200: the radius is not below 2^-150 times the midpoint (0 bits of relative error)
+FAIL adele_set_rat_converts_at_the_precision_asked_for (tests/test_adele_prec.c:470, 1 failed checks)
+
+=== adele: prec -> 2 in adf_cadele_set_rat (line 392)
+--- src/adele.c:392 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:742: cadele_set_rat_converts_at_the_precision_asked_for: check failed: rel_radius_below(acb_realref(y->inf), 150) | adf_cadele_set_rat at prec 200: the real radius is not below 2^-150 times the real midpoint (0 bits of relative error)
+FAIL cadele_set_rat_converts_at_the_precision_asked_for (tests/test_adele_prec.c:727, 1 failed checks)
+
+
+## tests/test_adele_prec.c against the drop_call and status mutants of src/adele.c
+=== adele: drop adf_fball_swap in adf_adele_swap (line 82)
+--- src/adele.c:82 delete
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:784: adele_swap_exchanges_the_finite_half: check failed: adf_fball_identical(&x->fin, fy) | the finite half of x is not the one y held before the swap
+FAIL tests/test_adele_prec.c:786: adele_swap_exchanges_the_finite_half: check failed: adf_fball_identical(&y->fin, fx) | the finite half of y is not the one x held before the swap
+FAIL adele_swap_exchanges_the_finite_half (tests/test_adele_prec.c:761, 2 failed checks)
+
+=== adele: drop adf_fball_swap in adf_cadele_swap (line 360)
+--- src/adele.c:360 delete
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:821: cadele_swap_exchanges_the_finite_half: check failed: adf_fball_identical(&x->fin, fy) | the finite half of x is not the one y held before the swap
+FAIL tests/test_adele_prec.c:823: cadele_swap_exchanges_the_finite_half: check failed: adf_fball_identical(&y->fin, fx) | the finite half of y is not the one x held before the swap
+FAIL cadele_swap_exchanges_the_finite_half (tests/test_adele_prec.c:797, 2 failed checks)
+
+=== adele: ADF_OK -> ADF_DOMAIN in adf_adele_get_arb_at (line 179)
+--- src/adele.c:179 replace
+red: the test fails, as it must
+FAIL tests/test_adele_prec.c:842: get_arb_at_the_real_place_returns_ADF_OK: check failed: adf_adele_get_arb_at(r, x, adf_place_inf()) == ADF_OK | the status at the archimedean place is not ADF_OK
+FAIL get_arb_at_the_real_place_returns_ADF_OK (tests/test_adele_prec.c:834, 1 failed checks)
+
+
+## green: the unmutated tree
+ok   zero_writes_every_field_of_a_value_that_holds_other_data
+ok   one_writes_every_field_of_a_value_that_holds_other_data
+ok   set_si_writes_every_field_of_a_value_that_holds_other_data
+ok   set_fmpz_writes_every_field_of_a_value_that_holds_other_data
+ok   set_rat_writes_every_field_of_a_value_that_holds_other_data
+ok   set_fmpz3_writes_every_field_of_a_value_that_holds_other_data
+ok   set_center_radius_writes_every_field_of_a_value_that_holds_other_data
+ok   set_copies_every_field_over_a_value_that_holds_other_data
+ok   canonicalise_writes_every_field_of_a_raw_triple_over_other_data
+ok   swap_moves_every_field
+ok   the_constructors_do_not_depend_on_the_earlier_value
+11 tests, 44 checks, 0 failed checks, 0 failed tests
+green: test_fball_overwrite passes
+ok   adele_add_computes_the_real_part_at_the_precision_asked_for
+ok   adele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   adele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_set_rat_converts_at_the_precision_asked_for
+ok   cadele_add_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_set_rat_converts_at_the_precision_asked_for
+ok   adele_swap_exchanges_the_finite_half
+ok   cadele_swap_exchanges_the_finite_half
+ok   get_arb_at_the_real_place_returns_ADF_OK
+17 tests, 148 checks, 0 failed checks, 0 failed tests
+green: test_adele_prec passes
