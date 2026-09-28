@@ -2,7 +2,27 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-28 (late), 21:00 to 21:50: START HERE
+## Session 2026-09-28 (night), 22:30 to 23:05: START HERE
+
+**One line.** The decisions that waited for TJO are ratified; the comparison of Sonnet effort levels is run and
+the level is MEDIUM (agent type `sonnet-medium`); no code of the library changed; nothing is running.
+
+**The comparison** (one task, one run per level; every result rebuilt by the orchestrator against the original
+and the three mutants, script and copies in `~/Projects/adelefeld-wt/effort-cmp/`):
+
+| Level | Verdicts right | Wall time | Tokens | Checks | Remarks |
+|---|---|---|---|---|---|
+| low | 3 of 3 | 78 s | 58599 | 3 | did not read off the statuses of the mutants; one input that did not kill, repaired |
+| medium | 3 of 3 | 106 s | 66751 | 9 | statuses recorded (`LIMIT`, `DOMAIN`), controls added |
+| high | 3 of 3 | 157 s | 89510 | 26 | wrote a probe program outside its directory; line numbers of `dp_word` cited wrong |
+
+The tests of the three agents are NOT merged: master has its own test for the two mutants that can be killed
+(`grammar_before_limits_in_sball_and_rfun`). Where a section below says "Sonnet at effort high", read medium.
+
+**Order of work from here.** m1-invariants alone (adf-xk4; `sonnet-medium`, codex as reviewer); m1-repair-tools
+alone, overnight (adf-xf4, adf-4lj); closure check (adf-igt); benchmarks on a quiet machine; milestone S.
+
+## Session 2026-09-28 (late), 21:00 to 21:50
 
 **One line.** Lane m1-repair-dump is landed (adf-tp2 closed); Sonnet 5.5 replaces the nonfree pi models; a
 comparison of Sonnet at effort low, medium, high is prepared and needs a restarted session; nothing is running.
