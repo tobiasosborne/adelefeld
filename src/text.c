@@ -645,24 +645,43 @@ tx_complex_syntax(tx_cur * c, tx_real * re, tx_real * im)
 }
 
 /* Stage 4 for a decimal: abs(exponent) <= max_exp10 (conventions 8.4 line 1066, 9.3 line 1165),
-   checked on the digit string before any number is formed (8.5 item 4, line 1083). As in proto
-   _check_limits (lines 583-588), an exponent of more than 18 significant digits is over the limit
-   whatever max_exp10 is; 18 digits fit a ulong. */
+   checked on the digit string before any number is formed (8.5 item 4, line 1083; decision M1-D7,
+   finding R4). The exponent has no hidden bound of 18 digits: the digit string is compared with
+   max_exp10 as a number, so it may be as long as the input (the value of the literal is not
+   formed here). max_exp10 is signed; an exponent is a non-negative magnitude, so a negative
+   max_exp10 admits no literal with an exponent. Zero digits are skipped, so 1e0007 compares as 7.
+   The comparison is on the absolute value: 1e-8 is over a limit of 7. */
 static int
 tx_dec_over(const char * s, const tx_num * n, const adf_text_limits_t * lim)
 {
-    size_t b = n->eb;
-    ulong v = 0;
+    size_t b = n->eb, nd, i, ld = 0;
+    char lbuf[32];
+    slong m = lim->max_exp10;
 
     if (!n->has_exp)
         return 0;
+    if (m < 0)
+        return 1;
     while (b < n->ee && s[b] == '0')
         b++;
-    if (n->ee - b > 18)
-        return 1;
-    for (; b < n->ee; b++)
-        v = 10 * v + (ulong) (s[b] - '0');
-    return (slong) v > lim->max_exp10;
+    if (b == n->ee)
+        return 0;               /* the exponent is 0 */
+    while (m > 0)
+    {
+        lbuf[ld++] = (char) ('0' + (m % 10));
+        m /= 10;
+    }
+    nd = n->ee - b;
+    if (nd != ld)
+        return nd > ld;
+    for (i = 0; i < nd; i++)
+    {
+        char lc = lbuf[ld - 1 - i];
+        char sc = s[b + i];
+        if (sc != lc)
+            return sc > lc;
+    }
+    return 0;
 }
 
 static int
@@ -671,18 +690,19 @@ tx_real_over(const char * s, const tx_real * r, const adf_text_limits_t * lim)
     return tx_dec_over(s, &r->m, lim) || (r->has_r && tx_dec_over(s, &r->r, lim));
 }
 
-/* The exponent of an accepted decimal, which stage 4 bounded by 10^18 in absolute value. */
+/* The exponent of an accepted decimal. Stage 4 admitted it, so its magnitude is at most
+   max_exp10 (a signed 64-bit bound); the unsigned accumulator cannot overflow. */
 static slong
 tx_dec_exp(const char * s, const tx_num * n)
 {
     size_t b;
-    slong v = 0;
+    ulong v = 0;
 
     if (!n->has_exp)
         return 0;
     for (b = n->eb; b < n->ee; b++)
-        v = 10 * v + (slong) (s[b] - '0');
-    return n->exp_neg ? -v : v;
+        v = 10 * v + (ulong) (s[b] - '0');
+    return n->exp_neg ? -(slong) v : (slong) v;
 }
 
 /* 10^e as an integer, e >= 0. */
@@ -709,6 +729,13 @@ tx_dec_value(fmpz_t num, fmpz_t den, const char * s, const tx_num * n)
     buf[ni + nf] = '\0';
     fmpz_set_str(num, buf, 10);
     flint_free(buf);
+    /* A zero coefficient is the exact zero whatever the exponent (decision M1-D7, finding R4):
+       the power of ten is not formed, so a huge exponent within max_exp10 costs nothing. */
+    if (fmpz_is_zero(num))
+    {
+        fmpz_one(den);
+        return;
+    }
     e = tx_dec_exp(s, n) - (slong) nf;
     if (e >= 0)
     {
@@ -1058,10 +1085,40 @@ tx_put_fmt(tx_buf * b, const fmpq_t y, slong q)
     flint_free(str);
 }
 
+/* 1 if the non-zero binary exponent e is above ADF_PRINT_EXP_MAX in absolute value (decision
+   M1-D6). 2^17 = 131072 > ADF_PRINT_EXP_MAX = 100000, so 18 bits or more are over without
+   reading the exponent into a word; below that fmpz_get_si is exact. */
+static int
+tx_bin_exp_over(const fmpz_t e)
+{
+    slong v;
+
+    if (fmpz_bits(e) > 17)
+        return 1;
+    v = fmpz_get_si(e);
+    if (v < 0)
+        v = -v;
+    return v > ADF_PRINT_EXP_MAX;
+}
+
+/* 1 if the printer of decision M1-D6 admits the arb x: x is zero or every non-zero midpoint and
+   radius has a binary exponent at most ADF_PRINT_EXP_MAX in absolute value. The test is made
+   before any conversion, so the cost of a printer is bounded (include/adelefeld/text.h:32-38). */
+static int
+tx_arb_printable(const arb_t x)
+{
+    if (!arf_is_zero(arb_midref(x)) && tx_bin_exp_over(ARF_EXPREF(arb_midref(x))))
+        return 0;
+    if (!mag_is_zero(arb_radref(x)) && tx_bin_exp_over(MAG_EXPREF(arb_radref(x))))
+        return 0;
+    return 1;
+}
+
 /* y = the exact value of an arf, canonical; returns an exponent q <= 0 such that y is a multiple
    of 10^q (x = man 2^ex = man 5^(-ex) 10^ex for ex < 0). arf_get_fmpz_2exp (arf.h:678) gives
-   man 2^ex exactly. An exponent beyond a word is refused with flint_abort: the exact decimal of
-   such a value does not fit in memory, and a printer has no status (HEADER-FINDING, text.h:32). */
+   man 2^ex exactly. The callers of the value form test the exponent of M1-D6 before this
+   function, so it fits a slong; an exponent beyond a word is not reached (an earlier
+   flint_abort here was finding R2 of reviewer text). */
 static slong
 tx_arf_get_fmpq(fmpq_t y, const arf_t x)
 {
@@ -1076,11 +1133,6 @@ tx_arf_get_fmpq(fmpq_t y, const arf_t x)
     fmpz_init(man);
     fmpz_init(ex);
     arf_get_fmpz_2exp(man, ex, x);
-    if (!fmpz_fits_si(ex))
-    {
-        flint_printf("adf_*_get_str: an arb exponent beyond a word cannot be printed exactly\n");
-        flint_abort();
-    }
     e = fmpz_get_si(ex);
     fmpz_one(fmpq_denref(y));
     if (e >= 0)
@@ -1217,6 +1269,11 @@ adf_adele_get_str(size_t * len, const adf_adele_t x, slong digits)
 {
     tx_buf b;
 
+    if (!tx_arb_printable(x->inf))
+    {
+        *len = 0;
+        return NULL;
+    }
     tx_buf_init(&b);
     tx_put(&b, "(", 1);
     tx_put_real(&b, x->inf, digits);
@@ -1268,6 +1325,11 @@ adf_cadele_get_str(size_t * len, const adf_cadele_t x, slong digits)
 {
     tx_buf b;
 
+    if (!tx_arb_printable(acb_realref(x->inf)) || !tx_arb_printable(acb_imagref(x->inf)))
+    {
+        *len = 0;
+        return NULL;
+    }
     tx_buf_init(&b);
     tx_puts(&b, "((");
     tx_put_real(&b, acb_realref(x->inf), digits);

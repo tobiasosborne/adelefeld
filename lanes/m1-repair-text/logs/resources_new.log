@@ -1,0 +1,17 @@
+{"args": ["print", "100000"], "returncode": 0, "seconds": 0.007, "peak_kib": 9352, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "1000000"], "returncode": 0, "seconds": 0.006, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "10000000"], "returncode": 0, "seconds": 0.006, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "100000000"], "returncode": 0, "seconds": 0.005, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "1073741824"], "returncode": 0, "seconds": 0.005, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "-100000"], "returncode": 0, "seconds": 0.024, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=49 text=(1.0009989037986941668e-30103 +/- 1.7e-30123 ; 0)\n", "stderr": ""}
+{"args": ["print", "-1000000"], "returncode": 0, "seconds": 0.006, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "-10000000"], "returncode": 0, "seconds": 0.005, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "-100000000"], "returncode": 0, "seconds": 0.006, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "-1073741824"], "returncode": 0, "seconds": 0.006, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["print", "18446744073709551616"], "returncode": 0, "seconds": 0.008, "peak_kib": 9356, "stdout": "constructor=0 finite=1 canonical=1\nlength=0 text=(null)\n", "stderr": ""}
+{"args": ["predicate", "0"], "returncode": -11, "seconds": 0.193, "peak_kib": 9356, "stdout": "predicate=0\n", "stderr": ""}
+{"args": ["predicate", "1"], "returncode": -11, "seconds": 0.182, "peak_kib": 9356, "stdout": "predicate=1\n", "stderr": ""}
+{"args": ["predicate", "2"], "returncode": -11, "seconds": 0.168, "peak_kib": 9356, "stdout": "predicate=2\n", "stderr": ""}
+{"args": ["predicate", "3"], "returncode": -11, "seconds": 0.181, "peak_kib": 9356, "stdout": "predicate=3\n", "stderr": ""}
+{"args": ["roundtrip"], "returncode": 0, "seconds": 0.011, "peak_kib": 9356, "stdout": "input_status=0 text=(null) reread_status=9\n", "stderr": ""}
+{"args": ["nested"], "returncode": 0, "seconds": 0.006, "peak_kib": 9356, "stdout": "nested_status=0 output_null=0\n", "stderr": ""}

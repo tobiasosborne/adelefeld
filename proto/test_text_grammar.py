@@ -364,6 +364,33 @@ class TestGateFindings(unittest.TestCase):
             self.assertGreaterEqual(hi, Fraction(113, 100), t)
 
 
+class TestRepairFindings(unittest.TestCase):
+    """Regressions for the findings R2, R3, R4, R9 and R10 of reviewer text, repaired in lane
+    m1-repair-text (docs/SPEC.md section 15 rows M1-D6 and M1-D7)."""
+
+    def test_r4_exp10_limit_has_no_18_digit_bound(self):
+        """M1-D7 (R4): the exponent is compared with max_exp10 as a number of any length, and a
+        zero coefficient is the exact zero whatever its exponent within the limit."""
+        p = 10 ** 18
+        lim = tg.Limits(max_exp10=p)
+        self.assertEqual(tg.canonical("adele", b"(0e1000000000000000000 ; 0)", lim), "(0 ; 0)")
+        self.assertEqual(tg.canonical("adele", b"(0e-1000000000000000000 ; 0)", lim), "(0 ; 0)")
+        self.assertEqual(tg.canonical("adele", b"(0e1000000000000000001 ; 0)", lim), "!LIMIT")
+        self.assertEqual(tg.canonical("adele", b"(0e-1000000000000000001 ; 0)", lim), "!LIMIT")
+        self.assertEqual(tg.canonical("adele", b"(1e1000000000000000001 ; 0)", lim), "!LIMIT")
+        # the largest signed 64-bit limit and a twenty-digit exponent
+        big = tg.Limits(max_exp10=9223372036854775807)
+        self.assertEqual(tg.canonical("adele", b"(0e9223372036854775807 ; 0)", big), "(0 ; 0)")
+        self.assertEqual(tg.canonical("adele", b"(0e9223372036854775808 ; 0)", big), "!LIMIT")
+        self.assertEqual(tg.canonical("adele", b"(0e99999999999999999999 ; 0)", big), "!LIMIT")
+        # leading zeros of a short exponent are that short exponent
+        self.assertEqual(tg.canonical("adele", b"(0e00000000000000000000000000000001 ; 0)", big), "(0 ; 0)")
+        # a negative limit admits no literal with a written exponent, exponent zero included
+        neg = tg.Limits(max_exp10=-1)
+        self.assertEqual(tg.canonical("adele", b"(0e0 ; 0)", neg), "!LIMIT")
+        self.assertEqual(tg.canonical("adele", b"(0 ; 0)", neg), "(0 ; 0)")
+
+
 class TestStatus(unittest.TestCase):
     def test_values(self):
         self.assertEqual(tg.STATUS, {"OK": 0, "NOT_DETERMINED": 1, "UNIT_NOT_CERTIFIED": 2, "NEEDS_SPLIT": 3,
