@@ -8,7 +8,7 @@
 (no blocker, 4 MAJOR); two repair lanes run (m1-repair-text, m1-repair-dump).
 
 **Master** (`origin/master`, pushed): `make check` 38 test programs with gcc, clang, `SAN=1`;
-`sh tests/test_driver.sh`, `sh tests/test_julia.sh`, `sh tests/test_exports.sh` pass (checked 18:50).
+`sh tests/test_driver.sh`, `sh tests/test_julia.sh`, `sh tests/test_exports.sh` pass (checked 18:42).
 
 | Lane | State |
 |---|---|
@@ -17,7 +17,7 @@
 | m1-repair-ctx (contexts R1, R2, R6) | merged `2efa43f`; adf-rki closed |
 | m1-review-dump (codex) | merged `9d216fd`; adf-8ju closed; `docs/reviews/m1/dump/review.md` |
 | m1-repair-text | resumed 18:30, pi deepseek (OpenRouter); running at the time of writing |
-| m1-repair-dump (adf-tp2) | started 18:52, pi space-bunny-alpha; brief on master; running at the time of writing |
+| m1-repair-dump (adf-tp2) | started 18:43, pi space-bunny-alpha; brief on master; running at the time of writing |
 | m1-repair-tools | paused as before (WIP commit on its branch); run it ALONE, last |
 | m1-repair-driver | brief on master, not started; start after m1-repair-text has landed |
 | m1-invariants (adf-xk4) | brief on master (`lanes/m1-invariants/brief.md`); runs alone after the repairs |
