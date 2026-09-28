@@ -9,8 +9,15 @@ under `refs/src/<key>/` (gitignored: other people's texts are not redistributed)
 next to the PDF. Format preference: TeX, then HTML or reStructuredText, then PDF plus extraction. Only
 lawful, publicly offered copies were fetched.
 
-Tate's thesis is not lawfully available as an open copy. `tate-poonen`, `tate-kudla` and `tate-warwick` are
-open expositions of the same theory and are used as substitutes; table 2 says which statement each settles.
+Tate's thesis is on disk since 2026-09-28 under the key `tate-thesis`: a scan of Cassels and Froehlich,
+Algebraic Number Theory (1967), supplied by TJO; it is not fetched by `fetch_sources.sh` and not redistributed.
+The scan has no text layer. `pages/p305.png` to `pages/p347.png` are the book pages of chapter XV, one file
+each, and are the ground truth. `tex/p<N>.tex` is an OCR draft of page N by a model (codex `gpt-6-luna`,
+xhigh): it is UNTRUSTED, carries the sha256 of its scan in its first lines, and may be cited only after a
+referee of another model family has compared it with the scan and recorded that in the file. Until then a
+statement of Tate is cited as `tate-thesis:pages/p<N>.png` with the quoted words read from the scan.
+`tate-poonen`, `tate-kudla` and `tate-warwick` are open expositions of the same theory and remain in use;
+table 2 says which statement each settles.
 
 The lines of the tables below carry 64-hex hashes and URLs and run longer than the 116-character prose
 limit; the prose of this document keeps to the limit. Quotes: leading indentation of the extraction line is
@@ -25,6 +32,7 @@ may run past the limit. All 57 quotes were machine-checked against the files on 
 | tate-poonen | B. Poonen, Tate's thesis, notes for MIT 18.786 (2015) | https://math.mit.edu/~poonen/786/notes.pdf | tate-poonen/notes.pdf | 4775c02ca6c2c005445b750fbe2858042061fc1b5f15ef383fe5ddfee165a66b | 2026-09-27 | PDF + txt | SPEC 6, 8, 9.3.7 |
 | tate-kudla | S. S. Kudla, Tate's thesis (chapter; copy on a university course page) | https://u.cs.biu.ac.il/~reznikov/courses/kudla-1.pdf | tate-kudla/kudla-1.pdf | 4932f3f8b8795dce6a7736a1d2a47feaf892979e48dddf8cad139ea81d961ae7 | 2026-09-27 | PDF + txt | SPEC 6, 9.3.7 |
 | tate-warwick | Warwick Number Theory Study Group, Tate's Thesis, 2023-05-01 | https://warwick.ac.uk/fac/sci/maths/people/staff/sheth/tatesthesis_notes.pdf | tate-warwick/tatesthesis_notes.pdf | ca4ce381aaa7ea60e474f2d26d7ff5197b50f5a0a5af1c6883c500701b9c42cf | 2026-09-27 | PDF + txt | SPEC 8 |
+| tate-thesis | J. W. S. Cassels, A. Froehlich (eds.), Algebraic Number Theory, Academic Press 1967; chapter XV: J. T. Tate, Fourier analysis in number fields and Hecke's zeta-functions (thesis, Princeton 1950), pages 305 to 347 | local copy supplied by TJO (not fetched) | tate-thesis/cassels-frohlich.pdf | 01259375a6275b726e836ce209cee40ed6f98a5cefe1aa5ad40f2ad07a63169e | 2026-09-28 | PDF scan (no text layer) + page images + untrusted OCR in TeX | SPEC 6, 8, 9.3.7; milestone 5 |
 | milne-cft | J. S. Milne, Class Field Theory, v4.03 (2020) | https://www.jmilne.org/math/CourseNotes/CFT.pdf | milne-cft/CFT.pdf | 50d79af78250a9f1117ad9d337e0b231704a533fc707966ed1bfa52e13d498f5 | 2026-09-27 | PDF + txt | SPEC 2, 5, 9.3.7 |
 | milne-ant | J. S. Milne, Algebraic Number Theory (course notes) | https://www.jmilne.org/math/CourseNotes/ANT.pdf | milne-ant/ANT.pdf | 24b83c789a89f25aebffb3cbe4ae5ca29edd0075acc072de093d140770630847 | 2026-09-27 | PDF + txt | SPEC 2, 3 (completions, valuations) |
 | hertogh-thesis | M. Hertogh, Computing with adèles and idèles, MSc thesis, Leiden 2021 (author's copy; canonical record hdl.handle.net/1887/3249353) | https://raw.githubusercontent.com/mathehertogh/adeles/1acd6362bbedccb35aac7a343eeead17d443b0d1/Computing_with_adeles_and_ideles.pdf | hertogh-thesis/thesis.pdf | 63ddd5ca8fe6b53826f6c1be4763f6636fec695137753607a1c977419acd7e57 | 2026-09-27 | PDF + txt | SPEC 5, 14 |

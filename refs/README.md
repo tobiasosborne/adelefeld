@@ -25,9 +25,11 @@ project repositories. No shadow libraries.
 ## What is not here
 
 Tate's thesis ("Fourier analysis in number fields and Hecke's zeta-functions", 1950; printed in
-Cassels-Froehlich, Algebraic Number Theory, 1967) is not lawfully available as an open copy. The keys
-`tate-poonen`, `tate-kudla`, `tate-warwick` are open expositions of the same conventions and are used as
-substitutes; `docs/sources.md` says which statement each one settles.
+Cassels-Froehlich, Algebraic Number Theory, 1967) is not offered as an open copy, so `fetch_sources.sh` does not
+fetch it. A scan supplied by TJO lies under `refs/src/tate-thesis/` (key `tate-thesis`): the page images
+`pages/p<N>.png` are the ground truth; `tex/p<N>.tex` is an untrusted OCR draft kept next to its scan, to be
+refereed against it (`docs/sources.md`). The keys `tate-poonen`, `tate-kudla`, `tate-warwick` are open
+expositions of the same conventions.
 
 ## Keys
 
