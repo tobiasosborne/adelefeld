@@ -7,7 +7,7 @@ Corollary 12) with proofs; `docs/proofs/precision.md` Propositions 5 and 6; `doc
 finding G1 and `closure.md` E1, C5; `tests/ref/adfref/policies.py`; `tests/ref/vectors/policies.jsonl`.
 
 **You own:** `src/scaled.c`, `tests/test_scaled.c`, `tests/test_scaled_vectors.c`,
-`tests/ref/vectors/m1-scaled/`, `bench/bench_scaled.c` (you may add its name to `bench/Makefile`).
+`tests/ref/vectors/m1-scaled/`, `bench/bench_scaled.c`.
 
 Implement every function of `scaled.h` from `adf_scaled_init` to `adf_scaled_add_rat`. The five cap
 functions at the end of the header are in `src/cap.c` and not yours. Contexts come from `src/modctx.c`
@@ -28,4 +28,5 @@ policy, containment after every step; canonical data (`s`, `u`) equal for equal 
 inputs; moduli of one word and of 4096 bits (context without blocks).
 
 Benchmark rows of PLAN row 1.7 (add, mul), provisional. Mutation run:
-`make mutate FILES=src/scaled.c JOBS=2 LIMIT=150`.
+`make mutate FILES=src/scaled.c JOBS=2 LIMIT=300` (the tool was repaired today and has the kinds `status`,
+`drop_call`, `call_swap`, `prec`; read `lanes/tools-mutate/report.md`). Read `lanes/m1-modctx-b/report.md`.

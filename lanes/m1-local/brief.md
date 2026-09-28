@@ -5,14 +5,14 @@ Read `lanes/COMMON-C.md`. Then `include/adelefeld/common.h`, `status.h`, `rat.h`
 backend), `docs/api-m1.md`; `docs/proofs/policies.md` section 4 completely (Definition 16 to Summary 26)
 with proofs and the review record on Propositions 24 and 25; `docs/conventions.md` 4.6, 5.2, 5.3, 5.14;
 `docs/SPEC.md` 4.1; `docs/PLAN.md` row 1.8; `docs/reviews/m0-gate/review.md` finding G11;
-`lanes/m1-fball/report.md` (HEADER-FINDING 1); `lanes/m1-modctx/report.md`; `src/fball.c`, `src/modctx.c`.
+`lanes/m1-fball/report.md` (HEADER-FINDING 1); `lanes/m1-modctx-b/report.md`; `src/fball.c`, `src/modctx.c`.
 
 **You own:** `src/fball.c` (you extend the file of lane m1-fball; its global behaviour must not change),
 `src/fball_local.c`, `tests/test_fball_local.c`, `tests/test_fball_local_vectors.c`,
-`tests/ref/adfref/local_ref.py`, `tests/ref/vectors/m1-local/`, `bench/bench_local.c` (you may add its
-name to `bench/Makefile`). `src/modctx.c` is read-only for you: if you need an internal accessor of the
-context that `modctx.h` does not offer, do not add it; use the public read access and list the cost in the
-report.
+`tests/ref/adfref/local_ref.py`, `tests/ref/vectors/m1-local/`, `bench/bench_local.c`. `src/modctx.c` and `src/modctx_internal.h` are read-only for you. The conversion of an integer to residues and
+back is `adf_modctx_reduce` and `adf_modctx_recombine` of `src/modctx_internal.h` (include it as
+`"modctx_internal.h"`; they allocate a vector of `k` integers per call, which you note as a cost and do not
+repair). Everything else you need of a context comes through the public read access of `modctx.h`.
 
 1. Reference first: `tests/ref/adfref/local_ref.py`, written from the proofs: a local value as
    `(d; res_1..res_k)` at a context, conversion both ways, negation, sum, product, product with an exact
