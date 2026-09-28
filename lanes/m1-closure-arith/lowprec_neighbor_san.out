@@ -1,0 +1,13 @@
+sign=-1 prec=1 alias=0 real=1 complex=1
+sign=-1 prec=1 alias=1 real=1 complex=1
+sign=-1 prec=0 alias=0 real=1 complex=1
+sign=-1 prec=0 alias=1 real=1 complex=1
+sign=-1 prec=-5 alias=0 real=1 complex=1
+sign=-1 prec=-5 alias=1 real=1 complex=1
+sign=1 prec=1 alias=0 real=1 complex=1
+sign=1 prec=1 alias=1 real=1 complex=1
+sign=1 prec=0 alias=0 real=1 complex=1
+sign=1 prec=0 alias=1 real=1 complex=1
+sign=1 prec=-5 alias=0 real=1 complex=1
+sign=1 prec=-5 alias=1 real=1 complex=1
+cases=24 failures=0

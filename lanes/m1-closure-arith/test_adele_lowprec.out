@@ -1,0 +1,15 @@
+ok   adele_add_rat_below_prec_two
+ok   adele_mul_rat_below_prec_two
+ok   adele_div_rat_below_prec_two
+ok   adele_add_below_prec_two
+ok   adele_sub_below_prec_two
+ok   adele_mul_below_prec_two
+ok   adele_set_rat_below_prec_two
+ok   cadele_add_rat_below_prec_two
+ok   cadele_mul_rat_below_prec_two
+ok   cadele_div_rat_below_prec_two
+ok   cadele_add_below_prec_two
+ok   cadele_sub_below_prec_two
+ok   cadele_mul_below_prec_two
+ok   cadele_set_rat_below_prec_two
+14 tests, 1426 checks, 0 failed checks, 0 failed tests

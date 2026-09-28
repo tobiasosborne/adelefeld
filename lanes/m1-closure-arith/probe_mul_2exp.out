@@ -1,0 +1,4 @@
+shift 4611686018427387904: bits of result = 1, result = 1
+shift 4611686018427387905: bits of result = 2, result = 2
+shift 9223372036854775808: bits of result = 1, result = 1
+shift 9223372036854775813: bits of result = 6, result = 32
