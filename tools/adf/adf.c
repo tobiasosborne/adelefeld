@@ -12,15 +12,33 @@
    line (ADF_LIMIT) and the rest of it is skipped.  Empty lines and lines whose first
    non-blank byte is "#" are ignored.  Every other line is one command
 
-       <operation> <operand> [ <separator> <operand> ]
+       <operation> <operand> [ <separator> <operand> [ <separator> <operand> ] ]
 
    The separator is the word "with" between spaces; tools/adf/README.md shows why no byte
    outside the alphabet of conventions 8.2 exists and why "with" cannot occur in a value
    text.  The settings are "prec <bits>" and "digits <n>", one per line.  The operations
-   are show, type, add, sub, mul, neg, div, equal, contains, overlaps, reconstruct and
-   cap; reconstruct takes either one operand (an adele) or three (a finite ball and an
-   interval given as two exact rationals), which is the one documented extension of the
-   two-operand form.
+   are show, type, add, sub, mul, neg, div, equal, contains, overlaps, compare, reconstruct,
+   cap, dump and load; reconstruct takes either one operand (an adele) or three (a finite
+   ball and an interval given as two exact rationals), which is the one documented extension
+   of the two-operand form.  dump writes the dump form of conventions 10.1 of a value, and
+   load reads such a text; the driver has no context, so a dump with a context occurrence is
+   not read.
+
+   The order of the checks of one command, which tools/adf/README.md states in full:
+     1. the line: an operation word of the table and the right number of operands (ADF_PARSE);
+     2. every operand, in order: the syntax of the value form alone, adf_text_classify
+        (conventions 8.5, stages 1 to 3);
+     3. every operand, in order: its kind; a kind of conventions 9.7 with no typed parser in
+        this build is ADF_UNSUPPORTED, decided before any value of the line is read;
+     4. every operand, in order: its value, by the typed parser of its kind (conventions 8.5,
+        stages 4 to 7);
+     5. the operation: the pair of types, the domain of the operation, the problem to be
+        solved (ADF_DOMAIN, ADF_NOT_UNIT, ADF_NO_SOLUTION, ADF_NOT_UNIQUE);
+     6. the printer: a printer that returns NULL is ADF_LIMIT.
+   A line that is not a sentence of the grammar of conventions 9.2 is decided on the syntax
+   of its operands first, because that is a fact about the line; a kind that this build does
+   not implement is decided before any value is read, because a request on a type that
+   version 1 does not implement is not a domain error (conventions 3.1, ADF_UNSUPPORTED).
 
    Mixed operand types are combined only where SPEC 4.1 defines it: an exact rational with
    a finite ball, an adele or a complex adele (the rational is converted only in the
@@ -28,26 +46,26 @@
    embedding of SPEC 4.1, "The type adf_cadele").  Every other pair is ADF_DOMAIN.  A kind
    of the value form with no typed parser in this build (the local ball, the partial ball,
    the idele, the idele class, the quotient class, the functions and the character, work
-   packages 1.8 and later) is ADF_UNSUPPORTED, and that is decided before any other check,
-   because a request on a type that version 1 does not implement is not a domain error.
+   packages 1.8 and later) is ADF_UNSUPPORTED.
 
-   Output: one line per command on standard output, either the value text or
-   "error: <STATUS NAME>" with the name of adf_status_str (conventions 11.1).  The exit
-   status is 0 if no command failed, 1 otherwise, 2 for a usage error.  Nothing else is
-   printed unless -v is given.
+   Output: one line per command on standard output, either the value text, "true" or
+   "false", one of "equal", "different" and "undecided" for compare, a name of a kind for
+   type, the dump form for dump, or "error: <STATUS NAME>" with the name of adf_status_str
+   (conventions 11.1).  A setting writes no line.  The exit status is 0 if no command failed,
+   1 otherwise, 2 for a usage error.  Nothing else is printed unless -v is given.
 
-   The guard on printing: the printer of a real ball (conventions 9.5) costs time and
-   memory that grow with the binary exponent of the arb, and an exponent beyond a word
-   aborts (the first finding of the report of lane m1-text).  The driver therefore refuses
-   to print a real ball whose binary exponent is above 100000 in absolute value, in the
-   midpoint or in the radius, and answers ADF_LIMIT.  tools/adf/README.md says so. */
+   The guard on printing is the rule of the library and not one of the driver (decision
+   M1-D6, include/adelefeld/text.h:32-38): a printer of a value with a real or complex part
+   returns NULL with length 0 when the midpoint or the radius of one of its real balls has a
+   binary exponent above ADF_PRINT_EXP_MAX in absolute value, and the driver answers
+   ADF_LIMIT for a NULL.  The driver holds no bound of its own; the test tests/test_driver.sh
+   checks that.  The same rule is why a prec above ADF_PRINT_EXP_MAX is refused with
+   ADF_LIMIT: a real result rounded at prec p has a radius with the binary exponent -p, so
+   above that bound no inexact real result of magnitude 1 or more can be printed at all. */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <flint/arf.h>
-#include <flint/mag.h>
 
 #include <adelefeld.h>
 
@@ -55,13 +73,18 @@
 
 /* The largest line the driver reads; a longer line is ADF_LIMIT for that line. */
 #define ADF_DRV_MAX_LINE ((size_t) 65536)
-/* The largest binary exponent of the midpoint or the radius of a real ball that the
-   driver prints; above it the driver answers ADF_LIMIT. */
-#define ADF_DRV_MAX_EXP2 ((slong) 100000)
-/* The precision in bits of the real part of an adele or a complex adele, unless the
-   script sets it. */
+/* The precision in bits of the real part of an adele or a complex adele, unless the script
+   sets it. */
 #define ADF_DRV_PREC_DEFAULT ((slong) 64)
-#define ADF_DRV_PREC_MAX ((slong) 1000000)
+/* The largest value a setting of prec may have is ADF_PRINT_EXP_MAX
+   (include/adelefeld/text.h:66), and a larger one is ADF_LIMIT: a real result rounded at
+   prec p has a radius with the binary exponent -p (measured: adf_adele_div_rat at prec
+   100000 has MAG_EXP -100000, at prec 100001 MAG_EXP -100001), so above ADF_PRINT_EXP_MAX
+   no inexact real result of magnitude 1 or more is within the reach of a printer (M1-D6). */
+#define ADF_DRV_PREC_MAX ADF_PRINT_EXP_MAX
+/* The largest value any setting of the driver can have, ADF_DIGITS_MAX.  The accumulator of
+   adf_drv_setting stops here, so a number of any length is read without an overflow. */
+#define ADF_DRV_SET_MAX ((slong) ADF_DIGITS_MAX)
 /* The separator between two operands: a blank, the word "with", a blank. */
 #define ADF_DRV_SEP " with "
 #define ADF_DRV_SEP_LEN ((size_t) 6)
@@ -80,8 +103,11 @@ typedef enum
     ADF_DRV_EQUAL,
     ADF_DRV_CONTAINS,
     ADF_DRV_OVERLAPS,
+    ADF_DRV_COMPARE,
     ADF_DRV_RECONSTRUCT,
     ADF_DRV_CAP,
+    ADF_DRV_DUMP,
+    ADF_DRV_LOAD,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -102,8 +128,11 @@ static const struct
     { "equal", ADF_DRV_EQUAL, 2 },
     { "contains", ADF_DRV_CONTAINS, 2 },
     { "overlaps", ADF_DRV_OVERLAPS, 2 },
+    { "compare", ADF_DRV_COMPARE, 2 },
     { "reconstruct", ADF_DRV_RECONSTRUCT, 0 },
     { "cap", ADF_DRV_CAP, 2 },
+    { "dump", ADF_DRV_DUMP, 1 },
+    { "load", ADF_DRV_LOAD, 1 },
     { "prec", ADF_DRV_PREC, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
@@ -163,69 +192,63 @@ adf_drv_value_clear(adf_drv_value * v)
     v->type = ADF_DRV_OTHER;
 }
 
-/* adf_drv_value_parse(v, s, len, prec): read one operand.  The kind comes from
-   adf_text_classify (conventions 9.7) and the value from the typed parser of that kind
-   (conventions 8.1); the parsers do not coerce between types.  A kind with no typed
-   parser in this build gives ADF_OK with type ADF_DRV_OTHER, so that the caller can
-   answer ADF_UNSUPPORTED for it before any other check. */
-static int
-adf_drv_value_parse(adf_drv_value * v, const char * s, size_t len, slong prec)
+/* adf_drv_kind_type(kind): the type the driver works with for that kind of conventions 9.7,
+   ADF_DRV_OTHER for the kinds with no typed parser in this build (work packages 1.8 and
+   later).  A caller answers ADF_UNSUPPORTED for ADF_DRV_OTHER before any value is read. */
+static adf_drv_type
+adf_drv_kind_type(adf_text_kind kind)
 {
-    adf_text_kind kind;
-    int status;
+    switch (kind)
+    {
+        case ADF_TEXT_RAT:
+            return ADF_DRV_RAT;
+        case ADF_TEXT_FBALL:
+            return ADF_DRV_FBALL;
+        case ADF_TEXT_ADELE:
+            return ADF_DRV_ADELE;
+        case ADF_TEXT_CADELE:
+            return ADF_DRV_CADELE;
+        default:
+            return ADF_DRV_OTHER;
+    }
+}
 
-    status = adf_text_classify(&kind, s, len, NULL);
-    if (status != ADF_OK)
-        return status;
+/* adf_drv_value_read(v, kind, s, len, prec): read one operand whose kind is already known,
+   by the typed parser of that kind (conventions 8.1); the parsers do not coerce between
+   types.  The kind comes from adf_text_classify (conventions 9.7), which the caller has run
+   on every operand before any value is read. */
+static int
+adf_drv_value_read(adf_drv_value * v, adf_text_kind kind, const char * s, size_t len, slong prec)
+{
+    v->type = adf_drv_kind_type(kind);
 
     switch (kind)
     {
         case ADF_TEXT_RAT:
-            v->type = ADF_DRV_RAT;
             return adf_rat_set_str(v->r, s, len, NULL);
         case ADF_TEXT_FBALL:
-            v->type = ADF_DRV_FBALL;
             return adf_fball_set_str(v->f, s, len, NULL);
         case ADF_TEXT_ADELE:
-            v->type = ADF_DRV_ADELE;
             return adf_adele_set_str(v->a, s, len, prec, NULL);
         case ADF_TEXT_CADELE:
-            v->type = ADF_DRV_CADELE;
             return adf_cadele_set_str(v->c, s, len, prec, NULL);
         default:
-            v->type = ADF_DRV_OTHER;
-            return ADF_OK;
+            return ADF_OK;      /* ADF_DRV_OTHER, which the caller has already refused */
     }
 }
 
-/* adf_drv_exp2_ok(arb): 1 if the binary exponent of the midpoint and of the radius of the
-   real ball are within ADF_DRV_MAX_EXP2 in absolute value.  ARF_EXP and MAG_EXP are the
-   exponents of FLINT 3.0.1 as fmpz (arf.h:87, mag.h:114), so a ball of a huge exponent
-   is refused and never printed. */
-static int
-adf_drv_exp2_ok(const arb_t x)
-{
-    fmpz_t e;
-    int ok;
-
-    fmpz_init(e);
-    fmpz_abs(e, ARF_EXPREF(arb_midref(x)));
-    ok = (fmpz_cmp_si(e, ADF_DRV_MAX_EXP2) <= 0);
-    fmpz_abs(e, MAG_EXPREF(arb_radref(x)));
-    ok = ok && (fmpz_cmp_si(e, ADF_DRV_MAX_EXP2) <= 0);
-    fmpz_clear(e);
-    return ok;
-}
-
 /* adf_drv_value_print(out, v, digits): write the canonical text of v (conventions 9.4).
-   Returns ADF_OK, ADF_UNSUPPORTED (no printer for the kind) or ADF_LIMIT (the guard on
-   the binary exponent of a real ball). */
+   Returns ADF_OK, ADF_UNSUPPORTED (no printer for the kind) or ADF_LIMIT (a printer that
+   returns NULL).  The bound on the binary exponent of a midpoint or a radius is the rule of
+   the library, decision M1-D6 (include/adelefeld/text.h:32-38): a printer of a value with a
+   real or complex part returns NULL with length 0 when such an exponent is above
+   ADF_PRINT_EXP_MAX in absolute value, and that is the only way a printer of the driver can
+   fail.  The driver holds no bound of its own, so the two can never drift apart. */
 static int
 adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
 {
     char * s = NULL;
     size_t len = 0;
-    int status = ADF_OK;
 
     switch (v->type)
     {
@@ -236,47 +259,168 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
             s = adf_fball_get_str(&len, v->f);
             break;
         case ADF_DRV_ADELE:
-        {
-            /* a local copy: the guard reads the arb inside the value, and the printer
-               takes the value itself, so the two see the same object (GCC 13 reports a
-               false -Wstringop-overread when the member of a struct is passed directly
-               after its sub-object has been read) */
-            adf_adele_t y;
-            adf_adele_init(y);
-            adf_adele_set(y, v->a);
-            if (!adf_drv_exp2_ok(y->inf))
-            {
-                adf_adele_clear(y);
-                return ADF_LIMIT;
-            }
-            s = adf_adele_get_str(&len, y, digits);
-            adf_adele_clear(y);
+            s = adf_adele_get_str(&len, v->a, digits);
             break;
-        }
         case ADF_DRV_CADELE:
-        {
-            adf_cadele_t y;
-            adf_cadele_init(y);
-            adf_cadele_set(y, v->c);
-            if (!adf_drv_exp2_ok(acb_realref(y->inf))
-                || !adf_drv_exp2_ok(acb_imagref(y->inf)))
-            {
-                adf_cadele_clear(y);
-                return ADF_LIMIT;
-            }
-            s = adf_cadele_get_str(&len, y, digits);
-            adf_cadele_clear(y);
+            s = adf_cadele_get_str(&len, v->c, digits);
             break;
-        }
         default:
             return ADF_UNSUPPORTED;
     }
 
-    if (s != NULL && len > 0)
-        (void) fwrite(s, 1, len, out);
+    if (s == NULL)
+        return ADF_LIMIT;
+    (void) fwrite(s, 1, len, out);
     fputc('\n', out);
     adf_str_free(s);
-    return status;
+    return ADF_OK;
+}
+
+/* adf_drv_value_dump(out, v): write the dump form of v (conventions 10.1).  Every value of
+   the value form is in the global backend (conventions 9.8, A11), so its dump has the form
+   "g" of conventions 10.1 and no context occurrence.  A dumper never fails
+   (include/adelefeld/dump.h, "Rules common to the dumpers"). */
+static int
+adf_drv_value_dump(FILE * out, const adf_drv_value * v)
+{
+    char * s = NULL;
+    size_t len = 0;
+
+    switch (v->type)
+    {
+        case ADF_DRV_RAT:
+            s = adf_rat_dump_str(&len, v->r);
+            break;
+        case ADF_DRV_FBALL:
+            s = adf_fball_dump_str(&len, v->f);
+            break;
+        case ADF_DRV_ADELE:
+            s = adf_adele_dump_str(&len, v->a);
+            break;
+        case ADF_DRV_CADELE:
+            s = adf_cadele_dump_str(&len, v->c);
+            break;
+        default:
+            return ADF_UNSUPPORTED;
+    }
+
+    (void) fwrite(s, 1, len, out);
+    fputc('\n', out);
+    adf_str_free(s);
+    return ADF_OK;
+}
+
+/* The bodies of the grammar of conventions 10.1.  The driver reads and writes the four it has
+   a type for; the others are valid requests on a type that this build does not implement. */
+static const char * const adf_drv_dump_bodies[] = {
+    "rat", "fball", "scaled", "adele", "cadele", "ucoset", "idele", "idclass", "lball",
+    "sball", "qclass", "ffun", "rfun", "char", "modctx"
+};
+
+static const size_t adf_drv_dump_body_count =
+    sizeof(adf_drv_dump_bodies) / sizeof(adf_drv_dump_bodies[0]);
+
+/* adf_drv_body_slot(name): the adf_drv_type of a body the driver has a value for, or
+   ADF_DRV_OTHER for a body of section 10 that it has none.  The four constants of
+   adf_drv_type are in the order of the four names, so the index of the name is the type. */
+static adf_drv_type
+adf_drv_body_slot(const char * name)
+{
+    static const char * const mine[] = { "rat", "fball", "adele", "cadele" };
+    size_t i;
+
+    for (i = 0; i < sizeof(mine) / sizeof(mine[0]); i++)
+        if (strcmp(name, mine[i]) == 0)
+            return (adf_drv_type) i;
+    return ADF_DRV_OTHER;
+}
+
+/* adf_drv_dump_body(s, len, body, blen): the body of the dump, that is the fourth token of
+   the text, when the text begins with "adf1 Q ".  Returns 0 when it does not, or when the
+   body token is empty or runs to the end of the text: the version, the field and the syntax
+   are then decided by the loader itself, which reads the whole text anyway. */
+static int
+adf_drv_dump_body(const char * s, size_t len, const char ** body, size_t * blen)
+{
+    static const char prefix[] = "adf1 Q ";
+    const size_t plen = sizeof(prefix) - 1;
+    size_t i;
+
+    if (len <= plen || memcmp(s, prefix, plen) != 0)
+        return 0;
+    for (i = plen; i < len && s[i] != ' '; i++)
+        ;
+    if (i == len)
+        return 0;
+    *body = s + plen;
+    *blen = i - plen;
+    return 1;
+}
+
+/* adf_drv_load(s, len, v): read a dump text (conventions 10) and put the value in v, whose
+   type is set.  The driver has no context, so a dump with a context occurrence is
+   ADF_UNSUPPORTED (conventions 10.2: one occurrence per local finite ball, per scaled value
+   and per piece of a quotient class).  The occurrence count is asked of the inspector of the
+   body, which validates the whole text first and constructs neither a value nor a context
+   ("Rules common to the inspectors"). */
+static int
+adf_drv_load(const char * s, size_t len, adf_drv_value * v)
+{
+    const char * body;
+    size_t blen, i, nctx = 1;
+    int status = ADF_OK;
+
+    v->type = ADF_DRV_OTHER;
+    if (!adf_drv_dump_body(s, len, &body, &blen))
+    {
+        /* no "adf1 Q " prefix: the rat loader reads the text and reports its status, which is
+           the status of the text: the version, the field and the syntax do not depend on the
+           body (conventions 10.1) */
+        v->type = ADF_DRV_RAT;
+        return adf_rat_load_str(v->r, s, len, NULL, NULL);
+    }
+    for (i = 0; i < adf_drv_dump_body_count; i++)
+        if (strlen(adf_drv_dump_bodies[i]) == blen
+            && memcmp(adf_drv_dump_bodies[i], body, blen) == 0)
+            break;
+    if (i == adf_drv_dump_body_count)
+        return ADF_PARSE;      /* the fourth token is no body of conventions 10.1 */
+    v->type = adf_drv_body_slot(adf_drv_dump_bodies[i]);
+    if (v->type == ADF_DRV_OTHER)
+        return ADF_UNSUPPORTED;   /* a body of section 10 that the driver has no type for */
+
+    /* the inspector validates the whole text and writes the number of context occurrences */
+    switch (v->type)
+    {
+        case ADF_DRV_RAT:
+            status = adf_rat_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        case ADF_DRV_FBALL:
+            status = adf_fball_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        case ADF_DRV_ADELE:
+            status = adf_adele_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        default:
+            status = adf_cadele_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+    }
+    if (status != ADF_OK)
+        return status;
+    if (nctx != 0)
+        return ADF_UNSUPPORTED; /* the dump needs a context, and the driver has none */
+
+    switch (v->type)
+    {
+        case ADF_DRV_RAT:
+            return adf_rat_load_str(v->r, s, len, NULL, NULL);
+        case ADF_DRV_FBALL:
+            return adf_fball_load_str(v->f, s, len, NULL, NULL);
+        case ADF_DRV_ADELE:
+            return adf_adele_load_str(v->a, s, len, NULL, NULL);
+        default:
+            return adf_cadele_load_str(v->c, s, len, NULL, NULL);
+    }
 }
 
 /* ---- conversions between the types the driver combines ---- */
@@ -386,6 +530,15 @@ adf_drv_is_blank(char c)
     return c == ' ' || c == '\t';
 }
 
+/* adf_drv_is_ws(c): the whitespace of the value form (conventions 8.2: the space, TAB, LF
+   and CR), which may stand before the first token and after the last one.  The driver splits
+   a line at LF, so LF never reaches this predicate. */
+static int
+adf_drv_is_ws(char c)
+{
+    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+}
+
 /* The operands of one line: the word of the operation, and up to four operands.  A fifth
    operand is not looked for; a line with four of them is refused by the arity check, so
    the last operand may hold the separator and no harm is done. */
@@ -468,21 +621,31 @@ adf_drv_ignorable(const char * line, size_t len)
     return line[i] == '#';
 }
 
-/* adf_drv_setting(s, len, hi, out): read the argument of a setting: an optional "-", then
-   decimal digits, then nothing, and the value in [1, hi].  ADF_PARSE when the argument is
-   not that shape, ADF_DOMAIN when the value is out of range (conventions 3.1: the data
-   violate the domain of the operation). */
+/* adf_drv_setting(s, len, hi, over, out): read the argument of a setting: whitespace, then
+   an optional "-", then decimal digits, then nothing, and the value in [1, hi].  The
+   whitespace around the number is that of conventions 8.2, so a setting may be written with
+   blanks, tabs or a CR around it and a CRLF script runs every setting line; every other byte
+   is ADF_PARSE.  A value above hi is the status over, which the caller names: ADF_LIMIT for
+   a size bound of an algorithm (prec, README of tools/adf), ADF_DOMAIN when the data
+   violate a stated domain (digits, include/adelefeld/text.h:39).  ADF_PARSE when the
+   argument is not that shape. */
 static int
-adf_drv_setting(const char * s, size_t len, slong hi, slong * out)
+adf_drv_setting(const char * s, size_t len, slong hi, int over, slong * out)
 {
     size_t i = 0;
     slong v = 0;
     int neg = 0;
 
-    if (len > 0 && s[0] == '-')
+    while (i < len && adf_drv_is_ws(s[i]))
+        i++;
+    while (len > i && adf_drv_is_ws(s[len - 1]))
+        len--;
+    if (i >= len)
+        return ADF_PARSE;
+    if (s[i] == '-')
     {
         neg = 1;
-        i = 1;
+        i++;
     }
     if (i == len)
         return ADF_PARSE;
@@ -490,12 +653,14 @@ adf_drv_setting(const char * s, size_t len, slong hi, slong * out)
     {
         if (s[i] < '0' || s[i] > '9')
             return ADF_PARSE;
-        if (v <= ADF_DRV_PREC_MAX)
+        if (v <= ADF_DRV_SET_MAX)
             v = v * 10 + (s[i] - '0');
     }
     /* a signed value: any negative one is below the range [1, hi] */
-    if (neg || v < 1 || v > hi)
+    if (neg || v < 1)
         return ADF_DOMAIN;
+    if (v > hi)
+        return over;
     *out = v;
     return ADF_OK;
 }
@@ -686,6 +851,10 @@ adf_drv_cap(const adf_drv_value * x, const adf_drv_value * y, adf_drv_value * z)
     return adf_fball_cap(z->f, x->f, y->r);
 }
 
+/* adf_drv_pred(op, x, y, text): the three set predicates of SPEC 4.2 and the three-valued
+   comparison of the same section, written as one of "equal", "different", "undecided".  The
+   words of SPEC 4.2 are "certainly equal" (both exact), "certainly different" (the sets are
+   disjoint) and "undecided"; the three values are those of adf_fball_compare. */
 static int
 adf_drv_pred(adf_drv_op op, const adf_drv_value * x, const adf_drv_value * y,
              const char ** text)
@@ -707,16 +876,34 @@ adf_drv_pred(adf_drv_op op, const adf_drv_value * x, const adf_drv_value * y,
     else
         adf_fball_set_rat(b, y->r);
 
-    if (op == ADF_DRV_EQUAL)
-        r = adf_fball_equal_set(a, b);
-    else if (op == ADF_DRV_OVERLAPS)
-        r = adf_fball_overlaps(a, b);
+    if (op == ADF_DRV_COMPARE)
+    {
+        switch (adf_fball_compare(a, b))
+        {
+            case ADF_CMP_EQUAL:
+                *text = "equal";
+                break;
+            case ADF_CMP_DIFFERENT:
+                *text = "different";
+                break;
+            default:
+                *text = "undecided";
+                break;
+        }
+        r = 1;
+    }
     else
-        r = adf_fball_contains(a, b);
+    {
+        if (op == ADF_DRV_EQUAL)
+            r = adf_fball_equal_set(a, b);
+        else if (op == ADF_DRV_OVERLAPS)
+            r = adf_fball_overlaps(a, b);
+        else
+            r = adf_fball_contains(a, b);
+        *text = r ? "true" : "false";
+    }
     adf_fball_clear(a);
     adf_fball_clear(b);
-
-    *text = r ? "true" : "false";
     return ADF_OK;
 }
 
@@ -736,97 +923,105 @@ adf_drv_arity(adf_drv_op op)
 /* ---- one command ---- */
 
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
-   when a line was written (or a setting was made), else the status to report. */
+   when a line was written (or a setting was made), else the status to report.  The steps
+   are those of the comment at the top of the file and of the README of tools/adf. */
 static int
 adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state * st)
 {
-    adf_drv_value x, y, z;
+    adf_drv_value x, y, w, z;
+    adf_text_kind kind[3];
     const char * text;
-    int status;
+    int i, status, nops;
 
     if (op == ADF_DRV_PREC || op == ADF_DRV_DIGITS)
         return (op == ADF_DRV_PREC)
-                   ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, &st->prec)
-                   : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, &st->digits);
+                   ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, ADF_LIMIT, &st->prec)
+                   : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
 
     adf_drv_value_init(&x);
     adf_drv_value_init(&y);
+    adf_drv_value_init(&w);
     adf_drv_value_init(&z);
     text = "";
-
     status = ADF_OK;
-    if (op != ADF_DRV_TYPE)
+    nops = l->nops;           /* 1, 2 or 3: the arity of the operation is checked before */
+
+    if (op == ADF_DRV_TYPE)
     {
-        /* every operation but "type" needs the value; "type" asks the classifier alone,
-           which checks the syntax only (conventions 9.7) */
-        status = adf_drv_value_parse(&x, l->s[0], l->n[0], st->prec);
+        /* "type" asks the classifier alone, which checks the syntax only (conventions 9.7),
+           and names all thirteen kinds */
+        status = adf_text_classify(&kind[0], l->s[0], l->n[0], NULL);
+        if (status == ADF_OK)
+        {
+            text = adf_drv_kind_names[kind[0]];
+            fputs(text, out);
+            fputc('\n', out);
+        }
+        goto done;
+    }
+    if (op == ADF_DRV_LOAD)
+    {
+        /* the dump form of conventions 10, not the value form: the loaders read it, and the
+           value is printed in the value form */
+        status = adf_drv_load(l->s[0], l->n[0], &x);
+        if (status == ADF_OK)
+            status = adf_drv_value_print(out, &x, st->digits);
+        goto done;
+    }
+
+    /* step 2: the syntax of every operand, in order (conventions 8.5, stages 1 to 3) */
+    for (i = 0; i < nops; i++)
+    {
+        status = adf_text_classify(&kind[i], l->s[i], l->n[i], NULL);
         if (status != ADF_OK)
             goto done;
-        if (l->nops >= 2)
+    }
+    /* step 3: the kind of every operand, in order; a kind with no typed parser in this build
+       is ADF_UNSUPPORTED, and no value of the line is read before that is decided */
+    for (i = 0; i < nops; i++)
+    {
+        if (adf_drv_kind_type(kind[i]) == ADF_DRV_OTHER)
         {
-            status = adf_drv_value_parse(&y, l->s[1], l->n[1], st->prec);
-            if (status != ADF_OK)
-                goto done;
+            status = ADF_UNSUPPORTED;
+            goto done;
         }
+    }
+    /* step 4: the value of every operand, in order, by the typed parser of its kind */
+    for (i = 0; i < nops; i++)
+    {
+        adf_drv_value * v = (i == 0) ? &x : ((i == 1) ? &y : &w);
+
+        status = adf_drv_value_read(v, kind[i], l->s[i], l->n[i], st->prec);
+        if (status != ADF_OK)
+            goto done;
     }
 
     switch (op)
     {
-        case ADF_DRV_TYPE:
-        {
-            /* the kind from adf_text_classify, one name per constant of conventions 9.7 */
-            adf_text_kind kind;
-
-            status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
-            if (status == ADF_OK)
-            {
-                text = adf_drv_kind_names[kind];
-                fputs(text, out);
-                fputc('\n', out);
-            }
-            break;
-        }
         case ADF_DRV_SHOW:
             status = adf_drv_value_print(out, &x, st->digits);
             break;
         case ADF_DRV_NEG:
-            if (x.type == ADF_DRV_OTHER)
-            {
-                status = ADF_UNSUPPORTED;
-                break;
-            }
             adf_drv_neg(&z, &x);
             z.type = x.type;
             status = adf_drv_value_print(out, &z, st->digits);
             break;
+        case ADF_DRV_DUMP:
+            status = adf_drv_value_dump(out, &x);
+            break;
         case ADF_DRV_ADD:
         case ADF_DRV_SUB:
         case ADF_DRV_MUL:
-            if (x.type == ADF_DRV_OTHER || y.type == ADF_DRV_OTHER)
-            {
-                status = ADF_UNSUPPORTED;
-                break;
-            }
             status = adf_drv_arith(op, &x, &y, &z, st->prec);
             if (status == ADF_OK)
                 status = adf_drv_value_print(out, &z, st->digits);
             break;
         case ADF_DRV_DIV:
-            if (x.type == ADF_DRV_OTHER || y.type == ADF_DRV_OTHER)
-            {
-                status = ADF_UNSUPPORTED;
-                break;
-            }
             status = adf_drv_div(&x, &y, &z, st->prec);
             if (status == ADF_OK)
                 status = adf_drv_value_print(out, &z, st->digits);
             break;
         case ADF_DRV_CAP:
-            if (x.type == ADF_DRV_OTHER || y.type == ADF_DRV_OTHER)
-            {
-                status = ADF_UNSUPPORTED;
-                break;
-            }
             status = adf_drv_cap(&x, &y, &z);
             if (status == ADF_OK)
                 status = adf_drv_value_print(out, &z, st->digits);
@@ -834,11 +1029,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         case ADF_DRV_EQUAL:
         case ADF_DRV_CONTAINS:
         case ADF_DRV_OVERLAPS:
-            if (x.type == ADF_DRV_OTHER || y.type == ADF_DRV_OTHER)
-            {
-                status = ADF_UNSUPPORTED;
-                break;
-            }
+        case ADF_DRV_COMPARE:
             status = adf_drv_pred(op, &x, &y, &text);
             if (status == ADF_OK)
             {
@@ -847,9 +1038,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             }
             break;
         case ADF_DRV_RECONSTRUCT:
-            if (x.type == ADF_DRV_OTHER)
-                status = ADF_UNSUPPORTED;
-            else if (l->nops == 1)
+            if (nops == 1)
             {
                 /* the full ball: the interval is the one of the real coordinate.  A
                    complex adele is a request version 1 does not implement (the library
@@ -865,23 +1054,13 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             }
             else
             {
-                /* a finite ball and the closed interval [lo, hi] of two rationals */
-                adf_rat_t lo, hi;
-
-                if (x.type != ADF_DRV_FBALL)
+                /* a finite ball and the closed interval [lo, hi] of two exact rationals */
+                if (x.type != ADF_DRV_FBALL || y.type != ADF_DRV_RAT || w.type != ADF_DRV_RAT)
                 {
                     status = ADF_DOMAIN;
                     break;
                 }
-                adf_rat_init(lo);
-                adf_rat_init(hi);
-                status = adf_rat_set_str(lo, l->s[1], l->n[1], NULL);
-                if (status == ADF_OK)
-                    status = adf_rat_set_str(hi, l->s[2], l->n[2], NULL);
-                if (status == ADF_OK)
-                    status = adf_fball_reconstruct(z.r, x.f, lo, hi);
-                adf_rat_clear(lo);
-                adf_rat_clear(hi);
+                status = adf_fball_reconstruct(z.r, x.f, y.r, w.r);
             }
             if (status == ADF_OK)
             {
@@ -897,6 +1076,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
 done:
     adf_drv_value_clear(&x);
     adf_drv_value_clear(&y);
+    adf_drv_value_clear(&w);
     adf_drv_value_clear(&z);
     return status;
 }

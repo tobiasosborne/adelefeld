@@ -1,0 +1,44 @@
+mutate: src/scaled.c: 350 mutants
+mutate: 350 mutants, 40 of them run (--limit 40, --seed 20260928)
+mutate: the baseline passes (6.2 s)
+
+SURVIVED src/scaled.c:540:31 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -538,5 +538,5 @@
+               fmpq_clear(aq);
+               fmpz_set(r, w->u);
+  -            if (fmpq_sgn(q) < 0)
+  +            if (fmpq_sgn(q) < 1)
+                   fmpz_neg(r, r);
+               fmpz_fdiv_r(r, r, K);
+
+
+SURVIVED src/scaled.c:508:9 swap_args: 'fmpq_mul(t.s, x->s, y->s)' -> 'fmpq_mul(t.s, y->s, x->s)'
+  the tests pass with the mutant
+  --- a/src/scaled.c
+  +++ b/src/scaled.c
+  @@ -506,5 +506,5 @@
+       {
+           t.exact = 1;
+  -        fmpq_mul(t.s, x->s, y->s);
+  +        fmpq_mul(t.s, y->s, x->s);
+       }
+       else if (x->exact == 0 && y->exact == 0)
+
+
+NOT COMPILED src/scaled.c:387:5 drop_call: 'adf_scaled_swap(z, &t);' -> '' (the statement is removed)
+  src/scaled.c:331:29: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/scaled.c:131:31 logic: '&&' -> '||'
+  src/scaled.c:131:81: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/scaled.c:250:13 op: '*' -> '/'
+  src/scaled.c:250:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/scaled.c:44:5 drop_call: 'fmpq_gcd_cofactors(g, abar, bbar, a, b);' -> '' (the statement is removed)
+  src/scaled.c:42:25: error: unused parameter ‘g’ [-Werror=unused-parameter]
+
+mutate: 40 mutants in 133.9 s: 34 killed, 2 survived, 4 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 2 mutant(s) survived; each one is a claim the tests do not check

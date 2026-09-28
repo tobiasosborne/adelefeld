@@ -8,7 +8,10 @@
    adf_modctx_reduce(ctx, a, res): res[i] = a mod q_i, 0 <= i < k, for any integer a (the
    residue is in [0, q_i)). res has room for k words.
    adf_modctx_recombine(out, ctx, res): the unique integer in [0, K) that is res[i] mod q_i
-   for every i (docs/proofs/policies.md Lemma 17.1). */
+   for every i (docs/proofs/policies.md Lemma 17.1).  FLINT's fmpz_multi_CRT_precomp promises
+   only "an integer of smallest absolute value" and does not define its sign argument
+   (refs/src/flint-3.0.1/fmpz.rst:1362-1365), so the function reduces the result modulo K once
+   and the range [0, K) holds by construction. */
 
 #ifndef ADELEFELD_MODCTX_INTERNAL_H
 #define ADELEFELD_MODCTX_INTERNAL_H

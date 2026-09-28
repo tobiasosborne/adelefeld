@@ -1,0 +1,7 @@
+ok   local_matches_global_of_same_value
+ok   mixed_local_global_inputs
+ok   local_inputs_different_contexts
+ok   local_output_aliases_each_input
+ok   local_domain_on_nonpositive_C
+ok   local_source_exact_result_untouched
+6 tests, 253 checks, 0 failed checks, 0 failed tests

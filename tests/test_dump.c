@@ -369,6 +369,145 @@ ADF_TEST(order_of_checks_two_faults)
     ADF_CHECK(AS("adf1 Q adele 2 1 0 0 0 1 0 0 0 g 8 6 1") == ADF_DOMAIN);
 }
 
+/* conventions 8.2 and 8.5: TAB, LF and CR are bytes of the alphabet, so stage 2 lets them past;
+   the header is judged next, and a version or a field other than "1" and "Q" is ADF_UNSUPPORTED
+   whatever the body holds (10.2 "Version and field"; dump.h: "adf_UNSUPPORTED (a version other
+   than 1, a field other than Q)"); with the header "adf1 Q " such a byte in the body is a
+   grammar failure of stage 3 (conventions 10.1: "Tokens are separated by exactly one space
+   0x20; no other whitespace anywhere").  A NUL and a byte above 0x7e are not bytes of the
+   alphabet at all, so stage 2 gives ADF_PARSE for them at every position, header included. */
+ADF_TEST(header_before_the_whitespace_of_the_body)
+{
+    static const char body[] = "rat 1 1";    /* 7 bytes */
+    static const int at[] = {0, 4, 6};    /* a first, a middle and the last position of the body */
+    static const char * const wname[] = {"TAB", "LF", "CR"};
+    const unsigned char ws[] = {0x09, 0x0a, 0x0d};
+    const unsigned char other[] = {0x00, 0x80};
+    char buf[64];
+    int w, j, p;
+
+    for (w = 0; w < 3; w++)
+    {
+        /* the two texts of the review: a version other than 1, a field other than Q */
+        memcpy(buf, "adf2 Q rat 1 1", 14);
+        buf[8] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s in the body of version 2",
+                      wname[w]);
+        memcpy(buf, "adf1 R rat 1 1", 14);
+        buf[8] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s in the body of field R",
+                      wname[w]);
+        ADF_CHECK_MSG(fball_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s, fball loader", wname[w]);
+        /* the byte in the body, with the header "adf1 Q ": a grammar failure */
+        for (p = 0; p < 3; p++)
+        {
+            memcpy(buf, "adf1 Q ", 7);
+            memcpy(buf + 7, body, sizeof(body) - 1);
+            buf[7 + at[p]] = (char) ws[w];
+            ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "%s at position %d of the body",
+                          wname[w], p);
+        }
+        /* inside the header: where the grammar wants the single space after the version, a
+           grammar failure; inside the field token, the field is the run of non-space bytes and
+           is not "Q", so ADF_UNSUPPORTED (conventions 10.1, `field = upper, {nonspace}`) */
+        /* inside the header: where the grammar wants the single space after the version, and
+           where the field token must begin with an upper-case letter (conventions 10.1,
+           `field = upper, {nonspace}`), a grammar failure; a byte after the field letter stays
+           inside the field token, which is then not "Q", so ADF_UNSUPPORTED (10.2) */
+        memcpy(buf, "adf1 Q rat 1 1", 14);
+        buf[4] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "%s after the version", wname[w]);
+        memcpy(buf, "adf1 Q rat 1 1", 14);
+        buf[5] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "%s instead of the field", wname[w]);
+        memcpy(buf, "adf1 Q rat 1 1", 14);
+        buf[6] = (char) ws[w];
+        ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED, "%s inside the field", wname[w]);
+    }
+    /* a NUL and a byte above 0x7e are no bytes of the alphabet (8.2): ADF_PARSE at every
+       position of the body, whatever the header says */
+    for (j = 0; j < 2; j++)
+    {
+        for (p = 0; p < 3; p++)
+        {
+            memcpy(buf, "adf2 Q rat 1 1", 14);
+            buf[7 + at[p]] = (char) other[j];
+            ADF_CHECK_MSG(rat_status(buf, 14, NULL) == ADF_PARSE, "byte %02x at position %d",
+                          other[j], p);
+        }
+    }
+    /* a NUL inside the field token, and a byte above 0x7e after the version */
+    memcpy(buf, "adf1 Q rat 1 1", 14);
+    buf[5] = '\0';
+    ADF_CHECK(rat_status(buf, 14, NULL) == ADF_PARSE);
+    memcpy(buf, "adf1 Q rat 1 1", 14);
+    buf[4] = (char) 0x80;
+    ADF_CHECK(rat_status(buf, 14, NULL) == ADF_PARSE);
+    /* the version itself may not be followed by anything but a space, whatever it is */
+    memcpy(buf, "adf1 Q rat 1 1", 14);
+    buf[3] = '2';
+    ADF_CHECK(rat_status(buf, 14, NULL) == ADF_UNSUPPORTED);
+}
+
+/* The status of adf_modctx_new_from_dump at occurrence 0, the entry point that reads every body
+   (modctx.h); checks that the output is untouched on every status other than OK. */
+static int
+any_body_status(const char * s, size_t len, const adf_text_limits_t * lim)
+{
+    adf_modctx_struct * sentinel = (adf_modctx_struct *) (void *) 0x50, * c = sentinel;
+    int st = adf_modctx_new_from_dump(&c, s, len, 0, lim);
+
+    if (st != ADF_OK)
+        ADF_CHECK_MSG(c == sentinel, "context output written on status %s", adf_status_str(st));
+    else
+        adf_modctx_free(c);
+    return st;
+}
+
+#define ACB0 "1 0 0 0 0 0 0 0"           /* the complex ball 1 + 0 i, both parts exact */
+
+/* The bodies sball and rfun, which have no typed loader (written by the orchestrator when lane
+   m1-repair-dump was landed, against two surviving mutants of src/dump.c).
+
+   sball: "sball" , " " , ( "n" | "r" , " " , arb | "c" , " " , acb ) , " " , h , { " " , lb }
+   (conventions 10.1, line 1348), and an arb is four tokens h (line 1330).  A text that ends
+   inside the complex ball, or that has a token there which is no h, is no sentence of the
+   grammar: ADF_PARSE (8.5 item 3), also when no token is left after the failure.
+
+   rfun: in each term the length L of P is a count (10.1, line 1357), and a count is limited by
+   max_items (8.4).  The grammar is stage 3 and the limits are stage 4 (8.5), so a text with
+   L above max_items and a token that is no h AFTER that count is ADF_PARSE, not ADF_LIMIT; the
+   same text with the token repaired is ADF_LIMIT; and with max_items = L it passes stages 1 to 6
+   and has no context occurrence, so occurrence 0 does not exist: ADF_DOMAIN (modctx.h). */
+ADF_TEST(grammar_before_limits_in_sball_and_rfun)
+{
+    static const char bad_rfun[] = "adf1 Q rfun 1 3 " ACB0 " " ACB0 " " ACB0 " zz 0 0 0 0 0 0 0 "
+                                   ACB0 " " ACB0;
+    static const char good_rfun[] = "adf1 Q rfun 1 3 " ACB0 " " ACB0 " " ACB0 " " ACB0 " "
+                                    ACB0 " " ACB0;
+    static const char * const bad_sball[] = {
+        "adf1 Q sball c",                          /* the text ends before the complex ball */
+        "adf1 Q sball c zz",                       /* no h, and nothing after it */
+        "adf1 Q sball c 1 0 0 zz",                 /* the same inside the real part */
+        "adf1 Q sball c 1 0 0 0 zz",               /* and as the first token of the imaginary part */
+        "adf1 Q sball c 1 0 0 0 0 0 0 zz",         /* and as its last token: the count is missing */
+        "adf1 Q sball r zz",
+        "adf1 Q sball r 1 0 0 zz"};
+    adf_text_limits_t lim;
+    size_t i;
+
+    for (i = 0; i < sizeof(bad_sball) / sizeof(bad_sball[0]); i++)
+        ADF_CHECK_MSG(any_body_status(bad_sball[i], strlen(bad_sball[i]), NULL) == ADF_PARSE, "\"%s\"",
+                      bad_sball[i]);
+    adf_text_limits_default(&lim);
+    lim.max_items = 2;
+    ADF_CHECK(any_body_status(bad_rfun, sizeof(bad_rfun) - 1, &lim) == ADF_PARSE);
+    ADF_CHECK(any_body_status(good_rfun, sizeof(good_rfun) - 1, &lim) == ADF_LIMIT);
+    lim.max_items = 3;
+    ADF_CHECK(any_body_status(bad_rfun, sizeof(bad_rfun) - 1, &lim) == ADF_PARSE);
+    ADF_CHECK(any_body_status(good_rfun, sizeof(good_rfun) - 1, &lim) == ADF_DOMAIN);
+}
+
 /* ------------------------------------------------------------------ adf_fball, global */
 
 ADF_TEST(fball_global_dump_text)

@@ -1,0 +1,7 @@
+# The same two sanitized binaries under 'ulimit -v 2000000': ASan reserves 15 TB of address
+# space at start-up (0xdfff0001000 = 15392894357504 bytes), so the process cannot even start.
+==1171136==ERROR: AddressSanitizer failed to allocate 0xdfff0001000 (15392894357504) bytes at address 2008fff7000 (errno: 12)
+==1171136==ReserveShadowMemoryRange failed while trying to map 0xdfff0001000 bytes. Perhaps you're using ulimit -v
+timeout: the monitored command dumped core
+/bin/bash: line 1: 1171135 Aborted                 ( ulimit -v 2000000; timeout 120 $C/recon_huge_exp.san )
+recon_huge_exp.san exit=134

@@ -42,23 +42,41 @@
    (arb.rst:468-470), so the predicate of conventions 5.5, arb_is_finite (arb.rst:606-609), is
    checked first; a ball that fails it is outside the contract and is answered ADF_DOMAIN.
 
+   The size bound of decision M1-D3. The same passage of arb.rst (lines 472-477) warns that the
+   function "will allocate a huge amount of memory to store the result if the exponent
+   difference is huge ... It is recommended to check that the midpoint and radius of x both are
+   within a reasonable range before calling this method". The check is made here, on the two
+   exponents themselves, before the call, and the status is ADF_LIMIT, which conventions 3.2
+   allows for reconstruction ("a size bound of an algorithm"): ADF_LIMIT when the midpoint or
+   the radius is not zero and its binary exponent (arf.h, ARF_EXP; mag.h, MAG_EXP) is above
+   ADF_RECON_EXP_MAX in absolute value, the value fixed by recon.h from M1-D3. A zero is
+   exempt, since arf_is_zero and mag_is_zero are the predicates of the two zero values
+   (arf.h:235-238, mag.h:229-233), and the exponent of a zero is 0 (arf.h:81 ARF_EXP_ZERO,
+   mag.h:212 mag_zero) anyway. The two exponents of a finite ball are integers of any size
+   (arf.rst:39: "Since exponents are bignums, overflow or underflow cannot occur"), so they
+   are read with fmpz_cmp_si and never as machine words; the cost of the check is the size of
+   those two integers only. With the two exponents within ADF_RECON_EXP_MAX, the exact end
+   points need integers of at most about ADF_RECON_EXP_MAX + 2 bits (measured:
+   lanes/m1-repair-recon/probe_exp.out, [source pending: the code of
+   arb_get_interval_fmpz_2exp, which is not on disk]), which is what the header promises.
+
    Aliasing (conventions 4.1(1)): the output of adf_fball_reconstruct is an adf_rat and may be
    the same object as lo or hi, so every input is read into a temporary before the output is
    written, and the output is written only on ADF_OK. The finite ball x is of another type than
    the output and aliases no input (recon.h, "Aliasing").
 
-   The local backend (adf_fball, backend ADF_LOCAL, work package 1.8) is not built yet, so a
-   local input cannot occur in the tests. The ball is read through adf_fball_get_fmpz3 alone, the
-   accessor of fball.h that documents the triple of a local value as well (the global triple of
-   the set: A0/g, K/g, d/g for a local value), and the centre and the radius are formed from that
-   triple with adf_rat_set_fmpz2. The two other accessors of fball.h, adf_fball_get_center and
-   adf_fball_get_radius, read the stored fields A/d and H/d, which for a raw local value are the
-   centre 0 and the radius 0, so they are not used; the fball lane records that as a
-   HEADER-FINDING in lanes/m1-fball/report.md. The set of candidates does not depend on the
-   representative of the centre, since conventions 5.2 says that any element of a + N Z is an
-   equally valid centre of the same set, so the local and the global forms of one ball give the
-   same answer. The cost of the accessor is a copy for the global backend and, as its header
-   says, a CRT recombination and a gcd for a local one. */
+   The local backend (adf_fball, backend ADF_LOCAL, work package 1.8) exists (src/fball_local.c,
+   fball.h "Backends"), and the ball of adf_adele_reconstruct may therefore be local. The
+   triple is read through adf_fball_get_fmpz3 alone, the accessor of fball.h that documents the
+   canonical global triple of the set for a local value as well (fball.h:155-160: "For a local
+   value this is (A0/g, K/g, d/g)"), and the centre and the radius are formed from that triple
+   with adf_rat_set_fmpz2. The two other accessors of fball.h are not used: adf_fball_get_center
+   and adf_fball_get_radius read the stored fields A/d and H/d, and the radius of a local value
+   is K/d, not the stored H/d (fball.h:162-169, conventions 5.3). The set of candidates does
+   not depend on the representative of the centre: conventions 5.2 says that any element of
+   a + N Z is an equally valid centre of the same set, so the local and the global form of one
+   ball give the same answer. The cost of the accessor is a copy for the global backend and, as
+   its header says, a CRT recombination and a gcd for a local one. */
 
 #include "adelefeld/recon.h"
 
@@ -79,36 +97,73 @@ fmpq_ceil_fmpz(fmpz_t r, const fmpq_t x)
     fmpz_cdiv_q(r, fmpq_numref(x), fmpq_denref(x));
 }
 
-/* q = mn * 2^exp, exactly, as a rational. The two branches put the power of two into the
-   numerator or into the denominator, so that no fmpq has to be built and then shifted; for
-   exp = 0 both branches give mn/1. The shifts go through slong: an exponent of the arb outside
-   the range of a machine integer is not reachable in practice, and conventions 5.5 already
-   marks the exponent overflow of the ball types as unverified. */
-static void
-fmpq_set_dyadic(fmpq_t q, const fmpz_t mn, const fmpz_t exp)
+/* q = mn * 2^exp, exactly, as a rational, provided |exp| <= max_exp; the power of two goes into
+   the numerator or into the denominator, so that no fmpq has to be built and then shifted, and
+   for exp = 0 both branches give mn/1. Returns 1 and writes q, or returns 0 and leaves q
+   untouched.
+
+   The magnitude of exp is computed with fmpz_abs and is read as a machine word only after
+   fmpz_cmp_si has shown that it is at most max_exp, so no fmpz_get_ui and no fmpz_get_si is
+   applied to an exponent that was not first shown to fit, and no slong is ever negated (the
+   negation of WORD_MIN is not representable, and the review of reviewer `arith` reports it for
+   the exponent -2^63, docs/reviews/m1/arith/review.md R1). fmpq_canonicalise is called at the
+   end because every function of the fmpq module assumes canonical input and produces canonical
+   output (refs/src/flint-3.0.1/fmpq.rst:21-26: "all functions in the fmpq module assume that
+   inputs are in canonical form, and produce outputs in canonical form"), and the numerator or
+   the denominator written here is a shift of mn, which need not be odd. */
+static int
+fmpq_set_dyadic(fmpq_t q, const fmpz_t mn, const fmpz_t exp, slong max_exp)
 {
-    if (fmpz_sgn(exp) >= 0)
+    fmpz_t m;
+    ulong sh;
+    int ok;
+
+    fmpz_init(m);
+    fmpz_abs(m, exp);
+    ok = (fmpz_cmp_si(m, max_exp) <= 0);
+    sh = ok ? (ulong) fmpz_get_si(m) : 0;
+    if (ok)
     {
         fmpz_t t;
 
         fmpz_init(t);
-        fmpz_mul_2exp(t, mn, (ulong) fmpz_get_ui(exp));
-        fmpz_set(fmpq_numref(q), t);
-        fmpz_one(fmpq_denref(q));
+        if (fmpz_sgn(exp) >= 0)
+        {
+            fmpz_mul_2exp(t, mn, sh);
+            fmpz_set(fmpq_numref(q), t);
+            fmpz_one(fmpq_denref(q));
+        }
+        else
+        {
+            fmpz_one(t);
+            fmpz_mul_2exp(t, t, sh);
+            fmpz_set(fmpq_numref(q), mn);
+            fmpz_set(fmpq_denref(q), t);
+        }
+        fmpq_canonicalise(q);
         fmpz_clear(t);
     }
-    else
-    {
-        fmpz_t den;
+    fmpz_clear(m);
+    return ok;
+}
 
-        fmpz_init(den);
-        fmpz_one(den);
-        fmpz_mul_2exp(den, den, (ulong) (-fmpz_get_si(exp)));
-        fmpz_set(fmpq_numref(q), mn);
-        fmpz_set(fmpq_denref(q), den);
-        fmpz_clear(den);
-    }
-    fmpq_canonicalise(q);
+/* The exponents of the midpoint and of the radius of a finite real ball, both within
+   ADF_RECON_EXP_MAX in absolute value, or one of them zero: 1. This is the test of decision
+   M1-D3, made before any integer of the size of the end points is built, and it is the reason
+   the call below is bounded. */
+static int
+arb_exponents_within_limit(const arb_t x)
+{
+    int mzero = arf_is_zero(arb_midref(x));
+    int rzero = mag_is_zero(arb_radref(x));
+
+    if (!mzero && (fmpz_cmp_si(ARF_EXPREF(arb_midref(x)), ADF_RECON_EXP_MAX) > 0
+                   || fmpz_cmp_si(ARF_EXPREF(arb_midref(x)), -ADF_RECON_EXP_MAX) < 0))
+        return 0;
+    if (!rzero && (fmpz_cmp_si(MAG_EXPREF(arb_radref(x)), ADF_RECON_EXP_MAX) > 0
+                   || fmpz_cmp_si(MAG_EXPREF(arb_radref(x)), -ADF_RECON_EXP_MAX) < 0))
+        return 0;
+    return 1;
 }
 
 int
@@ -204,9 +259,17 @@ adf_adele_reconstruct(adf_rat_t q, const adf_adele_t x)
     int status;
 
     /* Outside the contract (conventions 4.4, CV-09) when the real ball is not finite; checked
-       because arb_get_interval_fmpz_2exp aborts on such a ball (arb.rst:468-470). */
+       because arb_get_interval_fmpz_2exp aborts on such a ball (arb.rst:468-470). The check
+       comes first, since the exponent of an infinite midpoint is ARF_EXP_POS_INF, which is
+       above ADF_RECON_EXP_MAX and would answer ADF_LIMIT for a ball that is outside the
+       contract. */
     if (!arb_is_finite(x->inf))
         return ADF_DOMAIN;
+
+    /* Decision M1-D3: ADF_LIMIT before anything of the size of the exact end points is
+       built. */
+    if (!arb_exponents_within_limit(x->inf))
+        return ADF_LIMIT;
 
     fmpz_init(a);
     fmpz_init(b);
@@ -214,9 +277,19 @@ adf_adele_reconstruct(adf_rat_t q, const adf_adele_t x)
     adf_rat_init(lo);
     adf_rat_init(hi);
     arb_get_interval_fmpz_2exp(a, b, exp, x->inf);
-    fmpq_set_dyadic(lo->q, a, exp);
-    fmpq_set_dyadic(hi->q, b, exp);
-    status = adf_fball_reconstruct(q, &x->fin, lo, hi);
+    /* The exponent that the call returns lies between the smaller of the two exponents of the
+       ball, less one, and the larger of them (measured on 15 configurations, exponents from
+       -2^20 to 2^20 and 5: lanes/m1-repair-recon/probe_exp.out), so the bound of the test
+       above plus one covers it, and the check in fmpq_set_dyadic does not reject. That is a
+       measurement, not a quotation: [source pending: the code of arb_get_interval_fmpz_2exp,
+       which is not on disk]. The check is kept because it is the only place where the
+       exponent is read as a machine word, and if it ever rejected, the answer would be
+       ADF_LIMIT, which conventions 3.2 allows, so the failure would be a refusal and not a
+       wrong answer. */
+    status = ADF_LIMIT;
+    if (fmpq_set_dyadic(lo->q, a, exp, ADF_RECON_EXP_MAX + 1)
+        && fmpq_set_dyadic(hi->q, b, exp, ADF_RECON_EXP_MAX + 1))
+        status = adf_fball_reconstruct(q, &x->fin, lo, hi);
     adf_rat_clear(lo);
     adf_rat_clear(hi);
     fmpz_clear(a);

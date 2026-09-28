@@ -1,0 +1,58 @@
+
+=== green run, 2026-09-28T19:54:18+02:00, library with the repairs of R1, R2 and R4
+$ make -j2 build/test_dump build/test_dump_ctx build/test_dump_golden build/test_dump_limits && ./build/test_dump_limits
+ok   block_cap_refuses_65537_blocks_everywhere
+ok   block_cap_accepts_65536_blocks
+ok   block_count_of_a_short_text_is_a_grammar_failure
+ok   block_cap_and_max_items_in_that_order
+ok   block_cap_before_the_predicate_of_the_context
+ok   qclass_exponent_bound_at_and_above_the_bound
+ok   qclass_exponent_bound_is_a_limit_of_stage_four
+FAIL tests/test_dump_limits.c:614: no_exponent_bound_in_the_other_bodies: check failed: adf_adele_load_str(x, buf, (size_t) n, NULL, NULL) == ADF_OK | adele: adf1 Q adele 1 1 -ffffffffffffffffffffffffffffffffffffffff 0 0 l 1 6 2 2 3 0 0
+FAIL tests/test_dump_limits.c:616: no_exponent_bound_in_the_other_bodies: check failed: dl == (size_t) n && memcmp(d, buf, dl) == 0 | dump of the adele: adf1 Q adele 1 1 -ffffffffffffffffffffffffffffffffffffffff 0 0 l 1 6 2 2 3 0 0
+FAIL no_exponent_bound_in_the_other_bodies (tests/test_dump_limits.c:599, 2 failed checks)
+ok   block_cap_accepts_65536_blocks_in_full
+9 tests, 243 checks, 2 failed checks, 1 failed tests
+
+real	0m24,586s
+user	0m24,567s
+sys	0m0,013s
+test_dump_limits exit=1
+$ make -j2 build/test_dump_limits && ./build/test_dump_limits   (after the fix of the test: a global finite part)
+ok   block_cap_refuses_65537_blocks_everywhere
+ok   block_cap_accepts_65536_blocks
+ok   block_count_of_a_short_text_is_a_grammar_failure
+ok   block_cap_and_max_items_in_that_order
+ok   block_cap_before_the_predicate_of_the_context
+ok   qclass_exponent_bound_at_and_above_the_bound
+ok   qclass_exponent_bound_is_a_limit_of_stage_four
+ok   no_exponent_bound_in_the_other_bodies
+ok   block_cap_accepts_65536_blocks_in_full
+9 tests, 243 checks, 0 failed checks, 0 failed tests
+
+real	0m22,190s
+user	0m22,180s
+sys	0m0,008s
+exit=0
+
+$ ./build/test_dump; ./build/test_dump_ctx; ./build/test_dump_golden
+ok   load_over_a_value
+16 tests, 12231 checks, 3 failed checks, 1 failed tests
+test_dump exit=1
+ok   binding_counts_of_every_type
+14 tests, 28587 checks, 82 failed checks, 1 failed tests
+test_dump_ctx exit=1
+ok   golden_dump_every_row
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+test_dump_golden exit=0
+
+=== green run after the decision on the form lift, 2026-09-28T19:57:31+02:00
+$ ./build/test_dump; ./build/test_dump_ctx; ./build/test_dump_golden; ./build/test_dump_limits
+16 tests, 12237 checks, 3 failed checks, 1 failed tests
+test_dump exit=1
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+test_dump_ctx exit=0
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+test_dump_golden exit=0
+9 tests, 243 checks, 0 failed checks, 0 failed tests
+test_dump_limits exit=0

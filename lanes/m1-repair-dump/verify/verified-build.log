@@ -1,0 +1,22 @@
+mkdir -p lanes/m1-repair-dump/verify/build
+mkdir -p lanes/m1-repair-dump/verify/build/support
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/m1-repair-dump/verify/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/m1-repair-dump/verify/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/m1-repair-dump/verify/build/common.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/m1-repair-dump/verify/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/m1-repair-dump/verify/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/m1-repair-dump/verify/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/m1-repair-dump/verify/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/m1-repair-dump/verify/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/m1-repair-dump/verify/build/place.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/m1-repair-dump/verify/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/m1-repair-dump/verify/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/m1-repair-dump/verify/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/m1-repair-dump/verify/build/status.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/m1-repair-dump/verify/build/text.o
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/m1-repair-dump/verify/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/m1-repair-dump/verify/build/support/jsonl.o
+ar rcs lanes/m1-repair-dump/verify/build/libadelefeld.a lanes/m1-repair-dump/verify/build/adele.o lanes/m1-repair-dump/verify/build/cap.o lanes/m1-repair-dump/verify/build/common.o lanes/m1-repair-dump/verify/build/dump.o lanes/m1-repair-dump/verify/build/fball.o lanes/m1-repair-dump/verify/build/fball_local.o lanes/m1-repair-dump/verify/build/inlines.o lanes/m1-repair-dump/verify/build/modctx.o lanes/m1-repair-dump/verify/build/place.o lanes/m1-repair-dump/verify/build/rat.o lanes/m1-repair-dump/verify/build/recon.o lanes/m1-repair-dump/verify/build/scaled.o lanes/m1-repair-dump/verify/build/status.o lanes/m1-repair-dump/verify/build/text.o
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dump.c lanes/m1-repair-dump/verify/build/support/golden.o lanes/m1-repair-dump/verify/build/support/jsonl.o lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/build/test_dump
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dump_ctx.c lanes/m1-repair-dump/verify/build/support/golden.o lanes/m1-repair-dump/verify/build/support/jsonl.o lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/build/test_dump_ctx
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dump_golden.c lanes/m1-repair-dump/verify/build/support/golden.o lanes/m1-repair-dump/verify/build/support/jsonl.o lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/build/test_dump_golden

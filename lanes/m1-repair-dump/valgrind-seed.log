@@ -1,0 +1,343 @@
+==1502828== Memcheck, a memory error detector
+==1502828== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==1502828== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1502828== Command: lanes/m1-repair-dump/verify/fuzz-gcc-o0
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114DF6: LLVMFuzzerTestOneInput (fuzz_dump.c:384)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E27: LLVMFuzzerTestOneInput (fuzz_dump.c:388)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113B3F: load_one (fuzz_dump.c:150)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x113D23: load_one (fuzz_dump.c:175)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x11407B: load_one (fuzz_dump.c:213)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x11467B: fuzz_type (fuzz_dump.c:284)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x1146D1: fuzz_type (fuzz_dump.c:285)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+==1502828== Conditional jump or move depends on uninitialised value(s)
+==1502828==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1502828==    by 0x1142B7: load_one (fuzz_dump.c:235)
+==1502828==    by 0x114716: fuzz_type (fuzz_dump.c:286)
+==1502828==    by 0x114E6F: LLVMFuzzerTestOneInput (fuzz_dump.c:394)
+==1502828==    by 0x114ED5: main (fuzz_driver_repaired.c:6)
+==1502828==  Uninitialised value was created by a stack allocation
+==1502828==    at 0x113800: load_one (fuzz_dump.c:112)
+==1502828== 
+valid_seed_completed=1
+==1502828== 
+==1502828== HEAP SUMMARY:
+==1502828==     in use at exit: 0 bytes in 0 blocks
+==1502828==   total heap usage: 33 allocs, 33 frees, 5,862 bytes allocated
+==1502828== 
+==1502828== All heap blocks were freed -- no leaks are possible
+==1502828== 
+==1502828== For lists of detected and suppressed errors, rerun with: -s
+==1502828== ERROR SUMMARY: 120 errors from 36 contexts (suppressed: 0 from 0)
+
+real	0m0,954s
+user	0m0,853s
+sys	0m0,101s

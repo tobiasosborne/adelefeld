@@ -13,9 +13,10 @@
 #                            4.5 does not offer and the driver does not implement;
 #   ADF_NEEDS_SPLIT          belongs to the quotient by Q and to the functions at places
 #                            (SPEC 6, 9.3), which are work packages 1.9 and later.
-# ADF_LIMIT is reached twice: the line limit of the driver (the hostile case h4), the
-# decimal exponent over max_exp10, and the binary exponent of a real ball over the limit
-# of the driver (the guard of tools/adf/README.md).
+# ADF_LIMIT is reached three times: the line limit of the driver (the hostile case h4), the
+# decimal exponent over max_exp10, the binary exponent of a real ball over
+# ADF_PRINT_EXP_MAX (the guard of tools/adf/README.md, M1-D6), and a setting above the limit
+# the driver puts on it (prec over ADF_PRINT_EXP_MAX; a resource limit, conventions 3.1).
 #!exit 1
 # ADF_OK: the output holds the result
 show 7/3
@@ -43,6 +44,10 @@ digits 1e3
 show (1e100001 ; 0)
 show (1e-100001 ; 0)
 show (1e100000 ; 0)
+# the largest prec the driver accepts is ADF_PRINT_EXP_MAX (100000): an inexact real result
+# rounded at prec p has a radius with the binary exponent -p, so above that no inexact real
+# result of magnitude 1 or more can be printed
+prec 1000001
 # ADF_NOT_UNIT: proved: the value is not invertible
 div 1/2 with 0
 # ADF_NO_SOLUTION: proved: no value satisfies the problem
@@ -54,9 +59,9 @@ show 1/0
 show (1 ; 1/0)
 add (* ; 1 mod 2) with (1 ; 1)
 cap (* ; 1 mod 2) with 0
+# a setting below its range: the data violate the domain of the setting (conventions 3.1)
 prec 0
 prec -1
-prec 1000001
 digits 0
 digits -1
 digits 1000001

@@ -1,0 +1,18 @@
+{
+  "command": "python3 -B docs/reviews/m1/dump/checks/finish.py",
+  "command_records": 31,
+  "removed_build_directories": [
+    "build",
+    "san"
+  ],
+  "removed_binaries": [
+    "bridge",
+    "bridge-san",
+    "bridge.so",
+    "fuzz-gcc",
+    "fuzz-gcc-o0",
+    "roundtrip",
+    "roundtrip-san"
+  ],
+  "remaining_binaries": []
+}

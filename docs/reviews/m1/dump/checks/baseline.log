@@ -1,0 +1,33 @@
+ok   rat_dump_text
+ok   rat_round_trip_random
+ok   rat_statuses_and_strictness
+ok   order_of_checks_two_faults
+ok   fball_global_dump_text
+ok   fball_global_round_trip_random
+ok   fball_global_statuses
+ok   adele_round_trip_random
+ok   cadele_round_trip_random
+ok   adele_radius_edges
+ok   adele_statuses
+ok   inspect_without_contexts
+ok   hostile_bytes
+ok   input_at_the_end_of_a_page
+ok   load_over_a_value
+15 tests, 12165 checks, 0 failed checks, 0 failed tests
+ok   local_fball_round_trip_1_2_64_128_blocks
+ok   local_fball_raw_example
+ok   adele_cadele_local_round_trip
+ok   scaled_round_trip_contexts
+ok   scaled_statuses
+ok   scaled_get_str
+ok   binding_rules
+ok   inspection_capacity
+ok   new_from_dump_every_body
+ok   reference_vectors
+ok   modctx_vectors_from_dump
+ok   local_dump_at_the_end_of_a_page
+ok   stage_edges_and_piece_order
+ok   binding_counts_of_every_type
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+ok   golden_dump_every_row
+1 tests, 735 checks, 0 failed checks, 0 failed tests

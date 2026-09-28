@@ -1,0 +1,129 @@
+FAIL tests/test_cap_local.c:179: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=0 cap: local status 8
+FAIL tests/test_cap_local.c:181: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:182: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:188: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=0 add_cap: local status 8
+FAIL tests/test_cap_local.c:190: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:191: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:197: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=0 sub_cap: local status 8
+FAIL tests/test_cap_local.c:199: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:200: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:206: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=0 mul_cap: local status 8
+FAIL tests/test_cap_local.c:208: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:209: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:215: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=0 mul_rat_cap: local status 8
+FAIL tests/test_cap_local.c:217: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:218: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:179: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=1 cap: local status 8
+FAIL tests/test_cap_local.c:181: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:182: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:188: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=1 add_cap: local status 8
+FAIL tests/test_cap_local.c:190: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:191: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:197: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=1 sub_cap: local status 8
+FAIL tests/test_cap_local.c:199: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:200: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:206: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=1 mul_cap: local status 8
+FAIL tests/test_cap_local.c:208: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:209: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:215: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=1 v=1 mul_rat_cap: local status 8
+FAIL tests/test_cap_local.c:217: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:218: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:179: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=0 cap: local status 8
+FAIL tests/test_cap_local.c:181: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:182: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:188: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=0 add_cap: local status 8
+FAIL tests/test_cap_local.c:190: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:191: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:197: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=0 sub_cap: local status 8
+FAIL tests/test_cap_local.c:199: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:200: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:206: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=0 mul_cap: local status 8
+FAIL tests/test_cap_local.c:208: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:209: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:215: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=0 mul_rat_cap: local status 8
+FAIL tests/test_cap_local.c:217: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:218: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:179: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=1 cap: local status 8
+FAIL tests/test_cap_local.c:181: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:182: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:188: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=1 add_cap: local status 8
+FAIL tests/test_cap_local.c:190: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:191: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:197: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=1 sub_cap: local status 8
+FAIL tests/test_cap_local.c:199: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:200: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:206: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=1 mul_cap: local status 8
+FAIL tests/test_cap_local.c:208: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:209: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:215: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=2 v=1 mul_rat_cap: local status 8
+FAIL tests/test_cap_local.c:217: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:218: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:179: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=0 cap: local status 8
+FAIL tests/test_cap_local.c:181: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:182: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:188: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=0 add_cap: local status 8
+FAIL tests/test_cap_local.c:190: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:191: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:197: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=0 sub_cap: local status 8
+FAIL tests/test_cap_local.c:199: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:200: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:206: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=0 mul_cap: local status 8
+FAIL tests/test_cap_local.c:208: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:209: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:215: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=0 mul_rat_cap: local status 8
+FAIL tests/test_cap_local.c:217: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:218: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:179: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=1 cap: local status 8
+FAIL tests/test_cap_local.c:181: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:182: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:188: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=1 add_cap: local status 8
+FAIL tests/test_cap_local.c:190: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:191: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:197: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=1 sub_cap: local status 8
+FAIL tests/test_cap_local.c:199: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:200: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:206: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=1 mul_cap: local status 8
+FAIL tests/test_cap_local.c:208: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:209: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:215: local_matches_global_of_same_value: check failed: s1 == ADF_OK | k=64 v=1 mul_rat_cap: local status 8
+FAIL tests/test_cap_local.c:217: local_matches_global_of_same_value: check failed: s1 == s2
+FAIL tests/test_cap_local.c:218: local_matches_global_of_same_value: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL local_matches_global_of_same_value (tests/test_cap_local.c:134, 90 failed checks)
+FAIL tests/test_cap_local.c:258: mixed_local_global_inputs: check failed: adf_fball_add_cap(rloc, xloc, yglob, C) == ADF_OK
+FAIL tests/test_cap_local.c:260: mixed_local_global_inputs: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:263: mixed_local_global_inputs: check failed: adf_fball_sub_cap(rloc, xloc, yglob, C) == ADF_OK
+FAIL tests/test_cap_local.c:265: mixed_local_global_inputs: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:268: mixed_local_global_inputs: check failed: adf_fball_sub_cap(rloc, yglob, xloc, C) == ADF_OK
+FAIL tests/test_cap_local.c:270: mixed_local_global_inputs: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:273: mixed_local_global_inputs: check failed: adf_fball_mul_cap(rloc, xloc, yglob, C) == ADF_OK
+FAIL tests/test_cap_local.c:275: mixed_local_global_inputs: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL mixed_local_global_inputs (tests/test_cap_local.c:238, 8 failed checks)
+FAIL tests/test_cap_local.c:312: local_inputs_different_contexts: check failed: adf_fball_add_cap(rloc, xloc, yloc, C) == ADF_OK
+FAIL tests/test_cap_local.c:314: local_inputs_different_contexts: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:316: local_inputs_different_contexts: check failed: adf_fball_sub_cap(rloc, xloc, yloc, C) == ADF_OK
+FAIL tests/test_cap_local.c:318: local_inputs_different_contexts: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL tests/test_cap_local.c:320: local_inputs_different_contexts: check failed: adf_fball_mul_cap(rloc, xloc, yloc, C) == ADF_OK
+FAIL tests/test_cap_local.c:322: local_inputs_different_contexts: check failed: adf_fball_equal_set(rloc, rglob)
+FAIL local_inputs_different_contexts (tests/test_cap_local.c:290, 6 failed checks)
+FAIL tests/test_cap_local.c:362: local_output_aliases_each_input: check failed: adf_fball_cap(x, x, C) == ADF_OK
+FAIL tests/test_cap_local.c:387: local_output_aliases_each_input: check failed: adf_fball_add_cap(z, z, y, C) == ADF_OK
+FAIL tests/test_cap_local.c:393: local_output_aliases_each_input: check failed: adf_fball_add_cap(z, x, z, C) == ADF_OK
+FAIL tests/test_cap_local.c:394: local_output_aliases_each_input: check failed: adf_fball_equal_set(z, expect)
+FAIL tests/test_cap_local.c:399: local_output_aliases_each_input: check failed: adf_fball_add_cap(x, x, x, C) == ADF_OK
+FAIL tests/test_cap_local.c:400: local_output_aliases_each_input: check failed: adf_fball_equal_set(x, expect)
+FAIL tests/test_cap_local.c:425: local_output_aliases_each_input: check failed: adf_fball_mul_cap(x, x, y, C) == ADF_OK
+FAIL tests/test_cap_local.c:426: local_output_aliases_each_input: check failed: adf_fball_equal_set(x, expect)
+FAIL tests/test_cap_local.c:430: local_output_aliases_each_input: check failed: adf_fball_mul_cap(y, x, y, C) == ADF_OK
+FAIL tests/test_cap_local.c:431: local_output_aliases_each_input: check failed: adf_fball_equal_set(y, expect)
+FAIL tests/test_cap_local.c:450: local_output_aliases_each_input: check failed: adf_fball_mul_rat_cap(x, x, q, C) == ADF_OK
+FAIL local_output_aliases_each_input (tests/test_cap_local.c:341, 11 failed checks)
+FAIL tests/test_cap_local.c:483: local_domain_on_nonpositive_C: check failed: adf_fball_cap(out, xloc, C) == ADF_DOMAIN
+FAIL tests/test_cap_local.c:487: local_domain_on_nonpositive_C: check failed: adf_fball_add_cap(out, xloc, yloc, C) == ADF_DOMAIN
+FAIL tests/test_cap_local.c:491: local_domain_on_nonpositive_C: check failed: adf_fball_sub_cap(out, xloc, yloc, C) == ADF_DOMAIN
+FAIL tests/test_cap_local.c:495: local_domain_on_nonpositive_C: check failed: adf_fball_mul_cap(out, xloc, yloc, C) == ADF_DOMAIN
+FAIL tests/test_cap_local.c:499: local_domain_on_nonpositive_C: check failed: adf_fball_mul_rat_cap(out, xloc, q, C) == ADF_DOMAIN
+FAIL tests/test_cap_local.c:506: local_domain_on_nonpositive_C: check failed: adf_fball_cap(out, xloc, C) == ADF_DOMAIN
+FAIL local_domain_on_nonpositive_C (tests/test_cap_local.c:464, 6 failed checks)
+FAIL tests/test_cap_local.c:541: local_source_exact_result_untouched: check failed: adf_fball_mul_rat_cap(rloc, xloc, q, C) == ADF_OK
+FAIL local_source_exact_result_untouched (tests/test_cap_local.c:522, 1 failed checks)
+6 tests, 253 checks, 122 failed checks, 6 failed tests

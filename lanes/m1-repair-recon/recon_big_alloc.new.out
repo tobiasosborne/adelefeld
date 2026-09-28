@@ -1,0 +1,11 @@
+# recon_big_alloc of docs/reviews/m1/arith/checks, built against the repaired library (make -j2),
+# each case run under 'ulimit -v 2000000' and 'timeout 60', as the review did.
+case 1: arb_is_finite=1 adf_adele_is_canonical=1; calling adf_adele_reconstruct
+status = LIMIT
+exit=0
+case 2: arb_is_finite=1 adf_adele_is_canonical=1; calling adf_adele_reconstruct
+status = LIMIT
+exit=0
+case 3: arb_is_finite=1 adf_adele_is_canonical=1; calling adf_adele_reconstruct
+status = LIMIT
+exit=0

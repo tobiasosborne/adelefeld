@@ -17,8 +17,7 @@ Entry points:
   combine(pairs)              -> (status, place)                          (section 3.3)
 
 Limitations of the reference (not of the specification): the primitive character of a Dirichlet character
-is found by search with python-flint and is refused (UNSUPPORTED) for moduli above 10^5; arb exponents above
-2^20 in absolute value are refused (LIMIT) where the value of the ball must be computed. Value-text round trips
+is found by search with python-flint and is refused (UNSUPPORTED) for moduli above 10^5. Value-text round trips
 are exact here; a C parser stores rounded balls and its round trips may widen (gate G4, conventions 9.6).
 """
 import math
@@ -39,6 +38,9 @@ TYPES = ["rat", "fball", "adele", "cadele", "ucoset", "idele", "idclass", "lball
 
 WORD = 2 ** 64
 MAG_LIMIT = 2 ** 30          # radius mantissa of an arb: MAG_BITS = 30 (/usr/include/flint/mag.h:117)
+MODCTX_MAX_BLOCKS = 65536    # include/adelefeld/modctx.h, decision M1-D5
+QCLASS_EXP_MAX = 2 ** 20     # the bound of docs/SPEC.md 15 row M1-D9 on the binary exponents of
+                             # the real ball of a piece of a qclass
 
 
 class TextError(Exception):
@@ -583,8 +585,11 @@ def _check_limits(tree, limits):
         if tag == "dec":
             m = re.search(r"[eE]([+-]?)([0-9]+)$", node[1])
             if m:
+                # decision M1-D7 (finding R4): compare the exponent with max_exp10 as a number
+                # of any length; there is no hidden 18-digit bound. The exponent is non-negative,
+                # so a negative max_exp10 admits no literal with an exponent.
                 e = _strip_int(m.group(2))
-                if len(e) > 18 or int(e) > limits.max_exp10:
+                if int(e) > limits.max_exp10:
                     raise TextError("LIMIT")
         elif tag == "lcoord" and node[3] is not None and node[4] is not None:
             e = _strip_int(node[4].lstrip("-"))
@@ -632,6 +637,10 @@ def _dec(text):
     m = re.fullmatch(r"(-?)([0-9]+)(?:\.([0-9]+))?(?:[eE]([+-]?[0-9]+))?", text)
     sign, ip, fp, ex = m.group(1), m.group(2), m.group(3) or "", m.group(4)
     digits = _strip_int(ip + fp)
+    # A zero coefficient is the exact zero whatever the exponent (decision M1-D7, finding R4);
+    # the power of ten is not formed, so a huge exponent within max_exp10 costs nothing.
+    if digits == "0":
+        return Fraction(0)
     e = int(ex) if ex else 0
     e -= len(fp)
     v = Fraction(int(digits)) * _pow10(e)
@@ -1016,8 +1025,11 @@ def _dump_syntax(s, limits):
         raise TextError("LIMIT")
     if isinstance(s, str):
         s = s.encode("utf-8")
+    # docs/conventions.md 8.2: the alphabet is 0x20 to 0x7e with TAB, LF and CR.  Those three pass
+    # the alphabet, the header is judged next (8.5 item 3) and the grammar of 10.1 rejects them in
+    # the body, where only the single spaces between tokens are allowed.
     for c in s:
-        if not 0x20 <= c <= 0x7E:
+        if not (0x20 <= c <= 0x7E or c in (0x09, 0x0A, 0x0D)):
             raise TextError("PARSE")
     s = s.decode("ascii")
     m = re.match(r"adf([0-9]+)( |\Z)", s)
@@ -1097,11 +1109,25 @@ def _dump_syntax(s, limits):
 
 
 def _arb_value(a, limits=None):
-    """Exact (mid, rad) of a validated arb token group; refuses huge exponents (reference limit)."""
+    """Exact (mid, rad) of a validated arb token group.
+
+    The bound of QCLASS_EXP_MAX on the exponents of a qclass piece is a limit of stage 4
+    (docs/conventions.md 8.5 item 4, decision M1-D9) and is checked for every piece before any
+    semantic check, so the exponents below are of absolute value at most QCLASS_EXP_MAX and the
+    exact values are cheap.  The check is repeated here as a guard: a value form or another body
+    may reach this function with a larger exponent in a later version of the reader.
+    """
     _, mm, me, rm, re_ = a
-    if abs(me) > 2 ** 20 or abs(re_) > 2 ** 20:
+    if abs(me) > QCLASS_EXP_MAX or abs(re_) > QCLASS_EXP_MAX:
         raise TextError("LIMIT")
     return (Fraction(mm) * Fraction(2) ** me, Fraction(rm) * Fraction(2) ** re_)
+
+
+def _qclass_arbs(pieces):
+    """Every real ball of every piece of a qclass body, in traversal order (both forms)."""
+    for arch, _ in pieces:
+        for a in arch:
+            yield a
 
 
 def _v_arb(a):
@@ -1288,6 +1314,19 @@ def _dump_validate(node, limits):
     for ctx in _ctx_occurrences(node):
         if len(ctx[2]) > limits.max_items:
             raise TextError("LIMIT")
+    if kind == "qclass" and node[1] == "pieces":
+        # stage 4 (decision M1-D9): the binary exponents of the real ball of every piece, on the
+        # digit strings, before any semantic check.  A "lift" is a single adele and has no piece:
+        # the range of a piece, whose exact end points are the cost the bound pays for, is not
+        # formed there, so its exponents are read as they are
+        for a in _qclass_arbs(node[2]):
+            if abs(a[2]) > QCLASS_EXP_MAX or abs(a[4]) > QCLASS_EXP_MAX:
+                raise TextError("LIMIT")
+    # stage 5: at most MODCTX_MAX_BLOCKS blocks per context (decision M1-D5), decided from the
+    # count of the text alone, before the predicate of 5.14
+    for ctx in _ctx_occurrences(node):
+        if len(ctx[2]) > MODCTX_MAX_BLOCKS:
+            raise TextError("UNSUPPORTED")
     lbs = [node[1]] if kind == "lball" else (node[3] if kind == "sball" else [])
     for lb in lbs:                      # stage 4 for every local ball before stage 5 for any
         vals = [lb[5]] if lb[2] == "x" else [lb[4], lb[5]]

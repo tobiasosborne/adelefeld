@@ -1,0 +1,164 @@
+mutate: src/recon.c: 89 mutants
+mutate: the baseline passes (6.7 s)
+
+SURVIVED src/recon.c:123:38 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -121,5 +121,5 @@
+       fmpz_init(m);
+       fmpz_abs(m, exp);
+  -    ok = (fmpz_cmp_si(m, max_exp) <= 0);
+  +    ok = (fmpz_cmp_si(m, max_exp) <= 1);
+       sh = ok ? (ulong) fmpz_get_si(m) : 0;
+       if (ok)
+
+
+SURVIVED src/recon.c:124:40 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -122,5 +122,5 @@
+       fmpz_abs(m, exp);
+       ok = (fmpz_cmp_si(m, max_exp) <= 0);
+  -    sh = ok ? (ulong) fmpz_get_si(m) : 0;
+  +    sh = ok ? (ulong) fmpz_get_si(m) : 1;
+       if (ok)
+       {
+
+
+SURVIVED src/recon.c:231:13 swap_args: 'adf_rat_mul(c, c, N)' -> 'adf_rat_mul(c, N, c)'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -229,5 +229,5 @@
+               fmpz_set(fmpq_numref(c->q), kmin);
+               fmpz_one(fmpq_denref(c->q));
+  -            adf_rat_mul(c, c, N);
+  +            adf_rat_mul(c, N, c);
+               adf_rat_add(c, c, a);
+           }
+
+
+SURVIVED src/recon.c:230:13 drop_call: 'fmpz_one(fmpq_denref(c->q));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -228,5 +228,5 @@
+               /* fmpz_set of kmin into a one-denominator fraction, then a + N k. */
+               fmpz_set(fmpq_numref(c->q), kmin);
+  -            fmpz_one(fmpq_denref(c->q));
+  +            
+               adf_rat_mul(c, c, N);
+               adf_rat_add(c, c, a);
+
+
+SURVIVED src/recon.c:232:13 swap_args: 'adf_rat_add(c, c, a)' -> 'adf_rat_add(c, a, c)'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -230,5 +230,5 @@
+               fmpz_one(fmpq_denref(c->q));
+               adf_rat_mul(c, c, N);
+  -            adf_rat_add(c, c, a);
+  +            adf_rat_add(c, a, c);
+           }
+       }
+
+
+SURVIVED src/recon.c:177:34 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -175,5 +175,5 @@
+   
+       /* Step 3: an empty interval has no candidate. */
+  -    if (fmpq_cmp(lo->q, hi->q) > 0)
+  +    if (fmpq_cmp(lo->q, hi->q) > 1)
+           return ADF_NO_SOLUTION;
+   
+
+
+SURVIVED src/recon.c:143:9 drop_call: 'fmpq_canonicalise(q);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -141,5 +141,5 @@
+               fmpz_set(fmpq_denref(q), t);
+           }
+  -        fmpq_canonicalise(q);
+  +        
+           fmpz_clear(t);
+       }
+
+
+SURVIVED src/recon.c:130:27 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -128,5 +128,5 @@
+   
+           fmpz_init(t);
+  -        if (fmpz_sgn(exp) >= 0)
+  +        if (fmpz_sgn(exp) > 0)
+           {
+               fmpz_mul_2exp(t, mn, sh);
+
+
+SURVIVED src/recon.c:134:13 drop_call: 'fmpz_one(fmpq_denref(q));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -132,5 +132,5 @@
+               fmpz_mul_2exp(t, mn, sh);
+               fmpz_set(fmpq_numref(q), t);
+  -            fmpz_one(fmpq_denref(q));
+  +            
+           }
+           else
+
+
+SURVIVED src/recon.c:130:30 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -128,5 +128,5 @@
+   
+           fmpz_init(t);
+  -        if (fmpz_sgn(exp) >= 0)
+  +        if (fmpz_sgn(exp) >= 1)
+           {
+               fmpz_mul_2exp(t, mn, sh);
+
+
+NOT COMPILED src/recon.c:289:5 drop_assign: 'status = ADF_LIMIT;' -> '' (the statement is removed)
+  src/recon.c:298:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/recon.c:217:9 drop_call: 'fmpq_floor_fmpz(kmax, chi->q);' -> '' (the statement is removed)
+  src/recon.c:89:1: error: ‘fmpq_floor_fmpz’ defined but not used [-Werror=unused-function]
+
+NOT COMPILED src/recon.c:97:5 drop_call: 'fmpz_cdiv_q(r, fmpq_numref(x), fmpq_denref(x));' -> '' (the statement is removed)
+  src/recon.c:95:23: error: unused parameter ‘r’ [-Werror=unused-parameter]
+
+NOT COMPILED src/recon.c:194:5 drop_call: 'adf_fball_get_fmpz3(A, H, d, x);' -> '' (the statement is removed)
+  src/recon.c:170:54: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/recon.c:91:5 drop_call: 'fmpz_fdiv_q(r, fmpq_numref(x), fmpq_denref(x));' -> '' (the statement is removed)
+  src/recon.c:89:24: error: unused parameter ‘r’ [-Werror=unused-parameter]
+
+NOT COMPILED src/recon.c:195:5 drop_assign: 'status = adf_rat_set_fmpz2(a, A, d);' -> '' (the statement is removed)
+  src/recon.c:196:8: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/recon.c:216:9 drop_call: 'fmpq_ceil_fmpz(kmin, clo->q);' -> '' (the statement is removed)
+  src/recon.c:95:1: error: ‘fmpq_ceil_fmpz’ defined but not used [-Werror=unused-function]
+
+NOT COMPILED src/recon.c:123:5 drop_assign: 'ok = (fmpz_cmp_si(m, max_exp) <= 0);' -> '' (the statement is removed)
+  src/recon.c:115:68: error: unused parameter ‘max_exp’ [-Werror=unused-parameter]
+
+mutate: 89 mutants in 16034.9 s: 71 killed, 10 survived, 8 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 10 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1
+
+real	267m14,967s
+user	29m8,784s
+sys	3m17,078s

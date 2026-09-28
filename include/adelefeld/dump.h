@@ -23,6 +23,13 @@
    - Statuses: ADF_OK, ADF_PARSE, ADF_LIMIT, ADF_UNSUPPORTED (a version other than 1, a field other
      than Q), ADF_DOMAIN (conventions 3.2 row "Loaders of the dump form"; order of 8.5). On every
      status other than ADF_OK the output value is untouched.
+   - Every function that validates a dump validates every body of conventions 10.1, also the
+     bodies without a loader here. For the body "qclass" of the form "pieces" the binary exponents
+     of the real ball of every piece are limited (decision M1-D9, conventions 8.4): an exponent of
+     the midpoint or of the radius above ADF_DUMP_QCLASS_EXP_MAX in absolute value is ADF_LIMIT,
+     at stage 4 of conventions 8.5, decided on the digit strings. The form "lift" and the other
+     bodies have no such limit. A context occurrence of more than ADF_MODCTX_MAX_BLOCKS blocks is
+     ADF_UNSUPPORTED at stage 5 (decision M1-D5, adelefeld/modctx.h).
    - Context bindings (conventions 10.2, G3): there is one context occurrence per local fball and
      per scaled value, in dump traversal order. binds[i] is the caller-owned context for occurrence
      i; it must match that occurrence's modulus and ordered blocks (adf_modctx_matches_desc);
@@ -58,6 +65,11 @@
 #include "adelefeld/text.h"
 #include "adelefeld/modctx.h"
 #include "adelefeld/scaled.h"
+
+/* The largest absolute binary exponent of the midpoint and of the radius of the real ball of a
+   piece of a dumped qclass, form "pieces" (decision M1-D9): 2^20, the bound of ADF_RECON_EXP_MAX
+   (decision M1-D3). It is not a field of adf_text_limits_t: a caller cannot change it. */
+#define ADF_DUMP_QCLASS_EXP_MAX 1048576
 
 #ifdef __cplusplus
 extern "C" {

@@ -15,6 +15,7 @@
 #   h5_no_final_newline.cmd  one command without a final newline
 #   h6_empty.cmd          an empty file
 #   h7_many_lines.cmd     100000 lines, with the expected output beside it
+#   h9_settings_ws.cmd    blanks, tabs and a CR around the number of a setting
 #
 # The line limit of the driver is 65536 bytes (README of tools/adf).
 
@@ -70,6 +71,24 @@ printf 'show 7/3' > "$OUT/h5_no_final_newline.cmd"
 # h7: 100000 lines, and the expected output beside them.
 awk 'BEGIN { for (i = 0; i < 100000; i++) print "show 7/3" }' > "$OUT/h7_many_lines.cmd"
 awk 'BEGIN { for (i = 0; i < 100000; i++) print "7/3" }' > "$OUT/h7_many_lines.out"
+
+# h9: the number of a setting with whitespace around it.  The whitespace of the value form
+# (conventions 8.2) is the space, TAB, LF and CR, and it may stand before the first token and
+# after the last one; tools/adf/README.md says a command may be written with spaces around it.
+# A CRLF script must therefore run every setting line, and so must a line with trailing
+# blanks.  A setting writes no line, so only the value command and the two refusals of the
+# last lines are in the expected output.
+{
+    printf 'prec 64 \r\n'       # a trailing blank and a CR
+    printf 'prec\t64\t\n'       # tabs on both sides of the number
+    printf 'prec  64\n'         # blanks before the number
+    printf 'digits 20\r\n'      # a CR only
+    printf 'show 7/3\r\n'       # the value command of a CRLF script
+    printf 'prec 0x40\n'        # not a decimal integer
+    printf 'digits 2 0\n'       # a blank inside the number
+    printf 'prec 64 \t \n'      # blanks and a tab after the number
+    printf 'prec  100001 \n'    # above ADF_PRINT_EXP_MAX: error: LIMIT
+} > "$OUT/h9_settings_ws.cmd"
 
 # The lengths of the lines of h3 and h4 are part of the test, so they are reported: the
 # length of a line is what stands before its newline.

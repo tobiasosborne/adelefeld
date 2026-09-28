@@ -1,0 +1,31 @@
+{"name": "build", "command": "make -j2 BUILD=docs/reviews/m1/dump/checks/build 'CFLAGS=-std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror' docs/reviews/m1/dump/checks/build/test_dump docs/reviews/m1/dump/checks/build/test_dump_ctx docs/reviews/m1/dump/checks/build/test_dump_golden", "exit": 0, "seconds": 0.033664}
+{"name": "bridge.so", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude -fPIC -shared docs/reviews/m1/dump/checks/bridge.c docs/reviews/m1/dump/checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/bridge.so", "exit": 0, "seconds": 0.617659}
+{"name": "bridge", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude docs/reviews/m1/dump/checks/bridge.c docs/reviews/m1/dump/checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/bridge", "exit": 0, "seconds": 0.617263}
+{"name": "roundtrip", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude docs/reviews/m1/dump/checks/roundtrip.c docs/reviews/m1/dump/checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/roundtrip", "exit": 0, "seconds": 0.566698}
+{"name": "test_dump", "command": "docs/reviews/m1/dump/checks/build/test_dump", "exit": 0, "seconds": 0.064788}
+{"name": "test_dump_ctx", "command": "docs/reviews/m1/dump/checks/build/test_dump_ctx", "exit": 0, "seconds": 0.165331}
+{"name": "test_dump_golden", "command": "docs/reviews/m1/dump/checks/build/test_dump_golden", "exit": 0, "seconds": 0.032722}
+{"name": "bridge", "command": "docs/reviews/m1/dump/checks/bridge", "exit": 0, "seconds": 0.00866}
+{"name": "roundtrip", "command": "docs/reviews/m1/dump/checks/roundtrip", "exit": 0, "seconds": 0.033248}
+{"name": "status", "command": "python3 -B docs/reviews/m1/dump/checks/status_findings.py", "exit": 0, "seconds": 0.065363}
+{"name": "differential", "command": "python3 -B docs/reviews/m1/dump/checks/differential.py", "exit": 1, "seconds": 10.051575}
+{"name": "valgrind-bridge", "command": "valgrind --leak-check=full --errors-for-leak-kinds=definite,indirect --error-exitcode=99 docs/reviews/m1/dump/checks/bridge", "exit": 0, "seconds": 1.219163}
+{"name": "valgrind-roundtrip", "command": "valgrind --leak-check=full --errors-for-leak-kinds=definite,indirect --error-exitcode=99 docs/reviews/m1/dump/checks/roundtrip", "exit": 0, "seconds": 2.27269}
+{"name": "fuzz-build", "command": "cc -std=c11 -O0 -g -I. -Iinclude docs/reviews/m1/dump/checks/fuzz_driver.c docs/reviews/m1/dump/checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/fuzz-gcc-o0", "exit": 0, "seconds": 0.516906}
+{"name": "fuzz-seed", "command": "valgrind --track-origins=yes --error-exitcode=99 docs/reviews/m1/dump/checks/fuzz-gcc-o0", "exit": -6, "seconds": 2.624828}
+{"name": "build", "command": "make -j2 BUILD=docs/reviews/m1/dump/checks/build 'CFLAGS=-std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror' docs/reviews/m1/dump/checks/build/test_dump docs/reviews/m1/dump/checks/build/test_dump_ctx docs/reviews/m1/dump/checks/build/test_dump_golden", "exit": 0, "seconds": 0.016796}
+{"name": "bridge.so", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude -fPIC -shared docs/reviews/m1/dump/checks/bridge.c docs/reviews/m1/dump/checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/bridge.so", "exit": 0, "seconds": 0.717525}
+{"name": "bridge", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude docs/reviews/m1/dump/checks/bridge.c docs/reviews/m1/dump/checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/bridge", "exit": 0, "seconds": 0.618457}
+{"name": "roundtrip", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude docs/reviews/m1/dump/checks/roundtrip.c docs/reviews/m1/dump/checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/roundtrip", "exit": 0, "seconds": 0.718442}
+{"name": "differential", "command": "python3 -B docs/reviews/m1/dump/checks/differential.py", "exit": 1, "seconds": 13.962481}
+{"name": "san-build", "command": "make -j2 BUILD=docs/reviews/m1/dump/checks/san SAN=1 docs/reviews/m1/dump/checks/san/test_dump docs/reviews/m1/dump/checks/san/test_dump_ctx docs/reviews/m1/dump/checks/san/test_dump_golden", "exit": 0, "seconds": 0.016503}
+{"name": "bridge-san-build", "command": "cc -std=c11 -O1 -g -Iinclude -fsanitize=address,undefined -fno-omit-frame-pointer docs/reviews/m1/dump/checks/bridge.c docs/reviews/m1/dump/checks/san/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/bridge-san", "exit": 0, "seconds": 0.566738}
+{"name": "roundtrip-san-build", "command": "cc -std=c11 -O1 -g -Iinclude -fsanitize=address,undefined -fno-omit-frame-pointer docs/reviews/m1/dump/checks/roundtrip.c docs/reviews/m1/dump/checks/san/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/checks/roundtrip-san", "exit": 0, "seconds": 0.617011}
+{"name": "san-test_dump", "command": "env ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 docs/reviews/m1/dump/checks/san/test_dump", "exit": 0, "seconds": 0.116015}
+{"name": "san-test_dump_ctx", "command": "env ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 docs/reviews/m1/dump/checks/san/test_dump_ctx", "exit": 0, "seconds": 0.316192}
+{"name": "san-test_dump_golden", "command": "env ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 docs/reviews/m1/dump/checks/san/test_dump_golden", "exit": 0, "seconds": 0.03259}
+{"name": "san-bridge", "command": "env ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 docs/reviews/m1/dump/checks/bridge-san", "exit": 0, "seconds": 0.032578}
+{"name": "san-roundtrip", "command": "env ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 docs/reviews/m1/dump/checks/roundtrip-san", "exit": 0, "seconds": 0.115212}
+{"name": "cost", "command": "python3 -B docs/reviews/m1/dump/checks/cost.py 65537", "exit": 0, "seconds": 71.933129}
+{"name": "near-modctx", "command": "python3 -B docs/reviews/m1/dump/checks/cost_near_limit.py modctx", "exit": 0, "seconds": 134.98201}
+{"name": "near-qclass", "command": "python3 -B docs/reviews/m1/dump/checks/cost_near_limit.py qclass", "exit": 0, "seconds": 74.817593}

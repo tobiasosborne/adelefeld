@@ -1,0 +1,3 @@
+mutate: src/text.c: 911 mutants
+mutate: 911 mutants, 300 of them run (--limit 300, --seed 20260928)
+mutate: the baseline passes (2.6 s)

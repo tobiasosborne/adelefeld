@@ -1,0 +1,9 @@
+count=65537 squared_prefix=0 inspect_status=0 inspect_seconds=1.909527
+bytes=682067 status=OK blocks=65537 seconds=37.426054
+exit=0
+count=65536 squared_prefix=32768 inspect_status=0 inspect_seconds=1.494034
+bytes=959780 status=OK blocks=65536 seconds=42.871743
+exit=0
+count=83354 squared_prefix=0 inspect_status=0 inspect_seconds=1.330625
+bytes=878689 status=OK blocks=83354 seconds=60.031352
+exit=0

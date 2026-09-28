@@ -23,10 +23,14 @@ corrected in the script and the correction is written down in
 | `08_show_type.cmd` | conventions 9.3 (canonicalisation on input), 9.4 (the templates) and 9.7 (the thirteen kinds) |
 | `09_settings.cmd` | conventions 9.5 (the reading and the printing of a real ball) through `prec` and `digits` |
 | `10_line_language.cmd` | the line language of the driver: comments, empty lines, whitespace, the separator |
+| `11_guard.cmd` | the guard on printing: M1-D6 and the binary exponent FLINT stores |
+| `12_status_order.cmd` | the order of the checks of one command, step by step |
+| `13_dump.cmd` | `compare` (SPEC 4.2), `dump` and `load` (conventions 10) |
 
 `hostile/` holds the expected output of the hostile inputs.  Their bytes are written by
-`gen_hostile.sh` into `build/driver/`, because they hold NUL bytes, bytes 128 to 255 and
-lines of 65536 and 65537 bytes:
+`gen_hostile.sh` into `build/driver/`, because they hold NUL bytes, bytes 128 to 255, lines of
+65536 and 65537 bytes, and trailing blanks, tabs and a CR that a diff cannot be trusted to
+show:
 
 | Expected file | Input | What it checks |
 |---|---|---|
@@ -36,5 +40,6 @@ lines of 65536 and 65537 bytes:
 | `h4_line_65537.out` | `h4_line_65537.cmd` | a line of 65537 bytes: the error for that line, and the rest of it skipped |
 | `h5_no_final_newline.out` | `h5_no_final_newline.cmd` | a file without a final newline |
 | `h6_empty.out` (empty) | `h6_empty.cmd` | an empty file: no line, status 0 |
+| `h9_settings_ws.out` | `h9_settings_ws.cmd` | blanks, tabs and a CR around the number of a setting |
 | (generated) | `h7_many_lines.cmd` | 100000 lines, timed; the expected output is written beside the input |
 | (checked in the script) | a directory | `fopen` succeeds and the first read fails: a usage error, status 2, nothing on standard output |

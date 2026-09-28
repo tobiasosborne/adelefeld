@@ -1,0 +1,32 @@
+mutate: src/adele.c: 169 mutants
+mutate: 169 mutants, 60 of them run (--limit 60, --seed 20260928)
+mutate: the baseline passes (12.5 s)
+
+SURVIVED src/adele.c:279:5 swap_args: 'arb_add(z->inf, x->inf, t, prec)' -> 'arb_add(z->inf, t, x->inf, prec)'
+  the tests pass with the mutant
+  --- a/src/adele.c
+  +++ b/src/adele.c
+  @@ -277,5 +277,5 @@
+       adf_fball_set_rat(fq, q);
+   
+  -    arb_add(z->inf, x->inf, t, prec);
+  +    arb_add(z->inf, t, x->inf, prec);
+       adf_fball_add(&z->fin, &x->fin, fq);
+   
+
+
+NOT COMPILED src/adele.c:451:5 drop_call: 'acb_set(z, x->inf);' -> '' (the statement is removed)
+  src/adele.c:449:30: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:561:5 drop_assign: 'st = adf_fball_div_rat(fq, &x->fin, q);' -> '' (the statement is removed)
+  src/adele.c:562:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/adele.c:440:5 drop_call: 'adf_fball_set(&y->fin, f);' -> '' (the statement is removed)
+  src/adele.c:434:75: error: unused parameter ‘f’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:334:5 drop_assign: 'st = adf_fball_div_rat(fq, &x->fin, q);' -> '' (the statement is removed)
+  src/adele.c:335:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+mutate: 60 mutants in 594.6 s: 55 killed, 1 survived, 4 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1

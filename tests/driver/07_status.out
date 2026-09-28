@@ -16,10 +16,10 @@ error: PARSE
 error: LIMIT
 error: LIMIT
 error: LIMIT
+error: LIMIT
 error: NOT_UNIT
 error: NO_SOLUTION
 error: NOT_UNIQUE
-error: DOMAIN
 error: DOMAIN
 error: DOMAIN
 error: DOMAIN

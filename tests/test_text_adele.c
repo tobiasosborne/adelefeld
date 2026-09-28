@@ -407,34 +407,26 @@ set_sentinel_fin(adf_fball_t f)
     fmpz_set_si(f->d, 1);
 }
 
+/* The sentinel comparison is field by field, not memcmp: a whole-struct memcmp also reads the
+   mantissa limbs and padding that the ordinary init did not define (finding R10 of reviewer
+   text). arb_equal and fmpz_equal read only defined fields. */
 static int
 adele_is_sentinel(const adf_adele_t x, const adf_adele_struct * bytes)
 {
-    arb_t r;
-    int ok;
-
-    arb_init(r);
-    set_sentinel_arb(r);
-    ok = arb_equal(x->inf, r) && fmpz_cmp_si(x->fin.A, 5) == 0 && fmpz_cmp_si(x->fin.H, 18) == 0
-         && fmpz_is_one(x->fin.d) && x->fin.backend == ADF_GLOBAL
-         && memcmp(x, bytes, sizeof(adf_adele_struct)) == 0;
-    arb_clear(r);
-    return ok;
+    return arb_equal(x->inf, bytes->inf)
+           && fmpz_equal(x->fin.A, bytes->fin.A) && fmpz_equal(x->fin.H, bytes->fin.H)
+           && fmpz_equal(x->fin.d, bytes->fin.d) && x->fin.backend == bytes->fin.backend
+           && x->fin.mctx == bytes->fin.mctx && x->fin.res == bytes->fin.res;
 }
 
 static int
 cadele_is_sentinel(const adf_cadele_t x, const adf_cadele_struct * bytes)
 {
-    arb_t r;
-    int ok;
-
-    arb_init(r);
-    set_sentinel_arb(r);
-    ok = arb_equal(acb_realref(x->inf), r) && arb_equal(acb_imagref(x->inf), r)
-         && fmpz_cmp_si(x->fin.A, 5) == 0 && fmpz_cmp_si(x->fin.H, 18) == 0 && fmpz_is_one(x->fin.d)
-         && memcmp(x, bytes, sizeof(adf_cadele_struct)) == 0;
-    arb_clear(r);
-    return ok;
+    return arb_equal(acb_realref(x->inf), acb_realref(bytes->inf))
+           && arb_equal(acb_imagref(x->inf), acb_imagref(bytes->inf))
+           && fmpz_equal(x->fin.A, bytes->fin.A) && fmpz_equal(x->fin.H, bytes->fin.H)
+           && fmpz_equal(x->fin.d, bytes->fin.d) && x->fin.backend == bytes->fin.backend
+           && x->fin.mctx == bytes->fin.mctx && x->fin.res == bytes->fin.res;
 }
 
 /* Parse (s, n) as an adele at prec and check the status and, on a status, the untouched output. On
@@ -518,6 +510,30 @@ find_parts(const jsonl_file * f, const char * file, unsigned long line)
     return NULL;
 }
 
+/* Decision M1-D6: 1 if a non-zero binary exponent is above ADF_PRINT_EXP_MAX in absolute value;
+   the printer of a value with a real or complex part then returns NULL with *len = 0. */
+static int
+bin_exp_over(const fmpz_t e)
+{
+    fmpz_t lim;
+    int over;
+
+    fmpz_init_set_ui(lim, ADF_PRINT_EXP_MAX);
+    over = fmpz_cmpabs(e, lim) > 0;
+    fmpz_clear(lim);
+    return over;
+}
+
+static int
+arb_printable(const arb_t x)
+{
+    if (!arf_is_zero(arb_midref(x)) && bin_exp_over(ARF_EXPREF(arb_midref(x))))
+        return 0;
+    if (!mag_is_zero(arb_radref(x)) && bin_exp_over(MAG_EXPREF(arb_radref(x))))
+        return 0;
+    return 1;
+}
+
 /* Check a parsed adele against the expected canonical text E and the exact ball of the input. */
 static void
 check_adele_value(const adf_adele_t x, const jsonl_value * rec, const char * E, size_t en, slong prec,
@@ -529,6 +545,19 @@ check_adele_value(const adf_adele_t x, const jsonl_value * rec, const char * E, 
 
     fmpq_init(mid);
     fmpq_init(rad);
+    if (!arb_printable(x->inf))
+    {
+        /* M1-D6: the exact-rational reference prints this value, the C printer refuses it before
+           any conversion, so the golden text cannot be produced. The stored arb is still checked
+           against the exact ball of the vector file. */
+        ADF_CHECK_MSG(t == NULL && len == 0, "%s: M1-D6 did not refuse the over-bound value", where);
+        if (record_part(rec, 0, mid, rad) && exact_condition(mid, rad, prec))
+            ADF_CHECK_MSG(arb_is_exactly(x->inf, mid, rad), "%s: the arb is not exactly the ball", where);
+        flint_free(t);
+        fmpq_clear(mid);
+        fmpq_clear(rad);
+        return;
+    }
     ADF_CHECK_MSG(well_formed(t, len), "%s: the printed text is not well formed", where);
     if (split_adele(t, len, &rb, &re, &fb, &fe) && split_adele(E, en, &erb, &ere, &efb, &efe))
     {
@@ -554,6 +583,15 @@ check_cadele_value(const adf_cadele_t x, const jsonl_value * rec, const char * E
 
     fmpq_init(mid);
     fmpq_init(rad);
+    if (!arb_printable(acb_realref(x->inf)) || !arb_printable(acb_imagref(x->inf)))
+    {
+        /* M1-D6, as in check_adele_value. */
+        ADF_CHECK_MSG(t == NULL && len == 0, "%s: M1-D6 did not refuse the over-bound value", where);
+        flint_free(t);
+        fmpq_clear(mid);
+        fmpq_clear(rad);
+        return;
+    }
     ADF_CHECK_MSG(well_formed(t, len), "%s: the printed text is not well formed", where);
     if (split_cadele(t, len, sp) && split_cadele(E, en, ep))
     {
@@ -1184,8 +1222,9 @@ ADF_TEST(the_extreme_exponents_of_the_default_limits)
     if (parse_adele(x, "(1e100000 ; 0)", 14, 128, NULL, ADF_OK, "1e100000") == ADF_OK)
     {
         ADF_CHECK(arb_contains_interval(x->inf, mid, rad));
+        /* the binary exponent is about 332193, above ADF_PRINT_EXP_MAX = 100000: M1-D6 refuses */
         t = adf_adele_get_str(&len, x, ADF_DIGITS_DEFAULT);
-        ADF_CHECK(well_formed(t, len));
+        ADF_CHECK_MSG(t == NULL && len == 0, "M1-D6 did not refuse 1e100000");
         flint_free(t);
     }
     pow10_fmpq(mid, -100000);
@@ -1195,7 +1234,7 @@ ADF_TEST(the_extreme_exponents_of_the_default_limits)
         fmpq_neg(mid, mid);
         ADF_CHECK(arb_contains_interval(x->inf, mid, rad));
         t = adf_adele_get_str(&len, x, ADF_DIGITS_DEFAULT);
-        ADF_CHECK(well_formed(t, len));
+        ADF_CHECK_MSG(t == NULL && len == 0, "M1-D6 did not refuse 1e-100000");
         flint_free(t);
     }
     fmpq_clear(mid);
@@ -1397,9 +1436,11 @@ ADF_TEST(max_exp10_at_the_limit_and_one_above)
     lim.max_exp10 = -1;
     parse_adele(x, "(1e0 ; 0)", 9, 64, &lim, ADF_LIMIT, "1e0 at max -1");
     parse_adele(x, "(1 ; 0)", 7, 64, &lim, ADF_OK, "no exponent at max -1");
-    /* more than 18 significant digits of an exponent is over any limit (proto _check_limits) */
+    /* M1-D7 (finding R4): the exponent is compared with max_exp10 as a number of any length, with
+       no hidden 18-digit bound; a zero coefficient is the exact zero and forms no power of ten. */
     lim.max_exp10 = WORD_MAX;
-    parse_adele(x, "(1e1000000000000000000 ; 0)", 27, 64, &lim, ADF_LIMIT, "19-digit exponent");
+    parse_adele(x, "(0e1000000000000000000 ; 0)", 27, 64, &lim, ADF_OK, "19-digit exponent, zero");
+    parse_adele(x, "(0e10000000000000000000 ; 0)", 28, 64, &lim, ADF_LIMIT, "20-digit exponent");
     parse_adele(x, "(1e000000000000000000000 ; 0)", 29, 64, &lim, ADF_OK, "zero exponent with many zeros");
     adele_clear(x);
     cadele_clear(z);
