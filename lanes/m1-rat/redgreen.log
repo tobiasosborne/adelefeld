@@ -1,0 +1,37 @@
+== the exact constructors and the invariant of 5.1
+RED test_rat: adf_rat_set_fmpq does not copy the two fields
+     26 tests, 41415 checks, 143 failed checks, 2 failed tests
+     first failing check: FAIL tests/test_rat.c:203: the_vectors_of_the_constructors_from_raw_data: check failed: fmpq_equal(z->q, want) | tests/ref/vectors/m1-rat/ra
+RED test_rat: adf_rat_set_fmpq stores a non-canonical fmpq
+     26 tests, 41415 checks, 202 failed checks, 2 failed tests
+     first failing check: FAIL tests/test_rat.c:203: the_vectors_of_the_constructors_from_raw_data: check failed: fmpq_equal(z->q, want) | tests/ref/vectors/m1-rat/ra
+== the statuses and the state of the outputs after one
+RED test_rat: adf_rat_div does not test the divisor for 0
+     Aborted (core dumped)
+     first failing check: 
+RED test_rat: adf_rat_set_fmpz2 does not test the denominator for 0
+     26 tests, 41415 checks, 231 failed checks, 2 failed tests
+     first failing check: FAIL tests/test_rat.c:162: the_vectors_of_the_constructors_from_raw_data: check failed: s == status | tests/ref/vectors/m1-rat/rat_set.jsonl
+RED test_place: adf_place_prime accepts every word as a prime
+     11 tests, 797 checks, 48 failed checks, 2 failed tests
+     first failing check: FAIL tests/test_place.c:89: a_composite_prime_argument_is_outside_the_domain: check failed: adf_place_prime(&v, not_primes[i]) == ADF_DOMAIN
+== the predicates and the canonical order of places
+RED test_rat: adf_rat_identical does not compare the denominators
+     26 tests, 41415 checks, 7 failed checks, 1 failed tests
+     first failing check: FAIL tests/test_rat.c:411: the_vectors_of_the_predicates: check failed: adf_rat_identical(a, b) == flag | tests/ref/vectors/m1-rat/rat_ident
+RED test_place: adf_place_cmp reverses the canonical order
+     11 tests, 797 checks, 146 failed checks, 3 failed tests
+     first failing check: FAIL tests/test_place.c:125: the_archimedean_place_comes_before_every_prime: check failed: adf_place_cmp(inf, p) == -1
+RED test_place: adf_place_prime_get returns 0 for every place
+     11 tests, 797 checks, 21 failed checks, 5 failed tests
+     first failing check: FAIL tests/test_place.c:51: a_place_made_twice_from_the_same_prime_is_one_place: check failed: adf_place_prime_get(v) == primes[i]
+== the header is read-only, so the status values are checked by the build
+RED test_status (build error, not an assertion): a status value of the header is changed
+     src/status.c:30:1: error: static assertion failed: "conventions 3.1: ADF_LIMIT is 10"
+        30 | _Static_assert(ADF_LIMIT == 11, "conventions 3.1: ADF_LIMIT is 10");
+           | ^~~~~~~~~~~~~~
+== the green run
+GREEN test_status: 7 tests, 122 checks, 0 failed checks, 0 failed tests
+GREEN test_place: 11 tests, 797 checks, 0 failed checks, 0 failed tests
+GREEN test_rat: 26 tests, 41415 checks, 0 failed checks, 0 failed tests
+redgreen: every wrong implementation was caught

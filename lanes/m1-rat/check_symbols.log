@@ -1,0 +1,41 @@
+1. status.h: 1 declarations
+1. place.h: 8 declarations
+1. rat.h: 24 declarations
+   the three headers declare 33 functions in all
+   adf_alignof_place
+   adf_alignof_rat
+   adf_place_cmp
+   adf_place_equal
+   adf_place_inf
+   adf_place_is_archimedean
+   adf_place_prime
+   adf_place_prime_get
+   adf_rat_add
+   adf_rat_clear
+   adf_rat_div
+   adf_rat_equal
+   adf_rat_get_fmpq
+   adf_rat_identical
+   adf_rat_init
+   adf_rat_inv
+   adf_rat_is_canonical
+   adf_rat_is_zero
+   adf_rat_mul
+   adf_rat_neg
+   adf_rat_one
+   adf_rat_set
+   adf_rat_set_fmpq
+   adf_rat_set_fmpz
+   adf_rat_set_fmpz2
+   adf_rat_set_si
+   adf_rat_sgn
+   adf_rat_sub
+   adf_rat_swap
+   adf_rat_zero
+   adf_sizeof_place
+   adf_sizeof_rat
+   adf_status_str
+2. archive (nm --defined-only build/libadelefeld.a): all 33 functions defined
+2. shared (nm -D --defined-only build/m1-rat/libadelefeld.so): all 33 functions defined
+3. exported adf_ symbols of the shared object: 46
+check_symbols: passed
