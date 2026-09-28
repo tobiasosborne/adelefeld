@@ -2,7 +2,60 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-28 (day), paused at 16:10 by TJO (network down): START HERE
+## Session 2026-09-28 (evening), from 17:25: START HERE
+
+**One line.** Both blockers of the review of milestone 1 are repaired and merged; the dump form is reviewed
+(no blocker, 4 MAJOR); two repair lanes run (m1-repair-text, m1-repair-dump).
+
+**Master** (`origin/master`, pushed): `make check` 38 test programs with gcc, clang, `SAN=1`;
+`sh tests/test_driver.sh`, `sh tests/test_julia.sh`, `sh tests/test_exports.sh` pass (checked 18:50).
+
+| Lane | State |
+|---|---|
+| m1-repair-recon (arith R1, R2) | merged `d378c31`; header `recon.h` edited by the orchestrator (`9ea33b6`) |
+| m1-repair-adele (arith R3, R4, R6) | merged `df32c71`; adf-c43 closed |
+| m1-repair-ctx (contexts R1, R2, R6) | merged `2efa43f`; adf-rki closed |
+| m1-review-dump (codex) | merged `9d216fd`; adf-8ju closed; `docs/reviews/m1/dump/review.md` |
+| m1-repair-text | resumed 18:30, pi deepseek (OpenRouter); running at the time of writing |
+| m1-repair-dump (adf-tp2) | started 18:52, pi space-bunny-alpha; brief on master; running at the time of writing |
+| m1-repair-tools | paused as before (WIP commit on its branch); run it ALONE, last |
+| m1-repair-driver | brief on master, not started; start after m1-repair-text has landed |
+| m1-invariants (adf-xk4) | brief on master (`lanes/m1-invariants/brief.md`); runs alone after the repairs |
+| closure check (adf-igt) | rules and table of judges on master (`lanes/m1-closure/COMMON.md`) |
+
+If a lane is found dead (no `pi` process, no `DONE` in `lanes/<lane>/lane.log` of its worktree), start it again
+with the same command; it continues from its files.
+
+**Waits for TJO.** Decision M1-D9 (`docs/SPEC.md` section 15), PROPOSED by the orchestrator: the bound `2^20`
+on the binary exponents of a `qclass` piece in the dump form is kept, named `ADF_DUMP_QCLASS_EXP_MAX`,
+documented, and applied at stage 4 of conventions 8.5. Lane m1-repair-dump follows it. When it lands, the
+constant goes into `include/adelefeld/dump.h` and conventions 8.4 (the lane's report gives the text).
+
+**Left open by the landed lanes** (none blocks; all go to the mutation sweep adf-xf4 or to adf-xrt):
+- Survivors of mutation: 10 in `src/recon.c`, 13 in `src/adele.c` (reasons in the lane reports). Lane
+  m1-repair-ctx ran only 40 mutants per file (`src/scaled.c`, `src/modctx.c`): the full run did not finish
+  in 40 minutes.
+- `tools/mutate/equivalent.txt` lines 52 to 65 (`src/adele.c`): stale lines, and the reason "same value" is
+  false for `arb_mul`, `acb_mul`. Also stale for `src/scaled.c` (lines 447, 547 are now 508, 540).
+- `tests/ref/vectors/m1-adele/set_rat.jsonl`: one record edited by hand (M1-D4); the generator
+  `lanes/m1-adele/gen_adele_vectors.py` still writes the old answer. Do not regenerate before it is changed.
+- `tests/test_modctx_limits.c` runs its three slow cases (about 5 minutes) only with
+  `ADF_MODCTX_LIMITS_FULL=1` (`lanes/m1-repair-ctx/run_limits.sh`); `make check` uses `k = 2000`.
+- Sources pending: the code of `arb_get_interval_fmpz_2exp`; the documentation of `n_root` and of the
+  `sign` argument of `fmpz_multi_CRT_precomp`.
+- HEADER-FINDING of m1-repair-ctx: for `k` above the cap, `adf_modctx_new_blocks` returns `UNSUPPORTED`
+  before the per-element `DOMAIN` checks (it may not read the array); the header's "DOMAIN first" needs a
+  clause.
+
+**The clock.** The WIP commits of the pause carry the time 20:20 and the system clock read 17:27 when this
+session began (synchronised). Times of the afternoon in logs and in the section below are about three hours
+ahead.
+
+**Order of work from here.** Land m1-repair-text and m1-repair-dump; start m1-repair-driver; then
+m1-invariants alone; m1-repair-tools alone (overnight); closure check; benchmarks on a quiet machine;
+milestone S. The rules of the section below still bind.
+
+## Session 2026-09-28 (day), paused at 16:10 by TJO (network down)
 
 **One line.** Milestone 1 is implemented (193 of 193 functions) and reviewed; the review found defects;
 six lanes of repair and review are paused with their work saved on branches; nothing is running.
