@@ -29,3 +29,5 @@ lanes/*/golden_before/
 lanes/*/vectors_before/
 build-*/
 /refs/src
+bench/bench_*
+!bench/bench_*.c
