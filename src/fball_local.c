@@ -26,6 +26,7 @@
 #include <flint/fmpz.h>
 #include <flint/fmpq.h>
 #include <flint/flint.h>
+#include "invariants.h"
 
 /* The canonical global triple of the set of x (fball.h adf_fball_get_fmpz3): a copy for a global
    x; for a local x the CRT lift A0 in [0, K) (Lemma 17.3, line 319), g = gcd(A0, K, d), and
@@ -72,6 +73,7 @@ fl_store_local(adf_fball_t y, const adf_modctx_struct * ctx, const fmpz_t d, con
     fmpz_zero(y->A);
     adf_modctx_get_modulus(y->H, ctx);
     y->backend = ADF_LOCAL;
+    ADF_INV_RETARGET(y->mctx, ctx);
     y->mctx = ctx;
 }
 
@@ -85,6 +87,7 @@ fl_store_local(adf_fball_t y, const adf_modctx_struct * ctx, const fmpz_t d, con
 int
 adf_fball_set_local(adf_fball_t y, const adf_fball_t x, const adf_modctx_struct * ctx)
 {
+    ADF_INV_FBALL(x);
     fmpz_t A, H, d, K, u, v;
     int status = ADF_OK;
 
@@ -137,6 +140,7 @@ int
 adf_fball_set_local_enclose(adf_fball_t y, int * lost, const adf_fball_t x,
                             const adf_modctx_struct * ctx)
 {
+    ADF_INV_FBALL(x);
     fmpz_t A, H, d, K, e, d0, A0;
     fmpq_t KR;
     int is_lost;
@@ -190,6 +194,7 @@ adf_fball_set_local_enclose(adf_fball_t y, int * lost, const adf_fball_t x,
 void
 adf_fball_set_global(adf_fball_t y, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     fmpz_t A, H, d;
 
     fmpz_init(A);
@@ -202,6 +207,7 @@ adf_fball_set_global(adf_fball_t y, const adf_fball_t x)
     fmpz_swap(y->H, H);
     fmpz_swap(y->d, d);
     y->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(y->mctx);
     y->mctx = NULL;
     fmpz_clear(A);
     fmpz_clear(H);
@@ -211,11 +217,13 @@ adf_fball_set_global(adf_fball_t y, const adf_fball_t x)
 int
 adf_fball_is_local(const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     return x->backend == ADF_LOCAL;
 }
 
 const adf_modctx_struct *
 adf_fball_context(const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     return x->backend == ADF_LOCAL ? x->mctx : NULL;
 }

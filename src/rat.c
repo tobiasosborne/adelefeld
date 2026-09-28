@@ -30,6 +30,7 @@
    never handed to FLINT. */
 
 #include <adelefeld.h>
+#include "invariants.h"
 
 /* A note on -DADF_CHECK_INVARIANTS (conventions 4.4, DECISION CV-09: "With
    -DADF_CHECK_INVARIANTS every public function checks adf_x_is_canonical on entry and calls
@@ -64,6 +65,7 @@ adf_rat_clear(adf_rat_t x)
 void
 adf_rat_set(adf_rat_t y, const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     fmpq_set(y->q, x->q);
 }
 
@@ -73,6 +75,8 @@ adf_rat_set(adf_rat_t y, const adf_rat_t x)
 void
 adf_rat_swap(adf_rat_t x, adf_rat_t y)
 {
+    ADF_INV_RAT(x);
+    ADF_INV_RAT(y);
     fmpq_swap(x->q, y->q);
 }
 
@@ -93,6 +97,8 @@ adf_rat_is_canonical(const adf_rat_t x)
 int
 adf_rat_identical(const adf_rat_t x, const adf_rat_t y)
 {
+    ADF_INV_RAT(x);
+    ADF_INV_RAT(y);
     return fmpz_equal(fmpq_numref(x->q), fmpq_numref(y->q))
            && fmpz_equal(fmpq_denref(x->q), fmpq_denref(y->q));
 }
@@ -176,6 +182,7 @@ adf_rat_set_fmpq(adf_rat_t x, const fmpq_t q)
 void
 adf_rat_get_fmpq(fmpq_t q, const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     fmpq_set(q, x->q);
 }
 
@@ -187,6 +194,7 @@ adf_rat_get_fmpq(fmpq_t q, const adf_rat_t x)
 int
 adf_rat_is_zero(const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     return fmpq_is_zero(x->q);
 }
 
@@ -199,6 +207,8 @@ adf_rat_is_zero(const adf_rat_t x)
 int
 adf_rat_equal(const adf_rat_t x, const adf_rat_t y)
 {
+    ADF_INV_RAT(x);
+    ADF_INV_RAT(y);
     return fmpq_equal(x->q, y->q);
 }
 
@@ -208,6 +218,7 @@ adf_rat_equal(const adf_rat_t x, const adf_rat_t y)
 int
 adf_rat_sgn(const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     return fmpq_sgn(x->q);
 }
 
@@ -219,6 +230,8 @@ adf_rat_sgn(const adf_rat_t x)
 void
 adf_rat_add(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 {
+    ADF_INV_RAT(x);
+    ADF_INV_RAT(y);
     fmpq_add(z->q, x->q, y->q);
 }
 
@@ -227,6 +240,8 @@ adf_rat_add(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 void
 adf_rat_sub(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 {
+    ADF_INV_RAT(x);
+    ADF_INV_RAT(y);
     fmpq_sub(z->q, x->q, y->q);
 }
 
@@ -235,6 +250,8 @@ adf_rat_sub(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 void
 adf_rat_mul(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 {
+    ADF_INV_RAT(x);
+    ADF_INV_RAT(y);
     fmpq_mul(z->q, x->q, y->q);
 }
 
@@ -244,6 +261,7 @@ adf_rat_mul(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 void
 adf_rat_neg(adf_rat_t y, const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     fmpq_neg(y->q, x->q);
 }
 
@@ -257,6 +275,8 @@ adf_rat_neg(adf_rat_t y, const adf_rat_t x)
 int
 adf_rat_div(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 {
+    ADF_INV_RAT(x);
+    ADF_INV_RAT(y);
     if (fmpq_is_zero(y->q))
         return ADF_NOT_UNIT;
     fmpq_div(z->q, x->q, y->q);
@@ -275,6 +295,7 @@ adf_rat_div(adf_rat_t z, const adf_rat_t x, const adf_rat_t y)
 int
 adf_rat_inv(adf_rat_t y, const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     fmpq_t one;
 
     if (fmpq_is_zero(x->q))

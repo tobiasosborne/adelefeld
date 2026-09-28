@@ -35,6 +35,7 @@
 #include <flint/acb.h>
 
 #include "adelefeld/text.h"
+#include "invariants.h"
 
 /* ------------------------------------------------------------------------------------------------
    Stages 1 and 2 (conventions 8.5 items 1 and 2, lines 1079-1080; proto/text_grammar.py _prep,
@@ -454,6 +455,7 @@ adf_rat_set_str(adf_rat_t x, const char * s, size_t len, const adf_text_limits_t
 char *
 adf_rat_get_str(size_t * len, const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     tx_buf b;
 
     tx_buf_init(&b);
@@ -593,6 +595,7 @@ adf_fball_set_str(adf_fball_t x, const char * s, size_t len, const adf_text_limi
 char *
 adf_fball_get_str(size_t * len, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     tx_buf b;
 
     tx_buf_init(&b);
@@ -1267,6 +1270,7 @@ adf_adele_set_str(adf_adele_t x, const char * s, size_t len, slong prec, const a
 char *
 adf_adele_get_str(size_t * len, const adf_adele_t x, slong digits)
 {
+    ADF_INV_ADELE(x);
     tx_buf b;
 
     if (!tx_arb_printable(x->inf))
@@ -1323,6 +1327,7 @@ adf_cadele_set_str(adf_cadele_t x, const char * s, size_t len, slong prec, const
 char *
 adf_cadele_get_str(size_t * len, const adf_cadele_t x, slong digits)
 {
+    ADF_INV_CADELE(x);
     tx_buf b;
 
     if (!tx_arb_printable(acb_realref(x->inf)) || !tx_arb_printable(acb_imagref(x->inf)))

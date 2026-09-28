@@ -45,6 +45,7 @@
 #include <flint/fmpq.h>
 #include <flint/flint.h>
 #include <flint/ulong_extras.h>
+#include "invariants.h"
 
 /* --------------------------------------------------------------- helpers */
 
@@ -92,6 +93,7 @@ fb_store(adf_fball_t x, const fmpz_t A, const fmpz_t H, const fmpz_t d)
     fmpz_set(x->H, H);
     fmpz_set(x->d, d);
     x->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(x->mctx);
     x->mctx = NULL;
 }
 
@@ -191,6 +193,7 @@ fb_local_finish(adf_fball_t z, const adf_modctx_struct * ctx, const fmpz_t d)
     fmpz_zero(z->A);
     adf_modctx_get_modulus(z->H, ctx);
     z->backend = ADF_LOCAL;
+    ADF_INV_RETARGET(z->mctx, ctx);
     z->mctx = ctx;
 }
 
@@ -250,6 +253,7 @@ adf_fball_clear(adf_fball_t x)
     fmpz_clear(x->d);
     flint_free(x->res);
     x->res = NULL;
+    ADF_INV_RELEASE(x->mctx);
     x->mctx = NULL;
     x->backend = ADF_GLOBAL;
 }
@@ -259,6 +263,7 @@ adf_fball_clear(adf_fball_t x)
 void
 adf_fball_set(adf_fball_t y, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     if (x->backend == ADF_LOCAL)
     {
         slong k = adf_modctx_nblocks(x->mctx);
@@ -270,6 +275,7 @@ adf_fball_set(adf_fball_t y, const adf_fball_t x)
         fmpz_set(y->H, x->H);
         fmpz_set(y->d, x->d);
         y->backend = ADF_LOCAL;
+        ADF_INV_RETARGET(y->mctx, x->mctx);
         y->mctx = x->mctx;
         return;
     }
@@ -279,12 +285,15 @@ adf_fball_set(adf_fball_t y, const adf_fball_t x)
     fmpz_set(y->H, x->H);
     fmpz_set(y->d, x->d);
     y->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(y->mctx);
     y->mctx = NULL;
 }
 
 void
 adf_fball_swap(adf_fball_t x, adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     int ib;
     const adf_modctx_struct * im;
 
@@ -365,6 +374,8 @@ adf_fball_is_canonical(const adf_fball_t x)
 int
 adf_fball_identical(const adf_fball_t x, const adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     if (x->backend != y->backend || x->mctx != y->mctx)
         return 0;
     if (!fmpz_equal(x->A, y->A) || !fmpz_equal(x->H, y->H) || !fmpz_equal(x->d, y->d))
@@ -387,6 +398,7 @@ adf_fball_zero(adf_fball_t x)
     fmpz_zero(x->H);
     fmpz_one(x->d);
     x->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(x->mctx);
     x->mctx = NULL;
     flint_free(x->res);
     x->res = NULL;
@@ -399,6 +411,7 @@ adf_fball_one(adf_fball_t x)
     fmpz_zero(x->H);
     fmpz_one(x->d);
     x->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(x->mctx);
     x->mctx = NULL;
     flint_free(x->res);
     x->res = NULL;
@@ -411,6 +424,7 @@ adf_fball_set_si(adf_fball_t x, slong n)
     fmpz_zero(x->H);
     fmpz_one(x->d);
     x->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(x->mctx);
     x->mctx = NULL;
     flint_free(x->res);
     x->res = NULL;
@@ -423,6 +437,7 @@ adf_fball_set_fmpz(adf_fball_t x, const fmpz_t n)
     fmpz_zero(x->H);
     fmpz_one(x->d);
     x->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(x->mctx);
     x->mctx = NULL;
     flint_free(x->res);
     x->res = NULL;
@@ -431,10 +446,12 @@ adf_fball_set_fmpz(adf_fball_t x, const fmpz_t n)
 void
 adf_fball_set_rat(adf_fball_t x, const adf_rat_t q)
 {
+    ADF_INV_RAT(q);
     fmpz_set(x->A, fmpq_numref(q->q));
     fmpz_zero(x->H);
     fmpz_set(x->d, fmpq_denref(q->q));
     x->backend = ADF_GLOBAL;
+    ADF_INV_RELEASE(x->mctx);
     x->mctx = NULL;
     flint_free(x->res);
     x->res = NULL;
@@ -465,6 +482,8 @@ adf_fball_set_fmpz3(adf_fball_t x, const fmpz_t A, const fmpz_t H, const fmpz_t 
 int
 adf_fball_set_center_radius(adf_fball_t x, const adf_rat_t c, const adf_rat_t N)
 {
+    ADF_INV_RAT(c);
+    ADF_INV_RAT(N);
     if (fmpq_sgn(N->q) < 0)
         return ADF_DOMAIN;
     fb_set_cr(x, c->q, N->q);
@@ -476,6 +495,12 @@ adf_fball_canonicalise(adf_fball_t x)
 {
     fmpz_t A, H, d;
 
+#ifdef ADF_CHECK_INVARIANTS
+    /* A global x is raw data by contract (fball.h:138-141) and is not checked; a local x "must
+       already satisfy L" (fball.h:141-143) and is. */
+    if (x->backend == ADF_LOCAL)
+        ADF_INV_FBALL(x);
+#endif
     if (x->backend == ADF_LOCAL)
         return ADF_OK;
 
@@ -501,6 +526,7 @@ adf_fball_canonicalise(adf_fball_t x)
 int
 adf_fball_is_exact(const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     return fmpz_is_zero(x->H);
 }
 
@@ -510,6 +536,7 @@ adf_fball_is_exact(const adf_fball_t x)
 void
 adf_fball_get_fmpz3(fmpz_t A, fmpz_t H, fmpz_t d, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     adf_fball_t t;
     const adf_fball_struct * g;
 
@@ -525,6 +552,7 @@ adf_fball_get_fmpz3(fmpz_t A, fmpz_t H, fmpz_t d, const adf_fball_t x)
 void
 adf_fball_get_center(adf_rat_t c, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     adf_fball_t t;
     const adf_fball_struct * g;
 
@@ -539,6 +567,7 @@ adf_fball_get_center(adf_rat_t c, const adf_fball_t x)
 void
 adf_fball_get_radius(adf_rat_t N, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     fmpq_set_fmpz_frac(N->q, x->H, x->d);
 }
 
@@ -547,6 +576,7 @@ adf_fball_get_radius(adf_rat_t N, const adf_fball_t x)
 void
 adf_fball_get_den(fmpz_t d, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     adf_fball_t t;
     const adf_fball_struct * g;
 
@@ -562,6 +592,7 @@ adf_fball_get_den(fmpz_t d, const adf_fball_t x)
 int
 adf_fball_prec_at(slong * e, const adf_fball_t x, adf_place_t v)
 {
+    ADF_INV_FBALL(x);
     fmpz_t p, t;
     slong vH, vd;
 
@@ -586,6 +617,7 @@ adf_fball_prec_at(slong * e, const adf_fball_t x, adf_place_t v)
 void
 adf_fball_haar_volume(adf_rat_t vol, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     if (fmpz_is_zero(x->H))
         fmpq_zero(vol->q);
     else
@@ -599,6 +631,8 @@ adf_fball_haar_volume(adf_rat_t vol, const adf_fball_t x)
 void
 adf_fball_add(adf_fball_t z, const adf_fball_t x, const adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     fmpq_t a, b, N, M, c, r;
     adf_fball_t tx, ty;
     const adf_fball_struct * xg;
@@ -640,6 +674,8 @@ adf_fball_add(adf_fball_t z, const adf_fball_t x, const adf_fball_t y)
 void
 adf_fball_sub(adf_fball_t z, const adf_fball_t x, const adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     fmpq_t a, b, N, M, c, r;
     adf_fball_t tx, ty;
     const adf_fball_struct * xg;
@@ -681,6 +717,7 @@ adf_fball_sub(adf_fball_t z, const adf_fball_t x, const adf_fball_t y)
 void
 adf_fball_neg(adf_fball_t y, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     fmpq_t a, N, c, r;
 
     /* A local x: (d; -r_i mod q_i), the same context, exact (policies P21.1, line 390). */
@@ -761,6 +798,8 @@ fb_mul_global(adf_fball_t z, const adf_fball_struct * x, const adf_fball_struct 
 void
 adf_fball_mul(adf_fball_t z, const adf_fball_t x, const adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     adf_fball_t tx, ty, t;
     const adf_fball_struct * xg;
     const adf_fball_struct * yg;
@@ -815,6 +854,8 @@ adf_fball_mul(adf_fball_t z, const adf_fball_t x, const adf_fball_t y)
 void
 adf_fball_mul_rat(adf_fball_t y, const adf_fball_t x, const adf_rat_t q)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_RAT(q);
     fmpq_t a, N, c, r;
     adf_fball_t tx;
     const adf_fball_struct * xg;
@@ -862,6 +903,8 @@ adf_fball_mul_rat(adf_fball_t y, const adf_fball_t x, const adf_rat_t q)
 int
 adf_fball_div_rat(adf_fball_t y, const adf_fball_t x, const adf_rat_t q)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_RAT(q);
     adf_rat_struct qq;
 
     if (fmpq_is_zero(q->q))
@@ -918,6 +961,8 @@ fb_equal_set_g(const adf_fball_struct * x, const adf_fball_struct * y)
 int
 adf_fball_equal_set(const adf_fball_t x, const adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     adf_fball_t tx, ty;
     int res;
 
@@ -968,6 +1013,8 @@ fb_overlaps_g(const adf_fball_struct * x, const adf_fball_struct * y)
 int
 adf_fball_overlaps(const adf_fball_t x, const adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     adf_fball_t tx, ty;
     int res;
 
@@ -1024,6 +1071,8 @@ fb_contains_g(const adf_fball_struct * x, const adf_fball_struct * y)
 int
 adf_fball_contains(const adf_fball_t x, const adf_fball_t y)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
     adf_fball_t tx, ty;
     int res;
 
@@ -1038,6 +1087,8 @@ adf_fball_contains(const adf_fball_t x, const adf_fball_t y)
 int
 adf_fball_contains_rat(const adf_fball_t x0, const adf_rat_t q)
 {
+    ADF_INV_FBALL_NAMED("x", x0);
+    ADF_INV_RAT(q);
     fmpq_t a, N, diff, t;
     adf_fball_t tx;
     const adf_fball_struct * x;
@@ -1073,6 +1124,8 @@ adf_fball_contains_rat(const adf_fball_t x0, const adf_rat_t q)
 int
 adf_fball_compare(const adf_fball_t x0, const adf_fball_t y0)
 {
+    ADF_INV_FBALL_NAMED("x", x0);
+    ADF_INV_FBALL_NAMED("y", y0);
     fmpq_t a, b, N, M;
     adf_fball_t tx, ty;
     const adf_fball_struct * x;

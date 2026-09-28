@@ -34,6 +34,7 @@
 #include <flint/fmpz.h>
 #include <flint/fmpq.h>
 #include <flint/flint.h>
+#include "invariants.h"
 
 /* --------------------------------------------------------------- helpers */
 
@@ -54,6 +55,7 @@ adf_scaled_init(adf_scaled_t x, const adf_modctx_struct * ctx)
     fmpq_zero(x->s);
     fmpz_init(x->u);
     fmpz_zero(x->u);
+    ADF_INV_BORROW(ctx);
     x->mctx = ctx;
     x->exact = 1;
 }
@@ -62,6 +64,7 @@ adf_scaled_init(adf_scaled_t x, const adf_modctx_struct * ctx)
 void
 adf_scaled_clear(adf_scaled_t x)
 {
+    ADF_INV_RELEASE(x->mctx);
     fmpq_clear(x->s);
     fmpz_clear(x->u);
 }
@@ -72,8 +75,10 @@ adf_scaled_clear(adf_scaled_t x)
 void
 adf_scaled_set(adf_scaled_t y, const adf_scaled_t x)
 {
+    ADF_INV_SCALED(x);
     fmpq_set(y->s, x->s);
     fmpz_set(y->u, x->u);
+    ADF_INV_RETARGET(y->mctx, x->mctx);
     y->mctx = x->mctx;
     y->exact = x->exact;
 }
@@ -82,6 +87,8 @@ adf_scaled_set(adf_scaled_t y, const adf_scaled_t x)
 void
 adf_scaled_swap(adf_scaled_t x, adf_scaled_t y)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_SCALED(y);
     const adf_modctx_struct * m;
     int e;
 
@@ -128,6 +135,8 @@ adf_scaled_is_canonical(const adf_scaled_t x)
 int
 adf_scaled_identical(const adf_scaled_t x, const adf_scaled_t y)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_SCALED(y);
     return x->mctx == y->mctx && x->exact == y->exact && fmpq_equal(x->s, y->s) &&
            fmpz_equal(x->u, y->u);
 }
@@ -135,12 +144,14 @@ adf_scaled_identical(const adf_scaled_t x, const adf_scaled_t y)
 const adf_modctx_struct *
 adf_scaled_context(const adf_scaled_t x)
 {
+    ADF_INV_SCALED(x);
     return x->mctx;
 }
 
 int
 adf_scaled_is_exact(const adf_scaled_t x)
 {
+    ADF_INV_SCALED(x);
     return x->exact;
 }
 
@@ -151,8 +162,10 @@ adf_scaled_is_exact(const adf_scaled_t x)
 void
 adf_scaled_set_rat(adf_scaled_t y, const adf_rat_t q, const adf_modctx_struct * ctx)
 {
+    ADF_INV_RAT(q);
     fmpq_set(y->s, q->q);
     fmpz_zero(y->u);
+    ADF_INV_RETARGET(y->mctx, ctx);
     y->mctx = ctx;
     y->exact = 1;
 }
@@ -169,6 +182,7 @@ adf_scaled_set_rat(adf_scaled_t y, const adf_rat_t q, const adf_modctx_struct * 
 int
 adf_scaled_set_fball(adf_scaled_t y, int * lost, const adf_fball_t x, const adf_modctx_struct * ctx)
 {
+    ADF_INV_FBALL(x);
     fmpz_t A, H, d, K, t, abar, bbar;
     fmpq_t c, rdivk, g;
 
@@ -190,6 +204,7 @@ adf_scaled_set_fball(adf_scaled_t y, int * lost, const adf_fball_t x, const adf_
         /* the exact point (closure C5): exact = 1, s = c, u = 0, *lost = 0 */
         fmpq_set(y->s, c);
         fmpz_zero(y->u);
+        ADF_INV_RETARGET(y->mctx, ctx);
         y->mctx = ctx;
         y->exact = 1;
         if (lost != NULL)
@@ -204,6 +219,7 @@ adf_scaled_set_fball(adf_scaled_t y, int * lost, const adf_fball_t x, const adf_
         fmpz_fdiv_r(t, abar, K);
         fmpq_set(y->s, g);
         fmpz_set(y->u, t);
+        ADF_INV_RETARGET(y->mctx, ctx);
         y->mctx = ctx;
         y->exact = 0;
         /* *lost = 1 exactly when c K/R = A K/H is not an integer */
@@ -237,6 +253,7 @@ adf_scaled_set_fball(adf_scaled_t y, int * lost, const adf_fball_t x, const adf_
 int
 adf_scaled_set_context(adf_scaled_t y, int * lost, const adf_scaled_t x, const adf_modctx_struct * ctx)
 {
+    ADF_INV_SCALED(x);
     fmpz_t K, Kp, t, ubar;
     fmpq_t kk, uq, g, s2;
 
@@ -244,6 +261,7 @@ adf_scaled_set_context(adf_scaled_t y, int * lost, const adf_scaled_t x, const a
     {
         fmpq_set(y->s, x->s);
         fmpz_zero(y->u);
+        ADF_INV_RETARGET(y->mctx, ctx);
         y->mctx = ctx;
         y->exact = 1;
         if (lost != NULL)
@@ -275,6 +293,7 @@ adf_scaled_set_context(adf_scaled_t y, int * lost, const adf_scaled_t x, const a
     fmpz_fdiv_r(t, ubar, Kp);                 /* u' = (s u/s') mod K' = (u/g) mod K' */
     fmpq_set(y->s, s2);
     fmpz_set(y->u, t);
+    ADF_INV_RETARGET(y->mctx, ctx);
     y->mctx = ctx;
     y->exact = 0;
     fmpz_clear(K);
@@ -295,6 +314,7 @@ adf_scaled_set_context(adf_scaled_t y, int * lost, const adf_scaled_t x, const a
 void
 adf_scaled_get_fball(adf_fball_t y, const adf_scaled_t x)
 {
+    ADF_INV_SCALED(x);
     adf_rat_t c, r;
     fmpz_t K;
 
@@ -330,6 +350,8 @@ adf_scaled_get_fball(adf_fball_t y, const adf_scaled_t x)
 int
 adf_scaled_add(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_SCALED(y);
     adf_scaled_struct t;
     fmpz_t K, r, ta, tb;
     fmpq_t g;
@@ -401,6 +423,8 @@ adf_scaled_add(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 int
 adf_scaled_sub(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_SCALED(y);
     adf_scaled_struct t;
     int status;
 
@@ -423,6 +447,8 @@ adf_scaled_sub(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 int
 adf_scaled_mul(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_SCALED(y);
     adf_scaled_struct t;
     fmpz_t K, r;
 
@@ -490,6 +516,8 @@ adf_scaled_mul(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 int
 adf_scaled_mul_tight(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_SCALED(y);
     adf_scaled_struct t;
     fmpz_t K, h, r;
 
@@ -560,10 +588,12 @@ adf_scaled_mul_tight(adf_scaled_t z, const adf_scaled_t x, const adf_scaled_t y)
 void
 adf_scaled_neg(adf_scaled_t y, const adf_scaled_t x)
 {
+    ADF_INV_SCALED(x);
     if (x->exact == 1)
     {
         fmpq_neg(y->s, x->s);
         fmpz_zero(y->u);
+        ADF_INV_RETARGET(y->mctx, x->mctx);
         y->mctx = x->mctx;
         y->exact = 1;
     }
@@ -576,6 +606,7 @@ adf_scaled_neg(adf_scaled_t y, const adf_scaled_t x)
         fmpq_set(y->s, x->s);
         fmpz_neg(y->u, x->u);
         fmpz_fdiv_r(y->u, y->u, K);
+        ADF_INV_RETARGET(y->mctx, x->mctx);
         y->mctx = x->mctx;
         y->exact = 0;
         fmpz_clear(K);
@@ -590,10 +621,13 @@ adf_scaled_neg(adf_scaled_t y, const adf_scaled_t x)
 void
 adf_scaled_mul_rat(adf_scaled_t y, const adf_scaled_t x, const adf_rat_t q)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_RAT(q);
     if (fmpq_is_zero(q->q))
     {
         fmpq_zero(y->s);
         fmpz_zero(y->u);
+        ADF_INV_RETARGET(y->mctx, x->mctx);
         y->mctx = x->mctx;
         y->exact = 1;
     }
@@ -601,6 +635,7 @@ adf_scaled_mul_rat(adf_scaled_t y, const adf_scaled_t x, const adf_rat_t q)
     {
         fmpq_mul(y->s, q->q, x->s);
         fmpz_zero(y->u);
+        ADF_INV_RETARGET(y->mctx, x->mctx);
         y->mctx = x->mctx;
         y->exact = 1;
     }
@@ -618,6 +653,7 @@ adf_scaled_mul_rat(adf_scaled_t y, const adf_scaled_t x, const adf_rat_t q)
         if (fmpq_sgn(q->q) < 0)
             fmpz_neg(y->u, y->u);
         fmpz_fdiv_r(y->u, y->u, K);
+        ADF_INV_RETARGET(y->mctx, x->mctx);
         y->mctx = x->mctx;
         y->exact = 0;
         fmpq_clear(aq);
@@ -635,6 +671,8 @@ adf_scaled_mul_rat(adf_scaled_t y, const adf_scaled_t x, const adf_rat_t q)
 void
 adf_scaled_add_rat(adf_scaled_t y, int * lost, const adf_scaled_t x, const adf_rat_t q)
 {
+    ADF_INV_SCALED(x);
+    ADF_INV_RAT(q);
     adf_scaled_struct t;
     fmpz_t K, r, ta, tb;
     fmpq_t g, quot;

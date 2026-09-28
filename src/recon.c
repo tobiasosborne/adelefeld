@@ -83,6 +83,7 @@
 #include <flint/arb.h>
 #include <flint/fmpq.h>
 #include <flint/fmpz.h>
+#include "invariants.h"
 
 /* floor and ceiling of a rational, the denominator of which is positive. */
 static void
@@ -169,6 +170,9 @@ arb_exponents_within_limit(const arb_t x)
 int
 adf_fball_reconstruct(adf_rat_t q, const adf_fball_t x, const adf_rat_t lo, const adf_rat_t hi)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_RAT(lo);
+    ADF_INV_RAT(hi);
     adf_rat_t a, N, clo, chi, c;
     fmpz_t A, H, d, kmin, kmax;
     int status;
@@ -254,6 +258,7 @@ done:
 int
 adf_adele_reconstruct(adf_rat_t q, const adf_adele_t x)
 {
+    ADF_INV_ADELE(x);
     adf_rat_t lo, hi;
     fmpz_t a, b, exp;
     int status;

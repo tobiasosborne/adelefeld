@@ -1,0 +1,15 @@
+ok   the_table_of_cases_is_the_list_of_checked_functions
+ok   a_canonical_pack_is_canonical_in_every_slot
+test_invariants: 1432 break runs, 1432 ended by SIGABRT
+ok   every_checked_function_aborts_on_every_break_of_every_checked_argument
+ok   every_checked_function_returns_normally_on_canonical_inputs
+ok   canonicalise_accepts_a_raw_global_value
+ok   the_raw_setters_take_non_canonical_data
+ok   the_predicates_never_abort
+ok   finding_R3_neg_of_a_local_ball_with_denominator_zero_aborts
+ok   the_flag_is_defined
+9 tests, 4956 checks, 0 failed checks, 0 failed tests
+
+real	0m0,760s
+user	0m0,368s
+sys	0m0,431s

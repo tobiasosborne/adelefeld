@@ -1,0 +1,22 @@
+checks: 160, count sites: 27, seed 20260928
+baseline: build 0, test_invariants exit 0, test_invariants_lifetime exit 0
+check src/scaled.c:185  ADF_INV_FBALL(x);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 14 failed checks, 1 failed tests
+check src/fball.c:449  ADF_INV_RAT(q);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 15 failed checks, 1 failed tests
+check src/adele.c:200  ADF_INV_ADELE(x);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 21 failed checks, 1 failed tests
+check src/cap.c:162  ADF_INV_FBALL(x);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 14 failed checks, 1 failed tests
+check src/adele.c:402  ADF_INV_CADELE(x);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 14 failed checks, 1 failed tests
+check src/rat.c:185  ADF_INV_RAT(x);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 15 failed checks, 1 failed tests
+check src/fball.c:858  ADF_INV_RAT(q);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 14 failed checks, 1 failed tests
+check src/text.c:1330  ADF_INV_CADELE(x);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 14 failed checks, 1 failed tests
+check src/cap.c:128  ADF_INV_RAT(C);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 5 failed checks, 1 failed tests
+check src/fball.c:678  ADF_INV_FBALL(y);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 27 failed checks, 1 failed tests
+count src/scaled.c:81  ADF_INV_RETARGET(y->mctx, x->mctx);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 4 failed checks, 1 failed tests; test_invariants_lifetime: exit 1, 13 tests, 116 checks, 1 failed checks, 1 failed tests
+count src/dump.c:1686  ADF_INV_RETARGET(x->mctx, binds[0]);  ->  KILLED by test_invariants_lifetime: exit 1, 13 tests, 116 checks, 1 failed checks, 1 failed tests
+count src/scaled.c:58  ADF_INV_BORROW(ctx);  ->  KILLED by test_invariants_lifetime: exit 1, 13 tests, 116 checks, 18 failed checks, 5 failed tests
+count src/dump.c:1358  ADF_INV_RETARGET(f->mctx, ctx);  ->  KILLED by test_invariants_lifetime: exit 1, 13 tests, 116 checks, 4 failed checks, 1 failed tests
+count src/fball.c:414  ADF_INV_RELEASE(x->mctx);  ->  KILLED by test_invariants_lifetime: exit 1, 13 tests, 116 checks, 2 failed checks, 1 failed tests
+count src/scaled.c:296  ADF_INV_RETARGET(y->mctx, ctx);  ->  KILLED by test_invariants: exit 1, 9 tests, 5376 checks, 4 failed checks, 1 failed tests
+count src/fball_local.c:76  ADF_INV_RETARGET(y->mctx, ctx);  ->  KILLED by test_invariants_lifetime: exit 1, 13 tests, 116 checks, 40 failed checks, 9 failed tests
+count src/scaled.c:207  ADF_INV_RETARGET(y->mctx, ctx);  ->  KILLED by test_invariants_lifetime: exit 1, 13 tests, 116 checks, 1 failed checks, 1 failed tests
+after restoring: build 0, test_invariants exit 0
+mutants: 18, killed: 18, survived or unbuildable: 0
