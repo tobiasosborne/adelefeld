@@ -1658,37 +1658,66 @@ ADF_TEST(tight_and_scaled_policies_containment)
     flint_randclear(state);
 }
 
-/* ---- 17. a local adf_fball input: the deviation recorded in the report (HEADER-FINDING).
-        src/fball.c does not yet read local values (lane m1-fball), so the conversion refuses
-        the input instead of guessing a result (lanes/COMMON-C.md rule 3; the choice of
-        src/cap.c). ---- */
+/* ---- 17. a local adf_fball input is converted as its set (scaled.h: "ADF_OK always";
+        fball.h admits both backends). The result is identical to the conversion of the
+        global form of the same set, lost included, in the context of the value and in
+        another one. Until work package 1.8 existed the function refused local inputs. ---- */
 
-ADF_TEST(set_fball_refuses_a_local_value)
+ADF_TEST(set_fball_converts_a_local_value_as_its_set)
 {
     adf_modctx_struct * ctx = NULL;
-    ulong q = 7;
-    adf_fball_t x;
-    adf_scaled_t y, snap;
+    adf_modctx_struct * other = NULL;
+    ulong q[2] = {4, 3};
+    ulong q2[1] = {5};
+    adf_fball_t g, x;
+    adf_scaled_t y, e, snap;
+    adf_rat_t c, r;
+    int lost, elost, k;
+    static const slong cn[4] = {1, 5, -7, 2};
+    static const slong cd[4] = {2, 6, 1, 2};
+    static const slong rn[4] = {6, 2, 12, 1};   /* radii 6, 2/1, 12, 1/... chosen so that the */
+    static const slong rd[4] = {1, 1, 1, 1};   /* ball lives in the context of modulus 12     */
 
-    ADF_CHECK(adf_modctx_new_blocks(&ctx, &q, 1) == ADF_OK);
+    ADF_CHECK(adf_modctx_new_blocks(&ctx, q, 2) == ADF_OK);
+    ADF_CHECK(adf_modctx_new_blocks(&other, q2, 1) == ADF_OK);
+    adf_fball_init(g);
     adf_fball_init(x);
-    adf_scaled_init(y, ctx);
-    adf_scaled_init(snap, ctx);
-    /* a value that satisfies predicate L of conventions 5.3: (3 + 7 Zhat)/1 in ctx (7) */
-    x->res = flint_malloc(sizeof(ulong));
-    x->res[0] = 3;
-    x->backend = ADF_LOCAL;
-    x->mctx = ctx;
-    fmpz_set_si(x->H, 7);
-    fmpz_set_si(x->A, 0);
-    fmpz_set_si(x->d, 1);
-    ADF_CHECK(adf_fball_is_canonical(x));
-    ADF_CHECK(adf_scaled_set_fball(y, NULL, x, ctx) == ADF_UNSUPPORTED);
-    ADF_CHECK(adf_scaled_identical(y, snap)); /* the output is untouched */
+    adf_rat_init(c);
+    adf_rat_init(r);
+    for (k = 0; k < 4; k++)
+    {
+        const adf_modctx_struct * target = (k % 2 == 0) ? ctx : other;
+
+        adf_rat_set_si(c, cn[k]);
+        adf_rat_set_si(r, cd[k]);
+        ADF_CHECK(adf_rat_div(c, c, r) == ADF_OK);
+        adf_rat_set_si(r, rn[k]);
+        (void) rd;
+        ADF_CHECK(adf_fball_set_center_radius(g, c, r) == ADF_OK);
+        ADF_CHECK(adf_fball_set_local_enclose(x, NULL, g, ctx) == ADF_OK);
+        ADF_CHECK(adf_fball_is_local(x));
+        adf_fball_set_global(g, x);              /* the same set, global */
+        adf_scaled_init(y, target);
+        adf_scaled_init(e, target);
+        adf_scaled_init(snap, target);
+        lost = -1;
+        elost = -2;
+        ADF_CHECK(adf_scaled_set_fball(e, &elost, g, target) == ADF_OK);
+        ADF_CHECK(adf_scaled_set_fball(y, &lost, x, target) == ADF_OK);
+        ADF_CHECK(!adf_scaled_identical(y, snap) || adf_scaled_identical(e, snap));
+        ADF_CHECK(adf_scaled_identical(y, e));
+        ADF_CHECK(lost == elost);
+        ADF_CHECK(adf_scaled_is_canonical(y));
+        adf_scaled_clear(y);
+        adf_scaled_clear(e);
+        adf_scaled_clear(snap);
+    }
+    adf_rat_clear(c);
+    adf_rat_clear(r);
+    adf_fball_clear(g);
     adf_fball_clear(x);
-    adf_scaled_clear(y);
-    adf_scaled_clear(snap);
     adf_modctx_free(ctx);
+    adf_modctx_free(other);
 }
 
 /* ---- 18. every exact result stores the residue u = 0 (conventions 5.4: exact = 1 needs

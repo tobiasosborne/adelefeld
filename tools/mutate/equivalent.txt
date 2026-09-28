@@ -78,3 +78,40 @@ src/fball.c:553:swap_args | fmpq_mul(t2, b, N) against fmpq_mul(t2, N, b) in adf
 src/fball.c:554:swap_args | fmpq_mul(t3, N, M) against fmpq_mul(t3, M, N) in adf_fball_mul: a product does not depend on the order of its factors (fmpq.rst:400), and t3 is a temporary, so neither input is written
 src/fball.c:582:swap_args | fmpq_mul(c, a, q->q) against fmpq_mul(c, q->q, a) in adf_fball_mul_rat: a product does not depend on the order of its factors (fmpq.rst:400), and c is a temporary, so neither input is written
 src/fball.c:610:swap_args | fmpq_mul(c, a, qq) against fmpq_mul(c, qq, a) in adf_fball_div_rat: a product does not depend on the order of its factors (fmpq.rst:400), and c is a temporary, so neither input is written
+
+# src/scaled.c, lane m1-scaled, 2026-09-28.
+src/scaled.c:209:swap_args | fmpz_mul(t, d, K) against fmpz_mul(t, K, d): the product does not depend on the order
+src/scaled.c:220:swap_args | fmpz_mul(t, A, K) against fmpz_mul(t, K, A): the product does not depend on the order
+src/scaled.c:284:swap_args | fmpz_mul(t, x->u, Kp) against fmpz_mul(t, Kp, x->u): the product does not depend on the order
+src/scaled.c:358:swap_args | fmpq_add(t.s, x->s, y->s) against fmpq_add(t.s, y->s, x->s): the sum does not depend on the order
+src/scaled.c:363:swap_args | fmpz_mul(r, ta, x->u) against fmpz_mul(r, x->u, ta): the product does not depend on the order
+src/scaled.c:364:swap_args | fmpz_mul(ta, tb, y->u) against fmpz_mul(ta, y->u, tb): the product does not depend on the order
+src/scaled.c:365:swap_args | fmpz_add(r, r, ta) against fmpz_add(r, ta, r): the sum does not depend on the order
+src/scaled.c:386:swap_args | fmpz_mul(r, ta, w->u) against fmpz_mul(r, w->u, ta): the product does not depend on the order
+src/scaled.c:418:swap_args | adf_scaled_add(z, x, &t) against adf_scaled_add(z, &t, x): the sum rule of policies P5(1) is symmetric in its operands, the exact-operand rule selects the same pair in both orders, and the shared-pointer check compares the two inputs symmetrically
+src/scaled.c:447:swap_args | fmpq_mul(t.s, x->s, y->s) against fmpq_mul(t.s, y->s, x->s): the product does not depend on the order
+src/scaled.c:451:swap_args | fmpz_mul(r, x->u, y->u) against fmpz_mul(r, y->u, x->u): the product does not depend on the order
+src/scaled.c:454:swap_args | fmpq_mul(t.s, x->s, y->s) against fmpq_mul(t.s, y->s, x->s): the product does not depend on the order
+src/scaled.c:520:swap_args | fmpz_mul(r, x->u, y->u) against fmpz_mul(r, y->u, x->u): the product does not depend on the order
+src/scaled.c:524:swap_args | fmpq_mul(t.s, x->s, y->s) against fmpq_mul(t.s, y->s, x->s): the product does not depend on the order
+src/scaled.c:544:swap_args | fmpq_mul(t.s, aq, w->s) against fmpq_mul(t.s, w->s, aq): the product does not depend on the order
+src/scaled.c:609:swap_args | fmpq_mul(y->s, q->q, x->s) against fmpq_mul(y->s, x->s, q->q): the product does not depend on the order, also with y = x (both operands are read before the write)
+src/scaled.c:653:swap_args | fmpq_add(t.s, x->s, q->q) against fmpq_add(t.s, q->q, x->s): the sum does not depend on the order
+src/scaled.c:675:swap_args | fmpz_mul(r, ta, x->u) against fmpz_mul(r, x->u, ta): the product does not depend on the order
+src/scaled.c:676:swap_args | fmpz_add(r, r, tb) against fmpz_add(r, tb, r): the sum does not depend on the order
+src/scaled.c:476:cmp | fmpq_sgn(q) < 0 as <= 0: the branch is reached only for q != 0, where fmpq_sgn(q) is -1 or 1, and both values answer the same to < 0 and <= 0
+src/scaled.c:476:zero_one | fmpq_sgn(q) < 0 as < 1: on the only possible values -1 and 1 of fmpq_sgn(q) the comparisons < 0 and < 1 agree
+src/scaled.c:547:cmp | fmpq_sgn(q) < 0 as <= 0: the branch is reached only for q != 0, where fmpq_sgn(q) is -1 or 1, and both values answer the same to < 0 and <= 0
+src/scaled.c:547:zero_one | fmpq_sgn(q) < 0 as < 1: on the only possible values -1 and 1 of fmpq_sgn(q) the comparisons < 0 and < 1 agree
+src/scaled.c:625:cmp | fmpq_sgn(q->q) < 0 as <= 0: the branch is reached only for q != 0, where fmpq_sgn is -1 or 1, and both values answer the same to < 0 and <= 0
+src/scaled.c:625:zero_one | fmpq_sgn(q->q) < 0 as < 1: on the only possible values -1 and 1 of fmpq_sgn the comparisons < 0 and < 1 agree
+src/scaled.c:60:drop_call | fmpq_zero(x->s) after fmpq_init(x->s): fmpq_init already stores the canonical 0 = 0/1
+src/scaled.c:62:drop_call | fmpz_zero(x->u) after fmpz_init(x->u): fmpz_init already stores 0
+src/scaled.c:466:drop_call | fmpq_zero(t.s) in the q = 0 branch of adf_scaled_mul: t was just created by adf_scaled_init, which stores the exact 0 with s = 0/1
+
+# src/fball_local.c, lane m1-local, 2026-09-28.
+src/fball_local.c:107:swap_args | fmpz_mul(u, K, d) against fmpz_mul(u, d, K): the product does not depend on the order
+src/fball_local.c:108:swap_args | fmpz_mul(v, K, A) against fmpz_mul(v, A, K): the product does not depend on the order
+src/fball_local.c:165:swap_args | fmpz_mul(e, K, d) against fmpz_mul(e, d, K): the product does not depend on the order
+src/fball_local.c:167:swap_args | fmpz_gcd(e, A, d) against fmpz_gcd(e, d, A): the gcd does not depend on the order
+src/fball_local.c:170:swap_args | fmpz_mul(A0, A, d0) against fmpz_mul(A0, d0, A): the product does not depend on the order

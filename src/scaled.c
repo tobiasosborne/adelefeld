@@ -25,15 +25,9 @@
    output is untouched unless the function returns ADF_OK (conventions 4.3) and every permitted
    aliasing is safe.
 
-   HEADER-FINDING (adf_scaled_set_fball only): scaled.h promises ADF_OK always for the
-   conversion from a tight ball, and fball.h admits a local input (predicate L).  The set of a
-   local value is (A0 + K Zhat)/d and needs the CRT lift A0 of its residues
-   (docs/conventions.md 5.3); src/fball.c of lane m1-fball does not read local values yet (its
-   own HEADER-FINDING), and its adf_fball_get_fmpz3 silently writes nothing for them.  Following
-   the choice of src/cap.c (the same work package, the same gap), a local input is refused with
-   ADF_UNSUPPORTED and the output untouched, instead of guessing; test
-   set_fball_refuses_a_local_value pins this.  When work package 1.8 lands, the check can be
-   dropped in favour of adf_fball_get_fmpz3. */
+   adf_scaled_set_fball reads its input through adf_fball_get_fmpz3, the canonical triple of the
+   set, so a local input is converted as its set (the refusal of local inputs that this file had
+   before work package 1.8 existed is removed; test set_fball_converts_a_local_value_as_its_set). */
 
 #include "adelefeld/scaled.h"
 
@@ -169,16 +163,14 @@ adf_scaled_set_rat(adf_scaled_t y, const adf_rat_t q, const adf_modctx_struct * 
    modulus K (policies Proposition 7, line 139; Lemma 6, line 124; conventions 5.4 row
    "conversion from a tight ball"; closure C5).  R > 0: s* = gcd(c, R/K), u* = (c/s*) mod K;
    *lost = 1 exactly when c K/R is not an integer, that is when the set changes (Lemma 6).
-   R = 0: the exact c with *lost = 0 (closure C5).  lost may be NULL.  Status: ADF_OK, and
-   ADF_UNSUPPORTED for a local input (HEADER-FINDING, file header), y untouched there. */
+   R = 0: the exact c with *lost = 0 (closure C5).  lost may be NULL.  Status: ADF_OK always.
+   A local input is read through adf_fball_get_fmpz3, which gives the canonical triple of its
+   set (fball.h; policies Proposition 24.1), so both backends are converted as sets. */
 int
 adf_scaled_set_fball(adf_scaled_t y, int * lost, const adf_fball_t x, const adf_modctx_struct * ctx)
 {
     fmpz_t A, H, d, K, t, abar, bbar;
     fmpq_t c, rdivk, g;
-
-    if (x->backend != ADF_GLOBAL)
-        return ADF_UNSUPPORTED; /* HEADER-FINDING, file header */
 
     fmpz_init(A);
     fmpz_init(H);
