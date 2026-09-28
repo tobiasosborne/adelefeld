@@ -1,0 +1,41 @@
+run_id: 2026-09-28T083803Z
+tag: recon
+provisional: yes (PLAN row 1.6, one row; the other lanes of the milestone may change the cost of the shared helpers)
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+cores_online: 12
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+tsc_present: yes
+tsc_invariant: yes
+cycles_per_ns_trials: 9
+cycles_per_ns_min: 2.68788
+cycles_per_ns_median: 2.68797
+cycles_per_ns_max: 2.68799
+cycles_per_ns_spread: 0.00011
+seed: 20260928
+operand_family: adf_fball canonical global triples A, H, d as stated per row; the adele rows add the arb of the same centre with the radius 2^-899
+trials_per_case: 3
+batch_length: 256
+warm: yes
+allocating: yes (fmpq and fmpz temporaries inside each call, and the output is rewritten in a batch)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+recon_fball_chain_word	latency_chain	adf_fball_reconstruct; [a, a] against a ball with A,H word sized	start A 59 bit, H 60 bit, d 4001 bit; the real ball of radius 2^-899; [a, a] as the interval; 20000 dependent calls	20260928	yes	yes	20000	20000	89830226478407267	3531.7750	3685.1436	3686.1345
+recon_adele_chain_word	latency_chain	adf_adele_reconstruct; the same ball and the real ball of radius 2^-899	start A 59 bit, H 60 bit, d 4001 bit; the real ball of radius 2^-899; [a, a] as the interval; 10000 dependent calls	20260928	yes	yes	10000	10000	0	9254.9298	9619.0681	10129.1647
+recon_fball_chain_4096	latency_chain	adf_fball_reconstruct; [a, a] against a ball with A,H of 4096 bit	start A 4091 bit, H 4094 bit, d 4001 bit; the real ball of radius 2^-899; [a, a] as the interval; 2000 dependent calls	20260928	yes	yes	2000	2000	4611709760697309940	6537.9010	6554.8685	6699.9400
+recon_adele_chain_4096	latency_chain	adf_adele_reconstruct; the same ball and the real ball of radius 2^-899	start A 4095 bit, H 4096 bit, d 4001 bit; the real ball of radius 2^-899; [a, a] as the interval; 1000 dependent calls	20260928	yes	yes	1000	1000	0	119568.3770	126493.5130	126720.6060
+recon_fball_batch_word	independent_batch	adf_fball_reconstruct; one ball, independent outputs	one ball, A and H up to 60 bit, d 4001 bit; one real ball of radius 2^-899; [a, a] as the interval; n = 256 outputs	20260928	yes	yes	100	25600	919124836615668671	3667.8594	3687.2027	4388.3413
+recon_adele_batch_word	independent_batch	adf_adele_reconstruct; one adele, independent outputs	one ball, A and H up to 60 bit, d 4001 bit; one real ball of radius 2^-899; [a, a] as the interval; n = 256 outputs	20260928	yes	yes	50	12800	0	9510.3431	9629.7746	11116.2235
+recon_fball_batch_4096	independent_batch	adf_fball_reconstruct; one ball with A,H of 4096 bit, independent outputs	one ball, A and H up to 4095 bit, d 4001 bit; one real ball of radius 2^-899; [a, a] as the interval; n = 256 outputs	20260928	yes	yes	10	2560	4611709760697306844	6946.5801	7028.9832	7029.2051
+recon_adele_batch_4096	independent_batch	adf_adele_reconstruct; one adele with A,H of 4096 bit, independent outputs	one ball, A and H up to 4096 bit, d 4001 bit; one real ball of radius 2^-899; [a, a] as the interval; n = 256 outputs	20260928	yes	yes	5	1280	0	111073.7414	113796.1672	118922.1375
+
+# checksum of all case results, computed outside the timed region
+checksum: 1008321664869583348
