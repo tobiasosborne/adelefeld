@@ -975,7 +975,8 @@ ADF_TEST(swap_and_set)
 ADF_TEST(canonicalise_raw_and_domains)
 {
     adf_fball_t x, keep;
-    char dummy;
+    adf_modctx_struct * ctx4 = NULL;
+    ulong q4 = 4;
 
     adf_fball_init(x);
     adf_fball_init(keep);
@@ -1007,14 +1008,31 @@ ADF_TEST(canonicalise_raw_and_domains)
     ADF_CHECK(eqball_si(x, 1, 1, 0));
     (void) keep;
 
-    /* A local-shaped value is left as it is and returns ADF_OK, even when its fields would
-       not be canonical as a global triple. */
-    make_local_shaped(x, 2, 4, 2, &dummy);
+    /* A valid raw local value, (2; 2) in the context (4) (one block q_1 = 4, K = 4; predicate L,
+       docs/conventions.md 5.3: A = 0, H = K = 4, d = 2 >= 1, 0 <= res[0] = 2 < 4), is left as it
+       is and returns ADF_OK: for backend = ADF_LOCAL the raw data is already the stored form
+       (adelefeld/fball.h adf_fball_canonicalise: "For backend = ADF_LOCAL the input must already
+       satisfy L; the function then returns ADF_OK and changes nothing"; conventions 5.3, CV-55).
+       R4 of docs/reviews/m1/local/review.md: the previous fixture here used a fake one-byte
+       context and A = 2, which does not satisfy L (L requires A = 0 and a real context that
+       adf_fball_is_canonical may read, fball.h:96); this fixture does, and a real context is
+       used so that a conforming invariant-check build would accept it. */
+    ADF_CHECK(adf_modctx_new_blocks(&ctx4, &q4, 1) == ADF_OK);
+    fmpz_set_si(x->A, 0);
+    fmpz_set_si(x->H, 4);
+    fmpz_set_si(x->d, 2);
+    x->backend = ADF_LOCAL;
+    x->mctx = ctx4;
+    x->res = (ulong *) flint_malloc(sizeof(ulong));
+    x->res[0] = 2;
+    ADF_CHECK(adf_fball_is_canonical(x));
     ADF_CHECK(adf_fball_canonicalise(x) == ADF_OK);
-    ADF_CHECK(fmpz_equal_si(x->A, 2) && fmpz_equal_si(x->H, 4) && fmpz_equal_si(x->d, 2));
+    ADF_CHECK(fmpz_equal_si(x->A, 0) && fmpz_equal_si(x->H, 4) && fmpz_equal_si(x->d, 2) &&
+              x->res[0] == 2);
 
     adf_fball_clear(x);
     adf_fball_clear(keep);
+    adf_modctx_free(ctx4);
 }
 
 /* -------------------------------------------- local-shaped structural checks */
