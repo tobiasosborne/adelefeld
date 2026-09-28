@@ -15,13 +15,15 @@
    Statuses (conventions 6.8): exactly one candidate: ADF_OK, the output holds it; none:
    ADF_NO_SOLUTION; several: ADF_NOT_UNIQUE. adf_adele_reconstruct also returns ADF_LIMIT
    (decision M1-D3; conventions 3.2 allows it for reconstruction, "a size bound of an algorithm",
-   conventions 3.1) when the exact end points of the real ball would need more than
-   ADF_RECON_EXP_MAX bits: when the midpoint or the radius of the arb is not zero and its binary
+   conventions 3.1) exactly when the midpoint or the radius of the arb is not zero and its binary
    exponent (arf.h, ARF_EXP; mag.h, MAG_EXP) is above ADF_RECON_EXP_MAX in absolute value. The
-   test is made on the exponents before any integer of that size is built, so the cost of the
-   call is bounded by the sizes of the mantissas, of the finite ball and by ADF_RECON_EXP_MAX
-   bits. On every status other than ADF_OK the output is untouched (conventions 4.3). "Uniqueness not certified" (ADF_NOT_DETERMINED) belongs to reconstruction
-   from partial data (SPEC 9.2, second item), which is not declared here.
+   rule is on the exponents, not on the size of the end points: a ball at the bound is
+   converted, and its exact end points have about ADF_RECON_EXP_MAX + 2 bits (measured,
+   lanes/m1-repair-recon/probe_exp.out). The test is made before any integer of that size is
+   built, so the cost of the call is bounded by the sizes of the mantissas, of the finite ball
+   and by about ADF_RECON_EXP_MAX bits. On every status other than ADF_OK the output is
+   untouched (conventions 4.3). "Uniqueness not certified" (ADF_NOT_DETERMINED) belongs to
+   reconstruction from partial data (SPEC 9.2, second item), which is not declared here.
    Aliasing: the output is an adf_rat and aliases no input. Cost: a constant number of divisions,
    floors and ceilings of rationals of the input sizes. */
 
