@@ -999,6 +999,13 @@ call_r3(P * p)
     if (adf_fball_is_canonical(x))
         _exit(4);
     adf_fball_neg(y, x);
+    /* Reached only if the entry check is missing. The clears are for tools/memcheck, which reads the
+       text and does not know that the call above aborts. */
+    fmpz_clear(A);
+    fmpz_clear(H);
+    fmpz_clear(d);
+    adf_fball_clear(y);
+    adf_fball_clear(x);
     _exit(0);
 }
 

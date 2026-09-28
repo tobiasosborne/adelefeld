@@ -1340,6 +1340,7 @@ reconstruct_aborts(const adf_adele_t x, const char * want)
         close(fd[1]);
         adf_rat_init(q);
         (void) adf_adele_reconstruct(q, x);
+        adf_rat_clear(q);                  /* reached only if the entry check is missing */
         _exit(0);
     }
     close(fd[1]);
