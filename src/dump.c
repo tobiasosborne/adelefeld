@@ -65,16 +65,8 @@
    public function. */
 #define DP_NOSEM (-1)
 
-/* HEADER-FINDING: the bound of docs/SPEC.md 15 row M1-D9 on the binary exponents of the real ball
-   of a piece of a qclass.  Row M1-D9 says that the constant ADF_DUMP_QCLASS_EXP_MAX "is stated in
-   conventions.md 8.4 and in the header"; neither states it: include/adelefeld/dump.h has no
-   such #define, and docs/conventions.md 8.4 lists only max_len, max_exp10, max_prec and
-   max_items.  The value is the bound of row M1-D3, 2^20.  The text for dump.h and for
-   conventions 8.4 is in lanes/m1-repair-dump/report.md.  A lane that cannot edit the header
-   defines the constant here, so that the C and the specification agree on the number. */
-#ifndef ADF_DUMP_QCLASS_EXP_MAX
-#define ADF_DUMP_QCLASS_EXP_MAX (1L << 20)
-#endif
+/* ADF_DUMP_QCLASS_EXP_MAX (adelefeld/dump.h; docs/SPEC.md 15 row M1-D9; conventions 8.4): the bound
+   on the binary exponents of the real ball of a piece of a qclass, applied in dp_w_arb. */
 
 /* ================================================================================================
    Tokens (conventions 10.1: exactly one space between tokens; `h` lower-case hexadecimal). */

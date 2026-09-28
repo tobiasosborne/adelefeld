@@ -1,0 +1,23 @@
+== mutant 938 (expected: red)
+938c938
+<                 if (st->mode == DP_LIMITS && dp_over_items(L, st->lim))
+---
+>                 if (st->mode != DP_LIMITS && dp_over_items(L, st->lim))
+FAIL tests/test_dump.c:504: grammar_before_limits_in_sball_and_rfun: check failed: any_body_status(bad_rfun, sizeof(bad_rfun) - 1, &lim) == ADF_PARSE
+FAIL grammar_before_limits_in_sball_and_rfun (tests/test_dump.c:482, 1 failed checks)
+17 tests, 12259 checks, 1 failed checks, 1 failed tests
+== mutant 883 (expected: red)
+883c883
+<                     return 0;
+---
+>                     return 1;
+FAIL tests/test_dump.c:500: grammar_before_limits_in_sball_and_rfun: check failed: any_body_status(bad_sball[i], strlen(bad_sball[i]), NULL) == ADF_PARSE | "adf1 Q sball c"
+FAIL tests/test_dump.c:500: grammar_before_limits_in_sball_and_rfun: check failed: any_body_status(bad_sball[i], strlen(bad_sball[i]), NULL) == ADF_PARSE | "adf1 Q sball c zz"
+FAIL tests/test_dump.c:500: grammar_before_limits_in_sball_and_rfun: check failed: any_body_status(bad_sball[i], strlen(bad_sball[i]), NULL) == ADF_PARSE | "adf1 Q sball c 1 0 0 zz"
+FAIL tests/test_dump.c:500: grammar_before_limits_in_sball_and_rfun: check failed: any_body_status(bad_sball[i], strlen(bad_sball[i]), NULL) == ADF_PARSE | "adf1 Q sball c 1 0 0 0 zz"
+FAIL tests/test_dump.c:500: grammar_before_limits_in_sball_and_rfun: check failed: any_body_status(bad_sball[i], strlen(bad_sball[i]), NULL) == ADF_PARSE | "adf1 Q sball c 1 0 0 0 0 0 0 zz"
+FAIL grammar_before_limits_in_sball_and_rfun (tests/test_dump.c:482, 5 failed checks)
+17 tests, 12259 checks, 5 failed checks, 1 failed tests
+== original (expected: green)
+17 tests, 12259 checks, 0 failed checks, 0 failed tests
+restored

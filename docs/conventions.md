@@ -1072,6 +1072,14 @@ DECISION (proposed) CV-27; reason: each bounds the memory and time that a short 
 Integers in the value form have no separate limit; `max_len` bounds them. The grammar is not recursive (no
 production contains itself), so nesting depth is bounded by the grammar: `((((1))))` is simply `ADF_PARSE`.
 
+One limit is a constant of the implementation and not a field of `adf_text_limits_t` (decision M1-D9,
+`docs/SPEC.md` section 15): in a dumped `qclass` of the form `pieces` the binary exponent of the midpoint and of the
+radius of the real ball of every piece is at most `ADF_DUMP_QCLASS_EXP_MAX = 2^20` in absolute value
+(`include/adelefeld/dump.h`); a larger one is `ADF_LIMIT`. It is a limit of stage 4 of 8.5, compared on the digit
+strings as a number of any length. Reason: the check of the range of a piece (10.2) forms the exact end points of
+the ball, whose size grows with the exponents. The form `lift` forms no range and has no such limit, and neither
+has any other body.
+
 ### 8.5 Order of checks
 
 The first failing stage determines the status; the output is untouched (4.3).
