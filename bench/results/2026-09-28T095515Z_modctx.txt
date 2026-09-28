@@ -1,0 +1,33 @@
+run_id: 2026-09-28T095515Z
+tag: modctx
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+cores_online: 12
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+tsc_present: yes
+tsc_invariant: yes
+cycles_per_ns_trials: 9
+cycles_per_ns_min: 2.68795
+cycles_per_ns_median: 2.68797
+cycles_per_ns_max: 2.68799
+cycles_per_ns_spread: 0.00003
+seed: 20260928
+operand_family: one modulus context, 128 pairwise coprime primes near 2^32, product near 4096 bits; one integer a < K
+trials_per_case: 15
+warm: yes
+allocating: yes (each kernel allocates a temporary fmpz vector)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+modctx_reduce_4096_128	call_rate	global integer to k residues; a fixed 4096-bit a	a 4096 bit, K 4097 bit, k = 128; one reduce per call	20260928	yes	yes	20000	20000	2558041313	27215.3028	28362.9287	34425.2032
+modctx_recombine_4096_128	call_rate	k residues to the global integer; fixed residues	K 4097 bit, k = 128; one recombination per call	20260928	yes	yes	20000	20000	4096	18077.8315	22050.1009	30545.8308
+
+# checksum of all case results, computed outside the timed region
+checksum: 2558037217
