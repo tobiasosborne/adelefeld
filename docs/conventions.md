@@ -128,7 +128,7 @@ Outputs; then optional output reports (`adf_place_t * where`, `int * lost`); the
 
     int adf_adele_exp_at(adf_sball_t y, adf_place_t * where, const adf_adele_t x, const adf_places_t S, slong prec);
 
-`prec` is the real working precision in bits, as in `arb` (`arb.h:382`). It is an argument of every operation that
+`prec` is the real working precision in bits, as in `arb` (`arb.h:382`); a `prec` below 2 is taken as 2 (M1-D4). It is an argument of every operation that
 computes a real or complex ball, including the parser of the value form (a decimal is read into an `arb` at `prec`).
 It is never stored in a context (`PLAN.md` section 4). Operations that involve no real or complex ball take no
 `prec`.

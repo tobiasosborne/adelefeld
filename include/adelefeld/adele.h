@@ -18,8 +18,9 @@
    - Inputs satisfy the predicate of conventions 5.5; otherwise undefined (conventions 4.4, CV-09).
    - The finite coordinate follows adelefeld/fball.h exactly (tight rules, backends, the implicit
      global fallback of conventions 4.6); the real or complex coordinate follows arb or acb at the
-     working precision prec, in bits (conventions 2.2; arb.h:382). The finite coordinate does not
-     depend on prec.
+     working precision prec, in bits (conventions 2.2; arb.h:382). A prec below 2 is taken as 2
+     (decision M1-D4: a ball of one bit of an exact non-zero rational may contain 0). The finite
+     coordinate does not depend on prec.
    - Enclosure: if the inputs contain the true values, the output contains the true result, in each
      coordinate (PLAN section 1, principle 5).
    - Functions that cannot fail return void (conventions 3.2 row 1). A function that returns a
@@ -142,13 +143,16 @@ void adf_adele_mul(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slon
 void adf_adele_neg(adf_adele_t y, const adf_adele_t x);
 
 /* adf_adele_add_rat(z, x, q, prec): z = x + q, q an exact rational at every place:
-   (arb_add_fmpq(I, q, prec) ; F + q), the finite part by adf_fball_add with the exact ball q
+   (an enclosure of I + q at prec ; F + q), the finite part by adf_fball_add with the exact ball q
    (precision.md Proposition 1 with radius 0). SPEC 4.1: q meets an inexact value, so it is
    converted at prec only in the real coordinate. */
 void adf_adele_add_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec);
 
-/* adf_adele_mul_rat(z, x, q, prec): z = q x = (arb_mul_fmpq(I, q, prec) ; adf_fball_mul_rat(F, q))
-   (precision.md Proposition 6(2), line 106). */
+/* adf_adele_mul_rat(z, x, q, prec): z = q x = (an enclosure of q I at prec ; adf_fball_mul_rat(F, q))
+   (precision.md Proposition 6(2), line 106). FLINT 3.0.1 has no arb_add_fmpq, arb_mul_fmpq or
+   arb_div_fmpq; with q = n/d in lowest terms the real part of mul_rat and div_rat is computed with
+   the exact integers n and d (arb_mul_fmpz, arb_div_fmpz), never by dividing by a ball of q, so
+   that no division by a ball containing 0 can occur (review of milestone 1, arith R3). */
 void adf_adele_mul_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec);
 
 /* adf_adele_div_rat(z, x, q, prec): z = x / q (SPEC 4.5: one divides by an exact non-zero
