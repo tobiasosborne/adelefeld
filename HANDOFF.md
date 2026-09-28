@@ -33,7 +33,7 @@ under or on pace. Memory `orchestration-model-tiers`.
 | m1-closure-dump (adf-igt) | codex gpt-6-astra xhigh | `../adelefeld-wt/m1-closure-dump` | `docs/reviews/m1/dump/closure.md`, `lanes/m1-closure-dump/report.md` |
 
 Briefs of `m1-closure-arith` and `m1-closure-contexts` are on master; start them one at a time after
-m1-closure-dump (`MAXRETRY=3 tools/orch/wt_lane.sh m1-closure-<name> codex gpt-6-astra xhigh`). The closure
+m1-closure-dump (`MAXRETRY=3 tools/orch/wt_lane.sh m1-closure-<name> codex gpt-6-sol xhigh`; TJO: sol for most reviews, astra only for deep work). The closure
 checks of `local`, `text`, `surface` wait for m1-invariants and m1-repair-tools; their briefs are not written.
 `lanes/m1-closure/COMMON.md`: codex judges every review now.
 
