@@ -1,0 +1,33 @@
+{
+  "unchanged_reproducer_copies": 7,
+  "python_scripts_parsed": 8,
+  "syntax_errors": 0,
+  "reviewed_input_hashes": 40,
+  "child_commands": 54,
+  "explained_nonzero_children": 6,
+  "unexplained_nonzero_children": 0,
+  "maximum_child_seconds": 97.609768,
+  "removed_build_directories": [
+    "build",
+    "san"
+  ],
+  "removed_binaries": [
+    "bridge",
+    "bridge-san",
+    "bridge.so",
+    "fuzz_driver",
+    "fuzz_driver_closure",
+    "fuzz_driver_closure-san",
+    "red/R1",
+    "red/R1_green",
+    "red/R2",
+    "red/R2_green",
+    "red/R3",
+    "red/R4",
+    "red/R4_green",
+    "roundtrip",
+    "roundtrip-san"
+  ],
+  "remaining_binaries": 0,
+  "closure_lines_over_116": 0
+}

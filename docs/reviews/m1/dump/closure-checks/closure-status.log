@@ -1,0 +1,5 @@
+R1: cases=180
+R2: cases=152
+R2-unbounded: cases=12
+R4: cases=7692
+total_cases=8036 failures=0

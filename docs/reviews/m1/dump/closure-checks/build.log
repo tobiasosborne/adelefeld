@@ -1,0 +1,23 @@
+mkdir -p docs/reviews/m1/dump/closure-checks/build
+mkdir -p docs/reviews/m1/dump/closure-checks/build/support
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o docs/reviews/m1/dump/closure-checks/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o docs/reviews/m1/dump/closure-checks/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o docs/reviews/m1/dump/closure-checks/build/common.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o docs/reviews/m1/dump/closure-checks/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o docs/reviews/m1/dump/closure-checks/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o docs/reviews/m1/dump/closure-checks/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o docs/reviews/m1/dump/closure-checks/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o docs/reviews/m1/dump/closure-checks/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o docs/reviews/m1/dump/closure-checks/build/place.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o docs/reviews/m1/dump/closure-checks/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o docs/reviews/m1/dump/closure-checks/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o docs/reviews/m1/dump/closure-checks/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o docs/reviews/m1/dump/closure-checks/build/status.o
+cc -Iinclude -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o docs/reviews/m1/dump/closure-checks/build/text.o
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o docs/reviews/m1/dump/closure-checks/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o docs/reviews/m1/dump/closure-checks/build/support/jsonl.o
+ar rcs docs/reviews/m1/dump/closure-checks/build/libadelefeld.a docs/reviews/m1/dump/closure-checks/build/adele.o docs/reviews/m1/dump/closure-checks/build/cap.o docs/reviews/m1/dump/closure-checks/build/common.o docs/reviews/m1/dump/closure-checks/build/dump.o docs/reviews/m1/dump/closure-checks/build/fball.o docs/reviews/m1/dump/closure-checks/build/fball_local.o docs/reviews/m1/dump/closure-checks/build/inlines.o docs/reviews/m1/dump/closure-checks/build/modctx.o docs/reviews/m1/dump/closure-checks/build/place.o docs/reviews/m1/dump/closure-checks/build/rat.o docs/reviews/m1/dump/closure-checks/build/recon.o docs/reviews/m1/dump/closure-checks/build/scaled.o docs/reviews/m1/dump/closure-checks/build/status.o docs/reviews/m1/dump/closure-checks/build/text.o
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dump.c docs/reviews/m1/dump/closure-checks/build/support/golden.o docs/reviews/m1/dump/closure-checks/build/support/jsonl.o docs/reviews/m1/dump/closure-checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/closure-checks/build/test_dump
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dump_ctx.c docs/reviews/m1/dump/closure-checks/build/support/golden.o docs/reviews/m1/dump/closure-checks/build/support/jsonl.o docs/reviews/m1/dump/closure-checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/closure-checks/build/test_dump_ctx
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dump_golden.c docs/reviews/m1/dump/closure-checks/build/support/golden.o docs/reviews/m1/dump/closure-checks/build/support/jsonl.o docs/reviews/m1/dump/closure-checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/closure-checks/build/test_dump_golden
+cc -Iinclude -Itests -std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_dump_limits.c docs/reviews/m1/dump/closure-checks/build/support/golden.o docs/reviews/m1/dump/closure-checks/build/support/jsonl.o docs/reviews/m1/dump/closure-checks/build/libadelefeld.a -lflint -lgmp -lm -o docs/reviews/m1/dump/closure-checks/build/test_dump_limits
