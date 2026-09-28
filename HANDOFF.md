@@ -19,8 +19,26 @@ and the three mutants, script and copies in `~/Projects/adelefeld-wt/effort-cmp/
 The tests of the three agents are NOT merged: master has its own test for the two mutants that can be killed
 (`grammar_before_limits_in_sball_and_rfun`). Where a section below says "Sonnet at effort high", read medium.
 
-**Order of work from here.** m1-invariants alone (adf-xk4; `sonnet-medium`, codex as reviewer); m1-repair-tools
-alone, overnight (adf-xf4, adf-4lj); closure check (adf-igt); benchmarks on a quiet machine; milestone S.
+**Standing order of TJO (22:55).** Orchestrate without asking for each lane: `sonnet-medium` for demanding
+lanes, `space-bunny-alpha` as much as possible, codex for every review (until its weekly meter reads 50%;
+it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
+under or on pace. Memory `orchestration-model-tiers`.
+
+**RUNNING since 22:57 (three lanes; look at them first).**
+
+| Lane | Model | Where | State to look at |
+|---|---|---|---|
+| m1-repair-tools (adf-xf4, adf-4lj) | pi space-bunny-alpha, `LANE_TIMEOUT=14400` | `../adelefeld-wt/m1-repair-tools` (master merged in, `d729768`; second resume note in its brief: items 6, 7 and the sweep) | `lanes/m1-repair-tools/lane.log`, `sweep.md`, `report.md` |
+| m1-invariants (adf-xk4) | Claude `sonnet-medium`, subagent with worktree isolation | a worktree under `.claude/worktrees/` from `4fbb142` | its final message is the report; it was told not to run the mutation tool |
+| m1-closure-dump (adf-igt) | codex gpt-6-astra xhigh | `../adelefeld-wt/m1-closure-dump` | `docs/reviews/m1/dump/closure.md`, `lanes/m1-closure-dump/report.md` |
+
+Briefs of `m1-closure-arith` and `m1-closure-contexts` are on master; start them one at a time after
+m1-closure-dump (`MAXRETRY=3 tools/orch/wt_lane.sh m1-closure-<name> codex gpt-6-astra xhigh`). The closure
+checks of `local`, `text`, `surface` wait for m1-invariants and m1-repair-tools; their briefs are not written.
+`lanes/m1-closure/COMMON.md`: codex judges every review now.
+
+**Order of work from here.** Land the three lanes as they end (rules "How to land a lane" below); the other
+closure checks; benchmarks on a quiet machine; milestone S.
 
 ## Session 2026-09-28 (late), 21:00 to 21:50
 
