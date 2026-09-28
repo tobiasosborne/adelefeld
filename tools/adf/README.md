@@ -210,12 +210,14 @@ has the binary exponent 102001.
 
 ### Why `prec` stops at `ADF_PRINT_EXP_MAX`
 
-A real result rounded at `prec` p has a radius of the order of `2^-p`, and the binary
-exponent of that radius is `-p`: `div (1 ; 0) with 3` at `prec` 100000 has `MAG_EXP`
--100000 and at `prec` 100001 `MAG_EXP` -100001 (measured with
-`lanes/m1-repair-driver/prec_probe.c`).  Above `ADF_PRINT_EXP_MAX` no inexact real result
-of magnitude 1 or more is therefore within the reach of a printer at all, so the largest
-useful `prec` is `ADF_PRINT_EXP_MAX` and **a larger setting is `error: LIMIT`**, the status
+A real result of magnitude about `2^k` rounded at `prec` p has a radius with a binary exponent
+of about `k - p`: `div (1 ; 0) with 3` at `prec` 100000 has `MAG_EXP` -100000 and at `prec`
+100001 `MAG_EXP` -100001 (measured with `lanes/m1-repair-driver/prec_probe.c`), and
+`2^50000 / 3` at `prec` 100001 has `MAG_EXP` -50001 and is printed
+(`docs/reviews/m1/surface/closure-checks/prec_reason_closure.c`).  Above `ADF_PRINT_EXP_MAX`
+an inexact real result of magnitude about 1 or below is not within the reach of a printer, and
+a larger one is.  The cap is therefore a choice (decision M1-D1) and not a consequence of the
+printer's bound: **a setting above `ADF_PRINT_EXP_MAX` is `error: LIMIT`**, the status
 of a size bound (conventions 3.1).  A setting below 1 is `error: DOMAIN`, the status of
 data outside a stated domain.  `digits` has no such bound: `ADF_DIGITS_MAX = 1000000` is a
 domain of the printer (`include/adelefeld/text.h:39`), and a value outside it is

@@ -59,9 +59,10 @@
    returns NULL with length 0 when the midpoint or the radius of one of its real balls has a
    binary exponent above ADF_PRINT_EXP_MAX in absolute value, and the driver answers
    ADF_LIMIT for a NULL.  The driver holds no bound of its own; the test tests/test_driver.sh
-   checks that.  The same rule is why a prec above ADF_PRINT_EXP_MAX is refused with
-   ADF_LIMIT: a real result rounded at prec p has a radius with the binary exponent -p, so
-   above that bound no inexact real result of magnitude 1 or more can be printed at all. */
+   checks that.  A prec above ADF_PRINT_EXP_MAX is refused with ADF_LIMIT by decision M1-D1.
+   The cap is a choice: a real result of magnitude about 2^k rounded at prec p has a radius
+   with a binary exponent of about k - p, so above the cap a result of magnitude about 1 or
+   below cannot be printed, and a larger one can. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,10 +78,11 @@
    sets it. */
 #define ADF_DRV_PREC_DEFAULT ((slong) 64)
 /* The largest value a setting of prec may have is ADF_PRINT_EXP_MAX
-   (include/adelefeld/text.h:66), and a larger one is ADF_LIMIT: a real result rounded at
-   prec p has a radius with the binary exponent -p (measured: adf_adele_div_rat at prec
-   100000 has MAG_EXP -100000, at prec 100001 MAG_EXP -100001), so above ADF_PRINT_EXP_MAX
-   no inexact real result of magnitude 1 or more is within the reach of a printer (M1-D6). */
+   (include/adelefeld/text.h:66), and a larger one is ADF_LIMIT (decision M1-D1).  A real
+   result of magnitude about 2^k rounded at prec p has a radius with a binary exponent of
+   about k - p (measured: 1/3 at prec 100000 has MAG_EXP -100000, at prec 100001 MAG_EXP
+   -100001; 2^50000 / 3 at prec 100001 has MAG_EXP -50001 and is printed:
+   docs/reviews/m1/surface/closure-checks/prec_reason_closure.c). */
 #define ADF_DRV_PREC_MAX ADF_PRINT_EXP_MAX
 /* The largest value any setting of the driver can have, ADF_DIGITS_MAX.  The accumulator of
    adf_drv_setting stops here, so a number of any length is read without an overflow. */
