@@ -51,7 +51,8 @@ void adf_rat_set(adf_rat_t y, const adf_rat_t x);
 /* adf_rat_swap(x, y): exchanges the values; O(1), no allocation (conventions 2.3). */
 void adf_rat_swap(adf_rat_t x, adf_rat_t y);
 
-/* adf_rat_is_canonical(x): 1 if x satisfies conventions 5.1, else 0; never aborts. */
+/* adf_rat_is_canonical(x): 1 if x satisfies conventions 5.1, else 0; never aborts, for an
+   initialised object (decision M1-D2: the two fmpz must be initialised FLINT integers). */
 int adf_rat_is_canonical(const adf_rat_t x);
 
 /* adf_rat_identical(x, y): 1 if numerators and denominators are equal, else 0. For this exact type

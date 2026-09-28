@@ -73,7 +73,8 @@ void adf_scaled_set(adf_scaled_t y, const adf_scaled_t x);
 /* adf_scaled_swap(x, y): exchanges contents and context pointers; O(1). */
 void adf_scaled_swap(adf_scaled_t x, adf_scaled_t y);
 
-/* adf_scaled_is_canonical(x): 1 if the predicate above holds, else 0; never aborts (a NULL mctx
+/* adf_scaled_is_canonical(x): 1 if the predicate above holds, else 0; never aborts for an initialised
+   object whose mctx is NULL or a live context (decision M1-D2) (a NULL mctx
    gives 0). */
 int adf_scaled_is_canonical(const adf_scaled_t x);
 

@@ -88,7 +88,9 @@ void adf_adele_set(adf_adele_t y, const adf_adele_t x);
 /* adf_adele_swap(x, y): exchanges the contents; O(1), no allocation. */
 void adf_adele_swap(adf_adele_t x, adf_adele_t y);
 
-/* adf_adele_is_canonical(x): 1 if conventions 5.5 holds, else 0; never aborts. */
+/* adf_adele_is_canonical(x): 1 if conventions 5.5 holds, else 0; never aborts, for an
+   initialised object whose pointer fields are NULL or point to live objects of their kind
+   (decision M1-D2; fball.h, adf_fball_is_canonical). The same holds for adf_cadele. */
 int adf_adele_is_canonical(const adf_adele_t x);
 
 /* adf_adele_identical(x, y): 1 if arb_equal(x->inf, y->inf) (same midpoint and radius, arb.h) and

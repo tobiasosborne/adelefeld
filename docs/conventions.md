@@ -1272,7 +1272,7 @@ C fixed-point promise of 9.6, which is false (G4); the algorithm itself is kept.
   archimedean place): `print(parse(t))` is canonical, and `parse(print(v))` equals `v` as a set; it is identical
   to `v` except for the unit modulus, which is printed normal (CV-17) and for the backend, which the value form
   does not carry.
-- With real or complex parts, parsing a printed value encloses the original stored value. The print-read-print
+- With real or complex parts, parsing a printed value encloses the original stored value, provided the limits of the reader admit the printed text (a value read at the limit `max_exp10` may print with an exponent one above it) and the printer did not refuse the value (M1-D6: a binary exponent above `ADF_PRINT_EXP_MAX` in absolute value gives NULL). The print-read-print
   fixed-point statement applies only to the exact-rational reference parser. Repeated C value-text round trips may
   widen the value and change its text on every pass. Dump text is the identity-preserving form. Constrained
   printing preserves the exact decimal interval's sign; at a specified C precision the parser may still return

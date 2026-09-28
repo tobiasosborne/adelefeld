@@ -29,9 +29,18 @@
      newline; s[len] = 0 is not counted. The caller frees the pointer with adf_str_free.
    - The text is the canonical template of conventions 9.4 for the set of the value, whatever its
      backend (local values print through the canonical triple, conventions 5.3).
-   - A printer has no status and never returns NULL; it allocates with flint_malloc, as
-     fmpz_get_str does (fmpz.h:349). What flint_malloc does on exhaustion is FLINT's
+   - A printer has no status. It returns NULL, with *len = 0, in one case only (decision M1-D6):
+     the value has a real or complex part and the midpoint or the radius of one of its real
+     balls is not zero and has a binary exponent (ARF_EXP, arf.h; MAG_EXP, mag.h) above
+     ADF_PRINT_EXP_MAX in absolute value. The test is made before any conversion, so the cost
+     of a printer is bounded by the sizes of the mantissas, by digits and by ADF_PRINT_EXP_MAX
+     bits. adf_rat_get_str and adf_fball_get_str never return NULL. adf_str_free(NULL) does
+     nothing. Otherwise the printer allocates with flint_malloc, as fmpz_get_str does
+     (fmpz.h:349). What flint_malloc does on exhaustion is FLINT's
      [source pending: FLINT 3.0.1 documentation of flint_malloc on allocation failure].
+   - Reading a printed text back (conventions 9.6) needs limits that admit it: a value read at the
+     limit max_exp10 may print with a decimal exponent one above it (review of milestone 1, text
+     R3); the caller who reads printed text sets max_exp10 accordingly.
    - digits: the number of significant digits of the real-ball printer of conventions 9.5,
      1 <= digits <= 10^6; ADF_DIGITS_DEFAULT = 20 (conventions 8.1). Outside that range the
      behaviour is undefined (precondition). */
@@ -52,6 +61,9 @@
 #define ADF_TEXT_MAX_ITEMS_DEFAULT  1048576
 #define ADF_DIGITS_DEFAULT          20
 #define ADF_DIGITS_MAX              1000000
+/* The largest absolute binary exponent of a midpoint or radius that a printer converts
+   (decision M1-D6). The driver adf has used the same bound since M1-D1. */
+#define ADF_PRINT_EXP_MAX 100000
 
 #ifdef __cplusplus
 extern "C" {
