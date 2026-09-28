@@ -1,14 +1,14 @@
 /* tests/test_cap.c: the absolute cap on adf_fball (docs/proofs/policies.md section 3,
    Definition 13 to Proposition 15, line 251 to 301), global backend, beyond the vector file.
+   The cap on local-backend inputs (finding R1 of docs/reviews/m1/local/review.md) is covered
+   separately, in tests/test_cap_local.c.
 
    Covers: the exact case untouched by the cap (Proposition 14.2, docs/conventions.md 5.4
    "the absolute cap"); the invariant that a capped radius of positive radius divides C
    (Proposition 15.1); idempotence (Proposition 15.2); a sum of two already-capped values
    needs no further cap (Proposition 15.3); aliasing of every permitted combination of
    arguments (docs/adelefeld/fball.h "Aliasing"); C <= 0 gives ADF_DOMAIN with every output
-   untouched (docs/api-m1.md "Choices" item 5); a local-backend-shaped input gives
-   ADF_UNSUPPORTED with the output untouched (lane HEADER-FINDING, see src/cap.c); operands of
-   thousands of bits. */
+   untouched (docs/api-m1.md "Choices" item 5); operands of thousands of bits. */
 
 #include <stdio.h>
 #include <string.h>
@@ -42,22 +42,6 @@ static void
 mkrat_si(adf_rat_t q, slong num, slong den)
 {
     fmpq_set_si(q->q, num, den);
-}
-
-/* Give x the structural shape of a local-backend value (predicate L, structural part only;
-   the context is never dereferenced by src/cap.c or by this test). The caller frees x with
-   adf_fball_clear. */
-static void
-make_local_shaped(adf_fball_t x, slong H, slong d, const void * fake_mctx)
-{
-    fmpz_set_si(x->A, 0);
-    fmpz_set_si(x->H, H);
-    fmpz_set_si(x->d, d);
-    x->backend = ADF_LOCAL;
-    x->mctx = (const adf_modctx_struct *) fake_mctx;
-    x->res = (ulong *) flint_malloc(2 * sizeof(ulong));
-    x->res[0] = 0;
-    x->res[1] = 1;
 }
 
 /* ---------------------------------------------------------------- adf_fball_cap */
@@ -197,27 +181,6 @@ ADF_TEST(cap_domain_on_nonpositive_C)
     mkrat_si(C, -1, 3);
     ADF_CHECK(adf_fball_cap(y, x, C) == ADF_DOMAIN);
     ADF_CHECK(eqball_si(y, 3, 5, 2));
-
-    adf_fball_clear(x);
-    adf_fball_clear(y);
-    fmpq_clear(C->q);
-}
-
-/* A local-backend-shaped input: ADF_UNSUPPORTED, output untouched (HEADER-FINDING). */
-ADF_TEST(cap_unsupported_on_local_input)
-{
-    adf_fball_t x, y;
-    adf_rat_t C;
-
-    adf_fball_init(x);
-    adf_fball_init(y);
-    fmpq_init(C->q);
-
-    make_local_shaped(x, 6, 1, (const void *) 0x1);
-    mkball_si(y, 1, 3, 1);
-    mkrat_si(C, 3, 1);
-    ADF_CHECK(adf_fball_cap(y, x, C) == ADF_UNSUPPORTED);
-    ADF_CHECK(eqball_si(y, 1, 3, 1));
 
     adf_fball_clear(x);
     adf_fball_clear(y);
@@ -398,38 +361,6 @@ ADF_TEST(add_cap_domain_on_nonpositive_C)
     fmpq_clear(C->q);
 }
 
-/* A local-backend-shaped input, in either position: ADF_UNSUPPORTED, output untouched. */
-ADF_TEST(add_cap_unsupported_on_local_input)
-{
-    adf_fball_t x, y, z;
-    adf_rat_t C;
-
-    adf_fball_init(x);
-    adf_fball_init(y);
-    adf_fball_init(z);
-    fmpq_init(C->q);
-    mkrat_si(C, 3, 1);
-
-    make_local_shaped(x, 6, 1, (const void *) 0x1);
-    mkball_si(y, 0, 8, 1);
-    mkball_si(z, 1, 3, 1);
-    ADF_CHECK(adf_fball_add_cap(z, x, y, C) == ADF_UNSUPPORTED);
-    ADF_CHECK(eqball_si(z, 1, 3, 1));
-    adf_fball_clear(x);
-
-    adf_fball_init(x);
-    mkball_si(x, 0, 8, 1);
-    make_local_shaped(y, 6, 1, (const void *) 0x1);
-    mkball_si(z, 1, 3, 1);
-    ADF_CHECK(adf_fball_add_cap(z, x, y, C) == ADF_UNSUPPORTED);
-    ADF_CHECK(eqball_si(z, 1, 3, 1));
-
-    adf_fball_clear(x);
-    adf_fball_clear(y);
-    adf_fball_clear(z);
-    fmpq_clear(C->q);
-}
-
 /* Aliasing: z may be x, y, or both. */
 ADF_TEST(add_cap_aliasing)
 {
@@ -527,29 +458,6 @@ ADF_TEST(sub_cap_domain_on_nonpositive_C)
     mkball_si(z, 1, 3, 1);
     mkrat_si(C, -3, 1);
     ADF_CHECK(adf_fball_sub_cap(z, x, y, C) == ADF_DOMAIN);
-    ADF_CHECK(eqball_si(z, 1, 3, 1));
-
-    adf_fball_clear(x);
-    adf_fball_clear(y);
-    adf_fball_clear(z);
-    fmpq_clear(C->q);
-}
-
-ADF_TEST(sub_cap_unsupported_on_local_input)
-{
-    adf_fball_t x, y, z;
-    adf_rat_t C;
-
-    adf_fball_init(x);
-    adf_fball_init(y);
-    adf_fball_init(z);
-    fmpq_init(C->q);
-    mkrat_si(C, 3, 1);
-
-    mkball_si(x, 0, 8, 1);
-    make_local_shaped(y, 6, 1, (const void *) 0x1);
-    mkball_si(z, 1, 3, 1);
-    ADF_CHECK(adf_fball_sub_cap(z, x, y, C) == ADF_UNSUPPORTED);
     ADF_CHECK(eqball_si(z, 1, 3, 1));
 
     adf_fball_clear(x);
@@ -666,29 +574,6 @@ ADF_TEST(mul_cap_domain_on_nonpositive_C)
     fmpq_clear(C->q);
 }
 
-ADF_TEST(mul_cap_unsupported_on_local_input)
-{
-    adf_fball_t x, y, z;
-    adf_rat_t C;
-
-    adf_fball_init(x);
-    adf_fball_init(y);
-    adf_fball_init(z);
-    fmpq_init(C->q);
-    mkrat_si(C, 3, 1);
-
-    make_local_shaped(x, 6, 1, (const void *) 0x1);
-    mkball_si(y, 0, 8, 1);
-    mkball_si(z, 1, 3, 1);
-    ADF_CHECK(adf_fball_mul_cap(z, x, y, C) == ADF_UNSUPPORTED);
-    ADF_CHECK(eqball_si(z, 1, 3, 1));
-
-    adf_fball_clear(x);
-    adf_fball_clear(y);
-    adf_fball_clear(z);
-    fmpq_clear(C->q);
-}
-
 /* Aliasing: z may be x, y, or both. */
 ADF_TEST(mul_cap_aliasing)
 {
@@ -793,29 +678,6 @@ ADF_TEST(mul_rat_cap_domain_on_nonpositive_C)
     mkrat_si(q, 3, 1);
     mkrat_si(C, 0, 1);
     ADF_CHECK(adf_fball_mul_rat_cap(y, x, q, C) == ADF_DOMAIN);
-    ADF_CHECK(eqball_si(y, 1, 3, 1));
-
-    adf_fball_clear(x);
-    adf_fball_clear(y);
-    fmpq_clear(q->q);
-    fmpq_clear(C->q);
-}
-
-ADF_TEST(mul_rat_cap_unsupported_on_local_input)
-{
-    adf_fball_t x, y;
-    adf_rat_t q, C;
-
-    adf_fball_init(x);
-    adf_fball_init(y);
-    fmpq_init(q->q);
-    fmpq_init(C->q);
-
-    make_local_shaped(x, 6, 1, (const void *) 0x1);
-    mkball_si(y, 1, 3, 1);
-    mkrat_si(q, 3, 1);
-    mkrat_si(C, 3, 1);
-    ADF_CHECK(adf_fball_mul_rat_cap(y, x, q, C) == ADF_UNSUPPORTED);
     ADF_CHECK(eqball_si(y, 1, 3, 1));
 
     adf_fball_clear(x);
