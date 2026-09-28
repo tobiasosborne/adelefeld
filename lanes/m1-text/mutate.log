@@ -1,0 +1,402 @@
+mutate: src/text.c: 992 mutants
+mutate: 992 mutants, 150 of them run (--limit 150, --seed 20260928)
+mutate: the baseline passes (36.2 s)
+
+SURVIVED src/text.c:804:22 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -802,5 +802,5 @@
+           for (;;)
+           {
+  -            if (e >= 0)
+  +            if (e >= 1)
+               {
+                   fmpz_set(num2, a);
+
+
+SURVIVED src/text.c:1096:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -1094,5 +1094,5 @@
+       fmpz_clear(man);
+       fmpz_clear(ex);
+  -    return e < 0 ? e : 0;
+  +    return e < 1 ? e : 0;
+   }
+   
+
+
+SURVIVED src/text.c:114:18 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -112,5 +112,5 @@
+   tx_pm_at(const tx_cur * c, size_t j)
+   {
+  -    return j + 3 <= c->len && c->s[j] == '+' && c->s[j + 1] == '/' && c->s[j + 2] == '-';
+  +    return j + 3 < c->len && c->s[j] == '+' && c->s[j + 1] == '/' && c->s[j + 2] == '-';
+   }
+   
+
+
+SURVIVED src/text.c:100:53 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -98,5 +98,5 @@
+   tx_is_letter(char c)
+   {
+  -    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+  +    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c < 'z');
+   }
+   
+
+
+SURVIVED src/text.c:753:12 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -751,5 +751,5 @@
+       fmpz_init(w);
+       ex = (slong) fmpz_bits(fmpq_numref(R)) - (slong) fmpz_bits(fmpq_denref(R)) - (MAG_BITS - 1);
+  -    if (ex >= 0)
+  +    if (ex > 0)
+       {
+           fmpz_set(num, fmpq_numref(R));
+
+
+SURVIVED src/text.c:1328:68 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -1326,5 +1326,5 @@
+   tx_prime_entry_syntax(tx_cur * c)
+   {
+  -    return TX_KW(c, "p") && tx_expect(c, '=') && tx_scan_rat(c, 0, 0, NULL) && tx_expect(c, ':')
+  +    return TX_KW(c, "p") && tx_expect(c, '=') && tx_scan_rat(c, 0, 1, NULL) && tx_expect(c, ':')
+              && tx_lcoord_syntax(c);
+   }
+
+
+SURVIVED src/text.c:753:15 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -751,5 +751,5 @@
+       fmpz_init(w);
+       ex = (slong) fmpz_bits(fmpq_numref(R)) - (slong) fmpz_bits(fmpq_denref(R)) - (MAG_BITS - 1);
+  -    if (ex >= 0)
+  +    if (ex >= 1)
+       {
+           fmpz_set(num, fmpq_numref(R));
+
+
+SURVIVED src/text.c:713:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -711,5 +711,5 @@
+       flint_free(buf);
+       e = tx_dec_exp(s, n) - (slong) nf;
+  -    if (e >= 0)
+  +    if (e >= 1)
+       {
+           fmpz_t p;
+
+
+SURVIVED src/text.c:374:22 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -372,5 +372,5 @@
+   tx_put(tx_buf * b, const char * s, size_t n)
+   {
+  -    if (b->len + n + 1 > b->cap)
+  +    if (b->len + n + 0 > b->cap)
+       {
+           size_t cap = b->cap;
+
+
+SURVIVED src/text.c:100:27 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -98,5 +98,5 @@
+   tx_is_letter(char c)
+   {
+  -    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+  +    return (c >= 'A' && c < 'Z') || (c >= 'a' && c <= 'z');
+   }
+   
+
+
+SURVIVED src/text.c:889:11 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -887,5 +887,5 @@
+       fmpz_set(v, fmpq_denref(y));
+       tx_pow10_fmpz(p, (ulong) (x < 0 ? -x : x));
+  -    if (x >= 0)
+  +    if (x > 0)
+           fmpz_mul(v, v, p);
+       else
+
+
+SURVIVED src/text.c:889:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -887,5 +887,5 @@
+       fmpz_set(v, fmpq_denref(y));
+       tx_pow10_fmpz(p, (ulong) (x < 0 ? -x : x));
+  -    if (x >= 0)
+  +    if (x >= 1)
+           fmpz_mul(v, v, p);
+       else
+
+
+SURVIVED src/text.c:377:29 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -375,5 +375,5 @@
+       {
+           size_t cap = b->cap;
+  -        while (b->len + n + 1 > cap)
+  +        while (b->len + n + 0 > cap)
+               cap *= 2;
+           b->p = (char *) flint_realloc(b->p, cap);
+
+
+NOT COMPILED src/text.c:1362:30 logic: '&&' -> '||'
+  src/text.c:1365:48: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1401:36 logic: '&&' -> '||'
+  src/text.c:1401:64: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1363:48 logic: '&&' -> '||'
+  src/text.c:1363:12: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:629:32 op: '&' -> '|'
+  src/text.c:629:32: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:642:76 logic: '&&' -> '||'
+  src/text.c:642:55: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1220:17 op: '&' -> '|'
+  src/text.c:1220:17: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:1432:74 logic: '&&' -> '||'
+  src/text.c:1432:57: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1240:5 drop_assign: 'lim = tx_limits(lim, &store);' -> '' (the statement is removed)
+  src/text.c:1232:23: error: unused variable ‘store’ [-Werror=unused-variable]
+
+NOT COMPILED src/text.c:1397:36 logic: '&&' -> '||'
+  src/text.c:1398:18: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1465:52 op: '*' -> '/'
+  src/text.c:1465:52: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:496:24 op: '*' -> '/'
+  src/text.c:496:24: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:1471:5 drop_assign: 'lim = tx_limits(lim, &store);' -> '' (the statement is removed)
+  src/text.c:1467:23: error: unused variable ‘store’ [-Werror=unused-variable]
+
+NOT COMPILED src/text.c:368:18 op: '*' -> '/'
+  src/text.c:368:17: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:574:26 op: '&' -> '|'
+  src/text.c:574:26: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:1393:36 logic: '&&' -> '||'
+  src/text.c:1394:62: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:425:41 op: '*' -> '/'
+  src/text.c:425:41: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:1328:26 logic: '&&' -> '||'
+  src/text.c:1329:12: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:640:39 op: '*' -> '/'
+  src/text.c:640:39: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:216:16 zero_one: '0' -> '1'
+  FAIL tests/test_text_rat.c:68: a_nul_byte_anywhere_is_a_parse_error: check failed: st == want_status | length 1: status 7, expected 0
+
+NOT COMPILED src/text.c:496:36 op: '*' -> '+'
+  src/text.c:496:36: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:704:24 op: '*' -> '+'
+  src/text.c:704:23: error: expected ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:324:17 op: '*' -> '/'
+  src/text.c:324:16: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:224:5 negate_if: 'if(j >= c->len || !tx_is_digit(c->s[j]))' -> 'if(!(j >= c->len || !tx_is_digit(c->s[j])))'
+  FAIL tests/test_text_rat.c:68: a_nul_byte_anywhere_is_a_parse_error: check failed: st == want_status | length 1: status 9, expected 0
+
+NOT COMPILED src/text.c:931:5 drop_assign: 'c = fmpz_cmp(r, fmpq_denref(u));' -> '' (the statement is removed)
+  src/text.c:932:8: error: ‘c’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/text.c:393:18 op: '*' -> '/'
+  src/text.c:393:18: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:619:23 op: '*' -> '/'
+  src/text.c:619:23: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:1302:25 op: '*' -> '+'
+  src/text.c:1302:25: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:56:63 logic: '||' -> '&&'
+  src/text.c:56:63: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:676:23 op: '*' -> '+'
+  src/text.c:676:23: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:1197:78 logic: '&&' -> '||'
+  src/text.c:1197:56: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:246:47 op: '*' -> '/'
+  src/text.c:246:47: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:676:41 op: '*' -> '+'
+  src/text.c:676:41: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:669:44 op: '*' -> '+'
+  src/text.c:669:44: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:56:50 logic: '||' -> '&&'
+  src/text.c:56:50: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:997:10 op: '*' -> '+'
+  src/text.c:997:10: error: wrong type argument to unary plus
+
+NOT COMPILED src/text.c:44:60 op: '*' -> '+'
+  src/text.c:44:60: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:1222:17 op: '&' -> '|'
+  src/text.c:1222:17: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:1401:64 logic: '&&' -> '||'
+  src/text.c:1401:36: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:701:49 op: '*' -> '/'
+  src/text.c:701:49: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:1224:20 op: '&' -> '|'
+  src/text.c:1224:20: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:88:34 logic: '||' -> '&&'
+  src/text.c:88:34: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1247:65 logic: '&&' -> '||'
+  src/text.c:1247:30: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:141:19 op: '*' -> '/'
+  src/text.c:141:19: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:979:62 op: '*' -> '/'
+  src/text.c:979:62: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:476:22 op: '*' -> '/'
+  src/text.c:476:22: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:594:26 op: '*' -> '+'
+  src/text.c:594:26: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:1248:11 logic: '&&' -> '||'
+  src/text.c:1247:65: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:246:20 op: '*' -> '/'
+  src/text.c:246:20: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:238:9 op: '*' -> '+'
+  src/text.c:238:9: error: wrong type argument to unary plus
+
+NOT COMPILED src/text.c:1190:5 drop_assign: 'lim = tx_limits(lim, &store);' -> '' (the statement is removed)
+  src/text.c:1182:23: error: unused variable ‘store’ [-Werror=unused-variable]
+
+NOT COMPILED src/text.c:1362:68 logic: '&&' -> '||'
+  src/text.c:1362:51: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1207:25 op: '&' -> '|'
+  src/text.c:1207:25: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:501:78 logic: '&&' -> '||'
+  src/text.c:501:55: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:1394:62 logic: '&&' -> '||'
+  src/text.c:1394:39: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/text.c:402:20 op: '*' -> '+'
+  src/text.c:402:20: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:1257:41 op: '&' -> '|'
+  src/text.c:1257:41: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:845:57 op: '*' -> '+'
+  src/text.c:845:57: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:566:86 op: '*' -> '+'
+  src/text.c:566:86: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:184:28 op: '*' -> '+'
+  src/text.c:184:28: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:433:5 drop_assign: 'st = tx_prep(s, len, lim);' -> '' (the statement is removed)
+  src/text.c:434:8: error: ‘st’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/text.c:44:35 op: '*' -> '+'
+  src/text.c:44:35: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:1248:28 op: '&' -> '|'
+  src/text.c:1248:28: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:1252:26 op: '&' -> '|'
+  src/text.c:1252:26: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:669:73 op: '*' -> '+'
+  src/text.c:669:73: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:676:41 op: '*' -> '/'
+  src/text.c:676:41: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/text.c:1197:95 op: '&' -> '|'
+  src/text.c:1197:95: error: expected expression before ‘|’ token
+
+NOT COMPILED src/text.c:489:5 negate_if: 'if(f != NULL)' -> 'if(!(f != NULL))'
+  src/text.c:1202:9: error: ‘f’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/text.c:141:19 op: '*' -> '+'
+  src/text.c:141:19: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:1180:98 op: '*' -> '+'
+  src/text.c:1180:98: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:179:17 cmp: '==' -> '!='
+  FAIL tests/test_text_rat.c:68: a_nul_byte_anywhere_is_a_parse_error: check failed: st == want_status | length 1: status 9, expected 0
+
+NOT COMPILED src/text.c:845:38 op: '*' -> '+'
+  src/text.c:845:38: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/text.c:1397:84 logic: '&&' -> '||'
+  src/text.c:1397:63: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+TIMED OUT src/text.c:321:5 negate_if: "while(b + 1 < e && s[b] == '0')" -> "while(!(b + 1 < e && s[b] == '0'))"
+  the tests did not finish in 120 s
+
+TIMED OUT src/text.c:157:5 negate_if: 'while(j < c->len && tx_is_letter(c->s[j]))' -> 'while(!(j < c->len && tx_is_letter(c->s[j])))'
+  the tests did not finish in 120 s
+
+TIMED OUT src/text.c:377:23 op: '+' -> '-'
+  the tests did not finish in 120 s
+
+mutate: 150 mutants in 1263.7 s: 62 killed, 13 survived, 72 not compiled, 3 timed out, 0 excused
+mutate: FAILED: 13 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1
+exit 2
