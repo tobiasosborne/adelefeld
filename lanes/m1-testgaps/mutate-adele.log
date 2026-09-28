@@ -1,0 +1,80 @@
+mutate: src/adele.c: 144 mutants
+mutate: the baseline passes (8.3 s)
+
+NOT COMPILED src/adele.c:201:37 prec: 'prec' -> '2'
+  src/adele.c:199:78: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:464:37 prec: 'prec' -> '2'
+  src/adele.c:462:82: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:392:5 drop_call: 'acb_set_fmpq(y->inf, t, prec);' -> '' (the statement is removed)
+  src/adele.c:386:61: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:315:5 drop_assign: 'st = adf_fball_div_rat(fq, &x->fin, q);' -> '' (the statement is removed)
+  src/adele.c:316:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/adele.c:457:5 drop_call: 'acb_sub(z->inf, x->inf, y->inf, prec);' -> '' (the statement is removed)
+  src/adele.c:455:82: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:201:5 drop_call: 'arb_add(z->inf, x->inf, y->inf, prec);' -> '' (the statement is removed)
+  src/adele.c:199:78: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:164:5 drop_call: 'arb_set(r, x->inf);' -> '' (the statement is removed)
+  src/adele.c:162:26: error: unused parameter ‘r’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:223:37 prec: 'prec' -> '2'
+  src/adele.c:221:78: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:188:5 drop_call: 'adf_fball_set(f, &x->fin);' -> '' (the statement is removed)
+  src/adele.c:186:31: error: unused parameter ‘f’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:212:37 prec: 'prec' -> '2'
+  src/adele.c:210:78: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:464:5 drop_call: 'acb_mul(z->inf, x->inf, y->inf, prec);' -> '' (the statement is removed)
+  src/adele.c:462:82: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:450:37 prec: 'prec' -> '2'
+  src/adele.c:448:82: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:123:29 prec: 'prec' -> '2'
+  src/adele.c:117:59: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:438:5 drop_call: 'adf_fball_set(f, &x->fin);' -> '' (the statement is removed)
+  src/adele.c:436:32: error: unused parameter ‘f’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:152:5 drop_call: 'adf_fball_set(&y->fin, f);' -> '' (the statement is removed)
+  src/adele.c:146:73: error: unused parameter ‘f’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:223:5 drop_call: 'arb_mul(z->inf, x->inf, y->inf, prec);' -> '' (the statement is removed)
+  src/adele.c:221:78: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:212:5 drop_call: 'arb_sub(z->inf, x->inf, y->inf, prec);' -> '' (the statement is removed)
+  src/adele.c:210:78: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:457:37 prec: 'prec' -> '2'
+  src/adele.c:455:82: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:450:5 drop_call: 'acb_add(z->inf, x->inf, y->inf, prec);' -> '' (the statement is removed)
+  src/adele.c:448:82: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:392:29 prec: 'prec' -> '2'
+  src/adele.c:386:61: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:178:5 drop_call: 'arb_set(r, x->inf);' -> '' (the statement is removed)
+  src/adele.c:173:28: error: unused parameter ‘r’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:540:5 drop_assign: 'st = adf_fball_div_rat(fq, &x->fin, q);' -> '' (the statement is removed)
+  src/adele.c:541:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/adele.c:421:5 drop_call: 'adf_fball_set(&y->fin, f);' -> '' (the statement is removed)
+  src/adele.c:415:75: error: unused parameter ‘f’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:432:5 drop_call: 'acb_set(z, x->inf);' -> '' (the statement is removed)
+  src/adele.c:430:30: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/adele.c:123:5 drop_call: 'arb_set_fmpq(y->inf, t, prec);' -> '' (the statement is removed)
+  src/adele.c:117:59: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+mutate: 144 mutants in 693.2 s: 105 killed, 0 survived, 25 not compiled, 0 timed out, 14 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

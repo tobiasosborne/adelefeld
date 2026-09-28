@@ -1,0 +1,27 @@
+=== make mutate FILES=src/rat.c LIMIT=400 JOBS=2   09:32:30
+exit 0   09:34:44
+mutate: 36 mutants in 134.0 s: 20 killed, 0 survived, 14 not compiled, 0 timed out, 2 excused
+=== make mutate FILES=src/cap.c LIMIT=400 JOBS=2   09:34:44
+exit 0   09:39:30
+mutate: 48 mutants in 285.5 s: 39 killed, 0 survived, 6 not compiled, 0 timed out, 3 excused
+=== make mutate FILES=src/recon.c LIMIT=400 JOBS=2   09:39:30
+exit 2   09:45:27
+mutate: 63 mutants in 357.5 s: 48 killed, 3 survived, 7 not compiled, 0 timed out, 5 excused
+=== make mutate FILES=src/adele.c LIMIT=400 JOBS=2   09:45:27
+exit 0   09:57:00
+mutate: 144 mutants in 693.2 s: 105 killed, 0 survived, 25 not compiled, 0 timed out, 14 excused
+=== make mutate FILES=src/fball.c LIMIT=400 JOBS=2   09:57:00
+exit 2   10:19:42
+mutate: 347 mutants in 1361.3 s: 280 killed, 21 survived, 38 not compiled, 0 timed out, 8 excused
+=== make mutate FILES=src/recon.c LIMIT=400 JOBS=2, repeat 1   10:19:42
+exit 2   10:23:55
+mutate: 63 mutants in 253.3 s: 48 killed, 3 survived, 7 not compiled, 0 timed out, 5 excused
+=== make mutate FILES=src/recon.c LIMIT=400 JOBS=2, repeat 2   10:23:55
+exit 2   10:29:31
+mutate: 63 mutants in 335.4 s: 48 killed, 3 survived, 7 not compiled, 0 timed out, 5 excused
+=== make mutate FILES=src/recon.c LIMIT=400 JOBS=2, repeat 3   10:29:31
+exit 2   10:34:14
+mutate: 63 mutants in 283.0 s: 48 killed, 3 survived, 7 not compiled, 0 timed out, 5 excused
+=== all runs done   10:34:14
+=== make mutate FILES=src/fball.c LIMIT=400 JOBS=2, again after the last ten excuses   10:42:45
+=== the run above was stopped by the lane after 33 min, the machine being busy with the runs of other lanes; the log file is empty
