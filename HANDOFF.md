@@ -53,3 +53,10 @@ pass. 78 of the 193 declared functions are implemented. No lane is running. Ever
 the harness stopped the orchestrator's waiting loop, so lanes on pi or codex end without a signal: look at
 `lanes/<lane>/lane.log` in the worktree. Quota at 07:10: Claude weekly 69%, Fable weekly 67% (both reset
 2026-09-29 18:00), codex 19% of the week (11 of the 30 points TJO authorised are used; resets 2026-10-03).
+
+**Found after the session (2026-09-28 10:45).** `tools/mutate/mutate.py` does not kill the test program of a
+mutant that times out: nine such processes ran for eight hours (load average 10) until killed by hand. Do not
+run `make mutate` before this is fixed (issue in beads, priority 1). The full swap file is not a fault: 2 GB of
+swap hold pages of long-running desktop programs after five days of uptime, with 23 GB of memory available.
+The OpenRouter credit is used up (TJO): the models `space-bunny-alpha` (free) may still work, `mimo-v2.6-pro`
+through OpenRouter does not; `deepseek-flash` goes through its own provider.
