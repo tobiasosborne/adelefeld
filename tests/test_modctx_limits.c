@@ -38,6 +38,11 @@
 
 #include "test_runner.h"
 
+/* The two internal kernels of src/modctx_internal.h (hidden symbols; declared by hand as in
+   tests/test_modctx.c). */
+void adf_modctx_reduce(const adf_modctx_struct * ctx, const fmpz_t a, ulong * res);
+void adf_modctx_recombine(fmpz_t out, const adf_modctx_struct * ctx, const ulong * res);
+
 static adf_modctx_struct * const SENT = (adf_modctx_struct *) 0x1234;
 
 static double
@@ -317,4 +322,97 @@ ADF_TEST(largest_admitted_cases_succeed)
         ADF_CHECK(adf_modctx_nblocks(ctx) == want);
         adf_modctx_free(ctx);
     }
+}
+
+/* ---- 6. a NULL out is ADF_DOMAIN for every raw constructor ---- */
+
+ADF_TEST(null_out_is_a_domain_error)
+{
+    ulong q[2] = {2, 3};
+    ulong p[2] = {2, 3};
+    ulong e[2] = {1, 1};
+    fmpz_t K;
+
+    fmpz_init_set_ui(K, 6);
+    ADF_CHECK(adf_modctx_new_blocks(NULL, q, 2) == ADF_DOMAIN);
+    ADF_CHECK(adf_modctx_new_prime_powers(NULL, p, e, 2) == ADF_DOMAIN);
+    ADF_CHECK(adf_modctx_new_fmpz(NULL, K) == ADF_DOMAIN);
+    ADF_CHECK(adf_modctx_new_factorial(NULL, 10) == ADF_DOMAIN);
+    ADF_CHECK(adf_modctx_new_primorial_pow(NULL, 10, 1) == ADF_DOMAIN);
+    ADF_CHECK(adf_modctx_new_primorial_pow(NULL, 18446744073709551615UL, 2) == ADF_DOMAIN);
+    fmpz_clear(K);
+}
+
+/* ---- 7. adf_modctx_recombine returns the representative in [0, K) ---- */
+
+/* The promise of src/modctx_internal.h is [0, K); FLINT's fmpz_multi_CRT_precomp promises only
+   "an integer of smallest absolute value" (refs/src/flint-3.0.1/fmpz.rst:1362-1365).  The
+   balanced lift of 34 in K = 35 is -1, and the balanced lift of K - 1 is -1 for every K; these
+   are the residues whose FLINT representative could be negative.  The repair reduces the
+   result modulo K, so the representative is the non-negative one and the test pins that. */
+ADF_TEST(recombine_is_the_representative_in_range)
+{
+    static const ulong b1[2] = {5, 7};
+    static const ulong b2[2] = {65537, 65539};
+    static const ulong b3[3] = {3, 5, 7};
+    adf_modctx_struct * ctx = NULL;
+    fmpz_t K, out, a;
+    ulong res[3];
+    long cases = 0;
+    ulong r0, r1;
+
+    fmpz_init(K);
+    fmpz_init(out);
+    fmpz_init(a);
+
+    /* every residue pair of K = 35; the largest element 34 has balanced lift -1 */
+    ADF_CHECK(adf_modctx_new_blocks(&ctx, b1, 2) == ADF_OK);
+    adf_modctx_get_modulus(K, ctx);
+    for (r0 = 0; r0 < 5; r0++)
+        for (r1 = 0; r1 < 7; r1++)
+        {
+            res[0] = r0;
+            res[1] = r1;
+            adf_modctx_recombine(out, ctx, res);
+            ADF_CHECK_MSG(fmpz_sgn(out) >= 0 && fmpz_cmp(out, K) < 0,
+                          "recombine out of [0, K): r = (%lu, %lu)", r0, r1);
+            ADF_CHECK(fmpz_fdiv_ui(out, 5) == r0);
+            ADF_CHECK(fmpz_fdiv_ui(out, 7) == r1);
+            cases++;
+        }
+    res[0] = 4;
+    res[1] = 6;
+    adf_modctx_recombine(out, ctx, res);
+    ADF_CHECK(fmpz_equal_ui(out, 34));
+    adf_modctx_free(ctx);
+    ctx = NULL;
+
+    /* two word-sized primes: K - 1 has the balanced lift -1 */
+    ADF_CHECK(adf_modctx_new_blocks(&ctx, b2, 2) == ADF_OK);
+    adf_modctx_get_modulus(K, ctx);
+    res[0] = b2[0] - 1;
+    res[1] = b2[1] - 1;
+    adf_modctx_recombine(out, ctx, res);
+    ADF_CHECK(fmpz_sgn(out) >= 0 && fmpz_cmp(out, K) < 0);
+    fmpz_sub_ui(a, K, 1);
+    ADF_CHECK(fmpz_equal(out, a));
+    adf_modctx_free(ctx);
+    ctx = NULL;
+
+    /* K = 105 and the input -1: reduce gives (2, 4, 6), recombine must give 104, not -1 */
+    ADF_CHECK(adf_modctx_new_blocks(&ctx, b3, 3) == ADF_OK);
+    adf_modctx_get_modulus(K, ctx);
+    fmpz_set_si(a, -1);
+    adf_modctx_reduce(ctx, a, res);
+    ADF_CHECK(res[0] == 2 && res[1] == 4 && res[2] == 6);
+    adf_modctx_recombine(out, ctx, res);
+    ADF_CHECK(fmpz_sgn(out) >= 0 && fmpz_cmp(out, K) < 0);
+    fmpz_sub_ui(a, K, 1);
+    ADF_CHECK(fmpz_equal(out, a));
+    adf_modctx_free(ctx);
+
+    ADF_CHECK_MSG(cases == 35, "recombine cases %ld", cases);
+    fmpz_clear(K);
+    fmpz_clear(out);
+    fmpz_clear(a);
 }

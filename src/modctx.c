@@ -109,8 +109,11 @@ adf_power_fits_word(ulong p, ulong e, ulong * out)
 }
 
 /* The smallest prime q with q^e >= 2^64, for e >= 2.  n_root(2^64 - 1, e) is the largest
-   integer b with b^e < 2^64 (refs/src/flint-3.0.1/ulong_extras.rst:1021-1027), so q is the
-   first prime above b (n_nextprime, refs/src/flint-3.0.1/ulong_extras.rst:688-692). */
+   integer b with b^e < 2^64: it is the integer part of (2^64 - 1)^(1/e), the same convention
+   that the documentation gives for n_rootrem (refs/src/flint-3.0.1/ulong_extras.rst:1023-1030;
+   n_root itself is declared at /usr/include/flint/ulong_extras.h:69 and is not documented in
+   that file).  q is the first prime above b (n_nextprime,
+   refs/src/flint-3.0.1/ulong_extras.rst:688-692). */
 static ulong
 adf_overflow_prime(ulong e)
 {
@@ -119,7 +122,7 @@ adf_overflow_prime(ulong e)
 }
 
 /* Allocate and fully initialise a context from already validated data. K is copied; the
-   blocks q[0..k-1] are copied; the comb tables are built. The caller has checked the
+   blocks q[0..k-1] are copied; the precomputed programs are built. The caller has checked the
    predicate of 5.14 (for k >= 1: pairwise coprime, 2 <= q[i] < 2^64, product = K). */
 static adf_modctx_struct *
 adf_modctx_alloc(const fmpz_t K, const ulong * q, slong k)
@@ -511,8 +514,8 @@ adf_modctx_matches_desc(const adf_modctx_struct * ctx, const adf_ctx_desc_t * d)
 
 /* The residues of a modulo the blocks, in block order (docs/proofs/policies.md Definition 16,
    Lemma 17; docs/conventions.md 5.14). The caller passes a context with k >= 1 and an array
-   of k ulongs. The scratch of fmpz_comb is local, so two threads may call this on one context
-   at the same time (docs/conventions.md 4.5). */
+   of k ulongs.  The precomp call uses only local temporaries, so two threads may call this on
+   one context at the same time (docs/conventions.md 4.5). */
 ADF_HIDDEN void
 adf_modctx_reduce(const adf_modctx_struct * ctx, const fmpz_t a, ulong * res)
 {

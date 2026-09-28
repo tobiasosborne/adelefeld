@@ -308,6 +308,7 @@ ADF_TEST(add_rat_alias)
     int i, j;
 
     fmpz_init_set_ui(K, 12);
+    fmpz_init(u);
     ADF_CHECK(adf_modctx_new_fmpz(&ctx, K) == ADF_OK);
     adf_rat_init(s);
     adf_rat_init(q);
