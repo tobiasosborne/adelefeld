@@ -143,7 +143,7 @@ For every value type `x` (a modulus context is not a value: it has constructors 
 | `adf_x_clear(x)` | releases all memory owned by `x`. After it `x` must not be used except by `init` |
 | `adf_x_set(y, x)` | `y` becomes a copy (same backend, same context pointer). `y` may be `x` |
 | `adf_x_swap(x, y)` | exchanges contents; O(1), no allocation; context pointers travel with the values |
-| `adf_x_is_canonical(x)` | returns 1 if the storage invariant of section 5 holds, else 0. Never aborts |
+| `adf_x_is_canonical(x)` | returns 1 if the storage invariant of section 5 holds, else 0. Never aborts for an initialised object whose integer fields and tags hold any values, provided every pointer field is NULL or points to a live object of its kind (a context made by a constructor, a residue array of `k` words); a pointer to anything else is undefined behaviour, as for every C function (M1-D2, review of milestone 1, finding local R2) |
 | `adf_x_identical(x, y)` | representation identity (type, backend, context blocks, all fields) |
 | `adf_x_set_str`, `adf_x_get_str` | value form (section 9); `get_str` returns the allocated text and its byte length (8.1) |
 | `adf_x_load_str`, `adf_x_dump_str` | dump form (section 10); `dump_str` returns the text and its byte length (8.1) |

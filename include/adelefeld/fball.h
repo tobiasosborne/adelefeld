@@ -90,7 +90,11 @@ void adf_fball_set(adf_fball_t y, const adf_fball_t x);
 void adf_fball_swap(adf_fball_t x, adf_fball_t y);
 
 /* adf_fball_is_canonical(x): 1 if x satisfies G (backend ADF_GLOBAL) or L (backend ADF_LOCAL),
-   else 0; never aborts, whatever the fields hold (conventions 2.3). For L it reads the blocks of
+   else 0. It never aborts for an initialised object whose integer fields and backend tag hold
+   any values, provided its pointer fields are valid: mctx is NULL or a live context made by a
+   constructor of modctx.h, and res is NULL or an array of at least k words, k the block count of
+   mctx (conventions 2.3; decision M1-D2: a pointer that is not such an object cannot be
+   detected in C, and the predicate reads the blocks of mctx). For L it reads the blocks of
    mctx. Cost: a gcd for G; k word comparisons for L. */
 int adf_fball_is_canonical(const adf_fball_t x);
 
