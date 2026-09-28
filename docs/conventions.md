@@ -185,7 +185,7 @@ to prove the opposite.
 | Set predicates (`equal_set`, `overlaps`, `contains`) | no status: they return `int` 0 or 1 (2.3; the other predicates likewise) |
 | Division of `adf_rat` by an `adf_rat`; scaling by the inverse of an exact rational | `OK`, `NOT_UNIT` (divisor exactly 0) |
 | Constructors from raw data (`_set_fmpz3`, `_set_arb_fball`, `adf_ucoset_set_fmpz2`, ...) | `OK`, `DOMAIN` |
-| Raw context constructors (5.14) | `OK`, `DOMAIN`, `UNSUPPORTED` (a prime power above one word) |
+| Raw context constructors (5.14) | `OK`, `DOMAIN`, `UNSUPPORTED` (a block above one word or more than 65536 blocks) |
 | `adf_modctx_new_from_dump` | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN` |
 | Parsers of the value form (`_set_str`) | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN`, `NOT_DETERMINED` (only the sign conditions of section 9.3 at the requested `prec`) |
 | Loaders of the dump form (`_load_str`) | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN` |
