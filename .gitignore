@@ -27,3 +27,5 @@ docs/reviews/m0-gate/checks/add_immediate_probe
 crash-*
 lanes/*/golden_before/
 lanes/*/vectors_before/
+build-*/
+/refs/src
