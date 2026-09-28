@@ -1,0 +1,124 @@
+lanes/m1-cap: red-green log. Each entry: command, result, one line of comment.
+
+--- tests/test_cap.c (first test of the file: a link error counts as red) ---
+
+RED  make build/test_cap
+     ld: undefined reference to `adf_fball_cap' (six call sites: cap_basic, cap_exact_untouched,
+     cap_invariant_and_idempotent, cap_domain_on_nonpositive_C, cap_unsupported_on_local_input,
+     cap_aliasing). src/cap.c does not exist yet. Expected: the file's first red is a link error
+     (lanes/COMMON-C.md rule 1).
+
+     Wrote src/cap.c with adf_fball_cap implemented (Definition 13, policies.md:253).
+     Build note: `fmpq_gcd(g->q, N->q, C->q)` with g, N, C all `adf_rat_t` (locals plus the
+     const parameter) triggered a GCC -O2 -Wstringop-overread false positive ("reading 16
+     bytes from a region of size 8"), turned into a hard error by -Werror; a minimal two-line
+     repro without adf_fball did not reproduce it, so it is specific to this call shape.
+     Worked around by copying through plain fmpq_t temporaries (fmpq_set, fmpq_set_fmpz_frac)
+     before the fmpq_gcd call, never passing the struct-field expression `X->q` directly as a
+     fmpq_gcd argument. No behaviour change; noted here in case another lane's code hits the
+     same GCC quirk.
+
+RED  ./build/test_cap (after adf_fball_cap compiled and linked)
+     7 tests, 756 checks, 108 failed checks, 3 failed tests: cap_invariant_and_idempotent (104
+     failures: the test itself checked C / R' with the two operands swapped, R' / C instead of
+     C / R', so it demanded the wrong divisibility); cap_domain_on_nonpositive_C and
+     cap_unsupported_on_local_input (test bug: the sentinel ball written to the output before
+     the call was not itself canonical, e.g. (9+9 Zhat)/9 canonicalises to (0+1 Zhat)/1, not
+     (1+1 Zhat)/1 as the test asserted, so the "untouched" check compared against the wrong
+     value). All three were test-authoring bugs, not implementation bugs; fixed in
+     tests/test_cap.c.
+
+GREEN ./build/test_cap (after the test fixes)
+     7 tests, 757 checks, 0 failed checks, 0 failed tests.
+
+--- adf_fball_add_cap ---
+     Added stubs for add_cap/sub_cap/mul_cap/mul_rat_cap (each returns ADF_DOMAIN unconditionally)
+     so the file keeps linking while later functions are still unimplemented (COMMON-C rule 1:
+     after the file's first test, a red must be an assertion failure, not a link error).
+     ./build/test_cap after adding the stubs: 7 tests, 757 checks, 0 failed (stubs not yet called).
+
+RED  ./build/test_cap (after adding 6 ADF_TEST blocks for add_cap, stub still in place)
+     13 tests, 796 checks, 14 failed checks, 5 failed tests: add_cap_basic, add_cap_exact_untouched,
+     add_cap_of_two_capped_needs_no_cap, add_cap_unsupported_on_local_input, add_cap_aliasing all
+     fail on the stub's unconditional ADF_DOMAIN (add_cap_domain_on_nonpositive_C passes by
+     coincidence, since it also expects ADF_DOMAIN). Assertion failures, no link error.
+
+GREEN ./build/test_cap (after the real adf_fball_add_cap: tight add into a private temporary,
+     then adf_fball_cap)
+     13 tests, 796 checks, 0 failed checks, 0 failed tests.
+
+--- adf_fball_sub_cap ---
+
+RED  ./build/test_cap (after adding 5 ADF_TEST blocks for sub_cap, stub still ADF_DOMAIN)
+     18 tests, 825 checks, 11 failed checks, 4 failed tests: sub_cap_basic, sub_cap_exact_untouched,
+     sub_cap_unsupported_on_local_input, sub_cap_aliasing (sub_cap_domain_on_nonpositive_C passes
+     by coincidence). Assertion failures, no link error.
+
+GREEN ./build/test_cap (after the real adf_fball_sub_cap), first pass:
+     18 tests, 825 checks, 1 failed check, 1 failed test: sub_cap_aliasing, at "x - x = the exact
+     0". Test bug, not an implementation bug: this library's tight subtraction does not track the
+     correlation of an operand with itself; adf_fball_sub(z, x, x) computes 0 + gcd(N, N) Zhat =
+     0 + N Zhat, the same as any two independent balls with equal centre and radius, not the exact
+     point 0. Fixed the test's expectation (0 + 8 Zhat capped at C = 6 is 0 + 2 Zhat).
+
+GREEN ./build/test_cap (after the test fix)
+     18 tests, 825 checks, 0 failed checks, 0 failed tests.
+
+--- adf_fball_mul_cap ---
+
+RED  ./build/test_cap (after adding 5 ADF_TEST blocks for mul_cap, stub still ADF_DOMAIN)
+     23 tests, 854 checks, 11 failed checks, 4 failed tests (mul_cap_domain_on_nonpositive_C
+     passes by coincidence). Assertion failures, no link error.
+
+GREEN ./build/test_cap (after the real adf_fball_mul_cap: tight mul into a private temporary,
+     then adf_fball_cap)
+     23 tests, 854 checks, 0 failed checks, 0 failed tests.
+
+--- adf_fball_mul_rat_cap ---
+
+RED  ./build/test_cap (after adding 5 ADF_TEST blocks for mul_rat_cap, stub still ADF_DOMAIN)
+     28 tests, 874 checks, 8 failed checks, 4 failed tests (mul_rat_cap_domain_on_nonpositive_C
+     passes by coincidence; some individual checks inside other tests also pass by coincidence,
+     since adf_fball_init's default value (the exact 0) matches an expected untouched output).
+     Assertion failures, no link error.
+
+GREEN ./build/test_cap (after the real adf_fball_mul_rat_cap: adf_fball_mul_rat into a private
+     temporary, then adf_fball_cap)
+     28 tests, 874 checks, 0 failed checks, 0 failed tests.
+
+     All five functions of the lane are now implemented and unit-tested; test_cap.c never needed
+     a second link-error red after its first test (cap_basic). Next: tests/test_cap_vectors.c
+     (adf_fball_cap against tests/ref/vectors/policies.jsonl, and the combined vectors generated
+     for the other four).
+
+--- tests/test_cap_vectors.c (a new file; a link error would count as red for its first test) ---
+
+Wrote lanes/m1-cap/gen_vectors.py and ran it: tests/ref/vectors/m1-cap/cap_ops.jsonl, 2500 lines
+(650 add_cap, 650 sub_cap, 650 mul_cap, 550 mul_rat_cap; edge-ball x edge-cap cross product plus
+150 random rows per operation, seed 20260928, from tests/ref/adfref/fball.py composed with
+tests/ref/adfref/policies.py, in Python only).
+
+GREEN ./build/test_cap_vectors (first build; all five functions were already implemented and
+     green from tests/test_cap.c, so this run is an independent integration check, not a
+     function-by-function red-green step)
+     5 tests, 49930 checks, 0 failed checks, 0 failed tests: 300 absolute_cap rows of
+     tests/ref/vectors/policies.jsonl against adf_fball_cap; 650 rows each of add_cap, sub_cap,
+     mul_cap and 550 of mul_rat_cap against tests/ref/vectors/m1-cap/cap_ops.jsonl, against
+     adf_fball_add_cap, adf_fball_sub_cap, adf_fball_mul_cap, adf_fball_mul_rat_cap. No bug
+     surfaced beyond what the unit tests of test_cap.c had already found and fixed.
+
+--- make check, make clean && make check SAN=1, make mutate FILES=src/cap.c ---
+
+GREEN make -j2 check (whole tree)
+     11 test programs, all pass; test_cap: 28 tests, 874 checks; test_cap_vectors: 5 tests,
+     49930 checks; every other test program unaffected.
+
+GREEN make clean && make -j2 check SAN=1 (whole tree, ASan+UBSan)
+     11 test programs, all pass, same counts, no sanitizer report.
+
+GREEN make mutate FILES=src/cap.c (LIMIT=200 default, seed 20260928, 2 jobs)
+     29 mutants in 62.0 s: 21 killed, 0 survived, 8 not compiled, 0 timed out, 0 excused. Every
+     mutant of src/cap.c was either killed by the tests above or did not compile (a dropped
+     status assignment leaving a now-unused parameter warning under -Werror, an argument swap
+     that discards a const qualifier, or fmpq_gcd renamed to the undeclared identifier lcm).
+     No entry needed in tools/mutate/equivalent.txt.
