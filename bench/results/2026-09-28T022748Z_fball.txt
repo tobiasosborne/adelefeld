@@ -1,0 +1,40 @@
+run_id: 2026-09-28T022748Z
+tag: fball
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+cores_online: 12
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+tsc_present: yes
+tsc_invariant: yes
+cycles_per_ns_trials: 9
+cycles_per_ns_min: 2.68798
+cycles_per_ns_median: 2.68799
+cycles_per_ns_max: 2.68799
+cycles_per_ns_spread: 0.00001
+seed: 20260928
+operand_family: adf_fball canonical global triples, A,H,d as stated per row
+trials_per_case: 5
+batch_length: 256
+warm: yes
+allocating: yes (fmpq and fmpz temporaries inside each call)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+fball_add_chain_word	latency_chain	adf_fball_add; x = x + 3; A,H,d word sized	word; start A 59 bit, H 60 bit, d 1 bit; y = 3 exact; 50000 dependent calls	20260928	yes	no	50000	50000	60	330.2951	332.9552	337.8855
+fball_mul_chain_word	latency_chain	adf_fball_mul; x = x * 3; A,H,d word sized	word; start A 59 bit, H 60 bit, d 1 bit; y = 3 exact; 2048 dependent calls	20260928	yes	no	2048	2048	19536	2537.4243	4427.8193	6027.4116
+fball_add_chain_4096	latency_chain	adf_fball_add; x = x + 3; A,H,d 4096 bit	4096 bit; start A 4093 bit, H 4096 bit, d 1 bit; y = 3 exact; 2000 dependent calls	20260928	yes	no	2000	2000	4094	1650.1595	1678.6375	1683.9185
+fball_mul_chain_4096	latency_chain	adf_fball_mul; x = x * 3; A,H,d 4096 bit	4096 bit; start A 4095 bit, H 4096 bit, d 1 bit; y = 3 exact; 256 dependent calls	20260928	yes	no	256	256	6530	2638.5546	2809.2577	3063.5508
+fball_add_batch_word	independent_batch	adf_fball_add; independent pairs; A,H,d word sized	word; a[0] A,H,d up to 60 bit; b[0] up to 60 bit; n = 256	20260928	yes	no	200	51200	0	347.2561	352.4805	356.2489
+fball_mul_batch_word	independent_batch	adf_fball_mul; independent pairs; A,H,d word sized	word; a[0] A,H,d up to 60 bit; b[0] up to 60 bit; n = 256	20260928	yes	no	100	25600	0	1086.3763	1088.7500	1124.8184
+fball_add_batch_4096	independent_batch	adf_fball_add; independent pairs; A,H,d 4096 bit	4096 bit; a[0] A,H,d up to 4096 bit; b[0] up to 4096 bit; n = 256	20260928	yes	no	20	5120	0	54177.5807	54224.2779	56040.6932
+fball_mul_batch_4096	independent_batch	adf_fball_mul; independent pairs; A,H,d 4096 bit	4096 bit; a[0] A,H,d up to 4096 bit; b[0] up to 4096 bit; n = 256	20260928	yes	no	10	2560	0	106910.1039	146371.1723	147382.0160
+
+# checksum of all case results, computed outside the timed region
+checksum: 23056
