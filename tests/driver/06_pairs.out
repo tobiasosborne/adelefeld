@@ -1,0 +1,155 @@
+1
+(* ; 7/2 mod 12)
+(1.5 ; 11/2 mod 18)
+((1.5) + (2)*i ; 11/2 mod 18)
+(* ; 7/2 mod 12)
+(* ; 6 mod 12)
+error: DOMAIN
+error: DOMAIN
+(1.5 ; 11/2 mod 18)
+error: DOMAIN
+(2 ; 10 mod 18)
+((2) + (2)*i ; 10 mod 18)
+((1.5) + (2)*i ; 11/2 mod 18)
+error: DOMAIN
+((2) + (2)*i ; 10 mod 18)
+((2) + (4)*i ; 10 mod 18)
+0
+(* ; 19/2 mod 12)
+(-0.5 ; 27/2 mod 18)
+((-0.5) + (-2)*i ; 27/2 mod 18)
+(* ; 5/2 mod 12)
+(* ; 0 mod 12)
+error: DOMAIN
+error: DOMAIN
+(0.5 ; 9/2 mod 18)
+error: DOMAIN
+(0 ; 0 mod 18)
+((0) + (-2)*i ; 0 mod 18)
+((0.5) + (2)*i ; 9/2 mod 18)
+error: DOMAIN
+((0) + (2)*i ; 0 mod 18)
+((0) + (0)*i ; 0 mod 18)
+1/4
+(* ; 3/2 mod 6)
+(0.5 ; 5/2 mod 9)
+((0.5) + (1)*i ; 5/2 mod 9)
+(* ; 3/2 mod 6)
+(* ; 9 mod 36)
+error: DOMAIN
+error: DOMAIN
+(0.5 ; 5/2 mod 9)
+error: DOMAIN
+(1 ; 7 mod 18)
+((1) + (2)*i ; 7 mod 18)
+((0.5) + (1)*i ; 5/2 mod 9)
+error: DOMAIN
+((1) + (2)*i ; 7 mod 18)
+((-3) + (4)*i ; 7 mod 18)
+-1/2
+(* ; 9 mod 12)
+(-1 ; 13 mod 18)
+((-1) + (-2)*i ; 13 mod 18)
+1
+(* ; 6 mod 24)
+(2 ; 10 mod 36)
+((2) + (4)*i ; 10 mod 36)
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+true
+false
+error: DOMAIN
+error: DOMAIN
+false
+true
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+true
+false
+error: DOMAIN
+error: DOMAIN
+false
+true
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+true
+false
+error: DOMAIN
+error: DOMAIN
+false
+true
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+2
+1
+error: NO_SOLUTION
+1
+error: NOT_UNIQUE
+error: NO_SOLUTION
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: PARSE
+error: UNSUPPORTED
+(* ; 3 mod 6)
+(* ; 0 mod 1/2)
+(* ; 7/3)
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+error: UNSUPPORTED
+1/2
+(* ; 3 mod 12)
+(1 ; 5 mod 18)
+((1) + (2)*i ; 5 mod 18)
+error: UNSUPPORTED
+rat
+fball
+adele
+cadele
+ucoset

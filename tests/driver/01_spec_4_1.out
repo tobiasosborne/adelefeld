@@ -1,0 +1,16 @@
+rat
+7/3
+fball
+(* ; 7/3)
+(* ; 7/3)
+(* ; 3 mod 12)
+(1 ; 5 mod 18)
+((1) + (2)*i ; 5 mod 18)
+error: UNSUPPORTED
+error: UNSUPPORTED
+1
+((-1) + (0)*i ; 0)
+(-1 ; -1)
+((0) + (0)*i ; 1)
+(* ; 1/2 mod 1)
+(* ; 0 mod 1)

@@ -1,0 +1,53 @@
+# lane m1-driver: red and green runs of tests/test_driver.sh (work package 1.5)
+#
+# RED 1 (before tools/adf/adf.c exists), command `sh tests/test_driver.sh` from the root:
+#   test_driver: the driver does not build; see build/driver/build.log
+#   make: *** tools/adf: No such file or directory.  Stop.
+#   exit=1
+#
+# RED 2 (after tools/adf/adf.c was written, first build), command `sh tests/test_driver.sh`:
+#   adf.c:213:15: error: passing argument 1 of 'fmpz_init' makes pointer from integer
+#     without a cast (declared 'fmpz *' but argument is of type 'fmpz')
+#   (fmpz e; must be fmpz_t e)
+#   exit=1
+#
+# RED 3 (after that fix), same command:
+#   test_driver: 01_spec_4_1: the exit status is 1, expected 0
+#   diff: the value lines of "show" were empty
+#   (the four printers return char *; the driver had dropped the return value)
+#
+# GREEN 1 (after fixing that, and the adele/cadele mixed operation):
+#   test_driver: 01_spec_4_1 ... 04_spec_4_4_cap: the differences were in the
+#   expected files, written by hand before the program existed:
+#     - "neg 1" is the rational 1, not the adele: the command is now "neg (1 ; 1)";
+#     - the result of "sub" with a cadele and an adele was the cadele itself, a bug of
+#       the driver: the adele on the right was not embedded into C x A_f;
+#     - "contains" is "first inside second", so the 4.4 commands were reversed;
+#     - the result of "mul (* ; 1 mod 2) with 1/2" is the text (* ; 1/2 mod 1), which is
+#       the text SPEC 4.4 itself writes; my expected line assumed that the canonical
+#       triple of a set is unique, which it is not (see the report);
+#     - a wrong expected line for "div ((1)+(2)*i; 5 mod 18) with 2" (I computed the
+#       product instead of the quotient);
+#     - five slips in 06_pairs: I had used the finite ball 3 mod 12 where the operand was
+#       5 mod 18, and I had computed 1/2 - (5+18Z) with the wrong intermediate;
+#     - "type" must not call the typed parser: the classifier is syntax only (9.7), so
+#       "type 1/0" answers rat and not DOMAIN.  The driver was changed, not the test;
+#     - a setting of -1 was accepted: the sign of the argument was dropped.
+#   test_driver: 23 cases, 100320 expected lines, all equal (SAN=0)
+#
+# GREEN 2 (sanitizers): `SAN=1 sh tests/test_driver.sh`
+#   test_driver: 23 cases, 100320 expected lines, all equal (SAN=1)
+#   (the sanitized driver is build/adf-san; a first attempt reused build/adf unchanged,
+#    because the Makefile had nothing to do, so the binary name now carries the setting)
+#
+# GREEN 3 (clang): `CC=clang make -C tools/adf && sh tests/test_driver.sh`
+#   test_driver: 23 cases, 100320 expected lines, all equal (SAN=0)
+#
+# Note on a compiler diagnostic: GCC 13.3 reports
+#   'adf_adele_get_str' reading 96 bytes from a region of size 48 [-Wstringop-overread]
+# when a printer takes a struct member declared as `adf_adele_t` (an array of one struct)
+# after the `arb` inside that same member has been read; the object size of the arb is
+# applied to the enclosing value.  The driver prints an adele from a local copy of the
+# value, which is also what the guard needs, and the warning is gone at -O1, -O2 and -O3.
+# No warning is switched off.  The sanitized run is the runtime check that no read leaves
+# the object.

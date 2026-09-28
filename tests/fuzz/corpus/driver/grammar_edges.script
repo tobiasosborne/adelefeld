@@ -1,0 +1,12 @@
+add 1/2 with with with 1/2
+show 1/2 with 1/2 with 1/2 with 1/2
+   
+#
+	
+prec
+prec -
+prec 1e3
+digits 0000000000000000000005
+type {inf: 1; p=5: 2 + O(5^2)}
+show (1e100000 ; 0)
+show (1e-100001 ; 0)
