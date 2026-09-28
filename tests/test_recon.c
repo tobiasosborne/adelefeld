@@ -1203,6 +1203,11 @@ ADF_TEST(an_adele_with_operands_of_4096_bits)
     fmpz_init(m);
     fmpz_init(e);
     fmpz_init_set_ui(one, 1);
+    fmpq_init(fa);
+    fmpq_init(fN);
+    fmpq_init(glo);
+    fmpq_init(ghi);
+    fmpq_init(out);
 
     big_fmpz(A, 4096, 1);
     fmpz_one(den);
