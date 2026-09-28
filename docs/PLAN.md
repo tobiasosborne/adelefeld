@@ -1,11 +1,20 @@
-# adelefeld: implementation plan, version 1.1
+# adelefeld: implementation plan, version 1.2
 
-Date: 2026-09-28 (version 1.0: 2026-09-27). Status: **milestone 0 work packages landed, gate review pending;
-nothing of the C library is implemented.** Read `SPEC.md` first (what is built) and `PERF.md` (how speed and size
-are judged). Draft 1 applies the design review `reviews/astra-2026-09-27/review.md` (findings P1-P3, D1-D4, and the
-consequences of M1-M13 and F1-F6), and TJO's decision that elementary functions belong to the basic package. Draft 2
-applies review round 2 (`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of functions (`SPEC.md`
-9.3.7). Draft 3 applies review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its version 1.1.
+Date: 2026-09-28 (version 1.0: 2026-09-27). Status: **milestone 0 work packages landed, gate review applied;
+the repaired contracts await re-review; nothing of the C library is implemented.** Read `SPEC.md` first (what is
+built) and `PERF.md` (how speed and size are judged). Version 1.2 applies the milestone 0 gate review
+(`reviews/m0-gate/review.md`); version 1.1 applied the milestone 0 proof and convention rounds. Draft 1 applies the
+design review `reviews/astra-2026-09-27/review.md` (findings P1-P3, D1-D4, and the consequences of M1-M13 and
+F1-F6), and TJO's decision that elementary functions belong to the basic package. Draft 2 applies review round 2
+(`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of functions (`SPEC.md` 9.3.7). Draft 3 applies
+review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its version 1.2.
+
+**Change log of version 1.2** (2026-09-28): the milestone 0 gate review (`reviews/m0-gate/review.md`) is applied.
+Section 4: contexts have explicit constructors and a free function (G2); the implicit global fallback is limited to
+`adf_fball` and types containing it, and a default scaled binary operation requires a shared context pointer (G1).
+Section 5: the C value text is an enclosure, not a fixed point, and the dump loader takes one context binding per
+occurrence (G3, G4). Rows 1.7 and 1.8 record the scaled context rule and the raw/canonical distinction (G1, G11).
+The pole status, and the string and predicate signatures, follow `SPEC.md` 9.3.7 and 10.4 (G6, G14).
 
 **Change log of version 1.1** (2026-09-28): status of milestone 0 per work package (section 6); types of section 4
 updated for the exact unit (decision M0-D1), the opaque place handle and the content (M0-D8, seams R1 and R5) and
@@ -75,7 +84,7 @@ CV-15, CV-18, which the conventions draft states in full).
 
     typedef struct {                                                    /* (A + H Zhat)/d */
         fmpz_t A, H, d;                  /* d > 0; H >= 0. ADF_GLOBAL, H > 0: 0 <= A < H, gcd(A,H,d) = 1.
-                                            ADF_LOCAL: raw data, no gcd condition (CV-55, proposed) */
+                                            ADF_LOCAL: raw data, no gcd condition (CV-55) */
         int backend;                     /* ADF_GLOBAL: A is the value. ADF_LOCAL: res is the value, A = 0 */
         const adf_modctx_struct *mctx;   /* ADF_LOCAL: word-sized coprime blocks q_i with product H; else NULL */
         ulong *res;                      /* ADF_LOCAL: residues modulo the blocks */
@@ -101,39 +110,58 @@ Further types whose contracts are written in 0.4 and implemented in their milest
 `M`, array of `acb`), `adf_rfun` (sum of polynomial-Gaussian terms), `adf_char` (character with conductor and
 parity), solver results with certificates, and results of integrals with their domain.
 
-**Contexts.** `adf_modctx`: immutable; blocks, reduction constants, recombination tree; reference counted or
-caller-owned with a stated lifetime. Real working precision is an argument of each operation (as in `arb`), not a
-field of the modulus context.
+**Contexts.** `adf_modctx_struct` is incomplete in the public header. The library exports explicit constructors
+named `adf_modctx_new_*`, each taking `adf_modctx_struct **out` as its first argument, and
+`adf_modctx_free(adf_modctx_struct *ctx)`. A successful constructor allocates and fully initializes an immutable
+context (blocks, reduction constants, recombination tree) and writes its pointer to `*out`; on failure `*out` is
+untouched and no allocation is retained. The caller owns the returned context and frees it only after its borrowers
+are gone. Passing NULL to free does nothing, and a constructor does not free or replace a previous `*out`. No public
+by-value or array-of-one context type requires the layout of the incomplete struct. Value init functions stay
+non-failing and require successfully constructed contexts where stated. If inline context allocation is retained as
+an alternative, its size and alignment, signatures and initialization states must be stated explicitly. Real
+working precision is an argument of each operation (as in `arb`), not a field of the modulus context.
 
 **Rules written down in 0.4 for every function:** which arguments may alias; who owns arrays and scratch space; the
 state of the output after a failure; behaviour on invalid input (a non-finite real ball, a zero denominator);
 limits on the size of parsed input; thread safety (values are not shared between threads; contexts may be).
 
-A partial ball (`adf_sball`) carries the tag real or complex for its archimedean place. An operation whose raw
-result needs other blocks than those of its context returns a global value; it never writes into
-a context, and in version 1 it creates none (`SPEC.md` 4.1; `proofs/policies.md` Proposition 24, Summary 26).
-Equality and printing go through the canonical triple, never through raw residues.
+A partial ball (`adf_sball`) carries the tag real or complex for its archimedean place. The implicit global
+fallback applies only to `adf_fball` and to types containing it: an operation of theirs whose raw result needs other
+blocks than those of its context returns a global value. It never writes into a context, and in version 1 it
+creates none (`SPEC.md` 4.1; `proofs/policies.md` Proposition 24, Summary 26). Equality and printing go through the
+canonical triple, never through raw residues.
+
+**Scaled context rule.** A default binary operation on `adf_scaled` requires the same context pointer in both
+inputs; if the pointers differ it returns `ADF_DOMAIN` with its value output untouched. The check precedes every
+write, an aliased write included. The result borrows that input context; exact operands follow the same rule. To
+combine different contexts the caller constructs a context with modulus `lcm(K, K')`, converts both operands to it
+without loss and then calls the ordinary operation. No operation creates that context. A separately named
+target-context operation may take an explicit caller-owned context; its conversion loss and output context are then
+documented (`SPEC.md` 4.4; G1).
 
 **The local backend holds raw data** (finding F7 of `conventions.md`). Version 1.0 of this plan put the invariant
 `gcd(A, H, d) = 1` in the struct comment for both backends. `proofs/policies.md` Proposition 24 shows that
 cancellation keeps the *set* of a local value in its context while its canonical triple leaves it, and Summary 26
-that the canonical modulus can change after a sum. The struct comment now follows the proposed decision CV-55 of
+that the canonical modulus can change after a sum. The struct comment now follows the accepted decision CV-55 of
 `conventions.md` 5.3: a local value `(d; r_1, ..., r_k)` need not satisfy the gcd condition; its canonical triple is
 derived when needed (the gcd blockwise, `policies.md` Lemma 18), and equality and printing go through it. A local
 sum stays local with the denominator `lcm(d, e)`; a result whose raw form needs other blocks (a tight product with
 `h` not dividing `d e`, an exact scalar `m/n` with `|m|` not dividing `d`) or that combines two different context
-pointers is global. This is pending the gate review of milestone 0; if the gate keeps canonical data instead, every
-local result with `gcd > 1` converts to the global backend (P24.4).
+pointers is global. The milestone 0 gate review accepted CV-55 (raw local data); a backend whose invariant is
+canonical data instead converts every local result with `gcd > 1` to the global backend (P24.4).
 
-**Residues of unit cosets.** The header follows `conventions.md` 5.6 (CV-16, proposed): residues are stored and
+**Residues of unit cosets.** The header follows `conventions.md` 5.6 (CV-16, accepted by the gate review): residues
+are stored and
 printed in `1..N`, so the whole unit group is `[1 mod 1]`. `proofs/ideles.md` Definition 8 reduces them into
 `[0, Nbar)` and writes the whole group `(0, 1)`. The sets and the equality test are the same (ideles Proposition
 9.2); only the representative differs (finding F8 of `conventions.md`; the proof file is not changed here).
 
 **Status codes.** `ADF_OK`; `ADF_UNIT_NOT_CERTIFIED` (the enclosure does not prove invertibility);
-`ADF_NOT_UNIT` (proved not invertible); `ADF_NOT_DETERMINED` (the value is not fixed at this precision);
-`ADF_NEEDS_SPLIT`; `ADF_NOT_UNIQUE`; `ADF_NO_SOLUTION`; `ADF_DOMAIN` (with the place); `ADF_LIMIT` (resource limit);
-`ADF_PARSE`; `ADF_UNSUPPORTED`.
+`ADF_NOT_UNIT` (proved not invertible); `ADF_NOT_DETERMINED` (the value is not fixed at this precision, for
+example a ball that meets a pole and also contains regular points); `ADF_NEEDS_SPLIT`; `ADF_NOT_UNIQUE`;
+`ADF_NO_SOLUTION`; `ADF_DOMAIN` (with the place; an exact input at a proved nonremovable pole); `ADF_LIMIT`
+(resource limit); `ADF_PARSE`; `ADF_UNSUPPORTED`. The set predicates (`equal_set`, `overlaps`, `contains`,
+`compare`) return `int` 0 or 1, not a status (`SPEC.md` 10.4; G6, G14).
 
 **Modulus families offered by constructors:** arbitrary integer; list of pairwise coprime blocks; list of prime
 powers; `k!`; powers of a primorial; exact (radius 0). A single prime power `p^k` as the radius of an `adf_fball`
@@ -154,15 +182,19 @@ still constrains all primes; one place alone is `adf_lball`.
 Unit cosets are printed in canonical form: a modulus that is twice an odd number is halved (`[5 mod 6]` prints as
 `[2 mod 3]`), then the residue is reduced. The dump keeps the modulus as supplied. The exact units (stored with
 modulus 0, M0-D1) print as `[1]` and `[-1]`; residues are printed in `1..N`, so the whole unit group is `[1 mod 1]`
-(`conventions.md` 9.4, 9.8). Places are labelled `p=5` and `inf` (seams R9, M0-D8). The value form is canonical
-after one printing: printing rounds the radius of a real ball, so a text read and printed again can change once
-(`conventions.md` finding F6).
+(`conventions.md` 9.4, 9.8). Places are labelled `p=5` and `inf` (seams R9, M0-D8). With real or complex parts,
+parsing a printed value encloses the original stored value; it need not return it. The print-read-print fixed-point
+statement applies only to the exact-rational reference parser. A C value-text round trip may widen the value and
+change its text on every pass. Dump text is the identity-preserving form (`conventions.md` finding F6; G4).
 
 A decimal real ball is read as an enclosure. **Dump form**: versioned; real balls as exact dyadic numbers
 (`arb_dump_str`); backend and context recorded. Every dump starts `adf1 Q `: the version and the field (seams R9);
 types with an archimedean part write the number of archimedean components before the real balls (1 for `Q`, seams
-R3). A local finite ball is dumped with its raw data (`conventions.md` section 10). Reading a dump gives back the
-identical object. The loader validates the whole text before any FLINT load function sees it, since
+R3). A local finite ball is dumped with its raw data (`conventions.md` section 10). The loader takes one
+caller-owned context binding per local-`adf_fball` or `adf_scaled` occurrence, in dump traversal order; every
+binding must match that occurrence's modulus and ordered blocks, and repeated occurrences may share a pointer. Value
+fields and backend are restored exactly relative to those bindings, and loading with `identical()` requires the
+original context pointers (G3). The loader validates the whole text before any FLINT load function sees it, since
 `arb_load_str` aborts the process on some malformed strings (M0-D9).
 
 ## 6. Work packages
@@ -193,7 +225,7 @@ marked **gate** have an exit criterion instead of an estimate.
 | 0.5 | done | `5ae05db`: harness, six word rows, saved chain loops; first run `bench/results/2026-09-27T202944Z_word.txt`, second run `2026-09-27T221654Z_word.txt` (both `quiet_machine: no`) |
 | 0.6 | done | `9f4be67`: 38 rows with verdicts, recommendations R1 to R9 (adopted, M0-D8), three findings on `SPEC.md` 3 (applied) |
 | 1.1 | done early | `5ae05db`: Python reference, 59 tests, 18 of 18 mutants killed |
-| gate | pending | brief `e1ceee8` (`lanes/m0-gate/brief.md`): review of conventions, of version 1.1 of the three documents, and of what was added in the repairs, by codex `gpt-6-astra` |
+| gate | review returned; findings G1 to G16 applied in version 1.2, re-review pending | review `reviews/m0-gate/review.md`; application report `lanes/m0-gate-apply-docs/report.md` |
 
 ### Milestone 1: the ring (L)
 
@@ -205,8 +237,8 @@ marked **gate** have an exit criterion instead of an estimate.
 | 1.4 | Value text and dump, parser, printer | golden vectors; invalid and huge inputs; coverage-guided fuzzing; the dump loader validates the whole text before any FLINT load function (M0-D9), and the fuzzer never reaches `arb_load_str` with raw text | print, parse |
 | 1.5 | Driver `adf`: evaluates expressions in the value form | the tables of `SPEC.md` typed at the prompt | none |
 | 1.6 | Rational reconstruction from a full ball (milestone R) | progression cases; none, one, several candidates; end points of the closed real interval included (M0-D3) | one row |
-| 1.7 | Scaled policy and absolute cap; the exact case of scaled values; the tight scaled product as a separately named operation (M0-D5) | same expression in all policies, containment after every step; the loss cases (factor `h = gcd(u, v, K)` of the default product); exact values untouched by the cap (M0-D2); conversion between contexts and the lossless `lcm` | add, mul |
-| 1.8 | Local backend: `adf_modctx`, conversion both ways, batch kernels. Storage rules of `proofs/policies.md` Propositions 24, 25: numerator residues and `d` once per value; `d` inverted modulo a block only when coprime; results whose canonical triple leaves the context are global | represented set unchanged by conversion, denominators included; a denominator sharing a factor with a block (`A = d = 2`, block 4); cancellation that keeps the set but not the canonical triple (`(2; 2)` in context `(4)`); the canonical `H` changing after a sum; equality and printing through the canonical triple | conversions; batch add and mul |
+| 1.7 | Scaled policy and absolute cap; the exact case of scaled values; the tight scaled product as a separately named operation (M0-D5); a default binary operation requires a shared context pointer and otherwise returns `ADF_DOMAIN`, with the caller constructing the `lcm(K, K')` context (G1) | same expression in all policies, containment after every step; the loss cases (factor `h = gcd(u, v, K)` of the default product); exact values untouched by the cap (M0-D2); conversion between contexts and the lossless `lcm`; cross-context addition and subtraction rejected; lossless conversion into `lcm(K, K')` then same-context arithmetic | add, mul |
+| 1.8 | Local backend: `adf_modctx`, conversion both ways, batch kernels. Storage rules of `proofs/policies.md` Propositions 24, 25: numerator residues and `d` once per value; `d` inverted modulo a block only when coprime. Local values retain raw numerator residues and their denominator. Results whose raw set cannot be represented in the shared caller-owned context, or whose inputs use different context pointers, are global unless the caller supplies a suitable target context. Canonical cancellation alone does not force a local value global. Equality and value printing use the canonical triple (G11) | represented set unchanged by conversion, denominators included; a denominator sharing a factor with a block (`A = d = 2`, block 4); cancellation that keeps the set but not the canonical triple (`(2; 2)` in context `(4)`); the canonical `H` changing after a sum; equality and printing through the canonical triple | conversions; batch add and mul |
 | 1.9 | Julia-friendly interface check (M0-D12): every public operation exported, no variadic functions, `adf_sizeof_<type>`, `adf_version_check`, `adf_str_free` | `nm -D` of the library against the declarations of the header; the sizes against the documented layouts; a program that loads the library with `dlopen` and calls a few functions through `dlsym` without the header's inline functions; a Julia `ccall` smoke test where Julia is installed | none |
 
 ### Milestone 1F: functions (L; split as the reviewer recommends)
@@ -318,7 +350,7 @@ class groups and units, with its guarantee recorded.
    Total: 103 statements, 86 valid, 15 minor, 2 invalid. The two invalid verdicts (policies P24, P25, both claims
    about storage in the local backend, not about an enclosure radius) were agreed by the author and restated; no
    counterexample to an enclosure radius, sign, constant or formula was found in any review. Statements added in the
-   repairs (functions Proposition 7b, Remark 15r) and the repaired statements go to the gate review of milestone 0
+   repairs (functions Proposition 7b, Remark 15r) and the repaired statements went to the gate review of milestone 0
    (`lanes/m0-gate/brief.md`), which also reviews `conventions.md` and version 1.1 of the three documents.
 3. Statements about other people's work keep their label until quoted from a source on disk.
 

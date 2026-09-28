@@ -144,6 +144,10 @@ adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3	adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3
 adf1 Q qclass pieces 2 1 1 -4 1 -4 g 1 2 1 1 f -4 1 -4 g 0 2 1	adf1 Q qclass pieces 2 1 1 -4 1 -4 g 1 2 1 1 f -4 1 -4 g 0 2 1
 # a piece may reach beyond [0, 1] by the rounding of its enclosure (D4); only its midpoint must lie in [0, 1]
 adf1 Q qclass pieces 1 1 1 0 1 -1 g 0 1 1	adf1 Q qclass pieces 1 1 1 0 1 -1 g 0 1 1
+# raw local pieces: the predicate is on the canonical triple (conventions 5.10, gate findings G3, G13)
+# and one dump may record two contexts (G3)
+adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0	adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0
+adf1 Q qclass pieces 2 1 1 -2 0 0 l 1 2 1 2 0 1 3 -2 0 0 l 1 3 1 3 0	adf1 Q qclass pieces 2 1 1 -2 0 0 l 1 2 1 2 0 1 3 -2 0 0 l 1 3 1 3 0
 adf1 Q qclass pieces 2 1 f -4 1 -4 g 0 2 1 1 1 -4 1 -4 g 1 2 1	!DOMAIN
 adf1 Q qclass pieces 1 1 3 -1 0 0 g 0 1 1	!DOMAIN
 adf1 Q qclass pieces 1 1 1 -1 0 0 g 1 2 2	!DOMAIN
@@ -156,7 +160,10 @@ adf1 Q ffun 0 1	!DOMAIN
 adf1 Q rfun 0	adf1 Q rfun 0
 adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 adf1 Q rfun 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	!DOMAIN
-adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	!DOMAIN
+# P length >= 0, last coefficient not the exact zero ball (conventions 5.12, gate finding G7)
+adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+adf1 Q rfun 1 2 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	adf1 Q rfun 1 2 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+adf1 Q rfun 1 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	!DOMAIN
 adf1 Q char 1 1 0 0 0 0 0 0 0 0	adf1 Q char 1 1 0 0 0 0 0 0 0 0
 adf1 Q char 5 2 0 0 0 0 0 0 0 0	adf1 Q char 5 2 0 0 0 0 0 0 0 0
 adf1 Q char 4 3 0 0 0 0 0 0 0 0	adf1 Q char 4 3 0 0 0 0 0 0 0 0

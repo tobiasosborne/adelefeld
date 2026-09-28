@@ -120,6 +120,16 @@ def _scaled_add_wrong(x, y):
     return policies.ScaledBall(x.s + y.s, x.u + y.u, x.K)
 
 
+def _scaled_add_ignore_context(x, y):
+    """The G9 defect: the non-exact path uses x.K without checking x.K == y.K."""
+    if not isinstance(x, policies.ScaledBall) or not isinstance(y, policies.ScaledBall):
+        return policies.scaled_add(x, y)
+    g = qgcd(x.s, y.s)
+    A = int(x.s / g)
+    B = int(y.s / g)
+    return policies.ScaledBall(g, (A * x.u + B * y.u) % x.K, x.K)
+
+
 def _scaled_mul_residue_sum(x, y):
     if not isinstance(x, policies.ScaledBall) or not isinstance(y, policies.ScaledBall):
         return policies.scaled_mul(x, y)
@@ -247,6 +257,11 @@ def _m_scale_center_only(saved):
 @mutant("scaled sum adds the scales and the residues")
 def _m_scaled_add_wrong(saved):
     _patch(policies, "scaled_add", _scaled_add_wrong, saved)
+
+
+@mutant("scaled sum ignores a differing context (G9)")
+def _m_scaled_add_ignore_context(saved):
+    _patch(policies, "scaled_add", _scaled_add_ignore_context, saved)
 
 
 @mutant("scaled product adds the residues")

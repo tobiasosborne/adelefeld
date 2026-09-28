@@ -1,6 +1,6 @@
-# adelefeld: conventions, version 0.2 (work package 0.4, parts A and B)
+# adelefeld: conventions, version 0.3 (work package 0.4, parts A and B)
 
-Date: 2026-09-28. Status: **draft for the milestone-0 gate review; nothing is frozen.** Written by the lane
+Date: 2026-09-29. Status: **draft with the milestone-0 gate review applied; nothing is frozen.** Written by the lane
 `m0-conventions`. Read `SPEC.md` first. This document fixes, as a contract, what `PLAN.md` section 4 and 5 leave as
 a proposal: canonical forms and storage invariants, naming, aliasing and ownership, status codes, signs and
 normalisations, the text grammar, and the rules of the foreign-function interface. Two programmers who follow it
@@ -8,6 +8,19 @@ should write interchangeable code.
 
 ## Change log
 
+- **0.3 (2026-09-29), gate review applied.** The findings of `docs/reviews/m0-gate/review.md` that concern this
+  document and its reference are applied: G1 (scaled arithmetic obeys the context rules; the implicit global
+  fallback is limited to `adf_fball` and types containing it), G2 (the life cycle of `adf_modctx`: constructors
+  `adf_modctx_new_*` and `adf_modctx_free`, no inline allocation), G3 (the dump loader takes one binding per
+  context occurrence), G4 (C value-text round trips are not fixed points), G5 (idele and class arithmetic
+  validate the real sign of their result), G6 (a pole gives `DOMAIN` only for an exact pole), G7 (polynomial
+  coefficients: length `>= 0`, no exact-zero last coefficient), G8 (`max_items` bounds every context
+  occurrence), G10 (the phase width test of 11.3), G12 (the global predicate display), G13 (quotient-piece
+  constraints name the canonical triple), G14 (string and classification signatures), G15 (the real-character
+  root number is marked `[source pending]`). CV-11, CV-12, CV-29, CV-30, CV-35, CV-37, CV-39 and CV-41 are
+  replaced (by G1, G4, G14, G7, G3 and G7, G3, G2); the other 52 decisions are decided (section 13). The
+  reference `proto/text_grammar.py`, its tests and golden vectors changed with G3, G4, G7 and G8. G9, G11, G16
+  and the `PLAN.md` side of G1 are applied by another lane.
 - **0.2 (2026-09-28), part B.** Filled from the reviewed proofs (`docs/proofs/analysis.md`, `policies.md`,
   `ideles.md`, `quotient.md`, `catalogue.md`, `functions.md`), the seams sketch (`docs/seams.md` section 5) and the
   sources on disk (`docs/sources.md`, `refs/src/`). Sections 6.1 to 6.8 written (additive character with the
@@ -25,7 +38,8 @@ How to read it:
 
 - **DECISION CV-nn** (decided by the orchestrator, with the decision number `D1` to `D11`) and **DECISION
   (proposed) CV-nn** (a choice made here, open for the gate review), each with a one-line reason. All are collected
-  in section 13.
+  in section 13, which states for each its status after the gate review: decided (by the orchestrator, or accepted
+  by the review) or replaced (with the finding that replaced it).
 - Quotations are verbatim from the files on disk except that leading indentation and long runs of spaces from the
   PDF extraction are shortened, and control characters are written `\xNN`; " / " marks a line break.
 - FLINT's conventions are cited from the installed headers of FLINT 3.0.1 as `/usr/include/flint/<file>:<line>`
@@ -105,18 +119,18 @@ It is never stored in a context (`PLAN.md` section 4). Operations that involve n
 
 ### 2.3 Life cycle
 
-For every type `x`:
+For every value type `x` (a modulus context is not a value: it has constructors and `adf_modctx_free`, 4.6):
 
 | Function | Contract |
 |---|---|
-| `adf_x_init(x)` | sets the init value of section 5 (a valid canonical value). Types that need a context take it: `adf_scaled_init(x, ctx)` |
+| `adf_x_init(x)` | sets the init value of section 5 (a valid canonical value). Never fails; types that need a context take a successfully constructed one (4.6): `adf_scaled_init(x, ctx)` |
 | `adf_x_clear(x)` | releases all memory owned by `x`. After it `x` must not be used except by `init` |
 | `adf_x_set(y, x)` | `y` becomes a copy (same backend, same context pointer). `y` may be `x` |
 | `adf_x_swap(x, y)` | exchanges contents; O(1), no allocation; context pointers travel with the values |
 | `adf_x_is_canonical(x)` | returns 1 if the storage invariant of section 5 holds, else 0. Never aborts |
 | `adf_x_identical(x, y)` | representation identity (type, backend, context blocks, all fields) |
-| `adf_x_get_str`, `adf_x_set_str` | value form (section 9) |
-| `adf_x_dump_str`, `adf_x_load_str` | dump form (section 10) |
+| `adf_x_set_str`, `adf_x_get_str` | value form (section 9); `get_str` returns the allocated text and its byte length (8.1) |
+| `adf_x_load_str`, `adf_x_dump_str` | dump form (section 10); `dump_str` returns the text and its byte length (8.1) |
 
 Functions that cannot fail return `void` (as `arb_add`). Functions that can fail return `int`, a status (section
 3). Predicates return `int` 0 or 1.
@@ -137,7 +151,7 @@ section 3.3 is then the maximum. `PLAN.md` section 4 gives the names; `SPEC.md` 
 | `ADF_NOT_UNIQUE` | 4 | several candidates satisfy the problem (reconstruction, solving, `SPEC.md` 9.2) |
 | `ADF_NO_SOLUTION` | 5 | proved: no value satisfies the problem |
 | `ADF_NOT_UNIT` | 6 | proved: the value is not invertible (for example the exact 0) |
-| `ADF_DOMAIN` | 7 | proved: every point of the input lies outside the domain of the function (a ball that meets both the domain and its complement gives `ADF_NOT_DETERMINED`); or a constructor, parser or loader received data that violates the type's invariant (zero denominator, composite prime, non-finite real ball). Reported with the place, where there is one |
+| `ADF_DOMAIN` | 7 | proved: every point of the input lies outside the domain of the function (a ball that meets both the domain and its complement gives `ADF_NOT_DETERMINED`); or a constructor, parser or loader received data that violates the type's invariant (zero denominator, composite prime, non-finite real ball); or a stated context-compatibility requirement of the function fails (for example the two operands of a default `adf_scaled` operation have different context pointers, 5.4, gate finding G1). Reported with the place, where there is one |
 | `ADF_UNSUPPORTED` | 8 | valid request that version 1 does not implement (a prime or modulus above one word where a word is required, a dump of an unknown version, a complex branch that is not specified) |
 | `ADF_PARSE` | 9 | the text is not a sentence of the grammar of section 9 or 10 |
 | `ADF_LIMIT` | 10 | a resource limit was reached: a limit of section 8.4, a piece limit given as argument, a size bound of an algorithm |
@@ -150,20 +164,23 @@ to prove the opposite.
 
 | Class of function | Possible statuses |
 |---|---|
-| Ring arithmetic of `adf_rat`, `adf_fball`, `adf_adele`, `adf_cadele`, `adf_scaled` (add, sub, neg, mul, scale by exact rational, set predicates) | none: `void` |
+| Ring arithmetic of `adf_rat`, `adf_fball`, `adf_adele`, `adf_cadele` (add, sub, neg, mul, scale by exact rational) | none: `void` |
+| Ring arithmetic of `adf_scaled` (add, sub, neg, mul, scale by exact rational) | `OK`, `DOMAIN` (the context-compatibility rule of 5.4, gate finding G1); the value output is untouched on `DOMAIN` |
+| Set predicates (`equal_set`, `overlaps`, `contains`) | no status: they return `int` 0 or 1 (2.3; the other predicates likewise) |
 | Division of `adf_rat` by an `adf_rat`; scaling by the inverse of an exact rational | `OK`, `NOT_UNIT` (divisor exactly 0) |
 | Constructors from raw data (`_set_fmpz3`, `_set_arb_fball`, `adf_ucoset_set_fmpz2`, ...) | `OK`, `DOMAIN` |
+| Context constructors (`adf_modctx_new_*`, 5.14) | `OK`, `DOMAIN`, `UNSUPPORTED` (a prime power above one word) |
 | Parsers of the value form (`_set_str`) | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN`, `NOT_DETERMINED` (only the sign conditions of section 9.3 at the requested `prec`) |
 | Loaders of the dump form (`_load_str`) | `OK`, `PARSE`, `LIMIT`, `UNSUPPORTED`, `DOMAIN` |
 | Conversion to the local backend or to a scaled context | `OK`, `DOMAIN` (the set is not representable there without loss), `UNSUPPORTED` (the context has no word blocks) |
 | Conversion from tight to scaled | `OK` always; loss is reported in `int * lost` (`SPEC.md` 4.4: "says so") |
 | Adele to idele, inversion of an adele-like value | `OK`, `UNIT_NOT_CERTIFIED`, `NOT_UNIT` |
-| Unit coset, idele, idele class arithmetic | `OK`; `NOT_UNIT` only for an exact zero input where one is accepted |
+| Unit coset, idele, idele class arithmetic | `OK`, `NOT_DETERMINED` (the required real sign is not certified on the result, 5.7, gate finding G5); `NOT_UNIT` only for an exact zero input where one is accepted |
 | Functions at places (`_at`) and all-places functions (`SPEC.md` 9.3) | `OK`, `DOMAIN` (with place), `NOT_DETERMINED`, `NEEDS_SPLIT`, `UNSUPPORTED`, `LIMIT` |
 | Quotient by `Q` | `OK`, `NEEDS_SPLIT`, `LIMIT` |
-| Characters, Gauss sums, local factors | `OK`, `NOT_DETERMINED`, `DOMAIN` (a pole), `UNSUPPORTED` |
+| Characters, Gauss sums, local factors | `OK`, `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `DOMAIN` (for an exact pole), `UNSUPPORTED` |
 | Reconstruction and solvers | `OK`, `NO_SOLUTION`, `NOT_UNIQUE`, `NOT_DETERMINED` ("uniqueness not certified", `SPEC.md` 9.2), `LIMIT` |
-| Integrals, Poisson summation | `OK`, `DOMAIN` (outside the stated half-plane or at a pole), `NOT_DETERMINED`, `LIMIT` |
+| Integrals, Poisson summation | `OK`, `DOMAIN` (outside the stated half-plane, or at an exact pole), `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `LIMIT` |
 
 A function documents its own subset; it may not return a code outside its class's row.
 
@@ -209,9 +226,9 @@ Tests: every binary operation is tested with `(x, x, y)`, `(y, x, y)` and `(x, x
 - A value **borrows** its modulus context (`const adf_modctx_struct *`); it never frees or changes it.
 - Arrays passed to a constructor (block lists, coefficient lists) are copied; the caller keeps ownership.
 - Strings passed in are read during the call only; never retained.
-- Strings returned (`_get_str`, `_dump_str`) are allocated with `flint_malloc` and freed by the caller with
-  `flint_free` (`flint.h:201-204`), as for `arb_dump_str` (`arb.h:1088`) and `fmpz_get_str` (`fmpz.h:349`). The
-  library also exports `adf_str_free(char *)`, which calls `flint_free`.
+- Strings returned (`_get_str`, `_dump_str`) are allocated with `flint_malloc` and carry their byte length (8.1,
+  gate finding G14); the caller frees them with `adf_str_free(char *)`, which calls `flint_free`
+  (`flint.h:201-204`), as for `arb_dump_str` (`arb.h:1088`) and `fmpz_get_str` (`fmpz.h:349`).
 - Scratch space is allocated inside a call and released before it returns. There is no caller-visible scratch
   argument in version 1.
 
@@ -236,14 +253,16 @@ and leaves the output untouched. DECISION (proposed) CV-07; reason: a status the
 the one case the specification demands it.
 
 Implementation note (not a contract): the rule costs nothing for functions that cannot fail (`void`), and for
-functions that fail before writing. Others compute into temporaries and `swap` at the end.
+functions that fail before writing. Others compute into temporaries and `swap` at the end. A context constructor
+is not an `init`: it writes `*out` only on success, and no initialised-but-failed context state exists (gate
+finding G2, 4.6).
 
 ### 4.4 Invalid input
 
 | Input | Behaviour |
 |---|---|
 | Non-finite real or complex ball (`arb_is_finite` false, `arb.h:134`) given to a constructor | `ADF_DOMAIN`, output untouched |
-| Non-finite ball produced inside a computation from finite inputs | never stored; the function returns `ADF_NOT_DETERMINED` (or `ADF_DOMAIN` if a pole is proved). DECISION (proposed) CV-08; reason: the invariants of section 5 require finite balls |
+| Non-finite ball produced inside a computation from finite inputs | never stored; the function returns `ADF_NOT_DETERMINED` (or `ADF_DOMAIN` at a proved exact pole of a local factor or integral; a ball meeting a pole and also regular points gives `ADF_NOT_DETERMINED`, 6.4). DECISION (proposed) CV-08; reason: the invariants of section 5 require finite balls |
 | Zero denominator, negative radius, modulus `<= 0` where `>= 1` is required, `gcd(c, N) != 1` for a unit coset, composite `p` | `ADF_DOMAIN` from constructors, parsers and loaders |
 | Non-canonical value passed to a public function | precondition violation: behaviour undefined. With `-DADF_CHECK_INVARIANTS` every public function checks `adf_x_is_canonical` on entry and calls `flint_abort` with a message. DECISION (proposed) CV-09; reason: checking a gcd on every add would dominate the cost that `PERF.md` measures |
 | Aliasing forbidden by 4.1 | undefined behaviour |
@@ -256,21 +275,34 @@ A value that came out of any public function, parser or loader with `ADF_OK`, or
 - No global mutable state in the library (`SPEC.md` 10.1). Functions are reentrant.
 - A value may be read concurrently by several threads; it must not be written while another thread reads or
   writes it.
-- A context is immutable after `init` and may be read concurrently by any number of threads.
+- A context is immutable after construction (4.6) and may be read concurrently by any number of threads.
 - FLINT keeps thread-local caches of constants (`ARB_DEF_CACHED_CONSTANT`, `arb.h:621-642`, declared with
   `FLINT_TLS_PREFIX`, `flint.h:156-160`) and registers cleanup functions (`arb.h:634`). These are FLINT's, per
   thread; they are not state of ours. A thread that used real functions should call FLINT's cleanup before it
   exits [source pending: FLINT documentation of `flint_cleanup`].
 - The library never calls `flint_set_num_threads` and starts no threads.
 
-### 4.6 Contexts: lifetime
+### 4.6 Contexts: lifetime and construction
 
 DECISION (proposed) CV-10: **modulus contexts are caller-owned with a stated lifetime, not reference counted.**
 
-Contract: the caller initialises a context with `adf_modctx_init_*`, may use it for any number of values, and calls
-`adf_modctx_clear` only after every value that refers to it has been cleared or moved to another context or backend.
-Clearing a context that a live value refers to is undefined behaviour. With `-DADF_CHECK_INVARIANTS` a context
-counts the values that refer to it (atomically) and `adf_modctx_clear` aborts if the count is not zero.
+Construction and ownership (gate finding G2): an `adf_modctx_struct` is incomplete in the public header. The
+library exports explicit context constructors named `adf_modctx_new_*`, taking `adf_modctx_struct **out` as their
+first argument, and `adf_modctx_free(adf_modctx_struct *ctx)`. A successful constructor allocates and fully
+initializes an immutable context and writes its pointer to `*out`. On failure `*out` is untouched and no
+allocation is retained. The caller owns the returned context and frees it only after its borrowers are gone.
+Passing NULL to free does nothing. A constructor does not replace or free a previous `*out`.
+No public by-value or array-of-one context type requires the layout of the incomplete struct.
+Value init functions remain non-failing and require successfully constructed contexts where stated.
+Version 1 offers no inline allocation of a context: a size query without an alignment query and without an
+initialization ABI is not offered as a choice (the review allows inline allocation only if size, alignment,
+signatures and the successful and failed states are all specified).
+
+Lifetime contract: the caller constructs a context with `adf_modctx_new_*` (5.14), may use it for any number of
+values, and calls `adf_modctx_free` only after every value that refers to it has been cleared or moved to another
+context or backend. Freeing a context that a live value refers to is undefined behaviour. With
+`-DADF_CHECK_INVARIANTS` a context counts the values that refer to it (atomically) and `adf_modctx_free` aborts if
+the count is not zero.
 
 Reasons:
 
@@ -281,15 +313,23 @@ Reasons:
    line.
 3. No operation needs to create a context: see the next rule.
 
-Consequence: **no operation creates a context implicitly.** Where `SPEC.md` 4.1 allows a result that leaves its
-context to "fall back to the global backend or be given a new context", version 1 always falls back to the global
-backend, unless the caller passes a target context as an argument. DECISION (proposed) CV-11; reason: a context
-created inside a call would have no owner.
+Consequence: **no operation creates a context implicitly** (gate findings G1 and G2). Where `SPEC.md` 4.1 allows
+a result that leaves its context to "fall back to the global backend or be given a new context", the implicit
+global fallback applies only to `adf_fball` and types containing it. A default binary operation on `adf_scaled`
+requires the same context pointer in both inputs; otherwise it returns `ADF_DOMAIN` with its value output
+untouched. This check precedes writes, including aliased writes. The result borrows that input context. Exact
+operands follow the same context rule. To combine different contexts, the caller constructs a context with
+modulus `lcm(K, K')`, converts both operands to it without loss, and then calls the ordinary operation. No
+operation creates this context. A separately named target-context operation may take an explicit caller-owned
+context; its conversion loss and output context must be documented. DECISION CV-11 and CV-12 are **replaced** by
+this rule (gate finding G1): their earlier wording sent such a result global, which `adf_scaled` cannot store
+(its context is never NULL), and referred to contexts that no operation may create.
 
-Other context rules: a context never changes after `init` (`PLAN.md` section 4); two contexts with the same blocks
-in the same order are interchangeable for every operation except `adf_x_identical`; operations on two local values
-with different context pointers give a global result, even if the blocks agree. DECISION (proposed) CV-12; reason:
-comparing block lists on every operation costs more than the conversion it saves.
+Other context rules: a context never changes after construction (`PLAN.md` section 4); two contexts with the same
+blocks in the same order are interchangeable for every operation except `adf_x_identical`. For `adf_fball` and
+types containing it, operations on two local values with different context pointers give a global result, even if
+the blocks agree (the fallback above); reason: comparing block lists on every operation costs more than the
+conversion it saves.
 
 ## 5. Canonical forms and storage invariants
 
@@ -326,7 +366,7 @@ Meaning: the set `(A + H Zhat)/d`, centre `a = A/d`, radius `N = H/d` (`SPEC.md`
 Predicate `G(A, H, d)` (`SPEC.md` 4.1, D2), for `backend == ADF_GLOBAL`:
 
     mctx == NULL and res == NULL and d > 0 and H >= 0 and
-    ( H > 0 and 0 <= A < H and gcd(A, H, d) = 1 )  or  ( H = 0 and gcd(A, d) = 1 )
+    ((H > 0 and 0 <= A < H and gcd(A, H, d) = 1) or (H = 0 and gcd(A, d) = 1))
 
 - Init: the exact 0, `(A, H, d) = (0, 0, 1)`. DECISION (proposed) CV-13; reason: as `fmpq_init` and `arb_init`, and
   `0 mod 1` would be a guess.
@@ -387,7 +427,7 @@ Predicate `L(x)`, for `backend == ADF_LOCAL`, with `k = mctx->nblocks`:
   |---|---|
   | negation | local, `(d; -r_i mod q_i)`, exact (P21.1) |
   | sum | local, `(L; (r_i L/d + s_i L/e) mod q_i)`, `L = lcm(d, e)`, exact and tight (P21.2) |
-  | product | with `h = product of gcd(r_i, s_i, q_i)`: if `h = 1`, the blockwise product `(d e; r_i s_i mod q_i)` is tight and local; if `h > 1` and `h` divides `d e`, local `(d e/h; ...)` by the formula of P22.3; otherwise the tight product needs the derived blocks `q_i h_i` (P22.4) and is returned global (CV-11), or in a derived context passed by the caller. The blockwise product with `h > 1` is only an enclosure (P22.2) and is not the tight product |
+  | product | with `h = product of gcd(r_i, s_i, q_i)`: if `h = 1`, the blockwise product `(d e; r_i s_i mod q_i)` is tight and local; if `h > 1` and `h` divides `d e`, local `(d e/h; ...)` by the formula of P22.3; otherwise the tight product needs the derived blocks `q_i h_i` (P22.4) and is returned global (the fallback of 4.6, gate finding G1), or in a derived context passed by the caller. The blockwise product with `h > 1` is only an enclosure (P22.2) and is not the tight product |
   | exact scalar `m/n` | local `(n d/abs(m); sign(m) r_i mod q_i)` if `abs(m)` divides `d` (P23); otherwise global; `0` gives the exact 0 |
 
 - **Inverses modulo blocks** (policies P25 and its rules for the C code): a modular inverse is computed only of an
@@ -395,7 +435,8 @@ Predicate `L(x)`, for `backend == ADF_LOCAL`, with `k = mctx->nblocks`:
   `gcd(d, q_i) = 1`). The denominator is applied after recombination and never inverted modulo a block it shares a
   factor with (`SPEC.md` 4.1). A residue of the ball modulo `q_i` exists and may be reported only when
   `gcd(d, q_i) = 1` (P25.2); a solution of `d x = A mod q_i` is never reported as a residue of the value.
-- Results that leave the context (a changed `K`, or two different context pointers) are global (CV-11, CV-12).
+- Results that leave the context (a changed `K`, or two different context pointers) are global: the implicit
+  fallback of 4.6 applies to `adf_fball` and types containing it (gate finding G1).
 
 ### 5.4 Scaled value (policy 2 of `SPEC.md` 4.4)
 
@@ -418,7 +459,8 @@ Predicate `L(x)`, for `backend == ADF_LOCAL`, with `k = mctx->nblocks`:
   scales being a scale, which holds for `Q` (and `F_q[T]`) but not for number fields; no function returns "the
   canonical scale" of a result as part of the contract (seams R7, adopted by D8).
 
-Operations (source: `docs/proofs/policies.md` section 2; `s, t > 0`, context `K`):
+Operations (source: `docs/proofs/policies.md` section 2; `s, t > 0`, context `K`; a default binary operation
+requires the same context pointer in both inputs, 4.6):
 
 | Operation | Result | Source |
 |---|---|---|
@@ -430,11 +472,15 @@ Operations (source: `docs/proofs/policies.md` section 2; `s, t > 0`, context `K`
 | two exact values | the exact result, `exact = 1` (the tag is kept) | policies Definition 4 |
 | conversion from a tight ball `c + R Zhat` | `s* = gcd(c, R/K)`, `u* = (c/s*) mod K`; best enclosure; `lost` when `c K/R` is not an integer | policies P7, L6 |
 | conversion to context `K'` | `s' = s gcd(u, K/K')`, `u' = (s u/s') mod K'`; best; exact when `u K'/K` is an integer, always when `K` divides `K'` | policies P11 |
-| two contexts `K`, `K'` | convert both to `lcm(K, K')` (lossless), then operate | policies C12 |
+| two contexts `K`, `K'` | no default operation combines them; the caller rule of 4.6 (gate finding G1) applies | policies C12 |
 
 DECISION CV-48 (D5): the product of `SPEC.md` 4.4 is the default `adf_scaled_mul`; the tight variant of policies
 P10 is the separately named `adf_scaled_mul_tight`; reason (orchestrator): the specification's rule stays, and the
 tight rule needs a gcd and an exact division that the default kernel avoids.
+
+To combine two different context pointers, the caller constructs the context `lcm(K, K')` (5.14), converts both
+operands with the row "conversion to context `K'`" (lossless, since `K` divides `lcm(K, K')`), and then calls the
+ordinary operation. No operation creates this context (gate finding G1).
 
 The absolute cap (policy 3) stores plain `adf_fball` values; the cap `C`, a positive rational, is an argument of the
 capped operations, not a field (CV-23, proposed; reason: `SPEC.md` 4.4 says "the radius stays with each value").
@@ -510,6 +556,13 @@ Predicate:
 - Idele predicate: `arb_is_finite(inf)` and `arb_is_nonzero(inf)` (`arb.h:240`: the ball excludes 0);
   `fmpq_is_canonical(r)` and `r > 0`; `u` satisfies 5.6.
 - Class predicate: `arb_is_finite(t)` and `arb_is_positive(t)` (`arb.h:241`); `u` satisfies 5.6.
+- **Result sign check** (gate finding G5): idele and idele-class arithmetic validates the required real sign on
+  its result before committing it. A kernel may use sign-preserving endpoint bounds and a suitable enclosing
+  midpoint-radius ball. If it cannot produce a finite ball with the required sign, it returns
+  `ADF_NOT_DETERMINED` and leaves the value output untouched. Failure to preserve a sign under enclosure is never
+  `ADF_NOT_UNIT`. The rule applies to multiplication and division, inversion, powers and class conversion alike:
+  the predicate above must hold of the committed result, and an ordinary rounded product that loses the sign is
+  not a result of this type.
 - Signs (`SPEC.md` 5): the finite part is `r u` with `r > 0`; the sign of the finite coordinates is carried by the
   unit. The real sign is in `inf`. The class of an idele is `t = |x_inf| / r`, `u' = sign(x_inf) u`.
 - The idele of an exact rational `q != 0`: `inf` an enclosure of `q` at `prec`, `r = |q|`, `u = [sign(q) mod 0]`.
@@ -591,9 +644,14 @@ Source: `docs/proofs/quotient.md` (reviewed) and `docs/proofs/analysis.md` Lemma
 - LIFT: `len = 1`; `piece[0]` is any adele (5.5); the value is its class modulo `Q` ("always available, always
   exact as a set", `SPEC.md` 6).
 - PIECES: `len >= 1`; the value is the union of the images in `A/Q` of the pieces. Each piece is an adele
-  `J x (m + N Zhat)` with a finite part inside `Zhat` of integer radius: `d = 1`, `N = H >= 1` and `0 <= m < N`, or
-  `N = 0` and `m` an integer (quotient P5, P10 remark). The gluing rule: `(1 ; z)` is the point `(0 ; z - 1)`
-  (quotient P3).
+  `J x (m + N Zhat)` with a finite part inside `Zhat` of integer radius (quotient P5, P10 remark). In the PIECES
+  invariant and order keys, `A, H, d` always denote the finite part's canonical global triple (5.2, `SPEC.md`
+  4.1), including when its storage is local. Require `d = 1`, `H >= 0`, and the global centre range of 5.2; so
+  the finite set is `m + N Zhat` with `N = H >= 1` and `0 <= m < N`, or `N = 0` and `m` an integer. The real
+  midpoint must lie in `[0, 1]`. These are storage predicates only. A reduction operation must separately ensure
+  that each output encloses its constructed exact closed piece; the predicate alone does not certify provenance,
+  tightness or a bound on the amount of rounding (gate finding G13). The gluing rule: `(1 ; z)` is the point
+  `(0 ; z - 1)` (quotient P3).
 - **The invariant that replaces "inside `[0, 1]`".** DECISION CV-45 (D4): a piece's real part is a closed real ball
   whose **midpoint lies in `[0, 1]`**; the ball itself may reach beyond `[0, 1]` by the outward rounding of the
   enclosure. Its meaning is unchanged: every point `(s, z)` of a piece denotes its class in `A/Q`, which is defined
@@ -613,8 +671,9 @@ Source: `docs/proofs/quotient.md` (reviewed) and `docs/proofs/analysis.md` Lemma
   the limit: `ADF_LIMIT` (3.1). A function that may return one piece only returns `ADF_NEEDS_SPLIT` when the image
   needs more than one piece.
 - **Canonical order of pieces** (storage and printing): increasing by the exact lower end of the real part, then
-  its upper end, then `N`, then `m`; no two pieces identical (CV-24, proposed; reason: any fixed order makes the
-  printed form unique, this one is cheap). The value form orders by the printed real parts (9.4).
+  its upper end, then `N`, then `m` (the canonical triple's `H` and `A`, never raw local data); no two pieces
+  identical (CV-24, proposed; reason: any fixed order makes the printed form unique, this one is cheap). The
+  value form orders by the printed real parts (9.4).
 - **Equality of two unions** is decided by the canonical form of quotient P9 (common modulus `N'`, the sets `T_m` in
   `[0, 1)`), exactly when the end points are exact; for balls the function returns `ADF_CMP_UNDECIDED` unless the
   sets are certainly equal or certainly different.
@@ -638,8 +697,12 @@ Source: `docs/proofs/quotient.md` (reviewed) and `docs/proofs/analysis.md` Lemma
     typedef struct { acb_poly_t P; acb_t A, B, C; } adf_rterm_struct;  /* P(x) exp(-pi A x^2 + B x + C) */
     typedef struct { slong len; adf_rterm_struct * term; } adf_rfun_struct;
 
-- Predicate: `len >= 0`; for each term: `P` has length `>= 1` and finite coefficients; `A, B, C` finite; `Re(A) > 0`
-  certified (`arb_is_positive` of the real part of `A`, `arb.h:241`) (`SPEC.md` 7).
+- Predicate: `len >= 0`; for each term: `P` is a normalized `acb_poly` with length `>= 0` and finite
+  coefficients; its last coefficient, if any, is not the exact zero ball; `A, B, C` finite; `Re(A) > 0`
+  certified (`arb_is_positive` of the real part of `A`, `arb.h:241`) (`SPEC.md` 7). Length 0 is the zero
+  polynomial. Terms may retain a zero `P`; term order is unchanged. The value grammar admits `P=[]` and removes
+  exact trailing zero coefficients on input; the printer prints the resulting coefficient list. A ball merely
+  containing zero is not trimmed (gate finding G7).
 - No normal form; terms are kept in the stored order (CV-20).
 - Init: `len = 0` (the zero function).
 
@@ -676,14 +739,17 @@ modulo `q`, as numbered by FLINT's `dirichlet` module (`dirichlet.h:37`, "conrey
 Opaque (section 12). Contents, not part of the interface: `K >= 1` (an `fmpz`); `k >= 0` word blocks
 `q_1, ..., q_k`, pairwise coprime, `2 <= q_i < 2^64`, in the order supplied, with product `K` when `k >= 1`; an
 `nmod_t` per block (`nmod_init`, `nmod.h:212`); for each block whether it is a certified prime power and its prime;
-recombination data. Constructors:
+recombination data. The type is incomplete in the public header (4.6, gate finding G2). A context has no init
+value and no `init`/`clear`: it exists only after a successful constructor. A constructor writes its pointer to
+the `adf_modctx_struct **out` first argument on success; on failure `*out` is untouched and the status below is
+returned. `adf_modctx_free` releases a context. Constructors:
 
 | Constructor | Blocks |
 |---|---|
-| `adf_modctx_init_blocks(ctx, q, k)` | as supplied; `ADF_DOMAIN` unless pairwise coprime and each `>= 2` |
-| `adf_modctx_init_prime_powers(ctx, p, e, k)` | `p_i^e_i`, primes certified; `ADF_DOMAIN` on a composite or repeated prime; `ADF_UNSUPPORTED` if a power exceeds a word |
-| `adf_modctx_init_fmpz(ctx, K)` | one block `K` if `2 <= K < 2^64`; none if `K = 1` or `K >= 2^64` (then only the scaled policy can use it) |
-| factorial `k!`, powers of a primorial | the prime powers of `K` in increasing order of the prime. DECISION (proposed) CV-21; reason: the factorisation is known, and prime-power blocks serve operations that name a prime |
+| `adf_modctx_new_blocks(out, q, k)` | as supplied; `ADF_DOMAIN` unless pairwise coprime and each `>= 2` |
+| `adf_modctx_new_prime_powers(out, p, e, k)` | `p_i^e_i`, primes certified; `ADF_DOMAIN` on a composite or repeated prime; `ADF_UNSUPPORTED` if a power exceeds a word |
+| `adf_modctx_new_fmpz(out, K)` | one block `K` if `2 <= K < 2^64`; none if `K = 1` or `K >= 2^64` (then only the scaled policy can use it) |
+| factorial `k!` (`adf_modctx_new_factorial`), powers of a primorial | the prime powers of `K` in increasing order of the prime. DECISION (proposed) CV-21; reason: the factorisation is known, and prime-power blocks serve operations that name a prime |
 
 The local backend needs `k >= 1`; conversion into a context with `k = 0` returns `ADF_UNSUPPORTED`.
 
@@ -780,8 +846,11 @@ non-units (for `C = 1`, `chi(n) = 1` for every `n`), and `chi(-1) = (-1)^e`.
 - **Root number:** `W_chi = tau(chi) / (i^e sqrt(C))`, with `Lambda(s, chi) = W_chi Lambda(1 - s, conj(chi))`,
   `Lambda(s, chi) = C^((s+e)/2) pi^(-(s+e)/2) Gamma((s+e)/2) L(s, chi)`, `|W_chi| = 1`,
   `W_chi W_conj(chi) = 1` (analysis P13). The root number uses the positive finite Gauss sum although the finite
-  Fourier kernel is negative (analysis P13, last sentence). For a real character `W_chi = 1` (the golden vectors
-  include `(3, 2)`, `(4, 3)`, `(5, 4)`, `(7, 6)`, `(8, 3)`, `(8, 5)`, `(8, 7)`, `(12, 11)`).
+  Fourier kernel is negative (analysis P13, last sentence). For a real primitive character `W_chi = 1`
+  [source pending: a local source or proof of the signed primitive quadratic Gauss sum evaluation]. Until that
+  evaluation is supplied, compute `W_chi` by the same finite Gauss-sum formula used for other characters. The
+  real-character golden vectors (`(3, 2)`, `(4, 3)`, `(5, 4)`, `(7, 6)`, `(8, 3)`, `(8, 5)`, `(8, 7)`,
+  `(12, 11)`) are finite checks of examples, not its proof (gate finding G15).
 - **Local constants at a prime** (analysis P9) for a quasi-character `eta` of `Q_p^x` with `alpha = eta(p)`, unit
   restriction `eta_0` and conductor exponent `a`, with the local functional equation
   `Z_p(F_c f, eta^(-1), 1 - s) = gamma_p(s, eta) Z_p(f, eta, s)`:
@@ -799,6 +868,10 @@ non-units (for `C = 1`, `chi(n) = 1` for every `n`), and `chi(-1) = (-1)^e`.
   `gamma_inf(s, eta) = i^e pi^(s-1/2) Gamma((1-s+e)/2) / Gamma((s+e)/2)`, `L_inf(s, eta) = pi^(-(s+e)/2)
   Gamma((s+e)/2)`, `epsilon_inf = i^e`. Poles of the trivial factors: `s = 0, -2, -4, ...` at the real place,
   `s = 2 pi i k / log p` at `p`; a ball meeting a pole returns a status, never a finite ball (`SPEC.md` 9.3.7).
+  For a local factor or integral, an exact input at a proved nonremovable pole returns `ADF_DOMAIN`. An input ball
+  meeting a pole and also containing regular points returns `ADF_NOT_DETERMINED`. Both leave the value output
+  untouched. The same rule applies if exclusion of poles is undecided. No non-finite ball is stored. A separately
+  documented report may distinguish proved intersection with a pole from undecided intersection (gate finding G6).
 - Names: `adf_char_gauss_sum` (returns `tau` of the stored primitive character), `adf_char_root_number` (`W`),
   `adf_local_gamma_at`, `adf_local_epsilon_at`, `adf_local_zeta_factor_at`. DECISION (proposed) CV-60; reason: the
   names say which object is meant; `tau` and `G_minus` differ in sign and must not share a name. The golden file
@@ -912,10 +985,12 @@ object.
 ### 8.1 Interface
 
     int adf_x_set_str(adf_x_t x, const char * s, size_t len, [slong prec,] const adf_text_limits_t * lim);
-    char * adf_x_get_str(const adf_x_t x, [slong digits]);          /* value form, flint_malloc */
+    char * adf_x_get_str(size_t * len, const adf_x_t x, [slong digits]);   /* value form, flint_malloc */
     int adf_x_load_str(adf_x_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
-                       const adf_text_limits_t * lim);
-    char * adf_x_dump_str(const adf_x_t x);                          /* dump form, flint_malloc */
+                       const adf_text_limits_t * lim);           /* one context: the 10.2 convenience */
+    int adf_x_load_str_binds(adf_x_t x, const char * s, size_t len, const adf_modctx_struct ** binds,
+                             size_t nbinds, const adf_text_limits_t * lim);   /* one binding per occurrence */
+    char * adf_x_dump_str(size_t * len, const adf_x_t x);         /* dump form, flint_malloc */
 
 - The input is the `len` bytes at `s`; it need not be NUL-terminated, and a NUL byte inside it is an error
   (`ADF_PARSE`). DECISION (proposed) CV-25; reason: a NUL-terminated interface silently truncates at an embedded
@@ -923,7 +998,9 @@ object.
 - `prec` is present for the types with a real or complex part; `digits` likewise (default `ADF_DIGITS_DEFAULT = 20`,
   `1 <= digits <= 10^6`).
 - `lim = NULL` means the defaults of 8.4.
-- Output strings contain no NUL, no leading or trailing whitespace, and no newline.
+- A returned string is an output in the order of 2.2: `len` receives its byte length. The `len` bytes are ASCII
+  without embedded NUL; a terminating NUL is stored at `s[len]` and is not counted in `len`. The caller frees the
+  pointer with `adf_str_free`. The text has no leading or trailing whitespace and no newline (gate finding G14).
 
 ### 8.2 Alphabet and whitespace
 
@@ -952,7 +1029,7 @@ three tokens `5 mod 6`; `1 e5` is `1` followed by the unknown keyword `e`).
 | `max_len` | 1048576 bytes | the whole input, value form and dump |
 | `max_exp10` | 100000 | the absolute value of the exponent of a decimal (`1e100001` is over) |
 | `max_prec` | 100000 | the absolute value of `N` in `O(p^N)`, of the fields `v` and `N` of a dumped local ball |
-| `max_items` | 1048576 | `D M` of `ffun`; the number of pieces, terms, places, polynomial coefficients, blocks |
+| `max_items` | 1048576 | `D M` of `ffun`; the number of pieces, terms, places, polynomial coefficients, and the block count of every context occurrence (10.2) |
 
 DECISION (proposed) CV-27; reason: each bounds the memory and time that a short input can demand (a 16-byte
 `O(5^99999999999)` would otherwise ask for a 2^38-bit modulus). The limits are arguments, not global state.
@@ -968,7 +1045,9 @@ The first failing stage determines the status; the output is untouched (4.3).
 3. The grammar (section 9.2 or 10): `ADF_PARSE`. For the dump: first the header; an unknown version is
    `ADF_UNSUPPORTED` at this point, before the body is read.
 4. Limits on literals and counts (8.4): `ADF_LIMIT`. Checked on the digit strings, before any big number is
-   formed.
+   formed. Every count limit is applied to every occurrence before any semantic check of stage 6, whatever field
+   fails later: for a context this is its block count, including contexts nested in finite balls, adeles and
+   quotient pieces (gate finding G8).
 5. Word restrictions: a prime `p` or a character modulus `q` `>= 2^64`: `ADF_UNSUPPORTED`.
 6. Semantic constraints (section 9.3, and the predicates of section 5 for the dump): `ADF_DOMAIN`.
 7. Only in C, for a real or complex part: a sign condition that holds for the exact decimal interval but not for
@@ -1013,8 +1092,8 @@ There is no `+` sign on a number (only in an exponent), no `.5`, no `5.`, no hex
     sball_v   = "{" , [ sentry , { ";" , sentry } ] , "}" ;
     qclass_v  = adele_v , "+" , "Q"  |  "union" , "(" , adele_v , { "," , adele_v } , ")" , "+" , "Q" ;
     ffun_v    = "ffun" , "(" , "D" , "=" , uint , "," , "M" , "=" , uint , ";" , complex , { "," , complex } , ")" ;
-    rterm     = "term" , "(" , "P" , "=" , "[" , complex , { "," , complex } , "]" , "," , "A" , "=" , complex ,
-                "," , "B" , "=" , complex , "," , "C" , "=" , complex , ")" ;
+    rterm     = "term" , "(" , "P" , "=" , "[" , [ complex , { "," , complex } ] , "]" , "," , "A" ,
+                "=" , complex , "," , "B" , "=" , complex , "," , "C" , "=" , complex , ")" ;
     rfun_v    = "rfun" , "(" , [ rterm , { "," , rterm } ] , ")" ;
     char_v    = "char" , "(" , "q" , "=" , uint , "," , "n" , "=" , uint , "," , "s" , "=" , complex , ")" ;
 
@@ -1027,7 +1106,8 @@ Meaning: `real` is the closed interval `[m - r, m + r]`, `m` the value of `dec`,
 `a + p^N Z_p` (`O(p)` means `N = 1`); the idele `(x ; r * [c mod N])` is `x_inf = x`, finite part `r c U(N)`;
 the class `<t ; u>`; the partial ball lists its places; the qclass is the class modulo `Q` of an adele, or the
 union of pieces with the gluing rule; `ffun(D=, M=; f_0, ..., f_{L-1})` has `f_j = f(j/D)`; a term is
-`P(x) exp(-pi A x^2 + B x + C)` with `P = [c_0, c_1, ...]`, `c_k` the coefficient of `x^k`; `char(q=, n=, s=)` is
+`P(x) exp(-pi A x^2 + B x + C)` with `P = [c_0, c_1, ...]`, `c_k` the coefficient of `x^k` (`P = []` is the zero
+polynomial; exact trailing zero coefficients are removed on input, 5.12, gate finding G7); `char(q=, n=, s=)` is
 `t^s chi(u')` with the Conrey label `n` modulo `q`.
 
 ### 9.3 Semantic constraints
@@ -1042,7 +1122,7 @@ union of pieces with the gluing rule; `ffun(D=, M=; f_0, ..., f_{L-1})` has `f_j
 | | `p` prime (`n_is_prime`, `ulong_extras.h:335`) | `DOMAIN` |
 | | the base inside `O(...)` equals `p`; `abs(N) <= max_prec` (the latter is stage 4: `LIMIT`) | `DOMAIN` |
 | `sball_v` | at most one `inf` entry; no prime twice | `DOMAIN` |
-| `qclass_v`, form `union` | each piece: the midpoint of `real` in `[0, 1]` (5.10, CV-45); the finite part is an integer with `mod` an integer (or no `mod`) | `DOMAIN` |
+| `qclass_v`, form `union` | each piece: the midpoint of `real` in `[0, 1]` (5.10, CV-45); the finite part's canonical triple has `d = 1` and the centre range of 5.2 (5.10) | `DOMAIN` |
 | `ffun_v` | `D >= 1`, `M >= 1`; `D M <= max_items` (stage 4: `LIMIT`); number of values `= D M` | `DOMAIN` |
 | `rterm` | the exact interval of the real part of `A` lies in `(0, infinity)` | `DOMAIN` |
 | `char_v` | `q < 2^64` (`UNSUPPORTED`); `q >= 1`; `gcd(n mod q, q) = 1` | `DOMAIN` |
@@ -1058,7 +1138,8 @@ Canonicalisation performed by the parser (non-canonical but valid input): leadin
 `-0` becomes `0`; a finite centre reduced into `[0, N)`; `mod 0` dropped; a bare `a mod N` becomes `(* ; a mod N)`;
 unit residues reduced into `1..N` (the stored modulus stays as written, CV-17; the printed one is normal); a local
 centre reduced to its canonical representative (5.8), `O(p)` printed `O(p^1)`; partial-ball entries sorted by place;
-duplicate pieces removed; a character lowered to its primitive character; `n` reduced; decimals rewritten by 9.5.
+duplicate pieces removed; a character lowered to its primitive character; `n` reduced; exact trailing zero
+coefficients of `P` removed (5.12); decimals rewritten by 9.5.
 
 ### 9.4 Printing templates
 
@@ -1081,7 +1162,7 @@ numerator, `0` for zero. `r(x)` prints a real ball by 9.5, `z(x)` a complex ball
 | `adf_sball` | `{E; E; ...}` in canonical place order; `E` is `inf: r(x)` (real tag), `inf: z(x)` (complex tag) or `p=P: L`; no places: `{}` |
 | `adf_qclass` | lift: `(r ; F) + Q`; pieces: `union(X, X, ...) + Q`, `X = (r ; F)`, sorted like 5.10 but by the exact end points of the *printed* real parts, each distinct printed piece once (printing can make two pieces equal or change their order; this keeps the text a fixed point) |
 | `adf_ffun` | `ffun(D=D, M=M; z(f_0), z(f_1), ...)` |
-| `adf_rfun` | `rfun(T, T, ...)`, `T = term(P=[z(c_0), ...], A=z(A), B=z(B), C=z(C))`; zero function `rfun()` |
+| `adf_rfun` | `rfun(T, T, ...)`, `T = term(P=[z(c_0), ...], A=z(A), B=z(B), C=z(C))` with no exact-zero last coefficient (`P=[]` for the zero polynomial); zero function `rfun()` |
 | `adf_char` | `char(q=q, n=n, s=z(s))` |
 
 Examples (all in `tests/golden/`): `7/3`; `(3.14159 +/- 1e-5 ; 5/3 mod 6)`; `(* ; 2 mod 6)`; `[p=5: 3 + O(5^4)]`;
@@ -1115,7 +1196,8 @@ superfluous zeros (`2.5`, `0.0001`, `1250`, `100000000000000000000`); else `d.dd
 point only if `k > 1`, and the exponent without `+` and without leading zeros (`1e-5`, `1.5e-30`, `3e21`). A minus
 sign precedes a negative number.
 
-Properties (checked by the reference): the printed interval `[M - R, M + R]` contains `[mid - rad, mid + rad]`,
+Properties (checked by the exact-rational reference parser; a C parser reads a decimal as a rounded ball and its
+round trip is in 9.6, gate finding G4): the printed interval `[M - R, M + R]` contains `[mid - rad, mid + rad]`,
 since `R >= rad + |M - mid|`; the loop of step 5 ends, because `q` increases strictly, and once `q >= X(rad) + 1`
 (if `rad > 0`) and `q >= X(mid) - n + 2` the next `q'` is at most `q` (then `|M - mid| <= 10^q / 2` and
 `rad < 10^q` give `X(R) <= q`, and `X(M) <= max(X(mid) + 1, q)`); printing is idempotent on its own output (a
@@ -1143,9 +1225,10 @@ argument above, with `k` for 2), so the least level of the text read back is at 
 repetition happens only when it is strictly smaller; the levels decrease from the first one towards 2. The result
 satisfies the condition, contains the value (each step is an enclosure) and is a fixed point of printing.
 
-DECISION (proposed) CV-29: this algorithm, with default `n = 20`; reason: it is exactly specified (two
-implementations print the same text for the same `arb`), it never loses the enclosure, and like `arb_get_str`
-(`arb.h:168`) it drops midpoint digits that the radius makes meaningless.
+DECISION CV-29 (**replaced** by gate finding G4): this algorithm, with default `n = 20`; reason: it is exactly
+specified (two implementations print the same text for the same `arb`), it never loses the enclosure, and like
+`arb_get_str` (`arb.h:168`) it drops midpoint digits that the radius makes meaningless. The replaced part is the
+C fixed-point promise of 9.6, which is false (G4); the algorithm itself is kept.
 
 ### 9.6 Round trips
 
@@ -1153,19 +1236,29 @@ implementations print the same text for the same `arb`), it never loses the encl
   archimedean place): `print(parse(t))` is canonical, and `parse(print(v))` equals `v` as a set; it is identical
   to `v` except for the unit modulus, which is printed normal (CV-17) and for the backend, which the value form
   does not carry.
-- With real or complex parts: `parse(print(v))` contains `v` (enclosure), and `print(parse(print(v))) = print(v)`.
-  A printed idele, class or real test function can always be read back: constrained printing (9.5) keeps the sign
-  conditions of 9.3.
+- With real or complex parts, parsing a printed value encloses the original stored value. The print-read-print
+  fixed-point statement applies only to the exact-rational reference parser. Repeated C value-text round trips may
+  widen the value and change its text on every pass. Dump text is the identity-preserving form. Constrained
+  printing preserves the exact decimal interval's sign; at a specified C precision the parser may still return
+  `NOT_DETERMINED` as in 9.3 (gate finding G4).
 - Every expected output in `tests/golden/` is a fixed point of the reference: re-reading and printing it gives it
   back.
 
 ### 9.7 Type of a text
 
-`adf_text_classify(s, len)` returns the type whose start symbol derives the text, or `ADF_PARSE` if none does, or
-`ADF_LIMIT` if `len > max_len`. It checks syntax only (stages 1 to 3); semantic errors are found by the typed
-parser. The driver uses it; the typed parsers do not coerce between types (`7/3` is not accepted by
-`adf_fball_set_str`). DECISION (proposed) CV-30; reason: one text, one type, and no silent conversion that could
-hide an exact/inexact confusion.
+`adf_text_classify` returns an ADF status and writes an `adf_text_kind` through an output pointer only on
+`ADF_OK` (gate finding G14). The enum is defined in the public header with one named constant for each supported
+start symbol:
+
+    typedef enum { ADF_TEXT_RAT, ADF_TEXT_FBALL, ADF_TEXT_ADELE, ADF_TEXT_CADELE, ADF_TEXT_UCOSET,
+                   ADF_TEXT_IDELE, ADF_TEXT_IDCLASS, ADF_TEXT_LBALL, ADF_TEXT_SBALL, ADF_TEXT_QCLASS,
+                   ADF_TEXT_FFUN, ADF_TEXT_RFUN, ADF_TEXT_CHAR } adf_text_kind;
+    int adf_text_classify(adf_text_kind * kind, const char * s, size_t len, const adf_text_limits_t * lim);
+
+It checks syntax only (stages 1 to 3): `ADF_PARSE` if no start symbol derives the text, `ADF_LIMIT` if
+`len > max_len`. Semantic errors are found by the typed parser. The driver uses it; the typed parsers do not
+coerce between types (`7/3` is not accepted by `adf_fball_set_str`). DECISION CV-30 is **replaced** by G14: one
+text, one type, and the kind is a result channel distinct from the status.
 
 ### 9.8 Ambiguities of `PLAN.md` section 5, resolved
 
@@ -1226,11 +1319,13 @@ Tokens are separated by exactly one space `0x20`; no other whitespace anywhere; 
 A count fixes the number of repetitions that follow it (the archimedean count in `arch` and `carch`; `k` in `ctx`
 and in `fb`; the number of primes in `sball`;
 of pieces in `qclass` (form `pieces`); `D M` values in `ffun`; the number of terms in `rfun`, and in each term the
-length of `P`); a mismatch is `ADF_PARSE`. For `Q` the archimedean count must be 1 (`ADF_DOMAIN` otherwise).
+length of `P`, which may be 0 (5.12)); a mismatch is `ADF_PARSE`. For `Q` the archimedean count must be 1
+(`ADF_DOMAIN` otherwise).
 The field descriptor and the archimedean count follow seams R9 and R3 (D8): a later field (`K`, `F3(T)`) can be
 added without breaking version-1 files, and version 1 rejects it with `ADF_UNSUPPORTED`. `idclass` has no count (the
-type is special to `Q`); `sball` keeps its tag `n`, `r`, `c`. DECISION (proposed) CV-37: this dump grammar; reason:
-one token per struct field, so that load and dump are a direct transcription and identity is easy to test.
+type is special to `Q`); `sball` keeps its tag `n`, `r`, `c`. DECISION CV-37 (**replaced** by gate findings G3 and
+G7; the grammar itself is kept): this dump grammar; reason: one token per struct field, so that load and dump are a
+direct transcription and identity is easy to test.
 
 ### 10.2 Rules
 
@@ -1261,12 +1356,33 @@ one token per struct field, so that load and dump are a direct transcription and
   `arb` group of every valid vector in `tests/golden/dump.tsv` loads and dumps back identically. A loader may build
   the `arb` from the validated tokens directly, or pass exactly the four validated tokens; the validation of this
   section excludes every aborting case found.
-- **Contexts.** A local `fball` (also inside `adele`, `cadele`, `qclass`) and a scaled value record their context
-  (`ctx`). `adf_x_load_str(x, s, len, ctx, lim)` makes `x` refer to the caller's `ctx`, which must have the same
-  `K` and the same blocks in the same order; otherwise, or if `ctx` is `NULL`, the status is `ADF_DOMAIN`.
-  `adf_modctx_init_load_str(ctx, s, len, lim)` creates a context from a `modctx` dump, or from the context recorded
-  in any value dump. DECISION (proposed) CV-39; reason: the caller owns contexts (CV-10), so the loader cannot
-  create one behind the caller's back.
+- **Polynomial coefficients** (gate finding G7): the stored `P` length of a term must already be the normalized
+  length of 5.12: a nonempty coefficient list whose last coefficient is the exact zero ball is `ADF_DOMAIN`, and
+  length 0 is the zero polynomial. The loader never trims.
+- **Contexts** (gate finding G3). A local `fball` (also inside `adele`, `cadele`, `qclass`) and a scaled value
+  record their context (`ctx`). A dump loader takes an array of caller-owned context bindings and its length.
+  There is one binding per local-fball or scaled occurrence, in dump traversal order, including nested pieces.
+  Every binding must match that occurrence's modulus and ordered blocks. Repeated occurrences may share a
+  pointer. A validation/inspection function reports the number of occurrences and their context descriptors
+  without constructing a value. The caller explicitly constructs any missing contexts before loading. Value
+  fields and backend are restored exactly relative to those bindings. `identical()` with the original value
+  additionally requires binding each occurrence to its original context pointer. A binding count other than the
+  number of occurrences, a `NULL` binding, or a binding that does not match its occurrence is `ADF_DOMAIN`.
+  The one-context call `adf_x_load_str(x, s, len, ctx, lim)` remains a convenience for dumps whose occurrences
+  all use that context: it stands for the array with `ctx` at every occurrence (a dump without contexts needs no
+  binding, and any `ctx` is accepted). The inspection function and the descriptor are:
+
+        typedef struct { fmpz_t K; slong k; ulong * q; } adf_ctx_desc_t;   /* one context occurrence */
+        int adf_x_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs,
+                               const char * s, size_t len, const adf_text_limits_t * lim);
+
+  With `descs == NULL` only `*nctx` is written; with `descs != NULL` the caller passes `*nctx` initialised
+  descriptors (`adf_ctx_desc_init`), which own their block arrays after the call (`adf_ctx_desc_clear`). The
+  statuses are those of a loader. `adf_modctx_new_from_dump(out, s, len, occurrence, lim)` constructs the context
+  recorded at one occurrence: `occurrence` is 0-based in dump traversal order, a `modctx` dump has exactly one,
+  and an index out of range is `ADF_DOMAIN`. DECISION CV-39 is **replaced** by G3: the caller owns contexts
+  (CV-10), so the loader cannot create one behind the caller's back, and one context does not cover all valid
+  dumps.
 - **Unit moduli** are dumped as stored (as supplied, CV-17).
 - **Version and field.** This is version 1, written `adf1`, for the field `Q`: every dump starts `adf1 Q `. A
   reader of version 1 rejects any other version and any other field with `ADF_UNSUPPORTED`. A later version must be
@@ -1314,11 +1430,12 @@ The counts are in `tests/golden/README.md`.
    re-read exactly, must contain it too. The C test decides which case applies from the exact decimal it has read.
 4. `realball_print.tsv`: set the `arb` exactly (every vector has a midpoint with at most 128 bits and a radius
    mantissa below `2^30`) and compare the printed text.
-5. `dump.tsv`: load, then dump; the text must be identical; loading an invalid dump must leave the output
-   untouched and return the status.
-6. `psi_phases.tsv`: the enclosure returned by `adf_adele_psi_tate` on `(0 ; F)` must contain `E(t)` for every
-   expected angle `t`, and its radius must be small (the phases are points); `adf_adele_psi_tate_strict` must
-   return `ADF_OK` exactly for the vectors with one angle.
+5. `dump.tsv`: load with one binding per context occurrence (10.2), then dump; the text must be identical;
+   loading an invalid dump must leave the output untouched and return the status.
+6. `psi_phases.tsv`: the default enclosure must contain every listed phase. For a single phase, bound numerical
+   error by a shrinking precision-dependent tolerance. For several phases, compare with the rectangular hull of
+   all listed phases and bound only the excess due to numerical evaluation. The unavoidable width of that hull
+   is not an error. The strict variant returns `ADF_OK` exactly for singleton images (gate finding G10).
 7. `gauss.tsv`: the balls computed by `adf_char_gauss_sum` and `adf_char_root_number` must overlap the expected
    balls, have radius below `2^-60` at `prec = 128`, and the parity must agree.
 
@@ -1335,24 +1452,28 @@ contract of the public interface. Python stays for tests and proof checks only.
    A test lists the exported symbols with `nm -D` and compares them with the header's function declarations.
 2. **No variadic functions.** Printing takes explicit arguments; there is no `adf_printf`.
 3. **Status is a plain `int` return value** with the numeric values of 3.1; predicates return `int` 0 or 1;
-   comparisons return `int` with the values of 2.1. No status is returned through `errno` or a global.
+   comparisons return `int` with the values of 2.1. No status is returned through `errno` or a global. An extra
+   result is written through an output pointer and only on `ADF_OK` (`adf_text_kind` of 9.7, gate finding G14).
 4. **Structs.** Value types have a documented fixed layout (section 5), so that a binding can allocate them inline
    as Nemo.jl does for FLINT types. DECISION (proposed) CV-40: value structs are public with fixed layout, and the
    library exports `size_t adf_sizeof_<type>(void)` for every type, which a binding compares with its own layout at
    load time; reason: inline allocation avoids a heap object per number, and the size check turns a layout mismatch
-   into an error at load time instead of memory corruption. The modulus context is **opaque**: its fields are not
-   part of the interface; a binding allocates `adf_sizeof_modctx()` bytes and calls `init` and `clear`, or uses the
-   exported `adf_modctx_t` in C. DECISION (proposed) CV-41; reason: the context holds internal tables (reduction
-   constants, recombination tree) whose layout should be free to change.
+   into an error at load time instead of memory corruption. The modulus context is **opaque and incomplete**
+   (gate finding G2, replacing CV-41): its fields and layout are not part of the interface, there is no public
+   by-value or array-of-one context type, and a binding obtains every context from the exported
+   `adf_modctx_new_*` constructors and releases it with `adf_modctx_free` (4.6, 5.14). Version 1 offers no inline
+   context allocation. Reason (CV-41): the context holds internal tables (reduction constants, recombination
+   tree) whose layout should be free to change.
 5. **Places** are the 8-byte struct `adf_place_t` of section 7, passed by value; a binding treats it as an opaque
    bits type and creates it only through `adf_place_inf` and `adf_place_prime`.
 6. **Contexts are explicit; no hidden global state** (4.5, 4.6). A binding must keep a context alive as long as any
    value refers to it (in Julia: the value object holds a reference to the context object).
 7. **No callbacks.** Version 1 has no function-pointer parameters. If a later function needs one (an integrand), it
    takes a plain C function pointer and a `void *` user-data argument, never a closure.
-8. **Strings.** Input: `(const char *, size_t)`, never retained (8.1). Output: `char *` from `flint_malloc`,
-   freed by the caller with `flint_free` (`flint.h:204`) or with the exported `adf_str_free(char *)`, which calls
-   it. DECISION (proposed) CV-43; reason: a binding need not locate FLINT's allocator.
+8. **Strings.** Input: `(const char *, size_t)`, never retained (8.1). Output: `char *` from `flint_malloc` with
+   its byte length written through a `size_t *` output and a terminating NUL at `s[len]` (gate finding G14);
+   freed by the caller with the exported `adf_str_free(char *)`, which calls `flint_free` (`flint.h:204`).
+   DECISION (proposed) CV-43; reason: a binding need not locate FLINT's allocator.
 9. **Arrays.** An array output is either caller-allocated with its length as the next argument, or owned by an
    output value (5.9 to 5.12) and freed by that value's `clear`. No function returns a bare heap array.
 10. **Integer types.** `slong` and `ulong` are FLINT's `mp_limb_signed_t` and `mp_limb_t` (`flint.h:110-111`),
@@ -1383,57 +1504,59 @@ contract of the public interface. Python stays for tests and proof checks only.
 
 ## 13. Decisions, for review
 
-"decided" means decided by the orchestrator on 2026-09-28 (D1 to D11); "proposed" means open for the milestone-0
-gate review. 60 decisions: 12 decided, 48 proposed.
+"decided" means decided by the orchestrator on 2026-09-28 (D1 to D11) and accepted by the milestone-0 gate
+review; "decided (gate)" means proposed here and accepted by that review; "replaced (Gn)" means rejected by it
+and replaced by finding `Gn` of `docs/reviews/m0-gate/review.md` (whose text is in force). 60 decisions: 52
+decided (12 of them as D1 to D11), 8 replaced.
 
 | Id | Section | Decision | Reason (short) | Status |
 |---|---|---|---|---|
-| CV-01 | 1 | statuses are ordered integers, not bit flags | one code per result | proposed |
-| CV-02 | 2.1 | no `_equal` for ball types; `_identical` for representation | point equality is undecided | proposed |
-| CV-03 | 3.1 | numeric values `OK 0` ... `LIMIT 10` in order of precedence | combination is a maximum | proposed |
-| CV-04 | 3.3 | combined status is the maximum; place is the first in canonical order | proved failures dominate; deterministic place | proposed |
-| CV-05 | 4.1 | outputs may alias inputs of the same type | FLINT habit; cheap | proposed |
-| CV-06 | 4.3 | outputs untouched on every non-OK status | retry at higher precision | proposed |
-| CV-07 | 4.3 | "enclosure with status" only at branch cuts; otherwise default and `_strict` variants | a status never carries a value except where `SPEC.md` asks | proposed |
-| CV-08 | 4.4 | a non-finite result is never stored; `NOT_DETERMINED` | invariants need finite balls | proposed |
-| CV-09 | 4.4 | non-canonical input is a precondition violation; checked in debug builds | gcd checks would dominate the kernels | proposed |
-| CV-10 | 4.6 | contexts caller-owned with stated lifetime, no reference count | as FLINT; no shared writes; no hidden state | proposed |
-| CV-11 | 4.6 | no operation creates a context; results that leave a context are global | a created context would have no owner | proposed |
-| CV-12 | 4.6 | different context pointers give a global result | block comparison per operation is too costly | proposed |
-| CV-13 | 5.2 | init of a finite ball is the exact 0 | as `fmpq_init`, `arb_init` | proposed |
-| CV-14 | 5.4 | scaled value gets a field `exact` | the exact 0 of precision P6(2) must be stored; policies Definition 4 | proposed |
+| CV-01 | 1 | statuses are ordered integers, not bit flags | one code per result | decided (gate) |
+| CV-02 | 2.1 | no `_equal` for ball types; `_identical` for representation | point equality is undecided | decided (gate) |
+| CV-03 | 3.1 | numeric values `OK 0` ... `LIMIT 10` in order of precedence | combination is a maximum | decided (gate) |
+| CV-04 | 3.3 | combined status is the maximum; place is the first in canonical order | proved failures dominate; deterministic place | decided (gate) |
+| CV-05 | 4.1 | outputs may alias inputs of the same type | FLINT habit; cheap | decided (gate) |
+| CV-06 | 4.3 | outputs untouched on every non-OK status | retry at higher precision | decided (gate) |
+| CV-07 | 4.3 | "enclosure with status" only at branch cuts; otherwise default and `_strict` variants | a status never carries a value except where `SPEC.md` asks | decided (gate) |
+| CV-08 | 4.4 | a non-finite result is never stored; `NOT_DETERMINED` | invariants need finite balls | decided (gate) |
+| CV-09 | 4.4 | non-canonical input is a precondition violation; checked in debug builds | gcd checks would dominate the kernels | decided (gate) |
+| CV-10 | 4.6 | contexts caller-owned with stated lifetime, no reference count | as FLINT; no shared writes; no hidden state | decided (gate) |
+| CV-11 | 4.6 | no operation creates a context; the implicit global fallback is only for `adf_fball` and types containing it | a created context would have no owner | **replaced (G1)** |
+| CV-12 | 4.6 | a default `adf_scaled` operation requires the same context pointer in both inputs | block comparison per operation is too costly | **replaced (G1)** |
+| CV-13 | 5.2 | init of a finite ball is the exact 0 | as `fmpq_init`, `arb_init` | decided (gate) |
+| CV-14 | 5.4 | scaled value gets a field `exact` | the exact 0 of precision P6(2) must be stored; policies Definition 4 | decided (gate) |
 | CV-15 | 5.6 | unit coset with `N = 0`, `c = 1` or `-1`, is an exact unit | needed by three lanes (catalogue P12, ideles P13.6, exact ideles) | **decided (D1)** |
-| CV-16 | 5.6 | unit residues in `1..N` | no residue 0 for units; `[1 mod 1]` | proposed |
-| CV-17 | 5.6 | unit modulus stored as supplied; normal form for printing and equality | the dump keeps the modulus as supplied | proposed |
+| CV-16 | 5.6 | unit residues in `1..N` | no residue 0 for units; `[1 mod 1]` | decided (gate) |
+| CV-17 | 5.6 | unit modulus stored as supplied; normal form for printing and equality | the dump keeps the modulus as supplied | decided (gate) |
 | CV-18 | 7 | a place is an opaque handle; primes of places are one word | seams R1 | **decided (D8)** |
-| CV-19 | 5.8 | init of a local ball is the exact 0 at `p = 2` | some prime must be chosen | proposed |
-| CV-20 | 5.11 | no normal form for `adf_ffun`, `adf_rfun` | minimality is undecidable on balls | proposed |
-| CV-21 | 5.14 | family contexts use prime-power blocks, increasing prime | factorisation known; prime-named operations | proposed |
-| CV-22 | 5.3 | local backend keeps `A = 0` | an unused field cannot be misread | proposed |
-| CV-23 | 5.4 | the absolute cap is an argument | only the radius is per value | proposed |
-| CV-24 | 5.10 | order of quotient pieces | unique printed form | proposed |
-| CV-25 | 8.1 | inputs are `(pointer, length)`; NUL inside is `PARSE` | no silent truncation | proposed |
-| CV-26 | 8.2 | ASCII alphabet; everything else `PARSE` | no look-alike characters | proposed |
-| CV-27 | 8.4 | limits `max_len`, `max_exp10`, `max_prec`, `max_items` with defaults | short input cannot demand huge work | proposed |
-| CV-28 | 8.5 | fixed order of checks | status independent of parser internals | proposed |
-| CV-29 | 9.5 | real-ball printing algorithm, 20 digits by default, constrained printing | exact, enclosing, idempotent | proposed |
-| CV-30 | 9.7 | classification by syntax; typed parsers do not coerce | one text, one type | proposed |
-| CV-31 | 9.8 | exact finite ball prints `(* ; 7/3)` | no `mod 0` in output | proposed |
-| CV-32 | 9.8 | bare `a mod N` accepted as finite ball | natural input | proposed |
-| CV-33 | 9.8 | idele content printed even when 1 | uniform template | proposed |
-| CV-34 | 9.8 | local ball printing: canonical centre, explicit exponent, exact without `O` | unique text | proposed |
-| CV-35 | 9.2 | forms for `cadele`, `sball`, `qclass`, `ffun`, `rfun`, `char` | not in `PLAN.md` 5 | proposed |
-| CV-36 | 9.8 | leading zeros accepted, never printed | friendly input, unique output | proposed |
-| CV-37 | 10.1 | dump grammar: one token per field, hexadecimal | direct transcription | proposed |
-| CV-38 | 10.2 | strict loader, never canonicalises | identical object | proposed |
-| CV-39 | 10.2 | loader uses the caller's context, checks its blocks | caller owns contexts | proposed |
-| CV-40 | 12 | value structs have fixed layout; `adf_sizeof_<type>` exported | inline allocation, checked layout | proposed |
-| CV-41 | 12 | the modulus context is opaque | internal tables may change | proposed |
-| CV-42 | 12 | 64-bit platforms only | word places and blocks | proposed |
-| CV-43 | 12 | `adf_str_free` exported | bindings need not find FLINT's allocator | proposed |
-| CV-44 | 12 | FLINT version check exported | layouts may change between minor versions | proposed |
+| CV-19 | 5.8 | init of a local ball is the exact 0 at `p = 2` | some prime must be chosen | decided (gate) |
+| CV-20 | 5.11 | no normal form for `adf_ffun`, `adf_rfun` | minimality is undecidable on balls | decided (gate) |
+| CV-21 | 5.14 | family contexts use prime-power blocks, increasing prime | factorisation known; prime-named operations | decided (gate) |
+| CV-22 | 5.3 | local backend keeps `A = 0` | an unused field cannot be misread | decided (gate) |
+| CV-23 | 5.4 | the absolute cap is an argument | only the radius is per value | decided (gate) |
+| CV-24 | 5.10 | order of quotient pieces | unique printed form | decided (gate) |
+| CV-25 | 8.1 | inputs are `(pointer, length)`; NUL inside is `PARSE` | no silent truncation | decided (gate) |
+| CV-26 | 8.2 | ASCII alphabet; everything else `PARSE` | no look-alike characters | decided (gate) |
+| CV-27 | 8.4 | limits `max_len`, `max_exp10`, `max_prec`, `max_items` with defaults | short input cannot demand huge work | decided (gate) |
+| CV-28 | 8.5 | fixed order of checks | status independent of parser internals | decided (gate) |
+| CV-29 | 9.5 | real-ball printing algorithm, 20 digits by default, constrained printing | exact and enclosing; idempotent only for the exact reference (G4) | **replaced (G4)** |
+| CV-30 | 9.7 | classification by syntax; typed parsers do not coerce; kind is separate from status | one text, one type | **replaced (G14)** |
+| CV-31 | 9.8 | exact finite ball prints `(* ; 7/3)` | no `mod 0` in output | decided (gate) |
+| CV-32 | 9.8 | bare `a mod N` accepted as finite ball | natural input | decided (gate) |
+| CV-33 | 9.8 | idele content printed even when 1 | uniform template | decided (gate) |
+| CV-34 | 9.8 | local ball printing: canonical centre, explicit exponent, exact without `O` | unique text | decided (gate) |
+| CV-35 | 9.2 | forms for `cadele`, `sball`, `qclass`, `ffun`, `rfun`, `char`; `P` has length `>= 0`, no exact-zero last coefficient | not in `PLAN.md` 5; matches `acb_poly` normalization | **replaced (G7)** |
+| CV-36 | 9.8 | leading zeros accepted, never printed | friendly input, unique output | decided (gate) |
+| CV-37 | 10.1 | dump grammar: one token per field, hexadecimal; `P` lengths may be 0 and must be normalized | direct transcription | **replaced (G3, G7)** |
+| CV-38 | 10.2 | strict loader, never canonicalises | identical object | decided (gate) |
+| CV-39 | 10.2 | the loader takes one binding per context occurrence; one context is a convenience | caller owns contexts; one context does not cover every dump | **replaced (G3)** |
+| CV-40 | 12 | value structs have fixed layout; `adf_sizeof_<type>` exported | inline allocation, checked layout | decided (gate) |
+| CV-41 | 12 | the modulus context is opaque and incomplete; `adf_modctx_new_*` and `adf_modctx_free` | internal tables may change | **replaced (G2)** |
+| CV-42 | 12 | 64-bit platforms only | word places and blocks | decided (gate) |
+| CV-43 | 12 | `adf_str_free` exported | bindings need not find FLINT's allocator | decided (gate) |
+| CV-44 | 12 | FLINT version check exported | layouts may change between minor versions | decided (gate) |
 | CV-45 | 5.10 | quotient pieces: midpoint in `[0, 1]`; the ball may exceed it by rounding; `k + 1` pieces | outward rounding (finding F2); quotient P6 | **decided (D4)** |
-| CV-46 | 11.1 | golden file format | plain, escapable | proposed |
+| CV-46 | 11.1 | golden file format | plain, escapable | decided (gate) |
 | CV-47 | 5.4 | the cap never touches an exact value | `SPEC.md` 4.1; policies P14 | **decided (D2)** |
 | CV-48 | 5.4 | scaled product: `SPEC.md` rule by default, `adf_scaled_mul_tight` for policies P10 | the rule stays; the tight one needs a gcd | **decided (D5)** |
 | CV-49 | 5.6 | unit-coset power: `c^k U(N)` by default, `adf_ucoset_pow_tight` for ideles P13 | the tight modulus needs the table of P13 | **decided (D6)** |
@@ -1442,24 +1565,24 @@ gate review. 60 decisions: 12 decided, 48 proposed.
 | CV-52 | 10.2 | the dump text is validated completely before any FLINT load function | `arb_load_str` aborts (F5) | **decided (D9)** |
 | CV-53 | 6.6 | reciprocity: two functions named by the exponent (`_exp_u`, `_exp_uinv`) | no source on disk for the words arithmetic and geometric | **decided (D10)** |
 | CV-54 | 6.1 | transform against `conj(psi)` kept; conversion to the unconjugated transform recorded | Tate's original; the proofs use it | **decided (D11)** |
-| CV-55 | 5.3 | raw local values: no gcd condition; comparison and printing through the canonical triple | policies P24, Summary 26: canonical data would force conversions after sums | proposed |
-| CV-56 | 7 | `adf_place_t` is a one-word struct, not a bare integer | the compiler enforces opacity | proposed |
+| CV-55 | 5.3 | raw local values: no gcd condition; comparison and printing through the canonical triple | policies P24, Summary 26: canonical data would force conversions after sums | decided (gate) |
+| CV-56 | 7 | `adf_place_t` is a one-word struct, not a bare integer | the compiler enforces opacity | decided (gate) |
 | CV-57 | 6.7 | seams R1 to R9 adopted: `inf` label, content, dump field `Q` and archimedean count, R6 wording, no canonical scale, named character convention | cheap now, avoids a break later | **decided (D8)** |
-| CV-58 | 5.13 | `adf_char` value is `t^s chi(u')`; the L-function integral forms `conj(chi)` itself | the family as `SPEC.md` 5 writes it | proposed |
-| CV-59 | 6.1 | additive character functions `adf_adele_psi_tate`, `_strict` | named convention (seams R8) | proposed |
-| CV-60 | 6.4 | names `adf_char_gauss_sum` (tau), `adf_char_root_number`, `adf_local_gamma_at`, ... | `tau` and `G_minus` differ in sign | proposed |
+| CV-58 | 5.13 | `adf_char` value is `t^s chi(u')`; the L-function integral forms `conj(chi)` itself | the family as `SPEC.md` 5 writes it | decided (gate) |
+| CV-59 | 6.1 | additive character functions `adf_adele_psi_tate`, `_strict` | named convention (seams R8) | decided (gate) |
+| CV-60 | 6.4 | names `adf_char_gauss_sum` (tau), `adf_char_root_number`, `adf_local_gamma_at`, ... | `tau` and `G_minus` differ in sign | decided (gate) |
 
-Proposed decisions that most need the gate review: CV-55 (raw local values: a departure from the canonical-data
-comment of `PLAN.md` 4, with consequences for the C kernels), CV-06 (outputs untouched on failure: a cost in every
-function that can fail after writing), CV-10 and CV-11 (caller-owned contexts, and no implicit derived context,
-which turns every result that leaves a context into a global value), CV-16 (the residue range of unit cosets differs
-from `proofs/ideles.md` Definition 8), CV-29 (the printing algorithm of real balls, including constrained
-printing), CV-09 (undefined behaviour on non-canonical input), CV-58 (the value convention of `adf_char`).
+The gate review accepted CV-55 (raw local values: a departure from the canonical-data comment of `PLAN.md` 4,
+with consequences for the C kernels), CV-06 (outputs untouched on failure: a cost in every function that can fail
+after writing), CV-10 (caller-owned contexts), CV-16 (the residue range of unit cosets differs from
+`proofs/ideles.md` Definition 8), CV-09 (undefined behaviour on non-canonical input) and CV-58 (the value
+convention of `adf_char`) as written here. The eight rejected decisions carry the finding that replaces them in
+the table above.
 
 ## 14. Findings against the specification, the plan and the proofs
 
-Status after part B. "Resolved" means a decision of the orchestrator settles it; the amendment of `SPEC.md` and
-`PLAN.md` is done by another lane.
+Status after part B and the milestone-0 gate review. "Resolved" means a decision of the orchestrator settles it;
+the amendment of `SPEC.md` and `PLAN.md` is done by another lane.
 
 - **F1** (`SPEC.md` 5, `PLAN.md` 4 against `SPEC.md` 9.3.7, `proofs/catalogue.md` P12, `proofs/ideles.md` P13.6).
   Unit cosets were defined with `N >= 1`, but the exponent 0 gives "the exact 1", and the idele of an exact rational
@@ -1470,25 +1593,26 @@ Status after part B. "Resolved" means a decision of the orchestrator settles it;
   `mag.h:117`). Resolved by D4 (CV-45). Also `SPEC.md` 6 "one piece for each integer it crosses" counts `k` pieces
   where the construction gives `k + 1` (`proofs/quotient.md` P6 remark); resolved by D4.
 - **F3** (`PLAN.md` 4). `adf_scaled_struct` cannot hold an exact value, which `proofs/precision.md` P6(2) produces
-  and `proofs/policies.md` Definition 4 keeps as an exact tag. Proposed: CV-14.
+  and `proofs/policies.md` Definition 4 keeps as an exact tag. Resolved by CV-14 (decided).
 - **F4** (`SPEC.md` 4.1, "or is given a new context"). With caller-owned contexts no operation creates a context;
   version 1 uses the global fallback (CV-11), or a derived context passed by the caller. `proofs/policies.md` P22.4
-  and P24.3 describe the derived contexts that this excludes by default.
+  and P24.3 describe the derived contexts that this excludes by default. Gate finding G1 limits the implicit
+  fallback to `adf_fball` and types containing it; scaled values use the target-context rule of 5.4.
 - **F5** (FLINT 3.0.1). `arb_load_str` aborts the process on some malformed strings and silently changes others
   (**[probed]**, 10.2), although its documentation promises a nonzero return (`flint-3.0.1:arb.rst:297-298`).
   Resolved by D9 (CV-52).
 - **F6** (`PLAN.md` 5). The value form of a real ball is lossy on output as well as input; printing an idele without
   regard to its sign condition could produce a text that reads back as `DOMAIN`. Handled by 9.5 (constrained
-  printing) and the fixed-point property.
+  printing) and 9.6 (after gate finding G4 the fixed-point property holds for the exact-rational reference only;
+  C value-text round trips may widen).
 - **F7** (`PLAN.md` 4, struct comment `docs/PLAN.md:60`: "`H > 0: 0 <= A < H, gcd(A,H,d) = 1`" for both backends).
   For the local backend `proofs/policies.md` P24 shows that the set of a local value stays in its context after
-  cancellation while its canonical triple leaves it. This document proposes raw local values (CV-55); if the gate
-  review keeps the canonical-data comment instead, every local result with `gcd > 1` must convert to the global
-  backend (P24.4).
+  cancellation while its canonical triple leaves it. Resolved: the gate review accepted raw local values (CV-55);
+  the canonical-data comment of `PLAN.md` 4 is applied by another lane.
 - **F8** (`proofs/ideles.md` Definition 8 against CV-16). The proof reduces unit residues into `[0, Nbar)` and
   writes the whole unit group `(0, 1)`; this document stores and prints residues in `1..N` and writes it `[1 mod
-  1]`. The sets and the equality test are the same; only the representative differs. One of the two should change
-  before the header is frozen.
+  1]`. The sets and the equality test are the same; only the representative differs. The gate review accepted
+  CV-16 (residues `1..N`); `proofs/ideles.md` Definition 8 should follow.
 - **F9** (`proofs/catalogue.md` P15 and `SPEC.md` 9.3.7 against D10). Both use the names "arithmetic" and
   "geometric" for the two cyclotomic conventions; no source on disk uses them (`docs/sources.md`, pending item 2).
   The functions are named by their exponent (CV-53); the proofs' statements are unaffected.

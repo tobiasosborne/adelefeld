@@ -1,16 +1,18 @@
-# adelefeld: scope and specification, version 1.1
+# adelefeld: scope and specification, version 1.2
 
 Date: 2026-09-28 (version 1.0: 2026-09-27). Authors: TJO with Claude (Fable). Status: **milestone 0 work packages
-landed, gate review pending; nothing of the C library is implemented.** Three review rounds and a closure check by a
-second model family ratified version 1.0. Version 1.1 applies the findings of milestone 0: the proofs in `proofs/`
-and their four cross-family reviews (`reviews/m0-proofs/`), the sources on disk (`sources.md`), the seams sketch
-(`seams.md`) and the conventions draft (`conventions.md`). Companion documents: `PLAN.md` (work packages), `PERF.md`
+landed, gate review applied; the repaired contracts await re-review; nothing of the C library is implemented.**
+Version 1.2 applies the milestone 0 gate review (`reviews/m0-gate/review.md`), findings G1 to G16 and its findings
+against the specification. Version 1.1 applied the findings of milestone 0: the proofs in `proofs/` and their four
+cross-family reviews (`reviews/m0-proofs/`), the sources on disk (`sources.md`), the seams sketch (`seams.md`) and
+the conventions draft (`conventions.md`). Companion documents: `PLAN.md` (work packages), `PERF.md`
 (floors), `proofs/*.md` (proofs), `sources.md` (sources and quotations), `conventions.md` (conventions, draft).
 
 **Change log.**
 
 | Version | Date | Changes |
 |---|---|---|
+| 1.2 | 2026-09-28 | Milestone 0 gate review applied. G1: a default binary operation on `adf_scaled` requires the same context pointer in both operands and otherwise returns `ADF_DOMAIN`; the implicit global fallback is limited to `adf_fball` and types containing it (4.1, 4.4). G2: context constructors `adf_modctx_new_*` and `adf_modctx_free`, incomplete public struct, caller ownership (10.4). G3: the dump loader takes an array of caller-owned context bindings, one per occurrence, in traversal order (10.2). G5: idele and idele-class arithmetic validates the real sign on its result and otherwise returns `NOT_DETERMINED`, never `NOT_UNIT` (5). G6: an exact input at a proved nonremovable pole is `DOMAIN`; a ball meeting a pole and regular points, or an undecided exclusion, is `NOT_DETERMINED` (9.3.7). G14: string results carry a length and an explicit terminator; `adf_text_classify` writes a kind enum on `OK`; set predicates return `int` (10.4). G16: the canonical triple reduces the numerator modulo `H` before cancellation (`proofs/policies.md` Summary 26). Section 15.2 states the D1 to D12 correspondence to M0-D1 to M0-D12. |
 | 1.1 | 2026-09-28 | Label **[quoted]** added; 7 of 7 **[unverified]**/**[standard]** statements quoted from `refs/src/` (one attribution, "section 2.2" of Tate's thesis, stays unverified); proved statements cite `proofs/*.md` by statement number. Section 1: C is the implementation, Python only for tests, oracles and checks, a Julia layer later (M0-D12). Section 3: rows `A_K`, `A_F` corrected; seams recommendations R1 to R9 adopted (M0-D8). Section 4.1: local backend stated as raw storage against canonical triple (`policies.md` P24, P25, S26). Section 4.4: exact tag in the scaled policy; tight scaled product a separate operation (M0-D5); the cap never touches an exact value (M0-D2). Section 5: exact units (M0-D1); power of a unit coset (M0-D6); division by an idele (M0-D7); the stored class-group character against the conjugate character of the Tate integral (section 8). Section 4.1: the local backend keeps raw data (`conventions.md` CV-55, proposed). Section 6: `k + 1` pieces, closed real balls that may exceed `[0,1]` by rounding (M0-D4); the Fourier convention against the expositions on disk (M0-D11). Section 8: continuation and functional equation proved. Section 9.2: closed real interval (M0-D3). Section 9.3.7: centre of the finest-modulus coset, unit part of an idele in the Hilbert symbol, status at a pole, reciprocity named by formula (M0-D10). Section 10: Julia-friendly interface (M0-D12), dump loader validates first (M0-D9). Section 15: decisions M0-D1 to M0-D12 |
 | 1.0 | 2026-09-27 | Draft 4 ratified after the closure check of review round 3 |
 
@@ -199,11 +201,13 @@ canonical triple of the paragraph above is computed from it by cancellation. The
 A backend that keeps raw data may leave a value in its context; a backend whose invariant is canonical data must
 move it to the global backend (P24.4). The local backend keeps **raw** data: its values need not satisfy
 `gcd(A, H, d) = 1`, and the canonical form above is the invariant of the global backend and of the canonical triple
-that equality and printing compute (`conventions.md` 5.3, CV-55, proposed, pending the gate review of milestone 0).
-In version 1 no operation creates a context (contexts are owned by the caller, `conventions.md` CV-10, CV-11), so a
-result whose raw form needs other blocks, or that combines two different contexts, is returned in the global
-backend, or in a derived context that the caller passes. Equality and printing always go through the canonical
-triple, never through raw residues. **[design]** (D2)
+that equality and printing compute (`conventions.md` 5.3, CV-55, accepted by the milestone 0 gate review).
+In version 1 no operation creates a context: contexts are owned by the caller and made with the explicit
+constructors of section 10.4 (`conventions.md` CV-10, CV-11). The implicit global fallback applies only to
+`adf_fball` and to types containing it (the adele types): a result of theirs whose raw form needs other blocks, or
+that combines two different context pointers, is returned in the global backend, or in a derived context that the
+caller passes. It does not apply to `adf_scaled`; the shared-context rule for scaled arithmetic is in 4.4. Equality
+and printing always go through the canonical triple, never through raw residues. **[design]** (D2)
 
 ### 4.2 Set predicates
 
@@ -277,6 +281,15 @@ What is *not* a policy: forcing every result to a fixed radius. `(1 mod 2) * (1/
 `1/2 mod 2` excludes `3/2` and is wrong. **[proved]** (D1) (Draft 1 proposed this; it is withdrawn. FLINT's `padic`
 type keeps its precision in each value, not in its context. **[checked]**)
 
+**Context compatibility for scaled values.** The implicit global fallback of 4.1 does not apply to the scaled
+policy. A default binary operation on `adf_scaled` requires the same context pointer in both inputs; if the pointers
+differ, the function returns `ADF_DOMAIN` with its value output untouched. This check precedes every write, an
+aliased write included. The result borrows that input context, so the caller keeps it alive as long as the result.
+Exact operands follow the same context rule. To combine different contexts the caller constructs a context with
+modulus `lcm(K, K')`, converts both operands to it without loss (Proposition 11, Corollary 12) and then calls the
+ordinary operation. No operation creates this context. A separately named target-context operation may take an
+explicit caller-owned context; its conversion loss and output context must then be documented. **[design]** (G1)
+
 ### 4.5 What the additive types cannot do
 
 Every finite ball with positive radius contains non-invertible elements: choose a prime `p` outside the numerators
@@ -315,6 +328,14 @@ At a common `N`, product and inverse keep the finite precision exactly. At diffe
 modulo `gcd(N, M)`, so the finer input's precision is lost; `gcd(N, M)` is the best modulus for a product of
 independent cosets, up to the factor 2 of `U(2N) = U(N)`. The real ball is rounded as usual. **[proved]** (M5;
 `proofs/ideles.md` Propositions 10, 11)
+
+**Sign preservation.** Idele and idele-class arithmetic validates the required real sign on its result before it
+commits the result. A kernel may use sign-preserving endpoint bounds and a suitable enclosing midpoint-radius ball.
+If it cannot produce a finite ball with the required sign, it returns `ADF_NOT_DETERMINED` and leaves the value
+output untouched. Failure to preserve a sign under an enclosure is never `ADF_NOT_UNIT`. The rule applies to
+product, inverse, integer powers and the idele-to-class conversion. The ordinary rounded product can contain zero
+even when the exact product is positive: with `x = y = 1 +/- (1 - 2^-30)`, `arb_mul` at precision 128 can return a
+ball containing zero, while the exact product set is positive with lower endpoint `2^-60`. **[design]** (G5)
 
 **Integer powers of a unit coset.** The default enclosure of `(c U(N))^k` is `c^k U(N)` (inverse for `k < 0`); it
 contains every `u^k`, and it is the smallest coset exactly when the tight modulus `M_k` below equals the canonical
@@ -660,7 +681,7 @@ solvability modulo a prime power at 2, 3, 5), the criterion for the profinite po
 | Legendre symbol `(a/p)`, Jacobi symbol `(a/b)` | `p` an odd prime; `b` positive and odd; `a` an integer or a unit coset | quadratic residue symbols (FLINT has them) | `a` modulo the lower entry | **[quoted]** `flint-3.0.1:ulong_extras.rst:456-458`; **[proved]** `catalogue.md` 1 to 3 |
 | Kronecker symbol `(a/b)` | `b = 2^t m` positive, `m` odd | the Jacobi symbol modulo `m` times `(a/2)^t`, where `(a/2)` is 0 for even `a` and `(-1)^((a^2-1)/8)` for odd `a` | `a` modulo `m` if `t = 0`; modulo `lcm(m, 8)` if `t > 0` (sufficient, not always necessary). Not the residue modulo `b`: `(1/2) = +1`, `(3/2) = -1`. Negative or zero `b`: exact integers `a` only. Otherwise the set of possible values or `NOT_DETERMINED` (R1) | **[quoted]** `pari-doc:usersch3.tex:9266-9271`; **[proved]** `catalogue.md` 1 to 3 |
 | Hilbert symbol `(a, b)_v` | two non-zero values at a place; two ideles | `+1` if `a x^2 + b y^2 = z^2` has a non-zero solution at `v`, else `-1`. For rationals the product over all places is 1 | the parity of the valuations and the square class of the unit parts: unit parts modulo `p` at odd `p`, modulo 8 at 2, signs at the real place. For a ball `a + p^A Z_p`: `A - v(a) >= 1` at odd `p`, `>= 3` at 2 suffices (2 does not: `1 + 4 Z_2` against 2 gives both signs). For an idele the unit part includes the cofactor of the scale; see the notes below (R2) | **[quoted]** `hilbert-bristol:lecture19.txt:7-9, 46-56, 89-91`; **[proved]** `catalogue.md` 4 to 8 |
-| local zeta factor (trivial character) | a place and complex `s` | `(1 - p^(-s))^(-1)`; `pi^(-s/2) Gamma(s/2)` at the real place | complex ball. Poles at `s = 2 pi i k / log p`, and at `s = 0, -2, -4, ...` for the real place, all simple: a ball containing a pole returns a pole status and never a finite or unbounded ball | **[quoted]** `tate-poonen:notes.txt:1733` (finite), `:1014-1016` (real); **[proved]** `catalogue.md` 9, `analysis.md` 10 |
+| local zeta factor (trivial character) | a place and complex `s` | `(1 - p^(-s))^(-1)`; `pi^(-s/2) Gamma(s/2)` at the real place | complex ball. Poles at `s = 2 pi i k / log p`, and at `s = 0, -2, -4, ...` for the real place, all simple. An exact input at a proved nonremovable pole returns `ADF_DOMAIN`; an input ball that meets a pole and also contains regular points, or whose exclusion of poles is undecided, returns `ADF_NOT_DETERMINED`. Both leave the value output untouched and no non-finite ball is stored. `DOMAIN` keeps its definition in 3.1 | **[quoted]** `tate-poonen:notes.txt:1733` (finite), `:1014-1016` (real); **[proved]** `catalogue.md` 9, `analysis.md` 10 |
 | Gauss sums | a Dirichlet character with its conductor, extended by 0; the additive character of section 6 | needed for section 8; the root number of section 8 uses `tau(chi) = sum over a mod C of chi(a) exp(2 pi i a/C)`, the positive finite kernel | complex ball | **[quoted]** `tate-poonen:notes.txt:1053-1055` (local Gauss sum); **[proved]** `analysis.md` Lemma 8 |
 | local constants | a quasi-character at a place and `s` | defined by the local functional equation `Z(hat f, chi^-1, 1-s) = gamma(s, chi) Z(f, chi, s)` with the transform and measure of sections 6 and 7; the epsilon factor in addition needs the normalisation of the L-factor. The gamma factors for the transform of section 6 are fixed at every prime and at the real place for both parities | complex ball | **[quoted]** `tate-poonen:notes.txt:933-937` (local functional equation; the gamma form is it rearranged); **[proved]** `analysis.md` Propositions 9, 10 |
 | Haar volume of a finite ball | finite balls | `1/N` for radius `N > 0`; 0 for a point | exact | **[proved]** `catalogue.md` 10 (our measure convention, volume 1 for `Zhat`) |
@@ -703,18 +724,38 @@ functions on `Q_p(i)` and other extensions (with number fields).
    arguments, the state of outputs after a failure, and thread safety are written down.
 2. Two text forms. The *value form* is canonical and does not depend on the backend. The *dump* is versioned, keeps
    backend and context, and writes real balls as exact dyadic numbers (`arb_dump_str`). A decimal `+/-` string is an
-   enclosure on input, not a lossless form. The loader of dumps validates the text completely before any FLINT load
-   function sees it. FLINT documents that `arb_load_str` "Returns a nonzero value if *str* is not formatted
+   enclosure on input, not a lossless form. A dump loader takes an array of caller-owned context bindings and its
+   length. There is one binding per local-`adf_fball` or `adf_scaled` occurrence, in dump traversal order, nested
+   pieces included. Every binding must match that occurrence's modulus and ordered blocks. Repeated occurrences may
+   share a pointer. A validation/inspection function reports the number of occurrences and their context
+   descriptors without constructing a value; the caller constructs any missing contexts before loading. Value
+   fields and backend are restored exactly relative to those bindings. Loading with `identical()` also requires
+   binding each occurrence to its original context pointer. The one-context loader stays a convenience for dumps
+   whose occurrences all use that context. The loader validates the text completely before any FLINT load function
+   sees it. FLINT documents that `arb_load_str` "Returns a nonzero value if *str* is not formatted
    correctly" (`flint-3.0.1:arb.rst:297-298`), but in FLINT 3.0.1 it aborts the process on some malformed strings
    and silently changes others **[checked]** (probe, `conventions.md` section 10.2 and finding F5). Fuzzing never
    passes raw text to it. **[design]** (M0-D9)
 3. Status codes that distinguish: not certified to be a unit; proved not a unit; value not determined at this
-   precision; needs splitting; several candidates; resource limit reached; parse error; domain error.
+   precision (a ball that meets a pole and also contains regular points, or an undecided exclusion of poles, among
+   other cases); needs splitting; several candidates; resource limit reached; parse error; domain error (an exact
+   input at a proved nonremovable pole).
 4. A public C interface that a Julia layer can call through `ccall` without C glue: every public operation is an
    exported function (inline fast paths only in addition); no variadic functions and no callbacks with closures;
-   status as a plain `int`; value structs with a documented fixed layout and exported size functions; the modulus
-   context opaque; strings as pointer and length, freed by an exported function; 64-bit platforms. The rules are in
-   `conventions.md` section 12 (draft). **[design]** (M0-D12, TJO, 2026-09-27)
+   status as a plain `int`; value structs with a documented fixed layout and exported size functions; 64-bit
+   platforms. The modulus context is an incomplete public struct, always used through a pointer. The library exports
+   explicit constructors `adf_modctx_new_*`, each taking `adf_modctx_struct **out` as its first argument, and
+   `adf_modctx_free(adf_modctx_struct *ctx)`. A successful constructor allocates and fully initializes an immutable
+   context and writes its pointer to `*out`; on failure `*out` is untouched and no allocation is retained. The
+   caller owns the context and frees it only after its borrowers are gone. Passing NULL to free does nothing, and a
+   constructor does not free or replace a previous `*out`. Value init functions stay non-failing and require
+   successfully constructed contexts where stated. `get_str` and `dump_str` take `size_t *len` as an output and
+   return an allocated `char *`; the `len` bytes are ASCII with no embedded NUL, a terminating NUL is stored at
+   `s[len]` and is not counted in `len`, and the caller frees the pointer with `adf_str_free`. `adf_text_classify`
+   returns an `ADF` status and writes an `adf_text_kind` enum through an output pointer only on `OK`; the enum is
+   defined in the public header with one named constant per supported start symbol. Set predicates return `int` 0 or
+   1, not a status. The rules are in `conventions.md` section 12 (draft). **[design]** (M0-D12, TJO, 2026-09-27; G2,
+   G14)
 
 ## 11. Performance discipline
 
@@ -791,6 +832,8 @@ have made no complete survey. A list of what other systems offer, from memory, i
 
 The orchestrator numbered these D1 to D11 (and TJO's decision above D12). They are written `M0-D1` to `M0-D12` in
 this document because `D1` to `D4` are also the ids of findings of the first design review, cited since draft 2.
+`docs/conventions.md` writes the same twelve decisions as D1 to D12; the correspondence is D1 = M0-D1, D2 = M0-D2,
+and so on through D12 = M0-D12.
 
 | Id | Question | Decision | Where |
 |---|---|---|---|

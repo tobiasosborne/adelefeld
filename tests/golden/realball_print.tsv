@@ -17,6 +17,12 @@
 3/2 1/2 20	1.5 +/- 0.5
 -5/2 1/4 20	-2.5 +/- 0.25
 100 1/8 2	100 +/- 0.13
+# gate finding G4: 1 +/- 0.13 prints the exactly representable ball 1 +/- 1/8, but the ball an arb parser at
+# prec 128 stores for the text 1 +/- 0.13 has the larger radius below (fields 1 0 10a3d70b -1f, recorded by
+# docs/reviews/m0-gate/checks/flint_probe.c) and prints 1 +/- 0.14; its rereading prints 1 +/- 0.15
+1 1/8 20	1 +/- 0.13
+1 279172875/2147483648 20	1 +/- 0.14
+1 601295423/4294967296 20	1 +/- 0.15
 12345 0 2	12000 +/- 350
 12500 0 2	12000 +/- 500
 13500 0 2	14000 +/- 500

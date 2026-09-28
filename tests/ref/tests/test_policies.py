@@ -115,6 +115,41 @@ class PolicyComparison(unittest.TestCase):
                 self.assertTrue(fball.contains(t, s.to_fball()), (K, t, s))
 
 
+class CrossContext(unittest.TestCase):
+    """G9 of the milestone 0 gate review: the shared-context precondition is enforced for every
+    scaled binary operation, and the documented lcm workaround is lossless when K divides the target."""
+
+    def test_add_rejects_different_contexts(self):
+        # Inputs in contexts 2 and 3 permit the rational choices -2 and 3; their sum 1 is not in
+        # either context, so no default result can be returned. This must raise.
+        with self.assertRaises(ValueError):
+            policies.scaled_add(ScaledBall(F(1), 0, 2), ScaledBall(F(1), 0, 3))
+
+    def test_sub_rejects_different_contexts(self):
+        with self.assertRaises(ValueError):
+            policies.scaled_sub(ScaledBall(F(1), 0, 2), ScaledBall(F(1), 0, 3))
+
+    def test_mul_rejects_different_contexts(self):
+        with self.assertRaises(ValueError):
+            policies.scaled_mul(ScaledBall(F(1), 0, 2), ScaledBall(F(1), 0, 3))
+
+    def test_lossless_conversion_then_same_context_add(self):
+        # Proposition 11(2): converting into a multiple of K loses nothing. The converted operands
+        # share the context, so the ordinary sum is allowed and equals the tight sum.
+        x = ScaledBall(F(1), 0, 2)
+        y = ScaledBall(F(1), 0, 3)
+        L = 6
+        xl, lost_x = policies.convert_from_tight(x.to_fball(), L)
+        yl, lost_y = policies.convert_from_tight(y.to_fball(), L)
+        self.assertFalse(lost_x)
+        self.assertFalse(lost_y)
+        self.assertEqual(xl.to_fball(), x.to_fball())
+        self.assertEqual(yl.to_fball(), y.to_fball())
+        result = policies.scaled_add(xl, yl)
+        # The tight sum of 2 Zhat and 3 Zhat is Zhat.
+        self.assertEqual(result.to_fball(), B(0, 1))
+
+
 class IntendedLoss(unittest.TestCase):
     def test_cap_loss(self):
         # gcd(20, 3) = 1, so a radius of 20 becomes 1: the result is coarser

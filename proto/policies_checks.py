@@ -734,6 +734,58 @@ def check_backend_repairs():
            f"{n252} (ball, block) residue cases; {n26} canonical moduli (Summary 26)")
 
 
+def canonical_triple_old(A, H, d):
+    """Summary 26 as first written (before gate review G16): cancellation alone, no reduction of A."""
+    if H == 0:
+        g = gcd(abs(A), d)
+        return (A // g, 0, d // g)
+    g = gcd(gcd(abs(A), H), d)
+    return (A // g, H // g, d // g)
+
+
+def canonical_triple_new(A, H, d):
+    """Summary 26 after gate review G16: reduce A into [0, H) first, then cancel by the gcd."""
+    if H == 0:
+        g = gcd(abs(A), d)
+        return (A // g, 0, d // g)
+    R = A % H
+    g = gcd(gcd(R, H), d)
+    return (R // g, H // g, d // g)
+
+
+def is_canonical_triple(A, H, d):
+    if H == 0:
+        return gcd(abs(A), d) == 1
+    return 0 <= A < H and gcd(gcd(A, H), d) == 1
+
+
+def check_s26_centre():
+    """G16: the canonical-column proof must reduce the raw numerator modulo H before cancelling.
+
+    The old rule leaves the square of 3 + 4 Zhat as the raw triple (9, 4, 1), which violates 0 <= A < H.
+    The corrected rule gives (1, 4, 1). The corrected rule is also compared with the set of the raw triple.
+    """
+    old = canonical_triple_old(9, 4, 1)
+    new = canonical_triple_new(9, 4, 1)
+    ok = (old == (9, 4, 1)) and not is_canonical_triple(*old)
+    ok &= (new == (1, 4, 1)) and is_canonical_triple(*new)
+    # the witness really is the raw tight product (AB, H h, d e) of 3 + 4 Zhat with itself, h = gcd(3, 3, 4) = 1
+    ok &= gcd(gcd(3, 3), 4) == 1
+    # corrected rule: canonical, idempotent, and the same set as the raw triple, on a deterministic grid
+    n = 0
+    for A in range(0, 20):
+        for H in range(1, 9):
+            for d in range(1, 7):
+                A2, H2, d2 = canonical_triple_new(A, H, d)
+                ok &= is_canonical_triple(A2, H2, d2)
+                ok &= canonical_triple_new(A2, H2, d2) == (A2, H2, d2)
+                ok &= equal((F(A, d), F(H, d)), (F(A2, d2), F(H2, d2)))
+                n += 1
+    report("check_s26_centre (S26, G16)", ok,
+           f"old rule leaves (9,4,1) for the square of 3 + 4 Zhat; corrected rule gives (1,4,1); "
+           f"{n} raw triples agree with the corrected canonical triple")
+
+
 if __name__ == "__main__":
     check_hull()
     check_monotone()
@@ -748,6 +800,7 @@ if __name__ == "__main__":
     check_local_repr()
     check_local_ops()
     check_backend_repairs()
+    check_s26_centre()
     if FAILURES:
         print("FAILED:", ", ".join(FAILURES))
         sys.exit(1)

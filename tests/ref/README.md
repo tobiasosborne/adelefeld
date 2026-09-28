@@ -67,9 +67,11 @@ canonical form.
 | | `scaled_add`, `scaled_mul` | `a`, `b` (scaled values) | `result` (scaled value) |
 | | `absolute_cap` | `ball`, `C` | `result` |
 
-A scaled value is `{"s": q, "u": n, "K": n}` with `s > 0` and `0 <= u < K`. `scaled_add` and
-`scaled_mul` require the two operands to share `K`. A `value` that is `{"exact": q}` is an exact
-rational (radius 0).
+A scaled value is `{"s": q, "u": n, "K": n}` with `s > 0` and `0 <= u < K`. `scaled_add`, `scaled_sub` and
+`scaled_mul` require the two operands to share `K`; a mismatch raises `ValueError` (G9 of the gate review). To
+combine different contexts, convert each operand into a caller-selected common modulus (for example `lcm(K, K')`)
+with `convert_from_tight`, which is lossless when the old `K` divides the target, and then call the same-context
+operation. A `value` that is `{"exact": q}` is an exact rational (radius 0).
 
 The C tests read a line, build the inputs, run the operation and compare with the recorded result.
 They must not read `adfref`; they use the vectors as a fixture.

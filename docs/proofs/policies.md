@@ -561,14 +561,15 @@ raw form `(2 + 6 Zhat)/6`, canonical form `(1 + 3 Zhat)/3`. A canonical triple m
 set is still representable in the old one (P24). Every derived context is computed without factorisation. A block of
 a derived context that no longer fits a machine word forces the global backend (`SPEC.md` 4.1).
 
-*Proof of the canonical column.* A raw triple `(A', H', d')` has the canonical triple `(A'/g', H'/g', d'/g')` with
-`g' = gcd(A', H', d')` (Proposition 24.1, which uses only the triple). The raw triples are those of Propositions 21
-to 23; for the tight product the raw triple is `(A B, H h, d e)` (Proposition 22.1), for the scalar
-`(m A, abs(m) H, n d)` (Proposition 23.1), and the gcd does not depend on the lift of the numerator because the
-modulus is among its arguments.
+*Proof of the canonical column.* For a raw triple `(A', H', d')` with `H' > 0`, first put
+`R = A' mod H'` in `0 <= R < H'`. Set `g' = gcd(R, H', d') = gcd(A', H', d')`. The canonical triple is
+`(R/g', H'/g', d'/g')`. The canonical numerator modulus is therefore `H'/g'`, as displayed in the table. The raw
+triples are those of Propositions 21 to 23; for the tight product the raw triple is `(A B, H h, d e)`
+(Proposition 22.1), for the scalar `(m A, abs(m) H, n d)` (Proposition 23.1), and the gcd does not depend on the
+lift of the numerator because the modulus is among its arguments.
 
 Check: `check_backend_repairs` (canonical moduli against an independent canonicalisation of the set; the two
-examples).
+examples), `check_s26_centre` (the modulo-`H'` reduction, with the `(9, 4, 1)` witness).
 
 ## Table of statements
 
@@ -599,7 +600,7 @@ examples).
 | P23 | exact scalar in the local backend | proved here | `check_local_ops` |
 | P24 | cancellation: set stays; canonical triple needs `q_i/g_i` | proved here | `check_backend_repairs` |
 | P25 | `d x = A mod q_i`; a residue of the ball iff `gcd(d, q_i) = 1` | proved here | `check_backend_repairs` |
-| S26 | raw representation against canonical modulus, per operation | proved here | `check_backend_repairs` |
+| S26 | raw representation against canonical modulus | proved here | `check_backend_repairs`, `check_s26_centre` |
 
 ## Review record
 
@@ -619,5 +620,8 @@ C12, P14, P15, L17 to P23), 2 MINOR (L6, P10), 2 INVALID (P24, P25); Summary 26 
   modulo `q_i` exactly when `gcd(d, q_i) = 1`, and explicit rules for the C code.
 - Summary 26: separated raw representation from canonical modulus, with a proof of the canonical column and the
   review's two examples in which canonical `H` changes.
+- Summary 26 (gate review G16, 2026-09-28): the canonical-column proof now reduces the raw numerator modulo `H'`
+  first. Without that step the square of the raw triple `(9, 4, 1)` (from `(3 + 4 Zhat)^2`) keeps `A' = 9`, which
+  violates `0 <= A < H`; the canonical triple is `(1, 4, 1)`. Check `check_s26_centre` added.
 - Checks: `check_backend_repairs` added; the two refuted claims, as stated, are mutants in
   `lanes/m0-proofs-ideles/mutants.py` and are killed.

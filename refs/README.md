@@ -2,15 +2,19 @@
 
 Ground truth for `adelefeld`: a local copy of every source the specification leans on, under `refs/src/<key>/`
 (this directory is gitignored: other people's texts are not redistributed here). `fetch_sources.sh` re-fetches
-every source; `manifest.sha256` holds the sha256 of every fetched byte, `manifest-extra.sha256` the sha256 of the
-text extractions made with `pdftotext -layout`. Quotes in the project are cited as `<key>:<file>:<line>` against
-these files.
+every source; `fetch_intel.sh` re-fetches the Intel uops.info pages into `refs/src/uops-intel/`. `manifest.sha256`
+holds the sha256 of every fetched byte, `manifest-intel.sha256` the sha256 of the Intel pages, and
+`manifest-extra.sha256` the sha256 of the text extractions made with `pdftotext -layout`. Quotes in the project are
+cited as `<key>:<file>:<line>` against these files.
 
 ## Usage
 
     ./fetch_sources.sh          # fetch whatever is missing, then (re)write both manifests
     ./fetch_sources.sh --check  # fetch nothing; verify both manifests with sha256sum -c
     ./fetch_sources.sh --force  # re-download everything
+    ./fetch_intel.sh            # the same for the Intel uops.info pages (refs/src/uops-intel/,
+                                # manifest-intel.sha256)
+    ./fetch_intel.sh --check    # verify refs/manifest-intel.sha256 only
 
 ## Preference order for formats
 
@@ -46,6 +50,7 @@ substitutes; `docs/sources.md` says which statement each one settles.
 | `flint-3.0.1` | FLINT 3.0.1 documentation (.rst from the FLINT repository at tag v3.0.1) |
 | `pari-doc` | PARI/GP manual source (usersch*.tex from the PARI sources) |
 | `uops-zen2` | uops.info instruction pages (Zen 2 measurements) |
+| `uops-intel` | uops.info instruction pages (all microarchitectures; Alder Lake-P column for the Intel profile), fetched by `fetch_intel.sh` |
 | `hvh-mult` | D. Harvey, J. van der Hoeven, Integer multiplication in time O(n log n) (HAL) |
 
 The matching FLINT headers for version 3.0.1 are on this machine under `/usr/include/flint` and are not

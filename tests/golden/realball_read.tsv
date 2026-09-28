@@ -27,3 +27,6 @@ nan	!PARSE
 1e+	!PARSE
 --1	!PARSE
 1 +/- 1 +/- 1	!PARSE
+# gate finding G4: the exact intervals of 1 +/- 0.13 and of its C rereading 1 +/- 0.14
+1 +/- 0.13	87/100 113/100
+1 +/- 0.14	43/50 57/50

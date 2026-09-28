@@ -11,11 +11,14 @@ Entry points:
   read_real(data)             -> (lo, hi) exact, raises TextError         (section 9.5)
   print_real(mid, rad, digits=20, cond=None) -> text                     (section 9.5)
   dump_roundtrip(data)        -> the re-dumped text, or "!STATUS"         (section 10)
+  dump_contexts(data)         -> [(K, (q_1, ..., q_k)), ...], or "!STATUS"  (section 10.2, gate G3)
+  dump_load_check(data, binds) -> "OK", or "!STATUS"                       (section 10.2, gate G3)
   combine(pairs)              -> (status, place)                          (section 3.3)
 
 Limitations of the reference (not of the specification): the primitive character of a Dirichlet character
 is found by search with python-flint and is refused (UNSUPPORTED) for moduli above 10^5; arb exponents above
-2^20 in absolute value are refused (LIMIT) where the value of the ball must be computed.
+2^20 in absolute value are refused (LIMIT) where the value of the ball must be computed. Value-text round trips
+are exact here; a C parser stores rounded balls and its round trips may widen (gate G4, conventions 9.6).
 """
 import math
 import re
@@ -395,10 +398,12 @@ class Parser:
         self.kw("P")
         self.expect("=")
         self.expect("[")
-        coeffs = [self.complex()]
-        while self.peek(","):
-            self.expect(",")
+        coeffs = []
+        if not self.peek("]"):
             coeffs.append(self.complex())
+            while self.peek(","):
+                self.expect(",")
+                coeffs.append(self.complex())
         self.expect("]")
         parts = []
         for name in ("A", "B", "C"):
@@ -741,6 +746,19 @@ def _fmt_lcoord(lc):
     return "%s + O(%d^%d)" % (fmt_rat(c), p, N)
 
 
+def _is_exact_zero(z):
+    """an acb that is the exact zero ball (both parts exactly 0; arb_is_zero)"""
+    return z[0] == (Fraction(0), Fraction(0)) and z[1] == (Fraction(0), Fraction(0))
+
+
+def _trim_zero_coeffs(coeffs):
+    """docs/conventions.md 5.12 (gate finding G7): remove trailing exact zero coefficients; a ball merely
+    containing zero is not trimmed."""
+    while coeffs and _is_exact_zero(coeffs[-1]):
+        coeffs.pop()
+    return coeffs
+
+
 def _check_real(r, cond):
     lo, hi = r[0] - r[1], r[0] + r[1]
     if not _satisfies(lo, hi, cond):
@@ -850,7 +868,7 @@ def _build_and_print(type_name, node):
     if t == "rfun":
         terms = []
         for tn in node[1][1]:
-            coeffs = [_complex(z) for z in tn[1][1]]
+            coeffs = _trim_zero_coeffs([_complex(z) for z in tn[1][1]])
             A, B, C = _complex(tn[2]), _complex(tn[3]), _complex(tn[4])
             _check_real(A[0], "positive")
             terms.append("term(P=[%s], A=%s, B=%s, C=%s)" % (
@@ -1232,6 +1250,26 @@ def _v_lb(lb, limits):
             _domain()
 
 
+def _ctx_occurrences(node):
+    """Every "ctx" node of a parsed dump, in dump traversal order (docs/conventions.md 10.2, gate finding G3)."""
+    if isinstance(node, tuple):
+        if node[0] == "ctx":
+            yield node
+            return
+        for child in node[1:]:
+            for x in _ctx_occurrences(child):
+                yield x
+    elif isinstance(node, list):
+        for child in node:
+            for x in _ctx_occurrences(child):
+                yield x
+
+
+def _d_is_exact_zero(z):
+    """an acb token group that is the exact zero ball"""
+    return all(a[1] == 0 and a[3] == 0 for a in z[1:])
+
+
 def _dump_validate(node, limits):
     kind = node[0]
     # stage 4 and 5 first, then stage 6
@@ -1244,6 +1282,11 @@ def _dump_validate(node, limits):
     if kind == "rfun" and (len(node[1]) > limits.max_items or any(len(t[0]) > limits.max_items
                                                                    for t in node[1])):
         raise TextError("LIMIT")
+    # stage 4 (gate finding G8): the block count of every context occurrence, including contexts nested in
+    # finite balls, adeles and quotient pieces; checked before any semantic check, whatever fails later
+    for ctx in _ctx_occurrences(node):
+        if len(ctx[2]) > limits.max_items:
+            raise TextError("LIMIT")
     lbs = [node[1]] if kind == "lball" else (node[3] if kind == "sball" else [])
     for lb in lbs:                      # stage 4 for every local ball before stage 5 for any
         vals = [lb[5]] if lb[2] == "x" else [lb[4], lb[5]]
@@ -1331,11 +1374,11 @@ def _dump_validate(node, limits):
             _v_arb(z[2])
     elif kind == "rfun":
         for coeffs, A, B, C in node[1]:
-            if len(coeffs) == 0:
-                _domain()
             for z in coeffs + [A, B, C]:
                 _v_arb(z[1])
                 _v_arb(z[2])
+            if coeffs and _d_is_exact_zero(coeffs[-1]):
+                _domain()          # nonempty P with an exact-zero last coefficient is not normalized (G7)
             if _arb_sign(A[1]) != 1:
                 _domain()
     elif kind == "char":
@@ -1433,6 +1476,34 @@ def dump_roundtrip(data, limits=DEFAULT_LIMITS):
         return _dump_print(node)
     except TextError as e:
         return "!" + e.status
+
+
+def dump_contexts(data, limits=DEFAULT_LIMITS):
+    """docs/conventions.md 10.2 (gate finding G3): the context occurrences of a dump, in dump traversal order,
+    each as (K, (q_1, ..., q_k)); no value is constructed. "!STATUS" for an invalid dump."""
+    try:
+        node = _dump_syntax(data, limits)
+        _dump_validate(node, limits)
+        return [(ctx[1], tuple(ctx[2])) for ctx in _ctx_occurrences(node)]
+    except TextError as e:
+        return "!" + e.status
+
+
+def dump_load_check(data, binds, limits=DEFAULT_LIMITS):
+    """docs/conventions.md 10.2 (gate finding G3): the binding rule of the loader. `binds` stands for the array
+    of caller-owned context bindings, one per context occurrence in dump traversal order; an entry is None (a
+    missing binding) or (K, (q_1, ..., q_k)) matching the modulus and ordered blocks of the caller's context.
+    Returns "OK" if `data` loads with these bindings, else "!STATUS". The pointer identity that identical()
+    additionally requires (10.2) is not modelled here."""
+    occ = dump_contexts(data, limits)
+    if isinstance(occ, str):
+        return occ
+    if len(binds) != len(occ):
+        return "!DOMAIN"
+    for b, desc in zip(binds, occ):
+        if b is None or len(b) != 2 or b[0] != desc[0] or tuple(b[1]) != desc[1]:
+            return "!DOMAIN"
+    return "OK"
 
 
 # ================================================================================================================

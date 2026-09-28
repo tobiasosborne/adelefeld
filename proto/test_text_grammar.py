@@ -272,6 +272,74 @@ class TestGoldenVectors(unittest.TestCase):
             self.assertLess(abs(abs(tau) ** 2 - q), mpmath.mpf(10) ** -80)
 
 
+class TestGateFindings(unittest.TestCase):
+    """Regressions for the milestone-0 gate review (docs/reviews/m0-gate/review.md) applied to the reference."""
+
+    def test_g8_context_block_counts_have_limits(self):
+        """G8: max_items bounds the block count of every context occurrence, before semantic checks."""
+        lim = tg.Limits(max_items=1)
+        for s in ["adf1 Q modctx 6 2 2 3",
+                  "adf1 Q fball l 1 6 2 2 3 0 0",
+                  "adf1 Q scaled s 1 1 0 6 2 2 3",
+                  "adf1 Q qclass pieces 1 1 1 -1 0 0 l 2 6 2 2 3 0 0"]:
+            self.assertEqual(tg.dump_roundtrip(s.encode(), lim), "!LIMIT", s)
+        # every count limit precedes every semantic error (8.5 stage 4 before stage 6)
+        self.assertEqual(tg.dump_roundtrip(b"adf1 Q modctx 7 2 2 3", lim), "!LIMIT")
+        self.assertEqual(tg.dump_roundtrip(b"adf1 Q modctx 7 2 2 3"), "!DOMAIN")
+        self.assertEqual(tg.dump_roundtrip(b"adf1 Q modctx 6 2 2 3", tg.Limits(max_items=2)),
+                         "adf1 Q modctx 6 2 2 3")
+
+    def test_g3_context_occurrences_and_bindings(self):
+        """G3: one binding per context occurrence, in dump traversal order (conventions 10.2)."""
+        two = "adf1 Q qclass pieces 2 1 1 -2 0 0 l 1 2 1 2 0 1 3 -2 0 0 l 1 3 1 3 0"
+        self.assertEqual(tg.dump_contexts(two.encode()), [(2, (2,)), (3, (3,))])
+        self.assertEqual(tg.dump_load_check(two.encode(), [(2, (2,)), (3, (3,))]), "OK")
+        for binds in ([], [(2, (2,))], [(2, (2,)), (2, (2,))], [(3, (3,)), (2, (2,))],
+                      [(2, (2,)), (3, (3,), None)], [(2, (2,)), None], [(2, (2,)), (3, (3,)), (2, (2,))]):
+            self.assertNotEqual(tg.dump_load_check(two.encode(), binds), "OK", repr(binds))
+        # nested and single occurrences, including a scaled context with no blocks
+        self.assertEqual(tg.dump_contexts(b"adf1 Q adele 1 1 0 0 0 l 2 6 2 2 3 0 1"), [(6, (2, 3))])
+        self.assertEqual(tg.dump_load_check(b"adf1 Q adele 1 1 0 0 0 l 2 6 2 2 3 0 1", [(6, (2, 3))]), "OK")
+        self.assertEqual(tg.dump_load_check(b"adf1 Q adele 1 1 0 0 0 l 2 6 2 2 3 0 1", []), "!DOMAIN")
+        self.assertEqual(tg.dump_contexts(b"adf1 Q scaled x 1 2 1 0"), [(1, ())])
+        self.assertEqual(tg.dump_load_check(b"adf1 Q scaled x 1 2 1 0", [(1, ())]), "OK")
+        self.assertEqual(tg.dump_load_check(b"adf1 Q scaled x 1 2 1 0", [(2, (2,))]), "!DOMAIN")
+        self.assertEqual(tg.dump_contexts(b"adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3"), [])
+        self.assertEqual(tg.dump_load_check(b"adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3", []), "OK")
+        self.assertEqual(tg.dump_load_check(b"adf1 Q qclass lift 1 1 -1 0 0 g 1 3 3", [(1, ())]), "!DOMAIN")
+        # an invalid dump reports its own status before any binding rule
+        self.assertEqual(tg.dump_load_check(b"adf1 Q rat 1 0", [(1, ())]), "!DOMAIN")
+        self.assertEqual(tg.dump_contexts(b"adf2 Q rat 1 1"), "!UNSUPPORTED")
+
+    def test_g7_polynomial_normalisation(self):
+        """G7: P has length >= 0 and no exact-zero last coefficient; trailing exact zeros are removed on
+        input of the value form; a ball merely containing zero is not trimmed."""
+        z, o, ball = "(0) + (0)*i", "(1) + (0)*i", "(0 +/- 0.25) + (0)*i"
+
+        def term(p):
+            return "rfun(term(P=[%s], A=%s, B=%s, C=%s))" % (p, o, z, z)
+
+        self.assertEqual(tg.canonical("rfun", term(z).encode()), term(""))
+        self.assertEqual(tg.canonical("rfun", term("").encode()), term(""))
+        self.assertEqual(tg.canonical("rfun", term(o + ", " + z).encode()), term(o))
+        self.assertEqual(tg.canonical("rfun", term(z + ", " + o + ", " + z).encode()), term(z + ", " + o))
+        self.assertEqual(tg.canonical("rfun", term(o + ", " + ball).encode()), term(o + ", " + ball))
+
+    def test_g4_c_value_text_round_trips_may_change(self):
+        """G4: 1 +/- 0.13 prints the exactly representable ball 1 +/- 1/8, but the arb fields that a C parser
+        stores for 1 +/- 0.13 and its rereading (checks/flint_probe.c at prec 128) print one step wider on every
+        pass. Each text still encloses the exact interval of the first text (conventions 9.6, version 0.3)."""
+        self.assertEqual(tg.print_real(Fraction(1), Fraction(1, 8), 20), "1 +/- 0.13")
+        t1 = tg.print_real(Fraction(1), Fraction(0x10a3d70b) * Fraction(2) ** -31, 20)
+        t2 = tg.print_real(Fraction(1), Fraction(0x23d70a3f) * Fraction(2) ** -32, 20)
+        self.assertEqual(t1, "1 +/- 0.14")
+        self.assertEqual(t2, "1 +/- 0.15")
+        for t in ("1 +/- 0.13", t1, t2):
+            lo, hi = tg.read_real(t.encode())
+            self.assertLessEqual(lo, Fraction(87, 100), t)
+            self.assertGreaterEqual(hi, Fraction(113, 100), t)
+
+
 class TestStatus(unittest.TestCase):
     def test_values(self):
         self.assertEqual(tg.STATUS, {"OK": 0, "NOT_DETERMINED": 1, "UNIT_NOT_CERTIFIED": 2, "NEEDS_SPLIT": 3,

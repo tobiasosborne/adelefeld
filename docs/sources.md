@@ -1,8 +1,10 @@
 # Sources on disk (work package 0.2)
 
-Date: 2026-09-27. Every source the specification leans on is on disk under `refs/src/<key>/` (gitignored:
-other people's texts are not redistributed), re-fetchable by `refs/fetch_sources.sh`, with byte hashes in
-`refs/manifest.sha256` and text-extraction hashes in `refs/manifest-extra.sha256`. Quotes are cited as
+Date: 2026-09-27 (Intel uops.info rows added 2026-09-28). Every source the specification leans on is on disk
+under `refs/src/<key>/` (gitignored: other people's texts are not redistributed), re-fetchable by
+`refs/fetch_sources.sh` and, for the Intel CPU pages, `refs/fetch_intel.sh`, with byte hashes in
+`refs/manifest.sha256` and `refs/manifest-intel.sha256` and text-extraction hashes in
+`refs/manifest-extra.sha256`. Quotes are cited as
 `<key>:<file>:<line>` against these files; for PDFs the quote target is the `pdftotext -layout` extraction
 next to the PDF. Format preference: TeX, then HTML or reStructuredText, then PDF plus extraction. Only
 lawful, publicly offered copies were fetched.
@@ -51,10 +53,36 @@ may run past the limit. All 57 quotes were machine-checked against the files on 
 | uops-zen2 | uops.info instruction page `IMUL_R64_R64_I8` (Zen 2) | https://uops.info/html-instr/IMUL_R64_R64_I8.html | uops-zen2/IMUL_R64_R64_I8.html | 19269b14d60d35e3b848397bd5ea455e24c557acf0136cc26b9849fa4c86d200 | 2026-09-27 | HTML | PERF 1 |
 | uops-zen2 | uops.info instruction page `IMUL_R64_R64_I32` (Zen 2) | https://uops.info/html-instr/IMUL_R64_R64_I32.html | uops-zen2/IMUL_R64_R64_I32.html | 0f10dbe562039609819dd62e446127cd6b5bd3eb9be1f5d8aab5d5a1dd856137 | 2026-09-27 | HTML | PERF 1 |
 | uops-zen2 | uops.info instruction page `VPMULUDQ_YMM_YMM_YMM` (Zen 2) | https://uops.info/html-instr/VPMULUDQ_YMM_YMM_YMM.html | uops-zen2/VPMULUDQ_YMM_YMM_YMM.html | dafbbacebe29e23e00db9b8fa1b050ab3e288535ba290157b4db85009a632db2 | 2026-09-27 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `ADC_11_R64_R64` (all microarchitectures, Alder Lake-P column for the laptop) | https://uops.info/html-instr/ADC_11_R64_R64.html | uops-intel/ADC_11_R64_R64.html | f7368a5a60c7c31156a49879c1eda17b1d73c18c0e8cd3cc3576cac36a921bf1 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `ADC_R64_M64` | https://uops.info/html-instr/ADC_R64_M64.html | uops-intel/ADC_R64_M64.html | 08bf7bb6a884fcefb6e5dcf26b04ae0ae00f7411af17e7b273a06f622fb13bc2 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `ADD_01_R64_R64` | https://uops.info/html-instr/ADD_01_R64_R64.html | uops-intel/ADD_01_R64_R64.html | b0323fd9229921c65c761fc96a6ca807047c5b0901043bca921ed91ce6fca603 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `ADD_R64_I8` | https://uops.info/html-instr/ADD_R64_I8.html | uops-intel/ADD_R64_I8.html | 934a877098e4c55f2d1452974fe5c3b9aaaa1647212e7ed414073aa24837f87a | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `ADD_R64_M64` | https://uops.info/html-instr/ADD_R64_M64.html | uops-intel/ADD_R64_M64.html | 98f4740aee0c1cac404f7c0045ff6f68bc6eddad9e96551fcf34299365fa430a | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `CMOVB_R64_R64` | https://uops.info/html-instr/CMOVB_R64_R64.html | uops-intel/CMOVB_R64_R64.html | 62bc67687557b2895b3a09a4af10e2e66fa17b33d916e3985af4eeb21071184b | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `CMOVNB_R64_R64` | https://uops.info/html-instr/CMOVNB_R64_R64.html | uops-intel/CMOVNB_R64_R64.html | 835fc043ecc7ff3656a83e65dd8268ec56d859441b25c878750c162d0a1b7580 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `CMP_39_R64_R64` | https://uops.info/html-instr/CMP_39_R64_R64.html | uops-intel/CMP_39_R64_R64.html | f398058094a26dc28dce0b2502af9b3fc1fe628b382920678ba7e226df3bf9bc | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `IMUL_R64_R64` | https://uops.info/html-instr/IMUL_R64_R64.html | uops-intel/IMUL_R64_R64.html | 919891e67d3289323715ff4e1d2ac482609bd5431f33eca7dd37939e880ee4a7 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `IMUL_R64_R64_I32` | https://uops.info/html-instr/IMUL_R64_R64_I32.html | uops-intel/IMUL_R64_R64_I32.html | 0f10dbe562039609819dd62e446127cd6b5bd3eb9be1f5d8aab5d5a1dd856137 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `IMUL_R64_R64_I8` | https://uops.info/html-instr/IMUL_R64_R64_I8.html | uops-intel/IMUL_R64_R64_I8.html | 19269b14d60d35e3b848397bd5ea455e24c557acf0136cc26b9849fa4c86d200 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `MOV_M64_R64` | https://uops.info/html-instr/MOV_M64_R64.html | uops-intel/MOV_M64_R64.html | 56fa1dc2c26f5a04d7e98bba01b65378c01f4b5cdb9098917276e37adcb95f9f | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `MOV_R64_M64` | https://uops.info/html-instr/MOV_R64_M64.html | uops-intel/MOV_R64_M64.html | 0e996c1ee5ee6080e2e2b2627842d8d24c781f0b2d47d1def72512bebb927b55 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `MUL_R64` | https://uops.info/html-instr/MUL_R64.html | uops-intel/MUL_R64.html | c9d8adccabbccb56359a9dfd7e22f1a8c17054fc5ca9b9d229ce37efd7b488f8 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `SHL_R64_CL` | https://uops.info/html-instr/SHL_R64_CL.html | uops-intel/SHL_R64_CL.html | 2d7773985cca3f52d440345b34a4855d3b131fe964d771de098032ab13dad87c | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `SHR_R64_CL` | https://uops.info/html-instr/SHR_R64_CL.html | uops-intel/SHR_R64_CL.html | 8255a5ae094993ab6f5667b8223e56e90e29272dbb5045b8533cc8f15b88834d | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `SUB_29_R64_R64` | https://uops.info/html-instr/SUB_29_R64_R64.html | uops-intel/SUB_29_R64_R64.html | 9020541a9cd8a8e872d48d1065b49369e5ee44af4c2bfe352331bddba51f4e87 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `VMOVDQU_M256_YMM` | https://uops.info/html-instr/VMOVDQU_M256_YMM.html | uops-intel/VMOVDQU_M256_YMM.html | a64253a852ca25b66b4a5cc0b058502fd88b4d24579e1fccf6f032424026ea92 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `VMOVDQU_YMM_M256` | https://uops.info/html-instr/VMOVDQU_YMM_M256.html | uops-intel/VMOVDQU_YMM_M256.html | b988da3453bf53c2de0755b794b205634ad7545f9d5991099ce6c78e2f15cd69 | 2026-09-28 | HTML | PERF 1 |
+| uops-intel | uops.info instruction page `VPMULUDQ_YMM_YMM_YMM` | https://uops.info/html-instr/VPMULUDQ_YMM_YMM_YMM.html | uops-intel/VPMULUDQ_YMM_YMM_YMM.html | dafbbacebe29e23e00db9b8fa1b050ab3e288535ba290157b4db85009a632db2 | 2026-09-28 | HTML | PERF 1 |
 | hvh-mult | D. Harvey, J. van der Hoeven, Integer multiplication in time O(n log n), Ann. of Math. 193 (2021), 563-617 | https://hal.science/hal-02070778/file/nlogn.pdf | hvh-mult/nlogn.pdf | 23706afbca829df933be41754743bf760ed01ffe73d499ddb410774c4ee0bf1d | 2026-09-27 | PDF + txt | PERF 3 |
 
 Not fetched, recorded as local reference: the FLINT 3.0.1 headers matching these docs are on this machine
 under `/usr/include/flint` (161 files, e.g. `padic.h`, `arb.h`, `acb.h`).
+
+The `uops-intel` pages were fetched by `refs/fetch_intel.sh`, which writes `refs/manifest-intel.sha256`; each page
+holds every microarchitecture the site covers (the Intel profile of `PERF.md` reads the Alder Lake-P column). The
+seven pages shared with `uops-zen2` are byte-identical. The register-form pages among them settle the pending item
+on the Zen 2 register forms: `uops-intel/ADD_01_R64_R64.html` has an "AMD Zen 2" block with measured (loop)
+throughput 0.25 at line 1320 and documented 0.25 at line 1330, matching the figures `PERF.md` section 1a quotes.
 
 The Sage package snapshot is the whole pinned tree (`adeles-pkg/snapshot/`, 2202 files, including its
 committed documentation); every file is hashed in `refs/manifest.sha256`. The clone at
@@ -207,5 +235,6 @@ transitive. The SPEC does not adopt it; the thesis chose it deliberately (thesis
 3. An open text with proofs of the domains of convergence of the p-adic sine, cosine, sinh and cosh series
    (SPEC 9.3.2). The fetched texts cover exp and log with proofs (granville-ntr, evertse-padic, baker-padic)
    but not the trigonometric series.
-4. A uops.info page for the register-register form `add r64, r64` on Zen 2; the site serves the memory
-   form `ADD_R64_M64` under that name (see the report for what this means for PERF.md section 1).
+4. Settled on 2026-09-28: the register-register form `add r64, r64` on Zen 2 is in the fetched page
+   `uops-intel/ADD_01_R64_R64.html` (the "AMD Zen 2" block); the site serves the memory form `ADD_R64_M64`
+   under the bare name `ADD_R64_M64`. See the note after table 1.

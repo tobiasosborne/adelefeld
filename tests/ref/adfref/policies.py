@@ -94,7 +94,8 @@ def _context(x, y):
 
 
 def scaled_add(x, y):
-    """Proposition 5(1); exact operands fall back through the tight sum."""
+    """Proposition 5(1); exact operands fall back through the tight sum. The two operands must share
+    the context K; otherwise a ValueError is raised (the documented precondition of SPEC 4.4)."""
     if isinstance(x, Exact) and isinstance(y, Exact):
         return Exact(x.q + y.q)
     if isinstance(x, Exact) or isinstance(y, Exact):
@@ -103,9 +104,10 @@ def scaled_add(x, y):
         value, _ = convert_from_tight(tight, K)
         return value
     g = qgcd(x.s, y.s)
+    K = _context(x, y)
     A = int(x.s / g)
     B = int(y.s / g)
-    return ScaledBall(g, (A * x.u + B * y.u) % x.K, x.K)
+    return ScaledBall(g, (A * x.u + B * y.u) % K, K)
 
 
 def scaled_neg(x):
