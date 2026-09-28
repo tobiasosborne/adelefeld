@@ -1,0 +1,6 @@
+dump_occurrence_binding_checks=60 failures=0
+nested_context_limit_checks=12 failures=0
+scaled_mismatch_and_common_context_checks=806 failures=0
+C5_witness=1+2Zhat target_K=1 result=Zhat lost=1
+reference_limitations=context_pointer_identity, borrowing, C_aliasing, exact_operand_contexts
+total_checks=878 failures=0

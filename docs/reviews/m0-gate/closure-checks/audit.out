@@ -1,0 +1,5 @@
+findings=16 decisions=8 new_findings=5 edits=4
+finding_verdicts={'CLOSED WITH EDIT': 7, 'CLOSED': 9}
+decision_verdicts={'CLOSED WITH EDIT': 5, 'CLOSED': 3}
+review_source_files=5 overlong_lines=0
+input_hashes=51 report_exists=1

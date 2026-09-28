@@ -1,0 +1,11 @@
+random_dyadic_balls=12000 failures=0 seed=2026092803
+random_sign_constrained_balls=3000 failures=0
+golden_hard_cases=26 failures=0
+hard mid=-20396493/16 rad=1258000 n=2 -> -1280000 +/- 1270000
+hard mid=-1 rad=1073741823/1073741824 n=20 -> -1 +/- 0.9999999991
+hard mid=-1 rad=1023/1024 n=20 -> -1 +/- 0.9991
+hard mid=20396493/16 rad=1258000 n=2 -> 1280000 +/- 1270000
+hard mid=1 rad=1073741823/1073741824 n=20 -> 1 +/- 0.9999999991
+hard mid=1 rad=1023/1024 n=20 -> 1 +/- 0.9991
+hard_sign_cases=6 failures=0
+max_rounding_loops=2 max_radius_digits=46 max_fixed_point_passes=3
