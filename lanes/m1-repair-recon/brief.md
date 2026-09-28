@@ -30,3 +30,12 @@ a `mag` (and `/usr/include/flint/arf.h`, `mag.h`: `ARF_EXPREF`, `MAG_EXPREF`, `a
    three reproducers of the review built against the repaired library, with their new output.
 5. `make mutate FILES=src/recon.c JOBS=2 LIMIT=300`: survivors killed by tests or listed in the report with
    the reason (do not edit `tools/mutate/equivalent.txt`).
+
+## Resume note of the orchestrator (2026-09-28, 15:50)
+
+This lane was stopped from outside when the machine ran low on memory. It was not your fault and nothing is
+lost: your files are in the worktree as you left them, uncommitted. Before anything else run `git status`
+and `git diff --stat`, read the logs in your lane directory, and find the first item of the brief that is
+not finished. Do not start again from the beginning and do not rewrite what works. Memory: never run two
+builds or two mutation runs at the same time; use `make -j2`; run a mutation run in the foreground, not
+with `nohup`; if `free -g` shows less than 6 GB available, wait. Finish with `report.md`.

@@ -1,0 +1,19 @@
+E=1048576 R=1048576                ARF_EXP=1048576 MAG_EXP=1048576 | a_bits=0 b_bits=1 exp=1048576
+E=1048576 R=0                      ARF_EXP=1048576 MAG_EXP=0 | a_bits=1048576 b_bits=1048577 exp=-1
+E=0 R=1048576                      ARF_EXP=0 MAG_EXP=1048576 | a_bits=1048576 b_bits=1048577 exp=-1
+E=0 R=-1048576                     ARF_EXP=0 MAG_EXP=-1048576 | a_bits=1048576 b_bits=1048577 exp=-1048577
+E=-1048576 R=0                     ARF_EXP=-1048576 MAG_EXP=0 | a_bits=1048576 b_bits=1048577 exp=-1048577
+E=-1048576 R=-1048576              ARF_EXP=-1048576 MAG_EXP=-1048576 | a_bits=0 b_bits=1 exp=-1048576
+E=1048577 R=1048577                ARF_EXP=1048577 MAG_EXP=1048577 | a_bits=0 b_bits=1 exp=1048577
+E=1048577 R=0                      ARF_EXP=1048577 MAG_EXP=0 | a_bits=1048577 b_bits=1048578 exp=-1
+E=0 R=1048577                      ARF_EXP=0 MAG_EXP=1048577 | a_bits=1048577 b_bits=1048578 exp=-1
+E=0 R=-1048577                     ARF_EXP=0 MAG_EXP=-1048577 | a_bits=1048577 b_bits=1048578 exp=-1048578
+E=-1048577 R=0                     ARF_EXP=-1048577 MAG_EXP=0 | a_bits=1048577 b_bits=1048578 exp=-1048578
+E=-1048577 R=-1048577              ARF_EXP=-1048577 MAG_EXP=-1048577 | a_bits=0 b_bits=1 exp=-1048577
+E=1048575 R=1048575                ARF_EXP=1048575 MAG_EXP=1048575 | a_bits=0 b_bits=1 exp=1048575
+E=5 R=-9                           ARF_EXP=5 MAG_EXP=-9 | a_bits=14 b_bits=15 exp=-10
+E=-9 R=5                           ARF_EXP=-9 MAG_EXP=5 | a_bits=14 b_bits=15 exp=-10
+
+real	0m0,002s
+user	0m0,001s
+sys	0m0,002s

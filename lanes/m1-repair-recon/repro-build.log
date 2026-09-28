@@ -1,0 +1,2 @@
+## build recon_fuzz against the repaired src
+## build recon_fuzz against the mutant copy

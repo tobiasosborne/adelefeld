@@ -1,0 +1,43 @@
+# recon_huge_exp of docs/reviews/m1/arith/checks, built against the repaired library (make -j2),
+# run under 'ulimit -v 2000000' and 'timeout 60'; the program takes no argument and prints all cases.
+A (3 * 2^(2^64+1), fin = 6): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = 18446744073709551617
+  arb_get_interval_fmpz_2exp: a = 3, b = 3, exp = 18446744073709551617; fmpz_get_ui(exp) = 1, fmpz_get_si(exp) = 1
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 6/1)
+B (2^-(2^64+3), fin = 1/8): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = -18446744073709551619
+  arb_get_interval_fmpz_2exp: a = 1, b = 1, exp = -18446744073709551619; fmpz_get_ui(exp) = 3, fmpz_get_si(exp) = -3
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 1/8)
+B' (2^(2^64), fin = 1): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = 18446744073709551616
+  arb_get_interval_fmpz_2exp: a = 1, b = 1, exp = 18446744073709551616; fmpz_get_ui(exp) = 0, fmpz_get_si(exp) = 0
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 1/1)
+A2 (3 * 2^(2^62+1), fin = 6): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = 4611686018427387905
+  arb_get_interval_fmpz_2exp: a = 3, b = 3, exp = 4611686018427387905; fmpz_get_ui(exp) = 4611686018427387905, fmpz_get_si(exp) = 4611686018427387905
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 6/1)
+C2 (2^(2^62+1), fin = 2): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = 4611686018427387905
+  arb_get_interval_fmpz_2exp: a = 1, b = 1, exp = 4611686018427387905; fmpz_get_ui(exp) = 4611686018427387905, fmpz_get_si(exp) = 4611686018427387905
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 2/1)
+C3 (2^(2^63+5), fin = 32): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = 9223372036854775813
+  arb_get_interval_fmpz_2exp: a = 1, b = 1, exp = 9223372036854775813; fmpz_get_ui(exp) = 9223372036854775813, fmpz_get_si(exp) = 5
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 32/1)
+B2 (2^-(2^62+3), fin = 1/8): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = -4611686018427387907
+  arb_get_interval_fmpz_2exp: a = 1, b = 1, exp = -4611686018427387907; fmpz_get_ui(exp) = 4611686018427387907, fmpz_get_si(exp) = -4611686018427387907
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 1/8)
+D (2^-(2^63), fin = 1): arb_is_finite=1 arb_is_exact=1 adf_adele_is_canonical=1
+  exponent of the ball = -9223372036854775808
+  arb_get_interval_fmpz_2exp: a = 1, b = 1, exp = -9223372036854775808; fmpz_get_ui(exp) = 9223372036854775808, fmpz_get_si(exp) = -9223372036854775808
+  status = LIMIT (10), q = -99
+  expected: NO_SOLUTION (the real ball is the single point m*2^e, and m*2^e != 1/1)
+exit=0

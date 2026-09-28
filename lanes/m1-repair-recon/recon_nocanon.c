@@ -1,4 +1,9 @@
-/* adelefeld/recon.c: rational reconstruction from a full adelic ball.
+/* lanes/m1-repair-recon/recon_nocanon.c: a copy of src/recon.c with the single mutant of the
+   mutation run (src/recon.c:143 drop_call fmpq_canonicalise(q), survivor in
+   lanes/m1-repair-recon/mutate-recon.log) applied, so that the comparison of
+   docs/reviews/m1/arith/checks/recon_mut111.out can be repeated on the repaired file.
+
+   adelefeld/recon.c: rational reconstruction from a full adelic ball.
 
    Work package 1.6 (docs/PLAN.md section 6). The contract is the comment block of
    include/adelefeld/recon.h: docs/SPEC.md 9.2 first item, docs/proofs/quotient.md Proposition 11
@@ -140,7 +145,7 @@ fmpq_set_dyadic(fmpq_t q, const fmpz_t mn, const fmpz_t exp, slong max_exp)
             fmpz_set(fmpq_numref(q), mn);
             fmpz_set(fmpq_denref(q), t);
         }
-        fmpq_canonicalise(q);
+        /* MUTANT: fmpq_canonicalise(q) removed */
         fmpz_clear(t);
     }
     fmpz_clear(m);

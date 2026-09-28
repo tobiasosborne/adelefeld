@@ -1,0 +1,14 @@
+FAIL tests/test_recon_limit.c:229: the_real_balls_of_the_review_are_answered_limit: check failed: got == want | 3 * 2^(2^64+1) against 6: the status is OK, expected LIMIT
+FAIL tests/test_recon_limit.c:238: the_real_balls_of_the_review_are_answered_limit: check failed: adf_rat_identical(q, mark) == 1 | 3 * 2^(2^64+1) against 6: the output was written on OK
+FAIL tests/test_recon_limit.c:229: the_real_balls_of_the_review_are_answered_limit: check failed: got == want | 2^-(2^64+3) against 1/8: the status is OK, expected LIMIT
+FAIL tests/test_recon_limit.c:238: the_real_balls_of_the_review_are_answered_limit: check failed: adf_rat_identical(q, mark) == 1 | 2^-(2^64+3) against 1/8: the output was written on OK
+FAIL tests/test_recon_limit.c:229: the_real_balls_of_the_review_are_answered_limit: check failed: got == want | 2^(2^64) against 1: the status is OK, expected LIMIT
+FAIL tests/test_recon_limit.c:238: the_real_balls_of_the_review_are_answered_limit: check failed: adf_rat_identical(q, mark) == 1 | 2^(2^64) against 1: the output was written on OK
+FAIL tests/test_recon_limit.c:229: the_real_balls_of_the_review_are_answered_limit: check failed: got == want | 2^-(2^63) against 1: the status is NO_SOLUTION, expected LIMIT
+GNU MP: Cannot reallocate memory (old_size=16 new_size=8589934600)
+/bin/bash: line 1: 1094020 Aborted                 (core dumped) ./build/test_recon_limit
+
+real	0m0,169s
+user	0m0,001s
+sys	0m0,003s
+exit=134
