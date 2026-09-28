@@ -1,0 +1,2 @@
+recon_fuzz vs recon_fuzz_mut111 (src/recon.c with line 111, fmpq_canonicalise(q), removed),
+seeds 1, 2, 3, 20000 cases each, bits 8: outputs byte-identical for all three seeds (cmp).

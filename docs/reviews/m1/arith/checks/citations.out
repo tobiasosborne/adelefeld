@@ -1,0 +1,105 @@
+== refs/src/flint-3.0.1/arb.rst
+   11: applied to any choice of points in the input balls.
+   12: In general, the output ball is not the smallest possible.
+   13: 
+   14: The precision parameter passed to each function roughly indicates the
+   23: working precision) when the result is known to be inexact (while still
+   24: propagating errors rigorously, of course).
+   84: .. function:: void arb_init(arb_t x)
+   89: .. function:: void arb_clear(arb_t x)
+  102: .. function:: void arb_swap(arb_t x, arb_t y)
+  137: .. function:: void arb_set(arb_t y, const arb_t x)
+  141: .. function:: void arb_set_si(arb_t y, slong x)
+  167: .. function:: void arb_set_fmpq(arb_t y, const fmpq_t x, slong prec)
+  168: 
+  169:     Sets *y* to the rational number *x*, rounded to *prec* bits in the direction
+  461: .. function:: void arb_get_interval_fmpz_2exp(fmpz_t a, fmpz_t b, fmpz_t exp, const arb_t x)
+  462: 
+  463:     Computes the exact interval represented by *x*, in the form of an integer
+  464:     interval multiplied by a power of two, i.e. `x = [a, b] \times 2^{\text{exp}}`.
+  465:     The result is normalized by removing common trailing zeros
+  466:     from *a* and *b*.
+  468:     This method aborts if *x* is infinite or NaN, or if the difference between
+  469:     the exponents of the midpoint and the radius is so large that allocating
+  470:     memory for the result fails.
+  472:     Warning: this method will allocate a huge amount of memory to store
+  473:     the result if the exponent difference is huge. Memory allocation could
+  474:     succeed even if the required space is far larger than the physical
+  606: .. function:: int arb_is_finite(const arb_t x)
+  623: .. function:: int arb_equal(const arb_t x, const arb_t y)
+  729: .. function:: void arb_neg(arb_t y, const arb_t x)
+  767: .. function:: void arb_add(arb_t z, const arb_t x, const arb_t y, slong prec)
+  785: .. function:: void arb_sub(arb_t z, const arb_t x, const arb_t y, slong prec)
+  798: .. function:: void arb_mul(arb_t z, const arb_t x, const arb_t y, slong prec)
+  856: .. function:: void arb_div(arb_t z, const arb_t x, const arb_t y, slong prec)
+== refs/src/flint-3.0.1/acb.rst
+   58: .. function:: void acb_init(acb_t x)
+   62: .. function:: void acb_clear(acb_t x)
+  104: .. function:: void acb_set(acb_t z, const acb_t x)
+  114: .. function:: void acb_set_arb(acb_t z, const arb_t c)
+  128: .. function:: void acb_set_fmpq(acb_t z, const fmpq_t x, slong prec)
+  138: .. function:: void acb_swap(acb_t z, acb_t x)
+  224: .. function:: int acb_is_finite(const acb_t z)
+  240: .. function:: int acb_equal(const acb_t x, const acb_t y)
+  411: .. function:: void acb_neg(acb_t z, const acb_t x)
+  429: .. function:: void acb_add(acb_t z, const acb_t x, const acb_t y, slong prec)
+  441: .. function:: void acb_sub(acb_t z, const acb_t x, const acb_t y, slong prec)
+  463: .. function:: void acb_mul(acb_t z, const acb_t x, const acb_t y, slong prec)
+  469: 
+  521: .. function:: void acb_div(acb_t z, const acb_t x, const acb_t y, slong prec)
+== refs/src/flint-3.0.1/fmpq.rst
+   19: A fraction is said to be in canonical form if the numerator and
+   20: denominator have no common factor and the denominator is positive.
+   21: Except where otherwise noted, all functions in the :type:`fmpq` module
+   22: assume that inputs are in canonical form, and produce outputs in
+   23: canonical form. The user can manipulate the numerator and denominator
+   24: of an :type:`fmpq_t` as arbitrary integers, but then becomes
+   25: responsible for canonicalising the number (for example by calling
+   26: ``fmpq_canonicalise``) before passing it to any library function.
+  196: .. function:: void fmpq_set_si(fmpq_t res, slong p, ulong q)
+  197: 
+  198:     Sets ``res`` to the canonical form of the fraction ``p / q``.
+  400: .. function:: void fmpq_add(fmpq_t res, const fmpq_t op1, const fmpq_t op2)
+  408:     Division by zero results in an error.
+  409:     Aliasing between any combination of the variables is allowed.
+  410: 
+  419:     Aliasing between any combination of the variables is allowed,
+  420:     whilst no numerator is aliased with a denominator.
+  475: .. function:: void fmpq_inv(fmpq_t dest, const fmpq_t src)
+  476: 
+  477:     Sets ``dest`` to ``1 / src``. The result is placed in canonical
+  478:     form, assuming that ``src`` is already in canonical form.
+  519: .. function:: void fmpq_gcd(fmpq_t res, const fmpq_t op1, const fmpq_t op2)
+== /usr/include/flint/fmpq.h
+   28: FMPQ_INLINE void fmpq_init(fmpq_t x)
+   32: }
+   34: FMPQ_INLINE void fmpq_clear(fmpq_t x)
+   38: }
+   40: FMPQ_INLINE void fmpq_zero(fmpq_t res)
+   45: 
+   52: FMPQ_INLINE int fmpq_equal(const fmpq_t x, const fmpq_t y)
+   56: }
+   58: FMPQ_INLINE int fmpq_sgn(const fmpq_t x)
+   61: }
+   63: FMPQ_INLINE int fmpq_is_zero(const fmpq_t x)
+   66: }
+   78: FMPQ_INLINE void fmpq_set(fmpq_t dest, const fmpq_t src)
+   82: }
+   84: FMPQ_INLINE void fmpq_swap(fmpq_t op1, fmpq_t op2)
+   88: }
+   90: FMPQ_INLINE void fmpq_neg(fmpq_t dest, const fmpq_t src)
+   94: }
+  115: void fmpq_canonicalise(fmpq_t res);
+  117: int _fmpq_is_canonical(const fmpz_t num, const fmpz_t den);
+  118: int fmpq_is_canonical(const fmpq_t x);
+  136: FMPQ_INLINE void fmpq_set_fmpz(fmpq_t q, const fmpz_t n)
+  139:     fmpz_one(fmpq_denref(q));
+  142: void fmpq_set_fmpz_frac(fmpq_t res, const fmpz_t p, const fmpz_t q);
+  200: void fmpq_add(fmpq_t res, const fmpq_t op1, const fmpq_t op2);
+  209: void fmpq_add_fmpz(fmpq_t res, const fmpq_t op1, const fmpz_t c);
+  230: void fmpq_mul(fmpq_t res, const fmpq_t op1, const fmpq_t op2);
+  245: void fmpq_inv(fmpq_t dest, const fmpq_t src);
+  248: void fmpq_div(fmpq_t res, const fmpq_t op1, const fmpq_t op2);
+== /usr/include/flint/fmpz.h
+  472: void fmpz_cdiv_q(fmpz_t f, const fmpz_t g, const fmpz_t h);
+  473: void fmpz_fdiv_q(fmpz_t f, const fmpz_t g, const fmpz_t h);

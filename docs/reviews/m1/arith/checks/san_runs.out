@@ -1,0 +1,15 @@
+== fball_fuzz.san 5000 5 60
+cases: 5000 stats: {'exact_x': 1551, 'exact_y': 1571, 'ov': 1470, 'eq': 157, 'cxy': 314, 'neg_ctr': 1259}
+#alias_failures 0
+failures: 0
+sanitizer stderr bytes: 0
+== adele_prec.san 3000 7
+failures: 0
+sanitizer stderr bytes: 0
+== recon_fuzz.san 5000 11 20
+cases: 10000 by (call, expected status): {('F', 0): 1420, ('F', 4): 1169, ('F', 5): 2411, ('R', 0): 1621, ('R', 4): 147, ('R', 5): 3232}
+failures: 0
+sanitizer stderr bytes: 0
+== rat_fuzz.san 5000 11 64
+cases: 5000 failures: 0
+sanitizer stderr bytes: 0
