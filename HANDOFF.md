@@ -24,21 +24,31 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING since 22:57 (three lanes; look at them first).**
+**RUNNING at 23:57 (three lanes; look at them first).**
 
-| Lane | Model | Where | State to look at |
+| Lane | Model | Where | State |
 |---|---|---|---|
-| m1-repair-tools (adf-xf4, adf-4lj) | pi space-bunny-alpha, `LANE_TIMEOUT=14400` | `../adelefeld-wt/m1-repair-tools` (master merged in, `d729768`; second resume note in its brief: items 6, 7 and the sweep) | `lanes/m1-repair-tools/lane.log`, `sweep.md`, `report.md` |
-| m1-invariants (adf-xk4) | Claude `sonnet-medium`, subagent with worktree isolation | a worktree under `.claude/worktrees/` from `4fbb142` | its final message is the report; it was told not to run the mutation tool |
-| m1-closure-dump (adf-igt) | codex gpt-6-astra xhigh | `../adelefeld-wt/m1-closure-dump` | `docs/reviews/m1/dump/closure.md`, `lanes/m1-closure-dump/report.md` |
+| m1-invariants (adf-xk4) | Claude `sonnet-medium` subagent | `.claude/worktrees/agent-ac0c93624e0f28f88` | cut off at 23:49 by a network failure, resumed 23:51; list, tests, `src/invariants.h` and the checks in 10 files of `src/` were written by then |
+| m1-repair-tools (adf-xf4, adf-4lj) | Claude `sonnet-medium` subagent, since 23:56 | `../adelefeld-wt/m1-repair-tools` (master merged in, `d729768`; work uncommitted) | items 2, 3, 6, 7 done by space-bunny-alpha (selftest passes, run by the orchestrator); items 1, 4 and the README are with Sonnet; the sweep (item 5) is run by the ORCHESTRATOR as a script after the lane lands |
+| m1-closure-contexts (adf-igt) | codex gpt-6-sol xhigh, since 23:53 | `../adelefeld-wt/m1-closure-contexts` | running |
 
-Briefs of `m1-closure-arith` and `m1-closure-contexts` are on master; start them one at a time after
-m1-closure-dump (`MAXRETRY=3 tools/orch/wt_lane.sh m1-closure-<name> codex gpt-6-sol xhigh`; TJO: sol for most reviews, astra only for deep work). The closure
-checks of `local`, `text`, `surface` wait for m1-invariants and m1-repair-tools; their briefs are not written.
-`lanes/m1-closure/COMMON.md`: codex judges every review now.
+**Landed tonight.** Closure of `dump` (`fef212f`): 3 CLOSED, 1 SETTLED BY DECISION. Closure of `arith`
+(`9aa97c9`): R1, R2 settled by M1-D3, R3 and R6 CLOSED, R4 and R5 (both MINOR, stale and false lines of
+`equivalent.txt`) OPEN until m1-repair-tools lands. No blocker open in either. One check program of each
+was rebuilt and rerun by the orchestrator (8036 and 24 cases, 0 failures). Observations: adf-mds.
 
-**Order of work from here.** Land the three lanes as they end (rules "How to land a lane" below); the other
-closure checks; benchmarks on a quiet machine; milestone S.
+**space-bunny-alpha tonight.** The provider returns "Provider returned an empty response" and pi ends the
+session: 30 attempts in 25 minutes, most of 14 seconds, after two useful ones. It also wrote `report.md`
+as a running record, which the runner takes for the end of the lane. Try it again for the next lane with a
+brief that forbids `report.md` before the end; if the first three attempts end within a minute, use Sonnet.
+
+The closure checks of `local`, `text`, `surface` wait for m1-invariants and m1-repair-tools; their briefs
+are not written (pattern: `lanes/m1-closure-arith/brief.md`; model `gpt-6-sol`). `lanes/m1-closure/COMMON.md`:
+codex judges every review. Codex meter 39% at 23:50 (limit of TJO: 50%).
+
+**Order of work from here.** Land the three lanes as they end (rules "How to land a lane" below); the sweep
+(script, overnight, alone); tests for its survivors; the other closure checks; sources for milestone S into
+`refs/src/` (rational reconstruction, Hermite form, Hensel lifting), then its design by Fable, reviewed by astra; benchmarks on a quiet machine; milestone S.
 
 ## Session 2026-09-28 (late), 21:00 to 21:50
 
