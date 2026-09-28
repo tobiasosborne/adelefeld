@@ -24,13 +24,27 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 00:35 on 2026-09-29 (three lanes; look at them first).**
+**RUNNING at 01:00 on 2026-09-29 (two lanes; look at them first).**
 
 | Lane | Model | Where | State |
 |---|---|---|---|
 | m1-repair-tools (adf-xf4, adf-4lj) | Claude `sonnet-medium` subagent, since 23:56 | `../adelefeld-wt/m1-repair-tools` (master of 23:00 merged in, `d729768`; work uncommitted) | items 2, 3, 6, 7 done by space-bunny-alpha (selftest passes, run by the orchestrator); items 1, 4 and the README are with Sonnet; the sweep (item 5) is run by the ORCHESTRATOR as a script after the lane lands, on the master of that moment |
-| m1-closure-text (adf-igt) | codex gpt-6-sol xhigh, since 00:30 | `../adelefeld-wt/m1-closure-text` | running |
-| s-sources | pi space-bunny-alpha (answered 3 of 3 probes at 00:30), `MAXRETRY=60` | `../adelefeld-wt/s-sources`; fetched files go to `refs/src/` of the main tree through the link | fetches and indexes the sources of milestone S; no design |
+| s-design | Claude Fable subagent (TJO: Fable for significant cognition), since 00:58 | a worktree under `.claude/worktrees/` from `0c80063`; brief `lanes/s-design/brief.md` | writes `docs/proofs/solvers.md`, `proto/solvers_checks.py`, `docs/api-s.md`; then review by codex `gpt-6-astra` (refute mode), brief not yet written |
+
+**Landed: the sources of milestone S** (`90defed`, lane s-sources, space-bunny-alpha in 16 attempts):
+Shoup (rational reconstruction, Theorems 4.8, 4.9), Storjohann's thesis (Hermite and Howell form), Conrad
+(Hensel), FLINT 3.0.1 documentation (8 files) and C sources (54 files); table 3 of `docs/sources.md`, 57
+quotes checked by `lanes/s-sources/check_quotes.py`; `refs/fetch_sources.sh --check` passes. Not on disk:
+Wang 1981, Monagan 2004, Collins and Encarnacion, von zur Gathen and Gerhard, Storjohann and Mulders 1998,
+Fiedler and Hofmann, Howell 1986 (TJO may supply copies). The manifest now leaves out
+`refs/src/tate-thesis/log/` (orchestrator).
+
+**Closure check (adf-igt):** `dump`, `arith`, `contexts`, `local`, `text` are landed, NO BLOCKER OPEN in any;
+open are arith R4, R5 and contexts R5 (all MINOR, all lines of `tools/mutate/equivalent.txt`). `surface` is
+to be started when m1-repair-tools has landed (`MAXRETRY=3 tools/orch/wt_lane.sh m1-closure-surface codex
+gpt-6-sol xhigh`; the brief is on master). Weak tests named by the judges, for the work after the sweep:
+`test_modctx_limits` (range pin passes without its line), the test of text R3 (passes on the old printer),
+text R9 (coverage only), the builders of `test_fball_local.c` now use `set_local`.
 
 **m1-invariants and m1-inv-tests are landed** (`0418288`, `1743426`; adf-xk4, adf-6vy closed). Master at
 00:28: `make check` 42 test programs with gcc, clang, `SAN=1`, `INV=1`, `INV=1 SAN=1`; the three scripts.
