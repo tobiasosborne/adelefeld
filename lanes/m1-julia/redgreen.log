@@ -1,0 +1,145 @@
+lanes/m1-julia/redgreen.log
+
+Red-green demonstration for the Julia smoke test, work package 1.9 (lane m1-julia's brief, point
+5): two of the Julia tests of tests/julia/smoke.jl are shown to fail when the expected value is
+wrong for the right reason. Both mutations are made in scratch copies of include/ and src/ under
+build/redgreen/mut1/ and build/redgreen/mut2/, never in the working tree:
+
+    rm -rf build/redgreen
+    mkdir -p build/redgreen/mut1/include build/redgreen/mut1/src
+    mkdir -p build/redgreen/mut2/include build/redgreen/mut2/src
+    cp -r include/. build/redgreen/mut1/include/    # and mut2, and src/ the same way
+    cp -r src/.     build/redgreen/mut1/src/
+
+build/ is .gitignore'd (line 3: "build/"); nothing in the working tree (include/, src/, tests/)
+was touched by either mutation. Neither mutation touches src/*.c: adelefeld's own code reads
+struct fields by name, so a reordered or widened struct recompiles cleanly with no warning, and
+the library's own C behaviour (arithmetic, printing) is unaffected — the point of both demos is
+that a Julia binding, which reads memory by documented offset and by adf_sizeof_<type>(), not by
+field name, is not so lucky.
+
+================================================================================
+DEMO 1: adf_fball_struct, fields A and H swapped. A genuine ABI-breaking change that sizeof and
+_Alignof cannot see by themselves: the struct keeps size 48 and alignment 8.
+================================================================================
+
+--- mutation: build/redgreen/mut1/include/adelefeld/fball.h ---
+
+--- include/adelefeld/fball.h
++++ build/redgreen/mut1/include/adelefeld/fball.h
+@@ -63,7 +63,7 @@
+    borrowed (conventions 4.2). */
+ typedef struct
+ {
+-    fmpz_t A, H, d;
++    fmpz_t H, A, d;  /* MUTATION (lane m1-julia, red-green demo): A and H swapped, sizeof/alignof unchanged */
+     int backend;
+     const adf_modctx_struct * mctx;
+     ulong * res;
+
+--- build ---
+
+    cc -shared -fPIC -Ibuild/redgreen/mut1/include -std=c11 -O1 -g -Wall -Wextra \
+        build/redgreen/mut1/src/*.c -o build/redgreen/mut1/libadelefeld.so -lflint -lgmp -lm
+
+Clean build, no warnings, no errors: C code names its fields, so a reorder is invisible to the
+compiler and to every C test.
+
+--- RED: julia --startup-file=no tests/julia/smoke.jl build/redgreen/mut1/libadelefeld.so ---
+(run with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10; see tests/julia/README.md)
+
+ERROR: LoadError: Some tests did not pass: 46 passed, 2 failed, 0 errored, 0 broken.
+in expression starting at .../tests/julia/smoke.jl:84
+adf_fball: parse, add, mul, print, raw offsets (docs/SPEC.md 4.3): Test Failed at .../tests/julia/smoke.jl:173
+  Expression: raw_A == 3
+   Evaluated: 12 == 3
+adf_fball: parse, add, mul, print, raw offsets (docs/SPEC.md 4.3): Test Failed at .../tests/julia/smoke.jl:174
+  Expression: raw_H == 12
+   Evaluated: 3 == 12
+
+Test Summary:                                                            | Pass  Fail  Total  Time
+adelefeld Julia smoke test (build/redgreen/mut1/libadelefeld.so)         |   46     2     48  5.0s
+  version                                                                |    3            3  0.0s
+  layouts (adf_sizeof_*/adf_alignof_* against tests/julia/layouts.jl)    |   16           16  0.1s
+  adf_rat: init, set from two integers, add, mul, compare, print, clear  |    6            6  0.1s
+  adf_fball: parse, add, mul, print, raw offsets (docs/SPEC.md 4.3)      |    7     2      9  4.5s
+  adf_adele: parse at prec 128, multiply by itself, print with 20 digits |    6            6  0.1s
+  a status other than OK: "1/0" as a rational                            |    4            4  0.0s
+  a context: adf_modctx_new_blocks, nblocks, block, free                 |    4            4  0.1s
+
+Exactly 2 of the 48 checks fail, both in the adf_fball testset, both at the raw-offset reads
+(tests/julia/smoke.jl:173-174): raw_A reads 12 (H's value under the true layout) instead of 3,
+raw_H reads 3 instead of 12. Every other check passes, including the sizeof/alignof layout checks
+(adf_fball_struct is still 48 bytes, alignment 8: unaffected by a reorder) and the get_str
+comparisons ("(* ; 3 mod 12)", "(* ; 2 mod 6)", "(* ; 3 mod 6)" are unchanged, because the
+library's own printer reads x->A and x->H by name, wherever the compiler puts them). This is
+exactly why a sizeof/alignof check alone is not enough for a binding that reads fields directly,
+and why tests/julia/layouts.jl also carries the field offsets of adf_fball_struct.
+
+--- GREEN: the unmutated library, same command against build/libadelefeld.so ---
+
+Test Summary:                                      | Pass  Total  Time
+adelefeld Julia smoke test (build/libadelefeld.so) |   48     48  0.5s
+
+================================================================================
+DEMO 2: adf_rat_struct, one 8-byte field added (size 16 -> 24; alignment unchanged, 8).
+================================================================================
+
+--- mutation: build/redgreen/mut2/include/adelefeld/rat.h ---
+
+--- include/adelefeld/rat.h
++++ build/redgreen/mut2/include/adelefeld/rat.h
+@@ -31,6 +31,7 @@
+ typedef struct
+ {
+     fmpq_t q;
++    long pad; /* MUTATION (lane m1-julia, red-green demo): grows the struct from 16 to 24 bytes */
+ } adf_rat_struct;
+
+ typedef adf_rat_struct adf_rat_t[1];
+
+--- build ---
+
+    cc -shared -fPIC -Ibuild/redgreen/mut2/include -std=c11 -O1 -g -Wall -Wextra \
+        build/redgreen/mut2/src/*.c -o build/redgreen/mut2/libadelefeld.so -lflint -lgmp -lm
+
+Clean build, no warnings, no errors.
+
+--- RED: julia --startup-file=no tests/julia/smoke.jl build/redgreen/mut2/libadelefeld.so ---
+(run with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10)
+
+ERROR: LoadError: Some tests did not pass: 47 passed, 1 failed, 0 errored, 0 broken.
+in expression starting at .../tests/julia/smoke.jl:84
+layouts (adf_sizeof_*/adf_alignof_* against tests/julia/layouts.jl): Test Failed at .../tests/julia/smoke.jl:99
+  Expression: got_size == want_size
+   Evaluated: 0x0000000000000018 == 16
+
+Test Summary:                                                            | Pass  Fail  Total  Time
+adelefeld Julia smoke test (build/redgreen/mut2/libadelefeld.so)         |   47     1     48  2.2s
+  version                                                                |    3            3  0.0s
+  layouts (adf_sizeof_*/adf_alignof_* against tests/julia/layouts.jl)    |   15     1     16  2.1s
+  adf_rat: init, set from two integers, add, mul, compare, print, clear  |    6            6  0.0s
+  adf_fball: parse, add, mul, print, raw offsets (docs/SPEC.md 4.3)      |    9            9  0.0s
+  adf_adele: parse at prec 128, multiply by itself, print with 20 digits |    6            6  0.0s
+  a status other than OK: "1/0" as a rational                            |    4            4  0.0s
+  a context: adf_modctx_new_blocks, nblocks, block, free                 |    4            4  0.0s
+
+Exactly 1 of the 48 checks fails: the layouts testset's adf_rat_struct row
+(tests/julia/smoke.jl:99), got_size 0x18 (24, decimal) against the documented want_size 16 of
+tests/julia/layouts.jl. This is exactly the fault CV-40 (docs/conventions.md 12.4) exists to turn
+into a load-time error instead of memory corruption: a binding that had allocated
+adf_sizeof_rat() bytes before this fix would have used the library's true (larger) struct size
+correctly, but a binding that hard-coded 16 bytes from stale documentation, without ever calling
+adf_sizeof_rat(), would have under-allocated and corrupted adjacent memory the first time the
+library wrote the extra field. The mutation demonstrates why layouts.jl (and this comparison in
+smoke.jl) exists, not merely that the library's own function works.
+
+--- GREEN: the unmutated library, same command against build/libadelefeld.so ---
+
+Test Summary:                                      | Pass  Total  Time
+adelefeld Julia smoke test (build/libadelefeld.so) |   48     48  0.5s
+
+================================================================================
+Both scratch trees remain under build/redgreen/ (gitignored) for inspection; they are not part
+of any deliverable of this lane and are safe to delete (rm -rf build/redgreen).
+================================================================================
