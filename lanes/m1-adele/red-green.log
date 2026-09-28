@@ -1,0 +1,52 @@
+# Red-green log, lane m1-adele (work package 1.3)
+
+## Note on the order (honest record)
+
+The implementation `src/adele.c` was written before the test files and before the red run below.
+The ordering rule of COMMON-C rule 1 (test first, see it fail, then the code) was therefore not
+followed. The red below was captured afterwards, by linking the finished tests against an
+archive that leaves out `src/adele.c`; it shows that the tests do fail without the
+implementation, but it is a reconstruction and not a chronological red-green cycle. The test
+files were then run against the implementation, and the survivor of the first mutation run was
+killed by the new test `cadele_is_canonical_needs_both_coordinates`.
+
+## Red (reconstructed)
+
+`src/adele.c` left out of the archive. The two test programs were linked against an archive built
+from every other `src/*.c` (`build/libadelefeld_noadele.a`); the first run of each file is a link
+error, which COMMON-C rule 1 allows for the first test of a file:
+
+    cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic tests/test_adele.c \
+        build/support/golden.o build/support/jsonl.o build/libadelefeld_noadele.a \
+        -lflint -lgmp -lm -o /tmp/test_adele_red
+    -> 148 undefined references (adf_adele_init, adf_adele_add, adf_adele_div_rat, ...), exit 1
+
+    cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic tests/test_cadele.c \
+        build/support/golden.o build/support/jsonl.o build/libadelefeld_noadele.a \
+        -lflint -lgmp -lm -o /tmp/test_cadele_red
+    -> 152 undefined references (adf_cadele_init, adf_adele_set_si, adf_cadele_mul, ...), exit 1
+
+## Green
+
+After `src/adele.c` was written:
+
+    make -j2 check
+    -> check passed: all 11 test programs; build/test_adele 13 tests, 6712 checks,
+       0 failed; build/test_cadele 15 tests, 6141 checks, 0 failed
+
+## Sanitizers, second compiler, mutation
+
+    make clean && make -j2 check SAN=1
+    -> check passed: all 11 test programs (address and undefined-behaviour sanitizers)
+
+    make clean && make -j2 check CC=clang
+    -> check passed: all 11 test programs (clang)
+
+    make mutate FILES=src/adele.c JOBS=2 LIMIT=150
+    -> 90 mutants in 64.5 s: 13 killed, 0 survived, 77 not compiled, 0 timed out,
+       0 excused; passed
+
+The 77 "not compiled" mutants are the tool's `&` -> `|` rewrite inside `&&`, which produces
+`&|` and does not parse; the first run of the tool had one real survivor
+(`adf_cadele_is_canonical`, `&&` -> `||`), killed by the new test
+`cadele_is_canonical_needs_both_coordinates`.
