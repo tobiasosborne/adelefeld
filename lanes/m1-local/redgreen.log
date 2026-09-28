@@ -1,0 +1,62 @@
+# Red-green log of lane m1-local (lanes/COMMON-C.md rule 1)
+
+0. Reference first: tests/ref/adfref/local_ref.py; self-checks lanes/m1-local/check_local_ref.py
+   (13560 local values, 1800 balls, 4200 pairs, 5 examples, 3 of 3 mutants of the reference killed);
+   vectors tests/ref/vectors/m1-local/local.jsonl (1923 records) by lanes/m1-local/gen_local_vectors.py.
+
+1. RED  tests/test_fball_local.c, conversion tests (set_local_and_set_global_basic, prop25_...,
+        set_local_statuses_..., set_local_enclose_prop20, conversions_aliasing_..., round_trips_...):
+        `make build/test_fball_local` -> link error, undefined adf_fball_set_local,
+        adf_fball_set_local_enclose, adf_fball_set_global, adf_fball_is_local, adf_fball_context
+        (first test of a new file: a link error counts).
+2. GREEN (conversions) src/fball_local.c written. `./build/test_fball_local`: 6 tests, 2717 checks,
+        208 failed. Two failures were errors of the test itself, corrected before this run: the
+        canonical triple of 1/2 + (1/2) Zhat is (0, 1, 2), not (1, 1, 2); and the one-block context
+        with the modulus 36 of (4, 9) was written as (12). Every remaining failed check is an
+        assertion on a function of src/fball.c with a local input (adf_fball_set, _identical,
+        _equal_set, _contains), which is the red of step 3.
+3. RED  tests/test_fball_local.c, 14 more tests (life cycle, predicate L, identical, P24 accessors,
+        accessors against global forms, predicates, the S26 sum, P22 products, P23 scalars, two
+        context pointers, all operations against the global forms with aliasing on 1/2/64/128
+        blocks, and the three callers recon/printer/adele): `./build/test_fball_local` ->
+        20 tests, 15514 checks, 5945 failed checks, 18 failed tests (all by assertion; one
+        unguarded residue read in the scalar test was guarded first so that the red run did not
+        crash).
+4. GREEN src/fball.c extended (local life cycle, predicate L, identical with residues, accessors
+        through the canonical triple, local neg/add/sub/mul/mul_rat/div_rat, predicates through
+        the global forms): `./build/test_fball_local` -> 20 tests, 15514 checks, 0 failed.
+        `make -j2 check`: 22 of 23 programs pass; build/test_fball fails in the four tests of
+        lane m1-fball that pin the pre-1.8 behaviour on "local-shaped" values with a fake
+        context pointer (&dummy, a char): local_shaped_is_canonical (line 1029),
+        identical_local_guard (line 1069), then predicates_local_and_radius_edges aborts
+        (FLINT "Unable to allocate memory": the block count is read from the fake pointer).
+        See the report, "Findings": these tests contradict fball.h for local inputs.
+5. RED  tests/test_fball_local_vectors.c (every record of local.jsonl), written after step 4, so its
+        red run was made against the src/fball.c of lane m1-fball (the file before this lane)
+        with this lane's src/fball_local.c, in a scratch library: 1 test, 42682 checks,
+        4241 failed checks (244 local results instead of 967).
+6. GREEN the same test against this lane's src/fball.c: 1 test, 42682 checks, 0 failed;
+        967 local results, 632 global results, 154 statuses, 170 predicates.
+7. Mutation run 1 of src/fball_local.c (proposed tests/test_fball.c installed in the scratch copy,
+        see report): 78 mutants, 57 killed, 7 survived, 14 not compiled. 5 survivors are swaps of
+        commutative arguments (excused in tools/mutate/equivalent.txt); 2 are the dropped
+        flint_free(y->res) at lines 69 and 199 (a leak, which the default check does not see).
+8. RED  tests/test_fball_local.c::no_growth_of_live_blocks (counting FLINT memory functions,
+        1000 rounds of conversions and life-cycle operations), run against a scratch copy of
+        src/fball_local.c with line 199 dropped: "live blocks grew by 2000 in 1000 rounds",
+        1 failed check.
+9. GREEN the same test against src/fball_local.c: 21 tests, 20524 checks, 0 failed.
+10. Mutation run of src/fball.c (300 of its mutants, proposed tests/test_fball.c in the scratch copy):
+        216 killed, 28 survived, 55 not compiled, 1 timed out. Rerun of src/fball_local.c after the
+        leak test: 78 mutants, 59 killed, 0 survived, 14 not compiled, 5 excused.
+11. Tests added for the fball.c survivors (local_output_of_another_context_is_resized,
+        is_canonical_rejects_a_context_without_blocks, constructors_over_a_value_with_other_data,
+        no_growth_of_live_blocks_in_the_life_cycle): 25 tests, 20554 checks, 0 failed. Their red is
+        the mutation rerun (step 12): the mutants they target must now be killed.
+12. Mutation rerun of src/fball.c with the tests of step 11: 300 mutants, 224 killed, 2 survived
+        (577 status, 784 cmp; reasons in the report), 55 not compiled, 1 timed out, 18 excused.
+        Every mutant targeted in step 11 (186:46, 257, 282, 359, 360, 392, 409, 421, 433) is killed.
+13. Final: make -j2 check: 24 of 25 programs pass, test_fball fails as in step 4 (stale tests of
+        lane m1-fball); make clean && make -j2 check SAN=1: the same 24 pass, test_fball stops at
+        the ASan report on the fake context; the proposed tests/test_fball.c: 20 tests, 410 checks,
+        0 failed, plain and under ASan/UBSan; valgrind of both lane tests: exit 0.

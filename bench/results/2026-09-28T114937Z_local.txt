@@ -1,0 +1,37 @@
+run_id: 2026-09-28T114937Z
+tag: local
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+cycles_per_ns_min: 2.68798
+cycles_per_ns_median: 2.68799
+cycles_per_ns_max: 2.68799
+seed: 20260928
+trials_per_case: 15
+warm: yes
+allocating: yes (conversions allocate k fmpz in the kernels of src/modctx.c; global rows allocate fmpq temporaries)
+operand_family: 256 pairs; context A: 128 primes just above 2^32 (K about 4096 bits); context B: one block 2^64 - 59; d = 1; random residues (units, h = 1)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+local_add_batch_4096_128	independent_batch	local + local, one context	K 4097 bit, k = 128, d = 1	20260928	yes	yes	20	5120	2551838975	3711.9689	3870.9750	3893.0850
+global_add_batch_4096_128	independent_batch	the same sets, global	K 4097 bit, k = 128, d = 1	20260928	yes	yes	20	5120	1	1669.7809	1768.3428	1951.8705
+local_mul_batch_4096_128	independent_batch	local * local, h = 1	K 4097 bit, k = 128, d = 1	20260928	yes	yes	20	5120	4154350278	14203.5568	14241.6861	14632.1900
+global_mul_batch_4096_128	independent_batch	the same sets, global	K 4097 bit, k = 128, d = 1	20260928	yes	yes	20	5120	1	77632.8330	80490.0461	86383.0398
+set_local_4096_128	call_rate	global ball to local (P19)	K 4097 bit, k = 128, d = 1	20260928	yes	yes	20	5120	1481262138	32643.8268	34816.4627	37006.8314
+set_global_4096_128	call_rate	local to global (L17.3, P24.1)	K 4097 bit, k = 128, d = 1	20260928	yes	yes	20	5120	4096	17942.5922	18085.6166	18222.4656
+local_add_batch_64_1	independent_batch	local + local, one context	K 64 bit, k = 1, d = 1	20260928	yes	yes	200	51200	15803669075051139938	46.0548	46.5859	47.3368
+global_add_batch_64_1	independent_batch	the same sets, global	K 64 bit, k = 1, d = 1	20260928	yes	yes	200	51200	1	550.1976	596.2974	614.2495
+local_mul_batch_64_1	independent_batch	local * local, h = 1	K 64 bit, k = 1, d = 1	20260928	yes	yes	200	51200	11497400019395803248	195.8943	199.3004	220.6309
+global_mul_batch_64_1	independent_batch	the same sets, global	K 64 bit, k = 1, d = 1	20260928	yes	yes	200	51200	1	1156.5940	1393.4520	2022.1879
+set_local_64_1	call_rate	global ball to local (P19)	K 64 bit, k = 1, d = 1	20260928	yes	yes	200	51200	17233117016242572578	410.9490	412.7386	709.1394
+set_global_64_1	call_rate	local to global (L17.3, P24.1)	K 64 bit, k = 1, d = 1	20260928	yes	yes	200	51200	64	217.4084	224.9775	226.7494
+
+# checksum of all case results, computed outside the timed region
+checksum: 12391449535651844211
