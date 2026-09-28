@@ -1,0 +1,38 @@
+run_id: 2026-09-28T115533Z
+tag: dump
+provisional: yes (lane m1-dump; no floor derived beyond PERF 4: B bytes read or written)
+quiet_machine: no
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+cycles_per_ns_median: 2.68799
+seed: 20260928
+operand_family: dump texts of adf_rat, adf_fball (global, local 128 blocks), adf_adele, adf_scaled (128 blocks)
+trials_per_case: 9
+batch_length: 128
+warm: yes
+allocating: yes (the dumped string, fmpz temporaries, the residue array)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+rat_dump_word	independent_batch	adf_rat_dump_str; A/d word sized	operands up to 60 bit; mean text B = 41 bytes; n = 128	20260928	yes	yes	40	5120	213800	147.7221	149.0977	191.5598
+rat_load_word	independent_batch	adf_rat_load_str_binds; A/d word sized	operands up to 60 bit; mean text B = 41 bytes; n = 128	20260928	yes	yes	40	5120	0	501.9822	509.1516	520.2117
+rat_dump_4096	independent_batch	adf_rat_dump_str; A/d 4096 bit	operands up to 4096 bit; mean text B = 2059 bytes; n = 128	20260928	yes	yes	4	512	1054584	2109.0059	2113.3008	2121.8418
+rat_load_4096	independent_batch	adf_rat_load_str_binds; A/d 4096 bit	operands up to 4096 bit; mean text B = 2059 bytes; n = 128	20260928	yes	yes	4	512	0	52303.6816	54020.6367	56338.8184
+fball_dump_4096	independent_batch	adf_fball_dump_str; global (A,H,d) 4096 bit	operands up to 4096 bit; mean text B = 3088 bytes; n = 128	20260928	yes	yes	2	256	790754	3154.5352	3163.1055	3210.0938
+fball_load_4096	independent_batch	adf_fball_load_str_binds; global (A,H,d) 4096 bit	operands up to 4096 bit; mean text B = 3088 bytes; n = 128	20260928	yes	yes	2	256	0	68728.6992	70714.0547	74206.9414
+fball_local_dump_128	independent_batch	adf_fball_dump_str; local, 128 blocks, d 60 bit	operands up to 60 bit; mean text B = 4250 bytes; n = 128	20260928	yes	yes	2	256	1088128	4782.8516	4809.3594	6322.0898
+fball_local_load_128	independent_batch	adf_fball_load_str_binds; local, 128 blocks, d 60 bit	operands up to 60 bit; mean text B = 4250 bytes; n = 128	20260928	yes	yes	2	256	0	61706.5976	63047.1406	64516.2539
+adele_dump_word	independent_batch	adf_adele_dump_str; arb 53 bit, fin word sized	operands up to 60 bit; mean text B = 80 bytes; n = 128	20260928	yes	yes	20	2560	206660	343.3516	350.1016	357.3438
+adele_load_word	independent_batch	adf_adele_load_str_binds; arb 53 bit, fin word sized	operands up to 60 bit; mean text B = 81 bytes; n = 128	20260928	yes	yes	20	2560	0	1147.2070	1151.2145	1165.5539
+scaled_dump_128	independent_batch	adf_scaled_dump_str; s 60 bit, K of 128 blocks	operands up to 60 bit; mean text B = 4148 bytes; n = 128	20260928	yes	yes	2	256	1062114	4560.0156	4695.7070	5249.7851
+scaled_load_128	independent_batch	adf_scaled_load_str_binds; s 60 bit, K of 128 blocks	operands up to 60 bit; mean text B = 4148 bytes; n = 128	20260928	yes	yes	2	256	0	60820.8750	62278.1406	62583.6680
+
+# checksum of all case results, computed outside the timed region
+checksum: 1887636

@@ -1,0 +1,15 @@
+
+# src/dump.c, lane m1-dump, 2026-09-28. Survivors of `mutate.py --files src/dump.c --limit 300` (runs 1 and 2,
+# lanes/m1-dump/mutate_run1.txt, mutate_run2.txt), each read by hand; line numbers of the file as it stands.
+src/dump.c:148:op | t.n - j <= 15 as t.n + j <= 15 in dp_fmpz: both paths give the same fmpz for every validated token (up to 15 digits read directly, otherwise fmpz_set_str on a copy); with j in {0, 1} the mutant only sends negative 15-digit tokens to the second path
+src/dump.c:278:cmp | *pos < len as *pos <= len in dp_tok_at: *pos passes len only after the last token of the text, and no caller reads a position after the last token it needs (blocks, residues and descriptors are read up to their count)
+src/dump.c:381:cmp | r < 2^30 as r <= 2^30 in dp_v_arb: the same line requires r odd first, and 2^30 is even, so both conditions agree for every r
+src/dump.c:474:swap_args | fmpz_gcd(g, a, e) against fmpz_gcd(g, e, a): the gcd does not depend on the order
+src/dump.c:491:zero_one | the initial values in ulong q = 0, r = 0 of dp_v_fb: q is written by dp_word before it is read (dp_v_ctx has accepted the block as a word), r is read only when dp_word returned 1, which writes it
+src/dump.c:1038:zero_one | the stage-2 loop from byte 1 instead of 0: a forbidden byte at position 0 is not 'a', so stage 3 gives ADF_PARSE, the status stage 2 gives; stage 1 comes before both
+src/dump.c:1039:cmp | > 0x7e as >= 0x7e: the byte 0x7e is in no token of the grammar of conventions 10.1, so a text holding it is ADF_PARSE at stage 2 (mutant) or stage 3 (original)
+src/dump.c:1041:cmp | len < 3 as len <= 3: the only text of 3 bytes that passes the original test is "adf", which has no version digit and is ADF_PARSE on the next check, as in the mutant
+src/dump.c:1108:op | s[i + 1] == ' ' as s[i - 1] == ' ' in the check for two spaces: the pair (j, j + 1) is found at i = j + 1 instead of i = j; i - 1 >= b because s[b] is not a space (checked before), so the same texts are refused and no byte outside the body is read
+src/dump.c:1205:zero_one | ulong q = 0 as q = 1 in dp_bind_matches: dp_word writes q before it is read (the block is a validated word)
+src/dump.c:1361:cmp | n + extra + 1 > cap as >= or != in dp_sb_room: the buffer grows one step earlier or when it would fit exactly, which only makes it larger; the other comparisons under-allocate and are killed by the sanitizer run
+src/dump.c:1416:zero_one | n + 1 > cap as n + 0 > cap in dp_sb_finish: dp_sb_room keeps n + 1 <= cap after every append, so neither condition is true in any run; the check only guards a broken dp_sb_room
