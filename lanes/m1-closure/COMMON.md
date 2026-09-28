@@ -46,9 +46,13 @@ adele, text, tools, driver) and by Claude (cap).
 | local | R1 to R4 | codex gpt-6-astra xhigh | m1-repair-cap; M1-D2; m1-invariants (R3) |
 | text | R1 to R10 | codex gpt-6-astra xhigh | m1-repair-text; m1-dump (R5); M1-D2, M1-D6, M1-D7; m1-invariants (R7) |
 | dump | all | codex gpt-6-astra xhigh | the repairs of the dump review |
-| arith | R1 to R6 | Claude opus | m1-repair-recon, m1-repair-adele; M1-D3, M1-D4 |
-| contexts | R1 to R6 | Claude opus | m1-repair-ctx; m1-dump (R3, R4); M1-D5 |
-| surface | R1 to R15 | Claude opus | m1-repair-tools, m1-repair-driver; M1-D1, M1-D6 |
+| arith | R1 to R6 | codex gpt-6-astra xhigh | m1-repair-recon, m1-repair-adele; M1-D3, M1-D4 |
+| contexts | R1 to R6 | codex gpt-6-astra xhigh | m1-repair-ctx; m1-dump (R3, R4); M1-D5 |
+| surface | R1 to R15 | codex gpt-6-astra xhigh | m1-repair-tools, m1-repair-driver; M1-D1, M1-D6 |
+
+TJO, 2026-09-28 (night): codex is the reviewer of everything; the repairs of arith, contexts and surface
+were written by pi models, so codex is of another family there too. The reviews arith, contexts and surface
+were written by Claude opus: their judge continues a review that it did not write.
 
 The brief of a judge is this file and the line of the table. A lane that has not landed when the closure
 check starts is named in `closure.md` under "not examined", and its findings stay `OPEN`.
