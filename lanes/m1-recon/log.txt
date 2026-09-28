@@ -1,0 +1,110 @@
+# red-green log of lane m1-recon
+
+## red 1: the tests exist, the code does not
+$ make -j2 build/test_recon build/test_recon_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_recon.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_recon_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_vectors
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon_vectors.c:365:(.text+0x173d): undefined reference to `adf_fball_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon_vectors.c:495:(.text+0x239d): undefined reference to `adf_adele_reconstruct'
+collect2: error: ld returned 1 exit status
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:846:(.text+0xf53): undefined reference to `adf_fball_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:354:(.text+0x155b): undefined reference to `adf_adele_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:1127:(.text+0x2190): undefined reference to `adf_adele_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:1059:(.text+0x287b): undefined reference to `adf_fball_reconstruct'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:1063:(.text+0x28ff): undefined reference to `adf_adele_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:626:(.text+0x33c8): undefined reference to `adf_fball_reconstruct'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:631:(.text+0x3441): undefined reference to `adf_fball_reconstruct'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:639:(.text+0x34d0): undefined reference to `adf_fball_reconstruct'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:647:(.text+0x3555): undefined reference to `adf_fball_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:262:(.text+0x3b6d): undefined reference to `adf_fball_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:903:(.text+0x56f8): undefined reference to `adf_adele_reconstruct'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:927:(.text+0x59b8): undefined reference to `adf_adele_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:1212:(.text+0x6275): undefined reference to `adf_adele_reconstruct'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:1229:(.text+0x63ca): undefined reference to `adf_adele_reconstruct'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:1242:(.text+0x64a2): undefined reference to `adf_adele_reconstruct'
+/home/tobias/Projects/adelefeld-wt/m1-recon/tests/test_recon.c:751:(.text+0x7160): undefined reference to `adf_fball_reconstruct'
+collect2: error: ld returned 1 exit status
+
+## green 1: the implementation of src/recon.c is in place
+$ make -j2 && make check
+ok   an_adele_with_an_infinite_real_ball_is_rejected
+19 tests, 52740 checks, 0 failed checks, 0 failed tests
+== build/test_recon_vectors
+ok   vectors_recon
+ok   vectors_recon_edges_of_the_lane
+ok   vectors_recon_adele
+3 tests, 21194 checks, 0 failed checks, 0 failed tests
+== build/test_scaffold
+ok   flint_is_version_3_x
+ok   fmpz_two_plus_three_is_five
+ok   public_header_version
+3 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_status
+ok   the_numeric_values_of_the_status_codes
+ok   the_values_of_the_point_comparison
+ok   every_status_code_has_the_name_of_the_list
+ok   the_names_carry_no_prefix
+ok   the_names_are_distinct
+ok   a_code_outside_the_list_has_the_name_UNKNOWN
+ok   the_name_of_a_code_is_stable
+7 tests, 122 checks, 0 failed checks, 0 failed tests
+== build/test_support
+ok   jsonl_reads_every_vector_file
+ok   jsonl_reads_the_documented_records
+ok   jsonl_keeps_integers_as_text
+ok   jsonl_refuses_malformed_lines
+ok   jsonl_encodes_a_unicode_escape
+ok   jsonl_errors_name_the_line
+ok   jsonl_bounds_the_nesting
+ok   jsonl_refuses_a_value_of_the_wrong_kind
+ok   golden_reads_every_golden_file
+ok   golden_decodes_the_escapes
+ok   golden_decodes_the_hostile_inputs
+ok   golden_expands_generated_inputs
+ok   golden_refuses_malformed_lines
+ok   golden_bounds_a_generated_input
+ok   golden_reads_the_documented_vectors
+ok   golden_accepts_a_file_without_a_vector
+16 tests, 295152 checks, 0 failed checks, 0 failed tests
+check passed: all 11 test programs
+
+## green 2: after reading the ball through adf_fball_get_fmpz3 (both backends)
+$ make -j2 check
+2 tests, 13 checks, 0 failed checks, 0 failed tests
+20 tests, 399 checks, 0 failed checks, 0 failed tests
+9 tests, 34229 checks, 0 failed checks, 0 failed tests
+8 tests, 58 checks, 0 failed checks, 0 failed tests
+11 tests, 797 checks, 0 failed checks, 0 failed tests
+26 tests, 41415 checks, 0 failed checks, 0 failed tests
+19 tests, 52740 checks, 0 failed checks, 0 failed tests
+3 tests, 21194 checks, 0 failed checks, 0 failed tests
+3 tests, 10 checks, 0 failed checks, 0 failed tests
+7 tests, 122 checks, 0 failed checks, 0 failed tests
+16 tests, 295152 checks, 0 failed checks, 0 failed tests
+check passed: all 11 test programs
+
+$ make clean && make -j2 check SAN=1
+check passed: all 11 test programs
+
+$ make clean && make -j2 check CC=clang
+check passed: all 11 test programs
+
+$ make mutate FILES=src/recon.c JOBS=2
+mutate: src/recon.c: 35 mutants
+mutate: 35 mutants in 148.5 s: 30 killed, 2 survived, 3 not compiled, 0 timed out, 0 excused
+(the tool reported between 2 and 5 survivors over repeated runs; the union of the reported
+ survivors is five, and each of the five was applied by hand to the tree and every test still
+ passed, so the five are equivalent mutants; see report.md)
+
+$ ./bench/bench_recon --run --trials 3
+pinned to cpu 2 (requested 2)
+result file: bench/results/2026-09-28T083803Z_recon.txt
+recon_fball_chain_word   latency_chain     min  3531.7750  median  3685.1436  max  3686.1345 ns/op
+recon_adele_chain_word   latency_chain     min  9254.9298  median  9619.0681  max 10129.1647 ns/op
+recon_fball_chain_4096   latency_chain     min  6537.9010  median  6554.8685  max  6699.9400 ns/op
+recon_adele_chain_4096   latency_chain     min 119568.3770  median 126493.5130  max 126720.6060 ns/op
+recon_fball_batch_word   independent_batch min  3667.8594  median  3687.2027  max  4388.3413 ns/op
+recon_adele_batch_word   independent_batch min  9510.3431  median  9629.7746  max 11116.2235 ns/op
+recon_fball_batch_4096   independent_batch min  6946.5801  median  7028.9832  max  7029.2051 ns/op
+recon_adele_batch_4096   independent_batch min 111073.7414  median 113796.1672  max 118922.1375 ns/op
+checksum 1008321664869583348

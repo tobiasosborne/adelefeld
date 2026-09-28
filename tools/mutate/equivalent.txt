@@ -14,3 +14,12 @@
 src/fball.c:556:swap_args | fmpq_gcd(g, g, t3) against fmpq_gcd(g, t3, g): the gcd of two rationals does not depend on their order
 src/fball.c:584:swap_args | fmpq_mul(r, r, N) against fmpq_mul(r, N, r): the product does not depend on the order
 src/fball.c:612:swap_args | fmpq_mul(r, r, N) against fmpq_mul(r, N, r): the product does not depend on the order
+
+# src/common.c, lane m1-common, 2026-09-28.
+src/common.c:96:op | k - 1 < r.n for k + 1 < r.n: k = 0 gives the size_t 0 - 1, which is not below r.n, so no leading zero is dropped; the run keeps its zeros, stands for the same number, end is computed before, and the comparison pads the shorter run with '0'
+# src/recon.c, lane m1-recon, 2026-09-28. Each was applied by hand by the lane and all tests passed.
+src/recon.c:90:cmp | fmpz_sgn(exp) >= 0 as > 0: for exp = 0 both branches compute the rational mn/1
+src/recon.c:90:zero_one | the same token, >= 0 as >= 1: only exp = 0 changes branch, and both branches give mn/1 there
+src/recon.c:122:zero_one | fmpq_cmp(lo, hi) > 0 as > 1 removes the early return for the empty interval; the rest of the function answers ADF_NO_SOLUTION for lo > hi in both cases N = 0 and N > 0
+src/recon.c:176:swap_args | adf_rat_mul(c, c, N) against adf_rat_mul(c, N, c): the product does not depend on the order
+src/recon.c:177:swap_args | adf_rat_add(c, c, a) against adf_rat_add(c, a, c): the sum does not depend on the order

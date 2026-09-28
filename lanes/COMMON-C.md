@@ -31,3 +31,5 @@ function (CLAUDE.md rules 3 and 4), and cite it in the code as `docs/proofs/<fil
    `HEADER-FINDING`, and list it in your report.
 7. **Performance.** Write the simple correct version. Do not optimise. Note in the report where you see an
    avoidable cost (a gcd that could be skipped, a temporary, a canonicalisation done twice).
+8. **Benchmarks.** `bench/Makefile` finds every `bench/bench_<name>.c` by itself and links all of `src/*.c`.
+   Do not edit `bench/Makefile`, whatever your brief says about adding a name to it.
