@@ -1,0 +1,194 @@
+function	file	inputs checked (argument:type)	borrow begins	borrow ends	exempt or not applicable, with reason
+adf_adele_add	adele.c	x:adf_adele; y:adf_adele	z.fin (context of local inputs, if the result is local)	z.fin (previous context)	-
+adf_adele_add_rat	adele.c	x:adf_adele; q:adf_rat	z.fin (context of x.fin, if the result is local)	z.fin (previous context)	-
+adf_adele_clear	adele.c	none	-	x.fin (its context, if local)	EXEMPT (brief): clear releases; header: adele.h:82-83
+adf_adele_div_rat	adele.c	x:adf_adele; q:adf_rat	z.fin (context of x.fin, if the result is local)	z.fin (previous context)	-
+adf_adele_dump_inspect	dump.c	none	-	-	N/A: no value argument; the text is exempt (dump.h:17)
+adf_adele_dump_str	dump.c	x:adf_adele	-	-	-
+adf_adele_get_arb_at	adele.c	x:adf_adele	-	-	-
+adf_adele_get_fin	adele.c	x:adf_adele	f (context of x.fin, if local)	f (previous context)	-
+adf_adele_get_real	adele.c	x:adf_adele	-	-	-
+adf_adele_get_str	text.c	x:adf_adele	-	-	-
+adf_adele_identical	adele.c	x:adf_adele; y:adf_adele	-	-	-
+adf_adele_init	adele.c	none	-	-	EXEMPT (brief): init writes a fresh object and reads none; header: adele.h:79-80
+adf_adele_is_canonical	adele.c	none	-	-	EXEMPT (M1-D2, brief): is_canonical never aborts; header: adele.h:91-94
+adf_adele_load_str	dump.c	none	x.fin (the bound context, if the dump has an occurrence)	x.fin (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_adele_load_str_binds	dump.c	none	x.fin (the bound context, if the dump has an occurrence)	x.fin (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_adele_mul	adele.c	x:adf_adele; y:adf_adele	z.fin (context of local inputs, if the result is local)	z.fin (previous context)	-
+adf_adele_mul_rat	adele.c	x:adf_adele; q:adf_rat	z.fin (context of x.fin, if the result is local)	z.fin (previous context)	-
+adf_adele_neg	adele.c	x:adf_adele	y.fin (context of x.fin, if local)	y.fin (previous context)	-
+adf_adele_reconstruct	recon.c	x:adf_adele	-	-	-
+adf_adele_set	adele.c	x:adf_adele	y.fin (context of x.fin, if local)	y.fin (previous context)	-
+adf_adele_set_arb_fball	adele.c	f:adf_fball	y.fin (context of f, if local)	y.fin (previous context)	-
+adf_adele_set_rat	adele.c	q:adf_rat	-	y.fin (previous context)	-
+adf_adele_set_si	adele.c	none	-	y.fin (previous context)	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_adele_set_str	text.c	none	-	x.fin (previous context)	N/A: the only value argument is an output; the text argument is exempt (text.h:12-14, dump.h:17)
+adf_adele_sub	adele.c	x:adf_adele; y:adf_adele	z.fin (context of local inputs, if the result is local)	z.fin (previous context)	-
+adf_adele_swap	adele.c	x:adf_adele; y:adf_adele	neutral (adf_fball_swap of the fin parts)	neutral	-
+adf_alignof_adele	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_alignof_cadele	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_alignof_ctx_desc	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_alignof_fball	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_alignof_place	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_alignof_rat	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_alignof_scaled	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_alignof_text_limits	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_cadele_add	adele.c	x:adf_cadele; y:adf_cadele	z.fin (context of local inputs, if the result is local)	z.fin (previous context)	-
+adf_cadele_add_rat	adele.c	x:adf_cadele; q:adf_rat	z.fin (context of x.fin, if the result is local)	z.fin (previous context)	-
+adf_cadele_clear	adele.c	none	-	x.fin (its context, if local)	EXEMPT (brief): clear releases; header: adele.h:172-175
+adf_cadele_div_rat	adele.c	x:adf_cadele; q:adf_rat	z.fin (context of x.fin, if the result is local)	z.fin (previous context)	-
+adf_cadele_dump_inspect	dump.c	none	-	-	N/A: no value argument; the text is exempt (dump.h:17)
+adf_cadele_dump_str	dump.c	x:adf_cadele	-	-	-
+adf_cadele_get_complex	adele.c	x:adf_cadele	-	-	-
+adf_cadele_get_fin	adele.c	x:adf_cadele	f (context of x.fin, if local)	f (previous context)	-
+adf_cadele_get_str	text.c	x:adf_cadele	-	-	-
+adf_cadele_identical	adele.c	x:adf_cadele; y:adf_cadele	-	-	-
+adf_cadele_init	adele.c	none	-	-	EXEMPT (brief): init writes a fresh object and reads none; header: adele.h:172-174
+adf_cadele_is_canonical	adele.c	none	-	-	EXEMPT (M1-D2, brief): is_canonical never aborts; header: adele.h:172-178
+adf_cadele_load_str	dump.c	none	x.fin (the bound context, if the dump has an occurrence)	x.fin (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_cadele_load_str_binds	dump.c	none	x.fin (the bound context, if the dump has an occurrence)	x.fin (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_cadele_mul	adele.c	x:adf_cadele; y:adf_cadele	z.fin (context of local inputs, if the result is local)	z.fin (previous context)	-
+adf_cadele_mul_rat	adele.c	x:adf_cadele; q:adf_rat	z.fin (context of x.fin, if the result is local)	z.fin (previous context)	-
+adf_cadele_neg	adele.c	x:adf_cadele	y.fin (context of x.fin, if local)	y.fin (previous context)	-
+adf_cadele_set	adele.c	x:adf_cadele	y.fin (context of x.fin, if local)	y.fin (previous context)	-
+adf_cadele_set_acb_fball	adele.c	f:adf_fball	y.fin (context of f, if local)	y.fin (previous context)	-
+adf_cadele_set_adele	adele.c	x:adf_adele	y.fin (context of x.fin, if local)	y.fin (previous context)	-
+adf_cadele_set_rat	adele.c	q:adf_rat	-	y.fin (previous context)	-
+adf_cadele_set_str	text.c	none	-	x.fin (previous context)	N/A: the only value argument is an output; the text argument is exempt (text.h:12-14, dump.h:17)
+adf_cadele_sub	adele.c	x:adf_cadele; y:adf_cadele	z.fin (context of local inputs, if the result is local)	z.fin (previous context)	-
+adf_cadele_swap	adele.c	x:adf_cadele; y:adf_cadele	neutral	neutral	-
+adf_ctx_desc_clear	modctx.c	none	-	-	N/A: no argument of a type with a predicate
+adf_ctx_desc_init	modctx.c	none	-	-	N/A: no argument of a type with a predicate
+adf_fball_add	fball.c	x:adf_fball; y:adf_fball	z (context of local inputs, if the result is local)	z (previous context)	-
+adf_fball_add_cap	cap.c	x:adf_fball; y:adf_fball; C:adf_rat	-	z (previous context)	-
+adf_fball_canonicalise	fball.c	x:adf_fball, only if backend = ADF_LOCAL	-	neutral (a local x is unchanged, a global x has no context)	EXEMPT for a global x: 'brings a global value whose fields A, H, d were written directly ... into predicate G' (fball.h:138-141); for a local x the input 'must already satisfy L' (fball.h:141-143), so it is checked
+adf_fball_cap	cap.c	x:adf_fball; C:adf_rat	-	y (previous context)	-
+adf_fball_clear	fball.c	none	-	x (its context, if local)	EXEMPT (brief): clear releases; header: fball.h:82-83
+adf_fball_compare	fball.c	x:adf_fball; y:adf_fball	-	-	-
+adf_fball_contains	fball.c	x:adf_fball; y:adf_fball	-	-	-
+adf_fball_contains_rat	fball.c	x:adf_fball; q:adf_rat	-	-	-
+adf_fball_context	fball_local.c	x:adf_fball	-	-	-
+adf_fball_div_rat	fball.c	x:adf_fball; q:adf_rat	y (context of x, if the result is local)	y (previous context)	-
+adf_fball_dump_inspect	dump.c	none	-	-	N/A: no value argument; the text is exempt (dump.h:17)
+adf_fball_dump_str	dump.c	x:adf_fball	-	-	-
+adf_fball_equal_set	fball.c	x:adf_fball; y:adf_fball	-	-	-
+adf_fball_get_center	fball.c	x:adf_fball	-	-	-
+adf_fball_get_den	fball.c	x:adf_fball	-	-	-
+adf_fball_get_fmpz3	fball.c	x:adf_fball	-	-	-
+adf_fball_get_radius	fball.c	x:adf_fball	-	-	-
+adf_fball_get_str	text.c	x:adf_fball	-	-	-
+adf_fball_haar_volume	fball.c	x:adf_fball	-	-	-
+adf_fball_identical	fball.c	x:adf_fball; y:adf_fball	-	-	-
+adf_fball_init	fball.c	none	-	-	EXEMPT (brief): init writes a fresh object and reads none; header: fball.h:78-80
+adf_fball_is_canonical	fball.c	none	-	-	EXEMPT (M1-D2, brief): is_canonical never aborts; header: fball.h:92-99
+adf_fball_is_exact	fball.c	x:adf_fball	-	-	-
+adf_fball_is_local	fball_local.c	x:adf_fball	-	-	-
+adf_fball_load_str	dump.c	none	x (the bound context, if the dump has an occurrence)	x (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_fball_load_str_binds	dump.c	none	x (the bound context, if the dump has an occurrence)	x (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_fball_mul	fball.c	x:adf_fball; y:adf_fball	z (context of local inputs, if the result is local)	z (previous context)	-
+adf_fball_mul_cap	cap.c	x:adf_fball; y:adf_fball; C:adf_rat	-	z (previous context)	-
+adf_fball_mul_rat	fball.c	x:adf_fball; q:adf_rat	y (context of x, if the result is local)	y (previous context)	-
+adf_fball_mul_rat_cap	cap.c	x:adf_fball; q:adf_rat; C:adf_rat	-	y (previous context)	-
+adf_fball_neg	fball.c	x:adf_fball	y (context of x, if local)	y (previous context)	-
+adf_fball_one	fball.c	none	-	x (previous context)	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_fball_overlaps	fball.c	x:adf_fball; y:adf_fball	-	-	-
+adf_fball_prec_at	fball.c	x:adf_fball	-	-	-
+adf_fball_reconstruct	recon.c	x:adf_fball; lo:adf_rat; hi:adf_rat	-	-	-
+adf_fball_set	fball.c	x:adf_fball	y (context of x, if local)	y (previous context of y)	-
+adf_fball_set_center_radius	fball.c	c:adf_rat; N:adf_rat	-	x (previous context)	-
+adf_fball_set_fmpz	fball.c	none	-	x (previous context)	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_fball_set_fmpz3	fball.c	none	-	x (previous context)	N/A: inputs are a raw fmpz triple, 'The raw triple may be non-canonical' (fball.h:121-130); x is an output
+adf_fball_set_global	fball_local.c	x:adf_fball	-	y (previous context)	-
+adf_fball_set_local	fball_local.c	x:adf_fball	y (ctx)	y (previous context)	-
+adf_fball_set_local_enclose	fball_local.c	x:adf_fball	y (ctx)	y (previous context)	-
+adf_fball_set_rat	fball.c	q:adf_rat	-	x (previous context)	-
+adf_fball_set_si	fball.c	none	-	x (previous context)	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_fball_set_str	text.c	none	-	x (previous context)	N/A: the only value argument is an output; the text argument is exempt (text.h:12-14, dump.h:17)
+adf_fball_sub	fball.c	x:adf_fball; y:adf_fball	z (context of local inputs, if the result is local)	z (previous context)	-
+adf_fball_sub_cap	cap.c	x:adf_fball; y:adf_fball; C:adf_rat	-	z (previous context)	-
+adf_fball_swap	fball.c	x:adf_fball; y:adf_fball	neutral: the two context pointers are exchanged	neutral	-
+adf_fball_zero	fball.c	none	-	x (previous context)	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_flint_version_compiled	common.c	none	-	-	N/A: no argument of a type with a predicate
+adf_modctx_block	modctx.c	none	-	-	N/A: no argument of a type with a predicate
+adf_modctx_dump_str	modctx.c	none	-	-	N/A: no argument of a type with a predicate
+adf_modctx_free	modctx.c	none	-	-	N/A: no value argument; checks the borrow count (conventions 4.6, modctx.h:101)
+adf_modctx_get_modulus	modctx.c	none	-	-	N/A: no argument of a type with a predicate
+adf_modctx_matches_desc	modctx.c	none	-	-	N/A: no argument of a type with a predicate
+adf_modctx_nblocks	modctx.c	none	-	-	N/A: no argument of a type with a predicate
+adf_modctx_new_blocks	modctx.c	none	-	-	N/A: no argument of a type with a predicate (modctx.h:62-87); creates a context with borrow count 0
+adf_modctx_new_factorial	modctx.c	none	-	-	N/A: no argument of a type with a predicate (modctx.h:62-87); creates a context with borrow count 0
+adf_modctx_new_fmpz	modctx.c	none	-	-	N/A: no argument of a type with a predicate (modctx.h:62-87); creates a context with borrow count 0
+adf_modctx_new_from_dump	modctx.c	none	-	-	N/A: no argument of a type with a predicate; the text is exempt (modctx.h:96-99)
+adf_modctx_new_prime_powers	modctx.c	none	-	-	N/A: no argument of a type with a predicate (modctx.h:62-87); creates a context with borrow count 0
+adf_modctx_new_primorial_pow	modctx.c	none	-	-	N/A: no argument of a type with a predicate (modctx.h:62-87); creates a context with borrow count 0
+adf_place_cmp	place.c	none	-	-	N/A: no argument of a type with a predicate
+adf_place_equal	place.c	none	-	-	N/A: no argument of a type with a predicate
+adf_place_inf	place.c	none	-	-	N/A: no argument of a type with a predicate
+adf_place_is_archimedean	place.c	none	-	-	N/A: no argument of a type with a predicate
+adf_place_prime	place.c	none	-	-	N/A: no argument of a type with a predicate
+adf_place_prime_get	place.c	none	-	-	N/A: no argument of a type with a predicate
+adf_rat_add	rat.c	x:adf_rat; y:adf_rat	-	-	-
+adf_rat_clear	rat.c	none	-	-	EXEMPT (brief): clear releases; header: rat.h:45
+adf_rat_div	rat.c	x:adf_rat; y:adf_rat	-	-	-
+adf_rat_dump_inspect	dump.c	none	-	-	N/A: no value argument; the text is exempt (dump.h:17)
+adf_rat_dump_str	dump.c	x:adf_rat	-	-	-
+adf_rat_equal	rat.c	x:adf_rat; y:adf_rat	-	-	-
+adf_rat_get_fmpq	rat.c	x:adf_rat	-	-	-
+adf_rat_get_str	text.c	x:adf_rat	-	-	-
+adf_rat_identical	rat.c	x:adf_rat; y:adf_rat	-	-	-
+adf_rat_init	rat.c	none	-	-	EXEMPT (brief): init writes a fresh object and reads none; header: rat.h:42
+adf_rat_inv	rat.c	x:adf_rat	-	-	-
+adf_rat_is_canonical	rat.c	none	-	-	EXEMPT (M1-D2, brief): is_canonical never aborts; header: rat.h:54-56
+adf_rat_is_zero	rat.c	x:adf_rat	-	-	-
+adf_rat_load_str	dump.c	none	-	-	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_rat_load_str_binds	dump.c	none	-	-	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_rat_mul	rat.c	x:adf_rat; y:adf_rat	-	-	-
+adf_rat_neg	rat.c	x:adf_rat	-	-	-
+adf_rat_one	rat.c	none	-	-	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_rat_set	rat.c	x:adf_rat	-	-	-
+adf_rat_set_fmpq	rat.c	none	-	-	N/A: input is a raw fmpq that 'may be a non-canonical fmpq' (rat.h:81-85); x is an output
+adf_rat_set_fmpz	rat.c	none	-	-	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_rat_set_fmpz2	rat.c	none	-	-	N/A: inputs are raw fmpz (rat.h:74-79); x is an output
+adf_rat_set_si	rat.c	none	-	-	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_rat_set_str	text.c	none	-	-	N/A: the only value argument is an output; the text argument is exempt (text.h:12-14, dump.h:17)
+adf_rat_sgn	rat.c	x:adf_rat	-	-	-
+adf_rat_sub	rat.c	x:adf_rat; y:adf_rat	-	-	-
+adf_rat_swap	rat.c	x:adf_rat; y:adf_rat	-	-	-
+adf_rat_zero	rat.c	none	-	-	N/A: every argument that has a predicate is an output that is overwritten without being read
+adf_scaled_add	scaled.c	x:adf_scaled; y:adf_scaled	z (context of x)	z (previous context)	-
+adf_scaled_add_rat	scaled.c	x:adf_scaled; q:adf_rat	y (context of x)	y (previous context)	-
+adf_scaled_clear	scaled.c	none	-	x (its context)	EXEMPT (brief): clear releases; header: scaled.h:67-68
+adf_scaled_context	scaled.c	x:adf_scaled	-	-	-
+adf_scaled_dump_inspect	dump.c	none	-	-	N/A: no value argument; the text is exempt (dump.h:17)
+adf_scaled_dump_str	dump.c	x:adf_scaled	-	-	-
+adf_scaled_get_fball	scaled.c	x:adf_scaled	-	y (previous context, if local)	-
+adf_scaled_get_str	dump.c	x:adf_scaled	-	-	-
+adf_scaled_identical	scaled.c	x:adf_scaled; y:adf_scaled	-	-	-
+adf_scaled_init	scaled.c	none	x (ctx)	-	EXEMPT (brief): init writes a fresh object and reads none; header: scaled.h:63-65
+adf_scaled_is_canonical	scaled.c	none	-	-	EXEMPT (M1-D2, brief): is_canonical never aborts; header: scaled.h:76-79
+adf_scaled_is_exact	scaled.c	x:adf_scaled	-	-	-
+adf_scaled_load_str	dump.c	none	x (the bound context, if the dump has an occurrence)	x (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_scaled_load_str_binds	dump.c	none	x (the bound context, if the dump has an occurrence)	x (previous context)	N/A: x is an output; the text argument is exempt (dump.h:17, text.h:12-14)
+adf_scaled_mul	scaled.c	x:adf_scaled; y:adf_scaled	z (context of x)	z (previous context)	-
+adf_scaled_mul_rat	scaled.c	x:adf_scaled; q:adf_rat	y (context of x)	y (previous context)	-
+adf_scaled_mul_tight	scaled.c	x:adf_scaled; y:adf_scaled	z (context of x)	z (previous context)	-
+adf_scaled_neg	scaled.c	x:adf_scaled	y (context of x)	y (previous context)	-
+adf_scaled_set	scaled.c	x:adf_scaled	y (context of x)	y (previous context)	-
+adf_scaled_set_context	scaled.c	x:adf_scaled	y (ctx)	y (previous context)	-
+adf_scaled_set_fball	scaled.c	x:adf_fball	y (ctx)	y (previous context)	-
+adf_scaled_set_rat	scaled.c	q:adf_rat	y (ctx)	y (previous context)	-
+adf_scaled_sub	scaled.c	x:adf_scaled; y:adf_scaled	z (context of x)	z (previous context)	-
+adf_scaled_swap	scaled.c	x:adf_scaled; y:adf_scaled	neutral: the two context pointers are exchanged	neutral	-
+adf_sizeof_adele	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_sizeof_cadele	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_sizeof_ctx_desc	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_sizeof_fball	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_sizeof_place	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_sizeof_rat	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_sizeof_scaled	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_sizeof_text_limits	inlines.c	none	-	-	N/A: no argument of a type with a predicate; header-inline (common.h:47-52)
+adf_status_str	inlines.c	none	-	-	N/A: no argument of a type with a predicate
+adf_str_free	common.c	none	-	-	N/A: no argument of a type with a predicate
+adf_text_classify	text.c	none	-	-	N/A: no argument of a type with a predicate; the text is exempt (text.h:12-14)
+adf_text_limits_default	inlines.c	none	-	-	N/A: no argument of a type with a predicate
+adf_version_check	common.c	none	-	-	N/A: no argument of a type with a predicate

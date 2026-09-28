@@ -192,3 +192,14 @@ same thing as the original for every input may be excused by listing it in
 `tools/mutate/equivalent.txt` as `FILE:LINE:KIND | reason`, where `KIND` is one of `op`, `cmp`,
 `logic`, `gcd_lcm`, `swap_args`, `zero_one`, `drop_assign`, `negate_if`. The reason has to say
 why the mutant is equivalent, not that the tests do not notice.
+
+## The debug build `INV=1`
+
+`make clean && make check INV=1` builds the library and every test with `-DADF_CHECK_INVARIANTS`
+(`docs/conventions.md` 4.4 and 4.6): every public function checks the predicates of its inputs on
+entry and aborts with one line on stderr, and a context counts the values that borrow it and
+`adf_modctx_free` aborts if the count is not zero. `tests/test_invariants.c` and
+`tests/test_invariants_lifetime.c` test this with child processes (`fork`); built without the flag
+they print that they were skipped and pass. The list of checked functions is
+`lanes/m1-invariants/functions.tsv`; `test_invariants.c` requires that its table agrees with it.
+`make clean` between builds with different flags. `INV=1 SAN=1` works.

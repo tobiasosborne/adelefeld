@@ -1,0 +1,17 @@
+ok   free_with_one_live_borrower_of_each_kind_aborts
+ok   free_returns_after_every_borrower_is_cleared
+ok   the_count_is_a_count
+ok   free_of_null_does_nothing
+ok   set_moves_the_borrow
+ok   swap_keeps_the_counts
+ok   a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context
+ok   a_change_of_context_and_a_change_of_backend_leave_the_counts_right
+ok   aliased_calls_keep_one_borrow
+ok   adele_and_cadele_moves
+ok   loaders_and_parsers
+ok   two_threads_init_and_clear_100000_borrowers_then_free_returns
+12 tests, 98 checks, 0 failed checks, 0 failed tests
+
+real	0m3,317s
+user	0m0,200s
+sys	0m0,063s

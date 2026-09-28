@@ -1,0 +1,82 @@
+FAIL tests/test_invariants_lifetime.c:102: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.signal == SIGABRT | fball local, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: free_with_one_live_borrower_of_each_kind_aborts: check failed: strstr(o.err, "adf_modctx_free") != NULL | fball local, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | fball local, free of context 0: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.signal == SIGABRT | scaled, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: free_with_one_live_borrower_of_each_kind_aborts: check failed: strstr(o.err, "adf_modctx_free") != NULL | scaled, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | scaled, free of context 0: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.signal == SIGABRT | adele fin local, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: free_with_one_live_borrower_of_each_kind_aborts: check failed: strstr(o.err, "adf_modctx_free") != NULL | adele fin local, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adele fin local, free of context 0: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.signal == SIGABRT | cadele fin local, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: free_with_one_live_borrower_of_each_kind_aborts: check failed: strstr(o.err, "adf_modctx_free") != NULL | cadele fin local, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | cadele fin local, free of context 0: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.signal == SIGABRT | finding R7 (scaled, context 2), free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: free_with_one_live_borrower_of_each_kind_aborts: check failed: strstr(o.err, "adf_modctx_free") != NULL | finding R7 (scaled, context 2), free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: free_with_one_live_borrower_of_each_kind_aborts: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | finding R7 (scaled, context 2), free of context 0: stderr is not one line: []
+FAIL free_with_one_live_borrower_of_each_kind_aborts (tests/test_invariants_lifetime.c:779, 15 failed checks)
+ok   free_returns_after_every_borrower_is_cleared
+FAIL tests/test_invariants_lifetime.c:102: the_count_is_a_count: check failed: o.signal == SIGABRT | two borrowers, one cleared, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: the_count_is_a_count: check failed: strstr(o.err, "adf_modctx_free") != NULL | two borrowers, one cleared, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: the_count_is_a_count: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | two borrowers, one cleared, free of context 0: stderr is not one line: []
+FAIL the_count_is_a_count (tests/test_invariants_lifetime.c:802, 3 failed checks)
+ok   free_of_null_does_nothing
+FAIL tests/test_invariants_lifetime.c:102: set_moves_the_borrow: check failed: o.signal == SIGABRT | fball set, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: set_moves_the_borrow: check failed: strstr(o.err, "adf_modctx_free") != NULL | fball set, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: set_moves_the_borrow: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | fball set, free of context 0: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: set_moves_the_borrow: check failed: o.signal == SIGABRT | scaled set and swap, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: set_moves_the_borrow: check failed: strstr(o.err, "adf_modctx_free") != NULL | scaled set and swap, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: set_moves_the_borrow: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | scaled set and swap, free of context 1: stderr is not one line: []
+FAIL set_moves_the_borrow (tests/test_invariants_lifetime.c:814, 6 failed checks)
+FAIL tests/test_invariants_lifetime.c:102: swap_keeps_the_counts: check failed: o.signal == SIGABRT | fball swap, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: swap_keeps_the_counts: check failed: strstr(o.err, "adf_modctx_free") != NULL | fball swap, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: swap_keeps_the_counts: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | fball swap, free of context 1: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: swap_keeps_the_counts: check failed: o.signal == SIGABRT | fball swap with a global value, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: swap_keeps_the_counts: check failed: strstr(o.err, "adf_modctx_free") != NULL | fball swap with a global value, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: swap_keeps_the_counts: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | fball swap with a global value, free of context 0: stderr is not one line: []
+FAIL swap_keeps_the_counts (tests/test_invariants_lifetime.c:822, 6 failed checks)
+FAIL tests/test_invariants_lifetime.c:102: a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context: check failed: o.signal == SIGABRT | fball overwritten by another context, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context: check failed: strstr(o.err, "adf_modctx_free") != NULL | fball overwritten by another context, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | fball overwritten by another context, free of context 1: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context: check failed: o.signal == SIGABRT | scaled conversions, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context: check failed: strstr(o.err, "adf_modctx_free") != NULL | scaled conversions, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | scaled conversions, free of context 1: stderr is not one line: []
+FAIL a_value_overwritten_by_a_value_of_another_context_leaves_the_first_context (tests/test_invariants_lifetime.c:830, 6 failed checks)
+FAIL tests/test_invariants_lifetime.c:102: a_change_of_context_and_a_change_of_backend_leave_the_counts_right: check failed: o.signal == SIGABRT | scaled set_context, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: a_change_of_context_and_a_change_of_backend_leave_the_counts_right: check failed: strstr(o.err, "adf_modctx_free") != NULL | scaled set_context, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: a_change_of_context_and_a_change_of_backend_leave_the_counts_right: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | scaled set_context, free of context 1: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: a_change_of_context_and_a_change_of_backend_leave_the_counts_right: check failed: o.signal == SIGABRT | fball global to local in another context, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: a_change_of_context_and_a_change_of_backend_leave_the_counts_right: check failed: strstr(o.err, "adf_modctx_free") != NULL | fball global to local in another context, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: a_change_of_context_and_a_change_of_backend_leave_the_counts_right: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | fball global to local in another context, free of context 1: stderr is not one line: []
+FAIL a_change_of_context_and_a_change_of_backend_leave_the_counts_right (tests/test_invariants_lifetime.c:840, 6 failed checks)
+FAIL tests/test_invariants_lifetime.c:102: aliased_calls_keep_one_borrow: check failed: o.signal == SIGABRT | fball aliased, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: aliased_calls_keep_one_borrow: check failed: strstr(o.err, "adf_modctx_free") != NULL | fball aliased, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: aliased_calls_keep_one_borrow: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | fball aliased, free of context 0: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: aliased_calls_keep_one_borrow: check failed: o.signal == SIGABRT | scaled aliased, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: aliased_calls_keep_one_borrow: check failed: strstr(o.err, "adf_modctx_free") != NULL | scaled aliased, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: aliased_calls_keep_one_borrow: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | scaled aliased, free of context 0: stderr is not one line: []
+FAIL aliased_calls_keep_one_borrow (tests/test_invariants_lifetime.c:850, 6 failed checks)
+FAIL tests/test_invariants_lifetime.c:102: adele_and_cadele_moves: check failed: o.signal == SIGABRT | adele moves, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: adele_and_cadele_moves: check failed: strstr(o.err, "adf_modctx_free") != NULL | adele moves, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: adele_and_cadele_moves: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adele moves, free of context 1: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:102: adele_and_cadele_moves: check failed: o.signal == SIGABRT | cadele moves, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: adele_and_cadele_moves: check failed: strstr(o.err, "adf_modctx_free") != NULL | cadele moves, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: adele_and_cadele_moves: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | cadele moves, free of context 1: stderr is not one line: []
+FAIL adele_and_cadele_moves (tests/test_invariants_lifetime.c:858, 6 failed checks)
+FAIL tests/test_invariants_lifetime.c:102: loaders_and_parsers: check failed: o.signal == SIGABRT | load with a binding, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: loaders_and_parsers: check failed: strstr(o.err, "adf_modctx_free") != NULL | load with a binding, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: loaders_and_parsers: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | load with a binding, free of context 0: stderr is not one line: []
+FAIL tests/test_invariants_lifetime.c:104: loaders_and_parsers: check failed: strstr(o.err, "adf_modctx_free") != NULL | load overwrites a local value, free of context 0: stderr does not name adf_modctx_free: [free(): double free detected in tcache 2
+]
+FAIL tests/test_invariants_lifetime.c:102: loaders_and_parsers: check failed: o.signal == SIGABRT | load of a scaled value, free of context 0: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: loaders_and_parsers: check failed: strstr(o.err, "adf_modctx_free") != NULL | load of a scaled value, free of context 0: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: loaders_and_parsers: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | load of a scaled value, free of context 0: stderr is not one line: []
+FAIL loaders_and_parsers (tests/test_invariants_lifetime.c:866, 7 failed checks)
+FAIL tests/test_invariants_lifetime.c:102: two_threads_init_and_clear_100000_borrowers_then_free_returns: check failed: o.signal == SIGABRT | threads, one borrower held, free of context 1: no abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants_lifetime.c:104: two_threads_init_and_clear_100000_borrowers_then_free_returns: check failed: strstr(o.err, "adf_modctx_free") != NULL | threads, one borrower held, free of context 1: stderr does not name adf_modctx_free: []
+FAIL tests/test_invariants_lifetime.c:106: two_threads_init_and_clear_100000_borrowers_then_free_returns: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | threads, one borrower held, free of context 1: stderr is not one line: []
+FAIL two_threads_init_and_clear_100000_borrowers_then_free_returns (tests/test_invariants_lifetime.c:878, 3 failed checks)
+12 tests, 98 checks, 64 failed checks, 10 failed tests
+
+real	0m0,138s
+user	0m0,024s
+sys	0m0,010s

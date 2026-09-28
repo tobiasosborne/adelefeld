@@ -34,6 +34,11 @@
 #include <flint/ulong_extras.h>
 
 #include "adelefeld/modctx.h"
+#include "invariants.h"
+
+#ifdef ADF_CHECK_INVARIANTS
+#include <stdatomic.h>
+#endif
 
 /* The internal kernels are not part of the public interface and must not appear in the
    dynamic symbol table (tests/test_exports.sh of lane m1-common compares it with the public
@@ -55,6 +60,13 @@ struct adf_modctx_struct
     ulong * q;
     fmpz_multi_mod_t mod_P;            /* initialised exactly when k >= 1 */
     fmpz_multi_CRT_t crt_P;            /* initialised exactly when k >= 1 */
+#ifdef ADF_CHECK_INVARIANTS
+    /* The number of values that refer to this context (docs/conventions.md 4.6; src/invariants.h).
+       Atomic: values of several threads init and clear against one context. It exists only under
+       the flag, and adf_modctx_struct is incomplete in the public header, so no public layout
+       changes. */
+    atomic_long borrows;
+#endif
 };
 
 /* ------------------------------------------------------------------ small helpers */
@@ -129,6 +141,9 @@ adf_modctx_alloc(const fmpz_t K, const ulong * q, slong k)
 {
     adf_modctx_struct * ctx = flint_malloc(sizeof(adf_modctx_struct));
 
+#ifdef ADF_CHECK_INVARIANTS
+    atomic_init(&ctx->borrows, 0);
+#endif
     fmpz_init_set(ctx->K, K);
     ctx->k = k;
     if (k > 0)
@@ -396,12 +411,52 @@ adf_modctx_free(adf_modctx_struct * ctx)
 {
     if (ctx == NULL)
         return;
+#ifdef ADF_CHECK_INVARIANTS
+    {
+        long n = atomic_load(&ctx->borrows);
+
+        if (n != 0)
+        {
+            fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: adf_modctx_free: the context is still "
+                            "borrowed by %ld value(s) (docs/conventions.md 4.6)\n", n);
+            fflush(stderr);
+            flint_abort();
+        }
+    }
+#endif
     fmpz_multi_mod_clear(ctx->mod_P);
     fmpz_multi_CRT_clear(ctx->crt_P);
     flint_free(ctx->q);
     fmpz_clear(ctx->K);
     flint_free(ctx);
 }
+
+#ifdef ADF_CHECK_INVARIANTS
+/* The borrow count (src/invariants.h). A NULL context is not counted. A release never takes the
+   count below zero: a value whose context pointer was written by hand or copied bitwise was not
+   counted, and clearing it must not abort a program whose values are canonical (the flag adds no
+   abort for canonical inputs). Such a value is invisible to the count: the free of its context
+   is not refused because of it (report of lane m1-invariants, "moves the count cannot see"). */
+void
+adf_inv_borrow(const adf_modctx_struct * ctx)
+{
+    if (ctx != NULL)
+        atomic_fetch_add(&((adf_modctx_struct *) ctx)->borrows, 1);
+}
+
+void
+adf_inv_release(const adf_modctx_struct * ctx)
+{
+    if (ctx != NULL)
+    {
+        atomic_long * c = &((adf_modctx_struct *) ctx)->borrows;
+        long n = atomic_load(c);
+
+        while (n > 0 && !atomic_compare_exchange_weak(c, &n, n - 1))
+            ;
+    }
+}
+#endif
 
 /* docs/conventions.md 5.14: K = the modulus. */
 void

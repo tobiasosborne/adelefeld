@@ -51,6 +51,7 @@
 #include <flint/ulong_extras.h>
 
 #include "adelefeld/dump.h"
+#include "invariants.h"
 
 #if defined(__GNUC__) || defined(__clang__)
 #define DP_HIDDEN __attribute__((visibility("hidden")))
@@ -1354,6 +1355,7 @@ dp_set_fb(adf_fball_struct * f, const dp_parsed * P, const dp_fb * fb, const adf
             (void) dp_word(dp_tok_at(P->s, P->len, &pos), &r);
             f->res[i] = r;
         }
+        ADF_INV_RETARGET(f->mctx, ctx);
         f->mctx = ctx;
         f->backend = ADF_LOCAL;
     }
@@ -1603,6 +1605,7 @@ adf_rat_load_str_binds(adf_rat_t x, const char * s, size_t len, const adf_modctx
 char *
 adf_rat_dump_str(size_t * len, const adf_rat_t x)
 {
+    ADF_INV_RAT(x);
     dp_sb b;
 
     dp_sb_init(&b);
@@ -1648,6 +1651,7 @@ adf_fball_load_str_binds(adf_fball_t x, const char * s, size_t len, const adf_mo
 char *
 adf_fball_dump_str(size_t * len, const adf_fball_t x)
 {
+    ADF_INV_FBALL(x);
     dp_sb b;
 
     dp_sb_init(&b);
@@ -1679,6 +1683,7 @@ dp_load_scaled(adf_scaled_t x, const char * s, size_t len, const adf_modctx_stru
         dp_fmpz(u, P.node.c);
     fmpq_swap(x->s, q);
     fmpz_swap(x->u, u);
+    ADF_INV_RETARGET(x->mctx, binds[0]);
     x->mctx = binds[0];
     x->exact = P.node.form == 'x';
     fmpq_clear(q);
@@ -1703,6 +1708,7 @@ adf_scaled_load_str_binds(adf_scaled_t x, const char * s, size_t len, const adf_
 char *
 adf_scaled_dump_str(size_t * len, const adf_scaled_t x)
 {
+    ADF_INV_SCALED(x);
     dp_sb b;
 
     dp_sb_init(&b);
@@ -1722,6 +1728,7 @@ adf_scaled_dump_str(size_t * len, const adf_scaled_t x)
 char *
 adf_scaled_get_str(size_t * len, const adf_scaled_t x)
 {
+    ADF_INV_SCALED(x);
     adf_fball_t f;
     adf_rat_t c, N;
     fmpz_t K;
@@ -1790,6 +1797,7 @@ adf_adele_load_str_binds(adf_adele_t x, const char * s, size_t len, const adf_mo
 char *
 adf_adele_dump_str(size_t * len, const adf_adele_t x)
 {
+    ADF_INV_ADELE(x);
     dp_sb b;
 
     dp_sb_init(&b);
@@ -1835,6 +1843,7 @@ adf_cadele_load_str_binds(adf_cadele_t x, const char * s, size_t len, const adf_
 char *
 adf_cadele_dump_str(size_t * len, const adf_cadele_t x)
 {
+    ADF_INV_CADELE(x);
     dp_sb b;
 
     dp_sb_init(&b);

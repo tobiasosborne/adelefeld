@@ -1,0 +1,49 @@
+ok   the_table_of_cases_is_the_list_of_checked_functions
+ok   a_canonical_pack_is_canonical_in_every_slot
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_set: break 0 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_set: break 0: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_set: break 0: stderr does not name the argument x: []
+FAIL tests/test_invariants.c:818: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, slot_type(slot)) != NULL | adf_rat_set: break 0: stderr does not name the type adf_rat: []
+FAIL tests/test_invariants.c:822: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adf_rat_set: break 0: stderr is not exactly one line: []
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_set: break 1 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_set: break 1: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_set: break 1: stderr does not name the argument x: []
+FAIL tests/test_invariants.c:818: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, slot_type(slot)) != NULL | adf_rat_set: break 1: stderr does not name the type adf_rat: []
+FAIL tests/test_invariants.c:822: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adf_rat_set: break 1: stderr is not exactly one line: []
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_set: break 2 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_set: break 2: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_set: break 2: stderr does not name the argument x: []
+FAIL tests/test_invariants.c:818: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, slot_type(slot)) != NULL | adf_rat_set: break 2: stderr does not name the type adf_rat: []
+FAIL tests/test_invariants.c:822: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adf_rat_set: break 2: stderr is not exactly one line: []
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_set: break 3 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_set: break 3: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_set: break 3: stderr does not name the argument x: []
+FAIL tests/test_invariants.c:818: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, slot_type(slot)) != NULL | adf_rat_set: break 3: stderr does not name the type adf_rat: []
+FAIL tests/test_invariants.c:822: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adf_rat_set: break 3: stderr is not exactly one line: []
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_set: break 4 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_set: break 4: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_set: break 4: stderr does not name the argument x: []
+FAIL tests/test_invariants.c:818: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, slot_type(slot)) != NULL | adf_rat_set: break 4: stderr does not name the type adf_rat: []
+FAIL tests/test_invariants.c:822: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adf_rat_set: break 4: stderr is not exactly one line: []
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_swap: break 0 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_swap: break 0: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_swap: break 0: stderr does not name the argument x: []
+FAIL tests/test_invariants.c:818: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, slot_type(slot)) != NULL | adf_rat_swap: break 0: stderr does not name the type adf_rat: []
+FAIL tests/test_invariants.c:822: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adf_rat_swap: break 0: stderr is not exactly one line: []
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_swap: break 1 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_swap: break 1: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_swap: break 1: stderr does not name the argument x: []
+FAIL tests/test_invariants.c:818: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, slot_type(slot)) != NULL | adf_rat_swap: break 1: stderr does not name the type adf_rat: []
+FAIL tests/test_invariants.c:822: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: o.err[0] != 0 && strchr(o.err, '\n') == o.err + strlen(o.err) - 1 | adf_rat_swap: break 1: stderr is not exactly one line: []
+FAIL tests/test_invariants.c:808: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: ok | adf_rat_swap: break 2 of argument x (adf_rat) did not abort (exited 1 code 0 signal 0)
+FAIL tests/test_invariants.c:812: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, needle) != NULL | adf_rat_swap: break 2: stderr does not name the function: []
+FAIL tests/test_invariants.c:815: every_checked_function_aborts_on_every_break_of_every_checked_argument: check failed: strstr(o.err, arg) != NULL | adf_rat_swap: break 2: stderr does not name the argument x: []
+[... 7000 lines of FAIL lines cut ...]
+FAIL tests/test_invariants.c:971: finding_R3_neg_of_a_local_ball_with_denominator_zero_aborts: check failed: strstr(o.err, "adf_fball_neg") != NULL | stderr does not name adf_fball_neg: []
+FAIL finding_R3_neg_of_a_local_ball_with_denominator_zero_aborts (tests/test_invariants.c:963, 2 failed checks)
+ok   the_flag_is_defined
+9 tests, 7820 checks, 7076 failed checks, 2 failed tests
+
+real	0m15,226s
+user	0m0,359s
+sys	0m0,608s

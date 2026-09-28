@@ -63,6 +63,7 @@
 #include <flint/fmpz.h>
 #include <flint/fmpq.h>
 #include <flint/flint.h>
+#include "invariants.h"
 
 /* -------------------------------------------------------------- adf_fball_cap */
 
@@ -76,6 +77,8 @@
 int
 adf_fball_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t C)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_RAT(C);
     fmpq_t Cq, Nq, gq;
     adf_rat_t c, g;
     int status;
@@ -120,6 +123,9 @@ adf_fball_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t C)
 int
 adf_fball_add_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const adf_rat_t C)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
+    ADF_INV_RAT(C);
     adf_fball_t t;
     int status;
 
@@ -135,6 +141,9 @@ adf_fball_add_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const
 int
 adf_fball_sub_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const adf_rat_t C)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
+    ADF_INV_RAT(C);
     adf_fball_t t;
     int status;
 
@@ -150,6 +159,9 @@ adf_fball_sub_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const
 int
 adf_fball_mul_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const adf_rat_t C)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_FBALL(y);
+    ADF_INV_RAT(C);
     adf_fball_t t;
     int status;
 
@@ -167,6 +179,9 @@ adf_fball_mul_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const
 int
 adf_fball_mul_rat_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t q, const adf_rat_t C)
 {
+    ADF_INV_FBALL(x);
+    ADF_INV_RAT(q);
+    ADF_INV_RAT(C);
     adf_fball_t t;
     int status;
 

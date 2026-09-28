@@ -48,6 +48,17 @@ CFLAGS  += -fsanitize=address,undefined -fno-omit-frame-pointer
 LDFLAGS += -fsanitize=address,undefined
 endif
 
+# INV=1 builds the library and the tests with -DADF_CHECK_INVARIANTS (docs/conventions.md 4.4
+# and 4.6; lanes/m1-invariants/report.md): every public function checks the predicates of its
+# inputs on entry, and a context counts the values that refer to it. The flag changes the
+# objects, so `make clean` between a build with INV=1 and one without. -pthread is for the
+# threaded test of the borrow count (tests/test_invariants_lifetime.c).
+INV ?= 0
+ifeq ($(INV),1)
+CPPFLAGS += -DADF_CHECK_INVARIANTS
+LDLIBS   += -pthread
+endif
+
 BUILD = build
 LIB   = $(BUILD)/libadelefeld.a
 

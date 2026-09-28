@@ -42,6 +42,7 @@
 #include <flint/arb.h>
 #include <flint/acb.h>
 #include <flint/fmpq.h>
+#include "invariants.h"
 
 /* A prec below 2 is taken as 2 (decision M1-D4, docs/SPEC.md 15.2 row M1-D4; a ball of one bit
    of an exact non-zero rational may contain 0, and arb_div by such a ball gives a non-finite
@@ -83,6 +84,7 @@ adf_adele_clear(adf_adele_t x)
 void
 adf_adele_set(adf_adele_t y, const adf_adele_t x)
 {
+    ADF_INV_ADELE(x);
     arb_set(y->inf, x->inf);
     adf_fball_set(&y->fin, &x->fin);
 }
@@ -93,6 +95,8 @@ adf_adele_set(adf_adele_t y, const adf_adele_t x)
 void
 adf_adele_swap(adf_adele_t x, adf_adele_t y)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_ADELE(y);
     arb_swap(x->inf, y->inf);
     adf_fball_swap(&x->fin, &y->fin);
 }
@@ -114,6 +118,8 @@ adf_adele_is_canonical(const adf_adele_t x)
 int
 adf_adele_identical(const adf_adele_t x, const adf_adele_t y)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_ADELE(y);
     return arb_equal(x->inf, y->inf) && adf_fball_identical(&x->fin, &y->fin);
 }
 
@@ -131,6 +137,7 @@ adf_adele_identical(const adf_adele_t x, const adf_adele_t y)
 void
 adf_adele_set_rat(adf_adele_t y, const adf_rat_t q, slong prec)
 {
+    ADF_INV_RAT(q);
     fmpq_t t;
 
     prec = adele_prec(prec);
@@ -161,6 +168,7 @@ adf_adele_set_si(adf_adele_t y, slong n)
 int
 adf_adele_set_arb_fball(adf_adele_t y, const arb_t r, const adf_fball_t f)
 {
+    ADF_INV_FBALL(f);
     if (!arb_is_finite(r))
         return ADF_DOMAIN;
 
@@ -177,6 +185,7 @@ adf_adele_set_arb_fball(adf_adele_t y, const arb_t r, const adf_fball_t f)
 void
 adf_adele_get_real(arb_t r, const adf_adele_t x)
 {
+    ADF_INV_ADELE(x);
     arb_set(r, x->inf);
 }
 
@@ -188,6 +197,7 @@ adf_adele_get_real(arb_t r, const adf_adele_t x)
 int
 adf_adele_get_arb_at(arb_t r, const adf_adele_t x, adf_place_t v)
 {
+    ADF_INV_ADELE(x);
     if (!adf_place_is_archimedean(v))
         return ADF_DOMAIN;
 
@@ -201,6 +211,7 @@ adf_adele_get_arb_at(arb_t r, const adf_adele_t x, adf_place_t v)
 void
 adf_adele_get_fin(adf_fball_t f, const adf_adele_t x)
 {
+    ADF_INV_ADELE(x);
     adf_fball_set(f, &x->fin);
 }
 
@@ -214,6 +225,8 @@ adf_adele_get_fin(adf_fball_t f, const adf_adele_t x)
 void
 adf_adele_add(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong prec)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_ADELE(y);
     prec = adele_prec(prec);
     arb_add(z->inf, x->inf, y->inf, prec);
     adf_fball_add(&z->fin, &x->fin, &y->fin);
@@ -226,6 +239,8 @@ adf_adele_add(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong pre
 void
 adf_adele_sub(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong prec)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_ADELE(y);
     prec = adele_prec(prec);
     arb_sub(z->inf, x->inf, y->inf, prec);
     adf_fball_sub(&z->fin, &x->fin, &y->fin);
@@ -238,6 +253,8 @@ adf_adele_sub(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong pre
 void
 adf_adele_mul(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong prec)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_ADELE(y);
     prec = adele_prec(prec);
     arb_mul(z->inf, x->inf, y->inf, prec);
     adf_fball_mul(&z->fin, &x->fin, &y->fin);
@@ -249,6 +266,7 @@ adf_adele_mul(adf_adele_t z, const adf_adele_t x, const adf_adele_t y, slong pre
 void
 adf_adele_neg(adf_adele_t y, const adf_adele_t x)
 {
+    ADF_INV_ADELE(x);
     arb_neg(y->inf, x->inf);
     adf_fball_neg(&y->fin, &x->fin);
 }
@@ -263,6 +281,8 @@ adf_adele_neg(adf_adele_t y, const adf_adele_t x)
 void
 adf_adele_add_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_RAT(q);
     fmpq_t tq;
     arb_t t;
     adf_fball_t fq;
@@ -294,6 +314,8 @@ adf_adele_add_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong p
 void
 adf_adele_mul_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_RAT(q);
     fmpq_t tq;
 
     prec = adele_prec(prec);
@@ -319,6 +341,8 @@ adf_adele_mul_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong p
 int
 adf_adele_div_rat(adf_adele_t z, const adf_adele_t x, const adf_rat_t q, slong prec)
 {
+    ADF_INV_ADELE(x);
+    ADF_INV_RAT(q);
     fmpq_t tq;
     adf_fball_t fq;
     int st;
@@ -367,6 +391,7 @@ adf_cadele_clear(adf_cadele_t x)
 void
 adf_cadele_set(adf_cadele_t y, const adf_cadele_t x)
 {
+    ADF_INV_CADELE(x);
     acb_set(y->inf, x->inf);
     adf_fball_set(&y->fin, &x->fin);
 }
@@ -374,6 +399,8 @@ adf_cadele_set(adf_cadele_t y, const adf_cadele_t x)
 void
 adf_cadele_swap(adf_cadele_t x, adf_cadele_t y)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_CADELE(y);
     acb_swap(x->inf, y->inf);
     adf_fball_swap(&x->fin, &y->fin);
 }
@@ -392,6 +419,8 @@ adf_cadele_is_canonical(const adf_cadele_t x)
 int
 adf_cadele_identical(const adf_cadele_t x, const adf_cadele_t y)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_CADELE(y);
     return acb_equal(x->inf, y->inf) && adf_fball_identical(&x->fin, &y->fin);
 }
 
@@ -403,6 +432,7 @@ adf_cadele_identical(const adf_cadele_t x, const adf_cadele_t y)
 void
 adf_cadele_set_rat(adf_cadele_t y, const adf_rat_t q, slong prec)
 {
+    ADF_INV_RAT(q);
     fmpq_t t;
 
     prec = adele_prec(prec);
@@ -420,6 +450,7 @@ adf_cadele_set_rat(adf_cadele_t y, const adf_rat_t q, slong prec)
 void
 adf_cadele_set_adele(adf_cadele_t y, const adf_adele_t x)
 {
+    ADF_INV_ADELE(x);
     acb_set_arb(y->inf, x->inf);
     adf_fball_set(&y->fin, &x->fin);
 }
@@ -433,6 +464,7 @@ adf_cadele_set_adele(adf_cadele_t y, const adf_adele_t x)
 int
 adf_cadele_set_acb_fball(adf_cadele_t y, const acb_t z, const adf_fball_t f)
 {
+    ADF_INV_FBALL(f);
     if (!acb_is_finite(z))
         return ADF_DOMAIN;
 
@@ -448,12 +480,14 @@ adf_cadele_set_acb_fball(adf_cadele_t y, const acb_t z, const adf_fball_t f)
 void
 adf_cadele_get_complex(acb_t z, const adf_cadele_t x)
 {
+    ADF_INV_CADELE(x);
     acb_set(z, x->inf);
 }
 
 void
 adf_cadele_get_fin(adf_fball_t f, const adf_cadele_t x)
 {
+    ADF_INV_CADELE(x);
     adf_fball_set(f, &x->fin);
 }
 
@@ -466,6 +500,8 @@ adf_cadele_get_fin(adf_fball_t f, const adf_cadele_t x)
 void
 adf_cadele_add(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong prec)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_CADELE(y);
     prec = adele_prec(prec);
     acb_add(z->inf, x->inf, y->inf, prec);
     adf_fball_add(&z->fin, &x->fin, &y->fin);
@@ -474,6 +510,8 @@ adf_cadele_add(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong
 void
 adf_cadele_sub(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong prec)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_CADELE(y);
     prec = adele_prec(prec);
     acb_sub(z->inf, x->inf, y->inf, prec);
     adf_fball_sub(&z->fin, &x->fin, &y->fin);
@@ -482,6 +520,8 @@ adf_cadele_sub(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong
 void
 adf_cadele_mul(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong prec)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_CADELE(y);
     prec = adele_prec(prec);
     acb_mul(z->inf, x->inf, y->inf, prec);
     adf_fball_mul(&z->fin, &x->fin, &y->fin);
@@ -490,6 +530,7 @@ adf_cadele_mul(adf_cadele_t z, const adf_cadele_t x, const adf_cadele_t y, slong
 void
 adf_cadele_neg(adf_cadele_t y, const adf_cadele_t x)
 {
+    ADF_INV_CADELE(x);
     acb_neg(y->inf, x->inf);
     adf_fball_neg(&y->fin, &x->fin);
 }
@@ -499,6 +540,8 @@ adf_cadele_neg(adf_cadele_t y, const adf_cadele_t x)
 void
 adf_cadele_add_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slong prec)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_RAT(q);
     fmpq_t tq;
     acb_t t;
     adf_fball_t fq;
@@ -526,6 +569,8 @@ adf_cadele_add_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slon
 void
 adf_cadele_mul_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slong prec)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_RAT(q);
     fmpq_t tq;
 
     prec = adele_prec(prec);
@@ -546,6 +591,8 @@ adf_cadele_mul_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slon
 int
 adf_cadele_div_rat(adf_cadele_t z, const adf_cadele_t x, const adf_rat_t q, slong prec)
 {
+    ADF_INV_CADELE(x);
+    ADF_INV_RAT(q);
     fmpq_t tq;
     adf_fball_t fq;
     int st;
