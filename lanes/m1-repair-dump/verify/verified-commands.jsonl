@@ -1,0 +1,11 @@
+{"name": "build", "command": "make -j2 BUILD=lanes/m1-repair-dump/verify/build 'CFLAGS=-std=c11 -O2 -g -fPIC -Wall -Wextra -Wpedantic -Werror' lanes/m1-repair-dump/verify/build/test_dump lanes/m1-repair-dump/verify/build/test_dump_ctx lanes/m1-repair-dump/verify/build/test_dump_golden", "exit": 0, "seconds": 4.381339}
+{"name": "compile-bridge.so", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude -fPIC -shared lanes/m1-repair-dump/verify/bridge.c lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/bridge.so", "exit": 0, "seconds": 0.316952}
+{"name": "compile-bridge", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude lanes/m1-repair-dump/verify/bridge.c lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/bridge", "exit": 0, "seconds": 0.316899}
+{"name": "compile-roundtrip", "command": "cc -std=c11 -O2 -g -Wall -Wextra -Werror -Iinclude lanes/m1-repair-dump/verify/roundtrip.c lanes/m1-repair-dump/verify/build/libadelefeld.a -lflint -lgmp -lm -o lanes/m1-repair-dump/verify/roundtrip", "exit": 0, "seconds": 0.367017}
+{"name": "test_dump", "command": "lanes/m1-repair-dump/verify/build/test_dump", "exit": 0, "seconds": 0.032468}
+{"name": "test_dump_ctx", "command": "lanes/m1-repair-dump/verify/build/test_dump_ctx", "exit": 0, "seconds": 0.065267}
+{"name": "test_dump_golden", "command": "lanes/m1-repair-dump/verify/build/test_dump_golden", "exit": 0, "seconds": 0.016328}
+{"name": "bridge", "command": "lanes/m1-repair-dump/verify/bridge", "exit": 0, "seconds": 0.004118}
+{"name": "roundtrip", "command": "lanes/m1-repair-dump/verify/roundtrip", "exit": 0, "seconds": 0.015931}
+{"name": "status", "command": "python3 -B lanes/m1-repair-dump/verify/status_findings.py", "exit": 0, "seconds": 0.064895}
+{"name": "cost", "command": "python3 -B lanes/m1-repair-dump/verify/cost.py 65537", "exit": 0, "seconds": 2.872407}

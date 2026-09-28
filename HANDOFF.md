@@ -2,7 +2,58 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-28 (evening), 17:25 to 21:05, closed by TJO for a restart: START HERE
+## Session 2026-09-28 (late), 21:00 to 21:50: START HERE
+
+**One line.** Lane m1-repair-dump is landed (adf-tp2 closed); Sonnet 5.5 replaces the nonfree pi models; a
+comparison of Sonnet at effort low, medium, high is prepared and needs a restarted session; nothing is running.
+
+**Master** (pushed): `make check` 40 test programs with gcc, clang, `SAN=1`; `sh tests/test_driver.sh` (27
+cases), `sh tests/test_julia.sh`, `sh tests/test_exports.sh`, `pytest proto` (35) pass (21:45). First commands
+as in the section below, with 40 for 39.
+
+**Model tiers (TJO, 21:10).** The nonfree pi models (`deepseek-flash`, `mimo-v2.6-pro`, through any provider)
+are replaced by Claude Sonnet 5.5. Wherever a section below names one of them in a command, use Sonnet. The
+free pi model `space-bunny-alpha`, codex and Claude opus are used as before.
+- A Sonnet lane is a normal Claude subagent of the orchestrator (Agent tool, worktree isolation), NOT pi and
+  NOT a headless `claude -p` runner (TJO). Rules of the section of the day: push first, paste
+  `lanes/COMMON.md` and the whole brief into the prompt, save the report from the final message.
+- Code written by Sonnet is code of the Claude family: its reviewer and its judge in the closure check is
+  codex, not Claude opus. The table of judges in `lanes/m1-closure/COMMON.md` is right for the repairs already
+  landed (pi models wrote them; the report of m1-repair-dump was finished by Claude Fable, its code is pi's).
+- Quota at 21:00: Claude weekly 83%, 4.5 points behind pace; Fable weekly 79%, 8.5 behind (both reset
+  2026-09-29 18:00); codex weekly 36%.
+
+**The comparison of effort levels (TJO, 21:30: "sonnet low or medium is better as it is faster and cheaper,
+try out a couple of levels and compare"). NOT RUN.** The Agent tool takes the effort from the agent's
+definition, and definitions are read when a session starts: `.claude/agents/sonnet-low.md`,
+`sonnet-medium.md`, `sonnet-high.md` were written in this session and the harness did not know them. In the
+next session: check that the three agent types are offered; launch all three in one message, each with the
+text of `~/Projects/adelefeld-wt/effort-cmp/PROMPT.md` (LEVEL replaced) and its directory
+`~/Projects/adelefeld-wt/effort-cmp/<level>/` (a copy of the lane's tree before the orchestrator's test, with
+a finished build); compare verdicts, tests, wall time and tokens. The task is the three survivors of the
+mutation run of `src/dump.c`; the expected answers are in the comment at the head of `PROMPT.md` and in
+`lanes/m1-repair-dump/report.md` section 6, which the agents must not be shown. Then choose the level and
+write it into the memory `orchestration-model-tiers`.
+
+**m1-repair-dump as landed** (`lanes/m1-repair-dump/report.md`; sections 4 to 9 by the orchestrator):
+- The four timeouts of the mutation run are killed mutants, not loops without end: each fails checks at once,
+  and the time is the building of contexts of 65537 blocks that the mutant lets through.
+- Survivors: `:938` and `:883` killed by the new test `grammar_before_limits_in_sball_and_rfun` of
+  `tests/test_dump.c` (seen red with each mutant); `:503` is equivalent (line for `equivalent.txt` in the
+  report; to be added by m1-repair-tools in its new key format).
+- A context of 65536 blocks costs 64.1 CPU seconds to build, 62.3 of them in `fmpz_multi_mod_precompute` and
+  `fmpz_multi_CRT_precompute`; the reader of the dump takes 1.3 s. Factor 4 for each doubling of `k`.
+- `ADF_DUMP_QCLASS_EXP_MAX` is in `include/adelefeld/dump.h` and conventions 8.4. Only 60 of the 1012
+  mutants of `src/dump.c` were run.
+
+**Waits for TJO.** As in the section below. For M1-D9 the row of SPEC 15 now says that the bound holds for the
+form `pieces` and not for `lift`; the row is still PROPOSED.
+
+**Order of work from here.** The comparison of effort levels (one hour, first thing); m1-invariants alone
+(adf-xk4; Sonnet at the level chosen, codex as reviewer); m1-repair-tools alone, overnight (adf-xf4, adf-4lj);
+closure check (adf-igt); benchmarks on a quiet machine; milestone S.
+
+## Session 2026-09-28 (evening), 17:25 to 21:05, closed by TJO for a restart
 
 **One line.** Five repair lanes and the review of the dump form are merged; lane m1-repair-dump has its code
 done and checked but no finished report and is NOT merged; nothing is running.
@@ -25,7 +76,7 @@ done and checked but no finished report and is NOT merged; nothing is running.
 | m1-review-dump (codex) | merged `9d216fd`; adf-8ju closed; no blocker, 4 MAJOR |
 | m1-repair-text (text R2 to R4, R9, R10) | merged `705a998`; adf-nhk, adf-b8l, adf-5qq closed |
 | m1-repair-driver (surface R7 to R15) | merged; adf-jvi closed; clang failure of `test_dlopen` repaired by the orchestrator (`c7743e1`) |
-| m1-repair-dump (adf-tp2, in progress) | NOT merged. Branch `lane/m1-repair-dump` `b942ac8` (pushed), worktree `../adelefeld-wt/m1-repair-dump`. See below |
+| m1-repair-dump (adf-tp2) | merged in the late session (section above); what follows about it below is history |
 | m1-repair-tools (adf-xf4, adf-4lj) | paused as before (WIP commit on its branch); run it ALONE, overnight |
 | m1-invariants (adf-xk4) | brief on master; runs alone, after m1-repair-dump has landed |
 | closure check (adf-igt) | rules and table of judges in `lanes/m1-closure/COMMON.md` |

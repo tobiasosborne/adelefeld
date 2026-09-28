@@ -1,0 +1,13 @@
+== make -j2 check SAN=1  2026-09-28T21:35:55+02:00
+exit 0
+check passed: all 39 test programs
+== make -j2 check CC=clang  2026-09-28T21:37:15+02:00
+exit 0
+check passed: all 39 test programs
+== make -j2 check   2026-09-28T21:37:57+02:00
+exit 0
+check passed: all 39 test programs
+== python reference
+..................................                          [100%]
+34 passed, 13 subtests passed in 24.61s
+END 2026-09-28T21:39:02+02:00

@@ -1,0 +1,5 @@
+{"name": "cost", "command": "python3 -B lanes/m1-repair-dump/verify/cost.py 65537", "exit": 0, "seconds": 2.872407}
+
+real	0m2,926s
+user	0m2,851s
+sys	0m0,033s

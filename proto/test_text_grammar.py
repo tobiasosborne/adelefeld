@@ -580,5 +580,84 @@ class TestFuzz(unittest.TestCase):
                 self.assertEqual(out.encode(), b)
 
 
+class TestDumpReviewFindings(unittest.TestCase):
+    """Regressions for the findings R1, R2 and R4 of the review of the dump reader
+    (docs/reviews/m1/dump/review.md), applied to the reference: the cap of M1-D5 on the block
+    count of a context occurrence, the bound of M1-D9 on the binary exponents of a piece of a
+    qclass as a limit of stage 4, and the alphabet of 8.2 read before the header."""
+
+    def test_r1_block_cap_of_m1d5(self):
+        """M1-D5: at most 65536 blocks; more is UNSUPPORTED, decided from the count of the text
+        alone, before the predicate of conventions 5.14 and before max_items is not even
+        consulted (a larger max_items does not make it OK, a smaller one is checked first)."""
+        many = "adf1 Q modctx 6 10001" + " 2" * 65537
+        at_cap = "adf1 Q modctx 6 10000" + " 2" * 65536
+        self.assertEqual(tg.dump_roundtrip(many.encode()), "!UNSUPPORTED")
+        self.assertEqual(tg.modctx_new_from_dump(many.encode(), 0), "!UNSUPPORTED")
+        # stage 4 before stage 5: max_items at the cap gives LIMIT, one above gives UNSUPPORTED
+        self.assertEqual(tg.dump_roundtrip(many.encode(), tg.Limits(max_items=65536)), "!LIMIT")
+        self.assertEqual(tg.dump_roundtrip(many.encode(), tg.Limits(max_items=65537)), "!UNSUPPORTED")
+        # stage 3 before both: a count with a short body is a grammar failure
+        self.assertEqual(tg.dump_roundtrip(b"adf1 Q modctx 6 10000000000 2 3"), "!PARSE")
+        self.assertEqual(tg.dump_roundtrip(b"adf1 Q modctx 6 10000000000 2 3", tg.Limits(max_items=0)),
+                         "!PARSE")
+        # the cap is over the count, so a context whose predicate also fails is UNSUPPORTED
+        over = "1fffffffffffffffffff" + " 2" * 65536      # 65537 blocks, the first not a word
+        at_cap_bad = "1fffffffffffffffffff" + " 2" * 65535  # 65536 blocks, the first not a word
+        self.assertEqual(tg.dump_roundtrip(("adf1 Q modctx 6 10001 " + over).encode()), "!UNSUPPORTED")
+        self.assertEqual(tg.dump_roundtrip(("adf1 Q modctx 6 10000 " + at_cap_bad).encode()), "!DOMAIN")
+        # a context nested in a piece of a qclass is bounded as well
+        self.assertEqual(tg.dump_roundtrip(("adf1 Q qclass pieces 1 1 1 0 0 0 l 1 6 10001"
+                                            + " 2" * 65537 + " 0" * 65537).encode()),
+                         "!UNSUPPORTED")
+        # at the cap the count is admitted by the reader; the text stays invalid (the blocks
+        # repeat), which is a predicate of stage 6, not the cap
+        self.assertEqual(tg.dump_roundtrip(at_cap.encode()), "!DOMAIN")
+
+    def test_r2_qclass_exponent_bound_is_a_limit_of_stage_four(self):
+        """M1-D9: the bound ADF_DUMP_QCLASS_EXP_MAX = 2^20 is a limit of stage 4, so it is
+        decided on the digit strings before every semantic check; the comparison is a comparison
+        of integers, with no bound of a machine word."""
+        at = "adf1 Q qclass pieces 1 1 1 -{0:x} 0 0 l 1 2 1 2 0"
+        self.assertEqual(tg.dump_roundtrip(at.format(tg.QCLASS_EXP_MAX).encode()),
+                         at.format(tg.QCLASS_EXP_MAX))
+        for text in [at.format(tg.QCLASS_EXP_MAX + 1),
+                     at.format(2 ** 160),
+                     "adf1 Q qclass pieces 1 1 -1 -" + format(tg.QCLASS_EXP_MAX + 1, "x") + " 0 0 l 1 2 1 2 0",
+                     "adf1 Q qclass pieces 1 1 1 -" + format(tg.QCLASS_EXP_MAX + 1, "x") + " 0 0 l 0 2 1 2 0",
+                     "adf1 Q qclass pieces 1 1 1 -" + format(tg.QCLASS_EXP_MAX + 1, "x") + " 0 0 g 8 6 1",
+                     "adf1 Q qclass pieces 2 1 1 0 0 0 l 1 2 1 2 0 1 1 -"
+                     + format(tg.QCLASS_EXP_MAX + 1, "x") + " 0 0 l 1 2 1 2 0"]:
+            self.assertEqual(tg.dump_roundtrip(text.encode()), "!LIMIT", text)
+        # without the oversized exponent the predicate of stage 6 decides
+        self.assertEqual(tg.dump_roundtrip("adf1 Q qclass pieces 1 1 1 -1 0 0 l 0 2 1 2 0".encode()),
+                         "!DOMAIN")
+        self.assertEqual(tg.dump_roundtrip("adf1 Q qclass pieces 1 1 -1 -1 0 0 l 1 2 1 2 0".encode()),
+                         "!DOMAIN")
+        # a lift is a single adele and has no piece: the bound does not reach it
+        for text in ["adf1 Q qclass lift 1 1 -" + format(tg.QCLASS_EXP_MAX + 1, "x") + " 0 0 l 1 2 1 2 0",
+                     "adf1 Q qclass lift 1 1 -" + "f" * 40 + " 0 0 l 1 2 1 2 0"]:
+            self.assertEqual(tg.dump_roundtrip(text.encode()), text)
+        # the other bodies have no such bound
+        other = "adf1 Q adele 1 1 -" + "f" * 40 + " 0 0 g 0 0 1"
+        self.assertEqual(tg.dump_roundtrip(other.encode()), other)
+
+    def test_r4_alphabet_before_the_header(self):
+        """8.2 gives TAB, LF and CR as bytes of the alphabet, so the header is judged before the
+        body grammar: another version or field is UNSUPPORTED whatever the body holds, and with
+        the header "adf1 Q " such a byte in the body is a grammar failure."""
+        for w in (b"\t", b"\n", b"\r"):
+            self.assertEqual(tg.dump_roundtrip(b"adf2 Q rat" + w + b"1 1"), "!UNSUPPORTED")
+            self.assertEqual(tg.dump_roundtrip(b"adf1 R rat" + w + b"1 1"), "!UNSUPPORTED")
+            self.assertEqual(tg.dump_roundtrip(b"adf1 Q rat" + w + b"1 1"), "!PARSE")
+            self.assertEqual(tg.dump_roundtrip(b"adf1 Q rat 1" + w + b"1"), "!PARSE")
+            self.assertEqual(tg.dump_roundtrip(b"adf1 Q rat 1 1" + w), "!PARSE")
+            self.assertEqual(tg.dump_roundtrip(b"adf1" + w + b"Q rat 1 1"), "!PARSE")
+            self.assertEqual(tg.dump_roundtrip(b"adf1 Q" + w + b"rat 1 1"), "!UNSUPPORTED")
+            # a NUL and a byte above 0x7e are no bytes of the alphabet
+            self.assertEqual(tg.dump_roundtrip(b"adf2 Q rat\x001 1"), "!PARSE")
+            self.assertEqual(tg.dump_roundtrip(b"adf2 Q rat\x801 1"), "!PARSE")
+
+
 if __name__ == "__main__":
     unittest.main()

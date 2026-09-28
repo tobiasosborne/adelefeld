@@ -53,3 +53,24 @@ a comment), seen failing, then the code. Keep `lanes/m1-repair-dump/red-green.lo
 
 Memory: never two builds or two mutation runs at the same time; if `free -g` shows less than 6 GB
 available, wait. Finish with `report.md`.
+
+## Resume note of the orchestrator (2026-09-28, 20:20)
+
+Your first session ended at its time limit of 90 minutes. Nothing is lost: your files are in the worktree
+as you left them. The orchestrator ran `make clean && make -j2 check` on them at 20:18: all 39 test
+programs pass. Do not start again and do not rewrite what works. Run `git status`, read
+`lanes/m1-repair-dump/report.md` (sections 1 to 3 are written; section 4 is an empty heading; the first
+paragraph promises checks that the file does not contain), `red-green.log` and `green.log`.
+
+What is left, in this order; write each result into `report.md` as soon as you have it:
+1. Section 4 of the report (the tests, with the red runs from your logs).
+2. Item 6 of the brief without the mutation run: the sanitizer build, the clang build, the review's
+   `verify.py unit` and `cost` (copies in your lane directory), and item 3's fuzz run and valgrind run.
+3. Item 5 (where the time of a 1 MB dump goes): you have `bigctx`, `precomp` and a `gmon.out` in
+   `checks/`; report the numbers you measured.
+4. The mutation run, last, in the foreground, with a limit that ends within 30 minutes:
+   `make mutate FILES=src/dump.c JOBS=2 LIMIT=60`. If it does not end in 30 minutes, stop it and say so.
+5. The sections of `lanes/COMMON.md` rule 8 that are missing: what is not done, sources pending, findings
+   against the specification (your section 3.2 belongs there too), and the text for the header
+   `dump.h` and for conventions 8.4 (the constant of M1-D9).
+Remove the first paragraph's promise or make it true. Delete the binaries in `checks/` at the end.
