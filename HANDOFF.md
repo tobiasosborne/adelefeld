@@ -24,13 +24,25 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 23:57 (three lanes; look at them first).**
+**RUNNING at 00:10 on 2026-09-29 (three lanes; look at them first).**
 
 | Lane | Model | Where | State |
 |---|---|---|---|
-| m1-invariants (adf-xk4) | Claude `sonnet-medium` subagent | `.claude/worktrees/agent-ac0c93624e0f28f88` | cut off at 23:49 by a network failure, resumed 23:51; list, tests, `src/invariants.h` and the checks in 10 files of `src/` were written by then |
-| m1-repair-tools (adf-xf4, adf-4lj) | Claude `sonnet-medium` subagent, since 23:56 | `../adelefeld-wt/m1-repair-tools` (master merged in, `d729768`; work uncommitted) | items 2, 3, 6, 7 done by space-bunny-alpha (selftest passes, run by the orchestrator); items 1, 4 and the README are with Sonnet; the sweep (item 5) is run by the ORCHESTRATOR as a script after the lane lands |
+| m1-inv-tests (adf-6vy) | Claude `sonnet-medium` subagent, since 00:08 | a worktree under `.claude/worktrees/` from `66bfabf` | repairs the five test programs that fail under `INV=1`; owns five files of `tests/` only |
+| m1-repair-tools (adf-xf4, adf-4lj) | Claude `sonnet-medium` subagent, since 23:56 | `../adelefeld-wt/m1-repair-tools` (master of 23:00 merged in, `d729768`; work uncommitted) | items 2, 3, 6, 7 done by space-bunny-alpha (selftest passes, run by the orchestrator); items 1, 4 and the README are with Sonnet; the sweep (item 5) is run by the ORCHESTRATOR as a script after the lane lands |
 | m1-closure-contexts (adf-igt) | codex gpt-6-sol xhigh, since 23:53 | `../adelefeld-wt/m1-closure-contexts` | running |
+
+**m1-invariants is landed** (`0418288`, adf-xk4 closed; `lanes/m1-invariants/report.md`). `make check INV=1`
+builds the library with entry checks in 105 functions and a borrow count of contexts. Master: `make check`
+42 test programs with gcc, clang, `SAN=1`; the three scripts; `pytest proto` 35 (00:05). The release objects
+are identical to those before the lane (compared by the orchestrator against its own baseline).
+`make check INV=1` is NOT green: five older test programs step outside the contract (adf-6vy, lane
+m1-inv-tests). The code is Sonnet's: its judge is codex (closure of `local` R3 and `text` R7).
+
+**Waits for TJO** (adf-s04): M1-D10 (local values are made by the library; no raw setter that counts) and
+M1-D11 (a status for an input outside the contract is a courtesy of the release build; under the flag the
+call aborts), both PROPOSED in `docs/SPEC.md` section 15. Lane m1-inv-tests works by them. After they are
+accepted: one sentence each in `fball.h`, `scaled.h`, `recon.h` and conventions 4.6 (orchestrator).
 
 **Landed tonight.** Closure of `dump` (`fef212f`): 3 CLOSED, 1 SETTLED BY DECISION. Closure of `arith`
 (`9aa97c9`): R1, R2 settled by M1-D3, R3 and R6 CLOSED, R4 and R5 (both MINOR, stale and false lines of
