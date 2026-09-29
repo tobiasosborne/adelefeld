@@ -7,14 +7,18 @@
    nmod_poly/powmod_ui_binexp_preinv.c, nmod_poly/gcd.c, nmod_poly/evaluate_nmod.c. The script rewrote the
    manifests with files of other lanes too; refs/manifest.sha256 was reset to the original plus my 6 lines
    (sha256sum -c: 0 failures); manifest-extra.sha256 unchanged.
-
-## Design (decided)
-- hidden `slong adf_roots_modp(ulong * roots, const nmod_poly_t h, int route)`: route 0 auto (evaluation for
-  p <= ADF_ROOTS_P_EVAL_MAX), 1 evaluation, 2 gcd route. Roots sorted ascending. h must be nonzero (abort).
-- hidden `int adf_roots_modp_check(const nmod_poly_t h, const ulong * cand, slong m)`: 1 iff every candidate
-  is < p, a root of h by evaluation, the candidates distinct, and m = deg gcd(h, X^p - X).
-- gcd route: t = X^p mod h (nmod_poly_powmod_ui_binexp), d = gcd(h, t - X), candidates from
-  nmod_poly_roots(d, 0); refused list -> abort (S-D20), not NOT_DETERMINED.
+3. tests/test_roots_bigp.c written (red 1 link error, red 2 assertions, green): lanes/s2-slice4/redgreen.log.
+4. src/roots.c: adf_roots_modp (hidden, route AUTO/EVAL/GCD), adf_roots_modp_check (hidden), padic_search uses
+   it; UNSUPPORTED removed from adf_roots_padic_core and from verify_complete.
+5. bench/bench_roots_modp.c; run 2026-09-29T144527Z (file moved to lanes/s2-slice4/); crossover by the geometric
+   mean between p = 127 (0.94) and 251 (1.82): ADF_ROOTS_P_EVAL_MAX = 128.
+6. roots.h: the temporary-status sentences rewritten; the macro 128 with the measurement.
+7. tests/test_roots_padic.c: the three UNSUPPORTED checks replaced (red 3, green 2 in the log).
+8. Tests pass: bigp 5 tests 825 checks, padic 8 tests 55135 checks, seed, forged.
 
 ## Next
-- tests/test_roots_bigp.c (red), then code, bench, bound, header, fuzz, mutants, full checks.
+- docs/sources.md rows (nmod_poly_roots etc.) and the pending item 4 of milestone S.
+- mutants of item 5 of the brief in a scratch copy under build/ (4 mutants).
+- tests/fuzz/diff_roots_padic.py: primes above the bound with planted roots; run 180 s.
+- make clean && make check-all; SAN=1; CC=clang; check_headers.sh.
+- result.md.

@@ -2191,6 +2191,7 @@ a78c6e4398cbd89aaa687e3c6f61c6a0cf4b5339e69f7d178396855a0fcdc5a0  src/flint-3.0.
 475dcbce062a98ba55b94be65d7620b9b821d5c9d8ab04ff48a22d09792afa56  src/flint-3.0.1/padic_poly.rst
 65d6805bd89f8d66bf87f459d4f604b19499e5c9129896a07c72e11d4f773468  src/flint-3.0.1/ulong_extras.rst
 e34d3dd628572309e584aa25b3840c5b1321c788e4c5547e532e8b8037f92676  src/flint-src-3.0.1/arb_fmpz_poly/complex_roots.c
+61675864687bb6defff728d34d768d90028eaf2907c21b5c18bd91f1b1b207de  src/flint-src-3.0.1/flint.h.in
 b61ea648b7754043a2ee3138756de8b14dee3d1ef62dfa4b94b682eeb4592efc  src/flint-src-3.0.1/fmpq/cfrac_bound.c
 f38281af649ff7273e55dd7c98fdf542e6432cf4a5ac38b4da2e488b49fc4561  src/flint-src-3.0.1/fmpq/get_cfrac.c
 4b3974827e6d4213c91fa68bd9581002d028428171d2b3bb81180211747b2543  src/flint-src-3.0.1/fmpq/get_cfrac_helpers.c

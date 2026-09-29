@@ -992,8 +992,8 @@ open_class_clear(open_class * c)
        it is proper): the roots are written as the linear factors r->p[i];
      nmod_poly_evaluate_nmod, nmod_poly.rst:1243; evaluate_nmod.c:15 to 45, Horner's rule;
      nmod_neg, nmod_mul, nmod_inv, nmod.rst:94 to 114 (arguments reduced modulo the modulus); nmod_poly_zero,
-       nmod_poly_set_coeff_ui, nmod_poly_init_mod, nmod_poly_is_zero, nmod_poly_sub, nmod.rst is not needed for
-       them: nmod_poly.rst:193, 299, 106, 420, 489. */
+       nmod_poly_set_coeff_ui, nmod_poly_init_mod, nmod_poly_is_zero, nmod_poly_sub: nmod_poly.rst:193, 299,
+       106, 420, 489; nmod_poly_factor_init and _clear: nmod_poly_factor.rst:17, 23. */
 
 #define ADF_ROOTS_ROUTE_AUTO 0
 #define ADF_ROOTS_ROUTE_EVAL 1
