@@ -26,12 +26,17 @@
    function whose input has |v| or |N| above ADF_LBALL_EXP_MAX, or whose result would (the sums and differences of
    exponents that the functions form are then far from overflowing slong). is_canonical, init, clear, set, swap,
    identical and the layout queries have no such limit.
-   THE RULE for neg, add, sub, mul, inv and div (api-1f.md, decision 3, L4a): ADF_LIMIT is returned only if an INPUT
-   or the RESULT is outside these limits, never because of an intermediate value (the negation of the second operand
-   of a difference, the inverse of the divisor of a quotient, the precision of an exact value). "The result is
-   outside" means that its v or N is beyond ADF_LBALL_EXP_MAX, or that its stored centre needs p^k with
-   k bits(p) > ADF_LBALL_BITS_MAX. For example neg of 1 + 5^E Z_5, E = ADF_LBALL_EXP_MAX, is ADF_LIMIT: the centre of
-   the result is 5^E - 1.
+   THE RULE for neg, add, sub, mul, inv and div (api-1f.md, decision 3, L4a; SPEC 15.4 N-D7): ADF_LIMIT is returned
+   if an INPUT or the RESULT is outside these limits, or if the function would have to form a power p^k with
+   k bits(p) > ADF_LBALL_BITS_MAX to compute the centre of the result (to align two operands of different
+   valuation, or to reduce a rational centre). "The result is outside" means that its v or N is beyond
+   ADF_LBALL_EXP_MAX, or that its stored centre needs such a power. For example neg of 1 + 5^E Z_5,
+   E = ADF_LBALL_EXP_MAX, is ADF_LIMIT: the centre of the result is 5^E - 1. The functions avoid a power where
+   the result is known without it (the inverse of an exact power of p; x - x; an operand of a sum whose
+   valuation is at least the exponent of the result; the quotient of L4a), and these cases are tested; they do
+   not promise to avoid every power that another method could avoid (review f-review2, R1 and R2:
+   (1 + 2^k + 2^(k+1) Z_2) - 2^k and (1 + 2^k Z_2)/(1 + 2^k) with k = 2^25 + 1 are ADF_LIMIT, although the
+   stored results are small). ADF_LIMIT never carries a value: the outputs are untouched.
 
    Common rules, unless a comment says otherwise:
    - Aliasing (conventions 4.1): an output may be the same object as any input of the same type; inputs may alias
@@ -186,14 +191,14 @@ int adf_lball_neg(adf_lball_t y, const adf_lball_t x);
    (L2). Exact + exact: the exact sum. The centre is reduced modulo p^min(N, N'): an operand whose valuation is
    at least that minimum contributes 0 and its power of p is not formed.
    Status: ADF_OK; ADF_DOMAIN (different primes); ADF_LIMIT (bounds above; two exact operands whose exponents
-   differ so much that the exact sum needs a power p^k with k bits(p) > ADF_LBALL_BITS_MAX): only an input or the
-   RESULT outside the limits, no intermediate value (the rule under "Limits" above). Cost: a mod. */
+   differ so much that the exact sum needs a power p^k with k bits(p) > ADF_LBALL_BITS_MAX; the rule under
+   "Limits" above). Cost: a mod. */
 int adf_lball_add(adf_lball_t z, const adf_lball_t x, const adf_lball_t y);
 
 /* adf_lball_sub(z, x, y): z = x - y = x + (-y); tight by L5 and L2. It is computed as the sum with the sign of y
    inside, not as x plus a canonical value -y: -y may need a power p^k that x - y does not (x - x for a ball x of
-   relative precision 2^60 is the small ball O(p^N)). Status: as add, and the same rule: ADF_LIMIT only if an input or
-   the RESULT is outside the limits. Cost: as add. */
+   relative precision 2^60 is the small ball O(p^N)). Status: as add, with the rule under "Limits" above.
+   Cost: as add. */
 int adf_lball_sub(adf_lball_t z, const adf_lball_t x, const adf_lball_t y);
 
 /* adf_lball_mul(z, x, y): z = x y (L3). With centres c, c' of valuation v, v' (infinity for a centre 0) and
@@ -244,7 +249,7 @@ int adf_lball_abs(adf_rat_t a, const adf_lball_t x);
    exact unit x/p^m. Ball with v < N: m = v and unit = u + p^(N - v) Z_p, the ball of the unit parts, of
    relative precision N - v >= 1; every element of x is p^m times exactly one element of it, and every element
    of it arises. Proposition 4 (functions.md line 92) then splits each unit into w u' (w a root of unity, u' a
-   principal unit); that second split is not in this slice.
+   principal unit); that second split is adf_lball_decompose_teich.
    Status: ADF_OK, both written; ADF_DOMAIN if x is the exact 0 (Proposition 4: zero has no such decomposition),
    ADF_NOT_DETERMINED if x is a ball that contains 0; ADF_LIMIT if N - v > ADF_LBALL_EXP_MAX. Outputs untouched
    otherwise. m and unit are distinct; unit may alias x. Cost: constant plus a copy. */

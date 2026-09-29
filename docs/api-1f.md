@@ -45,11 +45,13 @@ Header: `include/adelefeld/lball.h`. Implementation: `src/lball.c`. Tests: `test
    `bits(p)`; a larger request is `ADF_LIMIT`, decided before any allocation that grows with it. The predicates
    return no status and form no power of `p` (they compare valuations of differences, L8).
    The rule (repair f-repair1, after the review f1, findings F1 to F3): an arithmetic function returns `ADF_LIMIT`
-   only if an INPUT or the RESULT is outside the limits, never because of an intermediate value. "The result is
+   if an INPUT or the RESULT is outside the limits, or if a power `p^k` above the bit limit would have to be
+   formed to compute the centre of the result (reworded after review f-review2, R1 and R2, SPEC 15.4 N-D7: the
+   functions avoid such a power in the cases listed below and do not promise to avoid it always). "The result is
    outside" means: its `v` or `N` is beyond `ADF_LBALL_EXP_MAX`, or its stored centre needs `p^k` with
    `k bits(p) > ADF_LBALL_BITS_MAX`. Examples where `LIMIT` is right: `neg` of `1 + 5^E Z_5` (centre `5^E - 1`),
    `inv` of `3 + 5^E Z_5` (centre `1/3 mod 5^E`), `(1 + 5^E Z_5) / (3 + 5^E Z_5)` (the same centre), the exact sum
-   `5^E + 5^(-E)`. Examples where `OK` is required although a natural intermediate is outside: `inv` of the exact
+   `5^E + 5^(-E)`. Examples where `OK` is returned although a natural intermediate is outside: `inv` of the exact
    `5^E` (an exact value has no precision), `x - x` for `x = 1 + 5^E Z_5` (the sign is applied inside the sum),
    `(5^(-E) + Z_5) / (5^(-E) + Z_5)` (the inverse has `N = 2E`, the quotient `N = E`; L4a).
 4. Two operands at different primes: `ADF_DOMAIN`, outputs untouched (conventions 3.1, compatibility requirement).
