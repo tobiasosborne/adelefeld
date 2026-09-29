@@ -989,7 +989,9 @@ open_class_clear(open_class * c)
        seeded by flint_randinit (177; find_distinct_nonzero_roots.c:29 to 43 repeats a random split until
        it is proper): the roots are written as the linear factors r->p[i];
      nmod_poly_evaluate_nmod, nmod_poly.rst:1243; evaluate_nmod.c:15 to 45, Horner's rule;
-     nmod_neg, nmod_mul, nmod_inv, nmod.rst:94 to 114 (arguments reduced modulo the modulus). */
+     nmod_neg, nmod_mul, nmod_inv, nmod.rst:94 to 114 (arguments reduced modulo the modulus); nmod_poly_zero,
+       nmod_poly_set_coeff_ui, nmod_poly_init_mod, nmod_poly_is_zero, nmod_poly_sub, nmod.rst is not needed for
+       them: nmod_poly.rst:193, 299, 106, 420, 489. */
 
 #define ADF_ROOTS_ROUTE_AUTO 0
 #define ADF_ROOTS_ROUTE_EVAL 1
@@ -1028,7 +1030,8 @@ modp_deg_d(nmod_poly_t d, const nmod_poly_t h)
 
     if (nmod_poly_degree(h) <= 0)
     {
-        nmod_poly_one(d);
+        nmod_poly_zero(d);
+        nmod_poly_set_coeff_ui(d, 0, 1);
         return 0;
     }
     nmod_poly_init_mod(x, h->mod);
