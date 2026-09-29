@@ -49,6 +49,12 @@ def cluster(e, d):
     return f, roots
 
 
+def odd_bits(r):
+    """The number of bits of the odd part of the numerator of a dyadic rational (0 for 0)."""
+    m = abs(r.numerator)
+    return (m // (m & -m)).bit_length() if m else 0
+
+
 def planted_ok(balls, roots):
     """Each planted root in exactly one closed ball, each ball exactly one planted root."""
     return (all(sum(1 for lo, hi in balls if lo <= r <= hi) == 1 for r in roots) and
@@ -148,8 +154,13 @@ class RealCases(unittest.TestCase):
             res = ri.real_roots(f, prec)
             self.assertTrue(contract_ok(f, prec, res, len(roots)))
             self.assertTrue(planted_ok(res[2], roots))
-            exact = sorted(lo for lo, hi in res[2] if lo == hi)
-            self.assertEqual(exact, sorted(r for r in roots if r.denominator & (r.denominator - 1) == 0))
+            # Proposition R4(3): a root m 2^t with m odd of at most max(prec, 2) + 1 bits is an exact ball
+            # (12345 has 14 bits: exact at 53, and at 2 only if a point of the grid met it); 0 is exact
+            exact = set(lo for lo, hi in res[2] if lo == hi)
+            dyadic = set(r for r in roots if r.denominator & (r.denominator - 1) == 0)
+            short = set(r for r in dyadic if odd_bits(r) <= max(prec, 2) + 1)
+            self.assertTrue(short <= exact <= dyadic, (prec, exact))
+            self.assertEqual(F(12345) in exact, prec == 53)
 
     def test_touching_cells(self):
         """1/3 and 2/3 are isolated by the cells (0, 1/2) and (1/2, 1), which touch at a point that is not a
@@ -260,7 +271,7 @@ def times():
             t = time.perf_counter() - t
             ok = contract_ok(f, prec, res, len(roots)) and planted_ok(res[2], roots)
             bits = max([max(x.numerator.bit_length(), x.denominator.bit_length()) for b in res[2] for x in b])
-            name = getattr(fam, "__name__", "cluster")
+            name = "cluster" if fam.__name__ == "<lambda>" else fam.__name__
             print(f"{name} {e} {prec} {refine} {t:.4f} {res[3]['nodes']} {res[3]['evaluations']} {bits} "
                   f"{'ok' if ok else 'FAILED'}", flush=True)
 
