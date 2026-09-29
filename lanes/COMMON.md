@@ -25,4 +25,6 @@ change it.
 8. **Report.** Finish by writing `report.md` in your lane directory: what was done; the files written; every check
    that was run, with its command and its result (numbers, not adjectives); what is not done; sources pending;
    findings against the specification. The report is the only thing the orchestrator reads first, so it must be
-   true and complete. Your work counts as finished only when this file exists.
+   true and complete. Your work counts as finished only when this file exists. A Claude subagent cannot write a
+   file of this name (the harness refuses it): it writes `lanes/<lane>/result.md` with the same content and
+   gives the same text as its final message; write neither file before the work is done.

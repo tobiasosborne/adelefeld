@@ -22,10 +22,12 @@ function (CLAUDE.md rules 3 and 4), and cite it in the code as `docs/proofs/<fil
 4. **FLINT idiom.** Use FLINT's functions and conventions (`fmpz`, `fmpq`, `arb`); init and clear every
    temporary; no leaks and no undefined behaviour: `make check SAN=1` must pass. Build with `make -j2`. No
    global state. No allocation beyond what FLINT does, unless the header says the function allocates.
-5. **Mutation testing** (CLAUDE.md rule 2): run `make mutate FILES=src/<your file>.c` (read `tests/README.md`;
-   use at most 2 jobs; if the run would take more than 10 minutes, use the tool's limit and seed options and say
-   so). Every surviving mutant is either killed by a new test or listed in `tools/mutate/equivalent.txt` with the
-   reason why it cannot change any result. Report the counts.
+5. **Mutation testing** (CLAUDE.md rule 2, `docs/workflow.md`): run the tool over the files you changed, at most
+   60 mutants for each file and at most 20 minutes in all (`--limit`, `--seed`, 2 jobs), with `--san`, and for
+   files with lines `ADF_INV_...` with `--make "make -s -j2 check INV=1" --copy Makefile include src tests lanes`.
+   A survivor that is a gap of the tests gets a test. Every other survivor is listed in the report with one
+   line; `tools/mutate/equivalent.txt` gets an entry only if the reason is one sentence that a reader can check
+   in the code at once. Do not repair the mutation tool; report what it does wrong.
 6. **The header is not yours.** If a declaration cannot be implemented as written, is ambiguous, or contradicts
    its proof, do not edit the header: implement the most defensible reading, mark the place with a comment
    `HEADER-FINDING`, and list it in your report.

@@ -2,146 +2,100 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-28 (night), 22:30 to 23:05: START HERE
+## Session 2026-09-28 22:30 to 2026-09-29 08:30: START HERE
 
-**One line.** The decisions that waited for TJO are ratified; the comparison of Sonnet effort levels is run and
-the level is MEDIUM (agent type `sonnet-medium`); no code of the library changed; nothing is running.
+**One line.** Milestone 1 is reviewed and its review is closed with no blocker open; the design of milestone S
+is written, reviewed and closed (draft 3); TJO changed the workflow: thin working slices, no mutation sweep,
+less ceremony (`docs/workflow.md`, read it first). Nothing is running. Everything is pushed.
 
-**The comparison** (one task, one run per level; every result rebuilt by the orchestrator against the original
-and the three mutants, script and copies in `~/Projects/adelefeld-wt/effort-cmp/`):
+**First commands.**
 
-| Level | Verdicts right | Wall time | Tokens | Checks | Remarks |
-|---|---|---|---|---|---|
-| low | 3 of 3 | 78 s | 58599 | 3 | did not read off the statuses of the mutants; one input that did not kill, repaired |
-| medium | 3 of 3 | 106 s | 66751 | 9 | statuses recorded (`LIMIT`, `DOMAIN`), controls added |
-| high | 3 of 3 | 157 s | 89510 | 26 | wrote a probe program outside its directory; line numbers of `dp_word` cited wrong |
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    make clean && make -j2 check 2>&1 | tail -1          # expect: check passed: all 42 test programs
+    free -g; ~/Projects/quota-app/target/release/quota; date
 
-The tests of the three agents are NOT merged: master has its own test for the two mutants that can be killed
-(`grammar_before_limits_in_sball_and_rfun`). Where a section below says "Sonnet at effort high", read medium.
+**Master** (checked 00:58 on 2026-09-29, after the last change of code): `make check` 42 test programs with
+gcc, clang, `SAN=1`, `INV=1`, `INV=1 SAN=1`; `sh tests/test_driver.sh` (27 cases), `sh tests/test_julia.sh`,
+`sh tests/test_exports.sh`; `python3 tools/mutate/selftest.py`, `python3 tools/memcheck/selftest.py`;
+`pytest proto` 35; `python3 proto/solvers_checks.py` 35 checks (03:43). `make clean` between builds with
+different flags.
 
-**Standing order of TJO (22:55).** Orchestrate without asking for each lane: `sonnet-medium` for demanding
-lanes, `space-bunny-alpha` as much as possible, codex for every review (until its weekly meter reads 50%;
-it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
-under or on pace. Memory `orchestration-model-tiers`.
+**THE NEXT STEP: slice 1 of milestone S** (issue "Milestone S, slice 1", P1; `docs/workflow.md` rules 1, 2).
+Partial rational reconstruction in the range `2 A B < m`, end to end:
+- `include/adelefeld/resid.h`: the type `adf_resid` `(c, m)` and ONE function that reconstructs;
+  `docs/api-s.md` section 2 has the proposed declarations. Only what the slice needs.
+- `src/resid.c`: the library's own Euclidean loop (`docs/proofs/solvers.md` L1.4, P1.6 case `2 A B < m`:
+  the row if `gcd(R, T) = 1`, else none). Outside the range the slice returns `UNSUPPORTED`, and says so.
+- Tests first (CLAUDE.md rule 1): against brute force over all small `(m, c, A, B)` and against
+  `recon_partial` of `proto/solvers_checks.py` (vectors written by a script). The edge cases are listed in
+  `docs/reviews/s-design/review.md` ("Your task is to REFUTE", item 1).
+- One command of the driver `adf` (or a Julia call) that reconstructs a fraction from a residue.
+- One differential fuzz target (workflow rule 5), run for an hour at night.
+- Needs three small decisions of TJO before the header is written: S-D1 (a type `adf_resid`), S-D2 (own loop,
+  not FLINT's `fmpq_reconstruct_fmpz_2`, which writes its outputs before it decides), S-D5 (`A < 0` or
+  `B < 1` is `NO_SOLUTION`). ASK THESE THREE, not all nineteen.
+- One lane (`sonnet-medium`, or `space-bunny-alpha` if its provider answers), then one review by codex
+  `gpt-6-sol`. Slice 2 widens to `m <= 2 A B` (enumeration, `NOT_DETERMINED`); then S.1.
 
-**NOTHING IS RUNNING (04:23 on 2026-09-29). The sweep was stopped by the harness at about 04:21 ("the system is
-running low on memory"); it is NOT to be started again before TJO says so.** At 04:22 the machine had 24 GB
-available, no process of the sweep was left and its scratch directory was removed by the tool. Seven files
-are done (table `lanes/m1-sweep/sweep.md` in the worktree); the run of `src/recon.c` was cut after its first
-survivor. The script resumes with `recon.c` when it is started again
-(`../adelefeld-wt/m1-sweep/lanes/m1-sweep/sweep.sh`). Suspicion, not examined: a mutant of `recon.c` that
-removes the guard of M1-D3 lets a test build integers of `2^36` bits, under the sanitizers; if so, run
-`recon.c` with `--jobs 1` and a limit of memory (`ulimit -v`).
+**Waits for TJO.**
+- For slice 1: S-D1, S-D2, S-D5 (`docs/api-s.md` section 5).
+- Milestone 1: M1-D10 and M1-D11 (adf-s04; PROPOSED in `docs/SPEC.md` section 15; the tests follow them
+  already; two judges found no input against them; once accepted, one sentence each in `fball.h`,
+  `scaled.h`, `recon.h`, conventions 4.6); adf-xrt; adf-qs9.
+- The other decisions S-D3, S-D4, S-D6 to S-D19 are asked when a slice needs them. S-D13 (roots of the
+  squarefree part) reinterprets SPEC 9.1 and is TJO's alone.
 
-**The state of the jobs before the stop:**
+**What landed in this session** (details: `docs/worklog/2026-09-28.md` from 22:30, `docs/worklog/2026-09-29.md`).
 
-| Job | Model | Where | State |
-|---|---|---|---|
-| the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | RESTARTED at 02:03 with the judge `make check INV=1` and `--san`: in the release build the lines `ADF_INV_...` are compiled away, and all 34 survivors of `cap.c` and `rat.c` in the first run were such lines (first run: `lanes/m1-sweep/release-run/`). 14 files, small first, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 30 s for a mutant, about 12 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log`. Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
+| What | Commit | State |
+|---|---|---|
+| Decisions M1-D9, wording of M1-D1 and M1-D6, the words of `compare` | `daddefc` | ratified by TJO |
+| Sonnet effort levels compared: medium chosen | `4fbb142` | memory `orchestration-model-tiers` |
+| `ADF_CHECK_INVARIANTS` (`make check INV=1`), adf-xk4 | `0418288` | release objects identical (own baseline) |
+| Five test programs brought inside the contract, adf-6vy | `1743426` | no check weakened |
+| Mutation tool, `equivalent.txt` (108 entries), memory checker | `5baf3cb` | the reasons of the entries are NOT reviewed and not trusted as proofs (workflow rule 4) |
+| Six closure checks of the review of milestone 1, adf-igt | `fef212f`, `9aa97c9`, `0cc92bd`, `be32d8d`, `755f68a`, `1fdd494` | NO BLOCKER OPEN; no new defect of the code |
+| M1-D1: the false reason for the cap of `prec` corrected | `a974d59` | the cap is unchanged; found by the judge of `surface` |
+| Sources of milestone S, table 3 of `docs/sources.md` | `90defed` | corrected twice after the design and its review |
+| Design of milestone S: draft 1, review (astra), draft 2, closure (sol), draft 3 | `79b0e3c`, `1207ddc`, `da222e9`, `540f57c`, `9600357` | reviewed and closed; proofs read by two codex reviewers, not by the orchestrator |
+| Workflow of TJO | this commit | `docs/workflow.md`, CLAUDE.md rules 2 and 6, `lanes/COMMON.md` rule 8, `lanes/COMMON-C.md` rule 5 |
 
-**QUOTA at 03:20: Claude weekly 91% used, 0.3 points behind pace; Fable weekly 90%, 1.3 behind** (reset
-2026-09-29 18:00); codex 46% (limit of TJO 50%). The Claude windows are ON pace: no further Claude subagent
-is launched until the meter shows them behind again or the window resets. Codex and the script go on.
+**What is left of milestone 1.**
+1. Tests for the known gaps (issue adf-whv, P2): `src/common.c:161` (no test of the status `UNSUPPORTED`
+   there), `src/recon.c:272` (`DOMAIN` for an infinite real ball: release build only), and the weak tests
+   the judges named: `test_modctx_limits` (the range pin passes without its line), text R3 (passes on the old
+   printer), text R9 (coverage only). The builders of `tests/test_fball_local.c` now use
+   `adf_fball_set_local`, so its tests of `set_local` are less independent; the vectors still are.
+2. The decisions above; then the sentences in the headers.
+3. adf-4lj: a target `check-all` of the Makefile (suite, three scripts, the two selftests).
+4. Benchmarks on a quiet machine (`make bench`, nothing else running); then milestone 1 marked done in
+   `docs/PLAN.md` section 6.
+None of these blocks slice 1 of milestone S.
 
-**The design of milestone S is DRAFT 3 and its review is closed** (`9600357`, 03:43). The closure check
-(`540f57c`; codex gpt-6-sol, 15 minutes; `docs/reviews/s-design/closure.md`): of the 33 statements of the
-first review 32 CLOSED, 1 CLOSED WITH EDIT, 0 OPEN; of the 14 new items 13 VALID, 1 MINOR, 0 INVALID; every
-repair attacked with neighbouring inputs; verdict NOT READY before four minor edits R11 to R14. The
-orchestrator applied the four edits as written (isolation formula of 3.11(5); the flag `reduced`; the seed
-exponent in S-D18; the regression `check_s2_rr_finish`) and showed that the new check fails on the mutant
-it is for. `proto/solvers_checks.py`: 35 checks, 0 failures. What is left before an implementation lane
-starts: the decisions S-D1 to S-D19 of TJO (`docs/api-s.md` section 5), among them E-S4 (does SPEC 9.1
-"multiple roots later" mean multiplicities later: S-D13), and then the edits of SPEC, PLAN and
-conventions (`docs/api-s.md` section 6), E-C5 deferred. Sources pending: the intermediate value theorem,
-Sturm's theorem.
+**The sweep is dropped (TJO).** It ran seven files under `INV=1` with sanitizers and was stopped by the
+harness at 04:21 for lack of memory, in `src/recon.c`; record in `lanes/m1-sweep/`. Do not start it again.
+Its lessons are in `docs/workflow.md`: in the release build the lines `ADF_INV_...` are dead and their
+mutants survive; under `INV=1` the code for non-canonical input is not reached; a mutant that removes a guard
+of size can use all memory (rule 9). The worktree `../adelefeld-wt/m1-sweep` may be removed.
 
-**The design of milestone S is DRAFT 2** (`da222e9`; lane s-design-repair, Sonnet medium, 45 minutes, 542k
-tokens; `lanes/s-design-repair/report.md`): every finding of the review answered, none contested; 34 checks
-(were 25), both mutants of the reviewer killed (rerun by the orchestrator); decisions S-D16 to S-D19 added
-(19 decisions wait for TJO in `docs/api-s.md` section 5); table 3 of `docs/sources.md` corrected. New
-statements that no reviewer had seen: Propositions 1.11, 3.6, 3.12, 3.13 and new claims of P3.2, P3.10; the
-closure check reviews them. No implementation lane starts before the closure says `MAY BE IMPLEMENTED` and
-TJO has taken the decisions.
+**Models and quota** (memory `orchestration-model-tiers`). `sonnet-medium` for demanding lanes;
+`space-bunny-alpha` when its provider answers (probe it with a one-line prompt: on 2026-09-28 it returned
+empty responses for an hour, then worked; forbid `report.md` before the end in its brief); codex `gpt-6-sol`
+xhigh for reviews, `gpt-6-astra` for a design or a proof; Fable by exception. At 08:20 on 2026-09-29: Claude
+weekly and Fable weekly reset at 18:00 on 2026-09-29; codex 46% of its week, limit of TJO 50% (resets
+2026-10-03). Claude subagents only while the quota app shows the window behind or on pace.
 
-**The review of the design of milestone S is landed** (`1207ddc`; codex gpt-6-astra, 38 minutes, 4 points of
-the codex week; `docs/reviews/s-design/review.md`): 28 VALID, 3 MINOR, 2 INVALID, verdict NOT READY. The
-proofs of reconstruction, of the Howell form and its certificate, and of the search of roots at a prime
-CLOSE (the three places the author was least sure of). INVALID: P3.9 (what FLINT's count of real roots does
-outside its contract: `X^2`, `X^3`, `X^4` return 2, 3, 4) and 3.11 (a sufficient precision called the
-smallest). Further: the reference for real roots raises on `X - 10^400` (float division); the root
-interface has conflicting contracts (certificates for `f` or for its squarefree part; a verifier that
-cannot certify completeness); two mutants of the author's checks survive. Repairs R1 to R10 are written
-out. Two findings reproduced by the orchestrator (the overflow; the counts of FLINT). Codex is at 46% of
-its week: 4 points remain to the limit of TJO, enough for the closure check on sol and the review of
-`equivalent.txt`, not for a second review on astra.
-
-**The design of milestone S is landed as DRAFT 1** (`79b0e3c` and before; lane s-design, Claude Fable, 62
-minutes, 535k tokens; `lanes/s-design/report.md`): `docs/proofs/solvers.md` (33 statements, one open and
-not used), `proto/solvers_checks.py` (25 checks, 30 s, 0 failures when run by the orchestrator),
-`docs/api-s.md` (interface, decisions S-D1 to S-D15 for TJO, edits proposed for SPEC, PLAN, conventions,
-8 work packages). No proof was checked by the orchestrator. NO implementation lane starts before the review
-has judged it and TJO has taken the decisions. The design found table 3 of `docs/sources.md` wrong on
-Thue's lemma (inequality reversed); read in the source by the orchestrator and corrected. Its seven other
-corrections of table 3 (report 5.1) are not yet applied: the review judges them first.
-
-**m1-repair-tools is landed** (`5baf3cb`; `lanes/m1-repair-tools/report.md`): keys of `equivalent.txt` without
-line numbers, `--san`, `--make`, `--keys`, `--keep`, `tools/mutate/check_equivalent.py`, the memory checker
-with `tools/memcheck/selftest.py`. `equivalent.txt` has 108 entries (72 carried with new reasons, 4 dropped,
-36 added); each matches exactly one mutant on master. NOT checked: the truth of the 108 reasons; one model
-wrote and judged them. To do after the sweep: a review of the reasons and of the survivors by codex
-(`gpt-6-sol`), then tests for the survivors. Mutants on lines `ADF_INV_...` survive a sweep of the release
-build by construction: judge them again with `--make "make -s -j2 check INV=1"`.
-Still open of adf-4lj: a target `check-all` of the Makefile (suite, three scripts, the two selftests,
-`check_equivalent.py`).
-Master at 00:58: `make check` 42 programs in the five builds; the three scripts; both selftests;
-`check_equivalent.py`; `pytest proto` 35.
-
-**Landed: the sources of milestone S** (`90defed`, lane s-sources, space-bunny-alpha in 16 attempts):
-Shoup (rational reconstruction, Theorems 4.8, 4.9), Storjohann's thesis (Hermite and Howell form), Conrad
-(Hensel), FLINT 3.0.1 documentation (8 files) and C sources (54 files); table 3 of `docs/sources.md`, 57
-quotes checked by `lanes/s-sources/check_quotes.py`; `refs/fetch_sources.sh --check` passes. Not on disk:
-Wang 1981, Monagan 2004, Collins and Encarnacion, von zur Gathen and Gerhard, Storjohann and Mulders 1998,
-Fiedler and Hofmann, Howell 1986 (TJO may supply copies). The manifest now leaves out
-`refs/src/tate-thesis/log/` (orchestrator).
-
-**The closure check is complete (adf-igt closed at 01:17).** All six reviews are judged, NO BLOCKER OPEN in
-any, no new finding against the code. `surface` (`1fdd494`): 13 CLOSED, 2 SETTLED BY DECISION; its judge
-showed that the reason given in M1-D1 for the cap of `prec` was false; the text is corrected in SPEC, the
-driver and its README (`a974d59`), the cap is unchanged. Left from the checks, all in one issue (the review
-of `equivalent.txt` and of the survivors): arith R4, R5 and contexts R5 (MINOR; the file is rewritten, its
-reasons are not yet judged by another family); weak tests named by the judges: `test_modctx_limits` (range
-pin passes without its line), the test of text R3 (passes on the old printer), text R9 (coverage only), the
-builders of `test_fball_local.c` now use `set_local`.
-
-**m1-invariants and m1-inv-tests are landed** (`0418288`, `1743426`; adf-xk4, adf-6vy closed). Master at
-00:28: `make check` 42 test programs with gcc, clang, `SAN=1`, `INV=1`, `INV=1 SAN=1`; the three scripts.
-The release objects are identical to those before m1-invariants. The code is Sonnet's; codex judged it in
-the closure of `local` (R3 CLOSED) and judges it in `text` (R7).
-
-**Waits for TJO** (adf-s04): M1-D10 (local values are made by the library; no raw setter that counts) and
-M1-D11 (a status for an input outside the contract is a courtesy of the release build; under the flag the
-call aborts), both PROPOSED in `docs/SPEC.md` section 15. The tests follow them already. After they are
-accepted: one sentence each in `fball.h`, `scaled.h`, `recon.h` and conventions 4.6 (orchestrator; the
-judge of `local` asks for it). Also adf-xrt, adf-qs9.
-
-**Landed tonight.** Closure of `dump` (`fef212f`): 3 CLOSED, 1 SETTLED BY DECISION. Closure of `arith`
-(`9aa97c9`): R1, R2 settled by M1-D3, R3 and R6 CLOSED, R4 and R5 (both MINOR, stale and false lines of
-`equivalent.txt`) OPEN until m1-repair-tools lands. Closure of `contexts` (`0cc92bd`): R5 OPEN for the same
-reason, the edit of R2 applied (`7e8f5f5`). Closure of `local` (`be32d8d`): nothing open. No blocker open in any. One check program of each
-was rebuilt and rerun by the orchestrator (8036 and 24 cases, 0 failures). Observations: adf-mds.
-
-**space-bunny-alpha tonight.** The provider returns "Provider returned an empty response" and pi ends the
-session: 30 attempts in 25 minutes, most of 14 seconds, after two useful ones. It also wrote `report.md`
-as a running record, which the runner takes for the end of the lane. Try it again for the next lane with a
-brief that forbids `report.md` before the end; if the first three attempts end within a minute, use Sonnet.
-
-The closure checks of `local`, `text`, `surface` wait for m1-invariants and m1-repair-tools; their briefs
-are not written (pattern: `lanes/m1-closure-arith/brief.md`; model `gpt-6-sol`). `lanes/m1-closure/COMMON.md`:
-codex judges every review. Codex meter 39% at 23:50 (limit of TJO: 50%).
-
-**Order of work from here.** Land the three lanes as they end (rules "How to land a lane" below); the sweep
-(script, overnight, alone); tests for its survivors; the other closure checks; sources for milestone S into
-`refs/src/` (rational reconstruction, Hermite form, Hensel lifting), then its design by Fable, reviewed by astra; benchmarks on a quiet machine; milestone S.
+**Things to know.**
+- A Claude subagent cannot write `report.md` (the harness refuses): `lanes/COMMON.md` rule 8 now names
+  `result.md`. Whether the harness admits that name is NOT tested; if not, take the report from the final
+  message by a script, do not copy it by hand.
+- The pi runner counts a lane as done when `report.md` exists: a model that writes it as a running record
+  stops its lane.
+- Never wait with `pgrep -f <pattern>` in a loop: the pattern matches the waiting command itself.
+- Times in a record are read from `date`; the orchestrator wrote estimates several times in this session and
+  had to correct them.
+- Old worktrees under `../adelefeld-wt/` and `.claude/worktrees/` hold merged branches and may be removed
+  with `git worktree remove`.
 
 ## Session 2026-09-28 (late), 21:00 to 21:50
 

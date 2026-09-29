@@ -1,0 +1,37 @@
+mutate: src/common.c: 59 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (56.5 s)
+
+NOT COMPILED src/common.c:142:5 drop_assign: 'bn = adf_ver_read(b + bm.end + 1);' -> '' (the statement is removed)
+  src/common.c:145:11: error: ‘bn.n’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+EXCUSED src/common.c:96:14 op: '+' -> '-'
+  k - 1 < r.n for k + 1 < r.n: k = 0 gives the size_t 0 - 1, which is not below r.n, so no leading zero is dropped and r.d and r.n keep the whole run; adf_ver_run_equal compares the digits from the right and pads the shorter run with '0' (src/common.c:104-120), so a run with leading zeros stands for the same number, and the only other reads of the run are n == 0 and end, which the drop does not change
+
+NOT COMPILED src/common.c:39:5 drop_call: 'flint_free(s);' -> '' (the statement is removed)
+  src/common.c:37:20: error: unused parameter ‘s’ [-Werror=unused-parameter]
+
+NOT COMPILED src/common.c:141:5 drop_assign: 'an = adf_ver_read(a + am.end + 1);' -> '' (the statement is removed)
+  src/common.c:143:11: error: ‘an.n’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+TIMED OUT src/common.c:93:26 logic: '&&' -> '||'
+  the tests did not finish in 300 s
+
+SURVIVED src/common.c:161:12 status: 'ADF_UNSUPPORTED' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/common.c
+  +++ b/src/common.c
+  @@ -159,5 +159,5 @@
+       if (adf_version_major_minor_equal(flint_version, adf_flint_version_compiled()))
+           return ADF_OK;
+  -    return ADF_UNSUPPORTED;
+  +    return ADF_OK;
+   }
+   
+
+
+TIMED OUT src/common.c:96:5 negate_if: "while(k + 1 < r.n && r.d[k] == '0')" -> "while(!(k + 1 < r.n && r.d[k] == '0'))"
+  the tests did not finish in 300 s
+
+mutate: 59 mutants in 2164.5 s: 52 killed, 1 survived, 3 not compiled, 2 timed out, 1 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check

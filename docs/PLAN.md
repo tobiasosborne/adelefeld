@@ -316,6 +316,11 @@ and 2 to 5. It depends on milestone 1 only (reconstruction, the local backend). 
 rational reconstruction, with a bound on the denominator) is what a solver of rational linear systems needs
 first.
 
+**Thin slices (TJO, 2026-09-29; `docs/workflow.md`):** the milestone is built as working slices, each end to
+end (header, code, test against the reference `proto/solvers_checks.py`, a call through the driver or Julia).
+Slice 1 is partial rational reconstruction in the range `2 A B < m`. The design (`docs/proofs/solvers.md`,
+`docs/api-s.md`, draft 3, reviewed in `docs/reviews/s-design/`) is the map; a slice implements the part it needs.
+
 | WP | Content |
 |---|---|
 | S.1 | Systems modulo `N`: particular solution, kernel, certificate (Hermite form with transformation; FLINT's Smith form returns no transformations) |
