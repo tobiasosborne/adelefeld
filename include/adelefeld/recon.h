@@ -23,7 +23,9 @@
    built, so the cost of the call is bounded by the sizes of the mantissas, of the finite ball
    and by about ADF_RECON_EXP_MAX bits. On every status other than ADF_OK the output is
    untouched (conventions 4.3). "Uniqueness not certified" (ADF_NOT_DETERMINED) belongs to
-   reconstruction from partial data (SPEC 9.2, second item), which is not declared here.
+   reconstruction from partial data (SPEC 9.2, second item), which is not declared here. A status returned for
+   an input outside the contract of the function (for example ADF_DOMAIN for an infinite real ball) is a courtesy
+   of the release build and no promise (decision M1-D11).
    Aliasing: the output is an adf_rat and aliases no input. Cost: a constant number of divisions,
    floors and ceilings of rationals of the input sizes. */
 

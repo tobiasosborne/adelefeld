@@ -21,7 +21,8 @@
    their scaled input; an adf_rat scalar has no context. To combine contexts K, K' the caller
    constructs the context lcm(K, K') (adelefeld/modctx.h), converts both operands with
    adf_scaled_set_context (lossless there, policies Corollary 12, line 241) and calls the ordinary
-   operation. No function here creates a context.
+   operation. No function here creates a context. A value that refers to a context gets and changes its context
+   field through functions of the library only (decision M1-D10).
 
    Common rules, unless a comment says otherwise: an output may be the same object as an input of the
    same type (conventions 4.1); inputs satisfy the predicate of conventions 5.4; outputs untouched on

@@ -323,9 +323,9 @@ Slice 1 is partial rational reconstruction in the range `2 A B < m`. The design 
 
 | WP | Content |
 |---|---|
-| S.1 | Systems modulo `N`: particular solution, kernel, certificate (Hermite form with transformation; FLINT's Smith form returns no transformations) |
-| S.2 | Simple roots at a prime by Hensel lifting; real roots with completeness status |
-| S.3 | Partial rational reconstruction |
+| S.3 | Partial rational reconstruction from a residue (`adf_resid`), with certified one/none/several statuses and an explicit limited-search `NOT_DETERMINED` result; complete classification when the search is allowed to finish. Certificate pair and enumeration as in `proofs/solvers.md` section 1 |
+| S.1 | Systems modulo `N`: particular solution, canonical kernel (Howell form of `[A^T \| I]`), certificate checked by matrix products, vector of non-solvability; right-hand sides that are finite balls (`proofs/solvers.md` section 2). The Hermite form over `Z` is an equivalent engine (Proposition 2.12); FLINT's Smith form returns no transformations |
+| S.2 | Roots in `Z_p` by search and Hensel lifting, with certificates and a completeness status; real roots with a completeness status (`proofs/solvers.md` section 3) |
 
 ### Milestone 6: the second field (after version 1)
 
@@ -351,7 +351,7 @@ class groups and units, with its guarantee recorded.
 | Functions | an independent oracle and a stated output precision; an identity that a constant function satisfies does not count; a result as large as the whole disc fails |
 | Quotient | several wraps; endpoints with the gluing rule |
 | Unit cosets | `[5 mod 6]` and `[2 mod 3]` are equal and print identically |
-| Solvers | the equation is verified; the kernel is complete on small cases |
+| Solvers | Compare every small modular solution set and kernel with direct enumeration. Check K1 to K7 as applicable. Changed certificates must be rejected when their asserted result or required canonical representation is false; valid alternate certificates may pass. Check R1 to R3 for each prime root certificate and independently enumerate compatible roots modulo `p^M`: a simple root of derivative valuation `s` has `p^s` representatives at sufficient `M`. Test root coverage, unresolved classes, real endpoint cases, real counts, and actual output accuracy separately |
 | Text | golden vectors; malformed and oversized input |
 
 ## 8. Review protocol

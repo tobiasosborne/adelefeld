@@ -17,7 +17,8 @@
    where conventions 5.3 keeps a result local: negation, sum and the products listed there, when
    all local inputs share one context pointer. Two different context pointers, or a raw result
    that needs other blocks, give a global result (the implicit fallback of conventions 4.6 and 5.3,
-   gate finding G1). No function of this header creates or changes a context.
+   gate finding G1). No function of this header creates or changes a context. A value that refers to a
+   context gets and changes its context field through functions of the library only (decision M1-D10).
 
    Common rules for every function below, unless its comment says otherwise:
    - Aliasing (conventions 4.1): an output may be the same object as any input of the same type
