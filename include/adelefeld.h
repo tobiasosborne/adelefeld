@@ -44,6 +44,7 @@
 #include "adelefeld/recon.h"
 #include "adelefeld/resid.h"
 #include "adelefeld/linsolve.h"
+#include "adelefeld/roots.h"
 #include "adelefeld/text.h"
 #include "adelefeld/modctx.h"
 #include "adelefeld/scaled.h"

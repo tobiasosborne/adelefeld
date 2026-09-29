@@ -1,0 +1,1 @@
+diff_roots_seed: 453919 calls in 180 s, seed 1; primes {'medium': 113516, 'word': 113381, 'two': 113678, 'small': 113344}; statuses {'OK': 200971, 'NOT_DETERMINED': 239311, 'DOMAIN': 13637}; OK with s > 0: 48523; 0 disagreements
