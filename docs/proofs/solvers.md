@@ -492,6 +492,59 @@ status; the method of note 3 fails 4742 times). It also tests that `sol_brute_fa
 the larger checks, is `sol_brute`.
 Used by: `api-s.md`, `adf_resid_reconstruct` (checker of a result), decisions S-D3, S-D4.
 
+### Proposition 1.12 (the verifier of the returned status).
+
+Hypotheses: as in Proposition 1.11. The verifier `V` of `adf_resid_verify_result` (reference:
+`recon_verify_returned`) is given `(m, c, A, B, limit)`, a status, for `OK` a pair `s = (n, d)`, and for `A < m`
+a quadruple. Claim:
+
+1. `V` accepts a claim exactly when the status is the status that Algorithm R returns for the same
+   `(m, c, A, B, limit)`, and for `OK` also `s` is the point that Algorithm R returns. The list of a claim of
+   another status is not read (the C function reads `q` for `OK` only). The quadruple is read for `OK`,
+   `NO_SOLUTION` and `NOT_DETERMINED`, and must satisfy (C1) to (C4); for `NOT_UNIQUE` the pair is computed
+   again from `(m, c, A)` and the given one is not read.
+2. Soundness: what `V` accepts is true in the sense of 1.11: `OK` with `s`, `NO_SOLUTION` and `NOT_UNIQUE` are
+   statements about `Sol`, `NOT_DETERMINED` is the statement of 1.7(3). So `V` accepts a subset of the claims
+   that the tests of 1.11 accept (for the list of the result, where 1.11 reads a list).
+3. Every result of Algorithm R is accepted.
+4. Cost: the same tests as Proposition 1.11, but a search of at most `min(ell, X)` rounds, `X = floor(B/|T|)`,
+   `ell = max(limit, 0)`: never the whole of `Sol`. For `limit <= 0` it makes no round.
+
+`V` in order. `m < 1`: accept `DOMAIN` only. `A < 0` or `B < 1`: accept `NO_SOLUTION` only. `NOT_UNIQUE`: accept
+if `A >= m` (1.6(a)); else with the own pair `(R', T', R, T)` of Lemma 1.4: refuse if `|T| > B` or `2 A B < m`,
+else run the search of step 7 of Algorithm R and accept if it returns `NOT_UNIQUE`. `OK`, `NO_SOLUTION`,
+`NOT_DETERMINED`: refuse if `A >= m` or the quadruple does not satisfy (C1) to (C4). `NO_SOLUTION`: accept if
+`|T| > B`; else if `2 A B < m` accept iff `gcd(R, T) > 1`; else accept iff the search of step 7 ends with
+`NO_SOLUTION`. `OK`: refuse if `s` is not a solution of 1.1 or `|T| > B`; if `2 A B < m` accept iff
+`s = (sigma R, |T|)`; else accept iff the search returns `OK` with the point `s`. `NOT_DETERMINED`: refuse if
+`2 A B < m`, `|T| > B` or `X <= ell`; else accept iff the search returns `NOT_DETERMINED`. Any other status is
+refused. "The search" is steps 7 and 8 of Algorithm R with the same `ell`.
+
+*Proof.* 3 and 1: for `m < 1`, an empty box and `A >= m` the statuses of steps 1 and 3 are unique. For
+`A < m` the quadruple of Lemma 1.4 is unique: (C3) fixes `R <= A < R'` and the consecutive rows of (EEA) are
+determined by `(m, c)`; so a quadruple that satisfies (C1) to (C4) is the one of step 4, and the tests of 5 and 6
+are those of steps 5 and 6. For the rest, `V` runs the search of steps 7 and 8, which is what Algorithm R does
+after them, with the same inputs, so the status and the point are the same. The two directions of 1 follow:
+Algorithm R returns exactly one status. 2: each accepted case is a case of Proposition 1.6 or 1.7(2), (3),
+with the hypotheses that are tested; a `NOT_UNIQUE` is accepted only where the search has found two reduced points
+(a solution each, by 1.6(d) and 1.5(1)) or `A >= m`. 4: the tests before the search cost one run of (EEA) and
+constant work; the search is bounded by 1.7(4) with `min(X, ell)` rounds.
+
+The case that showed the difference (review `docs/reviews/s13/review.md`, finding 1): `limit = 0`,
+`(m, c, A, B) = (10, 1, 2, 5)` and `OK` with `1/1` and the quadruple `(10, 0, 1, 1)`. The claim is true
+(`Sol = {1/1}`) and 1.11 accepts it; Algorithm R returns `NOT_DETERMINED` (`2 A B = 20 >= 10`, `|T| = 1 <= 5`,
+`X = 5 > 0`), so `V` refuses. The same holds for `NOT_UNIQUE` at `(2, 1, 1, 1)` and `NO_SOLUTION` at
+`(4, 2, 1, 2)` (quadruple `(2, 1, 0, -2)`). Finding 2: `(m, c, A, B) = (2, 0, 1, 5 * 10^9)`, `limit = 0`, `OK`
+with `0/1`: 1.11 walks `B` rounds; `V` makes none and refuses at once.
+
+Check: `check_s3_verify_returned` (116760 results of Algorithm R for `m <= 14` and the limits -1, 0, 1, 2, 5 are
+accepted; 3502800 claims of another status or list: 670450 accepted, all and only those that name the returned
+status (and for `OK` the returned point), 0 differences; 0 accepted by `V` that 1.11 refuses, with the list of the
+result read for the statuses other than `OK`; 11305 claims that 1.11 accepts and `V` refuses; 98061 changed
+quadruples, none accepted unless it satisfies (C1) to (C4); the three inputs of finding 1 refused, and the input
+of finding 2 refused in under a second). `check_s3_verify` stays the check of Proposition 1.11.
+Used by: `api-s.md` section 2 (`adf_resid_verify_result`), `src/resid.c`, decisions S-D3, S-D18, S-D20.
+
 ## 2. Linear systems modulo N (S.1)
 
 Throughout: `N >= 1` is an integer, of any shape (composite, with square factors, `N = 1`); no factorisation of
@@ -685,6 +738,27 @@ Claim, for every `N >= 1`, `n >= 0` and every list of rows (the empty list inclu
 3. One row per column. For the example: `a = 2`, `g = 2`, `s = 1`: `T[1] = (2, 1)`, pending `2 (2, 1) =
    (0, 2)`, which becomes `T[2]`.
 4. Read off the steps, with the bound of 1.
+
+**Remark (the third case; the algorithm is not changed).** The pending pair `((N/g) w', j + 1)` of the third case
+is implied by the others: the algorithm without it gives the same output. Proof (`docs/reviews/s1/review.md`,
+section "Algorithm H third-case pending pair"). Let `U` be the span of the rows `T[j']` with `j' > j` and of the
+pending vectors at positions greater than `j`, before the third case. By (I3), `(N/h) w` is in `U`. After the
+step `v'` is a pending vector at position `j + 1`. From `v' = (h/g) v - (a/g) w` one gets, modulo `N`,
+
+    (N/g) v = (N/h) v' + (a/g) (N/h) w,        (N/g) w = (h/g) (N/h) w.
+
+The first holds because `(N/h) v' = (N/g) v - (a/g)(N/h) w`; the second is `(h/g)(N/h) = N/g`. Both `(N/g) v`
+and `(N/g) w` are in `U + <v'>`. Since `w' = s v + t w`, so is `(N/g) w'`. So (I3) for column `j` holds without
+the pair, and the span of (I1) and of (I3) for the columns before `j` is the same with and without it: the pair
+only adds a vector that is already in the span. The proof of claim 2 goes through unchanged; the other cases do
+not use the pair. What it means for the cost bound 4: pairs are then added only in the first case, at most one per
+column, so at most `m + n` pairs are processed, not `m + n (1 + log2 N)`; the stated bound stays true (it is
+larger), and the factor `log2 N` remains only for the replacements of pivots, which continue the same pair. The
+statement, the algorithm and the reference `howell` are as written above; the option `third_pair = False` of the
+reference leaves the pair out. Check: `check_s1_third_case` (22800 row sets, 19 moduli up to `6^20`, up to 5
+columns and 6 rows: the output with and without the pair is identical and in Howell form, on all 22800; the third
+case was taken on 12371 of the row sets, 36980 times in all; 450 small sets also equal the Howell form of the
+definition without the pair).
 
 Check: `check_s1_howell` (1869 sets of rows over `Z/N`, `N` in 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18: span,
 (E1) to (E4) from the definitions, number of elements), `check_s1_canonical` (moduli up to 40 bits, up to 6
