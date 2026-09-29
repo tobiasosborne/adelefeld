@@ -2858,7 +2858,13 @@ def probe_s2_flint_real():
            f"lost) {lost}; outside the squarefree contract the count returns {outside}; {bad} failures")
 
 
-PART3 = [check_s2_certificate, check_s2_newton, check_s2_descent, check_s2_examples, check_s2_count_mod_p,
+def check_s2_rr_finish():
+    """Edit R14 of the closure check: a legal enclosure of an engine whose widening loses the accuracy."""
+    got = rr_finish([-1, 1], [(F(1), F(1) + F(6, 1024))], 8)[0]
+    report("check_s2_rr_finish", got == NOT_DETERMINED, f"X - 1, [1, 1 + 6/1024], prec 8: {got}")
+
+
+PART3 = [check_s2_rr_finish, check_s2_certificate, check_s2_newton, check_s2_descent, check_s2_examples, check_s2_count_mod_p,
          check_s2_seed, check_s2_lists, check_s2_bezout_depth, check_s2_isolation, check_s2_real_completeness,
          check_s2_real_planted, probe_s2_flint_real]
 

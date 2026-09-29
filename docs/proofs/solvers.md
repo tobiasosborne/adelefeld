@@ -1468,9 +1468,12 @@ The statements above hold for `p = 2` without change. What is different at 2 in 
    `f = X^3 + 2 X` at 2 the derivative at 0 is 2, so `s = 1`; a nonzero root would satisfy `X^2 = -2`, but a square
    is 0 or 1 modulo 4 and `-2 = 2`, so 0 is the only root in `Z_2` and the ball `Z_2`, of precision 0, isolates
    it (even `2 Z_2`, of precision 1); both are below `s + 1 = 2`. For `X - 1` (`s = 0`) the ball `Z_p` isolates the
-   root, precision 0 < 1. In general, for a polynomial with distinct integer roots `r_i` and no other root in `Z_p`,
-   the least isolating precision of `r_i` is 0 for a single root and `max_j v(r_i - r_j) + 1` otherwise, never
-   above `s_i + 1` with `s_i = sum_(j != i) v(r_i - r_j)`. The precision returned by Algorithm P is
+   root, precision 0 < 1. If the roots of `f` in `Z_p` are exactly the distinct integers `r_i`,
+   the least isolating precision of `r_i` is 0 for a single root and `max_(j != i) v(r_i - r_j) + 1` otherwise.
+   It is at most `s_i + 1`, where `s_i = v(g*'(r_i))`. If `g* = product_i (X - r_i)`, then
+   `s_i = sum_(j != i) v(r_i - r_j)`; for another `g*` the sum can be smaller than `s_i`
+   (`X (X^2 + 2 X + 2)` at 2: the only root is 0, the sum is 0, `s = 1`; edit R11 of the closure check,
+   `docs/reviews/s-design/closure.md`). The precision returned by Algorithm P is
    `K = max(k_req, s + 1)`, a sufficient one; it was called the smallest isolating precision in the first
    version, which is false. (The smallest precision allowed by the certificate (R1) is `s + 1`; that is a
    different claim.)
