@@ -256,7 +256,8 @@ def draw_planted(rng, p):
     if rng.random() < 0.4:
         f = S.pmul(f, [-non_residue(p, rng), 0, 1])
     if rng.random() < 0.15:
-        f = [c * rng.choice((p, 6, -1)) for c in f]           # content, sign
+        m = rng.choice((p, 6, -1))
+        f = [c * m for c in f]                                # content, sign (one factor for all coefficients)
     return f, roots, T
 
 

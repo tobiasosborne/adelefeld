@@ -28,3 +28,8 @@
   a script: 0 mismatches), item 5 under "Sources pending for milestone S". flint.h.in fetched too (7 files).
 - Mutants (lanes/s2-slice4/mutants.py, log mutants.log): 4 of 4 killed.
 - Next: fuzz script, full checks, result.md.
+- Fuzz: tests/fuzz/diff_roots_padic.py extended (mid primes 131..1031 against the reference; 21..64-bit primes
+  against the planted oracle). A first 20 s run found a defect of the script (the content step multiplied each
+  coefficient by its own random factor, so the planted roots were not roots); repaired. 180 s run, seed 1:
+  166075 calls, 0 disagreements (smoke test).
+- Next: make clean && make check-all; SAN=1; CC=clang; check_headers.sh; result.md.

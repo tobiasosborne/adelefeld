@@ -257,7 +257,9 @@ int adf_root_padic_from_seed(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t 
    the candidates are the roots of d given by nmod_poly_roots of FLINT (Rabin's Las Vegas splitting with
    a generator of fixed seed, refs/src/flint-src-3.0.1/nmod_poly_factor/roots.c:148 to 204); every
    candidate is tested by evaluation of h modulo p, and the list is used only if its entries are
-   distinct residues, all roots of h, and their number is deg d; then it is complete (P3.7(2)). A list
+   distinct residues, all roots of h, and their number is deg d; then it is complete (P3.7(2)). deg d
+   comes from FLINT's powering and gcd (nmod_poly_powmod_ui_binexp, nmod_poly_gcd; deterministic),
+   which are trusted as FLINT's count is trusted at the real place (S-D11); the root finder is not. A list
    refused by this test is a defect of FLINT or of the library, not a property of f: the function
    aborts (decision S-D20). The derivative is evaluated at each root found.
 
@@ -324,7 +326,8 @@ int adf_rootlist_verify_entries(const adf_rootlist_t L, const fmpz_poly_t f);
    suffice for the rerun (no claim about L then), when the rerun would return ADF_LIMIT, and for every
    SEED list (P3.13(3)). The rerun finds the roots modulo p as the search does (by the degree above
    ADF_ROOTS_P_EVAL_MAX), so above that bound it relies on the test of the candidates of FLINT
-   described at adf_roots_padic_partial, not on an evaluation at every residue.
+   described at adf_roots_padic_partial, not on an evaluation at every residue; if that test refuses
+   a list of FLINT, the rerun aborts as the search does (S-D20: a defect, not a property of L).
    At the real place (solvers P3.13(5), solvers.md:1545 to 1547; decision S-D11): 1 only if
    adf_rootlist_verify_entries(L, f) = 1 and n and count both equal the number of distinct real roots
    of g*, the normalised polynomial of f, recounted here from f with fmpz_poly_num_real_roots
