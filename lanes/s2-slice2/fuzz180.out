@@ -1,0 +1,1 @@
+diff_roots_padic: 355548 calls in 180 s, seed 1; statuses {'DOMAIN': 25784, 'OK': 304300, 'NOT_DETERMINED': 25464}; at p <= 7: 160140; lists with classes 25464, with s > 0 111676; 0 disagreements
