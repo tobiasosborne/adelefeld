@@ -139,6 +139,7 @@ ADF_FTYPE(adf_ctx_desc_t, q, ulong *);
 
 /* conventions 9.7, 12.3: the text kind is written through a pointer; a binding reads it as an int. */
 ADF_SIZE(adf_text_kind, 4);
+ADF_ALIGN(adf_text_kind, 4);
 
 ADF_TEST(sizeof_functions_agree_with_the_layouts)
 {
@@ -152,6 +153,10 @@ ADF_TEST(sizeof_functions_agree_with_the_layouts)
     ADF_CHECK(adf_sizeof_ctx_desc() == 24 && adf_alignof_ctx_desc() == 8);
     ADF_CHECK(adf_sizeof_resid() == 16 && adf_alignof_resid() == 8);
     ADF_CHECK(adf_sizeof_recon_cert() == 40 && adf_alignof_recon_cert() == 8);
+    /* adf-7gc item 3: the text kind, an enum written through a pointer (conventions 9.7, 12.3). */
+    ADF_CHECK(adf_sizeof_text_kind() == 4 && adf_alignof_text_kind() == 4);
+    ADF_CHECK(adf_sizeof_text_kind() == sizeof(adf_text_kind));
+    ADF_CHECK(adf_alignof_text_kind() == _Alignof(adf_text_kind));
 }
 
 /* The _t types are arrays of one struct (conventions 1, 2.1): an array parameter decays to a

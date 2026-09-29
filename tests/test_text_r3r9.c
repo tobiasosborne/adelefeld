@@ -442,6 +442,8 @@ ADF_TEST(the_committed_corpus_reaches_prec_two_and_digits_one)
     int digs[31];
     int old_precs[192];
     int old_digs[31];
+    int precs_ade[192];
+    int precs_cad[192];
     long files = 0, accepted = 0, old_accepted = 0;
     DIR *d;
     struct dirent *e;
@@ -449,6 +451,8 @@ ADF_TEST(the_committed_corpus_reaches_prec_two_and_digits_one)
     memset(precs, 0, sizeof(precs));
     memset(digs, 0, sizeof(digs));
     memset(old_precs, 0, sizeof(old_precs));
+    memset(precs_ade, 0, sizeof(precs_ade));
+    memset(precs_cad, 0, sizeof(precs_cad));
     memset(old_digs, 0, sizeof(old_digs));
     d = opendir(dir);
     ADF_CHECK_MSG(d != NULL, "the corpus directory %s cannot be read; the test runs from the "
@@ -489,6 +493,10 @@ ADF_TEST(the_committed_corpus_reaches_prec_two_and_digits_one)
             accepted++;
             precs[prec] = 1;
             digs[digits] = 1;
+            if (kind == ADF_TEXT_ADELE)
+                precs_ade[prec] = 1;
+            else
+                precs_cad[prec] = 1;
         }
         /* The same corpus as the old target of commit 1b2331e saw it: the text without the two
            control bytes, prec from its first byte and digits from its last
@@ -550,16 +558,19 @@ ADF_TEST(the_committed_corpus_reaches_prec_two_and_digits_one)
                               "the accepted adele and cadele texts of the corpus", p);
         ADF_CHECK_MSG(g > 20, "only %ld of the 30 digits values are reached by the accepted adele "
                               "and cadele texts of the corpus", g);
-        /* prec = 2 is the other value of R9. It is measured here and not asserted: no accepted
-           adele or cadele text of the committed corpus carries the control byte for prec = 2
-           (at_prec_2 is 0 today), so an assertion would be red on the clean tree. The gap is in
-           the corpus, which this lane does not own; the fix is one control byte in one file of
-           tests/fuzz/corpus/text/ (a first byte that is 0 mod 190 in front of an accepted adele
-           text), after which the assertion is `at_prec_2 > 0`. This is reported in
-           lanes/m1-leftovers/report.md, in "Findings against the specification". The value of
-           prec is used by the adele and cadele round trips only; the rat and fball paths of the
-           target do not take it, so a prec of 2 reached through one of those texts would not
-           close R9. */
+        /* prec = 2 is the other value of R9 (adf-zbl). The corpus holds an accepted adele text and
+           an accepted cadele text with the control byte 0 (prec = 2), and the same two with the
+           control byte 189 (prec = 191, the largest of the range); the round trip at those values
+           is exercised by the fuzz target on every run. The value of prec is used by the adele
+           and cadele round trips only, so the two kinds are asserted apart. */
+        ADF_CHECK_MSG(precs_ade[2] == 1, "no accepted adele text of the corpus is reached at "
+                                         "prec = 2 (finding R9, adf-zbl)");
+        ADF_CHECK_MSG(precs_cad[2] == 1, "no accepted cadele text of the corpus is reached at "
+                                         "prec = 2 (finding R9, adf-zbl)");
+        ADF_CHECK_MSG(precs_ade[191] == 1, "no accepted adele text of the corpus is reached at "
+                                           "prec = 191, the largest prec of the range");
+        ADF_CHECK_MSG(precs_cad[191] == 1, "no accepted cadele text of the corpus is reached at "
+                                           "prec = 191, the largest prec of the range");
         at_prec_2 = precs[2];
         printf("   the corpus of the text target: %ld files, %ld accepted adele or cadele texts, "
                "%ld of 190 prec values, %ld of 30 digits values, prec = 2 reached: %ld\n", files,

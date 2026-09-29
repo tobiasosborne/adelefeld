@@ -1048,7 +1048,8 @@ object.
   (`ADF_PARSE`). DECISION (proposed) CV-25; reason: a NUL-terminated interface silently truncates at an embedded
   NUL, and bindings (section 12) pass lengths anyway.
 - `prec` is present for the types with a real or complex part; `digits` likewise (default `ADF_DIGITS_DEFAULT = 20`,
-  `1 <= digits <= 10^6`).
+  `1 <= digits <= 10^6`). A `prec` below 2 (zero or negative included) is taken as 2 by the parsers, as by every
+  function (M1-D4, 2.2): `"(0.1 ; 0)"` read at `prec = -5, 0, 1` and `2` gives the same ball.
 - `lim = NULL` means the defaults of 8.4.
 - A returned string is an output in the order of 2.2: `len` receives its byte length. The `len` bytes are ASCII
   without embedded NUL; a terminating NUL is stored at `s[len]` and is not counted in `len`. The caller frees the
@@ -1087,6 +1088,14 @@ DECISION (proposed) CV-27; reason: each bounds the memory and time that a short 
 `O(5^99999999999)` would otherwise ask for a 2^38-bit modulus). The limits are arguments, not global state.
 Integers in the value form have no separate limit; `max_len` bounds them. The grammar is not recursive (no
 production contains itself), so nesting depth is bounded by the grammar: `((((1))))` is simply `ADF_PARSE`.
+
+The exponent digits of a decimal are compared with `max_exp10` as a number of any length (M1-D7). The Python
+reference (`proto/text_grammar.py`) refuses an exponent of more than 18 digits whatever `max_exp10`; the C reader
+has no such bound. Measured with the defaults (`adf_adele_set_str`, `prec = 64`): `(1e100000 ; 0)` is `ADF_OK`;
+`(1e100001 ; 0)`, a 19-digit exponent and a 39-digit exponent, positive or negative, are `ADF_LIMIT`; `1e` with
+the 38 exponent digits `00...05` is `ADF_OK` (leading zeros are skipped, the value is 5); with
+`max_exp10 = 10^6` a 39-digit exponent is `ADF_LIMIT`. A coefficient zero does not excuse the exponent:
+`(0e` with a 39-digit exponent `; 0)` is `ADF_LIMIT`.
 
 One limit is a constant of the implementation and not a field of `adf_text_limits_t` (decision M1-D9,
 `docs/SPEC.md` section 15): in a dumped `qclass` of the form `pieces` the binary exponent of the midpoint and of the
@@ -1495,7 +1504,14 @@ The counts are in `tests/golden/README.md`.
    C `arb` must contain the exact interval of the input ball (as in `realball_read.tsv`), and its printed text,
    re-read exactly, must contain it too. The C test decides which case applies from the exact decimal it has read.
 4. `realball_print.tsv`: set the `arb` exactly (every vector has a midpoint with at most 128 bits and a radius
-   mantissa below `2^30`) and compare the printed text.
+   mantissa below `2^30`) and compare the printed text. Which FLINT call sets the radius exactly matters here.
+   The FLINT documentation promises only an upper bound for all three candidates: `arf_get_mag` (`arf.rst:403-405`),
+   `mag_set_fmpz_2exp_fmpz` and `mag_set_ui_2exp_si` (`mag.rst:147-151`; `mag_set_fmpz`, `mag.rst:131-134`, says it
+   "may be inexact even if x is exactly representable"). Probed with a mantissa of 30 bits
+   (`lanes/m1-text/report.md`, "Bugs found", item 1): `arf_get_mag` and `mag_set_fmpz_2exp_fmpz` add one unit
+   and are not exact; `mag_set_ui_2exp_si` is exact for a mantissa below `2^30` (probed on 1, 3, 2^29, 2^29 + 1, 2^29 + 7,
+   2^30 - 1; not documented, checked by `tests/test_text_adele.c`). The dump loader builds the `mag` from its
+   mantissa and exponent fields and uses none of the three (`src/dump.c`, `dp_mag_set_exact`).
 5. `dump.tsv`: load with one binding per context occurrence (10.2), then dump; the text must be identical;
    loading an invalid dump must leave the output untouched and return the status.
 6. `psi_phases.tsv`: the default enclosure must contain every listed phase. For a single phase, bound numerical
@@ -1512,7 +1528,9 @@ contract of the public interface. Python stays for tests and proof checks only.
 
 1. **Every public operation is an exported function.** No operation exists only as a macro or only as a
    `static inline` function. Inline fast paths may exist in addition, in the FLINT manner: the header defines
-   `ADF_INLINE` as `static __inline__`, and one source file defines `ADF_INLINES_C` so that the same functions are
+   `ADF_INLINE` as `static inline` (FLINT writes `static __inline__`, `fmpz.h:15-19`; the headers of this library use
+   the C99 keyword on purpose, so that no compiler extension is used: `include/adelefeld/common.h:36-44`,
+   `lanes/m1-common/report.md`, "Findings against the specification"), and one source file defines `ADF_INLINES_C` so that the same functions are
    also compiled as exported symbols (FLINT: `fmpz.h:15-19`; **[probed]** `nm -D libflint.so` lists `fmpz_init`,
    `fmpq_init`, `arb_init`, `arb_swap` as exported). Accessor macros (as `arb_midref`) have function equivalents.
    A test lists the exported symbols with `nm -D` and compares them with the header's function declarations.

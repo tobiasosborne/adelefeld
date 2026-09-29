@@ -1,0 +1,25 @@
+ok   a_printed_text_is_read_back_with_limits_that_admit_it
+ok   prec_two_and_digits_one_on_the_value_forms_with_a_real_part
+ok   prec_two_reaches_a_wider_ball_than_a_larger_prec
+ok   the_bare_rat_and_fball_value_forms_round_trip
+   the old scheme on the same texts: 90 accepted, 1 prec values, 1 digits values
+FAIL tests/test_text_r3r9.c:566: the_committed_corpus_reaches_prec_two_and_digits_one: check failed: precs_ade[2] == 1 | no accepted adele text of the corpus is reached at prec = 2 (finding R9, adf-zbl)
+FAIL tests/test_text_r3r9.c:568: the_committed_corpus_reaches_prec_two_and_digits_one: check failed: precs_cad[2] == 1 | no accepted cadele text of the corpus is reached at prec = 2 (finding R9, adf-zbl)
+FAIL tests/test_text_r3r9.c:570: the_committed_corpus_reaches_prec_two_and_digits_one: check failed: precs_ade[191] == 1 | no accepted adele text of the corpus is reached at prec = 191, the largest prec of the range
+FAIL tests/test_text_r3r9.c:572: the_committed_corpus_reaches_prec_two_and_digits_one: check failed: precs_cad[191] == 1 | no accepted cadele text of the corpus is reached at prec = 191, the largest prec of the range
+   the corpus of the text target: 283 files, 90 accepted adele or cadele texts, 65 of 190 prec values, 30 of 30 digits values, prec = 2 reached: 0
+FAIL the_committed_corpus_reaches_prec_two_and_digits_one (tests/test_text_r3r9.c:431, 4 failed checks)
+8 tests, 148 checks, 4 failed checks, 1 failed tests
+   the old scheme on the same texts: 94 accepted, 1 prec values, 1 digits values
+   the corpus of the text target: 287 files, 94 accepted adele or cadele texts, 67 of 190 prec values, 30 of 30 digits values, prec = 2 reached: 1
+ok   the_committed_corpus_reaches_prec_two_and_digits_one
+8 tests, 148 checks, 0 failed checks, 0 failed tests
+FAIL tests/test_dump_limits.c:291: block_cap_refuses_65537_blocks_everywhere: check failed: r == (strcmp(kind, "cadele") == 0 ? st : ADF_PARSE) | cadele loader: DOMAIN
+FAIL block_cap_refuses_65537_blocks_everywhere (tests/test_dump_limits.c:320, 1 failed checks)
+9 tests, 297 checks, 1 failed checks, 1 failed tests
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_abi.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_abi
+tests/test_abi.c:157:15: error: implicit declaration of function ‘adf_sizeof_text_kind’; did you mean ‘adf_sizeof_text_limits’? [-Werror=implicit-function-declaration]
+tests/test_abi.c:157:46: error: implicit declaration of function ‘adf_alignof_text_kind’; did you mean ‘adf_alignof_text_limits’? [-Werror=implicit-function-declaration]
+ok   array_of_one_types
+ok   resid_function_signatures_and_status_codes
+3 tests, 24 checks, 0 failed checks, 0 failed tests
