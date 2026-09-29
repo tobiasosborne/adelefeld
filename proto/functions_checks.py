@@ -1755,7 +1755,247 @@ def sball_main():
         print(f"{check.__name__}: {check()}", flush=True)
 
 
+# ====================================================================================================
+# Section f-slice3 (lane f-slice3, 2026-09-30): the split of a unit, the p-primary fractional part, powers.
+# Statements L9 to L13 of docs/api-1f.md, section "Slice 1F.3-b". The reference of the C library
+# (tests/test_lball_decomp.c reads the vectors of lanes/f-slice3/gen_vectors.py). Not run by main(); run by
+# slice3_main() (called last below). Standard library only.
+#
+# Three independent computations of the Teichmueller representative are compared: the limit of a^(p^n) (pow), the
+# digit-by-digit lifting of Lemma 3 item 2 (functions.md line 72), and Newton's method (L9). The powers of a ball
+# (L12) are compared with enumeration of points.
+# ====================================================================================================
+
+def s3_teich_pow(p, r, K):
+    """omega(r) mod p^K as the limit of r^(p^n): r^(p^K) mod p^K (p odd)."""
+    return pow(r, p ** K, p ** K)
+
+
+def s3_teich_digits(p, r, K):
+    """omega(r) mod p^K by Lemma 3 item 2: at each step the one digit t in [0, p) that solves the next congruence."""
+    w = r % p
+    for j in range(1, K):
+        sols = [t for t in range(p) if pow(w + t * p ** j, p - 1, p ** (j + 1)) == 1]
+        assert len(sols) == 1, (p, r, j, sols)
+        w += sols[0] * p ** j
+    return w
+
+
+def s3_teich_newton(p, r, K):
+    """omega(r) mod p^K by Newton's method with the precision doubled (L9)."""
+    w, cur = r % p, 1
+    while cur < K:
+        nxt = min(2 * cur, K)
+        P = p ** nxt
+        fw = (pow(w, p - 1, P) - 1) % P
+        d = ((p - 1) * pow(w, p - 2, P)) % P
+        w = (w - fw * pow(d, -1, P)) % P
+        cur = nxt
+    return w % p ** K
+
+
+def s3_teich(p, r, prec):
+    """(status, LB): the Teichmueller representative of r as adf_lball_teichmuller returns it."""
+    if r % p == 0:
+        return ("DOMAIN", None)
+    rr = r % p
+    n = max(prec, 1)
+    if p == 2 or rr == 1 or rr == p - 1:
+        return ("OK", lb_exact(p, -1 if (p != 2 and rr == p - 1) else 1))
+    return ("OK", LB(p, 0, s3_teich_pow(p, rr, n), 0, n))
+
+
+def s3_split(x, prec):
+    """L10: (status, m, index, w, u) for adf_lball_decompose_teich."""
+    p, n = x.p, max(prec, 1)
+    if x.u == 0:
+        return ("DOMAIN" if x.exact else "NOT_DETERMINED", None, None, None, None)
+    if not x.exact and p == 2 and x.N - x.v == 1:
+        return ("NOT_DETERMINED", None, None, None, None)
+    t = x.u                                        # the unit part: an integer (ball) or a rational unit (exact)
+    mod = 4 if p == 2 else p
+    r = (t.numerator * pow(t.denominator, -1, mod)) % mod
+    k = 0 if x.exact else x.N - x.v
+    if p == 2 or r == 1 or r == p - 1:
+        s = -1 if (r == 3 if p == 2 else r == p - 1) else 1
+        w = lb_exact(p, s)
+        if x.exact:
+            u = lb_exact(p, t * s)
+        else:
+            u = LB(p, 0, int(t) % p ** k if s == 1 else (-int(t)) % p ** k, 0, k)
+        return ("OK", x.v, r, w, u)
+    K = n if x.exact else max(n, k)
+    om = s3_teich_pow(p, r, K)
+    w = LB(p, 0, om % p ** n, 0, n)
+    nu = n if x.exact else k
+    P = p ** nu
+    c = (t.numerator * pow(t.denominator * om, -1, P)) % P
+    return ("OK", x.v, r, w, LB(p, 0, c, 0, nu))
+
+
+def s3_frac(x):
+    """Proposition 19: (status, rational)."""
+    p = x.p
+    if not x.exact and x.N < 0:
+        return ("NOT_DETERMINED", None)
+    if x.u == 0 or x.v >= 0:
+        return ("OK", F(0))
+    k = -x.v
+    a = (x.u.numerator * pow(x.u.denominator, -1, p ** k)) % p ** k
+    return ("OK", F(a, p ** k))
+
+
+def s3_unit_mod(x, k):
+    """(status, integer): the unit part modulo p^k."""
+    p = x.p
+    if x.u == 0:
+        return ("DOMAIN" if x.exact else "NOT_DETERMINED", None)
+    if k < 0:
+        return ("DOMAIN", None)
+    if not x.exact and k > x.N - x.v:
+        return ("NOT_DETERMINED", None)
+    if k == 0:
+        return ("OK", 0)
+    P = p ** k
+    return ("OK", (x.u.numerator * pow(x.u.denominator, -1, P)) % P)
+
+
+def s3_pow(x, k):
+    """L12: (status, LB) for adf_lball_pow_si."""
+    p = x.p
+    if k == 0:
+        return ("OK", lb_exact(p, 1))
+    n = abs(k)
+    if x.u == 0:
+        if x.exact:
+            return ("OK", lb_exact(p, 0)) if k > 0 else ("NOT_UNIT", None)
+        return ("OK", LB(p, 0, 0, 0, x.N * n)) if k > 0 else ("UNIT_NOT_CERTIFIED", None)
+    if x.exact:
+        return ("OK", lb_exact(p, lb_val(x) ** k))
+    rel = x.N - x.v
+    vpn = 0
+    m = n
+    while m % p == 0:
+        m //= p
+        vpn += 1
+    relp = rel + vpn + (1 if (p == 2 and rel == 1 and n % 2 == 0) else 0)
+    P = p ** relp
+    c = pow(int(x.u), n, P)
+    if k < 0:
+        c = pow(c, -1, P)
+    return ("OK", LB(p, 0, c, x.v * k, x.v * k + relp))
+
+
+def check_teichmueller_three_ways():
+    """The limit of powers, the lifting of Lemma 3 and Newton's method agree; w^(p-1) = 1; w = r modulo p."""
+    n = 0
+    for p in (3, 5, 7, 11, 13):
+        for r in range(1, p):
+            for K in range(1, 13):
+                a, b, c = s3_teich_pow(p, r, K), s3_teich_digits(p, r, K), s3_teich_newton(p, r, K)
+                assert a == b == c, (p, r, K, a, b, c)
+                assert pow(a, p - 1, p ** K) == 1 and a % p == r
+                n += 1
+    return f"cases={n}"
+
+
+def check_split_enumeration():
+    """L10 by enumeration: every point a of the unit ball u + p^k Z_p splits as w_bf times a principal unit that lies in
+    the returned ball; the returned w is the factor of every point; the p classes of the principal units modulo
+    p^(k + 1) are all met (the ball is not too large). p = 2, 3, 5, 7."""
+    n = 0
+    for p, kmax in ((2, 5), (3, 3), (5, 2), (7, 2)):
+        for k in range(1, kmax + 1):
+            for u in range(1, p ** k):
+                if u % p == 0:
+                    continue
+                x = LB(p, 0, u, 0, k)
+                for prec in (1, 3, 7):
+                    st, m, idx, w, U = s3_split(x, prec)
+                    if p == 2 and k == 1:
+                        assert st == "NOT_DETERMINED"
+                        continue
+                    assert st == "OK" and m == 0
+                    L = max(k, prec) + 2
+                    classes = set()
+                    for t in range(p + 2):
+                        a = u + p ** k * t
+                        mod = 4 if p == 2 else p
+                        assert a % mod == idx
+                        if p == 2:
+                            wb = 1 if a % 4 == 1 else -1
+                        else:
+                            wb = s3_teich_pow(p, a % p, L)
+                        wv = int(w.u) if w.exact else int(w.u)
+                        assert (wb - wv) % p ** (w.N if not w.exact else L) == 0
+                        ub = (a * pow(wb, -1, p ** L)) % p ** L
+                        assert (ub - int(U.u)) % p ** k == 0 and ub % mod == 1
+                        if t < p:
+                            classes.add(ub % p ** (k + 1))
+                    assert len(classes) == p
+                    n += 1
+    return f"balls_and_precisions={n}"
+
+
+def check_pow_enumeration():
+    """L12 against enumeration: for every ball of the universes and every k in a list, the exponent of s3_pow is the
+    smallest valuation of a difference of two k-th powers of points of the ball, and every k-th power lies in it."""
+    n = 0
+    ks = (-9, -8, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 16, 25, 27)
+    for p, vmax, kmax, t in ((2, 2, 4, 3), (3, 1, 3, 2), (5, 1, 2, 1), (7, 1, 2, 1)):
+        for x in lb_universe(p, vmax, kmax):
+            if x.exact or x.u == 0:
+                continue
+            pts = lb_points(x, t)
+            for k in ks:
+                st, y = s3_pow(x, k)
+                assert st == "OK"
+                rs = [s ** k for s in pts]
+                for r in rs:
+                    d = r - lb_val(y)
+                    assert d == 0 or vp(d, p) >= y.N, (x, k, y, r)
+                mn = min((vp(r - rs[0], p) for r in rs if r != rs[0]), default=inf)
+                assert mn == y.N, (x, k, y, mn)
+                n += 1
+    return f"pow_cases={n}"
+
+
+def check_frac_and_unit_mod():
+    """Proposition 19 by its definition (0 <= r < 1, denominator a power of p, x - r in Z_p) on the points of balls; the
+    unit part modulo p^k by its congruence."""
+    n = 0
+    for p, vmax, kmax in ((2, 3, 3), (3, 2, 2), (5, 2, 2)):
+        for x in lb_universe(p, vmax, kmax, exact_extra=(F(7, 25), F(-1, 4), F(1, 3), F(5, 12))):
+            st, r = s3_frac(x)
+            pts = lb_points(x, 1)
+            if st == "OK":
+                assert 0 <= r < 1
+                d = r.denominator
+                while d % p == 0:
+                    d //= p
+                assert d == 1
+                for s in pts:
+                    assert s - r == 0 or vp(s - r, p) >= 0, (x, r, s)
+            else:
+                assert st == "NOT_DETERMINED" and x.N < 0
+                assert s3_frac(lb_exact(p, lb_val(x)))[1] != s3_frac(lb_exact(p, lb_val(x) + F(p) ** x.N))[1]
+            if x.u != 0:
+                for k in range(0, 4):
+                    stu, o = s3_unit_mod(x, k)
+                    if stu == "OK":
+                        assert 0 <= o < p ** k and (x.u.denominator * o - x.u.numerator) % p ** k == 0
+            n += 1
+    return f"frac_cases={n}"
+
+
+def slice3_main():
+    for check in (check_teichmueller_three_ways, check_split_enumeration, check_pow_enumeration,
+                  check_frac_and_unit_mod):
+        print(f"{check.__name__}: {check()}", flush=True)
+
+
 if __name__ == "__main__":
     main()
     lball_main()
     sball_main()
+    slice3_main()

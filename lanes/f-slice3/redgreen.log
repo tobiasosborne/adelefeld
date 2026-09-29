@@ -1,0 +1,49 @@
+redgreen.log of lane f-slice3 (Wed Sep 30 2026)
+
+RED 1: header and tests/test_lball_decomp.c written, no source: `make build/test_lball_decomp` ends in
+  "undefined reference to `adf_lball_pow_si'" (and adf_lball_frac, adf_lball_unit_mod, adf_lball_decompose_teich):
+  a link error, which counts for the first test of the file only.
+
+RED 2: src/lball_decomp.c a stub (all five functions return ADF_UNSUPPORTED). Every failure an assertion:
+FAIL teichmuller_against_the_limit_of_powers (tests/test_lball_decomp.c:283, 741 failed checks)
+FAIL teichmuller_statuses (tests/test_lball_decomp.c:305, 8 failed checks)
+FAIL decompose_teich_p2 (tests/test_lball_decomp.c:493, 465 failed checks)
+FAIL decompose_teich_p3 (tests/test_lball_decomp.c:497, 390 failed checks)
+FAIL decompose_teich_p5 (tests/test_lball_decomp.c:501, 630 failed checks)
+FAIL decompose_teich_p7 (tests/test_lball_decomp.c:506, 432 failed checks)
+FAIL decompose_teich_p11 (tests/test_lball_decomp.c:510, 216 failed checks)
+FAIL decompose_teich_the_big_prime (tests/test_lball_decomp.c:515, 5 failed checks)
+FAIL decompose_teich_exact_values (tests/test_lball_decomp.c:668, 4608 failed checks)
+FAIL decompose_teich_statuses_and_limits (tests/test_lball_decomp.c:687, 13 failed checks)
+FAIL frac_of_exact_values (tests/test_lball_decomp.c:785, 14004 failed checks)
+FAIL frac_of_balls (tests/test_lball_decomp.c:886, 7623 failed checks)
+FAIL frac_statuses_and_limits (tests/test_lball_decomp.c:916, 7 failed checks)
+FAIL unit_mod_against_the_congruences (tests/test_lball_decomp.c:965, 62466 failed checks)
+FAIL pow_balls_p2 (tests/test_lball_decomp.c:1179, 3226 failed checks)
+FAIL pow_balls_p3 (tests/test_lball_decomp.c:1183, 2726 failed checks)
+FAIL pow_balls_p5 (tests/test_lball_decomp.c:1187, 2526 failed checks)
+FAIL pow_balls_p7 (tests/test_lball_decomp.c:1191, 2526 failed checks)
+FAIL pow_the_big_prime_and_large_exponents (tests/test_lball_decomp.c:1196, 15 failed checks)
+FAIL pow_the_factor_v_p_of_k (tests/test_lball_decomp.c:1243, 540 failed checks)
+FAIL pow_exact_values_and_k_zero (tests/test_lball_decomp.c:1275, 391 failed checks)
+FAIL pow_limits (tests/test_lball_decomp.c:1343, 21 failed checks)
+FAIL pow_aliasing_and_composition (tests/test_lball_decomp.c:1423, 54 failed checks)
+23 tests, 153104 checks, 103633 failed checks, 23 failed tests
+
+RED 3: tests/test_lball.c, the new timing test against the OLD src/lball.c (set_fball with the full valuation), the bound
+  was 3.0 s at that time (raised to 3.5 s later; the old code needs 5.2 s in the test, 6.1 s in a scratch program):
+FAIL tests/test_lball.c:1724: set_fball_limit_is_decided_without_the_full_valuation: check failed: t0 < 3.0 | p = 3: LIMIT took 5.2 s (bound 3 s)
+FAIL set_fball_limit_is_decided_without_the_full_valuation (tests/test_lball.c:1700, 1 failed checks)
+28 tests, 3982410 checks, 1 failed checks, 1 failed tests
+
+GREEN: after src/lball_decomp.c and adf_lball_pow_si in src/lball.c:
+  first run of test_lball_decomp: 23 tests, 459220 checks, 3 failed checks, 2 failed tests. The three were two defects of
+  MY tests, not of the code: (a) pow of 2 + O(5^(2^40)) to the power 3: I expected LIMIT, but the centre 8 is a small
+  integer below 5^(2^40) and OK is right (the LIMIT cases became k = -3 and k = 2^27); (b) a forged ball made from
+  the ball around 0 (ball_of(1, N = 0) is the ball around 0, not the unit ball). After the repair of the tests:
+  23 tests, 459222 checks, 0 failed checks.
+  after adding vectors_slice3 (3000 lines from lanes/f-slice3/gen_vectors.py): 24 tests, 572484 checks, 420 failed
+  checks in the first run, all in vectors_slice3: the generator wrote "out" as a string; repaired in the generator;
+  then 24 tests, 572484 checks, 0 failed checks. (No fault of the C code was found by the vectors.)
+  test_lball (with the two set_fball tests): 28 tests, 3982410 checks, 0 failed checks.
+  tests/julia/lball2.jl was written after the C code was green and NOT run red; run green: 34 tests pass.

@@ -365,7 +365,70 @@ adf_lball_set_rat_ball(adf_lball_t x, adf_place_t v, const adf_rat_t c, slong N)
     return finish(x, res, st);
 }
 
-/* api-1f.md L1. */
+/* api-1f.md L13 (lane f-slice3, finding 1 of lanes/f-slice2/result.md). H > 0, q = A/d canonical, A > 0.
+   Returns 1 if adf_lball_set_fball must return ADF_LIMIT, decided without computing v_p(H) to the end, else 0 (then
+   the caller computes it; the answer of the caller is the same as before this function existed).
+   The only LIMIT of lb_make that the projection can meet besides the bounds of the exponents is the reduction of
+   the centre modulo p^k, k = v_p(H) - v_p(A) (L13, step 1), with k bits(p) > BITS_MAX, i.e. k > kmax = BITS_MAX /
+   bits(p), and the centre not the small integer that lb_make keeps unreduced (nr > 0, dr = 1, k >=
+   ceil(bits(nr)/(bits(p) - 1))). Bit lengths: p^v <= H and p >= 2^(bits(p) - 1) give v_p(H) <= vHmax = (bits(H) -
+   1)/(bits(p) - 1) (L13, step 2).
+     (i)  vA + kmax >= vHmax: k <= vHmax - vA <= kmax, never LIMIT: return 0.
+     (ii) dr = 1 and vA + need <= vHmax: the small-integer shortcut may hold (it needs k >= need): return 0.
+     (iii) else k >= need is impossible or dr != 1, so k > kmax is the only question: k > kmax iff p^(vA + kmax + 1)
+          divides H (L13, step 3), one divisibility test. */
+static int
+fball_limit_certain(ulong p, const fmpz_t H, const fmpz_t d, const fmpq_t q)
+{
+    fmpz_t P, nr, dr, pt;
+    slong a, b, vd, vA, kmax = BITS_MAX / (slong) FLINT_BIT_COUNT(p);
+    ulong bp1 = FLINT_BIT_COUNT(p) - 1, vHmax, need;
+    int r = 0;
+    if (fmpq_is_zero(q))
+        return 0;
+    fmpz_init_set_ui(P, p);
+    fmpz_init(nr);
+    fmpz_init(dr);
+    fmpz_init(pt);
+    a = val_fmpz(nr, fmpq_numref(q), P);
+    b = val_fmpz(dr, fmpq_denref(q), P);
+    vd = val_fmpz(pt, d, P);
+    vA = vd + a - b;                                    /* v_p(A) >= 0, A the numerator of the triple */
+    vHmax = (fmpz_bits(H) - 1) / bp1;
+    if ((ulong) vA + (ulong) kmax >= vHmax)
+        goto out;
+    if (fmpz_is_one(dr) && fmpz_sgn(nr) > 0)
+    {
+        need = (fmpz_bits(nr) + bp1 - 1) / bp1;
+        if ((ulong) vA + need <= vHmax)
+            goto out;
+    }
+    {
+        /* p^T divides H, T = vA + kmax + 1 <= vHmax (so p^T is about the size of H at most). The test is preceded
+        by the tests of p^1 and p^64: each is a necessary condition, and where v_p(H) is small (the usual case) the
+           first fails at the cost of one pass over H, not of a power of 2^26 bits. */
+        ulong T = (ulong) vA + (ulong) kmax + 1, t = 1;
+        r = 1;
+        while (r)
+        {
+            if (t > T)
+                t = T;
+            fmpz_pow_ui(pt, P, t);
+            r = fmpz_divisible(H, pt);
+            if (t == T)
+                break;
+            t = t == 1 ? 64 : T;
+        }
+    }
+out:
+    fmpz_clear(P);
+    fmpz_clear(nr);
+    fmpz_clear(dr);
+    fmpz_clear(pt);
+    return r;
+}
+
+/* api-1f.md L1 (the projection) and L13 (the early decision of LIMIT). */
 int
 adf_lball_set_fball(adf_lball_t x, adf_place_t v, const adf_fball_t f)
 {
@@ -385,6 +448,8 @@ adf_lball_set_fball(adf_lball_t x, adf_place_t v, const adf_fball_t f)
     fmpq_set_fmpz_frac(q, A, d);
     if (fmpz_is_zero(H))
         st = lb_make(res, p, q, 0, 1, 0);
+    else if (fball_limit_certain(p, H, d, q))
+        st = ADF_LIMIT;
     else
     {
         slong e = val_fmpz(r, H, P) - val_fmpz(r, d, P);
@@ -774,6 +839,162 @@ adf_lball_div(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
     st = lb_make(res, x->p, q, xz ? 0 : x->v - y->v, exact, exact ? 0 : K);
     fmpq_clear(q);
     return finish(z, res, st);
+}
+
+/* v_p of a nonzero ulong. */
+static ulong
+vp_ulong(ulong n, ulong p)
+{
+    ulong e = 0;
+    while (n % p == 0)
+    {
+        n /= p;
+        e++;
+    }
+    return e;
+}
+
+/* out = a^n for a nonzero integer a and n >= 1. ADF_LIMIT if the result would have more than BITS_MAX bits, decided
+   before the power is formed: bits(a^n) > n (bits(a) - 1) for |a| >= 2, and the formed power has at most n bits(a)
+   bits. The powers of +-1 are formed by sign (n may be 2^63). */
+static int
+lb_int_pow(fmpz_t out, const fmpz_t a, ulong n)
+{
+    ulong b1;
+    if (fmpz_is_pm1(a))
+    {
+        fmpz_set_si(out, (fmpz_sgn(a) < 0 && (n & 1)) ? -1 : 1);
+        return ADF_OK;
+    }
+    b1 = fmpz_bits(a) - 1;                              /* >= 1 for |a| >= 2 */
+    if (n > (ulong) BITS_MAX / b1)
+        return ADF_LIMIT;
+    fmpz_pow_ui(out, a, n);
+    return fmpz_bits(out) > (ulong) BITS_MAX ? ADF_LIMIT : ADF_OK;
+}
+
+/* L12 (docs/api-1f.md): y = x^k, the smallest ball containing {s^k : s in x}. With x = p^v (u + p^rel Z_p), u a
+   unit integer, rel = N - v >= 1, n = |k| >= 1: the set of n-th powers of the units of the ball is u^n + p^rel' Z_p
+   with rel' = rel + v_p(n) + e, e = 1 if p = 2, rel = 1 and n even (Lemma 9, docs/proofs/functions.md line 265, and
+   Proposition 4 step 2 for the sign at p = 2); the k-th power for k < 0 is the inverse of that ball (L4: the
+   relative precision is kept). The centre u^n mod p^rel' is formed by fmpz_powm, or, where p^rel' is beyond the bit
+   bound, as the integer u^n if that is small, and the result is then stored by lb_make (which keeps a small integer
+   centre unreduced). */
+int
+adf_lball_pow_si(adf_lball_t y, const adf_lball_t x, slong k)
+{
+    adf_lball_t res;
+    ulong n, p, vpn = 0;
+    slong vk, rel, relp, Np;
+    fmpz_t c, P;
+    fmpq_t q;
+    int st = ADF_OK;
+    ADF_INV_LBALL(x);
+    if (!in_bounds(x))
+        return ADF_LIMIT;
+    p = x->p;
+    adf_lball_init(res);
+    res->p = p;
+    if (k == 0)
+    {
+        fmpz_one(fmpq_numref(res->u));
+        res->exact = 1;
+        return finish(y, res, ADF_OK);
+    }
+    n = k < 0 ? -(ulong) k : (ulong) k;
+    if (fmpq_is_zero(x->u))
+    {
+        if (k < 0)
+        {
+            adf_lball_clear(res);
+            return x->exact ? ADF_NOT_UNIT : ADF_UNIT_NOT_CERTIFIED;
+        }
+        if (x->exact)
+            set_exact_zero(res);
+        else if (x->N != 0 && (ulong) (x->N < 0 ? -x->N : x->N) > (ulong) EXP_MAX / n)
+            st = ADF_LIMIT;
+        else
+            set_ball_zero(res, x->N * (slong) n);           /* |N n| <= EXP_MAX < 2^63 */
+        return finish(y, res, st);
+    }
+    /* the valuation of the result: k v, within the bound */
+    if (x->v != 0 && (ulong) (x->v < 0 ? -x->v : x->v) > (ulong) EXP_MAX / n)
+    {
+        adf_lball_clear(res);
+        return ADF_LIMIT;
+    }
+    vk = 0;
+    if (x->v != 0)                                      /* then n <= EXP_MAX, and |v n| <= EXP_MAX */
+        vk = k < 0 ? -(x->v * (slong) n) : x->v * (slong) n;
+    fmpz_init(c);
+    fmpz_init(P);
+    fmpq_init(q);
+    if (x->exact)
+    {
+        fmpz_t nu, de;
+        fmpz_init(nu);
+        fmpz_init(de);
+        st = lb_int_pow(nu, fmpq_numref(x->u), n);
+        if (st == ADF_OK)
+            st = lb_int_pow(de, fmpq_denref(x->u), n);
+        if (st == ADF_OK)
+        {
+            if (k < 0)
+                fmpz_swap(nu, de);
+            if (fmpz_sgn(de) < 0)
+            {
+                fmpz_neg(de, de);
+                fmpz_neg(nu, nu);
+            }
+            fmpz_swap(fmpq_numref(res->u), nu);
+            fmpz_swap(fmpq_denref(res->u), de);
+            res->v = vk;
+            res->N = 0;
+            res->exact = 1;
+        }
+        fmpz_clear(nu);
+        fmpz_clear(de);
+        goto out;
+    }
+    rel = x->N - x->v;
+    vpn = vp_ulong(n, p);
+    relp = rel + (slong) vpn + ((p == 2 && rel == 1 && n % 2 == 0) ? 1 : 0);
+    Np = vk + relp;                                     /* |vk| <= 2^60, relp <= 2^61 + 64 */
+    if (!exp_ok(Np))
+    {
+        st = ADF_LIMIT;
+        goto out;
+    }
+    if (fmpz_is_one(fmpq_numref(x->u)))
+        fmpz_one(c);
+    else if (pow_ok(p, relp))
+    {
+        fmpz_pow_p(P, p, (ulong) relp);
+        fmpz_powm_ui(c, fmpq_numref(x->u), n, P);
+        if (k < 0)
+        {
+            int ok = fmpz_invmod(c, c, P);
+            (void) ok;                                  /* u is prime to p */
+        }
+    }
+    else if (k > 0)
+    {
+        /* u^n as an integer: lb_make keeps it unreduced if it is below p^relp (bit lengths), else LIMIT */
+        st = lb_int_pow(c, fmpq_numref(x->u), n);
+    }
+    else
+        st = ADF_LIMIT;                                 /* the inverse modulo p^relp needs p^relp */
+    if (st == ADF_OK)
+    {
+        fmpz_swap(fmpq_numref(q), c);
+        fmpz_one(fmpq_denref(q));
+        st = lb_make(res, p, q, vk, 0, Np);
+    }
+out:
+    fmpz_clear(c);
+    fmpz_clear(P);
+    fmpq_clear(q);
+    return finish(y, res, st);
 }
 
 /* ----------------------------------------------------------------------- valuation, absolute value, decomposition */

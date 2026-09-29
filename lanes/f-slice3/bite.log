@@ -1,0 +1,13 @@
+fault  1 CAUGHT (exit 1; failing tests: 7): teichmuller: Newton step with the wrong sign
+fault  2 CAUGHT (exit 1; failing tests: 4): split: the sign at p = 2 taken from the wrong residue
+fault  3 CAUGHT (exit 1; failing tests: 3): split: p = 2 with relative precision 1 is not refused
+fault  4 CAUGHT (exit 1; failing tests: 5): split: the principal unit of a ball gets precision prec, not the relative precision
+fault  5 CAUGHT (exit 1; failing tests: 1): teichmuller: the residue p - 1 is not recognised as the exact -1
+fault  6 CAUGHT (exit 1; failing tests: 3): frac: a ball with N = -1 is called determined
+fault  7 CAUGHT (exit 1; failing tests: 2): unit_mod: k = N - v + 1 is accepted
+fault  8 CAUGHT (exit 1; failing tests: 7): pow: the factor v_p(k) is dropped
+fault  9 CAUGHT (exit 1; failing tests: 2): pow: the extra digit of the squares at p = 2 is dropped
+fault 10 CAUGHT (exit 1; failing tests: 7): pow: the negative power of a ball uses the centre, not its inverse
+fault 11 CAUGHT (exit 1; failing tests: 1): set_fball: the divisibility test always answers yes
+fault 12 CAUGHT (exit 1; failing tests: 1): set_fball: the small-centre shortcut (ii) is not recognised
+caught 12 of 12

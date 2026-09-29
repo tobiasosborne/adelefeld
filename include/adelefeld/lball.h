@@ -250,6 +250,98 @@ int adf_lball_abs(adf_rat_t a, const adf_lball_t x);
    otherwise. m and unit are distinct; unit may alias x. Cost: constant plus a copy. */
 int adf_lball_decompose(slong * m, adf_lball_t unit, const adf_lball_t x);
 
+/* ---- slice 1F.3-b (lane f-slice3): the split of a unit, the p-primary fractional part, integer powers ----
+   Statements with proofs: docs/api-1f.md, section "Slice 1F.3-b" (L9 to L13). Sources: docs/proofs/functions.md
+   Lemma 3 (line 55: item 2, the lifting of a simple root, proof at line 72), Proposition 4 (line 92), Lemma 9 (line
+   265) and Proposition 19 (line 656). All statuses and limits are those of the header above; in particular a
+   function that returns a status other than ADF_OK leaves its outputs untouched, and ADF_LIMIT is returned only for
+   an input or the RESULT outside the limits (a Teichmueller factor at precision n has a centre that needs p^n).
+
+   Change of adf_lball_set_fball (declaration and results unchanged): ADF_LIMIT is now decided before the valuation
+   of H is computed to the end. With k = v_p(H) - v_p(A) the relative precision of the centre (api-1f.md L13), the
+   only LIMIT that the function can return besides the bounds of the exponents is "k bits(p) > ADF_LBALL_BITS_MAX
+   and the centre is not a small integer". The function proves k > the bound by one divisibility test of H by
+   p^(v_p(A) + kmax + 1), kmax = ADF_LBALL_BITS_MAX / bits(p), and skips the test when the bit length of H already
+   bounds v_p(H) (v_p(H) <= (bits(H) - 1)/(bits(p) - 1), since p^v <= H). Measured: 6 s become 1 to 2 s at p = 3 for
+   H = 6^(2^25 + 1). */
+
+/* adf_lball_teichmuller(w, v, r, prec): w = the Teichmueller representative of the residue r modulo p, p the prime
+   of v: the unique root omega of T^(p-1) - 1 in Z_p with omega = r modulo p (Lemma 3 item 2, Proposition 4 step 1),
+   as a ball of absolute precision n = max(prec, 1) (prec below 1 is taken as 1: a ball of precision at most 0
+   would contain 0), the smallest ball containing the point: the centre is omega modulo p^n, in (0, p^n). If omega
+   is a rational (it is: 1 for p = 2; +1 or -1 exactly when r = 1 or r = p - 1 modulo p, always for p = 3), w is the
+   exact rational, and prec is not used. At p = 2 the Teichmueller representative of the only residue is 1
+   (Proposition 4: "At 2 that representative is always 1"). r is reduced modulo p first; the residue is computed by
+   Newton's method with the precision doubled at each step (api-1f.md L9).
+   Status: ADF_OK, w written; ADF_DOMAIN if v is the archimedean place or if p divides r (0 has no Teichmueller
+   representative); ADF_LIMIT if the ball needs p^n with n bits(p) > ADF_LBALL_BITS_MAX. Outputs untouched
+   otherwise.
+   Cost: O(log n) multiplications of integers of n bits. */
+int adf_lball_teichmuller(adf_lball_t w, adf_place_t v, ulong r, slong prec);
+
+/* adf_lball_decompose_teich(m, w, index, u, x, prec): the decomposition of Proposition 4 of the points of x,
+   x = p^m w u, w the Teichmueller factor (odd p) or the sign +-1 (p = 2), u a principal unit (u = 1 modulo p,
+   modulo 4 at p = 2).
+     m      = v_p of the points of x (as adf_lball_decompose);
+     *index = the residue of the unit part x/p^m modulo p (odd p, in [1, p - 1]) or modulo 4 (p = 2, 1 or 3): the
+              label of w: w = omega(index) at odd p, w = 1 if index = 1 and w = -1 if index = 3 at p = 2;
+     w      = that factor: exact when it is a rational (as adf_lball_teichmuller), else the ball of precision
+              max(prec, 1) around omega(index); at p = 2 the exact 1 or -1;
+     u      = the set of principal units {a/(p^m w) : a in x}: for a ball x with relative precision k = N - m, the
+              ball u = (x/p^m)/w with N = k, that is, centre (unit centre / w) modulo p^k (exact set, not a hull,
+              L10); for an exact x the exact rational (x/p^m)/w when w is rational, and else the ball of precision
+              max(prec, 1) around the p-adic number (x/p^m)/omega (which is not a rational).
+   Determined exactly when the unit part is known modulo p (odd p: x does not contain 0) or modulo 4 (p = 2: x is
+   exact, or k >= 2; L10). Every point of x has the same m, the same index and the same w, and u runs over exactly
+   the ball above: the set of pairs is {w} x u, and x = p^m w u as sets (L10).
+   Status: ADF_OK, all four written; ADF_DOMAIN if x is the exact 0; ADF_NOT_DETERMINED if x is a ball that contains
+   0, or p = 2 and k = 1 (the unit part modulo 4 is not determined, the points x/p^m = 1 and 3 modulo 4 have the
+   opposite sign); ADF_LIMIT if an input exponent, N - m or the result is outside the limits (p^max(k, n)
+   needed). Checked in this order. Outputs untouched otherwise.
+   Aliasing: w and u may be x; m, index are distinct objects; w and u are distinct objects.
+   Cost: the Teichmueller lift and two modular multiplications, of p^max(k, n). */
+int adf_lball_decompose_teich(slong * m, adf_lball_t w, ulong * index, adf_lball_t u, const adf_lball_t x,
+                              slong prec);
+
+/* adf_lball_frac(r, x): r = {x}_p, the p-primary fractional part of Proposition 19 (line 656): the rational in
+   [0, 1) with denominator a power of p such that x - r lies in Z_p; 0 if v_p(x) >= 0. Exact x: {x}_p. Ball
+   c + p^N Z_p: the value is constant on the ball exactly when N >= 0 (Proposition 19 step 3) and is then {c}_p; the
+   ball around 0 with N >= 0 gives 0.
+   Status: ADF_OK, r written; ADF_NOT_DETERMINED if x is a ball with N < 0 (a ball around 0 with N < 0 included),
+   r untouched; ADF_LIMIT if |v| or |N| is above ADF_LBALL_EXP_MAX, or if v < 0 and |v| bits(p) >
+   ADF_LBALL_BITS_MAX (the denominator of the result is p^|v|, the result is outside the limits). The exact 0 gives
+   0. Checked in this order: the bounds of the exponents (LIMIT), N < 0 (NOT_DETERMINED), the size of p^|v| (LIMIT).
+   Cost: a power and a modular inverse or a reduction (api-1f.md L11). */
+int adf_lball_frac(adf_rat_t r, const adf_lball_t x);
+
+/* adf_lball_unit_mod(out, x, k): out = the unit part of x modulo p^k in [0, p^k): x = p^v u, out = u mod p^k, the
+   inverse of the denominator being taken modulo p^k for an exact x (k >= 0; k = 0 gives 0). For a ball this is the
+   part of the unit that the ball determines: it requires k <= N - v (the relative precision), because the ball
+   fixes u only modulo p^(N - v) (L6).
+   Status: ADF_OK, out written; ADF_DOMAIN if x is the exact 0 or k < 0; ADF_NOT_DETERMINED if x is a ball that
+   contains 0, or k > N - v; ADF_LIMIT if k bits(p) > ADF_LBALL_BITS_MAX. Outputs untouched otherwise. Checked in
+   the order: zero cases, k < 0, LIMIT, NOT_DETERMINED. Cost: a power and a modular inverse. */
+int adf_lball_unit_mod(fmpz_t out, const adf_lball_t x, slong k);
+
+/* adf_lball_pow_si(y, x, k): y = x^k, the smallest ball containing {s^k : s in x} (L12). k = 0: the exact 1, for
+   every x (also the exact 0 and a ball that contains 0: a convention, x^0 = 1). k > 0: exact x gives the exact
+   power; a ball p^v (u + p^rel Z_p) (rel = N - v) gives the ball p^(k v) (u^k + p^rel' Z_p) with
+       rel' = rel + v_p(k) + e,  e = 1 if p = 2 and rel = 1 and k is even, else 0
+   (the factor v_p(k) is the one of the exponential series: (1 + p^r Z_p)^k = 1 + p^(r + v_p(k)) Z_p for r >= 1, and
+   r >= 2 at p = 2, Lemma 9; e is the case of the units modulo 2, where the squares are 1 modulo 8); a ball around 0
+   c = 0 + p^N Z_p gives the ball around 0 with exponent k N (the set of k-th powers is inside it and contains 0 and
+   p^(k N)). k < 0: the same set as the inverse of x^|k|: exact 0 gives ADF_NOT_UNIT, a ball that contains 0 gives
+   ADF_UNIT_NOT_CERTIFIED (as inv), else the ball or exact value p^(-|k| v) (u^(-|k|) + p^rel' Z_p), the same rel'.
+   The set {s^k} is a ball when 0 is not in x (L12); for a ball around 0 the result is only the smallest ball
+   containing the set.
+   Status: ADF_OK; ADF_LIMIT if an input exponent is above ADF_LBALL_EXP_MAX (checked first, also for k = 0), or the
+   result is outside the limits: |k v| or |k v + rel'| above ADF_LBALL_EXP_MAX (or |k N| for a ball around 0), the
+   centre needs p^rel' with rel' bits(p) > ADF_LBALL_BITS_MAX, or the numerator or the denominator of an exact
+   result has more than ADF_LBALL_BITS_MAX bits (an exact power is stored as a rational; the bound is decided before
+   the power is formed, and the exact +-1 is never limited); the outputs untouched. Aliasing: y may be x.
+   Cost: one powering modulo p^rel' (64 squarings at most) and a modular inverse for k < 0. */
+int adf_lball_pow_si(adf_lball_t y, const adf_lball_t x, slong k);
+
 /* Layout queries (conventions 12.4, CV-40). Header-inline and exported. */
 ADF_INLINE size_t adf_sizeof_lball(void) { return sizeof(adf_lball_struct); }
 ADF_INLINE size_t adf_alignof_lball(void) { return ADF_ALIGNOF(adf_lball_struct); }
