@@ -148,6 +148,9 @@ For every value type `x` (a modulus context is not a value: it has constructors 
 | `adf_x_set_str`, `adf_x_get_str` | value form (section 9); `get_str` returns the allocated text and its byte length (8.1) |
 | `adf_x_load_str`, `adf_x_dump_str` | dump form (section 10); `dump_str` returns the text and its byte length (8.1) |
 
+The types of milestone S (`adf_resid`, `adf_recon_cert`, `adf_linsol`, `adf_rootlist`) have no text form and
+no dump form in version 1; they are read and written through their accessors.
+
 Functions that cannot fail return `void` (as `arb_add`). Functions that can fail return `int`, a status (section
 3). Predicates return `int` 0 or 1.
 
@@ -197,7 +200,7 @@ to prove the opposite.
 | Functions at places (`_at`) and all-places functions (`SPEC.md` 9.3) | `OK`, `DOMAIN` (with place), `NOT_DETERMINED`, `NEEDS_SPLIT`, `UNSUPPORTED`, `LIMIT` |
 | Quotient by `Q` | `OK`, `NEEDS_SPLIT`, `LIMIT` |
 | Characters, Gauss sums, local factors | `OK`, `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `DOMAIN` (for an exact pole), `UNSUPPORTED` |
-| Reconstruction and solvers | `OK`, `NO_SOLUTION`, `NOT_UNIQUE`, `NOT_DETERMINED` ("uniqueness not certified", `SPEC.md` 9.2), `LIMIT` |
+| Reconstruction and solvers | `OK`, `NO_SOLUTION`, `NOT_UNIQUE`, `NOT_DETERMINED` ("uniqueness not certified", `SPEC.md` 9.2; a list of roots that is not proved complete), `LIMIT`, `DOMAIN` (a modulus below 1, the zero polynomial, a place of the wrong kind, a shape that does not fit), `UNSUPPORTED` (an exact right-hand side of a system, a prime above the temporary bound of a slice that finds the roots modulo `p` by evaluation at every residue, decision S-D10) |
 | Integrals, Poisson summation | `OK`, `DOMAIN` (outside the stated half-plane, or at an exact pole), `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `LIMIT` |
 
 In conversion or inversion, NOT_DETERMINED covers failure to certify the required real sign on the result;
@@ -264,6 +267,10 @@ precision without re-creating aliased inputs, and the rule is the same for every
 | `ADF_OK` | the result |
 | any other | untouched. Optional report arguments (`where`, per-place status arrays) are written |
 
+The argument `sol` of `adf_linsolve_mod` and `adf_linsolve_fball` is a report argument: it is written on
+`ADF_OK` (the coset of solutions) and on `ADF_NO_SOLUTION` (the vector that proves it), and untouched on every
+other status.
+
 Exception: a function documented as **"enclosure with status"** writes a valid enclosure and returns
 `ADF_NOT_DETERMINED`. The only such functions in version 1 are the complex archimedean wrappers when the input
 ball meets a branch cut (`SPEC.md` 9.3.6: "returns the enclosure `acb` gives, with a status"). Where `SPEC.md` says
@@ -290,6 +297,10 @@ finding G2, 4.6).
 | Text input | never undefined: every byte string of every length gives a status (sections 8-10); fuzzed |
 
 A value that came out of any public function, parser or loader with `ADF_OK`, or out of `init`, is canonical.
+
+A status that a function returns for an input outside its contract (for example `ADF_DOMAIN` of
+`adf_adele_reconstruct` for an infinite real ball, which exists so that FLINT does not abort) is a courtesy of the
+release build and no promise (decision M1-D11).
 
 ### 4.5 Threads
 
@@ -352,7 +363,9 @@ The shared-pointer check also applies to `adf_scaled_mul_tight`, including exact
 the two scaled inputs, not the old context of the initialized output. Unary and exact-scalar operations
 borrow the scaled input's context; an `adf_rat` scalar has no context to compare.
 
-Contexts stay immutable after construction. Matching moduli and ordered blocks permit explicit rebinding;
+Contexts stay immutable after construction. A value that refers to a context gets and changes its context field
+through functions of the library only; a hand write of the field, a bitwise copy of the value or a struct
+assignment is outside this contract (decision M1-D10). Matching moduli and ordered blocks permit explicit rebinding;
 they do not waive pointer-compatibility checks or the different-pointer global fallback below. For `adf_fball` and
 types containing it, operations on two local values with different context pointers give a global result, even if
 the blocks agree (the fallback above); reason: comparing block lists on every operation costs more than the
@@ -976,7 +989,10 @@ decisions now that avoid a break later (seams section 5). Where each is applied:
   `ceil((lo - a)/N) <= k <= floor((hi - a)/N)` for `N > 0`, and `a` if `lo <= a <= hi` for `N = 0`
   (`proofs/quotient.md` P11); for an `arb` the interval is `[mid - rad, mid + rad]` with its exact dyadic end
   points. Statuses: one candidate `ADF_OK`; none `ADF_NO_SOLUTION`; several `ADF_NOT_UNIQUE`. From partial data
-  (quotient P13), "uniqueness not certified" (`2 A B >= m` and no search) is `ADF_NOT_DETERMINED`.
+  (quotient P13; solvers P1.7), "uniqueness not certified" is `ADF_NOT_DETERMINED`. It is returned exactly when
+  `A < m <= 2 A B`, `|T| <= B` (`T` the denominator entry of the Euclidean row that the algorithm reaches),
+  `floor(B/|T|)` exceeds the search limit `ell = max(limit, 0)`, and the rounds `x <= ell` found fewer than two
+  reduced pairs. The cases `A >= m`, `|T| > B` and `2 A B < m` keep their decided statuses also when `limit` is 0.
   DECISION CV-51 (D3); reason (orchestrator): a real ball is a closed set, and an end point of it may be the answer.
 - Scaled product: 5.4 (CV-48, D5). Power of a unit coset: 5.6 (CV-49, D6). Division by an idele: 5.7 (CV-50, D7).
   Complete validation of dump text before FLINT: 10.2 (CV-52, D9).

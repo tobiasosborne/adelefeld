@@ -1301,10 +1301,11 @@ Hypotheses: `p` prime, `g` a polynomial over `F_p`, not zero. Claim:
    at most `deg d` roots and `q` at most `deg q = p - deg d` ((Roots), Theorem 7.14). So
    `p <= #roots(d) + #roots(q) <= deg d + (p - deg d) = p`, and `d` has exactly `deg d` roots.
 
-Version 1 uses 1, for `p` up to a bound (decision S-D10), so no routine for roots in `F_p` is called. 2 is
-the route for larger primes: the roots are then found by a routine of FLINT and each is tested by
-evaluation; the degree certifies that none is missing.
-`[source pending: flint-3.0.1 nmod_poly.rst, for nmod_poly_powmod, nmod_poly_gcd and the root finding]`
+Decision S-D10 (TJO, 2026-09-29): the root finder accepts every prime, and a bound on `p` is a property of a
+slice of the implementation, not of the library. A first slice uses 1 for `p` up to a bound that its header
+calls temporary and returns `UNSUPPORTED` above it; a later slice uses 2 for larger primes, with no bound of one
+word, and the bound is then the point where the method changes, set by a benchmark.
+`[source pending: flint-3.0.1 fmpz_mod_poly.rst, fmpz_mod_poly_factor.rst, nmod_poly.rst (for nmod_poly_powmod, nmod_poly_gcd and the root finding)]`
 
 Check: `check_s2_count_mod_p` (458 polynomials, `p` up to 257, against the evaluation at all residues).
 Used by: Proposition 3.5 (step 3 of Algorithm P).
@@ -1612,8 +1613,8 @@ what the repair did. The three definitions D1.1, D1.3, D2.1 were omitted from th
 | P3.13 | what the entries verifier and the complete verifier of a list of roots verify | proved here | new (repair R7) | `check_s2_lists` |
 
 Not proved and stated as such: P1.9 claim 4, P2.11 claim 3 (probed only); IVT and Sturm's theorem (source pending);
-the resultant bound (source pending, not asserted); the larger-prime `nmod_poly` alternative of decision S-D10
-(source pending). No numbered statement is open.
+the resultant bound (source pending, not asserted); the route 2 of decision S-D10, which the later slice takes
+for larger primes (source pending). No numbered statement is open.
 
 ## Review record
 
