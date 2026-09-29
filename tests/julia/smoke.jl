@@ -283,3 +283,6 @@ include(joinpath(@__DIR__, "resid.jl"))
 
 # Slice 1 of S.1 (lane s1-slice1): adf_linsolve_mod through ccall.
 include(joinpath(@__DIR__, "linsolve.jl"))
+
+# Slice 1 of S.2 (lane s2-slice1): adf_root_padic_from_seed through ccall.
+include(joinpath(@__DIR__, "roots.jl"))
