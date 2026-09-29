@@ -34,8 +34,10 @@ full-width digit, no-break space, `±`), an input of 1048577 bytes and one of ex
 p-adic exponents beyond the limits, deep nesting, leading zeros, negative moduli, zero denominators, primes at and
 beyond 2^64, and the `arb` dump strings on which FLINT 3.0.1's `arb_load_str` aborts.
 
-To regenerate after changing a vector: `python3 lanes/m0-conventions/write_golden.py` and
-`python3 lanes/m0-conventions/gen_gauss.py` from the repository root.
+The files of this directory are the source and are edited by hand. `lanes/m0-conventions/write_golden.py` is
+retired (TJO, 2026-09-29): it holds the first hand-computed vectors and refuses to run, because it would remove
+the vectors added later. The vectors that are computed (Gauss sums) are written by `python3 lanes/m0-conventions/gen_gauss.py`, as before.
+Every vector is checked by `python3 -m unittest proto/test_text_grammar.py`.
 
 Note (lane `m0-gate-apply-conv`): the vectors added for gate findings G3 (two-context quotient dump), G4
 (`1/8`, the two Arb rereadings) and G7 (polynomial coefficients) were added to these files by hand and are not

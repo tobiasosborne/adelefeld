@@ -9,6 +9,12 @@ by hand from docs/conventions.md; proto/test_text_grammar.py checks them against
 Run from the repository root: python3 lanes/m0-conventions/write_golden.py
 """
 import os
+import sys
+
+# RETIRED (TJO, 2026-09-29, issue adf-qs9). The files tests/golden/*.tsv are the source now: vectors were
+# added to them by hand (gate findings G3, G4, G7) and this script would remove them. It is kept as the
+# record of the hand-computed vectors and does not write any more.
+sys.exit("write_golden.py is retired: tests/golden/*.tsv are edited by hand (tests/golden/README.md)")
 
 FILES = {}
 
