@@ -2177,12 +2177,16 @@ ca1ab98f3ce55817d7bca8d9546d3475f6e57ac6a124fdfda53d1fe29d7a68c8  src/flint-3.0.
 882f69f7c17f0048854847e05248ac449b94eb1af41cd200fe48edc4a627d801  src/flint-3.0.1/fmpz_mat.rst
 dd75c63b7daa022f781b0ccbe2cf5ec6568a134622a65258b86bd08b9641ef8b  src/flint-3.0.1/fmpz_mod.rst
 e277db5fe1d29e02e152faaf091937f77c964b35df3384d706940644b758ddbf  src/flint-3.0.1/fmpz_mod_mat.rst
+e51f4d80c8c7d42d7c9ee3f6b4c1e67f149cf5b112bb7db56f1ffd0d3e3a2b72  src/flint-3.0.1/fmpz_mod_poly.rst
+0f81560d9263a135b0e40c1a0eb5ed5d2bba2664e6afab73bf4419e1c2fdc27a  src/flint-3.0.1/fmpz_mod_poly_factor.rst
 f72dc44920d7f69d213ceba3ee1c164d47b5399e7736f8d0439fd76209731c65  src/flint-3.0.1/fmpz_poly.rst
 9954b35434dd64cd1aad4a4d0ed190066f11e42c7cfb2ed621652af3f3969eae  src/flint-3.0.1/fmpz_vec.rst
 8eb1827dc25d85588d5995d4117c5b87d202f5026c755451609528aa8adf4fc5  src/flint-3.0.1/mag.rst
 4fb04ea1c41b779cf1264322702e5b1467c3f57359605c3d08be580f8928ca5d  src/flint-3.0.1/memory.rst
 081846a79539cf282a7bae04f269746678e63d9b60f3687cee536ca3d36f2e41  src/flint-3.0.1/nmod.rst
 468e1693bb86d4df199b3ba99c30b7f134f83d793c24a7f937b102478064fc6f  src/flint-3.0.1/nmod_mat.rst
+2dd8bae5ae92f1762641f348e8edfaa2049271ad526609e13509524bc6cedafd  src/flint-3.0.1/nmod_poly.rst
+59aa4c4c74f084051e0a74b7e99955480f3c0f065d7e94ea4770dadea6a60348  src/flint-3.0.1/nmod_poly_factor.rst
 a78c6e4398cbd89aaa687e3c6f61c6a0cf4b5339e69f7d178396855a0fcdc5a0  src/flint-3.0.1/padic.rst
 475dcbce062a98ba55b94be65d7620b9b821d5c9d8ab04ff48a22d09792afa56  src/flint-3.0.1/padic_poly.rst
 65d6805bd89f8d66bf87f459d4f604b19499e5c9129896a07c72e11d4f773468  src/flint-3.0.1/ulong_extras.rst
