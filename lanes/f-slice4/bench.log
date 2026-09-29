@@ -1,0 +1,12 @@
+exp p=3 N=100: adelefeld 45.9 us, FLINT padic 9.9 us
+exp p=3 N=1000: adelefeld 578.0 us, FLINT padic 480.5 us
+exp p=3 N=2000: adelefeld 1953.5 us, FLINT padic 597.9 us
+log p=3 N=100: adelefeld 29.8 us, FLINT padic 15.8 us
+log p=3 N=1000: adelefeld 1159.2 us, FLINT padic 267.3 us
+log p=3 N=2000: adelefeld 5873.0 us, FLINT padic 870.2 us
+Log p=3 N=100: adelefeld 31.1 us, FLINT padic 17.8 us
+Log p=3 N=1000: adelefeld 1156.8 us, FLINT padic 100.8 us
+exp p=2 N=1000: adelefeld 171.4 us, FLINT padic 59.1 us
+log p=2 N=1000: adelefeld 247.1 us, FLINT padic 90.2 us
+exp p=18446744073709551557 N=100: adelefeld 34.2 us, FLINT padic 33.3 us
+Log p=18446744073709551557 N=100: adelefeld 2800.7 us, FLINT padic 1806.4 us

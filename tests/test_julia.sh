@@ -129,6 +129,11 @@ if "$JULIA" --startup-file=no tests/julia/smoke.jl "$so" > "$run_output" 2>&1; t
         echo "test_julia: sball.jl FAILED" >&2
         exit 1
     fi
+    # lane f-slice4: the ccall test of exp, log and Log at a prime (tests/julia/lfunc.jl)
+    if ! "$JULIA" --startup-file=no tests/julia/lfunc.jl "$so"; then
+        echo "test_julia: lfunc.jl FAILED" >&2
+        exit 1
+    fi
     echo "test_julia: passed"
     exit 0
 fi
@@ -147,6 +152,10 @@ if grep -q '__gmpn_modexact_1_odd' "$run_output" 2>/dev/null; then
             fi
             if ! LD_PRELOAD="$sys_gmp" "$JULIA" --startup-file=no tests/julia/sball.jl "$so"; then
                 echo "test_julia: sball.jl FAILED (with LD_PRELOAD=$sys_gmp)" >&2
+                exit 1
+            fi
+            if ! LD_PRELOAD="$sys_gmp" "$JULIA" --startup-file=no tests/julia/lfunc.jl "$so"; then
+                echo "test_julia: lfunc.jl FAILED (with LD_PRELOAD=$sys_gmp)" >&2
                 exit 1
             fi
             echo "test_julia: passed (with LD_PRELOAD=$sys_gmp)"

@@ -1,0 +1,22 @@
+# Red and green runs of lane f-slice4 (tests/test_lfunc.c against src/lfunc.c)
+
+2026-09-30 00:54  timeout 600 make -j2 build/test_lfunc
+    RED (link): undefined reference to adf_lball_exp, adf_lball_log, adf_lball_Log (no src/lfunc.c yet).
+    The first failure of a new file; the header include/adelefeld/lfunc.h and the test existed, the code did not.
+
+2026-09-30 00:56  src/lfunc.c = a stub that returns ADF_UNSUPPORTED from all three functions;
+                  timeout 300 ./build/test_lfunc
+    RED (assertions): 10 tests, 107914 checks, 15505 failed checks, 9 failed tests. Failed checks per test:
+      ball_enumeration_over_the_grid 7601, cases_from_the_reference 790, every_status 38,
+      exact_results_and_shortcut_values 12, flint_second_opinion 1001, identities_as_containment 3858,
+      points_from_the_reference 2166, precision_2000 21, spec_precision_cases 18. (zz_free_the_grid has no check.)
+
+2026-09-30 01:05  src/lfunc.c written (exp by F4, log and Log by F3 and F5, domain by F1);
+                  timeout 300 ./build/test_lfunc
+    One failed check: ball_enumeration_over_the_grid, the coverage guard "balls > 10000 && tight > 1000" that I had
+    written before counting the universe; the universe is 7600 calls and 3852 smallest-ball witnesses. Every
+    enclosure, status, exponent and tightness check of the enumeration passed. The guard was set to the size of the
+    universe (balls >= 7600, tight >= 3800), so that a loop that shrinks the universe fails it.
+
+2026-09-30 01:06  timeout 300 ./build/test_lfunc
+    GREEN: 10 tests, 374421 checks, 0 failed checks, 0 failed tests (4.6 s).
