@@ -1323,6 +1323,398 @@ def lball_main():
         print(f"{check.__name__}: {check()}", flush=True)
 
 
+# ====================================================================================================
+# Section f-slice2 (lane f-slice2, 2026-09-29): partial balls adf_sball and the real functions.
+# Statements S1 to S7 of docs/api-1f.md, section "Slice 1F.1-a / 1F.2-a". The reference of the C library
+# (tests/test_sball.c and tests/test_rfunc.c read the vectors of lanes/f-slice2/gen_vectors.py).
+# Not run by main(); run by sball_main() (called after lball_main() below). mpmath is imported inside the
+# functions that need it (interval arithmetic at 800 bits: the oracle for exp, log, sin, cos); the roots are
+# enclosed by exact integer arithmetic (rf_iroot), with no library at all.
+#
+# A real ball is RB(m, e, rm, re): the closed interval [m 2^e - rm 2^re, m 2^e + rm 2^re] (arb: exact midpoint,
+# radius a mag with rm < 2^30, so the radius is exact).
+# ====================================================================================================
+
+IV_PREC = 800
+
+
+def dy(m, e):
+    """The rational m 2^e."""
+    return F(m) * F(2) ** e
+
+
+def dy_parts(q):
+    """(m, e) with q = m 2^e, m odd (or 0, 0). q must be dyadic."""
+    q = F(q)
+    if q == 0:
+        return (0, 0)
+    d = q.denominator
+    assert d & (d - 1) == 0, "not dyadic"
+    e = -(d.bit_length() - 1)
+    m = q.numerator
+    while m % 2 == 0:
+        m //= 2
+        e += 1
+    return (m, e)
+
+
+def dy_json(q):
+    m, e = dy_parts(q)
+    return {"m": m, "e": e}
+
+
+BOUND_BITS = 400
+
+
+def dy_json_bound(q, up):
+    """A dyadic with a mantissa of about BOUND_BITS bits that is >= q (up) or <= q: the bound as it is written into a
+    vector file (shorter than the exact end point of the 800 bit enclosure; the rounding is outward)."""
+    q = F(q)
+    if q == 0:
+        return {"m": 0, "e": 0}
+    a = abs(q)
+    k = a.numerator.bit_length() - a.denominator.bit_length() - BOUND_BITS - 1
+    t = q / F(2) ** k
+    m = -((-t.numerator) // t.denominator) if up else t.numerator // t.denominator
+    return {"m": m, "e": k}
+
+
+class RB:
+    __slots__ = ("m", "e", "rm", "re")
+
+    def __init__(self, m, e, rm=0, re=0):
+        assert 0 <= rm < 2 ** 30
+        self.m, self.e, self.rm, self.re = m, e, rm, re
+
+    @property
+    def mid(self):
+        return dy(self.m, self.e)
+
+    @property
+    def rad(self):
+        return dy(self.rm, self.re)
+
+    @property
+    def lo(self):
+        return self.mid - self.rad
+
+    @property
+    def hi(self):
+        return self.mid + self.rad
+
+    def json(self):
+        return {"m": self.m, "e": self.e, "rm": self.rm, "re": self.re}
+
+
+def rf_iroot(x, n):
+    """floor of the n-th root of the integer x >= 0 (Newton, exact)."""
+    if x < 2:
+        return x
+    r = 1 << ((x.bit_length() + n - 1) // n)
+    while True:
+        s = ((n - 1) * r + x // r ** (n - 1)) // n
+        if s >= r:
+            break
+        r = s
+    while r ** n > x:
+        r -= 1
+    while (r + 1) ** n <= x:
+        r += 1
+    return r
+
+
+ROOT_P = 700   # bits after the point of the enclosure of a root
+
+
+def rf_root_enclosure(x, n):
+    """[lo, hi] with lo <= x^(1/n) <= hi, x >= 0 a Fraction, by exact integers (n up to 64)."""
+    if n == 1:
+        return (x, x)
+    if x == 0:
+        return (F(0), F(0))
+    X = (x * 2 ** (n * ROOT_P)).__floor__()
+    r = rf_iroot(X, n)
+    return (F(r, 2 ** ROOT_P), F(r + 1, 2 ** ROOT_P))
+
+
+def _ivq(q):
+    from mpmath import iv, mp, mpf
+    mp.prec = 3000
+    q = F(q)
+    v = mpf(q.numerator) / mpf(q.denominator)
+    iv.prec = IV_PREC
+    return iv.mpf(v)
+
+
+def _iv_bounds(t):
+    """(lower, upper) of an mpmath interval as exact Fractions."""
+    from mpmath.libmp import to_man_exp
+
+    def conv(x):
+        man, exp = to_man_exp(x)[0:2]
+        man = -man if x[0] else man   # x = (sign, man, exp, bc)
+        return F(man) * F(2) ** exp if man else F(0)
+    return (conv(t._mpi_[0]), conv(t._mpi_[1]))
+
+
+def _iv_fn(name, q):
+    from mpmath import iv
+    iv.prec = IV_PREC
+    return _iv_bounds(getattr(iv, name)(_ivq(q)))
+
+
+def rf_status(f, n, lo, hi):
+    """The status of the wrapper for the ball [lo, hi] (exact end points), from rfunc.h."""
+    if f in ("exp", "sin", "cos"):
+        return "OK"
+    if f == "log":
+        return "DOMAIN" if hi <= 0 else ("OK" if lo > 0 else "NOT_DETERMINED")
+    if f == "log_abs":
+        if lo == 0 and hi == 0:
+            return "DOMAIN"
+        return "NOT_DETERMINED" if lo <= 0 <= hi else "OK"
+    if f == "sqrt" or (f == "root" and n % 2 == 0 and n >= 2):
+        return "DOMAIN" if hi < 0 else ("OK" if lo >= 0 else "NOT_DETERMINED")
+    if f == "root":
+        return "DOMAIN" if n == 0 else "OK"
+    raise ValueError(f)
+
+
+def _rt(x, n):
+    """Enclosure of the real n-th root (odd n allowed for x < 0) of a dyadic x."""
+    if x < 0:
+        lo, hi = _rt(-x, n)
+        return (-hi, -lo)
+    if n <= 64:
+        return rf_root_enclosure(x, n)
+    if x == 0:
+        return (F(0), F(0))
+    from mpmath import iv
+    iv.prec = IV_PREC
+    return _iv_bounds(iv.exp(iv.log(_ivq(x)) / n))
+
+
+def _crit_values(name, lo, hi):
+    """The values (+1, -1) that sin or cos takes at critical points inside [lo, hi]: sin has them at pi/2 + k pi,
+    cos at k pi, with the value (-1)^k. Raises ValueError if an end point is too close to one to decide."""
+    from mpmath import iv, floor
+    iv.prec = IV_PREC
+    pi = iv.pi
+    c0 = pi / 2 if name == "sin" else iv.mpf(0)
+
+    def kk(t, upper):
+        q = (_ivq(t) - c0) / pi
+        fa, fb = int(floor(q.a)), int(floor(q.b))
+        if q.a == q.b and fa == q.a:
+            return fa
+        if fa != fb or q.a == fa:
+            raise ValueError("ambiguous critical point")
+        return fa if upper else fa + 1
+    k1, k2 = kk(lo, False), kk(hi, True)
+    return {1 if k % 2 == 0 else -1 for k in range(k1, min(k2, k1 + 1) + 1)}
+
+
+def rf_image(f, n, lo, hi):
+    """(minlo, maxhi): minlo <= min f <= max f <= maxhi over [lo, hi], exact Fractions (mpmath intervals at 800 bits,
+    or exact integer roots). The status must be OK."""
+    if f == "exp":
+        return (_iv_fn("exp", lo)[0], _iv_fn("exp", hi)[1])
+    if f == "log":
+        return (_iv_fn("log", lo)[0], _iv_fn("log", hi)[1])
+    if f == "log_abs":
+        if lo > 0:
+            return (_iv_fn("log", lo)[0], _iv_fn("log", hi)[1])
+        return (_iv_fn("log", -hi)[0], _iv_fn("log", -lo)[1])
+    if f in ("sqrt", "root"):
+        k = 2 if f == "sqrt" else n
+        return (_rt(lo, k)[0], _rt(hi, k)[1])
+    if f in ("sin", "cos"):
+        cands = [_iv_fn(f, t) for t in (lo, hi)]
+        lows = [c[0] for c in cands]
+        highs = [c[1] for c in cands]
+        for v in _crit_values(f, lo, hi):
+            lows.append(F(v))
+            highs.append(F(v))
+        return (min(lows), max(highs))
+    raise ValueError(f)
+
+
+def rf_tight(f, n, lo, hi):
+    """1 if the radius of the result must be within a factor 4 of the true width (plus rounding), else 0.
+    exp: r <= 1. log, log_abs, sqrt, root (odd, or lo > 0): mid != 0 and r <= |mid| / 2. sin, cos: r <= 1/16 and
+    |f'(mid)| >= 3/4. Otherwise only the Lipschitz bound of the input radius is asserted for sin and cos."""
+    mid, r = (lo + hi) / 2, (hi - lo) / 2
+    if f == "exp":
+        return int(r <= 1)
+    if f in ("log", "sqrt", "root", "log_abs"):
+        return int(mid != 0 and r <= abs(mid) / 2 and (f != "root" or n % 2 == 1 or lo > 0))
+    from mpmath import iv
+    iv.prec = IV_PREC
+    x = _ivq(mid)
+    d = _iv_bounds(iv.cos(x) if f == "sin" else -iv.sin(x))
+    return int(r <= F(1, 16) and min(abs(d[0]), abs(d[1])) >= F(3, 4) and d[0] * d[1] > 0)
+
+
+def rf_vector(f, n, prec, rb):
+    """One vector of tests/ref/vectors/f-slice2/rfunc_real.jsonl."""
+    lo, hi = rb.lo, rb.hi
+    row = {"f": f, "n": n, "prec": prec, "x": rb.json(), "status": rf_status(f, n, lo, hi)}
+    if row["status"] == "OK":
+        a, b = rf_image(f, n, lo, hi)
+        row["lo"], row["hi"] = dy_json_bound(a, False), dy_json_bound(b, True)
+        row["tight"] = rf_tight(f, n, lo, hi)
+    return row
+
+
+# ---- partial balls: reference of the projection and of the componentwise operations ----
+
+def sb_json(arch, rb, loc):
+    return {"arch": arch, "inf": None if rb is None else rb.json(), "loc": [x.json() for x in loc]}
+
+
+def sb_ref_project(rb, A, H, d, places):
+    """S1: the projection of the adele (rb ; (A + H Zhat)/d) to the places ('inf' or a prime), any order.
+    Returns ('DOMAIN', repeated place) or ('OK', arch, rb or None, [LB by increasing prime])."""
+    seen = set()
+    for v in places:
+        if v in seen:
+            return ("DOMAIN", v)
+        seen.add(v)
+    primes = sorted(v for v in places if v != "inf")
+    return ("OK", 1 if "inf" in places else 0, rb if "inf" in places else None,
+            [lb_ref_project(p, A, H, d) for p in primes])
+
+
+def sb_real_op(op, x, y=None):
+    """The exact set of results of the real operation on the intervals: (lo, hi) as Fractions."""
+    if op == "neg":
+        return (-x.hi, -x.lo)
+    if op == "add":
+        return (x.lo + y.lo, x.hi + y.hi)
+    if op == "sub":
+        return (x.lo - y.hi, x.hi - y.lo)
+    ps = [x.lo * y.lo, x.lo * y.hi, x.hi * y.lo, x.hi * y.hi]
+    return (min(ps), max(ps))
+
+
+def sb_ref_op(op, X, Y=None):
+    """X, Y = (arch, RB or None, [LB]) over the same places. Returns (arch, (lo, hi) or None, [LB])."""
+    fn = {"neg": lb_ref_neg, "add": lb_ref_add, "sub": lb_ref_sub, "mul": lb_ref_mul}[op]
+    loc = [fn(a) if Y is None else fn(a, b) for a, b in zip(X[2], X[2] if Y is None else Y[2])]
+    real = None if X[1] is None else sb_real_op(op, X[1], None if Y is None else Y[1])
+    return (X[0], real, loc)
+
+
+def check_sball_projection_enumeration():
+    """S1: for random adeles (A + H Zhat)/d and primes, every point A/d + H z/d, z in [0, p^2), is inside the
+    component at p and the p classes modulo the next digit are all met (the component is the smallest)."""
+    rng = random.Random(21)
+    n = 0
+    for _ in range(300):
+        d = rng.randint(1, 60)
+        H = rng.choice((0, rng.randint(1, 500)))
+        A = rng.randint(-200, 200)
+        for p in (2, 3, 5, 7):
+            c = lb_ref_project(p, A, H, d)
+            pts = [F(A, d) + F(H, d) * z for z in range(p * p)]
+            if H == 0:
+                assert c.exact and all(lb_val(c) == t for t in pts)
+                continue
+            assert lb_is_canonical(c)
+            for t in pts:
+                assert lb_ref_contains(lb_exact(p, t), c)
+            classes = {lb_ball(p, t, c.N + 1).key() for t in pts}
+            assert len(classes) == p, (p, A, H, d)
+            n += 1
+    return f"cases={n}"
+
+
+def check_sball_tuple_enumeration():
+    """S3: over the places {inf, 2, 3, 5}, random partial balls X, Y, random tuples of points of each, and the
+    result tuple of add, sub, mul: every coordinate of the result tuple lies in the result component."""
+    rng = random.Random(22)
+    primes = (2, 3, 5)
+    n = 0
+
+    def rnd():
+        loc = []
+        for p in primes:
+            k = rng.choice((1, 2, 3))
+            v = rng.randint(-2, 2)
+            u = rng.randrange(1, p ** k)
+            while u % p == 0:
+                u = rng.randrange(1, p ** k)
+            loc.append(rng.choice((LB(p, 0, u, v, v + k),
+                                   lb_exact(p, F(rng.randint(-9, 9), rng.randint(1, 9)) * F(p) ** v))))
+        return (1, RB(rng.randint(-50, 50), rng.randint(-3, 2), rng.randint(0, 40), rng.randint(-6, 0)), loc)
+
+    for _ in range(400):
+        X, Y = rnd(), rnd()
+        for op in ("add", "sub", "mul"):
+            arch, real, loc = sb_ref_op(op, X, Y)
+            for _ in range(6):
+                fx = (X[1].lo, X[1].hi, X[1].mid)[rng.randrange(3)]
+                fy = (Y[1].lo, Y[1].hi, Y[1].mid)[rng.randrange(3)]
+                r = {"add": fx + fy, "sub": fx - fy, "mul": fx * fy}[op]
+                assert real[0] <= r <= real[1]
+                for a, b, c in zip(X[2], Y[2], loc):
+                    pa = rng.choice(lb_points(a))
+                    pb = rng.choice(lb_points(b))
+                    r = {"add": pa + pb, "sub": pa - pb, "mul": pa * pb}[op]
+                    assert lb_ref_contains(lb_exact(a.p, r), c), (op, a, b, c)
+                    n += 1
+    return f"tuple_points={n}"
+
+
+def check_real_reference_against_arb():
+    """rf_image (mpmath intervals, exact integer roots) against python-flint's arb at 300 bits, at the two end points
+    of the ball: the image bounds [minlo, maxhi] must satisfy minlo <= f(t) <= maxhi for t = lo and t = hi, with f(t)
+    an arb ball (its own radius allowed): the arb ball must not lie wholly above maxhi or below minlo. Two enclosures
+    of the same numbers; a bound that is too small, or too large by more than the width of the ball's image, fails."""
+    import flint
+    rng = random.Random(23)
+    n = 0
+    flint.ctx.prec = 300
+
+    def arb_at(f, k, q):
+        t = flint.arb(q.numerator) / q.denominator
+        return {"exp": t.exp, "log": t.log, "sin": t.sin, "cos": t.cos, "sqrt": t.sqrt}.get(f, lambda: t.root(k))()
+
+    def bounds(r):
+        (m1, e1), (m2, e2) = (tuple(int(t) for t in r.mid().man_exp()), tuple(int(t) for t in r.rad().man_exp()))
+        return dy(m1, e1) - dy(m2, e2), dy(m1, e1) + dy(m2, e2)
+
+    for _ in range(200):
+        f = rng.choice(("exp", "log", "sin", "cos", "sqrt", "root"))
+        k = rng.choice((1, 3, 5, 7)) if f == "root" else 0
+        mid = dy(rng.randint(1, 2 ** 20), rng.randint(-25, 5))
+        rad = mid / rng.choice((4, 8, 100)) if f in ("log", "sqrt", "root") else dy(rng.randint(0, 100), -12)
+        lo, hi = mid - rad, mid + rad
+        try:
+            a, b = rf_image(f, k, lo, hi)
+        except ValueError:
+            continue
+        ends = [bounds(arb_at(f, k, t)) for t in (lo, hi)]
+        # f(lo) and f(hi) lie in the image: minlo <= min f(t) and max f(t) <= maxhi; the arb balls overlap [a, b]
+        # and the smallest of the upper ends is >= a, the largest of the lower ends is <= b
+        assert min(e[1] for e in ends) >= a and max(e[0] for e in ends) <= b, (f, k, lo, hi)
+        # the image is not much wider than the values at the end points and the critical values: for the monotone
+        # functions, a is at most the smaller and b at least the larger end value, and they are close to them
+        if f in ("exp", "log", "sqrt", "root"):
+            assert a <= min(e[1] for e in ends) and b >= max(e[0] for e in ends)
+            assert a >= min(e[0] for e in ends) - F(1, 2 ** 250) * (1 + abs(a)), (f, k, lo, hi)
+            assert b <= max(e[1] for e in ends) + F(1, 2 ** 250) * (1 + abs(b)), (f, k, lo, hi)
+        n += 1
+    return f"cases={n}"
+
+
+def sball_main():
+    for check in (check_sball_projection_enumeration, check_sball_tuple_enumeration,
+                  check_real_reference_against_arb):
+        print(f"{check.__name__}: {check()}", flush=True)
+
+
 if __name__ == "__main__":
     main()
     lball_main()
+    sball_main()

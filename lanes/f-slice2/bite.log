@@ -1,0 +1,67 @@
+fault 0 [sball]: project does not sort the places
+    -> 16 tests, 867664 checks, 210054 failed checks, 5 failed tests
+    tests that failed: vectors_project, projection_enumeration, project_orders_and_statuses, project_limit_names_the_first_failing_prime, the_example_of_the_brief
+fault 1 [sball]: project drops the real place
+    -> 16 tests, 865506 checks, 209784 failed checks, 5 failed tests
+    tests that failed: vectors_project, projection_enumeration, project_orders_and_statuses, project_limit_names_the_first_failing_prime, the_example_of_the_brief
+fault 2 [sball]: binary pairs component i of x with component i + 1 of y
+    -> 16 tests, 840191 checks, 446 failed checks, 5 failed tests
+    tests that failed: vectors_ops, tuples_of_points_through_the_operations, domain_unsupported_and_where, limit_names_the_first_failing_prime, the_example_of_the_brief
+fault 3 [sball]: places_differ reports the larger prime
+    -> 16 tests, 873696 checks, 29 failed checks, 2 failed tests
+    tests that failed: vectors_ops, domain_unsupported_and_where
+fault 4 [sball]: contains compares the real balls the wrong way
+    -> 16 tests, 873696 checks, 24 failed checks, 2 failed tests
+    tests that failed: vectors_predicates, predicates_by_hand
+fault 5 [sball]: neg does not negate the real part
+    -> 16 tests, 873696 checks, 2160 failed checks, 3 failed tests
+    tests that failed: vectors_ops, tuples_of_points_through_the_operations, the_example_of_the_brief
+fault 6 [sball]: is_canonical accepts primes in any order
+    -> 16 tests, 873696 checks, 3 failed checks, 1 failed tests
+    tests that failed: is_canonical_rejects_each_clause
+fault 7 [sball]: mul adds the real parts
+    -> 16 tests, 873696 checks, 2281 failed checks, 3 failed tests
+    tests that failed: vectors_ops, tuples_of_points_through_the_operations, the_example_of_the_brief
+fault 8 [sball]: binary writes its output before it reports a status
+    -> 16 tests, 873696 checks, 7 failed checks, 1 failed tests
+    tests that failed: limit_names_the_first_failing_prime
+fault 9 [sball]: set_arb_lballs accepts two components at one prime
+    -> 16 tests, 873694 checks, 7 failed checks, 1 failed tests
+    tests that failed: set_arb_lballs
+fault 10 [sball]: binary checks the tag before the places (UNSUPPORTED before DOMAIN)
+    -> 16 tests, 873696 checks, 6 failed checks, 1 failed tests
+    tests that failed: domain_unsupported_and_where
+fault 11 [sball]: overlaps of real balls uses contains
+    -> 16 tests, 873696 checks, 17 failed checks, 2 failed tests
+    tests that failed: vectors_predicates, predicates_by_hand
+fault 12 [rfunc]: the odd root of a negative ball calls arb_root_ui on it
+    -> 8 tests, 57644 checks, 86 failed checks, 4 failed tests
+    tests that failed: vectors_real, odd_roots_of_negative_and_zero, domain_table, known_values
+fault 13 [rfunc]: log of the exact 0 is NOT_DETERMINED instead of DOMAIN
+    -> 8 tests, 59145 checks, 8 failed checks, 2 failed tests
+    tests that failed: vectors_real, domain_table
+fault 14 [rfunc]: sqrt of the exact 0 is DOMAIN
+    -> 8 tests, 58785 checks, 48 failed checks, 3 failed tests
+    tests that failed: vectors_real, odd_roots_of_negative_and_zero, domain_table
+fault 15 [rfunc]: prec below 2 is not raised to 2
+    -> (no output, exit -11)
+    tests that failed: (exit -11: crash or abort)
+fault 16 [rfunc]: at a place that is not in the ball: where is not reported
+    -> 8 tests, 59145 checks, 8 failed checks, 1 failed tests
+    tests that failed: sball_at_statuses_and_places
+fault 17 [rfunc]: sin computed as cos
+    -> 8 tests, 59145 checks, 62 failed checks, 2 failed tests
+    tests that failed: vectors_real, known_values
+fault 18 [rfunc]: odd root of a ball across 0: the lower end is not negated
+    -> 8 tests, 58281 checks, 52 failed checks, 3 failed tests
+    tests that failed: vectors_real, odd_roots_of_negative_and_zero, domain_table
+fault 19 [rfunc]: the exact 0 of an odd root is left to arb_root_ui (NaN)
+    -> 8 tests, 59145 checks, 0 failed checks, 0 failed tests
+    tests that failed: NONE
+fault 20 [rfunc]: log_abs of a ball containing 0 is computed
+    -> 8 tests, 59145 checks, 0 failed checks, 0 failed tests
+    tests that failed: NONE
+fault 21 [rfunc]: a non-finite result is stored with OK
+    -> 8 tests, 59145 checks, 3 failed checks, 1 failed tests
+    tests that failed: huge_arguments_never_give_a_nonfinite_ok
+22 faults, 20 caught, survivors: [19, 20]
