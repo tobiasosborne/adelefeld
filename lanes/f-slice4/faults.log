@@ -1,0 +1,22 @@
+fault 1: radius of Log taken from the input precision, without the loss or gain of m digits
+  exit 1: 10 tests, 372773 checks, 6825 failed checks, 3 failed tests
+  failed tests: ball_enumeration_over_the_grid, cases_from_the_reference, spec_precision_cases
+fault 2: exp: one term too few in the truncation (Proposition 7)
+  exit 1: 10 tests, 374567 checks, 1447 failed checks, 6 failed tests
+  failed tests: ball_enumeration_over_the_grid, cases_from_the_reference, exact_results_and_shortcut_values, flint_second_opinion, identities_as_containment, points_from_the_reference
+fault 3: log: one term too few in the truncation (Proposition 7b), both branches
+  exit 1: 10 tests, 374793 checks, 25745 failed checks, 6 failed tests
+  failed tests: ball_enumeration_over_the_grid, cases_from_the_reference, flint_second_opinion, identities_as_containment, points_from_the_reference, precision_2000
+fault 4: Log at odd p: the sum of log(a^(p-1)) not divided by p - 1
+  exit 1: 10 tests, 374591 checks, 12124 failed checks, 6 failed tests
+  failed tests: ball_enumeration_over_the_grid, cases_from_the_reference, flint_second_opinion, identities_as_containment, points_from_the_reference, precision_2000
+fault 5: exp: the domain p Z_p at p = 2 as well (c = 1 everywhere)
+  exit -6: (no summary)
+  failed tests: 
+fault 6: Log at p = 2, r = 1: the exponent r = 1 instead of the image 4 Z_2
+  exit 1: 10 tests, 374374 checks, 64 failed checks, 3 failed tests
+  failed tests: ball_enumeration_over_the_grid, cases_from_the_reference, spec_precision_cases
+fault 7: log: the domain 1 + p^0 Z_p = Z_p instead of 1 + p Z_p
+  exit 1: 10 tests, 451906 checks, 24762 failed checks, 3 failed tests
+  failed tests: ball_enumeration_over_the_grid, cases_from_the_reference, every_status
+caught 7 of 7 faults
