@@ -208,3 +208,172 @@ a point never. *The computation of `v(c - d)` from stored forms:* with `c = p^v 
 giving infinity): `v(c - d) = min(v, w)` if `v != w` (strict inequality), and `v + v_p(u - u')` if `v = w` (infinite
 if `u = u'`), where `v_p` of a rational is the valuation of its numerator minus that of its denominator. No power of
 `p` is formed.
+
+## Slice 1F.1-a and 1F.2-a: `adf_sball` and the real functions (lane f-slice2, 2026-09-29)
+
+Headers: `include/adelefeld/sball.h`, `include/adelefeld/rfunc.h`. Implementation: `src/sball.c`, `src/rfunc.c`.
+Tests: `tests/test_sball.c`, `tests/test_rfunc.c` (vectors `tests/ref/vectors/f-slice2/*.jsonl` from
+`lanes/f-slice2/gen_vectors.py`, which imports the reference at the end of `proto/functions_checks.py`, section
+"f-slice2"), `tests/julia/sball.jl`. Sources: `docs/conventions.md` 5.9 (struct and predicate), 7 (places, canonical
+order), 3.1 to 3.3 (statuses, the reported place), 4.3, 4.4; `docs/SPEC.md` 9.3.1, 9.3.3, 9.3.6;
+`docs/proofs/functions.md` Proposition 14 (line 446) and Proposition 22 (line 725); `refs/src/flint-3.0.1/arb.rst`
+(cited by line in `src/rfunc.c` and `src/sball.c`); the statements S1 to S7 below.
+
+### Functions
+
+| Function | Result | Statuses |
+|---|---|---|
+| `adf_sball_init/clear/set/swap/is_canonical/identical` | life cycle (conventions 2.3, 5.9) | none |
+| `adf_sball_set_arb_lballs(y, where, r, loc, n)` | the partial ball with real part `r` (or none) and the components `loc`, sorted | `OK`, `DOMAIN` (with the place) |
+| `adf_sball_project(y, where, x, places, n)` | the projection of an adele to the places (S1) | `OK`, `DOMAIN` (repeated place), `LIMIT` (with the prime) |
+| `adf_sball_arch`, `_num_places`, `_get_place`, `_has_place`, `_get_lball`, `_get_arb` | accessors; the canonical order of places | `_get_place`, `_get_lball`, `_get_arb`: `DOMAIN` |
+| `adf_sball_equal_set`, `_overlaps`, `_contains` | set predicates (S4) | none (0 or 1) |
+| `adf_sball_neg`, `_add`, `_sub`, `_mul` | componentwise, over the same set of places (S3) | `OK`, `DOMAIN` (places differ, with the first place), `UNSUPPORTED` (complex tag), `LIMIT` (with the prime) |
+| `adf_real_exp`, `_log`, `_log_abs`, `_sin`, `_cos`, `_sqrt`, `_root` | real functions on an `arb` (S5, S6) | `OK`, `DOMAIN`, `NOT_DETERMINED` |
+| `adf_sball_exp_at`, `_log_at`, `_log_abs_at`, `_sin_at`, `_cos_at`, `_sqrt_at`, `_root_at` | the same at the archimedean place of a partial ball; the result is a partial ball over that one place | as above, plus `DOMAIN` (place not in the ball), `UNSUPPORTED` (a prime, or the complex tag) |
+| `adf_sizeof_sball`, `adf_alignof_sball` | 120, 8 | none |
+
+### Decisions taken in this slice (the orchestrator's, and the lane's)
+
+1. The list of places is stored in the canonical order of conventions 7: the archimedean place first, then the
+   primes increasing (conventions 5.9 keeps the primes in `loc`, strictly increasing, and the archimedean coordinate
+   in `inf`). The brief said "the real place last"; conventions 7 says the opposite and holds. Index 0 of
+   `get_place` is the archimedean place when the tag is not `NONE`.
+2. Sets of places are passed as an array of `adf_place_t` and a length. No `adf_places_t` struct is defined in the
+   conventions (the name occurs in 7 and 2.2 only). Alternative: define the struct; not done, because nothing else
+   needs it yet.
+3. `where` is a report argument (conventions 2.2, 4.3): written on a status other than `OK`, untouched on `OK`, may
+   be `NULL`. On `DOMAIN` from the projection it is the repeated place; from two operands over different places it
+   is the first place, in the canonical order, that belongs to one operand only (a different tag is a difference at
+   the archimedean place); on `LIMIT` it is the first prime, in the canonical order, at which a component fails
+   (conventions 3.3: the statuses of the components are all `LIMIT`, so the maximum is `LIMIT` and the first place
+   carrying it is reported).
+4. Complex components (`arch = COMPLEX`) are stored, copied, compared and checked by the predicate; arithmetic and
+   the functions of `rfunc.h` return `ADF_UNSUPPORTED` with the archimedean place. No function of the slice makes a
+   complex tag. Alternative: `acb` arithmetic (four lines); not done, because no test could reach it through the
+   interface.
+5. Functions at a place of a partial ball produce a partial ball over that one place (SPEC 9.3.1: "the other
+   coordinates of `x` are not part of the result"). The functions at a prime (milestone 1F.4) are `UNSUPPORTED` with
+   that prime.
+6. The domain rule is the one of conventions 3.1: `DOMAIN` only if every point of the input ball is outside the
+   domain, `NOT_DETERMINED` if the ball meets the domain and its complement (S5). The exact 0 is `DOMAIN` under
+   `log` and `log_abs`, and gives 0 under `sqrt` and every root. `sqrt` is the root of degree 2 (the non-negative
+   root, SPEC 9.3.3). A root of degree 0 is `DOMAIN` with no place (invalid degree).
+7. The odd root of a negative ball is computed as minus the root of the negated ball (orchestrator); a ball that
+   contains 0 is enclosed by the images of its outer end points (S6). Alternative: `exp(log(x)/n)` for the positive
+   part; it is worse near 0.
+8. A result that `arb_is_finite` rejects is `NOT_DETERMINED` and is never stored (conventions 4.4, CV-08). So
+   `exp(2^1000)` is `NOT_DETERMINED` (measured; `exp(2^60)` is `OK`); alternative: `LIMIT` for an overflow of arb's
+   range. A `prec` below 2 is 2 (M1-D4). There is no upper bound on `prec` (as for `adf_adele_mul`).
+9. `adf_sball_set_arb_lballs` is a raw-data constructor (conventions 3.2: `OK`, `DOMAIN`); it also sorts, so that a
+   binding need not. It is what makes a partial ball of chosen components without an adele.
+
+### Statements S1 to S7 (to be merged into functions.md)
+
+Notation as in L0 to L8 above: `p` a prime, `v = v_p`, balls `c + p^N Z_p`. `Zhat = prod_q Z_q` over all primes `q`.
+A real ball `m +- r` (`arb`, exact midpoint `m` and radius `r >= 0`) is the closed interval `[m - r, m + r]`
+(`arb.rst`, lines 639 to 649: the predicates are stated for "all points p in the interval represented by x"). A
+partial ball is the set of the tuples described in `sball.h`.
+
+**S1 (projection of an adele to a set of places).** Let `x = (I ; F)` with `I` a real ball and `F = (A + H Zhat)/d`
+a finite ball, and let `S = {inf} u {p_1, ..., p_k}` or `S = {p_1, ..., p_k}` (distinct primes). The set of the
+tuples `(a_v)_{v in S}` of the coordinates of the elements of `I x F` is `I x prod_i B_i`, `B_i` the set of L1 at
+`p_i` (the exact rational `A/d` if `H = 0`, the ball `A/d + p^(e_i) Z_p` otherwise). The order of the factors is
+immaterial.
+
+*Proof.* An element of `I x F` is `(t, a + N z)` with `t` in `I`, `a = A/d`, `N = H/d`, `z` in `Zhat = prod_q Z_q`;
+its coordinates are `t` at the real place and `a + N z_q` at the prime `q`. The real coordinate `t` and the finite
+part `z` are independent (the set is a product). The coordinates `z_q` of `z` are independent too (`Zhat` is the
+product), so for the distinct primes `p_1, ..., p_k` every tuple `(z_{p_1}, ..., z_{p_k})` in `prod Z_{p_i}` occurs
+(the other coordinates are chosen as 0). Hence the set of tuples of `(a + N z_{p_i})_i` is `prod_i (a + N Z_{p_i})`,
+and each factor is the set of L1. The coordinates at the primes outside `S` are not part of the tuple, and they are
+not constrained: nothing else is claimed. Each factor is stored by L0. *Check:* `check_sball_projection_enumeration`
+(600 cases: every point `A/d + H z/d`, `z < p^2`, lies in the component and the `p` classes modulo the next digit
+are all met), the vectors `sball_project.jsonl`, the enumeration `projection_enumeration` in `tests/test_sball.c`.
+
+**S2 (order and sets of places).** The canonical order is `inf` first, then the primes increasing (conventions 7). A
+constructor accepts any order, sorts, and rejects a repeated place: the set of places is a set. The tuples over two
+different sets of places are elements of different spaces; no function of the slice compares or combines them
+(`DOMAIN` for the operations, 0 for the predicates).
+
+**S3 (componentwise ring operations).** Let `X = prod_{v in S} X_v` and `Y = prod_{v in S} Y_v` be partial balls
+over the same `S`, and `o` one of `+`, `-`, `.`. Then `{x o y : x in X, y in Y} = prod_{v in S} {x_v o y_v : x_v in
+X_v, y_v in Y_v}`, and the same for `-x`.
+
+*Proof.* The operations of the ring `prod_v Q_v` (with `Q_inf = R`) act coordinatewise, so the tuple of results of
+`(x, y)` is `(x_v o y_v)_v`. The choices of `(x_v, y_v)` at the different places are independent because `X` and `Y`
+are products, so every tuple of results of one point pair at each place is the result of a pair of points of `X` and
+`Y`, and conversely. At a prime the factor is a ball or a point, and its smallest enclosing ball is the result of
+L2, L3, L5 (the factor itself is that ball). At the real place the factor is the interval of results of the interval
+operation, `[lo + lo', hi + hi']`, `[lo - hi', hi - lo']`, `[min P, max P]` with `P` the four products of end points
+(Moore); `arb_add`, `arb_sub`, `arb_mul` return a ball that contains it (`arb.rst`, lines 767, 785, 798) with a
+radius at most the exact half width plus a rounding term (the tests assert: at most the width, times two for a
+product, plus `2^(4 - prec)` of the largest end point, plus the `2^-29` relative rounding of a `mag`). So the result
+contains the set of results, and at the primes equals it. *Check:* `check_sball_tuple_enumeration` (21600 tuple
+coordinates), the vectors `sball_ops.jsonl`, `tuples_of_points_through_the_operations` in `tests/test_sball.c`
+(48000 coordinates, over places `{inf, 2, 3, 5, 7}`: a tuple of results lies in the result component at every place,
+which pairs the components of the two operands correctly).
+
+**S4 (set predicates).** For nonempty sets `X = prod X_v`, `Y = prod Y_v` over the same `S`: `X = Y` iff `X_v = Y_v`
+for all `v`; `X` meets `Y` iff `X_v` meets `Y_v` for all `v`; `X` is inside `Y` iff `X_v` is inside `Y_v` for all
+`v`. For a real ball the sets are closed intervals with exact end points: equal iff each contains the other
+(`arb_contains`, `arb.rst` line 668, which is exact), meeting iff `max(lo, lo') <= min(hi, hi')` (`arb_overlaps`,
+line 651), inside iff `arb_contains`. A complex ball is the product of two intervals: the same with `acb_contains`,
+`acb_overlaps`. At a prime L8 applies.
+
+*Proof.* Products of nonempty sets: `X = Y` iff the projections agree (a product is determined by its factors, and
+the factors are nonempty); a tuple in `X` and `Y` has each coordinate in `X_v` and `Y_v`, and conversely a choice of
+a common point at each place gives a common tuple; `X` inside `Y` gives each projection inside, and conversely each
+tuple of `X` has its coordinates in the `Y_v`. *Check:* `sball_pred.jsonl` (1200 rows, both argument orders) and
+`predicates_by_hand`.
+
+**S5 (domains and statuses of the real functions).** For a real ball `B` with end points `lo <= hi`: `log` has the
+domain `t > 0`: `B` inside the domain iff `lo > 0`, disjoint iff `hi <= 0`; `log_abs` (`log |t|`) has `t != 0`:
+inside iff `lo > 0` or `hi < 0`, disjoint iff `lo = hi = 0`; `sqrt` and the roots of even degree have `t >= 0`:
+inside iff `lo >= 0`, disjoint iff `hi < 0`; `exp`, `sin`, `cos` and the roots of odd degree have the domain R. The
+wrapper returns `OK` when `B` is inside, `DOMAIN` when it is disjoint, `NOT_DETERMINED` otherwise (conventions 3.1:
+"a ball that meets both the domain and its complement gives `ADF_NOT_DETERMINED`"). `arb_is_positive`,
+`arb_is_nonnegative`, `arb_is_negative`, `arb_is_nonpositive` decide exactly these conditions on `lo` and `hi`
+(`arb.rst`, lines 639 to 649).
+
+*Proof.* Each clause is the definition of the domain applied to the closed interval. `log_abs`: `t = 0` is the only
+excluded point of R, and `B` contains it iff `lo <= 0 <= hi`; `B` is inside the domain iff it avoids it, and is
+disjoint from the domain iff `B = {0}`. *Check:* `rf_status` in the reference (exact rationals), the vectors
+`rfunc_real.jsonl` (the status of every line, decided on the exact end points), the table test `domain_table`.
+
+**S6 (the image of a ball by the end points).** Let `f` be continuous and increasing on an interval `J` that
+contains `B = [lo, hi]`. Then `f(B) = [f(lo), f(hi)]`, and any ball that contains `f(lo)` and `f(hi)` contains
+`f(B)`. The `n`-th root is increasing on `R` for odd `n` and on `[0, infinity)` for even `n` (Proposition 14, step
+1: `x^n` is strictly increasing on `[0, infinity)`; step 2: the odd power is odd, so the root is odd and increasing
+on `R`). Consequences used: (a) for odd `n` and `hi < 0`: `root(t) = -root(-t)`, so the image is the negation of the
+image of `-B`; (b) for `B` that contains 0, and outer end points `a <= lo`, `b >= hi` (so `a <= 0 <= b`), the image
+lies in `[root(a), root(b)] = [-root(-a), root(b)]` (odd `n`), resp. `[0, root(b)]` (even `n`, where `lo = 0`
+exactly because `B` is inside the domain and contains 0); (c) the exact 0 has the root 0 for every `n >= 1`.
+`arb_root_ui` is applied only to a strictly positive ball or a strictly positive exact point (the probe of lane
+d-functions found NaN for the odd root of a negative ball and of 0: arb.rst line 979 states the error bound for `0
+<= r <= m`). `exp`, `log`, `sin`, `cos` are the `arb` functions (`arb.rst` lines 1082, 1050, 1101, 1103): the
+enclosure of the image by `arb`, not tight; the tests bound the radius by 4 times the true width where the function
+is monotone on the ball and the ball is small relative to the point (`exp`: radius at most 1; `log`, `sqrt`, roots:
+radius at most half the midpoint; `sin`, `cos`: radius at most 1/16 and derivative at least 3/4 at the midpoint) and
+otherwise by the Lipschitz bound (`sin`, `cos`: the output radius is at most the input radius plus `2^(4 - prec)`).
+
+*Proof.* The first sentence is the intermediate value theorem for a continuous increasing `f` (Lemma 2 of
+`functions.md`), and monotonicity gives the endpoints as extremes. (a) and (b) are consequences; in (b), `lo <= hi`,
+`a <= lo`, `hi <= b` and monotonicity give `root(lo) >= root(a)` and `root(hi) <= root(b)`. *Check:* the vectors
+`rfunc_real.jsonl` (1301 rows: the image of the ball is enclosed by mpmath intervals at 800 bits, or by exact
+integer roots; the result must contain it widened by `2^-350` of the largest end point),
+`odd_roots_of_negative_and_zero`, `known_values`. The reference is checked against `python-flint`'s `arb` at 300
+bits (`check_real_reference_against_arb`, 200 cases).
+
+**S7 (no non-finite ball with OK).** A wrapper that returns `OK` has written a ball for which `arb_is_finite` holds
+(conventions 4.4, row "Non-finite ball produced inside a computation from finite inputs": `NOT_DETERMINED`, CV-08).
+An input that is not finite is `DOMAIN` (a constructor-like invalid input, conventions 3.1). *Check:*
+`non_finite_inputs`, `huge_arguments_never_give_a_nonfinite_ok` (arguments up to `2^(2^62)`).
+
+### What the oracles are
+
+Projection: enumeration in C (S1) and the reference `lb_ref_project` of L1, which f-slice1 tested by enumeration.
+Operations: tuples of points (S3), the reference of L2 to L5 at the primes, exact interval arithmetic at the real
+place. Predicates: the reference of L8 at the primes, exact end points at the real place. Real functions: mpmath
+intervals at 800 bits and exact integer roots (no `arb` in the reference), the status decided on exact rational end
+points, and hand tests of what `arb` does badly.

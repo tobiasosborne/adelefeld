@@ -1,0 +1,54 @@
+# lane f-slice2: red and green runs (2026-09-29/30)
+
+RED 1: make -j2 build/test_sball build/test_rfunc with headers and tests, and no src/sball.c, no src/rfunc.c:
+  link error, 386 lines "undefined reference" (every function of sball.h and rfunc.h). Both test files had compiled with
+  -Wall -Wextra -Wpedantic -Werror first (test-file errors repaired before this run: jsonl_is_null takes two
+  arguments; mag_get_fmpz_2exp_fmpz does not exist in FLINT 3.0.1).
+
+RED 2: stub src/sball.c and src/rfunc.c (init and clear only; predicates 0; num_places and arch -1; every other
+  function returns ADF_UNSUPPORTED). Every failure of the two test programs is an assertion. (Runs of the stub that
+  died with SIGSEGV, because a test dereferenced the NULL array the stub left, are not counted: guards were added to
+  the tests first, then this run.)
+
+--- build/test_rfunc:
+FAIL vectors_real (tests/test_rfunc.c:306, 6502 failed checks)
+FAIL odd_roots_of_negative_and_zero (tests/test_rfunc.c:325, 11 failed checks)
+FAIL non_finite_inputs (tests/test_rfunc.c:389, 32 failed checks)
+ok   huge_arguments_never_give_a_nonfinite_ok
+FAIL prec_below_two_is_two (tests/test_rfunc.c:477, 20 failed checks)
+FAIL domain_table (tests/test_rfunc.c:510, 55 failed checks)
+FAIL known_values (tests/test_rfunc.c:569, 14 failed checks)
+FAIL sball_at_statuses_and_places (tests/test_rfunc.c:629, 43 failed checks)
+8 tests, 38134 checks, 6677 failed checks, 7 failed tests
+
+--- build/test_sball:
+FAIL layout_and_init (tests/test_sball.c:308, 1 failed checks)
+FAIL set_swap_identical (tests/test_sball.c:323, 8 failed checks)
+FAIL is_canonical_rejects_each_clause (tests/test_sball.c:396, 14 failed checks)
+FAIL set_arb_lballs (tests/test_sball.c:527, 15 failed checks)
+FAIL accessors (tests/test_sball.c:634, 23 failed checks)
+FAIL vectors_project (tests/test_sball.c:801, 504 failed checks)
+FAIL projection_enumeration (tests/test_sball.c:810, 209627 failed checks)
+FAIL project_orders_and_statuses (tests/test_sball.c:907, 17 failed checks)
+FAIL project_limit_names_the_first_failing_prime (tests/test_sball.c:993, 3 failed checks)
+FAIL vectors_predicates (tests/test_sball.c:1083, 1668 failed checks)
+FAIL predicates_by_hand (tests/test_sball.c:1090, 10 failed checks)
+FAIL vectors_ops (tests/test_sball.c:1336, 1300 failed checks)
+FAIL tuples_of_points_through_the_operations (tests/test_sball.c:1502, 1601 failed checks)
+FAIL domain_unsupported_and_where (tests/test_sball.c:1601, 158 failed checks)
+FAIL limit_names_the_first_failing_prime (tests/test_sball.c:1685, 14 failed checks)
+FAIL the_example_of_the_brief (tests/test_sball.c:1800, 12 failed checks)
+16 tests, 723867 checks, 214975 failed checks, 16 failed tests
+
+  Note: huge_arguments_never_give_a_nonfinite_ok passes under the stub (every status is UNSUPPORTED and the output is
+  untouched, which that test allows). It bites only on a wrong OK (fault 21 of bite.log).
+
+GREEN: real src/rfunc.c and src/sball.c.
+  test_rfunc, first run: 8 tests, 59145 checks, 0 failed checks.
+  test_sball, first run: 16 tests, 873696 checks, 11 failed checks, all in vectors_ops: the test's bound for the radius
+    of a real result ignored that arb's mag rounds a radius up by a relative 2^-29 (a defect of the test; repaired by
+    adding 2^-25 of the bound, the bound is otherwise unchanged).
+  test_sball after the repair: 16 tests, 873696 checks, 0 failed checks (12.3 s, of which 12.2 s in
+    project_limit_names_the_first_failing_prime: adf_lball_set_fball at p = 3 on an 87-million-bit H).
+  tests/julia/sball.jl: written after the C code was green, not run red. Run against the built library: 35 of 35.
+  Debug build (make clean; make build/test_sball build/test_rfunc INV=1): 59145 and 873696 checks, 0 failed.
