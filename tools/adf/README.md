@@ -66,6 +66,9 @@ that the one chosen is unambiguous.
 | `cap` | two, a finite ball and a rational | the absolute cap (SPEC 4.4 item 3) |
 | `dump` | one | the dump form of the value (conventions 10.1) |
 | `load` | one | read a dump form, print the value in the value form (conventions 10) |
+| `roots` | three: a polynomial, a prime, a precision | the roots of the polynomial in `Z_p` (SPEC 9.1) |
+| `realroots` | one: a polynomial | the real roots of the polynomial, in isolating balls (SPEC 9.1) |
+| `recover` | three: a finite ball and two bounds | the rational of a residue class in a box (SPEC 9.2) |
 | `prec <bits>` | a setting | the precision of the real coordinate, 1 to `ADF_PRINT_EXP_MAX`, default 64 |
 | `digits <n>` | a setting | the digits of the real-ball printer, 1 to 1000000, default 20 (`ADF_DIGITS_DEFAULT`) |
 
@@ -106,6 +109,76 @@ read by the loader of `adf_rat`, whose status is then the status of the text: th
 the field and the syntax of section 10.1 do not depend on the body.  The dump form has no
 whitespace other than the single spaces of its tokens (conventions 8.2), so `load` does not
 trim its operand.
+
+### The commands of the solvers: `roots`, `realroots` and `recover`
+
+These three commands of `docs/SPEC.md` 9.1 and 9.2 (milestone S) read operands that the value
+form of conventions 9.2 does not have in every position, so they have a reading of their own.
+The grammar of the line is unchanged: one operation name and one to three operands separated by
+` with `, and a wrong number of operands is `error: PARSE` as for every other command.
+
+**The polynomial operand.**  A polynomial is its integer coefficients in decimal, separated by
+single spaces, the constant term first, at least one coefficient: `-2 0 1` is `X^2 - 2`.  A
+leading `-` is allowed on a coefficient, a leading `+` is not, and a decimal point, an
+exponent and a second space are not: an operand that is not of that form is `error: PARSE`, the
+status the driver gives a text it cannot read (conventions 8.5, stage 1).  The zero polynomial
+is `error: DOMAIN`, the domain of every function of `include/adelefeld/roots.h` ("Statuses",
+edit E-C1).  A line is at most 65536 bytes, so a coefficient of 100000 digits gives
+`error: LIMIT` for the line and the polynomial is never read
+(`tests/driver/s-hostile.cmd` has both a coefficient of 100000 digits and one of 60000).
+
+**`roots POLY with P with K`.**  `P` and `K` are exact rationals of the value form, read by
+`adf_rat_set_str`, and they must be integers.  The command calls `adf_roots_padic` with the
+depth `64` and prints the roots in the order of the list, separated by `; `, each as
+`A mod P^K` with `A` the centre of the certificate in `[0, P^K)` and `K` the precision of that
+certificate, which is `max(K_of_the_command, s + 1)` for a root whose `s = v_p(g'(alpha))` is
+`s` (include/adelefeld/roots.h, D3.2), so the `K` of a line is not always the `K` of its
+entries.  An empty complete list is the word `none`; an empty list is the answer of the function
+and not a failure.
+
+The statuses: `P` below 2, negative, or not below `2^64` is `error: DOMAIN`, because a place
+holds a prime of one word (conventions 7, `include/adelefeld/place.h:38-40`), and a composite
+`P` is `error: DOMAIN` from `adf_place_prime` itself; `K` below 1 is `error: DOMAIN`, the
+domain of the function; a `K` that does not fit in a `slong`, the type of the `prec_p` argument,
+is `error: LIMIT`, the status of a size bound (conventions 3.1), the status of a `prec` setting
+above `ADF_PRINT_EXP_MAX` as well; and `error: LIMIT` is also what the function returns when
+`2 K bits(P)` is above `ADF_ROOTS_BITS_MAX` (decision S-D18), for example
+`roots -2 0 1 with 7 with 3000000`.
+
+**`realroots POLY`.**  The command calls `adf_roots_real` at the setting `prec` and prints the
+balls in the order of the list, separated by `; `, and the word `none` for a list without a
+root.  Each ball is printed as the driver prints a real part, that is with the real-ball
+printer of conventions 9.5 and the setting `digits`.
+
+**`recover C mod M with A with B`.**  The first operand is a finite ball of the value form, whose
+canonical global triple is `(C, M, 1)`, and the command reads the residue class `P(M, C)` of it
+with `adf_resid_set_fball_forget`; `A` and `B` are exact rationals that must be integers and
+may be of any size, since `adf_resid_reconstruct` takes `fmpz` arguments.  The command passes
+the search limit `1000` and prints the unique solution `n/d` as the driver prints a rational
+(`n` alone when `d = 1`, conventions 9.4).  The statuses are those of the function:
+`error: NO_SOLUTION` (no solution, which includes the empty box `A < 0` or `B < 1`, decision
+S-D5), `error: NOT_UNIQUE` (at least two solutions), `error: NOT_DETERMINED` (the search limit
+ended the search before the set was decided, so uniqueness is not certified), `error: DOMAIN`
+for a bound that is not an integer, and `error: DOMAIN` from `adf_resid_set_fball_forget` for an
+exact ball, since a single rational is in no residue class with `M > 1`.  The command `reconstruct`
+keeps its name and its one and three operand forms: the two names are different operations.
+
+**The first operand of `recover` must be a finite ball.**  As for `cap` below, an adele or a
+complex adele is `error: UNSUPPORTED` and a rational is `error: DOMAIN`.
+
+**The order of the checks** is the order of the section below, with the polynomial in the place
+of the first operand: the syntax of every operand in order (the polynomial by its own parser,
+the others by `adf_text_classify`), then the kind of every operand that has one, then the value
+of every operand in order, then the operation: the zero polynomial, the two integers, the prime
+and the precision, and the domain of the function.  So a limit of the second operand is reported
+before a domain error of the third, and the zero polynomial is reported before the prime.
+
+**One line of the test depends on FLINT 3.0.1.**  The two-digit text of an isolating ball of
+`realroots` depends on which ball the isolation of FLINT returns, and one line of
+`tests/driver/s-realroots.cmd` is such a line.  It is checked by `lanes/drv-s/real_check.py`,
+which applies the algorithm of conventions 9.5 to the exact dyadic midpoint and radius that
+`lanes/drv-s/real_probe.c` reads out of the list, in exact rational arithmetic and written from
+the algorithm; see the comment of that command.
 
 ### Types of the operands, and the pairs that are refused
 
