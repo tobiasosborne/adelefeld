@@ -288,6 +288,10 @@ def check_big(br, rng, n):
         K = max(prec, s + 1)
         want.append((r % p ** K, K, s))
     want.sort()
+    ft = S.ptrim(f)
+    reduced = 1 if len(ft) > 1 and len(g) < len(ft) else 0       # independent of normalise of the library
+    if P["reduced"] != reduced:
+        fails.append(f"reduced {P['reduced']}; the degree drop from f to the oracle g gives {reduced}")
     if P["g"] != g or P["scope"] != 0 or P["complete"] != (1 if complete else 0):
         fails.append(f"g = {P['g']}, scope {P['scope']}, complete {P['complete']}; oracle {g}, {complete}")
     for c in P["certs"]:

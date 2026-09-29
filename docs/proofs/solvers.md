@@ -1238,8 +1238,8 @@ Algorithm P. Input: `f` not zero, a prime `p`, a requested precision `k_req >= 1
 1. Divide `f` by the largest power of `p` that divides all its coefficients.
 2. The list `L` of certificates and the list `U` of unresolved classes are empty; the class `(a, e) = (0, 0)`
    is open.
-3. For an open class `(a, e)`: compute `w` and `g` of Proposition 3.4. For every `b` in `[0, p)` with
-   `g(b) = 0` modulo `p`:
+3. For an open class `(a, e)`: compute `w` and `g` of Proposition 3.4. Find the complete list of the roots
+   `b` of `g` modulo `p` by either method of Proposition 3.7. For each root `b` in that list:
    - if `g'(b)` is not `0` modulo `p`: let `s = w - e`, `j = max(1, w - 2 e + 1)`; lift `b` to `beta_j` with
      `g(beta_j) = 0` modulo `p^j` by Proposition 3.3 applied to `g` (certificate `(b, 1, 0)`); form the
      certificate of 3.4(3) with `k = e + j`; lift it by Proposition 3.3 until `k >= K = max(k_req, s + 1)`;
@@ -1267,8 +1267,14 @@ Claim:
 6. (Termination.) The algorithm ends for every `D`. If `f` has no multiple root in `Z_p`, there is a `D_0`
    such that `U` is empty for every `D >= D_0`. This holds in particular if `gcd(f, f') = 1` in `Q[X]`, and
    for the squarefree part of any `f` (Lemma 3.1(2)).
-7. Cost: for each class opened, `p` evaluations of `g` and `g'` modulo `p` and one change of variable; for
-   each root, the lifting of 3.3.
+7. Cost: for each class opened, find the roots of its current polynomial g modulo p. The evaluation
+   method of Proposition 3.7(1) uses p evaluations of g. The degree method of Proposition 3.7(2) uses
+   O(log p) polynomial products and reductions modulo g, one polynomial gcd, the root finding of d,
+   and deg d evaluations of g to check the candidates. For g constant, d = 1 and the list is empty.
+   FLINT's root finding uses repeated pseudorandom splitting; no worst-case time bound is asserted.
+   After either method, evaluate g' once for each root found. For each child opened, make one change
+   of variable and remove its content at p. For each certified root, perform the lifting of 3.3.
+   These counts exclude coefficient bit costs and the sorting of the output lists.
 
 *Proof.* A class `(a, e)` is opened only if it is `(0, 0)` or the child `(a' + p^(e-1) b, e)` of an opened
 class `(a', e - 1)` with `b` a root modulo `p` of `g_(a', e-1)` and `g'(b) = 0` modulo `p`. The children of a
@@ -1307,7 +1313,12 @@ Proposition 3.4(4). Consequence: a root certified at level `e` has `s = w - e >=
    `v(f'(a_e)) >= w - e >= e`. The `a_e` converge in `Z_p` to a point `alpha` (fact (S1) of
    `proofs/quotient.md`), and `f(alpha) = f'(alpha) = 0`: a multiple root. Contradiction. If
    `gcd(f, f') = 1` there are `u, v` in `Q[X]` with `u f + v f' = 1`, so `f` and `f'` have no common root.
-7. Count.
+7. For evaluation, count the residues. For the degree method, binary powering processes the bits of p
+   (refs/src/flint-src-3.0.1/nmod_poly/powmod_ui_binexp.c:40 to 48), so it uses O(log p) products and
+   reductions. The gcd is computed once. The accepted candidate list has length deg d, and each
+   candidate is evaluated once. Step 3 evaluates the derivative only at those roots, makes a change
+   of variable only when a child is opened, and applies 3.3 only when a root is certified. Root finding
+   itself has no finite retry bound in the cited source; its repeated splitting cost stays separate.
 
 Check: `check_s2_descent` (31 named cases, depth limits 0, 1, 3, 8: disjointness; every `x` modulo `p^M` with
 `f(x) = 0` modulo `p^M`, found by enumeration, lies in exactly one ball or class; every certified ball
@@ -1375,11 +1386,29 @@ Hypotheses: `p` prime, `g` a polynomial over `F_p`, not zero. Claim:
    at most `deg d` roots and `q` at most `deg q = p - deg d` ((Roots), Theorem 7.14). So
    `p <= #roots(d) + #roots(q) <= deg d + (p - deg d) = p`, and `d` has exactly `deg d` roots.
 
-Decision S-D10 (TJO, 2026-09-29): the root finder accepts every prime, and a bound on `p` is a property of a
-slice of the implementation, not of the library. A first slice uses 1 for `p` up to a bound that its header
-calls temporary and returns `UNSUPPORTED` above it; a later slice uses 2 for larger primes, with no bound of one
-word, and the bound is then the point where the method changes, set by a benchmark.
-`[source pending: flint-3.0.1 fmpz_mod_poly.rst, fmpz_mod_poly_factor.rst, nmod_poly.rst (for nmod_poly_powmod, nmod_poly_gcd and the root finding)]`
+Decision S-D10 (TJO, 2026-09-29): the root finder accepts every prime that a place can hold. The place type
+holds the primes below 2^64, each proved prime by adf_place_prime; it is not widened. A bound on p is a
+property of an implementation slice. In the implemented slice, p <= ADF_ROOTS_P_EVAL_MAX = 128 uses 1;
+larger primes use 2. The bound is the point where the method changes, measured by bench/bench_roots_modp.c.
+For each class polynomial h of Algorithm P, its content at p is removed, so h modulo p is not zero
+(Proposition 3.4). Form t = X^p modulo h by nmod_poly_powmod_ui_binexp and d = gcd(h, t - X) by
+nmod_poly_gcd. Since t - X = X^p - X modulo h, this d is the gcd of h and X^p - X. For h constant, take d = 1.
+The candidates are the roots of d returned as linear factors by nmod_poly_roots(r, d, 0). Accept them only
+when they are distinct residues in [0, p), every candidate evaluates to zero in h, and their number is
+deg d. Proposition 3.7(2) then proves completeness. A refused list aborts under S-D20.
+The correctness of the powering, gcd, coefficient reduction and modular evaluation is trusted in FLINT.
+The candidate test checks the root finder's output; it does not independently certify deg d. In particular,
+a wrong gcd of smaller degree can cause an incomplete list to pass. The completeness verifier repeats the
+same count and therefore has the same trust base.
+Sources on disk: refs/src/flint-3.0.1/nmod_poly.rst:858 to 861 and 1716 to 1721;
+refs/src/flint-src-3.0.1/nmod_poly/powmod_ui_binexp.c:26 to 52 and 67 to 88;
+refs/src/flint-src-3.0.1/nmod_poly/gcd.c:16 to 24 and 27 to 74;
+refs/src/flint-src-3.0.1/nmod_poly_factor/roots.c:17 to 19 and 148 to 204;
+refs/src/flint-src-3.0.1/nmod_poly/find_distinct_nonzero_roots.c:15 to 51.
+The root routine retries a random split until proper; it returns no failure status or finite time bound.
+flint_randinit uses fixed seeds (refs/src/flint-src-3.0.1/flint.h.in:245 to 250). The implementation therefore
+uses a fixed pseudorandom sequence. The algorithm's random-shift analysis is not a worst-case time bound
+for that sequence. No fmpz_mod_poly source is needed for this one-word implementation.
 
 Check: `check_s2_count_mod_p` (458 polynomials, `p` up to 257, against the evaluation at all residues).
 Used by: Proposition 3.5 (step 3 of Algorithm P).
