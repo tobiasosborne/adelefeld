@@ -1,0 +1,30 @@
+mutate: src/cap.c: 41 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (44.7 s)
+
+NOT COMPILED src/cap.c:152:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:142:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:134:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:124:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+EXCUSED src/cap.c:100:5 swap_args: 'fmpq_gcd(gq, Nq, Cq)' -> 'fmpq_gcd(gq, Cq, Nq)'
+  fmpq_gcd(gq, Nq, Cq) against fmpq_gcd(gq, Cq, Nq): the gcd of (p, q) and (r, s) is the canonical form of gcd(p s, q r)/(q s), which is symmetric in the two arguments (refs/src/flint-3.0.1/fmpq.rst:509-514); gq is a temporary, so no input is written
+
+EXCUSED src/cap.c:169:5 swap_args: 'adf_fball_mul(t, x, y)' -> 'adf_fball_mul(t, y, x)'
+  adf_fball_mul computes the tight set product with radius gcd(a M, b N, N M) (docs/proofs/precision.md Proposition 2, line 34), symmetric in (a, N) and (b, M); the local branch tests gcd(gcd(r_i, s_i), q_i) and multiplies the denominators and the residues, all symmetric, and the global one is fb_mul_global (src/fball.c:715-745, 762-808), so the same ball is written; the output may be an input (include/adelefeld/fball.h:23)
+
+NOT COMPILED src/cap.c:190:5 drop_assign: 'status = adf_fball_cap(y, t, C);' -> '' (the statement is removed)
+  src/cap.c:180:35: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:106:5 drop_assign: 'status = adf_fball_set_center_radius(y, c, g);' -> '' (the statement is removed)
+  src/cap.c:112:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+EXCUSED src/cap.c:133:5 swap_args: 'adf_fball_add(t, x, y)' -> 'adf_fball_add(t, y, x)'
+  adf_fball_add computes the set sum (a + N Zhat) + (b + M Zhat) = (a + b) + gcd(N, M) Zhat (docs/proofs/precision.md Proposition 1, line 27) in every branch, with the same backend test for both orders (fb_same_local is symmetric), the local sum through the lcm of the two denominators and the global one through fmpq_add and fmpq_gcd (src/fball.c:201-224, 600-628), so the same ball is written; the output may be an input (include/adelefeld/fball.h:23)
+
+NOT COMPILED src/cap.c:170:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:160:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+mutate: 41 mutants in 1158.2 s: 33 killed, 0 survived, 5 not compiled, 0 timed out, 3 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

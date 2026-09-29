@@ -1,0 +1,4 @@
+mutate: src/common.c: 59 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (40.4 s)
+mutate: stopped by signal 15: 2 running command(s) killed, scratch removed

@@ -1,0 +1,51 @@
+mutate: src/rat.c: 56 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (45.2 s)
+
+NOT COMPILED src/rat.c:121:5 drop_call: 'fmpq_one(x->q);' -> '' (the statement is removed)
+  src/rat.c:119:23: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:282:5 drop_call: 'fmpq_div(z->q, x->q, y->q);' -> '' (the statement is removed)
+  src/rat.c:276:23: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:133:5 drop_call: 'fmpq_set_si(x->q, n, 1);' -> '' (the statement is removed)
+  src/rat.c:131:26: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:158:5 drop_call: 'fmpq_set_fmpz_frac(x->q, num, den);' -> '' (the statement is removed)
+  src/rat.c:154:29: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:245:5 drop_call: 'fmpq_sub(z->q, x->q, y->q);' -> '' (the statement is removed)
+  src/rat.c:241:23: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:255:5 drop_call: 'fmpq_mul(z->q, x->q, y->q);' -> '' (the statement is removed)
+  src/rat.c:251:23: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+EXCUSED src/rat.c:255:5 swap_args: 'fmpq_mul(z->q, x->q, y->q)' -> 'fmpq_mul(z->q, y->q, x->q)'
+  fmpq_mul(z->q, x->q, y->q) against the exchange: the product of two rationals does not depend on the order (refs/src/flint-3.0.1/fmpq.rst:400-409); aliasing between any combination of the variables is allowed (refs/src/flint-3.0.1/fmpq.rst:409), and the exchange changes none
+
+EXCUSED src/rat.c:235:5 swap_args: 'fmpq_add(z->q, x->q, y->q)' -> 'fmpq_add(z->q, y->q, x->q)'
+  fmpq_add(z->q, x->q, y->q) against the exchange: the sum of two rationals does not depend on the order (refs/src/flint-3.0.1/fmpq.rst:400-409); aliasing between any combination of the variables is allowed (refs/src/flint-3.0.1/fmpq.rst:409), and the exchange changes none
+
+NOT COMPILED src/rat.c:305:5 drop_call: 'fmpq_div(y->q, one, x->q);' -> '' (the statement is removed)
+  src/rat.c:296:23: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:265:5 drop_call: 'fmpq_neg(y->q, x->q);' -> '' (the statement is removed)
+  src/rat.c:262:23: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:142:5 drop_call: 'fmpq_set_fmpz(x->q, n);' -> '' (the statement is removed)
+  src/rat.c:140:28: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:69:5 drop_call: 'fmpq_set(y->q, x->q);' -> '' (the statement is removed)
+  src/rat.c:66:23: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:186:5 drop_call: 'fmpq_set(q, x->q);' -> '' (the statement is removed)
+  src/rat.c:183:25: error: unused parameter ‘q’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:235:5 drop_call: 'fmpq_add(z->q, x->q, y->q);' -> '' (the statement is removed)
+  src/rat.c:231:23: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/rat.c:113:5 drop_call: 'fmpq_zero(x->q);' -> '' (the statement is removed)
+  src/rat.c:111:24: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+mutate: 56 mutants in 1458.4 s: 41 killed, 0 survived, 13 not compiled, 0 timed out, 2 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

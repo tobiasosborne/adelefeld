@@ -1,0 +1,255 @@
+mutate: src/status.c: 34 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (45.2 s)
+
+NOT COMPILED src/status.c:27:27 cmp: '==' -> '!='
+  src/status.c:27:1: error: static assertion failed: "conventions 3.1: ADF_DOMAIN is 7"
+
+SURVIVED src/status.c:24:1 drop_call: '_Static_assert(ADF_NOT_UNIQUE == 4, "conventions 3.1: ADF_NOT_UNIQUE is 4");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -22,5 +22,5 @@
+   _Static_assert(ADF_UNIT_NOT_CERTIFIED == 2, "conventions 3.1: ADF_UNIT_NOT_CERTIFIED is 2");
+   _Static_assert(ADF_NEEDS_SPLIT == 3, "conventions 3.1: ADF_NEEDS_SPLIT is 3");
+  -_Static_assert(ADF_NOT_UNIQUE == 4, "conventions 3.1: ADF_NOT_UNIQUE is 4");
+  +
+   _Static_assert(ADF_NO_SOLUTION == 5, "conventions 3.1: ADF_NO_SOLUTION is 5");
+   _Static_assert(ADF_NOT_UNIT == 6, "conventions 3.1: ADF_NOT_UNIT is 6");
+
+
+SURVIVED src/status.c:25:1 drop_call: '_Static_assert(ADF_NO_SOLUTION == 5, "conventions 3.1: ADF_NO_SOLUTION is 5");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -23,5 +23,5 @@
+   _Static_assert(ADF_NEEDS_SPLIT == 3, "conventions 3.1: ADF_NEEDS_SPLIT is 3");
+   _Static_assert(ADF_NOT_UNIQUE == 4, "conventions 3.1: ADF_NOT_UNIQUE is 4");
+  -_Static_assert(ADF_NO_SOLUTION == 5, "conventions 3.1: ADF_NO_SOLUTION is 5");
+  +
+   _Static_assert(ADF_NOT_UNIT == 6, "conventions 3.1: ADF_NOT_UNIT is 6");
+   _Static_assert(ADF_DOMAIN == 7, "conventions 3.1: ADF_DOMAIN is 7");
+
+
+NOT COMPILED src/status.c:23:32 cmp: '==' -> '!='
+  src/status.c:23:1: error: static assertion failed: "conventions 3.1: ADF_NEEDS_SPLIT is 3"
+
+SURVIVED src/status.c:27:1 drop_call: '_Static_assert(ADF_DOMAIN == 7, "conventions 3.1: ADF_DOMAIN is 7");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -25,5 +25,5 @@
+   _Static_assert(ADF_NO_SOLUTION == 5, "conventions 3.1: ADF_NO_SOLUTION is 5");
+   _Static_assert(ADF_NOT_UNIT == 6, "conventions 3.1: ADF_NOT_UNIT is 6");
+  -_Static_assert(ADF_DOMAIN == 7, "conventions 3.1: ADF_DOMAIN is 7");
+  +
+   _Static_assert(ADF_UNSUPPORTED == 8, "conventions 3.1: ADF_UNSUPPORTED is 8");
+   _Static_assert(ADF_PARSE == 9, "conventions 3.1: ADF_PARSE is 9");
+
+
+SURVIVED src/status.c:21:1 drop_call: '_Static_assert(ADF_NOT_DETERMINED == 1, "conventions 3.1: ADF_NOT_DETERMINED is 1");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -19,5 +19,5 @@
+      rule of 3.3 is the maximum, which is why the order matters and not only the values. */
+   _Static_assert(ADF_OK == 0, "conventions 3.1: ADF_OK is 0");
+  -_Static_assert(ADF_NOT_DETERMINED == 1, "conventions 3.1: ADF_NOT_DETERMINED is 1");
+  +
+   _Static_assert(ADF_UNIT_NOT_CERTIFIED == 2, "conventions 3.1: ADF_UNIT_NOT_CERTIFIED is 2");
+   _Static_assert(ADF_NEEDS_SPLIT == 3, "conventions 3.1: ADF_NEEDS_SPLIT is 3");
+
+
+SURVIVED src/status.c:22:1 drop_call: '_Static_assert(ADF_UNIT_NOT_CERTIFIED == 2, "conventions 3.1: ADF_UNIT_NOT_CERTIFIED is 2");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -20,5 +20,5 @@
+   _Static_assert(ADF_OK == 0, "conventions 3.1: ADF_OK is 0");
+   _Static_assert(ADF_NOT_DETERMINED == 1, "conventions 3.1: ADF_NOT_DETERMINED is 1");
+  -_Static_assert(ADF_UNIT_NOT_CERTIFIED == 2, "conventions 3.1: ADF_UNIT_NOT_CERTIFIED is 2");
+  +
+   _Static_assert(ADF_NEEDS_SPLIT == 3, "conventions 3.1: ADF_NEEDS_SPLIT is 3");
+   _Static_assert(ADF_NOT_UNIQUE == 4, "conventions 3.1: ADF_NOT_UNIQUE is 4");
+
+
+SURVIVED src/status.c:42:1 drop_call: '_Static_assert(ADF_CMP_DIFFERENT == 1, "conventions 2.1: ADF_CMP_DIFFERENT is 1");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -40,4 +40,4 @@
+      adf_status_str. */
+   _Static_assert(ADF_CMP_EQUAL == 0, "conventions 2.1: ADF_CMP_EQUAL is 0");
+  -_Static_assert(ADF_CMP_DIFFERENT == 1, "conventions 2.1: ADF_CMP_DIFFERENT is 1");
+  +
+   _Static_assert(ADF_CMP_UNDECIDED == 2, "conventions 2.1: ADF_CMP_UNDECIDED is 2");
+
+
+NOT COMPILED src/status.c:25:32 cmp: '==' -> '!='
+  src/status.c:25:1: error: static assertion failed: "conventions 3.1: ADF_NO_SOLUTION is 5"
+
+SURVIVED src/status.c:29:1 drop_call: '_Static_assert(ADF_PARSE == 9, "conventions 3.1: ADF_PARSE is 9");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -27,5 +27,5 @@
+   _Static_assert(ADF_DOMAIN == 7, "conventions 3.1: ADF_DOMAIN is 7");
+   _Static_assert(ADF_UNSUPPORTED == 8, "conventions 3.1: ADF_UNSUPPORTED is 8");
+  -_Static_assert(ADF_PARSE == 9, "conventions 3.1: ADF_PARSE is 9");
+  +
+   _Static_assert(ADF_LIMIT == 10, "conventions 3.1: ADF_LIMIT is 10");
+   
+
+
+SURVIVED src/status.c:41:1 drop_call: '_Static_assert(ADF_CMP_EQUAL == 0, "conventions 2.1: ADF_CMP_EQUAL is 0");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -39,5 +39,5 @@
+      comparison that it "is not a status". A caller must not pass a comparison value to
+      adf_status_str. */
+  -_Static_assert(ADF_CMP_EQUAL == 0, "conventions 2.1: ADF_CMP_EQUAL is 0");
+  +
+   _Static_assert(ADF_CMP_DIFFERENT == 1, "conventions 2.1: ADF_CMP_DIFFERENT is 1");
+   _Static_assert(ADF_CMP_UNDECIDED == 2, "conventions 2.1: ADF_CMP_UNDECIDED is 2");
+
+
+NOT COMPILED src/status.c:22:39 cmp: '==' -> '!='
+  src/status.c:22:1: error: static assertion failed: "conventions 3.1: ADF_UNIT_NOT_CERTIFIED is 2"
+
+NOT COMPILED src/status.c:41:33 zero_one: '0' -> '1'
+  src/status.c:41:1: error: static assertion failed: "conventions 2.1: ADF_CMP_EQUAL is 0"
+
+NOT COMPILED src/status.c:43:34 cmp: '==' -> '!='
+  src/status.c:43:1: error: static assertion failed: "conventions 2.1: ADF_CMP_UNDECIDED is 2"
+
+SURVIVED src/status.c:43:1 drop_call: '_Static_assert(ADF_CMP_UNDECIDED == 2, "conventions 2.1: ADF_CMP_UNDECIDED is 2");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -41,3 +41,3 @@
+   _Static_assert(ADF_CMP_EQUAL == 0, "conventions 2.1: ADF_CMP_EQUAL is 0");
+   _Static_assert(ADF_CMP_DIFFERENT == 1, "conventions 2.1: ADF_CMP_DIFFERENT is 1");
+  -_Static_assert(ADF_CMP_UNDECIDED == 2, "conventions 2.1: ADF_CMP_UNDECIDED is 2");
+  +
+
+
+NOT COMPILED src/status.c:30:26 cmp: '==' -> '!='
+  src/status.c:30:1: error: static assertion failed: "conventions 3.1: ADF_LIMIT is 10"
+
+NOT COMPILED src/status.c:26:29 cmp: '==' -> '!='
+  src/status.c:26:1: error: static assertion failed: "conventions 3.1: ADF_NOT_UNIT is 6"
+
+NOT COMPILED src/status.c:20:23 cmp: '==' -> '!='
+  src/status.c:20:1: error: static assertion failed: "conventions 3.1: ADF_OK is 0"
+
+SURVIVED src/status.c:30:1 drop_call: '_Static_assert(ADF_LIMIT == 10, "conventions 3.1: ADF_LIMIT is 10");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -28,5 +28,5 @@
+   _Static_assert(ADF_UNSUPPORTED == 8, "conventions 3.1: ADF_UNSUPPORTED is 8");
+   _Static_assert(ADF_PARSE == 9, "conventions 3.1: ADF_PARSE is 9");
+  -_Static_assert(ADF_LIMIT == 10, "conventions 3.1: ADF_LIMIT is 10");
+  +
+   
+   /* The valid codes are 0 to ADF_STATUS_COUNT - 1 (the header; conventions 3.1 lists 11 of them). */
+
+
+NOT COMPILED src/status.c:20:26 zero_one: '0' -> '1'
+  src/status.c:20:1: error: static assertion failed: "conventions 3.1: ADF_OK is 0"
+
+NOT COMPILED src/status.c:42:34 cmp: '==' -> '!='
+  src/status.c:42:1: error: static assertion failed: "conventions 2.1: ADF_CMP_DIFFERENT is 1"
+
+NOT COMPILED src/status.c:28:32 cmp: '==' -> '!='
+  src/status.c:28:1: error: static assertion failed: "conventions 3.1: ADF_UNSUPPORTED is 8"
+
+SURVIVED src/status.c:28:1 drop_call: '_Static_assert(ADF_UNSUPPORTED == 8, "conventions 3.1: ADF_UNSUPPORTED is 8");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -26,5 +26,5 @@
+   _Static_assert(ADF_NOT_UNIT == 6, "conventions 3.1: ADF_NOT_UNIT is 6");
+   _Static_assert(ADF_DOMAIN == 7, "conventions 3.1: ADF_DOMAIN is 7");
+  -_Static_assert(ADF_UNSUPPORTED == 8, "conventions 3.1: ADF_UNSUPPORTED is 8");
+  +
+   _Static_assert(ADF_PARSE == 9, "conventions 3.1: ADF_PARSE is 9");
+   _Static_assert(ADF_LIMIT == 10, "conventions 3.1: ADF_LIMIT is 10");
+
+
+NOT COMPILED src/status.c:24:31 cmp: '==' -> '!='
+  src/status.c:24:1: error: static assertion failed: "conventions 3.1: ADF_NOT_UNIQUE is 4"
+
+SURVIVED src/status.c:23:1 drop_call: '_Static_assert(ADF_NEEDS_SPLIT == 3, "conventions 3.1: ADF_NEEDS_SPLIT is 3");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -21,5 +21,5 @@
+   _Static_assert(ADF_NOT_DETERMINED == 1, "conventions 3.1: ADF_NOT_DETERMINED is 1");
+   _Static_assert(ADF_UNIT_NOT_CERTIFIED == 2, "conventions 3.1: ADF_UNIT_NOT_CERTIFIED is 2");
+  -_Static_assert(ADF_NEEDS_SPLIT == 3, "conventions 3.1: ADF_NEEDS_SPLIT is 3");
+  +
+   _Static_assert(ADF_NOT_UNIQUE == 4, "conventions 3.1: ADF_NOT_UNIQUE is 4");
+   _Static_assert(ADF_NO_SOLUTION == 5, "conventions 3.1: ADF_NO_SOLUTION is 5");
+
+
+NOT COMPILED src/status.c:29:26 cmp: '==' -> '!='
+  src/status.c:29:1: error: static assertion failed: "conventions 3.1: ADF_PARSE is 9"
+
+NOT COMPILED src/status.c:41:30 cmp: '==' -> '!='
+  src/status.c:41:1: error: static assertion failed: "conventions 2.1: ADF_CMP_EQUAL is 0"
+
+SURVIVED src/status.c:20:1 drop_call: '_Static_assert(ADF_OK == 0, "conventions 3.1: ADF_OK is 0");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -18,5 +18,5 @@
+   /* conventions 3.1, the table "The list", in increasing order of precedence; the combination
+      rule of 3.3 is the maximum, which is why the order matters and not only the values. */
+  -_Static_assert(ADF_OK == 0, "conventions 3.1: ADF_OK is 0");
+  +
+   _Static_assert(ADF_NOT_DETERMINED == 1, "conventions 3.1: ADF_NOT_DETERMINED is 1");
+   _Static_assert(ADF_UNIT_NOT_CERTIFIED == 2, "conventions 3.1: ADF_UNIT_NOT_CERTIFIED is 2");
+
+
+NOT COMPILED src/status.c:21:38 zero_one: '1' -> '0'
+  src/status.c:21:1: error: static assertion failed: "conventions 3.1: ADF_NOT_DETERMINED is 1"
+
+SURVIVED src/status.c:26:1 drop_call: '_Static_assert(ADF_NOT_UNIT == 6, "conventions 3.1: ADF_NOT_UNIT is 6");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -24,5 +24,5 @@
+   _Static_assert(ADF_NOT_UNIQUE == 4, "conventions 3.1: ADF_NOT_UNIQUE is 4");
+   _Static_assert(ADF_NO_SOLUTION == 5, "conventions 3.1: ADF_NO_SOLUTION is 5");
+  -_Static_assert(ADF_NOT_UNIT == 6, "conventions 3.1: ADF_NOT_UNIT is 6");
+  +
+   _Static_assert(ADF_DOMAIN == 7, "conventions 3.1: ADF_DOMAIN is 7");
+   _Static_assert(ADF_UNSUPPORTED == 8, "conventions 3.1: ADF_UNSUPPORTED is 8");
+
+
+NOT COMPILED src/status.c:33:33 cmp: '==' -> '!='
+  src/status.c:33:1: error: static assertion failed: "there are eleven status codes"
+
+NOT COMPILED src/status.c:21:35 cmp: '==' -> '!='
+  src/status.c:21:1: error: static assertion failed: "conventions 3.1: ADF_NOT_DETERMINED is 1"
+
+NOT COMPILED src/status.c:42:37 zero_one: '1' -> '0'
+  src/status.c:42:1: error: static assertion failed: "conventions 2.1: ADF_CMP_DIFFERENT is 1"
+
+SURVIVED src/status.c:33:1 drop_call: '_Static_assert(ADF_STATUS_COUNT == 11, "there are eleven status codes");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/status.c
+  +++ b/src/status.c
+  @@ -31,5 +31,5 @@
+   
+   /* The valid codes are 0 to ADF_STATUS_COUNT - 1 (the header; conventions 3.1 lists 11 of them). */
+  -_Static_assert(ADF_STATUS_COUNT == 11, "there are eleven status codes");
+  +
+   
+   /* conventions 2.1 and the closure finding C1: the comparison of points is not a status. The
+
+
+mutate: 34 mutants in 530.8 s: 0 killed, 15 survived, 19 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 15 mutant(s) survived; each one is a claim the tests do not check

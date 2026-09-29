@@ -1,0 +1,6 @@
+mutate: src/place.c: 9 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (41.4 s)
+
+mutate: 9 mutants in 326.6 s: 9 killed, 0 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

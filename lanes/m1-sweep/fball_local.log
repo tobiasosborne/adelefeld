@@ -1,0 +1,54 @@
+mutate: src/fball_local.c: 85 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (42.9 s)
+
+EXCUSED src/fball_local.c:110:5 swap_args: 'fmpz_mul(u, K, d)' -> 'fmpz_mul(u, d, K)'
+  fmpz_mul(u, K, d) against fmpz_mul(u, d, K): the product of two integers does not depend on the order (refs/src/flint-3.0.1/fmpz.rst:752-755); FLINT permits any aliasing of the inputs and the output (refs/src/flint-3.0.1/fmpz.rst:53-55), and the exchange changes none; u is a temporary
+
+NOT COMPILED src/fball_local.c:67:11 op: '*' -> '/'
+  src/fball_local.c:67:11: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/fball_local.c:176:5 drop_assign: 'is_lost = !fmpz_is_one(fmpq_denref(KR)) || !fmpz_equal(d0, fmpq_numref(KR));' -> '' (the statement is removed)
+  src/fball_local.c:179:15: error: ‘is_lost’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/fball_local.c:177:5 drop_call: 'fl_store_local(y, ctx, d0, A0);' -> '' (the statement is removed)
+  src/fball_local.c:140:41: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball_local.c:67:11 op: '*' -> '+'
+  src/fball_local.c:67:11: error: expected identifier or ‘(’ before ‘+’ token
+
+EXCUSED src/fball_local.c:171:5 swap_args: 'fmpz_gcd(e, A, d)' -> 'fmpz_gcd(e, d, A)'
+  fmpz_gcd(e, A, d) against fmpz_gcd(e, d, A): the gcd of two integers is symmetric and always positive (refs/src/flint-3.0.1/fmpz.rst:1040-1044); FLINT permits any aliasing of the inputs and the output (refs/src/flint-3.0.1/fmpz.rst:53-55), and the exchange changes none; e is a temporary
+
+NOT COMPILED src/fball_local.c:179:9 op: '*' -> '/'
+  src/fball_local.c:179:9: error: expected expression before ‘/’ token
+
+EXCUSED src/fball_local.c:174:5 swap_args: 'fmpz_mul(A0, A, d0)' -> 'fmpz_mul(A0, d0, A)'
+  fmpz_mul(A0, A, d0) against fmpz_mul(A0, d0, A): the product of two integers does not depend on the order (refs/src/flint-3.0.1/fmpz.rst:752-755); FLINT permits any aliasing of the inputs and the output (refs/src/flint-3.0.1/fmpz.rst:53-55), and the exchange changes none; A0 is a temporary
+
+NOT COMPILED src/fball_local.c:119:5 drop_call: 'fl_store_local(y, ctx, u, v);' -> '' (the statement is removed)
+  src/fball_local.c:88:33: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball_local.c:72:5 drop_call: 'fmpz_set(y->d, d);' -> '' (the statement is removed)
+  src/fball_local.c:64:75: error: unused parameter ‘d’ [-Werror=unused-parameter]
+
+EXCUSED src/fball_local.c:111:5 swap_args: 'fmpz_mul(v, K, A)' -> 'fmpz_mul(v, A, K)'
+  fmpz_mul(v, K, A) against fmpz_mul(v, A, K): the product of two integers does not depend on the order (refs/src/flint-3.0.1/fmpz.rst:752-755); FLINT permits any aliasing of the inputs and the output (refs/src/flint-3.0.1/fmpz.rst:53-55), and the exchange changes none; v is a temporary
+
+EXCUSED src/fball_local.c:169:5 swap_args: 'fmpz_mul(e, K, d)' -> 'fmpz_mul(e, d, K)'
+  fmpz_mul(e, K, d) against fmpz_mul(e, d, K): the product of two integers does not depend on the order (refs/src/flint-3.0.1/fmpz.rst:752-755); FLINT permits any aliasing of the inputs and the output (refs/src/flint-3.0.1/fmpz.rst:53-55), and the exchange changes none; e is a temporary
+
+NOT COMPILED src/fball_local.c:67:26 op: '*' -> '/'
+  src/fball_local.c:67:26: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/fball_local.c:69:5 drop_call: 'adf_modctx_reduce(ctx, N, res);' -> '' (the statement is removed)
+  src/fball_local.c:64:91: error: unused parameter ‘N’ [-Werror=unused-parameter]
+
+NOT COMPILED src/fball_local.c:179:9 op: '*' -> '+'
+  src/fball_local.c:179:9: error: wrong type argument to unary plus
+
+NOT COMPILED src/fball_local.c:67:26 op: '*' -> '+'
+  src/fball_local.c:67:26: error: expected ‘)’ before ‘+’ token
+
+mutate: 85 mutants in 2341.1 s: 69 killed, 0 survived, 11 not compiled, 0 timed out, 5 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

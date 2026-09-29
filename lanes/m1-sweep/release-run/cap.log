@@ -1,0 +1,224 @@
+mutate: src/cap.c: 41 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (39.8 s)
+
+NOT COMPILED src/cap.c:189:5 drop_call: 'adf_fball_mul_rat(t, x, q);' -> '' (the statement is removed)
+  src/cap.c:180:56: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:152:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:142:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+SURVIVED src/cap.c:183:5 drop_call: 'ADF_INV_RAT(q);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -181,5 +181,5 @@
+   {
+       ADF_INV_FBALL(x);
+  -    ADF_INV_RAT(q);
+  +    
+       ADF_INV_RAT(C);
+       adf_fball_t t;
+
+
+SURVIVED src/cap.c:81:5 drop_call: 'ADF_INV_RAT(C);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -79,5 +79,5 @@
+   {
+       ADF_INV_FBALL(x);
+  -    ADF_INV_RAT(C);
+  +    
+       fmpq_t Cq, Nq, gq;
+       adf_rat_t c, g;
+
+
+SURVIVED src/cap.c:128:5 drop_call: 'ADF_INV_RAT(C);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -126,5 +126,5 @@
+       ADF_INV_FBALL(x);
+       ADF_INV_FBALL(y);
+  -    ADF_INV_RAT(C);
+  +    
+       adf_fball_t t;
+       int status;
+
+
+SURVIVED src/cap.c:144:5 drop_call: 'ADF_INV_FBALL(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -142,5 +142,5 @@
+   adf_fball_sub_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const adf_rat_t C)
+   {
+  -    ADF_INV_FBALL(x);
+  +    
+       ADF_INV_FBALL(y);
+       ADF_INV_RAT(C);
+
+
+NOT COMPILED src/cap.c:134:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:124:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:133:5 drop_call: 'adf_fball_add(t, x, y);' -> '' (the statement is removed)
+  src/cap.c:124:52: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+SURVIVED src/cap.c:162:5 drop_call: 'ADF_INV_FBALL(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -160,5 +160,5 @@
+   adf_fball_mul_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const adf_rat_t C)
+   {
+  -    ADF_INV_FBALL(x);
+  +    
+       ADF_INV_FBALL(y);
+       ADF_INV_RAT(C);
+
+
+EXCUSED src/cap.c:100:5 swap_args: 'fmpq_gcd(gq, Nq, Cq)' -> 'fmpq_gcd(gq, Cq, Nq)'
+  fmpq_gcd(gq, Nq, Cq) against fmpq_gcd(gq, Cq, Nq): the gcd of (p, q) and (r, s) is the canonical form of gcd(p s, q r)/(q s), which is symmetric in the two arguments (refs/src/flint-3.0.1/fmpq.rst:509-514); gq is a temporary, so no input is written
+
+EXCUSED src/cap.c:169:5 swap_args: 'adf_fball_mul(t, x, y)' -> 'adf_fball_mul(t, y, x)'
+  adf_fball_mul computes the tight set product with radius gcd(a M, b N, N M) (docs/proofs/precision.md Proposition 2, line 34), symmetric in (a, N) and (b, M); the local branch tests gcd(gcd(r_i, s_i), q_i) and multiplies the denominators and the residues, all symmetric, and the global one is fb_mul_global (src/fball.c:715-745, 762-808), so the same ball is written; the output may be an input (include/adelefeld/fball.h:23)
+
+SURVIVED src/cap.c:80:5 drop_call: 'ADF_INV_FBALL(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -78,5 +78,5 @@
+   adf_fball_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t C)
+   {
+  -    ADF_INV_FBALL(x);
+  +    
+       ADF_INV_RAT(C);
+       fmpq_t Cq, Nq, gq;
+
+
+NOT COMPILED src/cap.c:151:5 drop_call: 'adf_fball_sub(t, x, y);' -> '' (the statement is removed)
+  src/cap.c:142:52: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/cap.c:190:5 drop_assign: 'status = adf_fball_cap(y, t, C);' -> '' (the statement is removed)
+  src/cap.c:180:35: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+SURVIVED src/cap.c:182:5 drop_call: 'ADF_INV_FBALL(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -180,5 +180,5 @@
+   adf_fball_mul_rat_cap(adf_fball_t y, const adf_fball_t x, const adf_rat_t q, const adf_rat_t C)
+   {
+  -    ADF_INV_FBALL(x);
+  +    
+       ADF_INV_RAT(q);
+       ADF_INV_RAT(C);
+
+
+SURVIVED src/cap.c:145:5 drop_call: 'ADF_INV_FBALL(y);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -143,5 +143,5 @@
+   {
+       ADF_INV_FBALL(x);
+  -    ADF_INV_FBALL(y);
+  +    
+       ADF_INV_RAT(C);
+       adf_fball_t t;
+
+
+NOT COMPILED src/cap.c:106:5 drop_assign: 'status = adf_fball_set_center_radius(y, c, g);' -> '' (the statement is removed)
+  src/cap.c:112:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/cap.c:169:5 drop_call: 'adf_fball_mul(t, x, y);' -> '' (the statement is removed)
+  src/cap.c:160:52: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+SURVIVED src/cap.c:164:5 drop_call: 'ADF_INV_RAT(C);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -162,5 +162,5 @@
+       ADF_INV_FBALL(x);
+       ADF_INV_FBALL(y);
+  -    ADF_INV_RAT(C);
+  +    
+       adf_fball_t t;
+       int status;
+
+
+SURVIVED src/cap.c:163:5 drop_call: 'ADF_INV_FBALL(y);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -161,5 +161,5 @@
+   {
+       ADF_INV_FBALL(x);
+  -    ADF_INV_FBALL(y);
+  +    
+       ADF_INV_RAT(C);
+       adf_fball_t t;
+
+
+SURVIVED src/cap.c:184:5 drop_call: 'ADF_INV_RAT(C);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -182,5 +182,5 @@
+       ADF_INV_FBALL(x);
+       ADF_INV_RAT(q);
+  -    ADF_INV_RAT(C);
+  +    
+       adf_fball_t t;
+       int status;
+
+
+SURVIVED src/cap.c:126:5 drop_call: 'ADF_INV_FBALL(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -124,5 +124,5 @@
+   adf_fball_add_cap(adf_fball_t z, const adf_fball_t x, const adf_fball_t y, const adf_rat_t C)
+   {
+  -    ADF_INV_FBALL(x);
+  +    
+       ADF_INV_FBALL(y);
+       ADF_INV_RAT(C);
+
+
+SURVIVED src/cap.c:127:5 drop_call: 'ADF_INV_FBALL(y);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -125,5 +125,5 @@
+   {
+       ADF_INV_FBALL(x);
+  -    ADF_INV_FBALL(y);
+  +    
+       ADF_INV_RAT(C);
+       adf_fball_t t;
+
+
+SURVIVED src/cap.c:146:5 drop_call: 'ADF_INV_RAT(C);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/cap.c
+  +++ b/src/cap.c
+  @@ -144,5 +144,5 @@
+       ADF_INV_FBALL(x);
+       ADF_INV_FBALL(y);
+  -    ADF_INV_RAT(C);
+  +    
+       adf_fball_t t;
+       int status;
+
+
+EXCUSED src/cap.c:133:5 swap_args: 'adf_fball_add(t, x, y)' -> 'adf_fball_add(t, y, x)'
+  adf_fball_add computes the set sum (a + N Zhat) + (b + M Zhat) = (a + b) + gcd(N, M) Zhat (docs/proofs/precision.md Proposition 1, line 27) in every branch, with the same backend test for both orders (fb_same_local is symmetric), the local sum through the lcm of the two denominators and the global one through fmpq_add and fmpq_gcd (src/fball.c:201-224, 600-628), so the same ball is written; the output may be an input (include/adelefeld/fball.h:23)
+
+NOT COMPILED src/cap.c:170:5 drop_assign: 'status = adf_fball_cap(z, t, C);' -> '' (the statement is removed)
+  src/cap.c:160:31: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+mutate: 41 mutants in 956.2 s: 15 killed, 14 survived, 9 not compiled, 0 timed out, 3 excused
+mutate: FAILED: 14 mutant(s) survived; each one is a claim the tests do not check

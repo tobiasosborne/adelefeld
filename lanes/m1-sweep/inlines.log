@@ -1,0 +1,6 @@
+mutate: src/inlines.c: 0 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (44.2 s)
+
+mutate: 0 mutants in 44.2 s: 0 killed, 0 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

@@ -1,0 +1,17 @@
+mutate: src/recon.c: 93 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (45.0 s)
+
+SURVIVED src/recon.c:272:16 status: 'ADF_DOMAIN' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/recon.c
+  +++ b/src/recon.c
+  @@ -270,5 +270,5 @@
+          contract. */
+       if (!arb_is_finite(x->inf))
+  -        return ADF_DOMAIN;
+  +        return ADF_OK;
+   
+       /* Decision M1-D3: ADF_LIMIT before anything of the size of the exact end points is
+
+mutate: stopped by signal 15: 2 running command(s) killed, scratch removed
