@@ -80,14 +80,18 @@
    adf_rootlist_is_canonical and the two verifiers are called on values of unknown origin: they repeat
    the test of adf_place_prime and return 0 for a place whose word is not a prime
    (docs/reviews/s2/review.md, finding 1). The seed function and the entries
-   verifier need no roots modulo p and no bound on p (decision S-D10: every prime); the search for all
+   verifier need no roots modulo p and no bound on p (decision S-D10: every prime of a place); the search for all
    roots of slice 2 finds the roots modulo p by evaluation at every residue and has the TEMPORARY bound
    ADF_ROOTS_P_EVAL_MAX (below). A place not made by the functions of place.h is outside the contract
-   (conventions 7, line 1014). A prime of more than one word cannot be passed through adf_place_t in
-   version 1 (HEADER-FINDING of lane s2-slice1: S-D10 speaks of every prime, the place type admits the
-   primes below 2^64).
+   (conventions 7, line 1014). A prime of more than one word cannot be passed through adf_place_t, and
+   decision S-D10 (as decided on 2026-09-29, docs/SPEC.md 15.3) means the primes of a place: the place
+   type is not widened.
 
-   Limits (decision S-D18). Every exponent (s + 1, max(prec_p, s + 1), 2 k - s, k + s, 2 K) is
+   Limits (decision S-D18, as reworded on 2026-09-29: ADF_LIMIT comes before any power of p is formed
+   and before any allocation whose size grows with the limit; a limit that follows from the arguments
+   alone comes before any allocation; one that follows from s or from the depth of a class is known
+   only after g and the valuation are computed). A function that finds its own result refused by its
+   own check, or a Newton step that does not raise the precision, aborts (decision S-D20). Every exponent (s + 1, max(prec_p, s + 1), 2 k - s, k + s, 2 K) is
    computed with checked slong arithmetic. A precision K with 2 K bits(p) > ADF_ROOTS_BITS_MAX gives
    ADF_LIMIT; 2 K bits(p) is the bound used for the bit length of p^(2 K), the largest power of p the
    seed function forms. The value of the limit is a policy, not a measured budget. The search of
