@@ -11,7 +11,7 @@ if [ ! -d "$WT" ]; then git -C "$REPO" worktree add -q -b "lane/$LANE" "$WT" HEA
 [ -e "$WT/refs/src" ] || ln -s "$REPO/refs/src" "$WT/refs/src"
 cd "$WT"
 case "$TOOL" in
-  pi)    exec tools/orch/pi_lane.sh "$LANE" "$MODEL" "$EFFORT" ;;
+  pi)    LANE_ROOT="$WT" exec "$REPO/tools/orch/pi_lane.sh" "$LANE" "$MODEL" "$EFFORT" ;;
   codex) exec tools/orch/codex_lane.sh "$LANE" "$MODEL" "$EFFORT" ;;
   *) echo "unknown tool $TOOL" >&2; exit 2 ;;
 esac
