@@ -228,40 +228,43 @@ int adf_resid_reconstruct_first(adf_rat_t q, int * count, adf_recon_cert_t cert,
 /* adf_resid_verify_result(x, A, B, limit, status, q, cert) (solvers P1.11, solvers.md:462 to 494; the
    order of the arguments is the one of docs/api-s.md section 2, which puts the two integer parameters
    before the two values): 1 if the claim "adf_resid_reconstruct returned `status` for (x, A, B, limit),
-   and on ADF_OK the solution q" is TRUE, else 0. It is a predicate: 1 only if the claim is true, and
-   0 also where the claim may be true but this function cannot decide it. It never aborts for
-   initialised x, q and cert.
-   The tests, in the order of P1.11:
+   and on ADF_OK the solution q" is TRUE, else 0. The limit is part of the claim: the claim is about the
+   call, not about the whole set of solutions (repair of review s13, findings 1 and 2). It is a
+   predicate: 1 only if the claim is true, and every true claim is accepted: every result of
+   adf_resid_reconstruct with these arguments is accepted, and for the same arguments exactly one status
+   is accepted (for ADF_OK exactly one q). It never aborts for initialised x, q and cert.
+   The tests, in the order of P1.11, with ell = max(limit, 0):
    1. m < 1 (x is not a residue; the type excludes it, so no call of the library returns DOMAIN here):
       the claim is ADF_DOMAIN. A < 0 or B < 1: the claim is ADF_NO_SOLUTION, the only one, since the box
       is empty (decision S-D5).
-   2. ADF_NOT_UNIQUE: 1 if the set has at least two elements. A >= m proves it without any search
-      (Proposition 1.6 (a)). For A < m the complete enumeration of Proposition 1.5 (4) is run, with the
-      pair computed here as the Euclidean algorithm of Lemma 1.4 computes it; it stops at the second
-      solution, so the cost is that of the search itself. The certificate is not read: the claim of
-      Proposition 1.11 (1) is about the set, and a second call with B lowered is NOT a certificate
-      (P1.11 (3): m = 2, c = 1, A = B = 1, where both solutions have denominator 1 and B = 0 empties the
-      box). The enumeration is not run when |T| > B or 2 A B < m (then at most one solution exists), and
-      the claim is not decided when floor(B/|T|) is above a word, since the rounds could not all be
-      visited.
+   2. ADF_NOT_UNIQUE: 1 if A >= m (Proposition 1.6 (a), no search), or if A < m <= 2 A B, |T| <= B and
+      the cut search of the function, at most min(ell, floor(B/|T|)) rounds, finds two reduced points.
+      The certificate is not read: the pair is computed here as the Euclidean algorithm of Lemma 1.4
+      computes it. (A second call with B lowered is NOT a certificate, P1.11 (3): m = 2, c = 1, A = B = 1,
+      where both solutions have denominator 1 and B = 0 empties the box.) The search is not run when
+      |T| > B or 2 A B < m (then at most one solution exists).
    3. Every other status needs a certificate pair: adf_recon_cert_check first, which also refuses
       A >= m (the pair needs A < m) and a kind = 0 certificate. Then, with (R', T', R, T) of the
-      certificate, T nonzero and ell = max(limit, 0):
-      ADF_NO_SOLUTION: 1 if |T| > B (1.6 (b)), or if 2 A B < m and gcd(R, T) > 1 (1.6 (c)), or if the
-        complete enumeration finds no reduced point (1.6 (d));
+      certificate, T nonzero:
+      ADF_NO_SOLUTION: 1 if |T| > B (1.6 (b)), or if 2 A B < m and gcd(R, T) > 1 (1.6 (c)), or if
+        A < m <= 2 A B, X = floor(B/|T|) <= ell and the search finds no reduced point;
       ADF_OK: 1 if q = n/d is a solution of Definition 1.1 (d > 0, d <= B, |n| <= A, gcd(n, d) = 1,
-        gcd(d, m) = 1, n = c d modulo m) and either 2 A B < m and q = (sigma R, |T|) (1.6 (c)), or the
-        complete enumeration finds exactly the reduced point q (1.6 (d));
+        gcd(d, m) = 1, n = c d modulo m) and either 2 A B < m and q = (sigma R, |T|) (1.6 (c)), or
+        A < m <= 2 A B, |T| <= B, X <= ell and the search finds exactly one reduced point and it is q;
       ADF_NOT_DETERMINED: 1 if the four conditions of Proposition 1.7 (3) hold, that is A < m <= 2 A B,
-        |T| <= B, floor(B/|T|) > ell, and the cut search of the rounds x <= ell finds fewer than two
-        reduced points; that search is run, so the fourth condition is not assumed.
+        |T| <= B, X > ell, and the cut search of the rounds x <= ell finds fewer than two reduced points;
+        that search is run, so the fourth condition is not assumed.
    4. Any other status (ADF_DOMAIN, ADF_LIMIT, a code outside the class) gives 0.
    q is read only for ADF_OK, since the other statuses leave it untouched (conventions 4.3), so a claim
    of NO_SOLUTION or NOT_DETERMINED says nothing about q. On NOT_UNIQUE the claim of P1.11 (1) is a list
-   of two pairs; this interface carries one rational, so the list is replaced by the complete
-   enumeration, the second way named in note 4 of docs/api-s.md section 2.
-   Cost: the four multiplications of the certificate check, and, for the three cases that need it, one
-   Euclidean algorithm and at most floor(B/|T|) rounds. */
+   of two pairs; this interface carries one rational, so the list is replaced by the search of the
+   function, the second way named in note 4 of docs/api-s.md section 2.
+   Example of a claim that is false because of the limit: m = 10, c = 1, A = 2, B = 5, limit 0. The only
+   reduced solution is 1/1, but the function returns ADF_NOT_DETERMINED (no round is run), so the claim OK
+   is refused and NOT_DETERMINED is accepted. There is no case in which a true claim about the call is
+   refused.
+   Cost: the four multiplications of the certificate check, and, for the cases that need it, one
+   Euclidean algorithm and at most min(ell, floor(B/|T|)) rounds, however large B is. */
 int adf_resid_verify_result(const adf_resid_t x, const fmpz_t A, const fmpz_t B, slong limit, int status,
                             const adf_rat_t q, const adf_recon_cert_t cert);
 

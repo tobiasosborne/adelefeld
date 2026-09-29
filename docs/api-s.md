@@ -69,7 +69,7 @@ In this section `ell = max(limit, 0)`, `T` is the denominator entry of the certi
 | `int adf_resid_reconstruct(adf_rat_t q, adf_recon_cert_t cert, const adf_resid_t x, const fmpz_t A, const fmpz_t B, slong limit)` | decides `Sol(m, c, A, B)`: exactly one element, none, several | `solvers` P1.6, Algorithm R, P1.7 | `OK`: `q` is the only solution. `NO_SOLUTION`: proved; also for `A < 0` or `B < 1` (the box is empty). `NOT_UNIQUE`: two solutions were found (also inside a cut search). `NOT_DETERMINED`: exactly when `A < m <= 2 A B`, `abs(T) <= B`, `X > ell`, and the rounds `x <= ell` found fewer than two reduced pairs (`solvers` P1.7(3)): "uniqueness not certified". `q` untouched unless `OK`. `cert` (may be NULL) is written on every status: the pair if `0 <= A < m` and `B >= 1`, else `kind = 0`. `limit < 0` is taken as 0 | P1.7(4): one Euclidean algorithm on `(m, c)`, then at most `min(ell, X)` rounds |
 | `int adf_resid_reconstruct_first(adf_rat_t q, int * count, adf_recon_cert_t cert, const adf_resid_t x, const fmpz_t A, const fmpz_t B, slong limit)` (decision S-D4) | `q` is a solution, the first in the order of Algorithm R (for `A >= m`: `c/1`) | `solvers` P1.6, P1.7 | `OK`: `q` written, a verified solution; `*count` is 1 if `q` is proved to be the only solution, 2 if a second one was found (also `A >= m`), 0 if the search was cut with one candidate found. `NO_SOLUTION`: proved, `q` untouched, `*count = 0`. `NOT_DETERMINED`: the search was cut before any solution was found, `q` untouched, `*count = 0`. `*count` and `cert` are written on every status | as above |
 | `int adf_recon_cert_check(const adf_recon_cert_t cert, const adf_resid_t x, const fmpz_t A)` | 1 if `cert` has `kind = 1` and satisfies (C1) to (C4) for `(m, c, A)`, else 0 | `solvers` D1.3 | predicate | four multiplications, two reductions |
-| `int adf_resid_verify_result(const adf_resid_t x, const fmpz_t A, const fmpz_t B, slong limit, int status, const adf_rat_t q, const adf_recon_cert_t cert)` | 1 if the claim "the function returned `status` (with `q` for `OK`)" is true by the tests of `solvers` P1.11; else 0 | `solvers` P1.11 | predicate | `NO_SOLUTION` and `OK` in the range `m <= 2 A B`, and `NOT_UNIQUE` for `A < m`: the cost of the search itself; the other cases: `adf_recon_cert_check` and a few comparisons |
+| `int adf_resid_verify_result(const adf_resid_t x, const fmpz_t A, const fmpz_t B, slong limit, int status, const adf_rat_t q, const adf_recon_cert_t cert)` | 1 if the claim "`adf_resid_reconstruct` with these arguments, this `limit` included, returned `status` (with `q` for `OK`)" is true; else 0. No true claim is refused | `solvers` P1.11 | predicate | in the range `A < m <= 2 A B`, `abs(T) <= B`: the cut search of the function, at most `min(max(limit, 0), floor(B/abs(T)))` rounds; the other cases: `adf_recon_cert_check` and a few comparisons |
 
 Notes.
 
@@ -83,13 +83,19 @@ Notes.
    table of `check_s3_edge`. `A = 0`: the only possible solution is `0/1`, exactly when `c = 0`.
 3. **FLINT.** The function runs its own loop (S-D2). It never passes `A = 0` or `m <= 2` to
    `fmpq_reconstruct_fmpz_2` (`solvers` P1.9(6)).
-4. **What the checker of a result does** (`solvers` P1.11). `adf_recon_cert_check` first; then the case of
-   `solvers` P1.6 that the status claims: (b) `abs(T) > B`; (c) `2 A B < m` and `gcd(R, T)`; (d) the enumeration,
-   whose cost is that of the search itself. A `NOT_UNIQUE` is certified by two different pairs that are both
-   solutions (tested from Definition 1.1), or by repeating the complete enumeration until two are found. It is
-   NOT certified by a second call with the bound `B` lowered below the first denominator: for `m = 2`, `c = 1`,
-   `A = B = 1` both solutions `1/1` and `-1/1` have denominator 1, and with `B = 0` the box is empty.
-   `NOT_DETERMINED` is certified by recomputing the four conditions of `solvers` P1.7(3).
+4. **What the checker of a result does** (`solvers` P1.11). It verifies the claim about the call, this `limit`
+   included, not the claim about the whole set of solutions (decision of the orchestrator after review s13).
+   `adf_recon_cert_check` first (except for `NOT_UNIQUE`, whose certificate is not read); then the case of
+   `solvers` P1.6 that the status claims: (b) `abs(T) > B`; (c) `2 A B < m` and `gcd(R, T)`, which do not
+   depend on the limit; in the range `A < m <= 2 A B`, `abs(T) <= B`, with `ell = max(limit, 0)` and
+   `X = floor(B/abs(T))`, the checker runs the search of the function, at most `min(ell, X)` rounds:
+   `NOT_UNIQUE` exactly when two reduced points are found in these rounds; `NOT_DETERMINED` exactly when
+   `X > ell` and fewer than two were found (the four conditions of `solvers` P1.7(3)); `OK` exactly when
+   `X <= ell` and the one point found is `q`; `NO_SOLUTION` exactly when `X <= ell` and none was found. So the
+   cost is bounded by the limit whatever `B` is, and every result of the function is accepted. This is sound
+   by P1.11: it accepts fewer claims than the checker of the whole set. A `NOT_UNIQUE` is NOT certified by a
+   second call with the bound `B` lowered below the first denominator: for `m = 2`, `c = 1`, `A = B = 1` both
+   solutions `1/1` and `-1/1` have denominator 1, and with `B = 0` the box is empty.
 5. **With `limit <= 0` the status is not "`2 A B >= m`".** `A >= m` gives `NOT_UNIQUE`, `abs(T) > B` gives
    `NO_SOLUTION`, `2 A B < m` gives the answer of `solvers` P1.6(c); `NOT_DETERMINED` is returned exactly for
    `A < m <= 2 A B` with `abs(T) <= B` (example: `m = 2`, `c = 1`, `A = 2`, `B = 1` gives `NOT_UNIQUE`).
