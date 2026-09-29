@@ -23,7 +23,9 @@
      adelefeld/text.h     value form, limits, adf_text_classify
      adelefeld/modctx.h   contexts, descriptors, local-backend conversions
      adelefeld/scaled.h   adf_scaled (scaled policy), absolute cap
-     adelefeld/dump.h     dump form */
+     adelefeld/dump.h     dump form
+     adelefeld/ucoset.h   adf_ucoset, unit cosets and the exact units (milestone 2, slice 1)
+     adelefeld/idele.h    adf_idele, ideles: product, inverse, the idele of a rational (slice 1) */
 
 #ifndef ADELEFELD_H
 #define ADELEFELD_H
@@ -51,5 +53,7 @@
 #include "adelefeld/modctx.h"
 #include "adelefeld/scaled.h"
 #include "adelefeld/dump.h"
+#include "adelefeld/ucoset.h"
+#include "adelefeld/idele.h"
 
 #endif /* ADELEFELD_H */

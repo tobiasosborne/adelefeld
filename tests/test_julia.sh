@@ -77,6 +77,24 @@ fi
 
 echo "== $($JULIA --version)"
 
+# ---- 2b. ideles (milestone 2, slice 1, lane i-slice1): tests/julia/ideles.jl, its own process ----
+
+ideles_output=$(mktemp)
+if "$JULIA" --startup-file=no tests/julia/ideles.jl "$so" > "$ideles_output" 2>&1; then
+    cat "$ideles_output"
+elif grep -q '__gmpn_modexact_1_odd' "$ideles_output" 2>/dev/null \
+        && ideles_gmp=$(ldconfig -p 2> /dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$ideles_gmp" ] \
+        && LD_PRELOAD="$ideles_gmp" "$JULIA" --startup-file=no tests/julia/ideles.jl "$so"; then
+    echo "== tests/julia/ideles.jl passed with LD_PRELOAD=$ideles_gmp"
+else
+    cat "$ideles_output"
+    rm -f "$ideles_output"
+    echo "test_julia: tests/julia/ideles.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$ideles_output"
+
 # ---- 3. run the smoke test ----
 
 run_output=$(mktemp)

@@ -8,6 +8,17 @@ So containment and equality of cosets, products of cosets (unions of U(M)-cosets
 radius divides M are decided by enumeration in Z/M. Nothing here uses the formulas under test except as the
 prediction that is compared.
 Each check prints one line with counts; the script exits non-zero on any failure.
+
+Part 1 (lane m0-proofs-ideles, 2026-09-27): the checks of docs/proofs/ideles.md, cited there by name.
+Part 2 (lane i-slice1, 2026-09-29): the reference of slice 1 of milestone 2 (docs/api-2.md section 1): unit
+cosets with the exact units, the real kernel of Statement E, the idele of a rational, product and inverse of
+ideles. Adapted from part 2 of the unreviewed design lane d-ideles (its unit-coset functions and its kernel
+B); the kernel here is the one of docs/api-2.md Statement E (B3 uses max(hi - m, m - lo)). The reference
+functions are named ref_*; the checks compare them with enumeration and with exact rational end points.
+lanes/i-slice1/gen_vectors.py writes the C vectors from the ref_* functions.
+
+Run: timeout 180 python3 proto/ideles_checks.py          (all checks)
+     timeout 180 python3 proto/ideles_checks.py part2    (part 2 only)
 """
 from fractions import Fraction as F
 from math import gcd
@@ -445,20 +456,439 @@ def check_division():
            f"{n} cases: hull radius = gcd(|a| L, M); simple ball coarser in {coarser}")
 
 
+# ======================================================================================================
+# Part 2: reference of slice 1 of milestone 2 (docs/api-2.md section 1), lane i-slice1, 2026-09-29
+# ======================================================================================================
+#
+# A unit coset is a pair (c, N): N >= 1, 1 <= c <= N, gcd(c, N) = 1 (conventions.md 5.6, CV-16), or N = 0 and
+# c in {1, -1}, the exact unit (M0-D1). The normal form has N != 2 mod 4 (conventions 5.6).
+# A real ball is a pair (m, rho) of Fractions, the closed interval [m - rho, m + rho].
+# An idele is (ball, r, coset) with 0 outside the ball and r > 0 a Fraction.
+# A reference function that can fail returns (status, value); value is None unless the status is OK.
+
+OK, NOT_DETERMINED, NOT_UNIT, DOMAIN = "OK", "NOT_DETERMINED", "NOT_UNIT", "DOMAIN"
+RNG = random.Random(20260929)
+
+
+# ------------------------------------------------------------------ unit cosets
+
+def ref_uc_set(c, N):
+    """adf_ucoset_set_fmpz2: any integer c, N >= 0; the modulus is kept as supplied (CV-17)."""
+    if N < 0:
+        return DOMAIN, None
+    if N == 0:
+        return (OK, (c, 0)) if c in (1, -1) else (DOMAIN, None)
+    if gcd(c, N) != 1:
+        return DOMAIN, None
+    r = c % N
+    return OK, (r if r else N, N)
+
+
+def ref_uc_is_canonical(u):
+    c, N = u
+    return (N >= 1 and 1 <= c <= N and gcd(c, N) == 1) or (N == 0 and c in (1, -1))
+
+
+def ref_uc_is_normal(u):
+    return ref_uc_is_canonical(u) and (u[1] == 0 or u[1] % 4 != 2)
+
+
+def ref_uc_normal(u):
+    """Normal form (conventions 5.6; docs/api-2.md Statement B)."""
+    c, N = u
+    if N == 0:
+        return u
+    if N % 4 == 2:
+        N //= 2
+    return ref_uc_set(c, N)[1]
+
+
+def ref_uc_gcd(N, N2):
+    """gcd with gcd(0, N') = N' (SPEC 5); gcd(0, 0) = 0."""
+    if N == 0:
+        return N2
+    if N2 == 0:
+        return N
+    return gcd(N, N2)
+
+
+def ref_uc_mul(u, v):
+    """adf_ucoset_mul: (c c') U(gcd(N, N')) in normal form (ideles P10, P11; api-2.md A.1, C.1)."""
+    g = ref_uc_gcd(u[1], v[1])
+    if g == 0:
+        return (u[0] * v[0], 0)
+    return ref_uc_normal(ref_uc_set(u[0] * v[0], g)[1])
+
+
+def ref_uc_inv(u):
+    """adf_ucoset_inv: c^-1 U(N) in normal form (P10.2; api-2.md A.2, C.2)."""
+    c, N = u
+    if N == 0:
+        return u
+    if N == 1:
+        return (1, 1)
+    return ref_uc_normal(ref_uc_set(pow(c, -1, N), N)[1])
+
+
+def ref_uc_equal_set(u, v):
+    return ref_uc_normal(u) == ref_uc_normal(v)
+
+
+def ref_uc_contains(u, v):
+    """1 if u is inside v (first inside second, SPEC 4.2; ideles P9.1, api-2.md A.3)."""
+    (c, N), (c2, N2) = ref_uc_normal(u), ref_uc_normal(v)
+    if N2 == 0:
+        return N == 0 and c == c2
+    if N == 0:
+        return (c - c2) % N2 == 0
+    return N % N2 == 0 and (c - c2) % N2 == 0
+
+
+def ref_uc_overlaps(u, v):
+    g = ref_uc_gcd(u[1], v[1])
+    return u[0] == v[0] if g == 0 else (u[0] - v[0]) % g == 0
+
+
+def level_set(u, M):
+    """Oracle: the image of the set of u in (Z/M)^x; M a multiple of the modulus of u."""
+    c, N = u
+    if N == 0:
+        return frozenset({c % M})
+    return img(c, N, M)
+
+
+def some_cosets(nmax):
+    out = [(1, 0), (-1, 0)]
+    for N in range(1, nmax + 1):
+        for c in range(1, N + 1):
+            if gcd(c, N) == 1:
+                out.append((c, N))
+    return out
+
+
+def check_api_ucoset():
+    """The ref_uc_* functions against enumeration in (Z/M)^x. A level M = 5 L or 12 L or 28 L (L the lcm of
+    the moduli) has an odd prime that makes every coset with N >= 1 have at least two elements there, so an
+    exact unit and a coset are told apart."""
+    ok = True
+    n_pred = n_mul = 0
+    cos = some_cosets(14)
+    for u in cos:
+        ok &= ref_uc_is_canonical(u) and ref_uc_is_normal(ref_uc_normal(u))
+        ok &= ref_uc_normal(ref_uc_normal(u)) == ref_uc_normal(u)
+        for v in cos:
+            base = lcm(max(u[1], 1), max(v[1], 1))
+            levels = [base * 5, base * 12, base * 28]
+            inside_ = all(level_set(u, M) <= level_set(v, M) for M in levels)
+            meet = all(level_set(u, M) & level_set(v, M) for M in levels)
+            same = all(level_set(u, M) == level_set(v, M) for M in levels)
+            ok &= ref_uc_contains(u, v) == inside_
+            ok &= ref_uc_overlaps(u, v) == meet
+            ok &= ref_uc_equal_set(u, v) == same
+            n_pred += 1
+            w = ref_uc_mul(u, v)
+            for M in levels[:2]:
+                prod = frozenset((x * y) % M for x in level_set(u, M) for y in level_set(v, M))
+                ok &= prod == level_set(w, M)
+            ok &= ref_uc_is_normal(w)
+            ok &= (w[1] == 0) == (u[1] == 0 and v[1] == 0)
+            n_mul += 1
+        iu = ref_uc_inv(u)
+        base = max(u[1], 1)
+        for M in (base * 5, base * 12):
+            ok &= frozenset(pow(x, -1, M) for x in level_set(u, M)) == level_set(iu, M)
+            ok &= (1 % M) in level_set(ref_uc_mul(u, iu), M)       # the point 1 is in x * x^-1
+        ok &= ref_uc_is_normal(iu) and ref_uc_equal_set(ref_uc_inv(iu), u)
+        if u[1] >= 1:
+            ok &= ref_uc_mul(u, iu) == ref_uc_normal((1, u[1])) and ref_uc_mul(u, iu) != (1, 0)
+    # the examples of SPEC 5 and conventions 5.6, and the refused pairs
+    ok &= ref_uc_equal_set((5, 6), (2, 3)) and ref_uc_normal((5, 6)) == (2, 3)
+    ok &= ref_uc_set(-1, 6) == (OK, (5, 6)) and ref_uc_set(0, 1) == (OK, (1, 1))
+    ok &= not ref_uc_contains((1, 1), (1, 0)) and ref_uc_contains((1, 0), (1, 1))
+    ok &= not ref_uc_overlaps((1, 0), (-1, 0)) and ref_uc_overlaps((-1, 0), (3, 4))
+    bad = [(2, 4), (0, 6), (3, 6), (5, 0), (0, 0), (2, 0), (-2, 0), (1, -1), (0, 2)]
+    ok &= all(ref_uc_set(c, N)[0] == DOMAIN for c, N in bad)
+    report("check_api_ucoset (api-2.md A, B, C; P9, P10, P11)", ok,
+           f"{n_pred} ordered pairs of {len(cos)} cosets (2 exact): contains, overlaps, equal_set at 3 levels; "
+           f"{n_mul} products and {len(cos)} inverses at 2 levels; {len(bad)} invalid pairs refused")
+
+
+# ------------------------------------------------------------------ the real kernel (api-2.md Statement E)
+
+def exp2(x):
+    """ARF_EXP of x != 0: the e with 2^(e-1) <= |x| < 2^e."""
+    x = abs(F(x))
+    e = x.numerator.bit_length() - x.denominator.bit_length()
+    while F(2) ** e <= x:
+        e += 1
+    while F(2) ** (e - 1) > x:
+        e -= 1
+    return e
+
+
+def rd(x, p):
+    """Round x > 0 down to p bits (ARF_RND_FLOOR on a positive number)."""
+    x = F(x)
+    assert x > 0
+    s = F(2) ** (exp2(x) - p)
+    return (x / s).__floor__() * s
+
+
+def ru(x, p):
+    """Round x > 0 up to p bits (ARF_RND_CEIL on a positive number)."""
+    x = F(x)
+    assert x > 0
+    s = F(2) ** (exp2(x) - p)
+    return -((-x / s).__floor__()) * s
+
+
+def rn(x, p):
+    """Round x > 0 to the nearest p-bit number, ties to even (ARF_RND_NEAR)."""
+    x = F(x)
+    assert x > 0
+    s = F(2) ** (exp2(x) - p)
+    return round(x / s) * s
+
+
+def is_dyadic(x):
+    d = F(x).denominator
+    return d & (d - 1) == 0
+
+
+def bits(x):
+    """Number of bits of the odd mantissa of the dyadic number x != 0."""
+    x = abs(F(x))
+    assert is_dyadic(x)
+    n = x.numerator
+    while n % 2 == 0:
+        n //= 2
+    return n.bit_length()
+
+
+def kernel_B(lo, hi, sign, p):
+    """Kernel B of api-2.md Statement E5: a ball that contains sign * [lo, hi] and excludes 0, or
+    NOT_DETERMINED. 0 < lo <= hi dyadic with at most p bits. Returns (status, (m, rho), step). The radius
+    ru(., 30) models a mag; the C radius may be a few ulps larger (mag.rst:15), so B3 and B4 may differ
+    from the C in borderline cases, never the status."""
+    assert 0 < lo <= hi and bits(lo) <= p and bits(hi) <= p
+    if exp2(hi) - exp2(lo) > p:
+        return NOT_DETERMINED, None, "B1"
+    if lo == hi:
+        return OK, (sign * lo, F(0)), "B2"
+    m = rn((lo + hi) / 2, p)
+    rho = ru(max(hi - m, m - lo), 30)
+    if m > rho:
+        return OK, (sign * m, rho), "B3"
+    rho = ru((hi - lo) / 2, 30)
+    return OK, (sign * (lo + rho), rho), "B4"
+
+
+def abs_bounds(ball, p):
+    """Statement E1: l = RD_p(|m| - rho), h = RU_p(|m| + rho)."""
+    m, r = ball
+    return rd(abs(m) - r, p), ru(abs(m) + r, p)
+
+
+def sgn(ball):
+    return 1 if ball[0] > 0 else -1
+
+
+def ref_real_mul(x, y, p):
+    """E2 and B. Returns (status, ball, step, lo, hi, sign)."""
+    p = max(p, 2)
+    (lx, ux), (ly, uy) = abs_bounds(x, p), abs_bounds(y, p)
+    lo, hi, s = rd(lx * ly, p), ru(ux * uy, p), sgn(x) * sgn(y)
+    return kernel_B(lo, hi, s, p) + (lo, hi, s)
+
+
+def ref_real_inv(x, p):
+    """E3 and B."""
+    p = max(p, 2)
+    lx, ux = abs_bounds(x, p)
+    lo, hi, s = rd(1 / ux, p), ru(1 / lx, p), sgn(x)
+    return kernel_B(lo, hi, s, p) + (lo, hi, s)
+
+
+def ref_real_rat(q, p):
+    """E4 and B, q != 0."""
+    p = max(p, 2)
+    q = F(q)
+    lo, hi, s = rd(abs(q), p), ru(abs(q), p), (1 if q > 0 else -1)
+    return kernel_B(lo, hi, s, p) + (lo, hi, s)
+
+
+def ball_product_arb(x, y, p):
+    """Model of the ball product of arb (the alternative that decision D2-2 rejects): midpoint m1 m2 rounded
+    to nearest, radius |m1| r2 + |m2| r1 + r1 r2 plus the rounding error."""
+    (m1, r1), (m2, r2) = x, y
+    t = m1 * m2
+    m = rn(t, p) if t > 0 else -rn(-t, p)
+    return m, abs(m1) * r2 + abs(m2) * r1 + r1 * r2 + abs(m - t)
+
+
+def random_ball(rng, width_exp, big=False):
+    """A ball that excludes 0; width_exp controls how close the near end is to 0."""
+    man = rng.randint(1, 1 << (400 if big else 20))
+    m = F(man, 1 << rng.randint(0, 40)) * rng.choice([1, -1])
+    if big and rng.random() < 0.5:
+        m *= F(2) ** rng.randint(-3000, 3000)
+    gapexp = rng.randint(0, width_exp)
+    r = F(0)
+    if gapexp:
+        r = rd(abs(m) * (1 - F(1, 1 << gapexp)), 30)
+    return m, r
+
+
+def spec5_example():
+    """SPEC 5: x = y = 1 +/- (1 - 2^-30)."""
+    return (F(1), 1 - F(1, 1 << 30))
+
+
+def check_api_real_kernel():
+    ok = True
+    n = nd = n_exact = zone_ok = zone_nd = n_exact_mul = 0
+    steps = {}
+    for _ in range(4000):
+        p = RNG.choice([2, 3, 4, 8, 16, 30, 53, 64, 128, 300])
+        pp = max(p, 2)
+        big = RNG.random() < 0.1
+        x = random_ball(RNG, RNG.choice([0, 3, 40, 200]), big)
+        y = random_ball(RNG, RNG.choice([0, 3, 40, 200]), big)
+        q = F(RNG.randint(1, 10 ** 12), RNG.randint(1, 10 ** 12)) * RNG.choice([1, -1])
+        ax = (abs(x[0]) - x[1], abs(x[0]) + x[1])
+        ay = (abs(y[0]) - y[1], abs(y[0]) + y[1])
+        cases = [
+            (ref_real_mul(x, y, p), ax[0] * ay[0], ax[1] * ay[1], sgn(x) * sgn(y)),
+            (ref_real_inv(x, p), 1 / ax[1], 1 / ax[0], sgn(x)),
+            (ref_real_rat(q, p), abs(q), abs(q), 1 if q > 0 else -1),
+        ]
+        for (st, ball, step, lo, hi, s), L, H, s_true in cases:
+            n += 1
+            steps[step] = steps.get(step, 0) + 1
+            ok &= 0 < lo <= L <= H <= hi and s == s_true           # E1 to E4: the end points
+            if st == OK:
+                m, rr = ball
+                ok &= m - rr <= s * L <= m + rr and m - rr <= s * H <= m + rr   # enclosure of the set
+                ok &= (m - rr > 0) if s > 0 else (m + rr < 0)                  # 0 is excluded
+                ok &= bits(m) <= 2 * pp + 30                                   # E5, size of the midpoint
+                n_exact += step == "B2"
+            else:
+                ok &= st == NOT_DETERMINED
+                nd += 1
+            if hi < F(2) ** (pp - 1) * lo:                                     # E6
+                ok &= st == OK
+                zone_ok += 1
+            if hi >= F(2) ** (pp + 1) * lo:
+                ok &= st == NOT_DETERMINED
+                zone_nd += 1
+        # exact inputs whose product fits in p bits: an exact result
+        if x[1] == 0 and y[1] == 0:
+            t = x[0] * y[0]
+            if bits(t) <= pp and bits(x[0]) <= pp and bits(y[0]) <= pp:
+                st, ball, step = ref_real_mul(x, y, p)[:3]
+                ok &= st == OK and ball == (t, 0)
+                n_exact_mul += 1
+    ok &= all(ref_real_rat(F(k, 7), p)[0] == OK for k in (-3, 1, 10 ** 30) for p in (0, 1, 2, 3))
+    # SPEC 5 example: the ball product contains 0 at every precision, the kernel does not above a threshold
+    x = spec5_example()
+    spec = {}
+    for p in range(2, 140):
+        m, r = ball_product_arb(x, x, p)
+        ok &= m - r <= 0
+        spec[p] = ref_real_mul(x, x, p)[0]
+    first_ok = min(p for p in spec if spec[p] == OK)
+    ok &= all(spec[p] == (OK if p >= first_ok else NOT_DETERMINED) for p in spec)
+    st, ball, step, lo, hi, s = ref_real_mul(x, x, 128)
+    ok &= st == OK and lo == F(1, 1 << 60) and hi == (2 - F(1, 1 << 30)) ** 2
+    report("check_api_real_kernel (api-2.md E)", ok,
+           f"{n} results (mul, inv, rational): end points, enclosure, sign, size; {nd} NOT_DETERMINED, "
+           f"{n_exact} exact; steps {dict(sorted(steps.items()))}; promised OK in {zone_ok}, promised "
+           f"NOT_DETERMINED in {zone_nd}; {n_exact_mul} exact products of exact inputs; SPEC 5 example: "
+           f"NOT_DETERMINED below prec {first_ok}, OK from {first_ok} (checked 2 to 139), at 128 by {step}")
+
+
+# ------------------------------------------------------------------ ideles (api-2.md Statement D)
+
+def ref_idele_set_rat(q, p):
+    q = F(q)
+    if q == 0:
+        return NOT_UNIT, None
+    st, ball = ref_real_rat(q, p)[:2]
+    assert st == OK
+    return OK, (ball, abs(q), (1 if q > 0 else -1, 0))
+
+
+def ref_idele_mul(x, y, p):
+    st, ball = ref_real_mul(x[0], y[0], p)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, x[1] * y[1], ref_uc_mul(x[2], y[2]))
+
+
+def ref_idele_inv(x, p):
+    st, ball = ref_real_inv(x[0], p)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, 1 / x[1], ref_uc_inv(x[2]))
+
+
+def inside(point, ball):
+    return ball[0] - ball[1] <= point <= ball[0] + ball[1]
+
+
+def check_api_idele():
+    """Points of the input sets (a real point, the content, a unit residue at a level M) multiplied or inverted
+    exactly; the result point must lie in the result set."""
+    ok = True
+    n = npts = nd = 0
+    cos = some_cosets(12)
+    for _ in range(1500):
+        p = RNG.choice([2, 16, 53, 128])
+        x = (random_ball(RNG, RNG.choice([0, 3, 20])), F(RNG.randint(1, 40), RNG.randint(1, 40)), RNG.choice(cos))
+        y = (random_ball(RNG, RNG.choice([0, 3, 20])), F(RNG.randint(1, 40), RNG.randint(1, 40)), RNG.choice(cos))
+        M = lcm(max(x[2][1], 1), max(y[2][1], 1)) * 60
+        for name, (st, z) in (("mul", ref_idele_mul(x, y, p)), ("inv", ref_idele_inv(x, p))):
+            n += 1
+            if st != OK:
+                ok &= st == NOT_DETERMINED
+                nd += 1
+                continue
+            ok &= not inside(0, z[0]) and z[1] > 0 and ref_uc_is_normal(z[2])
+            for _k in range(4):
+                a = x[0][0] + x[0][1] * F(RNG.randint(-8, 8), 8)
+                b = y[0][0] + y[0][1] * F(RNG.randint(-8, 8), 8)
+                ua = RNG.choice(sorted(level_set(x[2], M)))
+                ub = RNG.choice(sorted(level_set(y[2], M)))
+                if name == "mul":
+                    pt = (a * b, x[1] * y[1], (ua * ub) % M)
+                else:
+                    pt = (1 / a, 1 / x[1], pow(ua, -1, M))
+                ok &= inside(pt[0], z[0]) and pt[1] == z[1] and pt[2] in level_set(z[2], M)
+                npts += 1
+    for q in (F(-3, 2), F(5), F(-1), F(1, 3)):
+        st, z = ref_idele_set_rat(q, 64)
+        ok &= st == OK and inside(q, z[0]) and z[1] == abs(q) and z[2] == ((1 if q > 0 else -1), 0)
+    ok &= ref_idele_set_rat(0, 64)[0] == NOT_UNIT
+    x = ((F(-3), F(1)), F(3, 2), (5, 12))
+    st, z = ref_idele_mul(x, ref_idele_inv(x, 64)[1], 64)
+    ok &= st == OK and inside(1, z[0]) and z[1] == 1 and z[2] == (1, 12) and z[0][1] > 0
+    report("check_api_idele (api-2.md D)", ok,
+           f"{n} results of mul and inv; {npts} exact points of the inputs, each result point inside the "
+           f"result; {nd} NOT_DETERMINED")
+
+
+PART1 = [check_decomposition, check_unit_cosets, check_canonical, check_products, check_lte, check_power,
+         check_power_local, check_norm, check_class_map, check_idele_to_adele, check_noninvertible,
+         check_division]
+PART2 = [check_api_ucoset, check_api_real_kernel, check_api_idele]
+
 if __name__ == "__main__":
-    check_decomposition()
-    check_unit_cosets()
-    check_canonical()
-    check_products()
-    check_lte()
-    check_power()
-    check_power_local()
-    check_norm()
-    check_class_map()
-    check_idele_to_adele()
-    check_noninvertible()
-    check_division()
+    todo = PART2 if sys.argv[1:] == ["part2"] else PART1 + PART2
+    for f in todo:
+        f()
     if FAILURES:
         print("FAILED:", ", ".join(FAILURES))
+        print(f"{len(todo)} checks, {len(FAILURES)} failed")
         sys.exit(1)
     print("all checks passed")
+    print(f"{len(todo)} checks")
