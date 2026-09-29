@@ -1,0 +1,154 @@
+# redgreen.log of lane s1-slice1
+
+## red 1 (2026-09-29T09:55+02:00): tests/test_linsolve.c written first, no src/linsolve.c: link error
+## (the first test of the file)
+
+$ make -j2 build/test_linsolve   (last 5 lines)
+/usr/bin/ld: .../tests/test_linsolve.c:659:(.text+0x8b3b): undefined reference to `adf_linsolve_mod'
+/usr/bin/ld: .../tests/test_linsolve.c:659:(.text+0x8b50): undefined reference to `adf_linsol_verify'
+/usr/bin/ld: .../tests/test_linsolve.c:664:(.text+0x8be9): undefined reference to `adf_linsol_clear'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:97: build/test_linsolve] Error 1
+
+## red 2 (2026-09-29T09:58+02:00): src/linsolve.c with the life cycle and the accessors only; the solver
+## returns ADF_UNSUPPORTED, the checker 0, is_canonical 1. Every test fails by assertions.
+## (A first run of this stage crashed in two tests that indexed x0 and V of a result without testing its
+## shape; the tests were changed to test the shape first, so that a wrong result fails an assertion.)
+
+$ ./build/test_linsolve | grep '^FAIL [a-z_0-9]* (\|tests, '
+FAIL init_value_and_accessors (tests/test_linsolve.c:573, 1 failed checks)
+FAIL accessors_copy_and_aliasing (tests/test_linsolve.c:609, 21 failed checks)
+FAIL every_system_modulo_4_with_r_c_at_most_2 (tests/test_linsolve.c:669, 4456 failed checks)
+FAIL random_systems_small_moduli_r_c_at_most_3 (tests/test_linsolve.c:709, 7089 failed checks)
+FAIL one_equation_every_a_b_for_N_below_40 (tests/test_linsolve.c:733, 1 failed checks)
+FAIL canonical_under_permutation_units_and_redundant_equations (tests/test_linsolve.c:822, 1 failed checks)
+FAIL vectors_s1_slice1_every_line (tests/test_linsolve.c:947, 483 failed checks)
+FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1235, 1813 failed checks)
+FAIL checker_refuses_wrong_shapes_and_moduli (tests/test_linsolve.c:1366, 2 failed checks)
+FAIL statuses_domain_and_limit_leave_sol_untouched (tests/test_linsolve.c:1396, 12 failed checks)
+FAIL special_cases_and_huge_entries (tests/test_linsolve.c:1468, 10 failed checks)
+FAIL wrapper_test_fmpz_mat_howell_form_mod (tests/test_linsolve.c:1559, 1 failed checks)
+12 tests, 14399 checks, 13890 failed checks, 12 failed tests
+
+## green (2026-09-29T10:02+02:00): src/linsolve.c complete (Algorithm H, kernel certificate, Algorithm L,
+## checker, predicate). The first run had 1 failed check, in special_cases_and_huge_entries: the planted x of
+## the test depended on the row index, so the system had no solution; the library returned NO_SOLUTION with a
+## y that its checker (K7) accepted. The test was repaired (x_j the same for every row). Then the change
+## "row of V removed" was made its own kind (it had been the same as "row of E removed"). The run below:
+
+$ ./build/test_linsolve | grep -v 'kernel sizes'
+ok   init_value_and_accessors
+ok   accessors_copy_and_aliasing
+all systems modulo 4, r, c <= 2: 4455 systems, OK 2569, NO_SOLUTION 1886; kernel of one element 1757, the whole space 42, other 2656; not free 1456; failures 0
+ok   every_system_modulo_4_with_r_c_at_most_2
+random systems, N in {1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18}, r, c <= 3: 7088 systems, OK 4749, NO_SOLUTION 2339; kernel of one element 3006, the whole space 1978, other 2104; not free 1159; failures 0
+ok   random_systems_small_moduli_r_c_at_most_3
+one equation a z = b modulo N, N < 40: 20540 cases, 0 failures
+ok   one_equation_every_a_b_for_N_below_40
+canonical form: 440 systems changed by permutation, units and redundant equations, 111 without solution; 0 with a different G or status
+ok   canonical_under_permutation_units_and_redundant_equations
+vectors: 483 lines, OK 342, NO_SOLUTION 141, N above 64 bits 123; 0 differ
+ok   vectors_s1_slice1_every_line
+changed certificates, generator removed                         :  2598 tried,  2598 refused,     0 accepted and true, 0 accepted and false
+changed certificates, generator changed                         :  2598 tried,  2069 refused,   529 accepted and true, 0 accepted and false
+changed certificates, row of E removed (with V)                 :  3000 tried,  3000 refused,     0 accepted and true, 0 accepted and false
+changed certificates, row of E changed                          :  3000 tried,  2403 refused,   597 accepted and true, 0 accepted and false
+changed certificates, row of V removed (E kept)                 :  3000 tried,  3000 refused,     0 accepted and true, 0 accepted and false
+changed certificates, row of V changed                          :  3000 tried,  2032 refused,   968 accepted and true, 0 accepted and false
+changed certificates, x0 or y changed                           :  3600 tried,  2158 refused,  1442 accepted and true, 0 accepted and false
+changed certificates, kind flipped                              :  3600 tried,  3600 refused,     0 accepted and true, 0 accepted and false
+changed certificates, generator multiplied by a unit            :  2178 tried,  1520 refused,   658 accepted and true, 0 accepted and false
+changed certificates, certificate of another matrix             :  3600 tried,  3393 refused,   207 accepted and true, 0 accepted and false
+changed certificates, certificate of A with one row replaced    :  3600 tried,  3243 refused,   357 accepted and true, 0 accepted and false
+changed certificates, row of E repeated, generator removed      :  1998 tried,  1998 refused,     0 accepted and true, 0 accepted and false
+changed certificates, generator plus a multiple of a later one  :  1308 tried,  1136 refused,   172 accepted and true, 0 accepted and false
+ok   checker_refuses_false_certificates
+ok   checker_refuses_wrong_shapes_and_moduli
+ok   statuses_domain_and_limit_leave_sol_untouched
+ok   special_cases_and_huge_entries
+wrapper test (FLINT fmpz_mat_howell_form_mod, padded): 270 matrices, 270 identical to Algorithm H
+ok   wrapper_test_fmpz_mat_howell_form_mod
+12 tests, 14415 checks, 0 failed checks, 0 failed tests
+
+## item 5 of the brief (2026-09-29T10:05+02:00): do the tests bite? One change at a time in a scratch copy
+## under build/mutants/, by lanes/s1-slice1/mutants.py (ulimit -v 2 GB, timeout 120 s). Exit status -6 is the
+## abort of the internal check of adf_linsolve_mod (step 5 of Algorithm L); the "-nocheck" variants disable that
+## check and show the failing assertions. H-third survives: see the note after the output.
+
+$ python3 lanes/s1-slice1/mutants.py
+MUTANT K1: exit status 1
+   FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1239, 949 failed checks)
+   changed certificates, generator changed                         :  2598 tried,  2063 refused,   529 accepted and true, 6 accepted and false
+   changed certificates, row of E repeated, generator removed      :  1998 tried,  1057 refused,     0 accepted and true, 941 accepted and false
+   12 tests, 15362 checks, 949 failed checks, 1 failed tests
+MUTANT K2: exit status 1
+   FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1239, 1910 failed checks)
+   changed certificates, certificate of another matrix             :  3600 tried,  1997 refused,   726 accepted and true, 877 accepted and false
+   changed certificates, certificate of A with one row replaced    :  3600 tried,  1428 refused,  1142 accepted and true, 1030 accepted and false
+   12 tests, 16322 checks, 1910 failed checks, 1 failed tests
+MUTANT K3: exit status 1
+   FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1239, 1219 failed checks)
+   changed certificates, generator changed                         :  2598 tried,  1710 refused,   529 accepted and true, 359 accepted and false
+   changed certificates, certificate of another matrix             :  3600 tried,  2775 refused,   207 accepted and true, 618 accepted and false
+   changed certificates, certificate of A with one row replaced    :  3600 tried,  3004 refused,   357 accepted and true, 239 accepted and false
+   12 tests, 15631 checks, 1219 failed checks, 1 failed tests
+MUTANT K4: exit status 1
+   FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1239, 2606 failed checks)
+   changed certificates, generator removed                         :  2598 tried,    90 refused,     0 accepted and true, 2508 accepted and false
+   changed certificates, generator changed                         :  2598 tried,  1974 refused,   529 accepted and true, 95 accepted and false
+   12 tests, 17018 checks, 2606 failed checks, 1 failed tests
+MUTANT K5: exit status 1
+   FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1239, 1318 failed checks)
+   changed certificates, generator changed                         :  2598 tried,  1939 refused,   529 accepted and true, 130 accepted and false
+   changed certificates, generator multiplied by a unit            :  2178 tried,  1472 refused,   658 accepted and true, 48 accepted and false
+   changed certificates, generator plus a multiple of a later one  :  1308 tried,     0 refused,   172 accepted and true, 1136 accepted and false
+   12 tests, 15729 checks, 1318 failed checks, 1 failed tests
+MUTANT K6: exit status 1
+   FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1239, 2740 failed checks)
+   changed certificates, x0 or y changed                           :  3600 tried,   808 refused,  1442 accepted and true, 1350 accepted and false
+   changed certificates, kind flipped                              :  3600 tried,  2212 refused,     0 accepted and true, 1388 accepted and false
+   12 tests, 17153 checks, 2740 failed checks, 1 failed tests
+MUTANT K7: exit status 1
+   FAIL checker_refuses_false_certificates (tests/test_linsolve.c:1239, 2213 failed checks)
+   changed certificates, kind flipped                              :  3600 tried,  1388 refused,     0 accepted and true, 2212 accepted and false
+   12 tests, 16627 checks, 2213 failed checks, 1 failed tests
+MUTANT H-first: exit status -6
+   adf_linsolve_mod: the result of Algorithm H fails the checker (a defect of adelefeld)
+MUTANT H-third: exit status 0
+   12 tests, 14415 checks, 0 failed checks, 0 failed tests
+MUTANT x0-mod: exit status -6
+   adf_linsolve_mod: the result of Algorithm H fails the checker (a defect of adelefeld)
+MUTANT H-first-nocheck: exit status 1
+   FAIL accessors_copy_and_aliasing (tests/test_linsolve.c:609, 11 failed checks)
+   FAIL every_system_modulo_4_with_r_c_at_most_2 (tests/test_linsolve.c:669, 1897 failed checks)
+   FAIL random_systems_small_moduli_r_c_at_most_3 (tests/test_linsolve.c:709, 1591 failed checks)
+   FAIL one_equation_every_a_b_for_N_below_40 (tests/test_linsolve.c:733, 1 failed checks)
+   FAIL canonical_under_permutation_units_and_redundant_equations (tests/test_linsolve.c:822, 1 failed checks)
+   FAIL vectors_s1_slice1_every_line (tests/test_linsolve.c:947, 217 failed checks)
+   FAIL checker_refuses_wrong_shapes_and_moduli (tests/test_linsolve.c:1370, 1 failed checks)
+   FAIL statuses_domain_and_limit_leave_sol_untouched (tests/test_linsolve.c:1400, 1 failed checks)
+   FAIL special_cases_and_huge_entries (tests/test_linsolve.c:1472, 3 failed checks)
+   FAIL wrapper_test_fmpz_mat_howell_form_mod (tests/test_linsolve.c:1563, 1 failed checks)
+   12 tests, 14415 checks, 3724 failed checks, 10 failed tests
+MUTANT H-third-nocheck: exit status 0
+   12 tests, 14415 checks, 0 failed checks, 0 failed tests
+MUTANT x0-mod-nocheck: exit status 1
+   FAIL every_system_modulo_4_with_r_c_at_most_2 (tests/test_linsolve.c:669, 1378 failed checks)
+   FAIL random_systems_small_moduli_r_c_at_most_3 (tests/test_linsolve.c:709, 1197 failed checks)
+   FAIL one_equation_every_a_b_for_N_below_40 (tests/test_linsolve.c:733, 1 failed checks)
+   FAIL canonical_under_permutation_units_and_redundant_equations (tests/test_linsolve.c:822, 1 failed checks)
+   FAIL vectors_s1_slice1_every_line (tests/test_linsolve.c:947, 211 failed checks)
+   FAIL checker_refuses_wrong_shapes_and_moduli (tests/test_linsolve.c:1370, 1 failed checks)
+   FAIL special_cases_and_huge_entries (tests/test_linsolve.c:1472, 2 failed checks)
+   12 tests, 14415 checks, 2791 failed checks, 7 failed tests
+
+Note on H-third (equivalent; not a gap of the tests). The pending pair ((N/g) w', j + 1) of the third case of
+Algorithm H (docs/proofs/solvers.md:635 to 637) is implied by what is already there. Proof: in the third case
+g = gcd(a, h) = s a + t h, w' = s v + t w, v' = (h/g) v - (a/g) w, and v' stays pending at j + 1. By (I3) for
+the old row w (solvers.md:665), (N/h) w is in the span U of the rows T[j'] with j' > j and of the pending vectors
+at positions > j; U contains v' after the step, and later steps keep or enlarge the spans (proof of 2.5(2)).
+Now (h/g) v = v' + (a/g) w, so (N/g) v = (N/h)(h/g) v = (N/h) v' + (a/g) (N/h) w is in U, and
+(N/g) w = (h/g) (N/h) w is in U. Hence (N/g) w' = s (N/g) v + t (N/g) w is in U: (I3) for the new row w' holds
+without the added pair. Probe: lanes/s1-slice1/probe_third_case.py, 34000 random row sets (N up to 3^9 2^5, up
+to 5 columns, 7 rows), the third case taken 60577 times: 0 outputs differ from Algorithm H as written.
+34000 row sets, third case taken 60577 times; 0 outputs differ from Algorithm H as written

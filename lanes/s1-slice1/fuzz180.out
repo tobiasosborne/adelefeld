@@ -1,0 +1,2 @@
+diff_linsolve: 413816 systems in 180 s (seed 1), 0 disagreements; moduli {'b300': 82909, 'composite': 82841, 'prime': 82869, 'small': 82694, 'w64': 82503}; statuses {'OK': 267926, 'NO_SOLUTION': 145890}
+exit 0
