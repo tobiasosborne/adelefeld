@@ -1,0 +1,2 @@
+/home/tobias/Projects/adelefeld/.claude/worktrees/agent-aca3414af3169ffa0/tests/ref/vectors/i-slice2/idele_maps.jsonl: 1097 records, 161 NOT_DETERMINED, 477131 bytes; by op {'mul_rat': 265, 'norm': 304, 'valuation': 264, 'abs_inf': 264}
+/home/tobias/Projects/adelefeld/.claude/worktrees/agent-aca3414af3169ffa0/tests/ref/vectors/i-slice2/idclass.jsonl: 922 records, 301 NOT_DETERMINED, 404855 bytes; by op {'class': 304, 'mul': 309, 'inv': 309}

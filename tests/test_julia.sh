@@ -95,6 +95,24 @@ else
 fi
 rm -f "$ideles_output"
 
+# ---- 2c. idele classes (milestone 2, slice 2, lane i-slice2): tests/julia/idclass.jl, its own process ----
+
+idclass_output=$(mktemp)
+if "$JULIA" --startup-file=no tests/julia/idclass.jl "$so" > "$idclass_output" 2>&1; then
+    cat "$idclass_output"
+elif grep -q '__gmpn_modexact_1_odd' "$idclass_output" 2>/dev/null \
+        && idclass_gmp=$(ldconfig -p 2> /dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$idclass_gmp" ] \
+        && LD_PRELOAD="$idclass_gmp" "$JULIA" --startup-file=no tests/julia/idclass.jl "$so"; then
+    echo "== tests/julia/idclass.jl passed with LD_PRELOAD=$idclass_gmp"
+else
+    cat "$idclass_output"
+    rm -f "$idclass_output"
+    echo "test_julia: tests/julia/idclass.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$idclass_output"
+
 # ---- 3. run the smoke test ----
 
 run_output=$(mktemp)

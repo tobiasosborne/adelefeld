@@ -16,9 +16,14 @@ ideles. Adapted from part 2 of the unreviewed design lane d-ideles (its unit-cos
 B); the kernel here is the one of docs/api-2.md Statement E (B3 uses max(hi - m, m - lo)). The reference
 functions are named ref_*; the checks compare them with enumeration and with exact rational end points.
 lanes/i-slice1/gen_vectors.py writes the C vectors from the ref_* functions.
+Part 3 (lane i-slice2, 2026-09-30): the reference of slice 2 (docs/api-2.md section 2): the real kernel with
+an exact rational factor (Statement F), an idele times a rational, the norm, the class map, class product and
+inverse, valuations and absolute values; checked against exact points and trial division.
+lanes/i-slice2/gen_vectors.py writes its C vectors.
 
 Run: timeout 180 python3 proto/ideles_checks.py          (all checks)
      timeout 180 python3 proto/ideles_checks.py part2    (part 2 only)
+     timeout 180 python3 proto/ideles_checks.py part3    (part 3 only)
 """
 from fractions import Fraction as F
 from math import gcd
@@ -877,13 +882,213 @@ def check_api_idele():
            f"result; {nd} NOT_DETERMINED")
 
 
+# ======================================================================================================
+# Part 3: reference of slice 2 of milestone 2 (docs/api-2.md section 2), lane i-slice2, 2026-09-30
+# ======================================================================================================
+#
+# Adapted from the unreviewed part 2 of lane d-ideles (worktree agent-acc17965b8910c1f2,
+# proto/ideles_checks.py lines 879-888 ref_real_scale / ref_real_div_pos, 1022-1029 ref_idele_mul_rat,
+# 1045-1061 ref_idele_class / ref_idele_valuation / ref_idele_abs_rat, 1131-1237 the checks). Taken: the
+# formulas of the class map (t = |X|/r, unit sign(X) u), of mul_rat and of the valuation. Changed: the scaling
+# is by a/b with integers (Statement F), the result carries the rounded ends; the valuation is at a place
+# (DOMAIN at "inf", no DOMAIN for a composite, which a place cannot hold); the checks use exact points of the
+# input sets and the unit cosets at levels M, as part 2 does.
+# A class is (ball, coset) with the ball positive. A place is a prime or the string "inf".
+
+INF = "inf"
+
+
+def ref_real_scale(x, a, b, sign, p):
+    """Statement F and kernel B: the ball x times a/b (a, b >= 1 integers), with the sign `sign`.
+    Returns (status, ball, step, lo, hi, sign)."""
+    p = max(p, 2)
+    lx, ux = abs_bounds(x, p)
+    lo, hi = rd(lx * a / F(b), p), ru(ux * a / F(b), p)
+    return kernel_B(lo, hi, sign, p) + (lo, hi, sign)
+
+
+def ref_idele_mul_rat(x, q, p):
+    """adf_idele_mul_rat (Statement H)."""
+    q = F(q)
+    if q == 0:
+        return NOT_UNIT, None
+    sq = 1 if q > 0 else -1
+    st, ball = ref_real_scale(x[0], abs(q.numerator), q.denominator, sgn(x[0]) * sq, p)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, x[1] * abs(q), ref_uc_mul(x[2], (sq, 0)))
+
+
+def ref_idele_norm(x, p):
+    """adf_idele_norm: |X| / r (P14.2; Statements F, I.4)."""
+    r = x[1]
+    return ref_real_scale(x[0], r.denominator, r.numerator, 1, p)
+
+
+def ref_idele_class(x, p):
+    """adf_idclass_set_idele: (|X| / r, sign(X) u) (P15; Statement G.4)."""
+    st, ball = ref_idele_norm(x, p)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, ref_uc_mul(x[2], (sgn(x[0]), 0)))
+
+
+def ref_idclass_mul(x, y, p):
+    st, ball = ref_real_mul(x[0], y[0], p)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, ref_uc_mul(x[1], y[1]))
+
+
+def ref_idclass_inv(x, p):
+    st, ball = ref_real_inv(x[0], p)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, ref_uc_inv(x[1]))
+
+
+def ref_idele_valuation_at(x, place):
+    """v_p(r) by repeated division of the numerator and the denominator (P14.4)."""
+    if place == INF:
+        return DOMAIN, None
+    return OK, vp(x[1], place)
+
+
+def ref_idele_abs_at(x, place):
+    st, v = ref_idele_valuation_at(x, place)
+    return (st, None) if st != OK else (OK, F(place) ** (-v))
+
+
+def ref_idele_abs_inf(x):
+    m, rho = x[0]
+    return (abs(m), rho)
+
+
+def trial_factor(n):
+    """Oracle independent of vp: the factorisation of n >= 1 by trial division (n below about 10^12)."""
+    out, p = {}, 2
+    while p * p <= n:
+        while n % p == 0:
+            out[p] = out.get(p, 0) + 1
+            n //= p
+        p += 1
+    if n > 1:
+        out[n] = out.get(n, 0) + 1
+    return out
+
+
+def random_point(x, M):
+    """An exact point (xi, r, unit residue modulo M) of the idele value x; M a multiple of its modulus."""
+    (m, rho), r, u = x
+    return (m + rho * F(RNG.randint(-8, 8), 8), r, RNG.choice(sorted(level_set(u, M))))
+
+
+def check_api_classes():
+    """The class map, class product and inverse, mul_rat, norm, valuation and absolute values of the reference
+    against exact points of the input sets and the unit cosets at levels M (Statements F to I; P14, P15)."""
+    ok = True
+    n = npts = nd = n_inv = 0
+    cos = some_cosets(12)
+    Phi = lambda pt, M: (abs(pt[0]) / pt[1], (pt[2] if pt[0] > 0 else -pt[2]) % M)
+    for _ in range(1500):
+        p = RNG.choice([2, 8, 16, 53, 128])
+        x = (random_ball(RNG, RNG.choice([0, 3, 20, 70])), F(RNG.randint(1, 60), RNG.randint(1, 60)),
+             RNG.choice(cos))
+        y = (random_ball(RNG, RNG.choice([0, 3, 20])), F(RNG.randint(1, 60), RNG.randint(1, 60)), RNG.choice(cos))
+        q = F(RNG.choice([-1, 1]) * RNG.randint(1, 60), RNG.randint(1, 60))
+        M = lcm(max(x[2][1], 1), max(y[2][1], 1)) * 60
+        # the class of x: every class of a point lies in it; the unit is exactly sign(X) u
+        st, cx = ref_idele_class(x, p)
+        n += 1
+        if st != OK:
+            ok &= st == NOT_DETERMINED
+            nd += 1
+            continue
+        ok &= cx[0][0] - cx[0][1] > 0 and ref_uc_is_normal(cx[1])
+        ok &= level_set(cx[1], M) == frozenset((w if sgn(x[0]) > 0 else -w) % M for w in level_set(x[2], M))
+        for _k in range(4):
+            pt = random_point(x, M)
+            t, w = Phi(pt, M)
+            ok &= inside(t, cx[0]) and w in level_set(cx[1], M)
+            npts += 1
+        # the norm is the t of the class; valuations and absolute values against trial division
+        ok &= ref_idele_norm(x, p)[:2] == (OK, cx[0])
+        fn, fd = trial_factor(x[1].numerator), trial_factor(x[1].denominator)
+        prod = F(1)
+        for pr in set(fn) | set(fd) | {2, 3, 5, 7, 11, 13}:
+            v = fn.get(pr, 0) - fd.get(pr, 0)
+            ok &= ref_idele_valuation_at(x, pr) == (OK, v) and ref_idele_abs_at(x, pr) == (OK, F(pr) ** (-v))
+            prod *= F(pr) ** (-v)
+        ok &= prod == 1 / x[1]                                               # P14.2
+        ok &= ref_idele_valuation_at(x, INF)[0] == DOMAIN and ref_idele_abs_at(x, INF)[0] == DOMAIN
+        ai = ref_idele_abs_inf(x)
+        ok &= ai[0] - ai[1] > 0 and all(inside(abs(random_point(x, M)[0]), ai) for _k in range(3))
+        # mul_rat: pointwise, and the class of q x is the class of x (G.3)
+        st, z = ref_idele_mul_rat(x, q, p)
+        if st == OK:
+            for _k in range(4):
+                pt = random_point(x, M)
+                qpt = (pt[0] * q, pt[1] * abs(q), (pt[2] if q > 0 else -pt[2]) % M)
+                ok &= inside(qpt[0], z[0]) and qpt[1] == z[1] and qpt[2] in level_set(z[2], M)
+                ok &= Phi(qpt, M) == Phi(pt, M)                              # kernel Q^x, pointwise
+            st2, cz = ref_idele_class(z, p)
+            if st2 == OK:
+                ok &= ref_uc_equal_set(cz[1], cx[1]) and abs(cz[0][0] - cx[0][0]) <= cz[0][1] + cx[0][1]
+        else:
+            ok &= st == NOT_DETERMINED
+        # class product and inverse: pointwise (the group law of R_{>0} x Zhat^x, P15.1)
+        st, cy = ref_idele_class(y, p)
+        if st == OK:
+            for name, (st3, c3) in (("mul", ref_idclass_mul(cx, cy, p)), ("inv", ref_idclass_inv(cx, p))):
+                if st3 != OK:
+                    ok &= st3 == NOT_DETERMINED
+                    continue
+                ok &= c3[0][0] - c3[0][1] > 0 and ref_uc_is_normal(c3[1])
+                n_inv += 1
+                for _k in range(4):
+                    a, b = Phi(random_point(x, M), M), Phi(random_point(y, M), M)
+                    pt = (a[0] * b[0], (a[1] * b[1]) % M) if name == "mul" else (1 / a[0], pow(a[1], -1, M))
+                    ok &= inside(pt[0], c3[0]) and pt[1] in level_set(c3[1], M)
+    # the product formula on rationals: the norm of the idele of q contains 1, exactly when the ball is exact
+    n_q = n_exact = 0
+    for _ in range(600):
+        q = F(RNG.choice([-1, 1]) * RNG.randint(1, 3000), RNG.choice([1, 2, 8, 64, 3, 7, 35, 3000]))
+        p = RNG.choice([2, 8, 16, 53, 128])
+        st, x = ref_idele_set_rat(q, p)
+        st, t = ref_idele_norm(x, p)[:2]
+        ok &= st == OK and inside(1, t)
+        st, c = ref_idele_class(x, p)
+        ok &= st == OK and inside(1, c[0]) and c[1] == (1, 0)
+        if x[0][1] == 0:
+            ok &= t == (F(1), F(0)) and c[0] == (F(1), F(0))
+            n_exact += 1
+        n_q += 1
+    # examples: the idele of -6/35 (tests/julia/idclass.jl); the sign on the unit (P15.3)
+    x = ref_idele_set_rat(F(-6, 35), 64)[1]
+    ok &= [ref_idele_valuation_at(x, pr)[1] for pr in (2, 3, 5, 7, 11)] == [1, 1, -1, -1, 0]
+    ok &= [ref_idele_abs_at(x, pr)[1] for pr in (2, 3, 5, 7, 11)] == [F(1, 2), F(1, 3), 5, 7, 1]
+    ok &= ref_idele_class(x, 64)[1][1] == (1, 0) and inside(1, ref_idele_class(x, 64)[1][0])
+    ok &= ref_idele_class(((F(1), F(0)), F(1), (-1, 0)), 64) == (OK, ((F(1), F(0)), (-1, 0)))
+    ok &= ref_idele_class(((F(-1), F(0)), F(1), (-1, 0)), 64) == (OK, ((F(1), F(0)), (1, 0)))
+    ok &= ref_idele_class(((F(-5, 2), F(1, 4)), F(3, 2), (5, 36)), 64)[1][1] == (31, 36)
+    ok &= ref_idele_mul_rat(x, 0, 64)[0] == NOT_UNIT
+    report("check_api_classes (api-2.md F to I; P14, P15)", ok,
+           f"{n} ideles: class map, norm, valuations, mul_rat; {npts} exact points in the class; {nd} "
+           f"NOT_DETERMINED; {n_inv} class products and inverses; {n_q} rationals: norm contains 1, exact 1 in "
+           f"{n_exact}")
+
+
 PART1 = [check_decomposition, check_unit_cosets, check_canonical, check_products, check_lte, check_power,
          check_power_local, check_norm, check_class_map, check_idele_to_adele, check_noninvertible,
          check_division]
 PART2 = [check_api_ucoset, check_api_real_kernel, check_api_idele]
+PART3 = [check_api_classes]
 
 if __name__ == "__main__":
-    todo = PART2 if sys.argv[1:] == ["part2"] else PART1 + PART2
+    if sys.argv[1:] == ["part3"]:
+        todo = PART3
+    else:
+        todo = PART2 if sys.argv[1:] == ["part2"] else PART1 + PART2 + PART3
     for f in todo:
         f()
     if FAILURES:

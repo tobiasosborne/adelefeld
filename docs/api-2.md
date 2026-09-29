@@ -40,9 +40,9 @@ form; constructors keep the modulus as supplied (CV-17).
 | `adf_ucoset_inv(y, x)` | `c^-1 U(N)`, normal | P10.2; Statements A, C | void |
 | `adf_idele_init`, `_clear`, `_set`, `_swap`, `_identical`, `_is_canonical` | life cycle | conventions 2.3, 5.7 | void; predicate |
 | `adf_idele_set_parts(x, inf, r, u)` | `(inf, r, u)`, `r` canonicalised, `u` as supplied | conventions 5.7 | `OK`, `DOMAIN` |
-| `adf_idele_set_rat(x, q, prec)` | the idele of `q`: real ball of `q`, content `abs(q)`, unit `[sign(q)]` | P3.4 (line 80); Statement E | `OK`, `NOT_UNIT` (`q = 0`) |
-| `adf_idele_mul(z, x, y, prec)` | componentwise; real part by kernel B | Statements C, D, E | `OK`, `NOT_DETERMINED` |
-| `adf_idele_inv(y, x, prec)` | componentwise; real part by kernel B | Statements C, D, E | `OK`, `NOT_DETERMINED` |
+| `adf_idele_set_rat(x, q, prec)` | the idele of `q`: real ball of `q`, content `abs(q)`, unit `[sign(q)]` | P3.4 (line 80); Statement E | `OK`, `NOT_UNIT` (`q = 0`), `LIMIT` (`prec > ADF_IDELE_PREC_MAX`, since slice 2) |
+| `adf_idele_mul(z, x, y, prec)` | componentwise; real part by kernel B | Statements C, D, E | `OK`, `NOT_DETERMINED`, `LIMIT` (since slice 2) |
+| `adf_idele_inv(y, x, prec)` | componentwise; real part by kernel B | Statements C, D, E | `OK`, `NOT_DETERMINED`, `LIMIT` (since slice 2) |
 | `adf_idele_get_real`, `adf_idele_content`, `adf_idele_get_unit` | copies of the three parts | conventions 5.7 (the content) | void |
 | `adf_sizeof_ucoset`, `adf_alignof_ucoset`, `adf_sizeof_idele`, `adf_alignof_idele` | layout | conventions 12.4 | |
 
@@ -200,3 +200,149 @@ which can be negative while `(abs(m_x) - rho_x)(abs(m_y) - rho_y) > 0`: in the e
 | i1-4 | Does `set_parts` accept a non-canonical `fmpq`? | yes, if its denominator is not 0: it is canonicalised; `DOMAIN` for denominator 0 or `r <= 0` | require a canonical `fmpq` (precondition) |
 | i1-5 | Real ball of `adf_idele_set_rat` | kernel B on `RD_p(abs(q))`, `RU_p(abs(q))` (never 0 by construction) | `arb_set_fmpq` and a test of `arb_is_nonzero` (the same ball in most cases, but the sign would rest on a property of `arb_set_fmpq` read from its source, not from its documentation) |
 | i1-6 | A defect of the kernel (a result that fails its own sign test) | `flint_abort` with a message (as S-D20) | return `NOT_DETERMINED` |
+
+## 2. Slice 2: idele classes, the class map, valuations, absolute values, norm
+
+Status: written by lane `i-slice2` on 2026-09-29/30, work packages 2.1 (the class type), 2.2 and 2.3 (the class
+map); not reviewed. Headers: `include/adelefeld/idclass.h` (new), `include/adelefeld/idele.h` (additions).
+Code: `src/idclass.c`, `src/idele.c`, the kernel shared through `src/idele_internal.h`. Tests:
+`tests/test_idclass.c`, `tests/test_idele_maps.c`, vectors `tests/ref/vectors/i-slice2/` written by
+`lanes/i-slice2/gen_vectors.py` from `proto/ideles_checks.py` (part 3). Julia: `tests/julia/idclass.jl`.
+
+### 2.1 Types and set statements
+
+| Type | Data | Set it means | Predicate `is_canonical` | Init |
+|---|---|---|---|---|
+| `adf_idclass` | `t` (`arb`), `u` (`adf_ucoset`) | the classes `(tau, w)` with `tau` in the closed interval `t` and `w` in the set of `u` (Statement G; each class of `A^x/Q^x` has exactly one such representative, `ideles.md` P15.2, line 373) | `t` finite and positive; `u` canonical (conventions 5.7) | `<1 ; [1]>` |
+
+Layout (64-bit, FLINT 3.0.1): `adf_idclass_struct` 64 bytes, `t` at 0 (48 bytes), `u` at 48 (16 bytes);
+alignment 8.
+
+### 2.2 Functions
+
+| Function | Result | Source | Statuses |
+|---|---|---|---|
+| `adf_idclass_init`, `_clear`, `_set`, `_swap`, `_identical`, `_is_canonical` | life cycle | conventions 2.3, 5.7 | void; predicate |
+| `adf_idclass_set_parts(x, t, u)` | `(t, u)`, `u` as supplied | conventions 5.7, 3.2 | `OK`, `DOMAIN` (`t` not finite or not positive) |
+| `adf_idclass_set_idele(c, x, prec)` | the class `(abs(X)/r, sign(X) u)`, unit in normal form | `ideles.md` P15 (366), "On data" (393); Statements F, G.4 | `OK`, `NOT_DETERMINED`, `LIMIT` |
+| `adf_idclass_mul(z, x, y, prec)`, `adf_idclass_inv(y, x, prec)` | componentwise; real part by kernel B with sign +1 | P15.1; Statements E, G.1, G.2 | `OK`, `NOT_DETERMINED`, `LIMIT` |
+| `adf_idclass_get_t`, `adf_idclass_get_unit`, `adf_idclass_norm` | copies of `t` and `u`; the norm of a class is `t` | conventions 5.7; P14.2, P14.3 | void |
+| `adf_idele_mul_rat(z, x, q, prec)` | `(Xq, r abs(q), [sign q] u)` | P3 (67); Statements F, H | `OK`, `NOT_DETERMINED`, `NOT_UNIT` (`q = 0`), `LIMIT` |
+| `adf_idele_valuation_at(v, x, w)` | `v_p(r)` by removal of `p`, no factorisation | P14.1, P14.4 (347, 351) | `OK`, `DOMAIN` (archimedean place) |
+| `adf_idele_abs_at(a, x, w)` | `p^(-v_p(r))`, an exact `adf_rat` | P14.1 | `OK`, `DOMAIN` (archimedean place) |
+| `adf_idele_abs_inf(a, x)` | `abs(X)` as the ball `[abs(m) +- rho]`, exact | Statement I | void |
+| `adf_idele_norm(t, x, prec)` | `abs(X)/r`, `1/r` exact before the rounding | P14.2, P14.3 (348, 350); Statements F, I | `OK`, `NOT_DETERMINED`, `LIMIT` |
+| `adf_sizeof_idclass`, `adf_alignof_idclass` | layout | conventions 12.4 | |
+
+On every status other than `OK` the value output is untouched (conventions 4.3). Aliasing: every output may be
+the same object as any input of its type (conventions 4.1).
+
+The precision limit (decision of the orchestrator, 2026-09-30, after lane i-review1, which found that
+`adf_idele_inv` and `adf_idele_set_rat` of 1/3 at `prec = LONG_MAX` crash: FLINT tries to allocate `2^63` bits):
+`ADF_IDELE_PREC_MAX = 2097152` in `idele.h`, the value of `ADF_ROOTS_REAL_PREC_MAX`. Every function of `idele.h`
+and `idclass.h` that takes a `prec` returns `LIMIT` for a larger `prec`, decided from `prec` alone before any
+allocation and before every other status (the maximum of conventions 3.3), outputs untouched. The rows of
+section 1.2 are amended for this (they were right for slice 1). Conventions 3.2, row "Unit coset, idele, idele
+class arithmetic", names `OK`, `NOT_DETERMINED`, `NOT_UNIT`; `LIMIT` is an addition to that row (conventions 3.1:
+"a size bound of an algorithm").
+
+Not in this slice: powers (`M_k`), hulls and the map to adeles, division, text and dump forms, set predicates of
+classes (`equal_set`, `contains`, `overlaps`), characters.
+
+### 2.3 Statements to add
+
+**Statement F (the real kernel with an exact rational factor).** Let `X = [m +- rho]` be a finite ball that does
+not contain 0, `l = RD_p(abs(m) - rho)`, `h = RU_p(abs(m) + rho)` (Statement E1), `a, b >= 1` integers and
+`s = a/b`. Put `lo = RD_p(l a / b)` and `hi = RU_p(h a / b)`.
+
+1. `0 < lo <= abs(xi) s <= hi` for every `xi` in `X`; `lo` and `hi` have at most `p` bits.
+2. The computation `l a` exact (at most `p + bits(a)` bits), then one division by `b` rounded to `p` bits, gives
+   exactly these `lo` and `hi`.
+3. If `rho = 0` and `abs(m)` has at most `p` bits, and `abs(m) s` is a dyadic number of at most `p` bits, then
+   `lo = hi = abs(m) s`, and kernel B returns the exact ball `sign * abs(m) s` (B2).
+4. The status of kernel B on these ends is a function of `X`, `s` and `p` (as E6).
+
+*Proof.*
+1. `l <= abs(xi) <= h` (E1). Multiplication by `s > 0` keeps the order: `l s <= abs(xi) s <= h s`. Rounding
+   down gives a number `<= l s` and rounding up a number `>= h s` (correct rounding, `arf.rst:24-39`). `l s > 0`,
+   and rounding a positive number down to `p` bits gives at least `2^(e - 1) > 0` for its exponent `e` (as in the
+   proof of E1).
+2. `l` is a dyadic number of at most `p` bits and `a` an integer, so `l a` is a dyadic number of at most
+   `p + bits(a)` bits: the product is exact at `ARF_PREC_EXACT` and fits in memory, the two conditions of
+   `arf.rst:91-112`. `arf_div_fmpz` then rounds the exact quotient `(l a)/b` once in the given direction
+   (`arf.rst:672`, `:676-680`, and the correct rounding of `arf.rst:24-39`).
+3. With `rho = 0`, `abs(m) - rho = abs(m) + rho = abs(m)`, a number of at most `p` bits, which both roundings
+   return unchanged; so `l = h = abs(m)` and `l s = h s = abs(m) s`, which both roundings return unchanged when
+   it has at most `p` bits. Then `lo = hi` and B2 applies (E5).
+4. Correct rounding makes `l`, `h`, `lo`, `hi` unique; B1 is decided by `lo` and `hi` alone.
+
+Used with `s = abs(n)/d` for `q = n/d` (`adf_idele_mul_rat`) and with `s = d/n` for `r = n/d > 0` (the norm and
+the class). The integers of the rational are used, never a ball of it (M1-D4).
+
+**Statement G (the set of a class value; product, inverse, invariance, the class of an idele value).** The value
+`(T, v)` of `adf_idclass`, `T` a closed interval of positive reals, `v` a canonical unit coset, means
+`C(T, v) = {(tau, w) : tau in T, w in v}`, a subset of `R_{>0} x Zhat^x`, which `Phi` of `ideles.md` P15
+(line 368) identifies with a set of classes of `A^x/Q^x` (P15.1, line 370).
+
+1. For `(tau, w)` in `C(T, v)` and `(tau', w')` in `C(T', v')` the product of the classes is `(tau tau', w w')`, as
+   `Phi` is an isomorphism of groups onto the product group `R_{>0} x Zhat^x` (P15.1). `tau tau'` lies in
+   `T T' = {tau tau'}` and `w w'` in the product coset (Statement C.1). So the product lies in `C(Z, v v')` for
+   every interval `Z` that contains `T T'`; the ends of E2 bound `T T'` because `tau, tau' > 0`.
+2. The inverse is `(1/tau, w^(-1))`, in `C(Z, v^(-1))` for every `Z` that contains `1/T` (Statement C.2; E3).
+3. For an idele value `S = (X, r, u)` and a rational `q != 0`, the class of every point of `q S` equals the class
+   of the point of `S` it comes from (P15.1: the kernel of `Phi` is `Q^x`). On the values:
+   `adf_idclass_set_idele` of `adf_idele_mul_rat(S, q)` has the unit `sign(X q) ([sign q] u)`, the same set as
+   `sign(X) u` (Statement A.1, `sign(q)^2 = 1`), and a real ball that contains `abs(X q)/(r abs(q)) = abs(X)/r`,
+   as does the real ball of the class of `S`. So the two units are equal sets and the two real balls meet.
+4. (The class of an idele value.) Let `S = (X, r, u)`, `sigma` the sign of `X` (every point of `X` has it, E1).
+   The classes of the points `(xi, r w)` of `S` are `Phi(xi, r w) = (abs(xi)/r, sigma w)` (P15.1, and "On data",
+   line 393), so they form `C(abs(X)/r, sigma u)`, and `sigma u` is the coset `(sigma c) U(N)` for `u = c U(N)`
+   (Statement A.1), the same set as its normal form (Statement B). The computed class `(T, sigma u)` with
+   `T` from Statement F (`s = 1/r`) contains this set; its unit is the exact set, only `T` is an enclosure.
+5. (The class of the idele of a rational.) For `S` made by `adf_idele_set_rat` from `q`, `X` contains `q`,
+   `r = abs(q)` and `u = [sign q]`: the unit of the class is `[sign(q) sign(q)] = [1]` and `T` contains
+   `abs(q)/abs(q) = 1` (P14.3, line 350). If `X` is the exact `q` and `q` has at most `p` bits (`p` of the call
+   that makes the class), `T` is the exact 1 (Statement F.3 with `abs(m) s = 1`).
+
+*Proof.* Written in the items; they use P15.1 (homomorphism, kernel `Q^x`), P3 (decomposition), and Statements
+A, B, C, E, F.
+
+**Statement H (an idele times an exact rational).** For a point `(xi, r w)` of `S = (X, r, u)` and `q = n/d != 0`
+diagonal, the product is `(xi q, (r abs(q)) (sign(q) w))`, and its decomposition is `(r abs(q), sign(q) w)` (P3,
+uniqueness, line 78). `sign(q) w` lies in `[sign q] u` (Statement A.1). So the product lies in
+`(Z, r abs(q), [sign q] u)` for every interval `Z` that contains `X q`; Statement F with `a = abs(n)`, `b = d`
+bounds `abs(X q)`, and the sign of `X q` is `sign(X) sign(q)`. The finite part is exact.
+
+*Proof.* `r q w = r abs(q) sign(q) w` in `A_f` (the diagonal `q` is `abs(q) sign(q)` at every prime);
+`r abs(q) > 0` is rational and `sign(q) w` is a unit of `Zhat`, so P3 gives the decomposition.
+
+**Statement I (valuations, absolute values and norm of an idele value).** For every point `(xi, r w)` of
+`S = (X, r, u)` and every prime `p`:
+
+1. `v_p(x_p) = v_p(r) = v_p(n) - v_p(d)` for `r = n/d` in lowest terms, the number of times `p` divides `n`
+   minus the number of times it divides `d` (P14.1, P14.4, lines 347, 351). `abs(v_p(r))` is at most the bit
+   length of `n` or of `d`, so it fits in an `slong`.
+2. `|x_p|_p = p^(-v_p(r))`, an exact rational; `p^(abs(v))` divides `n` (if `v > 0`) or `d` (if `v < 0`), so its
+   size is bounded by that of `r`.
+3. `|xi|_inf = abs(xi)` lies in `abs(X) = [abs(m) - rho, abs(m) + rho]`, which is the ball `(abs(m), rho)`
+   (E1, step 1 of its proof).
+4. The norm `abs(xi) * product_p |x_p|_p = abs(xi)/r` (P14.2, line 348) lies in `abs(X)/r`, bounded by
+   Statement F with `s = 1/r = d/n`; `1/r` enters exactly.
+5. For the idele of a rational `q` the norm contains 1, and is the exact 1 under the condition of G.5.
+
+*Proof.* 1, 2: P14.1 and P14.4; `v > 0` means `p^v` divides `n`, `v < 0` means `p^(-v)` divides `d`; a positive
+integer divisible by `p^k` has at least `k log2(p) >= k` bits. 3: E1. 4: P14.2 and Statement F. 5: G.5.
+
+### 2.4 Decisions taken in this slice
+
+| Id | Question | Taken | Alternatives |
+|---|---|---|---|
+| i2-1 | Names of the class accessors | `adf_idclass_get_t`, `adf_idclass_get_unit`, the verb first as `adf_idele_get_unit` of slice 1 and FLINT's `arb_get_*` | `adf_idclass_t_get`, `adf_idclass_unit_get`, the spelling of conventions 5.7 (which slice 1 did not follow for ideles) |
+| i2-2 | Real part of the norm, of the class and of `mul_rat` | E1 ends, then one correct rounding of the exact rational `l a / b` (Statement F), then kernel B | `arb_div_fmpz` or `arb_mul_fmpz` on the ball and a sign test (can lose the sign as `arb_mul` does, and rounds twice); exact end points `abs(m) +- rho` without E1 (exact, but the difference of two numbers of distant exponents can need unbounded memory, `arf.rst:103-106`) |
+| i2-3 | Status of the norm | the kernel of the class (a certified positive ball or `NOT_DETERMINED`), so that the norm is the `t` of the class and never contains 0 | always `OK` with an `arb` enclosure that may contain 0 (never fails, but a norm that is not certified positive) |
+| i2-4 | Valuation: output type, archimedean place | `slong *` (the bound of Statement I.1); `DOMAIN` at the real place | an `fmpz` output (no bound needed, heavier for a caller); `v = 0` or a flag at the real place |
+| i2-5 | Absolute value at a place | at a prime an exact `adf_rat` (`adf_idele_abs_at`, `DOMAIN` at the real place); at the real place the exact ball `abs(X)` (`adf_idele_abs_inf`, void) | one function with an `arb` output for all places (the `p`-adic value `p^(-v)` is not dyadic for odd `p` and would be rounded) |
+| i2-6 | The norm of a class | `adf_idclass_norm(t, x)`: a copy of `t`, void, no `prec` (P14.2 with `r = 1`, `x_inf = t > 0`) | no separate function (conventions 5.7 lists the norm among the class-level operations) |
+| i2-7 | The unit of the class of an idele | `adf_ucoset_mul(u, [sign X])`, normal form (a result of an operation, D2-1) | the stored pair of `u` with `c` negated and reduced, modulus as stored |
+| i2-8 | `adf_idele_mul_rat` by 0 | `NOT_UNIT`, output untouched (conventions 3.2: `NOT_UNIT` only for an exact zero input) | `DOMAIN` |
+| i2-9 | Where the kernel lives | `src/idele_internal.h`, hidden symbols of `src/idele.c`, as `src/modctx_internal.h` | a copy in `src/idclass.c` (the brief forbids it) |

@@ -1,0 +1,18 @@
+PASS check_decomposition (L2, P3): 800 ideles and rationals decomposed; (p)_p has v_p = 1 at all p
+PASS check_unit_cosets (L5, P6): 490 cosets: local description, coset property, not the ball; 5U(6)=2U(3)
+PASS check_canonical (L7, P9): 6400 ordered pairs of cosets (moduli <= 16); U(2N) = U(N) for odd N < 200
+PASS check_products (P10, P11): 400 pairs; 19200 candidate moduli: one coset iff Kbar | gbar
+PASS check_lte (L12): 3600 cases of v_p(x^k - 1) = v_p(x - 1) + v_p(k)
+PASS check_power (P13): 640 (coset, k) cases: hull modulus = M_k; 432 with P_k strictly inside
+PASS check_power_local (P13): 1848 (p, a, k) cases with |k| <= 30; k = 0 on 39 moduli
+PASS check_norm (P14): 500 scales with product of |r|_p = 1/r; 500 rationals with |q| = 1
+PASS check_class_map (P15): 2000 ideles: invariant under Q^x, homomorphism, kernel; without sign fails
+PASS check_idele_to_adele (P16): 490 cosets: additive hull radius = lcm(N,2); 317 with N odd
+PASS check_noninvertible (P17): 1965 (ball, prime) cases with a coordinate 0 mod p^k, k <= 2
+PASS check_division (P18, P19): 2864 cases: hull radius = gcd(|a| L, M); simple ball coarser in 581
+PASS check_api_ucoset (api-2.md A, B, C; P9, P10, P11): 4356 ordered pairs of 66 cosets (2 exact): contains, overlaps, equal_set at 3 levels; 4356 products and 66 inverses at 2 levels; 9 invalid pairs refused
+PASS check_api_real_kernel (api-2.md E): 12000 results (mul, inv, rational): end points, enclosure, sign, size; 2823 NOT_DETERMINED, 120 exact; steps {'B1': 2823, 'B2': 120, 'B3': 8520, 'B4': 537}; promised OK in 8834, promised NOT_DETERMINED in 2653; 120 exact products of exact inputs; SPEC 5 example: NOT_DETERMINED below prec 61, OK from 61 (checked 2 to 139), at 128 by B3
+PASS check_api_idele (api-2.md D): 3000 results of mul and inv; 9560 exact points of the inputs, each result point inside the result; 610 NOT_DETERMINED
+PASS check_api_classes (api-2.md F to I; P14, P15): 1500 ideles: class map, norm, valuations, mul_rat; 4432 exact points in the class; 392 NOT_DETERMINED; 1941 class products and inverses; 600 rationals: norm contains 1, exact 1 in 236
+all checks passed
+16 checks

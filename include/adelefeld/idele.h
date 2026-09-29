@@ -9,6 +9,9 @@
    free of 0). Proofs: docs/proofs/ideles.md Proposition 3 (line 67), Propositions 10 and 11 (lines 195,
    213); docs/api-2.md 1.3, Statements D (the set of a value, product, inverse, the idele of a rational)
    and E (the real kernel). Implemented in src/idele.c (milestone 2, slice 1); tests tests/test_idele.c.
+   Slice 2 (lane i-slice2) adds mul_rat, valuation_at, abs_at, abs_inf and norm (ideles.md P14, line 343;
+   api-2.md 2.3, 2.4, Statements F, H, I); tests tests/test_idele_maps.c. The class map is in
+   adelefeld/idclass.h.
 
    Meaning (api-2.md Statement D): the value (X, r, u) is the set of ideles (xi, r w) with xi in the
    closed interval X = [m - rho, m + rho] of the real ball inf and w in the set of the unit coset u
@@ -43,7 +46,12 @@
    - A function that returns a status leaves every output untouched on a status other than ADF_OK
      (conventions 4.3): it computes into temporaries and swaps at the end.
    - prec is the real working precision in bits; a prec below 2 is taken as 2 (M1-D4). The finite
-     part (content and unit) does not depend on prec. */
+     part (content and unit) does not depend on prec.
+   - A prec above ADF_IDELE_PREC_MAX gives ADF_LIMIT, decided from prec alone before any allocation,
+     every output untouched; it takes precedence over every other status of the function (the maximum
+     of conventions 3.3). Decision of the orchestrator, 2026-09-30, after lane i-review1 (a prec of
+     LONG_MAX made FLINT try to allocate 2^63 bits in inv and set_rat). The same rule holds for every
+     function of adelefeld/idclass.h that takes a prec. */
 
 #ifndef ADELEFELD_IDELE_H
 #define ADELEFELD_IDELE_H
@@ -53,11 +61,17 @@
 #include "adelefeld/common.h"
 #include "adelefeld/status.h"
 #include "adelefeld/rat.h"
+#include "adelefeld/place.h"
 #include "adelefeld/ucoset.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* The largest working precision of the functions of this header and of adelefeld/idclass.h, 2^21 bits
+   (the value of ADF_ROOTS_REAL_PREC_MAX of adelefeld/roots.h). Above it: ADF_LIMIT (the common rules
+   above). */
+#define ADF_IDELE_PREC_MAX 2097152
 
 /* Layout (conventions 5.7, 12.4, 12.11), 64-bit: inf (arb_struct, 48 bytes) at 0, r (fmpq, 16 bytes)
    at 48, u (adf_ucoset_struct, 16 bytes) at 64; size 80, alignment 8. The field name r is not part of
@@ -114,7 +128,8 @@ int adf_idele_set_parts(adf_idele_t x, const arb_t inf, const fmpq_t r, const ad
    M0-D1; api-2.md D.3). The real ball is kernel B on lo = RD_p(|q|), hi = RU_p(|q|) (E4), so it is
    the exact q when q is a dyadic number of at most p bits, and NOT_DETERMINED cannot occur.
    Status (conventions 3.2, NOT_UNIT for an exact zero input): ADF_OK, x written; ADF_NOT_UNIT if
-   q = 0, x untouched. Aliasing: q is an adf_rat and not part of x. Cost: two divisions at p bits. */
+   q = 0, x untouched; ADF_LIMIT if prec > ADF_IDELE_PREC_MAX (also for q = 0), x untouched.
+   Aliasing: q is an adf_rat and not part of x. Cost: two divisions at p bits. */
 int adf_idele_set_rat(adf_idele_t x, const adf_rat_t q, slong prec);
 
 /* ---- arithmetic (SPEC 5: componentwise) ---- */
@@ -124,7 +139,8 @@ int adf_idele_set_rat(adf_idele_t x, const adf_rat_t q, slong prec);
    adf_ucoset_mul (normal form; ideles.md P10, P11); Z is kernel B on the end points of E2, with the
    sign sign(X) sign(Y). The finite part is the product set itself (D.4).
    Status (conventions 3.2): ADF_OK, z written; ADF_NOT_DETERMINED (B1: e(hi) - e(lo) > p) if the real
-   part cannot be certified free of 0 at p bits, z untouched. Never ADF_NOT_UNIT.
+   part cannot be certified free of 0 at p bits, z untouched; ADF_LIMIT if prec > ADF_IDELE_PREC_MAX,
+   z untouched. Never ADF_NOT_UNIT.
    z may be x or y or both. Cost: two products at p bits for the end points, the kernel, a product of
    rationals and adf_ucoset_mul. */
 int adf_idele_mul(adf_idele_t z, const adf_idele_t x, const adf_idele_t y, slong prec);
@@ -133,10 +149,59 @@ int adf_idele_mul(adf_idele_t z, const adf_idele_t x, const adf_idele_t y, slong
    lies in y (api-2.md D.2). The unit is adf_ucoset_inv (normal form; ideles.md P10.2); Z is kernel B
    on the end points of E3, with the sign of X.
    Status: ADF_OK, y written; ADF_NOT_DETERMINED (B1) if the real part cannot be certified free of 0 at
-   p bits, y untouched. y may be x. x * x^-1 contains the idele 1 (its unit is U(N'), N' the normal
-   modulus, which contains 1; its content is 1; its real ball contains 1). Cost: two divisions at p
-   bits, the kernel, a rational inverse and a modular inverse. */
+   p bits, y untouched; ADF_LIMIT if prec > ADF_IDELE_PREC_MAX, y untouched. y may be x. x * x^-1
+   contains the idele 1 (its unit is U(N'), N' the normal modulus, which contains 1; its content is 1;
+   its real ball contains 1). Cost: two divisions at p bits, the kernel, a rational inverse and a
+   modular inverse. */
 int adf_idele_inv(adf_idele_t y, const adf_idele_t x, slong prec);
+
+/* adf_idele_mul_rat(z, x, q, prec): z = (Z, r |q|, u [sign(q)]) for x = (X, r, u) and an exact rational
+   q != 0 (slice 2; api-2.md 2.3, Statement H): every product of a point of x with the diagonal q lies
+   in z. The content r |q| is exact; the unit is adf_ucoset_mul(u, [sign(q)]), (sign(q) c) U(N) in normal
+   form; Z is kernel B on lo = RD_p(l_X |n| / d), hi = RU_p(h_X |n| / d) with q = n/d (Statement F;
+   the integers of q are used, never a ball of q, M1-D4), with the sign sign(X) sign(q).
+   Status: ADF_OK, z written; ADF_NOT_UNIT if q = 0 (conventions 3.2: an exact zero input), z untouched;
+   ADF_NOT_DETERMINED (B1) if the real part cannot be certified free of 0 at p bits, z untouched;
+   ADF_LIMIT if prec > ADF_IDELE_PREC_MAX (also for q = 0), z untouched.
+   z may be x. q is an adf_rat and not part of z. The class of the result equals the class of x
+   (ideles.md P15, kernel Q^x; Statement G.3). Cost: two exact products and two divisions at p bits, the
+   kernel, a product of rationals and adf_ucoset_mul. */
+int adf_idele_mul_rat(adf_idele_t z, const adf_idele_t x, const adf_rat_t q, slong prec);
+
+/* ---- valuations, absolute values, norm (PLAN 2.2; ideles.md P14, line 343; api-2.md 2.4, Statement I) ---- */
+
+/* adf_idele_valuation_at(v, x, w): *v = v_p(x_p) = v_p(r) for the prime p of the place w (ideles.md
+   P14.1, line 347), the same integer for every point of x. Computed by the number of times p divides the
+   numerator and the denominator of r (P14.4, line 351; fmpz_remove, refs/src/flint-3.0.1/fmpz.rst:1142);
+   r is never factored. |v| is at most the bit length of r, so it fits in an slong.
+   Status: ADF_OK, *v written; ADF_DOMAIN if w is the archimedean place (an idele has no valuation there),
+   *v untouched. Cost: two removals of p. */
+int adf_idele_valuation_at(slong * v, const adf_idele_t x, adf_place_t w);
+
+/* adf_idele_abs_at(a, x, w): a = |x_p|_p = p^(-v_p(r)) for the prime p of the place w, an exact rational
+   (ideles.md P14.1, line 347), the same for every point of x. p^|v| divides the numerator or the
+   denominator of r, so a is no larger than r in bits; no limit is needed.
+   Status: ADF_OK, a written; ADF_DOMAIN if w is the archimedean place (use adf_idele_abs_inf), a
+   untouched. a is an adf_rat and not part of x. Cost: two removals of p and a power of p. */
+int adf_idele_abs_at(adf_rat_t a, const adf_idele_t x, adf_place_t w);
+
+/* adf_idele_abs_inf(a, x): a = |x_inf|, the ball [|m| +/- rho] for x->inf = [m +/- rho], exactly (no
+   rounding: the midpoint is negated if negative and the radius is copied). As x->inf excludes 0, a is the
+   set {|xi| : xi in x->inf} and is positive. Never fails. a must not be x->inf (conventions 4.1(3)). */
+void adf_idele_abs_inf(arb_t a, const adf_idele_t x);
+
+/* adf_idele_norm(t, x, prec): t = a positive real ball that contains the norm |xi| * product_p |x_p|_p
+   = |xi| / r of every point (xi, r w) of x (ideles.md P14.2, line 348). The finite factor 1/r is exact:
+   it is formed from the integers of r and meets the real ball only in the last step, so each end point is
+   rounded once (PLAN 2.2, "norm exact before rounding"): t is kernel B on lo = RD_p(l_X d / n),
+   hi = RU_p(h_X d / n), r = n/d (Statement F), with the sign +1. It is the t of the class of x
+   (adf_idclass_set_idele). For the idele of a rational q (adf_idele_set_rat) t contains 1 (the product
+   formula, P14.3, line 350), and t is the exact 1 when the real ball of q is exact (q a dyadic number of at
+   most p bits).
+   Status: ADF_OK, t written; ADF_NOT_DETERMINED (B1) if the end points are more than p binades apart,
+   t untouched; ADF_LIMIT if prec > ADF_IDELE_PREC_MAX, t untouched. t must not be x->inf.
+   Cost: two exact products, two divisions at p bits and the kernel. */
+int adf_idele_norm(arb_t t, const adf_idele_t x, slong prec);
 
 /* ---- accessors ---- */
 
