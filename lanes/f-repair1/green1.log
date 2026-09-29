@@ -1,0 +1,21 @@
+== release: test_lball
+   enumeration p=2: 57 balls, 12996 binary cases, 114 unary cases
+   enumeration p=3: 38 balls, 5776 binary cases, 76 unary cases
+   enumeration p=5: 86 balls, 16000 binary cases, 172 unary cases
+   enumeration p=7: 158 balls, 8000 binary cases, 316 unary cases
+   aliasing: 1102 cases
+   composition p=2: 3249 pairs
+   composition p=3: 3721 pairs
+   composition p=5: 7396 pairs
+26 tests, 3982393 checks, 0 failed checks, 0 failed tests
+exit=0
+== INV: test_lball
+   enumeration p=2: 57 balls, 12996 binary cases, 114 unary cases
+   enumeration p=3: 38 balls, 5776 binary cases, 76 unary cases
+   enumeration p=5: 86 balls, 16000 binary cases, 172 unary cases
+   enumeration p=7: 158 balls, 8000 binary cases, 316 unary cases
+   aliasing: 1102 cases
+   composition p=2: 3249 pairs
+   composition p=3: 3721 pairs
+   composition p=5: 7396 pairs
+27 tests, 3982430 checks, 0 failed checks, 0 failed tests

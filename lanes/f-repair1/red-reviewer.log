@@ -1,0 +1,32 @@
+== boundaries
+inverse_negative_endpoint: got=LIMIT expected=OK expected_fields=(5,1,1,1152921504606846976,0) mismatch=1 output_untouched=1
+inverse_positive_endpoint: got=LIMIT expected=OK expected_fields=(5,1,1,-1152921504606846976,0) mismatch=1 output_untouched=1
+sub_same_fine_ball: got=LIMIT expected=OK expected_fields=(5,0,0,0,1152921504606846976) mismatch=1 output_untouched=1
+sub_coarse_minus_fine: got=LIMIT expected=OK expected_fields=(5,0,0,0,0) mismatch=1 output_untouched=1
+div_zero_by_fine_unit: got=LIMIT expected=OK expected_fields=(5,1,0,0,0) mismatch=1 output_untouched=1
+div_coarse_zero_by_fine_unit: got=LIMIT expected=OK expected_fields=(5,0,0,0,0) mismatch=1 output_untouched=1
+div_endpoint_ball_by_itself: got=LIMIT expected=OK expected_fields=(5,0,1,0,1152921504606846976) mismatch=1 output_untouched=1
+cases=7 canonical_input_checks=9 failures=7
+exit=1
+== check_invariants.py
+method=place exit=0 stdout=place: returned=1 N=91 output_canonical=1 stderr=
+method=exact exit=0 stdout=exact: returned=1 N=91 output_canonical=1 stderr=
+method=zero exit=0 stdout=zero: returned=1 N=91 output_canonical=1 stderr=
+method=prec exit=0 stdout=prec: returned=0 N=0 output_canonical=1 stderr=
+method=set exit=0 stdout=set: returned=0 N=91 output_canonical=0 stderr=
+method=swap exit=0 stdout=swap: returned=0 N=91 output_canonical=0 stderr=
+method=identical exit=0 stdout=identical: returned=0 N=91 output_canonical=1 stderr=
+method=rat exit=0 stdout=rat: returned=0 N=91 output_canonical=0 stderr=
+method=ratball exit=0 stdout=ratball: returned=0 N=91 output_canonical=1 stderr=
+method=add_control exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_add: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+invalid_entry_calls=9 missed_checks=9 aborting_controls=1
+exit=1
+== test_assertion (F6, the reviewer's program: it does not run tests/test_lball.c)
+wrong_unit=5 canonical=1 valuation=1 assertion_at_test_lball_976=1
+exit=1
+== proof_probe.py (F5, checks the equality as the reviewer wrote it)
+    assert lhs == rhs, "docs/api-1f.md L0 proof has the opposite sign"
+           ^^^^^^^^^^
+AssertionError: docs/api-1f.md L0 proof has the opposite sign
+exit=0

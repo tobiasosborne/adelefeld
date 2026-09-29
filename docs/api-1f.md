@@ -44,6 +44,14 @@ Header: `include/adelefeld/lball.h`. Implementation: `src/lball.c`. Tests: `test
    of `p` that is formed. A stored ball is an integer below `p^(N - v)`, so its size is the relative precision times
    `bits(p)`; a larger request is `ADF_LIMIT`, decided before any allocation that grows with it. The predicates
    return no status and form no power of `p` (they compare valuations of differences, L8).
+   The rule (repair f-repair1, after the review f1, findings F1 to F3): an arithmetic function returns `ADF_LIMIT`
+   only if an INPUT or the RESULT is outside the limits, never because of an intermediate value. "The result is
+   outside" means: its `v` or `N` is beyond `ADF_LBALL_EXP_MAX`, or its stored centre needs `p^k` with
+   `k bits(p) > ADF_LBALL_BITS_MAX`. Examples where `LIMIT` is right: `neg` of `1 + 5^E Z_5` (centre `5^E - 1`),
+   `inv` of `3 + 5^E Z_5` (centre `1/3 mod 5^E`), `(1 + 5^E Z_5) / (3 + 5^E Z_5)` (the same centre), the exact sum
+   `5^E + 5^(-E)`. Examples where `OK` is required although a natural intermediate is outside: `inv` of the exact
+   `5^E` (an exact value has no precision), `x - x` for `x = 1 + 5^E Z_5` (the sign is applied inside the sum),
+   `(5^(-E) + Z_5) / (5^(-E) + Z_5)` (the inverse has `N = 2E`, the quotient `N = E`; L4a).
 4. Two operands at different primes: `ADF_DOMAIN`, outputs untouched (conventions 3.1, compatibility requirement).
    The set predicates return 0.
 5. `div` is offered besides the five functions of the brief: it is `x (1/y)` and tight (L4 and L3), so it costs one
@@ -67,8 +75,8 @@ of `conventions.md` 5.8.
 `a, b` integers prime to `p`; put `k = N - w >= 1` and `u = a b^(-1) mod p^k` in `(0, p^k)`. Then `u` is an integer,
 prime to `p` (it is a unit modulo `p` because `a b^(-1)` is), `0 < u < p^k`, and `q + p^N Z_p = p^w u + p^N Z_p`.
 
-*Proof.* If `w >= N` then `q` lies in `p^N Z_p`, a group, so `q + p^N Z_p = p^N Z_p`. Otherwise `b u - a` is
-divisible by `p^k`, so `t - u = (b u - a)/b` lies in `p^k Z_p` (`b` is a unit) and `q - p^w u = p^w (t - u)` lies in
+*Proof.* If `w >= N` then `q` lies in `p^N Z_p`, a group, so `q + p^N Z_p = p^N Z_p`. Otherwise `a - b u` is
+divisible by `p^k`, so `t - u = (a - b u)/b` lies in `p^k Z_p` (`b` is a unit) and `q - p^w u = p^w (t - u)` lies in
 `p^(w + k) Z_p = p^N Z_p`. Hence the two balls, having centres in one class of `p^N Z_p`, are equal. The residue `u`
 is not 0 modulo `p^k` because `a b^(-1)` is a unit and `k >= 1`, so it is in `(0, p^k)`. Uniqueness of the stored
 form is `conventions.md` 5.8. *Check:* `proto/functions_checks.py`, `check_lball_reduction`.
@@ -139,7 +147,30 @@ no ball contains it. *Check:* enumeration (inv), and the identity of the relativ
 `(N - 2 v) - (-v) = N - v`.
 
 *Quotient.* `{s/t} = {s} {1/t}` and the set `{1/t}` is a ball (or a point) by L4, so by L3 `x/y` is the exact
-product set: `div` is tight and has the statuses of `inv`.
+product set: `div` is tight and has the statuses of `inv`. The closed form that the code uses, which forms no
+inverse, is L4a.
+
+**L4a (quotient from valuations and precisions).** Let `x = c + p^N Z_p` and `y = d + p^M Z_p` be canonical (`N`
+or `M` infinite for an exact operand), `d != 0`, `c = p^v u` (`u = 0` for a zero centre), `d = p^w t`. Then
+`{s/t' : s in x, t' in y}` is the exact 0 if `x` is the exact 0; the exact `(u/t) p^(v - w)` if both are exact;
+and otherwise the ball `(u/t) p^(v - w) + p^K Z_p` with
+`K = min( v + M - 2w, N - w, N + M - 2w )`, where the first term is absent if `u = 0` or `y` is exact, the second
+if `x` is exact, the third unless both are balls.
+
+*Proof.* By L4 the set of inverses of `y` is the ball `1/d + p^(M - 2w) Z_p` (the point `1/d` if `y` is exact),
+whose centre `1/d = p^(-w) (1/t)` has valuation `-w`. By L3 with the operands `x` and this ball, the product set is
+the ball with centre `c/d = p^(v - w) (u/t)` and exponent `min( v(c) + M', v(1/d) + N, N + M' )` with
+`M' = M - 2w`, `v(c) = v`, `v(1/d) = -w`, which is `min( v + M - 2w, N - w, N + M - 2w )`, the terms of an exact
+operand being left out as in L3. The exact-operand cases are those of L3 (`0 * anything = 0`). Nothing in this
+formula involves the inverse as a stored value, so it holds where the inverse alone is outside the limits.
+*Centre.* The stored centre is L0 applied to `(u/t) p^(v - w)` and `K`, that is `u t^(-1) mod p^k` with
+`k = K - (v - w)`; `t` is a unit, so the inverse modulo `p^k` exists. The computation needs `p^k`, with `k` the
+relative precision of the RESULT, and nothing larger. (It equals the residue that the product of the unit parts of
+`x` and of the stored inverse would give: the stored inverse is `1/t` modulo `p^(M - w)`, and `k <= M - w`, because
+`K` is at most its first term `v - w + (M - w)` when `x` is a ball with `u != 0` and `y` a ball; the other cases
+have no stored inverse of finite precision to compare with.) *Check:* `proto/functions_checks.py`,
+`check_lball_quotient` (the closed form against the quotient by way of the inverse, 12729 pairs), and the
+enumeration for `div` in `tests/test_lball.c`.
 
 **L6 (decomposition of a ball).** Let `x = c + p^N Z_p` be canonical with `c != 0`, `m = v(c)`, `c = p^m u`. Then
 every element of `x` has valuation `m`, and `x = p^m U` with `U = u + p^(N - m) Z_p`, a canonical ball of relative
