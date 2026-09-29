@@ -792,9 +792,11 @@ ADF_TEST(aliasing_of_the_inputs)
     /* A and B the members of x: c = 3, m = 100: A = c = 3, B = c = 3, 2AB = 18 < 100 */
     fx_set_si(&f, 3, 100, 0, 0);
     st = adf_resid_reconstruct(f.q, f.cert, f.x, f.x->c, f.x->c, 0);
-    ADF_CHECK_MSG(st == ADF_OK || st == ADF_NO_SOLUTION, "status %d", st);
+    /* the only solution is 3/1: d = 1, 2, 3 ask for n = 3, 6, 9 modulo 100 (review s3-review) */
+    ADF_CHECK_MSG(st == ADF_OK && q_equals_si(f.q, 3, 1), "status %d", st);
     fmpz_set_si(f.A, 3);
-    ADF_CHECK(st == adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.A, 0));
+    st = adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.A, 0);
+    ADF_CHECK_MSG(st == ADF_OK && q_equals_si(f.q, 3, 1), "status %d", st);
     fmpz_clear(v);
     fx_clear(&f);
 }
