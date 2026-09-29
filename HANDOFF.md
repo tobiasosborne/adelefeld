@@ -2,7 +2,68 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-28 22:30 to 2026-09-29 08:30: START HERE
+## Session 2026-09-29, 09:15 to 14:10: START HERE
+
+**One line.** Milestone S is implemented in slices and reviewed slice by slice: reconstruction from a
+residue (S.3), linear systems modulo `N` (S.1), roots at a prime and real roots (S.2). What is missing:
+the root search for primes between `2^20` and `2^64`. Nothing is running. Everything is pushed.
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    make clean && make check-all 2>&1 | tail -1     # expect: check-all passed: ... (56 test programs)
+    free -g; ~/Projects/quota-app/target/release/quota; date
+
+**Master** (14:05): `make check-all` (56 test programs, driver, exports 260 of 260, Julia, the two
+selftests), `make check SAN=1`, `sh lanes/m1-headers/check_headers.sh` pass. `CC=clang` passed at 12:30 (54
+programs) and in the lanes since. `INV=1` was last run at 09:55 (47 programs). Read every check BEFORE the
+push; run `check_headers.sh` too, it is not part of `check-all`.
+
+**What exists now** (headers `resid.h`, `linsolve.h`, `roots.h`; record `docs/worklog/2026-09-29.md`):
+- S.3 complete. S.1 complete. S.2: seed function, Algorithm P (roots modulo `p` by evaluation, temporary
+  `UNSUPPORTED` above `2^20`), real roots, all verifiers.
+- The user call of each slice is a Julia file under `tests/julia/`, run by `tests/test_julia.sh`. The
+  driver `adf` has NO command for milestone S: its grammar takes three operands.
+- Reviews: `docs/reviews/s3`, `s1`, `s2` (three files), `s13`. Every finding is repaired or decided, except
+  the cost of real roots (adf-8di).
+
+**The next steps**, in this order:
+1. adf-8di: real roots are correct and can be very slow (a quadratic with the roots `2^1500` and
+   `2^1500 + 1`: 97 s at `prec = 2`; the time is in `arb_fmpz_poly_complex_roots`). First a benchmark row
+   and a lower bound (`docs/PERF.md`), then a design: isolation of the real roots in exact arithmetic
+   (Descartes or Sturm bisection on `g`), FLINT's count as the check. Design before code; `gpt-6-astra`
+   may review the design.
+2. adf-e0n: the root search for primes above `2^20` (`solvers` P3.7(2)). One-word primes, so `nmod_poly`;
+   its root routine is NOT documented in FLINT 3.0.1 (`docs/sources.md`, lane s2-sources): fetch and read
+   the C source first (CLAUDE.md rule 4). Then the temporary `UNSUPPORTED` goes and the bound becomes a
+   crossover set by a benchmark.
+3. Long differential runs (an hour each, alone, at night) for `tests/fuzz/diff_linsolve.py`,
+   `diff_roots_seed.py`, `diff_roots_padic.py`, `diff_roots_real.py`. Only the reconstruction has had one.
+4. Milestone 1: benchmarks on a quiet machine; then mark milestones 1 and S in `docs/PLAN.md` section 6.
+5. A command of the driver for milestone S, if TJO wants one (a change of its grammar, M1-D1).
+
+**Waits for TJO.**
+- S-D20 (`docs/SPEC.md` 15.3): recorded as "a solver aborts when its own check fails". TJO ratified "all
+  recommendations" where the orchestrator had asked a question without one. To be confirmed.
+- The reading chosen for `adf_resid_verify_result` (it verifies the status that the function returns for
+  the given `limit`, and shares the search with the function; Proposition 1.11 and the Python reference
+  verify the whole set of solutions, without a bound on the cost). The Python reference
+  `recon_verify_result` was NOT changed and now differs from the C function by design.
+
+**Things to know.**
+- space-bunny works. Its two failures were ours: `pi -p` ends on an empty response of the provider (the
+  runner continues now), and a test program that does not end stops the lane (rule 3 of
+  `lanes/COMMON.md`; the watchdog of `tools/orch/pi_lane.sh` is untested). Prefer one bunny lane at a time.
+- A brief for a Claude subagent: push first; the brief is a file in the tree; tell the agent to run its
+  checks in the foreground and to report once (an agent with background jobs reports "paused" many times).
+- A brief must ask for `make check-all` and `check_headers.sh`, and must not say "tests unchanged" where a
+  temporary behaviour is replaced.
+- Codex reviews cost about one point of the week each; the meter lags. TJO allowed 60% used (it read 50%
+  at 14:05; resets 2026-10-03). Claude weekly resets 2026-09-29 18:00.
+- Worktrees of the lanes of today are under `../adelefeld-wt/` and `.claude/worktrees/`; all merged, all
+  may be removed with `git worktree remove`.
+
+## Session 2026-09-28 22:30 to 2026-09-29 08:30
 
 **One line.** Milestone 1 is reviewed and its review is closed with no blocker open; the design of milestone S
 is written, reviewed and closed (draft 3); TJO changed the workflow: thin working slices, no mutation sweep,
