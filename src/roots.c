@@ -1,5 +1,5 @@
 /* roots.c: the type adf_rootlist, the seed function and the entries verifier at a prime (milestone S,
-   S.2, slice 1).
+   S.2, slice 1); all roots at a prime (slice 2, below); the real roots (slice 3, at the end).
 
    The contract is the comment block of include/adelefeld/roots.h: docs/api-s.md sections 1 and 4
    (decisions S-D10, S-D13, S-D14, S-D16, S-D17, S-D18 of docs/SPEC.md 15.3). The statements are those
@@ -30,6 +30,8 @@
 
 #include <flint/fmpz_vec.h>
 #include <flint/nmod_poly.h>
+#include <flint/acb.h>                /* slice 3: the enclosures of arb_fmpz_poly_complex_roots */
+#include <flint/arb_fmpz_poly.h>
 
 #include <flint/ulong_extras.h>   /* n_is_prime */
 #include <adelefeld.h>
@@ -341,29 +343,18 @@ is_canonical_prime(const adf_rootlist_t L)
     return r;
 }
 
-/* at the real place (temporary, roots.h): PARTITION, complete, n = count, finite balls with
-   hi_i < lo_(i+1) */
+/* the real place (slice 3, below): the shape, the exact tests of the balls, the two verifiers */
+static int shape_ok_real(const adf_rootlist_t L);
+static int real_balls_ok(const fmpz_poly_struct * g, arb_srcptr ball, slong n);
+static int verify_entries_real(const adf_rootlist_t L, const fmpz_poly_t f);
+static int verify_complete_real(const adf_rootlist_t L, const fmpz_poly_t f);
+
+/* at the real place (roots.h, the predicate): the shape; every ball of admissible size; hi_i < lo_(i+1) for
+   the exact end points. No sign of g is tested. */
 static int
 is_canonical_real(const adf_rootlist_t L)
 {
-    slong i;
-
-    if (L->scope != ADF_ROOTLIST_PARTITION || L->complete != 1 || L->nu != 0 || L->n < 0 || L->count != L->n)
-        return 0;
-    if (L->reduced != 0 && L->reduced != 1)
-        return 0;
-    if (L->a != NULL || L->K != NULL || L->s != NULL || L->ua != NULL || L->ue != NULL)
-        return 0;
-    if (!ptr_ok(L->ball, L->n))
-        return 0;
-    for (i = 0; i < L->n; i++)
-    {
-        if (!arb_is_finite(L->ball + i))
-            return 0;
-        if (i > 0 && !arb_lt(L->ball + i - 1, L->ball + i))
-            return 0;
-    }
-    return 1;
+    return shape_ok_real(L) && real_balls_ok(NULL, L->ball, L->n);
 }
 
 int
@@ -637,7 +628,7 @@ adf_rootlist_verify_entries(const adf_rootlist_t L, const fmpz_poly_t f)
     if (fmpz_poly_is_zero(f))
         return 0;
     if (adf_place_is_archimedean(L->place))
-        return 0;                               /* TEMPORARY (roots.h): the real place in a later slice */
+        return verify_entries_real(L, f);       /* solvers P3.13(4), slice 3 */
     if (!shape_ok_prime(L))
         return 0;
     fmpz_poly_init(h);
@@ -1173,10 +1164,12 @@ adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, slong 
     ulong pu;
     int r;
 
-    if (depth < 0 || fmpz_poly_is_zero(f))
+    if (fmpz_poly_is_zero(f))
         return 0;
     if (adf_place_is_archimedean(L->place))
-        return 0;                               /* TEMPORARY (roots.h): the real place in a later slice */
+        return verify_complete_real(L, f);      /* solvers P3.13(5), slice 3; depth is not used there */
+    if (depth < 0)
+        return 0;
     if (!adf_rootlist_verify_entries(L, f))
         return 0;
     if (L->scope != ADF_ROOTLIST_PARTITION || L->complete != 1 || L->nu != 0)
@@ -1214,5 +1207,354 @@ adf_rootlist_get_unresolved(fmpz_t a, slong * e, const adf_rootlist_t L, slong i
         return 0;
     fmpz_set(a, L->ua + i);
     *e = L->ue[i];
+    return 1;
+}
+
+/* ==== slice 3: the real roots (Algorithm RR) ====
+
+   Algorithm RR and Proposition 3.10 of solvers.md (lines 1399 to 1440), the exact test of Proposition 3.8
+   (lines 1315 to 1320), what FLINT offers and what it certifies, Proposition 3.9 (lines 1346 to 1390), the two
+   verifiers of Proposition 3.13(4), (5) (lines 1542 to 1547); decisions S-D11, S-D13, S-D19. The reference is
+   real_roots_ref and rr_finish, proto/solvers_checks.py:2555 and 2594, with real_entry_ok (2499),
+   real_verify_entries (2509), real_verify_complete (2524). FLINT routines used (refs/src/flint-3.0.1):
+     fmpz_poly_num_real_roots, fmpz_poly.rst:3265 to 3268: the number of real roots of a squarefree polynomial;
+       trusted (S-D11), and called on the squarefree g only (solvers P3.9(1));
+     arb_fmpz_poly_complex_roots, arb_fmpz_poly.rst:66 to 79: enclosures of all roots, the real ones first with
+       imaginary part exactly zero; "must be squarefree"; not trusted: every enclosure is tested;
+     arb_is_zero, arb.rst:593; arb_is_finite, arb.rst:606; arb_is_exact, arb.rst:611; arb_bits, arb.rst:516;
+     arb_get_interval_fmpz_2exp, arb.rst:461 to 477: the exact interval [a, b] 2^exp of a ball;
+     arb_rel_accuracy_bits, arb.rst:500 to 509;
+     arf_cmpabs_2exp_si, arf.rst:352 to 356, and arf_cmp, arf.rst:330 to 340: comparisons (no rounding);
+       arf_set_fmpz_2exp, arf.rst:227 to 229: m 2^e, exact (an arf has an arbitrary-precision mantissa);
+     mag_cmp_2exp_si, mag.rst:196 to 199; mag_mul_2exp_si, exact (mag.rst:16 to 17); mag_set_ui_2exp_si,
+       mag.rst:149 to 151, an upper bound of 1 2^y, which is exact since 1 fits the mantissa;
+     fmpz_poly_evaluate_fmpz, fmpz_poly.rst:2230; fmpz_mul_2exp.
+   Every sign that decides anything is the sign of an integer: no floating-point number is compared. */
+
+ADF_ROOTS_HIDDEN int adf_roots_real_finish(adf_rootlist_t L, const fmpz_poly_t f, slong count, arb_srcptr in,
+                                           slong m, slong prec);
+
+/* 1 if the ball x is of admissible size (roots.h, "Real balls"): finite, a midpoint mantissa of at most
+   ADF_ROOTS_BITS_MAX bits, a midpoint and a radius that are 0 or strictly between 2^-M and 2^M in absolute
+   value, M = ADF_ROOTS_BITS_MAX. Then the exact end points have an exponent >= -(2 M + 30) and integers of at
+   most 3 M + 31 bits, and arb_get_interval_fmpz_2exp may be called (arb.rst:468 to 477) */
+static int
+real_ball_admissible(const arb_t x)
+{
+    const slong M = ADF_ROOTS_BITS_MAX;
+
+    if (!arb_is_finite(x) || arb_bits(x) > M)
+        return 0;
+    if (!arf_is_zero(arb_midref(x)) &&
+        (arf_cmpabs_2exp_si(arb_midref(x), M) >= 0 || arf_cmpabs_2exp_si(arb_midref(x), -M) <= 0))
+        return 0;
+    if (!mag_is_zero(arb_radref(x)) &&
+        (mag_cmp_2exp_si(arb_radref(x), M) >= 0 || mag_cmp_2exp_si(arb_radref(x), -M) <= 0))
+        return 0;
+    return 1;
+}
+
+/* the sign of g at x = m 2^e, exactly. For e >= 0, the sign of the integer g(m 2^e). For e < 0, with k = -e
+   and d = deg g, the sign of the integer sum_i c_i m^i 2^(k (d - i)) = 2^(k d) g(x), which has the sign of
+   g(x); it is formed by Horner's rule r = r m + c_i 2^(k (d - i)), i = d - 1, ..., 0, from r = c_d. e is the
+   exponent of an admissible ball, so |e| < 2^26 */
+static int
+real_sign_at(const fmpz_poly_t g, const fmpz_t m, const fmpz_t e)
+{
+    fmpz_t x, r, t;
+    slong i, d = fmpz_poly_degree(g);
+    ulong k;
+    int s;
+
+    if (d < 0)
+        return 0;
+    fmpz_init(x);
+    fmpz_init(r);
+    fmpz_init(t);
+    if (fmpz_sgn(e) >= 0)
+    {
+        fmpz_mul_2exp(x, m, fmpz_get_ui(e));
+        fmpz_poly_evaluate_fmpz(r, g, x);
+    }
+    else
+    {
+        fmpz_neg(t, e);
+        k = fmpz_get_ui(t);
+        if ((ulong) d > UWORD_MAX / k)
+            flint_abort();                      /* k d bits: no polynomial of that size can exist */
+        fmpz_set(r, g->coeffs + d);
+        for (i = d - 1; i >= 0; i--)
+        {
+            fmpz_mul(r, r, m);
+            fmpz_mul_2exp(t, g->coeffs + i, k * (ulong) (d - i));
+            fmpz_add(r, r, t);
+        }
+    }
+    s = fmpz_sgn(r);
+    fmpz_clear(x);
+    fmpz_clear(r);
+    fmpz_clear(t);
+    return s;
+}
+
+/* the exact test of solvers P3.8 (solvers.md:1316 to 1317; real_entry_ok, proto/solvers_checks.py:2499) for
+   the interval [a 2^e, b 2^e]: (b) a = b and g(a 2^e) = 0, or (a) a < b and g(lo) g(hi) < 0 */
+static int
+real_entry_ok(const fmpz_poly_t g, const fmpz_t a, const fmpz_t b, const fmpz_t e)
+{
+    int sl, sh;
+
+    if (fmpz_equal(a, b))
+        return real_sign_at(g, a, e) == 0;
+    if (fmpz_cmp(a, b) > 0)
+        return 0;
+    sl = real_sign_at(g, a, e);
+    sh = real_sign_at(g, b, e);
+    return sl * sh < 0;
+}
+
+/* 1 if each of the n balls is admissible, hi_(i-1) < lo_i for i >= 1 (exact end points, solvers P3.8,
+   hypothesis "hi_i < lo_(i+1)"), and, when g is not NULL, the end points of each ball pass the test of P3.8
+   for g. The predicate calls it with g = NULL, the entries verifier and Algorithm RR with g. */
+static int
+real_balls_ok(const fmpz_poly_struct * g, arb_srcptr ball, slong n)
+{
+    fmpz_t a, b, e;
+    arf_t lo, hi_prev;
+    slong i;
+    int ok = 1;
+
+    fmpz_init(a);
+    fmpz_init(b);
+    fmpz_init(e);
+    arf_init(lo);
+    arf_init(hi_prev);
+    for (i = 0; i < n && ok; i++)
+    {
+        ok = real_ball_admissible(ball + i);
+        if (!ok)
+            break;
+        arb_get_interval_fmpz_2exp(a, b, e, ball + i);
+        if (g != NULL)
+            ok = real_entry_ok(g, a, b, e);
+        if (ok && i > 0)
+        {
+            arf_set_fmpz_2exp(lo, a, e);
+            ok = arf_cmp(hi_prev, lo) < 0;      /* hi_(i-1) < lo_i */
+        }
+        arf_set_fmpz_2exp(hi_prev, b, e);
+    }
+    fmpz_clear(a);
+    fmpz_clear(b);
+    fmpz_clear(e);
+    arf_clear(lo);
+    arf_clear(hi_prev);
+    return ok;
+}
+
+/* the shape of a list at the real place (roots.h, the predicate): PARTITION, complete = 1, nu = 0,
+   n = count >= 0, reduced in {0, 1}, the pointers of a prime NULL, ball NULL exactly when n = 0 */
+static int
+shape_ok_real(const adf_rootlist_t L)
+{
+    if (L->scope != ADF_ROOTLIST_PARTITION || L->complete != 1 || L->nu != 0 || L->n < 0 || L->count != L->n)
+        return 0;
+    if (L->reduced != 0 && L->reduced != 1)
+        return 0;
+    if (L->a != NULL || L->K != NULL || L->s != NULL || L->ua != NULL || L->ue != NULL)
+        return 0;
+    return ptr_ok(L->ball, L->n);
+}
+
+/* the accuracy of decision S-D19 (solvers.md:1412 to 1415): arb_rel_accuracy_bits(x) >= prec, or x exact */
+static int
+real_accurate(const arb_t x, slong prec)
+{
+    return arb_is_exact(x) || arb_rel_accuracy_bits(x) >= prec;
+}
+
+/* step 5 of Algorithm RR (solvers.md:1409 to 1411): the ball [lo - r, hi + r], that is the same midpoint and
+   twice the radius r, or the radius 2^(-prec) for an exact ball. Both operations on the radius are exact. */
+static void
+real_widen(arb_t x, slong prec)
+{
+    if (mag_is_zero(arb_radref(x)))
+        mag_set_ui_2exp_si(arb_radref(x), 1, -prec);
+    else
+        mag_mul_2exp_si(arb_radref(x), arb_radref(x), 1);
+}
+
+/* Steps 5 to 7 of Algorithm RR (solvers.md:1409 to 1417; rr_finish, proto/solvers_checks.py:2594) for the
+   normalised polynomial g, the count of step 3 and the m candidates in of step 4, prec >= 2. ADF_LIMIT if a
+   candidate is not of admissible size; ADF_NOT_DETERMINED if m differs from count, a test of P3.8 fails after
+   the widening, two stored balls are not strictly ordered, or a stored ball is not accurate (S-D19); ADF_OK
+   with the m stored balls in out otherwise. out is written in every case (the caller owns it). */
+static int
+real_finish(arb_ptr out, const fmpz_poly_t g, slong count, arb_srcptr in, slong m, slong prec)
+{
+    fmpz_t a, b, e;
+    slong i;
+    int ok;
+
+    for (i = 0; i < m; i++)
+        if (!real_ball_admissible(in + i))
+            return ADF_LIMIT;
+    if (m != count)
+        return ADF_NOT_DETERMINED;              /* step 6: the number of intervals is n */
+    fmpz_init(a);
+    fmpz_init(b);
+    fmpz_init(e);
+    for (i = 0; i < m; i++)
+    {
+        arb_set(out + i, in + i);
+        arb_get_interval_fmpz_2exp(a, b, e, out + i);
+        if (!real_entry_ok(g, a, b, e))
+            real_widen(out + i, prec);          /* step 5, once */
+    }
+    fmpz_clear(a);
+    fmpz_clear(b);
+    fmpz_clear(e);
+    /* step 6 on the stored balls: the test of P3.8 (again, after any widening), the order, the accuracy */
+    ok = real_balls_ok(g, out, m);
+    for (i = 0; i < m && ok; i++)
+        ok = real_accurate(out + i, prec);
+    return ok ? ADF_OK : ADF_NOT_DETERMINED;
+}
+
+/* L = the list at the real place with g (swapped in), reduced, the m balls of *out (moved in: *out is set to
+   NULL) and count; the old contents of L are released. f may have been L->g: the caller has finished with it. */
+static void
+real_write(adf_rootlist_t L, fmpz_poly_t g, int reduced, arb_ptr * out, slong m, slong count)
+{
+    free_arrays(L);
+    L->place = adf_place_inf();
+    L->scope = ADF_ROOTLIST_PARTITION;
+    L->reduced = reduced;
+    L->complete = 1;
+    fmpz_poly_swap(L->g, g);
+    L->n = m;
+    L->ball = m > 0 ? *out : NULL;
+    if (m > 0)
+        *out = NULL;
+    L->nu = 0;
+    L->count = count;
+}
+
+/* The finish of Algorithm RR on candidates given by the caller (tests only): g = the normalised polynomial of
+   f != 0, then real_finish with the given count, and L written on ADF_OK as by adf_roots_real. */
+int
+adf_roots_real_finish(adf_rootlist_t L, const fmpz_poly_t f, slong count, arb_srcptr in, slong m, slong prec)
+{
+    fmpz_poly_t g;
+    arb_ptr out = NULL;
+    int reduced, st;
+
+    if (fmpz_poly_is_zero(f) || m < 0)
+        return ADF_DOMAIN;
+    if (prec < 2)
+        prec = 2;
+    fmpz_poly_init(g);
+    normalise(g, &reduced, f);
+    if (m > 0)
+        out = _arb_vec_init(m);
+    st = real_finish(out, g, count, in, m, prec);
+    if (st == ADF_OK)
+        real_write(L, g, reduced, &out, m, count);
+    if (out != NULL)
+        _arb_vec_clear(out, m);
+    fmpz_poly_clear(g);
+    return st;
+}
+
+/* Algorithm RR (solvers.md:1401 to 1417; real_roots_ref, proto/solvers_checks.py:2555): roots.h. */
+int
+adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec)
+{
+    fmpz_poly_t g;
+    acb_ptr z = NULL;
+    arb_ptr cand = NULL, out = NULL;
+    slong d, i, m = 0, count = 0;
+    int reduced, st = ADF_OK;
+
+    /* step 1, and the limit of the precision before any allocation */
+    if (fmpz_poly_is_zero(f))
+        return ADF_DOMAIN;
+    if (prec > ADF_ROOTS_REAL_PREC_MAX)
+        return ADF_LIMIT;
+    if (prec < 2)
+        prec = 2;                               /* M1-D4 */
+    /* step 2: g squarefree (L3.1(2)); a constant g has no root */
+    fmpz_poly_init(g);
+    normalise(g, &reduced, f);
+    d = fmpz_poly_degree(g);
+    if (d > 0)
+    {
+        /* step 3: the count of P3.9(1), on the squarefree g */
+        count = fmpz_poly_num_real_roots(g);
+        /* step 4: the enclosures of P3.9(2) with imaginary part exactly zero, in the order given */
+        z = _acb_vec_init(d);
+        cand = _arb_vec_init(d);
+        arb_fmpz_poly_complex_roots(z, g, 0, prec);
+        for (i = 0; i < d; i++)
+            if (arb_is_zero(acb_imagref(z + i)))
+                arb_set(cand + m++, acb_realref(z + i));
+        if (m > 0)
+            out = _arb_vec_init(m);
+        /* steps 5 to 7 */
+        st = real_finish(out, g, count, cand, m, prec);
+    }
+    if (st == ADF_OK)
+        real_write(L, g, reduced, &out, m, count);   /* L written only now: f may be L->g */
+    if (out != NULL)
+        _arb_vec_clear(out, m);
+    if (cand != NULL)
+        _arb_vec_clear(cand, d);
+    if (z != NULL)
+        _acb_vec_clear(z, d);
+    fmpz_poly_clear(g);
+    return st;
+}
+
+/* the entries verifier at the real place (solvers P3.13(4), solvers.md:1542 to 1544; real_verify_entries,
+   proto/solvers_checks.py:2509), f != 0 */
+static int
+verify_entries_real(const adf_rootlist_t L, const fmpz_poly_t f)
+{
+    fmpz_poly_t h;
+    int red, r;
+
+    if (!shape_ok_real(L))
+        return 0;
+    fmpz_poly_init(h);
+    normalise(h, &red, f);
+    r = fmpz_poly_equal(h, L->g) && red == L->reduced;
+    fmpz_poly_clear(h);
+    return r && real_balls_ok(L->g, L->ball, L->n);
+}
+
+/* the complete verifier at the real place (solvers P3.13(5), solvers.md:1545 to 1547; real_verify_complete,
+   proto/solvers_checks.py:2524), f != 0: the count is recomputed from f, never read from L */
+static int
+verify_complete_real(const adf_rootlist_t L, const fmpz_poly_t f)
+{
+    fmpz_poly_t h;
+    slong c;
+    int red;
+
+    if (!verify_entries_real(L, f))
+        return 0;
+    fmpz_poly_init(h);
+    normalise(h, &red, f);
+    c = fmpz_poly_degree(h) > 0 ? fmpz_poly_num_real_roots(h) : 0;
+    fmpz_poly_clear(h);
+    return L->n == c && L->count == c;
+}
+
+int
+adf_rootlist_get_arb(arb_t x, const adf_rootlist_t L, slong i)
+{
+    if (!adf_place_is_archimedean(L->place) || i < 0 || i >= L->n || L->ball == NULL)
+        return 0;
+    arb_set(x, L->ball + i);
     return 1;
 }

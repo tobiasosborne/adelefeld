@@ -1,20 +1,26 @@
 /* adelefeld/roots.h: roots of an integer polynomial at a place, with certificates (milestone S, S.2,
-   slice 1: the type adf_rootlist and the seed function; slice 2: all roots at a prime).
+   slice 1: the type adf_rootlist and the seed function; slice 2: all roots at a prime; slice 3: the
+   real roots).
 
    Contract: docs/api-s.md sections 1 and 4 (decisions S-D10, S-D13, S-D14, S-D15, S-D16, S-D17, S-D18
    of docs/SPEC.md 15.3); docs/proofs/solvers.md Lemma 3.1 (line 1013), Definition and Proposition 3.2
    (line 1044), Proposition 3.3 (line 1090), Proposition 3.4 (line 1121), Algorithm P and
    Proposition 3.5 (line 1160), Proposition 3.6 (line 1246), Proposition 3.7 (line 1284), 3.11
-   (line 1449), Proposition 3.12 (line 1487), Proposition 3.13 (line 1524); docs/conventions.md 2.3,
-   3.2, 4.1, 4.3, 7. Implemented in src/roots.c; tests tests/test_roots_seed.c (slice 1) and
-   tests/test_roots_padic.c (slice 2); reference proto/solvers_checks.py, functions squarefree_part
+   (line 1449), Proposition 3.12 (line 1487), Proposition 3.13 (line 1524); for the real place
+   Proposition 3.8 (line 1313), Proposition 3.9 (line 1346), Algorithm RR and Proposition 3.10 (line
+   1399), decisions S-D11 and S-D19; docs/conventions.md 2.3, 3.2, 4.1, 4.3, 7. Implemented in
+   src/roots.c; tests tests/test_roots_seed.c (slice 1), tests/test_roots_padic.c (slice 2) and
+   tests/test_roots_real.c (slice 3); reference proto/solvers_checks.py, functions squarefree_part
    (line 2377), normalise_g (1701), root_cert_ok (1631), newton_step (1639), padic_roots (1649),
-   rootlist_padic (1707), seed_root (1721), padic_verify_entries (1754), padic_verify_complete (1776).
+   rootlist_padic (1707), seed_root (1721), padic_verify_entries (1754), padic_verify_complete (1776),
+   real_entry_ok (2499), real_verify_entries (2509), real_verify_complete (2524), real_roots_ref (2555),
+   rr_finish (2594).
 
    Slice 1 declares the type, its life cycle without set, swap and identical, the seed function, the
    entries verifier and the accessors. Slice 2 adds adf_roots_padic, adf_roots_padic_partial,
-   adf_rootlist_get_unresolved and adf_rootlist_verify_complete. Not declared yet: adf_roots_real,
-   adf_rootlist_get_arb, set, swap, identical.
+   adf_rootlist_get_unresolved and adf_rootlist_verify_complete. Slice 3 adds adf_roots_real,
+   adf_rootlist_get_arb, and the real place of the predicate and of the two verifiers. Not declared
+   yet: set, swap, identical.
 
    The normalised polynomial (solvers L3.1(3), decision S-D13). For f in Z[X], f not 0, g* is
    f / gcd(f, f') scaled to a primitive integer polynomial with positive leading coefficient; for f
@@ -42,8 +48,11 @@
                            in increasing order of ua[i]; NULL when nu = 0. Only
                            adf_roots_padic_partial makes a class
      ball      real place  array of n isolating balls (arb) in increasing order; NULL when n = 0 and
-                           at a prime. No function of this slice makes a real ball
-     count     real place  the number of distinct real roots of g; 0 at a prime
+                           at a prime. Made by adf_roots_real only: the exact end points of each ball
+                           pass the test of solvers P3.8 for g, and each ball holds exactly one real
+                           root of g (so of f)
+     count     real place  the number of distinct real roots of g (FLINT's count, S-D11); 0 at a
+                           prime
 
    Predicate (adf_rootlist_is_canonical, without the input polynomial):
      - scope in {PARTITION, SEED}; reduced and complete in {0, 1}; n >= 0, nu >= 0, count >= 0;
@@ -56,8 +65,10 @@
      - at a prime: (R1) for every certificate, 0 <= a[i] < p^K[i] and K[i] > s[i] >= 0; the centres
        strictly increasing; 0 <= ua[i] < p^ue[i], ue[i] >= 0, the ua[i] strictly increasing; the
        balls and classes pairwise disjoint (solvers P3.2(4));
-     - at the real place (temporary, until the slice of adf_roots_real): scope PARTITION,
-       complete = 1, n = count, the balls finite and hi_i < lo_(i+1) (arb_lt, arb.rst:705).
+     - at the real place: scope PARTITION, complete = 1, n = count; every ball of the size of
+       "Real balls" below (finite; midpoint and radius within the bounds there), and
+       hi_i < lo_(i+1) for the exact end points [lo_i, hi_i] of consecutive balls (a comparison of
+       exact dyadic numbers). No sign of g is tested (that is the entries verifier).
    Init value: the real place, scope PARTITION, reduced = 0, complete = 1, g = 1, n = nu = count = 0,
    every pointer NULL (the constant 1 has no root).
 
@@ -83,7 +94,20 @@
    slice 2 applies the same bound to every precision K = max(prec_p, s + 1) of a root it certifies and
    to the exponent e of every class it opens or leaves unresolved (2 e bits(p) > ADF_ROOTS_BITS_MAX
    gives ADF_LIMIT), and also computes e + 1, w - e, w - 2 e, e + j and the valuations w with checked
-   arithmetic. */
+   arithmetic.
+
+   Real balls (slice 3). Every test of a real ball is made on its exact end points lo = a 2^e and
+   hi = b 2^e (arb_get_interval_fmpz_2exp, arb.rst:461 to 466), with exact integer arithmetic: the
+   sign of g at a dyadic point, the comparison of two dyadic points. No floating-point number
+   decides anything. FLINT warns that this function allocates without bound when the exponents of
+   the midpoint and of the radius are far apart (arb.rst:468 to 477). A ball is therefore of
+   admissible size when it is finite (arb_is_finite, arb.rst:606), the mantissa of its midpoint has
+   at most ADF_ROOTS_BITS_MAX bits (arb_bits, arb.rst:516), and its midpoint and its radius, where
+   not zero, lie strictly between 2^(-ADF_ROOTS_BITS_MAX) and 2^ADF_ROOTS_BITS_MAX in absolute
+   value; then e >= -(2 ADF_ROOTS_BITS_MAX + 30) (the mantissa of a radius has 30 bits) and a and b
+   have at most 3 ADF_ROOTS_BITS_MAX + 31 bits (6 MiB). The end points are
+   formed only for a ball of admissible size; the predicate and the verifiers give 0 for any other
+   ball, and no list of the library has one. The bound is a policy, as in S-D18. */
 
 #ifndef ADELEFELD_ROOTS_H
 #define ADELEFELD_ROOTS_H
@@ -111,6 +135,13 @@ extern "C" {
    ADF_UNSUPPORTED. The bound is a property of this slice, not of the library: it goes away with the
    slice that adds the route of solvers P3.7(2) for larger primes. */
 #define ADF_ROOTS_P_EVAL_MAX 1048576
+
+/* The largest precision of adf_roots_real, 2^21 bits (about 630000 decimal digits). Above it the
+   function returns ADF_LIMIT before any allocation. The bound keeps the balls of FLINT, whose accuracy
+   may exceed the precision asked for (arb_fmpz_poly.rst:98 to 101), well inside the admissible size
+   of "Real balls" (2^24). A policy of this slice (HEADER-FINDING of lane s2-slice3: docs/api-s.md 4
+   names no LIMIT for adf_roots_real). */
+#define ADF_ROOTS_REAL_PREC_MAX 2097152
 
 /* Layout (64 bit, fixed by this slice and pinned in tests/test_roots_seed.c): 120 bytes, alignment 8.
    place at 0, scope at 8, reduced at 12, complete at 16 (then 4 bytes of padding), g at 24 (an
@@ -254,11 +285,19 @@ int adf_roots_padic(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t p, slong 
    complete, a count n or a coverage (P3.13(1), api-s.md 4), and a SEED list says nothing about other
    roots. A certificate with 2 K bits(p) > ADF_ROOTS_BITS_MAX is not tested and gives 0; no list of
    the library has one.
-   At the real place it returns 0 in this slice: this is TEMPORARY, until the slice of adf_roots_real
-   brings the exact test of solvers P3.8 (P3.13(4)).
+   At the real place (solvers P3.13(4), solvers.md:1542 to 1544): 1 if f is not 0, g is the
+   normalised polynomial of f and reduced is the flag of f, the shape is that of the predicate (scope
+   PARTITION, complete = 1, n = count, nu = 0, a, K, s, ua, ue NULL, ball NULL exactly when n = 0),
+   every ball is of admissible size ("Real balls") and its exact end points [lo, hi] pass the test of
+   solvers P3.8 for g: lo < hi and g(lo) g(hi) < 0, or lo = hi and g(lo) = 0, by the exact sign of
+   g at each end point; and hi_i < lo_(i+1) for consecutive balls; else 0. Then every ball holds at
+   least one real root of g, so of f, different balls hold different roots, and n is at most the
+   number of real roots (P3.8(1)). It does NOT verify that count is the number of real roots, nor
+   that a ball holds only one root (P3.8(3): [0, 4] for (X - 1)(X - 2)(X - 3) passes).
    A predicate; never aborts on a list that satisfies the pointer rule of is_canonical. Cost: one gcd
-   of f and f'; for each certificate two evaluations of g modulo p^(K+s) and p^(s+1); (n + nu)^2
-   valuations. */
+   of f and f'; at a prime for each certificate two evaluations of g modulo p^(K+s) and p^(s+1) and
+   (n + nu)^2 valuations; at the real place two exact evaluations of g at dyadic points for each
+   ball and n - 1 comparisons. */
 int adf_rootlist_verify_entries(const adf_rootlist_t L, const fmpz_poly_t f);
 
 /* adf_rootlist_verify_complete(L, f, depth) (decision S-D17; solvers P3.13(2), (3)): at a prime, 1 only
@@ -270,12 +309,54 @@ int adf_rootlist_verify_entries(const adf_rootlist_t L, const fmpz_poly_t f);
    and complete are compared with the rerun. It returns 0 when depth < 0, when the depth does not
    suffice for the rerun (no claim about L then), when the rerun would return ADF_UNSUPPORTED
    (p > ADF_ROOTS_P_EVAL_MAX, TEMPORARY) or ADF_LIMIT, and for every SEED list (P3.13(3)).
-   At the real place it returns 0 in this slice: this is TEMPORARY, until the slice of adf_roots_real
-   brings the recount of solvers P3.13(5).
+   At the real place (solvers P3.13(5), solvers.md:1545 to 1547; decision S-D11): 1 only if
+   adf_rootlist_verify_entries(L, f) = 1 and n and count both equal the number of distinct real roots
+   of g*, the normalised polynomial of f, recounted here from f with fmpz_poly_num_real_roots
+   (fmpz_poly.rst:3265 to 3268; g* is squarefree; 0 for g* constant). The count is never read from
+   the list. Then every ball holds exactly one real root of f and every real root of f lies in a
+   ball (P3.8(2)). depth is not used at the real place (any value). A list with complete = 1 is the
+   only kind the shape admits there.
    A predicate; never aborts on a list that satisfies the pointer rule of is_canonical. Cost: that of
-   the entries verifier and of the search itself (api-s.md 4, note 3), and (n + m)^2 comparisons of
-   balls for m roots found. */
+   the entries verifier and, at a prime, of the search itself (api-s.md 4, note 3), and (n + m)^2
+   comparisons of balls for m roots found; at the real place one more gcd and one count of FLINT. */
 int adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, slong depth);
+
+/* ---- the real roots (slice 3) ---- */
+
+/* adf_roots_real(L, f, prec): Algorithm RR of solvers 3.10 (solvers.md:1399 to 1417), decisions S-D11,
+   S-D13, S-D19. The list of all distinct real roots of f, each in a ball that holds exactly one
+   of them, in increasing order; scope PARTITION, place the real place (adf_place_inf), g and reduced
+   as above, n = count, complete = 1, nu = 0.
+
+   A prec below 2 is taken as 2 (M1-D4). The steps: g = g*, the normalised polynomial of f (squarefree,
+   L3.1(2)); for g constant the list is empty (count 0). Else count = fmpz_poly_num_real_roots(g)
+   (fmpz_poly.rst:3265 to 3268; S-D11: this count is trusted); the enclosures of
+   arb_fmpz_poly_complex_roots(g, prec) (arb_fmpz_poly.rst:66 to 79) with imaginary part exactly
+   zero (arb_is_zero), in the order given, are candidates (their isolation is not trusted). For each
+   candidate the exact test of solvers P3.8 is made on its exact end points; if it fails, the ball is
+   widened once to the same midpoint and twice the radius (2^(-prec) for radius 0: [lo - r, hi + r],
+   step 5) and tested again. The list is written only if every stored ball (after any widening) passes
+   the test, the stored balls satisfy hi_i < lo_(i+1), their number equals count, and every stored ball
+   has arb_rel_accuracy_bits (arb.rst:506 to 509) at least prec or is exact (S-D19: measured on the
+   balls that are stored). Then each ball holds exactly one real root of f and every real root of f
+   is in a ball (P3.10(1), P3.8(2)); a multiple root of f is one simple root of g, its multiplicity is
+   not reported (P3.10(3)). The balls pass adf_rootlist_verify_entries and _verify_complete.
+
+   Statuses, in the order in which they are decided:
+     ADF_DOMAIN (edit E-C1): f = 0; L untouched.
+     ADF_LIMIT: prec > ADF_ROOTS_REAL_PREC_MAX, decided before any allocation; or a candidate ball of
+       FLINT not of admissible size ("Real balls"), decided before its end points are formed; L
+       untouched.
+     ADF_NOT_DETERMINED (S-D19): a test of P3.8 fails after the widening, two stored balls are not
+       strictly ordered, the number of candidates differs from count, or the accuracy of a stored ball
+       is below max(prec, 2); a larger prec may succeed; L untouched.
+     ADF_OK: L written as above (for f constant: the empty list, count 0).
+   Aliasing: L is an output of its own type; f is an input and may be L->g: L is written only after
+   the result has been computed. Allocates: g*, deg g complex balls of FLINT, the n stored balls, and
+   the exact end points of each ball. Cost: one gcd of f and f'; FLINT's count and isolation; at most
+   four exact evaluations of g at dyadic points of about prec bits for each ball and n - 1 comparisons
+   (solvers P3.10). */
+int adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec);
 
 /* ---- accessors ---- */
 
@@ -308,6 +389,11 @@ int adf_rootlist_get_unresolved(fmpz_t a, slong * e, const adf_rootlist_t L, slo
    [0, n), or K_i bits(p) > ADF_ROOTS_BITS_MAX (no list of the library has that); x untouched on 0.
    Cost: one power of p. */
 int adf_rootlist_get_fball(adf_fball_t x, const adf_rootlist_t L, slong i);
+
+/* adf_rootlist_get_arb(x, L, i): at the real place, x = a copy of the ball of root i (solvers P3.10).
+   Returns 1 if written; 0 if L is at a prime or i is outside [0, n), and then x is untouched. x may be
+   L->ball + i. A predicate, not a status. Cost: a copy. */
+int adf_rootlist_get_arb(arb_t x, const adf_rootlist_t L, slong i);
 
 /* Layout queries (conventions 12.4, CV-40). Header-inline and exported. */
 ADF_INLINE size_t adf_sizeof_rootlist(void) { return sizeof(adf_rootlist_struct); }

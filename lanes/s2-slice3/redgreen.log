@@ -1,0 +1,73 @@
+Lane s2-slice3: red and green runs of tests/test_roots_real.c, and the runs of item 5 of the brief (the tests
+bite).
+
+== RED 1 (2026-09-29): tests/test_roots_real.c written first, against stubs in src/roots.c
+   (adf_roots_real and the hidden adf_roots_real_finish return ADF_NOT_DETERMINED, adf_rootlist_get_arb
+   returns 0; the real place of is_canonical and of the two verifiers still the TEMPORARY code of slice 2).
+   The header declarations were added first so that the test compiles and links: the failures are
+   assertions. A first run segfaulted in predicate_at_the_real_place (L->ball of the empty stub list); that
+   test and the finish test now return early when the list has not the expected length.
+   make -j2 build/test_roots_real && timeout 300 ./build/test_roots_real     (exit 1)
+      REAL_CASES: 72 runs (18 polynomials, prec 2, 20, 53, 200), 0 lists true by the oracle
+   FAIL real_cases_against_the_sturm_chain_of_the_test (413 failed checks)
+   FAIL planted_roots_repeated_large_close_and_dyadic (252 failed checks)
+   FAIL precision_accuracy_below_2_and_nesting (275 failed checks)
+      false count                   18 changed lists,  18 refused ( 18 of them by verify_entries)
+      g replaced by f                4 changed lists,   4 refused (  4 of them by verify_entries)
+      (every other kind: 0 changed lists, because the stub gives no ball)
+   FAIL verifiers_accept_every_result_and_refuse_changed_lists (30 failed checks)
+   FAIL predicate_at_the_real_place (1 failed checks)
+   FAIL finish_widening_accuracy_after_widening_and_the_count (22 failed checks)
+   FAIL statuses_constants_untouched_and_aliasing (40 failed checks)
+      tests/ref/vectors/s2-slice3/real.jsonl: 163 lines, 161 OK (0 roots), 2 DOMAIN
+   FAIL vectors_s2_slice3_every_line (477 failed checks)
+   8 tests, 2843 checks, 1510 failed checks, 8 failed tests
+
+== GREEN 1: src/roots.c with Algorithm RR (adf_roots_real, real_finish, the hidden adf_roots_real_finish), the
+   real place of the predicate and of the two verifiers, get_arb.
+   First run: 7 tests ok, 1 failed check in predicate_at_the_real_place: a defect of the TEST. It expected the
+   entries verifier to refuse the ball 1 +- 2^(1 - 2^24) for (X-1)(X-2)(X-3); that ball isolates the root 1 and
+   passes the test of P3.8, so the entries verifier is right to accept it (the complete verifier refuses the list
+   of one ball). The check now expects entries 1 and complete 0.
+   The run took 92 s: 66 s in the planted test, (X - 10^400)(X - 10^400 - 1) at three precisions, 28 s each,
+   all of it inside arb_fmpz_poly_complex_roots (measured alone: 28.3 s; its balls carry midpoints of 2^21 bits,
+   accuracy 1456). That pair is now tested once, as a line of the vectors (it is a regression of
+   check_s2_real_planted); X - 10^400 stays in the planted test.
+   make -j2 build/test_roots_real && timeout 300 ./build/test_roots_real
+   8 tests, 10666 checks, 0 failed checks, 0 failed tests; 30.6 s (28.9 s of them the vector line above)
+   The prime tests, unchanged: test_roots_forged 2 tests, 26 checks, 0 failed. test_roots_seed 16 tests,
+   5347209 checks, 1 failed (line 400); test_roots_padic 8 tests, 55131 checks, 1 failed (line 1237). Both
+   failed checks assert the TEMPORARY 0 of slice 2 at the real place for the init list and f = 1, which is the
+   true complete list of f = 1 (no real root): the header of slice 3 says 1. See result.md, and the proposed
+   change lanes/s2-slice3/temporary-checks.patch (two lines, files not owned by this lane).
+
+== ITEM 5 (the tests bite): python3 lanes/s2-slice3/bite.py <indices>: six changes of src/roots.c, one at a time,
+   each in a scratch copy under build/bite3/, built and run with timeout 120 ./build/test_roots_real under an
+   address-space limit of 4 GiB. Run in three calls (0; 1 2 3; 3 4 5), each below 3 minutes. The first run of
+   change 3 did not build (-Werror: the parameter count unused); the change now leaves "(void) count;".
+   -- 0. the squarefree part not taken (f used for g in adf_roots_real): CAUGHT, exit -6
+      the program ended early; last line of stderr: timeout: the monitored command dumped core
+      last line of stdout:     non-squarefree polynomial in _fmpz_poly_num_real_roots
+   -- 1 of 1 changes caught
+   -- 1. the sign test at one end point accepting a zero (g(lo) g(hi) <= 0): CAUGHT, exit 1
+      FAIL verifiers_accept_every_result_and_refuse_changed_lists (tests/test_roots_real.c:849, 3 failed checks)
+      FAIL finish_widening_accuracy_after_widening_and_the_count (tests/test_roots_real.c:1148, 6 failed checks)
+      8 tests, 10666 checks, 9 failed checks, 2 failed tests
+   -- 2. the disjointness test removed: CAUGHT, exit 1
+      FAIL verifiers_accept_every_result_and_refuse_changed_lists (tests/test_roots_real.c:849, 25 failed checks)
+      FAIL predicate_at_the_real_place (tests/test_roots_real.c:1045, 2 failed checks)
+      FAIL finish_widening_accuracy_after_widening_and_the_count (tests/test_roots_real.c:1148, 3 failed checks)
+      8 tests, 10666 checks, 30 failed checks, 3 failed tests
+   
+   -- 3. the comparison of the two counts removed: CAUGHT, exit 1
+      FAIL finish_widening_accuracy_after_widening_and_the_count (tests/test_roots_real.c:1148, 5 failed checks)
+      8 tests, 10666 checks, 5 failed checks, 1 failed tests
+   -- 4. the accuracy measured before the widening instead of after: CAUGHT, exit 1
+      FAIL finish_widening_accuracy_after_widening_and_the_count (tests/test_roots_real.c:1148, 3 failed checks)
+      8 tests, 10666 checks, 3 failed checks, 1 failed tests
+   -- 5. verify_complete reading the count from the list: CAUGHT, exit 1
+      FAIL verifiers_accept_every_result_and_refuse_changed_lists (tests/test_roots_real.c:849, 53 failed checks)
+      FAIL predicate_at_the_real_place (tests/test_roots_real.c:1045, 1 failed checks)
+      8 tests, 10666 checks, 54 failed checks, 2 failed tests
+   -- 3 of 3 changes caught
+   In all: 6 of 6 changes caught (change 3 counted from its second run, the one that built).
