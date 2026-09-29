@@ -1,0 +1,4 @@
+Test Summary:                          | Pass  Total  Time
+adf_root_padic_from_seed through ccall |   10     10  0.5s
+Test Summary:                                          | Pass  Total  Time
+adf_roots_padic through ccall: (X^2 - 2)(X - 3) in Z_7 |   20     20  1.5s

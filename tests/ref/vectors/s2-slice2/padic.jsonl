@@ -1,0 +1,650 @@
+{"f":[1,0,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[1,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[1,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2+1 at 2"}
+{"f":[1,0,1],"p":5,"prec":1,"depth":0,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[2,1,0],[3,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[1,0,1],"p":5,"prec":3,"depth":0,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[57,3,0],[68,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[1,0,1],"p":5,"prec":1,"depth":1,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[2,1,0],[3,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[1,0,1],"p":5,"prec":3,"depth":1,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[57,3,0],[68,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[1,0,1],"p":5,"prec":1,"depth":3,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[2,1,0],[3,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[1,0,1],"p":5,"prec":3,"depth":3,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[57,3,0],[68,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[1,0,1],"p":5,"prec":1,"depth":8,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[2,1,0],[3,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[1,0,1],"p":5,"prec":3,"depth":8,"status":"OK","g":[1,0,1],"reduced":0,"certs":[[57,3,0],[68,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2+1 at 5"}
+{"f":[-9,0,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-9,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-9,0,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-9,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-9,0,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[-9,0,1],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-9,0,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[-9,0,1],"reduced":0,"certs":[[3,3,1],[5,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-9,0,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[-9,0,1],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-9,0,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[-9,0,1],"reduced":0,"certs":[[3,3,1],[5,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-9,0,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-9,0,1],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-9,0,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-9,0,1],"reduced":0,"certs":[[3,3,1],[5,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-9 at 2"}
+{"f":[-17,0,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-17,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-17,0,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-17,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-17,0,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[-17,0,1],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-17,0,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[-17,0,1],"reduced":0,"certs":[[1,3,1],[7,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-17,0,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[-17,0,1],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-17,0,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[-17,0,1],"reduced":0,"certs":[[1,3,1],[7,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-17,0,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-17,0,1],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-17,0,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-17,0,1],"reduced":0,"certs":[[1,3,1],[7,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: x^2-17 at 2"}
+{"f":[-3,0,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-3,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-3,0,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-3,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-3,0,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[-3,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-3,0,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[-3,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-3,0,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[-3,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-3,0,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[-3,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-3,0,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-3,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-3,0,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-3,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^2-3 at 2"}
+{"f":[-7,0,1],"p":3,"prec":1,"depth":0,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-7,0,1],"p":3,"prec":3,"depth":0,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-7,0,1],"p":3,"prec":1,"depth":1,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-7,0,1],"p":3,"prec":3,"depth":1,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-7,0,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-7,0,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-7,0,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-7,0,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-7 at 3"}
+{"f":[-2,0,1],"p":7,"prec":1,"depth":0,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[3,1,0],[4,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[-2,0,1],"p":7,"prec":3,"depth":0,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[108,3,0],[235,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[-2,0,1],"p":7,"prec":1,"depth":1,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[3,1,0],[4,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[-2,0,1],"p":7,"prec":3,"depth":1,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[108,3,0],[235,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[-2,0,1],"p":7,"prec":1,"depth":3,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[3,1,0],[4,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[-2,0,1],"p":7,"prec":3,"depth":3,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[108,3,0],[235,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[-2,0,1],"p":7,"prec":1,"depth":8,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[3,1,0],[4,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[-2,0,1],"p":7,"prec":3,"depth":8,"status":"OK","g":[-2,0,1],"reduced":0,"certs":[[108,3,0],[235,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: x^2-2 at 7"}
+{"f":[1,2,2,-7,1],"p":3,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[1,2,2,-7,1],"reduced":0,"certs":[],"unres":[[2,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[1,2,2,-7,1],"p":3,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[1,2,2,-7,1],"reduced":0,"certs":[],"unres":[[2,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[1,2,2,-7,1],"p":3,"prec":1,"depth":1,"status":"OK","g":[1,2,2,-7,1],"reduced":0,"certs":[[2,2,1],[5,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[1,2,2,-7,1],"p":3,"prec":3,"depth":1,"status":"OK","g":[1,2,2,-7,1],"reduced":0,"certs":[[11,3,1],[23,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[1,2,2,-7,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[1,2,2,-7,1],"reduced":0,"certs":[[2,2,1],[5,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[1,2,2,-7,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[1,2,2,-7,1],"reduced":0,"certs":[[11,3,1],[23,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[1,2,2,-7,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[1,2,2,-7,1],"reduced":0,"certs":[[2,2,1],[5,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[1,2,2,-7,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[1,2,2,-7,1],"reduced":0,"certs":[[11,3,1],[23,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: Conrad 4.2 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-10,0,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-10,0,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":1,"depth":1,"status":"OK","g":[-10,0,0,1],"reduced":0,"certs":[[4,2,1]],"unres":[],"complete":1,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":3,"depth":1,"status":"OK","g":[-10,0,0,1],"reduced":0,"certs":[[13,3,1]],"unres":[],"complete":1,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[-10,0,0,1],"reduced":0,"certs":[[4,2,1]],"unres":[],"complete":1,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[-10,0,0,1],"reduced":0,"certs":[[13,3,1]],"unres":[],"complete":1,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[-10,0,0,1],"reduced":0,"certs":[[4,2,1]],"unres":[],"complete":1,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-10,0,0,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[-10,0,0,1],"reduced":0,"certs":[[13,3,1]],"unres":[],"complete":1,"expect":1,"d0":1,"what":"PADIC_CASES: x^3-10 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[[2,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[[2,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":1,"depth":1,"status":"OK","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":3,"depth":1,"status":"OK","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-5,0,0,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[-5,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^3-5 at 3"}
+{"f":[-8,-2,-1,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-8,-2,-1,1],"reduced":0,"certs":[[1,1,0]],"unres":[[0,1]],"complete":0,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-8,-2,-1,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-8,-2,-1,1],"reduced":0,"certs":[[7,3,0]],"unres":[[0,1]],"complete":0,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-8,-2,-1,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[-8,-2,-1,1],"reduced":0,"certs":[[0,2,1],[1,1,0],[2,2,1]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-8,-2,-1,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[-8,-2,-1,1],"reduced":0,"certs":[[4,3,1],[6,3,1],[7,3,0]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-8,-2,-1,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[-8,-2,-1,1],"reduced":0,"certs":[[0,2,1],[1,1,0],[2,2,1]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-8,-2,-1,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[-8,-2,-1,1],"reduced":0,"certs":[[4,3,1],[6,3,1],[7,3,0]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-8,-2,-1,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-8,-2,-1,1],"reduced":0,"certs":[[0,2,1],[1,1,0],[2,2,1]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-8,-2,-1,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-8,-2,-1,1],"reduced":0,"certs":[[4,3,1],[6,3,1],[7,3,0]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"PADIC_CASES: Conrad 4.4 at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[23,6,5],[41,6,5]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[23,6,5],[41,6,5]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[23,6,5],[41,6,5]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[23,6,5],[41,6,5]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[23,6,5],[41,6,5]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[23,6,5],[41,6,5]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 2"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[2,1,0],[11,1,0]],"unres":[[0,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[375,3,0],[1822,3,0]],"unres":[[0,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":1,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[2,1,0],[11,1,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":3,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[375,3,0],[1822,3,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":1,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[2,1,0],[11,1,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":3,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[375,3,0],[1822,3,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":1,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[2,1,0],[11,1,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":13,"prec":3,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[375,3,0],[1822,3,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 13"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":1,"depth":0,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":3,"depth":0,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[11,3,0],[16,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":1,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":3,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[11,3,0],[16,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[11,3,0],[16,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[11,3,0],[16,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 3"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[8,1,0],[9,1,0]],"unres":[[0,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1386,3,0],[3527,3,0]],"unres":[[0,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":1,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[8,1,0],[9,1,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":3,"depth":1,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1386,3,0],[3527,3,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":1,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[8,1,0],[9,1,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":3,"depth":3,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1386,3,0],[3527,3,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":1,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[8,1,0],[9,1,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[-48841,0,6851,0,-251,0,1],"p":17,"prec":3,"depth":8,"status":"OK","g":[-48841,0,6851,0,-251,0,1],"reduced":0,"certs":[[1386,3,0],[3527,3,0]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (x^2-13)(x^2-17)(x^2-221) at 17"}
+{"f":[0,0,3,1],"p":3,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[0,3,1],"reduced":1,"certs":[],"unres":[[0,1]],"complete":0,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,3,1],"p":3,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[0,3,1],"reduced":1,"certs":[],"unres":[[0,1]],"complete":0,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,3,1],"p":3,"prec":1,"depth":1,"status":"OK","g":[0,3,1],"reduced":1,"certs":[[0,2,1],[6,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,3,1],"p":3,"prec":3,"depth":1,"status":"OK","g":[0,3,1],"reduced":1,"certs":[[0,3,1],[24,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,3,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[0,3,1],"reduced":1,"certs":[[0,2,1],[6,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,3,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[0,3,1],"reduced":1,"certs":[[0,3,1],[24,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,3,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[0,3,1],"reduced":1,"certs":[[0,2,1],[6,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,3,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[0,3,1],"reduced":1,"certs":[[0,3,1],[24,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^2(x+3)-style: x^3+3x^2 at 3"}
+{"f":[0,0,2,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[0,2,1],"reduced":1,"certs":[],"unres":[[0,1]],"complete":0,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[0,0,2,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[0,2,1],"reduced":1,"certs":[],"unres":[[0,1]],"complete":0,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[0,0,2,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[0,2,1],"reduced":1,"certs":[[0,2,1],[2,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[0,0,2,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[0,2,1],"reduced":1,"certs":[[0,3,1],[6,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[0,0,2,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[0,2,1],"reduced":1,"certs":[[0,2,1],[2,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[0,0,2,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[0,2,1],"reduced":1,"certs":[[0,3,1],[6,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[0,0,2,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[0,2,1],"reduced":1,"certs":[[0,2,1],[2,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[0,0,2,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[0,2,1],"reduced":1,"certs":[[0,3,1],[6,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: x^3+2x^2 at 2"}
+{"f":[2,-3,0,1],"p":3,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-2,1,1],"reduced":1,"certs":[],"unres":[[1,1]],"complete":0,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":3,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-2,1,1],"reduced":1,"certs":[],"unres":[[1,1]],"complete":0,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":3,"prec":1,"depth":1,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,2,1],[7,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":3,"prec":3,"depth":1,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,3,1],[25,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,2,1],[7,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,3,1],[25,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,2,1],[7,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,3,1],[25,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"PADIC_CASES: (x-1)^2(x+2) at 3"}
+{"f":[2,-3,0,1],"p":5,"prec":1,"depth":0,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,1,0],[3,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[2,-3,0,1],"p":5,"prec":3,"depth":0,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,3,0],[123,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[2,-3,0,1],"p":5,"prec":1,"depth":1,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,1,0],[3,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[2,-3,0,1],"p":5,"prec":3,"depth":1,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,3,0],[123,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[2,-3,0,1],"p":5,"prec":1,"depth":3,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,1,0],[3,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[2,-3,0,1],"p":5,"prec":3,"depth":3,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,3,0],[123,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[2,-3,0,1],"p":5,"prec":1,"depth":8,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,1,0],[3,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[2,-3,0,1],"p":5,"prec":3,"depth":8,"status":"OK","g":[-2,1,1],"reduced":1,"certs":[[1,3,0],[123,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"PADIC_CASES: (x-1)^2(x+2) at 5"}
+{"f":[-63,0,9],"p":3,"prec":1,"depth":0,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[-63,0,9],"p":3,"prec":3,"depth":0,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[-63,0,9],"p":3,"prec":1,"depth":1,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[-63,0,9],"p":3,"prec":3,"depth":1,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[-63,0,9],"p":3,"prec":1,"depth":3,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[-63,0,9],"p":3,"prec":3,"depth":3,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[-63,0,9],"p":3,"prec":1,"depth":8,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[-63,0,9],"p":3,"prec":3,"depth":8,"status":"OK","g":[-7,0,1],"reduced":0,"certs":[[13,3,0],[14,3,0]],"unres":[],"complete":1,"expect":2,"d0":0,"what":"PADIC_CASES: content: 9x^2-63 at 3"}
+{"f":[0,27],"p":3,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[0,27],"p":3,"prec":3,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[0,27],"p":3,"prec":1,"depth":1,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[0,27],"p":3,"prec":3,"depth":1,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[0,27],"p":3,"prec":1,"depth":3,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[0,27],"p":3,"prec":3,"depth":3,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[0,27],"p":3,"prec":1,"depth":8,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[0,27],"p":3,"prec":3,"depth":8,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: 27x at 3"}
+{"f":[12],"p":2,"prec":1,"depth":0,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":2,"prec":3,"depth":0,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":2,"prec":1,"depth":1,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":2,"prec":3,"depth":1,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":2,"prec":1,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":2,"prec":3,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":2,"prec":1,"depth":8,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":2,"prec":3,"depth":8,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 2"}
+{"f":[12],"p":5,"prec":1,"depth":0,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[12],"p":5,"prec":3,"depth":0,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[12],"p":5,"prec":1,"depth":1,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[12],"p":5,"prec":3,"depth":1,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[12],"p":5,"prec":1,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[12],"p":5,"prec":3,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[12],"p":5,"prec":1,"depth":8,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[12],"p":5,"prec":3,"depth":8,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"PADIC_CASES: constant 12 at 5"}
+{"f":[-1080,486,-45,1],"p":3,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-1080,486,-45,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[-1080,486,-45,1],"p":3,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-1080,486,-45,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[-1080,486,-45,1],"p":3,"prec":1,"depth":1,"status":"NOT_DETERMINED","g":[-1080,486,-45,1],"reduced":0,"certs":[],"unres":[[3,2]],"complete":0,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[-1080,486,-45,1],"p":3,"prec":3,"depth":1,"status":"NOT_DETERMINED","g":[-1080,486,-45,1],"reduced":0,"certs":[],"unres":[[3,2]],"complete":0,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[-1080,486,-45,1],"p":3,"prec":1,"depth":3,"status":"OK","g":[-1080,486,-45,1],"reduced":0,"certs":[[3,6,5],[12,5,4],[30,6,5]],"unres":[],"complete":1,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[-1080,486,-45,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[-1080,486,-45,1],"reduced":0,"certs":[[3,6,5],[12,5,4],[30,6,5]],"unres":[],"complete":1,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[-1080,486,-45,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[-1080,486,-45,1],"reduced":0,"certs":[[3,6,5],[12,5,4],[30,6,5]],"unres":[],"complete":1,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[-1080,486,-45,1],"p":3,"prec":3,"depth":8,"status":"OK","g":[-1080,486,-45,1],"reduced":0,"certs":[[3,6,5],[12,5,4],[30,6,5]],"unres":[],"complete":1,"expect":3,"d0":3,"what":"PADIC_CASES: (x-3)(x-12)(x-30) at 3"}
+{"f":[65,-66,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[65,-66,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[65,-66,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[65,-66,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[65,-66,1],"p":2,"prec":1,"depth":1,"status":"NOT_DETERMINED","g":[65,-66,1],"reduced":0,"certs":[],"unres":[[1,2]],"complete":0,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[65,-66,1],"p":2,"prec":3,"depth":1,"status":"NOT_DETERMINED","g":[65,-66,1],"reduced":0,"certs":[],"unres":[[1,2]],"complete":0,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[65,-66,1],"p":2,"prec":1,"depth":3,"status":"NOT_DETERMINED","g":[65,-66,1],"reduced":0,"certs":[],"unres":[[1,4]],"complete":0,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[65,-66,1],"p":2,"prec":3,"depth":3,"status":"NOT_DETERMINED","g":[65,-66,1],"reduced":0,"certs":[],"unres":[[1,4]],"complete":0,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[65,-66,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[65,-66,1],"reduced":0,"certs":[[1,7,6],[65,7,6]],"unres":[],"complete":1,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[65,-66,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[65,-66,1],"reduced":0,"certs":[[1,7,6],[65,7,6]],"unres":[],"complete":1,"expect":2,"d0":6,"what":"PADIC_CASES: (x-1)(x-1-2^6) at 2"}
+{"f":[5,-16,3],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[5,-16,3],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-16,3],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[5,-16,3],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-16,3],"p":2,"prec":1,"depth":1,"status":"OK","g":[5,-16,3],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-16,3],"p":2,"prec":3,"depth":1,"status":"OK","g":[5,-16,3],"reduced":0,"certs":[[3,3,1],[5,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-16,3],"p":2,"prec":1,"depth":3,"status":"OK","g":[5,-16,3],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-16,3],"p":2,"prec":3,"depth":3,"status":"OK","g":[5,-16,3],"reduced":0,"certs":[[3,3,1],[5,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-16,3],"p":2,"prec":1,"depth":8,"status":"OK","g":[5,-16,3],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-16,3],"p":2,"prec":3,"depth":8,"status":"OK","g":[5,-16,3],"reduced":0,"certs":[[3,3,1],[5,3,1]],"unres":[],"complete":1,"expect":2,"d0":1,"what":"PADIC_CASES: (3x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":1,"depth":0,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":3,"depth":0,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[5,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":1,"depth":1,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":3,"depth":1,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[5,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":1,"depth":3,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":3,"depth":3,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[5,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":1,"depth":8,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[5,-11,2],"p":2,"prec":3,"depth":8,"status":"OK","g":[5,-11,2],"reduced":0,"certs":[[5,3,0]],"unres":[],"complete":1,"expect":1,"d0":0,"what":"PADIC_CASES: (2x-1)(x-5) at 2"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":1,"depth":0,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,1,0],[1,1,0],[2,1,0],[3,1,0],[4,1,0],[5,1,0],[6,1,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":3,"depth":0,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,3,0],[1,3,0],[18,3,0],[19,3,0],[324,3,0],[325,3,0],[342,3,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":1,"depth":1,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,1,0],[1,1,0],[2,1,0],[3,1,0],[4,1,0],[5,1,0],[6,1,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":3,"depth":1,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,3,0],[1,3,0],[18,3,0],[19,3,0],[324,3,0],[325,3,0],[342,3,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":1,"depth":3,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,1,0],[1,1,0],[2,1,0],[3,1,0],[4,1,0],[5,1,0],[6,1,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":3,"depth":3,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,3,0],[1,3,0],[18,3,0],[19,3,0],[324,3,0],[325,3,0],[342,3,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":1,"depth":8,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,1,0],[1,1,0],[2,1,0],[3,1,0],[4,1,0],[5,1,0],[6,1,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[0,-1,0,0,0,0,0,1],"p":7,"prec":3,"depth":8,"status":"OK","g":[0,-1,0,0,0,0,0,1],"reduced":0,"certs":[[0,3,0],[1,3,0],[18,3,0],[19,3,0],[324,3,0],[325,3,0],[342,3,0]],"unres":[],"complete":1,"expect":7,"d0":0,"what":"PADIC_CASES: x^7-x at 7"}
+{"f":[-4,0,0,0,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-4,0,0,0,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-4,0,0,0,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-4,0,0,0,1],"p":2,"prec":3,"depth":1,"status":"OK","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-4,0,0,0,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-4,0,0,0,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-4,0,0,0,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-4,0,0,0,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-4,0,0,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"PADIC_CASES: x^4-4 at 2"}
+{"f":[-16,0,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-16,0,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-16,0,1],"p":2,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-16,0,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-16,0,1],"p":2,"prec":1,"depth":1,"status":"NOT_DETERMINED","g":[-16,0,1],"reduced":0,"certs":[],"unres":[[0,2]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-16,0,1],"p":2,"prec":3,"depth":1,"status":"NOT_DETERMINED","g":[-16,0,1],"reduced":0,"certs":[],"unres":[[0,2]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-16,0,1],"p":2,"prec":1,"depth":3,"status":"OK","g":[-16,0,1],"reduced":0,"certs":[[4,4,3],[12,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-16,0,1],"p":2,"prec":3,"depth":3,"status":"OK","g":[-16,0,1],"reduced":0,"certs":[[4,4,3],[12,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-16,0,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-16,0,1],"reduced":0,"certs":[[4,4,3],[12,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-16,0,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-16,0,1],"reduced":0,"certs":[[4,4,3],[12,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-8 at 2 ... x^2 - 16 at 2"}
+{"f":[-15625,0,1],"p":5,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-15625,0,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[-15625,0,1],"p":5,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-15625,0,1],"reduced":0,"certs":[],"unres":[[0,1]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[-15625,0,1],"p":5,"prec":1,"depth":1,"status":"NOT_DETERMINED","g":[-15625,0,1],"reduced":0,"certs":[],"unres":[[0,2]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[-15625,0,1],"p":5,"prec":3,"depth":1,"status":"NOT_DETERMINED","g":[-15625,0,1],"reduced":0,"certs":[],"unres":[[0,2]],"complete":0,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[-15625,0,1],"p":5,"prec":1,"depth":3,"status":"OK","g":[-15625,0,1],"reduced":0,"certs":[[125,4,3],[500,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[-15625,0,1],"p":5,"prec":3,"depth":3,"status":"OK","g":[-15625,0,1],"reduced":0,"certs":[[125,4,3],[500,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[-15625,0,1],"p":5,"prec":1,"depth":8,"status":"OK","g":[-15625,0,1],"reduced":0,"certs":[[125,4,3],[500,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[-15625,0,1],"p":5,"prec":3,"depth":8,"status":"OK","g":[-15625,0,1],"reduced":0,"certs":[[125,4,3],[500,4,3]],"unres":[],"complete":1,"expect":2,"d0":3,"what":"PADIC_CASES: x^2-p^6 at 5"}
+{"f":[1,0,1],"p":2,"prec":4,"depth":0,"status":"NOT_DETERMINED","g":[1,0,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":0,"d0":1,"what":"x^2+1 at 2, api-s note 1"}
+{"f":[1,0,1],"p":2,"prec":4,"depth":1,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"x^2+1 at 2, api-s note 1"}
+{"f":[1,0,1],"p":2,"prec":4,"depth":2,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"x^2+1 at 2, api-s note 1"}
+{"f":[1,0,1],"p":2,"prec":4,"depth":5,"status":"OK","g":[1,0,1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":1,"what":"x^2+1 at 2, api-s note 1"}
+{"f":[],"p":2,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial"}
+{"f":[0,0,0],"p":2,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial with trailing zeros"}
+{"f":[1],"p":2,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-1],"p":2,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[12],"p":2,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[8],"p":2,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-2],"p":2,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[3,1],"p":2,"prec":1,"depth":0,"status":"OK","g":[3,1],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[3,1],"p":2,"prec":5,"depth":2,"status":"OK","g":[3,1],"reduced":0,"certs":[[29,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":2,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":2,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":2,"prec":1,"depth":0,"status":"OK","g":[-3,2],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":2,"prec":5,"depth":2,"status":"OK","g":[-3,2],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[2,4],"p":2,"prec":1,"depth":0,"status":"OK","g":[1,2],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[2,4],"p":2,"prec":5,"depth":2,"status":"OK","g":[1,2],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,2],"p":2,"prec":1,"depth":0,"status":"OK","g":[1,2],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,2],"p":2,"prec":5,"depth":2,"status":"OK","g":[1,2],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":2,"prec":1,"depth":0,"status":"OK","g":[-5,7],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":2,"prec":5,"depth":2,"status":"OK","g":[-5,7],"reduced":0,"certs":[[19,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":2,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":2,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-2,0,1],"p":2,"prec":0,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec 0"}
+{"f":[-2,0,1],"p":2,"prec":-3,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec negative"}
+{"f":[-2,0,1],"p":2,"prec":2,"depth":-1,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"depth negative"}
+{"f":[],"p":3,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial"}
+{"f":[0,0,0],"p":3,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial with trailing zeros"}
+{"f":[1],"p":3,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-1],"p":3,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[12],"p":3,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[27],"p":3,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-3],"p":3,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[3,1],"p":3,"prec":1,"depth":0,"status":"OK","g":[3,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[3,1],"p":3,"prec":5,"depth":2,"status":"OK","g":[3,1],"reduced":0,"certs":[[240,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":3,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":3,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":3,"prec":1,"depth":0,"status":"OK","g":[-3,2],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":3,"prec":5,"depth":2,"status":"OK","g":[-3,2],"reduced":0,"certs":[[123,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[3,9],"p":3,"prec":1,"depth":0,"status":"OK","g":[1,3],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[3,9],"p":3,"prec":5,"depth":2,"status":"OK","g":[1,3],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,3],"p":3,"prec":1,"depth":0,"status":"OK","g":[1,3],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,3],"p":3,"prec":5,"depth":2,"status":"OK","g":[1,3],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":3,"prec":1,"depth":0,"status":"OK","g":[-5,7],"reduced":0,"certs":[[2,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":3,"prec":5,"depth":2,"status":"OK","g":[-5,7],"reduced":0,"certs":[[209,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":3,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":3,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-2,0,1],"p":3,"prec":0,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec 0"}
+{"f":[-2,0,1],"p":3,"prec":-3,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec negative"}
+{"f":[-2,0,1],"p":3,"prec":2,"depth":-1,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"depth negative"}
+{"f":[],"p":5,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial"}
+{"f":[0,0,0],"p":5,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial with trailing zeros"}
+{"f":[1],"p":5,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-1],"p":5,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[12],"p":5,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[125],"p":5,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-5],"p":5,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[3,1],"p":5,"prec":1,"depth":0,"status":"OK","g":[3,1],"reduced":0,"certs":[[2,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[3,1],"p":5,"prec":5,"depth":2,"status":"OK","g":[3,1],"reduced":0,"certs":[[3122,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":5,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":5,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":5,"prec":1,"depth":0,"status":"OK","g":[-3,2],"reduced":0,"certs":[[4,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":5,"prec":5,"depth":2,"status":"OK","g":[-3,2],"reduced":0,"certs":[[1564,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[5,25],"p":5,"prec":1,"depth":0,"status":"OK","g":[1,5],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[5,25],"p":5,"prec":5,"depth":2,"status":"OK","g":[1,5],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,5],"p":5,"prec":1,"depth":0,"status":"OK","g":[1,5],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,5],"p":5,"prec":5,"depth":2,"status":"OK","g":[1,5],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":5,"prec":1,"depth":0,"status":"OK","g":[-5,7],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":5,"prec":5,"depth":2,"status":"OK","g":[-5,7],"reduced":0,"certs":[[1340,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":5,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":5,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-2,0,1],"p":5,"prec":0,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec 0"}
+{"f":[-2,0,1],"p":5,"prec":-3,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec negative"}
+{"f":[-2,0,1],"p":5,"prec":2,"depth":-1,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"depth negative"}
+{"f":[],"p":7,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial"}
+{"f":[0,0,0],"p":7,"prec":2,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"zero polynomial with trailing zeros"}
+{"f":[1],"p":7,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-1],"p":7,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[12],"p":7,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[343],"p":7,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[-7],"p":7,"prec":2,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":0,"d0":0,"what":"constant"}
+{"f":[3,1],"p":7,"prec":1,"depth":0,"status":"OK","g":[3,1],"reduced":0,"certs":[[4,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[3,1],"p":7,"prec":5,"depth":2,"status":"OK","g":[3,1],"reduced":0,"certs":[[16804,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":7,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,27],"p":7,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":7,"prec":1,"depth":0,"status":"OK","g":[-3,2],"reduced":0,"certs":[[5,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-6,4],"p":7,"prec":5,"depth":2,"status":"OK","g":[-3,2],"reduced":0,"certs":[[8405,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[7,49],"p":7,"prec":1,"depth":0,"status":"OK","g":[1,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[7,49],"p":7,"prec":5,"depth":2,"status":"OK","g":[1,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,7],"p":7,"prec":1,"depth":0,"status":"OK","g":[1,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[1,7],"p":7,"prec":5,"depth":2,"status":"OK","g":[1,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":7,"prec":1,"depth":0,"status":"OK","g":[-5,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-5,7],"p":7,"prec":5,"depth":2,"status":"OK","g":[-5,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":7,"prec":1,"depth":0,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[0,1],"p":7,"prec":5,"depth":2,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"degree 1"}
+{"f":[-2,0,1],"p":7,"prec":0,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec 0"}
+{"f":[-2,0,1],"p":7,"prec":-3,"depth":3,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"prec negative"}
+{"f":[-2,0,1],"p":7,"prec":2,"depth":-1,"status":"DOMAIN","g":null,"reduced":null,"certs":null,"unres":null,"complete":null,"expect":null,"d0":null,"what":"depth negative"}
+{"f":[-8,1,-5,7],"p":13,"prec":6,"depth":3,"status":"OK","g":[-8,1,-5,7],"reduced":0,"certs":[[4086437,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[6,6,1,2,2],"p":59,"prec":8,"depth":8,"status":"OK","g":[6,6,1,2,2],"reduced":0,"certs":[[123210081888570,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-13170,6579,3],"p":13,"prec":1,"depth":1,"status":"NOT_DETERMINED","g":[-4390,2193,1],"reduced":0,"certs":[],"unres":[[2,2]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[-917280,25536,-913242,25317,4041,-219,3],"p":11,"prec":6,"depth":0,"status":"OK","g":[10920,86,10875,87,-45,1],"reduced":1,"certs":[[28,6,0],[30,6,0],[1771548,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[270,69,3],"p":11,"prec":8,"depth":1,"status":"OK","g":[90,23,1],"reduced":0,"certs":[[214358863,8,0],[214358876,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[3870,-39,-1293,13,1],"p":2,"prec":2,"depth":0,"status":"NOT_DETERMINED","g":[3870,-39,-1293,13,1],"reduced":0,"certs":[[2,2,0]],"unres":[[1,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[33000,1025,5],"p":5,"prec":3,"depth":5,"status":"OK","g":[6600,205,1],"reduced":0,"certs":[[460,4,3],[585,4,3]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[-5239080,317016,-402,-176,2],"p":13,"prec":8,"depth":12,"status":"OK","g":[-2619540,158508,-201,-88,1],"reduced":0,"certs":[[21,8,0],[54,8,0],[55,8,0],[815730679,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-13680,702,4551,-234,3],"p":2,"prec":5,"depth":1,"status":"OK","g":[-4560,234,1517,-78,1],"reduced":0,"certs":[[6,5,1],[8,5,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-15961374,759213,-2889,-273,3],"p":3,"prec":7,"depth":0,"status":"NOT_DETERMINED","g":[136422,-2991,-52,1],"reduced":1,"certs":[[2134,7,0]],"unres":[[0,1]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[598707900,109212492,-198399933,-36471676,-389876,22504,29],"p":29,"prec":6,"depth":1,"status":"NOT_DETERMINED","g":[20645100,3765948,-6841377,-1257644,-13444,776,1],"reduced":0,"certs":[[594823292,6,0],[594823315,6,0]],"unres":[[50,2]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[-4368328,-264486,-3897,1],"p":11,"prec":3,"depth":1,"status":"NOT_DETERMINED","g":[-4368328,-264486,-3897,1],"reduced":0,"certs":[[1293,3,0]],"unres":[[92,2]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[32,1],"p":17,"prec":8,"depth":0,"status":"OK","g":[32,1],"reduced":0,"certs":[[6975757409,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-9],"p":7,"prec":8,"depth":5,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1649076,11532,-4599,-12,3],"p":3,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[549692,3844,-1533,-4,1],"reduced":0,"certs":[[1,1,0]],"unres":[[2,1]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[25,1],"p":13,"prec":2,"depth":5,"status":"OK","g":[25,1],"reduced":0,"certs":[[144,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-36,1],"p":89,"prec":1,"depth":1,"status":"OK","g":[-36,1],"reduced":0,"certs":[[36,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-168480,-123492,42164,-2823,1],"p":53,"prec":7,"depth":1,"status":"NOT_DETERMINED","g":[-168480,-123492,42164,-2823,1],"reduced":0,"certs":[[6,7,0],[10,7,0]],"unres":[[2808,2]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[-357,-361,-360,-3,1],"p":89,"prec":5,"depth":3,"status":"OK","g":[-357,-361,-360,-3,1],"reduced":0,"certs":[[21,5,0],[5584059432,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-3047940,-625848,-1767,312,3],"p":23,"prec":6,"depth":2,"status":"OK","g":[-1015980,-208616,-589,104,1],"reduced":0,"certs":[[42,6,0],[148035807,6,1],[148035830,6,1],[148035884,6,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[846928992,-528004,846668242,-528002,-260750,2],"p":19,"prec":8,"depth":5,"status":"OK","g":[423464496,-264002,423334121,-264001,-130375,1],"reduced":0,"certs":[[56,8,5],[130377,8,5],[16983562983,8,2]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[43099470,-1784489,-24219,861,1],"p":29,"prec":8,"depth":12,"status":"OK","g":[43099470,-1784489,-24219,861,1],"reduced":0,"certs":[[23,8,0],[47,8,0],[500246412075,8,2],[500246412916,8,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[-114000,-18200,-20,86,2],"p":5,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-5700,-340,33,1],"reduced":1,"certs":[[87,3,0]],"unres":[[0,1]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[8379,-2247,129,3],"p":67,"prec":4,"depth":8,"status":"OK","g":[-399,50,1],"reduced":1,"certs":[[7,4,0],[20151064,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[274040,-4558,-137,1],"p":11,"prec":3,"depth":1,"status":"NOT_DETERMINED","g":[274040,-4558,-137,1],"reduced":0,"certs":[[1279,3,0]],"unres":[[34,2]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[9,5,-12,9,7],"p":13,"prec":1,"depth":8,"status":"OK","g":[9,5,-12,9,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[4,8],"p":71,"prec":8,"depth":3,"status":"OK","g":[1,2],"reduced":0,"certs":[[322876765622880,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[16575,-1213,-3,1],"p":101,"prec":2,"depth":12,"status":"OK","g":[16575,-1213,-3,1],"reduced":0,"certs":[[17,2,0],[25,2,0],[10162,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[16641,4773,-249,3],"p":3,"prec":7,"depth":3,"status":"OK","g":[-129,-40,1],"reduced":1,"certs":[[43,7,0],[2184,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[12,-10,6,12],"p":61,"prec":7,"depth":12,"status":"OK","g":[6,-5,3,6],"reduced":0,"certs":[[48248067268,7,0],[1571371418009,7,0],[3094494768754,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-58,1,-58,1],"p":2,"prec":5,"depth":1,"status":"OK","g":[-58,1,-58,1],"reduced":0,"certs":[[26,5,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[101973114,-14520541,681417,-10527,1],"p":59,"prec":3,"depth":5,"status":"OK","g":[-5367006,481765,-10508,1],"reduced":1,"certs":[[19,3,2],[27,3,0],[10462,3,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[10836,-135,-3621,45,3],"p":71,"prec":3,"depth":2,"status":"OK","g":[3612,-45,-1207,15,1],"reduced":0,"certs":[[28,3,2],[171138,3,2],[186773,3,0],[357868,3,2]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[20,1],"p":11,"prec":7,"depth":3,"status":"OK","g":[20,1],"reduced":0,"certs":[[19487151,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-6,5],"p":7,"prec":3,"depth":0,"status":"OK","g":[-6,5],"reduced":0,"certs":[[207,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[4,2,-1,4,-1],"p":5,"prec":8,"depth":3,"status":"OK","g":[-4,-2,1,-4,1],"reduced":0,"certs":[[111672,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[7,0,-7,5,-7,4],"p":83,"prec":5,"depth":2,"status":"OK","g":[7,0,-7,5,-7,4],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[5376,-1256,2658,-626,-15,1],"p":79,"prec":5,"depth":5,"status":"OK","g":[5376,-1256,2658,-626,-15,1],"reduced":0,"certs":[[4,5,0],[32,5,0],[3077056378,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1],"p":47,"prec":6,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[6826248,745758,-2261835,-248964,-4536,126,3],"p":3,"prec":5,"depth":0,"status":"NOT_DETERMINED","g":[2275416,248586,-753945,-82988,-1512,42,1],"reduced":0,"certs":[],"unres":[[0,1],[2,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[-4392800,-3294500,-3338453,-3338452,1054348,-43952,1],"p":11,"prec":6,"depth":2,"status":"NOT_DETERMINED","g":[-4392800,-3294500,-3338453,-3338452,1054348,-43952,1],"reduced":0,"certs":[[20,6,0],[1771560,6,0]],"unres":[[5,3]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[2239781382,2195863947,2195863950,-43917432,3],"p":47,"prec":8,"depth":5,"status":"OK","g":[746593794,731954649,731954650,-14639144,1],"reduced":0,"certs":[[51,8,4],[14639094,8,4]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[-9,1],"p":11,"prec":4,"depth":3,"status":"OK","g":[-9,1],"reduced":0,"certs":[[9,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1470,112,1472,112,2],"p":73,"prec":2,"depth":5,"status":"OK","g":[735,56,736,56,1],"reduced":0,"certs":[[776,2,0],[4553,2,0],[5294,2,0],[5308,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-2,-1,2,-3,-9,-3],"p":2,"prec":6,"depth":1,"status":"OK","g":[2,1,-2,3,9,3],"reduced":0,"certs":[[46,6,0],[49,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-6,-10],"p":7,"prec":3,"depth":12,"status":"OK","g":[3,5],"reduced":0,"certs":[[68,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[11,9,7],"p":2,"prec":2,"depth":3,"status":"OK","g":[11,9,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-10800,357,3],"p":13,"prec":2,"depth":12,"status":"OK","g":[-3600,119,1],"reduced":0,"certs":[[25,3,2],[2053,3,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[12,5,-8,11],"p":7,"prec":6,"depth":12,"status":"OK","g":[12,5,-8,11],"reduced":0,"certs":[[114880,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-39,1],"p":3,"prec":2,"depth":2,"status":"OK","g":[-39,1],"reduced":0,"certs":[[3,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[2,9],"p":13,"prec":3,"depth":12,"status":"OK","g":[2,9],"reduced":0,"certs":[[488,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[162000,13500,360,3],"p":7,"prec":1,"depth":0,"status":"OK","g":[1800,90,1],"reduced":1,"certs":[[3,1,0],[5,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-413952,-69832,-1010,88,2],"p":67,"prec":4,"depth":2,"status":"OK","g":[-206976,-34916,-505,44,1],"reduced":0,"certs":[[28,4,0],[20151088,4,0],[20151089,4,0],[20151114,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[13335840,-160524,-19908,91,7],"p":7,"prec":6,"depth":1,"status":"OK","g":[1905120,-22932,-2844,13,1],"reduced":0,"certs":[[27,6,0],[42,6,1],[117607,6,1],[117609,6,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[7,-9],"p":47,"prec":7,"depth":12,"status":"OK","g":[-7,9],"reduced":0,"certs":[[56291457830,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-280098,-22821,457,61,1],"p":5,"prec":5,"depth":3,"status":"OK","g":[-280098,-22821,457,61,1],"reduced":0,"certs":[[19,5,0],[3086,5,2],[3098,5,0],[3111,5,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[6],"p":3,"prec":4,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[27,1],"p":7,"prec":2,"depth":12,"status":"OK","g":[27,1],"reduced":0,"certs":[[22,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[90,-23,1],"p":13,"prec":7,"depth":2,"status":"OK","g":[90,-23,1],"reduced":0,"certs":[[5,7,1],[18,7,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-75000,5500,-130,1],"p":19,"prec":3,"depth":12,"status":"OK","g":[1500,-80,1],"reduced":1,"certs":[[30,3,0],[50,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[852169032,-181480550,-7890431,1],"p":53,"prec":8,"depth":5,"status":"OK","g":[852169032,-181480550,-7890431,1],"reduced":0,"certs":[[4,8,0],[7890454,8,4],[62259690411334,8,4]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[897974,-130291,6597,-137,1],"p":11,"prec":2,"depth":0,"status":"OK","g":[-18326,2285,-88,1],"reduced":1,"certs":[[17,2,0],[22,2,0],[49,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-39,13],"p":13,"prec":5,"depth":3,"status":"OK","g":[-3,1],"reduced":0,"certs":[[3,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-4454164,-171262,2],"p":13,"prec":3,"depth":12,"status":"OK","g":[-2227082,-85631,1],"reduced":0,"certs":[[85657,5,4],[371267,5,4]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[3,6,-7,-5],"p":2,"prec":4,"depth":0,"status":"OK","g":[-3,-6,7,5],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[26,1],"p":67,"prec":1,"depth":2,"status":"OK","g":[26,1],"reduced":0,"certs":[[41,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[20,1],"p":17,"prec":5,"depth":1,"status":"OK","g":[20,1],"reduced":0,"certs":[[1419837,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-321618,-14597,-321617,-14597,1],"p":11,"prec":7,"depth":2,"status":"NOT_DETERMINED","g":[-321618,-14597,-321617,-14597,1],"reduced":0,"certs":[],"unres":[[1309,3]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[0,-1],"p":13,"prec":6,"depth":1,"status":"OK","g":[0,1],"reduced":0,"certs":[[0,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[35,1],"p":5,"prec":7,"depth":2,"status":"OK","g":[35,1],"reduced":0,"certs":[[78090,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[172245336,222022,-57024,2],"p":13,"prec":3,"depth":5,"status":"OK","g":[86122668,111011,-28512,1],"reduced":0,"certs":[[57,3,0],[28508,5,4],[371240,5,4]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[-5,-3,10,2],"p":7,"prec":7,"depth":8,"status":"OK","g":[-5,-3,10,2],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-64970814,-2823875,41],"p":41,"prec":7,"depth":5,"status":"OK","g":[-1584654,-68875,1],"reduced":0,"certs":[[68898,7,3],[194754273858,7,3]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[21600,9480,-728,-30,2],"p":67,"prec":1,"depth":3,"status":"OK","g":[10800,4740,-364,-15,1],"reduced":0,"certs":[[15,1,0],[20,1,0],[49,1,0],[65,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-4],"p":13,"prec":5,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-5106437640,-275847114,-4956797,-29570,1],"p":31,"prec":3,"depth":1,"status":"NOT_DETERMINED","g":[-5106437640,-275847114,-4956797,-29570,1],"reduced":0,"certs":[[29731,3,0],[29738,3,0]],"unres":[[907,2]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[-2370,-237,790,79],"p":79,"prec":6,"depth":12,"status":"OK","g":[-30,-3,10,1],"reduced":0,"certs":[[243087455511,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-756,-472,-45,1],"p":3,"prec":8,"depth":0,"status":"OK","g":[-756,-472,-45,1],"reduced":0,"certs":[[54,8,0],[6554,8,0],[6559,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[98022,9207,288,3],"p":3,"prec":1,"depth":12,"status":"OK","g":[1054,65,1],"reduced":1,"certs":[[2,2,1],[5,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-54,1],"p":2,"prec":8,"depth":1,"status":"OK","g":[-54,1],"reduced":0,"certs":[[54,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[6,-4],"p":47,"prec":7,"depth":5,"status":"OK","g":[-3,2],"reduced":0,"certs":[[253311560233,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[6],"p":7,"prec":3,"depth":1,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-6,-8],"p":5,"prec":6,"depth":1,"status":"OK","g":[3,4],"reduced":0,"certs":[[11718,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[124656,43162,4798,182,2],"p":7,"prec":4,"depth":0,"status":"OK","g":[8904,1811,84,1],"reduced":1,"certs":[[2348,4,0],[2377,4,0],[2394,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-7,-7,-8],"p":2,"prec":1,"depth":12,"status":"OK","g":[7,7,8],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-9294270,-5251,7832,89],"p":89,"prec":7,"depth":5,"status":"OK","g":[-1770,29,1],"reduced":1,"certs":[[30,7,1],[44231334895470,7,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[6],"p":47,"prec":4,"depth":1,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[0,-35280,8246,-248,2],"p":7,"prec":8,"depth":8,"status":"OK","g":[0,-17640,4123,-124,1],"reduced":0,"certs":[[0,8,2],[5,8,0],[56,8,2],[63,8,2]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[0,3,3],"p":2,"prec":6,"depth":2,"status":"OK","g":[0,1,1],"reduced":0,"certs":[[0,6,0],[63,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-4],"p":3,"prec":1,"depth":5,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[7,8,-4],"p":11,"prec":7,"depth":12,"status":"OK","g":[-7,-8,4],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-366261877100,-7903782108,676081693,-7430976,19],"p":19,"prec":1,"depth":8,"status":"OK","g":[-19276940900,-415988532,35583247,-391104,1],"reduced":0,"certs":[[1,1,0],[2,1,0],[50,5,4],[391013,5,4]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[4171,97],"p":97,"prec":7,"depth":2,"status":"OK","g":[43,1],"reduced":0,"certs":[[80798284478070,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-60,1],"p":97,"prec":4,"depth":8,"status":"OK","g":[-60,1],"reduced":0,"certs":[[60,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[0,-2,7],"p":7,"prec":5,"depth":1,"status":"OK","g":[0,-2,7],"reduced":0,"certs":[[0,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-550,100,2],"p":31,"prec":8,"depth":8,"status":"OK","g":[-275,50,1],"reduced":0,"certs":[[5,8,0],[852891037386,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-30360,8724,-27534,8919,2829,195,3],"p":29,"prec":4,"depth":12,"status":"OK","g":[-10120,2908,-9178,2973,943,65,1],"reduced":0,"certs":[[2,4,0],[34522,4,1],[672759,4,0],[707235,4,1],[707270,4,0],[707271,4,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-502281,15201,167796,-5076,-123,3],"p":11,"prec":6,"depth":2,"status":"OK","g":[-167427,5067,55932,-1692,-41,1],"reduced":0,"certs":[[27,6,3],[53,6,0],[296060,6,0],[1475501,6,3],[1771522,6,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[-12,7,-5,-6],"p":41,"prec":3,"depth":2,"status":"OK","g":[12,-7,5,6],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[9,-8,12],"p":5,"prec":6,"depth":5,"status":"OK","g":[9,-8,12],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-814572,-60258,770,122,2],"p":2,"prec":8,"depth":3,"status":"NOT_DETERMINED","g":[-12342,-539,28,1],"reduced":1,"certs":[[22,8,0]],"unres":[[15,4]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-144,3],"p":2,"prec":7,"depth":3,"status":"OK","g":[-48,1],"reduced":0,"certs":[[48,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-7,12],"p":37,"prec":3,"depth":3,"status":"OK","g":[-7,12],"reduced":0,"certs":[[21106,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-58520,4542,-117,1],"p":11,"prec":6,"depth":8,"status":"OK","g":[-58520,4542,-117,1],"reduced":0,"certs":[[35,6,0],[38,6,0],[44,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-390,17,1],"p":37,"prec":4,"depth":2,"status":"OK","g":[-390,17,1],"reduced":0,"certs":[[13,4,0],[1874131,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[64960,-4850,-55,5],"p":5,"prec":5,"depth":2,"status":"OK","g":[12992,-970,-11,1],"reduced":0,"certs":[[14,5,1],[29,5,1],[3093,5,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-3012,3024,-765,3],"p":83,"prec":4,"depth":5,"status":"OK","g":[502,-253,1],"reduced":1,"certs":[[2,4,1],[251,4,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-7687680,-569664,-6864,180,3],"p":2,"prec":5,"depth":5,"status":"OK","g":[-2562560,-189888,-2288,60,1],"reduced":0,"certs":[[56,7,6],[468,9,8],[1996,11,10],[2028,11,10]],"unres":[],"complete":1,"expect":null,"d0":5,"what":"random"}
+{"f":[-668304,-272304,-369084,-137480,-17462,-664,2],"p":11,"prec":8,"depth":0,"status":"NOT_DETERMINED","g":[-55692,-13410,-28522,-6703,-338,1],"reduced":1,"certs":[[99912101,8,0],[114446780,8,0],[214358868,8,0]],"unres":[[5,1]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[4,1,4,1],"p":3,"prec":4,"depth":12,"status":"OK","g":[4,1,4,1],"reduced":0,"certs":[[77,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[7724970,-102816,3854745,-51360,-3868,24,1],"p":13,"prec":6,"depth":3,"status":"OK","g":[151470,-4986,75681,-2491,-27,1],"reduced":1,"certs":[[33,6,0],[45,6,0],[4826758,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-11880,-525,160,5],"p":5,"prec":1,"depth":3,"status":"OK","g":[-2376,-105,32,1],"reduced":0,"certs":[[4,1,0],[92,3,2],[117,3,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[-35046,-3795,11],"p":11,"prec":6,"depth":0,"status":"NOT_DETERMINED","g":[-3186,-345,1],"reduced":0,"certs":[],"unres":[[2,1]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[-326400,-78720,-324924,-78519,1479,201,3],"p":79,"prec":6,"depth":5,"status":"OK","g":[-2720,-588,-2693,-587,27,1],"reduced":1,"certs":[[17,6,0],[243087455481,6,0],[243087455517,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[15488,-3872,-8,2],"p":11,"prec":8,"depth":2,"status":"OK","g":[7744,-1936,-4,1],"reduced":0,"certs":[[4,8,0],[44,8,1],[214358837,8,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[58,1],"p":3,"prec":3,"depth":0,"status":"OK","g":[58,1],"reduced":0,"certs":[[23,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[4,9,6],"p":2,"prec":8,"depth":0,"status":"OK","g":[4,9,6],"reduced":0,"certs":[[188,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[9,2],"p":13,"prec":3,"depth":5,"status":"OK","g":[9,2],"reduced":0,"certs":[[1094,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-264132,89118,50,-142,2],"p":3,"prec":5,"depth":0,"status":"NOT_DETERMINED","g":[-132066,44559,25,-71,1],"reduced":0,"certs":[],"unres":[[0,1],[1,1]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-12,4,-5,-1],"p":67,"prec":8,"depth":12,"status":"OK","g":[12,-4,5,1],"reduced":0,"certs":[[149522557619144,8,0],[256545119937498,8,0],[406067677556635,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-6426,1755,-132,3],"p":7,"prec":4,"depth":8,"status":"OK","g":[-2142,585,-44,1],"reduced":0,"certs":[[6,4,0],[17,4,0],[21,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-20930,143,13],"p":13,"prec":4,"depth":12,"status":"OK","g":[-1610,11,1],"reduced":0,"certs":[[35,4,0],[28515,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[129,3],"p":7,"prec":3,"depth":5,"status":"OK","g":[43,1],"reduced":0,"certs":[[300,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[10,-2,6],"p":7,"prec":2,"depth":3,"status":"OK","g":[5,-1,3],"reduced":0,"certs":[[4,2,0],[29,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-56,1],"p":11,"prec":3,"depth":1,"status":"OK","g":[-56,1],"reduced":0,"certs":[[56,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[38,1],"p":31,"prec":8,"depth":5,"status":"OK","g":[38,1],"reduced":0,"certs":[[852891037403,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-117,-3,39,1],"p":13,"prec":3,"depth":3,"status":"OK","g":[-117,-3,39,1],"reduced":0,"certs":[[1075,3,0],[1122,3,0],[2158,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[2511,-174,3],"p":13,"prec":6,"depth":1,"status":"OK","g":[837,-58,1],"reduced":0,"certs":[[27,6,0],[31,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-75,-3,25,1],"p":3,"prec":2,"depth":5,"status":"OK","g":[-75,-3,25,1],"reduced":0,"certs":[[2,2,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-7,-10,-10,1,5],"p":3,"prec":6,"depth":5,"status":"OK","g":[-7,-10,-10,1,5],"reduced":0,"certs":[[275,6,0],[529,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[39,1,39,1],"p":101,"prec":8,"depth":12,"status":"OK","g":[39,1,39,1],"reduced":0,"certs":[[3156215819652023,8,0],[7672351236628778,8,0],[10828567056280762,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1924627200,-96224960,-963516172,-48112476,-601286,2],"p":67,"prec":6,"depth":1,"status":"NOT_DETERMINED","g":[-24057840,-601366,-12028918,-300683,1],"reduced":1,"certs":[[28005701401,6,0],[62452680768,6,0]],"unres":[[4449,2]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[-539994,119499,-5841,-51,3],"p":5,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[-179998,39833,-1947,-17,1],"reduced":0,"certs":[[7,3,0],[79,3,0]],"unres":[[3,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[6048,-240,2],"p":2,"prec":2,"depth":3,"status":"NOT_DETERMINED","g":[3024,-120,1],"reduced":0,"certs":[],"unres":[[4,4]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-250,15,1],"p":2,"prec":1,"depth":8,"status":"OK","g":[-250,15,1],"reduced":0,"certs":[[0,1,0],[1,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-2455200,225520,-4658,-64,2],"p":5,"prec":2,"depth":12,"status":"OK","g":[-1227600,112760,-2329,-32,1],"reduced":0,"certs":[[6,2,1],[11,2,1],[20,3,2],[70,3,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[68310000,-2282400,-22783176,761880,4383,-360,3],"p":2,"prec":7,"depth":12,"status":"OK","g":[-455400,6108,152010,-2039,-70,1],"reduced":1,"certs":[[50,10,9],[66,9,8],[978,10,9]],"unres":[],"complete":1,"expect":null,"d0":5,"what":"random"}
+{"f":[89888,6201,138,1],"p":61,"prec":3,"depth":12,"status":"OK","g":[1696,85,1],"reduced":1,"certs":[[226928,3,0],[226949,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-8,-10,-9,0,-9],"p":5,"prec":5,"depth":0,"status":"OK","g":[8,10,9,0,9],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[123804,-2286,2],"p":7,"prec":1,"depth":2,"status":"NOT_DETERMINED","g":[61902,-1143,1],"reduced":0,"certs":[],"unres":[[57,3]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[7,-3,-12,-5,4,-5],"p":79,"prec":8,"depth":8,"status":"OK","g":[-7,3,12,5,-4,5],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-6,-11,12,-4,1],"p":3,"prec":7,"depth":2,"status":"OK","g":[-6,-11,12,-4,1],"reduced":0,"certs":[[159,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1950,72,-969,36,3],"p":2,"prec":8,"depth":5,"status":"OK","g":[-650,24,-323,12,1],"reduced":0,"certs":[[13,8,1],[231,8,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[19050850,-2509709,-59943,3869,53],"p":53,"prec":3,"depth":0,"status":"NOT_DETERMINED","g":[359450,-47353,-1131,73,1],"reduced":0,"certs":[[7,3,0],[25,3,0]],"unres":[[27,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[484,539,56,1],"p":7,"prec":5,"depth":8,"status":"OK","g":[484,539,56,1],"reduced":0,"certs":[[16763,5,0],[16796,5,0],[16806,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1254,-71,1255,-71,1],"p":5,"prec":4,"depth":1,"status":"OK","g":[1254,-71,1255,-71,1],"reduced":0,"certs":[[33,4,2],[38,4,2],[182,4,0],[443,4,2]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-50,1],"p":61,"prec":4,"depth":3,"status":"OK","g":[-50,1],"reduced":0,"certs":[[50,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-15303750,-17157425,-17199136,-1893743,-40015,1696,53],"p":53,"prec":8,"depth":2,"status":"OK","g":[-11550,-12487,-12481,-930,7,1],"reduced":1,"certs":[[33,8,0],[62259690411336,8,0],[62259690411347,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[16848,12516,-4310,24,2],"p":2,"prec":1,"depth":5,"status":"OK","g":[8424,6258,-2155,12,1],"reduced":0,"certs":[[0,2,1],[2,2,1],[7,4,3],[15,4,3]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[5],"p":13,"prec":4,"depth":3,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[7,-11,5,-6],"p":97,"prec":8,"depth":0,"status":"OK","g":[-7,11,-5,6],"reduced":0,"certs":[[5879551042916625,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-2907918,197727,-107,-103,1],"p":3,"prec":4,"depth":2,"status":"NOT_DETERMINED","g":[-2907918,197727,-107,-103,1],"reduced":0,"certs":[[17,4,1],[38,4,1]],"unres":[[24,3]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[46080,-15424,1760,-77,1],"p":71,"prec":7,"depth":2,"status":"OK","g":[-5760,1208,-69,1],"reduced":1,"certs":[[8,7,0],[16,7,0],[45,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[10648800,-442800,-13758,123,3],"p":3,"prec":7,"depth":3,"status":"OK","g":[3549600,-147600,-4586,41,1],"reduced":0,"certs":[[17,7,1],[60,7,1],[2127,7,1],[2129,7,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[4,-5,-1,10,-4,9],"p":5,"prec":6,"depth":1,"status":"OK","g":[4,-5,-1,10,-4,9],"reduced":0,"certs":[[9279,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-26,-25,-25,1],"p":2,"prec":7,"depth":8,"status":"OK","g":[-26,-25,-25,1],"reduced":0,"certs":[[26,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[118496,36892,3552,107,1],"p":73,"prec":8,"depth":8,"status":"OK","g":[2576,746,61,1],"reduced":1,"certs":[[806460091894035,8,0],[806460091894073,8,0],[806460091894074,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[9216,-3456,-2748,1143,-108,3],"p":3,"prec":4,"depth":3,"status":"OK","g":[-192,60,61,-20,1],"reduced":1,"certs":[[4,4,1],[16,4,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[12628,-349,1],"p":89,"prec":6,"depth":8,"status":"OK","g":[12628,-349,1],"reduced":0,"certs":[[41,6,1],[308,6,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-6336,-614,19,1],"p":79,"prec":4,"depth":5,"status":"OK","g":[-6336,-614,19,1],"reduced":0,"certs":[[22,4,0],[38950049,4,0],[38950072,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[4118400,619320,-41522,-65,13],"p":13,"prec":7,"depth":1,"status":"OK","g":[316800,47640,-3194,-5,1],"reduced":0,"certs":[[22,7,1],[48,7,1],[62748457,7,0],[62748512,7,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-10,-5,5],"p":5,"prec":4,"depth":5,"status":"OK","g":[-2,-1,1],"reduced":0,"certs":[[2,4,0],[624,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[9,-10],"p":11,"prec":7,"depth":8,"status":"OK","g":[-9,10],"reduced":0,"certs":[[1948718,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-42,-3,14,1],"p":83,"prec":1,"depth":5,"status":"OK","g":[-42,-3,14,1],"reduced":0,"certs":[[13,1,0],[69,1,0],[70,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-6,5,7],"p":5,"prec":5,"depth":2,"status":"OK","g":[-6,5,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-50,-45,-44,6,1],"p":29,"prec":7,"depth":0,"status":"OK","g":[-50,-45,-44,6,1],"reduced":0,"certs":[[5,7,0],[17249876299,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[75164,-36522,36864,-18171,-357,45,1],"p":5,"prec":4,"depth":3,"status":"OK","g":[75164,-36522,36864,-18171,-357,45,1],"reduced":0,"certs":[[2,4,3],[19,4,0],[582,4,2],[602,4,3]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[9938940,130647,-10611,-75,3],"p":3,"prec":3,"depth":3,"status":"NOT_DETERMINED","g":[89540,-1243,-62,1],"reduced":1,"certs":[[1,3,0]],"unres":[[44,4]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-1568,17,1],"p":3,"prec":2,"depth":12,"status":"OK","g":[-1568,17,1],"reduced":0,"certs":[[32,5,4],[194,5,4]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[-133,12,1],"p":7,"prec":7,"depth":2,"status":"OK","g":[-133,12,1],"reduced":0,"certs":[[7,7,0],[823524,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1513512,-10962,1510965,-10954,-2546,8,1],"p":3,"prec":4,"depth":2,"status":"NOT_DETERMINED","g":[1513512,-10962,1510965,-10954,-2546,8,1],"reduced":0,"certs":[[28,4,0],[210,5,4]],"unres":[[12,3]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-20,1],"p":19,"prec":8,"depth":3,"status":"OK","g":[-20,1],"reduced":0,"certs":[[20,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[0,-11,-4,-4,-5,1],"p":97,"prec":8,"depth":3,"status":"OK","g":[0,-11,-4,-4,-5,1],"reduced":0,"certs":[[0,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[0,-1020,38,2],"p":2,"prec":7,"depth":12,"status":"OK","g":[0,-510,19,1],"reduced":0,"certs":[[0,7,1],[15,7,0],[94,7,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-25,1],"p":5,"prec":5,"depth":8,"status":"OK","g":[-25,1],"reduced":0,"certs":[[25,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[54,-3,-18,1],"p":47,"prec":4,"depth":2,"status":"OK","g":[54,-3,-18,1],"reduced":0,"certs":[[18,4,0],[1599586,4,0],[3280095,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-3,-2,-2,1],"p":2,"prec":1,"depth":1,"status":"OK","g":[-3,-2,-2,1],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-3264,-3292,-3290,-26,2],"p":101,"prec":5,"depth":5,"status":"OK","g":[-1632,-1646,-1645,-13,1],"reduced":0,"certs":[[48,5,0],[10510100467,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-49844811600,-1661490120,-13845661,1],"p":61,"prec":7,"depth":2,"status":"NOT_DETERMINED","g":[-830746860,-13845721,1],"reduced":1,"certs":[],"unres":[[226921,3]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[191664,63888,4433,114,1],"p":11,"prec":7,"depth":12,"status":"OK","g":[5808,1760,81,1],"reduced":1,"certs":[[19487127,7,1],[19487138,7,1],[19487167,7,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[69,3],"p":3,"prec":7,"depth":5,"status":"OK","g":[23,1],"reduced":0,"certs":[[2164,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-20,1],"p":97,"prec":1,"depth":5,"status":"OK","g":[-20,1],"reduced":0,"certs":[[20,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[314820,-9705,5],"p":5,"prec":5,"depth":5,"status":"OK","g":[62964,-1941,1],"reduced":0,"certs":[[33,5,4],[1908,5,4]],"unres":[],"complete":1,"expect":null,"d0":4,"what":"random"}
+{"f":[182,40,2],"p":2,"prec":1,"depth":5,"status":"OK","g":[91,20,1],"reduced":0,"certs":[[1,2,1],[3,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-74976,-2902,45,1],"p":7,"prec":6,"depth":12,"status":"OK","g":[-74976,-2902,45,1],"reduced":0,"certs":[[48,6,2],[117578,6,3],[117627,6,3]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[-2,2],"p":2,"prec":6,"depth":2,"status":"OK","g":[-1,1],"reduced":0,"certs":[[1,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[172494,185925,186273,13782,351,3],"p":79,"prec":7,"depth":8,"status":"OK","g":[1554,1633,1634,80,1],"reduced":1,"certs":[[4570373710280,7,0],[14633535275878,7,0],[19203908986117,7,0],[19203908986122,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-620,31],"p":31,"prec":4,"depth":2,"status":"OK","g":[-20,1],"reduced":0,"certs":[[20,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-30,2],"p":13,"prec":7,"depth":2,"status":"OK","g":[-15,1],"reduced":0,"certs":[[15,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-42,1],"p":5,"prec":8,"depth":0,"status":"OK","g":[-42,1],"reduced":0,"certs":[[42,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[10296,975,-3471,-325,13],"p":13,"prec":3,"depth":8,"status":"OK","g":[792,75,-267,-25,1],"reduced":0,"certs":[[33,3,0],[1075,3,0],[1122,3,0],[2189,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-8,-5,-4,-12,-5,11],"p":3,"prec":6,"depth":0,"status":"OK","g":[-8,-5,-4,-12,-5,11],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[5439,-258,3],"p":3,"prec":4,"depth":8,"status":"OK","g":[1813,-86,1],"reduced":0,"certs":[[37,4,1],[49,4,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[16844440,410922,2],"p":59,"prec":8,"depth":8,"status":"OK","g":[8422220,205461,1],"reduced":0,"certs":[[146830437398901,8,3],[146830437604280,8,3]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[9,1,1,9,9,5],"p":5,"prec":7,"depth":3,"status":"OK","g":[9,1,1,9,9,5],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[8,-4],"p":7,"prec":7,"depth":3,"status":"OK","g":[-2,1],"reduced":0,"certs":[[2,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-44,1],"p":67,"prec":8,"depth":5,"status":"OK","g":[-44,1],"reduced":0,"certs":[[44,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[234,6,117,3],"p":11,"prec":4,"depth":8,"status":"OK","g":[78,2,39,1],"reduced":0,"certs":[[1917,4,0],[12724,4,0],[14602,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[2394,2571,2574,180,3],"p":67,"prec":7,"depth":8,"status":"OK","g":[798,857,858,60,1],"reduced":0,"certs":[[2042235307560,7,1],[4018476297762,7,0],[6060711605285,7,1],[6060711605302,7,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[215180,7600,-485,5],"p":5,"prec":4,"depth":1,"status":"OK","g":[43036,1520,-97,1],"reduced":0,"certs":[[53,4,1],[58,4,1],[611,4,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-2552,-782,-28,2],"p":7,"prec":1,"depth":12,"status":"OK","g":[-1276,-391,-14,1],"reduced":0,"certs":[[1,1,0],[38,2,1],[45,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[7,-7,-11,-8,10],"p":7,"prec":2,"depth":1,"status":"OK","g":[7,-7,-11,-8,10],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[520,13],"p":13,"prec":5,"depth":0,"status":"OK","g":[40,1],"reduced":0,"certs":[[371253,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[2,9,9,11,-9,-1],"p":2,"prec":4,"depth":12,"status":"OK","g":[-2,-9,-9,-11,9,1],"reduced":0,"certs":[[2,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[486,-9,-162,3],"p":29,"prec":6,"depth":3,"status":"OK","g":[162,-3,-54,1],"reduced":0,"certs":[[54,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[102312,8400,51382,4202,113,1],"p":13,"prec":8,"depth":3,"status":"OK","g":[2436,142,1220,71,1],"reduced":1,"certs":[[815730679,8,1],[815730692,8,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[196560,-318,-225,3],"p":11,"prec":2,"depth":12,"status":"OK","g":[65520,-106,-75,1],"reduced":0,"certs":[[45,2,1],[56,2,1],[95,2,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[1,-4,-2,12],"p":3,"prec":7,"depth":1,"status":"OK","g":[1,-4,-2,12],"reduced":0,"certs":[[758,7,1],[1094,7,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-9086,-95,1],"p":71,"prec":8,"depth":2,"status":"OK","g":[-9086,-95,1],"reduced":0,"certs":[[154,8,1],[645753531245702,8,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[36091008,2643672,18117940,1322716,36222,440,2],"p":11,"prec":7,"depth":1,"status":"OK","g":[305856,17220,153250,8612,161,1],"reduced":1,"certs":[[2476246,7,0],[17010925,7,0],[19487112,7,1],[19487117,7,0],[19487123,7,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-58,2],"p":7,"prec":7,"depth":2,"status":"OK","g":[-29,1],"reduced":0,"certs":[[29,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[16284,-394,2],"p":79,"prec":7,"depth":1,"status":"OK","g":[8142,-197,1],"reduced":0,"certs":[[59,7,1],[138,7,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[2322,-183,3],"p":5,"prec":3,"depth":8,"status":"OK","g":[774,-61,1],"reduced":0,"certs":[[18,3,2],[43,3,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[156017160,7162361,79650,1],"p":43,"prec":3,"depth":8,"status":"OK","g":[156017160,7162361,79650,1],"reduced":0,"certs":[[79470,3,0],[3339241,4,3],[3418748,4,3]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[2,2,3,-8,-3],"p":19,"prec":3,"depth":3,"status":"OK","g":[-2,-2,-3,8,3],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-406296,-8154,-402210,-7968,4088,186,2],"p":3,"prec":4,"depth":2,"status":"OK","g":[-203148,-4077,-201105,-3984,2044,93,1],"reduced":0,"certs":[[9,4,3],[48,4,3],[186,5,4],[231,5,4]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[1596,80,1],"p":2,"prec":4,"depth":12,"status":"OK","g":[1596,80,1],"reduced":0,"certs":[[6,4,2],[10,4,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[-2819860,704961,1],"p":89,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-2819860,704961,1],"reduced":0,"certs":[],"unres":[[4,1]],"complete":0,"expect":null,"d0":3,"what":"random"}
+{"f":[1150468032,-8484292,-1021747,14518,1],"p":11,"prec":6,"depth":3,"status":"NOT_DETERMINED","g":[1150468032,-8484292,-1021747,14518,1],"reduced":0,"certs":[[48,6,0],[1771530,6,0]],"unres":[[53,4]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[1,11],"p":11,"prec":6,"depth":1,"status":"OK","g":[1,11],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1491048,-352620,486342,118635,3555,-365,1],"p":11,"prec":6,"depth":3,"status":"OK","g":[-1491048,-352620,486342,118635,3555,-365,1],"reduced":0,"certs":[[26,6,0],[354,6,2],[296060,6,0],[1475501,6,1],[1771552,6,2],[1771555,6,1]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[2526480,516956,31594,520,2],"p":13,"prec":7,"depth":5,"status":"OK","g":[114840,13058,249,1],"reduced":1,"certs":[[62748337,7,2],[62748459,7,0],[62748506,7,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[7,7,-12,-9,4],"p":29,"prec":7,"depth":12,"status":"OK","g":[7,7,-12,-9,4],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1710451600,-72256004,6597894,-88100,2],"p":11,"prec":2,"depth":0,"status":"NOT_DETERMINED","g":[-855225800,-36128002,3298947,-44050,1],"reduced":0,"certs":[[34,2,0],[110,2,0]],"unres":[[8,1]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-13392,-13527,-13524,-132,3],"p":47,"prec":6,"depth":8,"status":"OK","g":[-4464,-4509,-4508,-44,1],"reduced":0,"certs":[[93,6,1],[10779215281,6,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[11,2,6,-3,11],"p":43,"prec":3,"depth":1,"status":"OK","g":[11,2,6,-3,11],"reduced":0,"certs":[[35675,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1244970,-346419,21145,-337,1],"p":3,"prec":1,"depth":1,"status":"NOT_DETERMINED","g":[1244970,-346419,21145,-337,1],"reduced":0,"certs":[[5,2,1],[8,2,1]],"unres":[[0,2]],"complete":0,"expect":null,"d0":5,"what":"random"}
+{"f":[1422,79],"p":79,"prec":3,"depth":12,"status":"OK","g":[18,1],"reduced":0,"certs":[[493021,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1044,-620,-47,1],"p":5,"prec":2,"depth":2,"status":"OK","g":[-1044,-620,-47,1],"reduced":0,"certs":[[8,2,1],[16,2,0],[23,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-9,7,-8,-10,3],"p":5,"prec":2,"depth":8,"status":"OK","g":[-9,7,-8,-10,3],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-11,7,-1,-10,-9,-7],"p":83,"prec":6,"depth":0,"status":"OK","g":[11,-7,1,10,9,7],"reduced":0,"certs":[[103136705557,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-122400,-480,86,1],"p":7,"prec":8,"depth":8,"status":"OK","g":[-2040,26,1],"reduced":1,"certs":[[34,8,0],[5764741,8,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[255584142,-170389419,28398232,1],"p":73,"prec":1,"depth":1,"status":"NOT_DETERMINED","g":[-85194714,28398235,1],"reduced":1,"certs":[],"unres":[[3,2]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-1,-11,-3],"p":11,"prec":8,"depth":3,"status":"OK","g":[1,11,3],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[494208,503112,501146,6917,-1986,-20,1],"p":79,"prec":2,"depth":12,"status":"OK","g":[494208,503112,501146,6917,-1986,-20,1],"reduced":0,"certs":[[18,2,0],[52,2,0],[1714,2,0],[4526,2,0],[6208,2,0],[6225,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[55,1],"p":3,"prec":6,"depth":1,"status":"OK","g":[55,1],"reduced":0,"certs":[[674,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[76140,8811,294,3],"p":53,"prec":7,"depth":5,"status":"OK","g":[25380,2937,98,1],"reduced":0,"certs":[[1174711139790,7,0],[1174711139801,7,0],[1174711139822,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-5,-6],"p":7,"prec":3,"depth":1,"status":"OK","g":[5,6],"reduced":0,"certs":[[285,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[7722000,-222600,7710945,-222516,-11052,84,3],"p":11,"prec":2,"depth":12,"status":"OK","g":[2574000,-74200,2570315,-74172,-3684,28,1],"reduced":0,"certs":[[20,2,0],[52,2,0],[66,2,0],[76,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[2329600,244480,9456,160,1],"p":2,"prec":6,"depth":12,"status":"OK","g":[58240,4656,120,1],"reduced":1,"certs":[[12,6,5],[24,6,4],[36,6,5]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[-11520,5568,3948,-1862,-36,2],"p":13,"prec":6,"depth":1,"status":"OK","g":[-5760,2784,1974,-931,-18,1],"reduced":0,"certs":[[2,6,1],[40,6,0],[1104016,6,0],[3722793,6,0],[4826785,6,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[84,6,42,3],"p":7,"prec":3,"depth":12,"status":"OK","g":[28,2,14,1],"reduced":0,"certs":[[329,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-38,2,-19,1],"p":5,"prec":2,"depth":1,"status":"OK","g":[-38,2,-19,1],"reduced":0,"certs":[[19,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[934362,52272,463617,26104,-1780,-16,1],"p":7,"prec":1,"depth":5,"status":"OK","g":[-28314,-2442,-14123,-1219,17,1],"reduced":1,"certs":[[5,1,0],[10,2,1],[38,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-3],"p":59,"prec":8,"depth":0,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-8,-10,-1,-9,1,-8],"p":5,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[8,10,1,9,-1,8],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[6936,1904,-130,2],"p":7,"prec":1,"depth":3,"status":"OK","g":[-102,-31,1],"reduced":1,"certs":[[4,1,0],[6,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1733941044,18543141,-1030286,1],"p":101,"prec":7,"depth":8,"status":"OK","g":[1733941044,18543141,-1030286,1],"reduced":0,"certs":[[51,7,0],[1030268,7,3],[107213535210668,7,3]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[120,2],"p":7,"prec":7,"depth":2,"status":"OK","g":[60,1],"reduced":0,"certs":[[823483,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1347678,-193824,-4196,96,2],"p":29,"prec":5,"depth":0,"status":"OK","g":[-673839,-96912,-2098,48,1],"reduced":0,"certs":[[47,5,0],[20511090,5,0],[20511122,5,0],[20511140,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[25488,3795,116,1],"p":2,"prec":5,"depth":3,"status":"OK","g":[25488,3795,116,1],"reduced":0,"certs":[[5,5,1],[16,5,0],[23,5,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-150,6,-75,3],"p":5,"prec":2,"depth":3,"status":"OK","g":[-50,2,-25,1],"reduced":0,"certs":[[0,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-14,1],"p":2,"prec":2,"depth":12,"status":"OK","g":[-14,1],"reduced":0,"certs":[[2,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[222,179,-42,1],"p":3,"prec":3,"depth":2,"status":"OK","g":[222,179,-42,1],"reduced":0,"certs":[[6,3,0],[10,3,0],[26,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[12,2,3,1,7],"p":2,"prec":1,"depth":5,"status":"OK","g":[12,2,3,1,7],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-93,-3,31,1],"p":3,"prec":7,"depth":0,"status":"NOT_DETERMINED","g":[-93,-3,31,1],"reduced":0,"certs":[[2156,7,0]],"unres":[[0,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[-27,1],"p":2,"prec":3,"depth":8,"status":"OK","g":[-27,1],"reduced":0,"certs":[[3,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[3807,-342,-1278,114,3],"p":2,"prec":2,"depth":8,"status":"OK","g":[1269,-114,-426,38,1],"reduced":0,"certs":[[9,5,4],[17,5,4]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[18180,-363,1],"p":3,"prec":4,"depth":3,"status":"NOT_DETERMINED","g":[18180,-363,1],"reduced":0,"certs":[],"unres":[[60,4]],"complete":0,"expect":null,"d0":5,"what":"random"}
+{"f":[-3074,5,1],"p":7,"prec":7,"depth":0,"status":"OK","g":[-3074,5,1],"reduced":0,"certs":[[53,7,0],[823485,7,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-8],"p":3,"prec":2,"depth":1,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[44616,4784,170,2],"p":3,"prec":6,"depth":5,"status":"OK","g":[858,59,1],"reduced":1,"certs":[[696,6,0],[703,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[19008,-11412,1290,128,2],"p":13,"prec":5,"depth":0,"status":"NOT_DETERMINED","g":[-3168,846,67,1],"reduced":1,"certs":[[3,5,0]],"unres":[[4,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[220,59,1],"p":2,"prec":4,"depth":5,"status":"OK","g":[220,59,1],"reduced":0,"certs":[[9,4,0],[12,4,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-5,4],"p":43,"prec":5,"depth":5,"status":"OK","g":[-5,4],"reduced":0,"certs":[[36752112,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-21,1],"p":43,"prec":5,"depth":1,"status":"OK","g":[-21,1],"reduced":0,"certs":[[21,5,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[6,-8,-10,-11,-11],"p":61,"prec":7,"depth":12,"status":"OK","g":[-6,8,10,11,11],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[99,-3,-33,1],"p":2,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[99,-3,-33,1],"reduced":0,"certs":[],"unres":[[1,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[2],"p":17,"prec":8,"depth":5,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-49005,-2409,5,1],"p":11,"prec":1,"depth":0,"status":"NOT_DETERMINED","g":[-49005,-2409,5,1],"reduced":0,"certs":[[6,1,0]],"unres":[[0,1]],"complete":0,"expect":null,"d0":1,"what":"random"}
+{"f":[6,8,8,2],"p":3,"prec":5,"depth":3,"status":"OK","g":[3,4,4,1],"reduced":0,"certs":[[240,5,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-425568,41132,-426855,41145,-1287,13],"p":13,"prec":7,"depth":1,"status":"OK","g":[-32736,3164,-32835,3165,-99,1],"reduced":0,"certs":[[24,7,0],[31,7,2],[44,7,2],[6826318,7,2],[55922199,7,0]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-10],"p":7,"prec":6,"depth":8,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[10,-8,-11,8],"p":53,"prec":1,"depth":12,"status":"OK","g":[10,-8,-11,8],"reduced":0,"certs":[[43,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-2,-6,-1,10,-10],"p":3,"prec":4,"depth":3,"status":"OK","g":[2,6,1,-10,10],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[62172,1457,1],"p":37,"prec":2,"depth":0,"status":"NOT_DETERMINED","g":[62172,1457,1],"reduced":0,"certs":[],"unres":[[30,1]],"complete":0,"expect":null,"d0":2,"what":"random"}
+{"f":[-37260,-378,100,2],"p":2,"prec":8,"depth":8,"status":"OK","g":[-18630,-189,50,1],"reduced":0,"certs":[[18,8,0],[211,8,1],[233,8,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[-63504,-30114,-34890,-15103,-1567,-23,1],"p":3,"prec":3,"depth":3,"status":"OK","g":[-63504,-30114,-34890,-15103,-1567,-23,1],"reduced":0,"certs":[[2,3,1],[5,3,1],[18,3,2],[22,3,0],[60,4,3],[78,4,3]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[-576720,-25560,-85,5],"p":5,"prec":1,"depth":12,"status":"OK","g":[-3204,-53,1],"reduced":1,"certs":[[89,4,3],[589,4,3]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[-586040,46809,-585289,46728,752,-81,1],"p":7,"prec":1,"depth":2,"status":"OK","g":[-586040,46809,-585289,46728,752,-81,1],"reduced":0,"certs":[[5,1,0],[6,1,0],[7,2,1],[35,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[364,-59,1],"p":61,"prec":3,"depth":12,"status":"OK","g":[364,-59,1],"reduced":0,"certs":[[7,3,0],[52,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-3168,-618,3,3],"p":13,"prec":1,"depth":12,"status":"OK","g":[-1056,-206,1,1],"reduced":0,"certs":[[2,1,0],[3,1,0],[7,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-515125656,-5230782,355573,5164,1],"p":71,"prec":4,"depth":8,"status":"OK","g":[-9719352,84690,5111,1],"reduced":1,"certs":[[36,4,0],[25406587,4,2],[25411628,4,2]],"unres":[],"complete":1,"expect":null,"d0":2,"what":"random"}
+{"f":[64908,108207,115437,50532,7233,3],"p":7,"prec":8,"depth":3,"status":"NOT_DETERMINED","g":[7212,9619,9620,2408,1],"reduced":1,"certs":[[2387947,8,0],[3376853,8,2]],"unres":[[2398,4]],"complete":0,"expect":null,"d0":4,"what":"random"}
+{"f":[-5,1],"p":11,"prec":2,"depth":8,"status":"OK","g":[-5,1],"reduced":0,"certs":[[5,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[1],"p":11,"prec":4,"depth":12,"status":"OK","g":[1],"reduced":0,"certs":[],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[3960,392,-70,2],"p":7,"prec":2,"depth":3,"status":"OK","g":[1980,196,-35,1],"reduced":0,"certs":[[18,2,0],[22,2,0],[44,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[4,10,-6,-3,1],"p":3,"prec":1,"depth":8,"status":"OK","g":[4,10,-6,-3,1],"reduced":0,"certs":[[1,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-25,-24,1],"p":7,"prec":6,"depth":3,"status":"OK","g":[-25,-24,1],"reduced":0,"certs":[[25,6,0],[117648,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-10,-3],"p":71,"prec":2,"depth":5,"status":"OK","g":[10,3],"reduced":0,"certs":[[1677,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[36,1],"p":37,"prec":2,"depth":12,"status":"OK","g":[36,1],"reduced":0,"certs":[[1333,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1,1,9,2],"p":5,"prec":6,"depth":2,"status":"OK","g":[-1,1,9,2],"reduced":0,"certs":[[5779,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-1014426,-20079,97],"p":97,"prec":1,"depth":12,"status":"OK","g":[-10458,-207,1],"reduced":0,"certs":[[249,2,1],[9367,2,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[22200048,-3064194,123261,-1494,3],"p":7,"prec":8,"depth":8,"status":"OK","g":[7400016,-1021398,41087,-498,1],"reduced":0,"certs":[[13,8,0],[24,8,2],[59,8,4],[402,8,4]],"unres":[],"complete":1,"expect":null,"d0":3,"what":"random"}
+{"f":[70262,6966,210,2],"p":5,"prec":1,"depth":2,"status":"OK","g":[817,62,1],"reduced":1,"certs":[[1,1,0],[2,1,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[4,7,-6],"p":43,"prec":2,"depth":8,"status":"OK","g":[-4,-7,6],"reduced":0,"certs":[[1559,2,0],[1832,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[-98304,-3072,-98208,-3069,96,3],"p":7,"prec":6,"depth":8,"status":"OK","g":[-1024,0,-1023,0,1],"reduced":1,"certs":[[32,6,0],[117617,6,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[108,2],"p":7,"prec":2,"depth":8,"status":"OK","g":[54,1],"reduced":0,"certs":[[44,2,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[0,2,11,-7,-6],"p":3,"prec":3,"depth":8,"status":"OK","g":[0,-2,-11,7,6],"reduced":0,"certs":[[0,3,0],[1,3,1],[25,3,1]],"unres":[],"complete":1,"expect":null,"d0":1,"what":"random"}
+{"f":[7080,-1237,36,1],"p":23,"prec":3,"depth":12,"status":"OK","g":[7080,-1237,36,1],"reduced":0,"certs":[[8,3,0],[15,3,0],[12108,3,0]],"unres":[],"complete":1,"expect":null,"d0":0,"what":"random"}
+{"f":[3604810,-393307,-65536,1],"p":65537,"prec":3,"depth":4,"status":"OK","g":[3604810,-393307,-65536,1],"reduced":0,"certs":[[5,3,1],[65542,3,1],[281487861809142,3,0]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"large prime, planted"}
+{"f":[57671790,-6291523,-1048572,1],"p":1048573,"prec":3,"depth":4,"status":"OK","g":[57671790,-6291523,-1048572,1],"reduced":0,"certs":[[5,3,1],[1048578,3,1],[1152911609030508506,3,0]],"unres":[],"complete":1,"expect":3,"d0":1,"what":"large prime, planted"}

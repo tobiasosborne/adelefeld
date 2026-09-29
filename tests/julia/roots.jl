@@ -116,3 +116,73 @@ end
     @test seed([0], 7, 3, 20)[1] == DOMAIN
     @test seed([-2, 0, 1], 7, 3, 0)[1] == DOMAIN
 end
+
+# ---- slice 2 of S.2 (lane s2-slice2): all roots in Z_p through adf_roots_padic and the accessors ----
+
+const UNSUPPORTED = 8
+
+# all roots of c at p through the strict (strict = true) or the partial function; returns (status, certs,
+# classes, complete, verify_complete) with certs a vector of (a, K, s) and classes a vector of (a, e)
+function roots_padic(c, p, prec, depth; strict = true)
+    L = Libc.malloc(ccall(ad(:adf_sizeof_rootlist), Csize_t, ()))
+    ccall(ad(:adf_rootlist_init), Cvoid, (Ptr{Cvoid},), L)
+    f = poly_new(c)
+    fun = strict ? :adf_roots_padic : :adf_roots_padic_partial
+    st = ccall(ad(fun), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Place, Clong, Clong), L, f, place(p), prec, depth)
+    certs, classes, complete, vc = Tuple{BigInt, Int, Int}[], Tuple{BigInt, Int}[], -1, -1
+    if st == OK
+        z = fmpz_new(0)
+        K = Ref{Clong}(0)
+        s = Ref{Clong}(0)
+        n = ccall(ad(:adf_rootlist_length), Clong, (Ptr{Cvoid},), L)
+        for i in 0:n-1
+            ccall(ad(:adf_rootlist_get_cert), Cint, (Ptr{Clong}, Ref{Clong}, Ref{Clong}, Ptr{Cvoid}, Clong),
+                  z, K, s, L, i) == 1 || error("get_cert")
+            push!(certs, (fmpz_get(z), K[], s[]))
+        end
+        nu = ccall(ad(:adf_rootlist_unresolved_length), Clong, (Ptr{Cvoid},), L)
+        for i in 0:nu-1
+            ccall(ad(:adf_rootlist_get_unresolved), Cint, (Ptr{Clong}, Ref{Clong}, Ptr{Cvoid}, Clong),
+                  z, K, L, i) == 1 || error("get_unresolved")
+            push!(classes, (fmpz_get(z), K[]))
+        end
+        complete = ccall(ad(:adf_rootlist_is_complete), Cint, (Ptr{Cvoid},), L)
+        vc = ccall(ad(:adf_rootlist_verify_complete), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Clong), L, f, depth)
+        ccall(fl(:fmpz_clear), Cvoid, (Ptr{Clong},), z)
+    end
+    poly_free(f)
+    ccall(ad(:adf_rootlist_clear), Cvoid, (Ptr{Cvoid},), L)
+    Libc.free(L)
+    return st, certs, classes, complete, vc
+end
+
+peval(c, x) = foldr((ci, acc) -> acc * x + ci, c; init = big(0))
+vp(x, p) = (x == 0 ? typemax(Int) : (v = 0; while mod(x, p) == 0; x = div(x, p); v += 1; end; v))
+
+@testset "adf_roots_padic through ccall: (X^2 - 2)(X - 3) in Z_7" begin
+    c = [6, -2, -3, 1]                           # (X^2 - 2)(X - 3); 3 = sqrt(2) modulo 7
+    dc = [-2, -6, 3]                             # the derivative
+    st, certs, classes, complete, vc = roots_padic(c, 7, 10, 8)
+    @test st == OK && length(certs) == 3 && isempty(classes) && complete == 1 && vc == 1
+    for (a, K, s) in certs
+        @test 0 <= a < big(7)^K && K == max(10, s + 1)
+        @test mod(peval(c, a), big(7)^(K + s)) == 0          # (R3), in Julia
+        @test vp(peval(dc, a), 7) == s                        # (R2)
+    end
+    @test sort([mod(a, 7) for (a, _, _) in certs]) == [3, 3, 4]
+    r3 = [a for (a, _, s) in certs if a == 3]
+    @test length(r3) == 1                                    # the root 3 itself, s = v(g'(3)) = v(7) = 1
+    sq = [a for (a, _, _) in certs if a != 3]
+    @test all(mod(a^2 - 2, big(7)^10) == 0 for a in sq)      # the two square roots of 2
+    @test sort([s for (_, _, s) in certs]) == [0, 1, 1]
+    # depth 0: 3 is a double root modulo 7; the strict function is NOT_DETERMINED, the partial one gives
+    # the root near 4 and the class 3 + 7 Z_7
+    @test roots_padic(c, 7, 10, 0)[1] == NOT_DETERMINED
+    st, certs, classes, complete, vc = roots_padic(c, 7, 10, 0; strict = false)
+    @test st == OK && length(certs) == 1 && mod(certs[1][1], 7) == 4 && classes == [(big(3), 1)]
+    @test complete == 0 && vc == 0
+    # DOMAIN and the temporary bound of the slice
+    @test roots_padic([0], 7, 10, 8)[1] == DOMAIN
+    @test roots_padic(c, 7, 10, -1)[1] == DOMAIN
+    @test roots_padic(c, 1048583, 3, 2)[1] == UNSUPPORTED
+end

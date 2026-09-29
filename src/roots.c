@@ -29,6 +29,7 @@
    m used is below 2 K. */
 
 #include <flint/fmpz_vec.h>
+#include <flint/nmod_poly.h>
 
 #include <adelefeld.h>
 
@@ -722,4 +723,492 @@ adf_rootlist_get_fball(adf_fball_t x, const adf_rootlist_t L, slong i)
     fmpz_clear(H);
     fmpz_clear(one);
     return st == ADF_OK;
+}
+
+/* ==== slice 2: all roots at a prime (Algorithm P) ====
+
+   Algorithm P and Proposition 3.5 of solvers.md (lines 1160 to 1236), with the level of Proposition 3.4
+   (lines 1121 to 1154) and the roots modulo p by evaluation at every residue (Proposition 3.7(1), lines
+   1288 to 1289); the reference is padic_roots, proto/solvers_checks.py:1649 to 1698. FLINT routines
+   used besides those above (refs/src/flint-3.0.1):
+     fmpz_poly_taylor_shift, fmpz_poly.rst:2496: "composing f by x + c";
+     fmpz_poly_scalar_divexact_fmpz, fmpz_poly.rst:545: exact division of every coefficient;
+     fmpz_poly_get_nmod_poly, fmpz_poly.rst:3142: the coefficients reduced by the modulus;
+     nmod_poly_derivative, nmod_poly.rst:1212; nmod_poly_evaluate_nmod, nmod_poly.rst:1243 (Horner, the
+       point reduced modulo the modulus).
+   No routine of FLINT for roots or factorisation modulo p is called (S-D10, P3.7(1)).
+
+   The classes are not formed as f(a + p^e Y) from f: the polynomial of a child is formed from that of its
+   parent, g_(a1, e+1)(Y) = g_(a,e)(b + p Y) / p^v with a1 = a + p^e b and w(a1, e+1) = w(a, e) + v, which is
+   the identity f(a1 + p^(e+1) Y) = p^w g_(a,e)(b + p Y) of the proof of P3.4(4) (solvers.md:1149). */
+
+ADF_ROOTS_HIDDEN int adf_roots_padic_core(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t p, slong prec_p,
+                                          slong depth, int strict, slong bits_max);
+ADF_ROOTS_HIDDEN int adf_roots_certify(fmpz_t a_out, slong * K, slong * s, const fmpz_poly_t g,
+                                       const fmpz_poly_t h, const fmpz_t p, const fmpz_t a, const fmpz_t pe,
+                                       slong e, slong w, ulong b, slong prec_p, slong bits_max);
+
+/* 1 if 0 <= K and 2 K bits <= max (bits >= 1): the limit of S-D18 with the bound max, by a division */
+static int
+exp_within(slong K, ulong bits, slong max)
+{
+    return K >= 0 && max >= 0 && (ulong) K <= (ulong) max / (2 * bits);
+}
+
+/* the largest v such that p^v divides every coefficient of h, for h != 0 */
+static slong
+content_val_p(const fmpz_poly_t h, const fmpz_t p)
+{
+    slong i, t, v = WORD_MAX;
+
+    for (i = 0; i < fmpz_poly_length(h) && v > 0; i++)
+        if (!fmpz_is_zero(h->coeffs + i))
+        {
+            t = val_p(h->coeffs + i, p);
+            if (t < v)
+                v = t;
+        }
+    return v;
+}
+
+/* The certification of a simple digit, Algorithm P step 3, first case (solvers.md:1169 to 1172), by
+   P3.4(3) (solvers.md:1131 to 1134): at the open class (a, e) with w = w(a, e) and h = g_(a,e), b in
+   [0, p) with h(b) = 0 and h'(b) != 0 modulo p. s = w - e; j = max(1, w - 2 e + 1), the least j >= 1
+   with j > w - 2 e; beta_j by Newton steps of P3.3 on h from its certificate (b, 1, 0); the certificate
+   ((a + p^e beta_j) mod p^(e+j), e + j, s) of g, lifted by Newton steps of P3.3 on g until
+   k >= K = max(prec_p, s + 1), then reduced modulo p^K (P3.2(3)). g is the polynomial of Algorithm P
+   after step 1, pe = p^e, 0 <= a < p^e. Every exponent is computed with checked arithmetic (S-D18) and
+   K and k are tested against bits_max before any allocation and before any power of p is formed:
+   ADF_LIMIT with a_out, K, s untouched. Under (W) (solvers.md:1203 to 1207) w >= 2 e and k = s + 1 <= K,
+   so every power formed is below p^(2 K). a_out is written on ADF_OK only. */
+int
+adf_roots_certify(fmpz_t a_out, slong * K, slong * s, const fmpz_poly_t g, const fmpz_poly_t h, const fmpz_t p,
+                  const fmpz_t a, const fmpz_t pe, slong e, slong w, ulong b, slong prec_p, slong bits_max)
+{
+    fmpz_poly_t dh, dg;
+    fmpz_t beta, a1, q;
+    slong sv, e2, t, j, jj, k, Kv, s1;
+    ulong bits = fmpz_bits(p);
+    int st = ADF_OK;
+
+    /* s = w - e and j > w - 2 e (P3.4(3): "k > s is j > w - 2 e", solvers.md:1147) */
+    if (!sub_checked(&sv, w, e) || !add_checked(&e2, e, e) || !sub_checked(&t, w, e2))
+        return ADF_LIMIT;
+    j = 1;
+    if (!(j > t) && !add_checked(&j, t, 1))
+        return ADF_LIMIT;
+    if (!add_checked(&k, e, j) || !add_checked(&s1, sv, 1))
+        return ADF_LIMIT;
+    /* K = max(prec_p, s + 1), the least K >= prec_p with K > s (R1) */
+    Kv = prec_p > sv ? prec_p : s1;
+    if (!exp_within(Kv, bits, bits_max) || !exp_within(k, bits, bits_max))
+        return ADF_LIMIT;
+    if (sv < 0)
+    {
+        /* w >= e by P3.4(3): a defect of the tree, not an input */
+        flint_printf("adelefeld: adf_roots_padic: internal error: w = %wd < e = %wd\n", w, e);
+        flint_abort();
+    }
+    fmpz_poly_init(dh);
+    fmpz_poly_init(dg);
+    fmpz_init_set_ui(beta, b);
+    fmpz_init(a1);
+    fmpz_init(q);
+    fmpz_poly_derivative(dh, h);
+    fmpz_poly_derivative(dg, g);
+    /* beta_j: (b, 1, 0) is a certificate for h, lifted by P3.3 and reduced modulo p^j (P3.2(3)) */
+    jj = 1;
+    while (jj < j && st == ADF_OK)
+        if (!newton_step(beta, &jj, h, dh, p, 0))
+            st = ADF_LIMIT;
+    if (st == ADF_OK)
+    {
+        fmpz_pow_ui(q, p, (ulong) j);
+        fmpz_mod(beta, beta, q);
+        /* the certificate of P3.4(3) with k = e + j, reduced modulo p^k */
+        fmpz_set(a1, a);
+        fmpz_addmul(a1, pe, beta);
+        fmpz_pow_ui(q, p, (ulong) k);
+        fmpz_mod(a1, a1, q);
+        /* lifted by P3.3 until k >= K, then reduced modulo p^K */
+        while (k < Kv && st == ADF_OK)
+            if (!newton_step(a1, &k, g, dg, p, sv))
+                st = ADF_LIMIT;
+    }
+    if (st == ADF_OK)
+    {
+        fmpz_pow_ui(q, p, (ulong) Kv);
+        fmpz_mod(a1, a1, q);
+        fmpz_swap(a_out, a1);
+        *K = Kv;
+        *s = sv;
+    }
+    fmpz_poly_clear(dh);
+    fmpz_poly_clear(dg);
+    fmpz_clear(beta);
+    fmpz_clear(a1);
+    fmpz_clear(q);
+    return st;
+}
+
+/* a growing list of (centre, exponent, s): the certificates, or the classes (s unused) */
+typedef struct
+{
+    fmpz * a;
+    slong * k;
+    slong * s;
+    slong len;
+    slong alloc;
+} item_vec;
+
+static void
+item_vec_init(item_vec * v)
+{
+    v->a = NULL;
+    v->k = NULL;
+    v->s = NULL;
+    v->len = 0;
+    v->alloc = 0;
+}
+
+static void
+item_vec_clear(item_vec * v)
+{
+    if (v->a != NULL)
+        _fmpz_vec_clear(v->a, v->alloc);
+    flint_free(v->k);
+    flint_free(v->s);
+}
+
+static void
+item_vec_push(item_vec * v, const fmpz_t a, slong k, slong s)
+{
+    fmpz * b;
+    slong i, na;
+
+    if (v->len == v->alloc)
+    {
+        na = v->alloc == 0 ? 4 : 2 * v->alloc;
+        b = _fmpz_vec_init(na);
+        for (i = 0; i < v->len; i++)
+            fmpz_swap(b + i, v->a + i);
+        if (v->a != NULL)
+            _fmpz_vec_clear(v->a, v->alloc);
+        v->a = b;
+        v->k = v->k == NULL ? flint_malloc(na * sizeof(slong)) : flint_realloc(v->k, na * sizeof(slong));
+        v->s = v->s == NULL ? flint_malloc(na * sizeof(slong)) : flint_realloc(v->s, na * sizeof(slong));
+        v->alloc = na;
+    }
+    fmpz_set(v->a + v->len, a);
+    v->k[v->len] = k;
+    v->s[v->len] = s;
+    v->len++;
+}
+
+/* sorts by increasing centre (insertion sort: the lists have at most a few times deg g entries) */
+static void
+item_vec_sort(item_vec * v)
+{
+    slong i, j, t;
+
+    for (i = 1; i < v->len; i++)
+        for (j = i; j > 0 && fmpz_cmp(v->a + j - 1, v->a + j) > 0; j--)
+        {
+            fmpz_swap(v->a + j - 1, v->a + j);
+            t = v->k[j - 1];
+            v->k[j - 1] = v->k[j];
+            v->k[j] = t;
+            t = v->s[j - 1];
+            v->s[j - 1] = v->s[j];
+            v->s[j] = t;
+        }
+}
+
+/* an open class (a, e) of Algorithm P: pe = p^e, w = w(a, e), h = g_(a,e) (P3.4) */
+typedef struct
+{
+    fmpz_t a;
+    fmpz_t pe;
+    slong e;
+    slong w;
+    fmpz_poly_t h;
+} open_class;
+
+/* pushes the class (a, e) with pe, w and h (h is moved: swapped into the new entry) */
+static void
+push_class(open_class ** stk, slong * n, slong * alloc, const fmpz_t a, const fmpz_t pe, slong e, slong w,
+           fmpz_poly_t h)
+{
+    open_class * c;
+
+    if (*n == *alloc)
+    {
+        *alloc = *alloc == 0 ? 8 : 2 * *alloc;
+        *stk = *stk == NULL ? flint_malloc(*alloc * sizeof(open_class))
+                            : flint_realloc(*stk, *alloc * sizeof(open_class));
+    }
+    c = *stk + *n;
+    fmpz_init_set(c->a, a);
+    fmpz_init_set(c->pe, pe);
+    c->e = e;
+    c->w = w;
+    fmpz_poly_init(c->h);
+    fmpz_poly_swap(c->h, h);
+    (*n)++;
+}
+
+static void
+open_class_clear(open_class * c)
+{
+    fmpz_clear(c->a);
+    fmpz_clear(c->pe);
+    fmpz_poly_clear(c->h);
+}
+
+/* Algorithm P (solvers.md:1162 to 1176) on g0 != 0 at the prime pu <= ADF_ROOTS_P_EVAL_MAX with
+   k_req = prec_p >= 1 and D = depth >= 0, the limit of S-D18 with the bound bits_max. On ADF_OK the
+   arrays and lengths of T (n, a, K, s, nu, ua, ue; T without arrays on entry) hold the certificates and
+   the unresolved classes, each sorted by the centre; the other fields of T are not written. On ADF_LIMIT
+   T is not written. The certificates refer to g0 with its content at p removed (step 1), which is g0
+   for the normalised polynomial (content 1). */
+static int
+padic_search(adf_rootlist_t T, const fmpz_poly_t g0, ulong pu, slong prec_p, slong depth, slong bits_max)
+{
+    fmpz_t p, c, q, x, ap, pe1;
+    fmpz_poly_t g, hc;
+    nmod_poly_t hm, dm;
+    item_vec certs, classes;
+    open_class * stk = NULL;
+    open_class N;
+    slong nst = 0, ast = 0, i, v, w0, e1, wc, K = 0, s = 0;
+    ulong b, bits = FLINT_BIT_COUNT(pu);
+    int st = ADF_OK;
+
+    fmpz_init_set_ui(p, pu);
+    fmpz_init(c);
+    fmpz_init(q);
+    fmpz_init(x);
+    fmpz_init(ap);
+    fmpz_init(pe1);
+    fmpz_poly_init(g);
+    fmpz_poly_init(hc);
+    nmod_poly_init(hm, pu);
+    nmod_poly_init(dm, pu);
+    item_vec_init(&certs);
+    item_vec_init(&classes);
+    /* step 1: g = g0 / p^w0 */
+    w0 = content_val_p(g0, p);
+    fmpz_pow_ui(q, p, (ulong) w0);
+    fmpz_poly_scalar_divexact_fmpz(g, g0, q);
+    /* step 2: the class (0, 0) is open, with w(0, 0) = 0 and g_(0,0) = g */
+    fmpz_poly_set(hc, g);
+    fmpz_one(pe1);
+    push_class(&stk, &nst, &ast, c, pe1, 0, 0, hc);
+    /* step 3, for every open class until none is open (step 4) */
+    while (nst > 0 && st == ADF_OK)
+    {
+        N = stk[--nst];                         /* N owns the entry now */
+        fmpz_poly_get_nmod_poly(hm, N.h);
+        nmod_poly_derivative(dm, hm);
+        for (b = 0; b < pu && st == ADF_OK; b++)
+        {
+            if (nmod_poly_evaluate_nmod(hm, b) != 0)
+                continue;
+            if (nmod_poly_evaluate_nmod(dm, b) != 0)
+            {
+                /* a simple root of g_(a,e) modulo p: one root of g, certified (P3.4(3)) */
+                st = adf_roots_certify(ap, &K, &s, g, N.h, p, N.a, N.pe, N.e, N.w, b, prec_p, bits_max);
+                if (st == ADF_OK)
+                    item_vec_push(&certs, ap, K, s);
+                continue;
+            }
+            /* a multiple root modulo p: the child (a + p^e b, e + 1) (P3.4(4)) */
+            if (!add_checked(&e1, N.e, 1) || !exp_within(e1, bits, bits_max))
+            {
+                st = ADF_LIMIT;
+                break;
+            }
+            fmpz_set(c, N.a);
+            fmpz_addmul_ui(c, N.pe, b);
+            if (N.e >= depth)
+            {
+                /* e + 1 > D: the class is left unresolved (step 3, second case) */
+                item_vec_push(&classes, c, e1, 0);
+                continue;
+            }
+            /* g_(c, e+1)(Y) = g_(a,e)(b + p Y) / p^v and w(c, e + 1) = w + v (solvers.md:1149) */
+            fmpz_set_ui(x, b);
+            fmpz_poly_taylor_shift(hc, N.h, x);
+            fmpz_one(q);
+            for (i = 0; i < fmpz_poly_length(hc); i++)
+            {
+                fmpz_mul(hc->coeffs + i, hc->coeffs + i, q);
+                fmpz_mul_ui(q, q, pu);
+            }
+            v = content_val_p(hc, p);
+            if (!add_checked(&wc, N.w, v))
+            {
+                st = ADF_LIMIT;
+                break;
+            }
+            fmpz_pow_ui(q, p, (ulong) v);
+            fmpz_poly_scalar_divexact_fmpz(hc, hc, q);
+            fmpz_mul_ui(pe1, N.pe, pu);
+            push_class(&stk, &nst, &ast, c, pe1, e1, wc, hc);
+        }
+        open_class_clear(&N);
+    }
+    if (st == ADF_OK)
+    {
+        item_vec_sort(&certs);
+        item_vec_sort(&classes);
+        T->n = certs.len;
+        if (T->n > 0)
+        {
+            T->a = _fmpz_vec_init(T->n);
+            T->K = flint_malloc(T->n * sizeof(slong));
+            T->s = flint_malloc(T->n * sizeof(slong));
+        }
+        for (i = 0; i < T->n; i++)
+        {
+            fmpz_swap(T->a + i, certs.a + i);
+            T->K[i] = certs.k[i];
+            T->s[i] = certs.s[i];
+        }
+        T->nu = classes.len;
+        if (T->nu > 0)
+        {
+            T->ua = _fmpz_vec_init(T->nu);
+            T->ue = flint_malloc(T->nu * sizeof(slong));
+        }
+        for (i = 0; i < T->nu; i++)
+        {
+            fmpz_swap(T->ua + i, classes.a + i);
+            T->ue[i] = classes.k[i];
+        }
+    }
+    for (i = 0; i < nst; i++)
+        open_class_clear(stk + i);
+    flint_free(stk);
+    item_vec_clear(&certs);
+    item_vec_clear(&classes);
+    fmpz_clear(p);
+    fmpz_clear(c);
+    fmpz_clear(q);
+    fmpz_clear(x);
+    fmpz_clear(ap);
+    fmpz_clear(pe1);
+    fmpz_poly_clear(g);
+    fmpz_poly_clear(hc);
+    nmod_poly_clear(hm);
+    nmod_poly_clear(dm);
+    return st;
+}
+
+/* adf_roots_padic and adf_roots_padic_partial (roots.h; api-s.md 4; S-D15) with the limit of S-D18 as the
+   parameter bits_max (ADF_ROOTS_BITS_MAX for the public functions). strict = 1: the strict function. */
+int
+adf_roots_padic_core(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t p, slong prec_p, slong depth, int strict,
+                     slong bits_max)
+{
+    adf_rootlist_t T;
+    adf_rootlist_struct tmp;
+    ulong pu;
+    int reduced, st;
+
+    /* the statuses decided before any allocation, in the order of roots.h */
+    if (fmpz_poly_is_zero(f) || adf_place_is_archimedean(p) || prec_p < 1 || depth < 0)
+        return ADF_DOMAIN;
+    pu = adf_place_prime_get(p);
+    if (pu > ADF_ROOTS_P_EVAL_MAX)
+        return ADF_UNSUPPORTED;                 /* TEMPORARY (S-D10) */
+    if (!exp_within(prec_p, FLINT_BIT_COUNT(pu), bits_max))
+        return ADF_LIMIT;
+    adf_rootlist_init(T);
+    normalise(T->g, &reduced, f);
+    st = padic_search(T, T->g, pu, prec_p, depth, bits_max);
+    if (st == ADF_OK && strict && T->nu > 0)
+        st = ADF_NOT_DETERMINED;                /* CV-06: L untouched */
+    if (st == ADF_OK)
+    {
+        T->place = p;
+        T->scope = ADF_ROOTLIST_PARTITION;
+        T->reduced = reduced;
+        T->complete = T->nu == 0;               /* P3.5(3) */
+        T->count = 0;
+        /* L written only now (f may be L->g): the contents are exchanged, the old ones cleared */
+        tmp = *L;
+        *L = *T;
+        *T = tmp;
+    }
+    adf_rootlist_clear(T);
+    return st;
+}
+
+int
+adf_roots_padic_partial(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t p, slong prec_p, slong depth)
+{
+    return adf_roots_padic_core(L, f, p, prec_p, depth, 0, ADF_ROOTS_BITS_MAX);
+}
+
+int
+adf_roots_padic(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t p, slong prec_p, slong depth)
+{
+    return adf_roots_padic_core(L, f, p, prec_p, depth, 1, ADF_ROOTS_BITS_MAX);
+}
+
+/* ---- the complete verifier (solvers P3.13(2), (3), solvers.md:1533 to 1538; padic_verify_complete,
+   proto/solvers_checks.py:1776) ---- */
+
+int
+adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, slong depth)
+{
+    adf_rootlist_t T;
+    fmpz_t p;
+    slong i, j, m;
+    ulong pu;
+    int r;
+
+    if (depth < 0 || fmpz_poly_is_zero(f))
+        return 0;
+    if (adf_place_is_archimedean(L->place))
+        return 0;                               /* TEMPORARY (roots.h): the real place in a later slice */
+    if (!adf_rootlist_verify_entries(L, f))
+        return 0;
+    if (L->scope != ADF_ROOTLIST_PARTITION || L->complete != 1 || L->nu != 0)
+        return 0;
+    pu = adf_place_prime_get(L->place);
+    if (pu > ADF_ROOTS_P_EVAL_MAX)
+        return 0;                               /* TEMPORARY (S-D10): no rerun above the bound */
+    adf_rootlist_init(T);
+    fmpz_init_set_ui(p, pu);
+    /* the rerun of Algorithm P on g through depth; no class may be left */
+    r = padic_search(T, L->g, pu, 1, depth, ADF_ROOTS_BITS_MAX) == ADF_OK && T->nu == 0;
+    /* every root ball of the rerun meets exactly one listed ball, and every listed ball exactly one
+       root ball of the rerun (P3.2(4)) */
+    for (i = 0; i < T->n && r; i++)
+    {
+        for (j = 0, m = 0; j < L->n; j++)
+            m += balls_meet(T->a + i, T->K[i], L->a + j, L->K[j], p);
+        r = m == 1;
+    }
+    for (j = 0; j < L->n && r; j++)
+    {
+        for (i = 0, m = 0; i < T->n; i++)
+            m += balls_meet(T->a + i, T->K[i], L->a + j, L->K[j], p);
+        r = m == 1;
+    }
+    fmpz_clear(p);
+    adf_rootlist_clear(T);
+    return r;
+}
+
+int
+adf_rootlist_get_unresolved(fmpz_t a, slong * e, const adf_rootlist_t L, slong i)
+{
+    if (adf_place_is_archimedean(L->place) || i < 0 || i >= L->nu || L->ua == NULL)
+        return 0;
+    fmpz_set(a, L->ua + i);
+    *e = L->ue[i];
+    return 1;
 }

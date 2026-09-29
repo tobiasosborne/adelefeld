@@ -1,0 +1,77 @@
+Lane s2-slice2: red and green runs of tests/test_roots_padic.c, and the runs of item 5 of the brief (the tests
+bite).
+
+== RED 1 (2026-09-29): tests/test_roots_padic.c written first, against stubs in src/roots.c
+   (adf_roots_padic_core returns ADF_UNSUPPORTED, adf_roots_certify returns ADF_OK without writing,
+   adf_rootlist_verify_complete returns 1, adf_rootlist_get_unresolved returns 0); the header declarations
+   were added first so that the test compiles and links: the failures are assertions.
+   make -j2 build/test_roots_padic && timeout 300 ./build/test_roots_padic
+   FAIL every_run_against_the_enumeration (17281 failed checks)
+   FAIL vectors_s2_slice2_every_line (652 failed checks)
+   FAIL x2_plus_1_at_2_and_the_examples_of_3_11 (15 failed checks)
+   FAIL zero_polynomial_constants_degree_one_and_repeated_factors (19 failed checks)
+   FAIL verify_complete_refuses_changed_lists_seed_lists_and_the_example (8 failed checks)
+   FAIL domain_unsupported_and_limit_before_any_allocation_L_untouched (27 failed checks)
+   FAIL limits_during_the_search_and_exponent_overflow (17 failed checks)
+   FAIL get_unresolved_and_aliasing (7 failed checks)
+   8 tests, 23186 checks, 18026 failed checks, 8 failed tests; exit 1
+   (A first run segfaulted in limits_during_the_search_and_exponent_overflow on L->K[0] of the empty stub
+   list; the check was made to short-circuit on L->n == 2 before the green code was written.)
+
+== GREEN 1: src/roots.c with Algorithm P (padic_search, adf_roots_certify, adf_roots_padic_core), the
+   complete verifier and get_unresolved.
+   First run: 7 tests ok, every_run_against_the_enumeration failed 462 checks, all "not nested" (and the
+   strict comparison that followed from the same flag): a defect of the TEST, which paired the balls of
+   precision prec - 1 and prec by index, while the centres are sorted and their order changes with the
+   precision. The check now pairs every ball with the one ball of the next precision that it contains.
+   make -j2 build/test_roots_padic && timeout 300 ./build/test_roots_padic
+   8 tests, 28538 checks, 0 failed checks, 0 failed tests (20 polynomials for each prime)
+   The number of polynomials was then raised to 40 for each prime (16 random, 24 planted):
+   8 tests, 55131 checks, 0 failed checks, 0 failed tests; 2.2 s
+   tests/test_roots_seed.c unchanged: 16 tests, 5347209 checks, 0 failed checks
+   python3 tools/memcheck/check_uninit.py src/roots.c tests/test_roots_padic.c: 0, 0, 0 findings
+
+== ITEM 5 (the tests bite): python3 lanes/s2-slice2/bite.py: six changes of src/roots.c, one at a time, each in a
+   scratch copy under build/bite/, built and run with timeout 300 ./build/test_roots_padic.
+   A first run of the script hung on the change "k > s to >=" (stopped by the timeout, exit 124, after 4 failed
+   tests): the test changed_lists computed v_p(0) for two equal centres of the defective list (with K = s two
+   roots can have the same centre modulo p^K). The test now guards against equal centres. The second run
+   (44 s):
+   -- the condition g'(b) != 0 of a simple root removed: CAUGHT, exit -6
+      the program ended early: "adelefeld: adf_root_padic_from_seed: internal error: no inverse in a Newton step"
+   -- j > w - 2e changed to >=: CAUGHT, exit -6
+      the program ended early: "adelefeld: adf_root_padic_from_seed: internal error: Newton step from k = 4, s = 4"
+   -- k > s changed to >= (K = the least K >= prec_p with K > s): CAUGHT, exit 1
+      FAIL every_run_against_the_enumeration (4204 failed checks)
+      FAIL vectors_s2_slice2_every_line (164 failed checks)
+      FAIL x2_plus_1_at_2_and_the_examples_of_3_11 (2 failed checks)
+      FAIL zero_polynomial_constants_degree_one_and_repeated_factors (1 failed checks)
+      FAIL verify_complete_refuses_changed_lists_seed_lists_and_the_example (169 failed checks)
+      8 tests, 54795 checks, 4540 failed checks, 5 failed tests
+   -- one residue left out of the evaluation (the loop runs to p - 1): CAUGHT, exit 1
+      FAIL every_run_against_the_enumeration (9168 failed checks)
+      FAIL vectors_s2_slice2_every_line (260 failed checks)
+      FAIL x2_plus_1_at_2_and_the_examples_of_3_11 (8 failed checks)
+      FAIL zero_polynomial_constants_degree_one_and_repeated_factors (1 failed checks)
+      FAIL limits_during_the_search_and_exponent_overflow (2 failed checks)
+      FAIL get_unresolved_and_aliasing (2 failed checks)
+      8 tests, 54761 checks, 9441 failed checks, 6 failed tests
+   -- a class dropped instead of kept as unresolved at the depth limit: CAUGHT, exit 1
+      FAIL every_run_against_the_enumeration (1396 failed checks)
+      FAIL vectors_s2_slice2_every_line (138 failed checks)
+      FAIL x2_plus_1_at_2_and_the_examples_of_3_11 (4 failed checks)
+      FAIL verify_complete_refuses_changed_lists_seed_lists_and_the_example (1 failed checks)
+      FAIL limits_during_the_search_and_exponent_overflow (2 failed checks)
+      FAIL get_unresolved_and_aliasing (3 failed checks)
+      8 tests, 54791 checks, 1544 failed checks, 6 failed tests
+   -- complete set to 1 with a class unresolved: CAUGHT, exit 1
+      FAIL every_run_against_the_enumeration (3028 failed checks)
+      FAIL vectors_s2_slice2_every_line (92 failed checks)
+      FAIL x2_plus_1_at_2_and_the_examples_of_3_11 (1 failed checks)
+      FAIL verify_complete_refuses_changed_lists_seed_lists_and_the_example (1 failed checks)
+      FAIL get_unresolved_and_aliasing (1 failed checks)
+      8 tests, 54283 checks, 3123 failed checks, 5 failed tests
+   -- 6 of 6 changes caught
+   The first two changes are caught by the abort of the library's own guard in newton_step (src/roots.c, code of
+   slice 1, shared with the search), exit -6 (SIGABRT), before an assertion of the test sees a list; the message
+   names adf_root_padic_from_seed because newton_step is shared and its text was left as slice 1 wrote it.
