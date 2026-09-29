@@ -1,0 +1,68 @@
+test_driver: s-hostile: the output differs from tests/driver/s-hostile.out
+--- tests/driver/s-hostile.out	2026-09-29 23:01:57.413630263 +0200
++++ build/driver/got.out	2026-09-29 23:02:09.292611693 +0200
+@@ -1,17 +1,18 @@
+-error: DOMAIN
+-error: DOMAIN
+-error: DOMAIN
+-error: DOMAIN
+-error: DOMAIN
+-error: DOMAIN
+-error: DOMAIN
+-error: DOMAIN
+-error: LIMIT
+-error: LIMIT
+ error: PARSE
+ error: PARSE
+ error: PARSE
+-error: DOMAIN
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
+ error: LIMIT
+-none
+-none
++error: PARSE
++error: PARSE
+exit status: 1
+=== s-roots (build/adf < s-roots.cmd)
+exit status: 1
+--- tests/driver/s-roots.out	2026-09-29 23:00:11.825788199 +0200
++++ /tmp/s-roots.got	2026-09-29 23:02:17.411598915 +0200
+@@ -1,8 +1,8 @@
+-4567 mod 7^5; 12240 mod 7^5
+-none
+-0 mod 3^5
+=== s-realroots (build/adf < s-realroots.cmd)
+exit status: 1
+--- tests/driver/s-realroots.out	2026-09-29 23:00:30.348761482 +0200
++++ /tmp/s-realroots.got	2026-09-29 23:02:17.416598907 +0200
+@@ -1,8 +1,8 @@
+--1 +/- 0.42; 1 +/- 0.42
+-none
+--1 +/- 0.42; 1 +/- 0.42
+=== s-recover (build/adf < s-recover.cmd)
+exit status: 1
+--- tests/driver/s-recover.out	2026-09-29 23:01:08.787704653 +0200
++++ /tmp/s-recover.got	2026-09-29 23:02:17.421598899 +0200
+@@ -1,18 +1,18 @@
+-2/3
+-0
+--1/1
+=== s-hostile (build/adf < s-hostile.cmd)
+exit status: 1
+--- tests/driver/s-hostile.out	2026-09-29 23:01:57.413630263 +0200
++++ /tmp/s-hostile.got	2026-09-29 23:02:17.425598892 +0200
+@@ -1,17 +1,18 @@
+-error: DOMAIN
+-error: DOMAIN
+-error: DOMAIN

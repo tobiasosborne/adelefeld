@@ -18,11 +18,22 @@
    outside the alphabet of conventions 8.2 exists and why "with" cannot occur in a value
    text.  The settings are "prec <bits>" and "digits <n>", one per line.  The operations
    are show, type, add, sub, mul, neg, div, equal, contains, overlaps, compare, reconstruct,
-   cap, dump and load; reconstruct takes either one operand (an adele) or three (a finite
+   cap, dump, load, roots, realroots and recover; reconstruct takes either one operand (an adele)
+   or three (a finite
    ball and an interval given as two exact rationals), which is the one documented extension
    of the two-operand form.  dump writes the dump form of conventions 10.1 of a value, and
    load reads such a text; the driver has no context, so a dump with a context occurrence is
    not read.
+
+   The commands of the solvers of milestone S (roots, realroots and recover) read operands that
+   the value form does not have in every position: the polynomial is a list of its integer
+   coefficients in decimal, separated by single spaces, the constant term first, and the bounds of
+   the reconstruction are exact rationals that must be integers.  They are read apart from the
+   value form, by the section "the solver commands" below, and they take the place of the value
+   text in the same five steps, with the polynomial read in steps 2 to 4 and the domain of the
+   operation (the zero polynomial, an integer that is not a prime of a place, a precision below 1)
+   in step 5.  The grammar of the line is unchanged: one operation name, then one to three
+   operands separated by " with ".
 
    The order of the checks of one command, which tools/adf/README.md states in full:
      1. the line: an operation word of the table and the right number of operands (ADF_PARSE);
@@ -90,6 +101,17 @@
 /* The separator between two operands: a blank, the word "with", a blank. */
 #define ADF_DRV_SEP " with "
 #define ADF_DRV_SEP_LEN ((size_t) 6)
+/* The depth limit of the search of adf_roots_padic that the command "roots" runs.  A fixed
+   choice of the driver, not a bound of the library: Algorithm P opens its classes at the levels 0
+   to depth (include/adelefeld/roots.h, adf_roots_padic_partial), and a larger depth resolves
+   more classes.  With a normalised polynomial g*, every root of g* is simple (L3.1 (2)), so a
+   large enough depth completes every list. */
+#define ADF_DRV_ROOTS_DEPTH ((slong) 64)
+/* The search limit of adf_resid_reconstruct that the command "recover" passes: the number of
+   rounds of Algorithm R (docs/proofs/solvers.md:266).  A fixed choice of the driver, and not a
+   bound: with a limit of 0 the function answers NOT_DETERMINED on every problem in the range
+   A < m <= 2 A B with |T| <= B, that is, whenever it cannot decide without a search. */
+#define ADF_DRV_RECON_LIMIT ((slong) 1000)
 
 /* ---- the operations ---- */
 
@@ -110,6 +132,9 @@ typedef enum
     ADF_DRV_CAP,
     ADF_DRV_DUMP,
     ADF_DRV_LOAD,
+    ADF_DRV_ROOTS,
+    ADF_DRV_REALROOTS,
+    ADF_DRV_RECOVER,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -135,6 +160,9 @@ static const struct
     { "cap", ADF_DRV_CAP, 2 },
     { "dump", ADF_DRV_DUMP, 1 },
     { "load", ADF_DRV_LOAD, 1 },
+    { "roots", ADF_DRV_ROOTS, 3 },
+    { "realroots", ADF_DRV_REALROOTS, 1 },
+    { "recover", ADF_DRV_RECOVER, 3 },
     { "prec", ADF_DRV_PREC, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
@@ -922,6 +950,495 @@ adf_drv_arity(adf_drv_op op)
     return -1;
 }
 
+/* ---- the solver commands (milestone S) ---- */
+
+/* The three commands of the solvers read operands that the value form of conventions 9.2 does
+   not have in every position, so they have a reading of their own, apart from the value form:
+
+     roots POLY with P with K    the roots of POLY in Z_P, through adf_roots_padic with the depth
+                                 ADF_DRV_ROOTS_DEPTH.  The output is the roots in the order of the
+                                 list, separated by "; ", each as "A mod P^K" with A the centre in
+                                 [0, P^K) and K the precision of the certificate of that root
+                                 (roots.h, D3.2), and "none" for a complete list without a root
+     realroots POLY             the real roots of POLY, through adf_roots_real at the setting
+                                 prec.  The output is the balls in the order of the list, separated
+                                 by "; ", each the text of a real ball with the setting digits, and
+                                 "none" for a list without a root
+     recover C mod M with A with B
+                                 the rational n/d of the residue class P(M, C) in the box
+                                 |n| <= A, 0 < d <= B, through adf_resid_reconstruct with the limit
+                                 ADF_DRV_RECON_LIMIT.  The output is n/d as the driver prints a
+                                 rational
+
+   POLY is the list of the integer coefficients in decimal, separated by single spaces, the
+   constant term first, at least one coefficient: "-2 0 1" is X^2 - 2.  P, K, A and B are exact
+   rationals of the value form, read by adf_rat_set_str, and they must be integers.
+
+   The steps are those of the command at the top of the file, with the polynomial in the place of
+   the first operand and the domain of the operation (the zero polynomial, a value of P that is
+   not a prime of a place, a precision below 1, a bound that is not an integer) in step 5.  A
+   polynomial that is not of that form is ADF_PARSE, the status the driver gives a text it cannot
+   read (conventions 8.5, stage 1). */
+
+/* adf_drv_poly_syntax(f, s, len): the polynomial operand, step 2.  f is written on ADF_OK and
+   may be partly written on ADF_PARSE, so the caller clears it either way.  fmpz_set_str reads a
+   null-terminated string (refs/src/flint-3.0.1/fmpz.rst:427 to 431), so every token is copied
+   into a buffer of its own; a buffer on the stack serves the tokens that fit, and the rest is
+   allocated with flint_malloc, as fmpz_get_str allocates.  The sign is read here and not left to
+   fmpz_set_str, whose treatment of a leading "-" is not in refs/:
+   [source pending: FLINT 3.0.1, fmpz_set_str and a leading sign].
+   The number of coefficients is at most half the length of a line, which the driver bounds by
+   ADF_DRV_MAX_LINE, so the index of a coefficient is a slong. */
+static int
+adf_drv_poly_syntax(fmpz_poly_t f, const char * s, size_t len)
+{
+    char small[32], * buf;
+    fmpz_t t;
+    size_t i = 0, start, digits, need;
+    slong k = 0;
+    int neg;
+
+    if (len == 0)
+        return ADF_PARSE;
+    fmpz_init(t);
+    while (i < len)
+    {
+        start = i;
+        neg = (s[i] == '-');
+        if (neg)
+            i++;
+        if (i >= len || s[i] < '0' || s[i] > '9')
+            goto parse;
+        while (i < len && s[i] >= '0' && s[i] <= '9')
+            i++;
+        digits = i - start - (size_t) neg;
+        need = digits + 1;
+        buf = (need <= sizeof(small)) ? small : flint_malloc(need);
+        memcpy(buf, s + start + (size_t) neg, digits);
+        buf[digits] = '\0';
+        if (fmpz_set_str(t, buf, 10) != 0)
+        {
+            if (buf != small)
+                flint_free(buf);
+            goto parse;
+        }
+        if (buf != small)
+            flint_free(buf);
+        if (neg)
+            fmpz_neg(t, t);
+        /* a zero coefficient is not written, so the polynomial keeps the length of its degree and
+           the zero polynomial stays the empty one */
+        if (!fmpz_is_zero(t))
+            fmpz_poly_set_coeff_fmpz(f, k, t);
+        k++;
+        if (i == len)
+            break;
+        if (s[i] != ' ')
+            goto parse;           /* the separator of two coefficients is a single space */
+        i++;
+        if (i == len)
+            goto parse;           /* and nothing follows the last one */
+    }
+    fmpz_clear(t);
+    return ADF_OK;
+
+parse:
+    fmpz_clear(t);
+    return ADF_PARSE;
+}
+
+/* adf_drv_poly_value(f): the zero polynomial is outside the domain of every function of
+   include/adelefeld/roots.h ("Statuses", edit E-C1), so it is ADF_DOMAIN, the status of data
+   outside a stated domain (conventions 3.1). */
+static int
+adf_drv_poly_value(const fmpz_poly_t f)
+{
+    return fmpz_poly_is_zero(f) ? ADF_DOMAIN : ADF_OK;
+}
+
+/* adf_drv_int_value(z, v): the integer of an exact rational, step 5.  P, K, A and B are integers
+   (SPEC 9.1 and 9.2), so a value of another type, or a rational whose denominator is not 1, is
+   data outside the domain of the operation and ADF_DOMAIN.  z is written only on ADF_OK. */
+static int
+adf_drv_int_value(fmpz_t z, const adf_drv_value * v)
+{
+    fmpq_t u;
+
+    if (v->type != ADF_DRV_RAT)
+        return ADF_DOMAIN;
+    fmpq_init(u);
+    adf_rat_get_fmpq(u, v->r);
+    if (fmpz_is_one(fmpq_denref(u)))
+    {
+        fmpz_set(z, fmpq_numref(u));
+        fmpq_clear(u);
+        return ADF_OK;
+    }
+    fmpq_clear(u);
+    return ADF_DOMAIN;
+}
+
+/* adf_drv_place_operand(v, z): the place of the prime z.  A place holds a prime of one word, that
+   is below 2^64 (conventions 7, include/adelefeld/place.h:38 to 40), so a value below 2, a
+   negative value and a value that does not fit in a word are all outside the domain of the
+   command: ADF_DOMAIN.  The primality is certified by adf_place_prime itself, whose status for a
+   composite is ADF_DOMAIN (place.h:34 to 37). */
+static int
+adf_drv_place_operand(adf_place_t * v, const fmpz_t z)
+{
+    if (fmpz_sgn(z) < 0 || fmpz_cmp_ui(z, 1) <= 0)
+        return ADF_DOMAIN;
+    if (fmpz_cmp_ui(z, UWORD_MAX) > 0)
+        return ADF_DOMAIN;
+    return adf_place_prime(v, fmpz_get_ui(z));
+}
+
+/* adf_drv_prec_operand(out, z): the precision prec_p of the roots at a prime, which is a slong of
+   the interface (include/adelefeld/roots.h, adf_roots_padic).  A negative value is below 1, and a
+   value below 1 is outside the domain of the function (roots.h, "Statuses"): ADF_DOMAIN.  A
+   value that does not fit in a slong is a size bound of the driver, and ADF_LIMIT is the status
+   of a size bound (conventions 3.1), the status of a prec setting above ADF_PRINT_EXP_MAX as
+   well. */
+static int
+adf_drv_prec_operand(slong * out, const fmpz_t z)
+{
+    slong v;
+
+    if (fmpz_sgn(z) < 0)
+        return ADF_DOMAIN;
+    if (fmpz_cmp_si(z, WORD_MAX) > 0)
+        return ADF_LIMIT;
+    v = fmpz_get_si(z);
+    if (v < 1)
+        return ADF_DOMAIN;
+    *out = v;
+    return ADF_OK;
+}
+
+/* adf_drv_put_roots(out, L, p): the line of a list of roots at the prime p.  Every entry is
+   "A mod P^K" with the centre and the precision of its certificate, in the order of the list
+   (include/adelefeld/roots.h, D3.2), and an empty list is the word none: an empty complete list
+   is the answer of the function, not a failure (roots.h, adf_roots_padic).  The list is read
+   through its accessors only (decision S-D12), and a list at a prime holds a certificate for each
+   of its n entries, so adf_rootlist_get_cert writes for every index in [0, n). */
+static int
+adf_drv_put_roots(FILE * out, const adf_rootlist_t L, ulong p)
+{
+    fmpz_t a;
+    slong i, n = adf_rootlist_length(L), K, s;
+    char * t;
+
+    if (n == 0)
+    {
+        fputs("none", out);
+        fputc('\n', out);
+        return ADF_OK;
+    }
+    if (adf_place_is_archimedean(adf_rootlist_place(L)))
+        return ADF_LIMIT;        /* a list at the real place has no centre: a defect of the library */
+    fmpz_init(a);
+    for (i = 0; i < n; i++)
+    {
+        if (i > 0)
+            fputs("; ", out);
+        (void) adf_rootlist_get_cert(a, &K, &s, L, i);
+        t = fmpz_get_str(NULL, 10, a);
+        fputs(t, out);
+        flint_fprintf(out, " mod %wu^%wd", p, K);
+        flint_free(t);
+    }
+    fmpz_clear(a);
+    fputc('\n', out);
+    return ADF_OK;
+}
+
+/* adf_drv_arb_str(x, digits): the text of the real ball x, or NULL when the printer of the
+   library refuses it.  The library prints a real ball only as the real part of an adf_adele or of
+   an adf_cadele (include/adelefeld/text.h:160 to 175); there is no printer of an arb alone.  So
+   the ball is put in the real coordinate of an adele whose finite part is the init value, the
+   adele is printed by adf_adele_get_str with n = digits, and the text between the "(" and the
+   " ; " is returned: the finite part follows the real part after " ; ", and the real text of
+   conventions 9.5 is a decimal or "m +/- r", which holds no " ; ".  A text of another shape is
+   copied whole, so that no byte of the printer is lost.  The string is a copy of the driver's own,
+   allocated with flint_malloc and released with flint_free.  A NULL is the guard of decision
+   M1-D6 (text.h:32 to 38) and the driver answers ADF_LIMIT for it, as for every printer. */
+static char *
+adf_drv_arb_str(const arb_t x, slong digits)
+{
+    adf_adele_t a;
+    adf_fball_t f;
+    char * s, * sep, * t, * u;
+    size_t len, k;
+
+    adf_fball_init(f);
+    adf_adele_init(a);
+    if (adf_adele_set_arb_fball(a, x, f) != ADF_OK)
+    {
+        /* an infinite real ball, which no list of the library holds; the printer would refuse it
+           as well, so the answer is the same NULL */
+        adf_fball_clear(f);
+        adf_adele_clear(a);
+        return NULL;
+    }
+    adf_fball_clear(f);
+    s = adf_adele_get_str(&len, a, digits);
+    adf_adele_clear(a);
+    if (s == NULL)
+        return NULL;
+    sep = strstr(s, " ; ");
+    if (sep != NULL && sep > s)
+    {
+        u = s + 1;
+        k = (size_t) (sep - s) - 1;
+    }
+    else
+    {
+        u = s;
+        k = len;
+    }
+    t = flint_malloc(k + 1);
+    memcpy(t, u, k);
+    t[k] = '\0';
+    adf_str_free(s);
+    return t;
+}
+
+/* adf_drv_put_reals(out, L, digits): the line of a list of real roots: the balls in the order of
+   the list, separated by "; ", each the text of conventions 9.5 with n = digits, and "none" for a
+   list without a root.  Every text is formed before any byte is written, so that a printer that
+   refuses one of them gives ADF_LIMIT and the line of the error, not half a line of roots. */
+static int
+adf_drv_put_reals(FILE * out, const adf_rootlist_t L, slong digits)
+{
+    arb_struct x[1];
+    char ** t;
+    slong i, n = adf_rootlist_length(L);
+    int status = ADF_OK;
+
+    if (n == 0)
+    {
+        fputs("none", out);
+        fputc('\n', out);
+        return ADF_OK;
+    }
+    if (!adf_place_is_archimedean(adf_rootlist_place(L)))
+        return ADF_LIMIT;        /* only a list at the real place has balls: a defect of the library */
+    t = flint_calloc(n, sizeof(char *));
+    arb_init(x);
+    for (i = 0; i < n; i++)
+    {
+        /* a list at the real place holds a ball for each of its n entries (roots.h, P3.10) */
+        (void) adf_rootlist_get_arb(x, L, i);
+        t[i] = adf_drv_arb_str(x, digits);
+        if (t[i] == NULL)
+        {
+            status = ADF_LIMIT;
+            break;
+        }
+    }
+    arb_clear(x);
+    for (i = 0; i < n; i++)
+    {
+        if (status == ADF_OK)
+        {
+            if (i > 0)
+                fputs("; ", out);
+            fputs(t[i], out);
+        }
+        flint_free(t[i]);         /* flint_free(NULL) does nothing */
+    }
+    flint_free(t);
+    if (status == ADF_OK)
+        fputc('\n', out);
+    return status;
+}
+
+/* adf_drv_solve_roots(out, f, vp, vk): the operation of the command "roots".  f is the
+   polynomial, vp and vk the values of the two other operands, already read.  The order is that
+   of the operands: the zero polynomial, then the integers P and K, then the place and the
+   precision, then the function, which decides the rest (roots.h, "Statuses"). */
+static int
+adf_drv_solve_roots(FILE * out, const fmpz_poly_t f, const adf_drv_value * vp,
+                    const adf_drv_value * vk)
+{
+    adf_rootlist_t L;
+    adf_place_t pl;
+    fmpz_t p, k;
+    slong K;
+    int status;
+
+    status = adf_drv_poly_value(f);
+    if (status != ADF_OK)
+        return status;
+    fmpz_init(p);
+    fmpz_init(k);
+    status = adf_drv_int_value(p, vp);
+    if (status == ADF_OK)
+        status = adf_drv_int_value(k, vk);
+    if (status == ADF_OK)
+        status = adf_drv_place_operand(&pl, p);
+    if (status == ADF_OK)
+        status = adf_drv_prec_operand(&K, k);
+    if (status == ADF_OK)
+    {
+        adf_rootlist_init(L);
+        status = adf_roots_padic(L, f, pl, K, ADF_DRV_ROOTS_DEPTH);
+        if (status == ADF_OK)
+            status = adf_drv_put_roots(out, L, adf_place_prime_get(pl));
+        adf_rootlist_clear(L);
+    }
+    fmpz_clear(p);
+    fmpz_clear(k);
+    return status;
+}
+
+/* adf_drv_solve_realroots(out, f, prec, digits): the operation of the command "realroots": the
+   zero polynomial first, then the function at the setting prec, which is its own precision
+   argument.  A prec above ADF_ROOTS_REAL_PREC_MAX would be ADF_LIMIT from the function; the
+   setting prec is at most ADF_PRINT_EXP_MAX, which is below it, so that status cannot be reached
+   from this command. */
+static int
+adf_drv_solve_realroots(FILE * out, const fmpz_poly_t f, slong prec, slong digits)
+{
+    adf_rootlist_t L;
+    int status;
+
+    status = adf_drv_poly_value(f);
+    if (status != ADF_OK)
+        return status;
+    adf_rootlist_init(L);
+    status = adf_roots_real(L, f, prec);
+    if (status == ADF_OK)
+        status = adf_drv_put_reals(out, L, digits);
+    adf_rootlist_clear(L);
+    return status;
+}
+
+/* adf_drv_solve_recover(out, v0, v1, v2, digits): the operation of the command "recover".  The
+   first operand is the finite ball whose residue class is wanted, so it must be a finite ball:
+   an adele or a complex adele is ADF_UNSUPPORTED and a rational is ADF_DOMAIN, as for the
+   command cap (tools/adf/README.md, "Types of the operands").  Then the two bounds as integers,
+   then the passage from the ball to the residue class, adf_resid_set_fball_forget, whose ADF_DOMAIN
+   is that of an exact ball (a single rational is in no residue class with m > 1) and of a
+   denominator not coprime to the radius, and the reconstruction itself. */
+static int
+adf_drv_solve_recover(FILE * out, const adf_drv_value * v0, const adf_drv_value * v1,
+                      const adf_drv_value * v2, slong digits)
+{
+    adf_resid_t x;
+    adf_rat_t q;
+    adf_recon_cert_t cert;
+    adf_drv_value z;
+    fmpz_t A, B;
+    int status;
+
+    if (v0->type == ADF_DRV_ADELE || v0->type == ADF_DRV_CADELE)
+        return ADF_UNSUPPORTED;
+    if (v0->type != ADF_DRV_FBALL)
+        return ADF_DOMAIN;
+    fmpz_init(A);
+    fmpz_init(B);
+    status = adf_drv_int_value(A, v1);
+    if (status == ADF_OK)
+        status = adf_drv_int_value(B, v2);
+    if (status != ADF_OK)
+    {
+        fmpz_clear(A);
+        fmpz_clear(B);
+        return status;
+    }
+    adf_resid_init(x);
+    status = adf_resid_set_fball_forget(x, v0->f);
+    if (status == ADF_OK)
+    {
+        adf_rat_init(q);
+        adf_recon_cert_init(cert);
+        status = adf_resid_reconstruct(q, cert, x, A, B, ADF_DRV_RECON_LIMIT);
+        if (status == ADF_OK)
+        {
+            adf_drv_value_init(&z);
+            z.type = ADF_DRV_RAT;
+            adf_rat_set(z.r, q);
+            status = adf_drv_value_print(out, &z, digits);
+            adf_drv_value_clear(&z);
+        }
+        adf_recon_cert_clear(cert);
+        adf_rat_clear(q);
+    }
+    adf_resid_clear(x);
+    fmpz_clear(A);
+    fmpz_clear(B);
+    return status;
+}
+
+/* adf_drv_solver(out, op, l, st): the three commands of the solvers, with the steps 2 to 5 of the
+   command at the top of this file.  The polynomial of "roots" and "realroots" is the first
+   operand and is read by adf_drv_poly_syntax in step 2; the other operands, and all three of
+   "recover", are read by adf_text_classify and by the typed parser of their kind as for every
+   other command. */
+static int
+adf_drv_solver(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state * st)
+{
+    adf_drv_value v[3];
+    adf_text_kind kind[3];
+    fmpz_poly_t f;
+    int status, i, nops, first, poly_first;
+
+    poly_first = (op != ADF_DRV_RECOVER);
+    nops = (op == ADF_DRV_REALROOTS) ? 1 : 3;
+    first = poly_first ? 1 : 0;    /* the index of the first operand that is a value text */
+    for (i = 0; i < 3; i++)
+    {
+        adf_drv_value_init(&v[i]);
+        kind[i] = ADF_TEXT_RAT;
+    }
+    fmpz_poly_init(f);
+    status = ADF_OK;
+
+    /* step 2: the syntax of every operand, in order */
+    if (poly_first)
+    {
+        status = adf_drv_poly_syntax(f, l->s[0], l->n[0]);
+        if (status != ADF_OK)
+            goto done;
+    }
+    for (i = first; i < nops; i++)
+    {
+        status = adf_text_classify(&kind[i], l->s[i], l->n[i], NULL);
+        if (status != ADF_OK)
+            goto done;
+    }
+    /* step 3: the kind of every operand, in order */
+    for (i = first; i < nops; i++)
+    {
+        if (adf_drv_kind_type(kind[i]) == ADF_DRV_OTHER)
+        {
+            status = ADF_UNSUPPORTED;
+            goto done;
+        }
+    }
+    /* step 4: the value of every operand, in order */
+    for (i = first; i < nops; i++)
+    {
+        status = adf_drv_value_read(&v[i], kind[i], l->s[i], l->n[i], st->prec);
+        if (status != ADF_OK)
+            goto done;
+    }
+    /* step 5: the operation, and step 6: the printer, inside it */
+    if (op == ADF_DRV_ROOTS)
+        status = adf_drv_solve_roots(out, f, &v[1], &v[2]);
+    else if (op == ADF_DRV_REALROOTS)
+        status = adf_drv_solve_realroots(out, f, st->prec, st->digits);
+    else
+        status = adf_drv_solve_recover(out, &v[0], &v[1], &v[2], st->digits);
+
+done:
+    fmpz_poly_clear(f);
+    for (i = 0; i < 3; i++)
+        adf_drv_value_clear(&v[i]);
+    return status;
+}
+
 /* ---- one command ---- */
 
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
@@ -939,6 +1456,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return (op == ADF_DRV_PREC)
                    ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, ADF_LIMIT, &st->prec)
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
+    if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
+        return adf_drv_solver(out, op, l, st);
 
     adf_drv_value_init(&x);
     adf_drv_value_init(&y);
