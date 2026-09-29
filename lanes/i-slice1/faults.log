@@ -1,0 +1,33 @@
+== F1: 1 changed line(s)
+<     arf_sub(l, a, r, p, ARF_RND_FLOOR);
+>     arf_sub(l, a, r, p, ARF_RND_CEIL);
+   test_ucoset: exit 0; 11 tests, 43178 checks, 0 failed checks, 0 failed tests
+   test_idele: exit 1; 12 tests, 8625 checks, 678 failed checks, 1 failed tests
+      FAIL vectors_of_the_reference (tests/test_idele.c:824, 678 failed checks)
+== F2: 1 changed line(s)
+<     b1 = fmpz_cmp_si(gap, p) > 0;
+>     b1 = fmpz_cmp_si(gap, p + 1) > 0;
+   test_ucoset: exit 0; 11 tests, 43178 checks, 0 failed checks, 0 failed tests
+   test_idele: exit 1; 12 tests, 8649 checks, 73 failed checks, 2 failed tests
+      FAIL spec5_sign_preservation (tests/test_idele.c:532, 1 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idele.c:824, 72 failed checks)
+== F3: 1 changed line(s)
+<         fmpz_fdiv_q_2exp(N, N, 1);
+>         fmpz_fdiv_q_2exp(N, N, 0);
+   test_ucoset: exit 1; 11 tests, 43178 checks, 1352 failed checks, 5 failed tests
+      FAIL set_swap_identical (tests/test_ucoset.c:256, 1 failed checks)
+      FAIL normalise_removes_the_factor_2_and_reduces (tests/test_ucoset.c:353, 12 failed checks)
+      FAIL examples_of_spec_5_and_the_exact_factor (tests/test_ucoset.c:378, 4 failed checks)
+      FAIL enumeration_mul_inv_predicates (tests/test_ucoset.c:520, 579 failed checks)
+      FAIL vectors_of_the_reference (tests/test_ucoset.c:634, 756 failed checks)
+   test_idele: exit 1; 12 tests, 8613 checks, 176 failed checks, 2 failed tests
+      FAIL the_point_one_is_in_x_times_x_inverse (tests/test_idele.c:645, 3 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idele.c:824, 173 failed checks)
+== F4: 1 changed line(s)
+<     st = ball_from_ends(t, lo, hi, sx * sy, p);
+>     (void) sx; (void) sy; arb_mul(t, x->inf, y->inf, p); st = arb_is_nonzero(t) ? ADF_OK : ADF_NOT_DETERMINED;
+   test_ucoset: exit 0; 11 tests, 43178 checks, 0 failed checks, 0 failed tests
+   test_idele: exit 1; 12 tests, 7965 checks, 421 failed checks, 3 failed tests
+      FAIL spec5_sign_preservation (tests/test_idele.c:532, 164 failed checks)
+      FAIL prec_below_2_is_2_and_huge_exponents (tests/test_idele.c:759, 1 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idele.c:824, 256 failed checks)

@@ -1,0 +1,32 @@
+# Lane i-slice1: red and green runs (times: `date` read at 22:59 and at 23:07; the others are estimated
+# between those readings and marked ~)
+
+## tests/test_ucoset.c
+
+22:59 red 1  make -j2 build/test_ucoset, no src/ucoset.c: link error (undefined reference to adf_ucoset_* ...);
+             the test file compiles.
+~23:00 red 2  src/ucoset.c as a stub (init/clear real, every other function a no-op returning 0):
+             11 tests, 43176 checks, 26550 failed checks, 10 failed tests; only layout_is_16_bytes_c_then_N
+             passes (the layout is the header's). Every other test fails by assertion:
+             init 6, is_canonical 12, set_swap_identical 4, set_fmpz2_reduces 45, set_fmpz2_refuses 26,
+             normalise 33, examples 20, aliasing 2760, enumeration 17438, vectors 6206 failed checks.
+~23:01 green  src/ucoset.c written: 11 tests, 43178 checks, 0 failed (enumeration 4356 ordered pairs at 3
+             levels, 8712 product sets, 132 inverse sets; vectors 1803 lines: 373 set with 152 DOMAIN,
+             1386 mul with 3 predicates, 44 inv). Two checks of get_fmpz2 with crossed members were added
+             before the implementation of that function ran (they are green with the temporaries).
+
+## tests/test_idele.c
+
+~23:03 red 1  make -j2 build/test_idele, no src/idele.c: link error; the test file compiles (after two compile
+             errors of the test itself were repaired: an unused helper, fmpq_equal_si with 3 arguments).
+~23:04 red 2  src/idele.c as a stub (init/clear real, is_canonical returns 1, every other function a no-op
+             returning 0): 12 tests, 9101 checks, 7660 failed checks, 11 failed tests; only layout_is_80_bytes
+             passes. init 2, is_canonical 9, set_parts 17, set_rat 48, spec5 144, product 8, point one 8,
+             not_determined 6, aliasing 40, prec/huge 9, vectors 7369 failed checks.
+~23:05 first run of src/idele.c: gcc 13 -Werror=stringop-overread on the inline fmpq_is_canonical; the
+             predicate of the content is written out (denominator > 0, numerator > 0, gcd = 1).
+~23:06 the test aborted in FLINT: arf_get_fmpq cannot convert an exponent of 10^21 (arf.rst:310-314): a defect
+             of the TEST (its oracle called on a huge exponent), not of the library. The oracle of that one
+             case was replaced by a multiplication back (z * 3 * 2^(10^21) contains 1).
+23:07 green  12 tests, 8613 checks, 0 failed (vectors 1758 lines: 260 set_rat, 749 mul, 749 inv; 489
+             NOT_DETERMINED as the reference says; 82 exact results; largest midpoint 3 bits below 2 p + 30).
