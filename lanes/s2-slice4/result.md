@@ -42,7 +42,7 @@ temporary status are rewritten (the prime, the macro, the route, the statuses, t
   table 1, nine rows in table 3 S.2, item 5 under "Sources pending for milestone S").
 - `lanes/s2-slice4/`: brief.md (given), progress.md, redgreen.log, mutants.py, mutants.log,
   bench_roots_modp_2026-09-29T144527Z.txt (the bench result file, moved here from bench/results/),
-  checkall.log, check_san.log, check_clang.log, result.md.
+  checkall.log, check_san.log, check_clang.log, check_headers.log, result.md.
 
 ## Sources fetched (refs/fetch_sources.sh, into the shared refs/src)
 
@@ -152,9 +152,10 @@ Full checks:
   test sets, all pass; `python3 tools/mutate/selftest.py`: "selftest: passed: the weak test leaves a survivor,
   the strong test leaves none, and no process of a mutant is left"; `python3 tools/memcheck/selftest.py`:
   "selftest: passed".
-SAN_LINE
-CLANG_LINE
-HEADERS_LINE
+- `make clean && make -j2 check SAN=1`: last line "check passed: all 57 test programs" (log check_san.log; 0 lines
+  with "runtime error", "AddressSanitizer" or "LeakSanitizer").
+- `make clean && make -j2 check CC=clang`: last line "check passed: all 57 test programs" (log check_clang.log).
+- `sh lanes/m1-headers/check_headers.sh`: last line "check_headers: passed" (log check_headers.log).
 
 ## Not done
 

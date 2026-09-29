@@ -33,3 +33,4 @@
   coefficient by its own random factor, so the planted roots were not roots); repaired. 180 s run, seed 1:
   166075 calls, 0 disagreements (smoke test).
 - Next: make clean && make check-all; SAN=1; CC=clang; check_headers.sh; result.md.
+- All checks run; result.md written. Lane finished (open item: tests/julia/roots.jl:188, not mine).
