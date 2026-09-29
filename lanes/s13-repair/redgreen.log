@@ -1,0 +1,4 @@
+RED (scratch build/red with HEAD src/resid.c, src/linsolve.c, new tests/test_s13_repair.c):
+ hand certificates: 4 failed checks; grid 500192 claims: 16466 FAIL lines (verifier accepts claims that are not the status of the function); verifier cost test: no end within timeout 60 (5e9 rounds); linsolve: 6 failed checks (LIMIT 2 malloc 4 calloc; exact ball + LIMIT returned UNSUPPORTED w/ 3 calloc; UNSUPPORTED 3 calloc)
+GREEN: test_s13_repair 4 tests 649359 checks 0 failed; test_resid_rest 17 tests 7607041 checks 0 failed (old src: 69023 FAIL lines); test_linsolve_rest 13 tests 0 failed
+MUTATIONS (scratch build/mut, one at a time, test_s13_repair): M1 OK w/o X<=ell 6 failed checks; M2 NO_SOLUTION w/o X<=ell 10 failed; M3 verifier search to X: timeout 60 (rc 124), 46190 FAIL lines; M4 LIMIT test dropped from precheck: 3 failed checks

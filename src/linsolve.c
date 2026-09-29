@@ -895,11 +895,33 @@ adf_linsol_contains(const adf_linsol_t sol, const fmpz_mat_t x)
     return in;
 }
 
-/* docs/proofs/solvers.md:841 (Proposition 2.9): with the canonical triples (a_i, h_i, d_i) of the balls,
-   N = lcm(h_i), A'[i][j] = (N/h_i) d_i A[i][j], b'_i = (N/h_i) a_i. Returns ADF_OK with A', b', N built,
-   ADF_DOMAIN if r is not the number of rows of A, ADF_UNSUPPORTED if some ball is exact. Nothing is built
-   on a status other than OK. */
+/* fball_precheck(A, b, r): the refusals of adf_linsolve_fball, decided from the sizes and the flags of
+   the balls, before anything is allocated (S-D8, docs/SPEC.md 15.3; review s13, finding 3). In this order:
+   ADF_DOMAIN if r is not the number of rows of A; ADF_LIMIT if r + c > ADF_LINSOLVE_DIM_MAX (the test of
+   adf_linsolve_mod, on the same sizes, since A' has the shape of A); ADF_UNSUPPORTED if some ball is exact.
+   A ball is exact exactly when its stored H is 0 (adf_fball_is_exact reads the field): a local ball has
+   H = K >= 2 and is never exact, so no ball is recombined and no allocation is made for this test.
+   Returns ADF_OK if none applies. */
 static int
+fball_precheck(const fmpz_mat_t A, const adf_fball_struct * b, slong r)
+{
+    slong i, c = A->c;
+
+    if (r != A->r)
+        return ADF_DOMAIN;
+    if (r > ADF_LINSOLVE_DIM_MAX || c > ADF_LINSOLVE_DIM_MAX - r)
+        return ADF_LIMIT;
+    for (i = 0; i < r; i++)
+        if (adf_fball_is_exact(b + i))
+            return ADF_UNSUPPORTED;
+    return ADF_OK;
+}
+
+/* docs/proofs/solvers.md:841 (Proposition 2.9): with the canonical triples (a_i, h_i, d_i) of the balls,
+   N = lcm(h_i), A'[i][j] = (N/h_i) d_i A[i][j], b'_i = (N/h_i) a_i. Precondition: fball_precheck gave
+   ADF_OK, so r = A->r, r + c is within the limit and no h_i is 0. Builds A2, b2, N (A2 and b2 are
+   initialised here, N by the caller). */
+static void
 fball_system(fmpz_mat_t A2, fmpz_mat_t b2, fmpz_t N, const fmpz_mat_t A, const adf_fball_struct * b, slong r)
 {
     slong i, j, c = A->c;
@@ -907,41 +929,30 @@ fball_system(fmpz_mat_t A2, fmpz_mat_t b2, fmpz_t N, const fmpz_mat_t A, const a
     fmpz * h;
     fmpz * d;
     fmpz_t q;
-    int status = ADF_OK;
 
-    if (r != A->r)
-        return ADF_DOMAIN;
     a = _fmpz_vec_init(r);
     h = _fmpz_vec_init(r);
     d = _fmpz_vec_init(r);
     for (i = 0; i < r; i++)
-    {
         adf_fball_get_fmpz3(a + i, h + i, d + i, b + i);
-        if (fmpz_is_zero(h + i))
-            status = ADF_UNSUPPORTED;
-    }
-    if (status == ADF_OK)
+    fmpz_init(q);
+    fmpz_one(N);
+    for (i = 0; i < r; i++)
+        fmpz_lcm(N, N, h + i);
+    fmpz_mat_init(A2, r, c);
+    fmpz_mat_init(b2, r, 1);
+    for (i = 0; i < r; i++)
     {
-        fmpz_init(q);
-        fmpz_one(N);
-        for (i = 0; i < r; i++)
-            fmpz_lcm(N, N, h + i);
-        fmpz_mat_init(A2, r, c);
-        fmpz_mat_init(b2, r, 1);
-        for (i = 0; i < r; i++)
-        {
-            fmpz_divexact(q, N, h + i);
-            fmpz_mul(fmpz_mat_entry(b2, i, 0), q, a + i);
-            fmpz_mul(q, q, d + i);
-            for (j = 0; j < c; j++)
-                fmpz_mul(fmpz_mat_entry(A2, i, j), q, fmpz_mat_entry(A, i, j));
-        }
-        fmpz_clear(q);
+        fmpz_divexact(q, N, h + i);
+        fmpz_mul(fmpz_mat_entry(b2, i, 0), q, a + i);
+        fmpz_mul(q, q, d + i);
+        for (j = 0; j < c; j++)
+            fmpz_mul(fmpz_mat_entry(A2, i, j), q, fmpz_mat_entry(A, i, j));
     }
+    fmpz_clear(q);
     _fmpz_vec_clear(a, r);
     _fmpz_vec_clear(h, r);
     _fmpz_vec_clear(d, r);
-    return status;
 }
 
 int
@@ -951,14 +962,14 @@ adf_linsolve_fball(adf_linsol_t sol, const fmpz_mat_t A, const adf_fball_struct 
     fmpz_t N;
     int status;
 
+    status = fball_precheck(A, b, r);
+    if (status != ADF_OK)
+        return status;                                      /* DOMAIN, LIMIT, UNSUPPORTED: no allocation */
     fmpz_init(N);
-    status = fball_system(A2, b2, N, A, b, r);
-    if (status == ADF_OK)
-    {
-        status = adf_linsolve_mod(sol, A2, b2, N);          /* LIMIT, OK or NO_SOLUTION */
-        fmpz_mat_clear(A2);
-        fmpz_mat_clear(b2);
-    }
+    fball_system(A2, b2, N, A, b, r);
+    status = adf_linsolve_mod(sol, A2, b2, N);              /* OK or NO_SOLUTION (LIMIT was decided above) */
+    fmpz_mat_clear(A2);
+    fmpz_mat_clear(b2);
     fmpz_clear(N);
     return status;
 }
@@ -968,15 +979,15 @@ adf_linsol_verify_fball(const adf_linsol_t sol, const fmpz_mat_t A, const adf_fb
 {
     fmpz_mat_t A2, b2;
     fmpz_t N;
-    int ok = 0;
+    int ok;
 
+    if (fball_precheck(A, b, r) != ADF_OK)
+        return 0;                                           /* no allocation on a refusal */
     fmpz_init(N);
-    if (fball_system(A2, b2, N, A, b, r) == ADF_OK)
-    {
-        ok = adf_linsol_verify(sol, A2, b2, N);
-        fmpz_mat_clear(A2);
-        fmpz_mat_clear(b2);
-    }
+    fball_system(A2, b2, N, A, b, r);
+    ok = adf_linsol_verify(sol, A2, b2, N);
+    fmpz_mat_clear(A2);
+    fmpz_mat_clear(b2);
     fmpz_clear(N);
     return ok;
 }

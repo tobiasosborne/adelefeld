@@ -681,18 +681,15 @@ is_solution(const adf_resid_t x, const fmpz_t A, const fmpz_t B, const fmpz_t n,
     return ok;
 }
 
-/* enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, ell, status): the search resid_search, so the complete
-   enumeration of Proposition 1.5 (4) is the case ell = WORD_MAX. Returns what resid_search returns, and
-   0 before it when the enumeration cannot be run: a pair with T = 0, which (C4) forbids and which
-   resid_search cannot use, or a complete enumeration whose round counter X is above a word, since then
-   the rounds could not all be visited in one call. A cut search (ell < WORD_MAX) runs min(X, ell)
-   rounds and is bounded by ell, so X above a word is no obstacle there. The point found is written to
-   (fn, fd). */
+/* enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, ell, status): the search resid_search with the same ell as
+   adf_resid_reconstruct uses (ell = max(limit, 0)), so at most min(X, ell) rounds are run and the status
+   is the one the function returns (repair of review s13, findings 1 and 2). Returns 0 before it when the
+   search cannot be run: a pair with T = 0, which (C4) forbids. The point found is written to (fn, fd). */
 static int
 enumerate_all(fmpz_t fn, fmpz_t fd, const fmpz_t Rp, const fmpz_t Tp, const fmpz_t R, const fmpz_t T,
               const fmpz_t A, const fmpz_t B, const fmpz_t X, slong ell, int * status)
 {
-    if (fmpz_is_zero(T) || (ell == WORD_MAX && fmpz_cmp_si(X, WORD_MAX) > 0))
+    if (fmpz_is_zero(T))
     {
         *status = -1;
         return 0;
@@ -727,8 +724,8 @@ adf_resid_verify_result(const adf_resid_t x, const fmpz_t A, const fmpz_t B, slo
 
     if (status == ADF_NOT_UNIQUE)
     {
-        /* P1.11 (1) with the complete enumeration (the second way of note 4 of api-s.md section 2):
-           two solutions must be found. A >= m is proved by Proposition 1.6 (a) and needs no search.
+        /* P1.11 (1) with the cut search of the function (the second way of note 4 of api-s.md section 2):
+           two reduced points must be found in the rounds x <= min(ell, X). A >= m is proved by Proposition 1.6 (a) and needs no search.
            The certificate is not read: the claim is about the set, not about the pair. */
         if (fmpz_cmp(A, x->m) >= 0)
             ok = 1;
@@ -739,7 +736,7 @@ adf_resid_verify_result(const adf_resid_t x, const fmpz_t A, const fmpz_t B, slo
             fmpz_abs(X, T);
             fmpz_fdiv_q(X, B, X);                  /* X = floor(B/|T|) */
             if (fmpz_cmp(w, x->m) >= 0)            /* else 1.6 (c): at most one solution */
-                ok = enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, WORD_MAX, &st) && st == ADF_NOT_UNIQUE;
+                ok = enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, ell, &st) && st == ADF_NOT_UNIQUE;
         }
         goto done;
     }
@@ -768,8 +765,8 @@ adf_resid_verify_result(const adf_resid_t x, const fmpz_t A, const fmpz_t B, slo
             fmpz_gcd(g, R, T);
             ok = !fmpz_is_one(g);
         }
-        else                                        /* Proposition 1.6 (d): the complete enumeration */
-            ok = enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, WORD_MAX, &st) && st == ADF_NO_SOLUTION;
+        else                                        /* Proposition 1.6 (d): the cut search, complete when X <= ell */
+            ok = enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, ell, &st) && st == ADF_NO_SOLUTION;
         goto done;
     }
 
@@ -788,7 +785,7 @@ adf_resid_verify_result(const adf_resid_t x, const fmpz_t A, const fmpz_t B, slo
             ok = fmpz_equal(fmpq_numref(q->q), g) && fmpz_equal(fmpq_denref(q->q), fd);
         }
         else                                        /* Proposition 1.6 (d) */
-            ok = enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, WORD_MAX, &st) && st == ADF_OK
+            ok = enumerate_all(fn, fd, Rp, Tp, R, T, A, B, X, ell, &st) && st == ADF_OK
                  && fmpz_equal(fn, fmpq_numref(q->q)) && fmpz_equal(fd, fmpq_denref(q->q));
         goto done;
     }

@@ -192,18 +192,27 @@ int adf_linsol_contains(const adf_linsol_t sol, const fmpz_mat_t x);
    N = lcm(h_i) (N = 1 for r = 0), A'[i][j] = (N/h_i) d_i A[i][j] and b'_i = (N/h_i) a_i, the set is
    the inverse image in Zhat^c of the solutions of A' x = b' modulo N (solvers P2.9, line 841), and
    sol is the answer adf_linsolve_mod(sol, A', b', N) gives; sol->N is that lcm.
-   Statuses, in the order in which they are decided:
+   Statuses, in the order in which they are decided, all three before anything is allocated (S-D8;
+   repair of review s13, finding 3):
      ADF_DOMAIN: r is not the number of rows of A; sol untouched.
-     ADF_UNSUPPORTED (edit E-C1): some b[i] is exact (h_i = 0), the request of solvers P2.9, "what
-       is not covered"; sol untouched.
-     then those of adf_linsolve_mod for (A', b', N): OK, NO_SOLUTION (sol written), LIMIT
-       (r + c > ADF_LINSOLVE_DIM_MAX; sol untouched). DOMAIN cannot come from that call.
+     ADF_LIMIT: r + c > ADF_LINSOLVE_DIM_MAX, decided from the sizes (A' has the shape of A); sol
+       untouched.
+     ADF_UNSUPPORTED (edit E-C1): some b[i] is exact (H = 0 in the stored triple), the request of
+       solvers P2.9, "what is not covered"; sol untouched. The test reads the stored field H: a local
+       ball has H = K >= 2 and is never exact, so no ball is recombined for it.
+     then those of adf_linsolve_mod for (A', b', N): OK and NO_SOLUTION (sol written). DOMAIN and
+       LIMIT cannot come from that call.
+   The three refusals make no allocation at all (tested with the FLINT allocation hooks: 0 calls of
+   malloc, calloc and realloc). The order differs from an earlier text, in which UNSUPPORTED came
+   before LIMIT: a system with an exact ball and r + c above the limit now gives LIMIT.
    The balls are not changed. Cost: r c multiplications for A', an lcm per row, and adf_linsolve_mod. */
 int adf_linsolve_fball(adf_linsol_t sol, const fmpz_mat_t A, const adf_fball_struct * b, slong r);
 
-/* adf_linsol_verify_fball(sol, A, b, r): 1 if r is the number of rows of A, no b[i] is exact, and
-   adf_linsol_verify(sol, A', b', N) holds for the system (A', b', N) of P2.9 built as above; else
-   0. A predicate. Cost: that of adf_linsol_verify plus the construction of A', b', N. */
+/* adf_linsol_verify_fball(sol, A, b, r): 1 if r is the number of rows of A, r + c <= ADF_LINSOLVE_DIM_MAX,
+   no b[i] is exact, and adf_linsol_verify(sol, A', b', N) holds for the system (A', b', N) of P2.9 built
+   as above; else 0. A predicate. The three refusals are decided before anything is allocated (no
+   allocation on them). A system above the limit is refused with 0: adf_linsolve_fball never returns a
+   sol for it. Cost: that of adf_linsol_verify plus the construction of A', b', N. */
 int adf_linsol_verify_fball(const adf_linsol_t sol, const fmpz_mat_t A, const adf_fball_struct * b, slong r);
 
 /* adf_linsol_get_fball(x, sol, j): the ball x0[j] + rho_j Zhat, rho_j = gcd(N, G[0][j], ...,

@@ -1835,18 +1835,13 @@ claim_true(slong m, slong c, slong A, slong B, slong limit, int status, slong qn
     slong n1, d1, n2, d2, nel;
 
     expected_r(m, c, A, B, limit, &st, &n1, &d1, &n2, &d2, &nel);
-    /* Proposition 1.11: a claim of NO_SOLUTION is certified by the emptiness of the set, a claim of
-       NOT_UNIQUE by two elements of it, both whatever the limit is (1.11 (1) and (2)); a claim of OK
-       needs q to be the only element; the claim of NOT_DETERMINED is the four conditions of 1.7 (3),
-       which do depend on the limit. */
+    /* Repair of review s13: the verifier accepts the claim "adf_resid_reconstruct returned status for
+       this limit (and q on OK)", so the claim is true exactly when the status of expected_r is the
+       claimed one and, on OK, q is its first point. */
     if (status == ADF_OK)
-        return nel == 1 && qn == n1 && qd == d1;
-    if (status == ADF_NO_SOLUTION)
-        return nel == 0;
-    if (status == ADF_NOT_UNIQUE)
-        return nel >= 2;
-    if (status == ADF_NOT_DETERMINED)
-        return st == ADF_NOT_DETERMINED;
+        return st == ADF_OK && qn == n1 && qd == d1;
+    if (status == ADF_NO_SOLUTION || status == ADF_NOT_UNIQUE || status == ADF_NOT_DETERMINED)
+        return st == status;
     return 0;
 }
 
@@ -2047,16 +2042,61 @@ ADF_TEST(verify_result_on_the_vectors)
         /* the status of adf_resid_reconstruct, which is what the checker is asked about */
         if (st == ADF_NOT_UNIQUE)
         {
-            fmpq_t qq;
-            fmpz_t num, den;
+            /* review s13, finding 4: this branch asserts what a NOT_UNIQUE line says. q is untouched,
+               the certificate is the one of the vector, the verifier accepts the claim and refuses OK
+               with the first solution of the vector (the set has at least two elements). */
+            const jsonl_value *cv, *nv, *dv;
+            adf_rat_t first;
+            fmpz_t fn2, fd2;
 
-            fmpq_init(qq);
-            fmpz_init(num);
-            fmpz_init(den);
-            fmpz_set_ui(num, fmpz_fdiv_ui(fmpq_numref(qq), 1));  /* not used; q is untouched here */
-            fmpz_clear(den);
-            fmpz_clear(num);
-            fmpq_clear(qq);
+            ADF_CHECK_MSG(fmpz_equal_si(fmpq_numref(q->q), -12345) && fmpz_is_one(fmpq_denref(q->q)),
+                          "line %lu: q was written on NOT_UNIQUE", (unsigned long) i + 1);
+            ADF_CHECK(jsonl_field(rec, "cert", &cv, &err) == 1);
+            if (jsonl_is_null(cv, &err) == 1)
+                ADF_CHECK_MSG(cert->kind == 0, "line %lu: the file has no certificate, the call gave kind %d",
+                              (unsigned long) i + 1, cert->kind);
+            else
+            {
+                ADF_CHECK_MSG(cert->kind == 1 && jsonl_size(cv) == 4, "line %lu: certificate kind %d",
+                              (unsigned long) i + 1, cert->kind);
+                if (cert->kind == 1 && jsonl_size(cv) == 4)
+                {
+                    fmpz_t e;
+
+                    fmpz_init(e);
+                    ADF_CHECK(fmpz_set_str(e, jsonl_int_text(jsonl_at(cv, 0, &err), &err), 10) == 0);
+                    ADF_CHECK_MSG(fmpz_equal(e, cert->Rp), "line %lu: Rp differs", (unsigned long) i + 1);
+                    ADF_CHECK(fmpz_set_str(e, jsonl_int_text(jsonl_at(cv, 1, &err), &err), 10) == 0);
+                    ADF_CHECK_MSG(fmpz_equal(e, cert->Tp), "line %lu: Tp differs", (unsigned long) i + 1);
+                    ADF_CHECK(fmpz_set_str(e, jsonl_int_text(jsonl_at(cv, 2, &err), &err), 10) == 0);
+                    ADF_CHECK_MSG(fmpz_equal(e, cert->R), "line %lu: R differs", (unsigned long) i + 1);
+                    ADF_CHECK(fmpz_set_str(e, jsonl_int_text(jsonl_at(cv, 3, &err), &err), 10) == 0);
+                    ADF_CHECK_MSG(fmpz_equal(e, cert->T), "line %lu: T differs", (unsigned long) i + 1);
+                    fmpz_clear(e);
+                }
+            }
+            ADF_CHECK_MSG(adf_resid_verify_result(x, fA, fB, limit, ADF_NOT_UNIQUE, q, cert) == 1,
+                          "line %lu: the verifier refuses the NOT_UNIQUE result", (unsigned long) i + 1);
+            ADF_CHECK(jsonl_field(rec, "n", &nv, &err) == 1);
+            ADF_CHECK(jsonl_field(rec, "d", &dv, &err) == 1);
+            adf_rat_init(first);
+            fmpz_init(fn2);
+            fmpz_init(fd2);
+            ADF_CHECK_MSG(jsonl_is_null(nv, &err) == 0, "line %lu: no first solution in the file",
+                          (unsigned long) i + 1);
+            if (jsonl_is_null(nv, &err) == 0)
+            {
+                ADF_CHECK(fmpz_set_str(fn2, jsonl_int_text(nv, &err), 10) == 0);
+                ADF_CHECK(fmpz_set_str(fd2, jsonl_int_text(dv, &err), 10) == 0);
+                fmpz_swap(fmpq_numref(first->q), fn2);
+                fmpz_swap(fmpq_denref(first->q), fd2);
+                ADF_CHECK_MSG(adf_resid_verify_result(x, fA, fB, limit, ADF_OK, first, cert) == 0,
+                              "line %lu: the verifier accepts OK with the first solution although a "
+                              "second exists", (unsigned long) i + 1);
+            }
+            fmpz_clear(fn2);
+            fmpz_clear(fd2);
+            adf_rat_clear(first);
         }
         ADF_CHECK(jsonl_field(rec, "status", &v, &err) == 1);
         est = status_of(v, "recon_first.jsonl", &err);
@@ -2097,9 +2137,8 @@ ADF_TEST(verify_result_on_the_vectors)
             undecided++;
             /* the only reason for a true claim not to be decided here is a complete enumeration whose
                round counter is above a word; a cut claim (NOT_DETERMINED) is always decided */
-            ADF_CHECK_MSG(xbig && st != ADF_NOT_DETERMINED,
-                          "line %lu (m of %s bits, status %d): the claim is not decided although X fits in "
-                          "a word", (unsigned long) i + 1, "the file", st);
+            ADF_CHECK_MSG(0, "line %lu (status %d): a result of adf_resid_reconstruct was not accepted",
+                          (unsigned long) i + 1, st);
         }
         /* a changed claim: the status of the file where it differs, and the q of the file */
         if (st == ADF_NOT_UNIQUE)
@@ -2119,6 +2158,7 @@ ADF_TEST(verify_result_on_the_vectors)
     ADF_CHECK(jsonl_count(f) > 10000);
     ADF_CHECK(accepted + undecided == jsonl_count(f));
     ADF_CHECK(accepted > 10000);
+    ADF_CHECK(undecided == 0);             /* every result is accepted, X above a word or not */
     ADF_CHECK(bigX > 100);                 /* the large operands of the file really have X above a word */
     ADF_CHECK(changed_refused > 0);
     ADF_CHECK(changed_true == 0);          /* a NOT_UNIQUE claim cannot be an OK claim as well */
@@ -2173,10 +2213,10 @@ ADF_TEST(verify_result_when_X_is_above_a_word)
     fmpz_abs(aT, cert->T);
     fmpz_fdiv_q(X, fB, aT);
     ADF_CHECK_MSG(fmpz_cmp_si(X, WORD_MAX) > 0, "X = %s fits in a word", fmpz_get_str(NULL, 10, X));
-    /* the claim is true (two solutions exist, P1.11 (1)), but this checker cannot decide it: the
-       enumeration that would certify it has more rounds than a word holds. The header says so. */
-    ADF_CHECK_MSG(adf_resid_verify_result(x, fA, fB, 1, ADF_NOT_UNIQUE, q, cert) == 0,
-                  "the claim NOT_UNIQUE with X above a word was decided; the header says 0 there");
+    /* the claim is what adf_resid_reconstruct returned; the cut search of at most min(1, X) = 1 round
+       decides it (repair of review s13, finding 2), X above a word is no obstacle */
+    ADF_CHECK_MSG(adf_resid_verify_result(x, fA, fB, 1, ADF_NOT_UNIQUE, q, cert) == 1,
+                  "the claim NOT_UNIQUE with X above a word and limit 1 was not accepted");
     /* the two solutions, tested directly as P1.11 (1) does */
     ADF_CHECK(mkrat(q, -2, 1) == ADF_OK);
     ADF_CHECK(adf_resid_contains_rat(x, q) == 1);
