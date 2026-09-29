@@ -91,7 +91,8 @@
    and before any allocation whose size grows with the limit; a limit that follows from the arguments
    alone comes before any allocation; one that follows from s or from the depth of a class is known
    only after g and the valuation are computed). A function that finds its own result refused by its
-   own check, or a Newton step that does not raise the precision, aborts (decision S-D20). Every exponent (s + 1, max(prec_p, s + 1), 2 k - s, k + s, 2 K) is
+   own check, or a Newton step that does not raise the precision, aborts (decision S-D20). Every
+   exponent (s + 1, max(prec_p, s + 1), 2 k - s, k + s, 2 K) is
    computed with checked slong arithmetic. A precision K with 2 K bits(p) > ADF_ROOTS_BITS_MAX gives
    ADF_LIMIT; 2 K bits(p) is the bound used for the bit length of p^(2 K), the largest power of p the
    seed function forms. The value of the limit is a policy, not a measured budget. The search of
