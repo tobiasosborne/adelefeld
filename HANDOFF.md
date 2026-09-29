@@ -4,6 +4,20 @@
 
 ## Session 2026-09-29, 09:15 to 14:10: START HERE
 
+**RECOVERY NOTE, written 16:25 (read first if the session ended at the quota limit).** Six Claude lanes
+were launched at 16:24 to use the quota that expires at 18:00: `d-realroots`, `d-ideles`, `d-functions`
+(designs, Fable), `s2-slice4` (roots modulo primes above `2^20`, Opus), `s-protosync`, `m1-small` (Sonnet).
+Briefs: `lanes/<lane>/brief.md`. NONE is merged, reviewed or checked by the orchestrator. Their work is
+saved by `tools/orch/autosave.sh` every five minutes as WIP commits on the branches
+`worktree-agent-<id>` of origin (log: `../adelefeld-wt/autosave.log`; stop it with
+`touch lanes/AUTOSAVE_STOP`). To recover: `git fetch; git branch -r | grep worktree-agent`; in each branch
+read `lanes/<lane>/progress.md` and `result.md` (a lane without `result.md` did not finish); land a
+finished lane as always (all checks on master, read BEFORE the push); continue an unfinished one with a new
+agent from its branch and its `progress.md`. Also running: four differential runs of one hour each
+(`../adelefeld-wt/longrun/longrun.log`; linear systems and the seed function ended with 0 disagreements;
+Algorithm P until about 17:07, real roots until about 18:07); their results are NOT yet in the worklog.
+
+
 **One line.** Milestone S is implemented in slices and reviewed slice by slice: reconstruction from a
 residue (S.3), linear systems modulo `N` (S.1), roots at a prime and real roots (S.2). What is missing:
 the root search for primes between `2^20` and `2^64`. Nothing is running. Everything is pushed.
