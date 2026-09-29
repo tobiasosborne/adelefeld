@@ -359,8 +359,13 @@ int adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, sl
    Aliasing: L is an output of its own type; f is an input and may be L->g: L is written only after
    the result has been computed. Allocates: g*, deg g complex balls of FLINT, the n stored balls, and
    the exact end points of each ball. Cost: one gcd of f and f'; FLINT's count and isolation; at most
-   four exact evaluations of g at dyadic points of about prec bits for each ball and n - 1 comparisons
-   (solvers P3.10). */
+   four exact evaluations of g at the dyadic end points of each ball and n - 1 comparisons (solvers
+   P3.10). The end points have the bit length that FLINT's isolation worked with, which is not bounded
+   by prec: it grows with the size of the roots and with the inverse of their distance. The cost is not
+   bounded by the header either. Measured (docs/reviews/s2/review-real.md, a laptop, prec = 2, the
+   squarefree quadratic with the roots 2^e and 2^e + 1): e = 600: 0.03 s; e = 1200: 9.4 s, end points
+   of 2^20 bits; e = 1500: 97 s; e = 1800: no answer in 175 s. Nearly all of it is inside
+   arb_fmpz_poly_complex_roots (refs/src/flint-3.0.1/arb_fmpz_poly.rst:98 to 105). */
 int adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec);
 
 /* ---- accessors ---- */
