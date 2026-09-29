@@ -1,0 +1,12 @@
+== build/libadelefeld.so is up to date with src/*.c and include/adelefeld/*.h; reusing it
+== julia version 1.12.5
+== retrying with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10 (Julia's bundled libgmp lacks a symbol libflint needs; see the header comment of this script)
+Test Summary:                                      | Pass  Total  Time
+adelefeld Julia smoke test (build/libadelefeld.so) |   48     48  0.2s
+Test Summary:                       | Pass  Total  Time
+adf_resid_reconstruct through ccall |   28     28  0.1s
+Test Summary:                             | Pass  Total  Time
+adf_resid_reconstruct_first through ccall |   16     16  0.1s
+Test Summary:                            | Pass  Total  Time
+adf_resid_set_fball_forget through ccall |   14     14  0.1s
+test_julia: passed (with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10)
