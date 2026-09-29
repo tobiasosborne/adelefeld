@@ -703,14 +703,19 @@ ADF_TEST(planted_roots_repeated_large_close_and_dyadic)
         fmpz_mul_2exp(fmpq_denref(r + 1), fmpq_denref(r + 1), 40);
         mult[0] = 1; mult[1] = 2;
         planted("2^-40 apart", 1, r, mult, 2, NULL, 0, prec);
-        /* X - 10^400. The pair (X - 10^400)(X - 10^400 - 1) of check_s2_real_planted is a line of the vectors
-           (test 8) only: arb_fmpz_poly_complex_roots takes about 28 s for it at every prec (its balls carry
-           midpoints of 2^21 bits), too long to repeat here */
+        /* X - 10^400. The pair (X - 10^400)(X - 10^400 - 1) of check_s2_real_planted was a line of the vectors
+           (test 8) only: arb_fmpz_poly_complex_roots took about 28 s for it at every prec (its balls carried
+           midpoints of 2^21 bits). Lane r-slice1 (the candidates of src/roots_real.c) adds it here, below */
         fmpz_set_ui(fmpq_numref(r + 0), 10);
         fmpz_pow_ui(fmpq_numref(r + 0), fmpq_numref(r + 0), 400);
         fmpz_one(fmpq_denref(r + 0));
         mult[0] = 1;
         planted("X - 10^400", 1, r, mult, 1, NULL, 0, prec);
+        /* lane r-slice1: (X - 10^400)(X - 10^400 - 1)^2 */
+        fmpz_add_ui(fmpq_numref(r + 1), fmpq_numref(r + 0), 1);
+        fmpz_one(fmpq_denref(r + 1));
+        mult[1] = 2;
+        planted("(X - 10^400)(X - 10^400 - 1)^2", 1, r, mult, 2, NULL, 0, prec);
         /* Wilkinson's polynomial of degree 20 */
         for (i = 0; i < 20; i++)
         {

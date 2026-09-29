@@ -176,6 +176,27 @@ class RealCases(unittest.TestCase):
                     self.assertTrue(contract_ok(f, prec, res, len(roots)), (roots, prec, res[:3]))
                     self.assertTrue(planted_ok(res[2], roots))
 
+    def test_nested_when_prec_grows(self):
+        """Design R4(4) (lane r-slice1): the balls for a larger prec lie in those for a smaller one; the floor of
+        an item is static. Includes 191/3, 193/3 (accuracies that differ by one bit across 64)."""
+        n = 0
+        for roots in ([F(1, 3), F(2, 3)], [F(1, 3), F(1, 2), F(2, 3)], [F(191, 3), F(193, 3)],
+                      [F(1021, 3), F(1025, 3), F(1027, 3)], [F(-1, 3), F(0), F(1, 3)]):
+            f = [1]
+            for r in roots:
+                f = sc.pmul(f, [-r.numerator, r.denominator])
+            for refine in ("bisect", "qir"):
+                prev = None
+                for prec in (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 16, 20, 30, 53, 100):
+                    res = ri.real_roots(f, prec, refine=refine)
+                    self.assertTrue(contract_ok(f, prec, res, len(roots)))
+                    if prev is not None:
+                        for (lo0, hi0), (lo1, hi1) in zip(prev, res[2]):
+                            self.assertTrue(lo0 <= lo1 and hi1 <= hi0, (roots, prec, refine))
+                            n += 1
+                    prev = res[2]
+        self.assertGreater(n, 200)
+
     def test_planted_random(self):
         rnd = random.Random(20260929)
         pool = [F(-3), F(-1, 2), F(0), F(1, 3), F(1), F(1) + F(1, 2 ** 40), F(10) ** 30, -F(1, 10 ** 20),

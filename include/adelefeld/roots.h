@@ -144,10 +144,10 @@ extern "C" {
 #define ADF_ROOTS_P_EVAL_MAX 128
 
 /* The largest precision of adf_roots_real, 2^21 bits (about 630000 decimal digits). Above it the
-   function returns ADF_LIMIT before any allocation. The bound keeps the balls of FLINT, whose accuracy
-   may exceed the precision asked for (arb_fmpz_poly.rst:98 to 101), well inside the admissible size
-   of "Real balls" (2^24). A policy of this slice (HEADER-FINDING of lane s2-slice3: docs/api-s.md 4
-   names no LIMIT for adf_roots_real). */
+   function returns ADF_LIMIT before any allocation. The bound keeps the balls, whose accuracy may be up
+   to about twice the precision asked for (the last quadratic refinement step, docs/design/real-roots.md
+   section 6), well inside the admissible size of "Real balls" (2^24). A policy of this slice
+   (HEADER-FINDING of lane s2-slice3: docs/api-s.md 4 names no LIMIT for adf_roots_real). */
 #define ADF_ROOTS_REAL_PREC_MAX 2097152
 
 /* Layout (64 bit, fixed by this slice and pinned in tests/test_roots_seed.c): 120 bytes, alignment 8.
@@ -349,37 +349,49 @@ int adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, sl
 
    A prec below 2 is taken as 2 (M1-D4). The steps: g = g*, the normalised polynomial of f (squarefree,
    L3.1(2)); for g constant the list is empty (count 0). Else count = fmpz_poly_num_real_roots(g)
-   (fmpz_poly.rst:3265 to 3268; S-D11: this count is trusted); the enclosures of
-   arb_fmpz_poly_complex_roots(g, prec) (arb_fmpz_poly.rst:66 to 79) with imaginary part exactly
-   zero (arb_is_zero), in the order given, are candidates (their isolation is not trusted). For each
-   candidate the exact test of solvers P3.8 is made on its exact end points; if it fails, the ball is
-   widened once to the same midpoint and twice the radius (2^(-prec) for radius 0: [lo - r, hi + r],
-   step 5) and tested again. The list is written only if every stored ball (after any widening) passes
-   the test, the stored balls satisfy hi_i < lo_(i+1), their number equals count, and every stored ball
-   has arb_rel_accuracy_bits (arb.rst:506 to 509) at least prec or is exact (S-D19: measured on the
-   balls that are stored). Then each ball holds exactly one real root of f and every real root of f
-   is in a ball (P3.10(1), P3.8(2)); a multiple root of f is one simple root of g, its multiplicity is
-   not reported (P3.10(3)). The balls pass adf_rootlist_verify_entries and _verify_complete.
+   (fmpz_poly.rst:3265 to 3268; S-D11: this count is trusted); the candidates come from an isolation of
+   the real roots of g in exact integer arithmetic, bisection with Descartes' rule of signs, and a
+   refinement of each isolating interval by galloping from 0 or from a neighbouring root, quadratic
+   interval refinement and bisection, to the accuracy max(prec, 2) (src/roots_real.c; the statements and
+   proofs: docs/design/real-roots.md, R1 to R5). Their isolation is not trusted. For each candidate the
+   exact test of solvers P3.8 is made on its exact end points; if it fails, the ball is widened once to
+   the same midpoint and twice the radius (2^(-prec) for radius 0: [lo - r, hi + r], step 5) and tested
+   again. The list is written only if every stored ball (after any widening) passes the test, the stored
+   balls satisfy hi_i < lo_(i+1), their number equals count, and every stored ball has
+   arb_rel_accuracy_bits (arb.rst:506 to 509) at least prec or is exact (S-D19: measured on the balls
+   that are stored). Then each ball holds exactly one real root of f and every real root of f is in a
+   ball (P3.10(1), P3.8(2)); a multiple root of f is one simple root of g, its multiplicity is not
+   reported (P3.10(3)). The balls pass adf_rootlist_verify_entries and _verify_complete. Of the method,
+   not promised by this interface: a root m 2^t with m odd of at most max(prec, 2) + 1 bits comes out as
+   an exact ball (design R4(3)), and the balls for a larger prec lie in those for a smaller one (R4(4)).
 
    Statuses, in the order in which they are decided:
      ADF_DOMAIN (edit E-C1): f = 0; L untouched.
-     ADF_LIMIT: prec > ADF_ROOTS_REAL_PREC_MAX, decided before any allocation; or a candidate ball of
-       FLINT not of admissible size ("Real balls"), decided before its end points are formed; L
-       untouched.
+     ADF_LIMIT: prec > ADF_ROOTS_REAL_PREC_MAX, decided before any allocation; or the isolation or the
+       refinement would need an interval of width below 2^(2 - ADF_ROOTS_BITS_MAX) (a real root closer
+       than that to 0 or to another root, or accuracy asked below that width), decided before that
+       interval is formed; or a candidate ball not of admissible size ("Real balls"; a root of absolute
+       value 2^ADF_ROOTS_BITS_MAX or more), decided before its end points are formed; L untouched.
      ADF_NOT_DETERMINED (S-D19): a test of P3.8 fails after the widening, two stored balls are not
        strictly ordered, the number of candidates differs from count, or the accuracy of a stored ball
-       is below max(prec, 2); a larger prec may succeed; L untouched.
+       is below max(prec, 2); L untouched. The candidates satisfy all of these by construction (design
+       R5), so this status means that FLINT's count and the isolation disagree: a defect, not a
+       property of f; no input is known that gives it.
      ADF_OK: L written as above (for f constant: the empty list, count 0).
    Aliasing: L is an output of its own type; f is an input and may be L->g: L is written only after
-   the result has been computed. Allocates: g*, deg g complex balls of FLINT, the n stored balls, and
-   the exact end points of each ball. Cost: one gcd of f and f'; FLINT's count and isolation; at most
-   four exact evaluations of g at the dyadic end points of each ball and n - 1 comparisons (solvers
-   P3.10). The end points have the bit length that FLINT's isolation worked with, which is not bounded
-   by prec: it grows with the size of the roots and with the inverse of their distance. The cost is not
-   bounded by the header either. Measured (docs/reviews/s2/review-real.md, a laptop, prec = 2, the
-   squarefree quadratic with the roots 2^e and 2^e + 1): e = 600: 0.03 s; e = 1200: 9.4 s, end points
-   of 2^20 bits; e = 1500: 97 s; e = 1800: no answer in 175 s. Nearly all of it is inside
-   arb_fmpz_poly_complex_roots (refs/src/flint-3.0.1/arb_fmpz_poly.rst:98 to 105). */
+   the result has been computed. Allocates: g*, the polynomials of the isolation (at most deg g / 2 on
+   its stack at a time), deg g balls, and the exact end points of each ball. Cost: one gcd of f and f';
+   FLINT's count; the isolation: a tree of O(n (K - log2 sigma)) nodes (n = deg g, 2^K a bound on the
+   roots, sigma their least distance; design R3), each two Taylor shifts of degree n; the refinement of
+   each root: O(log) evaluations of g for galloping, then at most 8 evaluations for each halving of the
+   width (design section 6); then at most four exact evaluations of g at the end points of each ball
+   and n - 1 comparisons (solvers P3.10). The end points have about max(prec, log2(|r| / distance to
+   the next root)) bits, up to about twice prec after the last quadratic step. Measured
+   (lanes/r-slice1/runs/bench_after.txt, a shared laptop, prec = 2, the squarefree quadratic with the
+   roots 2^e and 2^e + 1, which took 111.5 s at e = 1500 with the old candidates of
+   arb_fmpz_poly_complex_roots): e = 1500: 0.00007 s; e = 100000: 0.014 s. A cluster of roots far from 0
+   at the scale of its own distances (2^e + 1/3, 2^e + 2/3) costs about e levels of the tree: 0.22 s at
+   e = 30000. X^2 - 2 at prec = 2^21: 0.86 s. */
 int adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec);
 
 /* ---- accessors ---- */

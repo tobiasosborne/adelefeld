@@ -20,7 +20,13 @@ asserts, for every call:
   - every C ball has arb_rel_accuracy_bits >= max(prec, 2) or is exact;
   - adf_rootlist_is_canonical, adf_rootlist_verify_entries and adf_rootlist_verify_complete accept the list.
 It prints the counts of each status, of roots, of exact balls and of reduced inputs. Exit status 1 on the first
-disagreement. The reference replaces S.sturm_chain by a memoised wrapper of the same function (speed only)."""
+disagreement. The reference replaces S.sturm_chain by a memoised wrapper of the same function (speed only).
+
+Lane r-slice1 (the candidates of src/roots_real.c) added: (1) the same input also goes to real_roots of
+proto/real_isolation.py, the reference of docs/design/real-roots.md, which runs the same algorithm in Python
+integers; the C balls must equal its balls exactly (every end point), unless --no-same; (2) the families of the
+review finding (roots 2^e and 2^e + 1), clusters 2^e + i/3 and close pairs 1/3 and 1/3 + 2^-e / 3, with e up to
+2000 (--big-e), and planted dyadic roots."""
 import argparse
 import ctypes
 import os
@@ -31,6 +37,7 @@ from fractions import Fraction as F
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "proto"))
 import solvers_checks as S  # noqa: E402
+import real_isolation as RI  # noqa: E402
 
 _chain = S.sturm_chain
 _memo = {}
@@ -168,9 +175,30 @@ def rand_root(rng):
     return F(rng.randint(-5, 5), 10 ** rng.randint(5, 25))                       # near 0
 
 
+BIG_E = 2000
+
+
 def draw_poly(rng):
     u = rng.random()
-    if u < 0.02:
+    if u < 0.08:                                                                 # the families of lane r-slice1
+        e = rng.randint(1, BIG_E)
+        v = rng.random()
+        if v < 0.3:
+            return S.pmul([rng.choice((1, 1234567, -3))], S.pmul([-2 ** e, 1], [-2 ** e - 1, 1]))
+        if v < 0.6:
+            f = [1]
+            for i in range(1, rng.randint(2, 4) + 1):
+                f = S.pmul(f, [-3 * 2 ** e - i, 3])
+            return f
+        if v < 0.8:
+            return S.pmul([-1, 3], [-2 ** e - 1, 3 * 2 ** e])
+        f = [rng.choice((1, -5))]
+        for _ in range(rng.randint(1, 4)):                                       # dyadic roots, some repeated
+            m, t = rng.randint(-2 ** 20, 2 ** 20), rng.randint(-60, 60)
+            r = F(m) * F(2) ** t
+            f = S.pmul(f, [-r.numerator, r.denominator])
+        return f
+    if u < 0.1:
         return [0] * rng.randint(0, 3)                                           # the zero polynomial
     if u < 0.3:
         big = rng.random() < 0.3
@@ -204,7 +232,10 @@ def main():
     ap.add_argument("--seconds", type=float, default=30)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--lib", default="build/libadelefeld.so")
+    ap.add_argument("--no-same", action="store_true", help="do not compare with proto/real_isolation.py")
+    ap.add_argument("--big-e", type=int, default=BIG_E)
     args = ap.parse_args()
+    globals()["BIG_E"] = args.big_e
     if not os.path.exists(args.lib):
         print(f"{args.lib} not found: run sh tests/test_exports.sh first")
         return 2
@@ -212,7 +243,7 @@ def main():
     rng = random.Random(args.seed)
     t_end = time.time() + args.seconds
     by_status = {}
-    n = n_roots = n_exact = n_reduced = n_none = 0
+    n = n_roots = n_exact = n_reduced = n_none = n_same = n_same_fail = 0
     while time.time() < t_end:
         f = draw_poly(rng)
         prec = draw_prec(rng)
@@ -246,6 +277,13 @@ def main():
                             if meet != (i == j):
                                 fails.append(f"C ball {i} [{clo}, {chi}] and enclosure {j} [{elo}, {ehi}]: "
                                              f"meet {meet}")
+                if not args.no_same:
+                    st2, n2, balls2, _ = RI.real_roots(ft, prec)
+                    if st2 != RI.OK or balls2 != got["balls"]:
+                        fails.append(f"C balls {got['balls']} differ from proto/real_isolation.py {st2} {balls2}")
+                        n_same_fail += 1
+                    else:
+                        n_same += 1
                 if not got["acc_ok"]:
                     fails.append("a ball below the accuracy max(prec, 2)")
                 if got["scope"] != 0 or got["complete"] != 1:
@@ -265,7 +303,7 @@ def main():
             return 1
     print(f"diff_roots_real: {n} calls in {args.seconds:.0f} s, seed {args.seed}; statuses {by_status}; roots "
           f"{n_roots}, exact balls {n_exact}, lists without a root {n_none}, reduced inputs {n_reduced}; "
-          f"0 disagreements")
+          f"lists equal to proto/real_isolation.py {n_same}; 0 disagreements")
     return 0
 
 

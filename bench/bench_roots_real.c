@@ -25,7 +25,17 @@
              close   (X - 1)(2^e X - 2^e - 1): roots 1 and 1 + 2^-e        small roots close together
              deg     prod_(i = 1..d) (X - 2^e - i)                         degree d, roots near 2^e
              small   prod_(i = 1..d) (X - i)                               degree d, small roots (e ignored)
-   Every polynomial is squarefree with real roots only, so the count is d (2 for the first three). */
+             thirds  (3X - 3 2^e - 1)(3X - 3 2^e - 2)                      roots 2^e + 1/3, 2^e + 2/3
+             sqrt2   X^2 - 2                                               e and d ignored (high prec)
+             x5      X^5 - X - 1                                           e and d ignored (high prec)
+             mignotte X^d - 2 (2^e X - 1)^2                                two roots very close to 2^-e
+   The first seven are squarefree with real roots only, so the count is d (2 for pair, far, close, thirds).
+
+   Lane r-slice1 added the last four families, the modes below and --run:
+             eval2   the exact signs at the 2 n end points of the balls that adf_roots_real returns, by the rule
+                     above: the unit of the lower bound of docs/PERF.md (the certificate needs these signs)
+   bench_roots_real --run   the table of lanes/r-slice1/result.md: mode adf and mode eval2 on a fixed list of
+                     inputs, the median of 5 runs of each (so that `make -C bench run` runs this file too). */
 
 #define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
@@ -93,6 +103,40 @@ family(fmpz_poly_t g, const char * name, ulong e, slong d)
     {
         fmpz_one(b); mul_linear(g, a, b);
         fmpz_mul_2exp(a, a, e); fmpz_add_ui(b, a, 1); mul_linear(g, a, b);
+    }
+    else if (!strcmp(name, "thirds"))
+    {
+        /* (3X - 3 2^e - 1)(3X - 3 2^e - 2): the roots 2^e + 1/3, 2^e + 2/3 (not dyadic) */
+        fmpz_set_ui(a, 3);
+        fmpz_one(b); fmpz_mul_2exp(b, b, e); fmpz_mul_ui(b, b, 3); fmpz_add_ui(b, b, 1); mul_linear(g, a, b);
+        fmpz_add_ui(b, b, 1); mul_linear(g, a, b);
+    }
+    else if (!strcmp(name, "sqrt2"))
+    {
+        fmpz_poly_zero(g);                      /* X^2 - 2 */
+        fmpz_poly_set_coeff_si(g, 2, 1);
+        fmpz_poly_set_coeff_si(g, 0, -2);
+    }
+    else if (!strcmp(name, "x5"))
+    {
+        fmpz_poly_zero(g);                      /* X^5 - X - 1 */
+        fmpz_poly_set_coeff_si(g, 5, 1);
+        fmpz_poly_set_coeff_si(g, 1, -1);
+        fmpz_poly_set_coeff_si(g, 0, -1);
+    }
+    else if (!strcmp(name, "mignotte"))
+    {
+        fmpz_poly_t t;                          /* X^d - 2 (2^e X - 1)^2 */
+        fmpz_poly_init(t);
+        fmpz_poly_zero(g);
+        fmpz_poly_set_coeff_si(g, d, 1);
+        fmpz_one(a); fmpz_mul_2exp(a, a, e);
+        fmpz_poly_set_coeff_fmpz(t, 1, a);
+        fmpz_poly_set_coeff_si(t, 0, -1);
+        fmpz_poly_mul(t, t, t);
+        fmpz_poly_scalar_mul_si(t, t, 2);
+        fmpz_poly_sub(g, g, t);
+        fmpz_poly_clear(t);
     }
     else if (!strcmp(name, "deg") || !strcmp(name, "small"))
     {
@@ -220,6 +264,143 @@ sign_at(const fmpz_poly_t g, const fmpz_t m, ulong k)
     return s;
 }
 
+#ifndef NO_ADF
+/* the sign of g at m 2^e for e of any sign (e >= 0: the value itself; e < 0: sign_at above) */
+static int
+sign_2exp(const fmpz_poly_t g, const fmpz_t m, const fmpz_t e)
+{
+    fmpz_t x, r;
+    int s;
+
+    if (fmpz_sgn(e) < 0)
+    {
+        fmpz_init(x);
+        fmpz_neg(x, e);
+        s = sign_at(g, m, fmpz_get_ui(x));
+        fmpz_clear(x);
+        return s;
+    }
+    fmpz_init(x);
+    fmpz_init(r);
+    fmpz_mul_2exp(x, m, fmpz_get_ui(e));
+    fmpz_poly_evaluate_fmpz(r, g, x);
+    s = fmpz_sgn(r);
+    fmpz_clear(x);
+    fmpz_clear(r);
+    return s;
+}
+
+/* one call of adf_roots_real: wall time, status, number of balls, the largest mantissa */
+static double
+run_adf(const fmpz_poly_t g, slong prec, int * st, slong * balls, slong * bits)
+{
+    adf_rootlist_t L;
+    arb_t x;
+    double t0, t1;
+    slong i;
+
+    adf_rootlist_init(L);
+    arb_init(x);
+    t0 = now();
+    *st = adf_roots_real(L, g, prec);
+    t1 = now();
+    *bits = 0;
+    for (i = 0; adf_rootlist_get_arb(x, L, i); i++)
+        *bits = FLINT_MAX(*bits, arb_bits(x));
+    *balls = i;
+    arb_clear(x);
+    adf_rootlist_clear(L);
+    return t1 - t0;
+}
+
+/* the time of the exact signs of g at the end points of the balls of adf_roots_real(g, prec) (one sign for an
+   exact ball): the work that the certificate of solvers P3.8 cannot avoid, repeated for at least 0.2 s */
+static double
+run_eval2(const fmpz_poly_t g, slong prec, slong * signs)
+{
+    adf_rootlist_t L;
+    fmpz_t a, b, e;
+    double t0, t1;
+    slong i, rep = 0;
+    int s = 0;
+
+    adf_rootlist_init(L);
+    fmpz_init(a);
+    fmpz_init(b);
+    fmpz_init(e);
+    adf_roots_real(L, g, prec);
+    *signs = 0;
+    t0 = now();
+    do
+    {
+        for (i = 0; i < L->n; i++)
+        {
+            arb_get_interval_fmpz_2exp(a, b, e, L->ball + i);
+            s += sign_2exp(L->g, a, e);
+            if (!fmpz_equal(a, b))
+                s += sign_2exp(L->g, b, e);
+            if (rep == 0)
+                *signs += fmpz_equal(a, b) ? 1 : 2;
+        }
+        rep++;
+        t1 = now();
+    }
+    while (t1 - t0 < 0.2);
+    (void) s;
+    fmpz_clear(a);
+    fmpz_clear(b);
+    fmpz_clear(e);
+    adf_rootlist_clear(L);
+    return (t1 - t0) / (double) rep;
+}
+
+static int
+cmp_double(const void * x, const void * y)
+{
+    double a = *(const double *) x, b = *(const double *) y;
+    return (a > b) - (a < b);
+}
+
+/* --run: the table of lanes/r-slice1/result.md */
+static int
+run_table(void)
+{
+    static const struct { const char * fam; ulong e; slong d, prec; } row[] = {
+        { "pair", 600, 0, 2 }, { "pair", 1500, 0, 2 }, { "pair", 3000, 0, 2 }, { "pair", 10000, 0, 2 },
+        { "pair", 10000, 0, 53 }, { "pair", 100000, 0, 2 }, { "thirds", 3000, 0, 2 }, { "thirds", 10000, 0, 53 },
+        { "thirds", 30000, 0, 2 }, { "close", 1200, 0, 2 },
+        { "close", 10000, 0, 2 }, { "far", 100000, 0, 2 }, { "deg", 300, 2, 2 }, { "deg", 300, 4, 2 },
+        { "deg", 300, 8, 2 }, { "deg", 300, 16, 2 }, { "small", 0, 20, 53 }, { "mignotte", 7, 20, 53 },
+        { "sqrt2", 0, 0, 53 }, { "sqrt2", 0, 0, 4096 }, { "sqrt2", 0, 0, 65536 }, { "sqrt2", 0, 0, 2097152 },
+        { "x5", 0, 0, 65536 },
+    };
+    fmpz_poly_t g;
+    double t[5], ev;
+    slong r, j, balls, bits, signs;
+    int st;
+
+    printf("# bench_roots_real --run: adf_roots_real, median of 5 wall times; eval2 = the exact signs at the end\n"
+           "# points of its balls (the floor of docs/PERF.md, restricted to certificates by exact signs)\n");
+    printf("family e d prec seconds_median seconds_min seconds_max status balls largest_mantissa_bits "
+           "signs eval2_seconds ratio\n");
+    fmpz_poly_init(g);
+    for (r = 0; r < (slong) (sizeof(row) / sizeof(row[0])); r++)
+    {
+        family(g, row[r].fam, row[r].e, row[r].d);
+        for (j = 0; j < 5; j++)
+            t[j] = run_adf(g, row[r].prec, &st, &balls, &bits);
+        qsort(t, 5, sizeof(double), cmp_double);
+        ev = run_eval2(g, row[r].prec, &signs);
+        printf("%s %lu %ld %ld %.6f %.6f %.6f %d %ld %ld %ld %.9f %.1f\n", row[r].fam, row[r].e, (long) row[r].d,
+               (long) row[r].prec, t[2], t[0], t[4], st, (long) balls, (long) bits, (long) signs, ev, t[2] / ev);
+        fflush(stdout);
+    }
+    fmpz_poly_clear(g);
+    flint_cleanup();
+    return 0;
+}
+#endif
+
 int
 main(int argc, char ** argv)
 {
@@ -228,9 +409,14 @@ main(int argc, char ** argv)
     slong d, prec, i, deg;
     double t0, t1;
 
+#ifndef NO_ADF
+    if (argc == 2 && !strcmp(argv[1], "--run"))
+        return run_table();
+#endif
     if (argc != 6)
     {
-        fprintf(stderr, "usage: %s flint|trace|count|eval|adf pair|far|close|deg|small e d prec\n", argv[0]);
+        fprintf(stderr, "usage: %s flint|trace|count|eval|eval2|adf FAMILY e d prec   or   %s --run\n", argv[0],
+                argv[0]);
         return 2;
     }
     e = strtoul(argv[3], NULL, 10);
@@ -294,24 +480,23 @@ main(int argc, char ** argv)
                (t1 - t0) / (double) rep, (long) rep, (long) fmpz_bits(m), s);
         fmpz_clear(m);
     }
-    else if (!strcmp(argv[1], "adf"))
+    else if (!strcmp(argv[1], "adf") || !strcmp(argv[1], "eval2"))
     {
 #ifndef NO_ADF
-        adf_rootlist_t L;
-        arb_t x;
-        slong bits = 0;
+        slong bits = 0, balls = 0, signs = 0;
         int st;
-        adf_rootlist_init(L);
-        arb_init(x);
-        t0 = now();
-        st = adf_roots_real(L, g, prec);
-        t1 = now();
-        for (i = 0; adf_rootlist_get_arb(x, L, i); i++)
-            bits = FLINT_MAX(bits, arb_bits(x));
-        printf("adf: %.6f s, status %d, balls %ld, largest mantissa %ld bits\n", t1 - t0, st, (long) i,
-               (long) bits);
-        arb_clear(x);
-        adf_rootlist_clear(L);
+        if (argv[1][0] == 'a')
+        {
+            t1 = run_adf(g, prec, &st, &balls, &bits);
+            printf("adf: %.6f s, status %d, balls %ld, largest mantissa %ld bits\n", t1, st, (long) balls,
+                   (long) bits);
+        }
+        else
+        {
+            t1 = run_eval2(g, prec, &signs);
+            printf("eval2: %.9f s for the %ld exact signs at the end points of the balls\n", t1, (long) signs);
+        }
+        (void) i;
 #else
         fprintf(stderr, "built with NO_ADF\n");
         return 2;
