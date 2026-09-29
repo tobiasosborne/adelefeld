@@ -24,7 +24,16 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 03:44 on 2026-09-29 (one job; look at it first).**
+**NOTHING IS RUNNING (04:23 on 2026-09-29). The sweep was stopped by the harness at about 04:21 ("the system is
+running low on memory"); it is NOT to be started again before TJO says so.** At 04:22 the machine had 24 GB
+available, no process of the sweep was left and its scratch directory was removed by the tool. Seven files
+are done (table `lanes/m1-sweep/sweep.md` in the worktree); the run of `src/recon.c` was cut after its first
+survivor. The script resumes with `recon.c` when it is started again
+(`../adelefeld-wt/m1-sweep/lanes/m1-sweep/sweep.sh`). Suspicion, not examined: a mutant of `recon.c` that
+removes the guard of M1-D3 lets a test build integers of `2^36` bits, under the sanitizers; if so, run
+`recon.c` with `--jobs 1` and a limit of memory (`ulimit -v`).
+
+**The state of the jobs before the stop:**
 
 | Job | Model | Where | State |
 |---|---|---|---|
