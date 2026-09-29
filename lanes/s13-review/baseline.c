@@ -1,0 +1,10 @@
+#define adf_resid_init baseline_resid_init
+#define adf_resid_clear baseline_resid_clear
+#define adf_resid_set_fmpz2 baseline_resid_set_fmpz2
+#define adf_resid_get_fmpz2 baseline_resid_get_fmpz2
+#define adf_resid_is_canonical baseline_resid_is_canonical
+#define adf_recon_cert_init baseline_recon_cert_init
+#define adf_recon_cert_clear baseline_recon_cert_clear
+#define adf_recon_cert_check baseline_recon_cert_check
+#define adf_resid_reconstruct baseline_resid_reconstruct
+#include "resid_29845cc.c"
