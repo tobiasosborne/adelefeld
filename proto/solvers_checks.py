@@ -473,6 +473,66 @@ def check_s3_limit():
            f"'limit 0 is 2AB >= m' fails {zero_cx} times; {bad} failures")
 
 
+def recon_search_status(m, c, A, B, cert, ell):
+    """The search of step (d) of Algorithm R, on its own: (status, first point) after at most min(ell, X) rounds,
+    X = floor(B / |T|). The same as `resid_search` of src/resid.c, which the C verifier calls. Needs 0 <= A < m,
+    m <= 2 A B, |T| <= B, and a pair that satisfies (C1) to (C4)."""
+    found = []
+    X = B // abs(cert[3])
+    for n, d in lattice_points(m, c, A, B, cert, xmax=ell):
+        if gcd(n, d) == 1:
+            found.append((n, d))
+            if len(found) == 2:
+                return NOT_UNIQUE, found[0]
+    if X > ell:
+        return NOT_DETERMINED, (found[0] if found else None)
+    if len(found) == 1:
+        return OK, found[0]
+    return NO_SOLUTION, None
+
+
+def recon_verify_returned(m, c, A, B, limit, status, sols, cert):
+    """The semantics of `adf_resid_verify_result` (src/resid.c, after review s13): 1 exactly when `status` is
+    the status that `recon_partial(m, c, A, B, limit)` returns, and for OK also the point (sols = [point]).
+    Cost: at most min(ell, X) rounds, ell = max(limit, 0). The list `sols` is read for OK only (the C function
+    reads q for OK only); the certificate is read for OK, NO_SOLUTION and NOT_DETERMINED, not for NOT_UNIQUE."""
+    if m < 1:
+        return status == DOMAIN
+    if A < 0 or B < 1:
+        return status == NO_SOLUTION
+    c %= m
+    ell = max(limit, 0)
+    if status == NOT_UNIQUE:
+        if A >= m:
+            return True                                            # Proposition 1.6 (a)
+        pair = eea_pair(m, c, A)                                   # the own pair; the given one is not read
+        if abs(pair[3]) > B or 2 * A * B < m:
+            return False
+        return recon_search_status(m, c, A, B, pair, ell)[0] == NOT_UNIQUE
+    if status not in (OK, NO_SOLUTION, NOT_DETERMINED):
+        return False
+    if A >= m or cert is None or not cert_pair_ok(m, c, A, cert):
+        return False
+    Rp, Tp, R, T = cert
+    if status == NO_SOLUTION:
+        if abs(T) > B:
+            return True
+        if 2 * A * B < m:
+            return gcd(R, T) != 1
+        return recon_search_status(m, c, A, B, cert, ell)[0] == NO_SOLUTION
+    if status == OK:
+        sols = list(sols)
+        if len(sols) != 1 or not is_solution(m, c, A, B, *sols[0]) or abs(T) > B:
+            return False
+        if 2 * A * B < m:
+            return sols[0] == ((1 if T > 0 else -1) * R, abs(T))
+        st, pt = recon_search_status(m, c, A, B, cert, ell)
+        return st == OK and pt == sols[0]
+    if 2 * A * B < m or abs(T) > B or B // abs(T) <= ell:          # NOT_DETERMINED
+        return False
+    return recon_search_status(m, c, A, B, cert, ell)[0] == NOT_DETERMINED
+
+
 def recon_truth(m, c, A, B, limit, status, sols, ref, exp):
     """Is the claim (status, sols) true? From the enumeration `ref` and `expected_recon` (which recounts the four
     conditions); it uses no certificate and no verifier."""
@@ -553,6 +613,62 @@ def check_s3_verify():
            f"recon_first count 0/1/2: {firsts[0]}/{firsts[1]}/{firsts[2]}; the lowering shortcut certifies "
            f"NOT_UNIQUE {short_ok} times and fails {short_fail} times (m = 2, c = 1, A = B = 1 fails); {bad} "
            f"failures")
+
+
+def check_s3_verify_returned():
+    """`recon_verify_returned` (Proposition 1.12): for every m <= 14 and the limits -1, 0, 1, 2, 5, every result
+    of `recon_partial` is accepted; a changed claim is accepted exactly when it is what `recon_partial` returns
+    (the status, and for OK the point); everything it accepts is accepted by `recon_verify_result` (fewer);
+    the three inputs of finding 1 of review s13 are refused; the input of finding 2 is refused at once."""
+    n = claims_n = acc = cert_n = sub_bad = bad = differ = 0
+    for m in range(1, 15):
+        for c in [x for x in range(-m, 2 * m + 1) if 0 <= x < m or x % 3 == 0]:
+            for A in range(-1, 2 * m + 2):
+                for B in (0, 1, 2, 3, 5, 8):
+                    for limit in (-1, 0, 1, 2, 5):
+                        st, sols, cert = recon_partial(m, c, A, B, limit)
+                        n += 1
+                        if not recon_verify_returned(m, c, A, B, limit, st, sols, cert):
+                            bad += 1
+                        for s2 in (OK, NO_SOLUTION, NOT_UNIQUE, NOT_DETERMINED, DOMAIN):
+                            for sols2 in (sols, sols[:1], sols[:1] * 2, [], [(1, 1)], [(0, 1), (1, 1)]):
+                                claims_n += 1
+                                want = s2 == st and (s2 != OK or (len(sols2) == 1 and sols2[0] == sols[0]))
+                                got = recon_verify_returned(m, c, A, B, limit, s2, sols2, cert)
+                                # the list is read for OK only: for the others the list of the result is used
+                                old = recon_verify_result(m, c, A, B, limit, s2, sols2 if s2 == OK else sols, cert)
+                                acc += got
+                                bad += got != want
+                                sub_bad += got and not old
+                                differ += old and not got
+                        if cert is not None and st in (OK, NO_SOLUTION, NOT_DETERMINED):
+                            for cert2 in ((cert[0], cert[1], cert[2], -cert[3]),
+                                          (cert[0] + m, cert[1], cert[2], cert[3]), None):
+                                cert_n += 1
+                                if recon_verify_returned(m, c, A, B, limit, st, sols, cert2) \
+                                        and not (cert2 is not None and cert_pair_ok(m, c % m, A, cert2)):
+                                    bad += 1
+    # the three inputs of finding 1 (limit 0: NOT_DETERMINED is what the function returns)
+    three = [((10, 1, 2, 5), OK, [(1, 1)], (10, 0, 1, 1)),
+             ((2, 1, 1, 1), NOT_UNIQUE, [(-1, 1), (1, 1)], (2, 0, 1, 1)),
+             ((4, 2, 1, 2), NO_SOLUTION, [], (2, 1, 0, -2))]
+    three_ok = 0
+    for (m, c, A, B), s2, sl, ct in three:
+        three_ok += (recon_partial(m, c, A, B, 0)[0] == NOT_DETERMINED and cert_pair_ok(m, c, A, ct)
+                     and recon_verify_result(m, c, A, B, 0, s2, sl, ct)
+                     and not recon_verify_returned(m, c, A, B, 0, s2, sl, ct))
+    t0 = time.time()
+    f2 = not recon_verify_returned(2, 0, 1, 5 * 10 ** 9, 0, OK, [(0, 1)], (2, 0, 0, 1))
+    f2_time = time.time() - t0
+    f2_true = recon_partial(2, 0, 1, 5 * 10 ** 9, 0)[0] == NOT_DETERMINED
+    report("check_s3_verify_returned", bad == 0 and sub_bad == 0 and three_ok == 3 and f2 and f2_true
+           and f2_time < 1 and differ > 0,
+           f"{n} results of recon_partial accepted (m <= 14, limits -1, 0, 1, 2, 5); {claims_n} claims tried, "
+           f"{acc} accepted, all and only the returned status; {sub_bad} accepted by recon_verify_returned but "
+           f"not by recon_verify_result; {differ} claims accepted by recon_verify_result and refused by the "
+           f"returned-status verifier; {cert_n} changed certificates; finding 1: {three_ok} of 3 inputs "
+           f"refused (the old verifier accepts them); finding 2 (B = 5e9, limit 0) refused in {f2_time:.4f} s; "
+           f"{bad} failures")
 
 
 def check_s3_ranges():
@@ -741,7 +857,7 @@ def probe_s3_flint():
 
 
 PART1 = [check_s3_coprime, check_s3_certificate, check_s3_param, check_s3_complete, check_s3_limit,
-         check_s3_verify, check_s3_ranges, check_s3_edge, check_s3_forget, probe_s3_flint]
+         check_s3_verify, check_s3_verify_returned, check_s3_ranges, check_s3_edge, check_s3_forget, probe_s3_flint]
 
 # =========================================================================================================
 # Part 2. S.1: linear systems modulo N
@@ -756,9 +872,10 @@ def pivot_col(row):
     return None
 
 
-def howell(rows, ncols, N):
+def howell(rows, ncols, N, third_pair=True, stats=None):
     """Algorithm H of solvers.md 2.5: the Howell form of the span of the rows over Z/N, as the list of its
-    non-zero rows in the order of their pivot columns."""
+    non-zero rows in the order of their pivot columns. `third_pair=False` leaves out the pending pair of the third
+    case (Remark after Proposition 2.5, check_s1_third_case); `stats` counts the cases taken."""
     T = {}
     stack = [([x % N for x in v], 0) for v in reversed(rows)]
     while stack:
@@ -784,7 +901,10 @@ def howell(rows, ncols, N):
             w2 = [(s * x + t * y) % N for x, y in zip(v, w)]
             v = [((h // g) * x - (a // g) * y) % N for x, y in zip(v, w)]
             T[j] = w2
-            stack.append(([((N // g) * x) % N for x in w2], j + 1))
+            if stats is not None:
+                stats["third"] += 1
+            if third_pair:
+                stack.append(([((N // g) * x) % N for x in w2], j + 1))
             j += 1
     cols = sorted(T)
     H = [T[j] for j in cols]
@@ -912,6 +1032,52 @@ def check_s1_howell():
                 if not ok:
                     bad += 1
     report("check_s1_howell", bad == 0, f"{n} row sets over Z/N, N in {MODULI}, up to 3 columns; {bad} failures")
+
+
+def check_s1_third_case():
+    """Remark after Proposition 2.5: the pending pair ((N/g) w', j + 1) of the third case of Algorithm H is
+    implied by the others. Algorithm H with and without it gives the same output (the Howell form, so also the
+    same as the form of the brute-force definition for small N). Counts the row sets on which the third case was
+    taken, and how many times."""
+    n = bad = with_third = times = 0
+    rng = random.Random(20260929)
+    for N in (4, 6, 8, 9, 12, 16, 18, 24, 30, 36, 60, 64, 72, 100, 210, 360, 1024, 2 ** 20 * 3 ** 5 * 5, 6 ** 20):
+        for ncols in (1, 2, 3, 4, 5):
+            for _ in range(240):
+                nrows = rng.randint(0, 6)
+                divs = [d for d in range(1, min(N, 400) + 1) if N % d == 0]
+                rows = []
+                for _r in range(nrows):
+                    r = [rng.randrange(N) for _c in range(ncols)]
+                    if rng.random() < 0.7:                   # entries with many common divisors with N
+                        r = [(x * rng.choice(divs)) % N for x in r]
+                    rows.append(r)
+                st = {"third": 0}
+                H1 = howell(rows, ncols, N, True, st)
+                H2 = howell(rows, ncols, N, False)
+                n += 1
+                if H1 != H2 or not is_howell(H2, ncols, N):
+                    bad += 1
+                if st["third"]:
+                    with_third += 1
+                    times += st["third"]
+    small = 0
+    for N in (4, 6, 8, 9, 12):                               # against the definition, without the pair
+        for ncols in (1, 2, 3):
+            if N ** ncols > 1800:
+                continue
+            for _ in range(30):
+                rows = rand_rows(rng.randint(0, 4), ncols, N)
+                Sset = span_brute(rows, ncols, N)
+                Bh, unique = howell_brute(Sset, ncols, N)
+                H2 = howell(rows, ncols, N, False)
+                small += 1
+                if not unique or Bh != H2:
+                    bad += 1
+    report("check_s1_third_case", bad == 0 and n >= 20000 and with_third > 0,
+           f"{n} row sets (19 moduli up to 6^20, up to 5 columns, up to 6 rows): output with and without the "
+           f"pair identical, and in Howell form; the third case taken on {with_third} row sets, {times} times in "
+           f"all; {small} small sets equal to the brute-force Howell form without the pair; {bad} failures")
 
 
 def check_s1_canonical():
@@ -1549,7 +1715,7 @@ def probe_s1_hnf():
            f"{bad} differences")
 
 
-PART2 = [check_s1_howell, check_s1_canonical, check_s1_assoc, check_s1_solve, check_s1_cert_sound,
+PART2 = [check_s1_howell, check_s1_third_case, check_s1_canonical, check_s1_assoc, check_s1_solve, check_s1_cert_sound,
          check_s1_checker_mutants, check_s1_duality, check_s1_edge, check_s1_adelic, probe_s1_flint,
          probe_s1_flint_empty, probe_s1_hnf]
 # =========================================================================================================
