@@ -1,0 +1,28 @@
+Red-green log of the lane s3-slice2 (commands: make -j2 build/test_resid build/test_resid_full; ./build/<test>).
+
+== red 1: tests written (tests/test_resid.c changed, tests/test_resid_full.c new); adf_recon_cert_check declared in
+   the header, not defined. Link error, allowed for the first test of a file:
+   "undefined reference to `adf_recon_cert_check'" in test_resid.c (check_cert, certificate_check_refuses_...)
+   and in test_resid_full.c (cert_is_right); make: *** [Makefile:97: build/test_resid] Error 1.
+
+== red 2: adf_recon_cert_check written in src/resid.c; adf_resid_reconstruct still the code of slice 1
+   (UNSUPPORTED for 2AB >= m, limit unused). Assertion failures:
+   test_resid:      12 tests, 3530818 checks, 1518087 failed checks, 4 failed tests
+                    (most of them in brute_force_every_m_up_to_36, about 1.49 million, and in
+                     null_cert_gives_the_same_answers, about 31 thousand; a few in the two boundary tests)
+   test_resid_full: 7 tests, 25801758 checks, 2640224 failed checks, 5 failed tests
+                    (brute_force_..._whole_range, limits_grid_m_up_to_24, vectors_s3_slice2_every_line,
+                     edge_cases_of_check_s3_edge, large_operands_return_at_once)
+   certificate_check_refuses_changed_quadruples passed here: the function existed already.
+
+== green 1: adf_resid_reconstruct with resid_search written. First run: 3 failed checks families, all faults of
+   the tests, not of the code, repaired in the tests:
+   - the cert = NULL comparisons compared q after sentinel() had overwritten it;
+   - boundary_2AB_against_m, delta = -1, limit 3: I had expected NOT_DETERMINED from a Python call made with
+     c = 12345; with the planted c the reference says OK (-A/B), |T| = B, X = 1 <= 3 (checked with
+     recon_partial, see the test comment);
+   - an unused helper (-Werror).
+   Second run:
+   test_resid:      12 tests, 3395820 checks, 0 failed checks, 0 failed tests
+   test_resid_full: 7 tests, 29391859 checks, 0 failed checks, 0 failed tests
+   test_abi:        3 tests, 20 checks, 0 failed checks (new test resid_function_signatures_and_status_codes)

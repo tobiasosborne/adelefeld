@@ -5,8 +5,9 @@
    The oracles, in order of independence:
    1. brute_force_by_definition: the enumeration of Definition 1.1 over (n, d), written in this
       file with machine integers, for every m <= 36, c from -m to 2 m, A from 0 to 2 m and B in
-      {1, 2, 3, 5, m - 1, m, m + 1, 2 m}. For 2 A B < m the status and q must agree with it; for
-      2 A B >= m the status must be ADF_UNSUPPORTED.
+      {1, 2, 3, 5, m - 1, m, m + 1, 2 m}, with a limit so large that no search is cut. The status
+      and q must agree with it (slice 2 completes the range 2 A B >= m; the full grid with the
+      counts and the limits is tests/test_resid_full.c).
    2. tests/ref/vectors/s3-slice1/recon.jsonl, written by lanes/s3-slice1/gen_vectors.py from
       recon_partial of proto/solvers_checks.py (2643 lines at the time of writing; every line is run).
    3. check_cert: the four conditions (C1) to (C4) of Definition 1.3, tested on every pair that
@@ -43,37 +44,17 @@ gcd_sl(slong a, slong b)
     return a;
 }
 
-/* (C1) to (C4) of Definition 1.3 for the pair in cert, for (m, c, A). Returns 1 if all hold. */
+/* (C1) to (C4) of Definition 1.3 for the pair in cert, for (m, c, A): adf_recon_cert_check of the
+   library (its own test is certificate_check_refuses_changed_quadruples). Returns 1 if all hold. */
 static int
 check_cert(const adf_recon_cert_t cert, const fmpz_t c, const fmpz_t m, const fmpz_t A)
 {
-    fmpz_t t, u;
-    int ok = 1;
+    adf_resid_t x;
+    int ok;
 
-    if (cert->kind != 1)
-        return 0;
-    fmpz_init(t);
-    fmpz_init(u);
-    /* C1: R = c T and R' = c T' modulo m */
-    fmpz_mul(t, c, cert->T);
-    fmpz_sub(t, cert->R, t);
-    ok = ok && fmpz_divisible(t, m);
-    fmpz_mul(t, c, cert->Tp);
-    fmpz_sub(t, cert->Rp, t);
-    ok = ok && fmpz_divisible(t, m);
-    /* C2: |T R' - T' R| = m */
-    fmpz_mul(t, cert->T, cert->Rp);
-    fmpz_mul(u, cert->Tp, cert->R);
-    fmpz_sub(t, t, u);
-    ok = ok && fmpz_cmpabs(t, m) == 0;
-    /* C3: 0 <= R <= A < R' */
-    ok = ok && fmpz_sgn(cert->R) >= 0 && fmpz_cmp(cert->R, A) <= 0 && fmpz_cmp(A, cert->Rp) < 0;
-    /* C4: T not 0 and T T' <= 0 */
-    ok = ok && !fmpz_is_zero(cert->T);
-    fmpz_mul(t, cert->T, cert->Tp);
-    ok = ok && fmpz_sgn(t) <= 0;
-    fmpz_clear(t);
-    fmpz_clear(u);
+    adf_resid_init(x);
+    ok = adf_resid_set_fmpz2(x, c, m) == ADF_OK && adf_recon_cert_check(cert, x, A);
+    adf_resid_clear(x);
     return ok;
 }
 
@@ -161,13 +142,6 @@ static int
 q_is_sentinel(const fixture * f)
 {
     return fmpz_equal_si(fmpq_numref(f->q->q), -777) && fmpz_equal_si(fmpq_denref(f->q->q), 13);
-}
-
-static int
-cert_is_sentinel(const fixture * f)
-{
-    return f->cert->kind == 1 && fmpz_equal_si(f->cert->Rp, 101) && fmpz_equal_si(f->cert->Tp, -102)
-           && fmpz_equal_si(f->cert->R, 103) && fmpz_equal_si(f->cert->T, 104);
 }
 
 static int
@@ -307,7 +281,7 @@ ADF_TEST(brute_force_every_m_up_to_36)
 {
     fixture f;
     slong m, c, A, k;
-    unsigned long cases = 0, n_ok = 0, n_b = 0, n_c = 0, n_unsup = 0, n_boxes = 0;
+    unsigned long cases = 0, n_ok = 0, n_b = 0, n_c = 0, n_range2 = 0, n_boxes = 0;
 
     fx_init(&f);
     for (m = 1; m <= 36; m++)
@@ -325,13 +299,27 @@ ADF_TEST(brute_force_every_m_up_to_36)
                         continue;
                     fx_set_si(&f, c, m, A, B);
                     sentinel(&f);
-                    st = adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0);
+                    st = adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 1000000);
                     cases++;
                     if (2 * A * B >= m)
                     {
-                        n_unsup++;
-                        ADF_CHECK_MSG(st == ADF_UNSUPPORTED, "m=%ld c=%ld A=%ld B=%ld: status %d", m, c, A, B, st);
-                        ADF_CHECK(q_is_sentinel(&f) && cert_is_sentinel(&f));
+                        /* the range of slice 2: the true answer by enumeration */
+                        sols = brute_force_by_definition(m, c, A, B, &n, &d);
+                        n_range2++;
+                        if (sols == 0)
+                            ADF_CHECK_MSG(st == ADF_NO_SOLUTION && q_is_sentinel(&f), "m=%ld c=%ld A=%ld B=%ld: status %d",
+                                          m, c, A, B, st);
+                        else if (sols == 1)
+                            ADF_CHECK_MSG(st == ADF_OK && q_equals_si(f.q, n, d), "m=%ld c=%ld A=%ld B=%ld: status %d", m,
+                                          c, A, B, st);
+                        else
+                            ADF_CHECK_MSG(st == ADF_NOT_UNIQUE && q_is_sentinel(&f), "m=%ld c=%ld A=%ld B=%ld: status %d",
+                                          m, c, A, B, st);
+                        if (A >= m)
+                            ADF_CHECK(cert_is_none(f.cert));
+                        else
+                            ADF_CHECK_MSG(check_cert(f.cert, f.c, f.m, f.A), "m=%ld c=%ld A=%ld B=%ld: certificate", m, c,
+                                          A, B);
                         continue;
                     }
                     n_boxes++;
@@ -364,10 +352,10 @@ ADF_TEST(brute_force_every_m_up_to_36)
                 }
             }
     printf("brute force: %lu cases, %lu inside 2AB < m (OK %lu, NO_SOLUTION by (b) %lu, by (c) %lu), "
-           "%lu UNSUPPORTED\n", cases, n_boxes, n_ok, n_b, n_c, n_unsup);
+           "%lu in the range 2AB >= m\n", cases, n_boxes, n_ok, n_b, n_c, n_range2);
     ADF_CHECK(n_ok > 0 && n_b > 0 && n_c > 0);
     ADF_CHECK(n_ok + n_b + n_c == n_boxes);
-    ADF_CHECK(n_unsup > 0);
+    ADF_CHECK(n_range2 > 0);
     fx_clear(&f);
 }
 
@@ -489,7 +477,9 @@ ADF_TEST(vectors_s3_slice1_every_line)
 
 /* ---- 3. the boundary of the range, at large m ---- */
 
-/* m = 2 A B + delta with A = 10^15 + 1, B = 10^15 + 3 (delta = 1: inside, 0 and -1: outside). */
+/* m = 2 A B + delta with A = 10^15 + 1, B = 10^15 + 3 (delta = 1: 2AB < m, the answer of 1.6 (c); 0 and -1:
+   m <= 2AB, the search: the values are those of recon_partial of proto/solvers_checks.py, NOT_DETERMINED for
+   the limits 0 and 3 because X = B / |T| is 10^15 >> 3). */
 ADF_TEST(boundary_2AB_against_m)
 {
     fixture f;
@@ -525,8 +515,21 @@ ADF_TEST(boundary_2AB_against_m)
         st = adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0);
         if (delta <= 0)
         {
-            ADF_CHECK_MSG(st == ADF_UNSUPPORTED, "delta %ld: status %d", delta, st);
-            ADF_CHECK(q_is_sentinel(&f) && cert_is_sentinel(&f));
+            ADF_CHECK_MSG(st == ADF_NOT_DETERMINED, "delta %ld: status %d", delta, st);
+            ADF_CHECK(q_is_sentinel(&f) && check_cert(f.cert, f.c, f.m, f.A));
+            sentinel(&f);
+            st = adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 3);
+            if (delta == -1)        /* the planted -A/B: |T| = B, X = 1 <= 3, the search is complete: OK */
+            {
+                ADF_CHECK_MSG(st == ADF_OK, "delta %ld, limit 3: status %d", delta, st);
+                ADF_CHECK(fmpz_equal(fmpq_numref(f.q->q), nn) && fmpz_equal(fmpq_denref(f.q->q), dd));
+            }
+            else                    /* c = 12345: T = 1, X = 10^15, one candidate 12345/1 found, not decided */
+            {
+                ADF_CHECK_MSG(st == ADF_NOT_DETERMINED, "delta %ld, limit 3: status %d", delta, st);
+                ADF_CHECK(q_is_sentinel(&f));
+            }
+            ADF_CHECK(check_cert(f.cert, f.c, f.m, f.A));
         }
         else
         {
@@ -549,7 +552,10 @@ ADF_TEST(boundary_2AB_against_m)
     fmpz_set_si(f.c, 1);
     ADF_CHECK(adf_resid_set_fmpz2(f.x, f.c, f.m) == ADF_OK);
     sentinel(&f);
-    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_UNSUPPORTED);
+    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_NOT_DETERMINED);
+    ADF_CHECK(q_is_sentinel(&f) && check_cert(f.cert, f.c, f.m, f.A));
+    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 1000000000) == ADF_OK && q_equals_si(f.q, 1, 1));
+    sentinel(&f);
     fmpz_set_str(f.m, "36893488147419103233", 10);     /* 2^65 + 1 > 2AB = 2^65: in range */
     ADF_CHECK(adf_resid_set_fmpz2(f.x, f.c, f.m) == ADF_OK);
     ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_OK);
@@ -574,9 +580,10 @@ ADF_TEST(boundary_small_moduli_and_zero_A)
     sentinel(&f);
     ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_OK && q_equals_si(f.q, 0, 1));
     ADF_CHECK(check_cert(f.cert, f.c, f.m, f.A));
-    fx_set_si(&f, 0, 1, 1, 1);
+    fx_set_si(&f, 0, 1, 1, 1);                                 /* A >= m: NOT_UNIQUE, no certificate */
     sentinel(&f);
-    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_UNSUPPORTED);
+    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_NOT_UNIQUE);
+    ADF_CHECK(q_is_sentinel(&f) && cert_is_none(f.cert));
     /* m = 2 */
     fx_set_si(&f, 0, 2, 0, 9);
     ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_OK && q_equals_si(f.q, 0, 1));
@@ -586,10 +593,13 @@ ADF_TEST(boundary_small_moduli_and_zero_A)
     ADF_CHECK(check_cert(f.cert, f.c, f.m, f.A) && fmpz_equal_si(f.cert->T, -2) && fmpz_is_zero(f.cert->R));
     fx_set_si(&f, 1, 2, 0, 1);                                 /* case (b): |T| = 2 > 1 */
     ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_NO_SOLUTION);
-    fx_set_si(&f, 1, 2, 1, 1);                                 /* 2 A B = 2 >= 2 */
+    fx_set_si(&f, 1, 2, 1, 1);                                 /* 2 A B = 2 >= 2: pair (2, 0, 1, 1), X = 1 */
     sentinel(&f);
-    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_UNSUPPORTED);
-    ADF_CHECK(q_is_sentinel(&f) && cert_is_sentinel(&f));
+    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_NOT_DETERMINED);
+    ADF_CHECK(q_is_sentinel(&f) && check_cert(f.cert, f.c, f.m, f.A));
+    sentinel(&f);
+    ADF_CHECK(adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 1) == ADF_NOT_UNIQUE);   /* 1/1 and -1/1 */
+    ADF_CHECK(q_is_sentinel(&f) && check_cert(f.cert, f.c, f.m, f.A));
     /* A = 0 at a large modulus: c = 0 gives 0/1; c = 3 has no solution, for B = 1 and for B huge */
     fmpz_set_si(f.m, 7);
     fmpz_set_str(f.B, "1", 10);
@@ -642,7 +652,7 @@ ADF_TEST(empty_box_is_no_solution_with_no_certificate)
     fx_clear(&f);
 }
 
-ADF_TEST(null_cert_gives_the_same_answers_and_limit_is_ignored)
+ADF_TEST(null_cert_gives_the_same_answers)
 {
     fixture f;
     slong m, c;
@@ -664,16 +674,107 @@ ADF_TEST(null_cert_gives_the_same_answers_and_limit_is_ignored)
                     {
                         fx_set_si(&f, c, m, A, B);
                         adf_rat_init(q2);
-                        st1 = adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0);
-                        st2 = adf_resid_reconstruct(q2, NULL, f.x, f.A, f.B, limits[k]);
+                        fmpz_set_si(fmpq_numref(q2->q), -5);
+                        fmpz_set_si(fmpq_denref(q2->q), 7);
+                        sentinel(&f);
+                        st1 = adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, limits[k]);
+                        ADF_CHECK(st1 != ADF_OK || fmpz_sgn(fmpq_denref(f.q->q)) > 0);
+                        st2 = adf_resid_reconstruct(q2, NULL, f.x, f.A, f.B, limits[k]);   /* cert = NULL */
                         n++;
                         ADF_CHECK(st1 == st2);
-                        ADF_CHECK(st1 != ADF_OK || adf_rat_identical(f.q, q2));
+                        if (st1 == ADF_OK)
+                            ADF_CHECK(adf_rat_identical(f.q, q2));
+                        else
+                            ADF_CHECK(fmpz_equal_si(fmpq_numref(q2->q), -5) && fmpz_equal_si(fmpq_denref(q2->q), 7)
+                                      && q_is_sentinel(&f));
                         adf_rat_clear(q2);
                     }
         }
     ADF_CHECK(n > 0);
     fx_clear(&f);
+}
+
+/* adf_recon_cert_check: a valid pair is accepted; every changed quadruple that breaks one of (C1) to (C4) is refused.
+   Independent of the function; the pair for m = 101, c = 34, A = 3 by hand: 101 = 2 * 34 + 33, 34 = 33 + 1, so the
+   rows (r, t) are (101, 0), (34, 1), (33, -2), (1, 3), (0, -101);
+   A = 3 stops at r = 1: (R', T', R, T) = (33, -2, 1, 3); C1: 34 * 3 = 102 = 1, 34 * (-2) = -68 = 33 mod 101;
+   C2: |3 * 33 - (-2) * 1| = 101. */
+ADF_TEST(certificate_check_refuses_changed_quadruples)
+{
+    adf_resid_t x;
+    adf_recon_cert_t cert;
+    fmpz_t A;
+    slong good[4] = { 33, -2, 1, 3 };
+    int i, k;
+    unsigned long refused = 0, accepted = 0;
+
+    adf_resid_init(x);
+    adf_recon_cert_init(cert);
+    fmpz_init_set_si(A, 3);
+    fmpz_set_si(x->c, 34);
+    fmpz_set_si(x->m, 101);
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 0);       /* kind 0 */
+    fmpz_set_si(cert->Rp, good[0]);
+    fmpz_set_si(cert->Tp, good[1]);
+    fmpz_set_si(cert->R, good[2]);
+    fmpz_set_si(cert->T, good[3]);
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 0);       /* kind 0 with data still refused */
+    cert->kind = 1;
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 1);
+    /* each entry changed by -3 .. 3 (not 0): the result must be the truth of (C1) to (C4), evaluated here on machine
+       integers independently of the library */
+    for (i = 0; i < 4; i++)
+        for (k = -3; k <= 3; k++)
+        {
+            slong v[4], Rp, Tp, R, T, want;
+
+            if (k == 0)
+                continue;
+            memcpy(v, good, sizeof(v));
+            v[i] += k;
+            Rp = v[0]; Tp = v[1]; R = v[2]; T = v[3];
+            want = ((R - 34 * T) % 101 == 0) && ((Rp - 34 * Tp) % 101 == 0)
+                   && (T * Rp - Tp * R == 101 || T * Rp - Tp * R == -101) && 0 <= R && R <= 3 && 3 < Rp && T != 0
+                   && T * Tp <= 0;
+            fmpz_set_si(cert->Rp, Rp);
+            fmpz_set_si(cert->Tp, Tp);
+            fmpz_set_si(cert->R, R);
+            fmpz_set_si(cert->T, T);
+            ADF_CHECK_MSG(adf_recon_cert_check(cert, x, A) == (int) want, "entry %d changed by %d", i, k);
+            if (want)
+                accepted++;
+            else
+                refused++;
+        }
+    ADF_CHECK(refused == 24 - accepted && refused >= 20);
+    /* one condition at a time, by construction: C3 with R > A (rows (34, 1) and (101, 0)), C4 with T T' > 0 */
+    fmpz_set_si(cert->Rp, 101);
+    fmpz_set_si(cert->Tp, 0);
+    fmpz_set_si(cert->R, 34);
+    fmpz_set_si(cert->T, 1);
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 0);       /* C1, C2, C4 hold, C3 fails: R = 34 > A = 3 */
+    fmpz_set_si(A, 34);
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 1);       /* the same quadruple for A = 34: a pair */
+    fmpz_set_si(A, 100);                                    /* R' = 101 > 100 >= R */
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 1);
+    fmpz_set_si(A, 101);                                    /* A < R' fails */
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 0);
+    fmpz_set_si(A, -1);                                     /* 0 <= R fails for no A: R = 34 > A */
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 0);
+    fmpz_set_si(A, 3);
+    fmpz_set_si(cert->Rp, 33);
+    fmpz_set_si(cert->Tp, 2);                               /* T' = 2 > 0 and T = 3: T T' > 0, C2 gives 3 * 33 - 2 = 97 */
+    fmpz_set_si(cert->R, 1);
+    fmpz_set_si(cert->T, 3);
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 0);
+    /* another modulus: the same quadruple is no pair for m = 102 */
+    fmpz_set_si(cert->Tp, -2);
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 1);
+    fmpz_set_si(x->m, 102);
+    ADF_CHECK(adf_recon_cert_check(cert, x, A) == 0);
+    fmpz_clear(A);
+    adf_resid_clear(x);
+    adf_recon_cert_clear(cert);
 }
 
 ADF_TEST(aliasing_of_the_inputs)

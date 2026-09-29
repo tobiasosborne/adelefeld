@@ -1,22 +1,26 @@
 #!/usr/bin/env python3
-"""tests/fuzz/diff_resid.py: differential run of adf_resid_reconstruct (slice s3-slice1) against
+"""tests/fuzz/diff_resid.py: differential run of adf_resid_reconstruct (slices 1 and 2 of milestone S) against
 recon_partial of proto/solvers_checks.py.
 
     sh tests/test_exports.sh                     # builds build/libadelefeld.so
     python3 tests/fuzz/diff_resid.py --seconds 180 --seed 1
 
-Random (m, c, A, B) of three sizes (small; near the 64 bit boundary, where 2 A B crosses 2^64 and 2^63;
-thousands of bits), half of them built from a planted fraction n/d with |n| <= A, d <= B, gcd(d, m) = 1,
-and with m drawn near 2 A B (2 A B - 2 .. 2 A B + 2, so the boundary of the range is hit), also with
-A < 0 and B < 1. The same input goes to the C function (ctypes on build/libadelefeld.so) and, where the
-contract fixes an answer, to the reference. The run asserts
-  - UNSUPPORTED exactly when A >= 0, B >= 1 and 2 A B >= m (the C function then writes nothing);
-  - otherwise the status equals the reference status (OK, NO_SOLUTION), q equals the reference solution
-    on OK and is untouched (sentinel) otherwise, and the certificate is the reference certificate
-    (kind 1) or none (kind 0, empty box);
-  - the certificate satisfies (C1) to (C4) (cert_pair_ok of the reference);
-  - a planted fraction is returned whenever 2 A B < m (Proposition 1.6 (c): the solution is unique).
-It prints the number of cases of each status. Exit status 1 on the first disagreement."""
+Random (m, c, A, B, limit): three sizes of operands (small; near the 64 bit boundary, where 2 A B crosses 2^64 and
+2^63; thousands of bits), half of them built from a planted fraction n/d with |n| <= A, d <= B, gcd(d, m) = 1, and
+with m drawn near 2 A B (2 A B - 2 .. 2 A B + 2, so the boundary of the range is hit), also A < 0, B < 1 and
+A >= m. The limit is drawn from -3, -1, 0, 1, 2, 3, 5, 10, 50, 300, 1000 so that one case runs at most about 1000
+rounds. The same input goes to the C function (ctypes on build/libadelefeld.so) and to the reference. The run
+asserts
+  - the status equals the reference status (OK, NO_SOLUTION, NOT_UNIQUE, NOT_DETERMINED);
+  - q equals the reference solution on OK, and is untouched (sentinel) on every other status;
+  - the certificate is the reference certificate (kind 1) when 0 <= A < m and B >= 1, else none (kind 0), and it
+    satisfies (C1) to (C4) (cert_pair_ok of the reference); with cert = NULL (every 7th case) the certificate
+    object is not changed;
+  - a planted fraction is a solution of the problem, so the status is never NO_SOLUTION, and on OK q is the
+    planted fraction.
+It prints the number of cases of each status, of them with a cut search (floor(B/|T|) > limit) and with
+NOT_UNIQUE found inside a cut search. Exit status 1 on the first disagreement. A run of 180 s is a smoke test of the
+contract, not a proof."""
 import argparse
 import ctypes
 import os
@@ -28,7 +32,9 @@ from math import gcd
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "proto"))
 import solvers_checks as S  # noqa: E402
 
-ADF_OK, ADF_NO_SOLUTION, ADF_UNSUPPORTED = 0, 5, 8
+ADF_OK, ADF_NOT_DETERMINED, ADF_NOT_UNIQUE, ADF_NO_SOLUTION = 0, 1, 4, 5
+STATUS = {S.OK: ADF_OK, S.NOT_DETERMINED: ADF_NOT_DETERMINED, S.NOT_UNIQUE: ADF_NOT_UNIQUE, S.NO_SOLUTION: ADF_NO_SOLUTION}
+LIMITS = (-3, -1, 0, 1, 2, 3, 5, 10, 50, 300, 1000)
 
 
 def load(path):
@@ -86,14 +92,14 @@ class Bridge:
             self.flint.fmpz_set_str(ctypes.c_void_p(ctypes.addressof(self.cert) + 8 * i), str(v).encode(), 10)
         ctypes.c_int.from_address(ctypes.addressof(self.cert) + 32).value = 1
 
-    def call(self, m, c, A, B, with_cert=True):
+    def call(self, m, c, A, B, limit, with_cert=True):
         for fz, v in ((self.fc, c), (self.fm, m), (self.fA, A), (self.fB, B)):
             self.set(fz, v)
         st = self.lib.adf_resid_set_fmpz2(self.x, ctypes.byref(self.fc), ctypes.byref(self.fm))
         assert st == 0, "set_fmpz2 refused m >= 1"
         self.sentinel()
         st = self.lib.adf_resid_reconstruct(self.q, self.cert if with_cert else None, self.x,
-                                            ctypes.byref(self.fA), ctypes.byref(self.fB), 0)
+                                            ctypes.byref(self.fA), ctypes.byref(self.fB), limit)
         q = (self.field(self.q, 0), self.field(self.q, 8))
         cert = tuple(self.field(self.cert, 8 * i) for i in range(4))
         kind = ctypes.c_int.from_address(ctypes.addressof(self.cert) + 32).value
@@ -154,66 +160,54 @@ def main():
     br = Bridge(args.lib)
     rng = random.Random(args.seed)
     t_end = time.time() + args.seconds
-    counts = {"OK": 0, "NO_SOLUTION (b)": 0, "NO_SOLUTION (c)": 0, "NO_SOLUTION (empty box)": 0,
-              "UNSUPPORTED": 0}
-    planted_seen = 0
+    counts = {"OK": 0, "NO_SOLUTION": 0, "NOT_UNIQUE": 0, "NOT_DETERMINED": 0}
+    cut = cut_unique = planted_seen = a_ge_m = empty_box = 0
     n = 0
     while time.time() < t_end:
         m, c, A, B, planted = draw(rng)
+        limit = rng.choice(LIMITS)
         n += 1
-        st, q, cert, kind = br.call(m, c, A, B, with_cert=(n % 7 != 0))
-        empty = A < 0 or B < 1
-        in_range = empty or 2 * A * B < m
-        where = f"case {n}: m={m} c={c} A={A} B={B}"
-        if not in_range:
-            if st != ADF_UNSUPPORTED or q != (-777, 13) or (n % 7 != 0 and (kind != 1 or cert != (101, -102, 103, 104))):
-                print(f"FAIL {where[:400]}: want UNSUPPORTED untouched, got status {st} q {q}")
-                return 1
-            counts["UNSUPPORTED"] += 1
-            continue
-        rst, sols, rcert = S.recon_partial(m, c, A, B, 0)
-        assert rst in (S.OK, S.NO_SOLUTION)
-        want_st = ADF_OK if rst == S.OK else ADF_NO_SOLUTION
-        if st != want_st:
+        with_cert = n % 7 != 0
+        st, q, cert, kind = br.call(m, c, A, B, limit, with_cert=with_cert)
+        rst, sols, rcert = S.recon_partial(m, c, A, B, limit)
+        where = f"case {n}: m={m} c={c} A={A} B={B} limit={limit}"
+        if st != STATUS[rst]:
             print(f"FAIL {where[:400]}: status {st}, reference {rst}")
             return 1
+        counts[rst] += 1
+        empty = A < 0 or B < 1
+        empty_box += empty
+        a_ge_m += (not empty) and A >= m
+        if rcert is not None and abs(rcert[3]) <= B and 2 * A * B >= m and B // abs(rcert[3]) > max(limit, 0):
+            cut += 1
+            cut_unique += rst == S.NOT_UNIQUE
         if st == ADF_OK:
             if q != sols[0]:
                 print(f"FAIL {where[:400]}: q {q}, reference {sols[0]}")
                 return 1
-            counts["OK"] += 1
-            if planted is not None:
-                planted_seen += 1
-                if q != planted:
-                    print(f"FAIL {where[:400]}: planted {planted}, got {q}")
-                    return 1
-        else:
-            if q != (-777, 13):
-                print(f"FAIL {where[:400]}: q written on NO_SOLUTION: {q}")
+        elif q != (-777, 13):
+            print(f"FAIL {where[:400]}: q written on status {st}: {q}")
+            return 1
+        if planted is not None:
+            planted_seen += 1
+            if st == ADF_NO_SOLUTION or (st == ADF_OK and q != planted):
+                print(f"FAIL {where[:400]}: planted {planted}, status {st}, q {q}")
                 return 1
-            if empty:
-                counts["NO_SOLUTION (empty box)"] += 1
-            elif abs(rcert[3]) > B:
-                counts["NO_SOLUTION (b)"] += 1
-            else:
-                counts["NO_SOLUTION (c)"] += 1
-            if planted is not None:
-                print(f"FAIL {where[:400]}: planted {planted} not found in the range 2AB < m")
-                return 1
-        if n % 7 != 0:
-            if empty:
+        if with_cert:
+            if empty or A >= m:
                 ok = kind == 0 and cert == (0, 0, 0, 0)
             else:
                 ok = kind == 1 and cert == tuple(rcert) and S.cert_pair_ok(m, c % m, A, cert)
             if not ok:
                 print(f"FAIL {where[:400]}: certificate {cert} kind {kind}, reference {rcert}")
                 return 1
-        else:
-            if kind != 1 or cert != (101, -102, 103, 104):
-                print(f"FAIL {where[:400]}: cert = NULL but the certificate object changed")
-                return 1
+        elif kind != 1 or cert != (101, -102, 103, 104):
+            print(f"FAIL {where[:400]}: cert = NULL but the certificate object changed")
+            return 1
     print(f"diff_resid: seed {args.seed}, {n} cases in {args.seconds} s, no disagreement; "
-          + "; ".join(f"{k}: {v}" for k, v in counts.items()) + f"; planted fractions returned: {planted_seen}")
+          + "; ".join(f"{k}: {v}" for k, v in counts.items())
+          + f"; cut searches {cut} (NOT_UNIQUE found inside one: {cut_unique}); A >= m: {a_ge_m}; empty box: "
+          f"{empty_box}; planted fractions: {planted_seen}")
     return 0
 
 

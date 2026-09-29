@@ -1,0 +1,9 @@
+MUTANT sign sigma dropped in the search: test_resid exit status 1; 25911 failed checks
+FAIL boundary_2AB_against_m (tests/test_resid.c:483, 1 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT sign sigma dropped in the search: test_resid_full exit status 1; 40203 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: edge_cases_of_check_s3_edge
+   failing test: large_operands_return_at_once
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
