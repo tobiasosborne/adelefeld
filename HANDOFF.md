@@ -24,11 +24,11 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 01:58 on 2026-09-29 (two jobs; look at them first).**
+**RUNNING at 02:12 on 2026-09-29 (two jobs; look at them first).**
 
 | Job | Model | Where | State |
 |---|---|---|---|
-| the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | 14 files, small first, `--san`, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 10 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log` (survivors are printed as found). Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
+| the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | RESTARTED at 02:12 with the judge `make check INV=1` and `--san`: in the release build the lines `ADF_INV_...` are compiled away, and all 34 survivors of `cap.c` and `rat.c` in the first run were such lines (first run: `lanes/m1-sweep/release-run/`). 14 files, small first, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 30 s for a mutant, about 12 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log`. Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
 | s-review | codex gpt-6-astra xhigh (deep work), since 01:56 | `../adelefeld-wt/s-review`; brief `lanes/s-review/brief.md` | refute review of the design of milestone S; writes `docs/reviews/s-design/review.md` |
 
 **QUOTA at 01:56: Claude weekly 90% used, 0.4 points behind pace; Fable weekly 90%, 0.4 behind** (reset
