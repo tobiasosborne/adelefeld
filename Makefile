@@ -2,6 +2,8 @@
 #
 #   make all            build build/libadelefeld.a from src/*.c (empty src is allowed)
 #   make check          build and run every tests/test_*.c; exit non-zero if any test fails
+#   make check-all      make check, then the driver, exports and julia scripts and the self-tests
+#                       of tools/mutate and tools/memcheck, one after the other
 #   make clean          remove build/
 #   make fuzz           run the coverage-guided fuzzers of tests/fuzz/ under libFuzzer
 #   make mutate         run the mutation testing of tools/mutate/mutate.py over src/
@@ -70,7 +72,7 @@ TEST_SRC  := $(sort $(wildcard tests/test_*.c))
 TEST_BIN  := $(patsubst tests/%.c,$(BUILD)/%,$(TEST_SRC))
 DEPS      := $(OBJ:.o=.d) $(SUPPORT_OBJ:.o=.d) $(patsubst tests/%.c,$(BUILD)/%.d,$(TEST_SRC))
 
-.PHONY: all check clean fuzz fuzz-build mutate mutate-selftest bench help
+.PHONY: all check check-all clean fuzz fuzz-build mutate mutate-selftest bench help
 .DELETE_ON_ERROR:
 # The objects are built by a pattern rule and are wanted again by the next run, so they are
 # kept and not deleted as intermediate files.
@@ -105,6 +107,33 @@ check: $(TEST_BIN)
 	if [ -n "$(TEST_BIN)" ] && [ $$fail -eq 0 ]; then echo "check passed: all $(words $(TEST_BIN)) test programs"; \
 	elif [ $$fail -ne 0 ]; then echo "check FAILED"; exit 1; \
 	else echo "check: no tests/test_*.c found"; fi
+
+# The whole acceptance run of one tree, in the order the other lanes run them: the C tests, the
+# driver, the exported symbols, the Julia smoke test, and the self-tests of the two static tools
+# (a self-test is run before the tool is trusted on the tree, not after). It stops at the first
+# failure: the name of the step is printed before it runs, so a log says where it stopped.
+#
+#   make check-all                 the whole run
+#   make check-all CC=clang        the same with clang; CC and SAN go to the scripts that read
+#                                  them (tests/test_exports.sh, tests/test_driver.sh)
+#   make check-all SAN=1 INV=1     the same with the sanitizers and with the invariant checks
+#
+# CC, SAN and INV are passed on to `make check` explicitly, not only through the environment.
+check-all:
+	@set -e; \
+	echo "== make check CC=$(CC) SAN=$(SAN) INV=$(INV)"; \
+	$(MAKE) check CC="$(CC)" SAN="$(SAN)" INV="$(INV)"; \
+	echo "== sh tests/test_driver.sh"; \
+	SAN="$(SAN)" sh tests/test_driver.sh; \
+	echo "== sh tests/test_exports.sh"; \
+	CC="$(CC)" sh tests/test_exports.sh; \
+	echo "== sh tests/test_julia.sh"; \
+	sh tests/test_julia.sh; \
+	echo "== python3 tools/mutate/selftest.py"; \
+	python3 tools/mutate/selftest.py; \
+	echo "== python3 tools/memcheck/selftest.py"; \
+	python3 tools/memcheck/selftest.py; \
+	echo "check-all passed: make check, driver, exports, julia, mutate-selftest, memcheck-selftest"
 
 clean:
 	rm -rf $(BUILD)
@@ -233,7 +262,9 @@ bench:
 	$(MAKE) -C bench run
 
 help:
-	@echo "targets: all check clean fuzz mutate mutate-selftest bench"
+	@echo "targets: all check check-all clean fuzz mutate mutate-selftest bench"
+	@echo "  check-all: make check, then the driver, exports and julia scripts and the two"
+	@echo "             tool self-tests, one after the other, stopping at the first failure"
 	@echo "variables: SAN=1 adds the sanitizers, CC=clang builds with clang,"
 	@echo "            FUZZ_SECONDS=30 sets the length of a fuzz run,"
 	@echo "            FILES=, LIMIT=, SEED=, JOBS= set the mutation run"

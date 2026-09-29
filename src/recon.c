@@ -132,6 +132,8 @@ fmpq_set_dyadic(fmpq_t q, const fmpz_t mn, const fmpz_t exp, slong max_exp)
         {
             fmpz_mul_2exp(t, mn, sh);
             fmpz_set(fmpq_numref(q), t);
+            /* Without effect for the two callers, whose q is fresh (0/1), and kept: a setter
+               writes both parts of its output (issue adf-xrt, orchestrator). */
             fmpz_one(fmpq_denref(q));
         }
         else
@@ -231,7 +233,6 @@ adf_fball_reconstruct(adf_rat_t q, const adf_fball_t x, const adf_rat_t lo, cons
         {
             /* fmpz_set of kmin into a one-denominator fraction, then a + N k. */
             fmpz_set(fmpq_numref(c->q), kmin);
-            fmpz_one(fmpq_denref(c->q));
             adf_rat_mul(c, c, N);
             adf_rat_add(c, c, a);
         }
