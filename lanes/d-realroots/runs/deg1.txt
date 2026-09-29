@@ -26,3 +26,5 @@ trace: total 1.249129 s, last prec 256, iterations 408
 last level: 256 184 408 7 -64 80 52 0.655934 0.004356
 count: 0.103523 s, n = 80
  16:34:29 up 1 day, 20:49,  3 users,  load average: 5,69, 4,85, 3,14
+
+[exited with code 0]
