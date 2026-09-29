@@ -41,6 +41,7 @@
 #include <flint/fmpz_mat.h>
 
 #include "adelefeld/common.h"
+#include "adelefeld/fball.h"
 #include "adelefeld/status.h"
 
 #ifdef __cplusplus
@@ -84,6 +85,20 @@ void adf_linsol_init(adf_linsol_t sol);
 
 /* adf_linsol_clear(sol): releases the memory; afterwards sol may only be passed to init. */
 void adf_linsol_clear(adf_linsol_t sol);
+
+/* adf_linsol_set(y, x): y = a deep copy of x: kind, N, r, c and the five matrices. y must be
+   initialised; its old value is released. y may be x itself. Cost: a copy of the matrices. */
+void adf_linsol_set(adf_linsol_t y, const adf_linsol_t x);
+
+/* adf_linsol_swap(x, y): exchanges the two values (the structs and so the matrices they own);
+   O(1), no allocation. x and y may be the same object. */
+void adf_linsol_swap(adf_linsol_t x, adf_linsol_t y);
+
+/* adf_linsol_identical(x, y): 1 if kind, N, r, c and the shapes and every entry of G, E, V, x0, y
+   agree, else 0. Representation identity: two results of the library on the same (A mod N, N, b
+   mod N) are identical (docs/api-s.md section 3, the paragraph after the table); a valid
+   certificate made elsewhere may differ. Cost: linear in the size of the matrices. */
+int adf_linsol_identical(const adf_linsol_t x, const adf_linsol_t y);
 
 /* adf_linsol_is_canonical(sol): 1 if the predicate above holds, else 0. Never aborts for an
    initialised object whose matrices are valid fmpz_mat values of any shape. Cost: (K5) is at most
@@ -151,6 +166,52 @@ int adf_linsol_get_particular(fmpz_mat_t x0, const adf_linsol_t sol);
    as for get_kernel) and the return value is 1; otherwise 0 and y untouched. A predicate, not a
    status. y may be sol->y itself. */
 int adf_linsol_get_dual(fmpz_mat_t y, const adf_linsol_t sol);
+
+/* adf_linsol_kernel_order(n, sol): n = (N/g_1) ... (N/g_k), g_i the pivot (first non-zero entry)
+   of row i of G: the number of elements of S(G) = K (solvers Lemma 2.3(3), line 551, with (E4) by
+   P2.6(1)); for kind COSET also the number of solutions modulo N. n = 1 for k = 0. Needs the
+   pivots to divide N, which is (E2) of a canonical value. Cost: k divisions. */
+void adf_linsol_kernel_order(fmpz_t n, const adf_linsol_t sol);
+
+/* adf_linsol_get_image_cert(E, V, sol): E, V = copies of the certificate matrices (e by r and
+   e by c), shapes set as for get_kernel. E and V must be different objects; either may be
+   sol->E or sol->V respectively. */
+void adf_linsol_get_image_cert(fmpz_mat_t E, fmpz_mat_t V, const adf_linsol_t sol);
+
+/* adf_linsol_contains(sol, x): 1 if the kind is COSET, x is c by 1, and x is a solution: x - x0
+   reduced modulo N is brought to zero by the greedy reduction by G (solvers L2.3(2), line 551;
+   P2.8(3)); else 0 (also for kind EMPTY and for a wrong shape of x). The entries of x are any
+   integers. Cost: k c multiplications modulo N. */
+int adf_linsol_contains(const adf_linsol_t sol, const fmpz_mat_t x);
+
+/* ---- balls on the right-hand side (solvers P2.9, P2.10) ---- */
+
+/* adf_linsolve_fball(sol, A, b, r): the set of all x in Zhat^c with (A x)_i in the ball b[i] for
+   i = 0, ..., r-1. A is r by c with integer entries, b an array of r finite balls, either backend
+   (a local ball is used through its canonical triple (a_i, h_i, d_i), adf_fball_get_fmpz3). With
+   N = lcm(h_i) (N = 1 for r = 0), A'[i][j] = (N/h_i) d_i A[i][j] and b'_i = (N/h_i) a_i, the set is
+   the inverse image in Zhat^c of the solutions of A' x = b' modulo N (solvers P2.9, line 841), and
+   sol is the answer adf_linsolve_mod(sol, A', b', N) gives; sol->N is that lcm.
+   Statuses, in the order in which they are decided:
+     ADF_DOMAIN: r is not the number of rows of A; sol untouched.
+     ADF_UNSUPPORTED (edit E-C1): some b[i] is exact (h_i = 0), the request of solvers P2.9, "what
+       is not covered"; sol untouched.
+     then those of adf_linsolve_mod for (A', b', N): OK, NO_SOLUTION (sol written), LIMIT
+       (r + c > ADF_LINSOLVE_DIM_MAX; sol untouched). DOMAIN cannot come from that call.
+   The balls are not changed. Cost: r c multiplications for A', an lcm per row, and adf_linsolve_mod. */
+int adf_linsolve_fball(adf_linsol_t sol, const fmpz_mat_t A, const adf_fball_struct * b, slong r);
+
+/* adf_linsol_verify_fball(sol, A, b, r): 1 if r is the number of rows of A, no b[i] is exact, and
+   adf_linsol_verify(sol, A', b', N) holds for the system (A', b', N) of P2.9 built as above; else
+   0. A predicate. Cost: that of adf_linsol_verify plus the construction of A', b', N. */
+int adf_linsol_verify_fball(const adf_linsol_t sol, const fmpz_mat_t A, const adf_fball_struct * b, slong r);
+
+/* adf_linsol_get_fball(x, sol, j): the ball x0[j] + rho_j Zhat, rho_j = gcd(N, G[0][j], ...,
+   G[k-1][j]) (solvers P2.10, line 883), the set of the j-th coordinates of the solutions in
+   Zhat^c, stored as a canonical global ball (rho_j = 1 gives the ball Zhat).
+   Statuses, in the order in which they are decided: ADF_DOMAIN if j < 0 or j >= c (x untouched);
+   ADF_NO_SOLUTION for kind EMPTY (x untouched); ADF_OK, x written. Cost: k gcds. */
+int adf_linsol_get_fball(adf_fball_t x, const adf_linsol_t sol, slong j);
 
 /* Layout queries (conventions 12.4, CV-40). Header-inline and exported. */
 ADF_INLINE size_t adf_sizeof_linsol(void) { return sizeof(adf_linsol_struct); }

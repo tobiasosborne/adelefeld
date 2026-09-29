@@ -1,0 +1,16 @@
+red 1: link error (undefined references to the nine new functions), tests/test_linsolve_rest.c
+red 2: stubs (return 0 / UNSUPPORTED / untouched): 13 tests, 30444 checks, 20327 failed checks, 13 failed tests (all assertions); lanes/s1-slice2/red2.out
+green 1: real code: 13 tests, 30444 checks, 39 failed checks, 2 failed tests. Both were defects of the tests: a char coord[64] buffer too small for N up to 360 (fball_against_exact_membership: 9 systems), and fmpz_randbits gave negative H and d in the large-operand test (set_fmpz3 refused: DOMAIN). Repaired in the test.
+green 2: 13 tests, 30328 checks, 0 failed checks, 0 failed tests (lanes/s1-slice2/green2.out); then the local/global test got mixed arrays (a ball of radius 11 stays global): 13 tests, 30328 checks, 0 failed.
+mutants (lanes/s1-slice2/mutate.py, output mutants.out, scratch copy build/scratch, one change at a time; each was caught):
+MUTANT: lcm replaced by the product of the H_i
+13 tests, 30328 checks, 1159 failed checks, 3 failed tests
+MUTANT: the denominator d of a ball ignored
+13 tests, 30328 checks, 771 failed checks, 3 failed tests
+MUTANT: rho_j without the gcd with N
+13 tests, 30328 checks, 232 failed checks, 3 failed tests
+MUTANT: contains without the reduction by G
+13 tests, 30328 checks, 2094 failed checks, 4 failed tests
+MUTANT: kernel_order with g_i in place of N/g_i
+13 tests, 30328 checks, 2137 failed checks, 3 failed tests
+13 tests, 30328 checks, 0 failed checks, 0 failed tests

@@ -119,3 +119,111 @@ end
     st, kind, G, x0, y, ver = solve([1 1], [1], 0)
     @test st == DOMAIN
 end
+
+# ---- slice 2 of S.1 (lane s1-slice2): adf_linsolve_fball and adf_linsol_get_fball ----
+# A finite ball is raw memory sized by adf_sizeof_fball, built by adf_fball_set_fmpz3(x, A, H, d): the set
+# (A + H Zhat)/d. The array of balls that adf_linsolve_fball takes holds the structs themselves, so each
+# ball is copied byte by byte into it (valid while the originals are alive: small values only here).
+# Statuses: UNSUPPORTED 8 (an exact ball, H = 0).
+
+const UNSUPPORTED = 8
+
+fmpz_str(r::Ref{Clong}) = begin
+    s = ccall(fl(:fmpz_get_str), Ptr{UInt8}, (Ptr{UInt8}, Cint, Ptr{Clong}), C_NULL, 10, r)
+    v = parse(BigInt, unsafe_string(s))
+    ccall(fl(:flint_free), Cvoid, (Ptr{Cvoid},), s)
+    v
+end
+
+function fball_new(a, H, d)
+    p = Libc.malloc(ccall(ad(:adf_sizeof_fball), Csize_t, ()))
+    ccall(ad(:adf_fball_init), Cvoid, (Ptr{Cvoid},), p)
+    fa, fH, fd = Fmpz(string(a)), Fmpz(string(H)), Fmpz(string(d))
+    st = ccall(ad(:adf_fball_set_fmpz3), Cint, (Ptr{Cvoid}, Ptr{Clong}, Ptr{Clong}, Ptr{Clong}), p, fa.v, fH.v, fd.v)
+    st == OK || error("adf_fball_set_fmpz3 failed: $st")
+    return p
+end
+
+fball_free(p) = (ccall(ad(:adf_fball_clear), Cvoid, (Ptr{Cvoid},), p); Libc.free(p))
+
+# solve A x in the balls (a_i + H_i Zhat)/d_i; returns (status, verified or -1, sol pointer, G, x0)
+function solve_fball(A::AbstractMatrix, balls)
+    r = size(A, 1)
+    size_fb = Int(ccall(ad(:adf_sizeof_fball), Csize_t, ()))
+    arr = Libc.malloc(max(r, 1) * size_fb)
+    ps = [fball_new(a, H, d) for (a, H, d) in balls]
+    for (i, p) in enumerate(ps)
+        Base.unsafe_copyto!(Ptr{UInt8}(arr) + (i - 1) * size_fb, Ptr{UInt8}(p), size_fb)
+    end
+    sol = Libc.malloc(ccall(ad(:adf_sizeof_linsol), Csize_t, ()))
+    ccall(ad(:adf_linsol_init), Cvoid, (Ptr{Cvoid},), sol)
+    pA = mat_new(A)
+    st = ccall(ad(:adf_linsolve_fball), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Clong), sol, pA, arr, r)
+    ver = ccall(ad(:adf_linsol_verify_fball), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Clong), sol, pA, arr, r)
+    out = mat_new(zeros(Int, 0, 0))
+    ccall(ad(:adf_linsol_get_kernel), Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}), out, sol)
+    G = mat_get(out)
+    x0 = ccall(ad(:adf_linsol_get_particular), Cint, (Ptr{Cvoid}, Ptr{Cvoid}), out, sol) == 1 ? vec(mat_get(out)) : nothing
+    mat_free(out)
+    mat_free(pA)
+    foreach(fball_free, ps)
+    Libc.free(arr)
+    return st, ver, sol, G, x0
+end
+
+function free_sol(sol)
+    ccall(ad(:adf_linsol_clear), Cvoid, (Ptr{Cvoid},), sol)
+    Libc.free(sol)
+end
+
+# the ball of coordinate j (0-based) of a solution: (status, A, H, d)
+function coord_ball(sol, j)
+    x = Libc.malloc(ccall(ad(:adf_sizeof_fball), Csize_t, ()))
+    ccall(ad(:adf_fball_init), Cvoid, (Ptr{Cvoid},), x)
+    st = ccall(ad(:adf_linsol_get_fball), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Clong), x, sol, j)
+    a, H, d = Fmpz("0"), Fmpz("0"), Fmpz("1")
+    st == OK && ccall(ad(:adf_fball_get_fmpz3), Cvoid, (Ptr{Clong}, Ptr{Clong}, Ptr{Clong}, Ptr{Cvoid}), a.v, H.v, d.v, x)
+    ccall(ad(:adf_fball_clear), Cvoid, (Ptr{Cvoid},), x)
+    Libc.free(x)
+    return st, fmpz_str(a.v), fmpz_str(H.v), fmpz_str(d.v)
+end
+
+@testset "adf_linsolve_fball and adf_linsol_get_fball through ccall" begin
+    # x1 + x2 in (3 + 4 Zhat) and x1 - x2 in (1 + 2 Zhat): N = lcm(4, 2) = 4
+    # (A' = [1 1; 2 -2], b' = [3, 2] by solvers P2.9); the set of solutions modulo 4 is found by enumeration
+    st, ver, sol, G, x0 = solve_fball([1 1; 1 -1], [(3, 4, 1), (1, 2, 1)])
+    @test st == OK && ver == 1
+    N = 4
+    member(x) = mod(x[1] + x[2] - 3, 4) == 0 && mod(x[1] - x[2] - 1, 2) == 0
+    ref = Set((u, v) for u in 0:N-1, v in 0:N-1 if member((u, v)))
+    @test !isempty(ref)
+    # x0 + S(G): all combinations of the rows of G with coefficients in Z/4
+    span = Set([Tuple(mod.(x0, N))])
+    for i in 1:size(G, 1)
+        span = Set(Tuple(mod.(collect(p) .+ t .* G[i, :], N)) for p in span, t in 0:N-1)
+    end
+    @test span == ref
+    # the ball of each coordinate: its residues modulo 4 are the j-th coordinates of the solutions modulo 4
+    for j in 1:2
+        stj, a, H, d = coord_ball(sol, j - 1)
+        @test stj == OK && d == 1 && H > 0 && 4 % H == 0
+        @test Set(t for t in 0:N-1 if mod(t - a, H) == 0) == Set(p[j] for p in ref)
+    end
+    @test coord_ball(sol, 2)[1] == DOMAIN
+    @test coord_ball(sol, -1)[1] == DOMAIN
+    free_sol(sol)
+    # an exact ball (H = 0): UNSUPPORTED (8)
+    st, ver, sol, G, x0 = solve_fball([1 1], [(3, 0, 1)])
+    @test st == UNSUPPORTED && ver == 0
+    free_sol(sol)
+    # a ball with a denominator: x1 + 2 x2 in (2 + 6 Zhat)/2 = 1 + 3 Zhat, canonical; N = 3
+    st, ver, sol, G, x0 = solve_fball([1 2], [(2, 6, 2)])
+    @test st == OK && ver == 1
+    @test mod(x0[1] + 2 * x0[2] - 1, 3) == 0
+    free_sol(sol)
+    # no solution: x in 1 + 2 Zhat and x in 0 + 2 Zhat
+    st, ver, sol, G, x0 = solve_fball(reshape([1, 1], 2, 1), [(1, 2, 1), (0, 2, 1)])
+    @test st == NO_SOLUTION && ver == 1 && x0 === nothing
+    @test coord_ball(sol, 0)[1] == NO_SOLUTION
+    free_sol(sol)
+end

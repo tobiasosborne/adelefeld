@@ -1,0 +1,61 @@
+set/swap/identical: 4455 systems, 0 failed; other rhs identical 1014, differing 3438; permuted equations identical 405, differing 4050
+ok   set_swap_identical_on_the_grid
+identical: 28 single changes, all seen
+ok   identical_sees_every_field
+grid mod 4: 4455 systems, contains yes 4455 no 63234, shifted 25533, kernel order > 1 in 2698; 0 bad
+ok   kernel_order_contains_image_cert_on_the_grid
+random small N: 1800 systems, contains yes 171290 no 405431, kernel order > 1 in 1007; 0 bad
+ok   kernel_order_contains_image_cert_random_small_moduli
+ok   kernel_order_named_values
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 1376 (r 3 c 1 N 90)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 1461 (r 3 c 2 N 72)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 1784 (r 3 c 1 N 90)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 2119 (r 3 c 1 N 90)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 2269 (r 3 c 2 N 72)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 2468 (r 3 c 1 N 180)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 2599 (r 3 c 1 N 72)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 2722 (r 3 c 1 N 90)
+FAIL tests/test_linsolve_rest.c:1029: fball_against_exact_membership: check failed: ok | system 2914 (r 2 c 2 N 72)
+fball: 2815 systems (185 skipped for N^c > 6000); OK 1591, NO_SOLUTION 1224; lcm below the product in 807; non-canonical raw triples 2651; coordinate balls checked 2774; 9 bad
+FAIL tests/test_linsolve_rest.c:1038: fball_against_exact_membership: check failed: nsys > 2000 && nok > 200 && nnone > 200 && nlcm_lt_prod > 100 && nnotcanon > 500 && nbad == 0
+FAIL fball_against_exact_membership (tests/test_linsolve_rest.c:941, 10 failed checks)
+local/global: 569 systems, 431 with some local ball, 0 mixed; 0 bad
+ok   fball_local_and_global_backends_agree
+ok   fball_statuses
+ok   get_fball_statuses_and_named_values
+get_fball: 5655 systems, 6604 coordinate balls with solutions compared with the residues; 0 bad
+ok   get_fball_residues_on_the_grid
+FAIL tests/test_linsolve_rest.c:1456: fball_large_operands_planted_solution: check failed: adf_fball_set_fmpz3(b + i, Ai, Hi, di) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1460: fball_large_operands_planted_solution: check failed: stat == ADF_OK
+FAIL tests/test_linsolve_rest.c:1461: fball_large_operands_planted_solution: check failed: adf_linsol_verify_fball(sol, A, b, r) == 1
+FAIL tests/test_linsolve_rest.c:1463: fball_large_operands_planted_solution: check failed: fmpz_bits(sol->N) >= 1700 + 1 * 0
+FAIL tests/test_linsolve_rest.c:1464: fball_large_operands_planted_solution: check failed: adf_linsol_contains(sol, x) == 1
+FAIL tests/test_linsolve_rest.c:1471: fball_large_operands_planted_solution: check failed: adf_linsol_contains(sol, xs) == 1
+FAIL tests/test_linsolve_rest.c:1486: fball_large_operands_planted_solution: check failed: fmpz_divisible(val, H)
+FAIL tests/test_linsolve_rest.c:1486: fball_large_operands_planted_solution: check failed: fmpz_divisible(val, H)
+FAIL tests/test_linsolve_rest.c:1486: fball_large_operands_planted_solution: check failed: fmpz_divisible(val, H)
+FAIL tests/test_linsolve_rest.c:1499: fball_large_operands_planted_solution: check failed: adf_linsol_get_fball(ball, sol, j) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1501: fball_large_operands_planted_solution: check failed: adf_fball_contains_rat(ball, q) == 1
+FAIL tests/test_linsolve_rest.c:1499: fball_large_operands_planted_solution: check failed: adf_linsol_get_fball(ball, sol, j) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1499: fball_large_operands_planted_solution: check failed: adf_linsol_get_fball(ball, sol, j) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1501: fball_large_operands_planted_solution: check failed: adf_fball_contains_rat(ball, q) == 1
+FAIL tests/test_linsolve_rest.c:1456: fball_large_operands_planted_solution: check failed: adf_fball_set_fmpz3(b + i, Ai, Hi, di) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1460: fball_large_operands_planted_solution: check failed: stat == ADF_OK
+FAIL tests/test_linsolve_rest.c:1461: fball_large_operands_planted_solution: check failed: adf_linsol_verify_fball(sol, A, b, r) == 1
+FAIL tests/test_linsolve_rest.c:1463: fball_large_operands_planted_solution: check failed: fmpz_bits(sol->N) >= 1700 + 1 * 0
+FAIL tests/test_linsolve_rest.c:1464: fball_large_operands_planted_solution: check failed: adf_linsol_contains(sol, x) == 1
+FAIL tests/test_linsolve_rest.c:1471: fball_large_operands_planted_solution: check failed: adf_linsol_contains(sol, xs) == 1
+FAIL tests/test_linsolve_rest.c:1486: fball_large_operands_planted_solution: check failed: fmpz_divisible(val, H)
+FAIL tests/test_linsolve_rest.c:1486: fball_large_operands_planted_solution: check failed: fmpz_divisible(val, H)
+FAIL tests/test_linsolve_rest.c:1486: fball_large_operands_planted_solution: check failed: fmpz_divisible(val, H)
+FAIL tests/test_linsolve_rest.c:1499: fball_large_operands_planted_solution: check failed: adf_linsol_get_fball(ball, sol, j) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1501: fball_large_operands_planted_solution: check failed: adf_fball_contains_rat(ball, q) == 1
+FAIL tests/test_linsolve_rest.c:1499: fball_large_operands_planted_solution: check failed: adf_linsol_get_fball(ball, sol, j) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1501: fball_large_operands_planted_solution: check failed: adf_fball_contains_rat(ball, q) == 1
+FAIL tests/test_linsolve_rest.c:1499: fball_large_operands_planted_solution: check failed: adf_linsol_get_fball(ball, sol, j) == ADF_OK
+FAIL tests/test_linsolve_rest.c:1501: fball_large_operands_planted_solution: check failed: adf_fball_contains_rat(ball, q) == 1
+FAIL fball_large_operands_planted_solution (tests/test_linsolve_rest.c:1401, 29 failed checks)
+ok   fball_limit_and_dimension
+vectors: 780 lines, OK 391, NO_SOLUTION 389, N above 64 bits 104, coordinate balls 759; 0 differ
+ok   vectors_s1_slice2_every_line
+13 tests, 30444 checks, 39 failed checks, 2 failed tests
