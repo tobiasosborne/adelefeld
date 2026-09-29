@@ -1,0 +1,69 @@
+ 16:30:19 up 1 day, 20:45,  3 users,  load average: 6,04, 3,84, 2,36
+family pair e 600 degree 2 prec 2 coefficient bits 1221
+searching for 2 roots, 2 deflated
+prec=32: 0 isolated roots | cpu/wall(s): 0 0
+prec=64: 0 isolated roots | cpu/wall(s): 0 0
+prec=128: 0 isolated roots | cpu/wall(s): 0 0
+prec=256: 0 isolated roots | cpu/wall(s): 0 0
+prec=512: 0 isolated roots | cpu/wall(s): 0.001 0.001
+prec=1024: 0 isolated roots | cpu/wall(s): 0.001 0.001
+prec=2048: 0 isolated roots | cpu/wall(s): 0.002 0.002
+prec=4096: 0 isolated roots | cpu/wall(s): 0.008 0.007
+prec=8192: 0 isolated roots | cpu/wall(s): 0.021 0.022
+prec=16384: 2 isolated roots | cpu/wall(s): 0.051 0.051
+done!
+flint: 0.084228 s, real 2, largest mantissa 16384 bits, least accuracy 15780 bits
+family pair e 600 degree 2 prec 2 coefficient bits 1221
+adf: 0.087997 s, status 0, balls 2, largest mantissa 16384 bits
+family pair e 900 degree 2 prec 2 coefficient bits 1821
+searching for 2 roots, 2 deflated
+prec=32: 0 isolated roots | cpu/wall(s): 0.001 0
+prec=64: 0 isolated roots | cpu/wall(s): 0 0
+prec=128: 0 isolated roots | cpu/wall(s): 0 0
+prec=256: 0 isolated roots | cpu/wall(s): 0 0.001
+prec=512: 0 isolated roots | cpu/wall(s): 0 0
+prec=1024: 0 isolated roots | cpu/wall(s): 0.001 0.001
+prec=2048: 0 isolated roots | cpu/wall(s): 0.003 0.003
+prec=4096: 0 isolated roots | cpu/wall(s): 0.007 0.007
+prec=8192: 0 isolated roots | cpu/wall(s): 0.023 0.023
+prec=16384: 0 isolated roots | cpu/wall(s): 0.066 0.066
+prec=32768: 0 isolated roots | cpu/wall(s): 0.185 0.185
+prec=65536: 0 isolated roots | cpu/wall(s): 0.499 0.499
+prec=131072: 2 isolated roots | cpu/wall(s): 1.12 1.12
+done!
+flint: 1.905322 s, real 2, largest mantissa 131072 bits, least accuracy 130168 bits
+family pair e 900 degree 2 prec 2 coefficient bits 1821
+adf: 1.942929 s, status 0, balls 2, largest mantissa 131071 bits
+family pair e 1200 degree 2 prec 2 coefficient bits 2421
+searching for 2 roots, 2 deflated
+prec=32: 0 isolated roots | cpu/wall(s): 0 0.001
+prec=64: 0 isolated roots | cpu/wall(s): 0 0
+prec=128: 0 isolated roots | cpu/wall(s): 0 0
+prec=256: 0 isolated roots | cpu/wall(s): 0 0
+prec=512: 0 isolated roots | cpu/wall(s): 0 0
+prec=1024: 0 isolated roots | cpu/wall(s): 0.002 0.001
+prec=2048: 0 isolated roots | cpu/wall(s): 0.002 0.003
+prec=4096: 0 isolated roots | cpu/wall(s): 0.008 0.008
+prec=8192: 0 isolated roots | cpu/wall(s): 0.024 0.024
+prec=16384: 0 isolated roots | cpu/wall(s): 0.069 0.069
+prec=32768: 0 isolated roots | cpu/wall(s): 0.194 0.194
+prec=65536: 0 isolated roots | cpu/wall(s): 0.507 0.506
+prec=131072: 0 isolated roots | cpu/wall(s): 0.869 0.87
+prec=262144: 0 isolated roots | cpu/wall(s): 2.032 2.032
+prec=524288: 0 isolated roots | cpu/wall(s): 4.957 4.957
+prec=1048576: 2 isolated roots | cpu/wall(s): 7.964 7.966
+done!
+flint: 16.635645 s, real 2, largest mantissa 1048574 bits, least accuracy 1047373 bits
+family pair e 1200 degree 2 prec 2 coefficient bits 2421
+adf: 17.846061 s, status 0, balls 2, largest mantissa 1048576 bits
+family pair e 1200 degree 2 prec 2 coefficient bits 2421
+count: 0.000012 s, n = 2
+family pair e 3000 degree 2 prec 2 coefficient bits 6021
+count: 0.000017 s, n = 2
+family pair e 1200 degree 2 prec 2 coefficient bits 2421
+eval: 0.000000691 s for one sign (289306 repetitions), point of 1205 bits, sign sum 289306
+family pair e 3000 degree 2 prec 2 coefficient bits 6021
+eval: 0.000002307 s for one sign (86707 repetitions), point of 3005 bits, sign sum 86707
+family pair e 3000 degree 2 prec 3000 coefficient bits 6021
+eval: 0.000005825 s for one sign (34336 repetitions), point of 6003 bits, sign sum 34336
+ 16:30:58 up 1 day, 20:46,  3 users,  load average: 5,96, 4,08, 2,50

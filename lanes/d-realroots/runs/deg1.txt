@@ -1,0 +1,30 @@
+ 16:31:07 up 1 day, 20:46,  3 users,  load average: 5,81, 4,08, 2,51
+family deg e 300 degree 2 prec 2 coefficient bits 601
+trace: total 0.006729 s, last prec 2048, iterations 236
+last level: 2048 57 236 301 -3124 2 1745 0.003368 0.000031
+family deg e 300 degree 4 prec 2 coefficient bits 1201
+trace: total 0.435470 s, last prec 16384, iterations 584
+last level: 16384 31 584 301 -15483 4 15479 0.180209 0.002527
+family deg e 300 degree 8 prec 2 coefficient bits 2401
+last level: 262144 96 1248 301 -288 0 284 50.851480 0.219710
+family deg e 300 degree 16 prec 2 coefficient bits 4801
+last level: 65536 128 1376 301 -130 0 125 31.307604 0.092177
+family small e 0 degree 10 prec 2 coefficient bits 24
+trace: total 0.000639 s, last prec 32, iterations 19
+last level: 32 19 19 4 -15 10 6 0.000521 0.000118
+count: 0.000319 s, n = 10
+family small e 0 degree 20 prec 2 coefficient bits 64
+trace: total 0.006072 s, last prec 64, iterations 47
+last level: 64 15 47 5 -21 20 12 0.002105 0.000202
+count: 0.000131 s, n = 20
+family small e 0 degree 40 prec 2 coefficient bits 163
+trace: total 0.078212 s, last prec 128, iterations 122
+last level: 128 26 122 6 -36 40 26 0.020480 0.000969
+count: 0.002589 s, n = 40
+family small e 0 degree 80 prec 2 coefficient bits 399
+trace: total 1.249129 s, last prec 256, iterations 408
+last level: 256 184 408 7 -64 80 52 0.655934 0.004356
+count: 0.103523 s, n = 80
+ 16:34:29 up 1 day, 20:49,  3 users,  load average: 5,69, 4,85, 3,14
+
+[exited with code 0]
