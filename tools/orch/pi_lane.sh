@@ -12,7 +12,7 @@ PROMPT="$(cat lanes/COMMON.md; echo; echo "Your lane directory: $D"; echo; cat "
 # pi -p then ends the run with exit 0. Such an end is not an attempt of the model: the session is continued
 # after a short wait, up to SOFTMAX times in all, and does not count against MAXRETRY.
 empty_end() { tail -n 40 "$D/events.jsonl" 2>/dev/null | grep '"type":"turn_end"' | tail -n 1 | grep -q 'empty response'; }
-attempt=1; soft=0; started=0
+attempt=1; soft=0; started="${RESUME:-0}"   # RESUME=1: continue the last session of the lane
 while [ $attempt -le "${MAXRETRY:-3}" ]; do
   [ -e lanes/STOP ] && { echo "$(date -Is) STOP" >> "$LOG"; exit 2; }
   echo "$(date -Is) attempt $attempt start ($MODEL $THINK) soft $soft" >> "$LOG"
