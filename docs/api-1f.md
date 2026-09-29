@@ -166,7 +166,9 @@ the ball with centre `c/d = p^(v - w) (u/t)` and exponent `min( v(c) + M', v(1/d
 operand being left out as in L3. The exact-operand cases are those of L3 (`0 * anything = 0`). Nothing in this
 formula involves the inverse as a stored value, so it holds where the inverse alone is outside the limits.
 *Centre.* The stored centre is L0 applied to `(u/t) p^(v - w)` and `K`, that is `u t^(-1) mod p^k` with
-`k = K - (v - w)`; `t` is a unit, so the inverse modulo `p^k` exists. The computation needs `p^k`, with `k` the
+`k = K - (v - w)`; `t` is a unit, so the inverse modulo `p^k` exists. Exception: if the centre of `x` is 0
+(`u = 0`), the stored centre is 0, nothing is inverted, and `k` is not used (the first term of `K` is absent and the
+ball is `p^K Z_p`; for `x = 2^-5 Z_2` and `y = 1 + 2 Z_2` it is `K = -5` and the centre 0). The computation needs `p^k`, with `k` the
 relative precision of the RESULT, and nothing larger. (It equals the residue that the product of the unit parts of
 `x` and of the stored inverse would give: the stored inverse is `1/t` modulo `p^(M - w)`, and `k <= M - w`, because
 `K` is at most its first term `v - w + (M - w)` when `x` is a ball with `u != 0` and `y` a ball; the other cases
@@ -230,8 +232,8 @@ order), 3.1 to 3.3 (statuses, the reported place), 4.3, 4.4; `docs/SPEC.md` 9.3.
 | `adf_sball_project(y, where, x, places, n)` | the projection of an adele to the places (S1) | `OK`, `DOMAIN` (repeated place), `LIMIT` (with the prime) |
 | `adf_sball_arch`, `_num_places`, `_get_place`, `_has_place`, `_get_lball`, `_get_arb` | accessors; the canonical order of places | `_get_place`, `_get_lball`, `_get_arb`: `DOMAIN` |
 | `adf_sball_equal_set`, `_overlaps`, `_contains` | set predicates (S4) | none (0 or 1) |
-| `adf_sball_neg`, `_add`, `_sub`, `_mul` | componentwise, over the same set of places (S3) | `OK`, `DOMAIN` (places differ, with the first place), `UNSUPPORTED` (complex tag), `LIMIT` (with the prime) |
-| `adf_real_exp`, `_log`, `_log_abs`, `_sin`, `_cos`, `_sqrt`, `_root` | real functions on an `arb` (S5, S6) | `OK`, `DOMAIN`, `NOT_DETERMINED` |
+| `adf_sball_neg`, `_add`, `_sub`, `_mul` | componentwise, over the same set of places (S3) | `OK`, `DOMAIN` (places differ, with the first place), `UNSUPPORTED` (complex tag), `LIMIT` (with the prime; `prec` too large: with the archimedean place); combined by 3.3 |
+| `adf_real_exp`, `_log`, `_log_abs`, `_sin`, `_cos`, `_sqrt`, `_root` | real functions on an `arb` (S5, S6) | `OK`, `DOMAIN`, `NOT_DETERMINED`, `LIMIT` (`prec` above `ADF_REAL_PREC_MAX`) |
 | `adf_sball_exp_at`, `_log_at`, `_log_abs_at`, `_sin_at`, `_cos_at`, `_sqrt_at`, `_root_at` | the same at the archimedean place of a partial ball; the result is a partial ball over that one place | as above, plus `DOMAIN` (place not in the ball), `UNSUPPORTED` (a prime, or the complex tag) |
 | `adf_sizeof_sball`, `adf_alignof_sball` | 120, 8 | none |
 
@@ -247,9 +249,11 @@ order), 3.1 to 3.3 (statuses, the reported place), 4.3, 4.4; `docs/SPEC.md` 9.3.
 3. `where` is a report argument (conventions 2.2, 4.3): written on a status other than `OK`, untouched on `OK`, may
    be `NULL`. On `DOMAIN` from the projection it is the repeated place; from two operands over different places it
    is the first place, in the canonical order, that belongs to one operand only (a different tag is a difference at
-   the archimedean place); on `LIMIT` it is the first prime, in the canonical order, at which a component fails
-   (conventions 3.3: the statuses of the components are all `LIMIT`, so the maximum is `LIMIT` and the first place
-   carrying it is reported).
+   the archimedean place); on the statuses of the components it is the place of the combined status
+   (conventions 3.3, line 211: the maximum in the numeric order of 3.1, the first place in the canonical order that
+   carries it; `LIMIT` at a prime is above `UNSUPPORTED` at the archimedean place, so a complex tag does not hide it,
+   finding R3 of `docs/reviews/f1/review-sball-rfunc.md`). A `prec` above `ADF_REAL_PREC_MAX` (2^21) is `LIMIT` with
+   the archimedean place, decided from `prec` alone before every other status (finding R5).
 4. Complex components (`arch = COMPLEX`) are stored, copied, compared and checked by the predicate; arithmetic and
    the functions of `rfunc.h` return `ADF_UNSUPPORTED` with the archimedean place. No function of the slice makes a
    complex tag. Alternative: `acb` arithmetic (four lines); not done, because no test could reach it through the
@@ -334,7 +338,10 @@ domain `t > 0`: `B` inside the domain iff `lo > 0`, disjoint iff `hi <= 0`; `log
 inside iff `lo > 0` or `hi < 0`, disjoint iff `lo = hi = 0`; `sqrt` and the roots of even degree have `t >= 0`:
 inside iff `lo >= 0`, disjoint iff `hi < 0`; `exp`, `sin`, `cos` and the roots of odd degree have the domain R. The
 wrapper returns `OK` when `B` is inside, `DOMAIN` when it is disjoint, `NOT_DETERMINED` otherwise (conventions 3.1:
-"a ball that meets both the domain and its complement gives `ADF_NOT_DETERMINED`"). `arb_is_positive`,
+"a ball that meets both the domain and its complement gives `ADF_NOT_DETERMINED`"). Exception (S7): a result that is
+not finite is never stored, and the status is `NOT_DETERMINED` although `B` is inside the domain (`exp` of the exact
+`2^1000` at 53 bits). A `prec` above `ADF_REAL_PREC_MAX` (2^21) is `LIMIT`, before every status of this paragraph.
+`arb_is_positive`,
 `arb_is_nonnegative`, `arb_is_negative`, `arb_is_nonpositive` decide exactly these conditions on `lo` and `hi`
 (`arb.rst`, lines 639 to 649).
 

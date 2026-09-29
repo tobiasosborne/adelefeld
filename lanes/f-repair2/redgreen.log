@@ -1,0 +1,41 @@
+== RED: reviewer's edge.c
+$ edge precedence
+inputs_canonical=1,1 local_status=LIMIT partial_status=UNSUPPORTED where_inf=1 output_empty=1
+exit 0
+$ edge s5
+input_finite=1 status=NOT_DETERMINED
+exit 0
+$ edge-inv inv arch
+returned=9
+exit 0
+$ edge-inv inv num
+returned=1
+exit 0
+$ edge-inv inv ident
+returned=1
+exit 0
+$ edge-inv inv setself
+exit 0
+$ edge-inv inv swap
+exit 0
+$ edge-inv inv swapself
+exit 0
+$ edge-inv inv control
+adelefeld: ADF_CHECK_INVARIANTS: adf_sball_neg: argument x is not a canonical adf_sball
+timeout: the monitored command dumped core
+exit 134
+$ edge prec exp
+start exp prec=9223372036854775807
+status=OK finite=1
+[+/- 5.01]
+exit 0
+$ edge prec sin
+Flint exception (General error):
+    Unable to allocate memory (8070450532247928976).
+timeout: the monitored command dumped core
+exit 0
+$ edge prec root
+Flint exception (General error):
+    Unable to allocate memory (17293822569102704648).
+timeout: the monitored command dumped core
+exit 0

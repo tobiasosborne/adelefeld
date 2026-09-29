@@ -142,6 +142,8 @@ real_apply(arb_t y, const arb_t x, rfn f, ulong n, slong prec)
 {
     arb_t t;
     int st = ADF_OK;
+    if (prec > ADF_REAL_PREC_MAX)   /* from prec alone, before every other status and any allocation (finding R5) */
+        return ADF_LIMIT;
     if (prec < 2)
         prec = 2;
     if (!arb_is_finite(x))
@@ -242,6 +244,12 @@ at_place(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v,
     arb_t t;
     int st;
     ADF_INV_SBALL(x);
+    if (prec > ADF_REAL_PREC_MAX)   /* from prec alone, before every other status; where = the archimedean place */
+    {
+        if (where != NULL)
+            *where = adf_place_inf();
+        return ADF_LIMIT;
+    }
     if (!adf_sball_has_place(x, v))
     {
         if (where != NULL)

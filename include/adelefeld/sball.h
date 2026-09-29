@@ -38,7 +38,8 @@
      `where` may be NULL.
    - Statuses over several places combine by the maximum; the reported place is the first place in the canonical
      order whose status is that maximum (conventions 3.3).
-   - A prec below 2 is taken as 2 (decision M1-D4, adele.h). The local components do not depend on prec.
+   - A prec below 2 is taken as 2 (decision M1-D4, adele.h). A prec above ADF_REAL_PREC_MAX is ADF_LIMIT (see
+     add). The local components do not depend on prec.
    - Complex components (arch = COMPLEX) are stored, copied and compared by the functions below; arithmetic on
      them and the functions of adelefeld/rfunc.h return ADF_UNSUPPORTED with the archimedean place in this slice
      (conventions 3.1: a valid request that version 1 does not yet implement). No function of this header makes a
@@ -57,6 +58,13 @@
 #include "adelefeld/fball.h"
 #include "adelefeld/lball.h"
 #include "adelefeld/adele.h"
+
+/* The largest working precision of a function that takes a prec: 2^21 bits, the value of ADF_ROOTS_REAL_PREC_MAX and
+   ADF_IDELE_PREC_MAX (the same definition stands in adelefeld/rfunc.h). Above it a function of this header and of
+   rfunc.h returns ADF_LIMIT, decided from prec alone. */
+#ifndef ADF_REAL_PREC_MAX
+#define ADF_REAL_PREC_MAX 2097152
+#endif
 
 #define ADF_ARCH_NONE    0
 #define ADF_ARCH_REAL    1
@@ -187,8 +195,9 @@ int adf_sball_contains(const adf_sball_t x, const adf_sball_t y);
 /* ---- componentwise ring operations over the SAME set of places ---- */
 
 /* adf_sball_neg(y, where, x): y = -x at every place: the local components by adf_lball_neg, the real one by
-   arb_neg (exact). Status: ADF_OK; ADF_UNSUPPORTED (a COMPLEX tag; where = the archimedean place); ADF_LIMIT
-   (adf_lball_neg; where = the first such prime). Outputs untouched on a status. */
+   arb_neg (exact). Status: ADF_OK; ADF_UNSUPPORTED (a COMPLEX tag; at the archimedean place); ADF_LIMIT
+   (adf_lball_neg; at the prime); combined as for add (the maximum, LIMIT above UNSUPPORTED; where = the first place
+   with that status). Outputs untouched on a status. */
 int adf_sball_neg(adf_sball_t y, adf_place_t * where, const adf_sball_t x);
 
 /* adf_sball_add(z, where, x, y, prec): z = x + y at every place: adf_lball_add at the primes (the smallest ball,
@@ -197,10 +206,13 @@ int adf_sball_neg(adf_sball_t y, adf_place_t * where, const adf_sball_t x);
    The two operands must have the same set of places and the same tag; otherwise ADF_DOMAIN with `where` = the
    first place, in the canonical order, that belongs to one operand and not to the other (or, when the tags
    differ, the archimedean place); the check comes first.
-   Status: ADF_OK, z written; ADF_DOMAIN (above); ADF_UNSUPPORTED (a COMPLEX tag, where = the archimedean place);
-   ADF_LIMIT (from an adf_lball function, where = the first prime, in canonical order, that fails). The maximum of
-   the statuses is taken by the rule of 3.3; the statuses of the places of one call are all ADF_LIMIT or all
-   one code, so the first failing place is reported. z is untouched on a status.
+   Status: ADF_OK, z written; ADF_LIMIT if prec > ADF_REAL_PREC_MAX (decided from prec alone, first of all, where =
+   the archimedean place, also when the tag is NONE); ADF_DOMAIN (above); ADF_UNSUPPORTED (a COMPLEX tag, at the
+   archimedean place); ADF_LIMIT (from an adf_lball function, at the prime). After the checks of prec and of the
+   places every place is inspected, the archimedean place and every prime (a complex tag does not end the inspection),
+   and the combined status is that of docs/conventions.md 3.3: the maximum in the numeric order of 3.1 (LIMIT 10 is
+   above UNSUPPORTED 8), `where` the first place, in the canonical order, whose status is that maximum. z is
+   untouched on a status.
    Enclosure: at each place the component of z contains the set of results of the operation on the components
    (arb at the archimedean place; the smallest ball at a prime), so z contains the set of results of the tuples
    (statement S3: the sum and the product of sets of tuples are the products of the sets at each place).

@@ -739,3 +739,112 @@ ADF_TEST(sball_at_statuses_and_places)
     adf_sball_clear(w);
     adf_adele_clear(a);
 }
+
+/* --------------------------------------------------------------------------------- the precision limit (finding R5) */
+
+/* Every function of rfunc.h: at prec = ADF_REAL_PREC_MAX it works (on an input whose value is cheap: exp, sin, cos of
+   0; log, log|.|, sqrt, cube root of 1), and above it, also at LONG_MAX, it returns ADF_LIMIT, decided from prec alone:
+   before the checks of the domain (non-finite input, degree 0, a place that is not one of x, a prime, a COMPLEX tag),
+   the output untouched; at the level of the partial ball where = the archimedean place. What would make a case fail:
+   an allocation in arb at LONG_MAX (the old code aborts in arb_sin and arb_root_ui), any other status. */
+ADF_TEST(prec_limit)
+{
+    const slong precs[4] = {ADF_REAL_PREC_MAX + 1, ADF_REAL_PREC_MAX + 2, LONG_MAX, LONG_MAX - 1};
+    const int zero_input[7] = {1, 0, 0, 1, 1, 0, 0};   /* exp, log, log_abs, sin, cos, sqrt, root: input 0, or 1 */
+    size_t k, i;
+    int j, st;
+    arb_t x, bad, y, s, want;
+    adf_sball_t sx, sy, sc, ss;
+    adf_place_t where, mark = place_of(1000003), inf = adf_place_inf();
+
+    arb_init(x);
+    arb_init(bad);
+    arb_init(y);
+    arb_init(s);
+    arb_init(want);
+    arb_set_si(s, 12345);
+    arb_zero_pm_inf(bad);   /* not finite: DOMAIN if it were checked first */
+    adf_sball_init(sx);
+    adf_sball_init(sy);
+    adf_sball_init(sc);
+    adf_sball_init(ss);
+    sball_real(ss, s);
+
+    for (k = 0; k < NFNS + 1; k++)   /* the last is the cube root */
+    {
+        const char * name = k < NFNS ? FNS[k].name : "root";
+        arb_set_si(x, zero_input[k] ? 0 : 1);
+        sball_real(sx, x);
+        sball_real(sy, s);
+        sball_real(sc, x);
+        sc->arch = ADF_ARCH_COMPLEX;
+        ADF_CHECK(adf_sball_is_canonical(sc));
+
+        /* at the limit: OK; the value is 1 for exp, cos, sqrt, root and 0 for log, log_abs, sin */
+        if (strcmp(name, "exp") == 0 || strcmp(name, "cos") == 0 || strcmp(name, "sqrt") == 0 ||
+            strcmp(name, "root") == 0)
+            arb_one(want);
+        else
+            arb_zero(want);
+        arb_set(y, s);
+        st = call_real(name, 3, y, x, ADF_REAL_PREC_MAX);
+        ADF_CHECK_MSG(st == ADF_OK && arb_is_finite(y) && arb_contains(y, want), "%s at the limit (arb): status %s",
+                      name, adf_status_str(st));
+        where = mark;
+        st = call_sball(name, 3, sy, &where, sx, inf, ADF_REAL_PREC_MAX);
+        ADF_CHECK_MSG(st == ADF_OK && adf_place_equal(where, mark) && adf_sball_is_canonical(sy) &&
+                          arb_contains(acb_realref(sy->inf), want),
+                      "%s at the limit (sball): status %s", name, adf_status_str(st));
+
+        for (i = 0; i < 4; i++)
+        {
+            /* arb level: valid input, and a non-finite input (LIMIT before DOMAIN); y untouched */
+            arb_set(y, s);
+            st = call_real(name, 3, y, x, precs[i]);
+            ADF_CHECK_MSG(st == ADF_LIMIT && arb_equal(y, s), "%s prec %ld (arb): status %s", name, (long) precs[i],
+                          adf_status_str(st));
+            st = call_real(name, 3, y, bad, precs[i]);
+            ADF_CHECK_MSG(st == ADF_LIMIT && arb_equal(y, s), "%s prec %ld non-finite (arb): status %s", name,
+                          (long) precs[i], adf_status_str(st));
+            /* aliased: x is unchanged */
+            arb_set(y, x);
+            st = call_real(name, 3, y, y, precs[i]);
+            ADF_CHECK(st == ADF_LIMIT && arb_equal(y, x));
+            /* the partial ball: where = the archimedean place, y untouched. j = 0: the place inf; j = 1 and j = 3:
+               a prime that is not a place of x; j = 2: the COMPLEX tag */
+            for (j = 0; j < 4; j++)
+            {
+                adf_place_t vv = j == 1 ? place_of(3) : (j == 3 ? place_of(1009) : inf);
+                adf_sball_struct * in = j == 2 ? sc : sx;
+                sball_real(sy, s);
+                where = mark;
+                st = call_sball(name, 3, sy, &where, in, vv, precs[i]);
+                ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_is_archimedean(where) && adf_sball_identical(sy, ss),
+                              "%s prec %ld case %d (sball): status %s", name, (long) precs[i], j, adf_status_str(st));
+                ADF_CHECK(call_sball(name, 3, sy, NULL, in, vv, precs[i]) == ADF_LIMIT);
+            }
+        }
+    }
+    /* a root of degree 0 above the limit: LIMIT first (where = inf); at the limit: DOMAIN as before */
+    arb_one(x);
+    sball_real(sx, x);
+    st = adf_real_root(y, x, 0, LONG_MAX);
+    ADF_CHECK(st == ADF_LIMIT);
+    where = mark;
+    st = adf_sball_root_at(sy, &where, sx, inf, 0, ADF_REAL_PREC_MAX + 1);
+    ADF_CHECK(st == ADF_LIMIT && adf_place_is_archimedean(where));
+    where = mark;
+    st = adf_sball_root_at(sy, &where, sx, inf, 0, ADF_REAL_PREC_MAX);
+    ADF_CHECK(st == ADF_DOMAIN && adf_place_equal(where, mark));
+    ADF_CHECK(adf_real_root(y, x, 0, ADF_REAL_PREC_MAX) == ADF_DOMAIN);
+
+    arb_clear(x);
+    arb_clear(bad);
+    arb_clear(y);
+    arb_clear(s);
+    arb_clear(want);
+    adf_sball_clear(sx);
+    adf_sball_clear(sy);
+    adf_sball_clear(sc);
+    adf_sball_clear(ss);
+}

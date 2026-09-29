@@ -50,6 +50,8 @@
 
 /* ---- helpers ---- */
 
+static void sb_swap(adf_sball_struct * x, adf_sball_struct * y);
+
 /* t = the empty value with n initialised components (not yet filled) and the tag arch; inf = 0. */
 static void
 sb_alloc(adf_sball_struct * t, int arch, slong n)
@@ -113,19 +115,29 @@ adf_sball_set(adf_sball_t y, const adf_sball_t x)
 {
     adf_sball_struct t;
     slong i;
+    ADF_INV_SBALL(x);   /* also when y == x (conventions 4.4; finding R4) */
     if (y == x)
         return;
-    ADF_INV_SBALL(x);
     sb_alloc(&t, x->arch, x->len);
     acb_set(t.inf, x->inf);
     for (i = 0; i < x->len; i++)
         adf_lball_set(&t.loc[i], &x->loc[i]);
-    adf_sball_swap(y, &t);
+    sb_swap(y, &t);
     adf_sball_clear(&t);
 }
 
 void
 adf_sball_swap(adf_sball_t x, adf_sball_t y)
+{
+    ADF_INV_SBALL(x);   /* both arguments, also when x == y (conventions 4.4; finding R4) */
+    ADF_INV_SBALL(y);
+    sb_swap(x, y);
+}
+
+/* The exchange without a check of the predicate: for the temporaries of this file, which are canonical, and so that
+   an OUTPUT argument (overwritten, not read) is not checked. */
+static void
+sb_swap(adf_sball_struct * x, adf_sball_struct * y)
 {
     int a;
     slong n;
@@ -172,6 +184,8 @@ int
 adf_sball_identical(const adf_sball_t x, const adf_sball_t y)
 {
     slong i;
+    ADF_INV_SBALL(x);
+    ADF_INV_SBALL(y);
     if (x->arch != y->arch || x->len != y->len || !acb_equal(x->inf, y->inf))
         return 0;
     for (i = 0; i < x->len; i++)
@@ -238,7 +252,7 @@ adf_sball_set_arb_lballs(adf_sball_t y, adf_place_t * where, const arb_t r, cons
     for (i = 0; i < n; i++)
         adf_lball_set(&t.loc[i], &loc[k[i].i]);
     flint_free(k);
-    adf_sball_swap(y, &t);
+    sb_swap(y, &t);
     adf_sball_clear(&t);
     return ADF_OK;
 }
@@ -290,7 +304,7 @@ adf_sball_project(adf_sball_t y, adf_place_t * where, const adf_adele_t x, const
         }
     }
     flint_free(ps);
-    adf_sball_swap(y, &t);
+    sb_swap(y, &t);
     adf_sball_clear(&t);
     return ADF_OK;
 }
@@ -300,20 +314,23 @@ adf_sball_project(adf_sball_t y, adf_place_t * where, const adf_adele_t x, const
 int
 adf_sball_arch(const adf_sball_t x)
 {
+    ADF_INV_SBALL(x);
     return x->arch;
 }
 
 slong
 adf_sball_num_places(const adf_sball_t x)
 {
+    ADF_INV_SBALL(x);
     return x->len + (x->arch != ADF_ARCH_NONE ? 1 : 0);
 }
 
 int
 adf_sball_get_place(adf_place_t * v, const adf_sball_t x, slong i)
 {
-    slong n = adf_sball_num_places(x);
+    slong n;
     ADF_INV_SBALL(x);
+    n = x->len + (x->arch != ADF_ARCH_NONE ? 1 : 0);
     if (i < 0 || i >= n)
         return ADF_DOMAIN;
     if (x->arch != ADF_ARCH_NONE)
@@ -491,31 +508,47 @@ places_differ(adf_place_t * where, const adf_sball_struct * x, const adf_sball_s
     return 0;
 }
 
+/* The combined status of a call (docs/conventions.md 3.3, from line 211): the maximum of the statuses of the
+   places in the numeric order of 3.1; the reported place the first place, in the canonical order, whose status is that
+   maximum. The places are visited in the canonical order (the archimedean place, then the primes increasing) and a
+   status replaces the current one only if it is larger, so the first place of the maximum is kept. Finding R3: the
+   complex tag (UNSUPPORTED at the archimedean place) does not end the inspection; a LIMIT (10) at a prime wins. */
+static void
+combine(int * st, adf_place_t * wh, int s, adf_place_t v)
+{
+    if (s > *st)
+    {
+        *st = s;
+        *wh = v;
+    }
+}
+
 int
 adf_sball_neg(adf_sball_t y, adf_place_t * where, const adf_sball_t x)
 {
     adf_sball_struct t;
+    adf_place_t wh = adf_place_inf();
     slong i;
+    int st = ADF_OK;
     ADF_INV_SBALL(x);
     if (x->arch == ADF_ARCH_COMPLEX)
-    {
-        report(where, adf_place_inf());
-        return ADF_UNSUPPORTED;
-    }
+        combine(&st, &wh, ADF_UNSUPPORTED, adf_place_inf());
     sb_alloc(&t, x->arch, x->len);
     if (x->arch == ADF_ARCH_REAL)
         arb_neg(acb_realref(t.inf), acb_realref(x->inf));
     for (i = 0; i < x->len; i++)
     {
-        int st = adf_lball_neg(&t.loc[i], &x->loc[i]);
-        if (st != ADF_OK)
-        {
-            report(where, place_of_prime(x->loc[i].p));
-            adf_sball_clear(&t);
-            return st;
-        }
+        int si = adf_lball_neg(&t.loc[i], &x->loc[i]);
+        if (si > st)
+            combine(&st, &wh, si, place_of_prime(x->loc[i].p));
     }
-    adf_sball_swap(y, &t);
+    if (st != ADF_OK)
+    {
+        report(where, wh);
+        adf_sball_clear(&t);
+        return st;
+    }
+    sb_swap(y, &t);
     adf_sball_clear(&t);
     return ADF_OK;
 }
@@ -528,21 +561,26 @@ typedef enum
 } binop;
 
 /* Statement S3: the set of results of a ring operation on products of sets is the product of the sets of results at
-   each place; the components are the smallest balls at the primes (L2, L3, L5) and arb's enclosure at the real place. */
+   each place; the components are the smallest balls at the primes (L2, L3, L5) and arb's enclosure at the real place.
+   Order of the checks: prec above ADF_REAL_PREC_MAX (LIMIT, where = the archimedean place, from prec alone, before
+   anything is allocated: finding R5), the places (DOMAIN: a precondition of the operation), then the statuses of the
+   places combine by the rule above. */
 static int
 binary(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec, binop op)
 {
     adf_sball_struct t;
+    adf_place_t wh = adf_place_inf();
     slong i;
-    ADF_INV_SBALL(x);
-    ADF_INV_SBALL(y);
+    int st = ADF_OK;
+    if (prec > ADF_REAL_PREC_MAX)
+    {
+        report(where, adf_place_inf());
+        return ADF_LIMIT;
+    }
     if (places_differ(where, x, y))
         return ADF_DOMAIN;
     if (x->arch == ADF_ARCH_COMPLEX)
-    {
-        report(where, adf_place_inf());
-        return ADF_UNSUPPORTED;
-    }
+        combine(&st, &wh, ADF_UNSUPPORTED, adf_place_inf());
     if (prec < 2)
         prec = 2;
     sb_alloc(&t, x->arch, x->len);
@@ -557,21 +595,23 @@ binary(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_
     }
     for (i = 0; i < x->len; i++)
     {
-        int st;
+        int si;
         if (op == OP_ADD)
-            st = adf_lball_add(&t.loc[i], &x->loc[i], &y->loc[i]);
+            si = adf_lball_add(&t.loc[i], &x->loc[i], &y->loc[i]);
         else if (op == OP_SUB)
-            st = adf_lball_sub(&t.loc[i], &x->loc[i], &y->loc[i]);
+            si = adf_lball_sub(&t.loc[i], &x->loc[i], &y->loc[i]);
         else
-            st = adf_lball_mul(&t.loc[i], &x->loc[i], &y->loc[i]);
-        if (st != ADF_OK)
-        {
-            report(where, place_of_prime(x->loc[i].p));
-            adf_sball_clear(&t);
-            return st;
-        }
+            si = adf_lball_mul(&t.loc[i], &x->loc[i], &y->loc[i]);
+        if (si > st)
+            combine(&st, &wh, si, place_of_prime(x->loc[i].p));
     }
-    adf_sball_swap(z, &t);
+    if (st != ADF_OK)
+    {
+        report(where, wh);
+        adf_sball_clear(&t);
+        return st;
+    }
+    sb_swap(z, &t);
     adf_sball_clear(&t);
     return ADF_OK;
 }
@@ -579,17 +619,23 @@ binary(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_
 int
 adf_sball_add(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec)
 {
+    ADF_INV_SBALL(x);   /* here and not in binary: the message names the public function */
+    ADF_INV_SBALL(y);
     return binary(z, where, x, y, prec, OP_ADD);
 }
 
 int
 adf_sball_sub(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec)
 {
+    ADF_INV_SBALL(x);   /* here and not in binary: the message names the public function */
+    ADF_INV_SBALL(y);
     return binary(z, where, x, y, prec, OP_SUB);
 }
 
 int
 adf_sball_mul(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec)
 {
+    ADF_INV_SBALL(x);   /* here and not in binary: the message names the public function */
+    ADF_INV_SBALL(y);
     return binary(z, where, x, y, prec, OP_MUL);
 }
