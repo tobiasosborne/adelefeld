@@ -2,21 +2,71 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-09-29, 09:15 to 14:10: START HERE
+## Session 2026-09-29, 20:45 to 21:10 (recovery): START HERE
 
-**RECOVERY NOTE, written 16:25 (read first if the session ended at the quota limit).** Six Claude lanes
-were launched at 16:24 to use the quota that expires at 18:00: `d-realroots`, `d-ideles`, `d-functions`
-(designs, Fable), `s2-slice4` (roots modulo primes above `2^20`, Opus), `s-protosync`, `m1-small` (Sonnet).
-Briefs: `lanes/<lane>/brief.md`. NONE is merged, reviewed or checked by the orchestrator. Their work is
-saved by `tools/orch/autosave.sh` every five minutes as WIP commits on the branches
-`worktree-agent-<id>` of origin (log: `../adelefeld-wt/autosave.log`; stop it with
-`touch lanes/AUTOSAVE_STOP`). To recover: `git fetch; git branch -r | grep worktree-agent`; in each branch
-read `lanes/<lane>/progress.md` and `result.md` (a lane without `result.md` did not finish); land a
-finished lane as always (all checks on master, read BEFORE the push); continue an unfinished one with a new
-agent from its branch and its `progress.md`. Also running: four differential runs of one hour each
-(`../adelefeld-wt/longrun/longrun.log`; linear systems and the seed function ended with 0 disagreements;
-Algorithm P until about 17:07, real roots until about 18:07); their results are NOT yet in the worklog.
+**One line.** The session of 16:24 ended at the quota limit with six lanes running. Recovered: two lanes
+landed (s2-slice4, m1-small), one had landed before the end (s-protosync), three design lanes are
+UNFINISHED and saved on origin; the four long differential runs ended with 0 disagreements. Nothing is
+running (the autosave loop is stopped). Everything is pushed.
 
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    make clean && make check-all 2>&1 | tail -1     # expect: check-all passed: ... (57 test programs)
+    free -g; ~/Projects/quota-app/target/release/quota; date
+
+**Master** (21:06): `make check-all` (57 test programs, driver, exports, Julia, the two selftests),
+`make check SAN=1`, `make check CC=clang`, `check_headers.sh` pass, all read before the push.
+
+**What landed now.**
+- s2-slice4 (Opus, adf-e0n): `adf_roots_padic` for every prime of a place; the temporary `UNSUPPORTED`
+  above `2^20` is gone. Roots modulo `p` by evaluation up to `ADF_ROOTS_P_EVAL_MAX = 128` (crossover
+  measured, loaded machine), above by `gcd(h, X^p - X)` and `nmod_poly_roots`, whose list is checked and
+  refused by abort (S-D20). FLINT's C sources of these routines are on disk and cited. New
+  `tests/test_roots_bigp.c`, `bench/bench_roots_modp.c`; `diff_roots_padic.py` now covers primes up to
+  64 bits (smoke run of 180 s only). Its report: `lanes/s2-slice4/result.md`. The orchestrator changed one
+  line of `tests/julia/roots.jl` (it expected `UNSUPPORTED` at 1048583; now it checks the three roots).
+  NOT YET REVIEWED: a codex review with its own oracle is the next step for this slice.
+- m1-small (Sonnet): adf-zbl (text R9 reaches prec 2 and 191; four corpus files), adf-mds items 1 and 2
+  (stale comment; `all_load` runs the typed loaders), adf-bgf (conventions 12.1, 11.3, 8.4, prec below 2),
+  adf-7gc item 3 (`adf_sizeof_text_kind`, `adf_alignof_text_kind`). Report `lanes/m1-small/result.md`.
+- Long differential runs (seed 2026092902, one hour each, code of 14:05): linear systems 13472390
+  systems, roots seed 17224715 calls, Algorithm P 9182030 calls, real roots 33653 calls; 0 disagreements
+  each (`../adelefeld-wt/longrun/longrun.log`, copied into the worklog). Algorithm P ran on the code BEFORE
+  s2-slice4; the new route above 128 has had 180 s only.
+
+**Unfinished lanes, saved as WIP on origin** (branch `worktree-agent-<id>`, worktree
+`.claude/worktrees/agent-<id>`; read `lanes/<lane>/brief.md` and `progress.md` in the branch; continue
+with a new agent from that branch; none has `result.md`):
+- d-realroots (`aa5882a1c1ea56bed`, adf-8di): cause of the 97 s found (FLINT doubles the precision after
+  `4 deg + 64` Durand-Kerner steps; linear convergence on close roots). Benchmark
+  `bench/bench_roots_real.c` and prototype `proto/real_isolation.py` (Descartes bisection, Collins-Akritas
+  form) with tests exist; `docs/design/real-roots.md` NOT written. Sturm text source pending.
+- d-ideles (`acc17965b8910c1f2`): facts and choices D2-1 to D2-7 in progress.md; `proto/ideles_checks.py`
+  touched; `docs/api-2.md` not written. Finding: ball product `arb_mul` plus a sign test cannot be the kernel
+  of sign preservation (SPEC 5).
+- d-functions (`adaf36d4414085b09`): FLINT probe done, part 2 of `proto/functions_checks.py` (1057 lines)
+  started; `docs/api-1f.md` not written. FLINT's padic sources and `arb_hypgeom.rst` are not on disk.
+
+**The next steps**, in this order:
+1. Review of s2-slice4 by codex `gpt-6-sol` (its own oracle; the trust base of `nmod_poly_powmod` and
+   `nmod_poly_gcd` named in the header; the three findings against `docs/proofs/solvers.md` in its report:
+   S-D10 source-pending line, Algorithm P step 3 covers only evaluation, cost P3.5(7)). Then close adf-e0n.
+2. Continue d-realroots (closest to done), then d-ideles and d-functions, each from its branch.
+3. A long run of `diff_roots_padic.py` on the new route (an hour, alone).
+4. Left of adf-mds: `proto/text_grammar.py` restricts the character modulus; `MAG_MAN`/`MAG_EXP` source
+   pending. Left of adf-7gc: `tests/julia/layouts.jl` and `docs/api-m1.md` do not list the new text-kind
+   pair; the other items.
+5. As before: benchmarks of milestone 1 on a quiet machine; a driver command for milestone S if TJO wants.
+
+**Waits for TJO.** As in the section below (S-D20 confirmation; the reading of `adf_resid_verify_result`).
+
+**Things to know.**
+- `tools/orch/autosave.sh` saved the lanes every five minutes and made this recovery possible. It does not
+  stop by itself when the lanes die: stop it at a session end (`touch lanes/AUTOSAVE_STOP`).
+- The WIP autosave commit `13957cc` of s-protosync is in master's history through the merge `352aef0`.
+
+## Session 2026-09-29, 09:15 to 14:10
 
 **One line.** Milestone S is implemented in slices and reviewed slice by slice: reconstruction from a
 residue (S.3), linear systems modulo `N` (S.1), roots at a prime and real roots (S.2). What is missing:

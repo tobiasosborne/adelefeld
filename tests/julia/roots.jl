@@ -182,10 +182,14 @@ vp(x, p) = (x == 0 ? typemax(Int) : (v = 0; while mod(x, p) == 0; x = div(x, p);
     st, certs, classes, complete, vc = roots_padic(c, 7, 10, 0; strict = false)
     @test st == OK && length(certs) == 1 && mod(certs[1][1], 7) == 4 && classes == [(big(3), 1)]
     @test complete == 0 && vc == 0
-    # DOMAIN and the temporary bound of the slice
     @test roots_padic([0], 7, 10, 8)[1] == DOMAIN
     @test roots_padic(c, 7, 10, -1)[1] == DOMAIN
-    @test roots_padic(c, 1048583, 3, 2)[1] == UNSUPPORTED
+    # above the old bound 2^20 (lane s2-slice4): 1048583 = 7 mod 8, so 2 is a square and there are three roots
+    p = big(1048583)
+    st, certs, classes, complete, vc = roots_padic(c, 1048583, 3, 2)
+    @test st == OK && length(certs) == 3 && isempty(classes) && complete == 1 && vc == 1
+    @test all(mod(peval(c, a), p^(K + s)) == 0 for (a, K, s) in certs)
+    @test any(a == 3 for (a, _, _) in certs)
 end
 
 # ---- slice 3 of S.2 (lane s2-slice3): the real roots through adf_roots_real and adf_rootlist_get_arb ----
