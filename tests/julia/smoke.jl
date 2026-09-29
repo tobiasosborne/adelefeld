@@ -280,3 +280,6 @@ end
 
 # Slice 1 of milestone S (lane s3-slice1): adf_resid_reconstruct through ccall.
 include(joinpath(@__DIR__, "resid.jl"))
+
+# Slice 1 of S.1 (lane s1-slice1): adf_linsolve_mod through ccall.
+include(joinpath(@__DIR__, "linsolve.jl"))
