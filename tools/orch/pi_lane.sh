@@ -18,8 +18,23 @@ while [ $attempt -le "${MAXRETRY:-3}" ]; do
   echo "$(date -Is) attempt $attempt start ($MODEL $THINK) soft $soft" >> "$LOG"
   if [ $started -eq 0 ]; then MSG="$PROMPT"; C=""; else MSG="You stopped before writing $D/report.md. Keep what is written, read $D/brief.md again, continue from the first unfinished item, and finish with $D/report.md."; C="-c"; fi
   started=1
+  # Watchdog: pi has no time limit for a shell command of the model. If the event log has not grown for
+  # STALL seconds, the test programs and scripts running inside this tree are killed, so that the model
+  # gets its answer and goes on.
+  ( while sleep 60; do
+      age=$(( $(date +%s) - $(stat -c %Y "$D/events.jsonl" 2>/dev/null || date +%s) ))
+      if [ "$age" -gt "${STALL:-600}" ]; then
+        for pid in $(pgrep -f "^(\./|$REPO/)?build/|^python3 " 2>/dev/null); do
+          if [ "$(readlink /proc/$pid/cwd 2>/dev/null)" = "$REPO" ]; then
+            echo "$(date -Is) watchdog: no event for $age s, kill $pid ($(tr '\0' ' ' < /proc/$pid/cmdline | cut -c1-80))" >> "$LOG"
+            kill "$pid" 2>/dev/null
+          fi
+        done
+      fi
+    done ) & wd=$!
   timeout "${LANE_TIMEOUT:-5400}" pi -p $C --mode json --session-dir "$D/sessions" -nc --model "$MODEL" --thinking "$THINK" "$MSG" \
     >> "$D/events.jsonl" 2>> "$D/stderr.log" < /dev/null; rc=$?
+  kill "$wd" 2>/dev/null
   echo "$(date -Is) attempt $attempt exit $rc" >> "$LOG"
   if [ -s "$D/report.md" ]; then echo "$(date -Is) DONE" >> "$LOG"; exit 0; fi
   if empty_end && [ $soft -lt "${SOFTMAX:-40}" ]; then

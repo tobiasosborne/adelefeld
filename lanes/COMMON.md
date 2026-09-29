@@ -10,7 +10,9 @@ change it.
    same time; never delete, move or reformat files you do not own.
 2. **No git and no tracker.** Do not run any git command that changes state (add, commit, checkout, stash, reset,
    clean, push) and do not run `bd`. The orchestrator commits.
-3. **Laptop.** Use at most 2 cores. No computation longer than about 3 minutes. No installation of system packages;
+3. **Laptop.** Use at most 2 cores. No computation longer than about 3 minutes. Run every test program and
+   script under `timeout` (for example `timeout 300 ./build/test_x`): a program that does not end stops your
+   lane, because your shell waits for it. No installation of system packages;
    Python: standard library, `python-flint`, `mpmath`, `sympy` only if already importable.
 4. **Ground truth.** A formula or convention of other people is quoted from a file under `refs/` with file and line.
    If the source is not on disk, do not cite from memory as if it were: mark the statement
