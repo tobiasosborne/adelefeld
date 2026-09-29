@@ -24,16 +24,27 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 03:24 on 2026-09-29 (two jobs; look at them first).**
+**RUNNING at 03:44 on 2026-09-29 (one job; look at it first).**
 
 | Job | Model | Where | State |
 |---|---|---|---|
 | the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | RESTARTED at 02:03 with the judge `make check INV=1` and `--san`: in the release build the lines `ADF_INV_...` are compiled away, and all 34 survivors of `cap.c` and `rat.c` in the first run were such lines (first run: `lanes/m1-sweep/release-run/`). 14 files, small first, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 30 s for a mutant, about 12 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log`. Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
-| s-closure | codex gpt-6-sol xhigh, since 03:24 | `../adelefeld-wt/s-closure`; brief `lanes/s-closure/brief.md` | closure check of the design review: judges every repair and reviews the statements that are new in draft 2; writes `docs/reviews/s-design/closure.md` |
 
 **QUOTA at 03:20: Claude weekly 91% used, 0.3 points behind pace; Fable weekly 90%, 1.3 behind** (reset
 2026-09-29 18:00); codex 46% (limit of TJO 50%). The Claude windows are ON pace: no further Claude subagent
 is launched until the meter shows them behind again or the window resets. Codex and the script go on.
+
+**The design of milestone S is DRAFT 3 and its review is closed** (`9600357`, 03:43). The closure check
+(`540f57c`; codex gpt-6-sol, 15 minutes; `docs/reviews/s-design/closure.md`): of the 33 statements of the
+first review 32 CLOSED, 1 CLOSED WITH EDIT, 0 OPEN; of the 14 new items 13 VALID, 1 MINOR, 0 INVALID; every
+repair attacked with neighbouring inputs; verdict NOT READY before four minor edits R11 to R14. The
+orchestrator applied the four edits as written (isolation formula of 3.11(5); the flag `reduced`; the seed
+exponent in S-D18; the regression `check_s2_rr_finish`) and showed that the new check fails on the mutant
+it is for. `proto/solvers_checks.py`: 35 checks, 0 failures. What is left before an implementation lane
+starts: the decisions S-D1 to S-D19 of TJO (`docs/api-s.md` section 5), among them E-S4 (does SPEC 9.1
+"multiple roots later" mean multiplicities later: S-D13), and then the edits of SPEC, PLAN and
+conventions (`docs/api-s.md` section 6), E-C5 deferred. Sources pending: the intermediate value theorem,
+Sturm's theorem.
 
 **The design of milestone S is DRAFT 2** (`da222e9`; lane s-design-repair, Sonnet medium, 45 minutes, 542k
 tokens; `lanes/s-design-repair/report.md`): every finding of the review answered, none contested; 34 checks
