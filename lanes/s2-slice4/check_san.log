@@ -1,0 +1,527 @@
+mkdir -p build
+mkdir -p build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/adele.c -o build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/cap.c -o build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/common.c -o build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/dump.c -o build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball.c -o build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball_local.c -o build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/inlines.c -o build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/linsolve.c -o build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/modctx.c -o build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/place.c -o build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rat.c -o build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/recon.c -o build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/resid.c -o build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots.c -o build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/scaled.c -o build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/status.c -o build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text.c -o build/text.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/golden.c -o build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/jsonl.c -o build/support/jsonl.o
+ar rcs build/libadelefeld.a build/adele.o build/cap.o build/common.o build/dump.o build/fball.o build/fball_local.o build/inlines.o build/linsolve.o build/modctx.o build/place.o build/rat.o build/recon.o build/resid.o build/roots.o build/scaled.o build/status.o build/text.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_abi.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_abi
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_adele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_adele_lowprec.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele_lowprec
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_adele_prec.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele_prec
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cadele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cadele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap_chain.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_chain
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap_local.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_local
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_common.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_common
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_common_unsupported.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_common_unsupported
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dlopen.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dlopen
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump_ctx.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump_ctx
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump_golden.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump_golden
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump_limits.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump_limits
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_local.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_local
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_local_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_local_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_overwrite.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_overwrite
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_headers.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_headers
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_invariants.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_invariants
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_invariants_lifetime.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_invariants_lifetime
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_layouts.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_layouts
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_linsolve.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_linsolve
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_linsolve_rest.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_linsolve_rest
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_modctx.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_modctx
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_modctx_limits.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_modctx_limits
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_modctx_pin.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_modctx_pin
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_place.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_place
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_rat.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_rat
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon_canon.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_canon
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon_limit.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_limit
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_resid.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_resid_full.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid_full
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_resid_rest.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid_rest
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_bigp.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_bigp
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_forged.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_forged
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_padic.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_padic
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_real.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_real
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_seed.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_seed
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_s13_repair.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_s13_repair
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaffold.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaffold
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaled.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaled_alias.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled_alias
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaled_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_status.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_status
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_support.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_support
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_adele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_adele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_classify.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_classify
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_fball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_fball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_limits.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_limits
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_r3r9.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_r3r9
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_rat.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_rat
+== build/test_abi
+ok   sizeof_functions_agree_with_the_layouts
+ok   array_of_one_types
+ok   resid_function_signatures_and_status_codes
+3 tests, 21 checks, 0 failed checks, 0 failed tests
+== build/test_adele
+ok   adele_ops_vectors
+ok   adele_set_rat_vectors
+ok   init_is_the_exact_zero
+ok   set_si_is_exact_in_both_coordinates
+ok   set_and_swap_copy_both_coordinates
+ok   set_arb_fball_rejects_a_non_finite_real_ball
+ok   get_real_get_fin_and_get_arb_at
+ok   div_rat_by_zero_is_not_unit_and_leaves_z
+ok   aliasing_of_add_sub_mul
+ok   aliasing_of_neg_and_scale
+ok   identical_separates_midpoint_radius_and_finite_part
+ok   is_canonical_sees_a_non_finite_real_ball
+ok   the_finite_coordinate_does_not_depend_on_prec
+13 tests, 6712 checks, 0 failed checks, 0 failed tests
+== build/test_adele_lowprec
+ok   adele_add_rat_below_prec_two
+ok   adele_mul_rat_below_prec_two
+ok   adele_div_rat_below_prec_two
+ok   adele_add_below_prec_two
+ok   adele_sub_below_prec_two
+ok   adele_mul_below_prec_two
+ok   adele_set_rat_below_prec_two
+ok   cadele_add_rat_below_prec_two
+ok   cadele_mul_rat_below_prec_two
+ok   cadele_div_rat_below_prec_two
+ok   cadele_add_below_prec_two
+ok   cadele_sub_below_prec_two
+ok   cadele_mul_below_prec_two
+ok   cadele_set_rat_below_prec_two
+14 tests, 1426 checks, 0 failed checks, 0 failed tests
+== build/test_adele_prec
+ok   adele_add_computes_the_real_part_at_the_precision_asked_for
+ok   adele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   adele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_set_rat_converts_at_the_precision_asked_for
+ok   cadele_add_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_set_rat_converts_at_the_precision_asked_for
+ok   adele_swap_exchanges_the_finite_half
+ok   cadele_swap_exchanges_the_finite_half
+ok   get_arb_at_the_real_place_returns_ADF_OK
+17 tests, 148 checks, 0 failed checks, 0 failed tests
+== build/test_cadele
+ok   cadele_ops_vectors
+ok   cadele_set_rat_vectors
+ok   cadele_init_is_the_exact_zero
+ok   cadele_set_and_swap
+ok   cadele_set_rat_has_exact_zero_imaginary_part
+ok   cadele_set_adele_is_exact
+ok   i_squared_is_minus_one
+ok   cadele_set_acb_fball_rejects_a_non_finite_complex_ball
+ok   cadele_div_rat_by_zero_is_not_unit_and_leaves_z
+ok   cadele_aliasing_of_add_sub_mul
+ok   cadele_aliasing_of_neg_and_scale
+ok   cadele_is_canonical_needs_both_coordinates
+ok   cadele_identical_separates_the_parts
+ok   cadele_finite_coordinate_does_not_depend_on_prec
+ok   cadele_get_complex_and_get_fin
+15 tests, 6141 checks, 0 failed checks, 0 failed tests
+== build/test_cap
+ok   cap_basic
+ok   cap_exact_untouched
+ok   cap_invariant_and_idempotent
+ok   cap_domain_on_nonpositive_C
+ok   cap_aliasing
+ok   cap_huge_operands
+ok   add_cap_basic
+ok   add_cap_exact_untouched
+ok   add_cap_of_two_capped_needs_no_cap
+ok   add_cap_domain_on_nonpositive_C
+ok   add_cap_aliasing
+ok   sub_cap_basic
+ok   sub_cap_exact_untouched
+ok   sub_cap_domain_on_nonpositive_C
+ok   sub_cap_aliasing
+ok   mul_cap_basic
+ok   mul_cap_exact_untouched
+ok   mul_cap_domain_on_nonpositive_C
+ok   mul_cap_aliasing
+ok   mul_rat_cap_basic
+ok   mul_rat_cap_exact_untouched
+ok   mul_rat_cap_domain_on_nonpositive_C
+ok   mul_rat_cap_aliasing
+23 tests, 852 checks, 0 failed checks, 0 failed tests
+== build/test_cap_chain
+ok   chain_invariant
+ok   chain_contains_tight
+ok   enumeration_small_radii
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+== build/test_cap_local
+ok   local_matches_global_of_same_value
+ok   mixed_local_global_inputs
+ok   local_inputs_different_contexts
+ok   local_output_aliases_each_input
+ok   local_domain_on_nonpositive_C
+ok   local_source_exact_result_untouched
+6 tests, 253 checks, 0 failed checks, 0 failed tests
+== build/test_cap_vectors
+ok   vectors_cap_absolute_cap
+ok   vectors_add_cap
+ok   vectors_sub_cap
+ok   vectors_mul_cap
+ok   vectors_mul_rat_cap
+5 tests, 49930 checks, 0 failed checks, 0 failed tests
+== build/test_common
+ok   the_compiled_version_string_names_the_flint_of_the_headers
+ok   the_compiled_version_string_is_static
+ok   the_run_time_check_accepts_the_installed_flint
+ok   adf_str_free_releases_the_memory_of_flint_malloc
+ok   adf_str_free_of_null_does_nothing
+ok   the_version_comparison_reads_the_major_and_the_minor_number
+ok   the_version_comparison_of_the_installed_flint_says_the_versions_agree
+7 tests, 78 checks, 0 failed checks, 0 failed tests
+== build/test_common_unsupported
+ok   the_check_accepts_the_same_major_and_minor
+ok   the_check_rejects_a_different_minor
+ok   the_check_rejects_a_different_major
+ok   the_check_rejects_a_string_that_is_not_a_version
+ok   unsupported_is_the_code_eight_and_is_named
+ok   the_check_writes_nothing
+6 tests, 48 checks, 0 failed checks, 0 failed tests
+== build/test_dlopen
+== building the shared object
+   build/exports/libadelefeld.so, copied to build/libadelefeld.so
+== 260 function names declared in include/adelefeld/*.h
+== variadic declarations (conventions 12.2)
+   none
+== 260 defined dynamic symbols that are public names, 0 reserved name(s)
+== declared and exported: 260
+adf_adele_add
+adf_adele_add_rat
+adf_adele_clear
+adf_adele_div_rat
+adf_adele_dump_inspect
+adf_adele_dump_str
+adf_adele_get_arb_at
+adf_adele_get_fin
+adf_adele_get_real
+adf_adele_get_str
+adf_adele_identical
+adf_adele_init
+adf_adele_is_canonical
+adf_adele_load_str
+adf_adele_load_str_binds
+adf_adele_mul
+adf_adele_mul_rat
+adf_adele_neg
+adf_adele_reconstruct
+adf_adele_set
+adf_adele_set_arb_fball
+adf_adele_set_rat
+adf_adele_set_si
+adf_adele_set_str
+adf_adele_sub
+adf_adele_swap
+adf_alignof_adele
+adf_alignof_cadele
+adf_alignof_ctx_desc
+adf_alignof_fball
+adf_alignof_linsol
+adf_alignof_place
+adf_alignof_rat
+adf_alignof_recon_cert
+adf_alignof_resid
+adf_alignof_rootlist
+adf_alignof_scaled
+adf_alignof_text_limits
+adf_cadele_add
+adf_cadele_add_rat
+adf_cadele_clear
+adf_cadele_div_rat
+adf_cadele_dump_inspect
+adf_cadele_dump_str
+adf_cadele_get_complex
+adf_cadele_get_fin
+adf_cadele_get_str
+adf_cadele_identical
+adf_cadele_init
+adf_cadele_is_canonical
+adf_cadele_load_str
+adf_cadele_load_str_binds
+adf_cadele_mul
+adf_cadele_mul_rat
+adf_cadele_neg
+adf_cadele_set
+adf_cadele_set_acb_fball
+adf_cadele_set_adele
+adf_cadele_set_rat
+adf_cadele_set_str
+adf_cadele_sub
+adf_cadele_swap
+adf_ctx_desc_clear
+adf_ctx_desc_init
+adf_fball_add
+adf_fball_add_cap
+adf_fball_canonicalise
+adf_fball_cap
+adf_fball_clear
+adf_fball_compare
+adf_fball_contains
+adf_fball_contains_rat
+adf_fball_context
+adf_fball_div_rat
+adf_fball_dump_inspect
+adf_fball_dump_str
+adf_fball_equal_set
+adf_fball_get_center
+adf_fball_get_den
+adf_fball_get_fmpz3
+adf_fball_get_radius
+adf_fball_get_str
+adf_fball_haar_volume
+adf_fball_identical
+adf_fball_init
+adf_fball_is_canonical
+adf_fball_is_exact
+adf_fball_is_local
+adf_fball_load_str
+adf_fball_load_str_binds
+adf_fball_mul
+adf_fball_mul_cap
+adf_fball_mul_rat
+adf_fball_mul_rat_cap
+adf_fball_neg
+adf_fball_one
+adf_fball_overlaps
+adf_fball_prec_at
+adf_fball_reconstruct
+adf_fball_set
+adf_fball_set_center_radius
+adf_fball_set_fmpz
+adf_fball_set_fmpz3
+adf_fball_set_global
+adf_fball_set_local
+adf_fball_set_local_enclose
+adf_fball_set_rat
+adf_fball_set_si
+adf_fball_set_str
+adf_fball_sub
+adf_fball_sub_cap
+adf_fball_swap
+adf_fball_zero
+adf_flint_version_compiled
+adf_linsol_clear
+adf_linsol_contains
+adf_linsol_get_dual
+adf_linsol_get_fball
+adf_linsol_get_image_cert
+adf_linsol_get_kernel
+adf_linsol_get_particular
+adf_linsol_identical
+adf_linsol_init
+adf_linsol_is_canonical
+adf_linsol_kernel_order
+adf_linsol_kernel_rows
+adf_linsol_kind
+adf_linsol_set
+adf_linsol_swap
+adf_linsolve_fball
+adf_linsolve_mod
+adf_linsol_verify
+adf_linsol_verify_fball
+adf_modctx_block
+adf_modctx_dump_str
+adf_modctx_free
+adf_modctx_get_modulus
+adf_modctx_matches_desc
+adf_modctx_nblocks
+adf_modctx_new_blocks
+adf_modctx_new_factorial
+adf_modctx_new_fmpz
+adf_modctx_new_from_dump
+adf_modctx_new_prime_powers
+adf_modctx_new_primorial_pow
+adf_place_cmp
+adf_place_equal
+adf_place_inf
+adf_place_is_archimedean
+adf_place_prime
+adf_place_prime_get
+adf_rat_add
+adf_rat_clear
+adf_rat_div
+adf_rat_dump_inspect
+adf_rat_dump_str
+adf_rat_equal
+adf_rat_get_fmpq
+adf_rat_get_str
+adf_rat_identical
+adf_rat_init
+adf_rat_inv
+adf_rat_is_canonical
+adf_rat_is_zero
+adf_rat_load_str
+adf_rat_load_str_binds
+adf_rat_mul
+adf_rat_neg
+adf_rat_one
+adf_rat_set
+adf_rat_set_fmpq
+adf_rat_set_fmpz
+adf_rat_set_fmpz2
+adf_rat_set_si
+adf_rat_set_str
+adf_rat_sgn
+adf_rat_sub
+adf_rat_swap
+adf_rat_zero
+adf_recon_cert_check
+adf_recon_cert_clear
+adf_recon_cert_identical
+adf_recon_cert_init
+adf_recon_cert_is_canonical
+adf_recon_cert_set
+adf_recon_cert_swap
+adf_resid_clear
+adf_resid_contains_rat
+adf_resid_get_fmpz2
+adf_resid_identical
+adf_resid_init
+adf_resid_is_canonical
+adf_resid_reconstruct
+adf_resid_reconstruct_first
+adf_resid_set
+adf_resid_set_fball_forget
+adf_resid_set_fmpz2
+adf_resid_set_rat
+adf_resid_swap
+adf_resid_verify_result
+adf_rootlist_clear
+adf_rootlist_get_arb
+adf_rootlist_get_cert
+adf_rootlist_get_fball
+adf_rootlist_get_poly
+adf_rootlist_get_unresolved
+adf_rootlist_init
+adf_rootlist_is_canonical
+adf_rootlist_is_complete
+adf_rootlist_length
+adf_rootlist_place
+adf_rootlist_scope
+adf_rootlist_unresolved_length
+adf_rootlist_verify_complete
+adf_rootlist_verify_entries
+adf_root_padic_from_seed
+adf_roots_padic
+adf_roots_padic_partial
+adf_roots_real
+adf_scaled_add
+adf_scaled_add_rat
+adf_scaled_clear
+adf_scaled_context
+adf_scaled_dump_inspect
+adf_scaled_dump_str
+adf_scaled_get_fball
+adf_scaled_get_str
+adf_scaled_identical
+adf_scaled_init
+adf_scaled_is_canonical
+adf_scaled_is_exact
+adf_scaled_load_str
+adf_scaled_load_str_binds
+adf_scaled_mul
+adf_scaled_mul_rat
+adf_scaled_mul_tight
+adf_scaled_neg
+adf_scaled_set
+adf_scaled_set_context
+adf_scaled_set_fball
+adf_scaled_set_rat
+adf_scaled_sub
+adf_scaled_swap
+adf_sizeof_adele
+adf_sizeof_cadele
+adf_sizeof_ctx_desc
+adf_sizeof_fball
+adf_sizeof_linsol
+adf_sizeof_place
+adf_sizeof_rat
+adf_sizeof_recon_cert
+adf_sizeof_resid
+adf_sizeof_rootlist
+adf_sizeof_scaled
+adf_sizeof_text_limits
+adf_status_str
+adf_str_free
+adf_text_classify
+adf_text_limits_default
+adf_version_check
+== declared and not exported: 0 (the library is not complete; not a failure)
+== exported and not declared: 0 (must be empty)
+   (empty)
+test_exports: passed: 260 of 260 declared functions are exported, 0 are not implemented yet, no exported name is undeclared, no variadic function
+ok   the_shared_object_is_loaded
+ok   the_five_functions_are_found_by_name_in_the_loaded_object
+2 tests, 29 checks, 0 failed checks, 0 failed tests
+== build/test_dump
+ok   rat_dump_text
+ok   rat_round_trip_random
+ok   rat_statuses_and_strictness
+ok   order_of_checks_two_faults
+ok   header_before_the_whitespace_of_the_body
+ok   grammar_before_limits_in_sball_and_rfun
+ok   fball_global_dump_text
+ok   fball_global_round_trip_random
+ok   fball_global_statuses
+ok   adele_round_trip_random
+ok   cadele_round_trip_random
+ok   adele_radius_edges
+ok   adele_statuses
+ok   inspect_without_contexts
+ok   hostile_bytes
+ok   input_at_the_end_of_a_page
+ok   load_over_a_value
+17 tests, 12259 checks, 0 failed checks, 0 failed tests
+== build/test_dump_ctx
+ok   local_fball_round_trip_1_2_64_128_blocks
+ok   local_fball_raw_example
+ok   adele_cadele_local_round_trip
+ok   scaled_round_trip_contexts
+ok   scaled_statuses
+ok   scaled_get_str
+ok   binding_rules
+ok   inspection_capacity
+ok   new_from_dump_every_body
+ok   reference_vectors
+ok   modctx_vectors_from_dump
+ok   local_dump_at_the_end_of_a_page
+ok   stage_edges_and_piece_order
+ok   binding_counts_of_every_type
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+== build/test_dump_golden
+ok   golden_dump_every_row
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+== build/test_dump_limits

@@ -836,3 +836,603 @@ ok   large_operands_return_at_once
 ok   aliasing_in_the_search_range
 7 tests, 29391859 checks, 0 failed checks, 0 failed tests
 == build/test_resid_rest
+ok   life_cycle_init_values
+ok   life_cycle_resid_set_swap_identical
+ok   life_cycle_recon_cert_set_swap_identical
+ok   layouts_are_pinned
+   set_rat and contains_rat: 7320 reduced fractions with |n|, d <= 12 over every m <= 40; set_rat OK 5176, DOMAIN 2144; contains_rat inside 5176, outside 144884
+ok   set_rat_and_contains_rat_against_the_definition
+ok   set_rat_statuses_and_shapes
+   forget: 624 balls of the grid (H <= 12, d <= 8, a in [0, H), read on the canonical triple), 475 kept, 149 refused, 19475 rationals of the balls, 8 exact balls refused
+ok   forget_contains_every_rational_of_the_ball
+ok   forget_uses_the_canonical_triple
+ok   forget_the_example_of_note_1
+ok   forget_local_and_global_give_the_same_residue
+   reconstruct_first: 363048 calls, OK 289494, NOT_DETERMINED 48243, NO_SOLUTION 25311; count 0/1/2 94455/30623/237970; 289494 q written, 73554 left untouched, 20901 cut answers
+ok   reconstruct_first_against_the_enumeration
+   recon_first vectors: 15338 lines, all run; OK 12144, NOT_DETERMINED 1809, NO_SOLUTION 1385; count 0/1/2 4204/1332/9802; 696 lines with m or A above a million
+ok   reconstruct_first_vectors
+   sets vectors: 8610 lines, all run; set_rat 5490 (OK 3612, DOMAIN 1878), forget 3120 (OK 2375, DOMAIN 745); contains_rat inside 3612, outside 125037
+ok   set_rat_and_forget_vectors
+   verify_result: 363048 results, all accepted; changed claims refused/accepted-and-true: status 1089144/0, numerator 30623/332425, denominator 25544/337504, sign 25544/337504, certificate 431989/272651, kind 125078/237970
+ok   verify_result_accepts_every_result_and_refuses_changed_claims
+   verify_result on the vectors: 15338 lines; accepted 15338, not decided 0 (of which 453 have X above a word); a status flipped: refused 9802, accepted and true 0
+ok   verify_result_on_the_vectors
+ok   verify_result_when_X_is_above_a_word
+ok   verify_result_outside_the_problem
+17 tests, 7607041 checks, 0 failed checks, 0 failed tests
+== build/test_roots_bigp
+ok   both_routes_give_the_same_roots_below_the_bound
+ok   planted_roots_above_the_bound_give_exactly_the_planted_list
+ok   statuses_above_the_bound
+ok   a_wrong_candidate_list_is_refused
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+ok   the_zero_polynomial_modulo_p_aborts
+5 tests, 825 checks, 0 failed checks, 0 failed tests
+== build/test_roots_forged
+ok   a_composite_place_is_refused
+ok   the_same_shape_at_a_prime_is_accepted
+2 tests, 26 checks, 0 failed checks, 0 failed tests
+== build/test_roots_padic
+enumeration: 8640 runs (p = 2, 3, 5, 7; 40 polynomials each; prec 1 to 6, depth 0 to 8): complete 7902, incomplete 738, empty 1572, with s > 0 2820; 8594 approximate roots, 14910 balls counted, 7200 nested pairs; 0 polynomials skipped (enumeration above 1048576); least depth found for 160, of them >= 1 for 75; 0 failures
+ok   every_run_against_the_enumeration
+vectors: 650 lines (248 of PADIC_CASES), OK 540, NOT_DETERMINED 90, DOMAIN 20; numbers of roots compared 54; least depths 540 (199 refused one below); 0 differ
+ok   vectors_s2_slice2_every_line
+ok   x2_plus_1_at_2_and_the_examples_of_3_11
+ok   zero_polynomial_constants_degree_one_and_repeated_factors
+changed lists: a certificate dropped 321 of 321 refused; two balls merged 185 of 185 refused; a ball moved off its root 321 of 321 refused; a ball doubled 321 of 321 refused; a false n 136 of 136 refused; a class kept with complete = 1 128 of 128 refused; a depth one below the least 79 of 79 refused; seed lists 1794 of 1794 refused
+ok   verify_complete_refuses_changed_lists_seed_lists_and_the_example
+ok   domain_unsupported_and_limit_before_any_allocation_L_untouched
+ok   limits_during_the_search_and_exponent_overflow
+ok   get_unresolved_and_aliasing
+8 tests, 55135 checks, 0 failed checks, 0 failed tests
+== build/test_roots_real
+   REAL_CASES: 72 runs (18 polynomials, prec 2, 20, 53, 200), 72 lists true by the oracle
+ok   real_cases_against_the_sturm_chain_of_the_test
+   planted, prec 2: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 1 of 6 balls exact
+   planted, prec 20: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 1 of 6 balls exact
+   planted, prec 53: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 1 of 6 balls exact
+ok   planted_roots_repeated_large_close_and_dyadic
+   precision: 6 polynomials at prec 2, 10, 53, 200, 2000 and 1, 0, -5, WORD_MIN; 108 nested pairs
+ok   precision_accuracy_below_2_and_nesting
+   ball removed                  51 changed lists,  51 refused (  0 of them by verify_entries)
+   two balls merged              24 changed lists,  24 refused ( 24 of them by verify_entries)
+   ball moved off its root       15 changed lists,  15 refused ( 15 of them by verify_entries)
+   ball widened over two roots   12 changed lists,  12 refused ( 12 of them by verify_entries)
+   false count                   33 changed lists,  33 refused ( 33 of them by verify_entries)
+   false n                       15 changed lists,  15 refused ( 15 of them by verify_entries)
+   g replaced by f                4 changed lists,   4 refused (  4 of them by verify_entries)
+   one root twice                12 changed lists,  12 refused ( 12 of them by verify_entries)
+ok   verifiers_accept_every_result_and_refuse_changed_lists
+ok   predicate_at_the_real_place
+ok   finish_widening_accuracy_after_widening_and_the_count
+ok   statuses_constants_untouched_and_aliasing
+   tests/ref/vectors/s2-slice3/real.jsonl: 163 lines, 161 OK (385 roots), 2 DOMAIN
+ok   vectors_s2_slice3_every_line
+8 tests, 10666 checks, 0 failed checks, 0 failed tests
+== build/test_roots_seed
+ok   layout_pins
+ok   init_value_and_accessors
+enumeration: 1918512 calls (p = 2, 3, 5, 7, 11; 18 polynomials each; every seed in [0, p^4); prec 1 to 6): OK 341322 (s > 0 in 2694), NOT_DETERMINED 1577190; 833 enumerations of balls; strong form of f and of g differ at 10781 seeds; 0 failures
+ok   every_seed_below_p4_against_the_enumeration
+seeds with v(g(a)) = 2 v(g'(a)): 26304, refused with L untouched: 26304
+ok   seeds_with_equality_are_refused_and_L_untouched
+ok   conrad_examples_4_2_4_3_4_4
+ok   normalised_polynomial_27X_repeated_factor_and_the_prime_2
+ok   precision_and_nested_balls
+ok   large_primes_and_large_precision
+FLINT allocations: an OK call 10; LIMIT calls 0, 0, 0
+ok   limit_of_the_precision_is_decided_before_any_allocation
+ok   limits_give_LIMIT_and_leave_L_untouched
+ok   domain_statuses_leave_L_untouched
+ok   aliasing_f_is_L_g_and_a_is_L_a
+ok   get_fball_is_the_canonical_cylinder
+entries verifier: 2200 seed lists, 2200 pass
+changed lists, centre moved off the root (a + t p^(K-1))   : 10984 tried, 10496 refused,  488 accepted and true, 0 accepted and false
+changed lists, K raised by one, centre not lifted          :  2200 tried,  1383 refused,  817 accepted and true, 0 accepted and false
+changed lists, s raised by one                             :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+changed lists, s lowered by one                            :    75 tried,    75 refused,    0 accepted and true, 0 accepted and false
+changed lists, g replaced by f (f != g*)                   :  1545 tried,  1545 refused,    0 accepted and true, 0 accepted and false
+changed lists, two balls of one root (PARTITION, n = 2)    :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+changed lists, centre not reduced (a + p^K)                :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+changed lists, SEED list with complete = 1                 :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+ok   verifier_accepts_every_seed_list_and_refuses_changed_lists
+ok   verifier_and_predicate_on_hand_made_lists
+vectors: 7262 lines, OK 2062, NOT_DETERMINED 5196, DOMAIN 4, p above 32 bits 144; 0 differ
+ok   vectors_s2_slice1_every_line
+16 tests, 5347209 checks, 0 failed checks, 0 failed tests
+== build/test_s13_repair
+ok   verify_result_hand_certificates_of_the_reviewer_limit_zero
+   grid: 500192 claims, 125048 accepted, 375144 refused; results OK 15181, NO_SOLUTION 41551, NOT_UNIQUE 38596, NOT_DETERMINED 29720
+ok   verify_result_is_the_status_of_the_function_on_the_grid
+   verifier with B = 5e9: six calls, 0.017 s of CPU
+ok   verify_result_cost_is_bounded_by_the_limit
+ok   linsolve_fball_refuses_before_any_allocation
+4 tests, 649359 checks, 0 failed checks, 0 failed tests
+== build/test_scaffold
+ok   flint_is_version_3_x
+ok   fmpz_two_plus_three_is_five
+ok   public_header_version
+3 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_scaled
+ok   life_cycle_and_predicate
+ok   set_rat_stores_the_exact_rational
+ok   set_fball_loss_exactly_when_the_set_changes
+ok   set_context_examples
+ok   set_context_loss_grid_and_best
+ok   context_rule_add
+ok   context_rule_sub
+ok   context_rule_mul
+ok   context_rule_mul_tight
+ok   exact_values_keep_the_tag
+ok   literal_rows_of_the_specification
+ok   product_loses_the_factor_h
+ok   neg_and_mul_rat_are_exact_as_sets
+ok   add_rat_lost_and_best
+ok   lcm_contexts_meet_losslessly
+ok   equal_sets_equal_data
+ok   aliasing_binary_ops
+ok   aliasing_unary_and_scalar_ops
+ok   one_word_and_4096_bit_moduli
+ok   exact_zero_and_zero_residues
+ok   tight_and_scaled_policies_containment
+ok   set_fball_converts_a_local_value_as_its_set
+ok   exact_results_store_a_zero_residue
+23 tests, 88410 checks, 0 failed checks, 0 failed tests
+== build/test_scaled_alias
+ok   set_context_alias_exhaustive
+ok   set_context_alias_exact
+ok   set_context_alias_random
+ok   add_rat_alias
+ok   binary_ops_alias
+ok   binary_domain_alias_untouched
+ok   neg_mul_rat_alias
+ok   set_fball_overwrite_and_lost
+ok   cap_alias
+9 tests, 142938 checks, 0 failed checks, 0 failed tests
+== build/test_scaled_vectors
+ok   vectors_policies_convert_from_tight
+ok   vectors_policies_scaled_add
+ok   vectors_policies_scaled_mul
+ok   vectors_lane_neg
+ok   vectors_lane_scale
+ok   vectors_lane_sub
+ok   vectors_lane_mul_exact
+ok   vectors_lane_mul_tight
+ok   vectors_lane_add_rat
+ok   vectors_lane_set_context
+ok   vectors_lane_to_fball
+11 tests, 62707 checks, 0 failed checks, 0 failed tests
+== build/test_status
+ok   the_numeric_values_of_the_status_codes
+ok   the_values_of_the_point_comparison
+ok   every_status_code_has_the_name_of_the_list
+ok   the_names_carry_no_prefix
+ok   the_names_are_distinct
+ok   a_code_outside_the_list_has_the_name_UNKNOWN
+ok   the_name_of_a_code_is_stable
+7 tests, 122 checks, 0 failed checks, 0 failed tests
+== build/test_support
+ok   jsonl_reads_every_vector_file
+ok   jsonl_reads_the_documented_records
+ok   jsonl_keeps_integers_as_text
+ok   jsonl_refuses_malformed_lines
+ok   jsonl_encodes_a_unicode_escape
+ok   jsonl_errors_name_the_line
+ok   jsonl_bounds_the_nesting
+ok   jsonl_refuses_a_value_of_the_wrong_kind
+ok   golden_reads_every_golden_file
+ok   golden_decodes_the_escapes
+ok   golden_decodes_the_hostile_inputs
+ok   golden_expands_generated_inputs
+ok   golden_refuses_malformed_lines
+ok   golden_bounds_a_generated_input
+ok   golden_reads_the_documented_vectors
+ok   golden_accepts_a_file_without_a_vector
+16 tests, 295239 checks, 0 failed checks, 0 failed tests
+== build/test_text_adele
+ok   every_row_of_the_golden_file_adele
+ok   every_row_of_the_golden_file_cadele
+ok   every_row_of_the_golden_file_realball_read
+ok   every_row_of_the_golden_file_realball_print
+ok   every_random_print_of_the_reference
+ok   every_random_adele_text_of_the_reference
+ok   every_random_cadele_text_of_the_reference
+ok   a_dyadic_ball_is_read_exactly_at_every_prec
+ok   the_radius_mantissa_bound_of_2_to_the_30
+ok   random_decimals_are_enclosed_at_small_prec
+ok   the_extreme_exponents_of_the_default_limits
+ok   the_printers_write_the_templates
+ok   the_digits_argument
+ok   print_then_parse_encloses_the_value
+ok   parse_print_parse_encloses_the_first_value
+ok   max_exp10_at_the_limit_and_one_above
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_bytes_and_ends_of_memory
+ok   the_earlier_stage_decides_the_status
+ok   the_grammar_of_real_and_complex
+20 tests, 84390 checks, 0 failed checks, 0 failed tests
+== build/test_text_classify
+ok   the_kinds_are_numbered_as_in_9_7
+ok   every_row_of_the_golden_file_dispatch
+ok   the_texts_of_every_type_file_are_of_that_type
+ok   every_text_of_the_reference
+ok   one_text_of_each_kind
+ok   signs_and_denominators_of_the_other_literals
+ok   limits_hostile_bytes_and_the_order_of_checks
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+8 tests, 20776 checks, 0 failed checks, 0 failed tests
+== build/test_text_fball
+ok   every_row_of_the_golden_file_fball
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template
+ok   random_balls_round_trip
+ok   the_parser_canonicalises
+ok   the_output_may_hold_any_value_before
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_and_forbidden_bytes
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+ok   the_earlier_stage_decides_the_status
+10 tests, 21545 checks, 0 failed checks, 0 failed tests
+== build/test_text_limits
+ok   printer_bound_adele_midpoint
+ok   printer_bound_adele_radius
+ok   printer_bound_cadele_imaginary_midpoint
+ok   printer_bound_cadele_imaginary_radius
+ok   printer_bound_cadele_real_part
+ok   fball_printer_never_null
+ok   exp10_limit_of_nineteen_digits
+ok   exp10_limit_of_nineteen_significant_digits
+ok   exp10_limit_of_twenty_digits
+ok   exp10_limit_negative_and_zero
+ok   value_at_exp10_boundary_prints_one_above
+11 tests, 105 checks, 0 failed checks, 0 failed tests
+== build/test_text_r3r9
+ok   the_reviewers_input_is_not_printed_at_the_default_limits
+ok   every_value_at_the_default_limits_prints_text_that_reads_back
+ok   a_cadele_at_the_exponent_boundary_is_refused_like_an_adele
+ok   a_printed_text_is_read_back_with_limits_that_admit_it
+ok   prec_two_and_digits_one_on_the_value_forms_with_a_real_part
+ok   prec_two_reaches_a_wider_ball_than_a_larger_prec
+ok   the_bare_rat_and_fball_value_forms_round_trip
+   the old scheme on the same texts: 90 accepted, 1 prec values, 1 digits values
+   the corpus of the text target: 283 files, 90 accepted adele or cadele texts, 65 of 190 prec values, 30 of 30 digits values, prec = 2 reached: 0
+ok   the_committed_corpus_reaches_prec_two_and_digits_one
+8 tests, 144 checks, 0 failed checks, 0 failed tests
+== build/test_text_rat
+ok   every_row_of_the_golden_file_rat
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template_q
+ok   huge_operands_print_their_digits_and_come_back
+ok   random_values_round_trip
+ok   max_len_at_the_limit_and_one_above
+ok   empty_and_null_input
+ok   a_nul_byte_anywhere_is_a_parse_error
+ok   every_byte_outside_the_alphabet_is_a_parse_error
+ok   input_at_the_end_of_a_heap_block_of_exact_size
+ok   input_at_the_end_of_a_page
+ok   the_earlier_stage_decides_the_status
+ok   canonicalisation_on_input
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+check passed: all 57 test programs
+make[1]: Leaving directory '/home/tobias/Projects/adelefeld/.claude/worktrees/agent-a1918945312a9f4dc'
+== sh tests/test_driver.sh
+test_driver: h7_many_lines: 100000 lines in 0.045 s
+test_driver: 27 cases, 100376 expected lines, all equal (SAN=0)
+== sh tests/test_exports.sh
+== building the shared object
+   build/exports/libadelefeld.so, copied to build/libadelefeld.so
+== 260 function names declared in include/adelefeld/*.h
+== variadic declarations (conventions 12.2)
+   none
+== 260 defined dynamic symbols that are public names, 0 reserved name(s)
+== declared and exported: 260
+adf_adele_add
+adf_adele_add_rat
+adf_adele_clear
+adf_adele_div_rat
+adf_adele_dump_inspect
+adf_adele_dump_str
+adf_adele_get_arb_at
+adf_adele_get_fin
+adf_adele_get_real
+adf_adele_get_str
+adf_adele_identical
+adf_adele_init
+adf_adele_is_canonical
+adf_adele_load_str
+adf_adele_load_str_binds
+adf_adele_mul
+adf_adele_mul_rat
+adf_adele_neg
+adf_adele_reconstruct
+adf_adele_set
+adf_adele_set_arb_fball
+adf_adele_set_rat
+adf_adele_set_si
+adf_adele_set_str
+adf_adele_sub
+adf_adele_swap
+adf_alignof_adele
+adf_alignof_cadele
+adf_alignof_ctx_desc
+adf_alignof_fball
+adf_alignof_linsol
+adf_alignof_place
+adf_alignof_rat
+adf_alignof_recon_cert
+adf_alignof_resid
+adf_alignof_rootlist
+adf_alignof_scaled
+adf_alignof_text_limits
+adf_cadele_add
+adf_cadele_add_rat
+adf_cadele_clear
+adf_cadele_div_rat
+adf_cadele_dump_inspect
+adf_cadele_dump_str
+adf_cadele_get_complex
+adf_cadele_get_fin
+adf_cadele_get_str
+adf_cadele_identical
+adf_cadele_init
+adf_cadele_is_canonical
+adf_cadele_load_str
+adf_cadele_load_str_binds
+adf_cadele_mul
+adf_cadele_mul_rat
+adf_cadele_neg
+adf_cadele_set
+adf_cadele_set_acb_fball
+adf_cadele_set_adele
+adf_cadele_set_rat
+adf_cadele_set_str
+adf_cadele_sub
+adf_cadele_swap
+adf_ctx_desc_clear
+adf_ctx_desc_init
+adf_fball_add
+adf_fball_add_cap
+adf_fball_canonicalise
+adf_fball_cap
+adf_fball_clear
+adf_fball_compare
+adf_fball_contains
+adf_fball_contains_rat
+adf_fball_context
+adf_fball_div_rat
+adf_fball_dump_inspect
+adf_fball_dump_str
+adf_fball_equal_set
+adf_fball_get_center
+adf_fball_get_den
+adf_fball_get_fmpz3
+adf_fball_get_radius
+adf_fball_get_str
+adf_fball_haar_volume
+adf_fball_identical
+adf_fball_init
+adf_fball_is_canonical
+adf_fball_is_exact
+adf_fball_is_local
+adf_fball_load_str
+adf_fball_load_str_binds
+adf_fball_mul
+adf_fball_mul_cap
+adf_fball_mul_rat
+adf_fball_mul_rat_cap
+adf_fball_neg
+adf_fball_one
+adf_fball_overlaps
+adf_fball_prec_at
+adf_fball_reconstruct
+adf_fball_set
+adf_fball_set_center_radius
+adf_fball_set_fmpz
+adf_fball_set_fmpz3
+adf_fball_set_global
+adf_fball_set_local
+adf_fball_set_local_enclose
+adf_fball_set_rat
+adf_fball_set_si
+adf_fball_set_str
+adf_fball_sub
+adf_fball_sub_cap
+adf_fball_swap
+adf_fball_zero
+adf_flint_version_compiled
+adf_linsol_clear
+adf_linsol_contains
+adf_linsol_get_dual
+adf_linsol_get_fball
+adf_linsol_get_image_cert
+adf_linsol_get_kernel
+adf_linsol_get_particular
+adf_linsol_identical
+adf_linsol_init
+adf_linsol_is_canonical
+adf_linsol_kernel_order
+adf_linsol_kernel_rows
+adf_linsol_kind
+adf_linsol_set
+adf_linsol_swap
+adf_linsolve_fball
+adf_linsolve_mod
+adf_linsol_verify
+adf_linsol_verify_fball
+adf_modctx_block
+adf_modctx_dump_str
+adf_modctx_free
+adf_modctx_get_modulus
+adf_modctx_matches_desc
+adf_modctx_nblocks
+adf_modctx_new_blocks
+adf_modctx_new_factorial
+adf_modctx_new_fmpz
+adf_modctx_new_from_dump
+adf_modctx_new_prime_powers
+adf_modctx_new_primorial_pow
+adf_place_cmp
+adf_place_equal
+adf_place_inf
+adf_place_is_archimedean
+adf_place_prime
+adf_place_prime_get
+adf_rat_add
+adf_rat_clear
+adf_rat_div
+adf_rat_dump_inspect
+adf_rat_dump_str
+adf_rat_equal
+adf_rat_get_fmpq
+adf_rat_get_str
+adf_rat_identical
+adf_rat_init
+adf_rat_inv
+adf_rat_is_canonical
+adf_rat_is_zero
+adf_rat_load_str
+adf_rat_load_str_binds
+adf_rat_mul
+adf_rat_neg
+adf_rat_one
+adf_rat_set
+adf_rat_set_fmpq
+adf_rat_set_fmpz
+adf_rat_set_fmpz2
+adf_rat_set_si
+adf_rat_set_str
+adf_rat_sgn
+adf_rat_sub
+adf_rat_swap
+adf_rat_zero
+adf_recon_cert_check
+adf_recon_cert_clear
+adf_recon_cert_identical
+adf_recon_cert_init
+adf_recon_cert_is_canonical
+adf_recon_cert_set
+adf_recon_cert_swap
+adf_resid_clear
+adf_resid_contains_rat
+adf_resid_get_fmpz2
+adf_resid_identical
+adf_resid_init
+adf_resid_is_canonical
+adf_resid_reconstruct
+adf_resid_reconstruct_first
+adf_resid_set
+adf_resid_set_fball_forget
+adf_resid_set_fmpz2
+adf_resid_set_rat
+adf_resid_swap
+adf_resid_verify_result
+adf_rootlist_clear
+adf_rootlist_get_arb
+adf_rootlist_get_cert
+adf_rootlist_get_fball
+adf_rootlist_get_poly
+adf_rootlist_get_unresolved
+adf_rootlist_init
+adf_rootlist_is_canonical
+adf_rootlist_is_complete
+adf_rootlist_length
+adf_rootlist_place
+adf_rootlist_scope
+adf_rootlist_unresolved_length
+adf_rootlist_verify_complete
+adf_rootlist_verify_entries
+adf_root_padic_from_seed
+adf_roots_padic
+adf_roots_padic_partial
+adf_roots_real
+adf_scaled_add
+adf_scaled_add_rat
+adf_scaled_clear
+adf_scaled_context
+adf_scaled_dump_inspect
+adf_scaled_dump_str
+adf_scaled_get_fball
+adf_scaled_get_str
+adf_scaled_identical
+adf_scaled_init
+adf_scaled_is_canonical
+adf_scaled_is_exact
+adf_scaled_load_str
+adf_scaled_load_str_binds
+adf_scaled_mul
+adf_scaled_mul_rat
+adf_scaled_mul_tight
+adf_scaled_neg
+adf_scaled_set
+adf_scaled_set_context
+adf_scaled_set_fball
+adf_scaled_set_rat
+adf_scaled_sub
+adf_scaled_swap
+adf_sizeof_adele
+adf_sizeof_cadele
+adf_sizeof_ctx_desc
+adf_sizeof_fball
+adf_sizeof_linsol
+adf_sizeof_place
+adf_sizeof_rat
+adf_sizeof_recon_cert
+adf_sizeof_resid
+adf_sizeof_rootlist
+adf_sizeof_scaled
+adf_sizeof_text_limits
+adf_status_str
+adf_str_free
+adf_text_classify
+adf_text_limits_default
+adf_version_check
+== declared and not exported: 0 (the library is not complete; not a failure)
+== exported and not declared: 0 (must be empty)
+   (empty)
+test_exports: passed: 260 of 260 declared functions are exported, 0 are not implemented yet, no exported name is undeclared, no variadic function
+== sh tests/test_julia.sh
+== build/libadelefeld.so is up to date with src/*.c and include/adelefeld/*.h; reusing it
+== julia version 1.12.5
+== retrying with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10 (Julia's bundled libgmp lacks a symbol libflint needs; see the header comment of this script)
+ERROR: LoadError: Some tests did not pass: 19 passed, 1 failed, 0 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld/.claude/worktrees/agent-a1918945312a9f4dc/tests/julia/roots.jl:163
+in expression starting at /home/tobias/Projects/adelefeld/.claude/worktrees/agent-a1918945312a9f4dc/tests/julia/smoke.jl:288
+Test Summary:                                      | Pass  Total  Time
+adelefeld Julia smoke test (build/libadelefeld.so) |   48     48  0.2s
+Test Summary:                       | Pass  Total  Time
+adf_resid_reconstruct through ccall |   28     28  0.1s
+Test Summary:                             | Pass  Total  Time
+adf_resid_reconstruct_first through ccall |   16     16  0.1s
+Test Summary:                            | Pass  Total  Time
+adf_resid_set_fball_forget through ccall |   14     14  0.1s
+Test Summary:                  | Pass  Total  Time
+adf_linsolve_mod through ccall |   15     15  1.3s
+Test Summary:                                             | Pass  Total  Time
+adf_linsolve_fball and adf_linsol_get_fball through ccall |   14     14  0.9s
+Test Summary:                          | Pass  Total  Time
+adf_root_padic_from_seed through ccall |   10     10  0.2s
+adf_roots_padic through ccall: (X^2 - 2)(X - 3) in Z_7: Test Failed at /home/tobias/Projects/adelefeld/.claude/worktrees/agent-a1918945312a9f4dc/tests/julia/roots.jl:188
+  Expression: (roots_padic(c, 1048583, 3, 2))[1] == UNSUPPORTED
+   Evaluated: 0 == 8
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld/.claude/worktrees/agent-a1918945312a9f4dc/tests/julia/roots.jl:164
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld/.claude/worktrees/agent-a1918945312a9f4dc/tests/julia/roots.jl:188 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+Test Summary:                                          | Pass  Fail  Total  Time
+adf_roots_padic through ccall: (X^2 - 2)(X - 3) in Z_7 |   19     1     20  2.0s
+RNG of the outermost testset: Random.Xoshiro(0x1605532e9ce4bdb3, 0xd352d4b47e7784af, 0x678c42acc7c77735, 0x12085804d67c9595, 0x13f586cddc98b6dc)
+test_julia: FAILED (even with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10)
+make: *** [Makefile:123: check-all] Error 1
+rc 2
