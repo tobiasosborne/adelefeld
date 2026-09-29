@@ -1,11 +1,9 @@
 # Proofs for milestone S: reconstruction from a residue, linear systems modulo N, roots
 
-Status: written by lane `s-design` on 2026-09-29; reviewed by a refute review (`docs/reviews/s-design/review.md`,
-verdict NOT READY before the repairs); repaired by lane `s-design-repair` on 2026-09-29, see "Review record" at the
-end. Checked numerically by `proto/solvers_checks.py`, which also holds the reference algorithms. Covers `SPEC.md`
-9.1 (solving) and 9.2, second item (reconstruction from partial data); `PLAN.md` section 6, milestone S, work
-packages S.3, S.1, S.2. The interface that implements these statements is `docs/api-s.md`. The repaired file has
-not been reviewed again.
+Status: written by lane `s-design` on 2026-09-29, not yet reviewed. Checked numerically by
+`proto/solvers_checks.py`, which also holds the reference algorithms. Covers `SPEC.md` 9.1 (solving) and 9.2,
+second item (reconstruction from partial data); `PLAN.md` section 6, milestone S, work packages S.3, S.1, S.2.
+The interface that implements these statements is `docs/api-s.md`.
 
 Order of the sections: 1 is S.3, 2 is S.1, 3 is S.2, as the work packages are worked.
 
@@ -46,10 +44,6 @@ Standard theorems used and not proved here. Each was read in the file named (cit
   `x_1, ..., x_k` are roots of `g` exactly when `(X - x_1) ... (X - x_k)` divides `g`; Theorem 7.14,
   `ntb-v2.txt:8056`: a polynomial of degree `k >= 0` over an integral domain has at most `k` distinct roots;
   Theorem 2.14 (Fermat), `ntb-v2.txt:1838`: `a^p = a` for every `a` in `Z/p`, `p` prime.
-- (EEA-poly) Shoup, Theorem 17.4, `shoup-ntb:ntb-v2.txt:20462` to `20470`, and the extended Euclidean algorithm
-  for polynomials, `ntb-v2.txt:20510` to `20521`. For polynomials `g`, `h` over a field `F` (`Q` or `F_p`), with
-  `g` not zero, the remainder sequence gives `d = gcd(g, h)`, monic, and polynomials `s`, `t` in `F[X]` with
-  `g s + h t = d`.
 - (H1) Conrad, Theorem 2.1, `conrad-hensel:hensel.txt:31` to `33`, proof `37` to `110`. If `f` is in `Z_p[X]`
   and `a` in `Z_p` satisfies `f(a) = 0` modulo `p` and `f'(a)` is not `0` modulo `p`, there is a unique `alpha`
   in `Z_p` with `f(alpha) = 0` and `alpha = a` modulo `p`. Every prime `p`, 2 included.
@@ -255,12 +249,10 @@ Used by: `SPEC.md` 9.2 (second item and "Results").
 
 ### Algorithm R and Proposition 1.7 (what the function returns; "uniqueness not certified").
 
-Algorithm R. Input: integers `m`, `c`, `A`, `B` and a search limit `limit` (any integer; `ell = max(limit, 0)`
-is used).
+Algorithm R. Input: integers `m`, `c`, `A`, `B` and a search limit `limit >= 0`.
 
 1. If `m < 1`: invalid input (`DOMAIN`; the type `adf_resid` of `api-s.md` excludes it). If `A < 0` or
-   `B < 1`: the box is empty, return `NO_SOLUTION` (decision S-D5). A `limit` below 0 is taken as 0: `ell` is
-   `limit` if `limit >= 0` and 0 otherwise.
+   `B < 1`: the box is empty, return `NO_SOLUTION` (decision S-D5). A `limit` below 0 is taken as 0.
 2. Replace `c` by `c mod m` in `[0, m)`.
 3. If `A >= m`: return `NOT_UNIQUE`.
 4. Compute a certificate pair: `(r_0, t_0, r_1, t_1) = (m, 0, c, 1)`; while `r_1 > A`:
@@ -268,11 +260,11 @@ is used).
    `(R', T', R, T) = (r_0, t_0, r_1, t_1)`. (Any other method may be used; then (C1) to (C4) are tested.)
 5. If `|T| > B`: return `NO_SOLUTION`.
 6. If `2 A B < m`: if `gcd(R, T) = 1` return `OK` with `(sigma R, |T|)`, else return `NO_SOLUTION`.
-7. Otherwise search. `X = floor(B/|T|)`, `found` empty. For `x = 1, 2, ..., min(X, ell)`: for each integer
+7. Otherwise search. `X = floor(B/|T|)`, `found` empty. For `x = 1, 2, ..., min(X, limit)`: for each integer
    `y` with `max(0, ceil((x R - A)/R')) <= y <= floor((x R + A)/R')`, in increasing order, and
    `d = x |T| + y |T'| <= B`: let `n = sigma (x R - y R')`; if `gcd(n, d) = 1` add `(n, d)` to `found`; if
    `found` has two elements return `NOT_UNIQUE`.
-8. If `X > ell` return `NOT_DETERMINED`. Otherwise return `OK` with the element of `found` if there is one,
+8. If `X > limit` return `NOT_DETERMINED`. Otherwise return `OK` with the element of `found` if there is one,
    and `NO_SOLUTION` if there is none.
 
 Claim:
@@ -280,47 +272,34 @@ Claim:
 1. The loop of step 4 ends and gives the pair of Lemma 1.4.
 2. `OK` is returned only if `Sol` has exactly one element, which is returned; `NO_SOLUTION` only if `Sol` is
    empty; `NOT_UNIQUE` only if `Sol` has at least two elements.
-3. `NOT_DETERMINED` is returned exactly when all four of the following hold: `A < m <= 2 A B`; `|T| <= B`;
-   `floor(B/|T|) > ell`; and among the points `phi(x, y)` with `x <= ell` fewer than two are reduced. It is
-   never returned when `2 A B < m`, when `A >= m`, when `|T| > B`, or when `ell >= B`. `NOT_UNIQUE` is returned
-   as soon as two reduced points are found, also when `floor(B/|T|) > ell` and the search would be cut: a cut
-   search that has found two solutions is decided. With `ell = 0` (that is, `limit <= 0`) step 7 does nothing:
-   `A >= m` gives `NOT_UNIQUE` (case (a) of Proposition 1.6), `|T| > B` gives `NO_SOLUTION` (case (b)),
-   `2 A B < m` gives the answer of case (c), and every other problem, that is `A < m <= 2 A B` with
-   `|T| <= B`, gives `NOT_DETERMINED`. So with `limit = 0` the status is NOT "`NOT_DETERMINED` exactly when
-   `2 A B >= m`": for `m = 2`, `c = 1`, `A = 2`, `B = 1` the function returns `NOT_UNIQUE` (`A >= m`), and a
-   problem with `2 A B >= m` and `|T| > B` gives `NO_SOLUTION`. (`check_s3_limit` counts 6210 problems with
-   `limit = 0` that refute the wrong reading.)
+3. `NOT_DETERMINED` is returned exactly when all of the following hold: `A < m <= 2 A B`; `|T| <= B`;
+   `floor(B/|T|) > limit`; and among the points `phi(x, y)` with `x <= limit` fewer than two are reduced. It
+   is never returned when `2 A B < m`, when `A >= m`, or when `limit >= B`. With `limit = 0` step 7 does
+   nothing, and the function decides exactly the cases (a), (b), (c) of Proposition 1.6.
 4. Cost: step 4 is one run of the extended Euclidean algorithm, `O(len(m)^2)` bit operations by (EEA-cost);
-   step 7 makes at most `min(X, ell)` rounds, each with a constant number of multiplications and divisions
+   step 7 makes at most `min(X, limit)` rounds, each with a constant number of multiplications and divisions
    and at most two gcds of integers bounded by `max(A B, m)`.
 
 *Proof.*
 1. While `r_1 > A >= 0` the division is defined and `r_1` decreases strictly, so the loop ends. The values are
    those of (EEA) for `(m, c)`: the loop stops at the first index with `r_j <= A`.
 2. Steps 3, 5, 6 are Proposition 1.6 (a), (b), (c). In step 7 every element of `found` is a solution by 1.6(d),
-   and two different `(x, y)` give different points by 1.5(1); so `NOT_UNIQUE` is right. If `X <= ell` the
+   and two different `(x, y)` give different points by 1.5(1); so `NOT_UNIQUE` is right. If `X <= limit` the
    loop has visited every `x <= floor(B/|T|)`, and for each `x` every `y` admitted by `I`: the bounds on `y`
    are those of 1.5(3) with `y >= 0`, and `d` increases with `y`, so the loop over `y` may stop at the first
    `d > B`. So `found` is all of `Sol` by 1.6(d).
-3. The function reaches step 8 with `X > ell` exactly under the stated conditions, and reaches step 8 only if
-   fewer than two reduced points were found in the rounds `x <= ell` (else step 7 returned `NOT_UNIQUE`); the
-   points found are exactly the reduced points of those rounds (2). `X <= B`, so `ell >= B` excludes it. For
-   `ell = 0` the four conditions reduce to `A < m <= 2 A B` and `|T| <= B`, since `X >= 1` then.
+3. The function reaches step 8 with `X > limit` exactly under the stated conditions. `X <= B`, so
+   `limit >= B` excludes it.
 4. Read off the steps; `x R <= X A <= A B`, `y R' <= x R + A`, `d <= B`.
 
 **What "uniqueness not certified" means.** It is the status `NOT_DETERMINED` of claim 3: the bounds admit more
 than one solution (`m <= 2 A B`), the caller's limit did not allow the complete search, and the part searched
 holds at most one solution. It says nothing about existence. It is not returned on the ground `m <= 2 A B`
 alone: in that range the function still returns `NO_SOLUTION` when `|T| > B`, `NOT_UNIQUE` when two solutions
-are found, and the exact answer when `floor(B/|T|) <= ell`.
+are found, and the exact answer when `floor(B/|T|) <= limit`.
 
-Check: `check_s3_complete` (limit large), `check_s3_limit` (limits -1, 0, 1, 2, 5, 329875 calls: `NOT_DETERMINED`
-exactly under the four conditions of claim 3, with the reduced points of the rounds `x <= ell` recounted from the
-enumeration of Definition 1.1 and Cramer's rule, not from the loop; every other status is the true one;
-`NOT_UNIQUE` found inside a cut search occurs 51291 times), `check_s3_edge`. The first version of the check tested
-only necessary conditions; a solver that returned `NOT_DETERMINED` where two solutions had been found survived it
-(reviewer's mutant, `docs/reviews/s-design/checks/mutation_checks.py`); it is now killed.
+Check: `check_s3_complete` (limit large), `check_s3_limit` (limits 0, 1, 2, 5: `NOT_DETERMINED` only under the
+conditions of claim 3, every other status true), `check_s3_edge`.
 Used by: `SPEC.md` 9.2 ("Results"); `conventions.md` 6.8 (CV-51).
 
 ### Proposition 1.8 (in which ranges the answer can be "none").
@@ -459,39 +438,6 @@ Check: `check_s3_coprime` (claim 1, by valuations), `check_s3_edge` (claims 2 an
 `check_s3_forget` (claim 4).
 Used by: `SPEC.md` 9.2 ("A separate function on a separate type").
 
-### Proposition 1.11 (checking a result of Algorithm R).
-
-Hypotheses: `m >= 1`, `c` an integer, `A`, `B` integers, `limit` an integer, `ell = max(limit, 0)`; a status and a
-list `S` of pairs `(n, d)`; for `A < m`, `A >= 0`, `B >= 1` a quadruple `(R', T', R, T)`. Claim: the following
-tests, made in this order, accept a claim only if it is true.
-
-1. `NOT_UNIQUE` with `S`: accept if `S` has two different pairs and each is a solution (Definition 1.1, tested
-   directly: `d > 0`, `d <= B`, `|n| <= A`, `gcd(n, d) = 1`, `n = c d` modulo `m`). Then `Sol` has at least two
-   elements. For `A >= m` the pairs `(c_0, 1)` and `(c_0 - m, 1)` of 1.6(a) are such a pair.
-2. For `A < m` every other status needs a quadruple that satisfies (C1) to (C4); then Proposition 1.6 applies.
-   `NO_SOLUTION`: accept if `|T| > B` (1.6(b)); or if `2 A B < m` and `gcd(R, T) > 1` (1.6(c)); or if the
-   enumeration of 1.5(4), which has `floor(B/|T|)` rounds, finds no reduced point (1.6(d)). `OK` with `S = {s}`:
-   accept if `s` is a solution and either `2 A B < m`, `|T| <= B` and `s = (sigma R, |T|)` (1.6(c)), or the
-   enumeration finds exactly the reduced point `s`. `NOT_DETERMINED` with `S`: accept if `m <= 2 A B`,
-   `|T| <= B`, `floor(B/|T|) > ell`, and `S` is the list of the reduced points of the rounds `x <= ell`, at most
-   one (Proposition 1.7(3)).
-3. A `NOT_UNIQUE` is not certified by a second call with `B` lowered below the first denominator. For
-   `m = 2`, `c = 1`, `A = B = 1` the two solutions `1/1` and `-1/1` both have denominator 1, and with `B = 0`
-   the box is empty: both are lost. In `check_s3_verify` the second call never finds a second solution (0 of
-   4742 `NOT_UNIQUE` problems with `m <= 14`), so the method is not a general one. Two solutions, or the complete
-   enumeration, are the certificate.
-
-*Proof.* 1 is Definition 1.1. 2: each accepted case is one of the cases of Propositions 1.6 and 1.7, whose
-hypotheses are exactly the tests. For `NOT_DETERMINED`, the list `S` is the set that Algorithm R has found
-(1.7, proof of 3), so the tests state the four conditions. 3: the example is computed above.
-
-Check: `check_s3_verify` (93408 results of Algorithm R for `m <= 14` are accepted; 2021284 changed claims, with
-another status, another list or a wrong quadruple, are refused or true, the truth being decided by the
-enumeration and the four conditions recounted: 0 accepted and false; the `count` of `recon_first` on every
-status; the method of note 3 fails 4742 times). It also tests that `sol_brute_fast`, the enumeration used by
-the larger checks, is `sol_brute`.
-Used by: `api-s.md`, `adf_resid_reconstruct` (checker of a result), decisions S-D3, S-D4.
-
 ## 2. Linear systems modulo N (S.1)
 
 Throughout: `N >= 1` is an integer, of any shape (composite, with square factors, `N = 1`); no factorisation of
@@ -521,16 +467,10 @@ A matrix `H` with `k >= 0` rows and entries written in `[0, N)` is in *echelon f
 This is the Howell form of Storjohann's dissertation for the ring `Z/N`: (E1) is his (r1), (E2) and (E3) his
 (r2), (E4) his (r4) (`storjohann-thesis:diss2up.txt:2058` to `2070`), with the prescribed associates and
 residues inherited from his choice for `Z`, `A(Z) = {0, 1, 2, ...}` and `R(Z, b) = {0, ..., |b| - 1}`
-(`diss2up.txt:481`). For a nonzero representative `a` in `[0, N)` the prescribed associate is `gcd(a, N)`. For the
-zero residue the prescribed representative is `0`, not the integer `gcd(0, N) = N`, which is not in `[0, N)`
-(`Ass(gcd(0, N)) = N`, whose class in `Z/N` is `0`). The inheritance from `Z` to `Z/N` is stated at
-`diss2up.txt:565` to `567` (Definition 1.4: `Ass(b) = phi(Ass(Gcd(b, N)))`), the residue formula
-`Rem(a, b) = phi(Rem(a, Ass(Gcd(b, N))))` at `diss2up.txt:521`. These choices give (E2) and (E3) for the nonzero
-pivots, which are the only entries that these conditions constrain: a pivot is never zero (E1). The source
-leaves the two choices to the user ("prescribed", `diss2up.txt:468`, `477`); they are fixed here, and the
-canonical form depends on them. Zero rows are not stored: the form has exactly `k` rows.
-Check: `check_s1_assoc` (for every `N <= 60` and every residue `a` in `[0, N)`, the least element of the orbit of
-`a` under the units of `Z/N` is `gcd(a, N)` for `a` not zero and `0` for `a = 0`).
+(`diss2up.txt:481`; the inheritance to `Z/N` is described at `diss2up.txt:515` to `523`): the prescribed
+associate of `a` is `gcd(a, N)`. The source leaves the two choices to the user ("prescribed",
+`diss2up.txt:468`, `477`); they are fixed here, and the canonical form depends on them. Zero rows are not
+stored: the form has exactly `k` rows.
 
 For `N = 1` every entry is zero, so a matrix in echelon form has no rows.
 
@@ -898,7 +838,7 @@ Used by: `SPEC.md` 9.1, 4.1.
 ### Proposition 2.11 (what FLINT 3.0.1 offers, and what is called).
 
 Read: `flint-3.0.1:nmod_mat.rst:26` to `31`, `:533` to `575`, `:700` to `723`;
-`flint-3.0.1:fmpz_mod_mat.rst:278` to `293`, `:366` to `388`; `flint-3.0.1:fmpz_mat.rst:1159` to `1176`;
+`flint-3.0.1:fmpz_mod_mat.rst:278` to `291`, `:366` to `388`; `flint-3.0.1:fmpz_mat.rst:1159` to `1176`;
 `flint-src-3.0.1:fmpz_mat/strong_echelon_form_mod.c`, `fmpz_mat/howell_form_mod.c`,
 `fmpz_mod_mat/howell_form.c`, `nmod_mat/strong_echelon_form.c`.
 
@@ -910,17 +850,11 @@ Read: `flint-3.0.1:nmod_mat.rst:26` to `31`, `:533` to `575`, `:700` to `723`;
    `fmpz_mod_mat/howell_form.c:16`), and `nmod_mat_howell_form` for a modulus of one word
    (`nmod_mat.rst:716`). Their entries name no condition on the modulus. Each works in place, returns the
    number of non-zero rows, returns no transformation, and asks that the matrix "must have at least as many
-   rows as columns" (`fmpz_mat.rst:1176`, `nmod_mat.rst:723`, and, for the wrapper `fmpz_mod_mat_howell_form`,
-   `fmpz_mod_mat.rst:293`). The source works with gcds against the modulus
-   (`fmpz_mat/strong_echelon_form_mod.c:105`, `138`, `222`, `270`, `nmod_mat/strong_echelon_form.c:72`, `91`,
-   `149`). For a NONEMPTY matrix the source reads the entry `(col, col)` for every column
-   (`strong_echelon_form_mod.c:250`, the loop `col < m` with `m = A->c` at `:180`), so a nonempty matrix with fewer
-   rows than columns is read outside its rows: it must be padded with zero rows. An EMPTY matrix (no rows or no
-   columns) returns before this loop: `fmpz_mat/strong_echelon_form_mod.c:167` to `168` and
-   `fmpz_mat/howell_form_mod.c:20` to `21` (`if (fmpz_mat_is_empty(A)) return`; the Howell form returns 0). The
-   probe `probe_s1_flint_empty` calls the function on 28 empty matrices (`0 x c`, `r x 0`; moduli 1, 2, 12,
-   `2^40 + 15`): rank 0, no crash. A call on a nonempty matrix with fewer rows than columns is undefined and is
-   not made.
+   rows as columns" (`fmpz_mat.rst:1176`, `nmod_mat.rst:723`, `fmpz_mod_mat.rst:291`). The source works with
+   gcds against the modulus (`fmpz_mat/strong_echelon_form_mod.c:105`, `138`, `222`, `270`,
+   `nmod_mat/strong_echelon_form.c:72`, `91`, `149`). The source reads the entry `(col, col)` for every
+   column (`strong_echelon_form_mod.c:250`), so a matrix with fewer rows than columns is read outside its
+   rows: the input must be padded with zero rows.
 3. (Not proved from the source; probed.) On 2080 matrices with moduli up to 30 bits, padded with zero rows,
    `fmpz_mat_howell_form_mod` returns exactly the output of Algorithm H. The normalisation agrees by the
    source: the pivot is multiplied by a unit to become `gcd(pivot, N)` (`_fmpz_unit`,
@@ -936,13 +870,7 @@ arithmetic for a modulus of one word and `fmpz` arithmetic otherwise; for it exi
 termination are proved (2.5). A call of FLINT's Howell form on `[A^T | I_c]`, padded with `r` zero rows, is an
 admitted replacement, because the checker (K1) to (K7) is run on every result before it is returned and its
 conditions imply the result whatever produced the certificate (2.6(1), (2), 2.7(1), 2.8(3)); if the checker
-refuses the output of FLINT, Algorithm H is run. The order matters (review, S-D7): the greedy reduction of step 3
-of Algorithm L divides by pivots and assumes that they are divisors of `N` in echelon position, and the count
-`x_0 = q_1 V_1 + ...` assumes the shapes of `E` and `V`. So a certificate taken from FLINT is first tested for
-its dimensions, entries in `[0, N)`, (K1), (K2), (K3), (K4), (K5) (none of them uses `b`), and only then consumed
-by step 3; (K6) or (K7) is tested last. A test after the answer is built would come too late to protect the
-operations that assume valid pivots. For Algorithm H itself no such guard is needed: its invariants are proved
-(2.5).
+refuses the output of FLINT, Algorithm H is run.
 
 **One computation modulo `N`, no prime powers (decision S-D9).** Algorithm H needs gcds with `N`, not the
 factorisation of `N`. A computation modulo the blocks of a context, with recombination, is not proposed: the
@@ -1014,17 +942,12 @@ roots in `p Z_p` of the reversed polynomial `X^(deg f) f(1/X)`; the caller forms
 
 1. If `p^w` divides every coefficient of `f`, then `f` and `f/p^w` have the same roots in `Z_p`, with the same
    simple and multiple ones.
-2. Let `K` be a field that contains `Q` (here `R`, `Q_p` or `C`), `h = gcd(f, f')` in `Q[X]` and `g = f/h`. Then
-   `g` and `f` have the same roots in `K`, and every root of `g` in `K` is simple. Moreover `gcd(g, g') = 1` in
-   `Q[X]`.
-3. (The normalised polynomial.) For a nonzero rational `c` the polynomials `g` and `c g` have the same roots in
-   `K`, all simple. The *normalised polynomial* `g*` of `f` is `c g` with `c` the rational for which `g*` is in
-   `Z[X]`, has content 1 and a positive leading coefficient; for `f` constant, `g* = 1`. The certificates of
-   Section 3 for the roots of `f` at a place refer to `g*` (decision S-D13, `api-s.md`).
+2. Let `K` be a field that contains `Q` (here `R` or `Q_p`), `h = gcd(f, f')` in `Q[X]` and `g = f/h`. Then `g`
+   and `f` have the same roots in `K`, and every root of `g` in `K` is simple.
 
 *Proof.*
 1. `f = p^w f_1` and `f' = p^w f_1'`, and `p^w` is not zero in `Z_p`.
-2. There are `u, v` in `Q[X]` with `h = u f + v f'` ((EEA-poly) in `Q[X]`), and `h` divides `f` and
+2. There are `u, v` in `Q[X]` with `h = u f + v f'` (Euclidean algorithm in `Q[X]`), and `h` divides `f` and
    `f'`. Let `alpha` in `K` be a root of `f`, and write `f = (X - alpha)^m q` with `m >= 1`, `q` in `K[X]`,
    `q(alpha)` not zero ((Roots), Theorem 7.12 of the source, applied `m` times). Then
    `f' = (X - alpha)^(m-1) (m q + (X - alpha) q')`, and the second factor has the value `m q(alpha)` at
@@ -1032,14 +955,10 @@ roots in `p Z_p` of the reversed polynomial `X^(deg f) f(1/X)`; the caller forms
    `(X - alpha)^m` does not. `h` divides `f'`, so `(X - alpha)^m` does not divide `h`; `h = u f + v f'`, so
    `(X - alpha)^(m-1)` divides `h`. So `g = f/h` is `(X - alpha)` times a polynomial that is not zero at
    `alpha`: `alpha` is a simple root of `g`. Conversely `g` divides `f`, so a root of `g` is a root of `f`,
-   and by what was shown it is a simple root of `g`. Finally, a root `alpha` of `g` in `C` is simple, so
-   `g = (X - alpha) q` with `q(alpha)` not zero and `g'(alpha) = q(alpha)` is not zero. If `gcd(g, g')` were not
-   constant it would have a root `alpha` in `C`, a common root of `g` and `g'`: impossible. So `gcd(g, g') = 1`.
-3. A nonzero constant is a unit of `K`; multiplying by it changes no root and no multiplicity.
+   and by what was shown it is a simple root of `g`.
 
-Check: `check_s2_real_completeness` (cases with multiple roots), `check_s2_examples` (content), `check_s2_lists`
-(lists of roots of polynomials with multiple factors, built on `g*`).
-Used by: 3.5, 3.6, 3.10, 3.12, 3.13.
+Check: `check_s2_real_completeness` (cases with multiple roots), `check_s2_examples` (content).
+Used by: 3.5, 3.10.
 
 ### Definition 3.2 (root certificate) and Proposition 3.2 (what it proves).
 
@@ -1053,29 +972,20 @@ Claim, for a root certificate `(a, k, s)`:
 
 1. There is exactly one root `alpha` of `f` in the ball `a + p^(s+1) Z_p`. It lies in `a + p^k Z_p`. It is a
    simple root, and `v(f'(alpha)) = s`.
-2. Let `k'` be an integer with `s < k' <= k` and `a'` an integer with `a' = a` modulo `p^(k')`. Then
-   `v(f'(a')) = s` and `v(f(a')) >= k' + s`. In particular, for `k' = k`, (R2) and (R3) hold for every integer
-   `a'` with `a' = a` modulo `p^k` in place of `a`: the certificate is a property of the ball `a + p^k Z_p`.
+2. (R2) and (R3) hold for every integer `a'` with `a' = a` modulo `p^k` in place of `a`. The certificate is a
+   property of the ball `a + p^k Z_p`.
 3. For every `k'` with `s < k' <= k`, `(a mod p^(k'), k', s)` is a root certificate.
 4. Two balls with root certificates hold the same root exactly when they meet.
 5. The check costs two evaluations of polynomials modulo `p^(k+s)` and `p^(s+1)`.
-6. (Equality is not enough.) The strict inequalities `k > s` and `v(f(a)) >= k + s` cannot be weakened to
-   equality `k = s`: for `f = X^2 + 3`, `p = 2`, `a = 1`, `v(f(1)) = v(4) = 2` and `v(f'(1)) = v(2) = 1`, so
-   `(1, 1, 1)` satisfies (R2) and (R3) and has `k = s`, and `f` has no root in `Z_2` at all (a square modulo 8 is
-   0, 1 or 4, and `-3 = 5` modulo 8). The checker refuses `(1, 1, 1)` by (R1). (`check_s2_certificate` counts, for
-   every certificate, `p^s` roots by enumeration.)
 
 *Proof.*
 1. By (R2), (R3), (R1): `|f(a)|_p <= p^(-k-s) < p^(-2s) = |f'(a)|_p^2`. (H2) gives exactly one root `alpha`
    with `|alpha - a|_p < |f'(a)|_p = p^(-s)`, that is with `alpha` in `a + p^(s+1) Z_p`; and
    `|alpha - a|_p = |f(a)/f'(a)|_p <= p^(-k-s+s) = p^(-k)`; and `|f'(alpha)|_p = |f'(a)|_p`.
-2. Let `a' = a + p^(k') t`, `t` an integer. `f'(a') = f'(a)` modulo `p^(k')` (every coefficient of the
-   difference is a multiple of `a' - a`), and `k' >= s + 1`, so `v(f'(a')) = s`. By (Taylor),
-   `f(a') = f(a) + f'(a) p^(k') t + z p^(2 k') t^2` with `z` an integer; the three terms have valuations at least
-   `k + s >= k' + s` (by (R3) and `k' <= k`), `s + k'`, and `2 k' >= k' + s + 1` (as `k' > s`). So
-   `v(f(a')) >= k' + s`.
-3. (R1) holds for `k'`. The reduced centre `a mod p^(k')` is an integer `a'` with `a' = a` modulo `p^(k')`, so
-   (R2) and (R3) hold for `(a', k', s)` by 2.
+2. Let `a' = a + p^k t`. `f'(a') = f'(a)` modulo `p^k`, and `k >= s + 1`, so `v(f'(a')) = s`. By (Taylor),
+   `f(a') = f(a) + f'(a) p^k t + z p^(2k) t^2` with `z` an integer; the three terms have valuations at least
+   `k + s`, `s + k`, `2 k >= k + s + 1`.
+3. (R1) holds for `k'`; (R2) by 2; (R3): `v(f(a)) >= k + s >= k' + s`, and 2 for the reduced centre.
 4. Let the balls be `B` and `B'` with roots `alpha`, `alpha'`. If `alpha = alpha'` it is in both. If they
    meet, one contains the other, say `B` is inside `B'`; `B'` is inside `a' + p^(s'+1) Z_p`, which holds
    exactly one root, and `alpha` is a root in it. So `alpha = alpha'`.
@@ -1235,51 +1145,21 @@ Proposition 3.4(4). Consequence: a root certified at level `e` has `s = w - e >=
    `gcd(f, f') = 1` there are `u, v` in `Q[X]` with `u f + v f' = 1`, so `f` and `f'` have no common root.
 7. Count.
 
+Remark 3.6 (a bound for `D_0`; **open**, not used). For `f` with `gcd(f, f') = 1` and integers `u, v`
+polynomials with `u f + v f' = R`, `R` a non-zero integer, the proof of claim 6 gives
+`v_p(R) >= min(v(f(a_e)), v(f'(a_e))) >= e` for every opened class that has a child, so
+`D_0 <= v_p(R) + 1`. With `R` the resultant of `f` and `f'` this would bound the depth by the valuation of
+the discriminant. The existence of `u, v` in `Z[X]` with `u f + v f' = Res(f, f')` is not on disk
+(`flint-3.0.1:fmpz_poly.rst:1276` to `1280` describes a function that computes such polynomials, not the
+theorem). `[source pending: a text with the identity u f + v g = Res(f, g) over Z[X]]` The function takes `D`
+from the caller, so nothing depends on the bound.
+
 Check: `check_s2_descent` (31 named cases, depth limits 0, 1, 3, 8: disjointness; every `x` modulo `p^M` with
 `f(x) = 0` modulo `p^M`, found by enumeration, lies in exactly one ball or class; every certified ball
 holds `p^s` of them; the expected number of roots; a polynomial with a multiple root never gives a complete
 list; 150 random products of linear factors with a factor without roots: every planted root is in exactly
-one ball and the list is complete), `check_s2_examples`. The oracle skips one run of the 124 (the multiple
-root `(x-1)^2 (x+2)` at 5: more than 200000 approximate residues); the check now counts and names it.
+one ball and the list is complete), `check_s2_examples`.
 Used by: `SPEC.md` 9.1 (rows "Polynomial roots at a given prime" and "Multiple roots ... later").
-
-### Proposition 3.6 (a depth bound from an integer Bezout identity).
-
-Hypotheses: `p` a prime; `f` in `Z[X]` not zero modulo `p`, that is `f` after Algorithm P, step 1 (the content at
-`p` removed); `u`, `v` in `Z[X]` and `R` a non-zero integer with `u f + v f' = R`. Claim:
-
-1. Every opened class `(a, e)` of Algorithm P that has a child has `e <= v_p(R)`.
-2. If `D >= v_p(R) + 1` then `U` is empty: the list is complete.
-3. Such `u`, `v`, `R` exist for every nonconstant `f` with `gcd(f, f') = 1` in `Q[X]`, in particular for the
-   normalised polynomial `g*` of any nonconstant polynomial (Lemma 3.1(3)). A nonzero constant has no root and
-   needs no bound.
-
-*Proof.*
-1. Let `(a, e)` be an opened class with a child. A child comes from a root `b` of `g_(a,e)` modulo `p`, so (W)
-   gives `w = w(a, e) >= 2 e`. The constant coefficient of `f(a + p^e Y) = p^w g_(a,e)(Y)` is `f(a)`, so
-   `v_p(f(a)) >= w >= 2 e`. Differentiating `f(a + p^e Y) = p^w g_(a,e)(Y)` gives
-   `p^e f'(a + p^e Y) = p^w g'_(a,e)(Y)`; at `Y = 0`, `f'(a) = p^(w - e) g'_(a,e)(0)` and
-   `v_p(f'(a)) >= w - e >= e`. As `a` is an integer and `u`, `v` have integer coefficients, `u(a)` and `v(a)` are
-   integers, and `R = u(a) f(a) + v(a) f'(a)` has `v_p(R) >= min(v_p(f(a)), v_p(f'(a))) >= e`.
-2. An unresolved class is added only by an opened class `(a, e)` with a child at level `e + 1 > D`, that is
-   `e >= D >= v_p(R) + 1`. By 1 such a class does not have a child. So nothing is added to `U`.
-3. By (EEA-poly) in `Q[X]` (with `f` of larger degree than `f'`) there are `u_0`, `v_0` in `Q[X]` with
-   `u_0 f + v_0 f' = gcd(f, f') = 1`. Let `R` be a positive common denominator of the coefficients of `u_0` and
-   `v_0`; then `u = R u_0`, `v = R v_0` are in `Z[X]` and `u f + v f' = R`. For `g*`: Lemma 3.1(2) gives
-   `gcd(g, g') = 1`, and (3) the same for `g*`, a constant multiple.
-
-Remark (what is not claimed). A bound in terms of the resultant `Res(f, f')` or the discriminant is not asserted.
-`[source pending: a text with the identity u f + v g = Res(f, g) over Z[X]]`. The passage
-`flint-3.0.1:fmpz_poly.rst:1276` to `1280` describes a function, not the theorem. When `p` divides the leading
-coefficient of `f` the resultant and the discriminant differ in their `p`-parts, so a bound for one is not a bound
-for the other. No implementation relies on the resultant; the function takes `D` from the caller.
-The identity of the review is an example: `f = X^2 - c`, `u = -4`, `v = 2 X`, `R = 4 c`, so `D = v_2(4 c) + 1`
-is enough at `p = 2`.
-
-Check: `check_s2_bezout_depth` (211 polynomials with `p` in 2, 3, 5: the identity `u f + v f' = R` holds exactly,
-`D` equal to `v_p(R) + 1` gives a complete list, 42 opened classes have a child, all with `e <= v_p(R)` and
-the children are counted from the definition; the identity `-4 (X^2 - c) + 2 X (2 X) = 4 c` for seven values of `c`).
-Used by: Algorithm P (the depth to give); `api-s.md` (optional depth). Status: proved here, with (EEA-poly).
 
 ### Proposition 3.7 (the roots modulo `p` are complete: by evaluation, or by a degree).
 
@@ -1293,10 +1173,9 @@ Hypotheses: `p` prime, `g` a polynomial over `F_p`, not zero. Claim:
 
 *Proof.*
 1. By definition.
-2. `d = u g + v (X^p - X)` for some `u, v` in `F_p[X]`, and `d` divides both ((EEA-poly) in `F_p[X]`, the
-   polynomial of larger degree first). Every `a` of `F_p` is a root of `X^p - X` (Fermat). So the roots of `d`
-   in `F_p` are the roots of `g` in `F_p`: a root of `g` is a root of `u g + v (X^p - X)`, and a root of `d`
-   is a root of `g`. Write
+2. `d = u g + v (X^p - X)` for some `u, v` in `F_p[X]`, and `d` divides both (Euclidean algorithm in
+   `F_p[X]`). Every `a` of `F_p` is a root of `X^p - X` (Fermat). So the roots of `d` in `F_p` are the roots of
+   `g` in `F_p`: a root of `g` is a root of `u g + v (X^p - X)`, and a root of `d` is a root of `g`. Write
    `X^p - X = d q`. Every `a` of `F_p` is a root of `d` or of `q`, because `F_p` is an integral domain. `d` has
    at most `deg d` roots and `q` at most `deg q = p - deg d` ((Roots), Theorem 7.14). So
    `p <= #roots(d) + #roots(q) <= deg d + (p - deg d) = p`, and `d` has exactly `deg d` roots.
@@ -1330,13 +1209,6 @@ either (a) `lo_i < hi_i` and `f(lo_i) f(hi_i) < 0`, or (b) `lo_i = hi_i` and `f(
 
 Status: proved modulo (IVT).
 
-Remark (a stored count is not a count). Claim 2 assumes that `n` is the number of distinct real roots of `f`; it
-is a hypothesis about `f`, not a number that may be read from a list. For `f = (X - 1)(X - 2)(X - 3)` the single
-interval `[0, 4]` with the supplied `n = 1` satisfies every other hypothesis of claim 2 (`f(0) f(4) = -36 < 0`,
-`m = 1 = n`) and holds three roots. A verifier of a list therefore recomputes the count (Proposition 3.13). The
-reference checker `real_cert_ok(f, n, balls)` takes a trusted `n` and is the checker of this proposition; the
-verifiers of a list are `real_verify_entries` and `real_verify_complete`.
-
 Check: `check_s2_real_completeness` (18 polynomials; the checker accepts the isolated intervals; the number
 of roots inside each interval and in the gaps is counted independently; lists with an interval removed,
 two intervals merged, or an interval moved off its root are refused).
@@ -1351,22 +1223,13 @@ Read: `flint-3.0.1:fmpz_poly.rst:3240` to `3268`, `:1271` to `1274`, `:2277` to 
 
 1. (Count.) `fmpz_poly_num_real_roots(pol)` "Returns the number of real roots of the squarefree polynomial
    `pol`"; "The polynomial is assumed to be squarefree" (`fmpz_poly.rst:3264` to `3268`). For a squarefree
-   polynomial every root is simple, so this is the number `n` of distinct real roots. It returns a number and no
-   intervals. Outside the squarefree-input hypothesis there is NO promised count of distinct roots, and the
-   behaviour in the source (`fmpz_poly/num_real_roots.c:107` to `129` and `:155` to `159`) is this: the zero
-   polynomial makes the function throw (`:158` to `159`). Otherwise the code strips the full power `X^i` that
-   divides the polynomial and ADDS `i` to its answer (`:107` to `117`): if nothing is left it returns `i` (so
-   `X^d` returns `d`), a linear rest gives `i + 1`, a quadratic rest gives `i` plus 2 or 0 (`:34` to `40`: 2 if
-   `b^2 > 4ac`, else 0, so a non-squarefree quadratic rest, `b^2 = 4ac`, contributes 0), a rest of degree 3 or 4
-   with discriminant 0 makes it throw (`:118` to `129`), and a rest of higher degree goes to the Sturm sequence
-   (`:140` to `149`). The installed FLINT 3.0.1 returns 2 for `X^2`, 3 for `X^3`, 4 for `X^4`, 3 for
-   `X^3 - X^2` (which has two distinct roots) and 0 for `(X - 1)^2` (one distinct root); none throws
-   (`probe_s2_flint_real`). So "a non-squarefree quadratic returns 0" and "a non-squarefree cubic or quartic
-   throws" are both false in general (they hold for `(X - 1)^2` and for cubics and quartics whose rest after
-   stripping `X^i` is degree 3 or 4 with discriminant 0). The first version of this proposition stated these two
-   blanket claims (review finding P3.9, INVALID). Nothing in the design depends on a behaviour outside the
-   hypothesis: Algorithm RR passes only a nonzero squarefree polynomial (its squarefree part) to this routine,
-   and a constant `g` (no real root) is handled before the call.
+   polynomial every root is simple, so this is the number `n` of distinct real roots. It returns a number
+   and no intervals. Outside its hypothesis: the zero polynomial makes it throw
+   (`fmpz_poly/num_real_roots.c:158` to `159`); a polynomial of degree 3 or 4 that is not squarefree makes
+   it throw (`:125` to `129`); for a polynomial of degree 2 that is not squarefree it returns 0 (`:34` to
+   `40`: `b^2 = 4ac` is not `> 4ac`), which is not the number of distinct roots; for higher degrees the
+   Sturm sequence is used (`:148`) and the documentation promises nothing. So the argument must be made
+   squarefree and not zero before the call.
 2. (Isolation.) `arb_fmpz_poly_complex_roots(roots, poly, flags, prec)` writes "all the real and complex
    roots"; "The root enclosures are guaranteed to be disjoint, so that all roots are isolated"; "The real
    roots are written first in ascending order (with the imaginary parts set exactly to zero)"; "The input
@@ -1388,11 +1251,9 @@ exact signs of Proposition 3.8 at its exact end points. The count of 1 is truste
 and behind it Sturm's theorem, which is not on disk. `[source pending: Sturm's theorem]` The number of real
 enclosures of 2 must equal the count of 1; the two routines are different algorithms.
 
-Check: `probe_s2_flint_real` (20 polynomials of degree at least 1, three of them with coefficients of 80 to 400
-digits, precisions 16, 64, 200, FLINT 3.0.1: 60 calls; the count equals the expected number, which the reference
-confirms with its own Sturm chain in exact arithmetic; the enclosures pass the checker of 3.8 after `rr_finish`;
-20 enclosures are exact points; the counts of `X^2`, `X^3`, `X^4`, `X^3 - X^2`, `(X - 1)^2` are recorded as
-above). The probe is a bounded comparison, not a proof of the internal paths of FLINT for large coefficients.
+Check: `probe_s2_flint_real` (17 polynomials of degree at least 1, precisions 16, 64, 200, FLINT 3.0.1: the
+count equals the expected number, which the reference confirms with its own Sturm chain in exact
+arithmetic; the enclosures pass the checker of 3.8; 20 enclosures are exact points).
 Used by: `SPEC.md` 9.1; Algorithm RR.
 
 ### Algorithm RR and Proposition 3.10 (real roots with a completeness status).
@@ -1408,12 +1269,8 @@ Algorithm RR. Input: an integer polynomial `f`, a precision `prec`.
 5. For each `i`: if `lo_i = hi_i`, test `g(lo_i) = 0`; else test `g(lo_i) g(hi_i) < 0`, both by exact
    evaluation. If the test fails, replace the interval once by `[lo_i - r, hi_i + r]` with `r` its radius
    (`2^(-prec)` for radius 0) and test again.
-6. Test `hi_i < lo_(i+1)` for all `i`; that the number of intervals is `n`; and that every ACTUAL output ball
-   (after any widening of step 5) has `arb_rel_accuracy_bits(ball) >= max(prec, 2)`, an exact ball allowed
-   (`flint-3.0.1:arb.rst:499` to `509`: the effective relative accuracy in bits, the negative of the position of
-   the top bit of the radius minus that of the midpoint, plus one). A `prec` below 2 is taken as 2.
-7. If every test holds: the list is complete and is output. Otherwise: `NOT_DETERMINED` at this precision, the
-   output untouched.
+6. Test `hi_i < lo_(i+1)` for all `i`, and that the number of intervals is `n`.
+7. If every test holds: the list is complete. Otherwise: not determined at this precision.
 
 Claim:
 
@@ -1422,27 +1279,12 @@ Claim:
 2. The status "complete" is returned only in this case. The answer does not depend on any promise of FLINT
    other than the count of step 3.
 3. A real root of multiplicity above one is found like any other; its multiplicity is not reported.
-4. (Accuracy.) When the list is complete, every ball has `arb_rel_accuracy_bits >= max(prec, 2)`. This is TESTED
-   on the balls that are output, not derived from the promise of the engine: `arb_fmpz_poly_complex_roots` promises
-   "a relative accuracy of at least prec bits" for the balls it returns (`arb_fmpz_poly.rst:68` to `69`, `:98`),
-   and step 5 may double a radius, which can cost one bit. Example
-   (`docs/reviews/s-design/checks/repair_checks.py`): `X - 1`, `prec = 8`, an incoming ball with midpoint
-   `1 + 3/1024` and radius `3/1024` (root at the left end
-   point) has accuracy 8; widened to radius `3/512` it has accuracy 7, and the sign test and the count still hold.
-   Deriving the final accuracy from the incoming promise is therefore wrong; the design returns `NOT_DETERMINED`
-   when the test fails (a larger `prec` may succeed). This is a contract counterexample, not an observed output
-   of FLINT for `X - 1`; on 60 calls of FLINT (`probe_s2_flint_real`) no ball had to be widened.
 
 *Proof.* Lemma 3.1(2): `g` has the real roots of `f`, all simple. Proposition 3.8 for `g` with the count `n`.
-Claim 4 is step 6 itself.
 
 Status: proved modulo (IVT) and the promise of FLINT for the count (3.9(1)).
 
-Check: `check_s2_real_completeness` (the reference, with its own count; accuracy of every ball by a formula
-different from the one the reference uses; balls and gaps counted by mpmath), `check_s2_real_planted` (roots known
-exactly: repeated, `10^30`, `2^-40` apart, near 0; `X - 10^400`; the first version of the reference raised
-`OverflowError` there because it formed the ratio of the coefficients as a float; the bound is now found in
-integer arithmetic: `B` doubles while `B |lead| <= |lead| + max |c_i|`), `probe_s2_flint_real` (the engine).
+Check: `check_s2_real_completeness` (the reference, with its own count), `probe_s2_flint_real` (the engine).
 Used by: `SPEC.md` 9.1.
 
 ### 3.11 The prime 2, and the examples of the specification.
@@ -1461,189 +1303,48 @@ The statements above hold for `p = 2` without change. What is different at 2 in 
    certificates need `k >= 2`.
 4. `X^2 - 3` at 2: `f(1 + 2 Y) = 4 Y^2 + 4 Y - 2`, `w = 1`, `g = 1` modulo 2: no root. 3 is not a square in
    `Z_2`.
-5. The loss of precision: a Newton step from a certificate with derivative valuation `s` gives certified
-   precision `2 k - s` (Proposition 3.3), not `2 k`. The certificate requires `k >= s + 1`, and that is
-   SUFFICIENT for isolation (Proposition 3.2(1)): the ball `a + p^k Z_p` holds exactly one root. It is not the
-   smallest precision of an isolating ball: a particular root may be isolated by a ball of smaller precision. For
-   `f = X^3 + 2 X` at 2 the derivative at 0 is 2, so `s = 1`; a nonzero root would satisfy `X^2 = -2`, but a square
-   is 0 or 1 modulo 4 and `-2 = 2`, so 0 is the only root in `Z_2` and the ball `Z_2`, of precision 0, isolates
-   it (even `2 Z_2`, of precision 1); both are below `s + 1 = 2`. For `X - 1` (`s = 0`) the ball `Z_p` isolates the
-   root, precision 0 < 1. In general, for a polynomial with distinct integer roots `r_i` and no other root in `Z_p`,
-   the least isolating precision of `r_i` is 0 for a single root and `max_j v(r_i - r_j) + 1` otherwise, never
-   above `s_i + 1` with `s_i = sum_(j != i) v(r_i - r_j)`. The precision returned by Algorithm P is
-   `K = max(k_req, s + 1)`, a sufficient one; it was called the smallest isolating precision in the first
-   version, which is false. (The smallest precision allowed by the certificate (R1) is `s + 1`; that is a
-   different claim.)
+5. The loss of precision: a Newton step at a root with `s >= 1` gives `2 k - s` digits, not `2 k`, and the
+   smallest precision of a ball that isolates the root is `s + 1`.
 
 Check: `check_s2_examples` (these cases with their values, and the examples 4.2, 4.3, 4.4 of the source,
-`conrad-hensel:hensel.txt:331` to `361`), `check_s2_isolation` (574 planted roots: the least isolating precision is
-never above `s + 1`, below it 133 times, equal 440 times; `X^3 + 2 X` at 2).
+`conrad-hensel:hensel.txt:331` to `361`).
 Used by: `SPEC.md` 9.1, 9.3.3.
-
-### Proposition 3.12 (the seed function).
-
-Hypotheses: `f` in `Z[X]` not zero; `g = g*` its normalised polynomial (Lemma 3.1(3)); `p` a prime; `a` an integer;
-`k_req >= 1`. Suppose `g'(a)` is not zero and `v(g(a)) > 2 s`, with `s = v(g'(a))` and `v(0)` infinite (the strong
-form for `g`). Claim:
-
-1. There is exactly one root `alpha` of `g` in `a + p^(s+1) Z_p`. It is a root of `f`, a simple root of `g`, and
-   `v(g'(alpha)) = s`.
-2. Let `K = max(k_req, s + 1)`. There is a root certificate `(a', K, s)` for `(g, p)` with `a' = a` modulo
-   `p^(s+1)`; its ball holds exactly `alpha`. It is computed as follows: if `g(a) = 0` it is `(a mod p^K, K, s)`;
-   otherwise `k_0 = v(g(a)) - s >= s + 1`, `(a mod p^(k_0), k_0, s)` is a certificate, and it is reduced to `K`
-   if `k_0 >= K` (3.2(3)) or lifted by Newton steps until `k >= K` and then reduced (3.3, 3.2(3)).
-3. The certificate refers to `g`, not to `f`. The condition and `s` of the seed function are those of `g`.
-   Example: `f = 27 X`, `p = 3`, `a = 0`. `g = X`, `g'(0) = 1`, `s = 0`, the certificate is `(0, K, 0)`. With `f`
-   in place of `g` one would find `f(0) = 0`, `f'(0) = 27`, `s = 3` and the triple `(0, K, 3)`, which is not a
-   certificate for the stored polynomial `g = X`: (R2) fails, `v(g'(0)) = 0`. The strong form for `f` and for `g`
-   differ in general (`check_s2_seed` counts 186 seeds among 3276 with `k_req = 1` where one holds and the other
-   not).
-4. If `g'(a) = 0` or `v(g(a)) <= 2 v(g'(a))` nothing is claimed: the seed function returns `NOT_DETERMINED`.
-5. The list of a seed has one ball and says nothing about other roots: `n = 1`, `nu = 0`, `complete = 0`
-   (scope SEED, `api-s.md`). A seed list is never complete, and `padic_verify_complete` refuses it.
-
-*Proof.* 1. `v(g(a)) > 2 s` with `s = v(g'(a))` is `|g(a)|_p < |g'(a)|_p^2`. (H2) for `g` (in `Z_p[X]`) gives a
-unique `alpha` in `Z_p` with `g(alpha) = 0` and `|alpha - a|_p < |g'(a)|_p = p^(-s)`, that is `alpha` in
-`a + p^(s+1) Z_p`, and `|g'(alpha)|_p = |g'(a)|_p`. Roots of `g` in `Q_p` and of `f` are the same (3.1(2)); any
-other root of `g` in `a + p^(s+1) Z_p` would violate the uniqueness. 2. If `g(a) = 0`: (R1) `K > s`; (R2)
-`v(g'(a mod p^K)) = s` and (R3) `v(g(a mod p^K)) >= K + s` follow as in the proof of 3.2(2) (Taylor at `a`, which
-does not use the range of the centre, `K > s`, `v(g(a)) = infinity`). Otherwise `v(g(a)) = k_0 + s`, `k_0 >= s + 1`
-by the strong form, and the same computation gives (R2), (R3) for `a mod p^(k_0)` with `k_0`. Reduction and
-lifting keep the centre modulo `p^(s+1)` (3.2(3), 3.3(1)); by 3.2(1) the ball `a' + p^(s+1) Z_p = a + p^(s+1) Z_p`
-holds one root, `alpha`. 3. Computed. 4, 5. Definitions.
-
-Check: `check_s2_seed` (6552 seeds: 36 polynomials, `p` = 2, 3, 5, negative and large `a`, `k_req` 1 and 4;
-1802 give a certificate with the properties above, checked by the oracle of approximate roots, 4750 give
-`NOT_DETERMINED` exactly when the condition on `g` fails; `f = 27 X` at 3 is a fixed case).
-Used by: `api-s.md`, `adf_root_padic_from_seed`; `SPEC.md` 9.3.3 (the square root at 2).
-
-### Proposition 3.13 (what the two verifiers of a list of roots verify).
-
-Hypotheses: `f` in `Z[X]` not zero; `g*` its normalised polynomial; a list `L` with fields as in `api-s.md`
-(`g`, `n`, certificates or balls, classes, `complete`, `scope`). At a prime `p`:
-
-1. (Entries.) If `g` equals `g*`, every listed triple `(a, K, s)` satisfies (R1) to (R3) for `g*`, and the
-   listed balls and classes are pairwise disjoint (3.2(4) for the criterion), then every listed ball holds exactly
-   one root of `g*` (so of `f`), and different listed balls hold different roots. This says nothing about roots
-   outside the listed balls, and nothing about the meaning of a flag `complete` or of a count `n`.
-2. (Complete.) If in addition `scope = PARTITION`, `complete = 1`, `nu = 0`, and Algorithm P run on `g*` through a
-   depth `D` leaves no unresolved class, and every root ball of that run meets exactly one listed ball and every
-   listed ball exactly one root ball of the run, then the roots of `f` in `Z_p` are exactly the roots of the listed
-   balls, one in each. If `D` is too small the run leaves a class unresolved and the verifier refuses without
-   any claim about `L`.
-3. A `SEED` list is never complete.
-
-At the real place:
-
-4. (Entries.) If every ball passes the exact test of Proposition 3.8 for `g*` and `hi_i < lo_(i+1)`, then every
-   ball holds at least one real root of `f` and the number of balls is at most the number of real roots
-   (3.8(1)), whatever number `n` the list carries.
-5. (Complete.) If in addition the number of balls equals the number of real roots of `g*` as recomputed by the
-   verifier (the count of 3.9(1), or Sturm), and equals the `n` of the list, then every ball holds exactly one
-   real root of `f` and every real root of `f` is in a ball (3.8(2)).
-
-*Proof.* 1. 3.2(1) for each triple; two balls that do not meet hold different roots (3.2(4)). 2. By 3.5(2), (3)
-the run of Algorithm P with `U` empty lists every root of `g*` in `Z_p`, each in exactly one root ball, and one
-root in each (3.2(1)). Two root balls that meet hold the same root (3.2(4)). Each root of the run lies in exactly
-one listed ball, so every root is listed; each listed ball meets exactly one root ball, so it holds a root of the
-run and no other. 3. By definition of the scope. 4. 3.8(1). 5. 3.8(2), the count being that of `g*` and
-`g*` having the real roots of `f` (3.1(2)).
-
-Examples. (a) `f = X (X - 1)`, `p = 3`, `g = f`, `n = nu = 0`, `complete = 1`, no certificates: every check of 1
-passes because there is nothing to check; the flag is false (two roots, 0 and 1). The rerun of 2 finds them, the
-matching fails, and the complete verifier returns 0. This is not a counterexample to Proposition 3.5, which is
-about the output of Algorithm P; it shows that the entries verifier cannot certify `complete`. (b) `f = (X-1)(X-2)
-(X-3)` and the single interval `[0, 4]`: 4 holds (`f(0) f(4) = -36 < 0`, one ball), 5 fails (the count is 3 and
-`n = 1` or, with `n = 3`, the number of balls is 1). A stored count is not a trusted count.
-
-Check: `check_s2_lists` (158 lists built on `g*`, 99 of them complete, pass the entries verifier; the complete ones
-pass the complete verifier at depth 12 and are refused one depth below the least depth that completes them
-(4 polynomials need 2 or more); 151 changed lists are refused: a class kept with `complete = 1`, a certificate
-dropped, a ball doubled, a wrong centre, a false `n`; the two examples; `(x-1)^2 (x+2)` at 3 gives a complete list
-of two roots because the list is built on `g*`).
-Used by: `api-s.md`, `adf_rootlist_verify_entries`, `adf_rootlist_verify_complete`.
 
 ## Table of statements
 
-Statements are Definitions (D), Lemmas (L), Propositions (P) and 3.11. The column "Review" is the verdict of
-`docs/reviews/s-design/review.md` (V = VALID, M = MINOR, I = INVALID, new = added by the repair, not reviewed) and
-what the repair did. The three definitions D1.1, D1.3, D2.1 were omitted from the first table.
-
-| No. | Content | Status | Review | Check |
-|---|---|---|---|---|
-| D1.1 | the problem and its set of solutions `Sol(m, c, A, B)` | definition | V | `check_s3_coprime` |
-| L1.2 | `gcd(d, m) = 1` follows for a reduced fraction; local meaning | proved here | V | `check_s3_coprime` |
-| D1.3 | certificate pair (C1) to (C4) | definition | V | `check_s3_certificate` |
-| L1.4 | the Euclidean algorithm gives a certificate pair; `gcd(R, T) = gcd(T, m)` | proved modulo (EEA), proof on disk | V | `check_s3_certificate` |
-| P1.5 | the points of the lattice in the box, from any certificate pair | proved here | V | `check_s3_param` |
-| P1.6 | the complete answer for every `(m, c, A, B)` | proved here | V | `check_s3_complete`, `check_s3_edge` |
-| P1.7 | Algorithm R: statuses, "uniqueness not certified", cost | proved here; cost modulo (EEA-cost) | V; claim 3 restated with `ell = max(limit, 0)`, the `limit = 0` reading corrected | `check_s3_limit` |
-| P1.8 | ranges in which the answer is "none"; existence | proved here; claim 4 modulo (Thue), proof on disk | V | `check_s3_ranges` |
-| P1.9 | FLINT's `fmpq_reconstruct_fmpz_2`: contract, source, outside the contract | claims 1, 2, 3, 5, 6 read from the source; claim 4 (multi-limb paths) not proved, probed only | V | `probe_s3_flint` |
-| P1.10 | the residue is not the adelic ball; forgetting map | proved here | V | `check_s3_coprime`, `check_s3_edge`, `check_s3_forget` |
-| P1.11 | checking a result of Algorithm R; NOT_UNIQUE is not certified by lowering `B` | proved here | new (repair R9) | `check_s3_verify` |
-| D2.1 | span, echelon form, Howell form; prescribed associate (0 for the zero residue) | definition | M; associate of zero and source lines corrected (R1) | `check_s1_assoc` |
-| L2.2 | an echelon form has at least `prod N/h_i` elements in its span | proved here | V | `check_s1_howell` |
-| L2.3 | Howell property, greedy membership, exact number of elements | proved here | V | `check_s1_howell` |
-| P2.4 | the Howell form is canonical over `Z/N` | proved here | V | `check_s1_howell`, `check_s1_canonical` |
-| P2.5 | Algorithm H: existence, correctness, cost | proved here | V | `check_s1_howell`, `check_s1_canonical` |
-| P2.6 | kernel certificate: soundness, canonical form, existence | proved modulo (Iso), proof on disk | V | `check_s1_solve`, `check_s1_cert_sound`, `check_s1_checker_mutants` |
-| P2.7 | no solution: dual vector, soundness and existence | 1, 3 proved here; 2 proved modulo (FAb), proof on disk | V | `check_s1_duality` |
-| P2.8 | Algorithm L; zero matrix, `N = 1`, `r = 0`, `c = 0` | proved here, from 2.3 to 2.7 | V | `check_s1_solve`, `check_s1_edge` |
-| P2.9 | right-hand sides that are finite balls | proved modulo (D) of `quotient.md` | V | `check_s1_adelic` |
-| P2.10 | the solution set as a vector of balls | proved here | V | `check_s1_adelic` |
-| P2.11 | FLINT's Howell form: what is promised, what is called; empty matrices | claims 1, 2, 4 read from the sources; claim 3 (equal normal form) not proved, probed only | M; the padding claim restricted to nonempty matrices, line 293 (R2) | `probe_s1_flint`, `probe_s1_flint_empty` |
-| P2.12 | the rows of the integer Hermite form of the lattice with pivot below `N` are the Howell form | proved here | V | `probe_s1_hnf` |
-| L3.1 | content at `p`; squarefree part has the same roots, all simple; `gcd(g, g') = 1`; the normalised polynomial | proved here, with (EEA-poly) | V; part 3 added | `check_s2_examples`, `check_s2_real_completeness`, `check_s2_lists` |
-| D3.2, P3.2 | root certificate; it gives exactly one root, in which ball; equality is not enough | proved modulo (H2), proof on disk | V; claims 2, 3 restated with `k'` (detail asked by the review) | `check_s2_certificate` |
-| P3.3 | Newton step: precision `2k - s` | proved here, with (Taylor) | V | `check_s2_newton` |
-| P3.4 | one level of the search | proved modulo (H1), proof on disk | V | `check_s2_descent` |
-| P3.5 | Algorithm P: soundness, partition, completeness, multiple roots, termination | proved modulo (H1), (H2), (S1) | V | `check_s2_descent`, `check_s2_examples` |
-| P3.6 | depth bound `D >= v_p(R) + 1` from an integer Bezout identity `u f + v f' = R` | proved here, with (EEA-poly); a resultant bound is NOT asserted (source pending) | M; was Remark 3.6 (open), now a proposition (R3) | `check_s2_bezout_depth` |
-| P3.7 | roots modulo `p` complete: evaluation, or `deg gcd(g, X^p - X)` | proved modulo (Roots), proof on disk, with (EEA-poly) | V | `check_s2_count_mod_p` |
-| P3.8 | real roots: count plus isolation gives completeness | proved modulo (IVT), source pending; a stored count is not a count | V | `check_s2_real_completeness` |
-| P3.9 | FLINT for real roots: what it offers, what it certifies; outside the squarefree hypothesis nothing is promised | read from the sources; Sturm's theorem source pending | I; claim 1 replaced by the behaviour of the source (R4) | `probe_s2_flint_real` |
-| P3.10 | Algorithm RR, with the accuracy test of the final balls | proved modulo (IVT) and FLINT's promise of the count | V; step 6, claim 4 added (R8) | `check_s2_real_completeness`, `check_s2_real_planted`, `probe_s2_flint_real` |
-| 3.11 | the prime 2 and the examples; the loss of precision | proved here, by computation | I; item 5 replaced (R5) | `check_s2_examples`, `check_s2_isolation` |
-| P3.12 | the seed function; condition, `s` and certificate refer to `g*` | proved modulo (H2), proof on disk | new (repair R7) | `check_s2_seed` |
-| P3.13 | what the entries verifier and the complete verifier of a list of roots verify | proved here | new (repair R7) | `check_s2_lists` |
-
-Not proved and stated as such: P1.9 claim 4, P2.11 claim 3 (probed only); IVT and Sturm's theorem (source pending);
-the resultant bound (source pending, not asserted); the larger-prime `nmod_poly` alternative of decision S-D10
-(source pending). No numbered statement is open.
+| No. | Content | Status | Check |
+|---|---|---|---|
+| L1.2 | `gcd(d, m) = 1` follows for a reduced fraction; local meaning | proved here | `check_s3_coprime` |
+| L1.4 | the Euclidean algorithm gives a certificate pair; `gcd(R, T) = gcd(T, m)` | proved modulo (EEA), proof on disk | `check_s3_certificate` |
+| P1.5 | the points of the lattice in the box, from any certificate pair | proved here | `check_s3_param` |
+| P1.6 | the complete answer for every `(m, c, A, B)` | proved here | `check_s3_complete`, `check_s3_edge` |
+| P1.7 | Algorithm R: statuses, "uniqueness not certified", cost | proved here; cost modulo (EEA-cost) | `check_s3_limit` |
+| P1.8 | ranges in which the answer is "none"; existence | proved here; claim 4 modulo (Thue), proof on disk | `check_s3_ranges` |
+| P1.9 | FLINT's `fmpq_reconstruct_fmpz_2`: contract, source, outside the contract | claims 1, 2, 3, 5, 6 read from the source; claim 4 (multi-limb paths) not proved, probed only | `probe_s3_flint` |
+| P1.10 | the residue is not the adelic ball; forgetting map | proved here | `check_s3_coprime`, `check_s3_edge`, `check_s3_forget` |
+| L2.2 | an echelon form has at least `prod N/h_i` elements in its span | proved here | `check_s1_howell` |
+| L2.3 | Howell property, greedy membership, exact number of elements | proved here | `check_s1_howell` |
+| P2.4 | the Howell form is canonical over `Z/N` | proved here | `check_s1_howell`, `check_s1_canonical` |
+| P2.5 | Algorithm H: existence, correctness, cost | proved here | `check_s1_howell`, `check_s1_canonical` |
+| P2.6 | kernel certificate: soundness, canonical form, existence | proved modulo (Iso), proof on disk | `check_s1_solve`, `check_s1_cert_sound` |
+| P2.7 | no solution: dual vector, soundness and existence | 1, 3 proved here; 2 proved modulo (FAb), proof on disk | `check_s1_duality` |
+| P2.8 | Algorithm L; zero matrix, `N = 1`, `r = 0`, `c = 0` | proved here, from 2.3 to 2.7 | `check_s1_solve`, `check_s1_edge` |
+| P2.9 | right-hand sides that are finite balls | proved modulo (D) of `quotient.md` | `check_s1_adelic` |
+| P2.10 | the solution set as a vector of balls | proved here | `check_s1_adelic` |
+| P2.11 | FLINT's Howell form: what is promised, what is called | claims 1, 2, 4 read from the sources; claim 3 (equal normal form) not proved, probed only | `probe_s1_flint` |
+| P2.12 | the rows of the integer Hermite form of the lattice with pivot below `N` are the Howell form | proved here | `probe_s1_hnf` |
+| L3.1 | content at `p`; squarefree part has the same roots, all simple | proved here (Euclidean algorithm in `Q[X]` assumed) | `check_s2_examples`, `check_s2_real_completeness` |
+| P3.2 | a root certificate gives exactly one root, in which ball | proved modulo (H2), proof on disk | `check_s2_certificate` |
+| P3.3 | Newton step: precision `2k - s` | proved here, with (Taylor) | `check_s2_newton` |
+| P3.4 | one level of the search | proved modulo (H1), proof on disk | `check_s2_descent` |
+| P3.5 | Algorithm P: soundness, partition, completeness, multiple roots, termination | proved modulo (H1), (H2), (S1) | `check_s2_descent`, `check_s2_examples` |
+| R3.6 | depth bound by the valuation of a resultant | **open** (source pending; not used) | none |
+| P3.7 | roots modulo `p` complete: evaluation, or `deg gcd(g, X^p - X)` | proved modulo (Roots), proof on disk (Euclidean algorithm in `F_p[X]` assumed) | `check_s2_count_mod_p` |
+| P3.8 | real roots: count plus isolation gives completeness | proved modulo (IVT), source pending | `check_s2_real_completeness` |
+| P3.9 | FLINT for real roots: what it offers, what it certifies | read from the sources; Sturm's theorem source pending | `probe_s2_flint_real` |
+| P3.10 | Algorithm RR | proved modulo (IVT) and FLINT's promise of the count | `check_s2_real_completeness`, `probe_s2_flint_real` |
+| 3.11 | the prime 2 and the examples | proved here, by computation | `check_s2_examples` |
 
 ## Review record
 
-**Review.** `docs/reviews/s-design/review.md` (refute review, codex `gpt-6-astra`, lane s-review, 2026-09-29):
-33 statements, 28 VALID, 3 MINOR (D2.1, P2.11, Remark 3.6), 2 INVALID (P3.9, 3.11), verdict NOT READY before the
-repairs. The reconstruction (section 1), the modular linear algebra (section 2) and the p-adic search survived its
-independent finite checks: 60480 boxes of reconstruction, 1875272 systems modulo `N`, 32946 Howell probes, 1878
-polynomials at each of 2 and 3.
-
-**Repairs of this file (lane s-design-repair, 2026-09-29).**
-
-| Repair | Where | What |
-|---|---|---|
-| R1 | D2.1 | associate of the zero residue is 0; source lines 481, 521, 565 to 567 |
-| R2 | P2.11(2) | padding is for nonempty matrices; empty matrices return early (`strong_echelon_form_mod.c:167`, `howell_form_mod.c:20`); line `fmpz_mod_mat.rst:293` |
-| R3 | P3.6 | Remark 3.6 became Proposition 3.6 with its proof; the resultant is not asserted |
-| R4 | P3.9(1) | the behaviour outside the squarefree hypothesis is that of the source (`X^d` returns `d`, `X^3 - X^2` returns 3); the two blanket claims are gone |
-| R5 | 3.11(5) | `k >= s + 1` is sufficient for isolation, not minimal; `X^3 + 2X` at 2 |
-| R6 | reference | `real_roots_ref` finds its bound in integer arithmetic; regression `X - 10^400` |
-| R7 | 3.1(3), 3.12, 3.13 | normalisation to `g*`; the seed scope; the entries and the complete verifier |
-| R8 | 3.10 | final accuracy tested on the output balls, `arb_rel_accuracy_bits >= max(prec, 2)` |
-| R9 | 1.7(3), 1.11 | the four conditions with `ell = max(limit, 0)`; verifier of a result; `count` on every status |
-| P3.7 | 3.7, 3.6, 3.1 | the polynomial Euclidean algorithm is cited: `ntb-v2.txt:20462`, `20510` |
-| other | D2.1, 2.11 | the order of the checks before a certificate of the optional FLINT engine is consumed (S-D7) |
-
-**Places where the review is held to be wrong.** None of its 33 verdicts is contested; each replacement text was
-read against its source (lines quoted above) and none was found false. Two places differ in detail from the review:
-the reference `real_roots_ref` refines each ball until the accuracy of R8 holds (it has no engine whose balls could
-be widened) and returns `NOT_DETERMINED` only if a test fails afterwards; and Proposition 3.6 is stated for
-`gcd(f, f') = 1` (which Lemma 3.1(3) gives for `g*`) rather than for "nonconstant squarefree `f`". The reviewer's
-suite `real` still prints its finding `untrusted-real-count`, because `real_cert_ok` keeps its signature and its
-meaning (the checker of 3.8 with a trusted count); the repair is `real_verify_complete`. Its check "overflow
-reproduction" fails (one failure), because the overflow is repaired.
-
-**What was not done.** The repaired file has not been reviewed again. The multi-limb paths of
-`fmpq_reconstruct_fmpz_2` are not proved. Nothing was computed with a C implementation.
+Not yet reviewed.

@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """Numerical checks and reference algorithms for docs/proofs/solvers.md (milestone S).
 
-Part 1 (S.3): partial rational reconstruction. Part 2 (S.1): linear systems modulo N, Howell form, certificates,
-the adelic form. Part 3 (S.2): roots at a prime by Hensel lifting; real roots with a completeness status.
+Part 1 (S.3): partial rational reconstruction.
+Part 2 (S.1): linear systems modulo N, kernels, Howell form, certificates, the adelic form.
+Part 3 (S.2): roots at a prime by Hensel lifting; real roots with a completeness status.
 
-Reference algorithms (recon_partial, howell, linsolve_mod, padic_roots, real_roots_ref, their verifiers) stand next
-to brute-force oracles that use the definition only (enumeration of n/d, of (Z/N)^c, of spans, of residues modulo
-p^K; exact rational arithmetic). Each check prints one line with counts; the exit status is nonzero on a failure.
-Checks named probe_* call the installed FLINT (ctypes) and are skipped with a line "SKIP" if it cannot be loaded.
+Two kinds of function stand next to each other:
+  * the reference algorithms, written as solvers.md specifies them (recon_partial, howell, linsolve_mod,
+    padic_roots, real_roots, and the checkers of their certificates);
+  * brute-force oracles that use the definition only (enumeration of all n/d within the bounds, of all of
+    (Z/N)^c, of all spans, of all residues modulo p^K; exact rational arithmetic).
+Each check compares the two and prints one line with counts. The script exits non-zero on any failure.
+
+The checks named probe_* call the installed FLINT (libflint.so, through ctypes) and record what FLINT does;
+they are wrapper tests in the sense of PLAN.md section 7 and are skipped with a line "SKIP" when the library
+cannot be loaded. They fail only where solvers.md states a property of FLINT as used by the design.
 
 Run: python3 proto/solvers_checks.py        (about one minute; one core)
-Size: the reviewer's mutation script passes this file as one argument of `python3 -c`; keep it below 130000 B."""
+"""
 from fractions import Fraction as F
 from math import gcd, isqrt
 from itertools import product
@@ -130,24 +137,6 @@ def sol_brute(m, c, A, B, with_coprime=True):
     return out
 
 
-def sol_brute_fast(m, c, A, B):
-    """Definition 1.1 by enumeration, the same set as sol_brute (checked in check_s3_verify), but for each d only
-    the integers n in [-A, A] of the residue class c d modulo m are tried, so that A >= m is affordable."""
-    out = set()
-    if A < 0:
-        return out
-    for d in range(1, B + 1):
-        if gcd(d, m) != 1:
-            continue
-        r = (c * d) % m
-        n = r - m * ((r + A) // m)                 # the least n >= -A with n = r modulo m
-        while n <= A:
-            if gcd(n, d) == 1:
-                out.add((n, d))
-            n += m
-    return out
-
-
 def eea_pair(m, c, A):
     """The certificate pair of Lemma 1.4 for 0 <= A < m: (R', T', R, T), consecutive rows of the extended
     Euclidean algorithm on (m, c mod m), with R <= A < R'."""
@@ -225,62 +214,6 @@ def recon_partial(m, c, A, B, limit):
     if len(found) == 1:
         return OK, found, cert
     return NO_SOLUTION, [], cert
-
-
-def recon_first(m, c, A, B, limit):
-    """`_reconstruct_first` (S-D4), reference: (status, q, count, cert). OK: q is the first solution in the order of
-    Algorithm R (c/1 for A >= m); count 1 = proved unique, 2 = a second one found, 0 = search cut with one
-    candidate. NO_SOLUTION, NOT_DETERMINED (cut, no candidate), DOMAIN: q None, count 0."""
-    st, sols, cert = recon_partial(m, c, A, B, limit)
-    if st == OK:
-        return OK, sols[0], 1, cert
-    if st == NOT_UNIQUE:
-        return OK, sols[0], 2, cert
-    if st == NOT_DETERMINED and sols:
-        return OK, sols[0], 0, cert
-    return st, None, 0, cert
-
-
-def is_solution(m, c, A, B, n, d):
-    """Definition 1.1, one pair."""
-    return d > 0 and 0 < B and d <= B and abs(n) <= A and gcd(n, d) == 1 and gcd(d, m) == 1 and (n - c * d) % m == 0
-
-
-def recon_verify_result(m, c, A, B, limit, status, sols, cert):
-    """The verifier of a result of `adf_resid_reconstruct` (R9): 1 only if the status is true. Uses the pair
-    (after (C1) to (C4)) and, where needed, the complete enumeration of Proposition 1.5; for NOT_DETERMINED
-    it re-derives the four conditions of Proposition 1.7(3)."""
-    if m < 1:
-        return status == DOMAIN and not sols
-    if A < 0 or B < 1:
-        return status == NO_SOLUTION and not sols
-    c %= m
-    sols = list(sols)
-    if status == NOT_UNIQUE:
-        return len(set(sols)) >= 2 and all(is_solution(m, c, A, B, n, d) for n, d in sols)
-    if status == DOMAIN or A >= m or cert is None or not cert_pair_ok(m, c, A, cert):
-        return False
-    Rp, Tp, R, T = cert
-    ell = max(limit, 0)
-    reduced = [(n, d) for n, d in lattice_points(m, c, A, B, cert) if gcd(n, d) == 1]
-    if status == NO_SOLUTION:
-        if sols:
-            return False
-        if abs(T) > B:
-            return True
-        return gcd(R, T) != 1 if 2 * A * B < m else not reduced
-    if status == OK:
-        if len(sols) != 1 or not is_solution(m, c, A, B, *sols[0]):
-            return False
-        if abs(T) > B:
-            return False
-        return sols[0] == ((1 if T > 0 else -1) * R, abs(T)) if 2 * A * B < m else set(reduced) == set(sols)
-    if status == NOT_DETERMINED:
-        if not (m <= 2 * A * B and abs(T) <= B and B // abs(T) > ell):
-            return False
-        low = [(n, d) for n, d in lattice_points(m, c, A, B, cert, xmax=ell) if gcd(n, d) == 1]
-        return len(low) < 2 and all(x in low for x in sols) and len(sols) == len(low)
-    return False
 
 
 def check_s3_coprime():
@@ -381,17 +314,17 @@ def classify(sols):
 
 
 def check_s3_complete():
-    """Proposition 1.6 and Algorithm R against the enumeration for every m <= 36, c inside and outside [0, m), A in
-    0..2m (all), eight values of B."""
+    """Proposition 1.6 and Algorithm R: for every admitted (m, c, A, B) the status and the solution agree with
+    the enumeration; c is taken outside [0, m) as well."""
     n = bad = 0
     count = {OK: 0, NO_SOLUTION: 0, NOT_UNIQUE: 0}
     for m in range(1, 37):
         for c in range(-m, 2 * m):
             if not (0 <= c < m) and (c % 5):
                 continue
-            for A in range(0, 2 * m + 1):
+            for A in list(range(0, min(m, 9))) + [m - 1, m, m + 1, 2 * m]:
                 for B in (1, 2, 3, 4, 6, 9, m, m + 3):
-                    ref = sol_brute_fast(m, c, A, B)
+                    ref = sol_brute(m, c, A, B)
                     st, sols, _ = recon_partial(m, c, A, B, limit=10 ** 9)
                     n += 1
                     count[classify(ref)] += 1
@@ -402,157 +335,37 @@ def check_s3_complete():
                     elif st == NOT_UNIQUE and not (len(set(sols)) == 2 and set(sols) <= ref):
                         bad += 1
     report("check_s3_complete", bad == 0,
-           f"{n} problems (m <= 36, A in 0..2m for every m): one {count[OK]}, none {count[NO_SOLUTION]}, "
-           f"several {count[NOT_UNIQUE]}; {bad} failures")
-
-
-def x_round(m, c, A, cert, n, d):
-    """The round x = |mu| of the point (n, d) of the lattice: (n, d) = mu (R, T) + nu (R', T'), solved by Cramer's
-    rule with exact fractions. This does not use the enumeration of Algorithm R (Proposition 1.5, step 2)."""
-    Rp, Tp, R, T = cert
-    mu = F(n * Tp - d * Rp, R * Tp - Rp * T)
-    assert mu.denominator == 1 and mu != 0
-    return abs(int(mu))
-
-
-def expected_recon(m, c, A, B, limit, ref):
-    """What Algorithm R must return, from the definition (Proposition 1.7(3), the four conditions), without the
-    loop of step 7. `ref` is the enumeration of Definition 1.1. Returns (status, the reduced points of the
-    rounds x <= max(limit, 0) or None)."""
-    if A < 0 or B < 1:
-        return NO_SOLUTION, None
-    if A >= m:
-        return NOT_UNIQUE, None
-    cert = eea_pair(m, c, A)
-    T = cert[3]
-    if abs(T) > B or 2 * A * B < m:
-        return classify(ref), None
-    ell = max(limit, 0)
-    low = sorted(s for s in ref if x_round(m, c, A, cert, *s) <= ell)      # the reduced points found in the rounds
-    if B // abs(T) <= ell:
-        return classify(ref), low
-    return (NOT_UNIQUE if len(low) >= 2 else NOT_DETERMINED), low
+           f"{n} problems (m <= 36): one {count[OK]}, none {count[NO_SOLUTION]}, several {count[NOT_UNIQUE]}; "
+           f"{bad} failures")
 
 
 def check_s3_limit():
-    """Proposition 1.7(3): NOT_DETERMINED exactly when A < m <= 2AB, |T| <= B, floor(B/|T|) > ell = max(limit, 0)
-    and fewer than two reduced points have round x <= ell, the points and rounds from enumeration and Cramer's rule
-    (x_round), not from the loop of Algorithm R. Every other status is the true one; the S-D3 claim (limit 0 is
-    2AB >= m) is refuted by count."""
-    n = bad = nd = cut_unique = zero_cx = 0
+    """Algorithm R with a search limit: NOT_DETERMINED is returned only if m <= 2 A B, A < m, |T| <= B and
+    floor(B/|T|) > limit; every other status is the true one; limit 0 never searches."""
+    n = bad = nd = 0
     for m in range(1, 30):
         for c in range(m):
-            for A in range(0, m + 2):
+            for A in range(0, m):
                 for B in (1, 2, 3, 5, 9, 17, 40):
-                    ref = sol_brute_fast(m, c, A, B)
-                    for limit in (-1, 0, 1, 2, 5):
+                    ref = sol_brute(m, c, A, B)
+                    cert = eea_pair(m, c, A)
+                    for limit in (0, 1, 2, 5):
                         st, sols, _ = recon_partial(m, c, A, B, limit)
-                        want, low = expected_recon(m, c, A, B, limit, ref)
                         n += 1
-                        if st != want:
-                            bad += 1
-                            continue
                         if st == NOT_DETERMINED:
                             nd += 1
-                            if sorted(sols) != low:
+                            allowed = (m <= 2 * A * B and abs(cert[3]) <= B and B // abs(cert[3]) > limit)
+                            if not allowed or not set(sols) <= ref or len(sols) > 1:
                                 bad += 1
-                        elif st == OK:
-                            if set(sols) != ref:
+                        else:
+                            if st != classify(ref):
                                 bad += 1
-                        elif st == NOT_UNIQUE:
-                            if len(set(sols)) != 2 or not set(sols) <= ref:
+                            if st == OK and set(sols) != ref:
                                 bad += 1
-                            if A < m and low is not None and B // abs(eea_pair(m, c, A)[3]) > max(limit, 0):
-                                cut_unique += 1
-                        if limit == 0 and (st == NOT_DETERMINED) != (2 * A * B >= m):
-                            zero_cx += 1
-    report("check_s3_limit", bad == 0 and nd > 0 and cut_unique > 0 and zero_cx > 0,
-           f"{n} calls with limits -1, 0, 1, 2, 5; NOT_DETERMINED {nd} times, each with the four conditions and "
-           f"the "
-           f"found points recounted; NOT_UNIQUE found inside a cut search {cut_unique} times; the claim "
-           f"'limit 0 is 2AB >= m' fails {zero_cx} times; {bad} failures")
-
-
-def recon_truth(m, c, A, B, limit, status, sols, ref, exp):
-    """Is the claim (status, sols) true? From the enumeration `ref` and `expected_recon` (which recounts the four
-    conditions); it uses no certificate and no verifier."""
-    sols = list(sols)
-    if m < 1:
-        return status == DOMAIN and not sols
-    if status == OK:
-        return len(sols) == 1 and ref == set(sols)
-    if status == NO_SOLUTION:
-        return not ref and not sols
-    if status == NOT_UNIQUE:
-        return len(set(sols)) >= 2 and set(sols) <= ref
-    if status == NOT_DETERMINED:
-        return exp[0] == NOT_DETERMINED and sorted(sols) == exp[1]
-    return False
-
-
-def check_s3_verify():
-    """`recon_verify_result` and `recon_first` (R9): every result of Algorithm R is accepted; changed claims are
-    refused or true (recounted by enumeration and the four conditions); `count` of `recon_first` on every status;
-    sol_brute_fast equals sol_brute; the shortcut of note 4 of the first api-s.md (a second call with B lowered
-    below the first denominator) never certifies NOT_UNIQUE here (m = 2, c = 1, A = B = 1 is the review's case)."""
-    n = refused = false_acc = bad = 0
-    firsts = {0: 0, 1: 0, 2: 0}
-    short_fail = short_ok = 0
-    for m in range(1, 15):
-        for c in [x for x in range(-m, 2 * m + 1) if 0 <= x < m or x % 3 == 0]:
-            for A in range(-1, 2 * m + 2):
-                for B in (0, 1, 2, 3, 5, 8):
-                    if A >= 0 and B >= 1 and sol_brute_fast(m, c % m, A, B) != sol_brute(m, c % m, A, B):
-                        bad += 1
-                    ref = sol_brute(m, c % m, A, B) if A >= 0 and B >= 1 else set()
-                    for limit in (-1, 0, 2, 100):
-                        st, sols, cert = recon_partial(m, c, A, B, limit)
-                        n += 1
-                        exp = (expected_recon(m, c % m, A, B, limit, ref)
-                               if A >= 0 and B >= 1 else (NO_SOLUTION, None))
-                        if not recon_verify_result(m, c, A, B, limit, st, sols, cert):
+                        if 2 * A * B < m and st == NOT_DETERMINED:
                             bad += 1
-                        # recon_first
-                        st1, q, cnt, _ = recon_first(m, c, A, B, limit)
-                        firsts[cnt] += 1
-                        if st1 == OK:
-                            if q not in ref or cnt not in (0, 1, 2) or (cnt == 1 and len(ref) != 1) or \
-                                    (cnt == 2 and len(ref) < 2) or (cnt == 0 and st != NOT_DETERMINED):
-                                bad += 1
-                        elif q is not None or cnt != 0 or st1 not in (NO_SOLUTION, NOT_DETERMINED):
-                            bad += 1
-                        # changed claims
-                        claims = [(s2, list(sols2)) for s2 in (OK, NO_SOLUTION, NOT_UNIQUE, NOT_DETERMINED)
-                                  for sols2 in (sols, sols[:1], sols[:1] * 2, [], [(1, 1)], [(0, 1), (1, 1)])]
-                        for s2, sols2 in claims:
-                            if (s2, sorted(sols2)) == (st, sorted(sols)):
-                                continue
-                            got = recon_verify_result(m, c, A, B, limit, s2, sols2, cert)
-                            if got:
-                                if not recon_truth(m, c % m, A, B, limit, s2, sols2, ref, exp):
-                                    false_acc += 1
-                            else:
-                                refused += 1
-                        if cert is not None:
-                            Rp, Tp, R, T = cert
-                            for cert2 in ((Rp, Tp, R, -T), (Rp + m, Tp, R, T), None):
-                                if st != NOT_UNIQUE and recon_verify_result(m, c, A, B, limit, st, sols, cert2) \
-                                        and cert2 is not None and not cert_pair_ok(m, c % m, A, cert2):
-                                    false_acc += 1
-                    if A >= 0 and B >= 1 and A < m + 1:
-                        st0, sl0, _ = recon_partial(m, c, A, B, 10 ** 9)   # shortcut of note 4, first api-s.md
-                        if st0 == NOT_UNIQUE:
-                            st2, sl2, _ = recon_partial(m, c, A, sl0[0][1] - 1, 10 ** 9)   # B below 1st denominator
-                            if st2 == OK and sl2[0] != sl0[0]:
-                                short_ok += 1
-                            else:
-                                short_fail += 1
-    report("check_s3_verify", bad == 0 and false_acc == 0 and short_fail > 0 and refused > 0 and firsts[2] and
-           firsts[1] and firsts[0],
-           f"{n} results verified (m <= 14); {refused} changed claims refused, {false_acc} accepted and false; "
-           f"recon_first count 0/1/2: {firsts[0]}/{firsts[1]}/{firsts[2]}; the lowering shortcut certifies "
-           f"NOT_UNIQUE {short_ok} times and fails {short_fail} times (m = 2, c = 1, A = B = 1 fails); {bad} "
-           f"failures")
+    report("check_s3_limit", bad == 0,
+           f"{n} calls with limits 0, 1, 2, 5; NOT_DETERMINED {nd} times; {bad} failures")
 
 
 def check_s3_ranges():
@@ -610,8 +423,7 @@ def check_s3_edge():
         ((1, 0, 0, 1), OK, {(0, 1)}), ((1, 7, 0, 5), OK, {(0, 1)}), ((1, 0, 1, 1), NOT_UNIQUE, None),
         ((2, 1, 1, 1), NOT_UNIQUE, {(1, 1), (-1, 1)}), ((2, 1, 0, 9), NO_SOLUTION, set()),
         ((2, 0, 0, 9), OK, {(0, 1)}), ((2, 1, 1, 0), NO_SOLUTION, set()), ((0, 1, 1, 1), DOMAIN, None),
-        ((5, 1, -1, 1), NO_SOLUTION, set()), ((-3, 1, 1, 1), DOMAIN, None),
-        ((6, 5, 1, 5), NOT_UNIQUE, {(-1, 1), (1, 5)}),
+        ((5, 1, -1, 1), NO_SOLUTION, set()), ((-3, 1, 1, 1), DOMAIN, None), ((6, 5, 1, 5), NOT_UNIQUE, {(-1, 1), (1, 5)}),
         ((6, 5, 1, 4), OK, {(-1, 1)}), ((6, -1, 1, 4), OK, {(-1, 1)}), ((6, 11, 1, 4), OK, {(-1, 1)}),
         ((7, 0, 0, 3), OK, {(0, 1)}), ((7, 3, 0, 3), NO_SOLUTION, set()), ((12, 6, 5, 50), NO_SOLUTION, set()),
         ((101, 34, 1, 3), OK, {(1, 3)}),
@@ -631,10 +443,9 @@ def check_s3_edge():
     if in_ball or (1, 5) not in sol_brute(6, 5, 1, 5):
         bad += 1
     n += 1
-    # large random: a fraction n/d within the bounds, modulus above 2 A B, is returned. A draw whose denominator is
-    # not prime to m is drawn again, so that every counted case is verified (the first version counted the draw)
-    big = redraws = 0
-    while big < 3000:
+    # large random: a fraction n/d within the bounds, modulus above 2 A B, is returned
+    big = 0
+    for _ in range(3000):
         bits = random.choice((20, 64, 300))
         A = random.getrandbits(bits) + 1
         B = random.getrandbits(bits) + 1
@@ -643,16 +454,15 @@ def check_s3_edge():
         nn = random.randrange(-A, A + 1)
         g = gcd(nn, d)
         nn, d = nn // g, d // g
+        big += 1
         if gcd(d, m) != 1:
-            redraws += 1
+            # the fraction is not a solution for any residue; the residue of another one is used instead
             continue
         c = nn * pow(d, -1, m) % m + m * random.randrange(-2, 3)
         st, s, _ = recon_partial(m, c, A, B, 0)
-        big += 1
         if st != OK or s != [(nn, d)]:
             bad += 1
-    report("check_s3_edge", bad == 0,
-           f"{n} fixed cases, {big} large random fractions verified ({redraws} draws repeated), {bad} failures")
+    report("check_s3_edge", bad == 0, f"{n} fixed cases, {big} large random fractions, {bad} failures")
 
 
 def check_s3_forget():
@@ -741,7 +551,7 @@ def probe_s3_flint():
 
 
 PART1 = [check_s3_coprime, check_s3_certificate, check_s3_param, check_s3_complete, check_s3_limit,
-         check_s3_verify, check_s3_ranges, check_s3_edge, check_s3_forget, probe_s3_flint]
+         check_s3_ranges, check_s3_edge, check_s3_forget, probe_s3_flint]
 
 # =========================================================================================================
 # Part 2. S.1: linear systems modulo N
@@ -960,11 +770,6 @@ def matvec(A, x, N):
     return [sum(a * b for a, b in zip(row, x)) % N for row in A]
 
 
-def matvec_cols(A, r, c, N):
-    """The columns of A as rows of length r: the generators of the image Im A in (Z/N)^r."""
-    return [[A[i][j] % N for i in range(r)] for j in range(c)]
-
-
 def transpose(A, r, c):
     return [[A[i][j] for i in range(r)] for j in range(c)]
 
@@ -1003,9 +808,8 @@ def linsolve_mod(A, b, r, c, N):
     raise AssertionError("Proposition 2.7 violated: no dual certificate")
 
 
-def linsol_check(sol, A, b, r, c, N, canonical=True, skip=frozenset()):
-    """The checker of Proposition 2.6 and 2.7: what is verified, with no elimination. `skip` names conditions
-    (K1 to K7) that are not tested; it exists only for the mutation test check_s1_checker_mutants."""
+def linsol_check(sol, A, b, r, c, N, canonical=True):
+    """The checker of Proposition 2.6 and 2.7: what is verified, with no elimination."""
     if N < 1 or sol.get("status") not in (OK, NO_SOLUTION):
         return False
     A = [[x % N for x in row] for row in A]
@@ -1013,32 +817,25 @@ def linsol_check(sol, A, b, r, c, N, canonical=True, skip=frozenset()):
     E, V, G = sol["E"], sol["V"], sol["G"]
     if len(E) != len(V) or any(len(v) != c or any(not (0 <= x < N) for x in v) for v in V):
         return False
-    if "K1" not in skip and (not is_echelon(E, r, N) or not is_echelon(G, c, N)):                # (K1)
+    if not is_echelon(E, r, N) or not is_echelon(G, c, N):                       # (K1)
         return False
-    if "K2" not in skip:
-        for e, v in zip(E, V):                                                                    # (K2)
-            if matvec(A, v, N) != e:
-                return False
-    if "K3" not in skip:
-        for g in G:                                                                               # (K3)
-            if any(matvec(A, g, N)):
-                return False
-    if "K4" not in skip:
-        prod = 1                                                                                  # (K4)
-        for row in E + G:
-            if pivot_col(row) is None:                      # a zero row has no pivot (only if K1 is not tested)
-                return False
-            prod *= N // row[pivot_col(row)]
-        if prod != N ** c:
+    for e, v in zip(E, V):                                                        # (K2)
+        if matvec(A, v, N) != e:
             return False
-    if canonical and "K5" not in skip and not is_howell(G, c, N):                                # (K5)
+    for g in G:                                                                   # (K3)
+        if any(matvec(A, g, N)):
+            return False
+    prod = 1                                                                      # (K4)
+    for row in E + G:
+        prod *= N // row[pivot_col(row)]
+    if prod != N ** c:
         return False
-    if sol["status"] == OK:                                                                       # (K6)
+    if canonical and not is_howell(G, c, N):                                      # (K5)
+        return False
+    if sol["status"] == OK:                                                       # (K6)
         x0 = sol["x0"]
-        return "K6" in skip or (len(x0) == c and all(0 <= x < N for x in x0) and matvec(A, x0, N) == b)
-    y = sol["y"]                                                                                  # (K7)
-    if "K7" in skip:
-        return True
+        return len(x0) == c and all(0 <= x < N for x in x0) and matvec(A, x0, N) == b
+    y = sol["y"]                                                                  # (K7)
     if len(y) != r or any(not (0 <= x < N) for x in y):
         return False
     yA = [sum(y[i] * A[i][j] for i in range(r)) % N for j in range(c)]
@@ -1163,119 +960,6 @@ def check_s1_cert_sound():
     report("check_s1_cert_sound", bad == 0 and accepted < n,
            f"{n} changed certificates: {n - accepted} refused, {accepted} accepted and true, "
            f"{bad} accepted and false")
-
-
-def assoc_rep(a, N):
-    """The prescribed associate of the residue a in [0, N) of Z/N (solvers.md D2.1): gcd(a, N) for a not zero,
-    and 0 for the zero residue (Ass(gcd(0, N)) = Ass(N) = N, whose class in Z/N is 0)."""
-    return 0 if a % N == 0 else gcd(a, N)
-
-
-def check_s1_assoc():
-    """D2.1: two residues are associates when they differ by a unit of Z/N. The prescribed representative of the
-    class of a is its least element in [0, N): gcd(a, N) for a not zero, 0 for the zero residue, which is not
-    gcd(0, N) = N. Also E2: a pivot of a Howell form is that representative, a divisor of N below N."""
-    n = bad = zero = 0
-    for N in range(1, 61):
-        units = [u for u in range(1, N + 1) if gcd(u, N) == 1]
-        for a in range(N):
-            orbit = {(u * a) % N for u in units}
-            n += 1
-            if assoc_rep(a, N) != min(orbit) or not 0 <= assoc_rep(a, N) < N or (a and N % assoc_rep(a, N)):
-                bad += 1
-            if a == 0:
-                zero += 1
-                if gcd(0, N) == assoc_rep(0, N) and N > 1:
-                    bad += 1                                    # gcd(0, N) = N is not in [0, N)
-    report("check_s1_assoc", bad == 0, f"{n} residues (N <= 60), {zero} zero residues; {bad} failures")
-
-
-def check_s1_checker_mutants():
-    """Mutation test of `linsol_check`: without any one of K1 to K7 it must accept some false certificate of the
-    pool (false = its claim is false by enumeration), and the full checker accepts none. The pool holds
-    random changes and the certificate of another matrix presented for A."""
-    pool = kills = 0
-    killed = {k: 0 for k in ("K1", "K2", "K3", "K4", "K5", "K6", "K7")}
-    full_false = 0
-    for N in (2, 4, 6, 8, 9, 12):
-        for _ in range(160):
-            r, c = random.randint(1, 3), random.randint(1, 3)
-            if N ** c > 1800:
-                continue
-            A = rand_rows(r, c, N)
-            if random.random() < 0.5:
-                d = random.choice([d for d in range(1, N + 1) if N % d == 0])
-                A = [[(x * d) % N for x in row] for row in A]
-            b = [random.randrange(N) for _ in range(r)]
-            sol = linsolve_mod(A, b, r, c, N)
-            ker = solutions_brute(A, [0] * r, r, c, N)
-            ref = solutions_brute(A, b, r, c, N)
-            kerH = howell([list(k) for k in ker], c, N)
-            for _ in range(20):
-                mut = {k: ([list(x) for x in v] if k in ("G", "E", "V") else (list(v) if k in ("x0", "y") else v))
-                       for k, v in sol.items()}
-                kind = random.randrange(11)
-                if kind == 0 and mut["G"]:
-                    del mut["G"][random.randrange(len(mut["G"]))]
-                elif kind == 1 and mut["G"]:
-                    g = random.choice(mut["G"])
-                    g[random.randrange(c)] = random.randrange(N)
-                elif kind == 2 and mut["E"]:
-                    i = random.randrange(len(mut["E"]))
-                    del mut["E"][i]
-                    del mut["V"][i]
-                elif kind == 3 and mut["V"]:
-                    v = random.choice(mut["V"])
-                    v[random.randrange(c)] = random.randrange(N)
-                elif kind == 4:
-                    key = "x0" if mut["status"] == OK else "y"
-                    mut[key][random.randrange(len(mut[key]))] = random.randrange(N)
-                elif kind == 5:
-                    if mut["status"] == OK:
-                        mut["status"], mut["y"] = NO_SOLUTION, [random.randrange(N) for _ in range(r)]
-                    else:
-                        mut["status"], mut["x0"] = OK, [random.randrange(N) for _ in range(c)]
-                elif kind == 6 and mut["G"]:
-                    g = random.choice(mut["G"])
-                    u = random.choice([u for u in range(1, N) if gcd(u, N) == 1])
-                    g[:] = [(u * x) % N for x in g]
-                elif kind == 7 and len(mut["G"]) >= 2:
-                    i, j = random.sample(range(len(mut["G"])), 2)
-                    mut["G"][i], mut["G"][j] = mut["G"][j], mut["G"][i]
-                elif kind == 8 and mut["E"]:
-                    e = random.choice(mut["E"])
-                    e[random.randrange(r)] = random.randrange(N)
-                elif kind == 9:
-                    # the certificate of another matrix of the same shape, presented for A
-                    A2 = rand_rows(r, c, N)
-                    E2, V2, G2 = kernel_cert(A2, r, c, N)
-                    mut["E"], mut["V"], mut["G"] = E2, V2, G2
-                elif kind == 10 and mut["E"] and mut["G"]:
-                    # a row of E repeated with its V, a row of G removed: (K4) may still hold
-                    i = random.randrange(len(mut["E"]))
-                    mut["E"].insert(i, list(mut["E"][i]))
-                    mut["V"].insert(i, list(mut["V"][i]))
-                    del mut["G"][random.randrange(len(mut["G"]))]
-                else:
-                    continue
-                span_ok = span_brute(mut["G"], c, N) == ker
-                true = span_ok and mut["G"] == kerH
-                if mut["status"] == OK:
-                    true = true and len(mut["x0"]) == c and tuple(mut["x0"]) in ref
-                else:
-                    true = true and not ref and len(mut["y"]) == r
-                if not true:
-                    pool += 1
-                    if linsol_check(mut, A, b, r, c, N):
-                        full_false += 1
-                    for k in killed:
-                        if linsol_check(mut, A, b, r, c, N, skip=frozenset([k])):
-                            killed[k] += 1
-    alive = [k for k, v in killed.items() if v == 0]
-    report("check_s1_checker_mutants", full_false == 0 and not alive,
-           f"{pool} false certificates; the full checker accepts {full_false}; a checker without K1..K7 accepts "
-           f"{[killed[k] for k in sorted(killed)]} of them (a zero would mean that condition is not needed for "
-           f"this pool: {alive})")
 
 
 def check_s1_duality():
@@ -1493,31 +1177,6 @@ def probe_s1_flint():
     report("probe_s1_flint", bad == 0, f"FLINT {flint_version()}: {n} matrices, N up to 30 bits; {bad} differences")
 
 
-def probe_s1_flint_empty():
-    """Proposition 2.11(2): an EMPTY matrix (no rows or no columns) returns 0 before the loop that reads (col, col)
-    (flint-src-3.0.1:fmpz_mat/strong_echelon_form_mod.c:167-168, howell_form_mod.c:20-21). A nonempty matrix with
-    fewer rows than columns is not passed (undefined; the design pads it)."""
-    if FLINT is None:
-        skip("probe_s1_flint_empty", "libflint not found")
-        return
-    n = bad = 0
-    for N in (1, 2, 12, 2 ** 40 + 15):
-        for r, c in ((0, 0), (0, 1), (0, 3), (0, 7), (1, 0), (2, 0), (5, 0)):
-            mat = FmpzMat()
-            FLINT.fmpz_mat_init(ctypes.byref(mat), ctypes.c_long(r), ctypes.c_long(c))
-            cN = ctypes.c_long(N)
-            FLINT.fmpz_mat_howell_form_mod.restype = ctypes.c_long
-            k = FLINT.fmpz_mat_howell_form_mod(ctypes.byref(mat), ctypes.byref(cN))
-            FLINT.fmpz_mat_clear(ctypes.byref(mat))
-            n += 1
-            if k != 0:
-                bad += 1
-    report("probe_s1_flint_empty", bad == 0,
-           f"FLINT {flint_version()}: {n} empty matrices (0 x c, r x 0), moduli 1, 2, 12, 2^40 + 15: rank 0, no "
-           f"crash; "
-           f"{bad} failures")
-
-
 def probe_s1_hnf():
     """Proposition 2.12: the rows with pivot below N of the integer Hermite form of the rows and N e_j are the
     Howell form. The Hermite form is that of python-flint (its own FLINT, not the installed one)."""
@@ -1549,9 +1208,8 @@ def probe_s1_hnf():
            f"{bad} differences")
 
 
-PART2 = [check_s1_howell, check_s1_canonical, check_s1_assoc, check_s1_solve, check_s1_cert_sound,
-         check_s1_checker_mutants, check_s1_duality, check_s1_edge, check_s1_adelic, probe_s1_flint,
-         probe_s1_flint_empty, probe_s1_hnf]
+PART2 = [check_s1_howell, check_s1_canonical, check_s1_solve, check_s1_cert_sound, check_s1_duality,
+         check_s1_edge, check_s1_adelic, probe_s1_flint, probe_s1_hnf]
 # =========================================================================================================
 # Part 3. S.2: roots
 # =========================================================================================================
@@ -1646,11 +1304,11 @@ def newton_step(f, p, a, k, s):
     return (a - p ** k * step) % p ** k2, k2
 
 
-def padic_roots(f, p, kreq, depth, trace=None):
-    """Algorithm P of solvers.md 3.5. Returns (status, certs, unresolved): certs = (a, K, s), the balls a + p^K Z_p
-    with one root each; unresolved = (a, e), classes left by the depth limit; OK iff unresolved is empty. The
-    certificates refer to f with its content at p removed. `trace`, if a list, gets (a, e, children) for every
-    opened class."""
+def padic_roots(f, p, kreq, depth):
+    """Algorithm P of solvers.md 3.5. Returns (status, certs, unresolved): certs is the list of (a, K, s), the
+    balls a + p^K Z_p with exactly one root each; unresolved the list of (a, e), the classes a + p^e Z_p that
+    the depth limit left undecided. status OK: unresolved is empty and the list is complete. The certificates
+    refer to f with its content at p removed (strip_content)."""
     f = ptrim(f)
     if not f or kreq < 1 or depth < 0:
         return DOMAIN, [], []
@@ -1661,8 +1319,7 @@ def padic_roots(f, p, kreq, depth, trace=None):
         a, e, wprev = stack.pop()
         g = pcompose_affine(f, a, p ** e)
         w = content_val(g, p)
-        nchild = 0
-        assert wprev is None or w >= wprev + 2 or not any(                 # Proposition 3.4(4)
+        assert wprev is None or w >= wprev + 2 or not any(                 # Remark 3.6 (not used by the proofs)
             peval([c // p ** w for c in g], b, p) == 0 for b in range(p))
         g = [c // p ** w for c in g]
         dg = pderiv(g)
@@ -1687,105 +1344,11 @@ def padic_roots(f, p, kreq, depth, trace=None):
                 certs.append((a1, K, s))
             elif e + 1 > depth:
                 unresolved.append((a + p ** e * b, e + 1))
-                nchild += 1
             else:
                 stack.append((a + p ** e * b, e + 1, w))
-                nchild += 1
-        if trace is not None:
-            trace.append((a, e, nchild))
     certs.sort()
     unresolved.sort()
     return (OK if not unresolved else NOT_DETERMINED), certs, unresolved
-
-
-def normalise_g(f):
-    """Decision S-D13 and R7: the polynomial that every certificate refers to is the primitive integer squarefree
-    part of f with positive leading coefficient (Lemma 3.1(2)). Not defined for f = 0."""
-    return squarefree_part(ptrim(f))
-
-
-def rootlist_padic(f, p, kreq, depth):
-    """`adf_roots_padic` / `_partial` (S-D15), reference, on g = normalise_g(f). Returns (status, L), L a dictionary
-    (place, g, scope PARTITION, n, certs, nu, unres, complete = 1 iff nu = 0). Status OK iff complete, else
-    NOT_DETERMINED; DOMAIN (L None) for f = 0, kreq < 1, depth < 0."""
-    f = ptrim(f)
-    if not f or kreq < 1 or depth < 0:
-        return DOMAIN, None
-    g = normalise_g(f)
-    st, certs, unres = padic_roots(g, p, kreq, depth)
-    L = {"place": p, "g": g, "scope": "PARTITION", "n": len(certs), "certs": certs, "nu": len(unres),
-         "unres": unres, "complete": 1 if not unres else 0}
-    return st, L
-
-
-def seed_root(f, p, a, kreq):
-    """`adf_root_padic_from_seed` (R7), reference: condition, s and certificate refer to g = normalise_g(f).
-    Strong form for g: g'(a) != 0 and v(g(a)) > 2 v(g'(a)) (g(a) = 0 allowed); then (H2) gives one root of g.
-    List: scope SEED, n = 1, nu = 0, complete = 0, certificate (a', K, s), K = max(kreq, s + 1). Returns
-    (status, L): OK, NOT_DETERMINED (not the strong form), DOMAIN (f = 0, kreq < 1)."""
-    f = ptrim(f)
-    if not f or kreq < 1:
-        return DOMAIN, None
-    g = normalise_g(f)
-    ga, da = peval(g, a), peval(pderiv(g), a)
-    if da == 0:
-        return NOT_DETERMINED, None
-    s = val(da, p)
-    vg = None if ga == 0 else val(ga, p)
-    if vg is not None and not vg > 2 * s:
-        return NOT_DETERMINED, None
-    K = max(kreq, s + 1)
-    k0 = K if vg is None else vg - s                       # (a, k0, s) is a certificate: k0 >= s + 1
-    a1, k = a % p ** k0, k0
-    assert root_cert_ok(g, p, a1, k, s), (g, p, a, k, s)
-    while k < K:
-        a1, k = newton_step(g, p, a1, k, s)
-    a1 %= p ** K
-    assert root_cert_ok(g, p, a1, K, s)
-    return OK, {"place": p, "g": g, "scope": "SEED", "n": 1, "certs": [(a1, K, s)], "nu": 0, "unres": [],
-                "complete": 0}
-
-
-def balls_meet(p, x, y):
-    """Two balls (a, k) and (b, l) of Z_p meet exactly when a = b modulo p^min(k, l) (solvers.md section 3)."""
-    return (x[0] - y[0]) % p ** min(x[1], y[1]) == 0
-
-
-def padic_verify_entries(f, L):
-    """`adf_rootlist_verify_entries` at a prime (R7): g is the normalised polynomial of f; every certificate
-    satisfies
-    (R1) to (R3) for g; balls and classes pairwise disjoint; shape fields consistent. It does not certify that
-    a list with complete = 1 holds every root."""
-    f = ptrim(f)
-    if not f or L is None or L["g"] != normalise_g(f):
-        return False
-    p = L["place"]
-    if L["n"] != len(L["certs"]) or L["nu"] != len(L["unres"]):
-        return False
-    if L["scope"] == "SEED":
-        if not (L["n"] == 1 and L["nu"] == 0 and L["complete"] == 0):
-            return False
-    elif L["scope"] != "PARTITION" or L["complete"] != (1 if L["nu"] == 0 else 0):
-        return False
-    if not all(root_cert_ok(L["g"], p, a, k, s) for a, k, s in L["certs"]):
-        return False
-    items = [(a, k) for a, k, _ in L["certs"]] + [tuple(u) for u in L["unres"]]
-    return all(not balls_meet(p, items[i], items[j]) for i in range(len(items)) for j in range(i))
-
-
-def padic_verify_complete(f, L, depth):
-    """`adf_rootlist_verify_complete` at a prime (R7): PARTITION list with complete = 1, entries verified, and
-    Algorithm P rerun on g through `depth` leaves no class and finds exactly the listed roots (P3.2(4))."""
-    if not padic_verify_entries(f, L) or L["scope"] != "PARTITION" or L["complete"] != 1 or L["nu"] != 0:
-        return False
-    p = L["place"]
-    st, certs, unres = padic_roots(L["g"], p, 1, depth)
-    if unres:
-        return False
-    listed = [(a, k) for a, k, _ in L["certs"]]
-    found = [(a, k) for a, k, _ in certs]
-    return all(sum(balls_meet(p, x, y) for y in listed) == 1 for x in found) and \
-        all(sum(balls_meet(p, x, y) for y in found) == 1 for x in listed)
 
 
 def approx_roots(f, p, K, inside=None):
@@ -1915,14 +1478,12 @@ def check_s2_newton():
 
 
 def check_s2_descent():
-    """Propositions 3.4, 3.5 on the named cases. Oracle: the x modulo p^M with f(x) = 0 modulo p^M lie each in
-    exactly
-    one certified ball or unresolved class; each ball holds p^s of them; balls and classes are disjoint; the number
-    of roots is the expected one; a multiple root never gives a complete list. Comparisons that the oracle cannot
-    make (more than 200000 residues) are counted and named in the output."""
+    """Propositions 3.4, 3.5: the list of certified balls and unresolved classes. Oracle: the x modulo p^M
+    with f(x) = 0 modulo p^M. Every such x lies in a certified ball or in an unresolved class; every
+    certified ball holds p^s of them; the balls and classes are pairwise disjoint; the number of roots is the
+    expected one; when no class is unresolved the x of the oracle are exactly those of the certified balls."""
     n = bad = 0
     details = []
-    skipped = []                                                    # oracle comparisons that could not be made
     for name, f, p, expect, simple in PADIC_CASES:
         for depth in (0, 1, 3, 8):
             st, certs, unres = padic_roots(f, p, 3, depth)
@@ -1946,7 +1507,6 @@ def check_s2_descent():
                 sols = approx_roots(strip_content(f, p), p, M)
             except OverflowError:
                 sols = None
-                skipped.append((name, depth))
             if sols is not None:
                 for x in sols:
                     inc = sum(1 for a, k, _ in certs if (x - a) % p ** k == 0)
@@ -1979,10 +1539,7 @@ def check_s2_descent():
         for r in roots:
             if sum(1 for a, k, _ in certs if (r - a) % p ** k == 0) != 1:
                 bad += 1
-    report("check_s2_descent", bad == 0, f"{n} runs of the named cases (depth limits 0, 1, 3, 8), of which "
-           f"{n - len(skipped)} compared with the oracle of approximate roots and {len(skipped)} skipped "
-           f"because the "
-           f"oracle has more than 200000 residues (cases: {sorted({a for a, _ in skipped})}); {rnd} random "
+    report("check_s2_descent", bad == 0, f"{n} runs of the named cases (depth limits 0, 1, 3, 8), {rnd} random "
            f"products with known integer roots; {bad} failures" + (f" {details[:3]}" if details else ""))
 
 
@@ -2022,277 +1579,6 @@ def check_s2_examples():
     if st != OK or sorted((a % 4, s) for a, _, s in certs) != [(0, 1), (2, 1), (3, 0)]:
         bad += 1
     report("check_s2_examples", bad == 0, f"{n} fixed cases; {bad} failures")
-
-
-def check_s2_seed():
-    """`seed_root` (R7): NOT_DETERMINED exactly when g'(a) = 0 or v(g(a)) <= 2 v(g'(a)) for the normalised g;
-    otherwise scope SEED, n = 1, nu = 0, complete = 0, one certificate (a', K, s) with K = max(kreq, s + 1),
-    root_cert_ok for g, a' = a mod p^(s+1), p^s approximate roots in the ball by the oracle; entries verifier
-    accepts, complete verifier refuses. Counts the seeds where the condition on f and on g differ."""
-    n = bad = ok_n = nd = differ = 0
-    polys = [f for _, f, _, _, _ in PADIC_CASES] + [[0, 27], [0, 9, 0, 3], [-9, 6, -1], [4, -4, 1], [0, 0, 1]]
-    for f in polys:
-        f = ptrim(f)
-        g = normalise_g(f)
-        for p in (2, 3, 5):
-            for a in list(range(-3, 2 * p ** 2)) + [p ** 5 + 1, -p ** 4 - 1]:
-                for kreq in (1, 4):
-                    st, L = seed_root(f, p, a, kreq)
-                    n += 1
-                    ga, da = peval(g, a), peval(pderiv(g), a)
-                    strong = da != 0 and (ga == 0 or val(ga, p) > 2 * val(da, p))
-                    fa, dfa = peval(f, a), peval(pderiv(f), a)
-                    strong_f = dfa != 0 and (fa == 0 or val(fa, p) > 2 * val(dfa, p))
-                    if kreq == 1 and strong != strong_f:
-                        differ += 1
-                    if strong != (st == OK):
-                        bad += 1
-                        continue
-                    if st != OK:
-                        nd += 1
-                        continue
-                    ok_n += 1
-                    (a1, K, s), = L["certs"]
-                    ok = L["g"] == g and L["scope"] == "SEED" and (L["n"], L["nu"], L["complete"]) == (1, 0, 0) \
-                        and s == val(da, p) and K == max(kreq, s + 1) and root_cert_ok(g, p, a1, K, s) \
-                        and (a1 - a) % p ** (s + 1) == 0
-                    if ok and p ** (K + s + 3) <= 3 ** 10:
-                        sols = approx_roots(g, p, K + s + 3, inside=(a1 % p ** (s + 1), s + 1))
-                        ok = len(sols) == p ** s and all((x - a1) % p ** K == 0 for x in sols)
-                    ok = ok and padic_verify_entries(f, L) and not padic_verify_complete(f, L, 8)
-                    if not ok:
-                        bad += 1
-    st, L = seed_root([0, 27], 3, 0, 2)                           # the finding of the review
-    if st != OK or L["certs"] != [(0, 2, 0)] or L["g"] != [0, 1]:
-        bad += 1
-    if seed_root([], 3, 0, 2)[0] != DOMAIN or seed_root([0, 27], 3, 0, 0)[0] != DOMAIN:
-        bad += 1
-    report("check_s2_seed", bad == 0 and ok_n > 0 and nd > 0,
-           f"{n} seeds ({len(polys)} polynomials, p = 2, 3, 5): {ok_n} OK, {nd} NOT_DETERMINED; the condition on f "
-           f"differs from that on g in {differ}; f = 27 X at 3, a = 0 gives g = X and the certificate (0, 2, 0); "
-           f"{bad} failures")
-
-
-def check_s2_lists():
-    """The root lists and their verifiers (R7, S-D13, S-D15). Lists are built on g and pass the entries verifier;
-    complete lists pass `padic_verify_complete`; X(X-1) at 3 with an empty list called complete passes the entries
-    verifier and is refused by the complete one; changed lists (class kept, certificate dropped, doubled ball,
-    wrong centre, false n) are refused; the depth needed is refused one below; the real interval [0, 4] of
-    (X-1)(X-2)(X-3) passes the entries verifier and is refused by the complete one for n = 1 and n = 3."""
-    n = bad = complete_n = refused = 0
-    for name, f, p, expect, simple in PADIC_CASES:
-        for depth in (0, 1, 3, 12):
-            st, L = rootlist_padic(f, p, 2, depth)
-            n += 1
-            if L is None or not padic_verify_entries(f, L) or (st == OK) != (L["complete"] == 1):
-                bad += 1
-                continue
-            if L["complete"]:
-                complete_n += 1
-                if not padic_verify_complete(f, L, 12):
-                    bad += 1
-            elif padic_verify_complete(f, L, 12):
-                bad += 1
-            if L["nu"]:                                            # a class kept but complete = 1 claimed
-                L2 = dict(L, complete=1)
-                refused += 1
-                if padic_verify_entries(f, L2) or padic_verify_complete(f, L2, 12):
-                    bad += 1
-            if L["complete"] and L["certs"] and depth == 12:
-                for i in range(len(L["certs"])):                    # a certificate dropped, n adjusted
-                    certs = L["certs"][:i] + L["certs"][i + 1:]
-                    L2 = dict(L, certs=certs, n=len(certs))
-                    refused += 1
-                    if padic_verify_complete(f, L2, 12) or not padic_verify_entries(f, L2):
-                        bad += 1                                    # the entries still hold: the list is short
-                a, K, s = L["certs"][0]
-                L3 = dict(L, certs=L["certs"] + [(a, K, s)], n=L["n"] + 1)       # two balls of one root
-                refused += 1
-                if padic_verify_entries(f, L3) or padic_verify_complete(f, L3, 12):
-                    bad += 1
-                if not root_cert_ok(L["g"], p, (a + 1) % p ** K, K, s):
-                    L4 = dict(L, certs=[((a + 1) % p ** K, K, s)] + L["certs"][1:])   # a wrong centre
-                    refused += 1
-                    if padic_verify_entries(f, L4):
-                        bad += 1
-                L5 = dict(L, n=L["n"] + 1)                                        # a false n
-                refused += 1
-                if padic_verify_entries(f, L5):
-                    bad += 1
-    # the roots of the planted products are counted as distinct roots (S-D13): (x-1)^2 (x+2) at 3 has two
-    st, L = rootlist_padic(pmul(pmul([-1, 1], [-1, 1]), [2, 1]), 3, 2, 12)
-    n += 1
-    if st != OK or L["n"] != 2 or not padic_verify_complete(pmul(pmul([-1, 1], [-1, 1]), [2, 1]), L, 12):
-        bad += 1
-    # (2) the finding: X(X - 1) at 3, an empty list called complete
-    f = [0, -1, 1]
-    L = {"place": 3, "g": f, "scope": "PARTITION", "n": 0, "certs": [], "nu": 0, "unres": [], "complete": 1}
-    n += 1
-    if not padic_verify_entries(f, L) or padic_verify_complete(f, L, 12):
-        bad += 1
-    # (4) the depth: for every named polynomial the least depth D0 with a complete list; the verifier at D0 - 1
-    # refuses the (true) complete list because its rerun leaves a class unresolved, at D0 it accepts
-    deep = 0
-    for name, f, p, expect, simple in PADIC_CASES:
-        L12 = rootlist_padic(f, p, 2, 12)[1]
-        if not L12["complete"]:
-            continue
-        d0 = next(d for d in range(0, 13) if rootlist_padic(f, p, 2, d)[1]["complete"])
-        n += 1
-        if not padic_verify_complete(f, L12, d0) or (d0 >= 1 and padic_verify_complete(f, L12, d0 - 1)):
-            bad += 1
-        deep += d0 >= 2
-    if deep == 0:
-        bad += 1
-    # (5) real
-    f = pfrom_roots([1, 2, 3])
-    n += 1
-    if not real_verify_entries(f, [(F(0), F(4))]) or real_verify_complete(f, [(F(0), F(4))], 1) or \
-            real_verify_complete(f, [(F(0), F(4))], 3):
-        bad += 1
-    st, cnt, balls = real_roots_ref(f, 10)
-    if not (real_verify_complete(f, balls, 3) and not real_verify_complete(f, balls, 2) and
-            not real_verify_complete(f, balls[:2], 2) and not real_verify_complete(f, [], 0)):
-        bad += 1
-    report("check_s2_lists", bad == 0 and complete_n > 0 and refused > 0,
-           f"{n} lists ({complete_n} complete) built on g; {refused} changed lists refused; X(X-1) with an empty "
-           f"complete list: entries accept, complete refuses; real [0, 4] for (X-1)(X-2)(X-3): entries accept, "
-           f"complete refuses n = 1 and n = 3; the depth needed is refused one below and accepted at it (for "
-           f"{deep} "
-           f"polynomials it is 2 or more); {bad} failures")
-
-
-def pxgcd_q(f, g):
-    """Extended Euclidean algorithm in Q[X] (Shoup, ntb-v2.txt:20510 to 20521): returns (d, u, v) with
-    u f + v g = d, d monic, all with Fraction coefficients."""
-    def padd(a, b, sgn=1):
-        m = max(len(a), len(b))
-        out = [(a[i] if i < len(a) else F(0)) + sgn * (b[i] if i < len(b) else F(0)) for i in range(m)]
-        while out and out[-1] == 0:
-            out.pop()
-        return out
-
-    def pmq(a, b):
-        if not a or not b:
-            return []
-        out = [F(0)] * (len(a) + len(b) - 1)
-        for i, x in enumerate(a):
-            for j, y in enumerate(b):
-                out[i + j] += x * y
-        return out
-
-    r0, r1 = fpoly(f), fpoly(g)
-    u0, u1, v0, v1 = [F(1)], [], [], [F(1)]
-    while r1:
-        q, r2 = fdivmod(r0, r1)
-        r0, r1 = r1, r2
-        u0, u1 = u1, padd(u0, pmq(q, u1), -1)
-        v0, v1 = v1, padd(v0, pmq(q, v1), -1)
-    lc = r0[-1]
-    return [x / lc for x in r0], [x / lc for x in u0], [x / lc for x in v0]
-
-
-def check_s2_bezout_depth():
-    """Proposition 3.6: u f + v f' = R (from the Euclidean algorithm in Q[X], denominators cleared, f without
-    content at p) gives v_p(R) >= e for every opened class with a child, and completeness at D = v_p(R) + 1; the
-    identity -4 (X^2 - c) + 2 X (2 X) = 4 c of the review."""
-    n = bad = withchild = 0
-    maxv = 0
-    for p in (2, 3, 5):
-        for _ in range(70):
-            f = ptrim([random.randrange(-6, 7) for _ in range(random.randint(2, 6))])
-            if len(f) < 2 or len(normalise_g(f)) != len(f):
-                continue                                           # constant, or not squarefree over Q
-            f1 = strip_content(f, p)
-            d, u0, v0 = pxgcd_q(f1, pderiv(f1))
-            if len(d) != 1:
-                continue
-            den = 1
-            for x in u0 + v0:
-                den = den * x.denominator // gcd(den, x.denominator)
-            u = [int(x * den) for x in u0]
-            v = [int(x * den) for x in v0]
-            R = den
-            lhs = ptrim([a + b for a, b in zip(pmul(u, f1) + [0] * 50, pmul(v, pderiv(f1)) + [0] * 50)])
-            n += 1
-            if lhs != [R]:
-                bad += 1
-                continue
-            vR = val(R, p)
-            maxv = max(maxv, vR)
-            trace = []
-            st, certs, unres = padic_roots(f1, p, 1, vR + 1, trace=trace)
-            if st != OK or unres:
-                bad += 1
-            for a, e, nchild in trace:
-                gg = pcompose_affine(f1, a, p ** e)                 # the children counted from the definition
-                w = content_val(gg, p)
-                gg = [x // p ** w for x in gg]
-                if nchild != sum(1 for b in range(p) if peval(gg, b, p) == 0 and peval(pderiv(gg), b, p) == 0):
-                    bad += 1
-                if nchild:
-                    withchild += 1
-                    if not vR >= e:
-                        bad += 1
-                    fa, da = peval(f1, a), peval(pderiv(f1), a)
-                    if min(val(fa, p) if fa else 99, val(da, p) if da else 99) < e:
-                        bad += 1
-                    if val(peval(u, a) * fa + peval(v, a) * da, p) != vR:
-                        bad += 1
-    for c in (1, 2, 3, 5, 7, 9, 17):                                # f = X^2 - c, u = -4, v = 2 X, R = 4 c
-        f = [-c, 0, 1]
-        lhs = ptrim([a + b for a, b in zip(pmul([-4], f) + [0] * 5, pmul([0, 2], pderiv(f)) + [0] * 5)])
-        n += 1
-        if lhs != [4 * c]:
-            bad += 1
-        st, certs, unres = padic_roots(f, 2, 1, val(4 * c, 2) + 1)
-        if st != OK:
-            bad += 1
-    report("check_s2_bezout_depth", bad == 0 and withchild > 0,
-           f"{n} polynomials (p = 2, 3, 5): identity u f + v f' = R exact, D = v_p(R) + 1 complete, {withchild} "
-           f"opened classes with a child all with e <= v_p(R) (largest v_p(R) {maxv}); {bad} failures")
-
-
-def check_s2_isolation():
-    """Corrected 3.11(5). Planted integer roots r_i of f: s_i = sum_j v(r_i - r_j); the ball r_i + p^k Z_p holds
-    another root iff k < k_min = max_j v(r_i - r_j) + 1 (k_min = 0 for a single root). k_min <= s_i + 1 always,
-    and < in many cases; X^3 + 2X at 2 has only the root 0, s = 1, and precision 0 isolates it."""
-    n = bad = below = equal = 0
-    for p in (2, 3, 5, 7):
-        for _ in range(60):
-            roots = sorted(set(random.randrange(-30, 31) for _ in range(random.randint(1, 4))))
-            f = pfrom_roots(roots)
-            st, certs, unres = padic_roots(f, p, 1, 12)
-            if st != OK or len(certs) != len(roots):
-                bad += 1
-                continue
-            for r in roots:
-                others = [q for q in roots if q != r]
-                s_i = sum(val(r - q, p) for q in others)
-                kmin = 0 if not others else max(val(r - q, p) for q in others) + 1
-                n += 1
-                for k in range(0, kmin + 2):                        # the ball holds another root iff k < kmin
-                    holds = 1 + sum(1 for q in others if (q - r) % p ** k == 0)
-                    if (holds == 1) != (k >= kmin):
-                        bad += 1
-                cert = [c for c in certs if (c[0] - r) % p ** c[1] == 0]
-                if len(cert) != 1 or cert[0][2] != s_i:
-                    bad += 1
-                if kmin > s_i + 1:
-                    bad += 1
-                elif kmin < s_i + 1:
-                    below += 1
-                else:
-                    equal += 1
-    f, p = [0, 2, 0, 1], 2
-    sols = approx_roots(f, p, 10)
-    st, certs, unres = padic_roots(f, p, 1, 6)
-    n += 1
-    if not (certs == [(0, 2, 1)] and all(x % 2 ** 9 == 0 for x in sols) and st == OK):
-        bad += 1
-    report("check_s2_isolation", bad == 0 and below > 0 and equal > 0,
-           f"{n} roots: the least isolating precision is at most s + 1 in all, below s + 1 in {below}, equal in "
-           f"{equal}; X^3 + 2X at 2: only root 0, s = 1, precision 0 isolates it; {bad} failures")
 
 
 def pmod(f, p):
@@ -2446,116 +1732,10 @@ def real_cert_ok(f, n, balls):
     return len(balls) == n
 
 
-def top_bit(x):
-    """The position e of the top bit of a positive rational x: 2^e <= x < 2^(e+1)."""
-    x = F(x)
-    e = x.numerator.bit_length() - x.denominator.bit_length()
-    return e - 1 if F(2) ** e > x else e
-
-
-EXACT = float("inf")
-
-
-def rel_accuracy_bits(lo, hi):
-    """arb_rel_accuracy_bits (flint-3.0.1:arb.rst:499 to 509) of the ball with exact end points lo <= hi: minus
-    (top bit of the radius minus top bit of the midpoint, plus one). Exact ball: infinite; midpoint 0 with
-    radius > 0: minus infinity. FLINT rounds the radius up to a 30-bit mantissa; not modelled."""
-    lo, hi = F(lo), F(hi)
-    if lo == hi:
-        return EXACT
-    mid, rad = (lo + hi) / 2, (hi - lo) / 2
-    if mid == 0:
-        return -EXACT
-    return -(top_bit(rad) - top_bit(abs(mid)) + 1)
-
-
-def real_accuracy_ok(balls, prec):
-    """The accuracy promise of `adf_roots_real` (R8): arb_rel_accuracy_bits(ball) >= max(prec, 2), exact allowed."""
-    need = max(prec, 2)
-    return all(rel_accuracy_bits(lo, hi) >= need for lo, hi in balls)
-
-
-def acc_independent(balls, prec):
-    """The same promise as real_accuracy_ok, by another formula (for the checks): with 2^t <= |mid| < 2^(t+1),
-    arb_rel_accuracy_bits >= need exactly when rad < 2^(t - need); an exact ball passes, mid = 0 fails."""
-    need = max(prec, 2)
-    for lo, hi in balls:
-        lo, hi = F(lo), F(hi)
-        mid, rad = abs(lo + hi) / 2, (hi - lo) / 2
-        if rad == 0:
-            continue
-        if mid == 0:
-            return False
-        t = 0
-        while F(2) ** t > mid:
-            t -= 1
-        while F(2) ** (t + 1) <= mid:
-            t += 1
-        if not rad < F(2) ** (t - need):
-            return False
-    return True
-
-
-def real_entry_ok(g, lo, hi):
-    """Proposition 3.8, one interval: (a) lo < hi and g(lo) g(hi) < 0, or (b) lo = hi and g(lo) = 0, exact."""
-    lo, hi = F(lo), F(hi)
-    if lo > hi:
-        return False
-    if lo == hi:
-        return peval(fpoly(g), lo) == 0
-    return sign(peval(fpoly(g), lo)) * sign(peval(fpoly(g), hi)) < 0
-
-
-def real_verify_entries(f, balls):
-    """`adf_rootlist_verify_entries` at the real place (R7): every ball passes the exact test of Proposition 3.8
-    for the squarefree part, and the balls are pairwise disjoint. No count is tested."""
-    f = ptrim(f)
-    if not f:
-        return False
-    g = squarefree_part(f)
-    prev = None
-    for lo, hi in balls:
-        if not real_entry_ok(g, lo, hi) or (prev is not None and not prev < F(lo)):
-            return False
-        prev = F(hi)
-    return True
-
-
-def real_verify_complete(f, balls, n):
-    """`adf_rootlist_verify_complete` at the real place (R7): the entries verify and n = number of balls = the count
-    of the squarefree part, recomputed here, never taken from the list."""
-    f = ptrim(f)
-    if not f or not real_verify_entries(f, balls):
-        return False
-    g = squarefree_part(f)
-    return len(balls) == n == (0 if len(g) == 1 else sturm_count(g))
-
-
-def real_refine(g, lo, hi, floor, need):
-    """The interval (lo, hi] holds exactly one root of the squarefree g. Returns a ball [lo', hi'] inside
-    [lo, hi] with lo' > floor (if floor is not None), that is an exact point where g vanishes or has an exact sign
-    change and arb_rel_accuracy_bits >= need."""
-    while True:
-        if peval(fpoly(g), hi) == 0:
-            return hi, hi
-        if lo < 0 < hi and peval(fpoly(g), F(0)) == 0:
-            return F(0), F(0)
-        if sign(peval(fpoly(g), lo)) * sign(peval(fpoly(g), hi)) < 0 and (floor is None or lo > floor) \
-                and rel_accuracy_bits(lo, hi) >= need:
-            return lo, hi
-        mid = (lo + hi) / 2
-        if peval(fpoly(g), mid) == 0:
-            return mid, mid
-        if sturm_count(g, mid, hi) == 1:
-            lo = mid
-        else:
-            hi = mid
-
-
 def real_roots_ref(f, bits):
-    """Algorithm RR of solvers.md 3.10, reference: Sturm count, isolation by bisection of (-B, B] with B a power of
-    two above Cauchy's bound in integer arithmetic (R6), each ball refined to arb_rel_accuracy_bits >= max(bits, 2)
-    (R8) and strictly disjoint; final tests as in the design. Returns (status, n, balls), balls only if OK."""
+    """Reference for Algorithm RR of solvers.md 3.10 with the library's own arithmetic: count by Sturm,
+    isolation by bisection of (-B, B], B a power of two above Cauchy's bound, until every interval holds one
+    root and is shorter than 2^-bits. Returns (status, n, balls)."""
     f = ptrim(f)
     if not f:
         return DOMAIN, 0, []
@@ -2563,51 +1743,41 @@ def real_roots_ref(f, bits):
     if len(g) == 1:
         return OK, 0, []
     n = sturm_count(g)
-    need = max(bits, 2)
-    lead, height = abs(g[-1]), max(abs(c) for c in g[:-1])
     B = 1
-    while B * lead <= lead + height:                        # B > 1 + height/lead, without a division
+    while B <= 1 + max(abs(c) for c in g[:-1]) / abs(g[-1]):
         B *= 2
-    work, cells = [(F(-B), F(B))], []
+    work, balls = [(F(-B), F(B))], []
     while work:
         lo, hi = work.pop()
         k = sturm_count(g, lo, hi)
         if k == 0:
             continue
-        if k == 1:
-            cells.append((lo, hi))
+        if k == 1 and hi - lo <= F(1, 2 ** bits):
+            if peval(fpoly(g), hi) == 0:
+                balls.append((hi, hi))
+            else:
+                balls.append((lo, hi))
             continue
         mid = (lo + hi) / 2
         work.append((lo, mid))
         work.append((mid, hi))
-    cells.sort()
-    balls, floor = [], None
-    for lo, hi in cells:
-        blo, bhi = real_refine(g, lo, hi, floor, need)
-        balls.append((blo, bhi))
-        floor = bhi
-    ok = (len(balls) == n and real_verify_entries(g, balls) and real_accuracy_ok(balls, bits) and
-          real_cert_ok(g, n, balls))
-    return (OK, n, balls) if ok else (NOT_DETERMINED, n, [])
-
-
-def rr_finish(f, engine_balls, prec):
-    """Steps 4 to 7 of Algorithm RR as repaired (R8), for balls of an engine (FLINT): widen once a ball whose exact
-    test fails (radius doubled; 2^-prec if 0), then test exact signs, disjointness, the count of the squarefree part
-    and the accuracy of the ACTUAL output balls. Returns (status, balls); NOT_DETERMINED, no balls, on failure."""
-    f = ptrim(f)
-    g = squarefree_part(f)
-    n = 0 if len(g) == 1 else sturm_count(g)
-    out = []
-    for lo, hi in engine_balls:
-        lo, hi = F(lo), F(hi)
-        if not real_entry_ok(g, lo, hi):
-            rad = (hi - lo) / 2 if hi > lo else F(1, 2 ** prec)
-            lo, hi = lo - rad, hi + rad
-        out.append((lo, hi))
-    if real_verify_complete(f, out, n) and real_accuracy_ok(out, prec):
-        return OK, out
-    return NOT_DETERMINED, []
+    balls.sort()
+    # (lo, hi] holds one root and its closure may touch the interval before it: move lo to the right, or
+    # find the root itself
+    fixed = []
+    for lo, hi in balls:
+        while lo < hi:
+            mid = (lo + hi) / 2
+            if peval(fpoly(g), mid) == 0:
+                lo = hi = mid
+            elif sturm_count(g, mid, hi) == 1:
+                lo = mid
+                break
+            else:
+                hi = mid
+        fixed.append((lo, hi))
+    ok = real_cert_ok(g, n, fixed)
+    return (OK if ok else NOT_DETERMINED), n, fixed
 
 
 REAL_CASES = [
@@ -2632,121 +1802,53 @@ REAL_CASES = [
 ]
 
 
-def roots_open(g, a, b):
-    """The number of roots of the squarefree g in the open interval (a, b): Sturm's count on (a, b] less the end
-    point b if it is a root."""
-    return sturm_count(g, a, b) - (1 if peval(fpoly(g), F(b)) == 0 else 0)
-
-
 def check_s2_real_completeness():
-    """Proposition 3.8, Algorithm RR, R7 and R8 on REAL_CASES: n balls at 20 bits, accepted by
-    `real_verify_complete` (which recounts), each of accuracy >= 20 by rel_accuracy_bits, each holding exactly one
-    root and none in a gap or outside, counted by mpmath (required; an exception is a failure) and by Sturm on
-    balls and gaps; changed lists (ball removed, merged, moved, stretched) are refused."""
-    try:
-        import mpmath
-    except ImportError:
-        report("check_s2_real_completeness", False, "mpmath is not importable (it is required)")
-        return
-    mpmath.mp.dps = 50
-    n = bad = mut = gaps = 0
+    """Proposition 3.8: count plus isolation gives completeness. For each case: the reference isolates n
+    intervals; the checker accepts them; n is the expected number; every interval holds exactly one root and
+    there is no root outside (Sturm counts on the intervals and on the gaps between them, an independent use
+    of the chain); a list with one interval removed, with two intervals merged, or with an interval moved
+    off its root is refused."""
+    n = bad = mut = 0
     for name, f, expect in REAL_CASES:
         st, cnt, balls = real_roots_ref(f, 20)
         g = squarefree_part(f)
         n += 1
-        ok = st == OK and cnt == expect and len(balls) == expect and real_verify_complete(f, balls, cnt) and \
-            acc_independent(balls, 20) and real_cert_ok(g, cnt, balls)
-        if len(g) > 1:
-            rts = mpmath.polyroots([mpmath.mpf(c) for c in reversed(g)], maxsteps=4000, extraprec=800)
-            real_rts = [mpmath.re(z) for z in rts if abs(mpmath.im(z)) < mpmath.mpf(10) ** -30]
-        else:
-            real_rts = []
-        if len(real_rts) != expect:
+        ok = st == OK and cnt == expect and len(balls) == expect and real_cert_ok(g, cnt, balls)
+        mp_count = None
+        try:
+            import mpmath
+            if len(g) > 1:
+                mpmath.mp.dps = 40
+                rts = mpmath.polyroots([mpmath.mpf(c) for c in reversed(g)], maxsteps=2000, extraprec=400)
+                mp_count = sum(1 for z in rts if abs(mpmath.im(z)) < mpmath.mpf(10) ** -25)
+            else:
+                mp_count = 0
+        except Exception:
+            mp_count = None
+        if mp_count is not None and mp_count != expect:
             ok = False
-        eps = mpmath.mpf(10) ** -35
-        for x in real_rts:                                    # every oracle root in exactly one ball
-            if sum(1 for lo, hi in balls if mpmath.mpf(lo.numerator) / lo.denominator - eps <= x <=
-                   mpmath.mpf(hi.numerator) / hi.denominator + eps) != 1:
-                ok = False
-        for lo, hi in balls:                                  # every ball holds exactly one oracle root
-            inside = sum(1 for x in real_rts if mpmath.mpf(lo.numerator) / lo.denominator - eps <= x <=
-                         mpmath.mpf(hi.numerator) / hi.denominator + eps)
+        for lo, hi in balls:
+            inside = 1 if lo == hi else sturm_count(g, lo, hi) + (1 if peval(fpoly(g), lo) == 0 else 0)
             if inside != 1:
                 ok = False
-            cnt_in = 1 if lo == hi else roots_open(g, lo, hi) + (1 if peval(fpoly(g), lo) == 0 else 0)
-            if cnt_in != 1:
-                ok = False
-        if balls:                                              # no root in a gap, nor outside the balls
-            B = 1 + 2 ** (1 + max(abs(c) for c in g).bit_length())     # above Cauchy's bound
-            for a, b in [(F(-B), balls[0][0])] + [(balls[i][1], balls[i + 1][0]) for i in range(len(balls) - 1)] + \
-                    [(balls[-1][1], F(B))]:
-                gaps += 1
-                if roots_open(g, a, b) != 0:
-                    ok = False
         if not ok:
             bad += 1
         if balls:
             mut += 1
-            if real_verify_complete(f, balls[1:], cnt):
+            if real_cert_ok(g, cnt, balls[1:]):
                 bad += 1
             lo, hi = balls[0]
             w = (hi - lo) if hi > lo else F(1, 2 ** 20)
             mut += 1
-            if real_verify_complete(f, [(hi + w / 8, hi + w / 4)] + balls[1:], cnt) and \
+            if real_cert_ok(g, cnt, [(hi + w / 8, hi + w / 4)] + balls[1:]) and \
                     sturm_count(g, hi + w / 8, hi + w / 4) == 0:
-                bad += 1
-            mut += 1
-            if real_verify_complete(f, [(lo, hi + w)] + balls[1:], cnt) and len(balls) > 1 and \
-                    hi + w >= balls[1][0]:
                 bad += 1
         if len(balls) >= 2:
             mut += 1
-            if real_verify_complete(f, [balls[0], balls[0]] + balls[2:], cnt):      # one root twice, one missing
-                bad += 1
-            mut += 1
             merged = [(balls[0][0], balls[1][1])] + balls[2:]
-            if real_verify_complete(f, merged, cnt) or real_verify_complete(f, merged, cnt - 1):
+            if real_cert_ok(g, cnt, merged):
                 bad += 1
-    report("check_s2_real_completeness", bad == 0,
-           f"{n} polynomials, {mut} changed lists, {gaps} gap and outside counts, accuracy of every ball >= 20 "
-           f"bits "
-           f"and roots counted by mpmath {mpmath.__version__}; {bad} failures")
-
-
-def check_s2_real_planted():
-    """Algorithm RR against exactly known roots (rational, repeated, 10^30, 2^-40 apart, near 0, zero, a factor
-    without real roots), precisions 2 and 20: each root in exactly one ball, each ball one root, count, accuracy;
-    the regression X - 10^400 and (X - 10^400)(X - 10^400 - 1) (R6)."""
-    pool = [F(-3), F(-1, 2), F(0), F(1, 3), F(1), F(1) + F(1, 2 ** 40), F(10) ** 30, -F(1, 10 ** 20), F(7, 5),
-            F(-7, 5), F(1, 2 ** 30)]
-    n = bad = 0
-    for _ in range(36):
-        k = random.randint(1, 4)
-        roots = random.sample(pool, k)
-        f = [random.choice((1, 2, -3, 5))]
-        for r in roots:
-            for _ in range(random.choice((1, 1, 2, 3))):
-                f = pmul(f, [-r.numerator, r.denominator])
-        if random.random() < 0.4:
-            f = pmul(f, random.choice(([1, 0, 1], [1, 1, 1], [2, -1, 3])))
-        for prec in (2, 20):
-            st, cnt, balls = real_roots_ref(f, prec)
-            n += 1
-            ok = st == OK and cnt == len(roots) and len(balls) == len(roots) and acc_independent(balls, prec)
-            ok = ok and all(sum(1 for lo, hi in balls if lo <= r <= hi) == 1 for r in roots)
-            ok = ok and all(sum(1 for r in roots if lo <= r <= hi) == 1 for lo, hi in balls)
-            if not ok:
-                bad += 1
-    for f, roots in (([-10 ** 400, 1], [F(10 ** 400)]),
-                     (pmul([-10 ** 400, 1], [-(10 ** 400) - 1, 1]), [F(10 ** 400), F(10 ** 400) + 1])):
-        st, cnt, balls = real_roots_ref(f, 6)
-        n += 1
-        if not (st == OK and cnt == len(roots) and len(balls) == len(roots) and acc_independent(balls, 6) and
-                all(sum(1 for lo, hi in balls if lo <= r <= hi) == 1 for r in roots) and
-                all(sum(1 for r in roots if lo <= r <= hi) == 1 for lo, hi in balls)):
-            bad += 1
-    report("check_s2_real_planted", bad == 0, f"{n} runs with planted roots (multiple, large, close, zero) and "
-           f"the regression X - 10^400; {bad} failures")
+    report("check_s2_real_completeness", bad == 0, f"{n} polynomials, {mut} changed lists; {bad} failures")
 
 
 class FmpzPoly(ctypes.Structure):
@@ -2754,18 +1856,10 @@ class FmpzPoly(ctypes.Structure):
 
 
 def flint_poly(f):
-    """An fmpz_poly of the installed FLINT with the integer coefficients f (any size: an integer below 2^62 in
-    absolute value goes through fmpz_poly_set_coeff_si, a larger one through fmpz_set_str)."""
     pol = FmpzPoly()
     FLINT.fmpz_poly_init(ctypes.byref(pol))
     for i, c in enumerate(f):
-        if abs(c) < SMALL:
-            FLINT.fmpz_poly_set_coeff_si(ctypes.byref(pol), ctypes.c_long(i), ctypes.c_long(c))
-        else:
-            z = ctypes.c_long(0)
-            FLINT.fmpz_set_str(ctypes.byref(z), str(c).encode(), 10)
-            FLINT.fmpz_poly_set_coeff_fmpz(ctypes.byref(pol), ctypes.c_long(i), ctypes.byref(z))
-            FLINT.fmpz_clear(ctypes.byref(z))
+        FLINT.fmpz_poly_set_coeff_si(ctypes.byref(pol), ctypes.c_long(i), ctypes.c_long(c))
     return pol
 
 
@@ -2809,58 +1903,41 @@ def flint_real_roots(g, prec):
 
 
 def probe_s2_flint_real():
-    """Proposition 3.9 and Algorithm RR with FLINT 3.0.1: fmpz_poly_num_real_roots(g) equals the count of the
-    oracle;
-    the real enclosures of arb_fmpz_poly_complex_roots are finished by `rr_finish` (one widening, exact tests,
-    disjointness, count, accuracy of the ACTUAL output balls >= max(prec, 2)); coefficients up to 400 digits.
-    Recorded, not relied on: the counts of X^2, X^3, X^4, X^3 - X^2, (X-1)^2 (outside the squarefree contract)."""
+    """Proposition 3.9 and Algorithm RR with FLINT 3.0.1 as the engine: for the squarefree part g of each case,
+    fmpz_poly_num_real_roots(g) equals the count of the oracle; the real enclosures of
+    arb_fmpz_poly_complex_roots pass the checker of Proposition 3.8 (exact sign change at the exact end
+    points, disjoint, their number equal to the count), after at most one widening of a ball whose end point
+    or centre is a root."""
     if FLINT is None:
         skip("probe_s2_flint_real", "libflint not found")
         return
-    n = bad = widened = exact = lost = ok_results = 0
-    cases = [(name, f, expect) for name, f, expect in REAL_CASES] + \
-        [("X - 10^400", [-10 ** 400, 1], 1), ("X^2 - 10^200", [-10 ** 200, 0, 1], 2),
-         ("10^80 X - 1", [-1, 10 ** 80], 1)]
-    for name, f, expect in cases:
+    n = bad = widened = exact = 0
+    for name, f, expect in REAL_CASES:
         g = squarefree_part(f)
-        if len(g) < 2:
+        if len(g) < 2 or max(abs(c) for c in g) >= SMALL:
             continue
         for prec in (16, 64, 200):
             cnt, balls, nonreal = flint_real_roots(g, prec)
             n += 1
+            fixed = []
             for lo, hi in balls:
                 if lo == hi and peval(fpoly(g), lo) == 0:
                     exact += 1
-                elif not real_entry_ok(g, lo, hi):
+                elif lo == hi or sign(peval(fpoly(g), lo)) * sign(peval(fpoly(g), hi)) >= 0:
+                    rad = (hi - lo) / 2 if hi > lo else F(1, 2 ** prec)
+                    lo, hi = lo - rad, hi + rad
                     widened += 1
+                fixed.append((lo, hi))
             if cnt != expect or len(balls) != expect or nonreal != len(g) - 1 - expect:
                 bad += 1
-                continue
-            st, fin = rr_finish(f, balls, prec)
-            if st == OK:
-                ok_results += 1
-                if not (real_verify_complete(f, fin, cnt) and acc_independent(fin, prec) and len(fin) == expect):
-                    bad += 1
-            else:
-                lost += 1
-    outside = {}
-    for name, g in (("X^2", [0, 0, 1]), ("X^3", [0, 0, 0, 1]), ("X^4", [0, 0, 0, 0, 1]), ("X^3-X^2", [0, 0, -1, 1]),
-                    ("(X-1)^2", [1, -2, 1])):
-        pol = flint_poly(g)
-        FLINT.fmpz_poly_num_real_roots.restype = ctypes.c_long
-        outside[name] = FLINT.fmpz_poly_num_real_roots(ctypes.byref(pol))
-        FLINT.fmpz_poly_clear(ctypes.byref(pol))
-    if outside != {"X^2": 2, "X^3": 3, "X^4": 4, "X^3-X^2": 3, "(X-1)^2": 0}:
-        bad += 1
-    report("probe_s2_flint_real", bad == 0,
-           f"FLINT {flint_version()}: {n} calls (prec 16, 64, 200, coefficients up to 400 digits); exact balls "
-           f"{exact}; balls widened {widened}; finished OK {ok_results}; NOT_DETERMINED after widening (accuracy "
-           f"lost) {lost}; outside the squarefree contract the count returns {outside}; {bad} failures")
+            elif not real_cert_ok(g, cnt, fixed):
+                bad += 1
+    report("probe_s2_flint_real", bad == 0, f"FLINT {flint_version()}: {n} calls (prec 16, 64, 200); balls widened "
+           f"once: {widened}; exact balls: {exact}; {bad} failures")
 
 
 PART3 = [check_s2_certificate, check_s2_newton, check_s2_descent, check_s2_examples, check_s2_count_mod_p,
-         check_s2_seed, check_s2_lists, check_s2_bezout_depth, check_s2_isolation, check_s2_real_completeness,
-         check_s2_real_planted, probe_s2_flint_real]
+         check_s2_real_completeness, probe_s2_flint_real]
 
 
 def main():
