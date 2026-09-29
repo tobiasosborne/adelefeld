@@ -1,0 +1,12 @@
+family d prec seconds nodes evaluations coefficient_bits_max ok
+small 10 2 0.0012 20 15 63 True
+small 10 53 0.0010 20 15 63 True
+small 20 2 0.0032 32 30 163 True
+small 20 53 0.0029 32 30 163 True
+small 40 2 0.0077 54 60 403 True
+small 40 53 0.0076 54 60 403 True
+small 80 2 0.0404 96 120 963 True
+small 80 53 0.0412 96 120 963 True
+cluster(e=300) 10 2 0.0104 618 24 3044 True
+cluster(e=300) 20 2 0.0372 634 48 6105 True
+cluster(e=300) 40 2 0.1988 660 94 12245 True
