@@ -1,0 +1,37 @@
+run_id: 2026-09-28T084008Z
+tag: modctx
+quiet_machine: no
+provisional: yes (lane m1-modctx; compared with the I/O floor of docs/PERF.md section 4, n = 4096 bits, k = 128: 16 cycles both ways)
+machine: 13th Gen Intel(R) Core(TM) i7-1365U
+cores_online: 12
+affinity_requested_cpu: 2
+affinity_actual_cpu: 2
+affinity_method: sched_setaffinity
+compiler: gcc 13.3.0
+flags: -O2 -g
+flint_version: 3.0.1
+gmp_version: 6.3.0
+clock_source: clock_gettime(CLOCK_MONOTONIC_RAW)
+tsc_present: yes
+tsc_invariant: yes
+cycles_per_ns_trials: 9
+cycles_per_ns_min: 2.68794
+cycles_per_ns_median: 2.68797
+cycles_per_ns_max: 2.68798
+cycles_per_ns_spread: 0.00004
+seed: 20260928
+operand_family: 128 pairwise coprime word blocks (distinct primes just below 2^32), product K of 4096 bit; integers A uniform in [0, K)
+trials_per_case: 15
+batch_length: 64
+warm: yes
+allocating: yes (fmpz scratch inside each conversion, conventions 4.2)
+
+# one table follows; columns are tab separated
+# name	kind	operand_family	bit_lengths	seed	warm	allocating	calls	ops	checksum	ns_per_op_min	ns_per_op_median	ns_per_op_max
+modctx_reduce_4096_k128	independent_batch	integer of ~4096 bits to 128 residues (blocks < 2^32)	K 4096 bit; blocks 32 bit; A uniform in [0, K); 64 per batch	20260928	yes	yes	400	25600	6610139175	29295.0172	33741.0812	37382.5808
+# modctx_reduce_4096_k128: 78744.05 cycles/op min, 90694.92 cycles/op median at 2.68797 cycles/ns (tsc median); PERF.md section 4 I/O floor 16 cycles
+modctx_combine_4096_k128	independent_batch	128 residues (blocks < 2^32) to the integer of [0, K)	K 4096 bit; residues < 2^32; result in [0, K); 64 per batch	20260928	yes	yes	400	25600	4096	23579.3934	25601.8490	42572.6933
+# modctx_combine_4096_k128: 63380.64 cycles/op min, 68816.93 cycles/op median at 2.68797 cycles/ns (tsc median); PERF.md section 4 I/O floor 16 cycles
+
+# checksum of all case results, computed outside the timed region
+checksum: 6610135079

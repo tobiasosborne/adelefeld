@@ -1,0 +1,15 @@
+ok   constructors_against_the_reference
+ok   conversion_against_the_reference
+ok   block_list_failures_leave_out_untouched
+ok   too_many_blocks_are_refused_before_the_list_is_read
+ok   prime_power_failures_leave_out_untouched
+ok   other_family_failures_leave_out_untouched
+ok   read_access_and_ownership
+ok   fmpz_family_edges
+ok   factorial_and_primorial_are_the_products_of_their_blocks
+ok   descriptors_and_matching
+ok   dump_text
+ok   random_round_trips_for_1_2_64_128_blocks
+ok   conversion_without_blocks
+ok   two_threads_read_one_context
+14 tests, 39677 checks, 0 failed checks, 0 failed tests

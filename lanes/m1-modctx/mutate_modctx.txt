@@ -1,0 +1,602 @@
+mutate: src/modctx.c: 359 mutants
+mutate: 359 mutants, 200 of them run (--limit 200, --seed 20260928)
+mutate: the baseline passes (12.4 s)
+
+SURVIVED src/modctx.c:224:28 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -222,5 +222,5 @@
+       if (k > 0)
+       {
+  -        q = flint_malloc(k * sizeof(ulong));
+  +        q = flint_malloc(k + sizeof(ulong));
+           primes = flint_malloc(k * sizeof(ulong));
+       }
+
+
+SURVIVED src/modctx.c:405:21 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -403,5 +403,5 @@
+          s[len], freed with adf_str_free (conventions 8.1). */
+       static const char prefix[] = "adf1 Q modctx ";
+  -    char kbuf[2 + 8 * sizeof(slong)];
+  +    char kbuf[2 + 8 / sizeof(slong)];
+       char qbuf[2 + 8 * sizeof(ulong)];
+       char * Kstr;
+
+
+SURVIVED src/modctx.c:78:11 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -76,5 +76,5 @@
+       ulong i;
+   
+  -    if (e >= 64)
+  +    if (e > 64)
+           return 1;
+       for (i = 0; i < e; i++)
+
+
+SURVIVED src/modctx.c:193:11 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -191,5 +191,5 @@
+       if (k < 0)
+           return ADF_DOMAIN;
+  -    if (k > MODCTX_MAX_BLOCKS)
+  +    if (k >= MODCTX_MAX_BLOCKS)
+           return ADF_UNSUPPORTED;                 /* HEADER-FINDING 1 */
+       if (k > 0 && q == NULL)
+
+
+SURVIVED src/modctx.c:224:28 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -222,5 +222,5 @@
+       if (k > 0)
+       {
+  -        q = flint_malloc(k * sizeof(ulong));
+  +        q = flint_malloc(k / sizeof(ulong));
+           primes = flint_malloc(k * sizeof(ulong));
+       }
+
+
+SURVIVED src/modctx.c:162:13 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -160,5 +160,5 @@
+           ok = ok && fmpz_multi_CRT_precompute(ctx->crt, moduli, k);
+       }
+  -    if (k > 0)
+  +    if (k > 1)
+           _fmpz_vec_clear(moduli, k);
+   
+
+
+SURVIVED src/modctx.c:461:12 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -459,5 +459,5 @@
+       flint_free(d->q);
+       d->q = NULL;
+  -    d->k = 0;
+  +    d->k = 1;
+   }
+   
+
+
+SURVIVED src/modctx.c:281:15 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -279,5 +279,5 @@
+       ulong * primes = NULL;
+       ulong p, e, r;
+  -    slong k = 0;
+  +    slong k = 1;
+       int status;
+   
+
+
+SURVIVED src/modctx.c:134:18 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -132,5 +132,5 @@
+       ctx->k = k;
+       ctx->q = (k > 0) ? flint_malloc(k * sizeof(ulong)) : NULL;
+  -    ctx->nm = (k > 0) ? flint_malloc(k * sizeof(nmod_t)) : NULL;
+  +    ctx->nm = (k >= 0) ? flint_malloc(k * sizeof(nmod_t)) : NULL;
+       ctx->pp = (k > 0) ? flint_malloc(k * sizeof(ulong)) : NULL;
+       fmpz_init(ctx->K);
+
+
+SURVIVED src/modctx.c:424:46 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -422,5 +422,5 @@
+       s = flint_malloc(total + 1);
+       pos = 0;
+  -    memcpy(s + pos, prefix, strlen(prefix) - 1);       /* without the trailing NUL */
+  +    memcpy(s + pos, prefix, strlen(prefix) - 0);       /* without the trailing NUL */
+       pos += strlen(prefix) - 1;
+       s[pos++] = ' ';
+
+
+SURVIVED src/modctx.c:135:18 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -133,5 +133,5 @@
+       ctx->q = (k > 0) ? flint_malloc(k * sizeof(ulong)) : NULL;
+       ctx->nm = (k > 0) ? flint_malloc(k * sizeof(nmod_t)) : NULL;
+  -    ctx->pp = (k > 0) ? flint_malloc(k * sizeof(ulong)) : NULL;
+  +    ctx->pp = (k >= 0) ? flint_malloc(k * sizeof(ulong)) : NULL;
+       fmpz_init(ctx->K);
+   
+
+
+SURVIVED src/modctx.c:162:11 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -160,5 +160,5 @@
+           ok = ok && fmpz_multi_CRT_precompute(ctx->crt, moduli, k);
+       }
+  -    if (k > 0)
+  +    if (k >= 0)
+           _fmpz_vec_clear(moduli, k);
+   
+
+
+SURVIVED src/modctx.c:98:28 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -96,5 +96,5 @@
+       do
+       {
+  -        p = n_nextprime(p, 1);
+  +        p = n_nextprime(p, 0);
+       }
+       while (!n_is_prime(p));
+
+
+SURVIVED src/modctx.c:148:53 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -146,5 +146,5 @@
+           ctx->q[i] = q[i];
+           nmod_init(ctx->nm + i, q[i]);
+  -        ctx->pp[i] = (primes != NULL) ? primes[i] : 0;
+  +        ctx->pp[i] = (primes != NULL) ? primes[i] : 1;
+           fmpz_set_ui(moduli + i, q[i]);
+           if (Kstore == NULL)
+
+
+SURVIVED src/modctx.c:422:28 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -420,5 +420,5 @@
+       }
+   
+  -    s = flint_malloc(total + 1);
+  +    s = flint_malloc(total - 1);
+       pos = 0;
+       memcpy(s + pos, prefix, strlen(prefix) - 1);       /* without the trailing NUL */
+
+
+SURVIVED src/modctx.c:218:11 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -216,5 +216,5 @@
+       if (k < 0)
+           return ADF_DOMAIN;
+  -    if (k > MODCTX_MAX_BLOCKS)
+  +    if (k >= MODCTX_MAX_BLOCKS)
+           return ADF_UNSUPPORTED;                 /* HEADER-FINDING 1 */
+       if (k > 0 && (p == NULL || e == NULL))
+
+
+SURVIVED src/modctx.c:473:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -471,5 +471,5 @@
+       if (d->k > 0 && d->q == NULL)
+           return 0;
+  -    for (i = 0; i < ctx->k; i++)
+  +    for (i = 1; i < ctx->k; i++)
+           if (ctx->q[i] != d->q[i])
+               return 0;
+
+
+SURVIVED src/modctx.c:424:14 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -422,5 +422,5 @@
+       s = flint_malloc(total + 1);
+       pos = 0;
+  -    memcpy(s + pos, prefix, strlen(prefix) - 1);       /* without the trailing NUL */
+  +    memcpy(s - pos, prefix, strlen(prefix) - 1);       /* without the trailing NUL */
+       pos += strlen(prefix) - 1;
+       s[pos++] = ' ';
+
+
+SURVIVED src/modctx.c:200:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -198,5 +198,5 @@
+           if (q[i] < 2)
+               return ADF_DOMAIN;
+  -    for (i = 0; i < k; i++)
+  +    for (i = 1; i < k; i++)
+           for (j = 0; j < i; j++)
+               if (n_gcd(q[i], q[j]) != 1)
+
+
+SURVIVED src/modctx.c:225:33 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -223,5 +223,5 @@
+       {
+           q = flint_malloc(k * sizeof(ulong));
+  -        primes = flint_malloc(k * sizeof(ulong));
+  +        primes = flint_malloc(k + sizeof(ulong));
+       }
+       for (i = 0; i < k; i++)
+
+
+SURVIVED src/modctx.c:82:17 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -80,5 +80,5 @@
+       for (i = 0; i < e; i++)
+       {
+  -        if (acc > UWORD_MAX / p)
+  +        if (acc >= UWORD_MAX / p)
+               return 1;
+           acc *= p;
+
+
+SURVIVED src/modctx.c:309:9 drop_assign: 'primes[k] = p;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -307,5 +307,5 @@
+               goto fail;
+           }
+  -        primes[k] = p;
+  +        
+           k++;
+       }
+
+
+SURVIVED src/modctx.c:162:5 negate_if: 'if(k > 0)' -> 'if(!(k > 0))'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -160,5 +160,5 @@
+           ok = ok && fmpz_multi_CRT_precompute(ctx->crt, moduli, k);
+       }
+  -    if (k > 0)
+  +    if (!(k > 0))
+           _fmpz_vec_clear(moduli, k);
+   
+
+
+SURVIVED src/modctx.c:222:11 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -220,5 +220,5 @@
+       if (k > 0 && (p == NULL || e == NULL))
+           return ADF_DOMAIN;
+  -    if (k > 0)
+  +    if (k >= 0)
+       {
+           q = flint_malloc(k * sizeof(ulong));
+
+
+SURVIVED src/modctx.c:472:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -470,5 +470,5 @@
+           return 0;
+       if (d->k > 0 && d->q == NULL)
+  -        return 0;
+  +        return 1;
+       for (i = 0; i < ctx->k; i++)
+           if (ctx->q[i] != d->q[i])
+
+
+SURVIVED src/modctx.c:354:9 drop_assign: 'primes[k] = p;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -352,5 +352,5 @@
+               goto fail;
+           }
+  -        primes[k] = p;
+  +        
+           k++;
+       }
+
+
+SURVIVED src/modctx.c:202:17 swap_args: 'n_gcd(q[i], q[j])' -> 'n_gcd(q[j], q[i])'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -200,5 +200,5 @@
+       for (i = 0; i < k; i++)
+           for (j = 0; j < i; j++)
+  -            if (n_gcd(q[i], q[j]) != 1)
+  +            if (n_gcd(q[j], q[i]) != 1)
+                   return ADF_DOMAIN;
+       return ctx_create(out, q, k, NULL, NULL);
+
+
+SURVIVED src/modctx.c:471:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/modctx.c
+  +++ b/src/modctx.c
+  @@ -469,5 +469,5 @@
+       if (!fmpz_equal(ctx->K, d->K) || ctx->k != d->k)
+           return 0;
+  -    if (d->k > 0 && d->q == NULL)
+  +    if (d->k > 1 && d->q == NULL)
+           return 0;
+       for (i = 0; i < ctx->k; i++)
+
+
+NOT COMPILED src/modctx.c:260:39 op: '*' -> '/'
+  src/modctx.c:271:5: error: "/*" within comment [-Werror=comment]
+
+NOT COMPILED src/modctx.c:62:12 op: '*' -> '+'
+  src/modctx.c:62:12: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:208:47 op: '*' -> '/'
+  src/modctx.c:219:49: error: "/*" within comment [-Werror=comment]
+
+NOT COMPILED src/modctx.c:441:5 op: '*' -> '/'
+  src/modctx.c:441:5: error: expected expression before ‘/’ token
+
+NOT COMPILED src/modctx.c:489:5 drop_assign: 'out = _fmpz_vec_init(ctx->k);' -> '' (the statement is removed)
+  src/modctx.c:490:5: error: ‘out’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:387:44 op: '*' -> '+'
+  src/modctx.c:387:44: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:367:5 negate_if: 'if(ctx == NULL)' -> 'if(!(ctx == NULL))'
+  src/modctx.c:369:5: error: ‘fmpz_multi_mod_clear’ accessing 72 bytes in a region of size 0 [-Werror=stringop-overflow=]
+
+NOT COMPILED src/modctx.c:236:13 drop_assign: 'status = ADF_DOMAIN;' -> '' (the statement is removed)
+  src/modctx.c:256:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:260:40 op: '*' -> '/'
+  src/modctx.c:260:40: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:367:13 cmp: '==' -> '!='
+  src/modctx.c:369:5: error: ‘fmpz_multi_mod_clear’ accessing 72 bytes in a region of size 0 [-Werror=stringop-overflow=]
+
+NOT COMPILED src/modctx.c:465:77 op: '*' -> '/'
+  src/modctx.c:465:77: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:292:18 op: '&' -> '|'
+  src/modctx.c:292:18: error: expected expression before ‘|’ token
+
+NOT COMPILED src/modctx.c:252:5 drop_assign: 'status = ctx_create(out, q, k, primes, NULL);' -> '' (the statement is removed)
+  src/modctx.c:208:50: error: unused parameter ‘out’ [-Werror=unused-parameter]
+
+NOT COMPILED src/modctx.c:123:31 op: '*' -> '/'
+  src/modctx.c:123:31: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:320:49 op: '*' -> '+'
+  src/modctx.c:320:49: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:180:5 op: '*' -> '/'
+  src/modctx.c:180:5: error: expected expression before ‘/’ token
+
+NOT COMPILED src/modctx.c:408:10 op: '*' -> '/'
+  src/modctx.c:408:10: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:323:11 op: '*' -> '/'
+  src/modctx.c:323:11: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:63:11 op: '*' -> '+'
+  src/modctx.c:63:11: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:405:17 op: '+' -> '-'
+  src/modctx.c:405:10: error: size of array ‘kbuf’ is too large
+
+NOT COMPILED src/modctx.c:126:23 op: '*' -> '+'
+  src/modctx.c:126:23: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:262:13 zero_one: '1' -> '0'
+  src/modctx.c:262:11: error: ISO C forbids zero-size array ‘q’ [-Werror=pedantic]
+
+NOT COMPILED src/modctx.c:413:5 drop_assign: 'kl = (size_t) snprintf(kbuf, sizeof(kbuf), "%llx", (unsigned long long) ctx->k);' -> '' (the statement is removed)
+  src/modctx.c:415:47: error: ‘kl’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/modctx.c:448:34 op: '*' -> '/'
+  src/modctx.c:448:34: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:497:42 op: '*' -> '+'
+  src/modctx.c:497:42: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:415:5 drop_assign: 'total = strlen(prefix) + strlen(Kstr) + 1 + kl;' -> '' (the statement is removed)
+  src/modctx.c:419:15: error: ‘total’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:231:13 drop_assign: 'status = ADF_DOMAIN;' -> '' (the statement is removed)
+  src/modctx.c:256:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:187:41 op: '*' -> '/'
+  src/modctx.c:194:49: error: "/*" within comment [-Werror=comment]
+
+NOT COMPILED src/modctx.c:434:9 drop_assign: 'ql = (size_t) snprintf(qbuf, sizeof(qbuf), "%llx", (unsigned long long) ctx->q[i]);' -> '' (the statement is removed)
+  src/modctx.c:409:28: error: ‘ql’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:393:42 op: '*' -> '+'
+  src/modctx.c:393:42: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:276:44 op: '*' -> '+'
+  src/modctx.c:276:44: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:365:35 op: '*' -> '+'
+  src/modctx.c:365:35: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:187:41 op: '*' -> '+'
+  src/modctx.c:187:41: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:340:13 drop_assign: 'status = ADF_UNSUPPORTED;' -> '' (the statement is removed)
+  src/modctx.c:361:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:73:16 op: '*' -> '+'
+  src/modctx.c:73:16: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:482:72 op: '*' -> '/'
+  src/modctx.c:482:72: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:320:48 op: '*' -> '/'
+  src/modctx.c:330:56: error: "/*" within comment [-Werror=comment]
+
+NOT COMPILED src/modctx.c:73:16 op: '*' -> '/'
+  src/modctx.c:73:16: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:187:61 op: '*' -> '+'
+  src/modctx.c:187:61: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:303:9 drop_assign: 'e = valuation_factorial(n, p);' -> '' (the statement is removed)
+  src/modctx.c:78:8: error: ‘e’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:398:6 op: '*' -> '+'
+  src/modctx.c:398:6: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:393:42 op: '*' -> '/'
+  src/modctx.c:393:42: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:211:11 op: '*' -> '/'
+  src/modctx.c:211:11: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:399:28 op: '*' -> '/'
+  src/modctx.c:399:28: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:127:10 op: '*' -> '/'
+  src/modctx.c:127:10: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:456:35 op: '*' -> '/'
+  src/modctx.c:456:35: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:123:50 op: '*' -> '/'
+  src/modctx.c:123:50: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:398:6 op: '*' -> '/'
+  src/modctx.c:398:6: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:408:10 op: '*' -> '+'
+  src/modctx.c:408:10: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:322:11 op: '*' -> '+'
+  src/modctx.c:322:11: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:279:11 op: '*' -> '+'
+  src/modctx.c:279:11: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:123:30 op: '*' -> '+'
+  src/modctx.c:123:30: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:399:59 op: '*' -> '+'
+  src/modctx.c:399:59: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:187:42 op: '*' -> '+'
+  src/modctx.c:187:42: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:448:34 op: '*' -> '+'
+  src/modctx.c:448:34: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:484:10 op: '*' -> '/'
+  src/modctx.c:484:10: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:322:11 op: '*' -> '/'
+  src/modctx.c:322:11: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:86:5 op: '*' -> '+'
+  src/modctx.c:86:5: error: wrong type argument to unary plus
+
+NOT COMPILED src/modctx.c:127:10 op: '*' -> '+'
+  src/modctx.c:127:10: error: expected identifier or ‘(’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:306:13 drop_assign: 'status = ADF_UNSUPPORTED;' -> '' (the statement is removed)
+  src/modctx.c:316:12: error: ‘status’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:123:76 op: '*' -> '+'
+  src/modctx.c:123:76: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:381:58 op: '*' -> '/'
+  src/modctx.c:381:58: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:111:23 cmp: '>' -> '>='
+  src/modctx.c:111:23: error: comparison of unsigned expression in ‘>= 0’ is always true [-Werror=type-limits]
+
+NOT COMPILED src/modctx.c:407:10 op: '*' -> '/'
+  src/modctx.c:407:10: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:296:25 drop_assign: 'p = next_prime(p)) k++;' -> '' (the statement is removed)
+  src/modctx.c:297:40: error: expected ‘)’ before ‘;’ token
+
+NOT COMPILED src/modctx.c:123:31 op: '*' -> '+'
+  src/modctx.c:123:31: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:399:59 op: '*' -> '/'
+  src/modctx.c:399:59: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:399:28 op: '*' -> '+'
+  src/modctx.c:399:28: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:276:45 op: '*' -> '/'
+  src/modctx.c:276:45: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:276:45 op: '*' -> '+'
+  src/modctx.c:276:45: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:507:5 drop_assign: 'in = _fmpz_vec_init(ctx->k);' -> '' (the statement is removed)
+  src/modctx.c:499:12: error: ‘in’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/modctx.c:412:5 drop_assign: 'Kstr = fmpz_get_str(NULL, 16, ctx->K);' -> '' (the statement is removed)
+  src/modctx.c:415:30: error: ‘Kstr’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/modctx.c:208:48 op: '*' -> '/'
+  src/modctx.c:208:48: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/modctx.c:320:48 op: '*' -> '+'
+  src/modctx.c:320:48: error: expected ‘;’, ‘,’ or ‘)’ before ‘+’ token
+
+NOT COMPILED src/modctx.c:423:5 drop_assign: 'pos = 0;' -> '' (the statement is removed)
+  src/modctx.c:424:14: error: ‘pos’ is used uninitialized [-Werror=uninitialized]
+
+TIMED OUT src/modctx.c:100:5 negate_if: 'while(!n_is_prime(p))' -> 'while(!(!n_is_prime(p)))'
+  the tests did not finish in 120 s
+
+TIMED OUT src/modctx.c:98:9 drop_assign: 'p = n_nextprime(p, 1);' -> '' (the statement is removed)
+  the tests did not finish in 120 s
+
+mutate: 200 mutants in 928.5 s: 95 killed, 28 survived, 75 not compiled, 2 timed out, 0 excused
+mutate: FAILED: 28 mutant(s) survived; each one is a claim the tests do not check
+make: *** [Makefile:211: mutate] Error 1

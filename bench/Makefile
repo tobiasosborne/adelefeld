@@ -14,12 +14,13 @@ FLAGS  ?= -O2 -g
 LIBS   ?= -lflint -lmpfr -lgmp
 BIN     = bench_word
 BIN_FBALL = bench_fball
+BIN_MODCTX = bench_modctx
 ASM_DIR = asm
 CHAIN_SYMS = chain_add_run chain_mul_run chain_mul2_run
 
 .PHONY: all run test asm clean
 
-all: $(BIN) $(BIN_FBALL)
+all: $(BIN) $(BIN_FBALL) $(BIN_MODCTX)
 
 $(BIN): harness.c bench_word.c harness.h
 	$(CC) $(FLAGS) -DBENCH_CFLAGS='"$(FLAGS)"' -o $@ harness.c bench_word.c $(LIBS)
@@ -27,6 +28,10 @@ $(BIN): harness.c bench_word.c harness.h
 # The fball rows link the finite-ball source itself, so `make -C bench` needs no built library.
 $(BIN_FBALL): harness.c bench_fball.c ../src/fball.c harness.h
 	$(CC) $(FLAGS) -I../include -DBENCH_CFLAGS='"$(FLAGS)"' -o $@ harness.c bench_fball.c ../src/fball.c $(LIBS)
+
+# The modctx rows (lane m1-modctx) link the modulus-context source itself.
+$(BIN_MODCTX): harness.c bench_modctx.c ../src/modctx.c harness.h
+	$(CC) $(FLAGS) -I../include -DBENCH_CFLAGS='"$(FLAGS)"' -o $@ harness.c bench_modctx.c ../src/modctx.c $(LIBS)
 
 asm: $(BIN)
 	mkdir -p $(ASM_DIR)
@@ -37,10 +42,11 @@ asm: $(BIN)
 run: all asm
 	cd .. && ./bench/$(BIN) --run
 	cd .. && ./bench/$(BIN_FBALL) --run
+	cd .. && ./bench/$(BIN_MODCTX) --run
 
 test: $(BIN)
 	cd .. && ./bench/$(BIN) --selftest
 
 clean:
-	rm -f $(BIN) $(BIN_FBALL)
+	rm -f $(BIN) $(BIN_FBALL) $(BIN_MODCTX)
 	rm -rf $(ASM_DIR)
