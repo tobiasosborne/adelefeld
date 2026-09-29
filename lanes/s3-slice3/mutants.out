@@ -1,0 +1,38 @@
+# hand mutants of src/resid.c, lane s3-slice3 (sh lanes/s3-slice3/mutants.sh, one at a time, build/test_resid_rest)
+# date: 2026-09-29T09:37:26Z, 17 tests, 6822128 checks, 0 failed on the unmutated tree
+
+mutant 1: adf_resid_set_rat: the test m < 1 removed -- killed (the test program aborts in fmpz_invmod
+          with the modulus 0; the test cases with q = 3/1 and m = 0, -1, -4 were added after the first
+          run of this mutant, which survived because the earlier cases all had d = 2 and were caught by
+          the gcd instead)
+mutant 2: adf_resid_set_rat: the test gcd(d, m) = 1 removed -- killed
+mutant 3: adf_resid_set_rat: the numerator n forgotten in c = n d^(-1) -- killed
+mutant 4: adf_resid_contains_rat: the test gcd(d, m) = 1 removed -- SURVIVED, equivalent: q is an
+          adf_rat and therefore reduced, and for a reduced q with m | c d - n the condition
+          gcd(d, m) = 1 follows (Lemma 1.2 (1)), so the two forms agree on every input of the contract
+mutant 5: adf_resid_contains_rat: the divisibility test m | c d - n replaced by 1 -- killed
+mutant 6: adf_resid_set_fball_forget: the test H = 0 removed -- killed (abort in fmpz_invmod)
+mutant 7: adf_resid_set_fball_forget: the test gcd(d, H) = 1 removed -- killed
+mutant 8: adf_resid_set_fball_forget: the centre A forgotten in c = A d^(-1) -- killed
+mutant 9: adf_recon_cert_is_canonical: the test on the kind removed -- killed
+mutant 10: adf_recon_cert_identical: the comparison of T removed -- killed
+mutant 11: resid_solve: the pair (c mod m, 1) of Proposition 1.6 (a) not reported as found -- SURVIVED,
+          equivalent: resid_solve writes (fn, fd) in that step whatever *nfound says, and *nfound is
+          read only on ADF_NOT_DETERMINED, which that step does not return
+mutant 12: adf_resid_reconstruct_first: the count 2 of a NOT_UNIQUE replaced by 1 -- killed
+mutant 13: adf_resid_reconstruct_first: a cut search with one solution treated as a cut without one --
+          killed (the program stops with a segmentation fault, since q is then not written)
+mutant 14: adf_resid_verify_result: the test that q is a solution removed -- SURVIVED, equivalent: an
+          adf_rat is reduced, so the later comparisons (with the row sigma R / |T| in the case 1.6 (c),
+          with the point the enumeration finds in the case 1.6 (d)) hold only for a reduced pair inside
+          the box, since R <= A and |T| <= B have been tested
+mutant 15: adf_resid_verify_result: the condition X > ell of Proposition 1.7 (3) removed -- SURVIVED,
+          equivalent: resid_search returns ADF_NOT_DETERMINED only when it did not visit every round,
+          that is only when X > ell
+mutant 16: adf_resid_verify_result: the certificate check of Proposition 1.11 (2) skipped -- killed (abort)
+mutant 17: adf_resid_verify_result: a NOT_UNIQUE claim accepted without a search -- killed
+mutant 18: adf_resid_verify_result: the empty box answered NO_SOLUTION whatever the claim -- killed
+
+Four survivors, all of them equivalent on the inputs the contract admits; the reason is one sentence
+each, as above. tools/mutate/equivalent.txt is not a file of this lane (it is not in the list of paths
+this lane owns), so the four entries are listed here instead.

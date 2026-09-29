@@ -1,0 +1,144 @@
+== red 1 (item 1, the life cycle): tests/test_resid_rest.c with the declarations of include/adelefeld/resid.h and no code
+2026-09-29T08:13:59Z
+`adf_recon_cert_identical'
+`adf_recon_cert_is_canonical'
+`adf_recon_cert_set'
+`adf_recon_cert_swap'
+`adf_resid_identical'
+`adf_resid_set'
+`adf_resid_swap'
+/usr/bin/ld: /tmp/ccpQj7Xf.o:/home/tobias/Projects/adelefeld-wt/s3-slice3/tests/test_resid_rest.c:255: more undefined references to `adf_recon_cert_identical' follow
+/usr/bin/ld: /tmp/ccpQj7Xf.o:/home/tobias/Projects/adelefeld-wt/s3-slice3/tests/test_resid_rest.c:289: more undefined references to `adf_recon_cert_is_canonical' follow
+ok   life_cycle_init_values
+FAIL tests/test_resid_rest.c:215: life_cycle_resid_set_swap_identical: check failed: adf_resid_is_canonical(y) == 0
+FAIL life_cycle_resid_set_swap_identical (tests/test_resid_rest.c:166, 1 failed checks)
+ok   life_cycle_recon_cert_set_swap_identical
+ok   layouts_are_pinned
+4 tests, 70 checks, 1 failed checks, 1 failed tests
+ok   life_cycle_init_values
+ok   life_cycle_resid_set_swap_identical
+ok   life_cycle_recon_cert_set_swap_identical
+ok   layouts_are_pinned
+4 tests, 71 checks, 0 failed checks, 0 failed tests
+== green 1 (item 1): the seven life-cycle functions added to src/resid.c
+2026-09-29T08:14:23Z
+ok   life_cycle_init_values
+ok   life_cycle_resid_set_swap_identical
+ok   life_cycle_recon_cert_set_swap_identical
+ok   layouts_are_pinned
+4 tests, 71 checks, 0 failed checks, 0 failed tests
+
+== red 2 (item 2: adf_resid_set_rat, adf_resid_contains_rat)
+2026-09-29T08:15:04Z
+undefined reference to `adf_resid_contains_rat
+undefined reference to `adf_resid_set_rat
+== green 2 (item 2: adf_resid_set_rat, adf_resid_contains_rat)
+2026-09-29T08:52:23Z
+ok   life_cycle_init_values
+ok   life_cycle_resid_set_swap_identical
+ok   life_cycle_recon_cert_set_swap_identical
+ok   layouts_are_pinned
+ok   set_rat_and_contains_rat_against_the_definition
+ok   set_rat_statuses_and_shapes
+6 tests, 337773 checks, 0 failed checks, 0 failed tests
+Notes on the red and green runs (faults in the tests of this lane, not weakened claims):
+- item 1: the first run of life_cycle_resid_set_swap_identical failed 1 check: the test expected
+  adf_resid_is_canonical(y) == 0 after adf_resid_set_fmpz2(y, -3, 7), which reduces c into [0, m) and
+  gives P(7, 4). The test was wrong; it now writes -3 into y->c by hand to make a non-canonical value.
+- item 2: the first version of the last block of set_rat_and_contains_rat_against_the_definition was
+  nonsense (it compared a predicate with itself) and was replaced by the claim it should have made: for
+  4/3 and m = 10 exactly one c in [0, 10) contains the rational, c = 8. Then the program hung: the loop
+  variable c of the m = 1 block was overwritten by resid_pair, so the loop never ended. The loop
+  variable is j now. The claim was not weakened.
+- item 2: set_rat_statuses_and_shapes expected P(1, 0) after the DOMAIN calls of m = 4; the value there
+  is P(4, 0), which is the point of the check. The expectation was corrected to m == 4.
+
+== red 3 (item 3: adf_resid_set_fball_forget)
+2026-09-29T08:53:50Z
+undefined reference to `adf_resid_set_fball_forget
+== green 3 (item 3: adf_resid_set_fball_forget)
+2026-09-29T08:54:57Z
+ok   forget_the_example_of_note_1
+ok   forget_local_and_global_give_the_same_residue
+10 tests, 363423 checks, 0 failed checks, 0 failed tests
+Note: the first run of forget_contains_every_rational_of_the_ball failed 234 checks. The test built
+the ball with the raw triple (A, H, d) and then expected the modulus H and the condition gcd(d, H) = 1;
+the function is documented on the canonical triple, and adf_fball_set_fmpz3 divides A, H, d by
+gcd(A, H, d), so the test now reads the canonical triple with adf_fball_get_fmpz3 and makes its claims
+about that. The second failure was a wrong membership formula of the test for 21/5: q is in
+(a + H Zhat)/d exactly when (q d - a)/H is an integer, and the test had multiplied by the denominator
+of q first. The claim (21/5 is in P(6, 3) and not in 3 + 6 Z) stands.
+
+== red 4 (item 4: adf_resid_reconstruct_first; the declaration and the refactoring of resid_solve were in, the function was not)
+2026-09-29T08:59:54Z
+undefined reference to `adf_resid_reconstruct_first
+== green 4 (item 4: adf_resid_reconstruct_first, the grid and the 15338 vectors; the 8610 set vectors of items 2 and 3)
+2026-09-29T09:03:08Z
+   recon_first vectors: 15338 lines, all run; OK 12144, NOT_DETERMINED 1809, NO_SOLUTION 1385; count 0/1/2 4204/1332/9802; 696 lines with m or A above a million
+ok   reconstruct_first_vectors
+   sets vectors: 8610 lines, all run; set_rat 5490 (OK 3612, DOMAIN 1878), forget 3120 (OK 2375, DOMAIN 745); contains_rat inside 3612, outside 125037
+ok   set_rat_and_forget_vectors
+13 tests, 3284612 checks, 0 failed checks, 0 failed tests
+Faults in the tests of item 4, found by the first green run and repaired in the test (no claim weakened):
+- the first run failed 50012 checks. Two causes, both in the expected values of the test: (a) the
+  round of a point was recovered with y = (sigma R d - n |T|)/m, which drops the sign; Proposition 1.5
+  (2) gives y = (R d - sigma n |T|)/m; (b) the test compared against every solution of the enumeration,
+  while the search visits the rounds x = 1, ..., min(X, ell) only, so it finds the solutions with
+  x <= ell, which for a small limit is none. The test now sorts the list by (x, y) and cuts it at
+  x > ell. The library was right in every one of the 50012 cases.
+- the status counter of the test counted only the codes <= ADF_NOT_DETERMINED and so reported no
+  NO_SOLUTION; the three counters are now by name.
+- the vectors test did not know the status name DOMAIN at first; status_of now maps it.
+
+== red 5 (item 5: adf_resid_verify_result)
+2026-09-29T09:05:43Z
+== red 5 (item 5: adf_resid_verify_result; the declaration and the statics were in, the function was not)
+2026-09-29T09:05:47Z
+== green 5 (item 5: adf_resid_verify_result)
+2026-09-29T09:13:26Z
+ok   layouts_are_pinned
+ok   set_rat_and_contains_rat_against_the_definition
+ok   set_rat_statuses_and_shapes
+ok   forget_contains_every_rational_of_the_ball
+ok   forget_uses_the_canonical_triple
+ok   forget_the_example_of_note_1
+ok   forget_local_and_global_give_the_same_residue
+   reconstruct_first: 363048 calls, OK 289494, NOT_DETERMINED 48243, NO_SOLUTION 25311; count 0/1/2 94455/30623/237970; 289494 q written, 73554 left untouched, 20901 cut answers
+ok   reconstruct_first_against_the_enumeration
+   recon_first vectors: 15338 lines, all run; OK 12144, NOT_DETERMINED 1809, NO_SOLUTION 1385; count 0/1/2 4204/1332/9802; 696 lines with m or A above a million
+ok   reconstruct_first_vectors
+   sets vectors: 8610 lines, all run; set_rat 5490 (OK 3612, DOMAIN 1878), forget 3120 (OK 2375, DOMAIN 745); contains_rat inside 3612, outside 125037
+ok   set_rat_and_forget_vectors
+   verify_result: 363048 results, all accepted; changed claims refused/accepted-and-true: status 1020122/69022, numerator 30623/332425, denominator 25544/337504, sign 25544/337504, certificate 431989/272651, kind 125078/237970
+ok   verify_result_accepts_every_result_and_refuses_changed_claims
+   verify_result on the vectors: 15338 lines; accepted 15338, not decided 0 (of which 453 have X above a word); a status flipped: refused 9802, accepted and true 0
+ok   verify_result_on_the_vectors
+ok   verify_result_when_X_is_above_a_word
+ok   verify_result_outside_the_problem
+17 tests, 6822123 checks, 0 failed checks, 0 failed tests
+Faults in the tests of item 5, found by the first green run and repaired in the test:
+- the first run reported 69022 accepted claims that the test called false. The test decided the truth
+  of a claim as "the status of Algorithm R for this limit is that status", which is not what P1.11
+  certifies: a claim of NOT_UNIQUE is true when the set has at least two elements and a claim of
+  NO_SOLUTION is true when it is empty, whatever the limit says (P1.11 (1) and (2), and recon_truth of
+  the reference, line 476). The test now decides the truth that way: OK needs q to be the only element,
+  NO_SOLUTION needs the set empty, NOT_UNIQUE needs two elements, NOT_DETERMINED needs the four
+  conditions of 1.7 (3). The library was right in every one of the 69022 cases.
+- the vector test compared the status of the file (the status of recon_first) with the status of
+  adf_resid_reconstruct; recon_first reports OK with a count, so the mapping count 2 -> NOT_UNIQUE and
+  count 0 -> NOT_DETERMINED was missing.
+- one comment of the test was left unterminated after that repair (a compile error, fixed).
+== item 6: tests/julia/resid.jl (the two new ccalls, run by sh tests/test_julia.sh through smoke.jl)
+2026-09-29T09:15:38Z
+adelefeld Julia smoke test (build/libadelefeld.so) |   48     48  0.1s
+Test Summary:                       | Pass  Total  Time
+adf_resid_reconstruct through ccall |   28     28  0.1s
+Test Summary:                             | Pass  Total  Time
+adf_resid_reconstruct_first through ccall |   16     16  0.1s
+Test Summary:                            | Pass  Total  Time
+adf_resid_set_fball_forget through ccall |   14     14  0.1s
+test_julia: passed (with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10)
+Fault in the Julia test of item 6: the first run had one failed check, forget("0", "6", "3") expected
+DOMAIN. The ball Zhat/3 has the canonical triple (0, 2, 1), since adf_fball_set_fmpz3 divides A, H, d
+by gcd(A, H, d) = 3, and gcd(1, 2) = 1, so the residue P(2, 0) exists. The test now says that, and two
+cases with gcd(d, H) > 1 on the canonical triple were added.
