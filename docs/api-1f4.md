@@ -94,8 +94,10 @@ odd `p`, `(+-1)^(p-1) = 1` since `p - 1` is even, so `+-1` is the root of unity 
 `u = 1`, and `x / p^m = w`. A rational `w` with `w^(p-1) = 1` (odd `p`) or `w = +-1` (`p = 2`) is `+-1`: its real
 absolute value is 1. On `1 + p Z_p`, `log = Log` (Proposition 11, step 3), and `+-p^m` lies in `1 + p Z_p` only for
 `m = 0` and `+1`, or `-1` at 2. *Check:* `exact_results_and_shortcut_values`, the exact rows of the case vectors.
-The converse is not used by the code for correctness; it says that the exact results are all the rational values
-of `log` and `Log` at rationals. For `exp` at a rational `x != 0` no such statement is made: a ball is returned.
+The converse is not used by the code for correctness; it says that the exact results are all the ZERO values
+of `log` and `Log` at rationals. Whether `log` or `Log` takes a nonzero rational value at a rational argument
+is not decided here (review f-review3, R2): such a value would be returned as a ball, which is an enclosure.
+`[source pending: a proof that log and Log take no nonzero rational value at a rational argument]` For `exp` at a rational `x != 0` no such statement is made: a ball is returned.
 
 **F3 (Log without the root of unity).** Let `x = p^m a`, `a` a unit of `Z_p`.
 (a) Odd `p`: `a^(p-1)` lies in `1 + p Z_p` and `Log(x) = log(a^(p-1)) / (p - 1)`. If `a = 1` modulo `p`, then
