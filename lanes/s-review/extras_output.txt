@@ -1,0 +1,5 @@
+target_sha256=09588ed7a576dc85971458fe5a53069c09b917347f3ba9bd6696507b75fd6b36
+arbitrary_howell: matrices=32946, failures=0
+adelic: systems=250, integer_points=3020, projections=184, failures=0
+mod_p_count: polynomials=791, failures=0
+total: failures=0, findings=0, seconds=6.66

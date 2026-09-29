@@ -1,0 +1,4 @@
+target_sha256=09588ed7a576dc85971458fe5a53069c09b917347f3ba9bd6696507b75fd6b36
+reconstruction: boxes=60480, calls=302400, boundary_boxes=2160, solutions=157476, empty_boxes=8400, failures=0
+arbitrary_reconstruction_certificates: tried=1031943, accepted=1334, false_accepted=0
+total: failures=0, findings=0, seconds=4.38

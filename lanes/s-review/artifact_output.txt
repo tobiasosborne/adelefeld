@@ -1,0 +1,4 @@
+artifacts: files=7, python_syntax=4, overlong_lines=0, reports=2
+verdicts: VALID=28, MINOR=3, INVALID=2, total=33
+author_check_hash: unchanged=1
+total: failures=0

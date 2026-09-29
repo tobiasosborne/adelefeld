@@ -1,0 +1,4 @@
+target_sha256=09588ed7a576dc85971458fe5a53069c09b917347f3ba9bd6696507b75fd6b36
+matrix: matrices=17330, systems=1875272, vectors=6036862, certificates=1875272, failures=0
+invented_scalar_certificates: tried=105106, accepted=237, false_accepted=0
+total: failures=0, findings=0, seconds=164.23

@@ -1,0 +1,8 @@
+target_sha256=09588ed7a576dc85971458fe5a53069c09b917347f3ba9bd6696507b75fd6b36
+padic_p2: calls=1878, certificates=1212, residues=9422
+padic_p3: calls=1878, certificates=1265, residues=155461
+newton: calls=2477, failures=0
+singular_children: nodes=14, failures=0
+FINDING 3.11-minimum: f=X^3+2X, p=2: only root 0, s=1; Z_2 already isolates it (k=0 < 2)
+FINDING seed-normalization: f=27X, p=3, a=0: seed s=3; stored g=X has derivative valuation 0
+total: failures=0, findings=2, seconds=0.92

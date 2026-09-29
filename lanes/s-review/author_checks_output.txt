@@ -1,0 +1,26 @@
+PASS check_s3_coprime: 465 problems (m <= 30), 85095 reduced pairs, 0 failures
+PASS check_s3_certificate: 159175 small and 2000 large triples (m, c, A), 0 failures; accepted wrong pairs: 0
+PASS check_s3_param: 177120 boxes (m <= 40, all c, all A < m), 2747820 lattice points, 0 failures
+PASS check_s3_complete: 94256 problems (m <= 36): one 21124, none 24793, several 48339; 0 failures
+PASS check_s3_limit: 239540 calls with limits 0, 1, 2, 5; NOT_DETERMINED 97264 times; 0 failures
+PASS check_s3_ranges: 270600 problems (m <= 40). I: one 13016, none 24194, several 0; II: one 20342, none 5021, several 7514; III: one 36510, none 3851, several 133092; IV: one 0, none 0, several 27060; 0 failures
+PASS check_s3_edge: 19 fixed cases, 3000 large random fractions, 0 failures
+PASS check_s3_forget: 4628 rationals of balls (H <= 12, d <= 7), 356 witnesses of a proper inclusion, 0 failures
+PASS probe_s3_flint: FLINT 3.0.1: 76146 calls, 36491 inside 2ND < m; outside: returns 0 although a solution exists 2380 times, returns one of several 22860 times; outputs changed at return 0: 32924 times; 0 failures
+PASS check_s1_howell: 1869 row sets over Z/N, N in (1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18), up to 3 columns; 0 failures
+PASS check_s1_canonical: 672 modules with changed generators; 32945 pairs of rows over (Z/N)^2, N in (4, 6, 8, 9, 12): 195 modules, 195 forms; 0 failures
+PASS check_s1_solve: 4432 systems modulo 4 (all A, b with r, c <= 2) and 4232 random systems, N in (1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18), r, c <= 3; without solution: 3265; 0 failures
+PASS check_s1_cert_sound: 8397 changed certificates: 6566 refused, 1831 accepted and true, 0 accepted and false
+PASS check_s1_duality: 420 submodules of (Z/N)^r, every b of (Z/N)^r; 0 failures
+PASS check_s1_edge: 13 fixed cases, 20540 single equations (N < 40), 60 systems, N up to 122 bits; 0 failures
+PASS check_s1_adelic: 396 systems with right-hand sides (A + H Zhat)/d; 0 failures
+PASS probe_s1_flint: FLINT 3.0.1: 2080 matrices, N up to 30 bits; 0 differences
+PASS probe_s1_hnf: python-flint 0.8.0: 2016 matrices, 1527 rows with pivot N; 0 differences
+PASS check_s2_certificate: 50 certificates of the named cases, 869 found by search in random polynomials; 0 failures
+PASS check_s2_newton: 500 steps and requests; 0 failures
+PASS check_s2_descent: 124 runs of the named cases (depth limits 0, 1, 3, 8), 150 random products with known integer roots; 0 failures
+PASS check_s2_examples: 12 fixed cases; 0 failures
+PASS check_s2_count_mod_p: 458 polynomials over F_p, p up to 257; 0 failures
+PASS check_s2_real_completeness: 18 polynomials, 42 changed lists; 0 failures
+PASS probe_s2_flint_real: FLINT 3.0.1: 51 calls (prec 16, 64, 200); balls widened once: 0; exact balls: 20; 0 failures
+total time 19.1 s; failures: 0
