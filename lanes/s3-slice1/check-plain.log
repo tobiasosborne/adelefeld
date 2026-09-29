@@ -1,0 +1,8 @@
+ok   the_earlier_stage_decides_the_status
+ok   canonicalisation_on_input
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+check passed: all 43 test programs
+
+real	0m21,652s
+user	0m27,858s
+sys	0m2,228s

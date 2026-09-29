@@ -277,3 +277,6 @@ alignof_of(fn::Symbol) = ccall(sym(fn), Csize_t, ())
         ccall(F_MODCTX_FREE, Cvoid, (Ptr{Cvoid},), ctx)
     end
 end
+
+# Slice 1 of milestone S (lane s3-slice1): adf_resid_reconstruct through ccall.
+include(joinpath(@__DIR__, "resid.jl"))

@@ -1,0 +1,31 @@
+MUTANT r <= A -> r < A: exit status 134; 0 failed checks
+   timeout: the monitored command dumped core
+   Aborted
+MUTANT abs(T) > B -> abs(T) >= B: exit status 1; 38162 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 14912 failed checks)
+   FAIL vectors_s3_slice1_every_line (tests/test_resid.c:404, 8 failed checks)
+   FAIL boundary_2AB_against_m (tests/test_resid.c:493, 2 failed checks)
+   FAIL aliasing_of_the_inputs (tests/test_resid.c:679, 1 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 23234 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 23234 failed checks)
+   11 tests, 3237467 checks, 38157 failed checks, 5 failed tests
+MUTANT 2AB < m -> 2AB <= m: exit status 1; 4341 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 4334 failed checks)
+   FAIL boundary_2AB_against_m (tests/test_resid.c:493, 2 failed checks)
+   FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:564, 2 failed checks)
+   ok   wrapper_test_against_fmpq_reconstruct_fmpz_2
+   11 tests, 3260773 checks, 4338 failed checks, 3 failed tests
+MUTANT gcd test removed: exit status 1; 28727 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 17676 failed checks)
+   FAIL vectors_s3_slice1_every_line (tests/test_resid.c:404, 141 failed checks)
+   FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:564, 2 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 10904 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 10904 failed checks)
+   11 tests, 3259513 checks, 28723 failed checks, 4 failed tests
+MUTANT sigma dropped: exit status 1; 35027 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 9561 failed checks)
+   FAIL vectors_s3_slice1_every_line (tests/test_resid.c:404, 518 failed checks)
+   FAIL boundary_2AB_against_m (tests/test_resid.c:493, 1 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 24943 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 24943 failed checks)
+   11 tests, 3260773 checks, 35023 failed checks, 4 failed tests

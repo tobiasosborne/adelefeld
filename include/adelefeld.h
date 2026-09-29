@@ -42,6 +42,7 @@
 #include "adelefeld/fball.h"
 #include "adelefeld/adele.h"
 #include "adelefeld/recon.h"
+#include "adelefeld/resid.h"
 #include "adelefeld/text.h"
 #include "adelefeld/modctx.h"
 #include "adelefeld/scaled.h"

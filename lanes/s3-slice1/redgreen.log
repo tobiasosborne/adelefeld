@@ -1,0 +1,73 @@
+/usr/bin/ld: /home/tobias/Projects/adelefeld/.claude/worktrees/agent-a043d11d7298c838d/tests/test_resid.c:121:(.text+0x500b): undefined reference to `adf_recon_cert_init'
+/usr/bin/ld: /tmp/ccrAF4VT.o: in function `adf_test_fn_vectors_s3_slice1_every_line':
+/home/tobias/Projects/adelefeld/.claude/worktrees/agent-a043d11d7298c838d/tests/test_resid.c:436:(.text+0x5229): undefined reference to `adf_resid_set_fmpz2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld/.claude/worktrees/agent-a043d11d7298c838d/tests/test_resid.c:438:(.text+0x5260): undefined reference to `adf_resid_reconstruct'
+/usr/bin/ld: /tmp/ccrAF4VT.o: in function `fx_clear':
+/home/tobias/Projects/adelefeld/.claude/worktrees/agent-a043d11d7298c838d/tests/test_resid.c:133:(.text+0x43f): undefined reference to `adf_recon_cert_clear'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:97: build/test_resid] Error 1
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o build/resid.o
+ar rcs build/libadelefeld.a build/adele.o build/cap.o build/common.o build/dump.o build/fball.o build/fball_local.o build/inlines.o build/modctx.o build/place.o build/rat.o build/recon.o build/resid.o build/scaled.o build/status.o build/text.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_resid.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid
+      7 FAIL tests/test_resid.c:639: empty_box_is_no_solution_with_no_certificate: check failed: adf_resid_reconstruct(f.q, NULL, f.x, f.A, f.B, 0) == ADF_NO_
+      7 FAIL tests/test_resid.c:636: empty_box_is_no_solution_with_no_certificate: check failed: q_is_sentinel(&f) && cert_is_none(f.cert)
+      3 FAIL tests/test_resid.c:344: brute_force_every_m_up_to_36: check failed: st == ADF_OK && q_equals_si(f.q, n, d) | m=1 c=2 A=0 B=2: want 0/1, status 8
+brute force: 804804 cases, 61214 inside 2AB < m (OK 22622, NO_SOLUTION by (b) 38592, by (c) 0), 743590 UNSUPPORTED
+vectors: 2643 lines, OK 0, NO_SOLUTION (b) 0, (c) 0, empty box 0
+ok   null_cert_gives_the_same_answers_and_limit_is_ignored
+wrapper test (FLINT fmpq_reconstruct_fmpz_2): 120651 cases, both OK and equal 0, both none 120651
+11 tests, 3176515 checks, 176786 failed checks, 10 failed tests
+176796
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o build/resid.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_resid.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid
+vectors: 2643 lines, OK 1117, NO_SOLUTION (b) 1384, (c) 140, empty box 2
+ok   vectors_s3_slice1_every_line
+FAIL tests/test_resid.c:543: boundary_2AB_against_m: check failed: adf_resid_reconstruct(f.q, f.cert, f.x, f.A, f.B, 0) == ADF_NO_SOLUTION
+FAIL tests/test_resid.c:544: boundary_2AB_against_m: check failed: q_is_sentinel(&f) && check_cert(f.cert, f.c, f.m, f.A)
+FAIL boundary_2AB_against_m (tests/test_resid.c:493, 2 failed checks)
+ok   boundary_small_moduli_and_zero_A
+ok   empty_box_is_no_solution_with_no_certificate
+ok   null_cert_gives_the_same_answers_and_limit_is_ignored
+ok   aliasing_of_the_inputs
+wrapper test (FLINT fmpq_reconstruct_fmpz_2): 120651 cases, both OK and equal 51645, both none 69006
+ok   wrapper_test_against_fmpq_reconstruct_fmpz_2
+11 tests, 3260773 checks, 2 failed checks, 1 failed tests
+brute force: 804804 cases, 61214 inside 2AB < m (OK 22622, NO_SOLUTION by (b) 29754, by (c) 8838), 743590 UNSUPPORTED
+vectors: 2643 lines, OK 1117, NO_SOLUTION (b) 1384, (c) 140, empty box 2
+wrapper test (FLINT fmpq_reconstruct_fmpz_2): 120651 cases, both OK and equal 51645, both none 69006
+11 tests, 3260773 checks, 0 failed checks, 0 failed tests
+MUTANT r <= A -> r < A: exit status 134; 0 failed checks
+   timeout: the monitored command dumped core
+   Aborted
+MUTANT abs(T) > B -> abs(T) >= B: exit status 1; 38162 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 14912 failed checks)
+   FAIL vectors_s3_slice1_every_line (tests/test_resid.c:404, 8 failed checks)
+   FAIL boundary_2AB_against_m (tests/test_resid.c:493, 2 failed checks)
+   FAIL aliasing_of_the_inputs (tests/test_resid.c:679, 1 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 23234 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 23234 failed checks)
+   11 tests, 3237467 checks, 38157 failed checks, 5 failed tests
+MUTANT 2AB < m -> 2AB <= m: exit status 1; 4341 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 4334 failed checks)
+   FAIL boundary_2AB_against_m (tests/test_resid.c:493, 2 failed checks)
+   FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:564, 2 failed checks)
+   ok   wrapper_test_against_fmpq_reconstruct_fmpz_2
+   11 tests, 3260773 checks, 4338 failed checks, 3 failed tests
+MUTANT gcd test removed: exit status 1; 28727 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 17676 failed checks)
+   FAIL vectors_s3_slice1_every_line (tests/test_resid.c:404, 141 failed checks)
+   FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:564, 2 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 10904 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 10904 failed checks)
+   11 tests, 3259513 checks, 28723 failed checks, 4 failed tests
+MUTANT sigma dropped: exit status 1; 35027 failed checks
+   FAIL brute_force_every_m_up_to_36 (tests/test_resid.c:306, 9561 failed checks)
+   FAIL vectors_s3_slice1_every_line (tests/test_resid.c:404, 518 failed checks)
+   FAIL boundary_2AB_against_m (tests/test_resid.c:493, 1 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 24943 failed checks)
+   FAIL wrapper_test_against_fmpq_reconstruct_fmpz_2 (tests/test_resid.c:703, 24943 failed checks)
+   11 tests, 3260773 checks, 35023 failed checks, 4 failed tests
+
+== summary (the sections above are, in order: red 1 = link error, tests only; red 2 = stub returning UNSUPPORTED
+== and always OK for set_fmpz2: 176786 failed checks, all assertions; green = src/resid.c: 0 failed checks;
+== the five mutants of lanes/s3-slice1/mutants.sh, the last block)
