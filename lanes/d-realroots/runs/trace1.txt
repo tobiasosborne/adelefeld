@@ -80,3 +80,20 @@ family close e 1200 degree 2 prec 2 coefficient bits 1202
 65536 72 602 1 -833 0 832 0.430757 0.003371
 131072 72 674 1 -933 0 932 1.052444 0.005567
 262144 72 746 1 -1033 0 1032 2.657285 0.013289
+524288 72 818 1 -1133 0 1132 6.169478 0.028999
+1048576 65 883 1 -2138568 2 1047373 8.972844 0.018912
+trace: total 19.635195 s, last prec 1048576, iterations 883
+family far e 1200 degree 2 prec 2 coefficient bits 2402
+# prec iterations total_iterations log2_max_midpoint correction isolated min_accuracy seconds_iterate seconds_validate
+32 32 32 1442 0 0 -209 0.000109 0.000078
+64 9 41 1202 -64 2 60 0.000028 0.000008
+trace: total 0.000223 s, last prec 64, iterations 41
+family far e 100000 degree 2 prec 2 coefficient bits 200002
+# prec iterations total_iterations log2_max_midpoint correction isolated min_accuracy seconds_iterate seconds_validate
+32 32 32 199042 0 0 -99009 0.000073 0.000045
+64 64 96 194978 0 0 -94913 0.000082 0.000005
+128 72 168 185826 0 0 -85697 0.000122 0.000006
+256 72 240 167522 0 0 -67265 0.000160 0.000007
+512 72 312 130914 0 0 -30401 0.000211 0.000008
+1024 38 350 100002 -1024 2 1020 0.000253 0.000009
+trace: total 0.000980 s, last prec 1024, iterations 350
