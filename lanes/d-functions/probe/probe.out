@@ -1,0 +1,65 @@
+exp p=3 x=3 Nin=8 Nout=8: ret=1 u=958 v=0 N=8
+exp p=3 x=12 Nin=8 Nout=8: ret=1 u=5125 v=0 N=8
+exp p=3 x=3 Nin=2 Nout=2: ret=1 u=4 v=0 N=2
+exp p=3 x=12 Nin=2 Nout=2: ret=1 u=4 v=0 N=2
+exp p=3 x=3 Nin=2 Nout=8: ret=1 u=958 v=0 N=8
+exp p=3 x=0 Nin=8 Nout=8: ret=1 u=1 v=0 N=8
+exp p=3 x=1 Nin=8 Nout=8: ret=0 u=259 v=1 N=8
+exp p=2 x=2 Nin=8 Nout=8: ret=0 u=9 v=0 N=8
+exp p=2 x=4 Nin=8 Nout=8: ret=1 u=77 v=0 N=8
+exp p=2 x=6 Nin=8 Nout=8: ret=0 u=9 v=0 N=8
+exp p=3 x=3 Nin=8 Nout=1: ret=1 u=1 v=0 N=1
+exp p=3 x=3 Nin=8 Nout=0: ret=1 u=0 v=0 N=0
+exp p=3 x=3 Nin=8 Nout=-2: ret=1 u=0 v=0 N=-2
+exp p=3 x=81 Nin=8 Nout=3: ret=1 u=1 v=0 N=3
+exp p=3 x=1 Nin=8 Nout=0: ret=0 u=0 v=0 N=0
+exp p=3 x=1 Nin=8 Nout=-1: ret=0 u=0 v=0 N=-1
+exp p=2 x=2 Nin=8 Nout=1: ret=0 u=1 v=0 N=1
+exp p=2 x=2 Nin=8 Nout=0: ret=0 u=0 v=0 N=0
+log p=2 x=-1 Nin=8 Nout=8: ret=0 u=9 v=0 N=8
+log p=2 x=3 Nin=8 Nout=8: ret=0 u=9 v=0 N=8
+log p=2 x=5 Nin=8 Nout=8: ret=1 u=31 v=2 N=8
+log p=2 x=1 Nin=8 Nout=8: ret=1 u=0 v=0 N=8
+log p=3 x=4 Nin=8 Nout=8: ret=1 u=664 v=1 N=8
+log p=3 x=2 Nin=8 Nout=8: ret=0 u=259 v=1 N=8
+log p=3 x=3 Nin=8 Nout=8: ret=0 u=259 v=1 N=8
+log p=3 x=4 Nin=8 Nout=1: ret=1 u=0 v=0 N=1
+log p=3 x=4 Nin=8 Nout=0: ret=1 u=0 v=0 N=0
+log p=3 x=4 Nin=8 Nout=-3: ret=1 u=0 v=0 N=-3
+log p=3 x=2 Nin=8 Nout=0: ret=0 u=0 v=0 N=0
+log p=2 x=3 Nin=8 Nout=1: ret=0 u=1 v=0 N=1
+log p=3 x=1 Nin=8 Nout=8: ret=1 u=0 v=0 N=8
+log p=2 x=-3 Nin=8 Nout=8: ret=1 u=61 v=2 N=8
+log p=3 x=4 Nin=2 Nout=8: ret=1 u=664 v=1 N=8
+teich p=5 x=2 N=8: ret=-1 u=280182 v=0 N=8
+teich p=101 x=2 N=5: ret=-1 u=6523027634 v=0 N=5
+teich p=2 x=3 N=8: ret=-1 u=1 v=0 N=8
+teich p=5 x=10 N=8: ret=-1 u=0 v=0 N=8
+teich p=5 x=2 N=0: ret=-1 u=0 v=0 N=0
+arb_log [-e,e]: finite=0 nan +/- +inf
+arb_log exact 0: finite=0 nan +/- +inf
+arb_log -1: finite=0 nan +/- +inf
+arb_sqrt [-e,e]: finite=0 nan +/- +inf
+arb_sqrt -1: finite=0 nan +/- +inf
+arb_sqrt exact 0: finite=1 0 +/- 0
+arb_sqrt [0,2e]: finite=1 0.0220970869413577 +/- 0.022097
+arb_sqrtpos [-e,e]: finite=1 0.0156250000582077 +/- 0.015625
+arb_root_ui 3 [-e,e]: finite=0 nan +/- +inf
+arb_root_ui 3 of -8: finite=0 nan +/- +inf
+arb_root_ui 3 of 8: finite=1 2.00000000000000 +/- 2.5920e-16
+arb_root_ui 3 of exact 0: finite=0 nan +/- +inf
+arb_root_ui 2 of exact 0: finite=1 0 +/- 0
+arb_gamma 0: finite=0 nan +/- +inf
+arb_gamma [-e,e]: finite=0 nan +/- +inf
+arb_gamma -3: finite=0 nan +/- +inf
+arb_tan near pi/2: finite=0 nan +/- +inf
+arb_zeta 1: finite=0 nan +/- +inf
+arb_exp 2^80: finite=1 6.81352032668723e+525029812488999453498029 +/- 7.7173e+525029812488999453498013
+arb_exp prec 1: finite=1 2.00000000000000 +/- 2.0078
+arb_exp prec 2: finite=1 2.00000000000000 +/- 1.0039
+acb_log -1: finite=1 (0 + 3.14159265358979j)  +/-  (0, 2.22e-16j)
+acb_log -1 +- e i: finite=1 (0 + 0j)  +/-  (4.77e-7, 3.14j)
+acb_log 0: finite=0 (nan + nanj)  +/-  (+inf, +infj)
+acb_log ball at 0: finite=0 (nan + nanj)  +/-  (+inf, +infj)
+acb_sqrt -1 +- e i: finite=1 (0.000244854837092134 + 0j)  +/-  (0.000245, 1.00j)
+acb_sqrt -1: finite=1 (0 + 1.00000000000000j)  +/-  (0, 0j)
