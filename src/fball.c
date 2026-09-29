@@ -1054,7 +1054,6 @@ fb_contains_g(const adf_fball_struct * x, const adf_fball_struct * y)
         {
             fmpq_div(t, N, M);
             res = fb_is_integer(t);
-            fmpq_sub(diff, a, b);
             fmpq_div(t, diff, M);
             res = res && fb_is_integer(t);
         }

@@ -1,0 +1,161 @@
+# lanes/m1-leftovers: red and green of the tests of task 2 and task 3.
+# A red run is made in a scratch copy of the tree under build/scratch/<name>/ (never in src/).
+# Each block: the change, the commands, the output.
+
+=== task 2.1: tests/test_common_unsupported.c reaches ADF_UNSUPPORTED (src/common.c:161) ===
+
+green (clean tree):
+  $ make build/test_common_unsupported && ./build/test_common_unsupported
+  6 tests, 48 checks, 0 failed checks, 0 failed tests
+  exit 0
+
+red (scratch copy build/scratch/common, src/common.c:161 changed from
+     "    return ADF_UNSUPPORTED;" to "    return ADF_OK;"):
+  $ cd build/scratch/common && make -j2 build/test_common_unsupported && ./build/test_common_unsupported
+  build exit=0, run exit=1
+  FAIL test_common_unsupported.c:105: the_check_rejects_a_different_minor:
+       the minor 1 gave 0, ADF_UNSUPPORTED is 8
+  FAIL tests/test_common_unsupported.c:110: the_check_rejects_a_different_minor: the minor 10 gave 0
+  FAIL tests/test_common_unsupported.c:115: the_check_rejects_a_different_minor: the minor 09 gave 0
+  FAIL tests/test_common_unsupported.c:122: the_check_rejects_a_different_major: the major 4 gave 0
+  FAIL tests/test_common_unsupported.c:125: the_check_rejects_a_different_major: the major 2 gave 0
+  FAIL tests/test_common_unsupported.c:128: the_check_rejects_a_different_major: the major 30 gave 0
+  FAIL test_common_unsupported.c:139: the_check_rejects_a_string_that_is_not_a_version:
+       the empty string gave 0
+  FAIL test_common_unsupported.c:142: ...: a string without a dot gave 0
+  FAIL test_common_unsupported.c:145: ...: a dot without a minor gave 0
+  FAIL test_common_unsupported.c:148: ...: a letter is not a digit, gave 0
+  FAIL test_common_unsupported.c:151: ...: a leading space gave 0
+  FAIL test_common_unsupported.c:166: unsupported_is_the_code_eight_and_is_named:
+       adf_version_check() == ADF_UNSUPPORTED
+  FAIL test_common_unsupported.c:167: ...: strcmp(adf_status_str(...), "UNSUPPORTED") == 0
+  FAIL test_common_unsupported.c:177,178,179: the_check_writes_nothing:
+       adf_version_check() == ADF_UNSUPPORTED
+  6 tests, 48 checks, 16 failed checks, 5 failed tests
+  (the first test, the_check_accepts_the_same_major_and_minor, still passes: it is the case
+   that returns ADF_OK, so it is not the line under test)
+
+=== task 2.2: tests/test_modctx_pin.c pins the bound [0, K) of adf_modctx_recombine ===
+
+The line of the library: src/modctx.c:603, `fmpz_fdiv_r(out, out, ctx->K);` in
+adf_modctx_recombine, which is the line that carries the range [0, K) of src/modctx_internal.h.
+
+green (clean tree):
+  $ make build/test_modctx_pin && ./build/test_modctx_pin
+  7 tests, 5716 checks, 0 failed checks, 0 failed tests
+  exit 0, real 0m0,008s
+
+red (scratch copy build/scratch/pin, the bound moved by one: line 603 kept and
+     "    fmpz_add_ui(out, out, 1);" added after it, so the range becomes (0, K]):
+  $ ./build/test_modctx_pin ; echo $?
+  1
+  (first lines of the run)
+  FAIL tests/test_modctx_pin.c:137: every_residue_of_K_35_is_the_representative_in_0_K: fmpz_equal(out, want)
+       | out = 1, the oracle says 0, for the residues (0, 0)
+  FAIL tests/test_modctx_pin.c:137: ... out = 16, the oracle says 15, for the residues (0, 1)
+  ...
+  7 tests, 5716 checks, 2847 failed checks, 7 failed tests
+  The old pin of the same bound, tests/test_modctx_limits.c, on the same scratch build:
+  $ ./build/test_modctx_limits ; echo $?
+  1
+  7 tests, 239 checks, 76 failed checks, 1 failed tests
+
+second red case (the line deleted, not moved), the case the closure judge named
+(lanes/m1-closure-contexts/report.md:133-134):
+  $ sed -i '604d' src/modctx.c && make -j2 build/test_modctx_pin build/test_modctx_limits
+  $ ./build/test_modctx_pin
+  7 tests, 5716 checks, 0 failed checks, 0 failed tests
+  $ ./build/test_modctx_limits
+  7 tests, 239 checks, 0 failed checks, 0 failed tests
+  So the new pin fails when the bound is moved and, like the old one, does not fail when the
+  line is only deleted: on FLINT 3.0.1 fmpz_multi_CRT_precomp(..., 0) returns a value of [0, K)
+  by itself, and no test of the value can see the difference. This is stated, not hidden.
+
+=== task 2.3: tests/test_text_r3r9.c, findings R3 and R9 of the text review ===
+
+R3, the old printer. The old printer is restored in a scratch copy (build/scratch/text) by making
+tx_arb_printable (src/text.c:1111) always return 1, which is what the printer did before decision
+M1-D6: it printed whatever the value was. That is the whole change (three lines of src/text.c).
+
+green (clean tree):
+  $ make build/test_text_r3r9 && ./build/test_text_r3r9
+  8 tests, 144 checks, 0 failed checks, 0 failed tests, exit 0
+
+red (build/scratch/text, old printer):
+  $ ./build/test_text_r3r9
+  exit 1
+  FAIL tests/test_text_r3r9.c:150: the_reviewers_input_is_not_printed_at_the_default_limits:
+       "(9.99e100000 ; 0)" printed "(1e100001 +/- 1.1e99998 ; 0)"; the decimal exponent of that
+       text is above the default max_exp10 = 100000, so the default reader refuses it and there
+       must be no text (decision M1-D6)
+  FAIL tests/test_text_r3r9.c:154: ...: no text but *len = 28
+  FAIL tests/test_text_r3r9.c:150: ...: "(9.99e-100000 ; 0)" printed "(1e-99999 +/- 1.1e-100002 ; 0)"
+  FAIL tests/test_text_r3r9.c:154: ...: no text but *len = 30
+  FAIL tests/test_text_r3r9.c:117: every_value_at_the_default_limits_prints_text_that_reads_back:
+       "(9.99e100000 ; 0)" printed as "(1e100001 +/- 1.1e99998 ; 0)" and the default reader gave
+       the status 10, not OK
+  FAIL tests/test_text_r3r9.c:117: ...: "(9.99e-100000 ; 0)" printed as "(1e-99999 +/- 1.1e-100002 ; 0)"
+       and the default reader gave the status 10, not OK
+  FAIL tests/test_text_r3r9.c:209/210: a_cadele_at_the_exponent_boundary_is_refused_like_an_adele:
+       "((9.99e100000) + (0)*i ; 0)" printed "((1e100001 +/- 1.1e99998) + (0)*i ; 0)", not NULL
+       (and the two other cadele rows, *len = 38, 38 and 59)
+  8 tests, 144 checks, 12 failed checks, 3 failed tests
+  The printed text of the first row is the text of the review, R3 (docs/reviews/m1/text/review.md:73-74),
+  and the status 10 is ADF_LIMIT, the status the review gives for reading it back.
+
+R9, the old scheme of the fuzz target. Restored in the same scratch copy, in two places:
+  - tests/fuzz/fuzz_text.c: prec = 2 + data[0] % 190 and digits = 1 + data[size-1] % 30, and the
+    whole input is the text (the lines 285-290 of the target of commit 1b2331e);
+  - tests/fuzz/corpus/text: the two control bytes removed from all 283 files, which is the corpus
+    as it was before lanes/m1-repair-text/prefix_corpus.py prefixed it.
+
+red (build/scratch/text with the old target and the old corpus):
+  $ ./build/test_text_r3r9
+  FAIL tests/test_text_r3r9.c:529: the_committed_corpus_reaches_prec_two_and_digits_one:
+       the old reading of the corpus accepts 0 adele or cadele texts, not more than ten
+  FAIL tests/test_text_r3r9.c:533: ...: the old scheme of finding R9 reaches prec = 2 on this corpus
+  FAIL tests/test_text_r3r9.c:535: ...: the old scheme of finding R9 reaches digits = 1 on this corpus
+  FAIL tests/test_text_r3r9.c:549: ...: only 0 of the 190 prec values of the range 2..191 are reached
+  FAIL tests/test_text_r3r9.c:551: ...: only 0 of the 30 digits values are reached
+  8 tests, 144 checks, 5 failed checks, 1 failed test
+  The measured "before" numbers of the review on the same corpus texts, computed by the test on
+  the clean tree and printed by it: the old scheme reaches 1 prec value and 1 digits value (42 and
+  12), the present scheme reaches 65 prec values and all 30 digits values.
+
+=== task 3: tests/test_recon_canon.c pins the canonicalise of src/recon.c ===
+
+The line is `fmpq_canonicalise(q);` at the end of the static function fmpq_set_dyadic
+(src/recon.c:143 after the two deletions of this lane, the line 111 of lanes/m1-testgaps/report.md
+section 8.4). It is kept, as TJO decided.
+
+green (clean tree):
+  $ make build/test_recon_canon && ./build/test_recon_canon
+  5 tests, 139 checks, 0 failed checks, 0 failed tests, exit 0
+
+red (scratch copy build/scratch/canon, the line `fmpq_canonicalise(q);` deleted from src/recon.c;
+     the test includes src/recon.c, as tests/test_common.c:22 includes src/common.c, so it is the
+     source of the library that the test compiles):
+  $ make -j2 build/test_recon_canon && ./build/test_recon_canon
+  build 0, run 1
+  FAIL tests/test_recon_canon.c:153: the_bound_is_the_value_mn_times_two_to_the_exp: the case 9
+       (6 * 2^-1) is 6/2, not 3
+  FAIL tests/test_recon_canon.c:153: ...: the case 10 (12 * 2^-3) is 12/8, not 3/2
+  FAIL tests/test_recon_canon.c:153: ...: the case 11 (-12 * 2^-3) is -12/8, not -3/2
+  FAIL tests/test_recon_canon.c:153: ...: the case 12 (0 * 2^-1) is 0/2, not 0
+  FAIL tests/test_recon_canon.c:153: ...: the case 13 (1024 * 2^-10) is 1024/1024, not 1
+  FAIL tests/test_recon_canon.c:196: the_bound_is_in_canonical_form: 6 * 2^-1 is stored as 6/2,
+       whose numerator and denominator have the gcd 2, not 1
+  FAIL tests/test_recon_canon.c:196: ... 12 * 2^-3 stored as 12/8, gcd 4
+  FAIL tests/test_recon_canon.c:196: ... 0 * 2^-1 stored as 0/2, gcd 2
+  FAIL tests/test_recon_canon.c:196: ... 1024 * 2^-10 stored as 1024/1024, gcd 1024
+  FAIL tests/test_recon_canon.c:196: ... -12 * 2^-3 stored as -12/8, gcd 4
+  FAIL tests/test_recon_canon.c:196: ... 2 * 2^-1 stored as 2/2, gcd 2
+  FAIL tests/test_recon_canon.c:196: ... 18 * 2^-2 stored as 18/4, gcd 2
+  FAIL tests/test_recon_canon.c:201: the same seven rows through the second check (is_canonical)
+  FAIL tests/test_recon_canon.c:226/228/233/235/240/242: a_bound_that_is_not_canonical_on_entry_
+       comes_out_canonical: 6 * 2^-1 into the value 4/2 is stored as 6/2, and fmpq_equal_si(q, 3)
+       fails; the same for the entry values -8/4 and 5/1
+  5 tests, 139 checks, 25 failed checks, 3 failed tests
+  The two tests that are green there are the refusal test and the public test, as the comment of
+  the test file says: the public result of adf_adele_reconstruct has the same value with and
+  without the line.
