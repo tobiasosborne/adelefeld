@@ -951,5 +951,378 @@ def main():
         print(f"{check.__name__}: {check()}", flush=True)
 
 
+
+# ====================================================================================================
+# Section f-slice1 (lane f-slice1, 2026-09-29): balls of Q_p at one prime, adf_lball.
+# Statements L0 to L8 of docs/api-1f.md, section "Statements to add to functions.md". The reference of the
+# C library (tests/test_lball.c reads the vectors of lanes/f-slice1/gen_vectors.py) and their finite checks.
+# Not run by main(); run by lball_main() (called after main() below). Standard library only.
+#
+# A value is LB(p, exact, u, v, N): exact: the rational p^v u; ball: p^v u + p^N Z_p (conventions 5.8).
+# The results are computed from the statements L2 to L5 on the RATIONAL centres, and are checked against a
+# different method: enumeration of points modulo p^(K + 1) (lb_enum_check), K the exponent of the result.
+# ====================================================================================================
+
+import random
+
+
+class LB:
+    __slots__ = ("p", "exact", "u", "v", "N")
+
+    def __init__(self, p, exact, u, v, N):
+        self.p, self.exact, self.u, self.v, self.N = p, int(exact), F(u), v, N
+
+    def key(self):
+        return (self.p, self.exact, self.u, self.v, self.N)
+
+    def __eq__(self, other):
+        return isinstance(other, LB) and self.key() == other.key()
+
+    def __hash__(self):
+        return hash(self.key())
+
+    def __repr__(self):
+        return f"LB{self.key()}"
+
+    def json(self):
+        return {"p": self.p, "exact": self.exact, "un": self.u.numerator, "ud": self.u.denominator,
+                "v": self.v, "N": self.N}
+
+
+def lb_val(x):
+    """The rational p^v u (the value of an exact x, the centre of a ball)."""
+    return x.u * F(x.p) ** x.v
+
+
+def lb_exact(p, q):
+    q = F(q)
+    if q == 0:
+        return LB(p, 1, 0, 0, 0)
+    w = vp(q, p)
+    return LB(p, 1, q / F(p) ** w, w, 0)
+
+
+def lb_ball(p, c, N):
+    """L0: the canonical form of c + p^N Z_p."""
+    c = F(c)
+    if c == 0 or vp(c, p) >= N:
+        return LB(p, 0, 0, 0, N)
+    w = vp(c, p)
+    k = N - w
+    t = c / F(p) ** w
+    u = (t.numerator * pow(t.denominator, -1, p ** k)) % (p ** k)
+    assert 0 < u < p ** k and u % p != 0
+    assert vp(c - F(p) ** w * u, p) >= N
+    return LB(p, 0, u, w, N)
+
+
+def lb_is_canonical(x):
+    p = x.p
+    if x.exact:
+        return x.N == 0 and (x.u == 0 and x.v == 0 or x.u != 0 and vp(x.u, p) == 0)
+    if x.u.denominator != 1:
+        return False
+    if x.u == 0:
+        return x.v == 0
+    return x.v < x.N and x.u % p != 0 and 0 < x.u < F(p) ** (x.N - x.v)
+
+
+def lb_zero_v(x):
+    """The valuation of the centre; infinity for the centre 0."""
+    return inf if x.u == 0 else x.v
+
+
+def lb_ref_neg(x):
+    return lb_exact(x.p, -lb_val(x)) if x.exact else lb_ball(x.p, -lb_val(x), x.N)
+
+
+def lb_ref_add(x, y):
+    """L2."""
+    if x.exact and y.exact:
+        return lb_exact(x.p, lb_val(x) + lb_val(y))
+    K = min(n.N for n in (x, y) if not n.exact)
+    return lb_ball(x.p, lb_val(x) + lb_val(y), K)
+
+
+def lb_ref_sub(x, y):
+    return lb_ref_add(x, lb_ref_neg(y))
+
+
+def lb_ref_mul(x, y):
+    """L3."""
+    p = x.p
+    if (x.exact and x.u == 0) or (y.exact and y.u == 0):
+        return lb_exact(p, 0)
+    if x.exact and y.exact:
+        return lb_exact(p, lb_val(x) * lb_val(y))
+    vx, vy = lb_zero_v(x), lb_zero_v(y)
+    terms = []
+    if not y.exact:
+        terms.append(vx + y.N)
+    if not x.exact:
+        terms.append(vy + x.N)
+    if not x.exact and not y.exact:
+        terms.append(x.N + y.N)
+    K = min(terms)
+    assert K != inf
+    return lb_ball(p, lb_val(x) * lb_val(y), K)
+
+
+def lb_ref_inv(x):
+    """L4: an LB, or the name of a status."""
+    if x.exact:
+        return "NOT_UNIT" if x.u == 0 else lb_exact(x.p, 1 / lb_val(x))
+    if x.u == 0:
+        return "UNIT_NOT_CERTIFIED"
+    return lb_ball(x.p, 1 / lb_val(x), x.N - 2 * x.v)
+
+
+def lb_ref_div(x, y):
+    r = lb_ref_inv(y)
+    return r if isinstance(r, str) else lb_ref_mul(x, r)
+
+
+def lb_ref_valuation(x):
+    """(status, v, is_inf)."""
+    if x.exact:
+        return ("OK", 0, 1) if x.u == 0 else ("OK", x.v, 0)
+    return ("NOT_DETERMINED", None, None) if x.u == 0 else ("OK", x.v, 0)
+
+
+def lb_ref_abs(x):
+    if x.exact:
+        return ("OK", F(0)) if x.u == 0 else ("OK", F(x.p) ** (-x.v))
+    return ("NOT_DETERMINED", None) if x.u == 0 else ("OK", F(x.p) ** (-x.v))
+
+
+def lb_ref_decompose(x):
+    """L6: (status, m, unit LB)."""
+    if x.exact:
+        if x.u == 0:
+            return ("DOMAIN", None, None)
+        return ("OK", x.v, lb_exact(x.p, x.u))
+    if x.u == 0:
+        return ("NOT_DETERMINED", None, None)
+    return ("OK", x.v, LB(x.p, 0, x.u, 0, x.N - x.v))
+
+
+def lb_dv(x, y):
+    """v_p(value(x) - value(y)) by the last paragraph of L8 (no power of p)."""
+    if x.u == 0 and y.u == 0:
+        return inf
+    if x.u == 0:
+        return y.v
+    if y.u == 0:
+        return x.v
+    if x.v != y.v:
+        return min(x.v, y.v)
+    d = vp(x.u - y.u, x.p)
+    return inf if d == inf else x.v + d
+
+
+def lb_ref_equal_set(x, y):
+    return x.key() == y.key()
+
+
+def lb_ref_overlaps(x, y):
+    if x.p != y.p:
+        return False
+    if x.exact and y.exact:
+        return lb_val(x) == lb_val(y)
+    n = min(z.N for z in (x, y) if not z.exact)
+    return lb_dv(x, y) >= n
+
+
+def lb_ref_contains(x, y):
+    """The set x is inside the set y."""
+    if x.p != y.p:
+        return False
+    if y.exact:
+        return x.exact and lb_val(x) == lb_val(y)
+    if x.exact:
+        return lb_dv(x, y) >= y.N
+    return x.N >= y.N and lb_dv(x, y) >= y.N
+
+
+def lb_ref_project(p, A, H, d):
+    """L1."""
+    if H == 0:
+        return lb_exact(p, F(A, d))
+    return lb_ball(p, F(A, d), vp(H, p) - vp(d, p))
+
+
+def lb_points(x, t=1):
+    """The points of x that matter modulo the next digit: c + p^N a, a in [0, p^t); the value for exact x."""
+    if x.exact:
+        return [lb_val(x)]
+    return [lb_val(x) + F(x.p) ** x.N * a for a in range(x.p ** t)]
+
+
+def lb_residue_class(r, c, K, p):
+    """(r - c)/p^K mod p; asserts that r lies in c + p^K Z_p."""
+    d = r - c
+    if d == 0:
+        return 0
+    assert vp(d, p) >= K, (r, c, K)
+    d = d / F(p) ** K
+    return (d.numerator * pow(d.denominator, -1, p)) % p
+
+
+def lb_enum_check(op, x, y=None, t=1):
+    """The result ball of op contains every result of the points and no smaller ball does (finite check).
+
+    Returns the reference result. The points are those of lb_points (a modulo p^t); by the case analysis of
+    L2 to L5 t = 1 suffices, and check_lball_enumeration repeats with t = 2 on small cases as a check of that
+    remark. The result R = c' + p^K Z_p contains every result when vp(r - c') >= K is asserted for each
+    point result r, and is tight when the classes (r - c')/p^K mod p cover all p residues (a ball of
+    exponent K + 1 or more would miss one of them).
+    """
+    p = x.p
+    if op == "neg":
+        ref = lb_ref_neg(x)
+        results = [-s for s in lb_points(x, t)]
+    elif op == "inv":
+        ref = lb_ref_inv(x)
+        if isinstance(ref, str):
+            return ref
+        results = [1 / s for s in lb_points(x, t) if s != 0]
+    else:
+        ref = {"add": lb_ref_add, "sub": lb_ref_sub, "mul": lb_ref_mul, "div": lb_ref_div}[op](x, y)
+        if isinstance(ref, str):
+            return ref
+        f = {"add": lambda s, u: s + u, "sub": lambda s, u: s - u, "mul": lambda s, u: s * u,
+             "div": lambda s, u: s / u}[op]
+        results = [f(s, u) for s in lb_points(x, t) for u in lb_points(y, t) if not (op == "div" and u == 0)]
+    if ref.exact:
+        assert all(r == lb_val(ref) for r in results), (op, x, y, ref)
+        return ref
+    c = lb_val(ref)
+    classes = {lb_residue_class(r, c, ref.N, p) for r in results}
+    assert classes == set(range(p)), (op, x, y, ref, sorted(classes))
+    return ref
+
+
+def lb_universe(p, vmax, kmax, exact_extra=()):
+    """All canonical balls with valuation in [-vmax, vmax], relative precision 1..kmax, the balls around 0 with
+    N in [-vmax, kmax], and the exact values 0, +-p^v (|v| <= vmax) and exact_extra."""
+    out = []
+    for v in range(-vmax, vmax + 1):
+        for k in range(1, kmax + 1):
+            for u in range(1, p ** k):
+                if u % p:
+                    out.append(LB(p, 0, u, v, v + k))
+    for N in range(-vmax, kmax + 1):
+        out.append(LB(p, 0, 0, 0, N))
+    out.append(lb_exact(p, 0))
+    for v in range(-vmax, vmax + 1):
+        for sgn in (1, -1):
+            out.append(lb_exact(p, sgn * F(p) ** v))
+    for q in exact_extra:
+        out.append(lb_exact(p, q))
+    seen, uniq = set(), []
+    for x in out:
+        assert lb_is_canonical(x), x
+        if x not in seen:
+            seen.add(x)
+            uniq.append(x)
+    return uniq
+
+
+def check_lball_reduction():
+    """L0: the canonical centre, on 3000 random rationals at p = 2, 3, 5, 7 and 2^64 - 59."""
+    rng = random.Random(20260929)
+    n = 0
+    for p in (2, 3, 5, 7, 2 ** 64 - 59):
+        for _ in range(600):
+            q = F(rng.randint(-10 ** 6, 10 ** 6), rng.randint(1, 10 ** 4)) * F(p) ** rng.randint(-4, 4)
+            N = rng.randint(-5, 6)
+            x = lb_ball(p, q, N)
+            assert lb_is_canonical(x)
+            n += 1
+    return f"reduced={n}"
+
+
+def check_lball_projection():
+    """L1: the p-th coordinates of (A + H Zhat)/d, by enumeration of z_p modulo p^2."""
+    rng = random.Random(1)
+    n = 0
+    for p in (2, 3, 5, 7):
+        for _ in range(120):
+            d = rng.randint(1, 60)
+            H = rng.choice([0, rng.randint(1, 500)])
+            A = rng.randint(-100, 100)
+            g = gcd(gcd(A, H), d)
+            A, H, d = A // g, H // g, d // g
+            ref = lb_ref_project(p, A, H, d)
+            if H == 0:
+                assert ref.exact and lb_val(ref) == F(A, d)
+            else:
+                e = vp(F(H, d), p)
+                assert ref.N == e
+                cs = {lb_residue_class(F(A, d) + F(H, d) * z, lb_val(ref), e, p) for z in range(p * p)}
+                assert cs == set(range(p)), (p, A, H, d, ref)
+            n += 1
+    return f"projected={n}"
+
+
+def check_lball_enumeration():
+    """L2 to L5: every result ball contains the results of all points and is not contained in a smaller ball.
+
+    Exhaustive on the universe of p = 2 (valuations -2..2, relative precision up to 3) and p = 3 (-1..1, up to
+    2), for add, sub, mul, div, and neg, inv on every ball; a random sample of pairs at p = 5 and 7; a repeat
+    with t = 2 (more digits of a) on p = 2.
+    """
+    counts = {}
+    rng = random.Random(7)
+    for p, vmax, kmax, full in ((2, 2, 3, True), (3, 1, 2, True), (5, 1, 2, False), (7, 1, 2, False)):
+        uni = lb_universe(p, vmax, kmax)
+        pairs = [(x, y) for x in uni for y in uni]
+        if not full:
+            pairs = rng.sample(pairs, 1500)
+        for op in ("add", "sub", "mul", "div"):
+            for x, y in pairs:
+                lb_enum_check(op, x, y)
+                counts[op] = counts.get(op, 0) + 1
+        for x in uni:
+            for op in ("neg", "inv"):
+                lb_enum_check(op, x)
+                counts[op] = counts.get(op, 0) + 1
+    uni2 = lb_universe(2, 1, 2)
+    for x in uni2:
+        for y in uni2:
+            for op in ("add", "mul"):
+                a = lb_enum_check(op, x, y, t=1)
+                b = lb_enum_check(op, x, y, t=2)
+                assert a == b
+                counts["t2"] = counts.get("t2", 0) + 1
+    return " ".join(f"{k}={v}" for k, v in sorted(counts.items()))
+
+
+def check_lball_decompose():
+    """L6, L7: x = p^m U, and every element of x has valuation m (points of the ball, p = 2, 3)."""
+    n = 0
+    for p in (2, 3):
+        for x in lb_universe(p, 2, 3):
+            st, m, U = lb_ref_decompose(x)
+            if st != "OK":
+                assert x.u == 0
+                continue
+            for s in lb_points(x, 2):
+                assert vp(s, p) == m
+            if not x.exact:
+                assert lb_is_canonical(U) and U.v == 0 and U.N == x.N - m and U.N >= 1
+                assert lb_ref_mul(lb_exact(p, F(p) ** m), U) == x
+            else:
+                assert U.exact and lb_val(U) * F(p) ** m == lb_val(x) and vp(lb_val(U), p) == 0
+            n += 1
+    return f"decomposed={n}"
+
+
+def lball_main():
+    for check in (check_lball_reduction, check_lball_projection, check_lball_enumeration, check_lball_decompose):
+        print(f"{check.__name__}: {check()}", flush=True)
+
+
 if __name__ == "__main__":
     main()
+    lball_main()
