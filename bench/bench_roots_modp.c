@@ -3,14 +3,15 @@
    degree route (route 2: d = gcd(h, X^p - X), the candidates of nmod_poly_roots, each tested). The
    crossover sets ADF_ROOTS_P_EVAL_MAX (include/adelefeld/roots.h).
 
-   For each prime p (the largest prime <= 2^b, b = 4, 6, 8, 10, 12, 14, 16, 18, 20), each degree 2, 8, 32 and
+   For each prime p (the largest prime <= 2^b, b = 4, 6 to 10, 12 to 20 in steps of 2), each degree 2, 8, 32 and
    two families of polynomials over F_p (random: a monic polynomial with uniform coefficients, about one root
    on average; split: deg distinct roots, the most work for the splitting of route 2, when p >= deg), the
    time of one call of the hidden function adf_roots_modp (src/roots.c) with the route forced, averaged
    over a batch of 16 polynomials (kind: independent batch). Every call of a batch returns a number of roots
    that is summed into a checksum outside the timed region; the two routes must give the same sum (else the
-   run stops). min, median, max over the trials. The machine is shared with other lanes: see the header of
-   the result file.
+   run stops). min, median, max over the trials, and for each p the geometric mean over the cases of the
+   ratio of the medians (above 1: route 2 is faster). The machine is shared with other lanes: see the header
+   of the result file.
 
    Build and run: make -C bench, then ./bench/bench_roots_modp --run [--trials N] [--cpu N] from the
    repository root; the table appears on stdout and in bench/results/<utc>_roots_modp.txt. */
@@ -25,6 +26,7 @@
 #include <flint/nmod_poly.h>
 #include <flint/ulong_extras.h>
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -136,14 +138,15 @@ calibrate(modp_ctx * c)
 static int
 run(int cpu, int trials)
 {
-    static const int bexp[9] = { 4, 6, 8, 10, 12, 14, 16, 18, 20 };
+    static const int bexp[11] = { 4, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20 };
     static const slong degs[3] = { 2, 8, 32 };
     char run_id[64], model[BENCH_STR];
     flint_rand_t st;
     modp_ctx c;
     bench_stats s[2];
     unsigned long long acc[2], sum = 0;
-    int actual_cpu, ib, id, split, route;
+    double lsum;
+    int actual_cpu, ib, id, split, route, ncase;
     ulong p;
     FILE * f;
 
@@ -171,9 +174,11 @@ run(int cpu, int trials)
     printf("%-9s %-4s %-6s %-30s %-30s %s\n", "p", "deg", "family", "route 1 (evaluation)", "route 2 (gcd)",
            "median 1 / median 2");
     flint_randinit(st);
-    for (ib = 0; ib < 9; ib++)
+    for (ib = 0; ib < 11; ib++)
     {
         p = prime_at_most(UWORD(1) << bexp[ib]);
+        lsum = 0;
+        ncase = 0;
         for (id = 0; id < 3; id++)
             for (split = 0; split <= 1; split++)
             {
@@ -212,8 +217,14 @@ run(int cpu, int trials)
                        s[0].median / 1e3, s[0].max / 1e3, s[1].min / 1e3, s[1].median / 1e3, s[1].max / 1e3,
                        s[0].median / s[1].median);
                 fflush(stdout);
+                lsum += log(s[0].median / s[1].median);
+                ncase++;
                 unfill(&c);
             }
+        fprintf(f, "%-9lu geometric mean of median 1 / median 2 over %d cases: %.3f\n", (unsigned long) p, ncase,
+                exp(lsum / ncase));
+        printf("%-9lu geometric mean of median 1 / median 2 over %d cases: %.3f\n", (unsigned long) p, ncase,
+               exp(lsum / ncase));
     }
     fprintf(f, "# checksum (roots of one batch, summed): %llu\n", sum);
     fclose(f);

@@ -294,13 +294,12 @@ ADF_TEST(both_routes_give_the_same_roots_below_the_bound)
     flint_randinit(st);
     for (i = 0; i < sizeof(small) / sizeof(small[0]); i++)
         agree_at(small[i], st, 1);
-    /* the three largest primes <= ADF_ROOTS_P_EVAL_MAX; every residue a root at the largest one only (the
-       evaluation of a polynomial of degree p at p residues costs p^2) */
+    /* the three largest primes <= ADF_ROOTS_P_EVAL_MAX */
     p = ADF_ROOTS_P_EVAL_MAX;
     for (k = 0; k < 3; k++)
     {
         p = prime_at_most(p);
-        agree_at(p, st, k == 0);
+        agree_at(p, st, 1);
         p--;
     }
     flint_randclear(st);

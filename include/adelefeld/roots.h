@@ -139,7 +139,7 @@ extern "C" {
    roots modulo p by evaluation at every residue (solvers P3.7(1)), 2^20. Above it they return
    ADF_UNSUPPORTED. The bound is a property of this slice, not of the library: it goes away with the
    slice that adds the route of solvers P3.7(2) for larger primes. */
-#define ADF_ROOTS_P_EVAL_MAX 1048576
+#define ADF_ROOTS_P_EVAL_MAX 128
 
 /* The largest precision of adf_roots_real, 2^21 bits (about 630000 decimal digits). Above it the
    function returns ADF_LIMIT before any allocation. The bound keeps the balls of FLINT, whose accuracy
