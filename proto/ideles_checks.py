@@ -8,6 +8,15 @@ So containment and equality of cosets, products of cosets (unions of U(M)-cosets
 radius divides M are decided by enumeration in Z/M. Nothing here uses the formulas under test except as the
 prediction that is compared.
 Each check prints one line with counts; the script exits non-zero on any failure.
+
+Part 1 (lane m0-proofs-ideles, 2026-09-27): the checks of docs/proofs/ideles.md, cited there by name.
+Part 2 (lane d-ideles, 2026-09-29): the reference algorithms of the interface of milestone 2
+(docs/api-2.md) and the oracles of its acceptance tests. Every example of docs/api-2.md is computed in
+part 2 (check_examples prints them). The reference functions are named ref_*; the oracles enumerate and
+do not call them.
+
+Run: timeout 180 python3 proto/ideles_checks.py          (all checks; ends with their number)
+     timeout 180 python3 proto/ideles_checks.py part2    (part 2 only)
 """
 from fractions import Fraction as F
 from math import gcd
@@ -175,9 +184,12 @@ def check_products():
         ok &= inv == img(cs, N, M)
         ok &= (1 % M) in frozenset((x * y) % M for x in img(c, N, M) for y in inv)
         # best modulus: all K <= 48 for which the product lies in one coset mod K
+        cache = {}  # level M2 -> product set at that level (the same set for every K with this lcm)
         for K in range(1, 49):
             M2 = lcm(M, K)
-            P2 = {(x * y) % M2 for x in img(c, N, M2) for y in img(c2, N2, M2)}
+            if M2 not in cache:
+                cache[M2] = {(x * y) % M2 for x in img(c, N, M2) for y in img(c2, N2, M2)}
+            P2 = cache[M2]
             one_coset = len({x % K for x in P2}) == 1
             Kb = canon(0, K)[1]
             gb = canon(0, g)[1]
@@ -445,20 +457,3 @@ def check_division():
            f"{n} cases: hull radius = gcd(|a| L, M); simple ball coarser in {coarser}")
 
 
-if __name__ == "__main__":
-    check_decomposition()
-    check_unit_cosets()
-    check_canonical()
-    check_products()
-    check_lte()
-    check_power()
-    check_power_local()
-    check_norm()
-    check_class_map()
-    check_idele_to_adele()
-    check_noninvertible()
-    check_division()
-    if FAILURES:
-        print("FAILED:", ", ".join(FAILURES))
-        sys.exit(1)
-    print("all checks passed")
