@@ -1304,11 +1304,12 @@ ADF_TEST(domain_unsupported_and_limit_before_any_allocation_L_untouched)
         EXPECT(ADF_DOMAIN, place_of(7), f, WORD_MIN, 3);
         EXPECT(ADF_DOMAIN, place_of(7), f, 5, -1);
         EXPECT(ADF_DOMAIN, place_of(7), f, 5, WORD_MIN);
-        EXPECT(ADF_DOMAIN, place_of(pbig), f, 5, -1);            /* DOMAIN before UNSUPPORTED */
-        /* UNSUPPORTED (TEMPORARY, S-D10): p just above 2^20, and before LIMIT */
-        EXPECT(ADF_UNSUPPORTED, place_of(pbig), f, 5, 3);
-        EXPECT(ADF_UNSUPPORTED, place_of(pbig), f, WORD_MAX, 3);
-        EXPECT(ADF_UNSUPPORTED, place_of(p64), f, 5, 3);
+        EXPECT(ADF_DOMAIN, place_of(pbig), f, 5, -1);
+        EXPECT(ADF_DOMAIN, place_of(p64), f, 0, 3);
+        /* no UNSUPPORTED (S-D10, slice 4): above 2^20 and at 2^64 - 59 the limit of the precision holds as
+           at every prime; the searches that succeed there are in tests/test_roots_bigp.c */
+        EXPECT(ADF_LIMIT, place_of(pbig), f, WORD_MAX, 3);
+        EXPECT(ADF_LIMIT, place_of(p64), f, ADF_ROOTS_BITS_MAX / 128 + 1, 3);
         /* LIMIT of the precision: 2 prec bits(p) > 2^24 */
         EXPECT(ADF_LIMIT, place_of(7), f, ADF_ROOTS_BITS_MAX / 6 + 1, 3);
         EXPECT(ADF_LIMIT, place_of(7), f, WORD_MAX, WORD_MAX);
@@ -1317,11 +1318,17 @@ ADF_TEST(domain_unsupported_and_limit_before_any_allocation_L_untouched)
 #undef EXPECT
     }
     ADF_CHECK(bad == 0);
-    /* the largest prime below the bound works: (X - 5)(X + 11) at 1048573 */
+    /* (X - 5)(X + 11) at 1048573, the largest prime below the old bound 2^20 of slice 2 */
     poly_from_roots(f, 1, r2, 2);
     ADF_CHECK(adf_roots_padic(L, f, place_of(pmax), 3, 2) == ADF_OK && L->n == 2 && L->complete == 1);
     ADF_CHECK(adf_rootlist_verify_complete(L, f, 2) == 1);
-    ADF_CHECK(pbig > ADF_ROOTS_P_EVAL_MAX && pmax <= ADF_ROOTS_P_EVAL_MAX && ADF_ROOTS_P_EVAL_MAX == 1048576);
+    ADF_CHECK(pbig > ADF_ROOTS_P_EVAL_MAX && pmax > ADF_ROOTS_P_EVAL_MAX && ADF_ROOTS_P_EVAL_MAX == 128);
+    /* and above it: X^2 - 2 at 2^20 + 7 (2 is a square: p = 7 modulo 8) and (X - 5)(X + 11) at 2^64 - 59 */
+    ADF_CHECK(adf_roots_padic(L, f, place_of(p64), 3, 2) == ADF_OK && L->n == 2 && L->complete == 1);
+    ADF_CHECK(adf_rootlist_verify_complete(L, f, 2) == 1);
+    poly_set_si(f, c2, 3);
+    ADF_CHECK(adf_roots_padic(L, f, place_of(pbig), 3, 2) == ADF_OK && L->n == 2 && L->complete == 1);
+    ADF_CHECK(adf_rootlist_verify_complete(L, f, 2) == 1);
     snap_clear(&S);
     adf_rootlist_clear(L);
     fmpz_poly_clear(f);

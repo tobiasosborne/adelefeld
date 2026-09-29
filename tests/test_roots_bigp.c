@@ -636,8 +636,9 @@ ADF_TEST(a_wrong_candidate_list_is_refused)
         nmod_poly_init(q, p);
         for (i = 0; i < 20; i++)
         {
-            /* planted roots times X^2 - c without root: the roots are exactly the planted ones */
-            n = n_randint(st, 9);
+            /* planted roots times X^2 - c without root: the roots are exactly the planted ones; at most p - 1
+               of them, so that a residue is left that is not a root */
+            n = n_randint(st, FLINT_MIN(9, p));
             for (j = 0; j < n; j++)
                 r[j] = n_randint(st, p);
             nmod_from_roots(h, 1 + n_randint(st, p - 1), r, n);

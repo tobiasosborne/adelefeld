@@ -727,15 +727,17 @@ adf_rootlist_get_fball(adf_fball_t x, const adf_rootlist_t L, slong i)
 /* ==== slice 2: all roots at a prime (Algorithm P) ====
 
    Algorithm P and Proposition 3.5 of solvers.md (lines 1160 to 1236), with the level of Proposition 3.4
-   (lines 1121 to 1154) and the roots modulo p by evaluation at every residue (Proposition 3.7(1), lines
-   1288 to 1289); the reference is padic_roots, proto/solvers_checks.py:1649 to 1698. FLINT routines
+   (lines 1121 to 1154) and the roots modulo p of Proposition 3.7 (lines 1284 to 1302: by evaluation at every
+   residue for p <= ADF_ROOTS_P_EVAL_MAX, by a degree above; slice 4, "the roots modulo p" below); the
+   reference is padic_roots, proto/solvers_checks.py:1649 to 1698. FLINT routines
    used besides those above (refs/src/flint-3.0.1):
      fmpz_poly_taylor_shift, fmpz_poly.rst:2496: "composing f by x + c";
      fmpz_poly_scalar_divexact_fmpz, fmpz_poly.rst:545: exact division of every coefficient;
      fmpz_poly_get_nmod_poly, fmpz_poly.rst:3142: the coefficients reduced by the modulus;
      nmod_poly_derivative, nmod_poly.rst:1212; nmod_poly_evaluate_nmod, nmod_poly.rst:1243 (Horner, the
        point reduced modulo the modulus).
-   No routine of FLINT for roots or factorisation modulo p is called (S-D10, P3.7(1)).
+   The root routine of FLINT modulo p, nmod_poly_roots, is called only by the route of P3.7(2), and its
+   candidates are tested there (S-D10).
 
    The classes are not formed as f(a + p^e Y) from f: the polynomial of a child is formed from that of its
    parent, g_(a1, e+1)(Y) = g_(a,e)(b + p Y) / p^v with a1 = a + p^e b and w(a1, e+1) = w(a, e) + v, which is
@@ -1150,7 +1152,7 @@ adf_roots_modp(ulong * roots, const nmod_poly_t h, int route)
     return route == ADF_ROOTS_ROUTE_EVAL ? modp_roots_eval(roots, h) : modp_roots_gcd(roots, h);
 }
 
-/* Algorithm P (solvers.md:1162 to 1176) on g0 != 0 at the prime pu <= ADF_ROOTS_P_EVAL_MAX with
+/* Algorithm P (solvers.md:1162 to 1176) on g0 != 0 at the prime pu (any word) with
    k_req = prec_p >= 1 and D = depth >= 0, the limit of S-D18 with the bound bits_max. On ADF_OK the
    arrays and lengths of T (n, a, K, s, nu, ua, ue; T without arrays on entry) hold the certificates and
    the unresolved classes, each sorted by the centre; the other fields of T are not written. On ADF_LIMIT
@@ -1165,8 +1167,8 @@ padic_search(adf_rootlist_t T, const fmpz_poly_t g0, ulong pu, slong prec_p, slo
     item_vec certs, classes;
     open_class * stk = NULL;
     open_class N;
-    slong nst = 0, ast = 0, i, v, w0, e1, wc, K = 0, s = 0;
-    ulong b, bits = FLINT_BIT_COUNT(pu);
+    slong nst = 0, ast = 0, i, v, w0, e1, wc, K = 0, s = 0, nr, ir;
+    ulong b, * rts, bits = FLINT_BIT_COUNT(pu);
     int st = ADF_OK;
 
     fmpz_init_set_ui(p, pu);
@@ -1181,6 +1183,9 @@ padic_search(adf_rootlist_t T, const fmpz_poly_t g0, ulong pu, slong prec_p, slo
     nmod_poly_init(dm, pu);
     item_vec_init(&certs);
     item_vec_init(&classes);
+    /* the roots modulo p of one class: at most deg g_(a,e) = deg g0 of them (a Taylor shift and a division by
+       a power of p keep the degree) */
+    rts = flint_malloc((FLINT_MAX(fmpz_poly_degree(g0), 0) + 1) * sizeof(ulong));
     /* step 1: g = g0 / p^w0 */
     w0 = content_val_p(g0, p);
     fmpz_pow_ui(q, p, (ulong) w0);
@@ -1195,10 +1200,12 @@ padic_search(adf_rootlist_t T, const fmpz_poly_t g0, ulong pu, slong prec_p, slo
         N = stk[--nst];                         /* N owns the entry now */
         fmpz_poly_get_nmod_poly(hm, N.h);
         nmod_poly_derivative(dm, hm);
-        for (b = 0; b < pu && st == ADF_OK; b++)
+        /* the roots b of g_(a,e) modulo p, complete (P3.7; the route by the size of p); hm is not 0: the
+           content at p of every class polynomial is removed (P3.4) */
+        nr = adf_roots_modp(rts, hm, ADF_ROOTS_ROUTE_AUTO);
+        for (ir = 0; ir < nr && st == ADF_OK; ir++)
         {
-            if (nmod_poly_evaluate_nmod(hm, b) != 0)
-                continue;
+            b = rts[ir];
             if (nmod_poly_evaluate_nmod(dm, b) != 0)
             {
                 /* a simple root of g_(a,e) modulo p: one root of g, certified (P3.4(3)) */
@@ -1275,6 +1282,7 @@ padic_search(adf_rootlist_t T, const fmpz_poly_t g0, ulong pu, slong prec_p, slo
     for (i = 0; i < nst; i++)
         open_class_clear(stk + i);
     flint_free(stk);
+    flint_free(rts);
     item_vec_clear(&certs);
     item_vec_clear(&classes);
     fmpz_clear(p);
@@ -1305,8 +1313,6 @@ adf_roots_padic_core(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t p, slong
     if (fmpz_poly_is_zero(f) || adf_place_is_archimedean(p) || prec_p < 1 || depth < 0)
         return ADF_DOMAIN;
     pu = adf_place_prime_get(p);
-    if (pu > ADF_ROOTS_P_EVAL_MAX)
-        return ADF_UNSUPPORTED;                 /* TEMPORARY (S-D10) */
     if (!exp_within(prec_p, FLINT_BIT_COUNT(pu), bits_max))
         return ADF_LIMIT;
     adf_rootlist_init(T);
@@ -1365,8 +1371,6 @@ adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, slong 
     if (L->scope != ADF_ROOTLIST_PARTITION || L->complete != 1 || L->nu != 0)
         return 0;
     pu = adf_place_prime_get(L->place);
-    if (pu > ADF_ROOTS_P_EVAL_MAX)
-        return 0;                               /* TEMPORARY (S-D10): no rerun above the bound */
     adf_rootlist_init(T);
     fmpz_init_set_ui(p, pu);
     /* the rerun of Algorithm P on g through depth; no class may be left */
