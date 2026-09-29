@@ -1,0 +1,40 @@
+fault 0: mul exponent = min(N, N') without the valuations
+    -> FAIL tests/test_lball.c:728: enumeration_p2: check failed: 0 | div p=2: 1 classes modulo p^(K+1), want p (not tight); x=(2,0) y=(2,5)
+    tests that failed: vectors_binary
+fault 1: mul without the term N + N' for two balls around 0
+    -> 20 tests, 3936700 checks, 122 failed checks, 5 failed tests
+    tests that failed: vectors_binary, enumeration_p2, enumeration_p3, enumeration_p5, enumeration_p7
+fault 2: add exponent = max(N, N') instead of min
+    -> FAIL tests/test_lball.c:728: enumeration_p5: check failed: 0 | sub p=5: 25 classes modulo p^(K+1), want p (not tight); x=(1,3) y=(0,2)
+    tests that failed: vectors_binary, enumeration_p2, enumeration_p3
+fault 3: inverse exponent N - v instead of N - 2 v
+    -> FAIL tests/test_lball.c:703: enumeration_p5: check failed: 0 | inv p=5: a result point is outside the ball (x.v=1 x.N=3 y.v=0 y.N=0)
+    tests that failed: vectors_binary, vectors_unary, enumeration_p2, enumeration_p3
+fault 4: sub computed as add (no negation)
+    -> 20 tests, 4087400 checks, 149404 failed checks, 5 failed tests
+    tests that failed: vectors_binary, enumeration_p2, enumeration_p3, enumeration_p5, enumeration_p7
+fault 5: add never drops the second operand of valuation >= K
+    -> 20 tests, 3938748 checks, 2 failed checks, 1 failed tests
+    tests that failed: limits_and_extreme_exponents
+fault 6: contains ignores the precision test N >= N'
+    -> 20 tests, 3938748 checks, 43 failed checks, 1 failed tests
+    tests that failed: vectors_predicates
+fault 7: is_canonical does not test that p does not divide u
+    -> 20 tests, 3938748 checks, 2 failed checks, 1 failed tests
+    tests that failed: is_canonical_rejects_each_clause
+fault 8: valuation of a ball around 0 answered instead of NOT_DETERMINED
+    -> 20 tests, 3938748 checks, 217 failed checks, 2 failed tests
+    tests that failed: vectors_unary, statuses_and_untouched_outputs
+fault 9: inverse of a ball around 0 answers NOT_UNIT instead of UNIT_NOT_CERTIFIED
+    -> 20 tests, 3938748 checks, 970 failed checks, 7 failed tests
+    tests that failed: vectors_binary, vectors_unary, enumeration_p2, enumeration_p3, enumeration_p5, enumeration_p7, statuses_and_untouched_outputs
+fault 10: centre reduction: the integer shortcut also for a negative numerator
+    -> FAIL tests/test_lball.c:678: enumeration_p2: check failed: adf_lball_is_canonical(z)
+    tests that failed: vectors_construct, vectors_binary, vectors_unary
+fault 11: decompose gives relative precision N instead of N - v
+    -> 20 tests, 3938748 checks, 864 failed checks, 3 failed tests
+    tests that failed: vectors_unary, statuses_and_untouched_outputs, decompose_roundtrip
+fault 12: mul writes its output before the status is known
+    -> 20 tests, 3938748 checks, 3 failed checks, 1 failed tests
+    tests that failed: limits_and_extreme_exponents
+13 faults, 13 caught, survivors: []

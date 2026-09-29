@@ -83,6 +83,11 @@ run_output=$(mktemp)
 if "$JULIA" --startup-file=no tests/julia/smoke.jl "$so" > "$run_output" 2>&1; then
     cat "$run_output"
     rm -f "$run_output"
+    # lane f-slice1: the ccall test of adf_lball (tests/julia/lball.jl)
+    if ! "$JULIA" --startup-file=no tests/julia/lball.jl "$so"; then
+        echo "test_julia: lball.jl FAILED" >&2
+        exit 1
+    fi
     echo "test_julia: passed"
     exit 0
 fi
@@ -95,6 +100,10 @@ if grep -q '__gmpn_modexact_1_odd' "$run_output" 2>/dev/null; then
              "libflint needs; see the header comment of this script)"
         if LD_PRELOAD="$sys_gmp" "$JULIA" --startup-file=no tests/julia/smoke.jl "$so"; then
             rm -f "$run_output"
+            if ! LD_PRELOAD="$sys_gmp" "$JULIA" --startup-file=no tests/julia/lball.jl "$so"; then
+                echo "test_julia: lball.jl FAILED (with LD_PRELOAD=$sys_gmp)" >&2
+                exit 1
+            fi
             echo "test_julia: passed (with LD_PRELOAD=$sys_gmp)"
             exit 0
         fi

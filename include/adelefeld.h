@@ -17,6 +17,7 @@
      adelefeld/place.h    adf_place_t and its functions
      adelefeld/rat.h      adf_rat
      adelefeld/fball.h    adf_fball, tight policy
+     adelefeld/lball.h    adf_lball, a ball in Q_p at one prime (milestone 1F.3, first slice)
      adelefeld/adele.h    adf_adele, adf_cadele
      adelefeld/recon.h    rational reconstruction from a full ball
      adelefeld/text.h     value form, limits, adf_text_classify
@@ -40,6 +41,7 @@
 #include "adelefeld/place.h"
 #include "adelefeld/rat.h"
 #include "adelefeld/fball.h"
+#include "adelefeld/lball.h"
 #include "adelefeld/adele.h"
 #include "adelefeld/recon.h"
 #include "adelefeld/resid.h"

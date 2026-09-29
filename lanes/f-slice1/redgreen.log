@@ -1,0 +1,16 @@
+f-slice1 red/green log (2026-09-29)
+
+RED 1 (first test of the file: link error, as allowed by lanes/COMMON-C.md rule 1):
+  make -j2 build/test_lball  ->  "undefined reference to adf_lball_init ... adf_lball_decompose" (all 28 functions),
+  ld returned 1 exit status. (The first attempts also failed on -Werror=comment and -Werror=unused-variable in the
+  test file itself; both repaired in the test.)
+
+RED 2 (every function stubbed: init/clear no-ops, predicates 0, arithmetic returns ADF_UNSUPPORTED):
+  make -j2 build/test_lball && ./build/test_lball  ->
+  "20 tests, 947996 checks, 103721 failed checks, 20 failed tests"
+  all 20 tests fail by assertion (layout_init_and_copy 7, is_canonical_rejects_each_clause 15, vectors_construct
+  first lines "set_rat line 1: status UNSUPPORTED", ... , the_example_of_the_brief 5 failed checks).
+
+GREEN 1 (src/lball.c written; one test bug repaired first: a forged u = 2^201 + 1 was divisible by 3, so not canonical):
+  make -j2 build/test_lball && ./build/test_lball  ->  "20 tests, 3937477 checks, 0 failed checks, 0 failed tests"
+  enumeration p=2: 57 balls, 12996 binary cases; p=3: 38 balls, 5776; p=5: 86 balls, 16000; p=7: 158 balls, 8000.
