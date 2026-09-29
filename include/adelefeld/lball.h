@@ -26,6 +26,12 @@
    function whose input has |v| or |N| above ADF_LBALL_EXP_MAX, or whose result would (the sums and differences of
    exponents that the functions form are then far from overflowing slong). is_canonical, init, clear, set, swap,
    identical and the layout queries have no such limit.
+   THE RULE for neg, add, sub, mul, inv and div (api-1f.md, decision 3, L4a): ADF_LIMIT is returned only if an INPUT
+   or the RESULT is outside these limits, never because of an intermediate value (the negation of the second operand
+   of a difference, the inverse of the divisor of a quotient, the precision of an exact value). "The result is
+   outside" means that its v or N is beyond ADF_LBALL_EXP_MAX, or that its stored centre needs p^k with
+   k bits(p) > ADF_LBALL_BITS_MAX. For example neg of 1 + 5^E Z_5, E = ADF_LBALL_EXP_MAX, is ADF_LIMIT: the centre of
+   the result is 5^E - 1.
 
    Common rules, unless a comment says otherwise:
    - Aliasing (conventions 4.1): an output may be the same object as any input of the same type; inputs may alias
@@ -34,7 +40,11 @@
      requirement, conventions 3.1) and the outputs are untouched. The set predicates return 0 for two different
      primes (the sets lie in different fields).
    - Inputs satisfy the predicate of conventions 5.8 (adf_lball_is_canonical); otherwise the behaviour is undefined
-     (conventions 4.4, CV-09). Every output written satisfies it.
+     (conventions 4.4, CV-09). With -DADF_CHECK_INVARIANTS every function below that reads a value or an adf_rat checks
+     it on entry and calls flint_abort (conventions 4.4): all of them except init (reads nothing), clear (must release
+     a value with forged fields), is_canonical (the predicate never aborts) and the layout queries (no argument); the
+     output of set and of the arithmetic functions is overwritten and not checked; set_fball reads its adf_fball
+     through adf_fball_get_fmpz3, which checks it. Every output written satisfies the predicate.
    - A function that returns a status leaves every output untouched on a status other than ADF_OK (CV-06).
    - Cost: M(n) is one multiplication of integers of n bits; "a mod" is a reduction modulo p^k, k = the relative
      precision of the result, with one modular inverse when the unit part is not an integer. */
@@ -168,25 +178,31 @@ int adf_lball_contains(const adf_lball_t x, const adf_lball_t y);
    give the exact result. ---- */
 
 /* adf_lball_neg(y, x): y = -x. Ball: -c + p^N Z_p (L5). Status: ADF_OK; ADF_LIMIT as in set_rat_ball (a mod with
-   k = N - v). Cost: a mod. */
+   k = N - v: the result -c has the centre p^k - u, so the RESULT needs p^k). Limits: only an input or the result
+   outside them (the rule under "Limits" above). Cost: a mod. */
 int adf_lball_neg(adf_lball_t y, const adf_lball_t x);
 
 /* adf_lball_add(z, x, y): z = x + y. Ball + ball: (c + c') + p^min(N, N') Z_p; exact + ball: (q + c) + p^N Z_p
    (L2). Exact + exact: the exact sum. The centre is reduced modulo p^min(N, N'): an operand whose valuation is
    at least that minimum contributes 0 and its power of p is not formed.
    Status: ADF_OK; ADF_DOMAIN (different primes); ADF_LIMIT (bounds above; two exact operands whose exponents
-   differ so much that the exact sum needs a power p^k with k bits(p) > ADF_LBALL_BITS_MAX). Cost: a mod. */
+   differ so much that the exact sum needs a power p^k with k bits(p) > ADF_LBALL_BITS_MAX): only an input or the
+   RESULT outside the limits, no intermediate value (the rule under "Limits" above). Cost: a mod. */
 int adf_lball_add(adf_lball_t z, const adf_lball_t x, const adf_lball_t y);
 
-/* adf_lball_sub(z, x, y): z = x - y = x + (-y); tight by L5 and L2. Status: as add. Cost: as add. */
+/* adf_lball_sub(z, x, y): z = x - y = x + (-y); tight by L5 and L2. It is computed as the sum with the sign of y
+   inside, not as x plus a canonical value -y: -y may need a power p^k that x - y does not (x - x for a ball x of
+   relative precision 2^60 is the small ball O(p^N)). Status: as add, and the same rule: ADF_LIMIT only if an input or
+   the RESULT is outside the limits. Cost: as add. */
 int adf_lball_sub(adf_lball_t z, const adf_lball_t x, const adf_lball_t y);
 
 /* adf_lball_mul(z, x, y): z = x y (L3). With centres c, c' of valuation v, v' (infinity for a centre 0) and
    exponents N, N' (infinity for an exact operand), the result has centre c c' and exponent
    K = min(v + N', v' + N, N + N'); the terms with an infinite part are absent. An exact 0 times anything is the
    exact 0 (the set {0}). Exact times exact is exact. The exponent K is formed from v, v', N, N' only.
-   Status: ADF_OK; ADF_DOMAIN (different primes); ADF_LIMIT (bounds above, or a mod with k > the bit bound).
-   Cost: one multiplication of the unit parts and a mod. */
+   Status: ADF_OK; ADF_DOMAIN (different primes); ADF_LIMIT (bounds above, or a mod with k > the bit bound): only an
+   input or the RESULT outside the limits (the rule under "Limits" above). Cost: one multiplication of the unit
+   parts and a mod. */
 int adf_lball_mul(adf_lball_t z, const adf_lball_t x, const adf_lball_t y);
 
 /* adf_lball_inv(y, x): y = 1/x (L4). Exact x != 0: the exact rational 1/x. Ball with v < N (0 not in the ball):
@@ -194,12 +210,20 @@ int adf_lball_mul(adf_lball_t z, const adf_lball_t x, const adf_lball_t y);
    Status: ADF_OK; ADF_NOT_UNIT if x is the exact 0 (proved: not invertible, conventions 3.2), y untouched;
    ADF_UNIT_NOT_CERTIFIED if x is a ball that contains 0 (the set of inverses of the non-zero points is not a
    ball; conventions 3.1: "the enclosure does not prove invertibility", SPEC 4.5), y untouched;
-   ADF_LIMIT (bounds, or a mod with k too large). Cost: a modular inverse. */
+   ADF_LIMIT (an input beyond the bounds, or the result: N - 2v beyond ADF_LBALL_EXP_MAX for a ball, or a modular
+   inverse with k bits(p) > ADF_LBALL_BITS_MAX). An exact value has no precision: its inverse is exact and has the
+   valuation -v, so it is never ADF_LIMIT for a valid input (for E = ADF_LBALL_EXP_MAX the inverse of the exact
+   p^E is the exact p^(-E)). Cost: a modular inverse. */
 int adf_lball_inv(adf_lball_t y, const adf_lball_t x);
 
 /* adf_lball_div(z, x, y): z = x / y = x (1/y); tight: the set of quotients equals the set of products of x with the
-   set of inverses of y (L4), and the product of two independent balls is tight (L3). Status: as inv, plus
-   ADF_DOMAIN for different primes (checked first). Outputs untouched on every status other than ADF_OK. */
+   set of inverses of y (L4), and the product of two independent balls is tight (L3). It is computed directly (L4a):
+   the exponent K of the result from the valuations and precisions of x and y, then the centre modulo p^k with k the
+   relative precision of the RESULT; the inverse of y is not formed. The exact 0 divided by a ball of units is the
+   exact 0. Status: as inv, plus ADF_DOMAIN for different primes (checked first); the divisor is examined before x:
+   ADF_LIMIT for y beyond the bounds, ADF_NOT_UNIT / ADF_UNIT_NOT_CERTIFIED for y = 0, then ADF_LIMIT for x beyond
+   the bounds or for the RESULT outside the limits (the rule under "Limits" above). Outputs untouched on every
+   status other than ADF_OK. */
 int adf_lball_div(adf_lball_t z, const adf_lball_t x, const adf_lball_t y);
 
 /* ---- valuation, absolute value, decomposition (SPEC 9.3.6; L6, L7) ---- */

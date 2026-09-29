@@ -14,6 +14,8 @@
 
    What would make a case fail is stated at each test. */
 
+#define _POSIX_C_SOURCE 200809L
+
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,6 +24,16 @@
 #include <flint/fmpz.h>
 #include "support/jsonl.h"
 #include "test_runner.h"
+
+#ifdef ADF_CHECK_INVARIANTS
+#include <signal.h>
+#include <sys/resource.h>
+#ifdef __linux__
+#include <sys/prctl.h>
+#endif
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
 
 /* ---------------------------------------------------------------------------------------------------- helpers */
 
@@ -948,6 +960,36 @@ ADF_TEST(aliasing)
     uni_free(&U);
 }
 
+/* The unit part of a decomposition has valuation 0, stored as v = 0 with u a unit or a ball of v = 0 (L6). The check
+   reads the valuation through the library and the field: the wrong unit 5 with v = 1 (finding F6 of
+   docs/reviews/f1/review-lball.md) fails both. The earlier assertion `v == 0 || (exact && u != 0)` accepted it. */
+static int
+unit_part_ok(const adf_lball_t unit)
+{
+    slong vu = 12345;
+    int inf = 1;
+    return adf_lball_is_canonical(unit) && unit->v == 0 && !fmpq_is_zero(unit->u) &&
+           adf_lball_valuation(&vu, &inf, unit) == ADF_OK && vu == 0 && inf == 0;
+}
+
+ADF_TEST(unit_part_check_rejects_the_wrong_unit)
+{
+    adf_lball_t w;
+    adf_lball_init(w);
+    lb_fields_si(w, 5, 1, 1, 1, 1, 0);                /* exact 5: canonical, valuation 1, the reviewer's example */
+    ADF_CHECK(adf_lball_is_canonical(w));
+    ADF_CHECK(!unit_part_ok(w));
+    lb_fields_si(w, 5, 1, 3, 2, 0, 0);                /* exact 3/2: a unit at 5 */
+    ADF_CHECK(unit_part_ok(w));
+    lb_fields_si(w, 5, 0, 7, 1, 0, 2);                /* 7 + 25 Z_5 */
+    ADF_CHECK(unit_part_ok(w));
+    lb_fields_si(w, 5, 0, 7, 1, 1, 3);                /* a ball of valuation 1 is not a unit part */
+    ADF_CHECK(!unit_part_ok(w));
+    lb_fields_si(w, 5, 1, 0, 1, 0, 0);                /* the exact 0 has no valuation 0 unit */
+    ADF_CHECK(!unit_part_ok(w));
+    adf_lball_clear(w);
+}
+
 /* x = p^m unit is recovered: exact p^m times the unit is x, for every value with a decomposition. */
 ADF_TEST(decompose_roundtrip)
 {
@@ -973,7 +1015,12 @@ ADF_TEST(decompose_roundtrip)
                 exact_of(pm, ps[k], c);
                 ADF_CHECK(adf_lball_mul(prod, pm, unit) == ADF_OK);
                 ADF_CHECK(adf_lball_equal_set(prod, U.v + i));
-                ADF_CHECK(unit->v == 0 || (unit->exact && !fmpq_is_zero(unit->u)));
+                ADF_CHECK(unit_part_ok(unit));
+                {
+                    slong vx = 54321;
+                    int infx = 1;
+                    ADF_CHECK(adf_lball_valuation(&vx, &infx, U.v + i) == ADF_OK && infx == 0 && vx == m);
+                }
                 if (!unit->exact)
                     ADF_CHECK(unit->N >= 1 && unit->v == 0);
                 n++;
@@ -1222,3 +1269,413 @@ ADF_TEST(the_example_of_the_brief)
     adf_rat_clear(q);
     adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(z);
 }
+
+/* ------------------------------------------------------------- the limits apply to the result, never to a temporary */
+
+/* Findings F1 to F3 of docs/reviews/f1/review-lball.md; the rule of the header and api-1f.md L4a: ADF_LIMIT only if an
+   input or the RESULT is outside the limits (|v|, |N| <= ADF_LBALL_EXP_MAX; a centre that needs p^k with
+   k bits(p) > ADF_LBALL_BITS_MAX), never because of an intermediate value. E = 2^60 is the exponent bound and
+   p = 5 throughout. The expected values are worked out by hand in the comment at each call. */
+
+/* z was set to the sentinel before the call that returned st. want_st == ADF_OK: z must be the canonical value
+   (p = 5, exact, un/ud, v, N); else z must be untouched. */
+static void
+expect_res(const char * name, int st, int want_st, const adf_lball_t z, int exact, slong un, ulong ud, slong v,
+           slong N)
+{
+    adf_lball_t want, sen;
+    adf_lball_init(want);
+    adf_lball_init(sen);
+    sentinel(sen);
+    lb_fields_si(want, 5, exact, un, ud, v, N);
+    fmpq_canonicalise(want->u);
+    ADF_CHECK_MSG(st == want_st, "%s: status %s, want %s", name, adf_status_str(st), adf_status_str(want_st));
+    if (want_st == ADF_OK)
+    {
+        ADF_CHECK_MSG(adf_lball_is_canonical(want), "%s: the expected value is not canonical (test error)", name);
+        ADF_CHECK_MSG(st != ADF_OK || (adf_lball_is_canonical(z) && adf_lball_identical(z, want)),
+                      "%s: result differs from the expected value", name);
+    }
+    else
+        ADF_CHECK_MSG(adf_lball_identical(z, sen), "%s: output touched on a status", name);
+    adf_lball_clear(want);
+    adf_lball_clear(sen);
+}
+
+/* F1. The inverse of an exact value has no precision, so the guard N - 2v does not apply to it. */
+ADF_TEST(inv_of_an_exact_power_at_the_exponent_limit)
+{
+    slong E = ADF_LBALL_EXP_MAX;
+    adf_lball_t x, z;
+    int sign;
+    adf_lball_init(x); adf_lball_init(z);
+    for (sign = -1; sign <= 1; sign += 2)
+    {
+        /* 1 / 5^(sign E) = 5^(-sign E), exact */
+        lb_fields_si(x, 5, 1, 1, 1, sign * E, 0);
+        ADF_CHECK(adf_lball_is_canonical(x));
+        sentinel(z);
+        expect_res("inv 5^(+-E)", adf_lball_inv(z, x), ADF_OK, z, 1, 1, 1, -sign * E, 0);
+        /* 1 / (3/2 5^(sign E)) = 2/3 5^(-sign E) */
+        lb_fields_si(x, 5, 1, 3, 2, sign * E, 0);
+        fmpq_canonicalise(x->u);
+        sentinel(z);
+        expect_res("inv 3/2 5^(+-E)", adf_lball_inv(z, x), ADF_OK, z, 1, 2, 3, -sign * E, 0);
+        /* aliased */
+        ADF_CHECK(adf_lball_inv(x, x) == ADF_OK && x->v == -sign * E && fmpz_equal_si(fmpq_numref(x->u), 2));
+    }
+    /* a ball whose inverse has N - 2v beyond the bound is still LIMIT: the RESULT is outside.
+       5^(-E) + O(5^(-E + 1)): the inverse has N' = -E + 1 + 2E = E + 1 */
+    lb_fields_si(x, 5, 0, 1, 1, -E, -E + 1);
+    ADF_CHECK(adf_lball_is_canonical(x));
+    sentinel(z);
+    expect_res("inv ball, N' = E + 1", adf_lball_inv(z, x), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    /* 3 + O(5^E): the inverse centre 1/3 mod 5^E needs 5^E, a centre of 2^60 bits: the RESULT is too big */
+    lb_fields_si(x, 5, 0, 3, 1, 0, E);
+    sentinel(z);
+    expect_res("inv 3 + O(5^E)", adf_lball_inv(z, x), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    /* 1 + O(5^E): the inverse is 1 + O(5^E), small */
+    lb_fields_si(x, 5, 0, 1, 1, 0, E);
+    sentinel(z);
+    expect_res("inv 1 + O(5^E)", adf_lball_inv(z, x), ADF_OK, z, 0, 1, 1, 0, E);
+    adf_lball_clear(x); adf_lball_clear(z);
+}
+
+/* F2. x - y is computed with the sign inside, no canonical temporary of -y. */
+ADF_TEST(sub_of_small_results_at_the_exponent_limit)
+{
+    slong E = ADF_LBALL_EXP_MAX;
+    adf_lball_t x, y, z;
+    adf_lball_init(x); adf_lball_init(y); adf_lball_init(z);
+    /* (1 + 5^E a) - (1 + 5^E b) = 5^E (a - b): O(5^E) around 0 */
+    lb_fields_si(x, 5, 0, 1, 1, 0, E);
+    sentinel(z);
+    expect_res("sub x - x", adf_lball_sub(z, x, x), ADF_OK, z, 0, 0, 1, 0, E);
+    /* Z_5 - (1 + 5^E Z_5) = Z_5 */
+    lb_fields_si(y, 5, 0, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("sub Z_5 - fine", adf_lball_sub(z, y, x), ADF_OK, z, 0, 0, 1, 0, 0);
+    /* (2 + O(5^E)) - (1 + O(5^E)) = 1 + O(5^E) */
+    lb_fields_si(y, 5, 0, 2, 1, 0, E);
+    sentinel(z);
+    expect_res("sub 2 - 1", adf_lball_sub(z, y, x), ADF_OK, z, 0, 1, 1, 0, E);
+    /* aliased outputs */
+    adf_lball_set(z, x);
+    ADF_CHECK(adf_lball_sub(z, z, z) == ADF_OK && fmpq_is_zero(z->u) && z->N == E && !z->exact);
+    /* at the negative end: 5^(-E) + O(5^(1 - E)) minus itself is O(5^(1 - E)) around 0 */
+    lb_fields_si(x, 5, 0, 1, 1, -E, -E + 1);
+    sentinel(z);
+    expect_res("sub at v = -E", adf_lball_sub(z, x, x), ADF_OK, z, 0, 0, 1, 0, -E + 1);
+    /* 0 - (5^(-E) + O(5^(1-E))): the exact 0 minus the ball is the ball -c: u = -1 mod 5 = 4 */
+    lb_fields_si(y, 5, 1, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("sub 0 - ball", adf_lball_sub(z, y, x), ADF_OK, z, 0, 4, 1, -E, -E + 1);
+    /* the RESULT needs a power: 0 - (1 + O(5^E)) = -1 + O(5^E), centre 5^E - 1: LIMIT, as neg */
+    lb_fields_si(x, 5, 0, 1, 1, 0, E);
+    sentinel(z);
+    expect_res("sub 0 - (1 + O(5^E)) needs 5^E", adf_lball_sub(z, y, x), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("neg (1 + O(5^E)) needs 5^E", adf_lball_neg(z, x), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(z);
+}
+
+/* F3. x / y is computed from the valuations and precisions first (api-1f.md L4a). */
+ADF_TEST(div_of_small_results_at_the_exponent_limit)
+{
+    slong E = ADF_LBALL_EXP_MAX;
+    adf_lball_t x, y, z;
+    adf_lball_init(x); adf_lball_init(y); adf_lball_init(z);
+    /* 0 / (3 + O(5^E)): every point of y is a unit, so the quotient is the exact 0 */
+    lb_fields_si(y, 5, 0, 3, 1, 0, E);
+    lb_fields_si(x, 5, 1, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("div 0 / fine unit", adf_lball_div(z, x, y), ADF_OK, z, 1, 0, 1, 0, 0);
+    /* Z_5 / (3 + O(5^E)) = Z_5 (K = N - w = 0) */
+    lb_fields_si(x, 5, 0, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("div Z_5 / fine unit", adf_lball_div(z, x, y), ADF_OK, z, 0, 0, 1, 0, 0);
+    /* (5^(-E) + Z_5) / (5^(-E) + Z_5) = 1 + O(5^E): K = min(E, E, 2E) = E, centre 1 */
+    lb_fields_si(x, 5, 0, 1, 1, -E, 0);
+    ADF_CHECK(adf_lball_is_canonical(x));
+    sentinel(z);
+    expect_res("div x / x at v = -E", adf_lball_div(z, x, x), ADF_OK, z, 0, 1, 1, 0, E);
+    /* aliased */
+    adf_lball_set(z, x);
+    ADF_CHECK(adf_lball_div(z, z, z) == ADF_OK && fmpq_is_one(z->u) && z->N == E && z->v == 0);
+    /* O(5^(-E)) / (3 + O(5^E)) = O(5^(-E)): K = min(-w + N, N + M - 2w) = min(-E, 0) = -E */
+    lb_fields_si(x, 5, 0, 0, 1, 0, -E);
+    sentinel(z);
+    expect_res("div O(5^-E) / fine unit", adf_lball_div(z, x, y), ADF_OK, z, 0, 0, 1, 0, -E);
+    /* (2 + O(5^3)) / 5^E exact = 2 5^(-E) + O(5^(3 - E)): u = 2, v = -E, N = 3 - E */
+    lb_fields_si(x, 5, 0, 2, 1, 0, 3);
+    lb_fields_si(y, 5, 1, 1, 1, E, 0);
+    sentinel(z);
+    expect_res("div ball / 5^E", adf_lball_div(z, x, y), ADF_OK, z, 0, 2, 1, -E, 3 - E);
+    /* (2 + O(5^3)) / 5^(-E) has N = E + 3: the RESULT is outside the bound */
+    lb_fields_si(y, 5, 1, 1, 1, -E, 0);
+    sentinel(z);
+    expect_res("div ball / 5^-E, N = E + 3", adf_lball_div(z, x, y), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    /* exact 5^E / exact 5^E = exact 1; 5^E / 5^(-E) = 5^(2E), the result is outside */
+    lb_fields_si(x, 5, 1, 1, 1, E, 0);
+    lb_fields_si(y, 5, 1, 1, 1, E, 0);
+    sentinel(z);
+    expect_res("div 5^E / 5^E", adf_lball_div(z, x, y), ADF_OK, z, 1, 1, 1, 0, 0);
+    lb_fields_si(y, 5, 1, 1, 1, -E, 0);
+    sentinel(z);
+    expect_res("div 5^E / 5^-E", adf_lball_div(z, x, y), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    /* 5^(-E) exact / (1 + O(5^E)) = 5^(-E) + O(5^0): K = v + M = 0 */
+    lb_fields_si(x, 5, 1, 1, 1, -E, 0);
+    lb_fields_si(y, 5, 0, 1, 1, 0, E);
+    sentinel(z);
+    expect_res("div 5^-E / (1 + O(5^E))", adf_lball_div(z, x, y), ADF_OK, z, 0, 1, 1, -E, 0);
+    /* 5^E exact / (1 + O(5^E)): K = E + E = 2E, outside */
+    lb_fields_si(x, 5, 1, 1, 1, E, 0);
+    sentinel(z);
+    expect_res("div 5^E / (1 + O(5^E)), N = 2E", adf_lball_div(z, x, y), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    /* the RESULT needs a centre 1/3 mod 5^E: (1 + O(5^E)) / (3 + O(5^E)) is LIMIT, rightly */
+    lb_fields_si(x, 5, 0, 1, 1, 0, E);
+    lb_fields_si(y, 5, 0, 3, 1, 0, E);
+    sentinel(z);
+    expect_res("div (1 + O(5^E)) / (3 + O(5^E)) needs 5^E", adf_lball_div(z, x, y), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    /* the statuses of a divisor without inverse come first, as before */
+    lb_fields_si(y, 5, 1, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("div by exact 0", adf_lball_div(z, x, y), ADF_NOT_UNIT, z, 0, 0, 1, 0, 0);
+    lb_fields_si(y, 5, 0, 0, 1, 0, E);
+    sentinel(z);
+    expect_res("div by O(5^E)", adf_lball_div(z, x, y), ADF_UNIT_NOT_CERTIFIED, z, 0, 0, 1, 0, 0);
+    adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(z);
+}
+
+/* add, mul, neg with inputs at the limits of both signs: the same rule (F1 to F3, "look for the same defect"). */
+ADF_TEST(add_mul_neg_at_the_exponent_limits)
+{
+    slong E = ADF_LBALL_EXP_MAX;
+    adf_lball_t x, y, z;
+    adf_lball_init(x); adf_lball_init(y); adf_lball_init(z);
+    /* add: the operand 5^E of valuation >= K is dropped: (1 + O(5^E)) + 5^E = 1 + O(5^E) */
+    lb_fields_si(x, 5, 0, 1, 1, 0, E);
+    lb_fields_si(y, 5, 1, 1, 1, E, 0);
+    sentinel(z);
+    expect_res("add ball + 5^E", adf_lball_add(z, x, y), ADF_OK, z, 0, 1, 1, 0, E);
+    /* (5^(-E) + O(5^(1-E))) + 5^E: 5^E is dropped */
+    lb_fields_si(x, 5, 0, 1, 1, -E, -E + 1);
+    sentinel(z);
+    expect_res("add ball(-E) + 5^E", adf_lball_add(z, x, y), ADF_OK, z, 0, 1, 1, -E, -E + 1);
+    /* exact 5^E + exact 5^(-E) = 5^(-E) (1 + 5^(2E)): the RESULT needs 5^(2E): LIMIT */
+    lb_fields_si(x, 5, 1, 1, 1, -E, 0);
+    sentinel(z);
+    expect_res("add 5^-E + 5^E", adf_lball_add(z, x, y), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    /* exact 5^E + (-5^E) = exact 0 */
+    lb_fields_si(x, 5, 1, -1, 1, E, 0);
+    sentinel(z);
+    expect_res("add 5^E - 5^E", adf_lball_add(z, x, y), ADF_OK, z, 1, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("sub 5^E - 5^E", adf_lball_sub(z, y, y), ADF_OK, z, 1, 0, 1, 0, 0);
+    /* neg of an exact value at both ends is exact and small */
+    lb_fields_si(x, 5, 1, 1, 1, -E, 0);
+    sentinel(z);
+    expect_res("neg 5^-E", adf_lball_neg(z, x), ADF_OK, z, 1, -1, 1, -E, 0);
+    lb_fields_si(x, 5, 1, 1, 1, E, 0);
+    sentinel(z);
+    expect_res("neg 5^E", adf_lball_neg(z, x), ADF_OK, z, 1, -1, 1, E, 0);
+    /* neg of a ball around 0 and of a ball at v = -E */
+    lb_fields_si(x, 5, 0, 0, 1, 0, E);
+    sentinel(z);
+    expect_res("neg O(5^E)", adf_lball_neg(z, x), ADF_OK, z, 0, 0, 1, 0, E);
+    lb_fields_si(x, 5, 0, 1, 1, -E, -E + 1);
+    sentinel(z);
+    expect_res("neg ball(-E)", adf_lball_neg(z, x), ADF_OK, z, 0, 4, 1, -E, -E + 1);
+    /* mul: 5^E * 5^(-E) = 1; (1 + O(5^E)) * 5^(-E) = 5^(-E) + O(5^0); 5^E * 5^E is outside */
+    lb_fields_si(x, 5, 1, 1, 1, E, 0);
+    lb_fields_si(y, 5, 1, 1, 1, -E, 0);
+    sentinel(z);
+    expect_res("mul 5^E 5^-E", adf_lball_mul(z, x, y), ADF_OK, z, 1, 1, 1, 0, 0);
+    sentinel(z);
+    expect_res("mul 5^E 5^E", adf_lball_mul(z, x, x), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    sentinel(z);
+    expect_res("mul 5^-E 5^-E", adf_lball_mul(z, y, y), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    lb_fields_si(x, 5, 0, 1, 1, 0, E);
+    sentinel(z);
+    expect_res("mul (1 + O(5^E)) 5^-E", adf_lball_mul(z, x, y), ADF_OK, z, 0, 1, 1, -E, 0);
+    /* (5^(-E) + O(5^0)) squared: K = -E, centre valuation -2E, so the result is outside */
+    lb_fields_si(x, 5, 0, 1, 1, -E, 0);
+    sentinel(z);
+    expect_res("mul ball(-E) ball(-E)", adf_lball_mul(z, x, x), ADF_LIMIT, z, 0, 0, 1, 0, 0);
+    adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(z);
+}
+
+/* sub and div at mixed valuations agree with the composition they replace, wherever the composition works, and
+   have its status where the divisor has no inverse. */
+static void
+composition_at_prime(ulong p, slong vmax, slong kmax)
+{
+    universe_t U = {NULL, 0, 0};
+    size_t i, j, pairs = 0;
+    uni_build(&U, p, vmax, kmax);
+    for (i = 0; i < U.n; i++)
+        for (j = 0; j < U.n; j++)
+        {
+            adf_lball_t m, r1, r2, d, a;
+            int s1, s2;
+            adf_lball_init(m); adf_lball_init(r1); adf_lball_init(r2); adf_lball_init(d); adf_lball_init(a);
+            /* sub = add of the negation */
+            ADF_CHECK(adf_lball_neg(m, U.v + j) == ADF_OK);
+            s1 = adf_lball_add(r1, U.v + i, m);
+            s2 = adf_lball_sub(r2, U.v + i, U.v + j);
+            ADF_CHECK(s1 == s2 && (s1 != ADF_OK || adf_lball_identical(r1, r2)));
+            /* div = mul by the inverse, for a divisor that is invertible */
+            s2 = adf_lball_div(d, U.v + i, U.v + j);
+            s1 = adf_lball_inv(m, U.v + j);
+            if (s1 == ADF_OK)
+            {
+                s1 = adf_lball_mul(a, U.v + i, m);
+                ADF_CHECK(s1 == ADF_OK && s2 == ADF_OK && adf_lball_identical(a, d));
+            }
+            else
+                ADF_CHECK(s2 == s1);
+            pairs++;
+            adf_lball_clear(m); adf_lball_clear(r1); adf_lball_clear(r2); adf_lball_clear(d); adf_lball_clear(a);
+        }
+    printf("   composition p=%lu: %lu pairs\n", p, (unsigned long) pairs);
+    uni_free(&U);
+}
+
+ADF_TEST(sub_and_div_agree_with_their_compositions)
+{
+    composition_at_prime(2, 2, 3);
+    composition_at_prime(3, 2, 2);
+    composition_at_prime(5, 1, 2);
+}
+
+#ifdef ADF_CHECK_INVARIANTS
+/* ------------------------------------------------------------------------------------ the entry check (F4) */
+
+/* conventions 4.4: with -DADF_CHECK_INVARIANTS every public function checks the predicate of each input on entry and
+   calls flint_abort. The nine paths that had no check (finding F4): place, is_exact, contains_zero, get_prec, set,
+   swap, identical (each argument), set_rat, set_rat_ball. Exempt: init (reads nothing), clear (must release a value
+   whose fields were forged), is_canonical (the predicate never aborts, M1-D2), the layout queries (no argument),
+   the OUTPUT argument of set and of every arithmetic function (it is overwritten). set_fball reads f through
+   adf_fball_get_fmpz3, which checks f. Each case runs in a child process: it must end by SIGABRT with a line on
+   stderr that names the function and the type; the canonical control must return normally and write nothing. */
+
+enum { IC_PLACE, IC_EXACT, IC_ZERO, IC_PREC, IC_SET, IC_SWAP_X, IC_SWAP_Y, IC_IDENT_X, IC_IDENT_Y, IC_SET_RAT,
+       IC_SET_RAT_BALL, IC_ADD, IC_SET_OUT, IC_COUNT };
+
+static const char * const ic_name[IC_COUNT] = {"adf_lball_place", "adf_lball_is_exact", "adf_lball_contains_zero",
+    "adf_lball_get_prec", "adf_lball_set", "adf_lball_swap", "adf_lball_swap", "adf_lball_identical",
+    "adf_lball_identical", "adf_lball_set_rat", "adf_lball_set_rat_ball", "adf_lball_add", "adf_lball_set"};
+
+/* forged = 1: the argument named by the case is not canonical (a composite p, or the fraction 2/4). IC_SET_OUT:
+   the OUTPUT of set is forged and the call must return normally. */
+static void
+ic_child(int which, int forged)
+{
+    adf_lball_t x, y;
+    adf_rat_t q;
+    adf_place_t v = place_of(5);
+    slong N = 0;
+    adf_lball_init(x); adf_lball_init(y); adf_rat_init(q);
+    lb_fields_si(x, 5, 0, 7, 1, 0, 2);                     /* 7 + 25 Z_5, canonical */
+    lb_fields_si(y, 5, 0, 7, 1, 0, 2);
+    fmpz_set_si(fmpq_numref(q->q), forged ? 2 : 1);        /* 2/4 is not canonical, 1/4 is */
+    fmpz_set_si(fmpq_denref(q->q), 4);
+    if (forged && (which <= IC_SET || which == IC_SWAP_X || which == IC_IDENT_X || which == IC_ADD))
+        x->p = 4;
+    if (forged && (which == IC_SWAP_Y || which == IC_IDENT_Y))
+        y->p = 4;
+    if (which == IC_SET_OUT)
+        y->p = 4;                                          /* forged output: not read, no check */
+    switch (which)
+    {
+    case IC_PLACE: (void) adf_lball_place(x); break;
+    case IC_EXACT: (void) adf_lball_is_exact(x); break;
+    case IC_ZERO: (void) adf_lball_contains_zero(x); break;
+    case IC_PREC: (void) adf_lball_get_prec(&N, x); break;
+    case IC_SET:
+    case IC_SET_OUT: adf_lball_set(y, x); break;
+    case IC_SWAP_X:
+    case IC_SWAP_Y: adf_lball_swap(x, y); break;
+    case IC_IDENT_X:
+    case IC_IDENT_Y: (void) adf_lball_identical(x, y); break;
+    case IC_SET_RAT: (void) adf_lball_set_rat(y, v, q); break;
+    case IC_SET_RAT_BALL: (void) adf_lball_set_rat_ball(y, v, q, 3); break;
+    case IC_ADD: (void) adf_lball_add(y, x, x); break;
+    default: break;
+    }
+    x->p = 5;
+    y->p = 5;
+    adf_lball_clear(x); adf_lball_clear(y); adf_rat_clear(q);
+    flint_cleanup();
+}
+
+/* Runs the child; returns the signal (0 if it exited) and copies stderr to err. */
+static int
+ic_run(int which, int forged, int * exit_code, char * err, size_t cap)
+{
+    int fd[2], st = 0;
+    size_t n = 0;
+    pid_t pid;
+    struct rlimit nocore = {0, 0};
+    fflush(stdout);
+    fflush(stderr);
+    if (pipe(fd) != 0)
+        abort();
+    pid = fork();
+    if (pid < 0)
+        abort();
+    if (pid == 0)
+    {
+        setrlimit(RLIMIT_CORE, &nocore);
+#ifdef __linux__
+        prctl(PR_SET_DUMPABLE, 0);
+#endif
+        close(fd[0]);
+        dup2(fd[1], 2);
+        close(fd[1]);
+        ic_child(which, forged);
+        _exit(0);
+    }
+    close(fd[1]);
+    while (n < cap - 1)
+    {
+        ssize_t r = read(fd[0], err + n, cap - 1 - n);
+        if (r <= 0)
+            break;
+        n += (size_t) r;
+    }
+    err[n] = 0;
+    {
+        char junk[256];
+        while (read(fd[0], junk, sizeof junk) > 0)
+            ;
+    }
+    close(fd[0]);
+    if (waitpid(pid, &st, 0) != pid)
+        abort();
+    *exit_code = WIFEXITED(st) ? WEXITSTATUS(st) : -1;
+    return WIFSIGNALED(st) ? WTERMSIG(st) : 0;
+}
+
+ADF_TEST(entry_check_of_every_public_function)
+{
+    int i, code;
+    char err[512];
+    for (i = 0; i < IC_COUNT; i++)
+    {
+        int sig;
+        /* the canonical control (and, for IC_SET_OUT, the forged output) returns normally and silently */
+        sig = ic_run(i, 0, &code, err, sizeof err);
+        ADF_CHECK_MSG(sig == 0 && code == 0 && err[0] == 0, "%s (case %d): control: signal %d, exit %d, stderr '%s'",
+                      ic_name[i], i, sig, code, err);
+        if (i == IC_SET_OUT)
+            continue;
+        sig = ic_run(i, 1, &code, err, sizeof err);
+        ADF_CHECK_MSG(sig == SIGABRT, "%s (case %d): a forged argument did not abort (signal %d, exit %d)", ic_name[i],
+                      i, sig, code);
+        ADF_CHECK_MSG(strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL &&
+                      strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL,
+                      "%s (case %d): stderr '%s'", ic_name[i], i, err);
+    }
+}
+#endif /* ADF_CHECK_INVARIANTS */

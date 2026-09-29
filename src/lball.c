@@ -24,6 +24,7 @@
 
 #include <adelefeld.h>
 #include <flint/ulong_extras.h>
+#include "invariants.h"
 
 #ifdef ADF_CHECK_INVARIANTS
 #include <stdio.h>
@@ -213,12 +214,42 @@ lb_make(adf_lball_struct * out, ulong p, const fmpq_t q, slong v0, int exact, sl
     return status;
 }
 
+/* The unchecked copy, swap and identity that the functions below use on values they made or already checked: the public
+   functions of the same name check their arguments under ADF_CHECK_INVARIANTS (conventions 4.4), and an OUTPUT of an
+   arithmetic function is not an input, so it is not checked. */
+static void
+lb_copy(adf_lball_struct * y, const adf_lball_struct * x)
+{
+    y->p = x->p;
+    fmpq_set(y->u, x->u);
+    y->v = x->v;
+    y->N = x->N;
+    y->exact = x->exact;
+}
+
+static void
+lb_swap(adf_lball_struct * x, adf_lball_struct * y)
+{
+    ulong p = x->p;
+    slong v = x->v, N = x->N;
+    int e = x->exact;
+    x->p = y->p; x->v = y->v; x->N = y->N; x->exact = y->exact;
+    y->p = p; y->v = v; y->N = N; y->exact = e;
+    fmpq_swap(x->u, y->u);
+}
+
+static int
+lb_identical(const adf_lball_struct * x, const adf_lball_struct * y)
+{
+    return x->p == y->p && x->exact == y->exact && x->v == y->v && x->N == y->N && fmpq_equal(x->u, y->u);
+}
+
 /* Puts the temporary into the output on OK, and clears the temporary. */
 static int
 finish(adf_lball_struct * z, adf_lball_struct * res, int status)
 {
     if (status == ADF_OK)
-        adf_lball_swap(z, res);
+        lb_swap(z, res);
     adf_lball_clear(res);
     return status;
 }
@@ -244,22 +275,16 @@ adf_lball_clear(adf_lball_t x)
 void
 adf_lball_set(adf_lball_t y, const adf_lball_t x)
 {
-    y->p = x->p;
-    fmpq_set(y->u, x->u);
-    y->v = x->v;
-    y->N = x->N;
-    y->exact = x->exact;
+    ADF_INV_LBALL(x);
+    lb_copy(y, x);
 }
 
 void
 adf_lball_swap(adf_lball_t x, adf_lball_t y)
 {
-    ulong p = x->p;
-    slong v = x->v, N = x->N;
-    int e = x->exact;
-    x->p = y->p; x->v = y->v; x->N = y->N; x->exact = y->exact;
-    y->p = p; y->v = v; y->N = N; y->exact = e;
-    fmpq_swap(x->u, y->u);
+    ADF_INV_LBALL(x);
+    ADF_INV_LBALL(y);
+    lb_swap(x, y);
 }
 
 /* conventions 5.8, the predicate. Never aborts: u < p^(N - v) is decided by bit lengths unless p^(N - v) is smaller
@@ -307,7 +332,9 @@ adf_lball_is_canonical(const adf_lball_t x)
 int
 adf_lball_identical(const adf_lball_t x, const adf_lball_t y)
 {
-    return x->p == y->p && x->exact == y->exact && x->v == y->v && x->N == y->N && fmpq_equal(x->u, y->u);
+    ADF_INV_LBALL(x);
+    ADF_INV_LBALL(y);
+    return lb_identical(x, y);
 }
 
 /* ---------------------------------------------------------------------------------------------- constructors */
@@ -317,6 +344,7 @@ adf_lball_set_rat(adf_lball_t x, adf_place_t v, const adf_rat_t q)
 {
     adf_lball_t res;
     int st;
+    ADF_INV_RAT(q);
     if (adf_place_is_archimedean(v))
         return ADF_DOMAIN;
     adf_lball_init(res);
@@ -329,6 +357,7 @@ adf_lball_set_rat_ball(adf_lball_t x, adf_place_t v, const adf_rat_t c, slong N)
 {
     adf_lball_t res;
     int st;
+    ADF_INV_RAT(c);
     if (adf_place_is_archimedean(v))
         return ADF_DOMAIN;
     adf_lball_init(res);
@@ -372,7 +401,9 @@ adf_place_t
 adf_lball_place(const adf_lball_t x)
 {
     adf_place_t v;
-    int st = adf_place_prime(&v, x->p);
+    int st;
+    ADF_INV_LBALL(x);
+    st = adf_place_prime(&v, x->p);
     if (st != ADF_OK)
         v = adf_place_inf();            /* not reached for a canonical value */
     return v;
@@ -381,18 +412,21 @@ adf_lball_place(const adf_lball_t x)
 int
 adf_lball_is_exact(const adf_lball_t x)
 {
+    ADF_INV_LBALL(x);
     return x->exact;
 }
 
 int
 adf_lball_contains_zero(const adf_lball_t x)
 {
+    ADF_INV_LBALL(x);
     return fmpq_is_zero(x->u);
 }
 
 int
 adf_lball_get_prec(slong * N, const adf_lball_t x)
 {
+    ADF_INV_LBALL(x);
     if (x->exact)
         return ADF_DOMAIN;
     *N = x->N;
@@ -466,7 +500,7 @@ adf_lball_equal_set(const adf_lball_t x, const adf_lball_t y)
 {
     ADF_INV_LBALL(x);
     ADF_INV_LBALL(y);
-    return adf_lball_identical(x, y);
+    return lb_identical(x, y);
 }
 
 int
@@ -478,7 +512,7 @@ adf_lball_overlaps(const adf_lball_t x, const adf_lball_t y)
     if (x->p != y->p)
         return 0;
     if (x->exact && y->exact)
-        return adf_lball_identical(x, y);
+        return lb_identical(x, y);
     n = x->exact ? y->N : y->exact ? x->N : (x->N < y->N ? x->N : y->N);
     return diff_val(&w, x, y) || w >= n;
 }
@@ -492,7 +526,7 @@ adf_lball_contains(const adf_lball_t x, const adf_lball_t y)
     if (x->p != y->p)
         return 0;
     if (y->exact)
-        return x->exact && adf_lball_identical(x, y);
+        return x->exact && lb_identical(x, y);
     if (!x->exact && x->N < y->N)
         return 0;
     return diff_val(&w, x, y) || w >= y->N;
@@ -512,7 +546,7 @@ adf_lball_neg(adf_lball_t y, const adf_lball_t x)
     adf_lball_init(res);
     if (x->exact)
     {
-        adf_lball_set(res, x);
+        lb_copy(res, x);
         fmpq_neg(res->u, x->u);
         return finish(y, res, ADF_OK);
     }
@@ -523,18 +557,20 @@ adf_lball_neg(adf_lball_t y, const adf_lball_t x)
     return finish(y, res, st);
 }
 
-/* L2. The operand is left out of the sum when it is 0 or when its valuation is at least K (it lies in p^K Z_p). */
-int
-adf_lball_add(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
+/* L2 (sum) and L5 with L2 (difference): z = x + sgn y, sgn = +1 or -1. The sign is applied to the unit part of the
+   operand y inside the sum, so no canonical value -y is formed: its centre p^k - u needs p^k even where the difference
+   is small (finding F2 of docs/reviews/f1/review-lball.md). The operand is left out of the sum when it is 0 or when
+   its valuation is at least K (it lies in p^K Z_p). The inputs are checked by the callers. */
+static int
+lb_addsub(adf_lball_t z, const adf_lball_struct * x, const adf_lball_struct * y, int sgn)
 {
     adf_lball_t res;
     const adf_lball_struct * op[2];
+    int isy[2];                     /* the sign is tracked by position: x and y may be the same object */
     int n = 0, i, st = ADF_OK, exact;
     slong K, m = LONG_MAX;
     fmpq_t q, t;
     fmpz_t pk;
-    ADF_INV_LBALL(x);
-    ADF_INV_LBALL(y);
     if (x->p != y->p)
         return ADF_DOMAIN;
     if (!in_bounds(x) || !in_bounds(y))
@@ -542,9 +578,15 @@ adf_lball_add(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
     exact = x->exact && y->exact;
     K = exact ? NO_BOUND : x->exact ? y->N : y->exact ? x->N : (x->N < y->N ? x->N : y->N);
     if (!fmpq_is_zero(x->u) && x->v < K)
+    {
+        isy[n] = 0;
         op[n++] = x;
+    }
     if (!fmpq_is_zero(y->u) && y->v < K)
+    {
+        isy[n] = 1;
         op[n++] = y;
+    }
     adf_lball_init(res);
     fmpq_init(q);
     fmpq_init(t);
@@ -561,7 +603,10 @@ adf_lball_add(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
         {
             fmpz_pow_p(pk, x->p, (ulong) (op[i]->v - m));
             fmpq_mul_fmpz(t, op[i]->u, pk);
-            fmpq_add(q, q, t);
+            if (isy[i] && sgn < 0)
+                fmpq_sub(q, q, t);
+            else
+                fmpq_add(q, q, t);
         }
     }
     if (st == ADF_OK)
@@ -573,20 +618,20 @@ adf_lball_add(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
 }
 
 int
-adf_lball_sub(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
+adf_lball_add(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
 {
-    adf_lball_t m;
-    int st;
     ADF_INV_LBALL(x);
     ADF_INV_LBALL(y);
-    if (x->p != y->p)
-        return ADF_DOMAIN;
-    adf_lball_init(m);
-    st = adf_lball_neg(m, y);
-    if (st == ADF_OK)
-        st = adf_lball_add(z, x, m);
-    adf_lball_clear(m);
-    return st;
+    return lb_addsub(z, x, y, 1);
+}
+
+/* z = x - y: the sum of x and the negation of y, with the sign inside (lb_addsub; L5, L2). */
+int
+adf_lball_sub(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
+{
+    ADF_INV_LBALL(x);
+    ADF_INV_LBALL(y);
+    return lb_addsub(z, x, y, -1);
 }
 
 /* L3. */
@@ -653,7 +698,9 @@ adf_lball_inv(adf_lball_t y, const adf_lball_t x)
         return ADF_LIMIT;
     if (fmpq_is_zero(x->u))
         return x->exact ? ADF_NOT_UNIT : ADF_UNIT_NOT_CERTIFIED;
-    if (!exp_ok(x->N - 2 * x->v))
+    /* The exponent of the RESULT: N - 2 v for a ball. An exact value has no precision, and its inverse has the
+       valuation -v, which is within the bound because v is (finding F1 of docs/reviews/f1/review-lball.md). */
+    if (!x->exact && !exp_ok(x->N - 2 * x->v))
         return ADF_LIMIT;
     adf_lball_init(res);
     fmpq_init(q);
@@ -663,21 +710,70 @@ adf_lball_inv(adf_lball_t y, const adf_lball_t x)
     return finish(y, res, st);
 }
 
+/* L4a (docs/api-1f.md, the quotient): z = x / y, computed directly and not as x (1/y), so that no intermediate
+   value, the inverse of y with its own exponent N - 2 v and its own centre, can be outside the limits when the
+   quotient is not (finding F3 of docs/reviews/f1/review-lball.md).
+   With c = p^v u the centre of x (u = 0 for a zero centre) and d = p^w t that of y (t != 0), M the precision of y,
+   the set of inverses of y is 1/d + p^(M - 2w) Z_p (L4), of valuation -w and unit part 1/t, and by L3 the quotient is
+       (u/t) p^(v - w) + p^K Z_p,   K = min( v + M - 2w   [x has centre != 0 and y is a ball],
+                                             N - w        [x is a ball],
+                                             N + M - 2w   [both are balls] ),
+   the terms of an exact operand being absent. Two exact operands give the exact (u/t) p^(v - w); the exact 0 gives
+   the exact 0. lb_make then reduces u/t modulo p^(K - (v - w)): the centre is computed only to the relative
+   precision of the RESULT (K - (v - w) <= M - w, the relative precision of the inverse, so the residue is the same
+   as the one the inverse would give). The bounds: all inputs within EXP_MAX, so every term is within 2^62. */
 int
 adf_lball_div(adf_lball_t z, const adf_lball_t x, const adf_lball_t y)
 {
-    adf_lball_t r;
-    int st;
+    adf_lball_t res;
+    fmpq_t q;
+    slong K = NO_BOUND, c;
+    int st, exact, xz;
     ADF_INV_LBALL(x);
     ADF_INV_LBALL(y);
     if (x->p != y->p)
         return ADF_DOMAIN;
-    adf_lball_init(r);
-    st = adf_lball_inv(r, y);
-    if (st == ADF_OK)
-        st = adf_lball_mul(z, x, r);
-    adf_lball_clear(r);
-    return st;
+    if (!in_bounds(y))
+        return ADF_LIMIT;
+    if (fmpq_is_zero(y->u))
+        return y->exact ? ADF_NOT_UNIT : ADF_UNIT_NOT_CERTIFIED;
+    if (!in_bounds(x))
+        return ADF_LIMIT;
+    adf_lball_init(res);
+    xz = fmpq_is_zero(x->u);
+    if (x->exact && xz)
+    {
+        res->p = x->p;
+        set_exact_zero(res);
+        return finish(z, res, ADF_OK);
+    }
+    exact = x->exact && y->exact;
+    if (!exact)
+    {
+        if (!y->exact && !xz)
+        {
+            c = x->v + y->N - 2 * y->v;
+            if (c < K)
+                K = c;
+        }
+        if (!x->exact)
+        {
+            c = x->N - y->v;
+            if (c < K)
+                K = c;
+        }
+        if (!x->exact && !y->exact)
+        {
+            c = x->N + y->N - 2 * y->v;
+            if (c < K)
+                K = c;
+        }
+    }
+    fmpq_init(q);
+    fmpq_div(q, x->u, y->u);
+    st = lb_make(res, x->p, q, xz ? 0 : x->v - y->v, exact, exact ? 0 : K);
+    fmpq_clear(q);
+    return finish(z, res, st);
 }
 
 /* ----------------------------------------------------------------------- valuation, absolute value, decomposition */
@@ -743,7 +839,7 @@ adf_lball_decompose(slong * m, adf_lball_t unit, const adf_lball_t x)
     if (!in_bounds(x) || !exp_ok(x->N - x->v))
         return ADF_LIMIT;
     adf_lball_init(res);
-    adf_lball_set(res, x);
+    lb_copy(res, x);
     res->N = x->exact ? 0 : x->N - x->v;
     res->v = 0;
     *m = x->v;

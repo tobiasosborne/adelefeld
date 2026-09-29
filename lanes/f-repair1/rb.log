@@ -1,0 +1,21 @@
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f-repair1/rb/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f-repair1/rb/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-repair1/rb/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f-repair1/rb/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f-repair1/rb/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f-repair1/rb/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-repair1/rb/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-repair1/rb/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-repair1/rb/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-repair1/rb/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f-repair1/rb/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-repair1/rb/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-repair1/rb/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f-repair1/rb/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-repair1/rb/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-repair1/rb/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f-repair1/rb/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-repair1/rb/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f-repair1/rb/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f-repair1/rb/ucoset.o
+ar rcs lanes/f-repair1/rb/libadelefeld.a lanes/f-repair1/rb/adele.o lanes/f-repair1/rb/cap.o lanes/f-repair1/rb/common.o lanes/f-repair1/rb/dump.o lanes/f-repair1/rb/fball.o lanes/f-repair1/rb/fball_local.o lanes/f-repair1/rb/idele.o lanes/f-repair1/rb/inlines.o lanes/f-repair1/rb/lball.o lanes/f-repair1/rb/linsolve.o lanes/f-repair1/rb/modctx.o lanes/f-repair1/rb/place.o lanes/f-repair1/rb/rat.o lanes/f-repair1/rb/recon.o lanes/f-repair1/rb/resid.o lanes/f-repair1/rb/roots.o lanes/f-repair1/rb/scaled.o lanes/f-repair1/rb/status.o lanes/f-repair1/rb/text.o lanes/f-repair1/rb/ucoset.o

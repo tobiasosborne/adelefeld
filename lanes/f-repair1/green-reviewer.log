@@ -1,0 +1,41 @@
+== boundaries
+inverse_negative_endpoint: got=OK expected=OK expected_fields=(5,1,1,1152921504606846976,0) mismatch=0 output_untouched=0
+inverse_positive_endpoint: got=OK expected=OK expected_fields=(5,1,1,-1152921504606846976,0) mismatch=0 output_untouched=0
+sub_same_fine_ball: got=OK expected=OK expected_fields=(5,0,0,0,1152921504606846976) mismatch=0 output_untouched=0
+sub_coarse_minus_fine: got=OK expected=OK expected_fields=(5,0,0,0,0) mismatch=0 output_untouched=0
+div_zero_by_fine_unit: got=OK expected=OK expected_fields=(5,1,0,0,0) mismatch=0 output_untouched=0
+div_coarse_zero_by_fine_unit: got=OK expected=OK expected_fields=(5,0,0,0,0) mismatch=0 output_untouched=0
+div_endpoint_ball_by_itself: got=OK expected=OK expected_fields=(5,0,1,0,1152921504606846976) mismatch=0 output_untouched=0
+cases=7 canonical_input_checks=9 failures=0
+exit=0
+== check_invariants.py
+method=place exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_place: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+method=exact exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_is_exact: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+method=zero exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_contains_zero: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+method=prec exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_get_prec: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+method=set exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_set: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+method=swap exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_swap: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+method=identical exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_identical: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+method=rat exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_set_rat: argument q is not a canonical adf_rat
+timeout: the monitored command dumped core
+method=ratball exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_set_rat_ball: argument c is not a canonical adf_rat
+timeout: the monitored command dumped core
+method=add_control exit=-6 stdout= stderr=adelefeld: ADF_CHECK_INVARIANTS: adf_lball_add: argument x is not a canonical adf_lball
+timeout: the monitored command dumped core
+invalid_entry_calls=9 missed_checks=0 aborting_controls=1
+exit=0
+== test_assertion (F6, the reviewer's program: it does not run tests/test_lball.c)
+wrong_unit=5 canonical=1 valuation=1 assertion_at_test_lball_976=1
+exit=1
+== proof_probe.py (F5, checks the equality as the reviewer wrote it)
+    assert lhs == rhs, "docs/api-1f.md L0 proof has the opposite sign"
+           ^^^^^^^^^^
+AssertionError: docs/api-1f.md L0 proof has the opposite sign
+exit=0

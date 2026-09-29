@@ -1082,6 +1082,32 @@ def lb_ref_div(x, y):
     return r if isinstance(r, str) else lb_ref_mul(x, r)
 
 
+def lb_ref_div_direct(x, y):
+    """L4a (lane f-repair1): the quotient from the valuations and precisions alone, without forming 1/y.
+
+    y = p^w t (+ p^M Z_p), t != 0, and x = p^v u (+ p^N Z_p): the centre is (u/t) p^(v - w), and
+    K = min(v + M - 2w [y ball, u != 0], N - w [x ball], N + M - 2w [both balls]).
+    """
+    p = x.p
+    if y.u == 0:
+        return "NOT_UNIT" if y.exact else "UNIT_NOT_CERTIFIED"
+    if x.exact and x.u == 0:
+        return lb_exact(p, 0)
+    w = y.v
+    e = 0 if x.u == 0 else x.v - w
+    centre = (x.u / y.u) * F(p) ** e
+    if x.exact and y.exact:
+        return lb_exact(p, centre)
+    terms = []
+    if not y.exact and x.u != 0:
+        terms.append(x.v + y.N - 2 * w)
+    if not x.exact:
+        terms.append(x.N - w)
+    if not x.exact and not y.exact:
+        terms.append(x.N + y.N - 2 * w)
+    return lb_ball(p, centre, min(terms))
+
+
 def lb_ref_valuation(x):
     """(status, v, is_inf)."""
     if x.exact:
@@ -1318,8 +1344,23 @@ def check_lball_decompose():
     return f"decomposed={n}"
 
 
+def check_lball_quotient():
+    """L4a: the direct quotient equals the quotient by way of the inverse, on every pair of the universes of
+    p = 2 (valuations -2..2, relative precision up to 3), p = 3 (-2..2, up to 2) and p = 5 (-1..1, up to 2)."""
+    n = 0
+    for p, vmax, kmax in ((2, 2, 3), (3, 2, 2), (5, 1, 2)):
+        uni = lb_universe(p, vmax, kmax)
+        for x in uni:
+            for y in uni:
+                a, b = lb_ref_div(x, y), lb_ref_div_direct(x, y)
+                assert a == b, (x, y, a, b)
+                n += 1
+    return f"quotients={n}"
+
+
 def lball_main():
-    for check in (check_lball_reduction, check_lball_projection, check_lball_enumeration, check_lball_decompose):
+    for check in (check_lball_reduction, check_lball_projection, check_lball_enumeration, check_lball_decompose,
+                  check_lball_quotient):
         print(f"{check.__name__}: {check()}", flush=True)
 
 

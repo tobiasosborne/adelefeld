@@ -1,0 +1,84 @@
+== release: test_lball
+   enumeration p=2: 57 balls, 12996 binary cases, 114 unary cases
+   enumeration p=3: 38 balls, 5776 binary cases, 76 unary cases
+   enumeration p=5: 86 balls, 16000 binary cases, 172 unary cases
+   enumeration p=7: 158 balls, 8000 binary cases, 316 unary cases
+   aliasing: 1102 cases
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 3/2 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1325: inv_of_an_exact_power_at_the_exponent_limit: check failed: adf_lball_inv(x, x) == ADF_OK && x->v == -sign * E && fmpz_equal_si(fmpq_numref(x->u), 2)
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 3/2 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1325: inv_of_an_exact_power_at_the_exponent_limit: check failed: adf_lball_inv(x, x) == ADF_OK && x->v == -sign * E && fmpz_equal_si(fmpq_numref(x->u), 2)
+FAIL inv_of_an_exact_power_at_the_exponent_limit (tests/test_lball.c:1306, 6 failed checks)
+FAIL tests/test_lball.c:1292: sub_of_small_results_at_the_exponent_limit: check failed: st == want_st | sub x - x: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: sub_of_small_results_at_the_exponent_limit: check failed: st == want_st | sub Z_5 - fine: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: sub_of_small_results_at_the_exponent_limit: check failed: st == want_st | sub 2 - 1: status LIMIT, want OK
+FAIL tests/test_lball.c:1364: sub_of_small_results_at_the_exponent_limit: check failed: adf_lball_sub(z, z, z) == ADF_OK && fmpq_is_zero(z->u) && z->N == E && !z->exact
+FAIL sub_of_small_results_at_the_exponent_limit (tests/test_lball.c:1345, 4 failed checks)
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div 0 / fine unit: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div Z_5 / fine unit: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div x / x at v = -E: status LIMIT, want OK
+FAIL tests/test_lball.c:1404: div_of_small_results_at_the_exponent_limit: check failed: adf_lball_div(z, z, z) == ADF_OK && fmpq_is_one(z->u) && z->N == E && z->v == 0
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div O(5^-E) / fine unit: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div ball / 5^E: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div 5^E / 5^E: status LIMIT, want OK
+FAIL div_of_small_results_at_the_exponent_limit (tests/test_lball.c:1383, 7 failed checks)
+   composition p=2: 3249 pairs
+   composition p=3: 3721 pairs
+   composition p=5: 7396 pairs
+26 tests, 3982393 checks, 17 failed checks, 3 failed tests
+exit=0
+== INV: test_lball
+   enumeration p=2: 57 balls, 12996 binary cases, 114 unary cases
+   enumeration p=3: 38 balls, 5776 binary cases, 76 unary cases
+   enumeration p=5: 86 balls, 16000 binary cases, 172 unary cases
+   enumeration p=7: 158 balls, 8000 binary cases, 316 unary cases
+   aliasing: 1102 cases
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 3/2 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1325: inv_of_an_exact_power_at_the_exponent_limit: check failed: adf_lball_inv(x, x) == ADF_OK && x->v == -sign * E && fmpz_equal_si(fmpq_numref(x->u), 2)
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1292: inv_of_an_exact_power_at_the_exponent_limit: check failed: st == want_st | inv 3/2 5^(+-E): status LIMIT, want OK
+FAIL tests/test_lball.c:1325: inv_of_an_exact_power_at_the_exponent_limit: check failed: adf_lball_inv(x, x) == ADF_OK && x->v == -sign * E && fmpz_equal_si(fmpq_numref(x->u), 2)
+FAIL inv_of_an_exact_power_at_the_exponent_limit (tests/test_lball.c:1306, 6 failed checks)
+FAIL tests/test_lball.c:1292: sub_of_small_results_at_the_exponent_limit: check failed: st == want_st | sub x - x: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: sub_of_small_results_at_the_exponent_limit: check failed: st == want_st | sub Z_5 - fine: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: sub_of_small_results_at_the_exponent_limit: check failed: st == want_st | sub 2 - 1: status LIMIT, want OK
+FAIL tests/test_lball.c:1364: sub_of_small_results_at_the_exponent_limit: check failed: adf_lball_sub(z, z, z) == ADF_OK && fmpq_is_zero(z->u) && z->N == E && !z->exact
+FAIL sub_of_small_results_at_the_exponent_limit (tests/test_lball.c:1345, 4 failed checks)
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div 0 / fine unit: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div Z_5 / fine unit: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div x / x at v = -E: status LIMIT, want OK
+FAIL tests/test_lball.c:1404: div_of_small_results_at_the_exponent_limit: check failed: adf_lball_div(z, z, z) == ADF_OK && fmpq_is_one(z->u) && z->N == E && z->v == 0
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div O(5^-E) / fine unit: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div ball / 5^E: status LIMIT, want OK
+FAIL tests/test_lball.c:1292: div_of_small_results_at_the_exponent_limit: check failed: st == want_st | div 5^E / 5^E: status LIMIT, want OK
+FAIL div_of_small_results_at_the_exponent_limit (tests/test_lball.c:1383, 7 failed checks)
+   composition p=2: 3249 pairs
+   composition p=3: 3721 pairs
+   composition p=5: 7396 pairs
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_place (case 0): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_place (case 0): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_is_exact (case 1): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_is_exact (case 1): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_contains_zero (case 2): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_contains_zero (case 2): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_get_prec (case 3): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_get_prec (case 3): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_set (case 4): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_set (case 4): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_swap (case 5): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_swap (case 5): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_swap (case 6): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_swap (case 6): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_identical (case 7): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_identical (case 7): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_identical (case 8): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_identical (case 8): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_set_rat (case 9): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_set_rat (case 9): stderr ''
+FAIL tests/test_lball.c:1674: entry_check_of_every_public_function: check failed: sig == SIGABRT | adf_lball_set_rat_ball (case 10): a forged argument did not abort (signal 0, exit 0)
+FAIL tests/test_lball.c:1676: entry_check_of_every_public_function: check failed: strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL && strstr(err, i >= IC_SET_RAT && i <= IC_SET_RAT_BALL ? "adf_rat" : "adf_lball") != NULL | adf_lball_set_rat_ball (case 10): stderr ''
+FAIL entry_check_of_every_public_function (tests/test_lball.c:1660, 22 failed checks)
+27 tests, 3982430 checks, 39 failed checks, 4 failed tests
