@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """tests/fuzz/diff_roots_padic.py: differential run of adf_roots_padic and adf_roots_padic_partial (slice 2 of S.2,
-lane s2-slice2) against rootlist_padic of proto/solvers_checks.py (line 1707; Algorithm P, padic_roots, line 1649).
+lane s2-slice2) against rootlist_padic of proto/solvers_checks.py (line 1707; Algorithm P, padic_roots, line 1649);
+since slice 4 (lane s2-slice4) also at primes above ADF_ROOTS_P_EVAL_MAX = 128.
 
     sh tests/test_exports.sh                     # builds build/libadelefeld.so
     python3 tests/fuzz/diff_roots_padic.py --seconds 180 --seed 1
 
 Random polynomials of degree 0 to 7: coefficients in small and in large ranges (up to 200 bits), products with
 planted integer roots (repeated roots, pairs of roots congruent modulo p^t, t up to 5, a leading coefficient p or a
-content), now and then a factor without roots. Primes: every prime up to 101, 2 and 3 more often. Precisions 1 to
-12, sometimes 40, now and then 0 or negative (DOMAIN); depths 0 to 12, now and then negative (DOMAIN). The same
-input goes to the two C functions (ctypes on build/libadelefeld.so) and to the reference. The run asserts, for
-every call:
+content), now and then a factor without roots. Primes: every prime up to 101, 2 and 3 more often, and (slice 4)
+the primes from 131 to 1031, where the library finds the roots modulo p by the degree of gcd(h, X^p - X) and the
+candidates of FLINT (roots.h) and the reference by evaluation at every residue. Precisions 1 to 12, sometimes 40,
+now and then 0 or negative (DOMAIN); depths 0 to 12, now and then negative (DOMAIN). The same input goes to the two
+C functions (ctypes on build/libadelefeld.so) and to the reference. The run asserts, for every call:
   - the status of adf_roots_padic is the reference status (OK 0, NOT_DETERMINED 1, DOMAIN 7), and that of
     adf_roots_padic_partial is OK (DOMAIN when the reference says DOMAIN);
   - the partial list equals the reference list: g (adf_rootlist_get_poly), reduced, complete, the certificates
@@ -18,8 +20,22 @@ every call:
   - adf_rootlist_verify_entries and adf_rootlist_is_canonical accept it, and adf_rootlist_verify_complete at the
     same depth returns complete;
   - for OK the strict list equals the partial list.
-It prints the counts of each status, of lists with classes and with s > 0. Exit status 1 on the first
-disagreement."""
+Primes of 21 to 64 bits (slice 4; the reference evaluates at every residue and cannot run there): a fixed list
+(2^20 + 7, 2^32 - 5, 2^48 - 59, 2^63 - 25, 2^64 - 59) and random primes of 21 to 64 bits (Miller-Rabin with the
+first twelve primes as bases, deterministic below 3.3 10^24, and adf_place_prime proves them again). The inputs
+are products with planted integer roots of up to 100 bits, distinct modulo p except one pair r1 = r0 + p^t u
+(t = 1 to 3, 0 < |u| <= 1000 < p), now and then a repeated root, a leading coefficient 2, 3 or p, a content, and
+a factor X^2 - c with c a non-residue modulo p (Euler's criterion). The oracle is an argument, not the reference:
+the roots in Z_p of such a product are exactly the planted roots (Z_p is an integral domain; X^2 - c has no root
+modulo p). A class polynomial modulo p is a unit times the product of Y - (digit) over the planted roots in the
+class, so a class is opened only when two planted roots share its next digit, and the list is complete exactly
+when depth >= T, T = v_p(r1 - r0) for the pair and 0 without one. The run asserts: the statuses (DOMAIN as the
+arguments say; strict OK exactly when depth >= T, else NOT_DETERMINED; partial OK); g is normalise_g of the
+reference; every certificate is (r mod p^K, K, s) for a planted root r, s = v_p(g'(r)), K = max(prec, s + 1), in
+increasing order; every planted root lies in exactly one ball or class; complete lists hold all planted roots;
+verify_entries and is_canonical accept the list, and verify_complete returns complete.
+It prints the counts of each status, of lists with classes and with s > 0, and of the calls by the size of p.
+Exit status 1 on the first disagreement. A run of 180 s is a smoke test, not a long fuzz run."""
 import argparse
 import ctypes
 import os
@@ -34,6 +50,35 @@ STATUS = {0: "OK", 1: "NOT_DETERMINED", 7: "DOMAIN"}
 SIZEOF_ROOTLIST = 120                     # include/adelefeld/roots.h, the layout
 OFF_REDUCED = 12
 PRIMES = [q for q in range(2, 102) if all(q % r for r in range(2, q))]
+PRIMES_MID = [q for q in range(131, 1032) if all(q % r for r in range(2, int(q ** 0.5) + 1))]
+PRIMES_BIG = [2 ** 20 + 7, 2 ** 32 - 5, 2 ** 48 - 59, 2 ** 63 - 25, 2 ** 64 - 59]
+
+
+def is_prime_word(n):
+    """Miller-Rabin with the first twelve primes as bases: deterministic for n < 3.3 10^24."""
+    if n < 2:
+        return False
+    small = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
+    for q in small:
+        if n % q == 0:
+            return n == q
+    d, r = n - 1, 0
+    while d % 2 == 0:
+        d, r = d // 2, r + 1
+    for a in small:
+        x = pow(a, d, n)
+        if x in (1, n - 1):
+            continue
+        for _ in range(r - 1):
+            x = x * x % n
+            if x == n - 1:
+                break
+        else:
+            return False
+    return True
+
+
+assert all(is_prime_word(q) for q in PRIMES_BIG) and all(is_prime_word(q) == (q in PRIMES) for q in range(2, 102))
 
 
 class Place(ctypes.Structure):
@@ -169,6 +214,99 @@ def draw_poly(rng, p):
     return f
 
 
+def vp(x, p):
+    v = 0
+    while x % p == 0:
+        x, v = x // p, v + 1
+    return v
+
+
+def draw_big_prime(rng):
+    if rng.random() < 0.5:
+        return rng.choice(PRIMES_BIG)
+    while True:
+        q = rng.randrange(2 ** (rng.randint(21, 64) - 1), 2 ** 64) | 1
+        if q < 2 ** 64 and is_prime_word(q):
+            return q
+
+
+def non_residue(p, rng):
+    while True:
+        c = rng.randrange(1, p)
+        if pow(c, (p - 1) // 2, p) == p - 1:
+            return c
+
+
+def draw_planted(rng, p):
+    """f with the planted roots `roots` (distinct), and T (see the docstring)."""
+    n = rng.randint(1, 6)
+    roots = []
+    while len(roots) < n:
+        r = rng.randrange(-2 ** 100, 2 ** 100) if rng.random() < 0.5 else rng.randrange(-p, 2 * p)
+        if all((r - q) % p for q in roots):
+            roots.append(r)
+    T = 0
+    if n >= 2 and rng.random() < 0.3:
+        T = rng.randint(1, 3)
+        roots[1] = roots[0] + p ** T * rng.randint(1, 1000) * rng.choice((1, -1))
+    mult = list(roots)
+    if rng.random() < 0.3:
+        mult.append(roots[0])                                 # a repeated root
+    f = S.pfrom_roots(mult, lead=rng.choice((1, 1, 2, 3, p)))
+    if rng.random() < 0.4:
+        f = S.pmul(f, [-non_residue(p, rng), 0, 1])
+    if rng.random() < 0.15:
+        f = [c * rng.choice((p, 6, -1)) for c in f]           # content, sign
+    return f, roots, T
+
+
+def check_big(br, rng, n):
+    """One call at a prime of 21 to 64 bits against the planted oracle; returns (fails, where, status, info)."""
+    p = draw_big_prime(rng)
+    f, roots, T = draw_planted(rng, p)
+    prec = draw_prec(rng)
+    depth = rng.randint(0, 4) if rng.random() > 0.03 else -1
+    where = f"case {n}: f={f} p={p} prec={prec} depth={depth} roots={roots}"[:1500]
+    got = br.run(f, p, prec, depth)
+    fails = []
+    if prec < 1 or depth < 0:
+        if got["status"] != 7 or got["status_partial"] != 7:
+            fails.append(f"statuses {got['status']}, {got['status_partial']}; want DOMAIN")
+        return fails, where, S.DOMAIN, None
+    complete = depth >= T
+    want_st = 0 if complete else 1
+    if got["status"] != want_st or got["status_partial"] != 0:
+        fails.append(f"statuses {got['status']}, {got['status_partial']}; want {want_st}, 0 (T = {T})")
+        return fails, where, None, None
+    P = got["partial"]
+    g = S.normalise_g(f)
+    dg = S.pderiv(g)
+    want = []
+    for r in roots:
+        s = vp(S.peval(dg, r), p)
+        K = max(prec, s + 1)
+        want.append((r % p ** K, K, s))
+    want.sort()
+    if P["g"] != g or P["scope"] != 0 or P["complete"] != (1 if complete else 0):
+        fails.append(f"g = {P['g']}, scope {P['scope']}, complete {P['complete']}; oracle {g}, {complete}")
+    for c in P["certs"]:
+        if c not in want:
+            fails.append(f"certificate {c} is not one of the oracle {want}")
+    if P["certs"] != sorted(P["certs"]):
+        fails.append("certificates not in increasing order")
+    for r in roots:
+        m = sum((r - a) % p ** K == 0 for a, K, _ in P["certs"]) + sum((r - a) % p ** e == 0 for a, e in P["unres"])
+        if m != 1:
+            fails.append(f"the planted root {r} lies in {m} balls and classes")
+    if complete and P["certs"] != want:
+        fails.append(f"certificates {P['certs']}, oracle {want}")
+    if P["verify"] != 1 or P["canonical"] != 1 or P["vc"] != (1 if complete else 0):
+        fails.append(f"verify_entries {P['verify']}, is_canonical {P['canonical']}, verify_complete {P['vc']}")
+    if complete and got.get("strict") != P:
+        fails.append("the strict list differs from the partial list")
+    return fails, where, S.OK if complete else S.NOT_DETERMINED, (bool(P["unres"]), any(c[2] > 0 for c in want))
+
+
 def draw_prec(rng):
     u = rng.random()
     if u < 0.03:
@@ -197,9 +335,28 @@ def main():
     rng = random.Random(args.seed)
     t_end = time.time() + args.seconds
     by_status = {}
-    n = n_classes = n_spos = n_small = 0
+    n = n_classes = n_spos = n_small = n_mid = n_big = 0
     while time.time() < t_end:
-        p = rng.choice((2, 3)) if rng.random() < 0.35 else rng.choice(PRIMES)
+        u = rng.random()
+        if u < 0.3:                                           # slice 4: 21 to 64 bits, the planted oracle
+            n += 1
+            n_big += 1
+            fails, where, st, info = check_big(br, rng, n)
+            by_status[st] = by_status.get(st, 0) + 1
+            if info:
+                n_classes += info[0]
+                n_spos += info[1]
+            if fails:
+                print("DISAGREEMENT", where)
+                for x in fails:
+                    print("   ", x)
+                return 1
+            continue
+        if u < 0.5:
+            p = rng.choice(PRIMES_MID)                        # slice 4: the degree route against the reference
+            n_mid += 1
+        else:
+            p = rng.choice((2, 3)) if rng.random() < 0.35 else rng.choice(PRIMES)
         n_small += p <= 7
         f = draw_poly(rng, p)
         prec, depth = draw_prec(rng), draw_depth(rng)
@@ -237,7 +394,8 @@ def main():
                 print("   ", x)
             return 1
     print(f"diff_roots_padic: {n} calls in {args.seconds:.0f} s, seed {args.seed}; statuses {by_status}; "
-          f"at p <= 7: {n_small}; lists with classes {n_classes}, with s > 0 {n_spos}; 0 disagreements")
+          f"at p <= 7: {n_small}; at 131 <= p <= 1031: {n_mid}; at p of 21 to 64 bits: {n_big}; "
+          f"lists with classes {n_classes}, with s > 0 {n_spos}; 0 disagreements")
     return 0
 
 

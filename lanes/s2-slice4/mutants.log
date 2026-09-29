@@ -1,0 +1,17 @@
+mutant: the test of each candidate by evaluation removed: KILLED
+    test_roots_bigp: exit 1; 5 tests, 825 checks, 101 failed checks, 1 failed tests
+        FAIL a_wrong_candidate_list_is_refused (tests/test_roots_bigp.c:622, 101 failed checks)
+    test_roots_padic: exit 0; 8 tests, 55135 checks, 0 failed checks, 0 failed tests
+mutant: the comparison with deg d removed: KILLED
+    test_roots_bigp: exit 1; 5 tests, 825 checks, 107 failed checks, 1 failed tests
+        FAIL a_wrong_candidate_list_is_refused (tests/test_roots_bigp.c:622, 107 failed checks)
+    test_roots_padic: exit 0; 8 tests, 55135 checks, 0 failed checks, 0 failed tests
+mutant: X^p replaced by X^(p-1): KILLED
+    test_roots_bigp: exit 134; (no summary line; last lines: adelefeld: adf_roots_padic: internal error: the roots modulo 2 of FLINT are refused (1 candidates, deg gcd(h, X^p - X) = 11) | timeout: the monitored command dumped core | Aborted)
+    test_roots_padic: exit 1; 8 tests, 55131 checks, 6 failed checks, 2 failed tests
+        FAIL vectors_s2_slice2_every_line (tests/test_roots_padic.c:820, 3 failed checks)
+        FAIL domain_unsupported_and_limit_before_any_allocation_L_untouched (tests/test_roots_padic.c:1269, 3 failed checks)
+mutant: the reduction modulo h dropped from the powering: KILLED
+    test_roots_bigp: exit 134; (no summary line; last lines:     Unable to allocate memory (34359738336). | timeout: the monitored command dumped core | Aborted)
+    test_roots_padic: exit 134; (no summary line; last lines:     Unable to allocate memory (18446744073709551152). | timeout: the monitored command dumped core | Aborted)
+4 of 4 mutants killed

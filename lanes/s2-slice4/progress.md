@@ -22,3 +22,9 @@
 - tests/fuzz/diff_roots_padic.py: primes above the bound with planted roots; run 180 s.
 - make clean && make check-all; SAN=1; CC=clang; check_headers.sh.
 - result.md.
+
+## Update
+- docs/sources.md: one row in table 1, nine rows in table 3 S.2 (quotes checked line by line against the files by
+  a script: 0 mismatches), item 5 under "Sources pending for milestone S". flint.h.in fetched too (7 files).
+- Mutants (lanes/s2-slice4/mutants.py, log mutants.log): 4 of 4 killed.
+- Next: fuzz script, full checks, result.md.

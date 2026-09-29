@@ -59,7 +59,8 @@ def main():
             rc, out = run(f"ulimit -v 4000000; timeout 120 ./build/{t}", MUT, 150)
             last = [l for l in out.splitlines() if "tests," in l]
             fails = [l for l in out.splitlines() if l.startswith("FAIL ") and "(" in l and ":" not in l.split()[1]]
-            res.append((t, rc, last[-1] if last else "(no summary line)", fails))
+            tail = " | ".join(l for l in out.splitlines()[-3:])
+            res.append((t, rc, last[-1] if last else "(no summary line; last lines: " + tail[:600] + ")", fails))
         dead = any(r[1] != 0 for r in res)
         killed += dead
         print(f"mutant: {name}: {'KILLED' if dead else 'SURVIVED'}")
