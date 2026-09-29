@@ -1,0 +1,6 @@
+# Red and green runs of lane s2-slice4 (tests/test_roots_bigp.c and the changed checks of test_roots_padic.c)
+
+## Red 1 (link error; the first test of the new file)
+make -j2 -s build/test_roots_bigp
+  -> the linker: undefined reference to `adf_roots_modp' and `adf_roots_modp_check' (10 lines shown by ld),
+     collect2: error: ld returned 1 exit status. No other compiler warning or error.

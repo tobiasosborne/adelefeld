@@ -28,8 +28,12 @@
    formed only after 2 K bits(p) <= ADF_ROOTS_BITS_MAX has been tested for the K of the call, and every
    m used is below 2 K. */
 
+#include <stdlib.h>                 /* qsort */
+#include <string.h>                 /* memcpy */
+
 #include <flint/fmpz_vec.h>
 #include <flint/nmod_poly.h>
+#include <flint/nmod_poly_factor.h>   /* slice 4: nmod_poly_roots */
 #include <flint/acb.h>                /* slice 3: the enclosures of arb_fmpz_poly_complex_roots */
 #include <flint/arb_fmpz_poly.h>
 
@@ -958,6 +962,189 @@ open_class_clear(open_class * c)
     fmpz_clear(c->a);
     fmpz_clear(c->pe);
     fmpz_poly_clear(c->h);
+}
+
+/* ---- the roots modulo p (solvers P3.7, solvers.md:1284 to 1302; decision S-D10; slice 4) ----
+
+   The distinct roots in F_p of a polynomial h over F_p that is not 0 (the hypothesis of P3.7), by one of two
+   routes:
+     1, evaluation (P3.7(1), solvers.md:1288 to 1289): h(b) for every b in [0, p); used for
+       p <= ADF_ROOTS_P_EVAL_MAX (roots.h, where the bound is measured);
+     2, a degree (P3.7(2), solvers.md:1290 to 1292): d = gcd(h, X^p - X), with X^p formed modulo h by powering;
+       the candidates are the roots of d found by nmod_poly_roots of FLINT; EVERY candidate is tested by
+       evaluation of h, and the list is accepted only if its entries are distinct, in [0, p), roots of h, and
+       their number is deg d. Then it is the complete list of the distinct roots of h in F_p (P3.7(2): a list
+       of distinct roots found by any method is complete exactly when its length is deg d). Nothing FLINT
+       returns is trusted beyond this test; a refused list aborts (decision S-D20; see modp_roots_gcd).
+   FLINT (refs/src/flint-3.0.1 for the documentation, refs/src/flint-src-3.0.1 for the C sources at the tag
+   v3.0.1; the rows of docs/sources.md, lane s2-slice4):
+     nmod_poly_powmod_ui_binexp, nmod_poly.rst:858 to 861, "We require e >= 0"; powmod_ui_binexp.c:67 to 88: a
+       modulus of length 0 aborts, one of length 1 gives 0, a base not shorter than the modulus is first
+       reduced modulo it;
+     nmod_poly_gcd, nmod_poly.rst:1716 to 1721: monic except when the gcd is 0; gcd.c:44 to 47: the gcd of
+       A and 0 is A made monic;
+     nmod_poly_roots(r, f, 0), declared in nmod_poly_factor.h and not documented: nmod_poly_factor/roots.c:148
+       to 204; it throws for f = 0 (lines 169 to 173), returns no factor for deg f = 0 and f made monic for
+       deg f = 1 (159 to 168), and otherwise splits the monic f by Rabin's Las Vegas method with a generator
+       seeded by flint_randinit (177; find_distinct_nonzero_roots.c:29 to 43 repeats a random split until
+       it is proper): the roots are written as the linear factors r->p[i];
+     nmod_poly_evaluate_nmod, nmod_poly.rst:1243; evaluate_nmod.c:15 to 45, Horner's rule;
+     nmod_neg, nmod_mul, nmod_inv, nmod.rst:94 to 114 (arguments reduced modulo the modulus). */
+
+#define ADF_ROOTS_ROUTE_AUTO 0
+#define ADF_ROOTS_ROUTE_EVAL 1
+#define ADF_ROOTS_ROUTE_GCD 2
+
+/* Hidden (tests/test_roots_bigp.c): the roots of h with the route forced (AUTO: evaluation for
+   p <= ADF_ROOTS_P_EVAL_MAX, the degree route above), and the check of a candidate list. roots has room
+   for deg h + 1 entries; it receives the distinct roots in increasing order, and their number is
+   returned. h = 0 aborts. */
+ADF_ROOTS_HIDDEN slong adf_roots_modp(ulong * roots, const nmod_poly_t h, int route);
+ADF_ROOTS_HIDDEN int adf_roots_modp_check(const nmod_poly_t h, const ulong * cand, slong m);
+
+/* h = 0 modulo p cannot occur in the search: every class polynomial has its content at p removed (Algorithm P
+   step 1 and P3.4, solvers.md:1123 to 1125, from L3.1(1)); a zero polynomial is a defect, not an input */
+static void
+modp_zero_abort(void)
+{
+    flint_printf("adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p\n");
+    flint_abort();
+}
+
+static int
+cmp_ulong(const void * x, const void * y)
+{
+    ulong a = *(const ulong *) x, b = *(const ulong *) y;
+
+    return a < b ? -1 : a > b;
+}
+
+/* d = gcd(h, X^p - X) over F_p for h != 0, and deg d is returned (P3.7(2); d = 1 for h constant). X^p is
+   formed modulo h: t = X^p mod h, and gcd(h, t - X) = gcd(h, X^p - X) because t - X = X^p - X modulo h */
+static slong
+modp_deg_d(nmod_poly_t d, const nmod_poly_t h)
+{
+    nmod_poly_t x, t;
+
+    if (nmod_poly_degree(h) <= 0)
+    {
+        nmod_poly_one(d);
+        return 0;
+    }
+    nmod_poly_init_mod(x, h->mod);
+    nmod_poly_init_mod(t, h->mod);
+    nmod_poly_set_coeff_ui(x, 1, 1);
+    nmod_poly_powmod_ui_binexp(t, x, h->mod.n, h);
+    nmod_poly_sub(t, t, x);
+    nmod_poly_gcd(d, h, t);
+    nmod_poly_clear(x);
+    nmod_poly_clear(t);
+    return nmod_poly_degree(d);
+}
+
+/* 1 if cand[0..m) are m = degd distinct residues in [0, p), each a root of h by evaluation (P3.7(2)) */
+static int
+modp_check(const nmod_poly_t h, slong degd, const ulong * cand, slong m)
+{
+    ulong * c;
+    slong i;
+    int r;
+
+    if (m != degd)
+        return 0;
+    for (i = 0; i < m; i++)
+        if (cand[i] >= h->mod.n || nmod_poly_evaluate_nmod(h, cand[i]) != 0)
+            return 0;
+    if (m < 2)
+        return 1;
+    c = flint_malloc(m * sizeof(ulong));
+    memcpy(c, cand, m * sizeof(ulong));
+    qsort(c, m, sizeof(ulong), cmp_ulong);
+    for (i = 1, r = 1; i < m && r; i++)
+        r = c[i - 1] != c[i];
+    flint_free(c);
+    return r;
+}
+
+int
+adf_roots_modp_check(const nmod_poly_t h, const ulong * cand, slong m)
+{
+    nmod_poly_t d;
+    int r;
+
+    if (nmod_poly_is_zero(h))
+        modp_zero_abort();
+    nmod_poly_init_mod(d, h->mod);
+    r = modp_check(h, modp_deg_d(d, h), cand, m);
+    nmod_poly_clear(d);
+    return r;
+}
+
+/* route 1: every residue (P3.7(1)); at most deg h roots (Roots, solvers.md:1005), so roots does not overflow */
+static slong
+modp_roots_eval(ulong * roots, const nmod_poly_t h)
+{
+    slong m = 0, deg = nmod_poly_degree(h);
+    ulong b;
+
+    for (b = 0; b < h->mod.n; b++)
+        if (nmod_poly_evaluate_nmod(h, b) == 0)
+        {
+            if (m >= deg)
+                modp_zero_abort();              /* more than deg h roots: h is 0 */
+            roots[m++] = b;
+        }
+    return m;
+}
+
+/* route 2: the candidates of nmod_poly_roots on d, each written as a linear factor q0 + q1 X, so the root is
+   -q0 / q1. A list that the check refuses aborts (decision S-D20: a function that finds its own result refused
+   by its own check aborts). NOT_DETERMINED would say that a larger depth may succeed (roots.h), which is not
+   true of a defect of FLINT or of this code; evaluation at every residue is no fallback above the bound. */
+static slong
+modp_roots_gcd(ulong * roots, const nmod_poly_t h)
+{
+    nmod_poly_t d;
+    nmod_poly_factor_t fac;
+    const nmod_poly_struct * q;
+    slong k, i, m = 0;
+    int ok = 1;
+
+    nmod_poly_init_mod(d, h->mod);
+    k = modp_deg_d(d, h);
+    if (k > 0)
+    {
+        nmod_poly_factor_init(fac);
+        nmod_poly_roots(fac, d, 0);
+        ok = fac->num <= k;                     /* roots has room for deg h + 1 >= k + 1 entries */
+        for (i = 0; ok && i < fac->num; i++)
+        {
+            q = fac->p + i;
+            ok = q->length == 2 && q->coeffs[1] != 0;
+            if (ok)
+                roots[m++] = nmod_neg(nmod_mul(q->coeffs[0], nmod_inv(q->coeffs[1], h->mod), h->mod), h->mod);
+        }
+        nmod_poly_factor_clear(fac);
+    }
+    if (!ok || !modp_check(h, k, roots, m))
+    {
+        flint_printf("adelefeld: adf_roots_padic: internal error: the roots modulo %wu of FLINT are refused "
+                     "(%wd candidates, deg gcd(h, X^p - X) = %wd)\n", h->mod.n, m, k);
+        flint_abort();
+    }
+    qsort(roots, m, sizeof(ulong), cmp_ulong);
+    nmod_poly_clear(d);
+    return m;
+}
+
+slong
+adf_roots_modp(ulong * roots, const nmod_poly_t h, int route)
+{
+    if (nmod_poly_is_zero(h))
+        modp_zero_abort();
+    if (route == ADF_ROOTS_ROUTE_AUTO)
+        route = h->mod.n <= ADF_ROOTS_P_EVAL_MAX ? ADF_ROOTS_ROUTE_EVAL : ADF_ROOTS_ROUTE_GCD;
+    return route == ADF_ROOTS_ROUTE_EVAL ? modp_roots_eval(roots, h) : modp_roots_gcd(roots, h);
 }
 
 /* Algorithm P (solvers.md:1162 to 1176) on g0 != 0 at the prime pu <= ADF_ROOTS_P_EVAL_MAX with
