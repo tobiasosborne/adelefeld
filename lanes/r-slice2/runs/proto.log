@@ -1,0 +1,15 @@
+.............F..
+======================================================================
+FAIL: test_cost_is_counted (proto.test_real_isolation.SlowFamily.test_cost_is_counted)
+The bounds of the design (section 5): for the pair with non-dyadic roots the tree has at most
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/r-slice2/proto/test_real_isolation.py", line 262, in test_cost_is_counted
+    self.assertGreaterEqual(stats["nodes"], e)          # the chain is there: no Newton step yet
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 15 not greater than or equal to 100
+
+----------------------------------------------------------------------
+Ran 16 tests in 3.096s
+
+FAILED (failures=1)

@@ -1,0 +1,356 @@
+==12== Memcheck, a memory error detector
+==12== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==12== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==12== Command: lanes/r-slice2/probe_final mignotte 50 4000 2 skip
+==12== 
+status=0 degree=50 coeffbits=8002 seconds=6.592337737 n=4 count=4
+exact=0 minacc=2 endpointbits=100003 errors=0
+==12== 
+==12== HEAP SUMMARY:
+==12==     in use at exit: 0 bytes in 0 blocks
+==12==   total heap usage: 19,507 allocs, 19,507 frees, 319,679,376 bytes allocated
+==12== 
+==12== All heap blocks were freed -- no leaks are possible
+==12== 
+==12== For lists of detected and suppressed errors, rerun with: -s
+==12== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==14== Memcheck, a memory error detector
+==14== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==14== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==14== Command: lanes/r-slice2/probe_final complex 50 190 2 skip
+==14== 
+status=0 degree=50 coeffbits=9598 seconds=0.358087845 n=0 count=0
+exact=0 minacc=9223372036854775807 endpointbits=0 errors=0
+==14== 
+==14== HEAP SUMMARY:
+==14==     in use at exit: 0 bytes in 0 blocks
+==14==   total heap usage: 7,932 allocs, 7,932 frees, 2,554,984 bytes allocated
+==14== 
+==14== All heap blocks were freed -- no leaks are possible
+==14== 
+==14== For lists of detected and suppressed errors, rerun with: -s
+==14== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==16== Memcheck, a memory error detector
+==16== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==16== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==16== Command: lanes/r-slice2/probe_final tiny 3 16777206 2 skip
+==16== 
+==16== 
+==16== Process terminating with default action of signal 15 (SIGTERM)
+==16==    at 0x4D4B6F1: fft_adjust (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D558CC: ifft_negacyclic (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D57341: _fft_mulmod_2expp1 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D58630: _fft_inner1_worker (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D58D43: fft_mfa_truncate_sqrt2_inner (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D5985A: mul_mfa_truncate_sqrt2 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D59B97: flint_mpn_mul_fft_main (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x496DDF7: flint_mpn_mul_large (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49B391C: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16== 
+==16== HEAP SUMMARY:
+==16==     in use at exit: 122,342,416 bytes in 4,077 blocks
+==16==   total heap usage: 192,689 allocs, 188,612 frees, 862,036,544 bytes allocated
+==16== 
+==16== 8 bytes in 1 blocks are still reachable in loss record 1 of 25
+==16==    at 0x484D953: calloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x4956625: flint_calloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A06879: fmpz_poly_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0248C: fmpz_poly_set_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x110C2C: adf_rootlist_init (roots.c:229)
+==16==    by 0x10E4C5: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 16 bytes in 1 blocks are still reachable in loss record 2 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x53728D4: __gmp_default_allocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x53840C7: __gmpz_init2 (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49AF0DC: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49AFEB7: fmpz_mul_2exp (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10E15D: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 16 bytes in 1 blocks are possibly lost in loss record 3 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5388CD6: __gmpz_realloc2 (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49AF8FC: _fmpz_clear_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0414C: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 24 bytes in 1 blocks are still reachable in loss record 4 of 25
+==16==    at 0x484D953: calloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x4956625: flint_calloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A06879: fmpz_poly_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F192A: fmpz_poly_derivative (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED61: normalise (roots.c:177)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 24 bytes in 1 blocks are still reachable in loss record 5 of 25
+==16==    at 0x484D953: calloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x4956625: flint_calloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A06879: fmpz_poly_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4E9A: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 32 bytes in 1 blocks are still reachable in loss record 6 of 25
+==16==    at 0x484D953: calloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x4956625: flint_calloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F50EC: fmpz_poly_init2 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49FE91E: fmpz_poly_mul (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10E318: factor (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10E18F: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 56 bytes in 1 blocks are still reachable in loss record 7 of 25
+==16==    at 0x484D953: calloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x4956625: flint_calloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5430: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 112 bytes in 1 blocks are still reachable in loss record 8 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D58A67: fft_mfa_truncate_sqrt2_inner (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D5985A: mul_mfa_truncate_sqrt2 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D59B97: flint_mpn_mul_fft_main (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x496DDF7: flint_mpn_mul_large (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49B391C: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16== 
+==16== 3,456 bytes in 1 blocks are still reachable in loss record 9 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D5708B: _fft_mulmod_2expp1 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D58630: _fft_inner1_worker (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D58D43: fft_mfa_truncate_sqrt2_inner (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D5985A: mul_mfa_truncate_sqrt2 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D59B97: flint_mpn_mul_fft_main (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x496DDF7: flint_mpn_mul_large (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49B391C: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16== 
+==16== 4,584 bytes in 1 blocks are still reachable in loss record 10 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D56FC1: _fft_mulmod_2expp1 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D58630: _fft_inner1_worker (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D58D43: fft_mfa_truncate_sqrt2_inner (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D5985A: mul_mfa_truncate_sqrt2 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D59B97: flint_mpn_mul_fft_main (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x496DDF7: flint_mpn_mul_large (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49B391C: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16== 
+==16== 32,768 bytes in 1 blocks are still reachable in loss record 11 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x495656A: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49AF141: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49AFEB7: fmpz_mul_2exp (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10E15D: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 64,800 bytes in 4,050 blocks are possibly lost in loss record 12 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x53728D4: __gmp_default_allocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x53840C7: __gmpz_init2 (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49AF0DC: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49AFEB7: fmpz_mul_2exp (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10E15D: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 69,632 bytes in 1 blocks are possibly lost in loss record 13 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49AF001: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49AFEB7: fmpz_mul_2exp (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10E15D: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 2,097,160 bytes in 1 blocks are possibly lost in loss record 14 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5380894: __gmpz_divexact (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49A6EEF: fmpz_divexact (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C4981: _fmpz_vec_scalar_divexact_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F548C: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 4,194,312 bytes in 1 blocks are still reachable in loss record 15 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5380894: __gmpz_divexact (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49A6EEF: fmpz_divexact (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C4981: _fmpz_vec_scalar_divexact_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F548C: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 6,291,456 bytes in 1 blocks are still reachable in loss record 16 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49B3B25: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 6,291,456 bytes in 1 blocks are possibly lost in loss record 17 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49FA524: _fmpz_poly_mul_classical (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49FE9B3: fmpz_poly_mul (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10E318: factor (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10E18F: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 6,291,456 bytes in 1 blocks are possibly lost in loss record 18 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49A5AFF: fmpz_abs (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49EAF91: _fmpz_poly_content (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5464: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 6,291,472 bytes in 2 blocks are possibly lost in loss record 19 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5386324: __gmpz_mul_si (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49C1AA1: _fmpz_vec_scalar_mul_si (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49FA500: _fmpz_poly_mul_classical (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49FE9B3: fmpz_poly_mul (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10E318: factor (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10E18F: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 8,388,608 bytes in 1 blocks are possibly lost in loss record 20 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 8,388,616 bytes in 1 blocks are possibly lost in loss record 21 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49A7EBB: _flint_mpz_addmul_large (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C131C: fmpz_submul (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C29B1: _fmpz_vec_scalar_submul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A04094: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 10,485,760 bytes in 1 blocks are still reachable in loss record 22 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 12,582,936 bytes in 3 blocks are possibly lost in loss record 23 of 25
+==16==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x53863C4: __gmpz_mul_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==16==    by 0x49E8BA9: _fmpz_poly_derivative (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F1939: fmpz_poly_derivative (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED61: normalise (roots.c:177)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16==    by 0x10E523: run (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16==    by 0x10DBEA: main (in /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/probe_final)
+==16== 
+==16== 25,427,968 bytes in 1 blocks are still reachable in loss record 24 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D595CF: mul_mfa_truncate_sqrt2 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D59B97: flint_mpn_mul_fft_main (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x496DDF7: flint_mpn_mul_large (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49B391C: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16== 
+==16== 25,435,688 bytes in 1 blocks are still reachable in loss record 25 of 25
+==16==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==16==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D5911B: mul_mfa_truncate_sqrt2 (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4D59B97: flint_mpn_mul_fft_main (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x496DDF7: flint_mpn_mul_large (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49B391C: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49C1B61: _fmpz_vec_scalar_mul_fmpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x4A0407A: _fmpz_poly_pseudo_rem_cohen (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F5505: _fmpz_poly_gcd_subresultant (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x49F4EAF: fmpz_poly_gcd (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==16==    by 0x10ED6F: normalise (roots.c:178)
+==16==    by 0x113E7A: adf_roots_real (roots.c:1770)
+==16== 
+==16== LEAK SUMMARY:
+==16==    definitely lost: 0 bytes in 0 blocks
+==16==    indirectly lost: 0 bytes in 0 blocks
+==16==      possibly lost: 50,466,152 bytes in 4,062 blocks
+==16==    still reachable: 71,876,264 bytes in 15 blocks
+==16==         suppressed: 0 bytes in 0 blocks
+==16== 
+==16== For lists of detected and suppressed errors, rerun with: -s
+==16== ERROR SUMMARY: 25 errors from 25 contexts (suppressed: 0 from 0)

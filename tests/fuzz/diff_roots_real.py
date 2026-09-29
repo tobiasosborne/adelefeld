@@ -14,6 +14,7 @@ computed at 64 bits (much narrower than the gaps, so that the one-to-one test be
 asserts, for every call:
   - the status is the reference status: DOMAIN for f = 0, OK otherwise (the C function may return NOT_DETERMINED
     by its contract; the run counts that as a disagreement, since the reference never needs it);
+  - the list is at the real place, including the empty list for a constant;
   - the list: g (adf_rootlist_get_poly) and reduced equal those of the reference, n = count = the reference count;
   - the C balls (adf_rootlist_get_arb, exact end points by arb_get_interval_fmpz_2exp) overlap the reference
     enclosures one to one: C ball i meets enclosure j exactly when i = j;
@@ -62,6 +63,10 @@ SIZEOF_ARB = 48                           # FLINT 3.0.1: arf 32 bytes, mag 16 by
 REF_BITS = 64
 
 
+class Place(ctypes.Structure):
+    _fields_ = [("opaque", ctypes.c_ulong)]
+
+
 class Bridge:
     def __init__(self, path):
         self.flint = ctypes.CDLL("libflint.so.18", mode=ctypes.RTLD_GLOBAL)
@@ -91,6 +96,10 @@ class Bridge:
         lib.adf_rootlist_get_arb.argtypes = [vp, vp, ctypes.c_long]
         lib.adf_rootlist_get_arb.restype = ctypes.c_int
         lib.adf_rootlist_get_poly.argtypes = [vp, vp]
+        lib.adf_rootlist_place.argtypes = [vp]
+        lib.adf_rootlist_place.restype = Place
+        lib.adf_place_is_archimedean.argtypes = [Place]
+        lib.adf_place_is_archimedean.restype = ctypes.c_int
         lib.adf_rootlist_verify_entries.argtypes = [vp, vp]
         lib.adf_rootlist_verify_entries.restype = ctypes.c_int
         lib.adf_rootlist_verify_complete.argtypes = [vp, vp, ctypes.c_long]
@@ -153,7 +162,7 @@ class Bridge:
         for i in range(fl.fmpz_poly_length(self.g)):
             fl.fmpz_poly_get_coeff_fmpz(z, self.g, i)
             g.append(self.get_fmpz(z))
-        out.update(balls=balls, acc_ok=acc_ok, exact=exact, g=g, n=n,
+        out.update(place_is_real=lib.adf_place_is_archimedean(lib.adf_rootlist_place(L)), balls=balls, acc_ok=acc_ok, exact=exact, g=g, n=n,
                    reduced=ctypes.c_int.from_buffer(L, OFF_REDUCED).value,
                    count=ctypes.c_long.from_buffer(L, OFF_COUNT).value,
                    scope=lib.adf_rootlist_scope(L), complete=lib.adf_rootlist_is_complete(L),
@@ -284,6 +293,8 @@ def main():
                         n_same_fail += 1
                     else:
                         n_same += 1
+                if got["place_is_real"] != 1:
+                    fails.append("list is not at the real place")
                 if not got["acc_ok"]:
                     fails.append("a ball below the accuracy max(prec, 2)")
                 if got["scope"] != 0 or got["complete"] != 1:

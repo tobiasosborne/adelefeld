@@ -363,7 +363,8 @@ int adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, sl
    ball (P3.10(1), P3.8(2)); a multiple root of f is one simple root of g, its multiplicity is not
    reported (P3.10(3)). The balls pass adf_rootlist_verify_entries and _verify_complete. Of the method,
    not promised by this interface: a root m 2^t with m odd of at most max(prec, 2) + 1 bits comes out as
-   an exact ball (design R4(3)), and the balls for a larger prec lie in those for a smaller one (R4(4)).
+   an exact ball when refinement returns without LIMIT (design R4(3)), and the balls for a larger prec
+   lie in those for a smaller one (R4(4)).
 
    Statuses, in the order in which they are decided:
      ADF_DOMAIN (edit E-C1): f = 0; L untouched.
@@ -379,19 +380,21 @@ int adf_rootlist_verify_complete(const adf_rootlist_t L, const fmpz_poly_t f, sl
        property of f; no input is known that gives it.
      ADF_OK: L written as above (for f constant: the empty list, count 0).
    Aliasing: L is an output of its own type; f is an input and may be L->g: L is written only after
-   the result has been computed. Allocates: g*, the polynomials of the isolation (at most deg g / 2 on
-   its stack at a time), deg g balls, and the exact end points of each ball. Cost: one gcd of f and f';
-   FLINT's count; the isolation: a tree of O(n (K - log2 sigma)) nodes (n = deg g, 2^K a bound on the
-   roots, sigma their least distance; design R3), each two Taylor shifts of degree n; the refinement of
-   each root: O(log) evaluations of g for galloping, then at most 8 evaluations for each halving of the
-   width (design section 6); then at most four exact evaluations of g at the end points of each ball
-   and n - 1 comparisons (solvers P3.10). The end points have about max(prec, log2(|r| / distance to
-   the next root)) bits, up to about twice prec after the last quadratic step. Measured
-   (lanes/r-slice1/runs/bench_after.txt, a shared laptop, prec = 2, the squarefree quadratic with the
-   roots 2^e and 2^e + 1, which took 111.5 s at e = 1500 with the old candidates of
-   arb_fmpz_poly_complex_roots): e = 1500: 0.00007 s; e = 100000: 0.014 s. A cluster of roots far from 0
-   at the scale of its own distances (2^e + 1/3, 2^e + 2/3) costs about e levels of the tree: 0.22 s at
-   e = 30000. X^2 - 2 at prec = 2^21: 0.86 s. */
+   the result has been computed. Allocates: g*, an optional count polynomial, the isolation and
+   refinement polynomials (at most deg g / 2 pending nodes on the stack), deg g balls, and the exact
+   end points of each ball. Cost: one gcd of f and f';
+   FLINT's count, optionally on an equivalent rational translate and dyadic scale (design R9);
+   no isolation for count 0; otherwise isolation stops after count certified items. The bisection tree
+   has O(n (K - log2 sigma)) nodes (design R3). Certified endpoint contractions skip chains whose
+   discarded regions have no sign variation (R6); failed trials fall back to bisection. Each visited
+   split node has at most two trials, with Taylor shifts and integer scalings of degree n. Refinement
+   uses galloping, quadratic interval refinement and bisection. Local polynomial coordinates and
+   certified ball filters preserve the exact decisions; uncertain filters use integer evaluation (R8).
+   The final certificate evaluates the exact endpoints, up to four times per ball, and makes n - 1
+   comparisons. No improved worst-case bit-complexity bound is claimed. Measured on the shared laptop
+   at prec 2 (lanes/r-slice2/report.md): degree-50 Mignotte and the two degree-50 no-root review inputs
+   take below 2 s; the cluster 2^30000 + 1/3, 2^30000 + 2/3 takes about 0.002 s. These are measurements,
+   not time guarantees. Endpoint sizes can be up to about twice the requested precision after QIR. */
 int adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec);
 
 /* ---- accessors ---- */

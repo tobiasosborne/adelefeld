@@ -1,0 +1,10 @@
+family mignotte e 4000 degree 50 prec 2 coefficient bits 8002
+adf: 29.704137 s, status 0, balls 4, largest mantissa 100004 bits
+family positive e 4999 degree 50 prec 2 coefficient bits 10000
+adf: 7.787246 s, status 0, balls 0, largest mantissa 0 bits
+family complex e 190 degree 50 prec 2 coefficient bits 9598
+adf: 4.593804 s, status 0, balls 0, largest mantissa 0 bits
+family thirds e 30000 degree 2 prec 2 coefficient bits 60004
+adf: 0.112229 s, status 0, balls 2, largest mantissa 30006 bits
+family sqrt2 e 0 degree 2 prec 2097152 coefficient bits 2
+adf: 0.499636 s, status 0, balls 2, largest mantissa 4194304 bits

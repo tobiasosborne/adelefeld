@@ -1,0 +1,29 @@
+   isolate: 68 runs on the 17 nonconstant REAL_CASES, 68 true by the oracle
+ok   isolate_on_real_cases
+   REAL_CASES: 90 runs (prec 2, 20, 53, 200, 2000), 90 lists true by the oracle
+ok   real_cases_end_to_end
+   pair: e up to 10000, the slowest call 0.0010 s (bound 10.0 s)
+   thirds: e up to 10000, the slowest call 0.0316 s (bound 10.0 s)
+ok   slow_family_pair_with_a_bound_on_the_time
+   close: e up to 10000, the slowest call 0.0013 s (bound 10.0 s)
+   cthirds: e up to 10000, the slowest call 0.0250 s (bound 10.0 s)
+ok   close_small_roots
+ok   wilkinson_20_and_mignotte
+ok   dyadic_roots_and_zero_are_exact_balls
+ok   no_root_degree_one_multiple_and_negative_lead
+   touching cells: 7 sets at 15 precisions, 98 nested pairs of lists
+ok   touching_cells_and_nesting
+   random: 330 calls, 221 roots in the random integer polynomials
+ok   random_planted_and_random_polynomials
+ok   limit_for_roots_outside_the_admissible_size
+   high precision: the slowest call 1.1848 s (bound 30 s)
+ok   high_precision_with_a_bound_on_the_time
+   review input 0: 37.025229 s, status 0, roots 4
+FAIL tests/test_roots_real_isolate.c:1240: review_cost_inputs: check failed: t < ISOLATION_SECONDS_MAX | review input 0: 37.025229 s > 2.0 s
+   review input 1: 12.499560 s, status 0, roots 0
+FAIL tests/test_roots_real_isolate.c:1240: review_cost_inputs: check failed: t < ISOLATION_SECONDS_MAX | review input 1: 12.499560 s > 2.0 s
+   review input 2: 5.726564 s, status 0, roots 0
+FAIL tests/test_roots_real_isolate.c:1240: review_cost_inputs: check failed: t < ISOLATION_SECONDS_MAX | review input 2: 5.726564 s > 2.0 s
+   review input 3: 0.111115 s, status 0, roots 2
+FAIL review_cost_inputs (tests/test_roots_real_isolate.c:1195, 3 failed checks)
+12 tests, 19189 checks, 3 failed checks, 1 failed tests

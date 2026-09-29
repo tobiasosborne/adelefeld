@@ -82,6 +82,14 @@ is output and `right := right / X`, `left := left / (X - 1)`; the children `(lef
 stack). The negative roots: the positive roots of `h(-X)`, a cell `(c, k)` mirrored to `(-c - 1, k)`, a point `c`
 to `-c`. The root 0: if `g(0) = 0`, the point 0, and `h = g / X` (`g` squarefree: `X` divides it once).
 
+Lane r-slice2 changes the execution of D as follows. The trusted total count is computed first (R9).
+If it is zero, no tree is built. Every output item accounts for one distinct root. Stop the whole descent
+when their number equals the total count; do not enter another subtree then (R7).
+Before bisecting a node with `v >= 2`, try endpoint contraction (R6). Each node has a jump, initially 2.
+Try the low edge, then the high edge, with `s = min(jump, k - KMIN)`, only if `s >= 2`.
+Success replaces the node by that descendant and sets `jump = 2s`. Failure halves `jump`, to at least 2,
+and performs the original bisection. Both children inherit that halved jump. A failed trial gives no status.
+
 **Proposition R2 (isolation is correct).** Let `h` be squarefree with `h(0) != 0`, and let Algorithm D return
 without `ADF_LIMIT`. Then every output point is a positive root of `h`, every output cell contains exactly one
 root of `h` and it is simple, and every positive root of `h` is an output point or lies in exactly one output
@@ -154,9 +162,11 @@ other than possibly its ends, and let `f < r` if there is a floor. Then:
    `ADF_LIMIT` only if `r` is closer than `2^KMIN` to 0 or to a root at an end, or if the stop needs a cell of
    exponent below `KMIN`. The stop holds for every clean cell (not touching 0) of exponent
    `k <= min(floor(log2 |r|) - need - 1, floor(log2 (r - f)) - 1)`.
-3. (Dyadic roots.) If `r = m 2^t` with `m` odd and `bits(m) <= need + 1`, the result is the exact point `r`.
+3. (Dyadic roots.) If refinement returns without `ADF_LIMIT`, and `r = m 2^t` with `m` odd and
+   `bits(m) <= need + 1`, the result is the exact point `r`.
 4. (Nested.) The sequence of cells visited depends only on `g` and the start cell; `need` and `f` decide only
-   where it stops. So for `need' > need`, and for any floors, the result for `need'` lies in the result for
+   where it stops. So for `need' > need`, with the same floor for both calls and both calls returning
+   without `ADF_LIMIT`, the result for `need'` lies in the result for
    `need` (the stop for `need` comes no later in the sequence, see the proof).
 
 *Proof.* (1) By induction over the steps. G: `g` has a single simple root `r` in the open cell and none between
@@ -221,23 +231,46 @@ Horner evaluation at a point of `bits(c) + |k|` bits. What is not proved here: t
 ([KS]:342 states it for Kerber's analysis, with a width bound; not on disk). Where the time goes (measured,
 `lanes/r-slice1/runs/bench_after.txt`, a shared machine): a cluster of two roots far from 0 and from each other's
 scale (`thirds`: the roots `2^e + 1/3`, `2^e + 2/3`) costs a descent of about `e` levels in the tree (0.22 s at
-`e = 30000`), since Algorithm D has no step G of its own; the two roots `2^e` and `2^e + 1` cost 0.014 s at
+`e = 30000`), in the first slice, which had no fast isolation step;
+the two roots `2^e` and `2^e + 1` cost 0.014 s at
 `e = 100000` (the midpoint meets `2^e`, and G finds the other root).
 
-Lower bound, in the sense of `docs/PERF.md` (the row in its section 4). PROVED: the input must be read and the
-output written. MODEL, restricted to results certified as decision (3) prescribes: the certificate evaluates
-`g` exactly at both end points of each ball that is not exact, so no implementation that keeps it is faster than
-those `2 n` exact signs at the end points it outputs. The benchmark measures them on the balls of this
-implementation (`eval2`); the end points have the length that the separation or `prec` forces (within 2 bits),
-except after a last Eqir step, which may give up to about twice the accuracy asked for (`X^2 - 2` at
-`prec = 2^21`: mantissas of `2^22` bits), where the floor for shortest end points is lower than `eval2`.
+Lower bound, in the sense of `docs/PERF.md` (the real-root row in section 4). PROVED under compulsory I/O:
+read the input and write the output. MODEL, restricted to the retained certificate: determine the exact sign
+at both endpoints of each nonexact ball and vanishing at each exact point. This is an operation-count floor.
+It does not fix the algorithm for finding a sign or prove a lower bound in seconds.
+`eval2` measures one implementation of that endpoint workload, now using the same exact local identity as
+real_entry_ok (R8). It is a REFERENCE cost, not a proved time floor. In particular, direct homogeneous Horner
+on the original polynomial is no longer the relevant reference when translation shortens the mantissas.
+An empty list has zero endpoint signs; no ratio to eval2 is defined there.
+The benchmark's time / eval2 describes the overhead relative to this reference on the returned endpoints.
+It is not a theorem about distance from an optimal implementation. Endpoint lengths can exceed the shortest
+ones that separation and accuracy force, especially after a final successful QIR step.
+
+Second-slice measurements, 2026-09-30, shared laptop, pinned to CPU 2. Before is one call of the unchanged
+code; after is the median of five. eval2 uses the exact local endpoint workload of R8. All statuses are OK.
+The family definitions are in bench/bench_roots_real.c and the review; Mignotte and positive are degree 50.
+The complex product has degree 50 and e = 190. The root count is four for Mignotte, two for thirds and sqrt2,
+and zero for positive and complex. Logs: lanes/r-slice2/runs/bench_before.txt and bench_after.txt.
+
+| Input | prec | Before s | After s | eval2 reference s | After / reference |
+|---|---:|---:|---:|---:|---:|
+| Mignotte, e = 4000 | 2 | 29.704137 | 0.111501 | 0.004330214 | 25.7 |
+| Positive, e = 4999 | 2 | 7.787246 | 0.020773 | 0 | undefined |
+| Complex product | 2 | 4.593804 | 0.002827 | 0 | undefined |
+| Thirds, e = 30000 | 2 | 0.112229 | 0.001259 | 0.000130900 | 9.6 |
+| X^2 - 2 | 2^21 | 0.499636 | 0.371910 | 0.056106208 | 6.6 |
+
+These are call timings. They give no theorem about the optimum or a uniform two-second runtime guarantee.
+The cost finding is repaired for the tested inputs. Interior clusters can still require ordinary bisection.
 
 ## 7. Not done, open
 
-- Algorithm D descends one level at a time; a cluster far from its own scale (`thirds`) costs a number of
-  levels linear in the bit size. A continued-fraction or quadratic step in the isolation is a later slice.
+- Endpoint contraction covers chains near an edge. There is no Newton step for a cluster in the interior.
+  No improved worst-case bit-complexity bound is proved for the new execution.
 - The quadratic convergence of Q is cited, not proved.
 - Sturm's theorem (behind FLINT's count, S-D11) is still `[source pending: Sturm's theorem]`.
+- (IVT), used by P3.8 and R7, still has no stated on-disk source; see solvers.md:64-67.
 
 ## 8. Statements
 
@@ -248,3 +281,110 @@ except after a last Eqir step, which may give up to about twice the accuracy ask
 | R3 | Algorithm D ends; tree size | proved modulo [SM]:569 and :571 to 575 | slow families |
 | R4 | refinement: one root, ends, dyadic roots exact, nested | proved modulo (IVT) | dyadic, nesting, timed tests |
 | R5 | the list passes steps 5 and 6 of Algorithm RR | proved modulo R2, R4 | all C tests; both verifiers |
+| R6 | endpoint contraction skips the same tree | proved modulo [SM] | exact captures; planted fault |
+| R7 | count-guided stop; certificate sound | proved modulo IVT and trusted count | count and timed tests |
+| R8 | local values and filters keep decisions | proved with Arb enclosure contract | captures; differential |
+| R9 | equivalent input to FLINT count | proved by affine bijections | no-root and minimum-scale tests |
+
+## 9. Second slice: skipped chains and the trusted count
+
+**Proposition R6 (endpoint contraction preserves the bisection output).** Let a pending node have polynomial
+`q` on `(0,1)`, clean endpoints, and `v >= 2`. For `s >= 2`, consider `J = (0,2^-s)` or
+`J = (1-2^-s,1)`. Accept only when the new endpoint is not a root, `var(q,J) >= 2`, and the variation
+on the open complement is zero. Then replacing the node by J skips only nodes which the original tree
+would split and siblings which it would discard. Its eventual items, including exact points, are identical.
+
+*Proof.*
+1. J is a dyadic descendant reached by s low-edge or high-edge bisections. Every proper ancestor A of J
+   has `var(q,A) >= var(q,J) >= 2`, by [SM]:571-575 applied to J and any disjoint subinterval of A.
+   Thus no skipped ancestor was an isolating cell.
+2. Each skipped sibling lies in the discarded open complement. The same inequality bounds its variation
+   by zero. Descartes' rule [SM]:547-553 excludes any root there. No intermediate split point is a root:
+   it lies inside that open complement, except its new endpoint, which was tested explicitly.
+3. The old endpoints are clean for q. Hence no endpoint deflation is skipped. The final polynomial is a
+   positive multiple of the polynomial formed by s bisections. The integer maps are
+   `q(X/2^s)` and `q((2^s-1+X)/2^s)`, multiplied by a positive power of 2 and with 2-content removed.
+4. The complement polynomials are positive multiples of `q((1+(2^s-1)X)/2^s)` for the low edge and
+   `q((2^s-1)X/2^s)` for the high edge. These are precisely what `contract_edge` tests with var01.
+   Its rejection changes neither node nor items; the next action is bisection.
+5. Induct over accepted trials. They remove only empty siblings from the same tree, so all output cells
+   and points are unchanged. Static refinement floors and every refinement result therefore remain unchanged.
+
+The use of zero tests on discarded regions is also described in
+`refs/src/sagraloff-mehlhorn/tex/arxivfinal.tex:856-858`. This implementation chooses the simpler edge
+contraction above. It does not implement the Newton iterate at :846-852 or claim its complexity bound.
+R3's finite-tree argument still applies. There are at most two trial transformations per visited split node.
+Trial coefficient sizes may grow with n s; the old per-node cost of two shifts is no longer the whole cost.
+
+**Proposition R7 (count-guided stopping keeps the final certificate sound).** Let N be the true count of
+real roots of squarefree g. Stopping isolation at N certified distinct items cannot omit a real root.
+The certificate of real_finish remains sound for any candidate method, including this stop.
+
+*Proof.*
+1. Every point is checked by exact vanishing. Every cell comes from `v = 1` with clean q endpoints.
+   R2 gives one simple root of the original g in it; q has opposite signs at those endpoints.
+   If an ancestor root of g is at an endpoint, refinement removes that endpoint before output (R4).
+2. Items occupy disjoint open cells or distinct split points. Thus N items account for N different roots.
+   Since there are only N roots, no root can remain in a pending subtree or on the other half-line.
+   For N = 0 the empty list is complete without isolation.
+3. Independently, real_finish checks each final ball at its exact endpoints: either an exact zero or a
+   strict sign change. It checks strict order and the number of balls against N. Each ball then contains
+   at least one root (IVT); their disjointness gives at least N distinct roots. There cannot be an extra
+   root inside a ball or outside all balls. This is `docs/proofs/solvers.md` Proposition 3.8.
+4. It also checks final accuracy and admissible size. Its argument uses no fact about how candidates
+   were found. An incorrect count remains outside this guarantee: FLINT's count is trusted by S-D11.
+   Arithmetic and polynomial operations in FLINT remain trusted as before. Isolation is not trusted.
+
+**Proposition R8 (local evaluation and filters preserve exact decisions).** For a start cell `(c0,k0)`,
+let `Q(X) = A g((z0+X) 2^k0)` for A positive, chosen so Q has integer coefficients.
+Here z0 = c0 for degree at least 8 and z0 = 0 otherwise; filters are used only for degree at least 8.
+All subsequent endpoints `(m,e)` have `e <= k0`. Evaluating Q at
+`(m-z0 2^(k0-e)) 2^(e-k0)` gives the same signs and the same secant grid integer as g at `m 2^e`.
+
+*Proof.*
+1. Substitution gives `Q((m-z0 2^(k0-e)) 2^(e-k0)) = A g(m 2^e)` exactly. The scaling and Taylor
+   shift form Q; removing 2-content divides by a positive integer. Its derivative is a positive
+   multiple of g' at the same transformed point, because `A 2^k0 > 0`.
+2. Homogeneous integer evaluation multiplies both endpoint values by the same positive power of 2.
+   Thus signs, exact zeros and `|fa|/(|fa|+|fb|)` are unchanged. All G, Q and B decisions are identical.
+   Stop tests still use the original coordinates and floor. Consequently every output ball is identical.
+3. Arb Horner evaluation encloses the exact Q value. A strictly positive or negative enclosure proves
+   that exact sign. An uncertain enclosure uses the homogeneous integer evaluation instead.
+4. The secant filter encloses `2^j |fa|/(|fa|+|fb|) + 1/2`, then encloses its floor. It is accepted
+   only if that last ball contains a unique integer. That integer is the exact rounded grid index.
+   An uncertain filter repeats the old exact integer calculation. This includes midpoint ties.
+   The sign-change check of the selected grid cell is still required.
+5. The final certificate uses no filter. When its mantissas are large and close to a signed power of two,
+   real_entry_ok forms its own Q at that dyadic anchor and evaluates both transformed endpoints exactly.
+   Step 1 proves these are precisely the required endpoint signs. It uses no isolation state or cache.
+
+Arb enclosure, rounding, unique integer, floor and sign conventions are on disk in
+`refs/src/flint-3.0.1/arb.rst:6-20`, :155-165, :531-553 and :639-650.
+The Python prototype uses exact local values throughout. It has the same decisions; it omits only the
+certified fast filter, whose result is proved identical above. The differential test compares balls exactly.
+
+**Proposition R9 (equivalent input to the trusted count).** A nonzero real polynomial g of degree d and
+`H(X) = b^d g((X+a)/b)`, with b positive, have the same number of distinct real roots.
+So do H and any positive multiple of `H(2^t X)`.
+
+*Proof.*
+1. `x -> (x+a)/b` is a bijection of the real line, with inverse `y -> b y-a`. Its images are exactly
+   the roots of g when x is a root of H. Multiplication by `b^d > 0` does not change vanishing.
+   Also `H'(X) = b^(d-1) g'((X+a)/b)`. A common complex root of H and H' would give a common
+   root of g and g'. Thus a squarefree g gives a squarefree H, as required by FLINT.
+2. `x -> 2^t x` is likewise a bijection. Positive content removal does not change roots.
+3. For degree at least 3 and coefficient size at least 1024 bits, the code may scale before counting.
+   It chooses `a/b = -g_(d-1)/(d g_d)` only for degree at least 5, a nonzero next-to-leading coefficient
+   and reduced numerator-plus-denominator size at most 16 bits. Otherwise no translation is formed.
+   Without a translation it scales only if t < -32. These cutoffs bound cost, not a mathematical status.
+4. H is built by multiplying coefficient i by `b^(d-i)` and shifting by a. After primitive reduction,
+   t (also used directly on g when there is no translation) is the integer quotient
+   `(bits(|H_0|)-bits(|H_d|))/d`, truncated towards zero, or omitted for H_0 = 0.
+   This is a scaling heuristic, not a claimed root bound. Its magnitude times d is bounded by the
+   coefficient bit-size difference, so the exponent product fits a word.
+5. FLINT counts this equivalent squarefree polynomial. Its answer is therefore the required count of g.
+   Only the count algorithm is trusted; neither its internal Sturm chain nor an independent count is
+   certified by this transformation. The original g remains the polynomial of every output certificate.
+
+Inherited pending sources remain Sturm's theorem, (IVT), and the eventual quadratic convergence analysis of Eqir.
+The bijection, contraction and local-coordinate arguments above need no additional source.

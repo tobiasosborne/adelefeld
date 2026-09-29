@@ -1,0 +1,1 @@
+diff_roots_real: 1075 calls in 120 s, seed 20260930; statuses {'OK': 1054, 'DOMAIN': 21}; roots 2848, exact balls 1180, lists without a root 35, reduced inputs 541; lists equal to proto/real_isolation.py 1054; 0 disagreements

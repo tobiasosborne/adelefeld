@@ -29,6 +29,8 @@
              sqrt2   X^2 - 2                                               e and d ignored (high prec)
              x5      X^5 - X - 1                                           e and d ignored (high prec)
              mignotte X^d - 2 (2^e X - 1)^2                                two roots very close to 2^-e
+             positive X^d + 2 (2^e X - 1)^2                                no real roots for even d
+             complex prod_(i=1..d/2) (2^(2e) (3X-1)^2 + i)                no real roots
    The first seven are squarefree with real roots only, so the count is d (2 for pair, far, close, thirds).
 
    Lane r-slice1 added the last four families, the modes below and --run:
@@ -42,6 +44,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 #include <flint/flint.h>
 #include <flint/fmpz.h>
 #include <flint/fmpz_poly.h>
@@ -136,6 +139,32 @@ family(fmpz_poly_t g, const char * name, ulong e, slong d)
         fmpz_poly_mul(t, t, t);
         fmpz_poly_scalar_mul_si(t, t, 2);
         fmpz_poly_sub(g, g, t);
+        fmpz_poly_clear(t);
+    }
+    else if (!strcmp(name, "positive"))
+    {
+        fmpz_poly_t t;
+        fmpz_poly_init(t);
+        fmpz_one(a); fmpz_mul_2exp(a, a, e);
+        fmpz_poly_set_coeff_fmpz(t, 1, a);
+        fmpz_poly_set_coeff_si(t, 0, -1);
+        fmpz_poly_mul(g, t, t);
+        fmpz_poly_scalar_mul_si(g, g, 2);
+        fmpz_poly_set_coeff_si(g, d, 1);
+        fmpz_poly_clear(t);
+    }
+    else if (!strcmp(name, "complex"))
+    {
+        fmpz_poly_t t;
+        fmpz_poly_init(t);
+        fmpz_one(a); fmpz_mul_2exp(a, a, 2 * e);
+        for (i = 1; i <= d / 2; i++)
+        {
+            fmpz_add_ui(b, a, i); fmpz_poly_set_coeff_fmpz(t, 0, b);
+            fmpz_mul_si(b, a, -6); fmpz_poly_set_coeff_fmpz(t, 1, b);
+            fmpz_mul_ui(b, a, 9); fmpz_poly_set_coeff_fmpz(t, 2, b);
+            fmpz_poly_mul(g, g, t);
+        }
         fmpz_poly_clear(t);
     }
     else if (!strcmp(name, "deg") || !strcmp(name, "small"))
@@ -290,6 +319,40 @@ sign_2exp(const fmpz_poly_t g, const fmpz_t m, const fmpz_t e)
     return s;
 }
 
+/* The endpoint workload uses the same exact local identity as the certificate
+   (design R8). Timings are reference costs of these operations, not a universal
+   lower bound in seconds; the proved floor is their required operation count. */
+static int
+pair_signs(const fmpz_poly_t g, const fmpz_t a, const fmpz_t b, const fmpz_t e)
+{
+    fmpz_t origin, x, y, local_e;
+    fmpz_poly_t h;
+    slong bits = (slong) fmpz_bits(a), scale;
+    int use, result;
+    if (fmpz_equal(a, b) || fmpz_poly_degree(g) < 5 || bits <= 4096)
+        return sign_2exp(g, a, e) + (fmpz_equal(a, b) ? 0 : sign_2exp(g, b, e));
+    fmpz_init(origin); fmpz_init(x); fmpz_init(y); fmpz_init(local_e);
+    fmpz_one(origin); fmpz_mul_2exp(origin, origin, (ulong) (bits - 1));
+    if (fmpz_sgn(a) < 0) fmpz_neg(origin, origin);
+    fmpz_sub(x, a, origin); fmpz_sub(y, b, origin);
+    use = FLINT_MAX(fmpz_bits(x), fmpz_bits(y)) < (ulong) bits / 2;
+    if (use)
+    {
+        fmpz_poly_init(h); fmpz_poly_set(h, g);
+        scale = fmpz_get_si(e) + bits - 1;
+        _fmpz_poly_scale_2exp(h->coeffs, h->length, scale);
+        fmpz_set_si(origin, fmpz_sgn(a));
+        _fmpz_poly_taylor_shift(h->coeffs, origin, h->length);
+        _fmpz_poly_remove_content_2exp(h->coeffs, h->length);
+        fmpz_set_si(local_e, 1 - bits);
+        result = sign_2exp(h, x, local_e) + sign_2exp(h, y, local_e);
+        fmpz_poly_clear(h);
+    }
+    else result = sign_2exp(g, a, e) + sign_2exp(g, b, e);
+    fmpz_clear(origin); fmpz_clear(x); fmpz_clear(y); fmpz_clear(local_e);
+    return result;
+}
+
 /* one call of adf_roots_real: wall time, status, number of balls, the largest mantissa */
 static double
 run_adf(const fmpz_poly_t g, slong prec, int * st, slong * balls, slong * bits)
@@ -330,15 +393,18 @@ run_eval2(const fmpz_poly_t g, slong prec, slong * signs)
     fmpz_init(e);
     adf_roots_real(L, g, prec);
     *signs = 0;
+    if (L->n == 0)
+    {
+        fmpz_clear(a); fmpz_clear(b); fmpz_clear(e); adf_rootlist_clear(L);
+        return 0.0;
+    }
     t0 = now();
     do
     {
         for (i = 0; i < L->n; i++)
         {
             arb_get_interval_fmpz_2exp(a, b, e, L->ball + i);
-            s += sign_2exp(L->g, a, e);
-            if (!fmpz_equal(a, b))
-                s += sign_2exp(L->g, b, e);
+            s += pair_signs(L->g, a, b, e);
             if (rep == 0)
                 *signs += fmpz_equal(a, b) ? 1 : 2;
         }
@@ -373,6 +439,7 @@ run_table(void)
         { "deg", 300, 8, 2 }, { "deg", 300, 16, 2 }, { "small", 0, 20, 53 }, { "mignotte", 7, 20, 53 },
         { "sqrt2", 0, 0, 53 }, { "sqrt2", 0, 0, 4096 }, { "sqrt2", 0, 0, 65536 }, { "sqrt2", 0, 0, 2097152 },
         { "x5", 0, 0, 65536 },
+        { "mignotte", 4000, 50, 2 }, { "positive", 4999, 50, 2 }, { "complex", 190, 50, 2 },
     };
     fmpz_poly_t g;
     double t[5], ev;
@@ -380,7 +447,7 @@ run_table(void)
     int st;
 
     printf("# bench_roots_real --run: adf_roots_real, median of 5 wall times; eval2 = the exact signs at the end\n"
-           "# points of its balls (the floor of docs/PERF.md, restricted to certificates by exact signs)\n");
+           "# points of its balls (reference timing of the required exact-sign workload)\n");
     printf("family e d prec seconds_median seconds_min seconds_max status balls largest_mantissa_bits "
            "signs eval2_seconds ratio\n");
     fmpz_poly_init(g);
@@ -392,7 +459,7 @@ run_table(void)
         qsort(t, 5, sizeof(double), cmp_double);
         ev = run_eval2(g, row[r].prec, &signs);
         printf("%s %lu %ld %ld %.6f %.6f %.6f %d %ld %ld %ld %.9f %.1f\n", row[r].fam, row[r].e, (long) row[r].d,
-               (long) row[r].prec, t[2], t[0], t[4], st, (long) balls, (long) bits, (long) signs, ev, t[2] / ev);
+               (long) row[r].prec, t[2], t[0], t[4], st, (long) balls, (long) bits, (long) signs, ev, ev > 0 ? t[2] / ev : NAN);
         fflush(stdout);
     }
     fmpz_poly_clear(g);

@@ -1,0 +1,23 @@
+jump 2 hi 0 k 164 at 134647.540
+jump 4 hi 0 k 160 at 134647.541
+jump 8 hi 0 k 152 at 134647.541
+jump 16 hi 0 k 136 at 134647.541
+jump 32 hi 0 k 104 at 134647.541
+jump 64 hi 0 k 40 at 134647.541
+jump 128 hi 0 k -88 at 134647.542
+jump 256 hi 0 k -344 at 134647.542
+jump 512 hi 0 k -856 at 134647.543
+jump 1024 hi 0 k -1880 at 134647.544
+jump 2048 hi 0 k -3928 at 134647.548
+jump 64 hi 0 k -3998 at 134647.612
+isolation complete at 134647.622, items 4
+refine item 0 k 167 at 134647.622
+refine done k 163 at 134647.622
+refine item 1 k -4000 at 134647.622
+refine done k -4003 at 134647.622
+refine item 2 k -4000 at 134647.622
+refine done k -104002 at 134669.729
+refine item 3 k 166 at 134669.729
+refine done k 163 at 134669.729
+status=0 degree=50 coeffbits=8002 seconds=22.924776389 n=4 count=4
+exact=0 minacc=2 endpointbits=100003 errors=0
