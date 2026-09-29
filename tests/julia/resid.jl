@@ -1,4 +1,4 @@
-# tests/julia/resid.jl: a Julia ccall of adf_resid_reconstruct (slice s3-slice1, lane s3-slice1).
+# tests/julia/resid.jl: a Julia ccall of adf_resid_reconstruct (slices 1 and 2 of milestone S).
 #
 # The driver `adf` takes at most three operands per command (tools/adf/adf.c, the line grammar and
 # tools/adf/README.md), so `adf resid <c> <m> <A> <B>` would change its grammar; the brief of the
@@ -9,7 +9,7 @@
 # see the header of tests/test_julia.sh).
 #
 # Only Libdl and Test of the standard library are used. Values are raw memory sized by the library's
-# own adf_sizeof_* functions. Statuses: OK 0, NO_SOLUTION 5, UNSUPPORTED 8 (include/adelefeld/status.h).
+# own adf_sizeof_* functions. Statuses: OK 0, NOT_DETERMINED 1, NOT_UNIQUE 4, NO_SOLUTION 5 (include/adelefeld/status.h).
 
 using Test
 using Libdl
@@ -21,7 +21,7 @@ const LIB = Libdl.dlopen(ARGS[1])
 fl(name) = Libdl.dlsym(FLINT, name)
 ad(name) = Libdl.dlsym(LIB, name)
 
-const OK, NO_SOLUTION, UNSUPPORTED = 0, 5, 8
+const OK, NOT_DETERMINED, NOT_UNIQUE, NO_SOLUTION = 0, 1, 4, 5
 
 mutable struct Fmpz
     v::Ref{Clong}
@@ -40,8 +40,8 @@ function fmpz_str(p::Ptr)
     return str
 end
 
-# reconstruct c, m, A, B (decimal strings); returns (status, "n/d" or "")
-function reconstruct(c, m, A, B)
+# reconstruct c, m, A, B (decimal strings) and the search limit; returns (status, "n/d" or "")
+function reconstruct(c, m, A, B, limit=0)
     fc, fm, fA, fB = Fmpz(c), Fmpz(m), Fmpz(A), Fmpz(B)
     x = Libc.malloc(ccall(ad(:adf_sizeof_resid), Csize_t, ()))
     q = Libc.malloc(ccall(ad(:adf_sizeof_rat), Csize_t, ()))
@@ -51,7 +51,7 @@ function reconstruct(c, m, A, B)
     ccall(ad(:adf_recon_cert_init), Cvoid, (Ptr{Cvoid},), cert)
     @test ccall(ad(:adf_resid_set_fmpz2), Cint, (Ptr{Cvoid}, Ptr{Clong}, Ptr{Clong}), x, fc.v, fm.v) == 0
     st = ccall(ad(:adf_resid_reconstruct), Cint,
-               (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Clong}, Ptr{Clong}, Clong), q, cert, x, fA.v, fB.v, 0)
+               (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Clong}, Ptr{Clong}, Clong), q, cert, x, fA.v, fB.v, limit)
     out = st == OK ? fmpz_str(q) * "/" * fmpz_str(q + 8) : ""
     ccall(ad(:adf_resid_clear), Cvoid, (Ptr{Cvoid},), x)
     ccall(ad(:adf_rat_clear), Cvoid, (Ptr{Cvoid},), q)
@@ -67,8 +67,15 @@ end
     @test reconstruct("-1", "101", "1", "3") == (OK, "-1/1")
     # gcd(R, T) = 2 (docs/proofs/solvers.md Remark 1 of 1.6): m = 12, c = 6, A = 1, B = 5, no solution
     @test reconstruct("6", "12", "1", "5")[1] == NO_SOLUTION
-    # 2 A B >= m: the temporary status
-    @test reconstruct("6", "12", "1", "6")[1] == UNSUPPORTED
+    # 2 A B >= m, the search (docs/api-s.md section 2, note 1): 1/5 = 5 modulo 6, A = 1, B = 5 has -1/1 and 1/5
+    @test reconstruct("5", "6", "1", "5", 1000)[1] == NOT_UNIQUE
+    @test reconstruct("5", "6", "1", "4", 1000) == (OK, "-1/1")
+    # limit 0 does not decide: m = 2, c = 1, A = B = 1 (1/1 and -1/1), 2 A B = m: uniqueness not certified
+    @test reconstruct("1", "2", "1", "1", 0)[1] == NOT_DETERMINED
+    @test reconstruct("1", "2", "1", "1", 1)[1] == NOT_UNIQUE
+    @test reconstruct("1", "2", "1", "1", -3)[1] == NOT_DETERMINED
+    # A >= m: NOT_UNIQUE whatever the limit (note 5: m = 2, c = 1, A = 2, B = 1, limit 0)
+    @test reconstruct("1", "2", "2", "1", 0)[1] == NOT_UNIQUE
     # empty box
     @test reconstruct("6", "12", "-1", "6")[1] == NO_SOLUTION
     # a planted fraction of 200 digits: n = -(10^100 + 7), d = 10^100 + 9 (coprime: they differ by 16 and
@@ -80,5 +87,9 @@ end
     d = B
     c = mod(n * invmod(d, m), m)
     @test reconstruct(string(c), string(m), string(A), string(B)) == (OK, string(n) * "/" * string(d))
-    @test reconstruct(string(c), string(m - 1), string(A), string(B))[1] == UNSUPPORTED
+    # m - 1 = 2 A B: the search (values of recon_partial): |T| = B, X = 1; limit 0 does not decide, limit 1 does
+    @test reconstruct(string(c), string(m - 1), string(A), string(B), 0)[1] == NOT_DETERMINED
+    @test reconstruct(string(c), string(m - 1), string(A), string(B), 1)[1] == NO_SOLUTION
+    # B / |T| above 2^64 (c = 1, T = 1, B = 10^30) and a large limit that is never run: limit 0 returns at once
+    @test reconstruct("1", string(big(10)^60 + 7), string(big(10)^40), string(big(10)^30), 0)[1] == NOT_DETERMINED
 end

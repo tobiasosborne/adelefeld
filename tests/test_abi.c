@@ -166,3 +166,15 @@ ADF_TEST(array_of_one_types)
     ADF_CHECK(sizeof(adf_resid_t) == sizeof(adf_resid_struct));
     ADF_CHECK(sizeof(adf_recon_cert_t) == sizeof(adf_recon_cert_struct));
 }
+
+/* Slice 2 of milestone S (lane s3-slice2): the signatures of the functions of resid.h that a binding calls, and the
+   status codes that adf_resid_reconstruct now returns (the Julia test tests/julia/resid.jl reads them as numbers). */
+ADF_TEST(resid_function_signatures_and_status_codes)
+{
+    int (*rec)(adf_rat_t, adf_recon_cert_t, const adf_resid_t, const fmpz_t, const fmpz_t, slong) = adf_resid_reconstruct;
+    int (*chk)(const adf_recon_cert_t, const adf_resid_t, const fmpz_t) = adf_recon_cert_check;
+
+    ADF_CHECK(rec != NULL && chk != NULL);
+    ADF_CHECK(ADF_OK == 0 && ADF_NOT_DETERMINED == 1 && ADF_NOT_UNIQUE == 4 && ADF_NO_SOLUTION == 5);
+    ADF_CHECK(sizeof(slong) == 8);              /* the limit is a C long on this platform: a Julia Clong */
+}

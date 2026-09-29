@@ -1,10 +1,11 @@
-/* adelefeld/resid.h: a residue modulo m, and partial rational reconstruction from it (slice 1).
+/* adelefeld/resid.h: a residue modulo m, and partial rational reconstruction from it (slices 1
+   and 2 of milestone S).
 
-   Contract: docs/api-s.md sections 1 and 2 (decisions S-D1, S-D2, S-D5, accepted by TJO on
-   2026-09-29); docs/proofs/solvers.md Definition 1.1 (line 76), Definition 1.3 (line 121),
-   Lemma 1.4 (line 133), Proposition 1.6 (line 210); docs/conventions.md 2.3, 3.2, 4.1, 4.3.
-   Implemented in src/resid.c; tests tests/test_resid.c; reference proto/solvers_checks.py,
-   function recon_partial.
+   Contract: docs/api-s.md sections 1 and 2 (decisions S-D1 to S-D5, accepted by TJO on
+   2026-09-29); docs/proofs/solvers.md Definition 1.1 (line 75), Definition 1.3 (line 117),
+   Lemma 1.4 (line 133), Propositions 1.5 to 1.7 (lines 162 to 325); docs/conventions.md 2.3, 3.2,
+   4.1, 4.3. Implemented in src/resid.c; tests tests/test_resid.c and tests/test_resid_full.c;
+   reference proto/solvers_checks.py, function recon_partial.
 
    The type adf_resid holds the pair (c, m), meaning the set P(m, c) of the rationals in
    c + m Z_p for every prime p dividing m; nothing is known at the other places. It is not a
@@ -13,13 +14,7 @@
 
    The problem (Definition 1.1). Given m >= 1, c, A, B, a solution is a pair of integers (n, d)
    with d > 0, gcd(n, d) = 1, gcd(d, m) = 1, n = c d modulo m, |n| <= A, d <= B. The sign is on
-   n, the denominator is positive.
-
-   This slice decides the problem only in the range 2 A B < m, where Proposition 1.6 gives the
-   complete answer from the certificate pair of the Euclidean algorithm. The range m <= 2 A B is
-   not implemented yet: adf_resid_reconstruct returns ADF_UNSUPPORTED there and writes nothing.
-   THIS STATUS IS TEMPORARY: it goes away with slice 2 (issue adf-1y1 and its successor), which
-   answers that range with OK, NO_SOLUTION, NOT_UNIQUE or NOT_DETERMINED. */
+   n, the denominator is positive. Sol(m, c, A, B) is the set of solutions. */
 
 #ifndef ADELEFELD_RESID_H
 #define ADELEFELD_RESID_H
@@ -90,30 +85,52 @@ void adf_recon_cert_clear(adf_recon_cert_t cert);
 
 /* ---- reconstruction ---- */
 
-/* adf_resid_reconstruct(q, cert, x, A, B, limit): decides Sol(m, c, A, B) with (c, m) = x, in
-   the range 2 A B < m (slice 1). The statuses, in the order in which they are decided:
+/* adf_recon_cert_check(cert, x, A): 1 if cert has kind = 1 and satisfies (C1) to (C4) of
+   Definition 1.3 for (m, c) = x and A, else 0. It tests the four conditions with four
+   multiplications, two reductions and comparisons (docs/proofs/solvers.md:117), and needs no
+   other information: it never aborts for an initialised cert, x and A. Kind 0 gives 0. It does
+   not test that (C1) to (C4) make the pair the one that the Euclidean algorithm computes (they
+   need not: Proposition 1.5 holds for every quadruple that satisfies them). */
+int adf_recon_cert_check(const adf_recon_cert_t cert, const adf_resid_t x, const fmpz_t A);
 
-   1. A < 0 or B < 1: ADF_NO_SOLUTION (decision S-D5: the box is empty). cert gets kind = 0.
-   2. 2 A B >= m: ADF_UNSUPPORTED (TEMPORARY, see the top of this file); q and cert are
-      untouched. 2 A B is computed as an fmpz, never in a word. Note that this includes every
-      A >= m, because B >= 1.
-   3. Otherwise 0 <= A < m. The certificate pair of Lemma 1.4 is computed by the Euclidean
-      algorithm on (m, c mod m), stopping at the first remainder R <= A; cert (if not NULL)
-      gets the pair with kind = 1, on every status of this case. Then, by Proposition 1.6:
-        |T| > B: ADF_NO_SOLUTION (1.6 (b));
-        else gcd(R, T) = 1: ADF_OK and q = sigma R/|T|, sigma the sign of T (1.6 (c));
-        else ADF_NO_SOLUTION (1.6 (c), Remark 1: the row is not divided by the gcd, the
-        reduced point would not lie in the lattice).
-   The answer OK is the unique element of Sol, a reduced fraction with 0 < d <= B, |n| <= A,
-   gcd(d, m) = 1 (Lemma 1.2).
+/* adf_resid_reconstruct(q, cert, x, A, B, limit): decides Sol(m, c, A, B) with (c, m) = x.
+   Let ell = max(limit, 0), (R', T', R, T) the certificate pair of Lemma 1.4 (the Euclidean
+   algorithm on (m, c mod m), stopping at the first remainder R <= A) and X = floor(B / abs(T)).
+   The algorithm is Algorithm R of docs/proofs/solvers.md, lines 256 to 324 (Proposition 1.7).
+   The statuses, in the order in which they are decided:
 
-   limit is not used in this slice (it bounds the search of the range m <= 2 A B, slice 2); it
-   is part of the final signature (docs/api-s.md section 2).
-   q is untouched on every status other than ADF_OK (conventions 4.3). cert may be NULL.
-   Aliasing: q and cert are outputs of different types; x, A and B may be the same object as
-   each other or members of x; no output may alias an input (q is an adf_rat, cert an
-   adf_recon_cert). Cost: one Euclidean algorithm on (m, c mod m), with at most one division of
-   multiprecision numbers per step; one gcd. */
+   1. A < 0 or B < 1: ADF_NO_SOLUTION (decision S-D5: the box is empty).
+   2. A >= m: ADF_NOT_UNIQUE (Proposition 1.6 (a): c mod m / 1 and (c mod m - m) / 1 are two
+      solutions).
+   3. Otherwise 0 <= A < m. abs(T) > B: ADF_NO_SOLUTION (1.6 (b)).
+   4. 2 A B < m: gcd(R, T) = 1 gives ADF_OK with q = sigma R / abs(T), sigma the sign of T;
+      gcd(R, T) > 1 gives ADF_NO_SOLUTION (1.6 (c), Remark 1: the row is not divided by the
+      gcd, the reduced point would not lie in the lattice). 2 A B is an fmpz, never a word.
+   5. Otherwise (A < m <= 2 A B, abs(T) <= B) the search of Algorithm R step 7: the rounds
+      x = 1, ..., min(X, ell), each with the integers y in
+      [max(0, ceil((x R - A) / R')), floor((x R + A) / R')] found by division (1.5 (3)), while
+      d = x abs(T) + y abs(T') <= B; a point (n, d), n = sigma (x R - y R'), is counted if
+      gcd(n, d) = 1. As soon as two reduced points are found: ADF_NOT_UNIQUE (also when the
+      search would have been cut). Else, if X > ell: ADF_NOT_DETERMINED ("uniqueness not
+      certified": the four conditions of Proposition 1.7 (3); a cut search with fewer than two
+      reduced points found). Else ADF_OK with the one point found, or ADF_NO_SOLUTION if none.
+   OK is the unique element of Sol, a reduced fraction with 0 < d <= B, |n| <= A, gcd(d, m) = 1
+   (Lemma 1.2). NOT_UNIQUE, NO_SOLUTION are proved. With limit <= 0 the status is not "2 A B >= m
+   gives NOT_DETERMINED": A >= m gives NOT_UNIQUE and abs(T) > B gives NO_SOLUTION (api-s.md
+   note 5; m = 2, c = 1, A = 2, B = 1 gives NOT_UNIQUE).
+
+   q is untouched on every status other than ADF_OK (conventions 4.3). cert (may be NULL) is
+   written on every status: the pair with kind = 1 if 0 <= A < m and B >= 1, else kind = 0 and
+   the four integers 0. The number of rounds is at most min(ell, X) (1.7 (4)); X is an fmpz and
+   is compared with ell as such, so B / abs(T) above a word is fine, and a call with a small
+   limit costs one Euclidean algorithm and at most ell rounds however large B is. A call with
+   a large limit (up to WORD_MAX) runs until two reduced points are found or X rounds are done:
+   that may be as long as B.
+   Aliasing: x, A and B may be the same object as each other or members of x; no output may
+   alias an input (q is an adf_rat, cert an adf_recon_cert). Cost: one Euclidean algorithm on
+   (m, c mod m), with at most one division of multiprecision numbers per step; then at most
+   min(ell, X) rounds, each with a constant number of multiplications, divisions and at most
+   two gcds of integers bounded by max(A B, m). */
 int adf_resid_reconstruct(adf_rat_t q, adf_recon_cert_t cert, const adf_resid_t x, const fmpz_t A,
                           const fmpz_t B, slong limit);
 

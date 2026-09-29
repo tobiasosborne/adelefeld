@@ -1,0 +1,88 @@
+MUTANT A >= m -> A > m: test_resid exit status 1; 16272 failed checks
+FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:570, 2 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT A >= m -> A > m: test_resid_full exit status 1; 54755 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: edge_cases_of_check_s3_edge
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT X > ell -> X >= ell (complete X < ell): test_resid exit status 0; 0 failed checks
+MUTANT X > ell -> X >= ell (complete X < ell): test_resid_full exit status 1; 15824 failed checks
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT two found -> three found: test_resid exit status 1; 45430 failed checks
+FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:570, 2 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT two found -> three found: test_resid_full exit status 1; 158905 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: edge_cases_of_check_s3_edge
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT gcd test of a lattice point removed: test_resid exit status 1; 62226 failed checks
+FAIL boundary_2AB_against_m (tests/test_resid.c:483, 2 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT gcd test of a lattice point removed: test_resid_full exit status 1; 143308 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: edge_cases_of_check_s3_edge
+   failing test: large_operands_return_at_once
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT gcd(R, T) test of 1.6 (c) removed: test_resid exit status 1; 28727 failed checks
+FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:570, 2 failed checks)
+   failing test: brute_force_every_m_up_to_36
+   failing test: vectors_s3_slice1_every_line
+   failing test: wrapper_test_against_fmpq_reconstruct_fmpz_2
+MUTANT gcd(R, T) test of 1.6 (c) removed: test_resid_full exit status 1; 36485 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: edge_cases_of_check_s3_edge
+   failing test: large_operands_return_at_once
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT lower bound of y + 1: test_resid exit status 1; 191501 failed checks
+FAIL boundary_2AB_against_m (tests/test_resid.c:483, 3 failed checks)
+FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:570, 2 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT lower bound of y + 1: test_resid_full exit status 124; 364050 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: limits_grid_m_up_to_24
+MUTANT lower bound of y - 1: test_resid exit status 1; 97 failed checks
+   failing test: brute_force_every_m_up_to_36
+MUTANT lower bound of y - 1: test_resid_full exit status 1; 206 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: limits_grid_m_up_to_24
+MUTANT upper bound of y + 1: test_resid exit status 1; 61816 failed checks
+FAIL boundary_2AB_against_m (tests/test_resid.c:483, 2 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT upper bound of y + 1: test_resid_full exit status 1; 177047 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: edge_cases_of_check_s3_edge
+   failing test: large_operands_return_at_once
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT upper bound of y - 1: test_resid exit status 1; 194745 failed checks
+FAIL boundary_2AB_against_m (tests/test_resid.c:483, 1 failed checks)
+FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:570, 2 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT upper bound of y - 1: test_resid_full exit status 124; 386426 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: limits_grid_m_up_to_24
+MUTANT rounds run to ell + 1: test_resid exit status 1; 2 failed checks
+FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:570, 1 failed checks)
+MUTANT rounds run to ell + 1: test_resid_full exit status 1; 94518 failed checks
+   failing test: edge_cases_of_check_s3_edge
+   failing test: large_operands_return_at_once
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT d > B -> d >= B: test_resid exit status 1; 42988 failed checks
+FAIL boundary_2AB_against_m (tests/test_resid.c:483, 2 failed checks)
+FAIL boundary_small_moduli_and_zero_A (tests/test_resid.c:570, 1 failed checks)
+   failing test: brute_force_every_m_up_to_36
+MUTANT d > B -> d >= B: test_resid_full exit status 1; 76074 failed checks
+   failing test: brute_force_every_m_up_to_36_whole_range
+   failing test: edge_cases_of_check_s3_edge
+   failing test: limits_grid_m_up_to_24
+   failing test: vectors_s3_slice2_every_line
+MUTANT sign sigma dropped in the search: build failed
+MUTANT X compared as its low word (fmpz_get_ui) instead of as an fmpz: test_resid exit status 0; 0 failed checks
+MUTANT X compared as its low word (fmpz_get_ui) instead of as an fmpz: test_resid_full exit status 1; 55 failed checks
+   failing test: large_operands_return_at_once
