@@ -1,0 +1,6 @@
+...................................                         [100%]
+35 passed, 13 subtests passed in 18.44s
+
+real	0m18,680s
+user	0m18,607s
+sys	0m0,065s

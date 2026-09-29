@@ -1,0 +1,22 @@
+KILLED   nd_off_by_one by check_s3_limit (3 s): FAIL check_s3_limit: 329875 calls with limits -1, 0, 1, 2, 5; NOT_DETERMINED 146121 times, each with the four 
+KILLED   nd_ignores_found_count by check_s3_limit (6 s): FAIL check_s3_limit: 329875 calls with limits -1, 0, 1, 2, 5; NOT_DETERMINED 146121 times, each with the four 
+KILLED   first_count_wrong by check_s3_verify (7 s): FAIL check_s3_verify: 93408 results verified (m <= 14); 2021284 changed claims refused, 0 accepted and false; 
+KILLED   verify_not_unique_unchecked by check_s3_verify (5 s): FAIL check_s3_verify: 93408 results verified (m <= 14); 1946984 changed claims refused, 74300 accepted and fal
+KILLED   verify_ok_without_uniqueness by check_s3_verify (6 s): FAIL check_s3_verify: 93408 results verified (m <= 14); 2011513 changed claims refused, 9771 accepted and fals
+KILLED   brute_fast_start by check_s3_verify (5 s): FAIL check_s3_verify: 93408 results verified (m <= 14); 2021284 changed claims refused, 0 accepted and false; 
+KILLED   real_complete_without_count by check_s2_lists (0 s): FAIL check_s2_lists: 158 lists (99 complete) built on g; 151 changed lists refused; X(X-1) with an empty compl
+KILLED   real_entries_without_disjointness by check_s2_real_completeness (1 s): FAIL check_s2_real_completeness: 18 polynomials, 69 changed lists, 66 gap and outside counts, accuracy of ever
+KILLED   accuracy_bits_off by check_s2_real_planted (5 s): FAIL check_s2_real_planted: 74 runs with planted roots (multiple, large, close, zero) and the regression X - 1
+KILLED   refine_ignores_floor by check_s2_real_planted (5 s): FAIL check_s2_real_planted: 74 runs with planted roots (multiple, large, close, zero) and the regression X - 1
+KILLED   cauchy_bound_too_small by check_s2_real_planted (4 s): FAIL check_s2_real_planted: 74 runs with planted roots (multiple, large, close, zero) and the regression X - 1
+KILLED   seed_uses_f_not_g by check_s2_seed (1 s): FAIL check_s2_seed: 6552 seeds (36 polynomials, p = 2, 3, 5): 1430 OK, 4750 NOT_DETERMINED; the condition on f
+KILLED   seed_weak_condition by check_s2_seed (0 s): AssertionError: ([1, 0, 1], 3, -2, 0, 0)
+KILLED   complete_verifier_no_rerun by check_s2_lists (0 s): FAIL check_s2_lists: 158 lists (99 complete) built on g; 151 changed lists refused; X(X-1) with an empty compl
+KILLED   entries_no_disjointness by check_s2_lists (0 s): FAIL check_s2_lists: 158 lists (99 complete) built on g; 151 changed lists refused; X(X-1) with an empty compl
+KILLED   entries_no_cert_test by check_s2_lists (0 s): FAIL check_s2_lists: 158 lists (99 complete) built on g; 151 changed lists refused; X(X-1) with an empty compl
+KILLED   rootlist_not_squarefree by check_s2_lists (0 s): FAIL check_s2_lists: 154 lists (70 complete) built on g; 120 changed lists refused; X(X-1) with an empty compl
+KILLED   assoc_zero_is_N by check_s1_assoc (0 s): FAIL check_s1_assoc: 1830 residues (N <= 60), 60 zero residues; 119 failures
+KILLED   checker_drops_K4 by check_s1_checker_mutants (2 s): FAIL check_s1_checker_mutants: 8235 false certificates; the full checker accepts 1365; a checker without K1..K
+KILLED   trace_counts_wrong by check_s2_bezout_depth (0 s): FAIL check_s2_bezout_depth: 214 polynomials (p = 2, 3, 5): identity u f + v f' = R exact, D = v_p(R) + 1 compl
+EQUIVALENT real_entry_weak_sign (g(lo) g(hi) <= 0 instead of < 0 for lo < hi): an end point is then a root, so every accepted ball still holds a root; with disjoint balls and n equal to the count the pigeonhole of Proposition 3.8(2) still gives exactly one root in each: the change does not alter what a verified list claims (the design keeps the strict test because it is the one stated and proved)
+mutants: 20, killed: 20, survived: 0 []

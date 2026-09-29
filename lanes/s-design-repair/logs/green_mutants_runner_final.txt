@@ -1,0 +1,3 @@
+KILLED limit_discards_two_found_solutions: exit=1; FAIL check_s3_limit: 329875 calls with limits -1, 0, 1, 2, 5; NOT_DETERMINED 146121 times, each with the four conditions and the found points recounted; NOT_UNI | AssertionError
+KILLED real_ignores_requested_precision: exit=1; FAIL check_s2_real_completeness: 18 polynomials, 69 changed lists, 66 gap and outside counts, accuracy of every ball >= 20 bits and roots counted by mpmath 1.3. | AssertionError
+surviving mutants of the reviewer: 0 of 2

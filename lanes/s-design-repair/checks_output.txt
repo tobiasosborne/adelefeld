@@ -1,0 +1,39 @@
+PASS check_s3_coprime: 465 problems (m <= 30), 85095 reduced pairs, 0 failures
+PASS check_s3_certificate: 159175 small and 2000 large triples (m, c, A), 0 failures; accepted wrong pairs: 0
+PASS check_s3_param: 177120 boxes (m <= 40, all c, all A < m), 2747820 lattice points, 0 failures
+PASS check_s3_complete: 366208 problems (m <= 36, A in 0..2m for every m): one 49241, none 26864, several 290103; 0 failures
+PASS check_s3_limit: 329875 calls with limits -1, 0, 1, 2, 5; NOT_DETERMINED 146121 times, each with the four conditions and the found points recounted; NOT_UNIQUE found inside a cut search 51291 times; the claim 'limit 0 is 2AB >= m' fails 6210 times; 0 failures
+PASS check_s3_verify: 93408 results verified (m <= 14); 2021284 changed claims refused, 0 accepted and false; recon_first count 0/1/2: 39052/6703/47653; the lowering shortcut certifies NOT_UNIQUE 0 times and fails 4742 times (m = 2, c = 1, A = B = 1 fails); 0 failures
+PASS check_s3_ranges: 270600 problems (m <= 40). I: one 13016, none 24194, several 0; II: one 20342, none 5021, several 7514; III: one 36510, none 3851, several 133092; IV: one 0, none 0, several 27060; 0 failures
+PASS check_s3_edge: 19 fixed cases, 3000 large random fractions verified (1283 draws repeated), 0 failures
+PASS check_s3_forget: 4628 rationals of balls (H <= 12, d <= 7), 356 witnesses of a proper inclusion, 0 failures
+PASS probe_s3_flint: FLINT 3.0.1: 76146 calls, 36491 inside 2ND < m; outside: returns 0 although a solution exists 2380 times, returns one of several 22860 times; outputs changed at return 0: 32924 times; 0 failures
+PASS check_s1_howell: 1869 row sets over Z/N, N in (1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18), up to 3 columns; 0 failures
+PASS check_s1_canonical: 672 modules with changed generators; 32945 pairs of rows over (Z/N)^2, N in (4, 6, 8, 9, 12): 195 modules, 195 forms; 0 failures
+PASS check_s1_assoc: 1830 residues (N <= 60), 60 zero residues; 0 failures
+PASS check_s1_solve: 4432 systems modulo 4 (all A, b with r, c <= 2) and 4232 random systems, N in (1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18), r, c <= 3; without solution: 3272; 0 failures
+PASS check_s1_cert_sound: 8472 changed certificates: 6592 refused, 1880 accepted and true, 0 accepted and false
+PASS check_s1_checker_mutants: 8142 false certificates; the full checker accepts 0; a checker without K1..K7 accepts [400, 681, 208, 1372, 87, 1454, 677] of them (a zero would mean that condition is not needed for this pool: [])
+PASS check_s1_duality: 420 submodules of (Z/N)^r, every b of (Z/N)^r; 0 failures
+PASS check_s1_edge: 13 fixed cases, 20540 single equations (N < 40), 60 systems, N up to 122 bits; 0 failures
+PASS check_s1_adelic: 393 systems with right-hand sides (A + H Zhat)/d; 0 failures
+PASS probe_s1_flint: FLINT 3.0.1: 2080 matrices, N up to 30 bits; 0 differences
+PASS probe_s1_flint_empty: FLINT 3.0.1: 28 empty matrices (0 x c, r x 0), moduli 1, 2, 12, 2^40 + 15: rank 0, no crash; 0 failures
+PASS probe_s1_hnf: python-flint 0.8.0: 2016 matrices, 1505 rows with pivot N; 0 differences
+PASS check_s2_certificate: 50 certificates of the named cases, 836 found by search in random polynomials; 0 failures
+PASS check_s2_newton: 500 steps and requests; 0 failures
+PASS check_s2_descent: 124 runs of the named cases (depth limits 0, 1, 3, 8), of which 123 compared with the oracle of approximate roots and 1 skipped because the oracle has more than 200000 residues (cases: ['(x-1)^2(x+2) at 5']); 150 random products with known integer roots; 0 failures
+PASS check_s2_examples: 12 fixed cases; 0 failures
+PASS check_s2_count_mod_p: 468 polynomials over F_p, p up to 257; 0 failures
+PASS check_s2_seed: 6552 seeds (36 polynomials, p = 2, 3, 5): 1802 OK, 4750 NOT_DETERMINED; the condition on f differs from that on g in 186; f = 27 X at 3, a = 0 gives g = X and the certificate (0, 2, 0); 0 failures
+PASS check_s2_lists: 158 lists (99 complete) built on g; 151 changed lists refused; X(X-1) with an empty complete list: entries accept, complete refuses; real [0, 4] for (X-1)(X-2)(X-3): entries accept, complete refuses n = 1 and n = 3; the depth needed is refused one below and accepted at it (for 4 polynomials it is 2 or more); 0 failures
+PASS check_s2_bezout_depth: 211 polynomials (p = 2, 3, 5): identity u f + v f' = R exact, D = v_p(R) + 1 complete, 42 opened classes with a child all with e <= v_p(R) (largest v_p(R) 6); 0 failures
+PASS check_s2_isolation: 574 roots: the least isolating precision is at most s + 1 in all, below s + 1 in 133, equal in 440; X^3 + 2X at 2: only root 0, s = 1, precision 0 isolates it; 0 failures
+PASS check_s2_real_completeness: 18 polynomials, 69 changed lists, 66 gap and outside counts, accuracy of every ball >= 20 bits and roots counted by mpmath 1.3.0; 0 failures
+PASS check_s2_real_planted: 74 runs with planted roots (multiple, large, close, zero) and the regression X - 10^400; 0 failures
+PASS probe_s2_flint_real: FLINT 3.0.1: 60 calls (prec 16, 64, 200, coefficients up to 400 digits); exact balls 20; balls widened 0; finished OK 60; NOT_DETERMINED after widening (accuracy lost) 0; outside the squarefree contract the count returns {'X^2': 2, 'X^3': 3, 'X^4': 4, 'X^3-X^2': 3, '(X-1)^2': 0}; 0 failures
+total time 68.8 s; failures: 0
+
+real	1m8,919s
+user	1m8,558s
+sys	0m0,132s

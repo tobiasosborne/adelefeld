@@ -1,0 +1,13 @@
+FAIL [RED] real_roots_ref at X - 10^400 (R6): raises OverflowError
+FAIL [RED] untrusted real count [0, 4] for (X-1)(X-2)(X-3) (R7): old checker real_cert_ok((X-1)(X-2)(X-3), n=1, [[0,4]]) returns True; must refuse
+FAIL [RED] seed f = 27 X at 3, certificate refers to g (R7): status OK, stored g [0, 1], certificate (0, 4, 3): root_cert_ok for g is False (s = 3, v(g'(0)) = 0)
+FAIL [RED] NOT_UNIQUE for m = 2, c = 1, A = B = 1 is certified (R9): the shortcut of note 4 certifies NOT_UNIQUE for (m, c, A, B) = (2, 1, 1, 1): False (both solutions 1/1 and -1/1 have denominator 1; B = 0 loses both)
+FAIL [RED] real accuracy is arb_rel_accuracy_bits >= max(prec, 2) (R8): 8 balls; smallest (arb_rel_accuracy_bits - required) = -9
+FAIL [RED] check_s3_edge prints the count of what was verified: printed 3000 large random fractions; recon_partial was called on 2096 of them
+FAIL [RED] check_s3_complete exhausts A in 0..2m: 36 moduli; 34 of them lack some A in 0..2m (m = 36 lacks 60)
+FAIL [RED] check_s2_descent does not skip silently: 1 oracle comparisons skipped by OverflowError; output says so: False
+FAIL [RED] D2.1: associate of zero is 0 (R1): 39 residues a in [0, N), N < 40, where the representative differs from the least element of the orbit of a under the units of Z/N; first [(0, 1), (0, 2), (0, 3)]
+REFUTED [REFUTED] S-D3: limit = 0 is exactly 2AB >= m: 4004 counterexamples, first [((1, 0, 1, 1), 'NOT_UNIQUE'), ((1, 0, 1, 2), 'NOT_UNIQUE')] (m = 2, c = 1, A = 2, B = 1 gives NOT_UNIQUE)
+REFUTED [REFUTED] P3.9(1): X^2 returns 0, X^3 and X^4 throw: FLINT 3.0.1 returns {'X^2': 2, 'X^3': 3, 'X^4': 4, '(X-1)^2': 0}
+REFUTED [REFUTED] 3.11(5): s + 1 is the smallest isolating precision: s = 1; solutions modulo 2^12: [0, 2048]...; the ball Z_2 (precision 0 < s + 1) holds the only root 0
+red probes failing: 9 of 9

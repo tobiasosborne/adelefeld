@@ -1,0 +1,44 @@
+=== suite recon
+target_sha256=1e1c399632e29bcd28fbe7a55bccfb27b32265d0b5ed8d108bef3ed50151388f
+reconstruction: boxes=60480, calls=302400, boundary_boxes=2160, solutions=157476, empty_boxes=8400, failures=0
+arbitrary_reconstruction_certificates: tried=1031943, accepted=1334, false_accepted=0
+total: failures=0, findings=0, seconds=5.21
+exit 0
+=== suite roots
+target_sha256=1e1c399632e29bcd28fbe7a55bccfb27b32265d0b5ed8d108bef3ed50151388f
+padic_p2: calls=1878, certificates=1212, residues=9422
+padic_p3: calls=1878, certificates=1265, residues=155461
+newton: calls=2477, failures=0
+singular_children: nodes=14, failures=0
+FINDING 3.11-minimum: f=X^3+2X, p=2: only root 0, s=1; Z_2 already isolates it (k=0 < 2)
+FINDING seed-normalization: f=27X, p=3, a=0: seed s=3; stored g=X has derivative valuation 0
+total: failures=0, findings=2, seconds=1.25
+exit 0
+=== suite certificates
+target_sha256=1e1c399632e29bcd28fbe7a55bccfb27b32265d0b5ed8d108bef3ed50151388f
+invented_root_certificates: tried=29000, accepted=352, false_accepted=0
+strong_hensel_boundary: equality_counterexamples=1, failures=0
+bezout_depth: polynomials=48, failures=0
+local_and_forget: reduced_pairs=24111, ball_rationals=5383, proper_witnesses=769, failures=0
+total: failures=0, findings=0, seconds=0.4
+exit 0
+=== suite real
+target_sha256=1e1c399632e29bcd28fbe7a55bccfb27b32265d0b5ed8d108bef3ed50151388f
+real_planted: polynomials=59, exact_intervals=91, failures=0
+FAIL ('overflow reproduction', {'out': ['OK', 1, [['9978856233088065275919124847828233950801103905082699603169173807865687250575773250642380105494154579223589913080037343794611370458102697841613281677235716517922895272669961561873748256658017296050112386562110992544201920300930371339445181512073950392257983454405448640754063637796698839692790437302785548641051038627686619314023717759700270288976961278553701168349496049785975507888691834850834907136', '10070405372841166792211960855606474629248820454670614278427606595093812821681973005235429464260155997381604499438569796489974777526525658372270284261430539605243288807281612585377177139746622959316627179099378065870295515900021475663660274920441601313287873210867883949384834863831530939139513285351434957344179947238949799307730357372174584695297850831567955307508665738316122072181248640675154493440']]]})
+FINDING reference-overflow: real_roots_ref([-10**400,1],6) raises OverflowError; exact answer is {10**400}
+FINDING untrusted-real-count: real_cert_ok((X-1)(X-2)(X-3),1,[[0,4]]) accepts a 3-root interval
+real_endpoints: positive_width_endpoint_rejected=1, exact_root_point_accepted=1
+total: failures=1, findings=2, seconds=0.28
+exit 1
+=== suite extras
+target_sha256=1e1c399632e29bcd28fbe7a55bccfb27b32265d0b5ed8d108bef3ed50151388f
+arbitrary_howell: matrices=32946, failures=0
+adelic: systems=250, integer_points=3020, projections=184, failures=0
+mod_p_count: polynomials=791, failures=0
+total: failures=0, findings=0, seconds=4.82
+exit 0
+=== suite matrix
+target_sha256=1e1c399632e29bcd28fbe7a55bccfb27b32265d0b5ed8d108bef3ed50151388f
+Alarm clock
+exit 142

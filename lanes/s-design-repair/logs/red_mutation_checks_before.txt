@@ -1,0 +1,8 @@
+limit_discards_two_found_solutions: exit=0
+PASS check_s3_limit: 239540 calls with limits 0, 1, 2, 5; NOT_DETERMINED 148555 times; 0 failures
+changed_statuses: 51291
+witness: ('NOT_DETERMINED', [], (2, 0, 1, 1))
+real_ignores_requested_precision: exit=0
+PASS check_s2_real_completeness: 18 polynomials, 42 changed lists; 0 failures
+precision_violations_x2_minus_2: 2
+total: surviving_mutants=2, reproduction_failures=0

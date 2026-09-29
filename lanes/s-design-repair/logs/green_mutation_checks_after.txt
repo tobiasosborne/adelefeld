@@ -1,0 +1,7 @@
+limit_discards_two_found_solutions: exit=1
+FAIL check_s3_limit: 329875 calls with limits -1, 0, 1, 2, 5; NOT_DETERMINED 146121 times, each with the four conditions and the found points recounted; NOT_UNIQUE found inside a cut search 0 times; the claim 'limit 0 is 2AB >= m' fails 6210 times; 51291 failures
+changed_statuses: 51291
+witness: ('NOT_DETERMINED', [], (2, 0, 1, 1))
+Traceback (most recent call last):
+  File "<string>", line 2877, in <module>
+AssertionError
