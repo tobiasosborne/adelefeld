@@ -50,6 +50,26 @@ ADF_OFF(adf_rat_struct, q, 0);
 ADF_FTYPE(adf_rat_struct, q, fmpq *);
 ADF_SIZE(adf_rat_t, 16);
 
+/* docs/api-s.md section 1 (slice s3-slice1): { fmpz_t c, m; } and { fmpz_t Rp, Tp, R, T; int kind; } */
+ADF_SIZE(adf_resid_struct, 16);
+ADF_ALIGN(adf_resid_struct, 8);
+ADF_OFF(adf_resid_struct, c, 0);
+ADF_OFF(adf_resid_struct, m, 8);
+ADF_FTYPE(adf_resid_struct, c, fmpz *);
+ADF_FTYPE(adf_resid_struct, m, fmpz *);
+ADF_SIZE(adf_recon_cert_struct, 40);
+ADF_ALIGN(adf_recon_cert_struct, 8);
+ADF_OFF(adf_recon_cert_struct, Rp, 0);
+ADF_OFF(adf_recon_cert_struct, Tp, 8);
+ADF_OFF(adf_recon_cert_struct, R, 16);
+ADF_OFF(adf_recon_cert_struct, T, 24);
+ADF_OFF(adf_recon_cert_struct, kind, 32);
+ADF_FTYPE(adf_recon_cert_struct, Rp, fmpz *);
+ADF_FTYPE(adf_recon_cert_struct, Tp, fmpz *);
+ADF_FTYPE(adf_recon_cert_struct, R, fmpz *);
+ADF_FTYPE(adf_recon_cert_struct, T, fmpz *);
+ADF_FTYPE(adf_recon_cert_struct, kind, int);
+
 /* conventions 5.2: { fmpz_t A, H, d; int backend; const adf_modctx_struct * mctx; ulong * res; } */
 ADF_SIZE(adf_fball_struct, 48);
 ADF_ALIGN(adf_fball_struct, 8);
@@ -130,6 +150,8 @@ ADF_TEST(sizeof_functions_agree_with_the_layouts)
     ADF_CHECK(adf_sizeof_place() == 8 && adf_alignof_place() == 8);
     ADF_CHECK(adf_sizeof_text_limits() == 32 && adf_alignof_text_limits() == 8);
     ADF_CHECK(adf_sizeof_ctx_desc() == 24 && adf_alignof_ctx_desc() == 8);
+    ADF_CHECK(adf_sizeof_resid() == 16 && adf_alignof_resid() == 8);
+    ADF_CHECK(adf_sizeof_recon_cert() == 40 && adf_alignof_recon_cert() == 8);
 }
 
 /* The _t types are arrays of one struct (conventions 1, 2.1): an array parameter decays to a
@@ -141,4 +163,6 @@ ADF_TEST(array_of_one_types)
     ADF_CHECK(sizeof(adf_cadele_t) == sizeof(adf_cadele_struct));
     ADF_CHECK(sizeof(adf_scaled_t) == sizeof(adf_scaled_struct));
     ADF_CHECK(sizeof(adf_rat_t) == sizeof(adf_rat_struct));
+    ADF_CHECK(sizeof(adf_resid_t) == sizeof(adf_resid_struct));
+    ADF_CHECK(sizeof(adf_recon_cert_t) == sizeof(adf_recon_cert_struct));
 }
