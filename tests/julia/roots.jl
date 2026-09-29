@@ -1,4 +1,5 @@
-# tests/julia/roots.jl: a Julia ccall of adf_root_padic_from_seed (slice 1 of S.2, lane s2-slice1).
+# tests/julia/roots.jl: a Julia ccall of adf_root_padic_from_seed (slice 1 of S.2, lane s2-slice1), of
+# adf_roots_padic (slice 2) and of adf_roots_real with adf_rootlist_get_arb (slice 3, lane s2-slice3).
 #
 # Usage: julia --startup-file=no tests/julia/roots.jl build/libadelefeld.so
 # (with the LD_PRELOAD of the system libgmp.so.10 if Julia's bundled libgmp lacks a symbol;
@@ -185,4 +186,86 @@ vp(x, p) = (x == 0 ? typemax(Int) : (v = 0; while mod(x, p) == 0; x = div(x, p);
     @test roots_padic([0], 7, 10, 8)[1] == DOMAIN
     @test roots_padic(c, 7, 10, -1)[1] == DOMAIN
     @test roots_padic(c, 1048583, 3, 2)[1] == UNSUPPORTED
+end
+
+# ---- slice 3 of S.2 (lane s2-slice3): the real roots through adf_roots_real and adf_rootlist_get_arb ----
+
+const SIZEOF_ARB = 48                            # FLINT 3.0.1: an arf of 32 bytes and a mag of 16 bytes
+
+# an arb (48 bytes of raw memory, initialised by FLINT)
+function arb_new()
+    x = Libc.malloc(SIZEOF_ARB)
+    ccall(fl(:arb_init), Cvoid, (Ptr{Cvoid},), x)
+    return x
+end
+
+function arb_free(x)
+    ccall(fl(:arb_clear), Cvoid, (Ptr{Cvoid},), x)
+    Libc.free(x)
+end
+
+# the exact interval [a, b] 2^e of an arb, as two Rational{BigInt}
+function arb_ends(x)
+    a, b, e = fmpz_new(0), fmpz_new(0), fmpz_new(0)
+    ccall(fl(:arb_get_interval_fmpz_2exp), Cvoid, (Ptr{Clong}, Ptr{Clong}, Ptr{Clong}, Ptr{Cvoid}), a, b, e, x)
+    k = fmpz_get(e)
+    s = k >= 0 ? big(2)^k // 1 : 1 // big(2)^(-k)
+    out = (fmpz_get(a) * s, fmpz_get(b) * s)
+    for z in (a, b, e)
+        ccall(fl(:fmpz_clear), Cvoid, (Ptr{Clong},), z)
+    end
+    return out
+end
+
+# the real roots of c: (status, [(midpoint, radius, lo, hi, exact)], count, verify_entries, verify_complete); the
+# midpoint and the radius are read through arb_get_mid_arb and arb_get_rad_arb, each an exact ball
+function roots_real(c, prec)
+    L = Libc.malloc(ccall(ad(:adf_sizeof_rootlist), Csize_t, ()))
+    ccall(ad(:adf_rootlist_init), Cvoid, (Ptr{Cvoid},), L)
+    f = poly_new(c)
+    st = ccall(ad(:adf_roots_real), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Clong), L, f, prec)
+    balls, ve, vc = [], -1, -1
+    if st == OK
+        x, m, r = arb_new(), arb_new(), arb_new()
+        n = ccall(ad(:adf_rootlist_length), Clong, (Ptr{Cvoid},), L)
+        for i in 0:n-1
+            got = ccall(ad(:adf_rootlist_get_arb), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Clong), x, L, i)
+            got == 1 || error("get_arb")
+            ccall(fl(:arb_get_mid_arb), Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}), m, x)
+            ccall(fl(:arb_get_rad_arb), Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}), r, x)
+            mid, mid2 = arb_ends(m)
+            rad, rad2 = arb_ends(r)
+            (mid == mid2 && rad == rad2) || error("midpoint or radius not exact")
+            lo, hi = arb_ends(x)
+            ex = ccall(fl(:arb_is_exact), Cint, (Ptr{Cvoid},), x)
+            push!(balls, (mid, rad, lo, hi, ex))
+        end
+        ccall(ad(:adf_rootlist_get_arb), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Clong), x, L, n) == 0 || error("get_arb n")
+        ve = ccall(ad(:adf_rootlist_verify_entries), Cint, (Ptr{Cvoid}, Ptr{Cvoid}), L, f)
+        vc = ccall(ad(:adf_rootlist_verify_complete), Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Clong), L, f, 0)
+        arb_free(x); arb_free(m); arb_free(r)
+    end
+    poly_free(f)
+    ccall(ad(:adf_rootlist_clear), Cvoid, (Ptr{Cvoid},), L)
+    Libc.free(L)
+    return st, balls, ve, vc
+end
+
+@testset "adf_roots_real through ccall: X^3 - 2 X to 100 bits" begin
+    c = [0, -2, 0, 1]                            # X^3 - 2 X: the roots -sqrt(2), 0, sqrt(2)
+    st, balls, ve, vc = roots_real(c, 100)
+    @test st == OK && length(balls) == 3 && ve == 1 && vc == 1
+    (m1, r1, lo1, hi1, _), (m2, r2, lo2, hi2, ex2), (m3, r3, lo3, hi3, _) = balls
+    @test hi1 < lo2 && hi2 < lo3                 # increasing and disjoint
+    @test lo1 == m1 - r1 && hi1 == m1 + r1       # the end points are midpoint -+ radius
+    @test ex2 == 1 && m2 == 0 && r2 == 0         # the root 0, exact
+    for (m, r, lo, hi) in ((m1, r1, lo1, hi1), (m3, r3, lo3, hi3))
+        @test sign(peval(c, lo)) * sign(peval(c, hi)) < 0      # the exact test of P3.8, in Julia
+        @test min(lo^2, hi^2) < 2 < max(lo^2, hi^2) && lo * hi > 0   # it holds sqrt(2) or -sqrt(2)
+        @test r > 0 && r < abs(m) / big(2)^100                 # 100 bits of relative accuracy
+    end
+    @test m1 < 0 < m3
+    @test roots_real([0], 100)[1] == DOMAIN
+    st, balls, ve, vc = roots_real([1, 0, 1], 100)             # X^2 + 1: no real root, OK, empty
+    @test st == OK && isempty(balls) && ve == 1 && vc == 1
 end

@@ -397,7 +397,7 @@ ADF_TEST(init_value_and_accessors)
     ADF_CHECK(adf_rootlist_get_cert(a, &K, &s, L, 0) == 0 && fmpz_equal_si(a, 99) && K == -7 && s == -7);
     ADF_CHECK(adf_rootlist_get_fball(x, L, 0) == 0 && adf_fball_is_exact(x));
     fmpz_poly_set_ui(f, 1);
-    ADF_CHECK(adf_rootlist_verify_entries(L, f) == 0);      /* the real place: 0 in this slice */
+    ADF_CHECK(adf_rootlist_verify_entries(L, f) == 1);      /* the real place: the true list of f = 1 */
     adf_rootlist_get_poly(L->g, L);                         /* g may be L->g */
     ADF_CHECK(fmpz_poly_is_one(L->g));
     adf_rootlist_clear(L);

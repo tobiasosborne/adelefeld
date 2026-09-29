@@ -1234,7 +1234,7 @@ ADF_TEST(verify_complete_refuses_changed_lists_seed_lists_and_the_example)
     adf_rootlist_clear(L);
     adf_rootlist_init(L);
     fmpz_poly_set_ui(f, 1);
-    ADF_CHECK(adf_rootlist_verify_complete(L, f, 3) == 0);        /* the real place: TEMPORARY */
+    ADF_CHECK(adf_rootlist_verify_complete(L, f, 3) == 1);        /* the real place: the true list of f = 1 */
     printf("changed lists:");
     for (k = 0; k < CH_KINDS; k++)
     {

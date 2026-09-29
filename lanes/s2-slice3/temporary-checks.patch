@@ -1,0 +1,22 @@
+--- ../../tests/test_roots_seed.c	2026-09-29 12:34:37.221913722 +0200
++++ tests/test_roots_seed.c	2026-09-29 13:11:39.093274904 +0200
+@@ -397,7 +397,7 @@
+     ADF_CHECK(adf_rootlist_get_cert(a, &K, &s, L, 0) == 0 && fmpz_equal_si(a, 99) && K == -7 && s == -7);
+     ADF_CHECK(adf_rootlist_get_fball(x, L, 0) == 0 && adf_fball_is_exact(x));
+     fmpz_poly_set_ui(f, 1);
+-    ADF_CHECK(adf_rootlist_verify_entries(L, f) == 0);      /* the real place: 0 in this slice */
++    ADF_CHECK(adf_rootlist_verify_entries(L, f) == 1);      /* the real place: the true list of f = 1 */
+     adf_rootlist_get_poly(L->g, L);                         /* g may be L->g */
+     ADF_CHECK(fmpz_poly_is_one(L->g));
+     adf_rootlist_clear(L);
+--- ../../tests/test_roots_padic.c	2026-09-29 12:34:37.220913723 +0200
++++ tests/test_roots_padic.c	2026-09-29 13:11:39.095274896 +0200
+@@ -1234,7 +1234,7 @@
+     adf_rootlist_clear(L);
+     adf_rootlist_init(L);
+     fmpz_poly_set_ui(f, 1);
+-    ADF_CHECK(adf_rootlist_verify_complete(L, f, 3) == 0);        /* the real place: TEMPORARY */
++    ADF_CHECK(adf_rootlist_verify_complete(L, f, 3) == 1);        /* the real place: the true list of f = 1 */
+     printf("changed lists:");
+     for (k = 0; k < CH_KINDS; k++)
+     {
