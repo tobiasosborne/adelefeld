@@ -2238,6 +2238,12 @@ e65b1c7049f05fd49eb6b6da9fffeacb51d8ed5ceab30c9799d560a5e10bd58f  src/flint-src-
 b9fd0c1c54f7b53295612a1052a175a1c619174c85526754a57d1f53f1af9f77  src/flint-src-3.0.1/nmod_mat/rank.c
 70a4b4c05ad1020b22a2874dc40ee572bd87597fac3fa9d4a656107bb12d61b0  src/flint-src-3.0.1/nmod_mat/solve.c
 06a36527d69985c9cfb2f288b1954ab9bb1c1a0d9a8dc1262921099e12974894  src/flint-src-3.0.1/nmod_mat/strong_echelon_form.c
+4639f19c6fdad380b96a930b7ce92efd9f4a5440d285e386088ff0faad5910a3  src/flint-src-3.0.1/nmod_poly/evaluate_nmod.c
+ce4bdf74776d12899c667ac3a50307213081ebfdd9634b66df30271bc1122ac6  src/flint-src-3.0.1/nmod_poly/find_distinct_nonzero_roots.c
+eca0d6a2b510bc3f9777db6c7b22541e8de47ead08c1a9967e2021d788c552d6  src/flint-src-3.0.1/nmod_poly/gcd.c
+a5887b3c006f42511affb9ce0b28078ad548c0ab3ed20e339c653ea3937f1a5e  src/flint-src-3.0.1/nmod_poly/powmod_ui_binexp.c
+b550fbb5b695d1be81ab7e68bf2c55d51fe2bc178a09240572407d7dabb472d9  src/flint-src-3.0.1/nmod_poly/powmod_ui_binexp_preinv.c
+d1d9c4d1a6fb88617049a8efa6ee65d57ff9923f1f87fe8317642f71bb4cdce7  src/flint-src-3.0.1/nmod_poly_factor/roots.c
 161028af21bef948bb1aa9982d4ee6a4e5b5e60144e5294ed082def734e0f3e6  src/flint-src-3.0.1/padic_poly/evaluate_padic.c
 7aaa786bf6055582ce68dc37f245a1b8e2618e4eb05af573576893ddd2bb494b  src/flint-src-3.0.1/padic_poly/get_fmpq_poly.c
 8c98e4cf9a09aeecde741fd7989637559e04841045707a91f4f0e6036ec56a25  src/flint-src-3.0.1/padic_poly/get_fmpz_poly.c

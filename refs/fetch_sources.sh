@@ -158,6 +158,17 @@ arb_fmpz_poly/complex_roots.c"
 for f in $FLINTSRC; do
   get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/$f" "src/flint-src-3.0.1/$f"
 done
+# FLINT 3.0.1 C sources (tag v3.0.1) for the roots modulo a prime of one word (S.2, lane s2-slice4,
+# decision S-D10): nmod_poly_roots is declared in nmod_poly_factor.h but not documented; its splitting
+# helper _nmod_poly_split_rabin is in find_distinct_nonzero_roots.c; the powering and the gcd it and
+# the library call.
+FLINTSRC_MODP="nmod_poly_factor/roots.c nmod_poly/find_distinct_nonzero_roots.c
+nmod_poly/powmod_ui_binexp.c nmod_poly/powmod_ui_binexp_preinv.c nmod_poly/gcd.c
+nmod_poly/evaluate_nmod.c"
+# shellcheck disable=SC2086
+for f in $FLINTSRC_MODP; do
+  get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/$f" "src/flint-src-3.0.1/$f"
+done
 
 # ---------------------------------------------------------------- text extractions
 if command -v pdftotext >/dev/null 2>&1; then
