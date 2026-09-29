@@ -786,3 +786,220 @@ adf_linsol_get_dual(fmpz_mat_t y, const adf_linsol_t sol)
     mat_get(y, sol->y);
     return 1;
 }
+
+/* ---- slice 2 of S.1: value functions, kernel order, membership, balls on the right-hand side ---- */
+
+/* the value functions: kind, N, r, c and the five matrices (linsolve.h) */
+void
+adf_linsol_set(adf_linsol_t y, const adf_linsol_t x)
+{
+    if (y == x)
+        return;
+    y->kind = x->kind;
+    fmpz_set(y->N, x->N);
+    y->r = x->r;
+    y->c = x->c;
+    mat_get(y->G, x->G);
+    mat_get(y->E, x->E);
+    mat_get(y->V, x->V);
+    mat_get(y->x0, x->x0);
+    mat_get(y->y, x->y);
+}
+
+void
+adf_linsol_swap(adf_linsol_t x, adf_linsol_t y)
+{
+    adf_linsol_struct t;
+
+    if (x == y)
+        return;
+    t = *x;
+    *x = *y;
+    *y = t;
+}
+
+/* 1 if the two matrices have the same shape and entries */
+static int
+mat_equal(const fmpz_mat_t a, const fmpz_mat_t b)
+{
+    slong i;
+
+    if (a->r != b->r || a->c != b->c)
+        return 0;
+    for (i = 0; i < a->r; i++)
+        if (!_fmpz_vec_equal(a->rows[i], b->rows[i], a->c))
+            return 0;
+    return 1;
+}
+
+int
+adf_linsol_identical(const adf_linsol_t x, const adf_linsol_t y)
+{
+    return x->kind == y->kind && fmpz_equal(x->N, y->N) && x->r == y->r && x->c == y->c && mat_equal(x->G, y->G)
+           && mat_equal(x->E, y->E) && mat_equal(x->V, y->V) && mat_equal(x->x0, y->x0)
+           && mat_equal(x->y, y->y);
+}
+
+/* docs/proofs/solvers.md:551 (Lemma 2.3(3)): if (E4) holds, S(H) has (N/h_1) ... (N/h_k) elements; (E4)
+   holds for G by P2.6(1). h_i is the first non-zero entry of row i of G, and divides N ((E2)). */
+void
+adf_linsol_kernel_order(fmpz_t n, const adf_linsol_t sol)
+{
+    const fmpz_mat_struct * G = sol->G;
+    fmpz_t q, acc;
+    slong i;
+
+    fmpz_init(q);
+    fmpz_init_set_ui(acc, 1);
+    for (i = 0; i < G->r; i++)
+    {
+        slong j = first_nonzero(G->rows[i], G->c);
+
+        if (j == G->c)
+            continue;                       /* a zero row is not part of a canonical G */
+        fmpz_divexact(q, sol->N, G->rows[i] + j);
+        fmpz_mul(acc, acc, q);
+    }
+    fmpz_swap(n, acc);
+    fmpz_clear(q);
+    fmpz_clear(acc);
+}
+
+void
+adf_linsol_get_image_cert(fmpz_mat_t E, fmpz_mat_t V, const adf_linsol_t sol)
+{
+    mat_get(E, sol->E);
+    mat_get(V, sol->V);
+}
+
+/* docs/proofs/solvers.md:551 (Lemma 2.3(2)): v is in S(G) exactly when the greedy reduction by G brings it
+   to zero; x is a solution exactly when x - x0 is in S(G) (P2.8(3), solvers.md:789 to 830). */
+int
+adf_linsol_contains(const adf_linsol_t sol, const fmpz_mat_t x)
+{
+    fmpz * v;
+    slong j, c = sol->c;
+    int in;
+
+    if (sol->kind != ADF_LINSOL_COSET || x->r != c || x->c != 1)
+        return 0;
+    v = _fmpz_vec_init(c);
+    for (j = 0; j < c; j++)
+    {
+        fmpz_sub(v + j, fmpz_mat_entry(x, j, 0), fmpz_mat_entry(sol->x0, j, 0));
+        fmpz_mod(v + j, v + j, sol->N);
+    }
+    greedy_reduce(v, NULL, sol->G, 0, sol->N);
+    in = _fmpz_vec_is_zero(v, c);
+    _fmpz_vec_clear(v, c);
+    return in;
+}
+
+/* docs/proofs/solvers.md:841 (Proposition 2.9): with the canonical triples (a_i, h_i, d_i) of the balls,
+   N = lcm(h_i), A'[i][j] = (N/h_i) d_i A[i][j], b'_i = (N/h_i) a_i. Returns ADF_OK with A', b', N built,
+   ADF_DOMAIN if r is not the number of rows of A, ADF_UNSUPPORTED if some ball is exact. Nothing is built
+   on a status other than OK. */
+static int
+fball_system(fmpz_mat_t A2, fmpz_mat_t b2, fmpz_t N, const fmpz_mat_t A, const adf_fball_struct * b, slong r)
+{
+    slong i, j, c = A->c;
+    fmpz * a;
+    fmpz * h;
+    fmpz * d;
+    fmpz_t q;
+    int status = ADF_OK;
+
+    if (r != A->r)
+        return ADF_DOMAIN;
+    a = _fmpz_vec_init(r);
+    h = _fmpz_vec_init(r);
+    d = _fmpz_vec_init(r);
+    for (i = 0; i < r; i++)
+    {
+        adf_fball_get_fmpz3(a + i, h + i, d + i, b + i);
+        if (fmpz_is_zero(h + i))
+            status = ADF_UNSUPPORTED;
+    }
+    if (status == ADF_OK)
+    {
+        fmpz_init(q);
+        fmpz_one(N);
+        for (i = 0; i < r; i++)
+            fmpz_lcm(N, N, h + i);
+        fmpz_mat_init(A2, r, c);
+        fmpz_mat_init(b2, r, 1);
+        for (i = 0; i < r; i++)
+        {
+            fmpz_divexact(q, N, h + i);
+            fmpz_mul(fmpz_mat_entry(b2, i, 0), q, a + i);
+            fmpz_mul(q, q, d + i);
+            for (j = 0; j < c; j++)
+                fmpz_mul(fmpz_mat_entry(A2, i, j), q, fmpz_mat_entry(A, i, j));
+        }
+        fmpz_clear(q);
+    }
+    _fmpz_vec_clear(a, r);
+    _fmpz_vec_clear(h, r);
+    _fmpz_vec_clear(d, r);
+    return status;
+}
+
+int
+adf_linsolve_fball(adf_linsol_t sol, const fmpz_mat_t A, const adf_fball_struct * b, slong r)
+{
+    fmpz_mat_t A2, b2;
+    fmpz_t N;
+    int status;
+
+    fmpz_init(N);
+    status = fball_system(A2, b2, N, A, b, r);
+    if (status == ADF_OK)
+    {
+        status = adf_linsolve_mod(sol, A2, b2, N);          /* LIMIT, OK or NO_SOLUTION */
+        fmpz_mat_clear(A2);
+        fmpz_mat_clear(b2);
+    }
+    fmpz_clear(N);
+    return status;
+}
+
+int
+adf_linsol_verify_fball(const adf_linsol_t sol, const fmpz_mat_t A, const adf_fball_struct * b, slong r)
+{
+    fmpz_mat_t A2, b2;
+    fmpz_t N;
+    int ok = 0;
+
+    fmpz_init(N);
+    if (fball_system(A2, b2, N, A, b, r) == ADF_OK)
+    {
+        ok = adf_linsol_verify(sol, A2, b2, N);
+        fmpz_mat_clear(A2);
+        fmpz_mat_clear(b2);
+    }
+    fmpz_clear(N);
+    return ok;
+}
+
+/* docs/proofs/solvers.md:883 (Proposition 2.10): the j-th coordinates of the solutions form the ball
+   x0[j] + rho_j Zhat, rho_j = gcd(N, G[0][j], ..., G[k-1][j]). */
+int
+adf_linsol_get_fball(adf_fball_t x, const adf_linsol_t sol, slong j)
+{
+    fmpz_t rho, one;
+    slong i;
+    int status;
+
+    if (j < 0 || j >= sol->c)
+        return ADF_DOMAIN;
+    if (sol->kind != ADF_LINSOL_COSET)
+        return ADF_NO_SOLUTION;
+    fmpz_init_set(rho, sol->N);
+    fmpz_init_set_ui(one, 1);
+    for (i = 0; i < sol->G->r; i++)
+        fmpz_gcd(rho, rho, fmpz_mat_entry(sol->G, i, j));
+    status = adf_fball_set_fmpz3(x, fmpz_mat_entry(sol->x0, j, 0), rho, one);
+    fmpz_clear(rho);
+    fmpz_clear(one);
+    return status;
+}

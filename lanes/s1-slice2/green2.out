@@ -1,0 +1,22 @@
+set/swap/identical: 4455 systems, 0 failed; other rhs identical 1014, differing 3438; permuted equations identical 405, differing 4050
+ok   set_swap_identical_on_the_grid
+identical: 28 single changes, all seen
+ok   identical_sees_every_field
+grid mod 4: 4455 systems, contains yes 4455 no 63234, shifted 25533, kernel order > 1 in 2698; 0 bad
+ok   kernel_order_contains_image_cert_on_the_grid
+random small N: 1800 systems, contains yes 171290 no 405431, kernel order > 1 in 1007; 0 bad
+ok   kernel_order_contains_image_cert_random_small_moduli
+ok   kernel_order_named_values
+fball: 2815 systems (185 skipped for N^c > 6000); OK 1591, NO_SOLUTION 1224; lcm below the product in 807; non-canonical raw triples 2651; coordinate balls checked 2774; 0 bad
+ok   fball_against_exact_membership
+local/global: 569 systems, 431 with some local ball, 0 mixed; 0 bad
+ok   fball_local_and_global_backends_agree
+ok   fball_statuses
+ok   get_fball_statuses_and_named_values
+get_fball: 5655 systems, 6604 coordinate balls with solutions compared with the residues; 0 bad
+ok   get_fball_residues_on_the_grid
+ok   fball_large_operands_planted_solution
+ok   fball_limit_and_dimension
+vectors: 780 lines, OK 391, NO_SOLUTION 389, N above 64 bits 104, coordinate balls 759; 0 differ
+ok   vectors_s1_slice2_every_line
+13 tests, 30444 checks, 0 failed checks, 0 failed tests

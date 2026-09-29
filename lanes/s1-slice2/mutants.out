@@ -1,0 +1,33 @@
+MUTANT: lcm replaced by the product of the H_i
+FAIL fball_against_exact_membership (tests/test_linsolve_rest.c:941, 808 failed checks)
+FAIL fball_statuses (tests/test_linsolve_rest.c:1109, 1 failed checks)
+FAIL vectors_s1_slice2_every_line (tests/test_linsolve_rest.c:1638, 350 failed checks)
+13 tests, 30328 checks, 1159 failed checks, 3 failed tests
+
+MUTANT: the denominator d of a ball ignored
+FAIL fball_against_exact_membership (tests/test_linsolve_rest.c:941, 414 failed checks)
+FAIL fball_large_operands_planted_solution (tests/test_linsolve_rest.c:1403, 7 failed checks)
+FAIL vectors_s1_slice2_every_line (tests/test_linsolve_rest.c:1638, 350 failed checks)
+13 tests, 30328 checks, 771 failed checks, 3 failed tests
+
+MUTANT: rho_j without the gcd with N
+FAIL fball_against_exact_membership (tests/test_linsolve_rest.c:941, 100 failed checks)
+FAIL get_fball_residues_on_the_grid (tests/test_linsolve_rest.c:1360, 98 failed checks)
+FAIL vectors_s1_slice2_every_line (tests/test_linsolve_rest.c:1638, 34 failed checks)
+13 tests, 30328 checks, 232 failed checks, 3 failed tests
+
+MUTANT: contains without the reduction by G
+FAIL kernel_order_contains_image_cert_on_the_grid (tests/test_linsolve_rest.c:655, 975 failed checks)
+FAIL kernel_order_contains_image_cert_random_small_moduli (tests/test_linsolve_rest.c:677, 819 failed checks)
+FAIL fball_against_exact_membership (tests/test_linsolve_rest.c:941, 294 failed checks)
+FAIL fball_large_operands_planted_solution (tests/test_linsolve_rest.c:1403, 6 failed checks)
+13 tests, 30328 checks, 2094 failed checks, 4 failed tests
+
+MUTANT: kernel_order with g_i in place of N/g_i
+FAIL kernel_order_contains_image_cert_on_the_grid (tests/test_linsolve_rest.c:655, 1199 failed checks)
+FAIL kernel_order_contains_image_cert_random_small_moduli (tests/test_linsolve_rest.c:677, 936 failed checks)
+FAIL kernel_order_named_values (tests/test_linsolve_rest.c:703, 2 failed checks)
+13 tests, 30328 checks, 2137 failed checks, 3 failed tests
+
+scratch restored:
+13 tests, 30328 checks, 0 failed checks, 0 failed tests
