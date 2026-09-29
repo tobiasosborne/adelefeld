@@ -171,10 +171,13 @@ ADF_TEST(array_of_one_types)
    status codes that adf_resid_reconstruct now returns (the Julia test tests/julia/resid.jl reads them as numbers). */
 ADF_TEST(resid_function_signatures_and_status_codes)
 {
-    int (*rec)(adf_rat_t, adf_recon_cert_t, const adf_resid_t, const fmpz_t, const fmpz_t, slong) = adf_resid_reconstruct;
-    int (*chk)(const adf_recon_cert_t, const adf_resid_t, const fmpz_t) = adf_recon_cert_check;
+    int (*rec)(adf_rat_t, adf_recon_cert_t, const adf_resid_t, const fmpz_t, const fmpz_t, slong) = NULL;
+    int (*chk)(const adf_recon_cert_t, const adf_resid_t, const fmpz_t) = NULL;
 
-    ADF_CHECK(rec != NULL && chk != NULL);
+    /* The assignments are inside sizeof: the compiler checks the types and no symbol of the library is
+       referenced, because this file is also built without the library (lanes/m1-headers/check_headers.sh). */
+    ADF_CHECK(sizeof(rec = adf_resid_reconstruct) == sizeof(rec));
+    ADF_CHECK(sizeof(chk = adf_recon_cert_check) == sizeof(chk));
     ADF_CHECK(ADF_OK == 0 && ADF_NOT_DETERMINED == 1 && ADF_NOT_UNIQUE == 4 && ADF_NO_SOLUTION == 5);
     ADF_CHECK(sizeof(slong) == 8);              /* the limit is a C long on this platform: a Julia Clong */
 }
