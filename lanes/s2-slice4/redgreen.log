@@ -1,0 +1,33 @@
+# Red and green runs of lane s2-slice4 (tests/test_roots_bigp.c and the changed checks of test_roots_padic.c)
+
+## Red 1 (link error; the first test of the new file)
+make -j2 -s build/test_roots_bigp
+  -> the linker: undefined reference to `adf_roots_modp' and `adf_roots_modp_check' (10 lines shown by ld),
+     collect2: error: ld returned 1 exit status. No other compiler warning or error.
+
+## Red 2 (assertions): the routes and the check implemented in src/roots.c, ADF_UNSUPPORTED above the bound kept,
+## the bound set to 128 (bench/bench_roots_modp.c, see result.md)
+make -j2 -s build/test_roots_bigp && timeout 300 ./build/test_roots_bigp
+  ok   both_routes_give_the_same_roots_below_the_bound
+  FAIL planted_roots_above_the_bound_give_exactly_the_planted_list (81 failed checks: statuses 8, 8 = UNSUPPORTED)
+  FAIL statuses_above_the_bound (17 failed checks)
+  ok   a_wrong_candidate_list_is_refused
+  ok   the_zero_polynomial_modulo_p_aborts
+  5 tests, 905 checks, 98 failed checks, 2 failed tests
+(A first run of this stage hung: the test a_wrong_candidate_list_is_refused looked for a non-root of a polynomial
+ whose planted roots covered all residues of p = 3; the test was repaired to plant at most p - 1 roots.)
+
+## Green 1: padic_search takes the roots of each class from adf_roots_modp (route AUTO); ADF_UNSUPPORTED removed
+## from adf_roots_padic_core and the refusal above the bound removed from adf_rootlist_verify_complete
+timeout 300 ./build/test_roots_bigp
+  ok (all five tests); 5 tests, 825 checks, 0 failed checks, 0 failed tests; 0.9 s
+
+## Red 3 (assertions): tests/test_roots_padic.c unchanged, against the code of green 1
+timeout 300 ./build/test_roots_padic
+  FAIL tests/test_roots_padic.c:1309, 1310, 1311 (want 8 = UNSUPPORTED; got 0 = OK with 61 allocations, 10 = LIMIT,
+  0 = OK), and after them the checks that compare L with its snapshot (L was written by the OK run)
+
+## Green 2: the three UNSUPPORTED checks replaced by LIMIT above the old bound (2^20 + 7 and 2^64 - 59), DOMAIN
+## at 2^64 - 59, the pinned value of the bound changed from 1048576 to 128, two successful runs above the bound
+timeout 300 ./build/test_roots_padic
+  8 tests, 55135 checks, 0 failed checks, 0 failed tests

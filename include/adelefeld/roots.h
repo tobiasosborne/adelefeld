@@ -1,6 +1,6 @@
 /* adelefeld/roots.h: roots of an integer polynomial at a place, with certificates (milestone S, S.2,
    slice 1: the type adf_rootlist and the seed function; slice 2: all roots at a prime; slice 3: the
-   real roots).
+   real roots; slice 4: the roots modulo p for every prime of a place).
 
    Contract: docs/api-s.md sections 1 and 4 (decisions S-D10, S-D13, S-D14, S-D15, S-D16, S-D17, S-D18
    of docs/SPEC.md 15.3); docs/proofs/solvers.md Lemma 3.1 (line 1013), Definition and Proposition 3.2
@@ -9,18 +9,18 @@
    (line 1449), Proposition 3.12 (line 1487), Proposition 3.13 (line 1524); for the real place
    Proposition 3.8 (line 1313), Proposition 3.9 (line 1346), Algorithm RR and Proposition 3.10 (line
    1399), decisions S-D11 and S-D19; docs/conventions.md 2.3, 3.2, 4.1, 4.3, 7. Implemented in
-   src/roots.c; tests tests/test_roots_seed.c (slice 1), tests/test_roots_padic.c (slice 2) and
-   tests/test_roots_real.c (slice 3); reference proto/solvers_checks.py, functions squarefree_part
-   (line 2377), normalise_g (1701), root_cert_ok (1631), newton_step (1639), padic_roots (1649),
-   rootlist_padic (1707), seed_root (1721), padic_verify_entries (1754), padic_verify_complete (1776),
-   real_entry_ok (2499), real_verify_entries (2509), real_verify_complete (2524), real_roots_ref (2555),
-   rr_finish (2594).
+   src/roots.c; tests tests/test_roots_seed.c (slice 1), tests/test_roots_padic.c (slice 2),
+   tests/test_roots_real.c (slice 3) and tests/test_roots_bigp.c (slice 4); reference
+   proto/solvers_checks.py, functions squarefree_part (line 2377), normalise_g (1701), root_cert_ok
+   (1631), newton_step (1639), padic_roots (1649), rootlist_padic (1707), seed_root (1721),
+   padic_verify_entries (1754), padic_verify_complete (1776), real_entry_ok (2499), real_verify_entries
+   (2509), real_verify_complete (2524), real_roots_ref (2555), rr_finish (2594).
 
    Slice 1 declares the type, its life cycle without set, swap and identical, the seed function, the
    entries verifier and the accessors. Slice 2 adds adf_roots_padic, adf_roots_padic_partial,
    adf_rootlist_get_unresolved and adf_rootlist_verify_complete. Slice 3 adds adf_roots_real,
-   adf_rootlist_get_arb, and the real place of the predicate and of the two verifiers. Not declared
-   yet: set, swap, identical.
+   adf_rootlist_get_arb, and the real place of the predicate and of the two verifiers. Slice 4 declares
+   nothing new: it removes the bound on p of the search (S-D10). Not declared yet: set, swap, identical.
 
    The normalised polynomial (solvers L3.1(3), decision S-D13). For f in Z[X], f not 0, g* is
    f / gcd(f, f') scaled to a primitive integer polynomial with positive leading coefficient; for f
@@ -79,13 +79,13 @@
    type allows no other. The functions that compute make no primality test of their own. The predicate
    adf_rootlist_is_canonical and the two verifiers are called on values of unknown origin: they repeat
    the test of adf_place_prime and return 0 for a place whose word is not a prime
-   (docs/reviews/s2/review.md, finding 1). The seed function and the entries
-   verifier need no roots modulo p and no bound on p (decision S-D10: every prime of a place); the search for all
-   roots of slice 2 finds the roots modulo p by evaluation at every residue and has the TEMPORARY bound
-   ADF_ROOTS_P_EVAL_MAX (below). A place not made by the functions of place.h is outside the contract
-   (conventions 7, line 1014). A prime of more than one word cannot be passed through adf_place_t, and
-   decision S-D10 (as decided on 2026-09-29, docs/SPEC.md 15.3) means the primes of a place: the place
-   type is not widened.
+   (docs/reviews/s2/review.md, finding 1). The seed function and the entries verifier need no roots
+   modulo p and no bound on p (decision S-D10: every prime of a place); the search for all roots needs
+   the roots modulo p and has no bound on p either: it finds them by evaluation at every residue for
+   p <= ADF_ROOTS_P_EVAL_MAX and by a degree above it (adf_roots_padic_partial). A place not made by the
+   functions of place.h is outside the contract (conventions 7, line 1014). A prime of more than one
+   word cannot be passed through adf_place_t, and decision S-D10 (as decided on 2026-09-29,
+   docs/SPEC.md 15.3) means the primes of a place: the place type is not widened.
 
    Limits (decision S-D18, as reworded on 2026-09-29: ADF_LIMIT comes before any power of p is formed
    and before any allocation whose size grows with the limit; a limit that follows from the arguments
@@ -135,11 +135,13 @@ extern "C" {
 /* S-D18: the bound of 2 K bits(p), 2^24 bits (2 MiB for one integer). */
 #define ADF_ROOTS_BITS_MAX 16777216
 
-/* S-D10, TEMPORARY: the largest prime for which adf_roots_padic and adf_roots_padic_partial find the
-   roots modulo p by evaluation at every residue (solvers P3.7(1)), 2^20. Above it they return
-   ADF_UNSUPPORTED. The bound is a property of this slice, not of the library: it goes away with the
-   slice that adds the route of solvers P3.7(2) for larger primes. */
-#define ADF_ROOTS_P_EVAL_MAX 1048576
+/* S-D10: the point where the search of the roots modulo p changes its method, 2^7. For p <= 2^7 the
+   roots modulo p are found by evaluation at every residue (solvers P3.7(1)); above it by the degree of
+   gcd(h, X^p - X) (P3.7(2); adf_roots_padic_partial below). It is not a limit: every prime of a place
+   is accepted. Measured by bench/bench_roots_modp.c (lanes/s2-slice4/result.md, a shared machine): the
+   geometric mean over degrees 2, 8, 32 and two families of polynomials of the ratio of the times of the
+   two methods crosses 1 between p = 127 (0.94) and p = 251 (1.82). A policy, as in S-D18. */
+#define ADF_ROOTS_P_EVAL_MAX 128
 
 /* The largest precision of adf_roots_real, 2^21 bits (about 630000 decimal digits). Above it the
    function returns ADF_LIMIT before any allocation. The bound keeps the balls of FLINT, whose accuracy
@@ -249,14 +251,20 @@ int adf_root_padic_from_seed(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t 
    (P3.5(6)); the depth v_p(R) + 1 of P3.6 suffices when an identity u g + v g' = R with u, v in Z[X]
    and R != 0 is known.
 
-   The roots modulo p are found by evaluation of the current polynomial of Y and its derivative
-   modulo p at every residue 0, ..., p - 1 (solvers P3.7(1)); no routine of FLINT for roots or
-   factorisation modulo p is called.
+   The roots modulo p of the current polynomial h of Y (not 0 modulo p: its content at p is removed, P3.4)
+   are found for p <= ADF_ROOTS_P_EVAL_MAX by evaluation at every residue 0, ..., p - 1 (solvers P3.7(1)),
+   and above it by the degree (P3.7(2)): d = gcd(h, X^p - X) modulo p, X^p formed modulo h by powering;
+   the candidates are the roots of d given by nmod_poly_roots of FLINT (Rabin's Las Vegas splitting with
+   a generator of fixed seed, refs/src/flint-src-3.0.1/nmod_poly_factor/roots.c:148 to 204); every
+   candidate is tested by evaluation of h modulo p, and the list is used only if its entries are
+   distinct residues, all roots of h, and their number is deg d; then it is complete (P3.7(2)). deg d
+   comes from FLINT's powering and gcd (nmod_poly_powmod_ui_binexp, nmod_poly_gcd; deterministic),
+   which are trusted as FLINT's count is trusted at the real place (S-D11); the root finder is not. A list
+   refused by this test is a defect of FLINT or of the library, not a property of f: the function
+   aborts (decision S-D20). The derivative is evaluated at each root found.
 
    Statuses, in the order in which they are decided:
      ADF_DOMAIN (edit E-C1): f = 0, p is the real place, prec_p < 1 or depth < 0; L untouched.
-     ADF_UNSUPPORTED (edit E-C1; S-D10), TEMPORARY: p > ADF_ROOTS_P_EVAL_MAX; L untouched. This
-       status goes away with the slice that adds the route of solvers P3.7(2).
      ADF_LIMIT: 2 prec_p bits(p) > ADF_ROOTS_BITS_MAX, decided before any allocation; L untouched.
      ADF_LIMIT: during the search, an overflow of slong in an exponent, a root with
        2 K bits(p) > ADF_ROOTS_BITS_MAX for K = max(prec_p, s + 1), or a class of exponent e with
@@ -266,13 +274,16 @@ int adf_root_padic_from_seed(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t 
    Aliasing: L is an output of its own type; f is an input and may be L->g: L is written only after
    the result has been computed. Allocates: g*, the polynomials of the open classes, powers of p up to
    p^(2 K) for each root, and the arrays of L. Cost (P3.5(7)): one gcd of f and f'; for each class
-   opened one Taylor shift and p evaluations of a polynomial and its derivative modulo p; for each root
-   O(log(K)) Newton steps modulo p^(2 K) at most. */
+   opened one Taylor shift and the roots modulo p of a polynomial h of degree n = deg g: for
+   p <= ADF_ROOTS_P_EVAL_MAX p evaluations of h, above it O(log p) products modulo h, one gcd, the
+   splitting of FLINT on d (a randomised method: its time is an expected time, and the source states no
+   bound) and deg d evaluations of h; then one evaluation of h' at each root; for each root O(log(K))
+   Newton steps modulo p^(2 K) at most. */
 int adf_roots_padic_partial(adf_rootlist_t L, const fmpz_poly_t f, adf_place_t p, slong prec_p, slong depth);
 
 /* adf_roots_padic(L, f, p, prec_p, depth): the list of all roots of f in Z_p, as the partial function
    above when its list is complete (nu = 0, complete = 1; the list may be empty: no root in Z_p is an
-   answer, not NO_SOLUTION). Statuses: ADF_DOMAIN, ADF_UNSUPPORTED, ADF_LIMIT as the partial function;
+   answer, not NO_SOLUTION). Statuses: ADF_DOMAIN, ADF_LIMIT as the partial function;
    ADF_NOT_DETERMINED: a class is unresolved at this depth (a larger depth may resolve it; api-s.md
    4); L untouched (CV-06). ADF_OK: L written, complete = 1, nu = 0. Aliasing, allocation and cost as
    the partial function. */
@@ -312,8 +323,11 @@ int adf_rootlist_verify_entries(const adf_rootlist_t L, const fmpz_poly_t f);
    one root ball of the rerun (P3.2(4)); else 0. Then the roots of f in Z_p are exactly the roots of
    the listed balls, one in each (P3.13(2)). Nothing of the list is trusted beyond what is checked: n
    and complete are compared with the rerun. It returns 0 when depth < 0, when the depth does not
-   suffice for the rerun (no claim about L then), when the rerun would return ADF_UNSUPPORTED
-   (p > ADF_ROOTS_P_EVAL_MAX, TEMPORARY) or ADF_LIMIT, and for every SEED list (P3.13(3)).
+   suffice for the rerun (no claim about L then), when the rerun would return ADF_LIMIT, and for every
+   SEED list (P3.13(3)). The rerun finds the roots modulo p as the search does (by the degree above
+   ADF_ROOTS_P_EVAL_MAX), so above that bound it relies on the test of the candidates of FLINT
+   described at adf_roots_padic_partial, not on an evaluation at every residue; if that test refuses
+   a list of FLINT, the rerun aborts as the search does (S-D20: a defect, not a property of L).
    At the real place (solvers P3.13(5), solvers.md:1545 to 1547; decision S-D11): 1 only if
    adf_rootlist_verify_entries(L, f) = 1 and n and count both equal the number of distinct real roots
    of g*, the normalised polynomial of f, recounted here from f with fmpz_poly_num_real_roots
