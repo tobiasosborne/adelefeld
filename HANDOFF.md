@@ -24,16 +24,24 @@ lanes, `space-bunny-alpha` as much as possible, codex for every review (until it
 it read 36%), Fable exceptionally for a task that needs significant cognition, and work as long as Claude is
 under or on pace. Memory `orchestration-model-tiers`.
 
-**RUNNING at 02:36 on 2026-09-29 (two jobs; look at them first).**
+**RUNNING at 03:24 on 2026-09-29 (two jobs; look at them first).**
 
 | Job | Model | Where | State |
 |---|---|---|---|
 | the mutation sweep (adf-xf4) | none: a script of the orchestrator, `lanes/m1-sweep/sweep.sh` | `../adelefeld-wt/m1-sweep` (branch `lane/m1-sweep`, from `27a8ea0`) | RESTARTED at 02:03 with the judge `make check INV=1` and `--san`: in the release build the lines `ADF_INV_...` are compiled away, and all 34 survivors of `cap.c` and `rat.c` in the first run were such lines (first run: `lanes/m1-sweep/release-run/`). 14 files, small first, `--limit 200`, seed 20260928, 100 minutes at most for a file; about 30 s for a mutant, about 12 hours. Table: `lanes/m1-sweep/sweep.md`; logs `lanes/m1-sweep/<file>.log`. Stop: `touch lanes/m1-sweep/STOP` there. It resumes where it stopped when started again |
-| s-design-repair | Claude `sonnet-medium` subagent, since 02:36 | a worktree under `.claude/worktrees/` from `62f15fe`; brief `lanes/s-design-repair/brief.md` | answers every finding of the review of the design; then a closure check by codex `gpt-6-sol` (brief not written; pattern `lanes/m1-closure/COMMON.md`) |
+| s-closure | codex gpt-6-sol xhigh, since 03:24 | `../adelefeld-wt/s-closure`; brief `lanes/s-closure/brief.md` | closure check of the design review: judges every repair and reviews the statements that are new in draft 2; writes `docs/reviews/s-design/closure.md` |
 
-**QUOTA at 01:56: Claude weekly 90% used, 0.4 points behind pace; Fable weekly 90%, 0.4 behind** (reset
-2026-09-29 18:00); codex 42% (limit of TJO 50%). The Claude windows are ON pace: no further Claude subagent
+**QUOTA at 03:20: Claude weekly 91% used, 0.3 points behind pace; Fable weekly 90%, 1.3 behind** (reset
+2026-09-29 18:00); codex 46% (limit of TJO 50%). The Claude windows are ON pace: no further Claude subagent
 is launched until the meter shows them behind again or the window resets. Codex and the script go on.
+
+**The design of milestone S is DRAFT 2** (`da222e9`; lane s-design-repair, Sonnet medium, 45 minutes, 542k
+tokens; `lanes/s-design-repair/report.md`): every finding of the review answered, none contested; 34 checks
+(were 25), both mutants of the reviewer killed (rerun by the orchestrator); decisions S-D16 to S-D19 added
+(19 decisions wait for TJO in `docs/api-s.md` section 5); table 3 of `docs/sources.md` corrected. New
+statements that no reviewer had seen: Propositions 1.11, 3.6, 3.12, 3.13 and new claims of P3.2, P3.10; the
+closure check reviews them. No implementation lane starts before the closure says `MAY BE IMPLEMENTED` and
+TJO has taken the decisions.
 
 **The review of the design of milestone S is landed** (`1207ddc`; codex gpt-6-astra, 38 minutes, 4 points of
 the codex week; `docs/reviews/s-design/review.md`): 28 VALID, 3 MINOR, 2 INVALID, verdict NOT READY. The
