@@ -128,6 +128,11 @@ get "https://kconrad.math.uconn.edu/blurbs/gradnumthy/hensel.pdf" src/conrad-hen
 for m in fmpz_mat fmpz_mod_mat nmod_mat padic_poly fmpz_poly arb_poly arb_calc arb_fmpz_poly; do
   get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/$m.rst" "src/flint-3.0.1/$m.rst"
 done
+# FLINT 3.0.1 documentation (tag v3.0.1): polynomials over a prime modulus, X^p, gcd, root finding
+# (decision S-D10: roots modulo a prime of any size, certified by deg gcd(g, X^p - X)).
+for m in fmpz_mod_poly fmpz_mod_poly_factor fmpz_mod nmod_poly nmod_poly_factor; do
+  get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/$m.rst" "src/flint-3.0.1/$m.rst"
+done
 # FLINT 3.0.1 C sources (tag v3.0.1): what the functions of S.1, S.2 and S.3 actually do.
 FLINTSRC="fmpq/reconstruct_fmpz.c fmpq/reconstruct_fmpz_2.c fmpq/reconstruct_fmpz_2_naive.c
 fmpq/get_cfrac.c fmpq/get_cfrac_helpers.c fmpq/cfrac_bound.c
