@@ -159,6 +159,38 @@ for f in $FLINTSRC; do
   get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/$f" "src/flint-src-3.0.1/$f"
 done
 
+# ================================================================ Real roots with a bounded cost (adf-8di)
+# Lane d-realroots, docs/design/real-roots.md. FLINT 3.0.1 C sources (tag v3.0.1): the root finder behind
+# arb_fmpz_poly_complex_roots (Durand-Kerner, its start values, its validation), the routines a real
+# isolation in exact arithmetic would call (Taylor shift, scaling by a power of 2, exact evaluation), and
+# the isolation and bisection of arb_calc.
+FLINTSRC_RR="acb_poly/find_roots.c acb_poly/refine_roots_durand_kerner.c acb_poly/validate_roots.c
+acb_poly/validate_real_roots.c acb_poly/root_bound_fujiwara.c
+fmpz_poly/taylor_shift.c fmpz_poly/taylor_shift_horner.c fmpz_poly/taylor_shift_divconquer.c
+fmpz_poly/scale_2exp.c fmpz_poly/signature.c fmpz_poly/evaluate_fmpz.c fmpz_poly/evaluate_horner_fmpz.c
+fmpz_poly/evaluate_divconquer_fmpz.c fmpz_poly/evaluate_fmpq.c fmpz_poly/evaluate_horner_fmpq.c
+fmpz_poly/evaluate_divconquer_fmpq.c
+arb_calc/isolate_roots.c arb_calc/refine_root_bisect.c arb_calc/refine_root_newton.c"
+# shellcheck disable=SC2086
+for f in $FLINTSRC_RR; do
+  get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/$f" "src/flint-src-3.0.1/$f"
+done
+get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/acb_poly.rst" src/flint-3.0.1/acb_poly.rst
+# Descartes' rule of signs, the one-circle and two-circle theorems (as cases of Obreshkoff's theorem), the
+# bound of the root separation, the size of the subdivision tree: M. Sagraloff, K. Mehlhorn, Computing real
+# roots of real polynomials, arXiv:1308.4088v2 (TeX source).
+# Refinement of an isolating interval: M. Kerber, M. Sagraloff, Root refinement for real polynomials using
+# quadratic interval refinement, arXiv:1104.1362v3 (TeX source).
+arxiv_tex() { # arxiv_tex ID KEY -- the e-print of arXiv (a gzipped tar), unpacked next to itself
+  get "https://arxiv.org/e-print/$1" "src/$2/$1.tar.gz"
+  if [ ! -d "src/$2/tex" ] || [ "$FORCE" = 1 ]; then
+    mkdir -p "src/$2/tex"
+    tar -xzf "src/$2/$1.tar.gz" -C "src/$2/tex"
+  fi
+}
+arxiv_tex 1308.4088v2 sagraloff-mehlhorn
+arxiv_tex 1104.1362v3 kerber-sagraloff
+
 # ---------------------------------------------------------------- text extractions
 if command -v pdftotext >/dev/null 2>&1; then
   # the trailing slash matters: refs/src is a symlink on some worktrees, and find does not
