@@ -1,0 +1,51 @@
+# Lane i-slice2: red and green runs (clock times from `date`)
+
+## 2026-09-29 23:54  red 0: the precision limit (orchestrator's addition), before any change of src/idele.c
+cc -Iinclude lanes/i-slice2/limit_repro.c build/libadelefeld.a -lflint -lgmp -lm -o build/limit_repro
+(ulimit -v 4000000; timeout 60 ./build/limit_repro)
+  -> "Segmentation fault", exit 139 (adf_idele_set_rat of 1/3 at prec WORD_MAX)
+
+## 23:55  red 1: the two new test files against the library of slice 1 (headers written, no code)
+make -j2 build/test_idclass build/test_idele_maps
+  -> link errors only: undefined adf_idclass_* (14 names) and adf_idele_mul_rat, _norm, _valuation_at,
+     _abs_at, _abs_inf (after one repair of the test file itself: a missing <flint/ulong_extras.h>, an unused
+     helper, a stray label; compile errors of the test, not of the library)
+
+## 23:56  green 0: ADF_IDELE_PREC_MAX in set_rat, mul, inv (src/idele.c), kernel moved to src/idele_internal.h
+./build/limit_repro -> "adf_idele_set_rat(1/3, WORD_MAX) = 10 (ADF_LIMIT = 10)", exit 0
+./build/test_idele -> 12 tests, 8613 checks, 0 failed (slice 1 unchanged)
+
+## 23:57  red 2: stubs (plausible outputs, wrong values: mul_rat copies x, valuation 0, abs 1, norm |X|,
+##        class = (|X|, u), class mul/inv copy x, is_canonical and identical return 1)
+./build/test_idele_maps -> 10 tests, 10377 checks, 3868 failed checks, 10 failed tests (every test)
+./build/test_idclass    -> 14 tests, 9738 checks, 3952 failed checks, 12 failed tests
+  (passing: layout_is_64_bytes, fixed by the header; init_is_the_class_of_one, whose stub init set <1;[1]>)
+  Before these stubs a first set of do-nothing stubs crashed the two programs (an uninitialised slong in a
+  test, repaired: the test now reads v only after the check; and read_class aborting on is_canonical = 0).
+  A test that passed on the first stubs, class_of_q_times_x_is_the_class_of_x (both t were 0 and overlapped),
+  was given checks of canonical form, enclosure and the unit against enumeration; it fails on the second stubs.
+
+## 23:58  green 1 (first try): the code of src/idclass.c and of the five functions in src/idele.c
+./build/test_idclass -> 14 tests, 9738 checks, 0 failed
+./build/test_idele   -> 12 tests, 8613 checks, 0 failed
+./build/test_idele_maps -> 10 tests, 10377 checks, 3 failed checks in 2 tests. Both were defects of the test:
+  1. norm_of_the_idele_of_a_rational_is_one asserted OK at every prec. At prec 0 (taken as 2) the norm of the
+     idele of 5/8 (and of -1000001/7) is NOT_DETERMINED: set_rat gives [1/2 +- (2^29 + 1) 2^-31] (the mag radius
+     is a little above 1/4, mag.rst:15), so the norm ends are RD_2(3/16 * 8/5) = 1/4 and RU_2(1 * 8/5) = 2,
+     e(hi) - e(lo) = 3 > 2 (B1). The contract promises OK only when hi < 2^(p-1) lo (E6). The test now requires
+     OK for prec >= 4, where the promise holds for the idele of any rational (bound written in the test), allows
+     NOT_DETERMINED with the output untouched below, and runs prec 0 to 5 one by one (6 NOT_DETERMINED seen).
+     The Python reference gives OK here because it models the mag radius as ru(., 30), exactly 1/4.
+  2. mul_rat_huge_operands built q = -(3^2000 + 1)/2^5000, which is not in lowest terms (3^2000 + 1 is even):
+     a non-canonical adf_rat, outside the contract; the product had a non-canonical content. Now 3^2000 + 2,
+     with a check that q is canonical.
+## 00:01  green 1
+./build/test_idele_maps -> 10 tests, 10466 checks, 0 failed ("norm of the idele of a rational: 78 exact 1,
+  6 NOT_DETERMINED (p < 4)"; vectors 1097 lines, 2154 places, 161 NOT_DETERMINED, 28 exact results)
+./build/test_idclass -> 14 tests, 9738 checks, 0 failed; ./build/test_idele -> 12 tests, 8613 checks, 0 failed
+
+## 00:05  refactor after the fault run: adf_idclass_set_idele computed its own copy of the norm, so fault G2 (in
+##        adf_idele_norm) was not seen by test_idclass; it now calls adf_idele_norm. Both tests green again
+##        (9738 and 10466 checks, 0 failed); G2 is now caught by both programs.
+## 00:22-00:33  final runs after the last edits (comment wrapping): check-all, SAN=1, CC=clang, check_headers,
+##        INV=1 builds of the three idele tests: all pass (lanes/i-slice2/result.md)

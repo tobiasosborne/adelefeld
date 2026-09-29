@@ -1,0 +1,46 @@
+== G1: 1 changed line(s)
+<         if (arf_sgn(arb_midref(x->inf)) < 0)          /* the sign of every point of X (E1) */
+>         if (arf_sgn(arb_midref(x->inf)) < 0 && 0)          /* the sign of every point of X (E1) */
+   test_idclass: exit 1; 14 tests, 9738 checks, 323 failed checks, 6 failed tests
+      FAIL class_map_hand_cases_and_the_sign_on_the_unit (tests/test_idclass.c:514, 5 failed checks)
+      FAIL class_map_units_against_enumeration (tests/test_idclass.c:567, 128 failed checks)
+      FAIL class_of_q_times_x_is_the_class_of_x (tests/test_idclass.c:611, 77 failed checks)
+      FAIL class_map_not_determined_and_prec (tests/test_idclass.c:679, 1 failed checks)
+      FAIL class_map_huge_operands (tests/test_idclass.c:718, 1 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idclass.c:934, 111 failed checks)
+   test_idele_maps: exit 0; 10 tests, 10466 checks, 0 failed checks, 0 failed tests
+== G2: 1 changed line(s)
+<     adf_idele_ends_scale(lo, hi, lx, hx, fmpq_denref(x->r), fmpq_numref(x->r), p);
+>     adf_idele_ends_scale(lo, hi, lx, hx, fmpq_numref(x->r), fmpq_denref(x->r), p);
+   test_idclass: exit 1; 14 tests, 9738 checks, 1002 failed checks, 7 failed tests
+      FAIL class_map_hand_cases_and_the_sign_on_the_unit (tests/test_idclass.c:514, 5 failed checks)
+      FAIL class_map_units_against_enumeration (tests/test_idclass.c:567, 260 failed checks)
+      FAIL class_of_q_times_x_is_the_class_of_x (tests/test_idclass.c:611, 286 failed checks)
+      FAIL class_map_not_determined_and_prec (tests/test_idclass.c:679, 1 failed checks)
+      FAIL class_map_huge_operands (tests/test_idclass.c:718, 1 failed checks)
+      FAIL prec_above_the_limit_is_LIMIT_and_untouched (tests/test_idclass.c:890, 3 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idclass.c:934, 446 failed checks)
+   test_idele_maps: exit 1; 10 tests, 10462 checks, 642 failed checks, 4 failed tests
+      FAIL norm_of_the_idele_of_a_rational_is_one (tests/test_idele_maps.c:572, 150 failed checks)
+      FAIL norm_hand_cases_and_not_determined (tests/test_idele_maps.c:644, 6 failed checks)
+      FAIL prec_above_the_limit_is_LIMIT_and_untouched (tests/test_idele_maps.c:811, 1 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idele_maps.c:877, 485 failed checks)
+== G3: 1 changed line(s)
+<     *v = a - b;              /* no overflow: 0 <= a, b < 2^62 (each at most the bit length of an fmpz) */
+>     *v = a - 0 * b;              /* no overflow: 0 <= a, b < 2^62 (each at most the bit length of an fmpz) */
+   test_idclass: exit 0; 14 tests, 9738 checks, 0 failed checks, 0 failed tests
+   test_idele_maps: exit 1; 10 tests, 10466 checks, 737 failed checks, 4 failed tests
+      FAIL valuations_of_the_idele_of_minus_6_over_35 (tests/test_idele_maps.c:388, 4 failed checks)
+      FAIL valuation_by_divisibility_and_the_product_formula (tests/test_idele_maps.c:427, 360 failed checks)
+      FAIL valuations_of_huge_contents (tests/test_idele_maps.c:490, 4 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idele_maps.c:877, 369 failed checks)
+== G4: 1 changed line(s)
+<     arf_div_fmpz(lo, t, b, p, ARF_RND_FLOOR);
+>     arf_div_fmpz(lo, t, b, p, ARF_RND_CEIL);
+   test_idclass: exit 1; 14 tests, 9738 checks, 190 failed checks, 2 failed tests
+      FAIL class_of_q_times_x_is_the_class_of_x (tests/test_idclass.c:611, 17 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idclass.c:934, 173 failed checks)
+   test_idele_maps: exit 1; 10 tests, 10466 checks, 317 failed checks, 3 failed tests
+      FAIL norm_hand_cases_and_not_determined (tests/test_idele_maps.c:644, 2 failed checks)
+      FAIL mul_rat_hand_cases_statuses_and_aliasing (tests/test_idele_maps.c:693, 2 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idele_maps.c:877, 313 failed checks)

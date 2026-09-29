@@ -1,0 +1,27 @@
+note: clang++ skipped (absent, or it finds no C++ standard library)
+1. single-header compilations (C11: gcc clang; C++17: g++): 57, failures: 0
+2. header-inline functions: 36, exported as T with ADF_INLINES_C: all
+3. declared functions per header:
+     41 include/adelefeld/adele.h
+      3 include/adelefeld/common.h
+     23 include/adelefeld/dump.h
+     34 include/adelefeld/fball.h
+     15 include/adelefeld/idclass.h
+     20 include/adelefeld/idele.h
+     28 include/adelefeld/lball.h
+     21 include/adelefeld/linsolve.h
+     19 include/adelefeld/modctx.h
+      8 include/adelefeld/place.h
+     24 include/adelefeld/rat.h
+      2 include/adelefeld/recon.h
+     25 include/adelefeld/resid.h
+     21 include/adelefeld/roots.h
+     26 include/adelefeld/scaled.h
+      1 include/adelefeld/status.h
+     14 include/adelefeld/text.h
+     20 include/adelefeld/ucoset.h
+   total: 345
+   variadic: 0; names without adf_: 0
+4. clang test_headers: 8 tests, 58 checks, 0 failed checks, 0 failed tests
+4. clang test_abi: 3 tests, 24 checks, 0 failed checks, 0 failed tests
+check_headers: passed
