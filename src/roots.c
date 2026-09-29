@@ -1413,8 +1413,9 @@ adf_rootlist_get_unresolved(fmpz_t a, slong * e, const adf_rootlist_t L, slong i
    real_verify_entries (2509), real_verify_complete (2524). FLINT routines used (refs/src/flint-3.0.1):
      fmpz_poly_num_real_roots, fmpz_poly.rst:3265 to 3268: the number of real roots of a squarefree polynomial;
        trusted (S-D11), and called on the squarefree g only (solvers P3.9(1));
-     arb_fmpz_poly_complex_roots, arb_fmpz_poly.rst:66 to 79: enclosures of all roots, the real ones first with
-       imaginary part exactly zero; "must be squarefree"; not trusted: every enclosure is tested;
+     the candidates come from src/roots_real.c (lane r-slice1: Descartes bisection and refinement in exact
+       integer arithmetic, docs/design/real-roots.md); until then they came from arb_fmpz_poly_complex_roots
+       (arb_fmpz_poly.rst:66 to 79). Either way they are not trusted: every candidate is tested;
      arb_is_zero, arb.rst:593; arb_is_finite, arb.rst:606; arb_is_exact, arb.rst:611; arb_bits, arb.rst:516;
      arb_get_interval_fmpz_2exp, arb.rst:461 to 477: the exact interval [a, b] 2^exp of a ball;
      arb_rel_accuracy_bits, arb.rst:500 to 509;
@@ -1427,6 +1428,8 @@ adf_rootlist_get_unresolved(fmpz_t a, slong * e, const adf_rootlist_t L, slong i
 
 ADF_ROOTS_HIDDEN int adf_roots_real_finish(adf_rootlist_t L, const fmpz_poly_t f, slong count, arb_srcptr in,
                                            slong m, slong prec);
+/* the candidates of step 4 (src/roots_real.c, lane r-slice1) */
+ADF_ROOTS_HIDDEN int adf_roots_real_isolate(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec);
 
 /* 1 if the ball x is of admissible size (roots.h, "Real balls"): finite, a midpoint mantissa of at most
    ADF_ROOTS_BITS_MAX bits, a midpoint and a radius that are 0 or strictly between 2^-M and 2^M in absolute
@@ -1665,9 +1668,8 @@ int
 adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec)
 {
     fmpz_poly_t g;
-    acb_ptr z = NULL;
     arb_ptr cand = NULL, out = NULL;
-    slong d, i, m = 0, count = 0;
+    slong d, m = 0, count = 0;
     int reduced, st = ADF_OK;
 
     /* step 1, and the limit of the precision before any allocation */
@@ -1685,17 +1687,18 @@ adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec)
     {
         /* step 3: the count of P3.9(1), on the squarefree g */
         count = fmpz_poly_num_real_roots(g);
-        /* step 4: the enclosures of P3.9(2) with imaginary part exactly zero, in the order given */
-        z = _acb_vec_init(d);
+        /* step 4: the candidates of the exact isolation and refinement (src/roots_real.c, lane r-slice1;
+           docs/design/real-roots.md, Proposition R5), in increasing order; ADF_LIMIT for a cell below
+           2^(2 - ADF_ROOTS_BITS_MAX) */
         cand = _arb_vec_init(d);
-        arb_fmpz_poly_complex_roots(z, g, 0, prec);
-        for (i = 0; i < d; i++)
-            if (arb_is_zero(acb_imagref(z + i)))
-                arb_set(cand + m++, acb_realref(z + i));
-        if (m > 0)
-            out = _arb_vec_init(m);
-        /* steps 5 to 7 */
-        st = real_finish(out, g, count, cand, m, prec);
+        st = adf_roots_real_isolate(cand, &m, g, prec);
+        /* steps 5 to 7, unchanged: the certificate does not trust the candidates */
+        if (st == ADF_OK)
+        {
+            if (m > 0)
+                out = _arb_vec_init(m);
+            st = real_finish(out, g, count, cand, m, prec);
+        }
     }
     if (st == ADF_OK)
         real_write(L, g, reduced, &out, m, count);   /* L written only now: f may be L->g */
@@ -1703,8 +1706,6 @@ adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec)
         _arb_vec_clear(out, m);
     if (cand != NULL)
         _arb_vec_clear(cand, d);
-    if (z != NULL)
-        _acb_vec_clear(z, d);
     fmpz_poly_clear(g);
     return st;
 }

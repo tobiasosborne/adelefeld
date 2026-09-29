@@ -1,0 +1,13 @@
+# A pair of complex roots close to the real axis (the Descartes tree must descend to separate it from the axis)
+# probe: build/red/cplx.c (scratch, not kept): 2^(2e) (3X - 1)^2 + 1 (roots 1/3 +- i 2^-e / 3, no real root), and
+# the same times X - 3; adf_roots_real at prec 53; wall time of one call; 2026-09-29 ~23:58, shared machine
+# new = this lane; old = src/roots.c of f0a23fc (arb_fmpz_poly_complex_roots), linked into a scratch library
+new e 100    alone: OK n 0 0.0001 s   times X - 3: OK n 1 0.0002 s
+new e 1000   alone: OK n 0 0.0010 s   times X - 3: OK n 1 0.0019 s
+new e 3000   alone: OK n 0 0.0039 s   times X - 3: OK n 1 0.0062 s
+new e 10000  alone: OK n 0 0.0195 s   times X - 3: OK n 1 0.0331 s
+old e 100    alone: OK n 0 0.0006 s   times X - 3: OK n 1 0.0009 s
+old e 1000   alone: OK n 0 1.7322 s   times X - 3: OK n 1 2.9602 s
+old e 3000   (not run to the end: the first probe with real part 1 ran out of its 100 s timeout at e = 3000)
+# the same with real part 1 (a dyadic point): new 0.0003 s (alone) and 0.0043 s (times X - 3) at e = 10000;
+# old 1.69 s and 2.80 s at e = 1000, no answer within 100 s at e = 3000

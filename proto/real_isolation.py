@@ -18,9 +18,10 @@ Sources (CLAUDE.md rule 3), under refs/src/:
        :278 to 298   Algorithm EQIR (exact quadratic interval refinement); :338 to 341 how N changes.
 
 The design, in the words of the design file:
-  Algorithm D   isolation: design section 4.1, Proposition R2.
-  Algorithm F   refinement: design section 4.4, Proposition R4.
-  Algorithm RR2 the whole: design section 4.5, Proposition R5.
+  Algorithm D   isolation: design section 4, Propositions R2 and R3.
+  Algorithm F   refinement: design section 5, Proposition R4 (steps G, stop, Q, B; lane r-slice1 added step G,
+                the static floor and the removal of the cap on N, as in src/roots_real.c).
+  Algorithm RR2 the whole: design section 5, Proposition R5.
 
 What is exact here: everything. No floating point number occurs. A point is c 2^k with integers c and k; the
 cell (c, k) is the open interval (c 2^k, (c + 1) 2^k).
@@ -238,10 +239,50 @@ def accuracy(c, k):
     return abs(2 * c + 1).bit_length() - 2
 
 
+def gallop(g, dg, c, k, anchor_hi, sign_at):
+    """Step G (design R4): the cell (c, k) holds exactly one root r; p, its left end (anchor_hi False) or its right
+    end, is 0 or a root of g. P(t): sign g(p + sigma 2^t) = v0 holds exactly for 2^t < |r - p|. Returns
+    ("point", m, t) for the root m 2^t, or ("cell", c', T, far_is_old) with T = floor(log2 |r - p|)."""
+    sigma = -1 if anchor_hi else 1
+    pc = c + 1 if anchor_hi else c                                 # p = pc 2^k
+    v0 = sgn(ev(g, pc, k))
+    if v0 == 0:
+        v0 = sigma * sgn(ev(dg, pc, k))
+
+    def at(t):                                                     # the point p + sigma 2^t as (m, t)
+        return (pc << (k - t)) + sigma
+
+    hi_t, lo_t, step = k, None, 1
+    while lo_t is None:                                            # galloping: t = k - 1, k - 2, k - 4, ...
+        t = min(k - step, hi_t - 1)
+        s = sign_at(at(t), t)
+        if s == 0:
+            return ("point", at(t), t)
+        if s == v0:
+            lo_t = t
+        else:
+            hi_t = t
+        step *= 2
+    while hi_t - lo_t > 1:                                         # bisection of the exponent
+        mid = (lo_t + hi_t) // 2
+        s = sign_at(at(mid), mid)
+        if s == 0:
+            return ("point", at(mid), mid)
+        if s == v0:
+            lo_t = mid
+        else:
+            hi_t = mid
+    T = lo_t
+    m = pc << (k - T)
+    return ("cell", m + 1 if sigma > 0 else m - 2, T, T == k - 1, v0)
+
+
 def refine(g, dg, c, k, floor, need, method, stats):
-    """The cell (c, k) holds exactly one root of the squarefree g and no root of g lies at an interior point
-    other than this one. Returns (lo, hi), rationals, with lo = hi a root, or lo < hi, g(lo) g(hi) < 0,
-    lo > floor (if floor is not None), and accuracy >= need; [lo, hi] lies in the closed cell."""
+    """Algorithm F of the design (as src/roots_real.c refine_cell). The cell (c, k) holds exactly one root of the
+    squarefree g and no other root in its interior. Returns (lo, hi), rationals, with lo = hi a root, or lo < hi,
+    g(lo) g(hi) < 0, lo > floor (if floor is not None), and accuracy >= need; [lo, hi] lies in the closed cell.
+    floor is the right end of the previous item as isolated (static), so the sequence of cells does not depend
+    on need nor on floor (design R4(4)). method "qir" uses step Q, "bisect" does not; both use step G."""
     def sign_at(m, e):
         stats["evaluations"] += 1
         return sgn(ev(g, m, e))
@@ -251,13 +292,29 @@ def refine(g, dg, c, k, floor, need, method, stats):
     if not lo_clean:                                               # the sign of g right of lo
         s_lo = sgn(ev(dg, c, k))
     hi_clean = sign_at(c + 1, k) != 0
-    j = 2                                                          # N = 2^j of [KS]:281, N = 4 at the start
+    j = 2                                                          # N = 2^j, N = 4 at the start ([KS]:337)
     while True:
+        if c in (0, -1) or not lo_clean or not hi_clean:          # step G: an anchor, 0 or a root at an end
+            anchor_hi = (c == -1) if c in (0, -1) else lo_clean
+            res = gallop(g, dg, c, k, anchor_hi, sign_at)
+            if res[0] == "point":
+                return value(res[1], res[2]), value(res[1], res[2])
+            _, c2, T, far_is_old, v0 = res
+            if not anchor_hi:
+                lo_clean, s_lo = True, v0
+                if not far_is_old:
+                    hi_clean = True
+            else:
+                hi_clean = True
+                if not far_is_old:
+                    lo_clean, s_lo = True, -v0
+            c, k = c2, T
+            continue
         apart = floor is None or value(c, k) > floor
-        if lo_clean and hi_clean and apart and accuracy(c, k) >= need:
+        if apart and accuracy(c, k) >= need:
             return value(c, k), value(c + 1, k)
-        if method == "qir" and lo_clean and hi_clean and apart and j > 1:
-            jj = min(j, max(need - accuracy(c, k), 2))             # not finer than the accuracy asks
+        if method == "qir" and j > 1:
+            jj = j                                                 # no cap: the sequence must not depend on need
             e = k - jj
             a = c << jj
             fa, fb = ev(g, a, e), ev(g, a + (1 << jj), e)          # the same scaling: the ratio is exact
@@ -335,7 +392,7 @@ def real_roots(f, prec, refine="qir", count=None):
         else:
             ball = globals()["refine"](g, dg, c, k, floor, need, refine, stats)
         balls.append(ball)
-        floor = ball[1]
+        floor = x if kind == 0 else value(c + 1, k)                 # static: the item as isolated (design R4(4))
     # the final tests, on the balls that are output (solvers.md 3.10, steps 5 to 7)
     ok = all(entry_ok(g, lo, hi) for lo, hi in balls)
     ok = ok and all(balls[i][1] < balls[i + 1][0] for i in range(len(balls) - 1))

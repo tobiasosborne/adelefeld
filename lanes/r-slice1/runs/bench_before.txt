@@ -1,0 +1,16 @@
+# bench/bench_roots_real.c mode adf, the library at f0a23fc (old route: arb_fmpz_poly_complex_roots)
+# 2026-09-29 22:50, load average 1.65; taskset -c 2; binary build/bench_roots_real_before
+# command: timeout 60 taskset -c 2 ./build/bench_roots_real_before adf FAMILY e d prec   (timeout 170 for the last two)
+family e d prec   seconds      status balls largest_mantissa_bits
+pair  600 0 2     0.054629     0 2 16384
+pair 1200 0 2    10.869216     0 2 1048576
+close 600 0 2     0.031883     0 2 16384
+close 1200 0 2    9.383373     0 2 1048576
+far 100000 0 2    0.002302     0 2 1024
+deg 300 2 2       0.001534     0 2 2048
+deg 300 4 2       0.104273     0 4 16384
+small 0 20 53     0.003980     0 20 128
+pair 600 0 2000   0.031746     0 2 16384
+pair 1500 0 2   111.535905     0 2 8388608
+deg 300 8 2     119.676823     0 8 524288
+# test_roots_real at f0a23fc: 8 tests, 10666 checks, 0 failed; elapsed 24.34 s

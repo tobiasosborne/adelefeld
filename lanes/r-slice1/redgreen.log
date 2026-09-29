@@ -1,0 +1,55 @@
+# lane r-slice1: red and green runs (times from `date`, machine shared, load about 1.5)
+
+## red 1 (2026-09-29 ~23:05): tests/test_roots_real_isolate.c against the library at f0a23fc
+timeout 300 make -j2 build/test_roots_real_isolate
+  -> tests/test_roots_real_isolate.c:523: undefined reference to `adf_roots_real_isolate'  (link error, first test
+     of the file)
+
+## red 2: the same tests against the OLD route, with a stub of the hidden function (build/red/stub.c: returns 1,
+## m = -1), so that the assertions of the other tests run
+cc ... tests/test_roots_real_isolate.c build/red/stub.c ... -o build/red/test_isolate_old
+timeout 170 ./build/red/test_isolate_old   -> exit 124 (killed), output:
+  FAIL isolate_on_real_cases (69 failed checks)                      [the stub]
+  ok   real_cases_end_to_end (90 runs true)
+  FAIL slow_family...: check failed: t < bound | pair e = 1500 at prec 2: 116.129 s, the bound is 10.0 s
+  (then killed at the 170 s timeout, inside pair e = 3000)
+
+## red 3: the same, with the three timed tests skipped (build/red/test_isolate_noslow.c, a scratch copy)
+timeout 170 ./build/red/test_isolate_noslow  -> exit 1
+  11 tests, 16678 checks, 87 failed checks, 3 failed tests
+  FAIL isolate_on_real_cases (69)            [stub]
+  FAIL wilkinson_20_and_mignotte (2)         Wilkinson 20 at prec 53 and 300: the integer roots are not all exact
+  FAIL dyadic_roots_and_zero_are_exact_balls (16)   e.g. "dyadic roots at prec 2: the dyadic root 1 2^-1 is not
+                                             an exact ball" (1/2, -3/4, 5/8, 2^-30, -7 2^40 at every prec; 12345
+                                             at prec 53)
+  ok   no_root_degree_one_multiple_and_negative_lead, touching_cells_and_nesting (98 nested pairs),
+       random_planted_and_random_polynomials (330 calls), limit_for_roots_outside_the_admissible_size
+       (these hold for the old route too: they are characterisation tests of the contract)
+
+## green 1 (23:10): src/roots_real.c with Descartes isolation and refinement by plain bisection; roots.c call site
+timeout 60 stdbuf -oL ./build/test_roots_real_isolate  -> exit 124: every test ok up to
+  limit_for_roots_outside_the_admissible_size, which did not end: (3X - 1)(2^(M+10) X - 1) refined the cell
+  (0, 2^-2) of the tiny root by about 2^24 bisections (the accuracy stays -1 while a cell touches 0).
+  Repair: step G of Algorithm F (gallop): the exponent of |r| by galloping and bisection of the exponent.
+
+## green 2 (23:15): with step G
+timeout 100 stdbuf -oL ./build/test_roots_real_isolate -> exit 124: every test ok (pair e = 10000: 0.18 s; close
+  e = 10000: 0.27 s) except high_precision_with_a_bound_on_the_time, which did not end (red for plain bisection).
+  Measured with bench/bench_roots_real.c (adf sqrt2, taskset -c 2): prec 4096: 0.0174 s; 16384: 0.434 s;
+  65536: 6.50 s: a factor 15 for a factor 4 of prec, quadratic; extrapolated to prec 2^21: about 6600 s.
+  The existing test tests/test_roots_real.c asks X^2 - 2 at ADF_ROOTS_REAL_PREC_MAX = 2^21, so with plain
+  bisection it would run about two hours. Decision (2) of the brief (plain bisection in this slice, QIR later
+  "if the benchmark asks for it"): the benchmark asks for it. Step Q (Eqir of [KS]) added.
+
+## green 3 (23:20): with step Q
+timeout 170 ./build/test_roots_real_isolate -> 11 tests, 19164 checks, 0 failed checks, 0 failed tests (11.9 s);
+  high precision: the slowest call 0.81 s (X^2 - 2 or X^5 - X - 1 at 2^21 bits).
+timeout 170 ./build/test_roots_real        -> 8 tests, 10666 checks, 0 failed checks, 0 failed tests (2.57 s;
+  24.34 s before the change); planted dyadic roots now 5 of 6 exact (1 of 6 before).
+
+## red 4 / green 4 (23:30): a polynomial without real roots whose complex roots are tiny
+test added: 2^(2M + 2) X^2 + 1 must give OK with n = 0 (the old code: LIMIT, because the root bound K < KMIN)
+build/red/test_prev (the previous roots_real.c, scratch copy build/red/roots_real_prev.c):
+  FAIL ...:1142: limit_for_roots_outside_the_admissible_size: check failed: st == ADF_OK && L->n == 0 |
+  2^(2M + 2) X^2 + 1: status 10;  11 tests, 19165 checks, 1 failed checks
+repair: K = max(K, KMIN) for the root cell. green: 11 tests, 19165 checks, 0 failed checks, 0 failed tests
