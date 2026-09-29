@@ -178,6 +178,11 @@ char * adf_cadele_get_str(size_t * len, const adf_cadele_t x, slong digits);
 ADF_INLINE size_t adf_sizeof_text_limits(void) { return sizeof(adf_text_limits_t); }
 ADF_INLINE size_t adf_alignof_text_limits(void) { return ADF_ALIGNOF(adf_text_limits_t); }
 
+/* The same for the kind written by adf_text_classify (conventions 9.7, 12.4): an enum, 4 bytes on the
+   platform of conventions 12.10; a binding allocates it inline and compares these two numbers. */
+ADF_INLINE size_t adf_sizeof_text_kind(void) { return sizeof(adf_text_kind); }
+ADF_INLINE size_t adf_alignof_text_kind(void) { return ADF_ALIGNOF(adf_text_kind); }
+
 #ifdef __cplusplus
 }
 #endif

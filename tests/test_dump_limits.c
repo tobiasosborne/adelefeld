@@ -58,9 +58,12 @@
 
 #include "test_runner.h"
 
-/* The bound of M1-D9.  The header does not define it (HEADER-FINDING, lane report), so the test
-   writes the value the specification fixes. */
+/* The bound of M1-D9, written here as the specification fixes it (2^20).  This comment once said
+   that the header does not define the bound (HEADER-FINDING of the lane report of m1-dump); it
+   does now, as ADF_DUMP_QCLASS_EXP_MAX in adelefeld/dump.h:72, and the assertion below keeps the
+   test's own copy and the header from drifting apart. */
 #define QCLASS_EXP_MAX (UWORD(1) << 20)
+_Static_assert(ADF_DUMP_QCLASS_EXP_MAX == (1 << 20), "the header and the specification differ");
 
 /* 40 hexadecimal digits, the width M1-D9 asks a test for; larger than 2^64, so a comparison
    that reads the exponent into a machine word would give a different answer. */
@@ -222,7 +225,11 @@ all_inspect(const char * s, size_t len, const adf_text_limits_t * lim, const cha
 /* The four typed loaders that can carry a context occurrence, each over a value that is not the
    one of the text (conventions 4.3: the output is untouched on every status other than ADF_OK).
    The context of the text is built first; -1 is returned when the text is refused, so that the
-   test can claim that no binding was available. */
+   test can claim that no binding was available.  The loaders are run in that case too: a refused
+   text is refused by the stages 1 to 5 of conventions 8.5, before a binding is looked at, so
+   every loader must give the status of the text (the status `st` for the loader of the body
+   `kind`, ADF_PARSE for the others) whatever context it is handed.  They are handed a small
+   unrelated context (2 blocks) that does not match the text. */
 static int
 all_load(const char * s, size_t len, const adf_text_limits_t * lim, const char * kind, int st)
 {
@@ -238,8 +245,18 @@ all_load(const char * s, size_t len, const adf_text_limits_t * lim, const char *
     adf_cadele_struct ccopy;
     int r;
 
+    int refused = 0;
+
     if (adf_modctx_new_from_dump(&c, s, len, 0, lim) != ADF_OK)
-        return -1;
+    {
+        static const char small[] = "adf1 Q modctx 6 2 2 3";
+
+        c = NULL;
+        refused = 1;
+        ADF_CHECK(adf_modctx_new_from_dump(&c, small, strlen(small), 0, NULL) == ADF_OK);
+        if (c == NULL)
+            return -1;
+    }
 
     memset(&fcopy, 0, sizeof(fcopy));
     adf_fball_init(f);
@@ -295,7 +312,7 @@ all_load(const char * s, size_t len, const adf_text_limits_t * lim, const char *
     fmpz_clear(ucopy);
     adf_scaled_clear(sc);
     adf_modctx_free(c);
-    return st;
+    return refused ? -1 : st;
 }
 
 /* ------------------------------------------------------------------ R1: the cap of M1-D5 */
