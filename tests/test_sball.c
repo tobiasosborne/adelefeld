@@ -18,6 +18,8 @@
 
    What would make a case fail is stated at each test. */
 
+#define _POSIX_C_SOURCE 200809L
+
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +29,16 @@
 #include <flint/mag.h>
 #include "support/jsonl.h"
 #include "test_runner.h"
+
+#ifdef ADF_CHECK_INVARIANTS
+#include <signal.h>
+#include <sys/resource.h>
+#ifdef __linux__
+#include <sys/prctl.h>
+#endif
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
 
 /* ------------------------------------------------------------------------------------------------- helpers */
 
@@ -1793,6 +1805,330 @@ ADF_TEST(limit_names_the_first_failing_prime)
     adf_sball_clear(s);
     adf_sball_clear(one);
 }
+
+/* -------------------------------------------------------------------------- the combined status (finding R3) */
+
+/* conventions 3.3: the combined status of one call is the maximum of the statuses of its places (numeric order of
+   3.1: UNSUPPORTED 8 < LIMIT 10), the reported place the first place, in the canonical order, with that status. A
+   complex component is UNSUPPORTED at the archimedean place; the primes are still inspected, and a LIMIT at a prime
+   wins. The check of the places (DOMAIN) is a precondition and comes first. What would make a case fail: returning
+   UNSUPPORTED at once for the complex tag (the old code: where = inf, LIMIT never seen); reporting the wrong prime;
+   writing the output. */
+ADF_TEST(complex_tag_does_not_mask_limit_at_a_prime)
+{
+    const long E = ADF_LBALL_EXP_MAX;   /* 2^60: admitted; the product has valuation 2E, beyond the bound */
+    adf_sball_t x, y, z, s, one;
+    adf_lball_struct loc[3], loc1[3];
+    adf_place_t where, mark = place_of(1000003);
+    const char * ops[3] = {"add", "sub", "mul"};
+    int st, i, o;
+
+    adf_sball_init(x);
+    adf_sball_init(y);
+    adf_sball_init(z);
+    adf_sball_init(s);
+    adf_sball_init(one);
+    for (i = 0; i < 3; i++)
+    {
+        adf_lball_init(&loc[i]);
+        adf_lball_init(&loc1[i]);
+    }
+    sb_sentinel(s);
+
+    /* the reviewer's input: {inf, 2}, COMPLEX, inf = 0, local component the exact 2^E; multiplied by itself */
+    lb_fields_si(&loc[0], 2, 1, 1, 1, E, 0);
+    ADF_CHECK(adf_lball_is_canonical(&loc[0]));
+    sb_poke(x, ADF_ARCH_COMPLEX, NULL, loc, 1);
+    sb_poke(y, ADF_ARCH_COMPLEX, NULL, loc, 1);
+    ADF_CHECK(adf_sball_is_canonical(x) && adf_sball_is_canonical(y));
+    sb_sentinel(z);
+    where = mark;
+    st = adf_sball_mul(z, &where, x, y, 53);
+    ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_prime_get(where) == 2 && adf_sball_identical(z, s),
+                  "reviewer input: status %s", adf_status_str(st));
+    ADF_CHECK(adf_sball_mul(z, NULL, x, y, 53) == ADF_LIMIT);
+    adf_sball_set(one, x);
+    where = mark;
+    st = adf_sball_mul(one, &where, one, one, 53);   /* all three arguments the same object */
+    ADF_CHECK(st == ADF_LIMIT && adf_place_prime_get(where) == 2 && adf_sball_identical(one, x));
+
+    /* the same without the prime failing: UNSUPPORTED at the archimedean place (the existing rule) */
+    lb_exact_of(&loc[0], 2, 1, 1);
+    sb_poke(x, ADF_ARCH_COMPLEX, NULL, loc, 1);
+    where = mark;
+    sb_sentinel(z);
+    st = adf_sball_mul(z, &where, x, x, 53);
+    ADF_CHECK(st == ADF_UNSUPPORTED && adf_place_is_archimedean(where) && adf_sball_identical(z, s));
+
+    /* add and sub: exact 5^(2^30) against exact 1 at 5 and 7 needs the power; COMPLEX tag, primes {3, 5, 7};
+       LIMIT at 5 and 7: the first, 5, is reported; only at 7: 7 */
+    lb_exact_of(&loc[0], 3, 1, 1);
+    lb_fields_si(&loc[1], 5, 1, 1, 1, 1L << 30, 0);
+    lb_fields_si(&loc[2], 7, 1, 1, 1, 1L << 30, 0);
+    lb_exact_of(&loc1[0], 3, 1, 1);
+    lb_exact_of(&loc1[1], 5, 1, 1);
+    lb_exact_of(&loc1[2], 7, 1, 1);
+    sb_poke(x, ADF_ARCH_COMPLEX, NULL, loc, 3);
+    sb_poke(y, ADF_ARCH_COMPLEX, NULL, loc1, 3);
+    ADF_CHECK(adf_sball_is_canonical(x) && adf_sball_is_canonical(y));
+    for (o = 0; o < 2; o++)
+    {
+        sb_sentinel(z);
+        where = mark;
+        st = call_op(ops[o], z, &where, x, y, 53);
+        ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_prime_get(where) == 5 && adf_sball_identical(z, s), "%s: %s",
+                      ops[o], adf_status_str(st));
+        /* mirrored: the operands exchanged */
+        where = mark;
+        st = call_op(ops[o], z, &where, y, x, 53);
+        ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_prime_get(where) == 5 && adf_sball_identical(z, s),
+                      "%s swapped: %s", ops[o], adf_status_str(st));
+    }
+    lb_exact_of(&loc[1], 5, 1, 1);
+    sb_poke(x, ADF_ARCH_COMPLEX, NULL, loc, 3);
+    where = mark;
+    sb_sentinel(z);
+    st = adf_sball_add(z, &where, x, y, 53);
+    ADF_CHECK(st == ADF_LIMIT && adf_place_prime_get(where) == 7 && adf_sball_identical(z, s));
+
+    /* neg: COMPLEX tag with 1 + O(3^(2^40)) at 3 (its negation needs the residue): LIMIT at 3, not UNSUPPORTED */
+    lb_fields_si(&loc[0], 3, 0, 1, 1, 0, 1L << 40);
+    ADF_CHECK(adf_lball_is_canonical(&loc[0]));
+    lb_exact_of(&loc[1], 5, 1, 1);
+    lb_exact_of(&loc[2], 7, 1, 1);
+    sb_poke(x, ADF_ARCH_COMPLEX, NULL, loc, 3);
+    where = mark;
+    sb_sentinel(z);
+    st = adf_sball_neg(z, &where, x);
+    ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_prime_get(where) == 3 && adf_sball_identical(z, s), "neg: %s",
+                  adf_status_str(st));
+    /* neg, no failing prime: UNSUPPORTED at inf */
+    lb_ball_of(&loc[0], 3, 1, 1, 3);
+    sb_poke(x, ADF_ARCH_COMPLEX, NULL, loc, 3);
+    where = mark;
+    st = adf_sball_neg(z, &where, x);
+    ADF_CHECK(st == ADF_UNSUPPORTED && adf_place_is_archimedean(where) && adf_sball_identical(z, s));
+
+    /* DOMAIN (the places differ) comes before both: COMPLEX tags, different primes, and a LIMIT at the common
+       prime 2 */
+    lb_fields_si(&loc[0], 2, 1, 1, 1, E, 0);
+    lb_exact_of(&loc[1], 3, 1, 1);
+    lb_fields_si(&loc1[0], 2, 1, 1, 1, E, 0);
+    lb_exact_of(&loc1[1], 5, 1, 1);
+    sb_poke(x, ADF_ARCH_COMPLEX, NULL, loc, 2);
+    sb_poke(y, ADF_ARCH_COMPLEX, NULL, loc1, 2);
+    where = mark;
+    sb_sentinel(z);
+    st = adf_sball_mul(z, &where, x, y, 53);
+    ADF_CHECK(st == ADF_DOMAIN && adf_place_prime_get(where) == 3 && adf_sball_identical(z, s));
+
+    for (i = 0; i < 3; i++)
+    {
+        adf_lball_clear(&loc[i]);
+        adf_lball_clear(&loc1[i]);
+    }
+    adf_sball_clear(x);
+    adf_sball_clear(y);
+    adf_sball_clear(z);
+    adf_sball_clear(s);
+    adf_sball_clear(one);
+}
+
+/* ------------------------------------------------------------------------------ the precision limit (finding R5) */
+
+/* Every function of sball.h that takes a prec: ADF_REAL_PREC_MAX works on a small input, above it (also LONG_MAX) the
+   status is ADF_LIMIT, decided from prec alone: before the check of the places (DOMAIN) and before the complex tag
+   (UNSUPPORTED); the output untouched; where = the archimedean place. What would make a case fail: an allocation at
+   LONG_MAX, a status other than LIMIT, a written output, a check of the places or of the tag first. */
+ADF_TEST(prec_limit_of_the_ring_operations)
+{
+    const slong precs[4] = {ADF_REAL_PREC_MAX + 1, ADF_REAL_PREC_MAX + 2, LONG_MAX, LONG_MAX - 1};
+    const ulong p2[1] = {2}, p3[1] = {3};
+    const char * ops[3] = {"add", "sub", "mul"};
+    adf_sball_t x, y, w, c, z, s;
+    adf_place_t where, mark = place_of(1000003);
+    int o, k, st;
+
+    adf_sball_init(x);
+    adf_sball_init(y);
+    adf_sball_init(w);
+    adf_sball_init(c);
+    adf_sball_init(z);
+    adf_sball_init(s);
+    sb_ones(x, ADF_ARCH_REAL, p2, 1);
+    sb_ones(w, ADF_ARCH_REAL, p3, 1);        /* other places than x */
+    sb_ones(c, ADF_ARCH_COMPLEX, p2, 1);     /* the complex tag */
+    sb_sentinel(s);
+    ADF_CHECK(adf_sball_is_canonical(c));
+    adf_sball_set(y, x);
+    for (o = 0; o < 3; o++)
+    {
+        /* the limit itself works, on the exact 1 */
+        sb_sentinel(z);
+        where = mark;
+        st = call_op(ops[o], z, &where, x, y, ADF_REAL_PREC_MAX);
+        ADF_CHECK_MSG(st == ADF_OK && adf_place_equal(where, mark) && adf_sball_is_canonical(z),
+                      "%s at the limit: %s", ops[o], adf_status_str(st));
+        for (k = 0; k < 4; k++)
+        {
+            sb_sentinel(z);
+            where = mark;
+            st = call_op(ops[o], z, &where, x, y, precs[k]);
+            ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_is_archimedean(where) && adf_sball_identical(z, s),
+                          "%s prec %ld: status %s", ops[o], (long) precs[k], adf_status_str(st));
+            ADF_CHECK(call_op(ops[o], z, NULL, x, y, precs[k]) == ADF_LIMIT);
+            /* before DOMAIN of the places, before UNSUPPORTED of the complex tag */
+            where = mark;
+            st = call_op(ops[o], z, &where, x, w, precs[k]);
+            ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_is_archimedean(where) && adf_sball_identical(z, s),
+                          "%s prec %ld, other places: status %s", ops[o], (long) precs[k], adf_status_str(st));
+            where = mark;
+            st = call_op(ops[o], z, &where, c, c, precs[k]);
+            ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_is_archimedean(where) && adf_sball_identical(z, s),
+                          "%s prec %ld, complex: status %s", ops[o], (long) precs[k], adf_status_str(st));
+        }
+    }
+    /* a value with no archimedean place: the place named is still the archimedean one */
+    {
+        adf_sball_t n0;
+        adf_sball_init(n0);
+        sb_ones(n0, ADF_ARCH_NONE, p2, 1);
+        where = mark;
+        sb_sentinel(z);
+        st = adf_sball_mul(z, &where, n0, n0, LONG_MAX);
+        ADF_CHECK(st == ADF_LIMIT && adf_place_is_archimedean(where) && adf_sball_identical(z, s));
+        adf_sball_clear(n0);
+    }
+    adf_sball_clear(x);
+    adf_sball_clear(y);
+    adf_sball_clear(w);
+    adf_sball_clear(c);
+    adf_sball_clear(z);
+    adf_sball_clear(s);
+}
+
+#ifdef ADF_CHECK_INVARIANTS
+/* ------------------------------------------------------------------------------------ the entry check (finding R4) */
+
+/* conventions 4.4: with -DADF_CHECK_INVARIANTS every public function checks the predicate of each input on entry and
+   calls flint_abort. The six paths that had no check: arch, num_places, identical (both arguments), the self branch of
+   set, swap (both arguments), the self branch of swap. Each case runs in a child process: it must end by SIGABRT
+   with a line on stderr that names the function and the type; the canonical control must return normally and write
+   nothing. The OUTPUT argument of set is overwritten and is not checked (as adf_lball_set): IC_SET_OUT returns. The
+   forged value is an initialised empty partial ball with arch = 9. */
+
+enum { IC_ARCH, IC_NUM, IC_IDENT_X, IC_IDENT_Y, IC_SET_SELF, IC_SET, IC_SWAP_X, IC_SWAP_Y, IC_SWAP_SELF, IC_ADD,
+       IC_SET_OUT, IC_COUNT };
+
+static const char * const ic_name[IC_COUNT] = {"adf_sball_arch", "adf_sball_num_places", "adf_sball_identical",
+    "adf_sball_identical", "adf_sball_set", "adf_sball_set", "adf_sball_swap", "adf_sball_swap", "adf_sball_swap",
+    "adf_sball_add", "adf_sball_set"};
+
+static void
+ic_child(int which, int forged)
+{
+    adf_sball_t x, y;
+    adf_sball_init(x);
+    adf_sball_init(y);
+    if (forged && (which == IC_ARCH || which == IC_NUM || which == IC_IDENT_X || which == IC_SET_SELF ||
+                   which == IC_SET || which == IC_SWAP_X || which == IC_SWAP_SELF || which == IC_ADD))
+        x->arch = 9;
+    if (forged && (which == IC_IDENT_Y || which == IC_SWAP_Y))
+        y->arch = 9;
+    if (which == IC_SET_OUT)
+        y->arch = 9;   /* forged output: not read, no check */
+    switch (which)
+    {
+    case IC_ARCH: (void) adf_sball_arch(x); break;
+    case IC_NUM: (void) adf_sball_num_places(x); break;
+    case IC_IDENT_X:
+    case IC_IDENT_Y: (void) adf_sball_identical(x, y); break;
+    case IC_SET_SELF: adf_sball_set(x, x); break;
+    case IC_SET:
+    case IC_SET_OUT: adf_sball_set(y, x); break;
+    case IC_SWAP_X:
+    case IC_SWAP_Y: adf_sball_swap(x, y); break;
+    case IC_SWAP_SELF: adf_sball_swap(x, x); break;
+    case IC_ADD: (void) adf_sball_add(y, NULL, x, x, 53); break;
+    default: break;
+    }
+    x->arch = ADF_ARCH_NONE;
+    y->arch = ADF_ARCH_NONE;
+    adf_sball_clear(x);
+    adf_sball_clear(y);
+    flint_cleanup();
+}
+
+/* Runs the child; returns the signal (0 if it exited) and copies stderr to err. */
+static int
+ic_run(int which, int forged, int * exit_code, char * err, size_t cap)
+{
+    int fd[2], st = 0;
+    size_t n = 0;
+    pid_t pid;
+    struct rlimit nocore = {0, 0};
+    fflush(stdout);
+    fflush(stderr);
+    if (pipe(fd) != 0)
+        abort();
+    pid = fork();
+    if (pid < 0)
+        abort();
+    if (pid == 0)
+    {
+        setrlimit(RLIMIT_CORE, &nocore);
+#ifdef __linux__
+        prctl(PR_SET_DUMPABLE, 0);
+#endif
+        close(fd[0]);
+        dup2(fd[1], 2);
+        close(fd[1]);
+        ic_child(which, forged);
+        _exit(0);
+    }
+    close(fd[1]);
+    while (n < cap - 1)
+    {
+        ssize_t r = read(fd[0], err + n, cap - 1 - n);
+        if (r <= 0)
+            break;
+        n += (size_t) r;
+    }
+    err[n] = 0;
+    {
+        char junk[256];
+        while (read(fd[0], junk, sizeof junk) > 0)
+            ;
+    }
+    close(fd[0]);
+    if (waitpid(pid, &st, 0) != pid)
+        abort();
+    *exit_code = WIFEXITED(st) ? WEXITSTATUS(st) : -1;
+    return WIFSIGNALED(st) ? WTERMSIG(st) : 0;
+}
+
+ADF_TEST(entry_check_of_every_public_function)
+{
+    int i, code;
+    char err[512];
+    for (i = 0; i < IC_COUNT; i++)
+    {
+        int sig;
+        /* the canonical control (and, for IC_SET_OUT, the forged output) returns normally and silently */
+        sig = ic_run(i, 0, &code, err, sizeof err);
+        ADF_CHECK_MSG(sig == 0 && code == 0 && err[0] == 0, "%s (case %d): control: signal %d, exit %d, stderr '%s'",
+                      ic_name[i], i, sig, code, err);
+        if (i == IC_SET_OUT)
+            continue;
+        sig = ic_run(i, 1, &code, err, sizeof err);
+        ADF_CHECK_MSG(sig == SIGABRT, "%s (case %d): a forged argument did not abort (signal %d, exit %d)", ic_name[i],
+                      i, sig, code);
+        ADF_CHECK_MSG(strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL &&
+                      strstr(err, "adf_sball") != NULL,
+                      "%s (case %d): stderr '%s'", ic_name[i], i, err);
+    }
+}
+#endif /* ADF_CHECK_INVARIANTS */
 
 /* --------------------------------------------------------------------------- the example of the brief, and use */
 

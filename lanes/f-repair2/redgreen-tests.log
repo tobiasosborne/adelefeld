@@ -1,0 +1,30 @@
+Red and green runs of the new tests (lane f-repair2). redgreen.log holds the red run of the reviewer's edge.c.
+
+RED (headers had the macro ADF_REAL_PREC_MAX only; src/sball.c and src/rfunc.c unchanged), release build:
+  build/test_sball: 18 tests, 873962 checks, 58 failed checks, 2 failed tests
+    complex_tag_does_not_mask_limit_at_a_prime: 10 failed checks, first
+      "reviewer input: status UNSUPPORTED" (wanted LIMIT at prime 2)
+    prec_limit_of_the_ring_operations: 49 failed checks, e.g.
+      "mul prec 9223372036854775807, other places: status DOMAIN", "..., complex: status UNSUPPORTED"
+  build/test_rfunc: prec_limit: assertion failures ("root prec 2097154 case 3 (sball): status DOMAIN"), then the
+    process aborts: "Flint exception (General error): Unable to allocate memory (17293822569102704648)"
+RED, INV build: tests/test_sball.c compiled with -DADF_CHECK_INVARIANTS and linked with the OLD src/sball.c
+  (git show HEAD:src/sball.c compiled by hand):
+  19 tests, 873993 checks, 75 failed checks, 3 failed tests; entry_check_of_every_public_function: 17 failed checks:
+  adf_sball_arch (case 0), adf_sball_num_places (1), adf_sball_identical (2 and 3), adf_sball_set self (4),
+  adf_sball_swap (6, 7, 8): "a forged argument did not abort (signal 0, exit 0)".
+RED, Julia: tests/julia/sball.jl from HEAD under the reviewer's julia_leak.jl and valgrind:
+  "1,600 (960 direct, 640 indirect) bytes in 20 blocks are definitely lost" (calloc of newarb).
+
+GREEN (after the change):
+  make clean && make -j2 check-all       exit 0, last line "check-all passed: make check, driver, exports, julia, mutate-selftest, memcheck-selftest"
+  make clean && make -j2 check SAN=1     exit 0, "check passed: all 65 test programs"
+  make clean && make -j2 check CC=clang  exit 0, "check passed: all 65 test programs"
+  make clean && make -j2 check INV=1     exit 0, "check passed: all 65 test programs"
+  sh lanes/m1-headers/check_headers.sh   "check_headers: passed"
+  test_sball (release): 18 tests, 873962 checks, 0 failed checks; test_rfunc: 9 tests, 59670 checks, 0 failed checks
+  Julia valgrind probe: the record of 20 blocks with 640 indirect bytes is gone; the process still exits 99 for the
+    runtime's own losses (the 20 x 48 bytes left are malloc in __register_frame of Julia's JIT, not adelefeld).
+  During the INV run one check failed once, in my own test: the message of adf_sball_add named "binary" (the static
+  helper) and not the public function. Repaired in src/sball.c (the check moved into add, sub, mul); the run above is
+  after that.

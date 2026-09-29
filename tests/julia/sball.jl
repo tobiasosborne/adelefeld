@@ -97,6 +97,11 @@ function newarb()
     ccall(fl(:arb_init), Cvoid, (Ptr{UInt8},), p)
     return p
 end
+# clears and frees what newarb made (finding R6: realtext used to leave its temporary arb behind)
+function freearb(p::Ptr{UInt8})
+    ccall(fl(:arb_clear), Cvoid, (Ptr{UInt8},), p)
+    Libc.free(p)
+end
 function arbtext(p::Ptr, digits = 70)
     s = ccall(fl(:arb_get_str), Ptr{UInt8}, (Ptr{UInt8}, Clong, Culong), p, digits, 0)
     str = unsafe_string(s)
@@ -118,10 +123,14 @@ end
 function realtext(s::SB, digits = 70)
     r = newarb()
     st = ccall(ad(:adf_sball_get_arb), Cint, (Ptr{UInt8}, Ptr{UInt8}, Place), r, s.ptr, ARCH)
-    return st, st == OK ? arbtext(r, digits) : ""
+    txt = st == OK ? arbtext(r, digits) : ""
+    freearb(r)
+    return st, txt
 end
 
-# an adf_rat holding n/d, and an adele holding it at `prec` bits
+# an adf_rat holding n/d, and an adele holding it at `prec` bits. Every adele made is listed in ADELES and cleared and
+# freed at the end of the test set (finding R6).
+const ADELES = Ptr{UInt8}[]
 function adele_of(n::Integer, d::Integer, prec = 200)
     r = Ptr{UInt8}(Libc.malloc(ccall(ad(:adf_sizeof_rat), Csize_t, ())))
     ccall(ad(:adf_rat_init), Cvoid, (Ptr{UInt8},), r)
@@ -136,6 +145,10 @@ function adele_of(n::Integer, d::Integer, prec = 200)
     ccall(ad(:adf_adele_set_rat), Cvoid, (Ptr{UInt8}, Ptr{UInt8}, Clong), a, r, prec)
     ccall(ad(:adf_rat_clear), Cvoid, (Ptr{UInt8},), r)
     Libc.free(r)
+    for f in (fn, fd)
+        ccall(fl(:fmpz_clear), Cvoid, (Ptr{Clong},), f)
+    end
+    push!(ADELES, a)
     return a
 end
 
@@ -250,4 +263,11 @@ pred(name::Symbol, x::SB, y::SB) = ccall(ad(name), Cint, (Ptr{UInt8}, Ptr{UInt8}
     b = adele_of(1, 1)
     st, sb, _ = project(b, [p2, p3, p5, ARCH])
     @test st == OK && isexact(getlball(sb, p3)[2]) && num(getlball(sb, p3)[2]) == 1
+
+    # what the test made is cleared: the adeles (the arb temporaries are cleared in realtext, the fmpz in adele_of)
+    for a in ADELES
+        ccall(ad(:adf_adele_clear), Cvoid, (Ptr{UInt8},), a)
+        Libc.free(a)
+    end
+    empty!(ADELES)
 end

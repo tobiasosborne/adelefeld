@@ -36,11 +36,12 @@
    domain was checked, because arb returns NaN for the odd root of a negative ball and of 0 (probe of lane
    d-functions, unreviewed; the tests of this slice check it again: tests/test_rfunc.c).
 
-   Statuses, both levels: OK; DOMAIN; NOT_DETERMINED. The arb-level functions also return DOMAIN for a
+   Statuses, both levels: OK; DOMAIN; NOT_DETERMINED; LIMIT (prec, below). The arb-level functions also return DOMAIN for a
    non-finite input ball (a constructor-like invalid input, conventions 3.1). Outputs are untouched on a status.
    Aliasing: y may be x.
-   A prec below 2 is taken as 2 (M1-D4). No upper bound on prec is checked here: a prec that arb cannot allocate
-   is the caller's error, as for adf_adele_mul (adele.h). */
+   A prec below 2 is taken as 2 (M1-D4). A prec above ADF_REAL_PREC_MAX is ADF_LIMIT at both levels: decided from
+   prec alone, before every other status (also before the domain checks and the checks on v) and before any
+   allocation; the outputs are untouched; at the level of the partial ball `where` = the archimedean place. */
 
 #ifndef ADELEFELD_RFUNC_H
 #define ADELEFELD_RFUNC_H
@@ -54,6 +55,13 @@
 
 #ifdef __cplusplus
 extern "C" {
+#endif
+
+/* The largest working precision of the functions of this header and of the functions of adelefeld/sball.h that
+   take a prec: 2^21 bits, the value of ADF_ROOTS_REAL_PREC_MAX and ADF_IDELE_PREC_MAX. The same definition stands
+   in sball.h (guarded), which this header includes. */
+#ifndef ADF_REAL_PREC_MAX
+#define ADF_REAL_PREC_MAX 2097152
 #endif
 
 /* ---- real balls ---- */
@@ -82,7 +90,8 @@ int adf_real_root(arb_t y, const arb_t x, ulong n, slong prec);
        or, where = the archimedean place, if the tag is COMPLEX (complex wrappers are not in this slice);
      ADF_DOMAIN or ADF_NOT_DETERMINED, where = v, with the meaning of the table above (a domain failure at the place
        v; no value is written); ADF_DOMAIN with where untouched for a root of degree 0.
-   The checks on v come first, in the order above. y untouched on every status other than OK.
+   The check of prec (LIMIT) comes before them; then the checks on v, in the order above. y untouched on every
+   status other than OK.
    Aliasing: y may be x. Cost: as the arb-level function. */
 int adf_sball_exp_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_log_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
