@@ -1,0 +1,8 @@
+FLINT=3.0.1
+flint_howell_hnf: matrices=2560, engines=3, differences=0
+flint_reconstruct_large: planted=712, bit_sizes=8, differences=0
+FINDING flint_nonsquarefree: f=X^2, count=2, throws=0
+FINDING flint_nonsquarefree: f=X^3, count=3, throws=0
+FINDING flint_nonsquarefree: f=X^4, count=4, throws=0
+flint_real_planted: polynomials=60, exact_balls=10, differences=0
+total: failures=0

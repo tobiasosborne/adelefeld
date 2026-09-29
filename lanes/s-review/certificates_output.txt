@@ -1,0 +1,6 @@
+target_sha256=09588ed7a576dc85971458fe5a53069c09b917347f3ba9bd6696507b75fd6b36
+invented_root_certificates: tried=29000, accepted=352, false_accepted=0
+strong_hensel_boundary: equality_counterexamples=1, failures=0
+bezout_depth: polynomials=48, failures=0
+local_and_forget: reduced_pairs=24111, ball_rationals=5383, proper_witnesses=769, failures=0
+total: failures=0, findings=0, seconds=0.39

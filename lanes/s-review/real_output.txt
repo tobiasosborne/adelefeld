@@ -1,0 +1,6 @@
+target_sha256=09588ed7a576dc85971458fe5a53069c09b917347f3ba9bd6696507b75fd6b36
+real_planted: polynomials=59, exact_intervals=106, failures=0
+FINDING reference-overflow: real_roots_ref([-10**400,1],6) raises OverflowError; exact answer is {10**400}
+FINDING untrusted-real-count: real_cert_ok((X-1)(X-2)(X-3),1,[[0,4]]) accepts a 3-root interval
+real_endpoints: positive_width_endpoint_rejected=1, exact_root_point_accepted=1
+total: failures=0, findings=2, seconds=0.8
