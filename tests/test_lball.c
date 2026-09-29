@@ -1679,3 +1679,98 @@ ADF_TEST(entry_check_of_every_public_function)
     }
 }
 #endif /* ADF_CHECK_INVARIANTS */
+
+/* ---------------------------------------------------------------------- set_fball, LIMIT (lane f-slice3) */
+
+/* Finding 1 of lanes/f-slice2/result.md: set_fball at p = 3 of the adele A = H - 1, H = 6^(2^25 + 1) (87 million bits)
+   returned ADF_LIMIT only after fmpz_remove had formed v_3(H) (5 to 6 s here, 13 to 16 s in the report). The answer is
+   LIMIT: k = v_3(H) - v_3(A) = 2^25 + 1, 3^k has 2^26 + 2 bits, more than ADF_LBALL_BITS_MAX, and the centre A is a
+   unit of 87 million bits, far above 3^k: no small-centre shortcut. The test fails on the old code by time. The
+   bound is 3.5 s (the new code needs 1 to 2 s: a divisibility test of H by a power of 3 of 2^26 bits). */
+#include <time.h>
+
+static double
+now_s(void)
+{
+    struct timespec t;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    return (double) t.tv_sec + 1e-9 * (double) t.tv_nsec;
+}
+
+ADF_TEST(set_fball_limit_is_decided_without_the_full_valuation)
+{
+    adf_fball_t f;
+    adf_lball_t x, s;
+    fmpz_t A, H, d;
+    double t0;
+    int st;
+    adf_fball_init(f);
+    adf_lball_init(x);
+    adf_lball_init(s);
+    fmpz_init(A);
+    fmpz_init(H);
+    fmpz_init(d);
+    fmpz_set_ui(H, 6);
+    fmpz_pow_ui(H, H, (1ul << 25) + 1);
+    fmpz_sub_ui(A, H, 1);
+    fmpz_one(d);
+    ADF_CHECK(adf_fball_set_fmpz3(f, A, H, d) == ADF_OK);
+    sentinel(x);
+    sentinel(s);
+    t0 = now_s();
+    st = adf_lball_set_fball(x, place_of(3), f);
+    t0 = now_s() - t0;
+    ADF_CHECK_MSG(st == ADF_LIMIT && adf_lball_identical(x, s), "p = 3: status %s", adf_status_str(st));
+    ADF_CHECK_MSG(t0 < 3.5, "p = 3: LIMIT took %.1f s (bound 3.5 s)", t0);
+    /* p = 2 and p = 5 are as before: LIMIT at 2 (2^k, k = 2^25 + 1, has 2^26 + 2 bits), OK at 5 (the ball around 0) */
+    t0 = now_s();
+    ADF_CHECK(adf_lball_set_fball(x, place_of(2), f) == ADF_LIMIT && adf_lball_identical(x, s));
+    ADF_CHECK(adf_lball_set_fball(x, place_of(5), f) == ADF_OK && !x->exact && x->N == 0 && fmpq_is_zero(x->u));
+    t0 = now_s() - t0;
+    ADF_CHECK_MSG(t0 < 3.5, "p = 2 and 5 took %.1f s (bound 3.5 s)", t0);
+    fmpz_clear(A);
+    fmpz_clear(H);
+    fmpz_clear(d);
+    adf_fball_clear(f);
+    adf_lball_clear(x);
+    adf_lball_clear(s);
+}
+
+/* The two cases of the early decision that must NOT be LIMIT or must be: H = 2^(2^25 + 5) has v_2(H) above the bound
+   kmax = 2^25 of p = 2. With A = 1, d = 1 the centre 1 is a small integer: the result 1 + O(2^(2^25 + 5)) is fine
+   (the shortcut of L0; no power of 2 is formed). With d = 3 the centre is 1/3 modulo 2^k, k = 2^25 + 5: LIMIT. */
+ADF_TEST(set_fball_small_centre_above_the_bound_is_ok)
+{
+    adf_fball_t f;
+    adf_lball_t x, s;
+    fmpz_t A, H, d;
+    slong e = (1L << 25) + 5;
+    adf_fball_init(f);
+    adf_lball_init(x);
+    adf_lball_init(s);
+    fmpz_init(A);
+    fmpz_init(H);
+    fmpz_init(d);
+    fmpz_one(H);
+    fmpz_mul_2exp(H, H, (ulong) e);
+    fmpz_set_ui(A, 3);
+    fmpz_one(d);
+    ADF_CHECK(adf_fball_set_fmpz3(f, A, H, d) == ADF_OK);
+    ADF_CHECK(adf_lball_set_fball(x, place_of(2), f) == ADF_OK && !x->exact && x->N == e && x->v == 0 &&
+              fmpz_equal_si(fmpq_numref(x->u), 3));
+    fmpz_set_ui(A, 1);
+    fmpz_set_ui(d, 3);
+    ADF_CHECK(adf_fball_set_fmpz3(f, A, H, d) == ADF_OK);
+    sentinel(x);
+    sentinel(s);
+    ADF_CHECK(adf_lball_set_fball(x, place_of(2), f) == ADF_LIMIT && adf_lball_identical(x, s));
+    /* at p = 3 the adele (1 + H Zhat)/3 has v_3(H) = 0, v_3(d) = 1, so N = -1, and the centre 1/3 has valuation -1 >= N:
+       the ball around 0 of exponent -1 */
+    ADF_CHECK(adf_lball_set_fball(x, place_of(3), f) == ADF_OK && !x->exact && x->N == -1 && fmpq_is_zero(x->u));
+    fmpz_clear(A);
+    fmpz_clear(H);
+    fmpz_clear(d);
+    adf_fball_clear(f);
+    adf_lball_clear(x);
+    adf_lball_clear(s);
+}

@@ -124,6 +124,11 @@ if "$JULIA" --startup-file=no tests/julia/smoke.jl "$so" > "$run_output" 2>&1; t
         echo "test_julia: lball.jl FAILED" >&2
         exit 1
     fi
+    # lane f-slice3: the ccall test of the split, the fractional part and the powers (tests/julia/lball2.jl)
+    if ! "$JULIA" --startup-file=no tests/julia/lball2.jl "$so"; then
+        echo "test_julia: lball2.jl FAILED" >&2
+        exit 1
+    fi
     # lane f-slice2: the ccall test of adf_sball and the real functions (tests/julia/sball.jl)
     if ! "$JULIA" --startup-file=no tests/julia/sball.jl "$so"; then
         echo "test_julia: sball.jl FAILED" >&2
@@ -148,6 +153,10 @@ if grep -q '__gmpn_modexact_1_odd' "$run_output" 2>/dev/null; then
             rm -f "$run_output"
             if ! LD_PRELOAD="$sys_gmp" "$JULIA" --startup-file=no tests/julia/lball.jl "$so"; then
                 echo "test_julia: lball.jl FAILED (with LD_PRELOAD=$sys_gmp)" >&2
+                exit 1
+            fi
+            if ! LD_PRELOAD="$sys_gmp" "$JULIA" --startup-file=no tests/julia/lball2.jl "$so"; then
+                echo "test_julia: lball2.jl FAILED (with LD_PRELOAD=$sys_gmp)" >&2
                 exit 1
             fi
             if ! LD_PRELOAD="$sys_gmp" "$JULIA" --startup-file=no tests/julia/sball.jl "$so"; then
