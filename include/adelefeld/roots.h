@@ -65,7 +65,10 @@
    primality of p with n_is_prime (ulong_extras.h:335, proved for every word: src/place.c:23 to 28)
    and takes p as a ulong, so 2 <= p < 2^64 (conventions 7, lines 1021 to 1022). The functions of
    this header rely on exactly this: p is a prime, and its size is at most one word because the
-   type allows no other. They make no primality test of their own. The seed function and the entries
+   type allows no other. The functions that compute make no primality test of their own. The predicate
+   adf_rootlist_is_canonical and the two verifiers are called on values of unknown origin: they repeat
+   the test of adf_place_prime and return 0 for a place whose word is not a prime
+   (docs/reviews/s2/review.md, finding 1). The seed function and the entries
    verifier need no roots modulo p and no bound on p (decision S-D10: every prime); the search for all
    roots of slice 2 finds the roots modulo p by evaluation at every residue and has the TEMPORARY bound
    ADF_ROOTS_P_EVAL_MAX (below). A place not made by the functions of place.h is outside the contract

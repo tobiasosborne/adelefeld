@@ -31,6 +31,7 @@
 #include <flint/fmpz_vec.h>
 #include <flint/nmod_poly.h>
 
+#include <flint/ulong_extras.h>   /* n_is_prime */
 #include <adelefeld.h>
 
 #if defined(__GNUC__) || defined(__clang__)
@@ -269,11 +270,14 @@ ptr_ok(const void * ptr, slong len)
 }
 
 /* the shape of a list at a prime: lengths, pointers, and the rules of the scope (roots.h, the
-   predicate; solvers P3.12(5), P3.13(3)); the prime is >= 2 */
+   predicate; solvers P3.12(5), P3.13(3)); the place is a prime. A place made by adf_place_prime is a
+   proved prime (src/place.c); a list of unknown origin may carry a word written by hand, so the test
+   of adf_place_prime (n_is_prime, certified for every word: refs/src/flint-3.0.1/ulong_extras.rst:833
+   to 836) is made again here (docs/reviews/s2/review.md, finding 1). It also refuses p < 2. */
 static int
 shape_ok_prime(const adf_rootlist_t L)
 {
-    if (adf_place_prime_get(L->place) < 2)
+    if (!n_is_prime(adf_place_prime_get(L->place)))
         return 0;
     if (L->n < 0 || L->nu < 0 || L->count != 0 || L->ball != NULL)
         return 0;
