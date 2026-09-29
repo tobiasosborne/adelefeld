@@ -1184,7 +1184,7 @@ ADF_TEST(get_fball_statuses_and_named_values)
 {
     adf_linsol_t sol, e;
     fmpz_mat_t A, b;
-    fmpz_t N, a, H, d;
+    fmpz_t a, H, d;
     adf_fball_t x, mark;
     sys_t s;
 
@@ -1293,7 +1293,6 @@ ADF_TEST(get_fball_statuses_and_named_values)
     }
     (void) A;
     (void) b;
-    (void) N;
     fmpz_clear(a);
     fmpz_clear(H);
     fmpz_clear(d);
