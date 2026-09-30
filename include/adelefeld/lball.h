@@ -268,7 +268,12 @@ int adf_lball_decompose(slong * m, adf_lball_t unit, const adf_lball_t x);
    and the centre is not a small integer". The function proves k > the bound by one divisibility test of H by
    p^(v_p(A) + kmax + 1), kmax = ADF_LBALL_BITS_MAX / bits(p), and skips the test when the bit length of H already
    bounds v_p(H) (v_p(H) <= (bits(H) - 1)/(bits(p) - 1), since p^v <= H). Measured: 6 s become 1 to 2 s at p = 3 for
-   H = 6^(2^25 + 1). */
+   H = 6^(2^25 + 1).
+   Review n-review1, C2: the same bound is also taken as v_p(H) < bits(H) / log2(p) (p^v <= H < 2^bits(H); computed in
+   double, plus 1), which is tighter for p = 3 and larger odd p. It decides the branch where bits(A) alone is above the
+   bound (the centre is then not its own residue, the levels k < bits(A)/(bits(p) - 1) need the reduction): H =
+   6^(2^25 + 1), A = 2^(2^26 + 2) at p = 3 is ADF_LIMIT in 0.7 s (it was 16.8 s). A case that it does not decide
+   (v_p(H) close to bits(H)/log2(p)) still computes the valuation of H. */
 
 /* adf_lball_teichmuller(w, v, r, prec): w = the Teichmueller representative of the residue r modulo p, p the prime
    of v: the unique root omega of T^(p-1) - 1 in Z_p with omega = r modulo p (Lemma 3 item 2, Proposition 4 step 1),
@@ -302,7 +307,9 @@ int adf_lball_teichmuller(adf_lball_t w, adf_place_t v, ulong r, slong prec);
    Status: ADF_OK, all four written; ADF_DOMAIN if x is the exact 0; ADF_NOT_DETERMINED if x is a ball that contains
    0, or p = 2 and k = 1 (the unit part modulo 4 is not determined, the points x/p^m = 1 and 3 modulo 4 have the
    opposite sign); ADF_LIMIT if an input exponent, N - m or the result is outside the limits (p^max(k, n)
-   needed). Checked in this order. Outputs untouched otherwise.
+   needed). Checked in this order, except that the limits of the exponents of the input (|v|, |N| <= ADF_LBALL_EXP_MAX)
+   are tested before the case p = 2, k = 1 and before any difference of exponents is formed (review n-review1, C1: a
+   canonical ball with v = -1, N = LONG_MAX is ADF_LIMIT, not a signed overflow). Outputs untouched otherwise.
    Aliasing: w and u may be x; m, index are distinct objects; w and u are distinct objects.
    Cost: the Teichmueller lift and two modular multiplications, of p^max(k, n). */
 int adf_lball_decompose_teich(slong * m, adf_lball_t w, ulong * index, adf_lball_t u, const adf_lball_t x,

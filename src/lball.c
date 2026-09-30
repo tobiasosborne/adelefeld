@@ -21,6 +21,7 @@
    output with the inputs is then free, and a status leaves the output untouched. */
 
 #include <limits.h>
+#include <math.h>
 
 #include <adelefeld.h>
 #include <flint/ulong_extras.h>
@@ -395,6 +396,15 @@ fball_limit_certain(ulong p, const fmpz_t H, const fmpz_t d, const fmpq_t q)
     vd = val_fmpz(pt, d, P);
     vA = vd + a - b;                                    /* v_p(A) >= 0, A the numerator of the triple */
     vHmax = (fmpz_bits(H) - 1) / bp1;
+    {
+        /* a tighter upper bound of v_p(H) (review n-review1, C2): p^t <= H < 2^bits(H) gives t < bits(H) / log2(p);
+           the quotient is taken in double and 1 is added, far above its rounding error (below 2^-20 for 2^28 bits).
+           An upper bound only: it decides "not certain" faster, and every use below needs an upper bound. */
+        double t = (double) fmpz_bits(H) / log2((double) p);
+        ulong b2 = (ulong) t + 1;
+        if (b2 < vHmax)
+            vHmax = b2;
+    }
     if ((ulong) vA + (ulong) kmax >= vHmax)
         goto out;
     if (fmpz_is_one(dr) && fmpz_sgn(nr) > 0)

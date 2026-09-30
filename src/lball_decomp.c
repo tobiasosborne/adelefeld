@@ -210,10 +210,11 @@ adf_lball_decompose_teich(slong * m, adf_lball_t w, ulong * index, adf_lball_t u
         return x->exact ? ADF_DOMAIN : ADF_NOT_DETERMINED;
     p = x->p;
     exact = x->exact;
-    if (!exact && p == 2 && x->N - x->v == 1)
-        return ADF_NOT_DETERMINED;
+    /* the limits of N-D4 first: N - v is formed only for |v|, |N| <= EXP_MAX (review n-review1, C1) */
     if (!in_bounds(x) || !exp_ok(x->N - x->v))
         return ADF_LIMIT;
+    if (!exact && p == 2 && x->N - x->v == 1)
+        return ADF_NOT_DETERMINED;
     mv = x->v;
     k = exact ? 0 : x->N - x->v;
     r = unit_residue(x);

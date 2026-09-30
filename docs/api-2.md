@@ -649,9 +649,27 @@ character by character. The value must satisfy the predicate of conventions 5.7;
 precondition), the loop would not end, and the printer writes the unconstrained text (`k = 2`) instead.
 Cost: `k` grows with the number of leading digits that the radius and the midpoint share (about the number of
 decimal digits of `|mid| / (|mid| - rad)`), and a level costs the size of the numbers: the ball `2^b + 1 +/- 2^b`
-prints in 0.10 s for `b = 4000`, 2.1 s for `b = 16000`, 24 s for `b = 40000`; the bound of decision M1-D6 admits
-`b` up to 10^5, about seven minutes. An avoidable cost: a lower bound of the least `k` would skip the levels that
-must fail; none is proved here (the levels are not nested), so the search is linear, as the specification says.
+printed in 0.10 s for `b = 4000` and 2.0 s for `b = 16000` (measured before the bound below); the cost grows roughly
+like `b^2` (0.01 s at `b = 1000`), and `b = 10^5`, which the bound of decision M1-D6 admits, did not end in 170 s.
+
+**The bound on the work (review n-review1, D2; decision N-D11).** Two ways of keeping the exact search were
+considered and neither is proved here. (a) A lower bound of the least `k` from the exponents of the midpoint and the
+radius: whether a level satisfies the condition depends on the digits of the two numbers and not on their exponents
+alone (the levels are not nested, conventions 9.5), and no bound from the exponents is proved. (b) A search that is
+logarithmic in `k`: it needs that "level `k` satisfies the condition" is monotone in `k` from some level on that is
+found cheaply; that is not proved either (only the sufficient direction is: the printed interval exceeds the exact
+one by at most `10^q + 10^(X(E) - k + 1)`, which tends to 0). So the search stays linear and is bounded instead. Let
+`S` be the largest bit length of the four integers of `mid` and `rad` of the pass (at least 64): one level costs a
+number of operations that grows with `S`. The printer adds `S` to a counter for every level it forms, over the whole
+call (the levels of the search and of the repetitions). When the counter passes `TX_COND_WORK_MAX = 2^25` the printer
+stops and writes nothing: `adf_idele_get_str` and `adf_idclass_get_str` return NULL with `*len = 0`, as for M1-D6,
+and the driver prints `error: LIMIT`. A ball whose passes need together at most `2^25 / S` levels is printed by the
+same algorithm as before, so the text is the same (the golden files and the vectors of `t-slice1` pass unchanged).
+Measured (`lanes/n-repair1/printer-times.log`, the ball `2^(b-1) + 1/2 +/- 2^(b-1)`, one core): `b = 4000` prints in
+0.10 s (2438 bytes, as before); `b = 8000` is refused after 0.37 s, `b = 16000` after 0.50 s, `b = 40000` after
+0.80 s, `b = 10^5` after 1.17 s. What is refused now and was printed before: balls that need more than about
+`2^25 / S` levels; for this family from `b` about 5500 on (`b = 16000` printed in 2.0 s before). An avoidable cost
+that remains: a level rebuilds `10^q` and the floor of its logarithm and does not reuse the level before.
 
 ### 4.3 The driver
 
@@ -680,6 +698,7 @@ points exceeds `prec`).
 | t-10 | Exponent of `pow`, `powtight` | an exact rational that is an integer; another type or a denominator other than 1 is `DOMAIN`; an integer beyond a word is `LIMIT` | `DOMAIN` for a big integer |
 | t-11 | Output of `norm` and of `abs ... with real` | the real ball as the text of 9.5 without a sign condition (the helper of the solver commands) | the constrained printing (positive) |
 | t-12 | Existing driver cases that used `[5 mod 6]` as "a kind with no typed parser" | `[p=5: 3]` in `06_pairs`, `07_status`, `12_status_order`, `13_dump` (the expected files are unchanged; `type [5 mod 6]` still gives `ucoset`) | delete the cases; keep `[5 mod 6]` and change the expected lines |
+| N-D11 | The constrained printer on a ball that M1-D6 admits but that needs more work than a bound | a work bound `TX_COND_WORK_MAX = 2^25` (levels times bits); over it NULL with `*len = 0`, the driver prints `error: LIMIT` (Statement Q, n-repair1, D2) | a proved lower bound of the level (none exists, see Statement Q); a search logarithmic in the level (the levels are not monotone); a bound of `b` alone (would refuse the balls that print in milliseconds); no bound (a hang on admitted input) |
 
 ### 4.5 Not done, findings
 

@@ -291,15 +291,16 @@ at_place(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v,
 {
     arb_t t;
     int st;
-    ADF_INV_SBALL(x);
-    /* prec above the limit: LIMIT from prec alone, before every other status, where = the archimedean place. Only
-       where prec is a number of bits: at a prime it is the absolute precision N of lfunc.h (f-slice6). */
+    /* prec above the limit: LIMIT from prec alone, before every other status, before the entry check of x and any
+       allocation (finding R5), where = the archimedean place. Only where prec is a number of bits: at a prime it is
+       the absolute precision N of lfunc.h (f-slice6). */
     if (adf_place_is_archimedean(v) && prec > ADF_REAL_PREC_MAX)
     {
         if (where != NULL)
             *where = adf_place_inf();
         return ADF_LIMIT;
     }
+    ADF_INV_SBALL(x);
     if (!adf_sball_has_place(x, v))
     {
         if (where != NULL)

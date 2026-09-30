@@ -20,6 +20,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include <flint/flint.h>
 #include <flint/fmpz.h>
@@ -1689,4 +1690,81 @@ ADF_TEST(round_trips_enclose)
     }
     ADF_CHECK_MSG(count >= 700, "only %zu round trips", count);
     jsonl_close(f);
+}
+
+/* Review n-review1, D2: the constrained printer ends in bounded time on every ball that decision M1-D6 admits.
+   The ball 2^(b-1) + 1/2 +/- 2^(b-1), b = 100000, has both exponents 100000 (admitted) and needs about 30000 levels of
+   30000-digit numbers (it did not end in 170 s).  The printer now counts the work (levels times the size of the
+   numbers in bits) and returns NULL with *len = 0 when the work passes ADF_PRINT_COND_WORK_MAX (docs/api-2.md 4.2,
+   Statement Q; decision N-D11): the driver prints "error: LIMIT".  What would make a case fail: a text where NULL
+   is due, NULL where the text is small, or a time above 2 s. */
+static void
+ball_two_pow(arb_t x, slong b, slong e, int negative)
+{
+    fmpz_t z;
+
+    fmpz_init(z);
+    fmpz_one(z);
+    fmpz_mul_2exp(z, z, (ulong) b);
+    fmpz_add_ui(z, z, 1);
+    arf_set_fmpz(arb_midref(x), z);
+    arf_mul_2exp_si(arb_midref(x), arb_midref(x), e - b);
+    mag_one(arb_radref(x));
+    mag_mul_2exp_si(arb_radref(x), arb_radref(x), e);
+    if (negative)
+        arb_neg(x, x);
+    fmpz_clear(z);
+}
+
+ADF_TEST(constrained_printer_ends_in_bounded_time)
+{
+    adf_idele_t x;
+    adf_idclass_t c;
+    size_t len;
+    char * s;
+    clock_t t0;
+    double sec;
+
+    adf_idele_init(x);
+    adf_idclass_init(c);
+    /* the worst admitted input, idele and class */
+    ball_two_pow(x->inf, 100000, 99999, 0);
+    ADF_CHECK(adf_idele_is_canonical(x));
+    len = 17;
+    t0 = clock();
+    s = adf_idele_get_str(&len, x, 1);
+    sec = (double) (clock() - t0) / CLOCKS_PER_SEC;
+    ADF_CHECK_MSG(s == NULL && len == 0, "idele: NULL, len 0 expected (len %zu)", len);
+    ADF_CHECK_MSG(sec < 2.0, "idele: %.2f s (bound 2 s)", sec);
+    if (s != NULL)
+        adf_str_free(s);
+    arb_set(c->t, x->inf);
+    ADF_CHECK(adf_idclass_is_canonical(c));
+    len = 17;
+    t0 = clock();
+    s = adf_idclass_get_str(&len, c, 1);
+    sec = (double) (clock() - t0) / CLOCKS_PER_SEC;
+    ADF_CHECK_MSG(s == NULL && len == 0, "class: NULL, len 0 expected (len %zu)", len);
+    ADF_CHECK_MSG(sec < 2.0, "class: %.2f s (bound 2 s)", sec);
+    if (s != NULL)
+        adf_str_free(s);
+    /* the negative ball, likewise */
+    ball_two_pow(x->inf, 100000, 99999, 1);
+    len = 17;
+    t0 = clock();
+    s = adf_idele_get_str(&len, x, 1);
+    sec = (double) (clock() - t0) / CLOCKS_PER_SEC;
+    ADF_CHECK_MSG(s == NULL && len == 0 && sec < 2.0, "negative idele: %.2f s, len %zu", sec, len);
+    if (s != NULL)
+        adf_str_free(s);
+    /* a ball of 4000 bits needs about 1200 levels: inside the bound, printed as before (it takes 0.1 s) */
+    ball_two_pow(x->inf, 4000, 4000, 0);
+    len = 0;
+    s = adf_idele_get_str(&len, x, 1);
+    ADF_CHECK_MSG(s != NULL && len > 1000 && len < 4000 && strncmp(s, "(1.318204093430943", 18) == 0,
+                  "4000 bits: %s, len %zu", s == NULL ? "NULL" : "text", len);
+    if (s != NULL)
+        adf_str_free(s);
+    adf_idele_clear(x);
+    adf_idclass_clear(c);
 }

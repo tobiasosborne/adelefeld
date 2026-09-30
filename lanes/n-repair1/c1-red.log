@@ -1,0 +1,40 @@
+src/lball_decomp.c:213:34: runtime error: signed integer overflow: 9223372036854775807 - -1 cannot be represented in type 'long int'
+ok   layout_init_and_copy
+ok   is_canonical_rejects_each_clause
+ok   vectors_construct
+ok   vectors_binary
+ok   vectors_unary
+ok   vectors_predicates
+   enumeration p=2: 57 balls, 12996 binary cases, 114 unary cases
+ok   enumeration_p2
+   enumeration p=3: 38 balls, 5776 binary cases, 76 unary cases
+ok   enumeration_p3
+   enumeration p=5: 86 balls, 16000 binary cases, 172 unary cases
+ok   enumeration_p5
+   enumeration p=7: 158 balls, 8000 binary cases, 316 unary cases
+ok   enumeration_p7
+ok   statuses_and_untouched_outputs
+   aliasing: 1102 cases
+ok   aliasing
+ok   unit_part_check_rejects_the_wrong_unit
+ok   decompose_roundtrip
+ok   inverse_times_self_contains_one
+ok   the_prime_2_64_minus_59
+ok   limits_and_extreme_exponents
+ok   get_center_and_abs_values
+ok   set_fball_local_backend
+ok   set_fball_exact_and_fractional
+ok   the_example_of_the_brief
+ok   inv_of_an_exact_power_at_the_exponent_limit
+ok   sub_of_small_results_at_the_exponent_limit
+ok   div_of_small_results_at_the_exponent_limit
+ok   add_mul_neg_at_the_exponent_limits
+   composition p=2: 3249 pairs
+   composition p=3: 3721 pairs
+   composition p=5: 7396 pairs
+ok   sub_and_div_agree_with_their_compositions
+ok   set_fball_limit_is_decided_without_the_full_valuation
+ok   set_fball_small_centre_above_the_bound_is_ok
+FAIL tests/test_lball.c:1836: inputs_beyond_the_exponent_limit_are_limit_not_overflow: check failed: adf_lball_decompose_teich(&m, w, &idx, y, b[i], 2) == ADF_LIMIT && m == 17 && idx == 17 && adf_lball_identical(y, s) | decompose_teich 1
+FAIL inputs_beyond_the_exponent_limit_are_limit_not_overflow (tests/test_lball.c:1793, 1 failed checks)
+29 tests, 3982754 checks, 1 failed checks, 1 failed tests
