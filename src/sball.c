@@ -619,6 +619,11 @@ binary(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_
 int
 adf_sball_add(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec)
 {
+    if (prec > ADF_REAL_PREC_MAX)   /* first of all, before the entry check and any read of x or y (finding R5) */
+    {
+        report(where, adf_place_inf());
+        return ADF_LIMIT;
+    }
     ADF_INV_SBALL(x);   /* here and not in binary: the message names the public function */
     ADF_INV_SBALL(y);
     return binary(z, where, x, y, prec, OP_ADD);
@@ -627,6 +632,11 @@ adf_sball_add(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf
 int
 adf_sball_sub(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec)
 {
+    if (prec > ADF_REAL_PREC_MAX)   /* first of all, before the entry check and any read of x or y (finding R5) */
+    {
+        report(where, adf_place_inf());
+        return ADF_LIMIT;
+    }
     ADF_INV_SBALL(x);   /* here and not in binary: the message names the public function */
     ADF_INV_SBALL(y);
     return binary(z, where, x, y, prec, OP_SUB);
@@ -635,6 +645,11 @@ adf_sball_sub(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf
 int
 adf_sball_mul(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec)
 {
+    if (prec > ADF_REAL_PREC_MAX)   /* first of all, before the entry check and any read of x or y (finding R5) */
+    {
+        report(where, adf_place_inf());
+        return ADF_LIMIT;
+    }
     ADF_INV_SBALL(x);   /* here and not in binary: the message names the public function */
     ADF_INV_SBALL(y);
     return binary(z, where, x, y, prec, OP_MUL);

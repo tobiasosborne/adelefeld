@@ -1756,7 +1756,9 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
         status = place_status;
         goto done;
     }
-    if (x.type == ADF_DRV_CADELE)
+    /* the domain of these commands is a rational, a finite ball or an adele (README); a complex adele, a unit coset,
+       an idele and a class are not, and their fields must not be read as an adele (review n-review1 D1) */
+    if (x.type != ADF_DRV_RAT && x.type != ADF_DRV_FBALL && x.type != ADF_DRV_ADELE)
     {
         status = ADF_UNSUPPORTED;
         goto done;

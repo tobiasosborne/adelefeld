@@ -860,3 +860,112 @@ ADF_TEST(prec_limit)
     adf_sball_clear(sc);
     adf_sball_clear(ss);
 }
+
+/* ---- LIMIT is decided from prec alone, before any allocation, also under ADF_CHECK_INVARIANTS (lane n-repair1,
+   finding R5 of review n-review1; pattern of lane i-repair1, F1).  The oracle is the FLINT allocator:
+   refs/src/flint-3.0.1/memory.rst:16-21.  The local component is the exact 5-adic rational
+   (2^4096 + 3)/(2^2048 + 7), so that the entry check of the debug build (integer gcds) allocates.  Run
+   `make check INV=1` to see it red on the old code. ---- */
+
+static void *(*r5_malloc)(size_t);
+static void *(*r5_realloc)(void *, size_t);
+static void *(*r5_calloc)(size_t, size_t);
+static void (*r5_free)(void *);
+static size_t r5_calls;
+static int r5_tracking;
+
+static void *
+r5_hook_malloc(size_t n)
+{
+    r5_calls += r5_tracking;
+    return r5_malloc(n);
+}
+
+static void *
+r5_hook_realloc(void * p, size_t n)
+{
+    r5_calls += r5_tracking;
+    return r5_realloc(p, n);
+}
+
+static void *
+r5_hook_calloc(size_t n, size_t s)
+{
+    r5_calls += r5_tracking;
+    return r5_calloc(n, s);
+}
+
+static void
+r5_hook_free(void * p)
+{
+    r5_free(p);
+}
+
+static void
+r5_big_local(adf_lball_t l)
+{
+    l->p = 5;
+    l->exact = 1;
+    l->v = 0;
+    l->N = 0;
+    fmpz_one(fmpq_numref(l->u));
+    fmpz_mul_2exp(fmpq_numref(l->u), fmpq_numref(l->u), 4096);
+    fmpz_add_ui(fmpq_numref(l->u), fmpq_numref(l->u), 3);
+    fmpz_one(fmpq_denref(l->u));
+    fmpz_mul_2exp(fmpq_denref(l->u), fmpq_denref(l->u), 2048);
+    fmpz_add_ui(fmpq_denref(l->u), fmpq_denref(l->u), 7);
+    fmpq_canonicalise(l->u);
+}
+
+ADF_TEST(LIMIT_before_any_allocation_of_the_functions_at_a_place)
+{
+    adf_lball_t l;
+    adf_sball_t x, y;
+    arb_t a;
+    adf_place_t where;
+    size_t calls[14];
+    int st[14], wi[14], i;
+    slong precs[2] = {ADF_REAL_PREC_MAX + 1, WORD_MAX};
+
+    adf_lball_init(l);
+    adf_sball_init(x);
+    adf_sball_init(y);
+    arb_init(a);
+    arb_one(a);
+    r5_big_local(l);
+    ADF_CHECK(adf_sball_set_arb_lballs(x, NULL, a, l, 1) == ADF_OK);
+    ADF_CHECK(adf_sball_is_canonical(x));
+    __flint_get_memory_functions(&r5_malloc, &r5_calloc, &r5_realloc, &r5_free);
+    __flint_set_memory_functions(r5_hook_malloc, r5_hook_calloc, r5_hook_realloc, r5_hook_free);
+    for (i = 0; i < 14; i++)
+    {
+        slong prec = precs[i / 7];
+        adf_place_t inf = adf_place_inf();
+
+        flint_cleanup();
+        r5_calls = 0;
+        ADF_CHECK(adf_place_prime(&where, 3) == ADF_OK);
+        r5_tracking = 1;
+        switch (i % 7)
+        {
+            case 0: st[i] = adf_sball_exp_at(y, &where, x, inf, prec); break;
+            case 1: st[i] = adf_sball_log_at(y, &where, x, inf, prec); break;
+            case 2: st[i] = adf_sball_Log_at(y, &where, x, inf, prec); break;
+            case 3: st[i] = adf_sball_sin_at(y, &where, x, inf, prec); break;
+            case 4: st[i] = adf_sball_cos_at(y, &where, x, inf, prec); break;
+            case 5: st[i] = adf_sball_sqrt_at(y, &where, x, inf, prec); break;
+            default: st[i] = adf_sball_root_at(y, &where, x, inf, 3, prec); break;
+        }
+        r5_tracking = 0;
+        calls[i] = r5_calls;
+        wi[i] = adf_place_is_archimedean(where);
+    }
+    __flint_set_memory_functions(r5_malloc, r5_calloc, r5_realloc, r5_free);
+    for (i = 0; i < 14; i++)
+        ADF_CHECK_MSG(st[i] == ADF_LIMIT && calls[i] == 0 && wi[i], "function %d: status %d, %zu allocator calls", i,
+                      st[i], calls[i]);
+    arb_clear(a);
+    adf_lball_clear(l);
+    adf_sball_clear(x);
+    adf_sball_clear(y);
+}

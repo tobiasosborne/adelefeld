@@ -1774,3 +1774,135 @@ ADF_TEST(set_fball_small_centre_above_the_bound_is_ok)
     adf_lball_clear(x);
     adf_lball_clear(s);
 }
+
+/* Review n-review1, C1: canonical balls whose exponents are far beyond ADF_LBALL_EXP_MAX (is_canonical admits any
+   slong).  Every public function that forms N - v, N + M, N - 2 v or any sum of exponents must test the limits of
+   its inputs first and return ADF_LIMIT, and must not overflow a slong (the run under UBSan, `make check SAN=1`,
+   reports "runtime error" on the first signed overflow).  What would make a case fail: a function that returns
+   another status than ADF_LIMIT, changes an output on ADF_LIMIT, or forms a sum of two such exponents. */
+static void
+huge_ball(adf_lball_t x, ulong p, slong v, slong N, int exact)
+{
+    x->p = p;
+    x->v = v;
+    x->N = exact ? 0 : N;
+    x->exact = exact;
+    fmpq_one(x->u);
+}
+
+ADF_TEST(inputs_beyond_the_exponent_limit_are_limit_not_overflow)
+{
+    enum { NB = 8 };
+    adf_lball_t b[NB];
+    slong i, j, k;
+    /* p = 2: v = -1, N = LONG_MAX; v = LONG_MAX - 1, N = LONG_MAX; exact v = LONG_MAX; exact v = LONG_MIN + 1.
+       p = 3: v = LONG_MIN + 1, N = LONG_MIN + 2; v = 0, N = LONG_MAX; exact v = LONG_MAX; v = -1, N = LONG_MAX. */
+    for (i = 0; i < NB; i++)
+        adf_lball_init(b[i]);
+    huge_ball(b[0], 2, -1, LONG_MAX, 0);
+    huge_ball(b[1], 2, LONG_MAX - 1, LONG_MAX, 0);
+    huge_ball(b[2], 2, LONG_MAX, 0, 1);
+    huge_ball(b[3], 2, LONG_MIN + 1, 0, 1);
+    huge_ball(b[4], 3, LONG_MIN + 1, LONG_MIN + 2, 0);
+    huge_ball(b[5], 3, 0, LONG_MAX, 0);
+    huge_ball(b[6], 3, LONG_MAX, 0, 1);
+    huge_ball(b[7], 3, -1, LONG_MAX, 0);
+    for (i = 0; i < NB; i++)
+        ADF_CHECK_MSG(adf_lball_is_canonical(b[i]), "ball %ld is canonical", i);
+    for (i = 0; i < NB; i++)
+    {
+        adf_lball_t y, w, s;
+        adf_rat_t r;
+        fmpz_t o;
+        slong m = 17, n, vv;
+        ulong idx = 17;
+        int isinf, st;
+
+        adf_lball_init(y);
+        adf_lball_init(w);
+        adf_lball_init(s);
+        adf_rat_init(r);
+        fmpz_init(o);
+        sentinel(s);
+        sentinel(y);
+        ADF_CHECK_MSG(adf_lball_neg(y, b[i]) == ADF_LIMIT && adf_lball_identical(y, s), "neg %ld", i);
+        ADF_CHECK_MSG(adf_lball_inv(y, b[i]) == ADF_LIMIT && adf_lball_identical(y, s), "inv %ld", i);
+        for (k = -2; k <= 2; k++)
+        {
+            ADF_CHECK_MSG(adf_lball_pow_si(y, b[i], k) == ADF_LIMIT && adf_lball_identical(y, s), "pow %ld %ld", i, k);
+        }
+        ADF_CHECK_MSG(adf_lball_decompose(&m, y, b[i]) == ADF_LIMIT && m == 17 && adf_lball_identical(y, s),
+                      "decompose %ld", i);
+        ADF_CHECK_MSG(adf_lball_decompose_teich(&m, w, &idx, y, b[i], 2) == ADF_LIMIT && m == 17 && idx == 17 &&
+                          adf_lball_identical(y, s),
+                      "decompose_teich %ld", i);
+        st = adf_lball_frac(r, b[i]);
+        ADF_CHECK_MSG(st == ADF_LIMIT, "frac %ld: %s", i, adf_status_str(st));
+        (void) adf_lball_unit_mod(o, b[i], 1);
+        (void) adf_lball_abs(r, b[i]);
+        (void) adf_lball_valuation(&vv, &isinf, b[i]);
+        (void) adf_lball_get_prec(&n, b[i]);
+        (void) adf_lball_get_center(r, b[i]);
+        (void) adf_lball_contains_zero(b[i]);
+        (void) adf_lball_is_exact(b[i]);
+        for (j = 0; j < NB; j++)
+        {
+            int same = b[i]->p == b[j]->p;
+            int want = same ? ADF_LIMIT : ADF_DOMAIN;
+
+            ADF_CHECK_MSG(adf_lball_add(y, b[i], b[j]) == want && adf_lball_identical(y, s), "add %ld %ld", i, j);
+            ADF_CHECK_MSG(adf_lball_sub(y, b[i], b[j]) == want && adf_lball_identical(y, s), "sub %ld %ld", i, j);
+            ADF_CHECK_MSG(adf_lball_mul(y, b[i], b[j]) == want && adf_lball_identical(y, s), "mul %ld %ld", i, j);
+            ADF_CHECK_MSG(adf_lball_div(y, b[i], b[j]) == want && adf_lball_identical(y, s), "div %ld %ld", i, j);
+            (void) adf_lball_equal_set(b[i], b[j]);
+            (void) adf_lball_overlaps(b[i], b[j]);
+            (void) adf_lball_contains(b[i], b[j]);
+        }
+        adf_lball_clear(y);
+        adf_lball_clear(w);
+        adf_lball_clear(s);
+        adf_rat_clear(r);
+        fmpz_clear(o);
+    }
+    for (i = 0; i < NB; i++)
+        adf_lball_clear(b[i]);
+}
+
+/* Review n-review1, C2: H = 6^(2^25 + 1), A = 2^(2^26 + 2), d = 1.  At p = 3 the centre A has more bits than the
+   bound (2^26 + 3 bits), the level k = v_3(H) = 2^25 + 1 needs p^k with 2^26 + 2 bits: LIMIT.  The early decision
+   must reach this branch (it took 16.8 s before: the full valuation of H).  What would make the case fail: a status
+   other than LIMIT, or a time above the bound.  At p = 2 the ball is A/1 + 2^N Z_2 with the centre 2^(2^26 + 2) of
+   valuation w = 2^26 + 2 above N = 2^25 + 1: the ball around 0, OK. */
+ADF_TEST(set_fball_limit_when_the_numerator_alone_is_above_the_bound)
+{
+    adf_fball_t f;
+    adf_lball_t x, s;
+    fmpz_t A, H, d;
+    double t0;
+    int st;
+    adf_fball_init(f);
+    adf_lball_init(x);
+    adf_lball_init(s);
+    fmpz_init(A);
+    fmpz_init(H);
+    fmpz_init(d);
+    fmpz_set_ui(H, 6);
+    fmpz_pow_ui(H, H, (1ul << 25) + 1);
+    fmpz_one(A);
+    fmpz_mul_2exp(A, A, (1ul << 26) + 2);
+    fmpz_one(d);
+    ADF_CHECK(adf_fball_set_fmpz3(f, A, H, d) == ADF_OK);
+    sentinel(x);
+    sentinel(s);
+    t0 = now_s();
+    st = adf_lball_set_fball(x, place_of(3), f);
+    t0 = now_s() - t0;
+    ADF_CHECK_MSG(st == ADF_LIMIT && adf_lball_identical(x, s), "p = 3: status %s", adf_status_str(st));
+    ADF_CHECK_MSG(t0 < 3.5, "p = 3: LIMIT took %.1f s (bound 3.5 s)", t0);
+    fmpz_clear(A);
+    fmpz_clear(H);
+    fmpz_clear(d);
+    adf_fball_clear(f);
+    adf_lball_clear(x);
+    adf_lball_clear(s);
+}

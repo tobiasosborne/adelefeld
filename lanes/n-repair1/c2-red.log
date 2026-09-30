@@ -1,0 +1,3 @@
+FAIL tests/test_lball.c:1901: set_fball_limit_when_the_numerator_alone_is_above_the_bound: check failed: t0 < 3.5 | p = 3: LIMIT took 5.2 s (bound 3.5 s)
+FAIL set_fball_limit_when_the_numerator_alone_is_above_the_bound (tests/test_lball.c:1876, 1 failed checks)
+30 tests, 3982758 checks, 1 failed checks, 1 failed tests

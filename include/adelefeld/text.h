@@ -32,12 +32,18 @@
      newline; s[len] = 0 is not counted. The caller frees the pointer with adf_str_free.
    - The text is the canonical template of conventions 9.4 for the set of the value, whatever its
      backend (local values print through the canonical triple, conventions 5.3).
-   - A printer has no status. It returns NULL, with *len = 0, in one case only (decision M1-D6):
+   - A printer has no status. It returns NULL, with *len = 0, in two cases only. (1) Decision M1-D6:
      the value has a real or complex part and the midpoint or the radius of one of its real
      balls is not zero and has a binary exponent (ARF_EXP, arf.h; MAG_EXP, mag.h) above
-     ADF_PRINT_EXP_MAX in absolute value. The test is made before any conversion, so the cost
-     of a printer is bounded by the sizes of the mantissas, by digits and by ADF_PRINT_EXP_MAX
-     bits. adf_rat_get_str and adf_fball_get_str never return NULL. adf_str_free(NULL) does
+     ADF_PRINT_EXP_MAX in absolute value. The test is made before any conversion. (2) Decision
+     N-D11 (review n-review1, D2): the constrained printing of the real part of an idele or a
+     class (conventions 9.5) searches its level one by one, and stops without a text when the
+     levels formed, weighted by the bit lengths of the numbers, pass a fixed bound (2^25 bit
+     levels in src/text.c; about 300 levels at 10^5 bits); the ball 2^99999 + 1/2 +/- 2^99999
+     is refused after about 1.2 s, and a ball of 4000 bits prints as before. Every other ball
+     that satisfies (1) is printed by the same algorithm as before. The cost of a printer is
+     therefore bounded by the sizes of the mantissas, by digits, by ADF_PRINT_EXP_MAX bits and
+     by that bound. adf_rat_get_str and adf_fball_get_str never return NULL. adf_str_free(NULL) does
      nothing. Otherwise the printer allocates with flint_malloc, as fmpz_get_str does
      (fmpz.h:349). What flint_malloc does on exhaustion is FLINT's
      [source pending: FLINT 3.0.1 documentation of flint_malloc on allocation failure].

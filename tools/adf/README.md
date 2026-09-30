@@ -206,7 +206,9 @@ unchanged: one operation name and two operands separated by ` with `; a wrong nu
 
 **X** is an exact rational, a finite ball or an adele.  A rational is made into the adele `(q ; q)` at the setting
 `prec` (SPEC 4.1).  A finite ball has no real coordinate: the place `real` is `error: DOMAIN` for it.  A complex adele
-is `error: UNSUPPORTED` (the complex functions are later), and so is a kind of the value form with no typed parser.
+is `error: UNSUPPORTED` (the complex functions are later), and so is a kind of the value form with no typed parser,
+and so is a unit coset, an idele or a class (`tests/driver/f-cross.cmd`, review n-review1 D1: the driver used to read
+the field of another type and printed a wrong value, `project (5 ; 5 * [1]) with 5` gave `5: 0`).
 
 **PLACES** is a list of places separated by single spaces: a prime in decimal, or the word `real`.  A token that is
 neither is `error: PARSE` (a `+`, a letter, a leading zero, a decimal point, two spaces in a row, a blank at the end).
@@ -355,7 +357,12 @@ balls is not zero and has a binary exponent above `ADF_PRINT_EXP_MAX = 100000` i
 value, tested before any conversion, and `adf_rat_get_str` and `adf_fball_get_str` never
 return NULL.  **The driver answers `error: LIMIT` for a NULL from a printer.**  The reason
 is in the decision: the cost and the memory of the printer grow with the binary exponent,
-and an exponent beyond a machine word aborted the process.
+and an exponent beyond a machine word aborted the process.  The constrained printer of the real
+part of an idele or a class has a second, independent refusal (decision N-D11, `include/adelefeld/text.h`,
+`docs/api-2.md` 4.2): a ball whose level search needs more than a fixed work is NULL as well, and so
+`error: LIMIT`; `show`, `mul` and the other commands that print an idele or a class inherit it (`norm` and
+`abs` print a real ball without the sign condition and do not).  For example, after `prec 20000`, `show (1 +/-
+0.999...9 ; 1 * [1])` with 1000 nines prints and with 1500 nines is `error: LIMIT` (run on 2026-09-30).
 
 The binary exponent is the one FLINT stores, `x = m 2^e` with `0.5 <= |m| < 1`
 (`refs/src/flint-3.0.1/arf.rst:14-20`), which is one more than the exponent

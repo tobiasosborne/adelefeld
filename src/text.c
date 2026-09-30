@@ -1951,13 +1951,46 @@ tx_interval_sat(const fmpq_t M, const fmpq_t R, int positive)
     return ok;
 }
 
+/* The work of the constrained printer is bounded (review n-review1, D2; docs/api-2.md 4.2, Statement Q; decision
+   N-D11).  One level costs about the size of its numbers, S bits (the larger of the bit lengths of the numerators
+   and denominators of the midpoint and the radius, at least 64), and the levels are searched one after the other:
+   the ball 2^(b-1) + 1/2 +/- 2^(b-1) needs about 0.3 b levels of 0.3 b digits; it takes 0.01 s, 0.09 s and 2.0 s at
+   b = 1000, 4000 and 16000 (roughly b^2), and did not end in 170 s at b = 100000, which decision M1-D6 admits.  The
+   printer adds S to a counter for every level it forms, over the whole call (the search and the repetitions), and stops with a refusal
+   when the counter passes TX_COND_WORK_MAX: no text, the callers return NULL with *len = 0 as for M1-D6.  The bound
+   is 2^25.  Measured on the ball above (lanes/n-repair1/printer-times.log): b = 4000 prints as before (0.10 s),
+   b = 8000 is refused after 0.37 s (the search and its repetitions need about 2 * 2400 levels of 8000 bits), b =
+   100000 is refused after 1.2 s.  Every ball whose passes together need at most 2^25 / S levels prints as
+   before. */
+#define TX_COND_WORK_MAX ((ulong) 1 << 25)
+
+/* S of the numbers of one pass: the largest bit length among the four integers of mid and rad, at least 64. */
+static ulong
+tx_cond_size(const fmpq_t mid, const fmpq_t rad)
+{
+    ulong s = 64, t;
+
+    t = fmpz_bits(fmpq_numref(mid));
+    s = FLINT_MAX(s, t);
+    t = fmpz_bits(fmpq_denref(mid));
+    s = FLINT_MAX(s, t);
+    t = fmpz_bits(fmpq_numref(rad));
+    s = FLINT_MAX(s, t);
+    t = fmpz_bits(fmpq_denref(rad));
+    return FLINT_MAX(s, t);
+}
+
 /* The constrained printer (conventions 9.5): the least level k >= 2 at which the printed interval satisfies the
    condition; then the text is read back exactly and printed again until it does not change (proto print_real
    with cond, 231-250). The arb satisfies the condition (a precondition of the callers); if it did not, no k
-   would exist and the loop would not end, so the unconstrained text (k = 2) is written instead. */
-static void
+   would exist and the loop would not end, so the unconstrained text (k = 2) is written instead.
+   Returns 1 and writes nothing when the work bound TX_COND_WORK_MAX is passed, else 0. */
+static int
 tx_put_real_cond(tx_buf * b, const arb_t x, slong n, int positive)
 {
+    int refused = 0;
+    ulong work = 0;
+
     fmpq_t mid, rad, M, R;
     arf_t r;
     char * prev = NULL;
@@ -1983,9 +2016,16 @@ tx_put_real_cond(tx_buf * b, const arb_t x, slong n, int positive)
     for (;;)
     {
         slong k = 2;
+        ulong size = tx_cond_size(mid, rad);
 
         for (;;)
         {
+            work += size;
+            if (work > TX_COND_WORK_MAX)
+            {
+                refused = 1;
+                goto done_refused;
+            }
             tx_buf_init(&lb);
             tx_real_level(&lb, M, R, mid, rad, n, k);
             if (tx_interval_sat(M, R, positive))
@@ -2006,12 +2046,16 @@ tx_put_real_cond(tx_buf * b, const arb_t x, slong n, int positive)
         fmpq_set(rad, R);
     }
     flint_free(prev);
+    goto done;
+done_refused:
+    flint_free(prev);
 done:
     fmpq_clear(mid);
     fmpq_clear(rad);
     fmpq_clear(M);
     fmpq_clear(R);
     arf_clear(r);
+    return refused;
 }
 
 /* The unit coset as printed (conventions 9.4): "[c]" for N = 0, else "[c mod N]"; c and N are the normal form. */
@@ -2030,7 +2074,8 @@ tx_put_unit(tx_buf * b, const fmpz_t c, const fmpz_t N)
 
 /* The templates of conventions 9.4: "[c mod N]" (c, N the normal form), "(r(x_inf) ; q(r) * U)" and
    "<r(t) ; U>", the real part by the constrained printer of 9.5 (nonzero for the idele, positive for the
-   class). NULL with *len = 0 when the real ball is beyond the bound of decision M1-D6. */
+   class). NULL with *len = 0 when the real ball is beyond the bound of decision M1-D6, or when the constrained
+   printer passes its work bound TX_COND_WORK_MAX (decision N-D11). */
 ADF_TX_HIDDEN char * adf_tx_write_unit_form(size_t * len, int form, const arb_t inf, const fmpq_t r,
                                             const fmpz_t c, const fmpz_t N, slong digits);
 
@@ -2051,7 +2096,8 @@ adf_tx_write_unit_form(size_t * len, int form, const arb_t inf, const fmpq_t r, 
     else if (form == ADF_TX_FORM_IDELE)
     {
         tx_put(&b, "(", 1);
-        tx_put_real_cond(&b, inf, digits, 0);
+        if (tx_put_real_cond(&b, inf, digits, 0))
+            goto refused;
         tx_puts(&b, " ; ");
         tx_put_q(&b, r);
         tx_puts(&b, " * ");
@@ -2061,10 +2107,15 @@ adf_tx_write_unit_form(size_t * len, int form, const arb_t inf, const fmpq_t r, 
     else
     {
         tx_put(&b, "<", 1);
-        tx_put_real_cond(&b, inf, digits, 1);
+        if (tx_put_real_cond(&b, inf, digits, 1))
+            goto refused;
         tx_puts(&b, " ; ");
         tx_put_unit(&b, c, N);
         tx_put(&b, ">", 1);
     }
     return tx_finish(&b, len);
+refused:            /* the work bound of the constrained printer (TX_COND_WORK_MAX): as for M1-D6 */
+    flint_free(b.p);
+    *len = 0;
+    return NULL;
 }

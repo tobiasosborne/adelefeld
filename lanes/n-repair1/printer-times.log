@@ -1,0 +1,10 @@
+b=4000 scale=3999 negative=0 midpoint_exp=4000 radius_exp=4000 canonical=1 seconds=0.104517 null=0 len=2438 
+
+b=8000 scale=7999 negative=0 midpoint_exp=8000 radius_exp=8000 canonical=1 seconds=0.367362 null=1 len=0 
+
+b=16000 scale=15999 negative=0 midpoint_exp=16000 radius_exp=16000 canonical=1 seconds=0.498761 null=1 len=0 
+
+b=40000 scale=39999 negative=0 midpoint_exp=40000 radius_exp=40000 canonical=1 seconds=0.796129 null=1 len=0 
+
+b=100000 scale=99999 negative=0 midpoint_exp=100000 radius_exp=100000 canonical=1 seconds=1.168658 null=1 len=0 
+

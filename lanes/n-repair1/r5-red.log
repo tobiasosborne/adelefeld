@@ -1,0 +1,24 @@
+FAIL tests/test_sball.c:2309: LIMIT_before_any_allocation_of_add_sub_mul: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 0: status 10, 14 allocator calls
+FAIL tests/test_sball.c:2309: LIMIT_before_any_allocation_of_add_sub_mul: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 1: status 10, 14 allocator calls
+FAIL tests/test_sball.c:2309: LIMIT_before_any_allocation_of_add_sub_mul: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 2: status 10, 14 allocator calls
+FAIL tests/test_sball.c:2309: LIMIT_before_any_allocation_of_add_sub_mul: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 3: status 10, 14 allocator calls
+FAIL tests/test_sball.c:2309: LIMIT_before_any_allocation_of_add_sub_mul: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 4: status 10, 14 allocator calls
+FAIL tests/test_sball.c:2309: LIMIT_before_any_allocation_of_add_sub_mul: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 5: status 10, 14 allocator calls
+FAIL LIMIT_before_any_allocation_of_add_sub_mul (tests/test_sball.c:2269, 6 failed checks)
+20 tests, 874008 checks, 6 failed checks, 1 failed tests
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 0: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 1: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 2: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 3: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 4: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 5: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 6: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 7: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 8: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 9: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 10: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 11: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 12: status 10, 14 allocator calls
+FAIL tests/test_rfunc.c:965: LIMIT_before_any_allocation_of_the_functions_at_a_place: check failed: st[i] == ADF_LIMIT && calls[i] == 0 && wi[i] | function 13: status 10, 14 allocator calls
+FAIL LIMIT_before_any_allocation_of_the_functions_at_a_place (tests/test_rfunc.c:920, 14 failed checks)
+10 tests, 59700 checks, 14 failed checks, 1 failed tests
