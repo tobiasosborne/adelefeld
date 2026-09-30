@@ -1,0 +1,8 @@
+san exit=0
+check passed: all 67 test programs
+clang exit=0
+check passed: all 67 test programs
+inv exit=0
+check passed: all 67 test programs
+headers exit=0
+check_headers: passed

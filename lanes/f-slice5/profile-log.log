@@ -1,0 +1,5 @@
+terms=1000 power_mod=0.005559 division=0.012426 inverse=0.491130 term_product=3.533716 sum_mod=3.981094
+terms=2000 power_mod=0.014422 division=0.054558 inverse=1.118047 term_product=11.354522 sum_mod=13.843706
+terms=3000 power_mod=0.029123 division=0.147714 inverse=2.020323 term_product=23.465387 sum_mod=31.189827
+terms=4000 power_mod=0.039589 division=0.275653 inverse=3.220608 term_product=41.467314 sum_mod=57.990944
+terms=5000 power_mod=0.068221 division=0.450437 inverse=4.209618 term_product=58.602675 sum_mod=86.309951

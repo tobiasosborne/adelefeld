@@ -1,0 +1,3 @@
+{"calls": 160, "wall_seconds": 0.006660251005087048, "max_call_seconds": 6.9759e-05}
+{"inputs": 80, "enclosure_points": 80, "tight_witnesses": 0, "exact": 0, "status": 0}
+{"suite": "big", "elapsed_seconds": 0.5576015830156393, "inputs": 80, "enclosure_points": 80, "tight_witnesses": 0, "exact": 0, "status": 0}

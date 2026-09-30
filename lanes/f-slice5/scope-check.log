@@ -1,0 +1,7 @@
+src/lfunc.c: OK
+include/adelefeld/lfunc.h: OK
+tests/test_lfunc.c: OK
+bench/bench_lfunc.c: OK
+docs/api-1f4.md: OK
+docs/PERF.md: OK
+tests/ref/vectors/f-slice5/stored.jsonl: OK

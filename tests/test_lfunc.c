@@ -23,6 +23,9 @@
 #define _POSIX_C_SOURCE 200809L
 
 #include <limits.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <adelefeld.h>
@@ -246,6 +249,70 @@ open_vectors(const char * name)
     snprintf(path, sizeof path, "tests/ref/vectors/f-slice4/%s", name);
     ADF_CHECK_MSG(jsonl_open(path, &f, &err), "%s", jsonl_error_message(&err));
     return f;
+}
+
+/* Old-code fixtures, seed 930505. Compare every stored field and status, including aliasing.
+   2000 inputs at six primes, balls and exact rationals, N through 3000 and negative Log valuations. */
+ADF_TEST(stored_before_optimisation)
+{
+    jsonl_file *f = NULL;
+    jsonl_error_t err;
+    size_t i;
+    adf_lball_t x, y, z, want;
+    ADF_CHECK_MSG(jsonl_open("tests/ref/vectors/f-slice5/stored.jsonl", &f, &err),
+                  "%s", jsonl_error_message(&err));
+    if (!f) return;
+    ADF_CHECK(jsonl_count(f) == 2000);
+    adf_lball_init(x); adf_lball_init(y); adf_lball_init(z); adf_lball_init(want);
+    for (i = 0; i < jsonl_count(f); i++)
+    {
+        const jsonl_value *rec = jsonl_record(f, i);
+        lfn_t fn = fn_of(member_str(rec, "f"));
+        int st, ast, expected = (int) member_slong(rec, "st");
+        slong N = member_slong(rec, "N");
+        lb_from_json(x, member(rec, "x")); lb_from_json(want, member(rec, "y"));
+        /* The saved probe's unchanged-output sentinel. */
+        y->p = 7; y->v = -3; y->N = 0; y->exact = 1; fmpq_set_si(y->u, 17, 19);
+        adf_lball_set(z, x);
+        st = fn(y, x, N); ast = fn(z, z, N);
+        ADF_CHECK_MSG(st == expected && fields_equal(y, want), "stored row %lu", (ulong) i+1);
+        ADF_CHECK_MSG(ast == expected && fields_equal(z, st == ADF_OK ? want : x),
+                      "stored alias row %lu", (ulong) i+1);
+    }
+    adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(z); adf_lball_clear(want);
+    jsonl_close(f);
+}
+
+/* Five seconds per call is the regression constant requested for review R1.
+   A child alarm bounds even the old code, so a stalled call fails instead of blocking the suite. */
+ADF_TEST(review_R1_five_seconds)
+{
+    int i;
+    for (i = 0; i < 2; i++)
+    {
+        pid_t child = fork();
+        int status = 0;
+        ADF_CHECK(child >= 0);
+        if (child == 0)
+        {
+            adf_lball_t x, y;
+            int st;
+            alarm(5);
+            adf_lball_init(x); adf_lball_init(y); x->p = BIGP;
+            fmpz_set_ui(fmpq_numref(x->u), i == 0 ? BIGP : 2);
+            if (i == 0) fmpz_add_ui(fmpq_numref(x->u), fmpq_numref(x->u), 1);
+            st = i == 0 ? adf_lball_log(y, x, 10000) : adf_lball_Log(y, x, 10000);
+            alarm(0);
+            adf_lball_clear(x); adf_lball_clear(y);
+            _exit(st == ADF_OK ? 0 : 1);
+        }
+        if (child > 0)
+        {
+            ADF_CHECK(waitpid(child, &status, 0) == child);
+            ADF_CHECK_MSG(WIFEXITED(status) && WEXITSTATUS(status) == 0,
+                          "R1 input %d exceeded 5 seconds or failed: wait status %d", i+1, status);
+        }
+    }
 }
 
 /* v_p of a nonzero integer */

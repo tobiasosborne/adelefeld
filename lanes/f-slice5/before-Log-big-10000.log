@@ -1,0 +1,1 @@
+compiler=13.3.0 flags=-O2 -g flint=3.0.1 clock=MONOTONIC_RAW seed=0 cpu=2 pin_status=0 threads=1 kind=call_rate warm_output=1 p=18446744073709551557 N=10000 bits=640000 trials=1 fn=Log

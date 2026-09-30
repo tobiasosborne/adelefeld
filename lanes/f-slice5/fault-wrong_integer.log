@@ -1,0 +1,85 @@
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 3
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 3
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 33
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 33
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 111
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 111
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 135
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 135
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 153
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 153
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 225
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 225
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 309
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 309
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 321
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 321
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 339
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 339
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 357
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 357
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 417
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 417
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 489
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 489
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 507
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 507
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 519
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 519
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 549
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 549
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 609
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 609
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 771
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 771
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 795
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 795
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 807
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 807
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 915
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 915
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 927
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 927
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 981
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 981
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1011
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1011
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1161
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1161
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1257
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1257
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1299
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1299
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1467
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1467
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1497
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1497
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1551
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1551
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1557
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1557
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1575
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1575
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1629
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1629
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1659
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1659
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1683
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1683
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1713
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1713
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1755
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1755
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1761
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1761
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1773
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1773
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1779
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1779
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1785
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1785
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1791
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1791
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:278: stored_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored row 1869
+FAIL lanes/f-slice5/../../tests/test_lfunc.c:279: stored_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored alias row 1869
+stored checks=80002 failures=84

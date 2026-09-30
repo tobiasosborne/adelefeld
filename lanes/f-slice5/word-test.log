@@ -1,0 +1,18 @@
+ok   stored_before_optimisation
+ok   review_R1_five_seconds
+  cases_from_the_reference: 790 lines, OK 649, DOMAIN 100, NOT_DETERMINED 41
+ok   cases_from_the_reference
+  points_from_the_reference: 2165 points, 28 exact results
+ok   points_from_the_reference
+  ball_enumeration_over_the_grid: 7600 calls, 61032 point values enclosed, 3852 smallest-ball witnesses
+ok   ball_enumeration_over_the_grid
+ok   spec_precision_cases
+  identities_as_containment: 1046 round trips, 360 homomorphism checks
+ok   identities_as_containment
+  flint_second_opinion: 1000 compared, 0 refused by FLINT
+ok   flint_second_opinion
+ok   precision_2000
+ok   every_status
+ok   exact_results_and_shortcut_values
+ok   zz_free_the_grid
+12 tests, 454429 checks, 0 failed checks, 0 failed tests

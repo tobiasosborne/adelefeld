@@ -16,11 +16,13 @@
    non-negative), fmpz_pow_ui and fmpz_ui_pow_ui (913-916), fmpz_powm_ui (923-930), fmpz_remove (1142-1150),
    fmpz_invmod (1154-1160).
 
-   Everything is integer arithmetic modulo a power p^W of p: the input is reduced to a residue modulo p^W, the sum is
-   formed there, and the result is the residue modulo p^K. A function computes into a temporary and moves it into
-   the output only on ADF_OK (conventions 4.3), so y may be x and a status leaves y untouched. */
+   Inputs are reduced modulo p^W. Small log sums use decreasing term moduli (F8). Larger log sums
+   factor into short principal units and use exact binary splitting (F9). Results are reduced modulo p^K.
+   A function computes into a temporary and moves it into the output only on ADF_OK (conventions 4.3),
+   so y may be x and a status leaves y untouched. */
 
 #include <limits.h>
+#include <flint/ulong_extras.h>
 
 #include <adelefeld.h>
 #include "invariants.h"
@@ -325,11 +327,13 @@ adf_lball_exp(adf_lball_t y, const adf_lball_t x, slong N)
 
 /* ------------------------------------------------------------------------------------------------ log and Log */
 
+/* Retain the original loop when the entire working modulus is a tagged word.
+   The small-N measurements show that setting up the shrinking powers costs more there. */
 /* F5 and Proposition 8: S = sum_{k=1}^{T} (-1)^(k+1) z^k / k modulo p^K, from z_r = z modulo p^W, W >= K + e(T),
    v(z) >= vz >= 1, vz < K. Each term: z_r^k modulo p^W is divisible by p^e, e = v_p(k) (v(z_r^k) >= k vz > e, and
    W > e); it is divided by p^e and multiplied by the inverse of k / p^e modulo p^W. */
 static void
-log_sum(fmpz_t S, ulong p, const fmpz_t zr, slong T, const fmpz_t P, const fmpz_t PK)
+log_sum_word(fmpz_t S, ulong p, const fmpz_t zr, slong T, const fmpz_t P, const fmpz_t PK)
 {
     fmpz_t zk, term, inv, kk, pe;
     slong k;
@@ -360,6 +364,135 @@ log_sum(fmpz_t S, ulong p, const fmpz_t zr, slong T, const fmpz_t P, const fmpz_
     }
     fmpz_mod(S, S, PK);
     fmpz_clear(zk); fmpz_clear(term); fmpz_clear(inv); fmpz_clear(kk); fmpz_clear(pe);
+}
+
+/* F8 (docs/api-1f4.md): z = p^vz b. The degree-k unit power needs only
+   H_k = K - k vz + v_p(k) digits. Q uses the monotone upper bound K-k vz+floor_log(k,p),
+   so reducing the previous unit power never loses a digit needed by a later term.
+   The sum itself retains K digits. The original F7 working-power limit is checked by the caller. */
+FLINT_STATIC_NOINLINE void
+log_sum(fmpz_t S, ulong p, const fmpz_t zr, slong vz, slong K, slong T, const fmpz_t PK)
+{
+    fmpz_t b, zk, term, pe, Q, Qt, scale, pv, tmp;
+    slong k, previous = 0;
+    fmpz_init(b); fmpz_init(zk); fmpz_init(term); fmpz_init(pe);
+    fmpz_init(Q); fmpz_init(Qt); fmpz_init(scale); fmpz_init(pv); fmpz_init(tmp);
+    fmpz_ui_pow_ui(pv, p, (ulong) vz);
+    fmpz_divexact(b, zr, pv);
+    fmpz_set(Q, PK); fmpz_one(scale); fmpz_one(zk); fmpz_zero(S);
+    for (k = 1; k <= T; k++)
+    {
+        ulong kp = (ulong) k;
+        slong e = 0, bound = floor_log((ulong) k, p), H;
+        fmpz_ui_pow_ui(tmp, p, (ulong) (vz - (bound - previous)));
+        fmpz_divexact(Q, Q, tmp);
+        previous = bound;
+        fmpz_mul(zk, zk, b); fmpz_mod(zk, zk, Q);
+        fmpz_mul(scale, scale, pv);
+        while (kp % p == 0) { kp /= p; e++; }
+        H = K - k * vz + e;
+        if (H <= 0) continue;
+        fmpz_ui_pow_ui(pe, p, (ulong) e);
+        fmpz_ui_pow_ui(tmp, p, (ulong) (bound - e));
+        fmpz_divexact(Qt, Q, tmp);
+        fmpz_mod(term, zk, Qt);
+        /* F8: choose j in [0,kp) with term+j Qt divisible by kp.
+           Only word inverses are used. refs/src/flint-3.0.1/ulong_extras.rst:477-483;
+           fmpz.rst:845-859 (word remainder and exact division). kp <= T <= 2K <= 2^26. */
+        if (kp != 1)
+        {
+            ulong r = fmpz_fdiv_ui(term, kp);
+            ulong qi = n_invmod(fmpz_fdiv_ui(Qt, kp), kp);
+            ulong j = n_mulmod2(r == 0 ? 0 : kp - r, qi, kp);
+            fmpz_addmul_ui(term, Qt, j);
+            fmpz_divexact_ui(term, term, kp);
+        }
+        fmpz_divexact(tmp, scale, pe); fmpz_mul(term, term, tmp);
+        if (k % 2 == 1) fmpz_add(S, S, term); else fmpz_sub(S, S, term);
+    }
+    fmpz_mod(S, S, PK);
+    fmpz_clear(b); fmpz_clear(zk); fmpz_clear(term); fmpz_clear(pe);
+    fmpz_clear(Q); fmpz_clear(Qt); fmpz_clear(scale); fmpz_clear(pv); fmpz_clear(tmp);
+}
+
+/* F9: exact binary splitting of sum_{k=a}^{b-1} q^(k-a)/k.
+   No precision is lost inside the tree. FLINT documents balanced chunks for exp at
+   refs/src/flint-3.0.1/padic.rst:440-447 and rectangular log at :509-516.
+   This tree and the factorisation below are proved independently in docs/api-1f4.md F9. */
+static void
+log_split(fmpz_t A, fmpz_t B, fmpz_t R, const fmpz_t q, ulong a, ulong b)
+{
+    if (b - a == 1)
+    {
+        fmpz_one(A); fmpz_set_ui(B, a); fmpz_set(R, q);
+    }
+    else
+    {
+        ulong m = a + (b - a) / 2;
+        fmpz_t C, D, U, tmp;
+        fmpz_init(C); fmpz_init(D); fmpz_init(U); fmpz_init(tmp);
+        log_split(A, B, R, q, a, m);
+        log_split(C, D, U, q, m, b);
+        fmpz_mul(tmp, R, C); fmpz_mul(tmp, tmp, B);
+        fmpz_mul(A, A, D); fmpz_add(A, A, tmp);
+        fmpz_mul(B, B, D); fmpz_mul(R, R, U);
+        fmpz_clear(C); fmpz_clear(D); fmpz_clear(U); fmpz_clear(tmp);
+    }
+}
+
+/* Log of a short integral principal unit by an exact rational partial sum (F9). */
+static void
+log_short(fmpz_t S, ulong p, const fmpz_t z, slong vz, slong K, const fmpz_t PK)
+{
+    slong T = count_log(p, K, vz), D;
+    fmpz_t A, B, R, q, pp, pe;
+    fmpz_init(A); fmpz_init(B); fmpz_init(R); fmpz_init(q); fmpz_init_set_ui(pp,p); fmpz_init(pe);
+    fmpz_neg(q, z);
+    log_split(A, B, R, q, 1, (ulong) T + 1);
+    fmpz_mul(A, A, z);
+    D = fmpz_remove(B, B, pp);
+    fmpz_ui_pow_ui(pe, p, (ulong) D);
+    fmpz_divexact(A, A, pe);
+    fmpz_invmod(B, B, PK); fmpz_mul(S, A, B); fmpz_mod(S, S, PK);
+    fmpz_clear(A); fmpz_clear(B); fmpz_clear(R); fmpz_clear(q); fmpz_clear(pp); fmpz_clear(pe);
+}
+
+/* F9: successively remove the low 2*v digits of a unit that is 1 modulo p^v.
+   Each remaining factor is 1 modulo p^(2*v). The last factor is taken modulo p^K.
+   All factors lie in 1+p^c Z_p, so log adds and congruence modulo p^K is sufficient. */
+FLINT_STATIC_NOINLINE void
+log_balanced(fmpz_t S, ulong p, const fmpz_t zr, slong vz, slong K, const fmpz_t PK)
+{
+    fmpz_t u, low, z, Q, inv, term, pp;
+    slong v = vz;
+    fmpz_init(u); fmpz_init(low); fmpz_init(z); fmpz_init(Q); fmpz_init(inv); fmpz_init(term);
+    fmpz_init_set_ui(pp, p);
+    fmpz_add_ui(u, zr, 1); fmpz_mod(u, u, PK); fmpz_zero(S);
+    while (v < K)
+    {
+        slong m = v <= K / 2 ? 2 * v : K;
+        fmpz_ui_pow_ui(Q, p, (ulong) m); fmpz_mod(low, u, Q);
+        fmpz_sub_ui(z, low, 1);
+        if (!fmpz_is_zero(z))
+        {
+            slong w = fmpz_remove(term, z, pp);
+            log_short(term, p, z, w, K, PK);
+            fmpz_add(S, S, term);
+        }
+        if (m == K) break;
+        if (!fmpz_is_one(low))
+        {
+            /* u-low is divisible by p^m. Only K-m digits of low^(-1) are needed (F9). */
+            fmpz_sub(term, u, low); fmpz_divexact(term, term, Q);
+            fmpz_divexact(z, PK, Q);
+            fmpz_invmod(inv, low, z); fmpz_mul(term, term, inv); fmpz_mod(term, term, z);
+            fmpz_mul(u, term, Q); fmpz_add_ui(u, u, 1);
+        }
+        v = m;
+    }
+    fmpz_mod(S, S, PK);
+    fmpz_clear(u); fmpz_clear(low); fmpz_clear(z); fmpz_clear(Q); fmpz_clear(inv); fmpz_clear(term);
+    fmpz_clear(pp);
 }
 
 /* v_p of a nonzero rational. */
@@ -463,7 +596,12 @@ Log_centre(adf_lball_struct * res, ulong p, const fmpq_t a, slong K)
         }
         T = count_log(p, K, vz);
     }
-    log_sum(S, p, zr, T, P, PK);
+    if (fmpz_bits(P) <= FLINT_BITS - 2)
+        log_sum_word(S, p, zr, T, P, PK);
+    else if (K <= 64)
+        log_sum(S, p, zr, vz, K, T, PK);
+    else
+        log_balanced(S, p, zr, vz, K, PK);
     if (power)
     {
         fmpz_set_ui(t, p - 1);
