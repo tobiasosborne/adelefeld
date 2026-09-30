@@ -272,6 +272,8 @@ pow_bits_exceeded(const fmpq_t r, slong k)
     if (fmpq_is_one(r))
         return 0;
     b = (ulong) fmpz_bits(fmpq_numref(r)) + (ulong) fmpz_bits(fmpq_denref(r));
+    if (b == 0)
+        return 0;                       /* 0/0 is no canonical content: the debug build aborts on entry */
     return abs_k(k) > (ulong) ADF_IDELE_POW_BITS_MAX / b;
 }
 
@@ -282,8 +284,6 @@ idele_pow(adf_idele_t z, const adf_idele_t x, slong k, slong prec, int tight)
     arb_t t;
     int st;
 
-    if (prec > ADF_IDELE_PREC_MAX || pow_bits_exceeded(x->r, k))
-        return ADF_LIMIT;               /* both before any allocation and before r^k is formed */
     if (k == 0)
     {
         arb_one(z->inf);                /* L.2: the exact idele 1 */
@@ -320,6 +320,8 @@ idele_pow(adf_idele_t z, const adf_idele_t x, slong k, slong prec, int tight)
 int
 adf_idele_pow(adf_idele_t z, const adf_idele_t x, slong k, slong prec)
 {
+    if (prec > ADF_IDELE_PREC_MAX || pow_bits_exceeded(x->r, k))
+        return ADF_LIMIT;               /* first: before the entry check of the debug build (N-D8, F1) */
     PW_INV_IDELE(x);                    /* in the public function, so that the message names it */
     return idele_pow(z, x, k, prec, 0);
 }
@@ -327,6 +329,8 @@ adf_idele_pow(adf_idele_t z, const adf_idele_t x, slong k, slong prec)
 int
 adf_idele_pow_tight(adf_idele_t z, const adf_idele_t x, slong k, slong prec)
 {
+    if (prec > ADF_IDELE_PREC_MAX || pow_bits_exceeded(x->r, k))
+        return ADF_LIMIT;               /* first: before the entry check of the debug build (N-D8, F1) */
     PW_INV_IDELE(x);                    /* in the public function, so that the message names it */
     return idele_pow(z, x, k, prec, 1);
 }
@@ -338,8 +342,6 @@ idclass_pow(adf_idclass_t z, const adf_idclass_t x, slong k, slong prec, int tig
     arb_t t;
     int st;
 
-    if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
     if (k == 0)
     {
         arb_one(z->t);                  /* <1 ; [1]> */
@@ -367,6 +369,8 @@ idclass_pow(adf_idclass_t z, const adf_idclass_t x, slong k, slong prec, int tig
 int
 adf_idclass_pow(adf_idclass_t z, const adf_idclass_t x, slong k, slong prec)
 {
+    if (prec > ADF_IDELE_PREC_MAX)
+        return ADF_LIMIT;               /* first: before the entry check of the debug build (N-D8, F1) */
     PW_INV_CLASS(x);
     return idclass_pow(z, x, k, prec, 0);
 }
@@ -374,6 +378,8 @@ adf_idclass_pow(adf_idclass_t z, const adf_idclass_t x, slong k, slong prec)
 int
 adf_idclass_pow_tight(adf_idclass_t z, const adf_idclass_t x, slong k, slong prec)
 {
+    if (prec > ADF_IDELE_PREC_MAX)
+        return ADF_LIMIT;               /* first: before the entry check of the debug build (N-D8, F1) */
     PW_INV_CLASS(x);
     return idclass_pow(z, x, k, prec, 1);
 }

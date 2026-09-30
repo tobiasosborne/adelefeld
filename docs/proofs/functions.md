@@ -798,6 +798,79 @@ in Propositions 4 and 11 do not affect the proved formulas. No statement below i
 | 21 | No ordered-field structure at any prime | proved here | check_no_order |
 | 22 | Scalar outputs, invertibility, projections, ball domains | proved here | check_typed_and_projection |
 
+### Statements proved in the lane documents (not copied into this file)
+
+The lanes of milestone 1F proved the statements below in their own interface documents, stepwise, because this file
+has no statement for them. They are NOT copied here (decision of 2026-09-30, lane i-repair1); this table names each,
+the file and line where it is proved, and its review status as the reviews under `docs/reviews/f1/` give it.
+Reviews: f-review1 = `docs/reviews/f1/review-lball.md` (2026-09-29, adf_lball); f-review2 =
+`docs/reviews/f1/review-sball-rfunc.md` (adf_lball again, adf_sball, real functions); f-review3 =
+`docs/reviews/f1/review-lfunc.md` (exp, log, Log at a prime). "No counterexample" means: the review tested the
+statement by enumeration or by its own oracle and found none; it is not a proof by the reviewer unless it says
+"read". "Not reviewed" means that no review under `docs/reviews/f1/` covers the statement.
+
+`docs/api-1f.md`, slice 1F.3-a (adf_lball):
+
+| Statement | Content | Proved at | Review status |
+|---|---|---|---|
+| L0 | rational to its canonical centre | api-1f.md:75 | f-review1 F5 (MINOR, sign); closed (f-review2) |
+| L1 | projection of a finite ball to a prime | api-1f.md:86 | no counterexample (f-review1, f-review2) |
+| L2 | sum of balls | api-1f.md:98 | no counterexample (f-review1, f-review2) |
+| L5 | negation | api-1f.md:109 | no counterexample (f-review1, f-review2) |
+| L3 | product of balls | api-1f.md:114 | read, no false step (f-review1); no counterexample |
+| L4 | inverse of a ball | api-1f.md:134 | read, no false step (f-review1); no counterexample |
+| L4a | quotient from valuations and precisions | api-1f.md:155 | f-review2 R7 (MINOR, centre); repaired |
+| L6 | decomposition of a ball | api-1f.md:179 | no counterexample (f-review1, f-review2) |
+| L7 | valuation and absolute value | api-1f.md:190 | no counterexample (f-review1, f-review2) |
+| L8 | set predicates | api-1f.md:197 | no counterexample (f-review1, f-review2) |
+
+f-review1 F1 to F3 (MAJOR) and f-review2 R1, R2 (MAJOR) concern the storage algorithm and the limit rule, not a
+formula of L2 to L4a: the set formulas gave the right small ball. The rule is reworded by N-D7 (SPEC 15.4).
+
+`docs/api-1f.md`, slice 1F.1-a and 1F.2-a (adf_sball, real functions):
+
+| Statement | Content | Proved at | Review status |
+|---|---|---|---|
+| S1 | projection of an adele to a set of places | api-1f.md:284 | no counterexample (f-review2, 310 cases) |
+| S2 | order and sets of places | api-1f.md:300 | no counterexample (f-review2) |
+| S3 | componentwise ring operations | api-1f.md:305 | f-review2 R3 (MAJOR: masked LIMIT); repaired |
+| S4 | set predicates of partial balls | api-1f.md:323 | no counterexample (f-review2: 1800 calls) |
+| S5 | domains and statuses of the real functions | api-1f.md:336 | f-review2 R8 (MINOR: range); repaired |
+| S6 | the image of a ball by the end points | api-1f.md:353 | no counterexample (f-review2: 3660 cases) |
+| S7 | no non-finite ball with OK | api-1f.md:377 | no counterexample (f-review2) |
+
+R3 concerns the code and the header (the combination of statuses of S3 at several places); R4 and R5 (entry checks
+under ADF_CHECK_INVARIANTS; a `prec` of LONG_MAX) concern the code; all three are repaired by lane f-repair2.
+
+`docs/api-1f.md`, slice 1F.3-b (lane f-slice3) and slice 1F.4-b (lane f-slice6):
+
+| Statement | Content | Proved at | Review status |
+|---|---|---|---|
+| L9 | Newton lifting of the Teichmueller representative | api-1f.md:444 | not reviewed |
+| L10 | the split of a ball | api-1f.md:464 | not reviewed |
+| L11 | fractional part, unit modulo p^k | api-1f.md:486 | not reviewed |
+| L12 | integer powers | api-1f.md:497 | not reviewed |
+| L13 | early decision of LIMIT in `adf_lball_set_fball` | api-1f.md:531 | not reviewed |
+| S8 | `f_at` at a prime is the function of `lfunc.h` on the component | api-1f.md:615 | not reviewed |
+| S9 | the limit ADF_REAL_PREC_MAX | api-1f.md:632 | not reviewed |
+
+`docs/api-1f4.md` (lane f-slice4; the file has F1 to F7, no F8; exp, log, Log at a prime):
+
+| Statement | Content | Proved at | Review status |
+|---|---|---|---|
+| F1 | the domain test | api-1f4.md:72 | referee note, no failure (f-review3) |
+| F2 | exact values | api-1f4.md:85 | f-review3 R2 (MINOR: prose beyond the proof); corrected |
+| F3 | Log without the root of unity | api-1f4.md:102 | referee note, no failure (f-review3) |
+| F4 | exp with one common denominator | api-1f4.md:118 | proof re-read, no failure (f-review3) |
+| F5 | the sum of log, and a lower bound of the valuation | api-1f4.md:140 | proof re-read, no failure (f-review3) |
+| F6 | the precision of a result | api-1f4.md:158 | referee note, no failure (f-review3) |
+| F7 | limits | api-1f4.md:176 | referee note, no failure (f-review3) |
+
+f-review3 R1 (MAJOR) is a cost finding (`log(1 + p)` at a prime of one word, N = 10000, 59 s), not a statement; the
+brief of lane f-slice5 is written, and `lanes/f-slice5/` has no result. After F2 (api-1f4.md, f-review3 R2) it is
+left undecided whether log or Log takes a nonzero rational value at a rational argument: `[source pending: a proof
+that log and Log take no nonzero rational value at a rational argument]`; the code returns a ball there.
+
 ## Review record
 
 Date: 2026-09-27. Reviewer: Claude opus. Review file: `docs/reviews/m0-proofs/functions-review.md`, with

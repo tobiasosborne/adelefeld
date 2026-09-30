@@ -500,10 +500,17 @@ roundings, so the status and the ends agree bit for bit (the vectors check `lo`,
    `abs(k) b > MAX` exactly then), without overflow and without allocation. For `r = 1` there is no limit. For
    `r != 1`, `bits(n) + bits(d) >= 3`, so `k = WORD_MIN` always gives `LIMIT` and `fmpq_pow_si` (`fmpq.rst:480`)
    is never called with it.
-5. (Against repeated multiplication.) The product of `abs(k)` independent copies of `x` by `adf_idele_mul` has
-   the content `r^abs(k)` and, by Statement C.1 applied `abs(k) - 1` times at the one modulus `N'`, the unit
-   `c'^abs(k) U(N')`: the default power loses nothing against the product rule, and its real part encloses the
-   subset `{xi^k}` of the product set. `tests/test_idpow.c` checks this, and that the tight unit lies inside.
+5. (Against repeated multiplication.) Let `y = x` for `k > 0` and `y` the inverse idele of `x` (`adf_idele_inv`,
+   Statement D.2: content `1/r`, unit `c'^(-1) U(N')`, `c'^(-1)` the inverse modulo `N'`) for `k < 0`. The product
+   of `abs(k)` independent copies of `y` by `adf_idele_mul` has the content `r^k` and, by Statement C.1 applied
+   `abs(k) - 1` times at the one modulus `N'`, the unit `c'^k U(N')`: the default power loses nothing against the
+   product rule, and its real part encloses the subset `{xi^k}` of the product set. (The product of `abs(k)`
+   copies of `x` itself is right only for `k > 0`: for `k = -1` and `x` the exact rational idele 2 it is `x`,
+   with real part 2 and content 2, and `{xi^k} = {1/2}` is not inside it; the inverse gives 1/2.) For `k = 0`
+   the product of no copies is the exact idele 1, which is the result (Statement L.2); the formula `c'^0 U(N')`
+   does not hold for it, as the result unit is `[1]`, not `U(N')`. `tests/test_idpow.c` checks the case `k > 0`
+   and that the tight unit lies inside. [Correction of lane i-repair1, finding F4 of
+   `docs/reviews/m2/review-slices-2-3.md`.]
 
 **Statement M (the two hulls, as computed).** For `x = (X, r, u)`, `u = (c, N)` as stored, `r = n/d`:
 
@@ -515,8 +522,12 @@ roundings, so the status and the ends agree bit for bit (the vectors check `lo`,
    The ball is `(n c' + n L Zhat)/d`, stored as its canonical triple by `adf_fball_set_fmpz3`, a function of the
    set (`fball.h`).
 2. `adf_adele_set_idele_simple` stores `r c'' + r N'' Zhat` for the normal form `(c'', N'')` of `u`. It contains
-   `r c'' U(N'') = r c U(N)` (P16.1, line 409; Statement B). It equals the smallest hull exactly when `N''` is even
-   and has twice its radius when `N''` is odd (P16.4 for `(c'', N'')`).
+   `r c'' U(N'') = r c U(N)` (P16.1, line 409; Statement B). It equals the smallest hull exactly when `N''` is even.
+   When `N''` is odd, the smallest hull has the modulus `lcm(N'', 2) = 2 N''` (P16.4 for `(c'', N'')`), so the
+   radius of the simple hull is half the radius of the smallest hull: the simple hull is the coarser set (it
+   contains the smallest hull). Example: `x = (1, 1, [2 mod 3])`: simple `2 + 3 Zhat`, smallest `5 + 6 Zhat`.
+   [Correction of lane i-repair1, finding F5 of `docs/reviews/m2/review-slices-2-3.md`: the direction of the ratio
+   was reversed.]
 3. `N = 0`: the finite parts are the one rational `r e`; both functions store it exactly (SPEC 5).
 4. The real coordinate is `X` itself, so every point `(xi, r w)` of `x` lies in the adele value.
 

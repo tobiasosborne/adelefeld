@@ -137,10 +137,10 @@ adf_adele_div_idele(adf_adele_t z, const adf_adele_t x, const adf_idele_t y, slo
     fmpq_t one;
     int st = ADF_OK;
 
+    if (prec > ADF_IDELE_PREC_MAX)
+        return ADF_LIMIT;                       /* first: from prec alone, before the entry checks (N-D8, F1) */
     ADF_INV_ADELE(x);
     MP_INV_IDELE(y);
-    if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;                               /* before any allocation (the rule of idele.h) */
     arb_init(t);
     arb_div(t, x->inf, y->inf, p);
     if (!arb_is_finite(t))

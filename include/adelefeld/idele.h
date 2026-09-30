@@ -51,7 +51,9 @@
      every output untouched; it takes precedence over every other status of the function (the maximum
      of conventions 3.3). Decision of the orchestrator, 2026-09-30, after lane i-review1 (a prec of
      LONG_MAX made FLINT try to allocate 2^63 bits in inv and set_rat). The same rule holds for every
-     function of adelefeld/idclass.h that takes a prec. */
+     function of adelefeld/idclass.h, adelefeld/idpow.h and adelefeld/idmap.h that takes a prec. The test of
+     prec is the first thing a function does: it comes before the entry check of ADF_CHECK_INVARIANTS, which
+     reads (and allocates for) the inputs (lane i-repair1, finding F1 of docs/reviews/m2/review-slices-2-3.md). */
 
 #ifndef ADELEFELD_IDELE_H
 #define ADELEFELD_IDELE_H
@@ -192,12 +194,14 @@ void adf_idele_abs_inf(arb_t a, const adf_idele_t x);
 
 /* adf_idele_norm(t, x, prec): t = a positive real ball that contains the norm |xi| * product_p |x_p|_p
    = |xi| / r of every point (xi, r w) of x (ideles.md P14.2, line 348). The finite factor 1/r is exact:
-   it is formed from the integers of r and meets the real ball only in the last step, so each end point is
-   rounded once (PLAN 2.2, "norm exact before rounding"): t is kernel B on lo = RD_p(l_X d / n),
-   hi = RU_p(h_X d / n), r = n/d (Statement F), with the sign +1. It is the t of the class of x
-   (adf_idclass_set_idele). For the idele of a rational q (adf_idele_set_rat) t contains 1 (the product
-   formula, P14.3, line 350), and t is the exact 1 when the real ball of q is exact (q a dyadic number of at
-   most p bits).
+   it is formed from the integers of r, and no rounding is done on it. The real ball is rounded twice: first
+   its ends to p bits, l_X = RD_p(|m| - rho) and h_X = RU_p(|m| + rho) (E1; the exact ends could need unbounded
+   memory, arf.rst:103-106), then, after the exact scale, each end once more. So t is kernel B on
+   lo = RD_p(l_X d / n), hi = RU_p(h_X d / n), r = n/d (Statement F), with the sign +1. It is the t of the
+   class of x (adf_idclass_set_idele). For the idele of a rational q (adf_idele_set_rat) t contains 1 (the
+   product formula, P14.3, line 350), and t is the exact 1 when the real ball of q is exact and q has at most
+   p bits, p of this call (a dyadic q of more bits gives the ends RD_p(q) and RU_p(q), and t is a ball
+   around 1; the constructor's precision does not enter).
    Status: ADF_OK, t written; ADF_NOT_DETERMINED (B1) if the end points are more than p binades apart,
    t untouched; ADF_LIMIT if prec > ADF_IDELE_PREC_MAX, t untouched. t must not be x->inf.
    Cost: two exact products, two divisions at p bits and the kernel. */

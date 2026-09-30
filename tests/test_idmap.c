@@ -1105,3 +1105,114 @@ ADF_TEST(vectors_of_the_reference)
     adf_adele_clear(z);
     adf_adele_clear(zkeep);
 }
+
+/* ---- LIMIT is decided from prec alone, before any allocation, also under ADF_CHECK_INVARIANTS (lane
+   i-repair1, finding F1 of docs/reviews/m2/review-slices-2-3.md; SPEC 15.4 N-D8). The oracle is the FLINT
+   allocator: refs/src/flint-3.0.1/memory.rst:16-21. The values have a content and a modulus of thousands of
+   bits, so that the entry check of the debug build (integer gcds) allocates. ---- */
+
+static void *(*orig_malloc)(size_t);
+static void *(*orig_realloc)(void *, size_t);
+static void *(*orig_calloc)(size_t, size_t);
+static void (*orig_free)(void *);
+static size_t alloc_calls;
+static int alloc_tracking;
+
+static void *
+hook_malloc(size_t n)
+{
+    alloc_calls += alloc_tracking;
+    return orig_malloc(n);
+}
+
+static void *
+hook_realloc(void * p, size_t n)
+{
+    alloc_calls += alloc_tracking;
+    return orig_realloc(p, n);
+}
+
+static void *
+hook_calloc(size_t n, size_t s)
+{
+    alloc_calls += alloc_tracking;
+    return orig_calloc(n, s);
+}
+
+static void
+hook_free(void * p)
+{
+    orig_free(p);
+}
+
+static void
+hooks_on(void)
+{
+    __flint_get_memory_functions(&orig_malloc, &orig_calloc, &orig_realloc, &orig_free);
+    __flint_set_memory_functions(hook_malloc, hook_calloc, hook_realloc, hook_free);
+}
+
+static void
+hooks_off(void)
+{
+    __flint_set_memory_functions(orig_malloc, orig_calloc, orig_realloc, orig_free);
+}
+
+static void
+count_begin(void)
+{
+    flint_cleanup();
+    alloc_calls = 0;
+    alloc_tracking = 1;
+}
+
+static size_t
+count_end(void)
+{
+    alloc_tracking = 0;
+    return alloc_calls;
+}
+
+static void
+set_big_idele(adf_idele_t x)
+{
+    fmpz_one(fmpq_numref(x->r));
+    fmpz_mul_2exp(fmpq_numref(x->r), fmpq_numref(x->r), 4096);
+    fmpz_add_ui(fmpq_numref(x->r), fmpq_numref(x->r), 3);
+    fmpz_one(fmpq_denref(x->r));
+    fmpz_mul_2exp(fmpq_denref(x->r), fmpq_denref(x->r), 2048);
+    fmpz_add_ui(fmpq_denref(x->r), fmpq_denref(x->r), 7);
+    fmpq_canonicalise(x->r);
+    fmpz_one(x->u.c);
+    fmpz_one(x->u.N);
+    fmpz_mul_2exp(x->u.N, x->u.N, 2048);
+    fmpz_add_ui(x->u.N, x->u.N, 1);
+}
+
+ADF_TEST(LIMIT_before_any_allocation_of_the_division)
+{
+    adf_idele_t y;
+    adf_adele_t a, z;
+    size_t calls[2];
+    int st[2], i;
+
+    adf_idele_init(y);
+    adf_adele_init(a);
+    adf_adele_init(z);
+    set_big_idele(y);
+    ADF_CHECK(adf_idele_is_canonical(y) && adf_adele_is_canonical(a));
+    hooks_on();
+    for (i = 0; i < 2; i++)
+    {
+        count_begin();
+        st[i] = adf_adele_div_idele(z, a, y, i == 0 ? ADF_IDELE_PREC_MAX + 1 : WORD_MAX);
+        calls[i] = count_end();
+    }
+    hooks_off();
+    for (i = 0; i < 2; i++)
+        ADF_CHECK_MSG(st[i] == ADF_LIMIT && calls[i] == 0, "call %d: status %d, %zu allocator calls", i, st[i],
+                      calls[i]);
+    adf_idele_clear(y);
+    adf_adele_clear(a);
+    adf_adele_clear(z);
+}
