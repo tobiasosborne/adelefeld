@@ -18,12 +18,16 @@
    outside the alphabet of conventions 8.2 exists and why "with" cannot occur in a value
    text.  The settings are "prec <bits>" and "digits <n>", one per line.  The operations
    are show, type, add, sub, mul, neg, div, equal, contains, overlaps, compare, reconstruct,
-   cap, dump, load, roots, realroots and recover; reconstruct takes either one operand (an adele)
+   cap, dump, load, roots, realroots, recover, project, exp_at and log_at; reconstruct takes either one operand (an adele)
    or three (a finite
    ball and an interval given as two exact rationals), which is the one documented extension
    of the two-operand form.  dump writes the dump form of conventions 10.1 of a value, and
    load reads such a text; the driver has no context, so a dump with a context occurrence is
    not read.
+
+   The commands of the functions at places (milestone 1F: project, exp_at and log_at) read a list of
+   places as their second operand, which the value form does not have either; see the section "the
+   commands at places" below and tools/adf/README.md.
 
    The commands of the solvers of milestone S (roots, realroots and recover) read operands that
    the value form does not have in every position: the polynomial is a list of its integer
@@ -135,6 +139,9 @@ typedef enum
     ADF_DRV_ROOTS,
     ADF_DRV_REALROOTS,
     ADF_DRV_RECOVER,
+    ADF_DRV_PROJECT,
+    ADF_DRV_EXP_AT,
+    ADF_DRV_LOG_AT,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -163,6 +170,9 @@ static const struct
     { "roots", ADF_DRV_ROOTS, 3 },
     { "realroots", ADF_DRV_REALROOTS, 1 },
     { "recover", ADF_DRV_RECOVER, 3 },
+    { "project", ADF_DRV_PROJECT, 2 },
+    { "exp_at", ADF_DRV_EXP_AT, 2 },
+    { "log_at", ADF_DRV_LOG_AT, 2 },
     { "prec", ADF_DRV_PREC, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
@@ -1439,6 +1449,300 @@ done:
     return status;
 }
 
+/* ---- the commands at places (milestone 1F, lane f-slice6) ---- */
+
+/* Three commands read a set of places as their second operand, which the value form does not have:
+
+     project X with PLACES    the partial ball of X over the places, adf_sball_project
+     exp_at X with PLACE      exp of X at the one place, adf_sball_exp_at
+     log_at X with PLACE      log of X at the one place, adf_sball_log_at
+
+   X is an exact rational, a finite ball or an adele of the value form.  A rational is converted to the
+   adele (q ; q) at the setting prec (SPEC 4.1); a finite ball has no real coordinate, so the place "real"
+   is ADF_DOMAIN for it; a complex adele is ADF_UNSUPPORTED (the complex functions are not in this slice,
+   include/adelefeld/sball.h).  PLACES is a list of places separated by single spaces: a prime in decimal
+   or the word real.  A token of another shape (a sign other than "-", a leading zero, a letter, two
+   spaces in a row) is ADF_PARSE.  A negative number, 0, 1, a composite and a number of more than 64 bits
+   are not places: ADF_DOMAIN, as for the solver commands.  A place twice is ADF_DOMAIN (adf_sball_project).
+   exp_at and log_at take exactly one place.
+
+   The precision: at the place real, the setting prec is the working precision in bits of arb; at a prime
+   it is the requested ABSOLUTE p-adic precision N of adelefeld/lfunc.h (include/adelefeld/rfunc.h, "A
+   PRIME").  The line printed is the partial ball: its components in the canonical order (the real place
+   first, then the primes increasing), separated by "; ", each
+
+     real: <ball>                  the real-ball text of conventions 9.5 with the setting digits
+     <p>: <centre>                 an exact local ball: the rational p^v u, printed as a rational
+     <p>: <centre> + O(<p>^<N>)    a local ball: the canonical centre p^v u in [0, p^N), the rational
+                                   printed as the driver prints a rational, and N its absolute precision
+
+   This is a text of the driver and not a value form of the library (the value form of a partial ball,
+   conventions 9.2, is a different text and has no printer in this build; decision N-D1 is the pattern).
+   The statuses of the library are the statuses of the command; the place reported by the library is not
+   printed. */
+
+/* adf_drv_place_token(tok, len, v): one token of a list of places, the syntax and the value together, since
+   both are decided on the token alone: ADF_PARSE for a token that is not "real" or an optionally negative
+   decimal without a leading zero; ADF_DOMAIN for a value that is no prime of a place; else the place. */
+static int
+adf_drv_place_token(const char * tok, size_t len, adf_place_t * v)
+{
+    fmpz_t z;
+    char * buf;
+    size_t i = 0, digits;
+    int neg, status;
+
+    if (len == 4 && memcmp(tok, "real", 4) == 0)
+    {
+        *v = adf_place_inf();
+        return ADF_OK;
+    }
+    neg = (len > 0 && tok[0] == '-');
+    if (neg)
+        i = 1;
+    digits = len - i;
+    if (digits == 0)
+        return ADF_PARSE;
+    if (tok[i] == '0' && digits > 1)
+        return ADF_PARSE;        /* a leading zero is not the decimal of the operand form */
+    for (; i < len; i++)
+        if (tok[i] < '0' || tok[i] > '9')
+            return ADF_PARSE;
+    if (neg)
+        return ADF_DOMAIN;
+    buf = flint_malloc(digits + 1);
+    memcpy(buf, tok + (len - digits), digits);
+    buf[digits] = '\0';
+    fmpz_init(z);
+    status = (fmpz_set_str(z, buf, 10) == 0) ? adf_drv_place_operand(v, z) : ADF_PARSE;
+    fmpz_clear(z);
+    flint_free(buf);
+    return status;
+}
+
+/* adf_drv_place_list(s, len, places, n): the list of places of the second operand.  Tokens are separated
+   by exactly one space; a blank at the end of the operand, or two in a row, is a token of length 0, which
+   is ADF_PARSE.  *n receives the number of places read.  The syntax of every token is decided before the
+   value of any (the order of the checks): a PARSE anywhere wins over a DOMAIN before it.  The result is
+   ADF_OK, or the status of the first token that is no place. */
+static int
+adf_drv_place_list(const char * s, size_t len, adf_place_t * places, slong * n)
+{
+    size_t i = 0, start;
+    slong k = 0;
+    int first_bad = ADF_OK, status;
+
+    while (1)
+    {
+        adf_place_t v = adf_place_inf();
+
+        start = i;
+        while (i < len && s[i] != ' ')
+            i++;
+        status = adf_drv_place_token(s + start, i - start, &v);
+        if (status == ADF_PARSE)
+            return ADF_PARSE;
+        if (status != ADF_OK && first_bad == ADF_OK)
+            first_bad = status;
+        places[k++] = v;
+        if (i == len)
+            break;
+        i++;                     /* the single space */
+    }
+    *n = k;
+    return first_bad;
+}
+
+/* adf_drv_lball_text(l): the text of a local ball as above, or NULL when the centre is beyond the bound of
+   adf_lball_get_center (the printer refuses: ADF_LIMIT, as for every printer).  The string is allocated
+   with flint_malloc. */
+static char *
+adf_drv_lball_text(const adf_lball_struct * l)
+{
+    adf_rat_t c;
+    char * t, * out, tail[64];
+    size_t len, tl;
+
+    adf_rat_init(c);
+    if (adf_lball_get_center(c, l) != ADF_OK)
+    {
+        adf_rat_clear(c);
+        return NULL;
+    }
+    t = adf_rat_get_str(&len, c);
+    adf_rat_clear(c);
+    if (l->exact)
+        tail[0] = '\0';
+    else
+        flint_sprintf(tail, " + O(%wu^%wd)", (ulong) l->p, l->N);
+    tl = strlen(tail);
+    out = flint_malloc(len + tl + 1);
+    memcpy(out, t, len);
+    memcpy(out + len, tail, tl + 1);
+    adf_str_free(t);
+    return out;
+}
+
+/* adf_drv_put_sball(out, y, digits): the line of a partial ball.  Every text is formed before a byte is
+   written, so that a printer that refuses one gives ADF_LIMIT and the line of the error, not half a line. */
+static int
+adf_drv_put_sball(FILE * out, const adf_sball_t y, slong digits)
+{
+    char ** t;
+    slong i, m = 0, count = adf_sball_num_places(y);
+    int status = ADF_OK;
+    arb_t r;
+
+    if (y->arch == ADF_ARCH_COMPLEX)
+        return ADF_UNSUPPORTED;
+    t = flint_calloc(count + 1, sizeof(char *));
+    if (y->arch == ADF_ARCH_REAL)
+    {
+        char * b;
+
+        arb_init(r);
+        (void) adf_sball_get_arb(r, y, adf_place_inf());
+        b = adf_drv_arb_str(r, digits);
+        arb_clear(r);
+        if (b == NULL)
+            status = ADF_LIMIT;
+        else
+        {
+            t[m] = flint_malloc(strlen(b) + 7);
+            strcpy(t[m], "real: ");
+            strcat(t[m], b);
+            flint_free(b);
+            m++;
+        }
+    }
+    for (i = 0; status == ADF_OK && i < y->len; i++)
+    {
+        char * b = adf_drv_lball_text(&y->loc[i]), pre[32];
+
+        if (b == NULL)
+        {
+            status = ADF_LIMIT;
+            break;
+        }
+        flint_sprintf(pre, "%wu: ", (ulong) y->loc[i].p);
+        t[m] = flint_malloc(strlen(pre) + strlen(b) + 1);
+        strcpy(t[m], pre);
+        strcat(t[m], b);
+        flint_free(b);
+        m++;
+    }
+    for (i = 0; i < m; i++)
+    {
+        if (status == ADF_OK)
+        {
+            if (i > 0)
+                fputs("; ", out);
+            fputs(t[i], out);
+        }
+        flint_free(t[i]);
+    }
+    flint_free(t);
+    if (status == ADF_OK)
+        fputc('\n', out);
+    return status;
+}
+
+/* adf_drv_places(out, op, l, st): project, exp_at and log_at, the steps of the command at the top of the
+   file: 2. the syntax of X (adf_text_classify) and of the list of places; 3. the kind of X; 4. its value;
+   5. the operation: the places, the type of X against them, the projection, the function; 6. the printer. */
+static int
+adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state * st)
+{
+    adf_drv_value x;
+    adf_text_kind kind;
+    adf_place_t * places = NULL;
+    adf_sball_t s, y;
+    adf_adele_t a;
+    arb_t r0;
+    slong n = 0, i;
+    int status, place_status = ADF_OK, has_real = 0;
+
+    adf_drv_value_init(&x);
+    adf_sball_init(s);
+    adf_sball_init(y);
+    adf_adele_init(a);
+
+    /* step 2: the syntax of X, then of the places (at most one token to two bytes of the operand) */
+    status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK)
+        goto done;
+    places = flint_malloc((l->n[1] / 2 + 2) * sizeof(adf_place_t));
+    place_status = adf_drv_place_list(l->s[1], l->n[1], places, &n);
+    if (place_status == ADF_PARSE)
+    {
+        status = ADF_PARSE;
+        goto done;
+    }
+    if (op != ADF_DRV_PROJECT && n != 1)
+    {
+        status = ADF_PARSE;      /* exp_at and log_at take exactly one place */
+        goto done;
+    }
+    /* step 3 and step 4: the kind and the value of X */
+    if (adf_drv_kind_type(kind) == ADF_DRV_OTHER)
+    {
+        status = ADF_UNSUPPORTED;
+        goto done;
+    }
+    status = adf_drv_value_read(&x, kind, l->s[0], l->n[0], st->prec);
+    if (status != ADF_OK)
+        goto done;
+    /* step 5: the places, then the type, then the projection and the function */
+    if (place_status != ADF_OK)
+    {
+        status = place_status;
+        goto done;
+    }
+    if (x.type == ADF_DRV_CADELE)
+    {
+        status = ADF_UNSUPPORTED;
+        goto done;
+    }
+    for (i = 0; i < n; i++)
+        if (adf_place_is_archimedean(places[i]))
+            has_real = 1;
+    if (x.type == ADF_DRV_FBALL)
+    {
+        if (has_real)
+        {
+            status = ADF_DOMAIN;     /* a finite ball has no real coordinate */
+            goto done;
+        }
+        arb_init(r0);
+        status = adf_adele_set_arb_fball(a, r0, x.f);
+        arb_clear(r0);
+    }
+    else if (x.type == ADF_DRV_RAT)
+        adf_adele_set_rat(a, x.r, st->prec);
+    else
+        adf_adele_set(a, x.a);
+    if (status == ADF_OK)
+        status = adf_sball_project(s, NULL, a, places, n);
+    if (status != ADF_OK)
+        goto done;
+    if (op == ADF_DRV_PROJECT)
+        adf_sball_swap(y, s);
+    else if (op == ADF_DRV_EXP_AT)
+        status = adf_sball_exp_at(y, NULL, s, places[0], st->prec);
+    else
+        status = adf_sball_log_at(y, NULL, s, places[0], st->prec);
+    if (status == ADF_OK)
+        status = adf_drv_put_sball(out, y, st->digits);
+
+done:
+    flint_free(places);
+    adf_adele_clear(a);
+    adf_sball_clear(s);
+    adf_sball_clear(y);
+    adf_drv_value_clear(&x);
+    return status;
+}
+
 /* ---- one command ---- */
 
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
@@ -1458,6 +1762,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
+    if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT)
+        return adf_drv_places(out, op, l, st);
 
     adf_drv_value_init(&x);
     adf_drv_value_init(&y);

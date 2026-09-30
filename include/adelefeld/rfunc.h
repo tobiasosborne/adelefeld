@@ -39,7 +39,8 @@
    Statuses, both levels: OK; DOMAIN; NOT_DETERMINED; LIMIT (prec, below). The arb-level functions also return DOMAIN for a
    non-finite input ball (a constructor-like invalid input, conventions 3.1). Outputs are untouched on a status.
    Aliasing: y may be x.
-   A prec below 2 is taken as 2 (M1-D4). A prec above ADF_REAL_PREC_MAX is ADF_LIMIT at both levels: decided from
+   A prec below 2 is taken as 2 (M1-D4). A prec above ADF_REAL_PREC_MAX is ADF_LIMIT at both levels (at the level of the
+   partial ball: at the archimedean place only; at a prime `prec` is an absolute p-adic precision, see below): decided from
    prec alone, before every other status (also before the domain checks and the checks on v) and before any
    allocation; the outputs are untouched; at the level of the partial ball `where` = the archimedean place. */
 
@@ -81,20 +82,43 @@ int adf_real_root(arb_t y, const arb_t x, ulong n, slong prec);
 
 /* adf_sball_exp_at(y, where, x, v, prec), and log, log_abs, sin, cos, sqrt likewise; adf_sball_root_at(y, where,
    x, v, n, prec): y = the partial ball over the one place v that holds f applied to the component of x at v
-   (arch = REAL, len = 0, inf = the real result + 0 i). The other components of x are not part of y
-   (docs/proofs/functions.md Proposition 22).
-   v must be a place of x and the archimedean place, whose tag is REAL:
-   Status: ADF_OK, y written (where untouched);
-     ADF_DOMAIN, where = v, if v is not a place of x;
-     ADF_UNSUPPORTED, where = v, if v is a prime of x (functions at primes are the milestone 1F.4, not this slice),
-       or, where = the archimedean place, if the tag is COMPLEX (complex wrappers are not in this slice);
-     ADF_DOMAIN or ADF_NOT_DETERMINED, where = v, with the meaning of the table above (a domain failure at the place
-       v; no value is written); ADF_DOMAIN with where untouched for a root of degree 0.
-   The check of prec (LIMIT) comes before them; then the checks on v, in the order above. y untouched on every
-   status other than OK.
-   Aliasing: y may be x. Cost: as the arb-level function. */
+   (docs/proofs/functions.md Proposition 22: the other components of x are not part of y).
+   v must be a place of x: the archimedean place (tag REAL) or a prime of x.
+
+   THE ARCHIMEDEAN PLACE (slice 1F.2). y has arch = REAL, len = 0, inf = the real result + 0 i. `prec` is the working
+   precision in bits of arb; a prec below 2 is taken as 2 (M1-D4) and a prec above ADF_REAL_PREC_MAX is ADF_LIMIT with
+   where = the archimedean place, decided before every other status, also before the check that x has the place
+   (only when v is the archimedean place; for a prime see below).
+
+   A PRIME (slice 1F.4, lane f-slice6). Three functions exist at a prime, through adelefeld/lfunc.h:
+       adf_sball_exp_at   : adf_lball_exp on the component of x at v;
+       adf_sball_log_at   : adf_lball_log on it (the series; domain 1 + p Z_p);
+       adf_sball_Log_at   : adf_lball_Log on it (the Iwasawa logarithm; domain every x != 0).
+   y is the partial ball over v (arch = NONE, inf = 0, len = 1, loc[0] = the result of the lfunc.h function, the
+   identical fields). At a prime `prec` is NOT a number of bits: it is the requested ABSOLUTE p-adic precision N of
+   lfunc.h (the error set of the result is p^K Z_p, K = N for an exact input, K = min(N, exponent of the image) for a
+   ball input; lfunc.h says which). It is passed unchanged: no rounding up of a value below 2, and ADF_REAL_PREC_MAX
+   does not apply at a prime. The limits at a prime are those of lfunc.h (|v| or |N| above ADF_LBALL_EXP_MAX, a
+   result exponent above it, the working modulus p^W above ADF_LBALL_BITS_MAX bits): ADF_LIMIT with where = v.
+   The statuses of lfunc.h arrive unchanged with where = v: ADF_DOMAIN (x does not meet the domain; the exact 0 under
+   Log), ADF_NOT_DETERMINED (x meets the domain and its complement; a ball that contains 0 under Log), ADF_LIMIT.
+   The other functions (log_abs, sin, cos, sqrt, root) at a prime are ADF_UNSUPPORTED with where = v, a valid request
+   that a later slice implements; the check that v is a place of x comes first. A COMPLEX tag concerns the
+   archimedean place only and does not affect a prime.
+
+   adf_sball_Log_at at the ARCHIMEDEAN place is the real logarithm, domain t > 0, the same result and statuses as
+   adf_sball_log_at (SPEC 9.3.2, "Log at all places": "The real coordinate needs a positive input, or the separately
+   named log_abs"). log_abs_at is the function for a negative real input.
+
+   Status, in the order of the checks: ADF_LIMIT (prec above the limit, v archimedean); ADF_DOMAIN, where = v, if v is
+   not a place of x; ADF_UNSUPPORTED, where = v, for a prime with a function of the second list above; at the
+   archimedean place ADF_UNSUPPORTED, where = the archimedean place, if the tag is COMPLEX; ADF_DOMAIN with where
+   untouched for a root of degree 0 at the archimedean place; then the statuses of the function on the component,
+   where = v; else ADF_OK, y written (where untouched). y untouched on every status other than OK.
+   Aliasing: y may be x. Cost: as the function of arb (archimedean place) or of lfunc.h (a prime). */
 int adf_sball_exp_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_log_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
+int adf_sball_Log_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_log_abs_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_sin_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_cos_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);

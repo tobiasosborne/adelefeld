@@ -1,0 +1,6 @@
+redgreen.log of lane f-slice6
+01:57 RED 1: make build/test_rfunc_prime: link error, undefined reference to adf_sball_Log_at (declared in rfunc.h, not defined).
+01:57 RED 2: with a stub Log_at (log at the real place, UNSUPPORTED at a prime) ./build/test_rfunc_prime: 7 of 9 tests fail with assertions: vectors_exact_at_prime 1825 failed checks, vectors_of_lfunc_through_at 790, statuses_arrive_with_the_prime 30, prec_is_the_absolute_precision_at_a_prime 35, other_functions_and_place_checks 3, projected_adele_at_every_place 9, aliasing_at_a_prime 3 (Log_at_the_real_place and the hand test passed or crashed, see red1.txt: the run ended in a segfault of the test on y->loc[0] of an unwritten y, guarded afterwards).
+01:58 RED 3: tests/test_rfunc.c changed to the new contract (exp, log DOMAIN at a prime for the value 2/3; prime not a place of x is DOMAIN at prec above the limit): ./build/test_rfunc on the old code: sball_at_statuses_and_places 6 failed checks, prec_limit 112 failed checks (red2.txt).
+01:58 GREEN: after src/rfunc.c at_prime: test_rfunc 9 tests 59670 checks 0 failed; test_rfunc_prime 9 tests 98016 checks 0 failed.
+Test defects found by the first green run (mine, not of the code): the vector field c is a string (member_str); exp of O(7^5) is OK not NOT_DETERMINED (M >= c), aliasing test now uses O(7^0).

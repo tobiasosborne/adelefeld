@@ -623,7 +623,8 @@ make_adele(adf_adele_t a, slong num, slong den, slong prec)
     adf_rat_clear(q);
 }
 
-/* The order of the checks on v: not a place -> DOMAIN (where = v); a prime of x -> UNSUPPORTED (where = v); a COMPLEX
+/* The order of the checks on v: not a place -> DOMAIN (where = v); a prime of x -> exp, log: the function at the prime,
+   the others UNSUPPORTED (where = v) (changed by lane f-slice6; before: every function UNSUPPORTED); a COMPLEX
    tag -> UNSUPPORTED (where = inf); then the status of the real function with where = inf. y untouched on each. A
    function that checked the real failure first, or wrote y, fails. */
 ADF_TEST(sball_at_statuses_and_places)
@@ -632,6 +633,7 @@ ADF_TEST(sball_at_statuses_and_places)
     adf_sball_t x, y, w;
     adf_place_t places3[3], v, where, mark = place_of(1000003), inf = adf_place_inf();
     size_t k;
+    int want_p;
     arb_t r;
 
     adf_adele_init(a);
@@ -658,15 +660,18 @@ ADF_TEST(sball_at_statuses_and_places)
         v = place_of(5);
         where = mark;
         st = k < NFNS ? FNS[k].g(y, &where, x, v, 53) : adf_sball_root_at(y, &where, x, v, 3, 53);
-        ADF_CHECK_MSG(st == ADF_UNSUPPORTED && adf_place_equal(where, v) && adf_sball_identical(y, x), "k=%lu",
+        /* f-slice6: exp and log exist at a prime now; for the value 2/3 both are DOMAIN at 5 and at 2 (v_5(2/3) = 0,
+           v_2(2/3) = 1 < 2; v(2/3 - 1) = 0): lfunc.h, tests/test_rfunc_prime.c. The others are UNSUPPORTED. */
+        want_p = (k == 0 || k == 1) ? ADF_DOMAIN : ADF_UNSUPPORTED;
+        ADF_CHECK_MSG(st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x), "k=%lu",
                       (unsigned long) k);
         v = place_of(2);
         where = mark;
         st = k < NFNS ? FNS[k].g(y, &where, x, v, 53) : adf_sball_root_at(y, &where, x, v, 3, 53);
-        ADF_CHECK(st == ADF_UNSUPPORTED && adf_place_equal(where, v) && adf_sball_identical(y, x));
+        ADF_CHECK(st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x));
         /* NULL where is allowed */
         st = k < NFNS ? FNS[k].g(y, NULL, x, v, 53) : adf_sball_root_at(y, NULL, x, v, 3, 53);
-        ADF_CHECK(st == ADF_UNSUPPORTED);
+        ADF_CHECK(st == want_p);
     }
 
     /* no archimedean place in x (tag NONE): the archimedean place is not a place of x */
@@ -744,8 +749,10 @@ ADF_TEST(sball_at_statuses_and_places)
 
 /* Every function of rfunc.h: at prec = ADF_REAL_PREC_MAX it works (on an input whose value is cheap: exp, sin, cos of
    0; log, log|.|, sqrt, cube root of 1), and above it, also at LONG_MAX, it returns ADF_LIMIT, decided from prec alone:
-   before the checks of the domain (non-finite input, degree 0, a place that is not one of x, a prime, a COMPLEX tag),
-   the output untouched; at the level of the partial ball where = the archimedean place. What would make a case fail:
+   before the checks of the domain (non-finite input, degree 0, a place that is not one of x, a COMPLEX tag), the
+   output untouched; at the level of the partial ball where = the archimedean place. For a PRIME as the place the
+   limit does not apply (f-slice6: prec is the absolute precision N there): the prime that is not a place of x is
+   DOMAIN with where = that prime. What would make a case fail:
    an allocation in arb at LONG_MAX (the old code aborts in arb_sin and arb_root_ui), any other status. */
 ADF_TEST(prec_limit)
 {
@@ -816,12 +823,17 @@ ADF_TEST(prec_limit)
             {
                 adf_place_t vv = j == 1 ? place_of(3) : (j == 3 ? place_of(1009) : inf);
                 adf_sball_struct * in = j == 2 ? sc : sx;
-                sball_real(sy, s);
-                where = mark;
+                int prime_not_in_x = (j == 1 || j == 3);   /* f-slice6: at a prime prec is the absolute precision N, */
+                sball_real(sy, s);                          /* not a number of bits: no LIMIT from ADF_REAL_PREC_MAX; */
+                where = mark;                               /* the prime is not a place of x: DOMAIN with that prime */
                 st = call_sball(name, 3, sy, &where, in, vv, precs[i]);
-                ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_is_archimedean(where) && adf_sball_identical(sy, ss),
-                              "%s prec %ld case %d (sball): status %s", name, (long) precs[i], j, adf_status_str(st));
-                ADF_CHECK(call_sball(name, 3, sy, NULL, in, vv, precs[i]) == ADF_LIMIT);
+                if (prime_not_in_x)
+                    ADF_CHECK_MSG(st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss),
+                                  "%s prec %ld case %d (sball): status %s", name, (long) precs[i], j, adf_status_str(st));
+                else
+                    ADF_CHECK_MSG(st == ADF_LIMIT && adf_place_is_archimedean(where) && adf_sball_identical(sy, ss),
+                                  "%s prec %ld case %d (sball): status %s", name, (long) precs[i], j, adf_status_str(st));
+                ADF_CHECK(call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT));
             }
         }
     }

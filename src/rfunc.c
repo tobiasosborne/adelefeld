@@ -48,6 +48,7 @@ typedef enum
     F_EXP,
     F_LOG,
     F_LOG_ABS,
+    F_LOG_IW,   /* the Iwasawa logarithm Log: at the real place log (domain t > 0), at a prime adf_lball_Log */
     F_SIN,
     F_COS,
     F_ROOT   /* degree n >= 1; the square root is F_ROOT with n = 2 */
@@ -172,6 +173,8 @@ real_apply(arb_t y, const arb_t x, rfn f, ulong n, slong prec)
         case F_LOG:
             arb_log(t, x, prec);
             break;
+        case F_LOG_IW:   /* never passed: at_place maps the Iwasawa logarithm at the real place to F_LOG */
+            break;
         case F_LOG_ABS:
             arb_abs(t, x);
             arb_log(t, t, prec);
@@ -238,13 +241,60 @@ adf_real_root(arb_t y, const arb_t x, ulong n, slong prec)
 
 /* ---- at a place of a partial ball (SPEC 9.3.1: f_at with one place; Proposition 22) ---- */
 
+/* At a PRIME (lane f-slice6): exp, log and Log go through adf_lball_exp, adf_lball_log and adf_lball_Log
+   (include/adelefeld/lfunc.h) on the component of x at v, with N = prec, the absolute precision (docs/api-1f.md,
+   section "Slice 1F.4-b"). The result is the partial ball over v: arch NONE, inf = 0, len 1, loc[0] = the result.
+   Statuses of lfunc.h are passed on with where = v. The component is copied first, so y may be x. Every other
+   function is UNSUPPORTED with where = v (a later slice). */
+static int
+at_prime(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, rfn f, slong N)
+{
+    adf_lball_t c, r;
+    adf_sball_t t;
+    int st;
+
+    if (f != F_EXP && f != F_LOG && f != F_LOG_IW)
+    {
+        if (where != NULL)
+            *where = v;
+        return ADF_UNSUPPORTED;
+    }
+    adf_lball_init(c);
+    adf_lball_init(r);
+    st = adf_sball_get_lball(c, x, v);   /* v is a prime of x: OK */
+    if (st == ADF_OK)
+    {
+        if (f == F_EXP)
+            st = adf_lball_exp(r, c, N);
+        else if (f == F_LOG)
+            st = adf_lball_log(r, c, N);
+        else
+            st = adf_lball_Log(r, c, N);
+    }
+    if (st == ADF_OK)
+    {
+        adf_sball_init(t);
+        st = adf_sball_set_arb_lballs(t, NULL, NULL, r, 1);   /* r is canonical: OK */
+        if (st == ADF_OK)
+            adf_sball_swap(y, t);
+        adf_sball_clear(t);
+    }
+    if (st != ADF_OK && where != NULL)
+        *where = v;
+    adf_lball_clear(c);
+    adf_lball_clear(r);
+    return st;
+}
+
 static int
 at_place(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, rfn f, ulong n, slong prec)
 {
     arb_t t;
     int st;
     ADF_INV_SBALL(x);
-    if (prec > ADF_REAL_PREC_MAX)   /* from prec alone, before every other status; where = the archimedean place */
+    /* prec above the limit: LIMIT from prec alone, before every other status, where = the archimedean place. Only
+       where prec is a number of bits: at a prime it is the absolute precision N of lfunc.h (f-slice6). */
+    if (adf_place_is_archimedean(v) && prec > ADF_REAL_PREC_MAX)
     {
         if (where != NULL)
             *where = adf_place_inf();
@@ -256,7 +306,9 @@ at_place(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v,
             *where = v;
         return ADF_DOMAIN;
     }
-    if (!adf_place_is_archimedean(v) || x->arch == ADF_ARCH_COMPLEX)
+    if (!adf_place_is_archimedean(v))
+        return at_prime(y, where, x, v, f, prec);
+    if (x->arch == ADF_ARCH_COMPLEX)
     {
         if (where != NULL)
             *where = v;
@@ -264,6 +316,8 @@ at_place(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v,
     }
     if (f == F_ROOT && n == 0)
         return ADF_DOMAIN;
+    if (f == F_LOG_IW)
+        f = F_LOG;   /* the real place: Log = log on t > 0 (SPEC 9.3.2: "the real coordinate needs a positive input") */
     arb_init(t);
     st = real_apply(t, acb_realref(x->inf), f, n, prec);
     if (st != ADF_OK)
@@ -291,6 +345,12 @@ int
 adf_sball_log_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec)
 {
     return at_place(y, where, x, v, F_LOG, 0, prec);
+}
+
+int
+adf_sball_Log_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec)
+{
+    return at_place(y, where, x, v, F_LOG_IW, 0, prec);
 }
 
 int

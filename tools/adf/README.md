@@ -69,6 +69,8 @@ that the one chosen is unambiguous.
 | `roots` | three: a polynomial, a prime, a precision | the roots of the polynomial in `Z_p` (SPEC 9.1) |
 | `realroots` | one: a polynomial | the real roots of the polynomial, in isolating balls (SPEC 9.1) |
 | `recover` | three: a finite ball and two bounds | the rational of a residue class in a box (SPEC 9.2) |
+| `project` | two: a value and a list of places | the partial ball of a rational, finite ball or adele over the places (SPEC 9.3.1) |
+| `exp_at`, `log_at` | two: a value and one place | `exp`, `log` at the place, a prime or `real` (SPEC 9.3.1, 9.3.2) |
 | `prec <bits>` | a setting | the precision of the real coordinate, 1 to `ADF_PRINT_EXP_MAX`, default 64 |
 | `digits <n>` | a setting | the digits of the real-ball printer, 1 to 1000000, default 20 (`ADF_DIGITS_DEFAULT`) |
 
@@ -179,6 +181,53 @@ before a domain error of the third, and the zero polynomial is reported before t
 which applies the algorithm of conventions 9.5 to the exact dyadic midpoint and radius that
 `lanes/drv-s/real_probe.c` reads out of the list, in exact rational arithmetic and written from
 the algorithm; see the comment of that command.
+
+### The commands at places: `project`, `exp_at` and `log_at`
+
+These three commands of milestone 1F (`docs/SPEC.md` 9.3.1: `f_at(x, S)` and `project(x, S)`) read a set of
+places as their second operand, which the value form of conventions 9.2 does not have.  The grammar of the line is
+unchanged: one operation name and two operands separated by ` with `; a wrong number of operands is
+`error: PARSE`.  The test cases are `tests/driver/f-at-prime.cmd`, `f-project.cmd`, `f-places-hostile.cmd` and
+`f-places-1000.cmd`.
+
+    project X with PLACES     the partial ball of X over the places (adf_sball_project)
+    exp_at X with PLACE       exp of X at the one place (adf_sball_exp_at)
+    log_at X with PLACE       log of X at the one place (adf_sball_log_at)
+
+**X** is an exact rational, a finite ball or an adele.  A rational is made into the adele `(q ; q)` at the setting
+`prec` (SPEC 4.1).  A finite ball has no real coordinate: the place `real` is `error: DOMAIN` for it.  A complex adele
+is `error: UNSUPPORTED` (the complex functions are later), and so is a kind of the value form with no typed parser.
+
+**PLACES** is a list of places separated by single spaces: a prime in decimal, or the word `real`.  A token that is
+neither is `error: PARSE` (a `+`, a letter, a leading zero, a decimal point, two spaces in a row, a blank at the end).
+A token that is a decimal but no place of `Q` is `error: DOMAIN`: a negative number, 0, 1, a composite, a number of
+more than 64 bits (`adf_place_prime`, as for the solver commands).  A place named twice is `error: DOMAIN`
+(`adf_sball_project`).  `exp_at` and `log_at` take exactly one place; a list of another length is `error: PARSE`.  The
+order of the checks is that of the section below: the arity of the line; the syntax of X and of every token; the
+number of places; the kind of X; the value of X; then the tokens that are no place, the type of X against the places,
+the projection and the function.  So a syntax fault in one token wins over a token that is no place, and an
+unsupported kind wins over a token that is no place.  A list may be as long as a line (`f-places-1000.cmd` has 1000).
+
+**The precision.**  At the place `real` the setting `prec` is the working precision of arb in bits.  At a prime it is
+the requested ABSOLUTE p-adic precision `N` of `include/adelefeld/lfunc.h` (`rfunc.h`, "A PRIME"): `prec 8` gives a
+result modulo `p^8` for an exact input.  A finite ball keeps its own precision when that is smaller (`exp` of `5 +
+5^2 Z_5` is `6 + O(5^2)` at every `prec` of 2 or more).  The statuses are those of the library
+(`DOMAIN`, `NOT_DETERMINED`, `LIMIT`); the place that the library reports is not printed.
+
+**The output** is one line, the partial ball: its components in the canonical order (the real place first, then the
+primes in increasing order), separated by `; `, each
+
+    real: <ball>                  the real-ball text of conventions 9.5, with the setting digits
+    <p>: <value>                  an exact local ball: the rational p^v u as the driver prints a rational
+    <p>: <centre> + O(<p>^<N>)    a local ball: the canonical centre p^v u in [0, p^N) as a rational, N its absolute
+                                  precision
+
+This is a text of the driver, not a value form of the library: the value form of a partial ball (conventions 9.2) is
+a different text, `{inf: ...; p=5: ...}`, and the driver has no typed parser or printer for it in this build
+(decision N-D1 is the pattern).  `exp_at` and `log_at` print the partial ball over the one place, so their line has
+the label: `5: 349831 + O(5^8)` for `exp_at 5 with 5` at `prec 8`; `real: 1` for `exp_at 0 with real`; `2: 0` for
+`log_at -1 with 2` (`log(-1) = 0` exactly at 2).  A centre with a negative valuation prints as a rational: `project
+(* ; 1/5 mod 25) with 5` is `5: 1/5 + O(5^2)`.
 
 ### Types of the operands, and the pairs that are refused
 

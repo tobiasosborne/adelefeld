@@ -1,0 +1,128 @@
+ok   vectors_real
+ok   odd_roots_of_negative_and_zero
+ok   non_finite_inputs
+ok   huge_arguments_never_give_a_nonfinite_ok
+ok   prec_below_two_is_two
+ok   domain_table
+ok   known_values
+FAIL tests/test_rfunc.c:666: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x) | k=0
+FAIL tests/test_rfunc.c:671: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x)
+FAIL tests/test_rfunc.c:674: sball_at_statuses_and_places: check failed: st == want_p
+FAIL tests/test_rfunc.c:666: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x) | k=1
+FAIL tests/test_rfunc.c:671: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x)
+FAIL tests/test_rfunc.c:674: sball_at_statuses_and_places: check failed: st == want_p
+FAIL sball_at_statuses_and_places (tests/test_rfunc.c:630, 6 failed checks)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 2097153 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 2097153 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 2097154 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 2097154 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 9223372036854775807 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 9223372036854775807 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 9223372036854775806 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | exp prec 9223372036854775806 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 2097153 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 2097153 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 2097154 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 2097154 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 9223372036854775807 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 9223372036854775807 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 9223372036854775806 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log prec 9223372036854775806 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 2097153 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 2097153 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 2097154 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 2097154 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 9223372036854775807 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 9223372036854775807 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 9223372036854775806 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | log_abs prec 9223372036854775806 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 2097153 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 2097153 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 2097154 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 2097154 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 9223372036854775807 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 9223372036854775807 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 9223372036854775806 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sin prec 9223372036854775806 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 2097153 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 2097153 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 2097154 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 2097154 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 9223372036854775807 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 9223372036854775807 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 9223372036854775806 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | cos prec 9223372036854775806 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 2097153 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 2097153 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 2097154 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 2097154 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 9223372036854775807 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 9223372036854775807 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 9223372036854775806 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | sqrt prec 9223372036854775806 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 2097153 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 2097153 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 2097154 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 2097154 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 9223372036854775807 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 9223372036854775807 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 9223372036854775806 case 1 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL tests/test_rfunc.c:831: prec_limit: check failed: st == ADF_DOMAIN && adf_place_equal(where, vv) && adf_sball_identical(sy, ss) | root prec 9223372036854775806 case 3 (sball): status LIMIT
+FAIL tests/test_rfunc.c:836: prec_limit: check failed: call_sball(name, 3, sy, NULL, in, vv, precs[i]) == (prime_not_in_x ? ADF_DOMAIN : ADF_LIMIT)
+FAIL prec_limit (tests/test_rfunc.c:757, 112 failed checks)
+9 tests, 59670 checks, 118 failed checks, 2 failed tests
