@@ -1,0 +1,14 @@
+ok   every_row_of_the_golden_file_ucoset
+ok   ucoset_stored_form_and_printing
+ok   every_row_of_the_golden_file_idele
+ok   every_row_of_the_golden_file_idclass
+ok   the_reference_on_generated_texts
+ok   constrained_printing_against_the_reference
+ok   constrained_printing_examples
+ok   printing_of_hand_made_values
+ok   prec_rules_and_not_determined
+ok   limits_of_conventions_8_4
+ok   hostile_big_numbers_nesting_nul_and_cuts
+ok   order_of_the_stages
+ok   round_trips_enclose
+13 tests, 73457 checks, 0 failed checks, 0 failed tests

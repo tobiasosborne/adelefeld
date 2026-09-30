@@ -1,0 +1,25 @@
+<8 ; [11 mod 12]>
+<1 ; [-1]>
+<0.25 ; [29 mod 36]>
+<2 ; [-1]>
+<4 ; [1 mod 36]>
+<4 ; [25 mod 36]>
+<0.5 ; [29 mod 36]>
+<1 ; [1]>
+<8 ; [17 mod 36]>
+<4 ; [49 mod 120]>
+2
+0.5 +/- 0.25
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: PARSE
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: LIMIT
+error: PARSE
+error: UNSUPPORTED

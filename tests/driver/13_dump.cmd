@@ -21,7 +21,7 @@ compare (* ; 0 mod 2) with (* ; 1 mod 4)
 # the predicates of SPEC 4.2 are predicates of two finite balls; an adele is not one
 compare (1 ; 0) with 1/2
 # a kind with no typed parser is UNSUPPORTED, before any value is read
-compare [5 mod 6] with 1/2
+compare [p=5: 3] with 1/2
 # dump: the dump form of conventions 10.1 of a value the driver read.  Every value of the
 # value form is in the global backend (conventions 9.8, A11), so its dump has the form "g"
 # and no context occurrence.
@@ -32,7 +32,7 @@ dump (* ; 2 mod 6)
 dump (1 ; 0)
 dump ((1) + (0.5)*i ; 2 mod 6)
 # a kind with no typed parser in this build; the dump form of 10.1 has no body for it here
-dump [5 mod 6]
+dump [p=5: 3]
 # the value is read first: a rat with a zero denominator is DOMAIN
 dump 1/0
 # load: a dump text read into a value and printed in the value form of conventions 9.4.

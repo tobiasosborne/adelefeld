@@ -1,0 +1,27 @@
+bite.log of lane t-slice1: the tests of tests/test_text_idele.c against faults made in scratch copies
+(sh lanes/t-slice1/bite.sh; read from the output of the run of 2026-09-30 about 03:35)
+
+fault                 file               result
+no_gcd                src/text.c         13 tests, 73457 checks, 953 failed checks, 6 failed tests
+no_constraint         src/text.c         13 tests, 73254 checks, 1022 failed checks, 6 failed tests
+no_kernel             src/text.c         13 tests, 72310 checks, 97 failed checks, 2 failed tests
+positive_only         src/text.c         13 tests, 67332 checks, 560 failed checks, 6 failed tests
+stored_unit           src/text_idele.c   13 tests, 73457 checks, 853 failed checks, 7 failed tests
+no_exp_limit          src/text.c         the test program dies with SIGFPE (a 39-digit exponent reaches the conversion)
+digits_off_by_one     src/text.c         13 tests, 73457 checks, 441 failed checks, 2 failed tests
+
+What each fault is (the sed program is in bite.sh): the coprimality test of a unit coset dropped; the constrained
+printer takes level 2 whatever the condition; the fallback to kernel B removed; the idele condition "excludes 0"
+reduced to "is positive"; the unit printed as stored and not in normal form; the limit on decimal exponents not
+applied to the real part; the digits of the printer off by one (nk = n + k - 3).
+
+Two earlier faults survived, and were replaced (first run of bite.sh, same day, about 03:33):
+  unreduced_residue  (the reduction of the residue into 1..N in tx_unit_build removed): 0 failed checks. Not a gap:
+                     adf_ucoset_set_fmpz2 reduces the residue itself (ucoset.h), so the line is redundant. It stays as
+                     a second guard of the contract of the hidden function.
+  content_zero       (content 0 no longer refused by tx_read...): 0 failed checks. Not a gap: adf_idele_set_parts
+                     refuses r <= 0 with ADF_DOMAIN, the same status. It stays because stage 6 of conventions 8.5 is
+                     decided before stage 7 and the value must not be built.
+A third fault of the first run (the exact interval may touch 0: `>=` for `>`) made the process abort in
+adf_idele_kernel_defect (a defect of the library reported by the library itself), and a fourth did not build (an unused
+variable under -Werror); both were replaced by the faults above.

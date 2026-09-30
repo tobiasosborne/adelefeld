@@ -1,0 +1,37 @@
+redgreen.log of lane t-slice1 (times read from date)
+
+1. The reader and the printers of the three kinds.
+   Tests: tests/test_text_idele.c (13 tests), first against a stub src/text_idele.c (every reader returned
+   ADF_UNSUPPORTED, every printer the string STUB). Red run at 03:10 (first 30 lines and the summary in
+   lanes/t-slice1/red1.out):
+       13 tests, 44107 checks, 9614 failed checks, 13 failed tests
+   The failures are assertions, e.g. "ucoset.tsv line 2: status 8, expected 0". (The stub compiled and linked, so
+   this is not the link error that COMMON-C rule 1 allows only for the first test of a file.)
+   Code: src/text.c (section "adf_ucoset, adf_idele, adf_idclass", about 500 lines) and src/text_idele.c.
+   First green run: two failed checks, both defects of the test and not of the code: the length 10 of "[11 mod 15]"
+   (it is 11 bytes), and the size of the printed 2^99999 (it prints as 4.99...e30102 +/- 2.1e30082, not as 30000
+   bytes). The test was corrected to say what the specification says; no code changed.
+   Green run at 03:13 (lanes/t-slice1/green1.out):
+       13 tests, 73457 checks, 0 failed checks, 0 failed tests
+   Later, under SAN=1 with gcc 13, tests/test_text_idele.c did not compile (-Werror=array-bounds, a false positive of
+   memset on a pointer into a 100 kB malloc block); the five memset calls of the test were replaced by a loop
+   (repeat_char); the tests did not change otherwise.
+
+2. The driver.
+   The case files tests/driver/i-01-show-type, i-02-ucoset, i-03-idele, i-04-idclass, i-05-maps, i-06-status
+   (.cmd and .out, 207 expected lines written by hand) were written before any line of tools/adf/adf.c was changed,
+   and checked by lanes/t-slice1/check_driver_cases.py against exact arithmetic (207 lines, 0 disagreements; with one
+   expected line altered by hand the script reports the difference).
+   Red run, `sh tests/test_driver.sh` with the old driver: "test_driver: i-01-show-type: the output differs" (all 18 value
+   lines of that case are `error: UNSUPPORTED`); `build/adf tests/driver/i-02-ucoset.cmd` gave 19 lines `error: PARSE` and
+   26 lines `error: UNSUPPORTED` (the new commands are unknown words, and the kinds have no typed parser there).
+   Code: tools/adf/adf.c (the section "the unit coset, the idele and the idele class").
+   Green run at 03:24: "test_driver: 41 cases, 100726 expected lines, all equal (SAN=0)" on the first run of the new
+   driver, after four old cases were edited: 06_pairs, 07_status, 12_status_order and 13_dump used `[5 mod 6]` as the
+   example of "a kind with no typed parser", which is no longer true; each occurrence became `[p=5: 3]` (a local ball,
+   still unsupported) and no expected line changed (`type [5 mod 6]` still gives ucoset).
+
+3. Julia. tests/julia/text_idele.jl was written after the C reader and printer and run through tests/test_julia.sh:
+   32 checks pass (with LD_PRELOAD of the system libgmp, as the other ideles files).
+
+4. The tests bite: lanes/t-slice1/bite.log.

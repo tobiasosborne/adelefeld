@@ -18,7 +18,10 @@
    outside the alphabet of conventions 8.2 exists and why "with" cannot occur in a value
    text.  The settings are "prec <bits>" and "digits <n>", one per line.  The operations
    are show, type, add, sub, mul, neg, div, equal, contains, overlaps, compare, reconstruct,
-   cap, dump, load, roots, realroots, recover, project, exp_at and log_at; reconstruct takes either one operand (an adele)
+   cap, dump, load, roots, realroots, recover, project, exp_at and log_at, and, for the unit coset, the idele and
+   the idele class (lane t-slice1, milestone 2), inv, pow, powtight, norm, class, idele, hull, hullsimple, unitof,
+   valuation and abs (the section "the unit coset, the idele and the idele class" below);
+   reconstruct takes either one operand (an adele)
    or three (a finite
    ball and an interval given as two exact rationals), which is the one documented extension
    of the two-operand form.  dump writes the dump form of conventions 10.1 of a value, and
@@ -58,10 +61,10 @@
    Mixed operand types are combined only where SPEC 4.1 defines it: an exact rational with
    a finite ball, an adele or a complex adele (the rational is converted only in the
    coordinate where it is inexact, SPEC 4.1), and an adele with a complex adele (the
-   embedding of SPEC 4.1, "The type adf_cadele").  Every other pair is ADF_DOMAIN.  A kind
-   of the value form with no typed parser in this build (the local ball, the partial ball,
-   the idele, the idele class, the quotient class, the functions and the character, work
-   packages 1.8 and later) is ADF_UNSUPPORTED.
+   embedding of SPEC 4.1, "The type adf_cadele"), and the pairs of the unit coset, the idele and the class listed
+   in the section named above.  Every other pair is ADF_DOMAIN.  A kind of the value form with no typed
+   parser in this build (the local ball, the partial ball, the quotient class, the functions and the
+   character, work packages 1.8 and later) is ADF_UNSUPPORTED.
 
    Output: one line per command on standard output, either the value text, "true" or
    "false", one of "equal", "different" and "undecided" for compare, a name of a kind for
@@ -142,6 +145,17 @@ typedef enum
     ADF_DRV_PROJECT,
     ADF_DRV_EXP_AT,
     ADF_DRV_LOG_AT,
+    ADF_DRV_INV,
+    ADF_DRV_POW,
+    ADF_DRV_POWTIGHT,
+    ADF_DRV_NORM,
+    ADF_DRV_CLASS,
+    ADF_DRV_MKIDELE,
+    ADF_DRV_HULL,
+    ADF_DRV_HULLSIMPLE,
+    ADF_DRV_UNITOF,
+    ADF_DRV_VALUATION,
+    ADF_DRV_ABS,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -173,6 +187,17 @@ static const struct
     { "project", ADF_DRV_PROJECT, 2 },
     { "exp_at", ADF_DRV_EXP_AT, 2 },
     { "log_at", ADF_DRV_LOG_AT, 2 },
+    { "inv", ADF_DRV_INV, 1 },
+    { "pow", ADF_DRV_POW, 2 },
+    { "powtight", ADF_DRV_POWTIGHT, 2 },
+    { "norm", ADF_DRV_NORM, 1 },
+    { "class", ADF_DRV_CLASS, 1 },
+    { "idele", ADF_DRV_MKIDELE, 1 },
+    { "hull", ADF_DRV_HULL, 1 },
+    { "hullsimple", ADF_DRV_HULLSIMPLE, 1 },
+    { "unitof", ADF_DRV_UNITOF, 1 },
+    { "valuation", ADF_DRV_VALUATION, 2 },
+    { "abs", ADF_DRV_ABS, 2 },
     { "prec", ADF_DRV_PREC, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
@@ -194,6 +219,9 @@ typedef enum
     ADF_DRV_FBALL,
     ADF_DRV_ADELE,
     ADF_DRV_CADELE,
+    ADF_DRV_UCOSET,      /* milestone 2: the unit coset, the idele and the idele class */
+    ADF_DRV_IDELE,
+    ADF_DRV_IDCLASS,
     ADF_DRV_OTHER        /* a kind of the value form with no typed parser in this build */
 } adf_drv_type;
 
@@ -204,6 +232,9 @@ typedef struct
     adf_fball_t f;
     adf_adele_t a;
     adf_cadele_t c;
+    adf_ucoset_t u;
+    adf_idele_t i;
+    adf_idclass_t k;
 } adf_drv_value;
 
 typedef struct
@@ -220,6 +251,9 @@ adf_drv_value_init(adf_drv_value * v)
     adf_fball_init(v->f);
     adf_adele_init(v->a);
     adf_cadele_init(v->c);
+    adf_ucoset_init(v->u);
+    adf_idele_init(v->i);
+    adf_idclass_init(v->k);
 }
 
 static void
@@ -229,6 +263,9 @@ adf_drv_value_clear(adf_drv_value * v)
     adf_fball_clear(v->f);
     adf_adele_clear(v->a);
     adf_cadele_clear(v->c);
+    adf_ucoset_clear(v->u);
+    adf_idele_clear(v->i);
+    adf_idclass_clear(v->k);
     v->type = ADF_DRV_OTHER;
 }
 
@@ -248,6 +285,12 @@ adf_drv_kind_type(adf_text_kind kind)
             return ADF_DRV_ADELE;
         case ADF_TEXT_CADELE:
             return ADF_DRV_CADELE;
+        case ADF_TEXT_UCOSET:
+            return ADF_DRV_UCOSET;
+        case ADF_TEXT_IDELE:
+            return ADF_DRV_IDELE;
+        case ADF_TEXT_IDCLASS:
+            return ADF_DRV_IDCLASS;
         default:
             return ADF_DRV_OTHER;
     }
@@ -272,6 +315,12 @@ adf_drv_value_read(adf_drv_value * v, adf_text_kind kind, const char * s, size_t
             return adf_adele_set_str(v->a, s, len, prec, NULL);
         case ADF_TEXT_CADELE:
             return adf_cadele_set_str(v->c, s, len, prec, NULL);
+        case ADF_TEXT_UCOSET:
+            return adf_ucoset_set_str(v->u, s, len, NULL);
+        case ADF_TEXT_IDELE:
+            return adf_idele_set_str(v->i, s, len, prec, NULL);
+        case ADF_TEXT_IDCLASS:
+            return adf_idclass_set_str(v->k, s, len, prec, NULL);
         default:
             return ADF_OK;      /* ADF_DRV_OTHER, which the caller has already refused */
     }
@@ -303,6 +352,15 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
             break;
         case ADF_DRV_CADELE:
             s = adf_cadele_get_str(&len, v->c, digits);
+            break;
+        case ADF_DRV_UCOSET:
+            s = adf_ucoset_get_str(&len, v->u);
+            break;
+        case ADF_DRV_IDELE:
+            s = adf_idele_get_str(&len, v->i, digits);
+            break;
+        case ADF_DRV_IDCLASS:
+            s = adf_idclass_get_str(&len, v->k, digits);
             break;
         default:
             return ADF_UNSUPPORTED;
@@ -1743,6 +1801,429 @@ done:
     return status;
 }
 
+/* ---- the unit coset, the idele and the idele class (milestone 2, lane t-slice1) ---- */
+
+/* The kinds ucoset, idele and idclass of the value form have typed parsers and printers, and the driver combines
+   them as follows (tools/adf/README.md, "Ideles and classes").  Each command is one line of output.
+
+     show X, type X               as for every kind (dump X is ADF_UNSUPPORTED: no dump form yet)
+     mul X with Y                 ucoset * ucoset, idele * idele, class * class; idele * rational and
+                                  rational * idele (adf_idele_mul_rat: the rational must not be 0, ADF_NOT_UNIT)
+     div X with Y                 the same pairs, x * y^-1 (adf_ucoset_inv, adf_idele_inv, adf_idclass_inv, then the
+                                  product; idele / rational is the product with the exact inverse of the rational);
+                                  an adele by an idele: adf_adele_div_idele
+     neg X                        a unit coset: the product with [-1]; an idele: every coordinate negated, exactly
+                                  (-X, r, [-1] u); a class has no negation (the class of -x is the class of x): DOMAIN
+     inv X                        ucoset, idele, class, and a rational (ADF_NOT_UNIT for 0)
+     pow X with K, powtight X with K
+                                  ucoset, idele, class, K an integer that fits a word (adelefeld/idpow.h)
+     norm X                       idele and class: the positive real ball |x_inf| / r, resp. t
+     class X                      idele to class (adf_idclass_set_idele)
+     idele Q                      a rational to its idele at the setting prec (adf_idele_set_rat)
+     hull X, hullsimple X         idele to adele: the smallest ball, the simple ball (adelefeld/idmap.h)
+     unitof A                     adele to idele when the adele certifies it (adf_idele_set_adele)
+     valuation X with P           v_p(r) of an idele, P a prime (ADF_DOMAIN for real, for a non-prime)
+     abs X with PLACE             |x_p|_p as a rational at a prime; |x_inf| as a real ball at real
+     equal, contains, overlaps    unit cosets only (the sets of adelefeld/ucoset.h); the library has no set
+                                  predicate of ideles or classes (docs/api-2.md 3.5, decision i3-1): DOMAIN
+     add, sub, cap, compare, reconstruct
+                                  DOMAIN with an operand of these kinds
+
+   Every other combination is ADF_DOMAIN: a pair of types that the operation does not define.  The steps are those
+   of the command at the top of the file: the kinds of these operands are supported, so step 3 does not refuse
+   them, and every domain rule above is in step 5.  The ball of norm and abs at the real place is printed by
+   adf_drv_arb_str (the text of conventions 9.5 without a sign condition). */
+
+static int
+adf_drv_is_unit_type(adf_drv_type t)
+{
+    return t == ADF_DRV_UCOSET || t == ADF_DRV_IDELE || t == ADF_DRV_IDCLASS;
+}
+
+/* adf_drv_slong_operand(k, v): the exponent of pow and powtight: an exact rational that is an integer.  Another
+   type, or a denominator other than 1, is ADF_DOMAIN (data outside the domain of the operation); an integer that
+   does not fit a slong is a size bound of the interface, ADF_LIMIT (as adf_drv_prec_operand). */
+static int
+adf_drv_slong_operand(slong * k, const adf_drv_value * v)
+{
+    fmpq_t q;
+    int status = ADF_OK;
+
+    if (v->type != ADF_DRV_RAT)
+        return ADF_DOMAIN;
+    fmpq_init(q);
+    adf_rat_get_fmpq(q, v->r);
+    if (!fmpz_is_one(fmpq_denref(q)))
+        status = ADF_DOMAIN;
+    else if (!fmpz_fits_si(fmpq_numref(q)))
+        status = ADF_LIMIT;
+    else
+        *k = fmpz_get_si(fmpq_numref(q));
+    fmpq_clear(q);
+    return status;
+}
+
+/* adf_drv_arb_line(out, x, digits): the line of a real ball, or ADF_LIMIT when the printer of the library refuses
+   it (decision M1-D6, through adf_drv_arb_str). */
+static int
+adf_drv_arb_line(FILE * out, const arb_t x, slong digits)
+{
+    char * s = adf_drv_arb_str(x, digits);
+
+    if (s == NULL)
+        return ADF_LIMIT;
+    fputs(s, out);
+    fputc('\n', out);
+    flint_free(s);
+    return ADF_OK;
+}
+
+/* adf_drv_units_mul(z, x, y, div, prec): z = x * y or x / y for the pairs listed above; ADF_DOMAIN for another
+   pair.  The statuses are those of the library (ADF_NOT_DETERMINED of the real kernel, ADF_NOT_UNIT for the
+   rational 0); z is written only on ADF_OK. */
+static int
+adf_drv_units_mul(adf_drv_value * z, const adf_drv_value * x, const adf_drv_value * y, int div, slong prec)
+{
+    int status;
+
+    if (x->type == ADF_DRV_UCOSET && y->type == ADF_DRV_UCOSET)
+    {
+        adf_ucoset_t t;
+
+        adf_ucoset_init(t);
+        if (div)
+            adf_ucoset_inv(t, y->u);
+        else
+            adf_ucoset_set(t, y->u);
+        adf_ucoset_mul(z->u, x->u, t);
+        adf_ucoset_clear(t);
+        z->type = ADF_DRV_UCOSET;
+        return ADF_OK;
+    }
+    if (x->type == ADF_DRV_IDELE && y->type == ADF_DRV_IDELE)
+    {
+        adf_idele_t t;
+
+        adf_idele_init(t);
+        status = div ? adf_idele_inv(t, y->i, prec) : (adf_idele_set(t, y->i), ADF_OK);
+        if (status == ADF_OK)
+            status = adf_idele_mul(z->i, x->i, t, prec);
+        adf_idele_clear(t);
+        z->type = ADF_DRV_IDELE;
+        return status;
+    }
+    if (x->type == ADF_DRV_IDCLASS && y->type == ADF_DRV_IDCLASS)
+    {
+        adf_idclass_t t;
+
+        adf_idclass_init(t);
+        status = div ? adf_idclass_inv(t, y->k, prec) : (adf_idclass_set(t, y->k), ADF_OK);
+        if (status == ADF_OK)
+            status = adf_idclass_mul(z->k, x->k, t, prec);
+        adf_idclass_clear(t);
+        z->type = ADF_DRV_IDCLASS;
+        return status;
+    }
+    if ((x->type == ADF_DRV_IDELE && y->type == ADF_DRV_RAT) || (x->type == ADF_DRV_RAT && y->type == ADF_DRV_IDELE))
+    {
+        const adf_drv_value * i = (x->type == ADF_DRV_IDELE) ? x : y;
+        const adf_drv_value * q = (x->type == ADF_DRV_IDELE) ? y : x;
+        adf_rat_t t;
+
+        if (div && x->type == ADF_DRV_RAT)
+            return ADF_DOMAIN;             /* a rational divided by an idele is not offered */
+        adf_rat_init(t);
+        status = div ? adf_rat_inv(t, q->r) : (adf_rat_set(t, q->r), ADF_OK);
+        if (status == ADF_OK)
+            status = adf_idele_mul_rat(z->i, i->i, t, prec);
+        adf_rat_clear(t);
+        z->type = ADF_DRV_IDELE;
+        return status;
+    }
+    if (div && x->type == ADF_DRV_ADELE && y->type == ADF_DRV_IDELE)
+    {
+        status = adf_adele_div_idele(z->a, x->a, y->i, prec);
+        z->type = ADF_DRV_ADELE;
+        return status;
+    }
+    return ADF_DOMAIN;
+}
+
+/* adf_drv_units_neg(z, x): the negation of a unit coset (the product with [-1]) and of an idele (every
+   coordinate: the real ball, and the unit times [-1]; the content is positive and stays); a class has none. */
+static int
+adf_drv_units_neg(adf_drv_value * z, const adf_drv_value * x)
+{
+    adf_ucoset_t m;
+
+    if (x->type == ADF_DRV_UCOSET)
+    {
+        adf_ucoset_init(m);
+        adf_ucoset_minus_one(m);
+        adf_ucoset_mul(z->u, x->u, m);
+        adf_ucoset_clear(m);
+        z->type = ADF_DRV_UCOSET;
+        return ADF_OK;
+    }
+    if (x->type == ADF_DRV_IDELE)
+    {
+        arb_t inf;
+        fmpq_t r;
+        adf_ucoset_t u;
+        int status;
+
+        arb_init(inf);
+        fmpq_init(r);
+        adf_ucoset_init(u);
+        adf_ucoset_init(m);
+        arb_neg(inf, x->i->inf);
+        adf_idele_content(r, x->i);
+        adf_ucoset_minus_one(m);
+        adf_ucoset_mul(u, &x->i->u, m);
+        status = adf_idele_set_parts(z->i, inf, r, u);
+        arb_clear(inf);
+        fmpq_clear(r);
+        adf_ucoset_clear(u);
+        adf_ucoset_clear(m);
+        z->type = ADF_DRV_IDELE;
+        return status;
+    }
+    return ADF_DOMAIN;
+}
+
+/* adf_drv_units_op(out, op, x, y, z, st): every command with an operand of one of the three kinds, and the new
+   commands; step 5 and step 6 of the command.  Writes the line on ADF_OK. */
+static int
+adf_drv_units_op(FILE * out, adf_drv_op op, const adf_drv_value * x, const adf_drv_value * y, adf_drv_value * z,
+                 adf_drv_state * st)
+{
+    int status = ADF_OK;
+    slong k = 0;
+    const char * text = "";
+
+    switch (op)
+    {
+        case ADF_DRV_SHOW:
+            return adf_drv_value_print(out, x, st->digits);
+        case ADF_DRV_DUMP:
+            return adf_drv_value_dump(out, x);
+        case ADF_DRV_MUL:
+        case ADF_DRV_DIV:
+            status = adf_drv_units_mul(z, x, y, op == ADF_DRV_DIV, st->prec);
+            break;
+        case ADF_DRV_NEG:
+            status = adf_drv_units_neg(z, x);
+            break;
+        case ADF_DRV_INV:
+            z->type = x->type;
+            if (x->type == ADF_DRV_RAT)
+                status = adf_rat_inv(z->r, x->r);
+            else if (x->type == ADF_DRV_UCOSET)
+                adf_ucoset_inv(z->u, x->u);
+            else if (x->type == ADF_DRV_IDELE)
+                status = adf_idele_inv(z->i, x->i, st->prec);
+            else if (x->type == ADF_DRV_IDCLASS)
+                status = adf_idclass_inv(z->k, x->k, st->prec);
+            else
+                status = ADF_DOMAIN;
+            break;
+        case ADF_DRV_POW:
+        case ADF_DRV_POWTIGHT:
+        {
+            int tight = (op == ADF_DRV_POWTIGHT);
+
+            if (!adf_drv_is_unit_type(x->type))
+                return ADF_DOMAIN;
+            status = adf_drv_slong_operand(&k, y);
+            if (status != ADF_OK)
+                return status;
+            z->type = x->type;
+            if (x->type == ADF_DRV_UCOSET)
+            {
+                if (tight)
+                    adf_ucoset_pow_tight(z->u, x->u, k);
+                else
+                    adf_ucoset_pow(z->u, x->u, k);
+            }
+            else if (x->type == ADF_DRV_IDELE)
+                status = tight ? adf_idele_pow_tight(z->i, x->i, k, st->prec) : adf_idele_pow(z->i, x->i, k, st->prec);
+            else
+                status = tight ? adf_idclass_pow_tight(z->k, x->k, k, st->prec)
+                               : adf_idclass_pow(z->k, x->k, k, st->prec);
+            break;
+        }
+        case ADF_DRV_NORM:
+        {
+            arb_t t;
+
+            if (x->type != ADF_DRV_IDELE && x->type != ADF_DRV_IDCLASS)
+                return ADF_DOMAIN;
+            arb_init(t);
+            if (x->type == ADF_DRV_IDELE)
+                status = adf_idele_norm(t, x->i, st->prec);
+            else
+                adf_idclass_norm(t, x->k);
+            if (status == ADF_OK)
+                status = adf_drv_arb_line(out, t, st->digits);
+            arb_clear(t);
+            return status;
+        }
+        case ADF_DRV_CLASS:
+            if (x->type != ADF_DRV_IDELE)
+                return ADF_DOMAIN;
+            status = adf_idclass_set_idele(z->k, x->i, st->prec);
+            z->type = ADF_DRV_IDCLASS;
+            break;
+        case ADF_DRV_MKIDELE:
+            if (x->type != ADF_DRV_RAT)
+                return ADF_DOMAIN;
+            status = adf_idele_set_rat(z->i, x->r, st->prec);
+            z->type = ADF_DRV_IDELE;
+            break;
+        case ADF_DRV_HULL:
+        case ADF_DRV_HULLSIMPLE:
+            if (x->type != ADF_DRV_IDELE)
+                return ADF_DOMAIN;
+            if (op == ADF_DRV_HULL)
+                adf_adele_set_idele(z->a, x->i);
+            else
+                adf_adele_set_idele_simple(z->a, x->i);
+            z->type = ADF_DRV_ADELE;
+            break;
+        case ADF_DRV_UNITOF:
+            if (x->type != ADF_DRV_ADELE)
+                return ADF_DOMAIN;
+            status = adf_idele_set_adele(z->i, x->a);
+            z->type = ADF_DRV_IDELE;
+            break;
+        case ADF_DRV_EQUAL:
+        case ADF_DRV_CONTAINS:
+        case ADF_DRV_OVERLAPS:
+        {
+            int r;
+
+            if (x->type != ADF_DRV_UCOSET || y->type != ADF_DRV_UCOSET)
+                return ADF_DOMAIN;
+            if (op == ADF_DRV_EQUAL)
+                r = adf_ucoset_equal_set(x->u, y->u);
+            else if (op == ADF_DRV_CONTAINS)
+                r = adf_ucoset_contains(x->u, y->u);
+            else
+                r = adf_ucoset_overlaps(x->u, y->u);
+            text = r ? "true" : "false";
+            fputs(text, out);
+            fputc('\n', out);
+            return ADF_OK;
+        }
+        default:            /* add, sub, cap, compare, reconstruct: not defined for these kinds */
+            return ADF_DOMAIN;
+    }
+    if (status == ADF_OK)
+        status = adf_drv_value_print(out, z, st->digits);
+    return status;
+}
+
+/* adf_drv_valabs(out, op, l, st): valuation X with P and abs X with PLACE.  The second operand is a place, as for
+   the commands at places (adf_drv_place_token): the steps 2 to 5 are those of adf_drv_places; the type of X is
+   ADF_DOMAIN unless it is an idele. */
+static int
+adf_drv_valabs(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state * st)
+{
+    adf_drv_value x;
+    adf_text_kind kind;
+    adf_place_t pl = adf_place_inf();
+    int status, pst;
+
+    adf_drv_value_init(&x);
+    status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK)
+        goto done;
+    pst = adf_drv_place_token(l->s[1], l->n[1], &pl);
+    if (pst == ADF_PARSE)
+    {
+        status = ADF_PARSE;
+        goto done;
+    }
+    if (adf_drv_kind_type(kind) == ADF_DRV_OTHER)
+    {
+        status = ADF_UNSUPPORTED;
+        goto done;
+    }
+    status = adf_drv_value_read(&x, kind, l->s[0], l->n[0], st->prec);
+    if (status != ADF_OK)
+        goto done;
+    if (pst != ADF_OK)
+    {
+        status = pst;
+        goto done;
+    }
+    if (x.type != ADF_DRV_IDELE)
+    {
+        status = ADF_DOMAIN;
+        goto done;
+    }
+    if (op == ADF_DRV_VALUATION)
+    {
+        slong v = 0;
+
+        status = adf_idele_valuation_at(&v, x.i, pl);
+        if (status == ADF_OK)
+        {
+            flint_fprintf(out, "%wd", v);
+            fputc('\n', out);
+        }
+    }
+    else if (adf_place_is_archimedean(pl))
+    {
+        arb_t a;
+
+        arb_init(a);
+        adf_idele_abs_inf(a, x.i);
+        status = adf_drv_arb_line(out, a, st->digits);
+        arb_clear(a);
+    }
+    else
+    {
+        adf_drv_value z;
+
+        adf_drv_value_init(&z);
+        status = adf_idele_abs_at(z.r, x.i, pl);
+        z.type = ADF_DRV_RAT;
+        if (status == ADF_OK)
+            status = adf_drv_value_print(out, &z, st->digits);
+        adf_drv_value_clear(&z);
+    }
+
+done:
+    adf_drv_value_clear(&x);
+    return status;
+}
+
+/* adf_drv_units_involved(op, x, y, w, nops): 1 for a new command, and for any command with an operand of one of the
+   three kinds among its first nops operands. */
+static int
+adf_drv_units_involved(adf_drv_op op, const adf_drv_value * x, const adf_drv_value * y, const adf_drv_value * w,
+                       int nops)
+{
+    switch (op)
+    {
+        case ADF_DRV_INV:
+        case ADF_DRV_POW:
+        case ADF_DRV_POWTIGHT:
+        case ADF_DRV_NORM:
+        case ADF_DRV_CLASS:
+        case ADF_DRV_MKIDELE:
+        case ADF_DRV_HULL:
+        case ADF_DRV_HULLSIMPLE:
+        case ADF_DRV_UNITOF:
+            return 1;
+        default:
+            break;
+    }
+    return adf_drv_is_unit_type(x->type) || (nops > 1 && adf_drv_is_unit_type(y->type))
+           || (nops > 2 && adf_drv_is_unit_type(w->type));
+}
+
 /* ---- one command ---- */
 
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
@@ -1764,6 +2245,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT)
         return adf_drv_places(out, op, l, st);
+    if (op == ADF_DRV_VALUATION || op == ADF_DRV_ABS)
+        return adf_drv_valabs(out, op, l, st);
 
     adf_drv_value_init(&x);
     adf_drv_value_init(&y);
@@ -1821,6 +2304,13 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         status = adf_drv_value_read(v, kind[i], l->s[i], l->n[i], st->prec);
         if (status != ADF_OK)
             goto done;
+    }
+
+    if (adf_drv_units_involved(op, &x, &y, &w, nops))
+    {
+        /* the new commands, and every command with an operand of the kinds ucoset, idele, idclass */
+        status = adf_drv_units_op(out, op, &x, &y, &z, st);
+        goto done;
     }
 
     switch (op)
