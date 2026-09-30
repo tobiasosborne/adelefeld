@@ -1,0 +1,69 @@
+# large mode, run in parts: timeout 900 python3 -B lanes/f-review4/oracle.py <b>/probe large <primes> <Ns>
+## part 1: p = 2, 3 at N = 1000, 5000, 20000
+   p=2 N=1000: 8 cases, probe+oracle 0.1 s, max t_new 0.000 s, max t_old 0.001 s
+   p=2 N=5000: 8 cases, probe+oracle 3.0 s, max t_new 0.001 s, max t_old 0.013 s
+   p=2 N=20000: 8 cases, probe+oracle 58.8 s, max t_new 0.006 s, max t_old 0.375 s
+   p=3 N=1000: 7 cases, probe+oracle 0.1 s, max t_new 0.000 s, max t_old 0.003 s
+   p=3 N=5000: 7 cases, probe+oracle 3.0 s, max t_new 0.003 s, max t_old 0.145 s
+   p=3 N=20000: 7 cases, probe+oracle 62.5 s, max t_new 0.027 s, max t_old 4.858 s
+== large: N = 1000, 5000, 20000
+   bal: 45
+   cases: 45
+   exact_results: 6
+   flint: 39
+   old: 45
+   oracle_exact: 39
+   oracle_time: 99.289
+   sum: 45
+
+real	2m7,566s
+user	2m7,446s
+sys	0m0,084s
+
+[exited with code 0]
+## part 2: p = 5, 7, 11, 65537, 2^64-59 at N = 1000, 5000
+   p=5 N=1000: 7 cases, probe+oracle 0.4 s, max t_new 0.001 s, max t_old 0.010 s
+   p=5 N=5000: 7 cases, probe+oracle 2.6 s, max t_new 0.003 s, max t_old 0.223 s
+   p=7 N=1000: 7 cases, probe+oracle 0.5 s, max t_new 0.000 s, max t_old 0.005 s
+   p=7 N=5000: 7 cases, probe+oracle 3.4 s, max t_new 0.004 s, max t_old 0.302 s
+   p=11 N=1000: 7 cases, probe+oracle 0.7 s, max t_new 0.001 s, max t_old 0.007 s
+   p=11 N=5000: 7 cases, probe+oracle 5.9 s, max t_new 0.008 s, max t_old 0.584 s
+   p=65537 N=1000: 7 cases, probe+oracle 2.0 s, max t_new 0.004 s, max t_old 0.104 s
+   p=65537 N=5000: 7 cases, probe+oracle 57.4 s, max t_new 0.043 s, max t_old 6.214 s
+   p=18446744073709551557 N=1000: 7 cases, probe+oracle 16.3 s, max t_new 0.038 s, max t_old 0.696 s
+   p=18446744073709551557 N=5000: 7 cases, probe+oracle 309.1 s, max t_new 0.388 s, max t_old -1.000 s
+== large: N = 1000, 5000, 20000
+   bal: 70
+   cases: 70
+   flint: 70
+   old: 63
+   oracle_direct: 21
+   oracle_exact: 49
+   oracle_time: 338.84
+   sum: 63
+
+real	6m38,300s
+user	6m38,157s
+sys	0m0,097s
+
+[exited with code 0]
+## part 3: p = 5, 7, 11 at N = 20000
+   p=5 N=20000: 7 cases, probe+oracle 54.7 s, max t_new 0.038 s, max t_old 7.155 s
+   p=7 N=20000: 7 cases, probe+oracle 63.3 s, max t_new 0.045 s, max t_old 11.418 s
+   p=11 N=20000: 7 cases, probe+oracle 98.0 s, max t_new 0.057 s, max t_old 16.678 s
+== large: N = 1000, 5000, 20000
+   bal: 21
+   cases: 21
+   flint: 21
+   old: 21
+   oracle_exact: 12
+   oracle_skipped: 9
+   oracle_time: 29.779
+   sum: 21
+
+real	3m36,103s
+user	3m36,001s
+sys	0m0,036s
+
+[exited with code 0]
+## part 4: p = 65537, 2^64-59 at N = 20000: stopped after 10 min without a completed prime (close request)
