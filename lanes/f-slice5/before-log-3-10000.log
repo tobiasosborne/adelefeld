@@ -1,0 +1,5 @@
+compiler=13.3.0 flags=-O2 -g flint=3.0.1 clock=MONOTONIC_RAW seed=0 cpu=2 pin_status=0 threads=1 kind=call_rate warm_output=1 p=3 N=10000 bits=15850 trials=3 fn=log
+trial=0 seconds=0.415524619 status=0
+trial=1 seconds=0.422256159 status=0
+trial=2 seconds=0.360321605 status=0
+seconds_min_med_max=0.360321605,0.415524619,0.422256159 mul_mod_min_med_max=0.000056111,0.000064895,0.000071758 flint_min_med_max=0.011090947,0.012725026,0.014904658 output_bytes=1982 checksum=13548

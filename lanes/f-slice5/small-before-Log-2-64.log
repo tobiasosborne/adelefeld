@@ -1,0 +1,33 @@
+compiler=13.3.0 flags=-O2 -g flint=3.0.1 clock=MONOTONIC_RAW seed=0 cpu=4 pin_status=0 threads=1 kind=call_rate warm_output=1 p=2 N=64 bits=65 trials=31 fn=Log
+trial=0 seconds=0.000070251 status=0
+trial=1 seconds=0.000022972 status=0
+trial=2 seconds=0.000020312 status=0
+trial=3 seconds=0.000019683 status=0
+trial=4 seconds=0.000019764 status=0
+trial=5 seconds=0.000018971 status=0
+trial=6 seconds=0.000018543 status=0
+trial=7 seconds=0.000018354 status=0
+trial=8 seconds=0.000018264 status=0
+trial=9 seconds=0.000018277 status=0
+trial=10 seconds=0.000018440 status=0
+trial=11 seconds=0.000018294 status=0
+trial=12 seconds=0.000018918 status=0
+trial=13 seconds=0.000018481 status=0
+trial=14 seconds=0.000018086 status=0
+trial=15 seconds=0.000018103 status=0
+trial=16 seconds=0.000018308 status=0
+trial=17 seconds=0.000018138 status=0
+trial=18 seconds=0.000018051 status=0
+trial=19 seconds=0.000018055 status=0
+trial=20 seconds=0.000018144 status=0
+trial=21 seconds=0.000018092 status=0
+trial=22 seconds=0.000018259 status=0
+trial=23 seconds=0.000018146 status=0
+trial=24 seconds=0.000018161 status=0
+trial=25 seconds=0.000018196 status=0
+trial=26 seconds=0.000018210 status=0
+trial=27 seconds=0.000018015 status=0
+trial=28 seconds=0.000018750 status=0
+trial=29 seconds=0.000018633 status=0
+trial=30 seconds=0.000018780 status=0
+seconds_min_med_max=0.000018015,0.000018294,0.000070251 mul_mod_min_med_max=0.000000404,0.000000455,0.000000677 flint_min_med_max=0.000012302,0.000012655,0.000032342 output_bytes=8 checksum=39817

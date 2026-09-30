@@ -1,0 +1,16 @@
+precision exit=0
+{"suite": "precision", "elapsed_seconds": 0.7412628279998899, "inputs": 3600, "residue_checks": 3600}
+small exit=0
+{"suite": "small", "elapsed_seconds": 2.696044484007871, "inputs": 16443, "enclosure_points": 31143, "tight_witnesses": 1945, "exact": 273, "status": 11151}
+big exit=0
+{"suite": "big", "elapsed_seconds": 0.9486793440009933, "inputs": 80, "enclosure_points": 80, "tight_witnesses": 0, "exact": 0, "status": 0}
+limits exit=0
+{"suite": "limits", "elapsed_seconds": 3.9782136010180693, "inputs": 161, "status_and_alias_checks": 161}
+random exit=0
+{"suite": "random", "elapsed_seconds": 4.777617098996416, "inputs": 3000, "enclosure_points": 16499, "tight_witnesses": 1477, "exact": 1, "status": 0}
+large exit=0
+{"suite": "large", "elapsed_seconds": 3.15482632999192, "inputs": 30, "enclosure_points": 30, "tight_witnesses": 0, "exact": 0, "status": 0}
+powered_large exit=0
+{"suite": "powered_large", "elapsed_seconds": 0.8566222299996298, "inputs": 2, "enclosure_points": 8, "tight_witnesses": 1, "exact": 0, "status": 0}
+bench_validate exit=0
+{"suite": "bench_validate", "elapsed_seconds": 19.393699548993027, "inputs": 7, "enclosure_points": 7, "tight_witnesses": 0, "exact": 0, "status": 0}

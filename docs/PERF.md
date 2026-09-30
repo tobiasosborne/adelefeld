@@ -282,3 +282,53 @@ result. Minimum, median and maximum are reported. A result converted to cycles a
 how the core clock was obtained: the time-stamp rate that the harness records is not the core clock (section 1b), so
 a clock probe next to the run, or a cycle counter where one is open, is needed. `bench/baseline.c` predates this
 contract and is kept as a dated reference; its replacement is work package 0.5.
+
+
+### Series at a prime (f-slice5, 2026-09-30)
+
+The floor was stated before measurements in `lanes/f-slice5/progress.md`. The problem is a call at fixed p
+and absolute K, with a fresh dense integer centre written in the existing fmpz layout. A centre of B bytes
+must be written. This is a compulsory-output bound, restricted to that layout and to dense outputs. It does
+not apply to exact shortcuts or compressed, cached or symbolic results. The entropy count on the principal
+disc remains p^(K-c); it is a space count, not an arithmetic time bound.
+
+The Intel store model of section 1b gives B/64 cycles (MODEL, L1 vector stores). This is a weak bound: the
+centre can be larger than L1, and arithmetic and allocation are not counted. One multiplication followed by
+reduction modulo p^K is measured separately as a REFERENCE, not a lower bound: it has not been proved
+necessary for every exp or log algorithm. FLINT padic is another REFERENCE. It is used by this benchmark,
+not by the library (N-D9).
+
+`bench/bench_lfunc.c`: call rate, reused outputs, seed 0, one FLINT thread, CLOCK_MONOTONIC_RAW, cpu 2.
+GCC 13.3.0, -std=c11 -O2 -g -Wall -Wextra -Werror, FLINT 3.0.1, GMP 6.3.0. Inputs are exact exp(p^c),
+log(1+p^c), and Log(2) at odd p or Log(5) at 2. Input valuation for exp is c; z valuation for the direct log
+is c. General odd-prime Log forms the powered unit once. No library context is cached; the benchmark's
+p^K and FLINT context are reused for the comparison rows. Context construction is outside the timed region.
+Results are consumed and compared with FLINT outside every timed region (96 full-residue comparisons,
+0 differences). Dense modular-product operands are p^K-17 and p^K-33. Sizes are printed in each log.
+
+All families at p=2,3,5 and K=2000,10000,100000 have three after trials; the word-prime rows below have five.
+Minimum, median and maximum are retained in `lanes/f-slice5/after-*.log`. The full before/after table, including
+FLINT and modular-product costs, is `lanes/f-slice5/table.md`. Baselines are provisional: shared-core work
+occurred during some before measurements, and two 100000-digit baseline runs at 3 only completed one call.
+The baseline Log at 5, K=100000 exceeded 180 s; the word-prime Log exceeded 120 s. Exp's kernel is unchanged.
+
+For the final after run, the dependent-add clock probes next to it give 3.105 to 3.783 adds/ns (under the
+one-cycle assumption of section 1b). Other work used cpu 4; a later laptop load read 3.24. These are
+provisional clocks, not hardware cycle counters. Earlier contended probes are retained separately and are
+not used for this cycle conversion.
+
+At p=2^64-59 and K=10000, the exp centre has 80000 bytes; the canonical log and Log unit centres have
+79992 bytes. The store floor is 0.330 to 0.403 us under the stated clock and store models.
+
+| Function | Before s | After median s | After / store floor | After / mul reference | After / FLINT |
+|---|---:|---:|---:|---:|---:|
+| exp(p) | 0.113944 | 0.079073 | 196416 to 239305 | 9.5 | 2.407 |
+| log(1+p) | 74.823288 | 0.043326 | 107633 to 131135 | 5.3 | 0.061 |
+| Log(2) | >120 | 0.770731 | 1914688 to 2332775 | 114.8 | 0.960 |
+
+Thus the three measured word-prime families meet the two-second target. This is not a worst-case time
+bound over every rational centre or every ball. F8 of `api-1f4.md` proves the decreasing term precision;
+F9 proves the balanced factors and the exact splitting tree. Tiny sums retain the original tagged-word loop.
+The paired small-call benchmark covers p=2,3,5,2^64-59 and K=8,16,32 in the same process, alternating
+old/new order. Its 36 median ratios are 0.385 to 1.032; the largest increase has overlapping trial ranges.
+Full minimum/median/maximum values are in `lanes/f-slice5/small-rate-final.log`.

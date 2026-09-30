@@ -1,0 +1,3 @@
+{"calls": 7200, "wall_seconds": 0.24162205200991593, "max_call_seconds": 0.000398832}
+{"inputs": 3600, "residue_checks": 3600}
+{"suite": "precision", "elapsed_seconds": 0.3909885809989646, "inputs": 3600, "residue_checks": 3600}

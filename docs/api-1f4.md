@@ -50,11 +50,13 @@ input ball, `K = N` for an exact input and `K = min(N, E)` for a ball, `E` the e
 7. `Log` never forms the root of unity `w` (F3): at odd `p` it takes `log(a^(p-1)) / (p - 1)` for the unit part `a`
    (or `log(a)` when `a = 1` modulo `p`), at 2 `log(s a)` with `s = +-1`, `s a = 1` modulo 4. Alternative: the
    Teichmueller representative by Hensel lifting or by powering, as the reference does (statement T of
-   `proto/lfunc_checks.py`); rejected in C because it costs a lifting of the same size as the power and one division
-   more, and because the tests then check two different routes against each other.
+   `proto/lfunc_checks.py`); rejected in C because the measured lift costs more than the power and needs one division more,
+   and because the tests then check two different routes against each other. The f-slice5 cost comparison
+   at p = 2^64-59 and K = 10000 measured 0.66 s for the power and 3.08 s for the lift (power.log).
 8. `exp` is a Horner sum with the one denominator `L!` (F4); `log` is the term-by-term sum of Proposition 8 with the
    count of Proposition 7b (the tight one, the default of PLAN 1F.7), with the lower bound of the valuation of `z`
-   taken from the residue of `z` when `z = a^(p-1) - 1` (F5). No binary splitting, no rectangular splitting.
+   taken from the residue of `z` when `z = a^(p-1) - 1` (F5). The tagged-word log loop is retained. Other sums with K <= 64 use F8; larger sums use F9.
+   Exp retains its original Horner sum. The F7 status limit is unchanged.
 9. Limits: the bounds of `lball.h`; `LIMIT` for an input or a result beyond them, and for a working power `p^W` with
    `W bits(p) > ADF_LBALL_BITS_MAX` (F7). The last is the only limit set by an intermediate value; the lball rule
    ("never because of an intermediate value") cannot hold for a sum that must be formed modulo `p^W`, `W > K`. No
@@ -192,3 +194,96 @@ for `x = 3` modulo 4), and `Log` through the Teichmueller representative (odd `p
 points of each ball (`check_ball_enumeration`: 1020 balls, 13281 points). The C tests compare with the reference
 field by field, enclose the value of every grid point of every grid ball, and compare with FLINT's `padic` at the
 centre for 1000 random inputs up to precision 200 and at precision 2000.
+
+## F8 (working precision of each log term; lane f-slice5)
+
+Let z be in p Z_p, v(z) >= v >= 1, K > v, and z = p^v b. For degree k >= 1 put
+
+    e_k = v_p(k), d_k = k / p^e_k, h_k = k v - e_k, H_k = K - h_k.
+
+If H_k <= 0 the term is zero modulo p^K. Otherwise compute b^k modulo p^H_k, divide by the unit d_k
+in that ring, and multiply by p^h_k. This gives z^k/k modulo p^K. The input z need only be known
+modulo p^K. A convenient nonincreasing modulus for the recurrence of the unit powers is
+
+    p^G_k, G_k = K - k v + floor(log_p k).
+
+The sum must keep K digits even when a term needs fewer digits. The tail count remains Proposition 7b.
+The original working-power limit F7 remains checked before this computation.
+
+Proof, step by step.
+
+1. v_p(k) <= floor(log_p k) and k v > e_k (Lemma 5). Hence h_k >= 0. A term with h_k >= K is zero
+   modulo p^K. Multiplication by a unit changes no valuation.
+2. An error divisible by p^H_k in b^k/d_k becomes divisible by p^(H_k+h_k) = p^K after multiplication
+   by p^h_k. Thus H_k digits of the unit power suffice. This is a sufficient precision, not a necessary
+   one for every special input.
+3. If z is replaced modulo p^K, b changes by p^(K-v). For k >= 1 write b' = b + delta. In the binomial
+   expansion of b'^k-b^k, the term of degree i in delta has valuation at least
+   (i(K-v) + v_p(k) - v_p(i)). Indeed i binom(k,i) = k binom(k-1,i-1).
+   Since K-v >= 1 and v_p(i) <= i-1, this is at least K-v+e_k. After multiplication by p^(k v-e_k),
+   its valuation is at least K+(k-1)v. Thus the input precision K is sufficient for every term.
+4. floor(log_p k) increases by at most 1 from k to k+1, while v >= 1. Hence G_k is nonincreasing,
+   and G_k >= H_k. Given b^(k-1) modulo p^G_(k-1), multiplication by b followed by reduction modulo
+   p^G_k gives the required b^k. Through the last retained degree G_k > 0 by the definition of the count.
+5. For the unit division let Q = p^H_k and 0 <= r < Q. Since gcd(Q,d_k)=1, choose
+   j = (-r mod d_k) (Q mod d_k)^(-1) mod d_k. Then r+j Q is divisible by d_k, and
+   0 <= (r+j Q)/d_k < Q. This quotient is exactly r/d_k modulo Q. d_k <= k fits in a word, so the
+   inverse, remainder and exact division use word operations. The case d_k=1 needs no inverse.
+6. Add the terms with their signs while preserving K digits of the sum. Each term error and the omitted
+   tail are in p^K Z_p, so their total error is in p^K Z_p. Reducing the sum at G_k would lose digits.
+
+Checks: all 2000 stored old-code cases, including aliasing, and the existing reference vectors.
+Three faults in private copies reduce a term by one extra digit, divide by the wrong unit integer, or
+reduce the sum at G_k. Each is rejected by the stored comparison. Commands and counts are in the lane report.
+
+## F9 (balanced factors and an exact splitting tree)
+
+For an integral principal unit u = 1 modulo p^v, v >= c, known modulo p^K, take m = min(2v,K).
+Let l be its least nonnegative residue modulo p^m. Then l is a unit, l = 1 modulo p^v, and
+u/l = 1 modulo p^m. Modulo p^K,
+
+    log(u) = log(l) + log(u/l).
+
+Repeat with v replaced by m, until m=K. A factor equal to 1 contributes zero. Every other factor has
+z = l-1 of valuation w >= v, and bit size less than m log2(p). Use Proposition 7b's count T for that w.
+Compute its finite sum exactly by the following tree, with q=-z and 1 <= a < b <= T+1:
+
+    B_(a,b) = product_(k=a)^(b-1) k,
+    R_(a,b) = q^(b-a),
+    A_(a,b) / B_(a,b) = sum_(k=a)^(b-1) q^(k-a)/k.
+
+A leaf is A=1, B=a, R=q. At a split a < d < b combine the left and right triples by
+
+    A = A_left B_right + R_left A_right B_left,
+    B = B_left B_right, R = R_left R_right.
+
+Then z A_(1,T+1)/B_(1,T+1) is the signed log partial sum. Remove the p part of B, divide A z by
+that same p power exactly, invert the remaining unit denominator modulo p^K, and reduce. The p valuation
+of B here is v_p(T!), not the guard exponent of F5. This tree uses exact integers and needs no guard
+precision; the original F7 limit is still checked from F5 before selecting this route.
+
+Proof.
+
+1. l is congruent to u modulo p^m and is a unit. Therefore u/l-1 = (u-l)/l lies in p^m Z_p.
+   Both l and u/l lie in 1+p^c Z_p. Lemma 9's product identity proves the logarithm identity.
+2. Replacing a principal unit by another modulo p^K changes its log by p^K Z_p: the quotient is in
+   1+p^K Z_p, and Lemma 9 gives the valuation of its log. Therefore modular inverses and products in the
+   factorisation preserve the result modulo p^K. For the residual write u-l = p^m d, an exact integer
+   division. Then u/l = 1 + p^m d/l. Only K-m digits of l^(-1) are needed: an inverse error in
+   p^(K-m) becomes an error in p^K after multiplication by p^m d. This avoids a full-size inverse.
+   At the last step the remaining quotient is 1 modulo p^K.
+3. Each step doubles the known valuation, unless it reaches K. Thus there are finitely many steps.
+   The integer factor has less than m digits, and the term count decreases as v increases.
+4. The leaf identities hold directly. Splitting the stated sum at d gives the left sum plus
+   q^(d-a) times the right sum. Putting this over B_left B_right gives precisely the combine rule.
+   Induction proves the tree identities without rounding.
+5. Since q=-z, z q^(k-1) = (-1)^(k-1) z^k. Thus the final ratio is the required finite sum.
+   Every summand is p-integral since k w > v_p(k), so their sum is p-integral. Consequently the integer
+   numerator A z is divisible by the entire p part of B. The remaining denominator is a unit.
+6. Proposition 7b bounds each omitted infinite tail by p^K Z_p. Reducing each exact partial sum and then
+   adding the factor logarithms retains the complete log modulo p^K. F6 therefore gives the same ball,
+   canonical centre, exponent and exact flag as before. Domain tests, shortcuts and F7 are unchanged.
+
+The tree and factor proof above are our own. FLINT describes rectangular log splitting in
+`refs/src/flint-3.0.1/padic.rst:509-516`, and balancing chunk size against valuation for exp in
+`:440-447`. No FLINT padic function is called by the library (N-D9).

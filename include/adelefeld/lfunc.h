@@ -56,8 +56,10 @@
        stated here because the sum cannot be formed without p^W. No power is formed, and no limit applies, when the
        centre of the result is known without a sum: the exact results above; exp of a ball around 0 or K <= v(a)
        (the centre is 1); log and Log when K <= c or the unit part of a is exactly 1 (the centre is 0).
-   The cost is not bounded by these limits: the sum has about (p - 1) K / ((p - 1) v(a) - 1) terms for exp and
-   about K / v(a - 1) for log, each a multiplication of integers of W bits(p) bits. The caller chooses N.
+   The cost is not bounded by these limits. Exp keeps its common-denominator Horner sum, with about
+   (p - 1) K / ((p - 1) v(a) - 1) terms. The tagged-word log loop is retained. Other sums with K <= 64 use decreasing term precision
+   and word-size unit division (docs/api-1f4.md F8). Larger log sums split the principal unit into factors with increasing
+   valuation, then evaluate their shorter series by exact binary splitting (F9). The caller chooses N.
 
    Aliasing: y may be x. Inputs satisfy adf_lball_is_canonical; with -DADF_CHECK_INVARIANTS each function checks x on
    entry and calls flint_abort (conventions 4.4). Every value written satisfies the predicate. */
@@ -92,8 +94,8 @@ int adf_lball_log(adf_lball_t y, const adf_lball_t x, slong N);
    y encloses Log(t) for every t in x. Domain: every x != 0. The exact +-p^m give the exact 0 (F2). Status: ADF_OK;
    ADF_DOMAIN (the exact 0); ADF_NOT_DETERMINED (a ball that contains 0); ADF_LIMIT; y untouched on each status other
    than OK. The root of unity w is never formed: F3 (Log(x) = log(a^(p-1))/(p-1) for the unit part a of x at odd p,
-   log(+-a) with +-a = 1 modulo 4 at p = 2). Cost: at most one power a^(p-1) modulo p^W and one sum of Proposition
-   7b's count of terms. */
+   log(+-a) with +-a = 1 modulo 4 at p = 2). Cost: at most one power a^(p-1) modulo p^W, then F8's direct sum
+   or F9's balanced factor sums, as described above. */
 int adf_lball_Log(adf_lball_t y, const adf_lball_t x, slong N);
 
 #ifdef __cplusplus

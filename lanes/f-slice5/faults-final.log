@@ -1,0 +1,3 @@
+term_precision 1 stored checks=80002 failures=672
+wrong_integer 1 stored checks=80002 failures=84
+sum_precision 1 stored checks=80002 failures=730
