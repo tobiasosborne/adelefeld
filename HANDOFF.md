@@ -66,7 +66,7 @@ programs, all pass; after it only documents and lane files were committed):
   printer: balls whose search needs more than about 2^25 / S levels are refused now).
 - f-review2 R3 to R8 and i-review2 F1 to F5: CLOSED (n-review1 part A, B).
 
-**Nothing is running.** Quota at 05:35: Claude weekly 15% (8.2 points ahead of pace), Fable weekly 14%
+**Nothing is running.** Quota at 05:20: Claude weekly 15% (8.2 points ahead of pace), Fable weekly 14%
 (7.2 ahead: the referee f-review4 cost about 9 points), codex 8% (2.7 ahead). Let the Claude windows fall
 back to pace before the next Claude lanes; codex has room.
 
