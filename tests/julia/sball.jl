@@ -210,7 +210,9 @@ pred(name::Symbol, x::SB, y::SB) = ccall(ad(name), Cint, (Ptr{UInt8}, Ptr{UInt8}
     st, _, where = unary_at(:adf_sball_log_at, s, p3)
     @test st == DOMAIN && primeof(where) == 3
     st, _, where = unary_at(:adf_sball_exp_at, s, p2)
-    @test st == UNSUPPORTED && primeof(where) == 2
+    @test st == DOMAIN && primeof(where) == 2   # lane f-slice6: exp exists at a prime; 2/3 has v_2 = 1 < 2: DOMAIN
+    st, _, where = unary_at(:adf_sball_sin_at, s, p2)
+    @test st == UNSUPPORTED && primeof(where) == 2   # sin at a prime is a later slice
     # log of a negative real ball: DOMAIN at the real place; the odd root and the exp are fine
     neg = adele_of(-2, 3)
     st, sn, _ = project(neg, [ARCH, p2])

@@ -553,3 +553,85 @@ and `LIMIT` needs `v_p(H)` large. *Check:* `tests/test_lball.c`
 `set_fball_limit_is_decided_without_the_full_valuation` (red on the old code: 5.2 s against the bound 3.5 s),
 `set_fball_small_centre_above_the_bound_is_ok` (case (ii): `H = 2^(2^25 + 5)`, `A = 3`: `OK`; `A = 1`, `d = 3`:
 `LIMIT`), and the vectors of lane f-slice1 (`set_fball` lines), unchanged.
+
+
+## Slice 1F.4-b: exp, log, Log at a prime of a partial ball, and the driver (lane f-slice6, 2026-09-30)
+
+Headers: `include/adelefeld/rfunc.h` (block "A PRIME"), `include/adelefeld/lfunc.h`, `sball.h`, `lball.h`.
+Implementation: `src/rfunc.c` (`at_prime`, `at_place`). Tests: `tests/test_rfunc_prime.c` (vectors
+`tests/ref/vectors/f-slice6/at_prime.jsonl` from `lanes/f-slice6/gen_vectors.py`, and the vectors of f-slice4
+through `_at`), `tests/test_rfunc.c` (two tests changed to the new contract), `tests/julia/f_at.jl`, the driver
+commands `project`, `exp_at`, `log_at` (`tools/adf/adf.c`, `tools/adf/README.md`, `tests/driver/f-*.cmd`). Sources:
+`docs/SPEC.md` 9.3.1 (`f_at(x, S)`, "a partial ball over S (for one place: a local or real ball)", "if one place
+fails, the function returns the status with that place and no value"), 9.3.2 ("`Log` at all places": "The real
+coordinate needs a positive input, or the separately named `log_abs`"); `docs/proofs/functions.md` Proposition 22
+(line 725); `docs/conventions.md` 3.3 (the reported place).
+
+### Functions
+
+| Function | At a prime `p` of `x` | At the archimedean place | Statuses |
+|---|---|---|---|
+| `adf_sball_exp_at` | `adf_lball_exp` on the component, `N = prec` | `arb_exp` at `prec` bits | as `lfunc.h` / `rfunc.h`, `where` = the place |
+| `adf_sball_log_at` | `adf_lball_log` | `arb_log` (domain `t > 0`) | as above |
+| `adf_sball_Log_at` (new) | `adf_lball_Log` | `arb_log`, the same as `log_at` | as above |
+| `log_abs_at`, `sin_at`, `cos_at`, `sqrt_at`, `root_at` | `UNSUPPORTED`, `where` = the prime | unchanged | |
+
+### Decisions taken in this slice (each with the alternative)
+
+1. **`prec` at a prime is the absolute precision `N`.** One name for two meanings: bits of arb at the real place,
+   the absolute p-adic precision of `lfunc.h` at a prime. It is passed unchanged: no clamp to `[2, ...]`, no
+   `ADF_REAL_PREC_MAX` (a request of `N = 2^22` for the exact 0 is the exact 1, and the real place says `LIMIT` at
+   the same number). The limits at a prime are those of `lfunc.h`. Alternative: a separate argument or separate
+   names (`adf_sball_exp_at_prec`); not done, because the caller of `f_at` names one place and one precision, and
+   the place says which meaning holds. The header says so. 2. **Consequence for the old check.** `ADF_LIMIT` for
+   `prec` above `ADF_REAL_PREC_MAX` is now decided only when `v` is the archimedean place (before every other
+   status, `where` = the archimedean place, also when x has no such place: unchanged). For a prime it is not
+   decided: a prime that is not a place of `x` is `DOMAIN` with `where` = that prime at every `prec` (before:
+   `LIMIT` with the archimedean place). `tests/test_rfunc.c` `prec_limit` changed for the cases `j = 1, 3`, and
+   `sball_at_statuses_and_places` for `exp` and `log` at the primes of 2/3 (now `DOMAIN`, where they were
+   `UNSUPPORTED`); `tests/julia/sball.jl` has one line changed for the same reason (`exp_at` at 2 of 2/3), with a
+   line added that `sin_at` at 2 is still `UNSUPPORTED`. This is the change of contract that the brief asks for; no
+   test was weakened: each new expectation is the status that the lfunc.h function returns on the component. 3.
+   **`Log_at` at the real place is the real logarithm** (domain `t > 0`), not `log |t|`. SPEC 9.3.2 (`docs/SPEC.md`
+   lines 598-599): "The real coordinate needs a positive input, or the separately named `log_abs`", and `log_abs_at`
+   exists. Alternative: `log |t|` (the archimedean part of the Iwasawa logarithm of an idele would then be the
+   absolute value, as in the product formula); not done, because 9.3.2 names the positive input as the domain, and
+   `log_abs_at` covers the other need. A negative real input is `DOMAIN` with `where` = the archimedean place. 4.
+   **The result at a prime is the partial ball over that one prime** (`arch = NONE`, `inf = 0`, `len = 1`, `loc[0]`
+   = the result of the `lfunc.h` function, the identical fields), built by `adf_sball_set_arb_lballs` and swapped
+   into `y`, so that `y` may be `x` (the component is copied first) and a status leaves `y` untouched. 5. **Check
+   order** (header): `LIMIT` (`prec`, archimedean `v`); `DOMAIN` (`v` not a place of `x`); at a prime, the functions
+   not yet implemented are `UNSUPPORTED` with `where` = `v`, else the function; at the archimedean place the complex
+   tag (`UNSUPPORTED`), the root of degree 0 (`DOMAIN`, no place), the function. A root of degree 0 at a prime is
+   `UNSUPPORTED` (the prime is not implemented for roots; the degree is not looked at). The complex tag does not
+   affect a prime. 6. **The driver** (`tools/adf/README.md`, "The commands at places"): `exp_at` and `log_at` print
+   the partial ball, with the label of the place (`5: 349831 + O(5^8)`, `real: 1`), as `project` does. Alternative:
+   the bare component without the label; not done, because the label is what tells a real ball from a p-adic one and
+   the bare centre `1` is ambiguous. The text of a local ball is `<centre> + O(<p>^<N>)`, `<value>` when exact. A
+   place is `real` or a decimal; a syntax fault is `PARSE`, a decimal that is no prime is `DOMAIN`.
+
+### Statements
+
+**S8 (`f_at` at a prime is the function of `lfunc.h` on the component).** Let `x` be a partial ball with the local
+component `c` at the prime `p`, and let `f` be `exp`, `log` or `Log` with the domain and the image ball of
+`lfunc.h`. Then `adf_sball_f_at(y, ., x, p, N)` returns exactly the status of `adf_lball_f(r, c, N)`, and on `OK`
+the partial ball `y` over `{p}` whose component is `r`, and the set of `y` contains `{ f(t_p) : t in x }` for every
+tuple `t` of `x`.
+
+*Proof.* The code reads `c` by `adf_sball_get_lball` (a copy of the component at `p`, which exists because `p` is a
+place of `x`, checked before), calls `adf_lball_f(r, c, N)`, and on `OK` forms the partial ball with the single
+component `r` (`adf_sball_set_arb_lballs`: `r` satisfies the predicate because `lfunc.h` writes only canonical
+values, so the call is `OK`). The status is passed on with `where = p`, conventions 3.3, since there is one place.
+By Proposition 22 (line 725) `f_at` after the projection to `{p}` is the tuple `(f_p(x_p))`, typed over `{p}`; the
+other coordinates of `x` are not part of the result, and this is what `y` holds. The enclosure is that of `lfunc.h`
+(SPEC 9.3.1: `r` contains `f(t)` for every `t` in `c`), and the set of tuples of `y` is the set of `r`. Nothing else
+is computed, so nothing else can be wrong. *Check:* `tests/test_rfunc_prime.c` runs 1824 exact cases against a
+reference that uses no line of `src/lfunc.c` (`gen_vectors.py`), the 790 cases of the f-slice4 vectors (balls, exact
+inputs, every status) through `_at`, and compares the fields of the component with those of `adf_lball_f`.
+
+**S9 (the limit).** `ADF_LIMIT` from `ADF_REAL_PREC_MAX` is an upper bound of the working precision of arb, which
+arb allocates for (finding R5 of the review of the real functions). At a prime the number `prec` is `N`, and
+`lfunc.h` bounds `N` itself (`ADF_LBALL_EXP_MAX`, the working modulus `p^W`, `lfunc.h` "Limits"), so an upper bound
+of `2^21` would refuse valid requests (an exact result needs no work at any `N`). The test
+`prec_is_the_absolute_precision_at_a_prime` runs `exp(0)`, `log(1)`, `Log(5)` at `N = 2^21 + 1`, `2^21 + 2` and
+`LONG_MAX` and gets the exact results, and `exp(5)` at `N = LONG_MAX` gets `LIMIT` from `lfunc.h` with `where` = 5.

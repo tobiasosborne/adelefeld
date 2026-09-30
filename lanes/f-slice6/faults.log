@@ -1,0 +1,19 @@
+A: the status of the function at a prime is reported with the archimedean place
+    CAUGHT by test_rfunc_prime: 9 tests, 98140 checks, 1109 failed checks, 5 failed tests; test_rfunc: 9 tests, 59670 checks, 4 failed checks, 1 failed tests
+B: prec is clamped to 2 at a prime (as at the real place)
+    CAUGHT by test_rfunc_prime: 9 tests, 98617 checks, 584 failed checks, 3 failed tests
+C: Log_at at a prime computes log instead of Log
+    CAUGHT by test_rfunc_prime: 9 tests, 90548 checks, 677 failed checks, 6 failed tests
+D: ADF_REAL_PREC_MAX applies at a prime too
+    CAUGHT by test_rfunc_prime: 9 tests, 98011 checks, 17 failed checks, 2 failed tests; test_rfunc: 9 tests, 59670 checks, 112 failed checks, 1 failed tests
+E: Log_at at the real place is log |t|
+    CAUGHT by test_rfunc_prime: 9 tests, 98015 checks, 2 failed checks, 1 failed tests
+F: sin_at at a prime is computed (it falls into the Log branch)
+    CAUGHT by test_rfunc_prime: 9 tests, 98009 checks, 7 failed checks, 2 failed tests; test_rfunc: 9 tests, 59670 checks, 3 failed checks, 1 failed tests
+G: the driver accepts a leading zero in a place
+    CAUGHT by cases f-places-hostile
+H: the driver prints the components in the order of the places given
+    CAUGHT by cases f-project, f-places-1000
+I: exp_at calls log_at
+    CAUGHT by cases f-at-prime
+caught 9 of 9 faults

@@ -1,0 +1,1824 @@
+{"K": 0, "N": 1, "c": "1", "exact": 1, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 4, "c": "1", "exact": 1, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 9, "c": "1", "exact": 1, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 16, "c": "1", "exact": 1, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 0}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"K": 4, "N": 4, "c": "13", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"K": 9, "N": 9, "c": "333", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"K": 16, "N": 16, "c": "16717", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"K": 4, "N": 4, "c": "9", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"K": 9, "N": 9, "c": "297", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"K": 16, "N": 16, "c": "12585", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 4, "N": 4, "c": "5", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 9, "N": 9, "c": "85", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 16, "N": 16, "c": "12885", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"K": 4, "N": 4, "c": "1", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"K": 9, "N": 9, "c": "145", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"K": 16, "N": 16, "c": "47249", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"K": 4, "N": 4, "c": "5", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"K": 9, "N": 9, "c": "101", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"K": 16, "N": 16, "c": "21605", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"K": 4, "N": 4, "c": "5", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"K": 9, "N": 9, "c": "21", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"K": 16, "N": 16, "c": "52245", "exact": 0, "f": "exp", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"N": 1, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 4, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 9, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 16, "f": "exp", "p": 2, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"K": 9, "N": 9, "c": "124", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"K": 16, "N": 16, "c": "9852", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"K": 9, "N": 9, "c": "472", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"K": 16, "N": 16, "c": "9688", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"K": 9, "N": 9, "c": "488", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"K": 16, "N": 16, "c": "53736", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 9, "N": 9, "c": "248", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 16, "N": 16, "c": "19704", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 9, "N": 9, "c": "480", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 16, "N": 16, "c": "32224", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"K": 9, "N": 9, "c": "432", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"K": 16, "N": 16, "c": "19376", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 9, "N": 9, "c": "268", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 16, "N": 16, "c": "5900", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 9, "N": 9, "c": "388", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 16, "N": 16, "c": "55684", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"K": 9, "N": 9, "c": "40", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"K": 16, "N": 16, "c": "55848", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"K": 9, "N": 9, "c": "392", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"K": 16, "N": 16, "c": "15752", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"K": 9, "N": 9, "c": "224", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"K": 16, "N": 16, "c": "55520", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 9, "N": 9, "c": "176", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 16, "N": 16, "c": "28336", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"K": 9, "N": 9, "c": "476", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"K": 16, "N": 16, "c": "65500", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 1, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 4, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 9, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 16, "f": "log", "p": 2, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"K": 9, "N": 9, "c": "264", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"K": 16, "N": 16, "c": "45832", "exact": 0, "f": "log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"N": 1, "f": "Log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "Log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "Log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "Log", "p": 2, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 2}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 2}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 2}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 3}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 4}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"K": 9, "N": 9, "c": "124", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"K": 16, "N": 16, "c": "9852", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 6}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 6}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 6}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"K": 9, "N": 9, "c": "472", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"K": 16, "N": 16, "c": "9688", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 7}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 8}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"K": 9, "N": 9, "c": "488", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"K": 16, "N": 16, "c": "53736", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 9}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 10}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 10}
+{"K": 9, "N": 9, "c": "124", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 10}
+{"K": 16, "N": 16, "c": "9852", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 12}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 16}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 9, "N": 9, "c": "248", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 16, "N": 16, "c": "19704", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 9, "N": 9, "c": "480", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 16, "N": 16, "c": "32224", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 31}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"K": 9, "N": 9, "c": "432", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"K": 16, "N": 16, "c": "19376", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 49}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 50}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 50}
+{"K": 9, "N": 9, "c": "248", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 50}
+{"K": 16, "N": 16, "c": "19704", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": 50}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -6}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -6}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -6}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 1, "xn": -6}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 9, "N": 9, "c": "268", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 16, "N": 16, "c": "5900", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 9, "N": 9, "c": "388", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 16, "N": 16, "c": "55684", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"K": 9, "N": 9, "c": "40", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"K": 16, "N": 16, "c": "55848", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 2}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 2}
+{"K": 9, "N": 9, "c": "268", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 2}
+{"K": 16, "N": 16, "c": "5900", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"K": 9, "N": 9, "c": "392", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"K": 16, "N": 16, "c": "15752", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"K": 9, "N": 9, "c": "392", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"K": 16, "N": 16, "c": "15752", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 20}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 3}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 3}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 3}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": -3}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": -3}
+{"K": 9, "N": 9, "c": "244", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": -3}
+{"K": 16, "N": 16, "c": "59636", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"K": 9, "N": 9, "c": "224", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"K": 16, "N": 16, "c": "55520", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 6, "xn": 25}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 6, "xn": 25}
+{"K": 9, "N": 9, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 6, "xn": 25}
+{"K": 16, "N": 16, "c": "25604", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 6, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": -10}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": -10}
+{"K": 9, "N": 9, "c": "164", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": -10}
+{"K": 16, "N": 16, "c": "164", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 7, "xn": -10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 9, "N": 9, "c": "176", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 16, "N": 16, "c": "28336", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 5, "xn": 11}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"K": 4, "N": 4, "c": "12", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"K": 9, "N": 9, "c": "476", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"K": 16, "N": 16, "c": "65500", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 9, "xn": 13}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 17}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 17}
+{"K": 9, "N": 9, "c": "400", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 17}
+{"K": 16, "N": 16, "c": "28560", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 2, "xn": 17}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 65}
+{"K": 4, "N": 4, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 65}
+{"K": 9, "N": 9, "c": "64", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 65}
+{"K": 16, "N": 16, "c": "63552", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 4, "xn": 65}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"K": 4, "N": 4, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"K": 9, "N": 9, "c": "4", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"K": 16, "N": 16, "c": "25604", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 3, "xn": 100}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"K": 4, "N": 4, "c": "8", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"K": 9, "N": 9, "c": "264", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"K": 16, "N": 16, "c": "45832", "exact": 0, "f": "Log", "p": 2, "status": "OK", "xd": 25, "xn": -1}
+{"K": 0, "N": 1, "c": "1", "exact": 1, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 4, "c": "1", "exact": 1, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 9, "c": "1", "exact": 1, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 16, "c": "1", "exact": 1, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 0}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"K": 4, "N": 4, "c": "67", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"K": 9, "N": 9, "c": "7519", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"K": 16, "N": 16, "c": "39530983", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"K": 4, "N": 4, "c": "34", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"K": 9, "N": 9, "c": "5785", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"K": 16, "N": 16, "c": "21263425", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"K": 4, "N": 4, "c": "10", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"K": 9, "N": 9, "c": "17668", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"K": 16, "N": 16, "c": "26274790", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"K": 4, "N": 4, "c": "22", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"K": 9, "N": 9, "c": "5125", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"K": 16, "N": 16, "c": "15397231", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 4, "N": 4, "c": "52", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 9, "N": 9, "c": "1267", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 16, "N": 16, "c": "6043948", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"K": 4, "N": 4, "c": "31", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"K": 9, "N": 9, "c": "10966", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"K": 16, "N": 16, "c": "32172988", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 4, "N": 4, "c": "58", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 9, "N": 9, "c": "2245", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 16, "N": 16, "c": "14488933", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"K": 4, "N": 4, "c": "7", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"K": 9, "N": 9, "c": "14668", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"K": 16, "N": 16, "c": "38573665", "exact": 0, "f": "exp", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 1, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 4, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 9, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 16, "f": "exp", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"K": 4, "N": 4, "c": "48", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"K": 9, "N": 9, "c": "8553", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"K": 16, "N": 16, "c": "17309910", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"K": 4, "N": 4, "c": "60", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"K": 9, "N": 9, "c": "7512", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"K": 16, "N": 16, "c": "499587", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"K": 4, "N": 4, "c": "9", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"K": 9, "N": 9, "c": "3492", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"K": 16, "N": 16, "c": "38424708", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 4, "N": 4, "c": "15", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 9, "N": 9, "c": "17106", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 16, "N": 16, "c": "34619820", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 4, "N": 4, "c": "51", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 9, "N": 9, "c": "18114", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 16, "N": 16, "c": "16492785", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 4, "N": 4, "c": "75", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 9, "N": 9, "c": "2181", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 16, "N": 16, "c": "32597229", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"K": 4, "N": 4, "c": "39", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"K": 9, "N": 9, "c": "15024", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"K": 16, "N": 16, "c": "999174", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"K": 4, "N": 4, "c": "21", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"K": 9, "N": 9, "c": "12171", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"K": 16, "N": 16, "c": "42547134", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"K": 4, "N": 4, "c": "9", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"K": 9, "N": 9, "c": "9081", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"K": 16, "N": 16, "c": "27053523", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"K": 4, "N": 4, "c": "3", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"K": 9, "N": 9, "c": "13287", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"K": 16, "N": 16, "c": "38828163", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"K": 4, "N": 4, "c": "39", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"K": 9, "N": 9, "c": "16563", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"K": 16, "N": 16, "c": "15881061", "exact": 0, "f": "log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 1, "f": "log", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 4, "f": "log", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 9, "f": "log", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 16, "f": "log", "p": 3, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 1, "f": "Log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "Log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "Log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "Log", "p": 3, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 2}
+{"K": 4, "N": 4, "c": "24", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 2}
+{"K": 9, "N": 9, "c": "14118", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 2}
+{"K": 16, "N": 16, "c": "8654955", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 2}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"K": 4, "N": 4, "c": "48", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"K": 9, "N": 9, "c": "8553", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"K": 16, "N": 16, "c": "17309910", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 4}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 5}
+{"K": 4, "N": 4, "c": "66", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 5}
+{"K": 9, "N": 9, "c": "9057", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 5}
+{"K": 16, "N": 16, "c": "29769753", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"K": 4, "N": 4, "c": "24", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"K": 9, "N": 9, "c": "14118", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"K": 16, "N": 16, "c": "8654955", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"K": 4, "N": 4, "c": "60", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"K": 9, "N": 9, "c": "7512", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"K": 16, "N": 16, "c": "499587", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 8}
+{"K": 4, "N": 4, "c": "72", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 8}
+{"K": 9, "N": 9, "c": "2988", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 8}
+{"K": 16, "N": 16, "c": "25964865", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 8}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 9}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"K": 4, "N": 4, "c": "9", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"K": 9, "N": 9, "c": "3492", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"K": 16, "N": 16, "c": "38424708", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"K": 4, "N": 4, "c": "48", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"K": 9, "N": 9, "c": "8553", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"K": 16, "N": 16, "c": "17309910", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 12}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 4, "N": 4, "c": "15", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 9, "N": 9, "c": "17106", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 16, "N": 16, "c": "34619820", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 16}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 4, "N": 4, "c": "51", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 9, "N": 9, "c": "18114", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 16, "N": 16, "c": "16492785", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 4, "N": 4, "c": "75", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 9, "N": 9, "c": "2181", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 16, "N": 16, "c": "32597229", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 31}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"K": 4, "N": 4, "c": "39", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"K": 9, "N": 9, "c": "15024", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"K": 16, "N": 16, "c": "999174", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 49}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 50}
+{"K": 4, "N": 4, "c": "75", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 50}
+{"K": 9, "N": 9, "c": "12549", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 50}
+{"K": 16, "N": 16, "c": "25147740", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": 50}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"K": 4, "N": 4, "c": "24", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"K": 9, "N": 9, "c": "14118", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"K": 16, "N": 16, "c": "8654955", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 1, "xn": -6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 1}
+{"K": 4, "N": 4, "c": "57", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 1}
+{"K": 9, "N": 9, "c": "5565", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 1}
+{"K": 16, "N": 16, "c": "34391766", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 1}
+{"K": 4, "N": 4, "c": "15", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 1}
+{"K": 9, "N": 9, "c": "10626", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 1}
+{"K": 16, "N": 16, "c": "13276968", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"K": 4, "N": 4, "c": "21", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"K": 9, "N": 9, "c": "12171", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"K": 16, "N": 16, "c": "42547134", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 2}
+{"K": 4, "N": 4, "c": "24", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 2}
+{"K": 9, "N": 9, "c": "14118", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 2}
+{"K": 16, "N": 16, "c": "8654955", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 5}
+{"K": 4, "N": 4, "c": "66", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 5}
+{"K": 9, "N": 9, "c": "9057", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 5}
+{"K": 16, "N": 16, "c": "29769753", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 20}
+{"K": 4, "N": 4, "c": "33", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 20}
+{"K": 9, "N": 9, "c": "17610", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 20}
+{"K": 16, "N": 16, "c": "4032942", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 20}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 4, "N": 4, "c": "33", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 9, "N": 9, "c": "11130", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 16, "N": 16, "c": "25736811", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"K": 4, "N": 4, "c": "33", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"K": 9, "N": 9, "c": "11130", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"K": 16, "N": 16, "c": "25736811", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"K": 4, "N": 4, "c": "9", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"K": 9, "N": 9, "c": "9081", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"K": 16, "N": 16, "c": "27053523", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 6, "xn": 25}
+{"K": 4, "N": 4, "c": "27", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 6, "xn": 25}
+{"K": 9, "N": 9, "c": "3996", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 6, "xn": 25}
+{"K": 16, "N": 16, "c": "7837830", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 6, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": -10}
+{"K": 4, "N": 4, "c": "30", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": -10}
+{"K": 9, "N": 9, "c": "15663", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": -10}
+{"K": 16, "N": 16, "c": "37925121", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 7, "xn": -10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"K": 4, "N": 4, "c": "3", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"K": 9, "N": 9, "c": "13287", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"K": 16, "N": 16, "c": "38828163", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 5, "xn": 11}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 9, "xn": 13}
+{"K": 4, "N": 4, "c": "30", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 9, "xn": 13}
+{"K": 9, "N": 9, "c": "8454", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 9, "xn": 13}
+{"K": 16, "N": 16, "c": "37839180", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 9, "xn": 13}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"K": 4, "N": 4, "c": "39", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"K": 9, "N": 9, "c": "16563", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"K": 16, "N": 16, "c": "15881061", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 2, "xn": 17}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 65}
+{"K": 4, "N": 4, "c": "48", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 65}
+{"K": 9, "N": 9, "c": "8958", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 65}
+{"K": 16, "N": 16, "c": "7252302", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 4, "xn": 65}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 100}
+{"K": 4, "N": 4, "c": "18", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 100}
+{"K": 9, "N": 9, "c": "6984", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 100}
+{"K": 16, "N": 16, "c": "33802695", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 3, "xn": 100}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": -1}
+{"K": 4, "N": 4, "c": "30", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": -1}
+{"K": 9, "N": 9, "c": "1569", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": -1}
+{"K": 16, "N": 16, "c": "26553936", "exact": 0, "f": "Log", "p": 3, "status": "OK", "xd": 25, "xn": -1}
+{"K": 0, "N": 1, "c": "1", "exact": 1, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 4, "c": "1", "exact": 1, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 9, "c": "1", "exact": 1, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 16, "c": "1", "exact": 1, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 0}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"K": 4, "N": 4, "c": "456", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"K": 9, "N": 9, "c": "1521706", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"K": 16, "N": 16, "c": "16702693581", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"K": 4, "N": 4, "c": "436", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"K": 9, "N": 9, "c": "1259811", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"K": 16, "N": 16, "c": "21423134811", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"K": 4, "N": 4, "c": "26", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"K": 9, "N": 9, "c": "914401", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"K": 16, "N": 16, "c": "110567320651", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"K": 4, "N": 4, "c": "51", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"K": 9, "N": 9, "c": "282551", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"K": 16, "N": 16, "c": "5992470051", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 4, "N": 4, "c": "136", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 9, "N": 9, "c": "278261", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 16, "N": 16, "c": "109508090761", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"K": 4, "N": 4, "c": "141", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"K": 9, "N": 9, "c": "1745766", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"K": 16, "N": 16, "c": "87628698891", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 4, "N": 4, "c": "526", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 9, "N": 9, "c": "1455526", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 16, "N": 16, "c": "91159658651", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"K": 4, "N": 4, "c": "271", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"K": 9, "N": 9, "c": "207146", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"K": 16, "N": 16, "c": "68638879021", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 4, "N": 4, "c": "36", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 9, "N": 9, "c": "855036", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 16, "N": 16, "c": "95178589411", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"K": 4, "N": 4, "c": "451", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"K": 9, "N": 9, "c": "1689826", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"K": 16, "N": 16, "c": "55491924201", "exact": 0, "f": "exp", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"N": 1, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 4, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 9, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 16, "f": "exp", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"K": 4, "N": 4, "c": "555", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"K": 9, "N": 9, "c": "1111180", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"K": 16, "N": 16, "c": "110465954930", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"K": 4, "N": 4, "c": "90", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"K": 9, "N": 9, "c": "1151965", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"K": 16, "N": 16, "c": "93313651965", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"K": 4, "N": 4, "c": "455", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"K": 9, "N": 9, "c": "1369205", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"K": 16, "N": 16, "c": "87050197330", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"K": 4, "N": 4, "c": "120", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"K": 9, "N": 9, "c": "621995", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"K": 16, "N": 16, "c": "63992809495", "exact": 0, "f": "log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 1, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 4, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 9, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 16, "f": "log", "p": 5, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 1, "f": "Log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "Log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "Log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "Log", "p": 5, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 2}
+{"K": 4, "N": 4, "c": "335", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 2}
+{"K": 9, "N": 9, "c": "1752835", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 2}
+{"K": 16, "N": 16, "c": "137769330960", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 3}
+{"K": 4, "N": 4, "c": "220", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 3}
+{"K": 9, "N": 9, "c": "1311470", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 3}
+{"K": 16, "N": 16, "c": "125284514595", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 4}
+{"K": 4, "N": 4, "c": "45", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 4}
+{"K": 9, "N": 9, "c": "1552545", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 4}
+{"K": 16, "N": 16, "c": "122950771295", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 4}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"K": 4, "N": 4, "c": "555", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"K": 9, "N": 9, "c": "1111180", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"K": 16, "N": 16, "c": "110465954930", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 7}
+{"K": 4, "N": 4, "c": "600", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 7}
+{"K": 9, "N": 9, "c": "499350", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 7}
+{"K": 16, "N": 16, "c": "88184093100", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 8}
+{"K": 4, "N": 4, "c": "380", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 8}
+{"K": 9, "N": 9, "c": "1352255", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 8}
+{"K": 16, "N": 16, "c": "108132211630", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 8}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 9}
+{"K": 4, "N": 4, "c": "440", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 9}
+{"K": 9, "N": 9, "c": "669815", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 9}
+{"K": 16, "N": 16, "c": "97981138565", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 9}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"K": 4, "N": 4, "c": "335", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"K": 9, "N": 9, "c": "1752835", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"K": 16, "N": 16, "c": "137769330960", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 12}
+{"K": 4, "N": 4, "c": "265", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 12}
+{"K": 9, "N": 9, "c": "910890", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 12}
+{"K": 16, "N": 16, "c": "95647395265", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 12}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"K": 4, "N": 4, "c": "90", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"K": 9, "N": 9, "c": "1151965", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"K": 16, "N": 16, "c": "93313651965", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 16}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"K": 4, "N": 4, "c": "455", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"K": 9, "N": 9, "c": "1369205", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"K": 16, "N": 16, "c": "87050197330", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 31}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 49}
+{"K": 4, "N": 4, "c": "575", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 49}
+{"K": 9, "N": 9, "c": "998700", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 49}
+{"K": 16, "N": 16, "c": "23780295575", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 49}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"K": 4, "N": 4, "c": "335", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"K": 9, "N": 9, "c": "1752835", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"K": 16, "N": 16, "c": "137769330960", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": 50}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -3}
+{"K": 4, "N": 4, "c": "220", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -3}
+{"K": 9, "N": 9, "c": "1311470", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -3}
+{"K": 16, "N": 16, "c": "125284514595", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -6}
+{"K": 4, "N": 4, "c": "555", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -6}
+{"K": 9, "N": 9, "c": "1111180", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -6}
+{"K": 16, "N": 16, "c": "110465954930", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 1, "xn": -6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 1}
+{"K": 4, "N": 4, "c": "290", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 1}
+{"K": 9, "N": 9, "c": "200290", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 1}
+{"K": 16, "N": 16, "c": "14818559665", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 1}
+{"K": 4, "N": 4, "c": "405", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 1}
+{"K": 9, "N": 9, "c": "641655", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 1}
+{"K": 16, "N": 16, "c": "27303376030", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": 1}
+{"K": 4, "N": 4, "c": "25", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": 1}
+{"K": 9, "N": 9, "c": "1453775", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": 1}
+{"K": 16, "N": 16, "c": "64403797525", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 2}
+{"K": 4, "N": 4, "c": "115", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 2}
+{"K": 9, "N": 9, "c": "441365", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 2}
+{"K": 16, "N": 16, "c": "12484816365", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 4, "N": 4, "c": "405", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 9, "N": 9, "c": "641655", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 16, "N": 16, "c": "27303376030", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"K": 4, "N": 4, "c": "450", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"K": 9, "N": 9, "c": "241075", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"K": 16, "N": 16, "c": "150254147325", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 20}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 3}
+{"K": 4, "N": 4, "c": "175", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 3}
+{"K": 9, "N": 9, "c": "1712050", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 3}
+{"K": 16, "N": 16, "c": "2333743300", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": -3}
+{"K": 4, "N": 4, "c": "175", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": -3}
+{"K": 9, "N": 9, "c": "1712050", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": -3}
+{"K": 16, "N": 16, "c": "2333743300", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": 7}
+{"K": 4, "N": 4, "c": "600", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": 7}
+{"K": 9, "N": 9, "c": "499350", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": 7}
+{"K": 16, "N": 16, "c": "88184093100", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 4, "N": 4, "c": "70", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 9, "N": 9, "c": "841945", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 16, "N": 16, "c": "42121935695", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 6, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"K": 4, "N": 4, "c": "360", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"K": 9, "N": 9, "c": "1253485", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"K": 16, "N": 16, "c": "49585237860", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 7, "xn": -10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 11}
+{"K": 4, "N": 4, "c": "85", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 11}
+{"K": 9, "N": 9, "c": "684460", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 11}
+{"K": 16, "N": 16, "c": "117848340710", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 5, "xn": 11}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 9, "xn": 13}
+{"K": 4, "N": 4, "c": "500", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 9, "xn": 13}
+{"K": 9, "N": 9, "c": "1553625", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 9, "xn": 13}
+{"K": 16, "N": 16, "c": "115671475500", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 9, "xn": 13}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"K": 4, "N": 4, "c": "120", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"K": 9, "N": 9, "c": "621995", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"K": 16, "N": 16, "c": "63992809495", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 2, "xn": 17}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 4, "N": 4, "c": "270", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 9, "N": 9, "c": "670895", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 16, "N": 16, "c": "90701842770", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 4, "xn": 65}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"K": 4, "N": 4, "c": "450", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"K": 9, "N": 9, "c": "241075", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"K": 16, "N": 16, "c": "150254147325", "exact": 0, "f": "Log", "p": 5, "status": "OK", "xd": 3, "xn": 100}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": -1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": -1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": -1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 5, "status": "OK", "xd": 25, "xn": -1}
+{"K": 0, "N": 1, "c": "1", "exact": 1, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 4, "c": "1", "exact": 1, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 9, "c": "1", "exact": 1, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 0}
+{"K": 0, "N": 16, "c": "1", "exact": 1, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 0}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 1}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"K": 4, "N": 4, "c": "890", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"K": 9, "N": 9, "c": "20875184", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"K": 16, "N": 16, "c": "15026453160167", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 8}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"K": 4, "N": 4, "c": "50", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"K": 9, "N": 9, "c": "1942459", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"K": 16, "N": 16, "c": "13161451926330", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 50}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -6}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": -3}
+{"K": 1, "N": 1, "c": "1", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"K": 4, "N": 4, "c": "1485", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"K": 9, "N": 9, "c": "35908440", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"K": 16, "N": 16, "c": "22712216182643", "exact": 0, "f": "exp", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 1, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 4, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 9, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 16, "f": "exp", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -1}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 2}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 3}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 4}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 5}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 6}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"K": 4, "N": 4, "c": "497", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"K": 9, "N": 9, "c": "29981784", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"K": 16, "N": 16, "c": "32047855821009", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 9}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 10}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 12}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 16}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 25}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 31}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 49}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"K": 4, "N": 4, "c": "49", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"K": 9, "N": 9, "c": "35587671", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"K": 16, "N": 16, "c": "26127099500642", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"K": 4, "N": 4, "c": "1855", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"K": 9, "N": 9, "c": "32429761", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"K": 16, "N": 16, "c": "2747467408749", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 1}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 1}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 1}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": 1}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 2}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 5}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 20}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"K": 4, "N": 4, "c": "1358", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"K": 9, "N": 9, "c": "2447977", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"K": 16, "N": 16, "c": "3932542157341", "exact": 0, "f": "log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": 7}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 6, "xn": 25}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 7, "xn": -10}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 5, "xn": 11}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 9, "xn": 13}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 2, "xn": 17}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 4, "xn": 65}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 3, "xn": 100}
+{"N": 1, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 4, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 9, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 16, "f": "log", "p": 7, "status": "DOMAIN", "xd": 25, "xn": -1}
+{"N": 1, "f": "Log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 4, "f": "Log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 9, "f": "Log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"N": 16, "f": "Log", "p": 7, "status": "DOMAIN", "xd": 1, "xn": 0}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 2}
+{"K": 4, "N": 4, "c": "966", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 2}
+{"K": 9, "N": 9, "c": "9993928", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 2}
+{"K": 16, "N": 16, "c": "10682618607003", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 3}
+{"K": 4, "N": 4, "c": "889", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 3}
+{"K": 9, "N": 9, "c": "22435833", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 3}
+{"K": 16, "N": 16, "c": "25297779371347", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 4}
+{"K": 4, "N": 4, "c": "1932", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 4}
+{"K": 9, "N": 9, "c": "19987856", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 4}
+{"K": 16, "N": 16, "c": "21365237214006", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 4}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 5}
+{"K": 4, "N": 4, "c": "742", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 5}
+{"K": 9, "N": 9, "c": "32973675", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 5}
+{"K": 16, "N": 16, "c": "24338705731620", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 6}
+{"K": 4, "N": 4, "c": "1855", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 6}
+{"K": 9, "N": 9, "c": "32429761", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 6}
+{"K": 16, "N": 16, "c": "2747467408749", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 6}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"K": 4, "N": 4, "c": "497", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"K": 9, "N": 9, "c": "29981784", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"K": 16, "N": 16, "c": "32047855821009", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 8}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 9}
+{"K": 4, "N": 4, "c": "1778", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 9}
+{"K": 9, "N": 9, "c": "4518059", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 9}
+{"K": 16, "N": 16, "c": "17362628173093", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 9}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 10}
+{"K": 4, "N": 4, "c": "1708", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 10}
+{"K": 9, "N": 9, "c": "2613996", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 10}
+{"K": 16, "N": 16, "c": "1788393769022", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 12}
+{"K": 4, "N": 4, "c": "420", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 12}
+{"K": 9, "N": 9, "c": "2070082", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 12}
+{"K": 16, "N": 16, "c": "13430086015752", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 12}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 16}
+{"K": 4, "N": 4, "c": "1463", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 16}
+{"K": 9, "N": 9, "c": "39975712", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 16}
+{"K": 16, "N": 16, "c": "9497543858411", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 16}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 25}
+{"K": 4, "N": 4, "c": "1484", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 25}
+{"K": 9, "N": 9, "c": "25593743", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 25}
+{"K": 16, "N": 16, "c": "15444480893639", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 31}
+{"K": 4, "N": 4, "c": "1274", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 31}
+{"K": 9, "N": 9, "c": "38928687", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 31}
+{"K": 16, "N": 16, "c": "21609799013257", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 31}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 49}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"K": 4, "N": 4, "c": "49", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"K": 9, "N": 9, "c": "35587671", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"K": 16, "N": 16, "c": "26127099500642", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": 50}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -3}
+{"K": 4, "N": 4, "c": "889", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -3}
+{"K": 9, "N": 9, "c": "22435833", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -3}
+{"K": 16, "N": 16, "c": "25297779371347", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"K": 4, "N": 4, "c": "1855", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"K": 9, "N": 9, "c": "32429761", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"K": 16, "N": 16, "c": "2747467408749", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 1, "xn": -6}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 1}
+{"K": 4, "N": 4, "c": "1435", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 1}
+{"K": 9, "N": 9, "c": "30359679", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 1}
+{"K": 16, "N": 16, "c": "22550311962598", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 1}
+{"K": 4, "N": 4, "c": "1512", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 1}
+{"K": 9, "N": 9, "c": "17917774", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 1}
+{"K": 16, "N": 16, "c": "7935151198254", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 1}
+{"K": 4, "N": 4, "c": "1659", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 1}
+{"K": 9, "N": 9, "c": "7379932", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 1}
+{"K": 16, "N": 16, "c": "8894224837981", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 1}
+{"K": 0, "N": 1, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": 1}
+{"K": 0, "N": 4, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": 1}
+{"K": 0, "N": 9, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": 1}
+{"K": 0, "N": 16, "c": "0", "exact": 1, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": 1}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 2}
+{"K": 4, "N": 4, "c": "77", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 2}
+{"K": 9, "N": 9, "c": "27911702", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 2}
+{"K": 16, "N": 16, "c": "18617769805257", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 2}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 5}
+{"K": 4, "N": 4, "c": "2254", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 5}
+{"K": 9, "N": 9, "c": "10537842", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 5}
+{"K": 16, "N": 16, "c": "32273856929874", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 5}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 20}
+{"K": 4, "N": 4, "c": "1785", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 20}
+{"K": 9, "N": 9, "c": "30525698", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 20}
+{"K": 16, "N": 16, "c": "20406163574279", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 20}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 3}
+{"K": 4, "N": 4, "c": "1358", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 3}
+{"K": 9, "N": 9, "c": "2447977", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 3}
+{"K": 16, "N": 16, "c": "3932542157341", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"K": 4, "N": 4, "c": "1358", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"K": 9, "N": 9, "c": "2447977", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"K": 16, "N": 16, "c": "3932542157341", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": -3}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"K": 4, "N": 4, "c": "917", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"K": 9, "N": 9, "c": "14759864", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"K": 16, "N": 16, "c": "17788449675962", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": 7}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 6, "xn": 25}
+{"K": 4, "N": 4, "c": "2030", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 6, "xn": 25}
+{"K": 9, "N": 9, "c": "33517589", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 6, "xn": 25}
+{"K": 16, "N": 16, "c": "12697013484890", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 6, "xn": 25}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": -10}
+{"K": 4, "N": 4, "c": "1708", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": -10}
+{"K": 9, "N": 9, "c": "2613996", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": -10}
+{"K": 16, "N": 16, "c": "1788393769022", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 7, "xn": -10}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 11}
+{"K": 4, "N": 4, "c": "2380", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 11}
+{"K": 9, "N": 9, "c": "33916505", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 11}
+{"K": 16, "N": 16, "c": "17080706919430", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 5, "xn": 11}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 9, "xn": 13}
+{"K": 4, "N": 4, "c": "1197", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 9, "xn": 13}
+{"K": 9, "N": 9, "c": "25936799", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 9, "xn": 13}
+{"K": 16, "N": 16, "c": "4357247006231", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 9, "xn": 13}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 17}
+{"K": 4, "N": 4, "c": "336", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 17}
+{"K": 9, "N": 9, "c": "15520400", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 17}
+{"K": 16, "N": 16, "c": "15932547696961", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 2, "xn": 17}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 65}
+{"K": 4, "N": 4, "c": "1785", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 65}
+{"K": 9, "N": 9, "c": "3087070", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 65}
+{"K": 16, "N": 16, "c": "24693343696938", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 4, "xn": 65}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 100}
+{"K": 4, "N": 4, "c": "126", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 100}
+{"K": 9, "N": 9, "c": "23145766", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 100}
+{"K": 16, "N": 16, "c": "11511938736298", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 3, "xn": 100}
+{"K": 1, "N": 1, "c": "0", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": -1}
+{"K": 4, "N": 4, "c": "917", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": -1}
+{"K": 9, "N": 9, "c": "14759864", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": -1}
+{"K": 16, "N": 16, "c": "17788449675962", "exact": 0, "f": "Log", "p": 7, "status": "OK", "xd": 25, "xn": -1}
