@@ -2,6 +2,92 @@
 
 # HANDOFF: adelefeld
 
+## Session 2026-09-29 22:37 to 2026-09-30 (night; orchestrator Claude Fable): START HERE
+
+**One line.** Fourteen lanes landed in one night: milestone S is closed (reviewed), the real roots are fast
+(exact isolation, two slices), milestone 2 (ideles) is complete and reviewed except for its text and dump
+forms, milestone 1F has work packages 1F.1 to 1F.4 (local balls, partial balls, real functions, `exp`,
+`log`, `Log` at a prime), reviewed and repaired. Everything named here is merged and pushed. State of the
+running lanes at the time of writing (03:40): see "Running".
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    make clean && make -j2 check-all 2>&1 | tail -1     # expect: check-all passed: ... (70 or more programs)
+    make clean && make -j2 check INV=1 2>&1 | tail -1; sh lanes/m1-headers/check_headers.sh | tail -1
+    free -g; ~/Projects/quota-app/target/release/quota; date
+
+**Master.** Last full run of all suites (check-all, SAN=1, CC=clang, INV=1, check_headers) at 02:56 on
+`00aa1da`: 70 test programs, all pass. Merged after it without a full run on master: lane i-repair1
+(`1cf0e42`; the lane ran all five suites in its worktree, 70 programs). Run the suites first.
+
+**Rules of TJO for this and later sessions** (2026-09-29 22:40; memory `orchestration-model-tiers`): land
+features as vertical slices; a proper review after each vertical slice; decide what a senior scientist
+would decide and record it (`docs/SPEC.md` 15.4, N-D1 to N-D10), ask TJO only for a real blocker; top tier
+for intricate or performance code is codex `gpt-6.1-sol` (high or xhigh) and Claude Opus; Sonnet medium for
+standard code and for quick bug hunts; `space-bunny-alpha` is free and works; astra and Fable only for
+theorem-grade work; no indiscriminate fuzzing or mutation runs; look at quota and at the machine
+semiregularly. TJO confirmed S-D20 and ratified the reading of `adf_resid_verify_result` (now S-D21).
+
+**What landed** (each: brief `lanes/<lane>/brief.md`, report `lanes/<lane>/result.md` or `report.md`).
+
+| Lane | Model | What | Review |
+|---|---|---|---|
+| s2-review4 | codex 6.1-sol | review of roots modulo large primes | no blocker; fuzz oracle and proof text repaired; adf-e0n closed |
+| drv-s | space-bunny | driver `roots`, `realroots`, `recover` (N-D1) | none |
+| r-slice1 | Opus | real roots by exact isolation (N-D2); 111 s to 0.00007 s | r-review1 (codex): no wrong list, cost |
+| r-slice2 | codex 6.1-sol | count-steered isolation, contraction, scaled count, filtered refinement | r-review2 (Sonnet hunt): no defect; certificate argument with file and line |
+| f-slice1, f-repair1 | Sonnet | `adf_lball` (N-D3 to N-D5, N-D7) | f-review1, closed by f-review2 |
+| f-slice2, f-repair2 | Sonnet | `adf_sball`, projection, real functions, `ADF_REAL_PREC_MAX` (N-D8) | f-review2 (codex); repairs NOT judged again |
+| f-slice3 | Sonnet | `p^m w u`, Teichmueller, fractional part, `pow_si` | NOT reviewed |
+| f-slice4 | Opus | `exp`, `log`, `Log` at a prime (N-D9) | f-review3 (codex): no wrong enclosure; cost (lane f-slice5) |
+| f-slice6 | Sonnet | `_at` functions at a prime; driver `project`, `exp_at`, `log_at` (N-D10) | NOT reviewed |
+| i-slice1 | Opus | unit cosets, ideles (N-D6) | i-review1 (Sonnet hunt): no defect |
+| i-slice2, i-slice3 | Opus | classes, valuations, norm; powers, hulls, division | i-review2 (codex): no wrong enclosure |
+| i-repair1 | Sonnet | repairs of i-review2; documents follow the code (conventions 3.2, 5.6, 5.7, 7; PLAN; SPEC 9.3.2; statement indexes) | repairs NOT judged again |
+
+Reviews are under `docs/reviews/s2/review-bigp.md`, `docs/reviews/r1/`, `docs/reviews/f1/`, `docs/reviews/m2/`.
+
+**Running at 03:40** (look at them first; nothing else runs):
+- f-slice5, codex `gpt-6.1-sol` high, since 01:48: the cost of the series at a prime (f-review3 R1:
+  `log(1 + p)` at `p = 2^64 - 59`, `N = 10000` takes 60 s). Worktree `../adelefeld-wt/f-slice5`, branch
+  `lane/f-slice5`, log `lanes/f-slice5/lane.log` there. The results of every call must stay identical.
+- t-slice1, Sonnet medium, since 03:05: value form of unit cosets, ideles, classes; driver arithmetic on
+  ideles. A Claude subagent in `.claude/worktrees/`; if the session ended, look for its `progress.md`.
+
+**The next steps**, in this order:
+1. Land f-slice5 and t-slice1 (read the report, commit in the worktree without binaries, merge, all
+   suites on master, push). f-slice5 was written by codex: its reviewer is of the Claude family.
+2. One review (codex `gpt-6.1-sol`) of what is not reviewed: f-slice3, f-slice6, t-slice1, and the
+   closure of f-review2 (R3 to R8) and i-review2 (F1 to F5).
+3. Milestone 1F continues: `sin`, `cos`, `sinh`, `cosh` at a prime (1F.7; after f-slice5, same file);
+   local roots (1F.5); powers (1F.6); then 1F.8, 1F.9. Text forms of `adf_lball` and `adf_sball`
+   (conventions 9; golden vectors exist), where the driver text of N-D10 meets the value form.
+4. Milestone 2: dump forms. Then milestone 3 (quotient and characters): a first slice.
+5. adf-4dj: the remaining cost of the real roots is FLINT's count (6 to 8 s at degree 50 with
+   coefficients of 10^4 bits); replacing the count touches S-D11.
+6. Left from before: benchmarks of milestone 1 on a quiet machine; adf-mds, adf-7gc; a long run of
+   `diff_roots_padic.py` on the route above 128 (not run: the reviewer's oracle covered the route).
+
+**Waits for TJO.** Nothing blocks. Open to reversal: N-D1 to N-D10 (`docs/SPEC.md` 15.4). The one with
+the widest reach is N-D7 (`LIMIT` of local balls may be returned when a power of `p` above the bit limit
+would be formed; a rule "never because of an intermediate value" is not promised).
+
+**Things to know.**
+- A Claude subagent that runs its check suites in the background reports "finished" several times
+  before its report arrives: tell it to run everything in the foreground.
+- Lanes leave compiled binaries and large logs in their lane directories: delete them before the
+  commit in the worktree (`find lanes/<lane> -type f -exec file {} + | grep ELF`).
+- The codex sandbox cannot run LeakSanitizer (ptrace): a codex lane reports the default `SAN=1` suite as
+  failed and passes with `ASAN_OPTIONS=detect_leaks=0`. The orchestrator's run on master is the check.
+- "34 mutants survived" in the log of `check-all` is the self-test of the mutation tool (its weak
+  example), not a failure.
+- `bd` has one writer: two `bd` commands in one pipe fail with a lock error.
+- About 90 worktrees exist under `../adelefeld-wt/` and `.claude/worktrees/`; all lanes named above are
+  merged and their worktrees may be removed with `git worktree remove`.
+- The three design branches `worktree-agent-aa58...`, `acc1...`, `adaf...` are superseded by the slices;
+  the real-roots one is merged, the other two are not needed any more.
+
 ## Session 2026-09-29, 20:45 to 21:10 (recovery): START HERE
 
 **One line.** The session of 16:24 ended at the quota limit with six lanes running. Recovered: two lanes
