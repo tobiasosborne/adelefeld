@@ -1,0 +1,3 @@
+k=33554433 bitsA=67108867 bitsH=86736952 canonical=1
+full_remove input_bits=86736952 p=3 returned_valuation=33554433
+status=LIMIT seconds=7.501012

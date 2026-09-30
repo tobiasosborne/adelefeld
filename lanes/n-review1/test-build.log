@@ -1,0 +1,6 @@
+mkdir -p lanes/n-review1/build/support
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/n-review1/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/n-review1/build/support/jsonl.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_lball_decomp.c lanes/n-review1/build/support/golden.o lanes/n-review1/build/support/jsonl.o lanes/n-review1/build/libadelefeld.a -lflint -lgmp -lm -o lanes/n-review1/build/test_lball_decomp
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_rfunc_prime.c lanes/n-review1/build/support/golden.o lanes/n-review1/build/support/jsonl.o lanes/n-review1/build/libadelefeld.a -lflint -lgmp -lm -o lanes/n-review1/build/test_rfunc_prime
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_text_idele.c lanes/n-review1/build/support/golden.o lanes/n-review1/build/support/jsonl.o lanes/n-review1/build/libadelefeld.a -lflint -lgmp -lm -o lanes/n-review1/build/test_text_idele

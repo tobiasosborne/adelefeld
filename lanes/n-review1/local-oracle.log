@@ -1,0 +1,2 @@
+counts {'T': 228, 'checks': 45044, 'S': 8321, 'F': 906, 'U': 2995, 'P': 18840, 'power_points': 256480, 'frac_points': 14014, 'R': 288, 'split_points': 73216, 'limit_cases': 24}
+failures 0

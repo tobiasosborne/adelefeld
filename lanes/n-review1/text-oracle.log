@@ -1,0 +1,2 @@
+counts {'calls': 5782, 'U': 275, 'checks': 33344, 'OK': 2310, 'golden': 308, 'nonOK': 3472, 'I': 2848, 'roundtrips': 2213, 'printer_reference': 2213, 'tight': 1173, 'allowed_ND': 231, 'C': 2659, 'hostile_extra': 10}
+failures 0

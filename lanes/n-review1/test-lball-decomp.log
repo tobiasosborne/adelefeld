@@ -1,0 +1,25 @@
+ok   teichmuller_against_the_limit_of_powers
+ok   teichmuller_statuses
+ok   decompose_teich_p2
+ok   decompose_teich_p3
+ok   decompose_teich_p5
+ok   decompose_teich_p7
+ok   decompose_teich_p11
+ok   decompose_teich_the_big_prime
+ok   decompose_teich_exact_values
+ok   decompose_teich_statuses_and_limits
+ok   frac_of_exact_values
+ok   frac_of_balls
+ok   frac_statuses_and_limits
+ok   unit_mod_against_the_congruences
+ok   pow_balls_p2
+ok   pow_balls_p3
+ok   pow_balls_p5
+ok   pow_balls_p7
+ok   pow_the_big_prime_and_large_exponents
+ok   pow_the_factor_v_p_of_k
+ok   pow_exact_values_and_k_zero
+ok   pow_limits
+ok   pow_aliasing_and_composition
+ok   vectors_slice3
+24 tests, 572484 checks, 0 failed checks, 0 failed tests

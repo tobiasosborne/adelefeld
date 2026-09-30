@@ -1,0 +1,11 @@
+canonical=1
+function=exp_at status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=log_at status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=Log_at status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=sin_at status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=cos_at status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=sqrt_at status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=root_at status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=add status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=sub status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1
+function=mul status=LIMIT calls=0 bytes=0 where_inf=1 output_empty=1

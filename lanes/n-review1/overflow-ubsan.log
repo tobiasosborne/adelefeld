@@ -1,0 +1,3 @@
+canonical=1 v=-1 N=9223372036854775807
+src/lball_decomp.c:213:34: runtime error: signed integer overflow: 9223372036854775807 - -1 cannot be represented in type 'long int'
+exit=1

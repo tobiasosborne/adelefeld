@@ -1,0 +1,31 @@
+mkdir -p lanes/n-review1/build/san
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/adele.c -o lanes/n-review1/build/san/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/cap.c -o lanes/n-review1/build/san/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/common.c -o lanes/n-review1/build/san/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/dump.c -o lanes/n-review1/build/san/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball.c -o lanes/n-review1/build/san/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball_local.c -o lanes/n-review1/build/san/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idclass.c -o lanes/n-review1/build/san/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idele.c -o lanes/n-review1/build/san/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idmap.c -o lanes/n-review1/build/san/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idpow.c -o lanes/n-review1/build/san/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/inlines.c -o lanes/n-review1/build/san/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lball.c -o lanes/n-review1/build/san/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lball_decomp.c -o lanes/n-review1/build/san/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lfunc.c -o lanes/n-review1/build/san/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/linsolve.c -o lanes/n-review1/build/san/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/modctx.c -o lanes/n-review1/build/san/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/place.c -o lanes/n-review1/build/san/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rat.c -o lanes/n-review1/build/san/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/recon.c -o lanes/n-review1/build/san/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/resid.c -o lanes/n-review1/build/san/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rfunc.c -o lanes/n-review1/build/san/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots.c -o lanes/n-review1/build/san/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots_real.c -o lanes/n-review1/build/san/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/sball.c -o lanes/n-review1/build/san/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/scaled.c -o lanes/n-review1/build/san/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/status.c -o lanes/n-review1/build/san/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text.c -o lanes/n-review1/build/san/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text_idele.c -o lanes/n-review1/build/san/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/ucoset.c -o lanes/n-review1/build/san/ucoset.o
+ar rcs lanes/n-review1/build/san/libadelefeld.a lanes/n-review1/build/san/adele.o lanes/n-review1/build/san/cap.o lanes/n-review1/build/san/common.o lanes/n-review1/build/san/dump.o lanes/n-review1/build/san/fball.o lanes/n-review1/build/san/fball_local.o lanes/n-review1/build/san/idclass.o lanes/n-review1/build/san/idele.o lanes/n-review1/build/san/idmap.o lanes/n-review1/build/san/idpow.o lanes/n-review1/build/san/inlines.o lanes/n-review1/build/san/lball.o lanes/n-review1/build/san/lball_decomp.o lanes/n-review1/build/san/lfunc.o lanes/n-review1/build/san/linsolve.o lanes/n-review1/build/san/modctx.o lanes/n-review1/build/san/place.o lanes/n-review1/build/san/rat.o lanes/n-review1/build/san/recon.o lanes/n-review1/build/san/resid.o lanes/n-review1/build/san/rfunc.o lanes/n-review1/build/san/roots.o lanes/n-review1/build/san/roots_real.o lanes/n-review1/build/san/sball.o lanes/n-review1/build/san/scaled.o lanes/n-review1/build/san/status.o lanes/n-review1/build/san/text.o lanes/n-review1/build/san/text_idele.o lanes/n-review1/build/san/ucoset.o

@@ -1,0 +1,27 @@
+f-at-prime.cmd lines 29 mismatches 0 exit 1 expected_exit 1
+f-places-1000.cmd lines 6 mismatches 0 exit 1 expected_exit 1
+f-places-hostile.cmd lines 38 mismatches 0 exit 1 expected_exit 1
+f-project.cmd lines 13 mismatches 0 exit 1 expected_exit 1
+i-01-show-type.cmd lines 22 mismatches 0 exit 1 expected_exit 1
+i-02-ucoset.cmd lines 45 mismatches 0 exit 1 expected_exit 1
+i-03-idele.cmd lines 39 mismatches 0 exit 1 expected_exit 1
+i-04-idclass.cmd lines 25 mismatches 0 exit 1 expected_exit 1
+i-05-maps.cmd lines 49 mismatches 0 exit 1 expected_exit 1
+i-06-status.cmd lines 27 mismatches 0 exit 1 expected_exit 1
+fixture_lines 293 failures 0
+CROSS_FAIL project [1] with 5 actual 5: 0 expected error: UNSUPPORTED
+CROSS_FAIL project [5 mod 6] with 5 actual 5: 0 expected error: UNSUPPORTED
+CROSS_FAIL project (5 ; 5 * [1]) with 5 actual 5: 0 expected error: UNSUPPORTED
+CROSS_FAIL project (1 ; 1 * [1]) with 5 actual 5: 0 expected error: UNSUPPORTED
+CROSS_FAIL project <1 ; [1]> with 5 actual 5: 0 expected error: UNSUPPORTED
+CROSS_FAIL exp_at [1] with 5 actual 5: 1 expected error: UNSUPPORTED
+CROSS_FAIL exp_at [5 mod 6] with 5 actual 5: 1 expected error: UNSUPPORTED
+CROSS_FAIL exp_at (5 ; 5 * [1]) with 5 actual 5: 1 expected error: UNSUPPORTED
+CROSS_FAIL exp_at (1 ; 1 * [1]) with 5 actual 5: 1 expected error: UNSUPPORTED
+CROSS_FAIL exp_at <1 ; [1]> with 5 actual 5: 1 expected error: UNSUPPORTED
+CROSS_FAIL log_at [1] with 5 actual error: DOMAIN expected error: UNSUPPORTED
+CROSS_FAIL log_at [5 mod 6] with 5 actual error: DOMAIN expected error: UNSUPPORTED
+CROSS_FAIL log_at (5 ; 5 * [1]) with 5 actual error: DOMAIN expected error: UNSUPPORTED
+CROSS_FAIL log_at (1 ; 1 * [1]) with 5 actual error: DOMAIN expected error: UNSUPPORTED
+CROSS_FAIL log_at <1 ; [1]> with 5 actual error: DOMAIN expected error: UNSUPPORTED
+cross_lines 20 mismatches 15 exit 1

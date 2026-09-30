@@ -1,0 +1,6 @@
+==24==LeakSanitizer has encountered a fatal error.
+==24==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==24==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+FAIL bridge_exit
+counts {'T': 228, 'checks': 45044, 'S': 8321, 'F': 906, 'U': 2995, 'P': 18840, 'power_points': 256480, 'frac_points': 14014, 'R': 288, 'split_points': 73216, 'limit_cases': 24}
+failures 1
