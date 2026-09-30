@@ -1,0 +1,25 @@
+import sys; sys.set_int_max_str_digits(0)
+from flint import fmpz_poly
+import functools, random
+random.seed(5)
+X = fmpz_poly([0, 1])
+def lin(a, b): return fmpz_poly([-b, a])
+def prod(l): return functools.reduce(lambda a, b: a * b, l)
+F = {}
+F['a_2kX-i_25_k390'] = (2, prod([lin(2 ** 390, i) for i in range(1, 26)]))
+F['b_2kX-i_50_k190'] = (2, prod([lin(2 ** 190, i) for i in range(1, 51)]))
+F['c_wilk50_prec3000'] = (3000, prod([lin(1, i) for i in range(1, 51)]))
+F['d_pm_pairs_40'] = (2, prod([X ** 2 - (2 ** 100 + i) ** 2 for i in range(1, 21)]))
+F['e_2kX-1-2^-i_29_k300'] = (2, prod([lin(2 ** (300 + i), 2 ** i + 1) for i in range(1, 30)]))
+F['f_cluster25_k380_prec2'] = (2, prod([lin(3 * 2 ** 380, 2 ** 380 + i) for i in range(1, 26)]))
+F['g_cluster50_k190_prec1000'] = (1000, prod([lin(3 * 2 ** 190, 2 ** 190 + i) for i in range(1, 51)]))
+F['h_dense_d20_10000bits_prec2'] = (2, fmpz_poly([random.randint(-2 ** 10000, 2 ** 10000) for _ in range(21)]))
+F['i_dense_d50_2000bits'] = (2, fmpz_poly([random.randint(-2 ** 2000, 2 ** 2000) for _ in range(51)]))
+F['j_dense_d50_5000bits'] = (2, fmpz_poly([random.randint(-2 ** 5000, 2 ** 5000) for _ in range(51)]))
+F['k_2^kX-1_pow50_minus1_k190_prec2000'] = (2000, fmpz_poly([-1, 2 ** 190]) ** 50 - 1)
+F['l_mignotte_d50_e4000_prec5000'] = (5000, X ** 50 - 2 * fmpz_poly([-1, 2 ** 4000]) ** 2)
+F['m_X50-1_prec2^21'] = (2 ** 21, X ** 50 - 2)
+F['n_chebT50_prec20000'] = (20000, prod([lin(1, 0)]) * 0 + fmpz_poly([0]) + X ** 50 - 1)
+for name, (prec, p) in F.items():
+    open('/tmp/x/f6_%s.txt' % name, 'w').write("%d %s\n" % (prec, " ".join(str(int(c)) for c in p.coeffs())))
+    print(name, p.degree(), max(abs(int(c)).bit_length() for c in p.coeffs()))
