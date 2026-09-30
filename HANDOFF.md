@@ -48,26 +48,40 @@ semiregularly. TJO confirmed S-D20 and ratified the reading of `adf_resid_verify
 
 Reviews are under `docs/reviews/s2/review-bigp.md`, `docs/reviews/r1/`, `docs/reviews/f1/`, `docs/reviews/m2/`.
 
-**Running at 03:40** (look at them first; nothing else runs):
-- f-slice5, codex `gpt-6.1-sol` high, since 01:48: the cost of the series at a prime (f-review3 R1:
-  `log(1 + p)` at `p = 2^64 - 59`, `N = 10000` takes 60 s). Worktree `../adelefeld-wt/f-slice5`, branch
-  `lane/f-slice5`, log `lanes/f-slice5/lane.log` there. The results of every call must stay identical.
-- t-slice1, Sonnet medium, since 03:05: value form of unit cosets, ideles, classes; driver arithmetic on
-  ideles. A Claude subagent in `.claude/worktrees/`; if the session ended, look for its `progress.md`.
+**Landed after 03:40** (all pushed; last full run of all suites on master at 05:20 on `3ed2586`, 71 test
+programs, all pass; after it only documents and lane files were committed):
+- f-slice5 (codex 6.1-sol): the series at a prime fast (F8, F9; `log(1 + p)` at `2^64 - 59`, `N = 10000`:
+  74.8 s to 0.043 s; results identical). Referee f-review4 (Fable, `docs/reviews/f1/review-lfunc-fast.md`):
+  F8 and F9 TRUE as written, code matches the digit counts, 21188 inputs old = new = own oracle; MAJOR 1:
+  the stored fixture guards F9 with 9 of its 2000 rows and none at the word prime (issue in beads, P1;
+  repair from the OLD code at `1cf0e42`, generator `lanes/f-slice5/gen_stored.py`).
+- t-slice1 (Sonnet): value form of unit cosets, ideles, classes; driver `inv`, `pow`, `powtight`, `norm`,
+  `class`, `idele`, `hull`, `hullsimple`, `unitof`, `valuation`, `abs`. Dump forms NOT done.
+- n-review1 (codex 6.1-sol): the provider REFUSED the session before it wrote its report ("flagged for
+  possible cybersecurity risk", four attempts); the orchestrator assembled `docs/reviews/f1/
+  review-slices-3-6-text.md` from the lane's notes and logs. Findings: BLOCKER, the driver read the wrong
+  field of an idele operand in `project`, `exp_at`, `log_at` (a wrong printed value); 3 MAJOR (overflow
+  of `N - v` at the exponent limit; the constrained printer did not end on the worst admitted ball; `prec`
+  after the entry check in `sball`/`rfunc`); all repaired by n-repair1 (Sonnet), N-D11 (work bound of the
+  printer: balls whose search needs more than about 2^25 / S levels are refused now).
+- f-review2 R3 to R8 and i-review2 F1 to F5: CLOSED (n-review1 part A, B).
+
+**Nothing is running.** Quota at 05:35: Claude weekly 15% (8.2 points ahead of pace), Fable weekly 14%
+(7.2 ahead: the referee f-review4 cost about 9 points), codex 8% (2.7 ahead). Let the Claude windows fall
+back to pace before the next Claude lanes; codex has room.
 
 **The next steps**, in this order:
-1. Land f-slice5 and t-slice1 (read the report, commit in the worktree without binaries, merge, all
-   suites on master, push). f-slice5 was written by codex: its reviewer is of the Claude family.
-2. One review (codex `gpt-6.1-sol`) of what is not reviewed: f-slice3, f-slice6, t-slice1, and the
-   closure of f-review2 (R3 to R8) and i-review2 (F1 to F5).
-3. Milestone 1F continues: `sin`, `cos`, `sinh`, `cosh` at a prime (1F.7; after f-slice5, same file);
+1. The stored fixture of `tests/test_lfunc.c` (P1 issue above): rows with `K` in 39..64 and 65..3000 at every
+   prime, from the old code. One Sonnet lane or the orchestrator; then the planted faults of
+   `lanes/f-review4/faults.py` must fail the stored comparison.
+2. Milestone 1F continues: `sin`, `cos`, `sinh`, `cosh` at a prime (1F.7; `src/lfunc.c` is free now);
    local roots (1F.5); powers (1F.6); then 1F.8, 1F.9. Text forms of `adf_lball` and `adf_sball`
    (conventions 9; golden vectors exist), where the driver text of N-D10 meets the value form.
-4. Milestone 2: dump forms. Then milestone 3 (quotient and characters): a first slice.
-5. adf-4dj: the remaining cost of the real roots is FLINT's count (6 to 8 s at degree 50 with
-   coefficients of 10^4 bits); replacing the count touches S-D11.
+3. Milestone 2: dump forms of the three types. Then milestone 3 (quotient and characters): a first slice.
+4. A review (codex) of n-repair1 (the printer bound N-D11 in particular) together with the next slice.
+5. adf-4dj: the remaining cost of the real roots is FLINT's count; replacing it touches S-D11.
 6. Left from before: benchmarks of milestone 1 on a quiet machine; adf-mds, adf-7gc; a long run of
-   `diff_roots_padic.py` on the route above 128 (not run: the reviewer's oracle covered the route).
+   `diff_roots_padic.py` on the route above 128 (the reviewer's oracle covered it).
 
 **Waits for TJO.** Nothing blocks. Open to reversal: N-D1 to N-D10 (`docs/SPEC.md` 15.4). The one with
 the widest reach is N-D7 (`LIMIT` of local balls may be returned when a power of `p` above the bit limit
@@ -83,6 +97,11 @@ would be formed; a rule "never because of an intermediate value" is not promised
 - "34 mutants survived" in the log of `check-all` is the self-test of the mutation tool (its weak
   example), not a failure.
 - `bd` has one writer: two `bd` commands in one pipe fail with a lock error.
+- A codex session can be refused by its provider's filter after it has done its work (n-review1: the
+  text about sanitizers and hostile input, probably); the lane's `progress.md` and logs are then the
+  report. Ask lanes to write `progress.md` as they go.
+- A Fable subagent as a referee costs about 9 points of the Fable weekly window in 95 minutes: use it
+  for a proof that decides enclosures, not for a review of code.
 - About 90 worktrees exist under `../adelefeld-wt/` and `.claude/worktrees/`; all lanes named above are
   merged and their worktrees may be removed with `git worktree remove`.
 - The three design branches `worktree-agent-aa58...`, `acc1...`, `adaf...` are superseded by the slices;
