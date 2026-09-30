@@ -1,0 +1,2 @@
+/home/tobias/Projects/adelefeld/.claude/worktrees/agent-a4f828c7987853213/tests/ref/vectors/i-slice3/idpow.jsonl: 1573 records, 553596 bytes; by op {'uc_pow': 642, 'idele_pow': 509, 'idclass_pow': 422}; statuses {'NOT_DETERMINED': 322, 'OK': 594, 'LIMIT': 15}
+/home/tobias/Projects/adelefeld/.claude/worktrees/agent-a4f828c7987853213/tests/ref/vectors/i-slice3/idmap.jsonl: 774 records, 147115 bytes; by op {'hull': 300, 'set_adele': 72, 'div': 402}; statuses {'OK': 425, 'NOT_UNIT': 16, 'UNIT_NOT_CERTIFIED': 31, 'LIMIT': 2}

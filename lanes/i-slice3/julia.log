@@ -1,0 +1,8 @@
+(-6/35)^2 = ([0.0293877551020408 +/- 1.64e-17] ; content 36/1225, unit [1 mod 0])
+as an adele: finite part (* ; 36/1225), real part [0.0293877551020408 +/- 1.64e-17]
+(1/2) / (-6/35)^2 = finite (* ; 1225/72), real [17.0138888888889 +/- 1.12e-14]
+U(1)^2: tight [1 mod 24]; [2 mod 5]^2: default [4 mod 5], tight [49 mod 120]
+(1 ; 1 mod 4) / (3 ; [1 mod 1]) = finite (* ; 1 mod 2)
+Test Summary:                                                   | Pass  Total  Time
+powers, hulls and division through ccall (milestone 2, slice 3) |   35     35  0.5s
+== tests/julia/idmap.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10

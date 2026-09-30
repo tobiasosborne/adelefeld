@@ -1,0 +1,6 @@
+FAIL check_api_powers (api-2.md J, K, L; P13): 8996 (coset, k) against the table M_k, 26988 centres by random chat; 288 against enumeration (smallest coset, residue, default enclosure, repeated multiplication); 3000 real powers against exact ends (1078 NOT_DETERMINED), 11532 points of idele powers
+R1 (ref_tight_parts): caught
+FAIL check_api_hulls (api-2.md M, N; P16, P17): 1680 (coset, content): every unit at level 210 lcm(N, 2) in both hulls, small hull radius = r gcd of differences; simple hull coarser in 294; 9 adeles to ideles
+R2 (ref_hull): caught
+FAIL check_api_division (api-2.md O; P18, P19): 2499 quotients: radius and containment against enumeration, normal form of the divisor, product rule on the small hull of the inverse; 97 by exact units; 24 with a = M = 0
+R3 (ref_div_fin): caught

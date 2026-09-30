@@ -1,0 +1,1461 @@
+mkdir -p build
+mkdir -p build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/adele.c -o build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/cap.c -o build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/common.c -o build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/dump.c -o build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball.c -o build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball_local.c -o build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idclass.c -o build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idele.c -o build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idmap.c -o build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idpow.c -o build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/inlines.c -o build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lball.c -o build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lfunc.c -o build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/linsolve.c -o build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/modctx.c -o build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/place.c -o build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rat.c -o build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/recon.c -o build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/resid.c -o build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rfunc.c -o build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots.c -o build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots_real.c -o build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/sball.c -o build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/scaled.c -o build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/status.c -o build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text.c -o build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/ucoset.c -o build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/golden.c -o build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/jsonl.c -o build/support/jsonl.o
+ar rcs build/libadelefeld.a build/adele.o build/cap.o build/common.o build/dump.o build/fball.o build/fball_local.o build/idclass.o build/idele.o build/idmap.o build/idpow.o build/inlines.o build/lball.o build/lfunc.o build/linsolve.o build/modctx.o build/place.o build/rat.o build/recon.o build/resid.o build/rfunc.o build/roots.o build/roots_real.o build/sball.o build/scaled.o build/status.o build/text.o build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_abi.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_abi
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_adele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_adele_lowprec.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele_lowprec
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_adele_prec.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_adele_prec
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cadele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cadele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap_chain.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_chain
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap_local.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_local
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_cap_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_cap_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_common.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_common
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_common_unsupported.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_common_unsupported
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dlopen.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dlopen
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump_ctx.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump_ctx
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump_golden.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump_golden
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_dump_limits.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_dump_limits
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_local.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_local
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_local_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_local_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_overwrite.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_overwrite
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_fball_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_fball_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_headers.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_headers
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_idclass.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_idclass
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_idele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_idele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_idele_maps.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_idele_maps
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_idmap.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_idmap
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_idpow.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_idpow
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_invariants.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_invariants
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_invariants_lifetime.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_invariants_lifetime
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_layouts.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_layouts
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_lball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_lball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_lfunc.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_lfunc
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_linsolve.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_linsolve
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_linsolve_rest.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_linsolve_rest
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_modctx.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_modctx
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_modctx_limits.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_modctx_limits
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_modctx_pin.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_modctx_pin
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_place.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_place
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_rat.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_rat
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon_canon.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_canon
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon_limit.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_limit
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_recon_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_recon_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_resid.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_resid_full.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid_full
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_resid_rest.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_resid_rest
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_rfunc.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_rfunc
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_bigp.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_bigp
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_forged.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_forged
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_padic.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_padic
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_real.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_real
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_real_isolate.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_real_isolate
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_roots_seed.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_roots_seed
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_s13_repair.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_s13_repair
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_sball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_sball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaffold.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaffold
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaled.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaled_alias.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled_alias
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_scaled_vectors.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_scaled_vectors
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_status.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_status
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_support.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_support
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_adele.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_adele
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_classify.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_classify
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_fball.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_fball
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_limits.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_limits
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_r3r9.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_r3r9
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_rat.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_text_rat
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_ucoset.c build/support/golden.o build/support/jsonl.o build/libadelefeld.a -lflint -lgmp -lm -o build/test_ucoset
+== build/test_abi
+ok   sizeof_functions_agree_with_the_layouts
+ok   array_of_one_types
+ok   resid_function_signatures_and_status_codes
+3 tests, 24 checks, 0 failed checks, 0 failed tests
+== build/test_adele
+ok   adele_ops_vectors
+ok   adele_set_rat_vectors
+ok   init_is_the_exact_zero
+ok   set_si_is_exact_in_both_coordinates
+ok   set_and_swap_copy_both_coordinates
+ok   set_arb_fball_rejects_a_non_finite_real_ball
+ok   get_real_get_fin_and_get_arb_at
+ok   div_rat_by_zero_is_not_unit_and_leaves_z
+ok   aliasing_of_add_sub_mul
+ok   aliasing_of_neg_and_scale
+ok   identical_separates_midpoint_radius_and_finite_part
+ok   is_canonical_sees_a_non_finite_real_ball
+ok   the_finite_coordinate_does_not_depend_on_prec
+13 tests, 6712 checks, 0 failed checks, 0 failed tests
+== build/test_adele_lowprec
+ok   adele_add_rat_below_prec_two
+ok   adele_mul_rat_below_prec_two
+ok   adele_div_rat_below_prec_two
+ok   adele_add_below_prec_two
+ok   adele_sub_below_prec_two
+ok   adele_mul_below_prec_two
+ok   adele_set_rat_below_prec_two
+ok   cadele_add_rat_below_prec_two
+ok   cadele_mul_rat_below_prec_two
+ok   cadele_div_rat_below_prec_two
+ok   cadele_add_below_prec_two
+ok   cadele_sub_below_prec_two
+ok   cadele_mul_below_prec_two
+ok   cadele_set_rat_below_prec_two
+14 tests, 1426 checks, 0 failed checks, 0 failed tests
+== build/test_adele_prec
+ok   adele_add_computes_the_real_part_at_the_precision_asked_for
+ok   adele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   adele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   adele_set_rat_converts_at_the_precision_asked_for
+ok   cadele_add_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_sub_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_add_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_mul_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_div_rat_computes_the_real_part_at_the_precision_asked_for
+ok   cadele_set_rat_converts_at_the_precision_asked_for
+ok   adele_swap_exchanges_the_finite_half
+ok   cadele_swap_exchanges_the_finite_half
+ok   get_arb_at_the_real_place_returns_ADF_OK
+17 tests, 148 checks, 0 failed checks, 0 failed tests
+== build/test_cadele
+ok   cadele_ops_vectors
+ok   cadele_set_rat_vectors
+ok   cadele_init_is_the_exact_zero
+ok   cadele_set_and_swap
+ok   cadele_set_rat_has_exact_zero_imaginary_part
+ok   cadele_set_adele_is_exact
+ok   i_squared_is_minus_one
+ok   cadele_set_acb_fball_rejects_a_non_finite_complex_ball
+ok   cadele_div_rat_by_zero_is_not_unit_and_leaves_z
+ok   cadele_aliasing_of_add_sub_mul
+ok   cadele_aliasing_of_neg_and_scale
+ok   cadele_is_canonical_needs_both_coordinates
+ok   cadele_identical_separates_the_parts
+ok   cadele_finite_coordinate_does_not_depend_on_prec
+ok   cadele_get_complex_and_get_fin
+15 tests, 6141 checks, 0 failed checks, 0 failed tests
+== build/test_cap
+ok   cap_basic
+ok   cap_exact_untouched
+ok   cap_invariant_and_idempotent
+ok   cap_domain_on_nonpositive_C
+ok   cap_aliasing
+ok   cap_huge_operands
+ok   add_cap_basic
+ok   add_cap_exact_untouched
+ok   add_cap_of_two_capped_needs_no_cap
+ok   add_cap_domain_on_nonpositive_C
+ok   add_cap_aliasing
+ok   sub_cap_basic
+ok   sub_cap_exact_untouched
+ok   sub_cap_domain_on_nonpositive_C
+ok   sub_cap_aliasing
+ok   mul_cap_basic
+ok   mul_cap_exact_untouched
+ok   mul_cap_domain_on_nonpositive_C
+ok   mul_cap_aliasing
+ok   mul_rat_cap_basic
+ok   mul_rat_cap_exact_untouched
+ok   mul_rat_cap_domain_on_nonpositive_C
+ok   mul_rat_cap_aliasing
+23 tests, 852 checks, 0 failed checks, 0 failed tests
+== build/test_cap_chain
+ok   chain_invariant
+ok   chain_contains_tight
+ok   enumeration_small_radii
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+== build/test_cap_local
+ok   local_matches_global_of_same_value
+ok   mixed_local_global_inputs
+ok   local_inputs_different_contexts
+ok   local_output_aliases_each_input
+ok   local_domain_on_nonpositive_C
+ok   local_source_exact_result_untouched
+6 tests, 253 checks, 0 failed checks, 0 failed tests
+== build/test_cap_vectors
+ok   vectors_cap_absolute_cap
+ok   vectors_add_cap
+ok   vectors_sub_cap
+ok   vectors_mul_cap
+ok   vectors_mul_rat_cap
+5 tests, 49930 checks, 0 failed checks, 0 failed tests
+== build/test_common
+ok   the_compiled_version_string_names_the_flint_of_the_headers
+ok   the_compiled_version_string_is_static
+ok   the_run_time_check_accepts_the_installed_flint
+ok   adf_str_free_releases_the_memory_of_flint_malloc
+ok   adf_str_free_of_null_does_nothing
+ok   the_version_comparison_reads_the_major_and_the_minor_number
+ok   the_version_comparison_of_the_installed_flint_says_the_versions_agree
+7 tests, 78 checks, 0 failed checks, 0 failed tests
+== build/test_common_unsupported
+ok   the_check_accepts_the_same_major_and_minor
+ok   the_check_rejects_a_different_minor
+ok   the_check_rejects_a_different_major
+ok   the_check_rejects_a_string_that_is_not_a_version
+ok   unsupported_is_the_code_eight_and_is_named
+ok   the_check_writes_nothing
+6 tests, 48 checks, 0 failed checks, 0 failed tests
+== build/test_dlopen
+== building the shared object
+   build/exports/libadelefeld.so, copied to build/libadelefeld.so
+== 395 function names declared in include/adelefeld/*.h
+== variadic declarations (conventions 12.2)
+   none
+== 395 defined dynamic symbols that are public names, 0 reserved name(s)
+== declared and exported: 395
+adf_adele_add
+adf_adele_add_rat
+adf_adele_clear
+adf_adele_div_idele
+adf_adele_div_rat
+adf_adele_dump_inspect
+adf_adele_dump_str
+adf_adele_get_arb_at
+adf_adele_get_fin
+adf_adele_get_real
+adf_adele_get_str
+adf_adele_identical
+adf_adele_init
+adf_adele_is_canonical
+adf_adele_load_str
+adf_adele_load_str_binds
+adf_adele_mul
+adf_adele_mul_rat
+adf_adele_neg
+adf_adele_reconstruct
+adf_adele_set
+adf_adele_set_arb_fball
+adf_adele_set_idele
+adf_adele_set_idele_simple
+adf_adele_set_rat
+adf_adele_set_si
+adf_adele_set_str
+adf_adele_sub
+adf_adele_swap
+adf_alignof_adele
+adf_alignof_cadele
+adf_alignof_ctx_desc
+adf_alignof_fball
+adf_alignof_idclass
+adf_alignof_idele
+adf_alignof_lball
+adf_alignof_linsol
+adf_alignof_place
+adf_alignof_rat
+adf_alignof_recon_cert
+adf_alignof_resid
+adf_alignof_rootlist
+adf_alignof_sball
+adf_alignof_scaled
+adf_alignof_text_kind
+adf_alignof_text_limits
+adf_alignof_ucoset
+adf_cadele_add
+adf_cadele_add_rat
+adf_cadele_clear
+adf_cadele_div_rat
+adf_cadele_dump_inspect
+adf_cadele_dump_str
+adf_cadele_get_complex
+adf_cadele_get_fin
+adf_cadele_get_str
+adf_cadele_identical
+adf_cadele_init
+adf_cadele_is_canonical
+adf_cadele_load_str
+adf_cadele_load_str_binds
+adf_cadele_mul
+adf_cadele_mul_rat
+adf_cadele_neg
+adf_cadele_set
+adf_cadele_set_acb_fball
+adf_cadele_set_adele
+adf_cadele_set_rat
+adf_cadele_set_str
+adf_cadele_sub
+adf_cadele_swap
+adf_ctx_desc_clear
+adf_ctx_desc_init
+adf_fball_add
+adf_fball_add_cap
+adf_fball_canonicalise
+adf_fball_cap
+adf_fball_clear
+adf_fball_compare
+adf_fball_contains
+adf_fball_contains_rat
+adf_fball_context
+adf_fball_div_rat
+adf_fball_dump_inspect
+adf_fball_dump_str
+adf_fball_equal_set
+adf_fball_get_center
+adf_fball_get_den
+adf_fball_get_fmpz3
+adf_fball_get_radius
+adf_fball_get_str
+adf_fball_haar_volume
+adf_fball_identical
+adf_fball_init
+adf_fball_is_canonical
+adf_fball_is_exact
+adf_fball_is_local
+adf_fball_load_str
+adf_fball_load_str_binds
+adf_fball_mul
+adf_fball_mul_cap
+adf_fball_mul_rat
+adf_fball_mul_rat_cap
+adf_fball_neg
+adf_fball_one
+adf_fball_overlaps
+adf_fball_prec_at
+adf_fball_reconstruct
+adf_fball_set
+adf_fball_set_center_radius
+adf_fball_set_fmpz
+adf_fball_set_fmpz3
+adf_fball_set_global
+adf_fball_set_local
+adf_fball_set_local_enclose
+adf_fball_set_rat
+adf_fball_set_si
+adf_fball_set_str
+adf_fball_sub
+adf_fball_sub_cap
+adf_fball_swap
+adf_fball_zero
+adf_flint_version_compiled
+adf_idclass_clear
+adf_idclass_get_t
+adf_idclass_get_unit
+adf_idclass_identical
+adf_idclass_init
+adf_idclass_inv
+adf_idclass_is_canonical
+adf_idclass_mul
+adf_idclass_norm
+adf_idclass_pow
+adf_idclass_pow_tight
+adf_idclass_set
+adf_idclass_set_idele
+adf_idclass_set_parts
+adf_idclass_swap
+adf_idele_abs_at
+adf_idele_abs_inf
+adf_idele_clear
+adf_idele_content
+adf_idele_get_real
+adf_idele_get_unit
+adf_idele_identical
+adf_idele_init
+adf_idele_inv
+adf_idele_is_canonical
+adf_idele_mul
+adf_idele_mul_rat
+adf_idele_norm
+adf_idele_pow
+adf_idele_pow_tight
+adf_idele_set
+adf_idele_set_adele
+adf_idele_set_parts
+adf_idele_set_rat
+adf_idele_swap
+adf_idele_valuation_at
+adf_lball_abs
+adf_lball_add
+adf_lball_clear
+adf_lball_contains
+adf_lball_contains_zero
+adf_lball_decompose
+adf_lball_div
+adf_lball_equal_set
+adf_lball_exp
+adf_lball_get_center
+adf_lball_get_prec
+adf_lball_identical
+adf_lball_init
+adf_lball_inv
+adf_lball_is_canonical
+adf_lball_is_exact
+adf_lball_log
+adf_lball_Log
+adf_lball_mul
+adf_lball_neg
+adf_lball_overlaps
+adf_lball_place
+adf_lball_set
+adf_lball_set_fball
+adf_lball_set_rat
+adf_lball_set_rat_ball
+adf_lball_sub
+adf_lball_swap
+adf_lball_valuation
+adf_linsol_clear
+adf_linsol_contains
+adf_linsol_get_dual
+adf_linsol_get_fball
+adf_linsol_get_image_cert
+adf_linsol_get_kernel
+adf_linsol_get_particular
+adf_linsol_identical
+adf_linsol_init
+adf_linsol_is_canonical
+adf_linsol_kernel_order
+adf_linsol_kernel_rows
+adf_linsol_kind
+adf_linsol_set
+adf_linsol_swap
+adf_linsolve_fball
+adf_linsolve_mod
+adf_linsol_verify
+adf_linsol_verify_fball
+adf_modctx_block
+adf_modctx_dump_str
+adf_modctx_free
+adf_modctx_get_modulus
+adf_modctx_matches_desc
+adf_modctx_nblocks
+adf_modctx_new_blocks
+adf_modctx_new_factorial
+adf_modctx_new_fmpz
+adf_modctx_new_from_dump
+adf_modctx_new_prime_powers
+adf_modctx_new_primorial_pow
+adf_place_cmp
+adf_place_equal
+adf_place_inf
+adf_place_is_archimedean
+adf_place_prime
+adf_place_prime_get
+adf_rat_add
+adf_rat_clear
+adf_rat_div
+adf_rat_dump_inspect
+adf_rat_dump_str
+adf_rat_equal
+adf_rat_get_fmpq
+adf_rat_get_str
+adf_rat_identical
+adf_rat_init
+adf_rat_inv
+adf_rat_is_canonical
+adf_rat_is_zero
+adf_rat_load_str
+adf_rat_load_str_binds
+adf_rat_mul
+adf_rat_neg
+adf_rat_one
+adf_rat_set
+adf_rat_set_fmpq
+adf_rat_set_fmpz
+adf_rat_set_fmpz2
+adf_rat_set_si
+adf_rat_set_str
+adf_rat_sgn
+adf_rat_sub
+adf_rat_swap
+adf_rat_zero
+adf_real_cos
+adf_real_exp
+adf_real_log
+adf_real_log_abs
+adf_real_root
+adf_real_sin
+adf_real_sqrt
+adf_recon_cert_check
+adf_recon_cert_clear
+adf_recon_cert_identical
+adf_recon_cert_init
+adf_recon_cert_is_canonical
+adf_recon_cert_set
+adf_recon_cert_swap
+adf_resid_clear
+adf_resid_contains_rat
+adf_resid_get_fmpz2
+adf_resid_identical
+adf_resid_init
+adf_resid_is_canonical
+adf_resid_reconstruct
+adf_resid_reconstruct_first
+adf_resid_set
+adf_resid_set_fball_forget
+adf_resid_set_fmpz2
+adf_resid_set_rat
+adf_resid_swap
+adf_resid_verify_result
+adf_rootlist_clear
+adf_rootlist_get_arb
+adf_rootlist_get_cert
+adf_rootlist_get_fball
+adf_rootlist_get_poly
+adf_rootlist_get_unresolved
+adf_rootlist_init
+adf_rootlist_is_canonical
+adf_rootlist_is_complete
+adf_rootlist_length
+adf_rootlist_place
+adf_rootlist_scope
+adf_rootlist_unresolved_length
+adf_rootlist_verify_complete
+adf_rootlist_verify_entries
+adf_root_padic_from_seed
+adf_roots_padic
+adf_roots_padic_partial
+adf_roots_real
+adf_sball_add
+adf_sball_arch
+adf_sball_clear
+adf_sball_contains
+adf_sball_cos_at
+adf_sball_equal_set
+adf_sball_exp_at
+adf_sball_get_arb
+adf_sball_get_lball
+adf_sball_get_place
+adf_sball_has_place
+adf_sball_identical
+adf_sball_init
+adf_sball_is_canonical
+adf_sball_log_abs_at
+adf_sball_log_at
+adf_sball_mul
+adf_sball_neg
+adf_sball_num_places
+adf_sball_overlaps
+adf_sball_project
+adf_sball_root_at
+adf_sball_set
+adf_sball_set_arb_lballs
+adf_sball_sin_at
+adf_sball_sqrt_at
+adf_sball_sub
+adf_sball_swap
+adf_scaled_add
+adf_scaled_add_rat
+adf_scaled_clear
+adf_scaled_context
+adf_scaled_dump_inspect
+adf_scaled_dump_str
+adf_scaled_get_fball
+adf_scaled_get_str
+adf_scaled_identical
+adf_scaled_init
+adf_scaled_is_canonical
+adf_scaled_is_exact
+adf_scaled_load_str
+adf_scaled_load_str_binds
+adf_scaled_mul
+adf_scaled_mul_rat
+adf_scaled_mul_tight
+adf_scaled_neg
+adf_scaled_set
+adf_scaled_set_context
+adf_scaled_set_fball
+adf_scaled_set_rat
+adf_scaled_sub
+adf_scaled_swap
+adf_sizeof_adele
+adf_sizeof_cadele
+adf_sizeof_ctx_desc
+adf_sizeof_fball
+adf_sizeof_idclass
+adf_sizeof_idele
+adf_sizeof_lball
+adf_sizeof_linsol
+adf_sizeof_place
+adf_sizeof_rat
+adf_sizeof_recon_cert
+adf_sizeof_resid
+adf_sizeof_rootlist
+adf_sizeof_sball
+adf_sizeof_scaled
+adf_sizeof_text_kind
+adf_sizeof_text_limits
+adf_sizeof_ucoset
+adf_status_str
+adf_str_free
+adf_text_classify
+adf_text_limits_default
+adf_ucoset_clear
+adf_ucoset_contains
+adf_ucoset_equal_set
+adf_ucoset_get_fmpz2
+adf_ucoset_identical
+adf_ucoset_init
+adf_ucoset_inv
+adf_ucoset_is_canonical
+adf_ucoset_is_exact
+adf_ucoset_is_normal
+adf_ucoset_minus_one
+adf_ucoset_mul
+adf_ucoset_normalise
+adf_ucoset_one
+adf_ucoset_overlaps
+adf_ucoset_pow
+adf_ucoset_pow_tight
+adf_ucoset_set
+adf_ucoset_set_fmpz2
+adf_ucoset_swap
+adf_version_check
+== declared and not exported: 0 (the library is not complete; not a failure)
+== exported and not declared: 0 (must be empty)
+   (empty)
+test_exports: passed: 395 of 395 declared functions are exported, 0 are not implemented yet, no exported name is undeclared, no variadic function
+ok   the_shared_object_is_loaded
+ok   the_five_functions_are_found_by_name_in_the_loaded_object
+2 tests, 29 checks, 0 failed checks, 0 failed tests
+== build/test_dump
+ok   rat_dump_text
+ok   rat_round_trip_random
+ok   rat_statuses_and_strictness
+ok   order_of_checks_two_faults
+ok   header_before_the_whitespace_of_the_body
+ok   grammar_before_limits_in_sball_and_rfun
+ok   fball_global_dump_text
+ok   fball_global_round_trip_random
+ok   fball_global_statuses
+ok   adele_round_trip_random
+ok   cadele_round_trip_random
+ok   adele_radius_edges
+ok   adele_statuses
+ok   inspect_without_contexts
+ok   hostile_bytes
+ok   input_at_the_end_of_a_page
+ok   load_over_a_value
+17 tests, 12259 checks, 0 failed checks, 0 failed tests
+== build/test_dump_ctx
+ok   local_fball_round_trip_1_2_64_128_blocks
+ok   local_fball_raw_example
+ok   adele_cadele_local_round_trip
+ok   scaled_round_trip_contexts
+ok   scaled_statuses
+ok   scaled_get_str
+ok   binding_rules
+ok   inspection_capacity
+ok   new_from_dump_every_body
+ok   reference_vectors
+ok   modctx_vectors_from_dump
+ok   local_dump_at_the_end_of_a_page
+ok   stage_edges_and_piece_order
+ok   binding_counts_of_every_type
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+== build/test_dump_golden
+ok   golden_dump_every_row
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+== build/test_dump_limits
+ok   block_cap_refuses_65537_blocks_everywhere
+ok   block_cap_accepts_65536_blocks
+ok   block_count_of_a_short_text_is_a_grammar_failure
+ok   block_cap_and_max_items_in_that_order
+ok   block_cap_before_the_predicate_of_the_context
+ok   qclass_exponent_bound_at_and_above_the_bound
+ok   qclass_exponent_bound_is_a_limit_of_stage_four
+ok   no_exponent_bound_in_the_other_bodies
+ok   block_cap_accepts_65536_blocks_in_full
+9 tests, 297 checks, 0 failed checks, 0 failed tests
+== build/test_fball
+ok   spec_4_3_rows
+ok   spec_4_2_rows
+ok   radius_zero_is_a_point
+ok   aliasing_binary
+ok   canonical_form
+ok   canonical_predicate
+ok   enclosure_by_enumeration
+ok   tightness_witnesses
+ok   valuation_formula_at_each_prime
+ok   accessors
+ok   precision_at_a_place
+ok   div_rat_status
+ok   big_operands_4096_bits
+ok   constructors
+ok   swap_and_set
+ok   canonicalise_raw_and_domains
+ok   local_shaped_is_canonical
+ok   identical_local_guard
+ok   predicates_local_and_radius_edges
+ok   arithmetic_local_input_as_set
+20 tests, 412 checks, 0 failed checks, 0 failed tests
+== build/test_fball_local
+ok   set_local_and_set_global_basic
+ok   prop25_denominator_shares_a_factor_with_the_block
+ok   set_local_statuses_leave_the_output_untouched
+ok   set_local_enclose_prop20
+ok   conversions_aliasing_and_other_contexts
+ok   round_trips_on_1_2_64_128_blocks
+ok   life_cycle_of_the_residue_array
+ok   is_canonical_predicate_L
+ok   identical_compares_raw_data
+ok   prop24_cancellation_keeps_the_set_not_the_triple
+ok   accessors_agree_with_the_global_form
+ok   predicates_through_the_canonical_triple
+ok   canonical_H_changes_after_a_sum
+ok   products_of_proposition_22
+ok   scalars_of_proposition_23
+ok   different_context_pointers_give_global_results
+ok   operations_against_the_global_forms
+ok   caller_reconstruct_with_a_local_ball
+ok   caller_printer_with_a_local_ball
+ok   caller_adele_add_with_local_finite_parts
+ok   no_growth_of_live_blocks
+ok   local_output_of_another_context_is_resized
+ok   is_canonical_rejects_a_context_without_blocks
+ok   constructors_over_a_value_with_other_data
+ok   no_growth_of_live_blocks_in_the_life_cycle
+25 tests, 20554 checks, 0 failed checks, 0 failed tests
+== build/test_fball_local_vectors
+local.jsonl: 967 local results, 632 global results, 154 statuses, 170 predicates
+ok   every_record_of_local_jsonl
+1 tests, 42682 checks, 0 failed checks, 0 failed tests
+== build/test_fball_overwrite
+ok   zero_writes_every_field_of_a_value_that_holds_other_data
+ok   one_writes_every_field_of_a_value_that_holds_other_data
+ok   set_si_writes_every_field_of_a_value_that_holds_other_data
+ok   set_fmpz_writes_every_field_of_a_value_that_holds_other_data
+ok   set_rat_writes_every_field_of_a_value_that_holds_other_data
+ok   set_fmpz3_writes_every_field_of_a_value_that_holds_other_data
+ok   set_center_radius_writes_every_field_of_a_value_that_holds_other_data
+ok   set_copies_every_field_over_a_value_that_holds_other_data
+ok   canonicalise_writes_every_field_of_a_raw_triple_over_other_data
+ok   swap_moves_every_field
+ok   the_constructors_do_not_depend_on_the_earlier_value
+11 tests, 44 checks, 0 failed checks, 0 failed tests
+== build/test_fball_vectors
+ok   vectors_canonical
+ok   vectors_add
+ok   vectors_sub
+ok   vectors_mul
+ok   vectors_neg
+ok   vectors_scale
+ok   vectors_predicates
+ok   vectors_compare
+ok   vectors_membership
+9 tests, 34229 checks, 0 failed checks, 0 failed tests
+== build/test_headers
+ok   status_values_are_those_of_conventions_3_1
+ok   status_names_are_those_of_the_golden_files
+ok   point_comparison_values_are_those_of_conventions_2_1
+ok   text_kinds_are_the_thirteen_start_symbols_in_order
+ok   text_limits_default_are_those_of_conventions_8_4
+ok   version_is_0_1_0
+ok   backend_tags_are_those_of_conventions_5_2
+ok   header_compiled_against_flint_3_0
+8 tests, 58 checks, 0 failed checks, 0 failed tests
+== build/test_idclass
+ok   layout_is_64_bytes
+ok   init_is_the_class_of_one
+ok   is_canonical_is_the_class_predicate
+ok   set_parts_accessors_identical_swap
+ok   class_map_hand_cases_and_the_sign_on_the_unit
+ok   class_map_units_against_enumeration
+ok   class_of_q_times_x_is_the_class_of_x
+ok   class_map_not_determined_and_prec
+ok   class_map_huge_operands
+ok   spec5_sign_preservation_for_classes
+ok   mul_inv_units_against_enumeration_and_the_class_of_one
+ok   mul_inv_not_determined_leave_the_output_untouched
+ok   prec_above_the_limit_is_LIMIT_and_untouched
+vectors: 922 lines: 304 class, 309 mul, 309 inv; 301 NOT_DETERMINED, 22 exact results
+ok   vectors_of_the_reference
+14 tests, 9738 checks, 0 failed checks, 0 failed tests
+== build/test_idele
+ok   layout_is_80_bytes
+ok   init_is_the_exact_idele_one
+ok   is_canonical_is_the_predicate_of_conventions_5_7
+ok   set_parts_and_its_refusals
+ok   set_rat_negative_exact_and_zero
+ok   spec5_sign_preservation
+ok   product_of_the_ideles_of_rationals
+ok   the_point_one_is_in_x_times_x_inverse
+ok   not_determined_leaves_the_output_untouched
+ok   aliasing_of_mul_and_inv
+ok   prec_below_2_is_2_and_huge_exponents
+vectors: 1758 lines: 260 set_rat, 749 mul, 749 inv; 489 NOT_DETERMINED, 82 exact results; largest midpoint minus (2 p + 30) bits: -3
+ok   vectors_of_the_reference
+12 tests, 8613 checks, 0 failed checks, 0 failed tests
+== build/test_idele_maps
+ok   valuations_of_the_idele_of_minus_6_over_35
+ok   valuation_by_divisibility_and_the_product_formula
+ok   valuations_of_huge_contents
+ok   abs_inf_is_the_exact_absolute_ball
+norm of the idele of a rational: 78 exact 1, 6 NOT_DETERMINED (p < 4)
+ok   norm_of_the_idele_of_a_rational_is_one
+ok   norm_hand_cases_and_not_determined
+ok   mul_rat_hand_cases_statuses_and_aliasing
+ok   mul_rat_huge_operands_and_prec_below_2
+ok   prec_above_the_limit_is_LIMIT_and_untouched
+vectors: 1097 lines: 265 mul_rat, 304 norm, 264 valuation lines (2154 places), 264 abs_inf; 161 NOT_DETERMINED, 28 exact results
+ok   vectors_of_the_reference
+10 tests, 10466 checks, 0 failed checks, 0 failed tests
+== build/test_idmap
+hulls: 1680 (coset, content) cases, simple hull strictly coarser in 1392
+ok   hulls_contain_every_point_and_the_small_one_is_tight
+ok   set_adele_statuses_and_round_trip
+division: 4736 cases against enumeration, 600 by exact units, 64 with a = M = 0, 0 too long to enumerate
+ok   division_against_enumeration_and_the_inverse
+ok   division_statuses_aliasing_local_and_prec
+ok   division_by_an_exact_rational_is_P18
+vectors: 774 lines: 300 hull, 72 set_adele (47 refused), 402 div (2 LIMIT)
+ok   vectors_of_the_reference
+6 tests, 54197 checks, 0 failed checks, 0 failed tests
+== build/test_idpow
+ucoset powers against enumeration: 296 cases, 118 levels too large (checked by the vectors)
+ok   ucoset_pow_against_enumeration
+ok   ucoset_pow_hand_cases_and_aliasing
+vectors: 1573 lines: 642 ucoset, 509 idele, 422 class; 322 NOT_DETERMINED, 15 LIMIT, 114 exact, 594 with exact ends
+ok   vectors_of_the_reference
+ok   idele_pow_hand_cases_statuses_aliasing
+ok   idele_pow_against_repeated_multiplication
+ok   idclass_pow_hand_cases
+6 tests, 10122 checks, 0 failed checks, 0 failed tests
+== build/test_invariants
+test_invariants: skipped: built without -DADF_CHECK_INVARIANTS
+ok   skipped_without_the_flag
+1 tests, 1 checks, 0 failed checks, 0 failed tests
+== build/test_invariants_lifetime
+test_invariants_lifetime: skipped: built without -DADF_CHECK_INVARIANTS
+ok   skipped_without_the_flag
+1 tests, 1 checks, 0 failed checks, 0 failed tests
+== build/test_layouts
+ok   alignments_left_out_by_test_abi_c
+1 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_lball
+ok   layout_init_and_copy
+ok   is_canonical_rejects_each_clause
+ok   vectors_construct
+ok   vectors_binary
+ok   vectors_unary
+ok   vectors_predicates
+   enumeration p=2: 57 balls, 12996 binary cases, 114 unary cases
+ok   enumeration_p2
+   enumeration p=3: 38 balls, 5776 binary cases, 76 unary cases
+ok   enumeration_p3
+   enumeration p=5: 86 balls, 16000 binary cases, 172 unary cases
+ok   enumeration_p5
+   enumeration p=7: 158 balls, 8000 binary cases, 316 unary cases
+ok   enumeration_p7
+ok   statuses_and_untouched_outputs
+   aliasing: 1102 cases
+ok   aliasing
+ok   unit_part_check_rejects_the_wrong_unit
+ok   decompose_roundtrip
+ok   inverse_times_self_contains_one
+ok   the_prime_2_64_minus_59
+ok   limits_and_extreme_exponents
+ok   get_center_and_abs_values
+ok   set_fball_local_backend
+ok   set_fball_exact_and_fractional
+ok   the_example_of_the_brief
+ok   inv_of_an_exact_power_at_the_exponent_limit
+ok   sub_of_small_results_at_the_exponent_limit
+ok   div_of_small_results_at_the_exponent_limit
+ok   add_mul_neg_at_the_exponent_limits
+   composition p=2: 3249 pairs
+   composition p=3: 3721 pairs
+   composition p=5: 7396 pairs
+ok   sub_and_div_agree_with_their_compositions
+26 tests, 3982393 checks, 0 failed checks, 0 failed tests
+== build/test_lfunc
+  cases_from_the_reference: 790 lines, OK 649, DOMAIN 100, NOT_DETERMINED 41
+ok   cases_from_the_reference
+  points_from_the_reference: 2165 points, 28 exact results
+ok   points_from_the_reference
+  ball_enumeration_over_the_grid: 7600 calls, 61032 point values enclosed, 3852 smallest-ball witnesses
+ok   ball_enumeration_over_the_grid
+ok   spec_precision_cases
+  identities_as_containment: 1046 round trips, 360 homomorphism checks
+ok   identities_as_containment
+  flint_second_opinion: 1000 compared, 0 refused by FLINT
+ok   flint_second_opinion
+ok   precision_2000
+ok   every_status
+ok   exact_results_and_shortcut_values
+ok   zz_free_the_grid
+10 tests, 374421 checks, 0 failed checks, 0 failed tests
+== build/test_linsolve
+ok   init_value_and_accessors
+ok   accessors_copy_and_aliasing
+all systems modulo 4, r, c <= 2: 4455 systems, OK 2569, NO_SOLUTION 1886; kernel of one element 1757, the whole space 42, other 2656; not free 1456; failures 0
+   kernel sizes (size:count): 1:1757 2:1204 4:1317 8:156 16:21
+ok   every_system_modulo_4_with_r_c_at_most_2
+random systems, N in {1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18}, r, c <= 3: 7088 systems, OK 4749, NO_SOLUTION 2339; kernel of one element 3006, the whole space 1978, other 2104; not free 1159; failures 0
+   kernel sizes (size:count): 1:3006 2:538 3:262 4:363 5:166 6:159 8:232 9:249 10:108 12:110 16:238 18:101 20:18 24:18 25:97 27:79 32:44 36:102 40:3 48:17 50:10 54:8 64:158 72:26 81:97 96:1 100:81 108:18 125:61 128:28 144:69 162:9 192:3 200:5 216:53 243:9 250:7 256:77 288:5 324:80 432:9 500:3 512:67 576:4 648:14 729:56 864:7 972:3 1000:48 1024:10 1728:48 1944:3 2048:2 2916:2 4096:51 5832:46
+ok   random_systems_small_moduli_r_c_at_most_3
+one equation a z = b modulo N, N < 40: 20540 cases, 0 failures
+ok   one_equation_every_a_b_for_N_below_40
+canonical form: 440 systems changed by permutation, units and redundant equations, 111 without solution; 0 with a different G or status
+ok   canonical_under_permutation_units_and_redundant_equations
+vectors: 483 lines, OK 342, NO_SOLUTION 141, N above 64 bits 123; 0 differ
+ok   vectors_s1_slice1_every_line
+changed certificates, generator removed                         :  2598 tried,  2598 refused,     0 accepted and true, 0 accepted and false
+changed certificates, generator changed                         :  2598 tried,  2069 refused,   529 accepted and true, 0 accepted and false
+changed certificates, row of E removed (with V)                 :  3000 tried,  3000 refused,     0 accepted and true, 0 accepted and false
+changed certificates, row of E changed                          :  3000 tried,  2403 refused,   597 accepted and true, 0 accepted and false
+changed certificates, row of V removed (E kept)                 :  3000 tried,  3000 refused,     0 accepted and true, 0 accepted and false
+changed certificates, row of V changed                          :  3000 tried,  2032 refused,   968 accepted and true, 0 accepted and false
+changed certificates, x0 or y changed                           :  3600 tried,  2158 refused,  1442 accepted and true, 0 accepted and false
+changed certificates, kind flipped                              :  3600 tried,  3600 refused,     0 accepted and true, 0 accepted and false
+changed certificates, generator multiplied by a unit            :  2178 tried,  1520 refused,   658 accepted and true, 0 accepted and false
+changed certificates, certificate of another matrix             :  3600 tried,  3393 refused,   207 accepted and true, 0 accepted and false
+changed certificates, certificate of A with one row replaced    :  3600 tried,  3243 refused,   357 accepted and true, 0 accepted and false
+changed certificates, row of E repeated, generator removed      :  1998 tried,  1998 refused,     0 accepted and true, 0 accepted and false
+changed certificates, generator plus a multiple of a later one  :  1308 tried,  1136 refused,   172 accepted and true, 0 accepted and false
+ok   checker_refuses_false_certificates
+ok   checker_refuses_wrong_shapes_and_moduli
+ok   statuses_domain_and_limit_leave_sol_untouched
+ok   special_cases_and_huge_entries
+wrapper test (FLINT fmpz_mat_howell_form_mod, padded): 270 matrices, 270 identical to Algorithm H
+ok   wrapper_test_fmpz_mat_howell_form_mod
+12 tests, 14415 checks, 0 failed checks, 0 failed tests
+== build/test_linsolve_rest
+set/swap/identical: 4455 systems, 0 failed; other rhs identical 1014, differing 3438; permuted equations identical 405, differing 4050
+ok   set_swap_identical_on_the_grid
+identical: 28 single changes, all seen
+ok   identical_sees_every_field
+grid mod 4: 4455 systems, contains yes 4455 no 63234, shifted 25533, kernel order > 1 in 2698; 0 bad
+ok   kernel_order_contains_image_cert_on_the_grid
+random small N: 1800 systems, contains yes 171290 no 405431, kernel order > 1 in 1007; 0 bad
+ok   kernel_order_contains_image_cert_random_small_moduli
+ok   kernel_order_named_values
+fball: 2815 systems (185 skipped for N^c > 6000); OK 1591, NO_SOLUTION 1224; lcm below the product in 807; non-canonical raw triples 2651; coordinate balls checked 2774; 0 bad
+ok   fball_against_exact_membership
+local/global: 544 systems, 358 with some local ball, 52 mixed; 0 bad
+ok   fball_local_and_global_backends_agree
+ok   fball_statuses
+ok   get_fball_statuses_and_named_values
+get_fball: 5655 systems, 6564 coordinate balls with solutions compared with the residues; 0 bad
+ok   get_fball_residues_on_the_grid
+ok   fball_large_operands_planted_solution
+ok   fball_limit_and_dimension
+vectors: 780 lines, OK 391, NO_SOLUTION 389, N above 64 bits 104, coordinate balls 759; 0 differ
+ok   vectors_s1_slice2_every_line
+13 tests, 30328 checks, 0 failed checks, 0 failed tests
+== build/test_modctx
+ok   vectors_modctx
+ok   golden_modctx_bodies
+ok   constructor_validations_touch_no_output
+ok   ctx_desc_and_match
+ok   two_threads_read_one_context
+ok   free_null_and_layout
+ok   from_dump_edge_cases
+ok   from_dump_many_blocks
+ok   dump_input_without_terminator
+ok   new_prime_powers_many_blocks
+ok   matches_desc_compares_the_first_block
+11 tests, 10197 checks, 0 failed checks, 0 failed tests
+== build/test_modctx_limits
+ok   refused_call_retains_no_primorial_memory
+ok   primorial_refusals_are_decided_from_n_and_e
+ok   factorial_refusals_are_decided_from_n
+ok   k_above_the_bound_does_not_read_the_array
+ok   largest_admitted_cases_succeed
+ok   null_out_is_a_domain_error
+ok   recombine_is_the_representative_in_range
+7 tests, 239 checks, 0 failed checks, 0 failed tests
+== build/test_modctx_pin
+ok   every_residue_of_K_35_is_the_representative_in_0_K
+ok   every_residue_of_K_105_is_the_representative_in_0_K
+ok   every_residue_of_K_2310_is_the_representative_in_0_K
+ok   the_lower_end_of_the_range_is_0
+ok   the_upper_end_of_the_range_is_K_minus_1
+ok   one_block_gives_the_residue_itself
+ok   a_negative_input_recombines_to_its_class_in_0_K
+7 tests, 5716 checks, 0 failed checks, 0 failed tests
+== build/test_place
+ok   the_place_has_the_fixed_layout_of_the_interface
+ok   the_archimedean_place_is_not_a_prime
+ok   a_place_made_twice_from_the_same_prime_is_one_place
+ok   every_prime_gives_a_finite_place
+ok   the_largest_prime_below_two_to_the_sixty_four_is_a_place
+ok   a_composite_prime_argument_is_outside_the_domain
+ok   the_output_is_untouched_when_the_argument_is_not_prime
+ok   the_archimedean_place_comes_before_every_prime
+ok   the_canonical_order_is_the_increasing_order_of_the_primes
+ok   the_order_is_a_strict_total_order
+ok   a_place_survives_by_value
+11 tests, 797 checks, 0 failed checks, 0 failed tests
+== build/test_rat
+ok   the_vectors_of_the_constructors_from_raw_data
+ok   the_vectors_of_adf_rat_set_si
+ok   the_vectors_of_the_sum
+ok   the_vectors_of_the_difference
+ok   the_vectors_of_the_product
+ok   the_vectors_of_the_negation
+ok   the_vectors_of_the_quotient
+ok   the_vectors_of_the_inverse
+ok   the_vectors_of_the_predicates
+ok   the_life_cycle
+ok   the_zero_and_the_one
+ok   the_zero_keeps_its_canonical_form_under_arithmetic
+ok   a_copy_may_be_its_own_source
+ok   a_swap_exchanges_the_values
+ok   a_copy_owns_its_own_limbs
+ok   the_constructor_from_two_integers_reduces_and_moves_the_sign
+ok   the_constructor_from_two_integers_admits_aliased_arguments
+ok   the_constructor_from_an_fmpq_canonicalises
+ok   a_zero_denominator_is_outside_the_domain_and_writes_nothing
+ok   the_quotient_by_the_exact_zero_is_not_a_unit_and_writes_nothing
+ok   the_inverse_of_the_exact_zero_is_not_a_unit_and_writes_nothing
+ok   the_sign_of_every_value
+ok   the_equality_of_two_values
+ok   a_non_canonical_value_is_told_from_a_canonical_one
+ok   the_arithmetic_of_huge_operands_is_exact
+ok   the_layout_of_the_rational_is_the_documented_one
+26 tests, 41415 checks, 0 failed checks, 0 failed tests
+== build/test_recon
+ok   one_candidate_of_a_ball_of_radius_one_sixth
+ok   the_end_points_of_the_closed_interval_are_candidates
+ok   an_interval_of_the_width_of_the_radius
+ok   an_interval_just_below_the_width_of_the_radius
+ok   no_candidate_gives_no_solution
+ok   an_empty_interval_gives_no_solution
+ok   an_exact_finite_ball_gives_its_centre
+ok   negative_centres
+ok   a_radius_with_a_denominator
+ok   several_candidates_give_not_unique
+ok   the_output_may_be_one_of_the_interval_end_points
+ok   operands_of_4096_bits
+ok   the_enumeration_of_candidates_agrees_with_the_function
+ok   an_adele_with_a_real_ball_of_radius_zero
+ok   the_end_points_of_the_real_interval_are_candidates
+ok   the_adele_agrees_with_the_finite_ball_call_on_the_exact_interval
+ok   an_adele_with_an_exact_finite_ball
+ok   an_adele_with_operands_of_4096_bits
+ok   an_adele_with_an_infinite_real_ball_is_rejected
+19 tests, 52740 checks, 0 failed checks, 0 failed tests
+== build/test_recon_canon
+ok   the_bound_is_the_value_mn_times_two_to_the_exp
+ok   the_bound_is_in_canonical_form
+ok   a_bound_that_is_not_canonical_on_entry_comes_out_canonical
+ok   the_refusal_of_an_exponent_beyond_the_bound_leaves_it_untouched
+ok   the_public_reconstruction_returns_a_canonical_rational
+5 tests, 139 checks, 0 failed checks, 0 failed tests
+== build/test_recon_limit
+ok   the_real_balls_of_the_review_are_answered_limit
+ok   one_above_the_bound_gives_limit
+ok   at_the_bound_the_ball_is_computed
+ok   a_zero_midpoint_a_zero_radius_and_two_zeros
+4 tests, 778 checks, 0 failed checks, 0 failed tests
+== build/test_recon_vectors
+ok   vectors_recon
+ok   vectors_recon_edges_of_the_lane
+ok   vectors_recon_adele
+3 tests, 21194 checks, 0 failed checks, 0 failed tests
+== build/test_resid
+ok   life_cycle_and_init_values
+ok   set_fmpz2_reduces_and_refuses_m_below_one
+ok   get_fmpz2_aliasing_and_is_canonical
+brute force: 804804 cases, 61214 inside 2AB < m (OK 22622, NO_SOLUTION by (b) 29754, by (c) 8838), 743590 in the range 2AB >= m
+ok   brute_force_every_m_up_to_36
+vectors: 2643 lines, OK 1117, NO_SOLUTION (b) 1384, (c) 140, empty box 2
+ok   vectors_s3_slice1_every_line
+ok   boundary_2AB_against_m
+ok   boundary_small_moduli_and_zero_A
+ok   empty_box_is_no_solution_with_no_certificate
+ok   null_cert_gives_the_same_answers
+ok   certificate_check_refuses_changed_quadruples
+ok   aliasing_of_the_inputs
+wrapper test (FLINT fmpq_reconstruct_fmpz_2): 120651 cases, both OK and equal 51645, both none 69006
+ok   wrapper_test_against_fmpq_reconstruct_fmpz_2
+12 tests, 3395820 checks, 0 failed checks, 0 failed tests
+== build/test_resid_full
+enumeration against the literal definition: 79664 problems
+ok   enumeration_agrees_with_the_literal_definition
+brute force whole range: 804804 cases; NO_SOLUTION 52674, OK 92246, NOT_UNIQUE 659884; in the range 2AB >= m: NO_SOLUTION 14082, OK 69624, NOT_UNIQUE 659884
+ok   brute_force_every_m_up_to_36_whole_range
+limits grid: 1236900 calls (NO_SOLUTION 71481, OK 70868, NOT_UNIQUE 785882, NOT_DETERMINED 308669), NOT_UNIQUE found in a cut search 108402, OK from a cut search 0, 'limit 0 is 2AB >= m' fails 127564 times, 247380 cert = NULL calls
+ok   limits_grid_m_up_to_24
+vectors: 11298 lines (NO_SOLUTION 1114, OK 1293, NOT_UNIQUE 6281, NOT_DETERMINED 2610), X >= 2^64 in 314, limit WORD_MAX in 237, largest m 4001 bits, slowest call 0.000 s
+ok   vectors_s3_slice2_every_line
+ok   edge_cases_of_check_s3_edge
+large operands: 368 calls (NO_SOLUTION 83, OK 51, NOT_UNIQUE 19, NOT_DETERMINED 215), 24 with X above 2^64, 71 with a decided problem at limit WORD_MAX, slowest call 0.000 s
+ok   large_operands_return_at_once
+ok   aliasing_in_the_search_range
+7 tests, 29391859 checks, 0 failed checks, 0 failed tests
+== build/test_resid_rest
+ok   life_cycle_init_values
+ok   life_cycle_resid_set_swap_identical
+ok   life_cycle_recon_cert_set_swap_identical
+ok   layouts_are_pinned
+   set_rat and contains_rat: 7320 reduced fractions with |n|, d <= 12 over every m <= 40; set_rat OK 5176, DOMAIN 2144; contains_rat inside 5176, outside 144884
+ok   set_rat_and_contains_rat_against_the_definition
+ok   set_rat_statuses_and_shapes
+   forget: 624 balls of the grid (H <= 12, d <= 8, a in [0, H), read on the canonical triple), 475 kept, 149 refused, 19475 rationals of the balls, 8 exact balls refused
+ok   forget_contains_every_rational_of_the_ball
+ok   forget_uses_the_canonical_triple
+ok   forget_the_example_of_note_1
+ok   forget_local_and_global_give_the_same_residue
+   reconstruct_first: 363048 calls, OK 289494, NOT_DETERMINED 48243, NO_SOLUTION 25311; count 0/1/2 94455/30623/237970; 289494 q written, 73554 left untouched, 20901 cut answers
+ok   reconstruct_first_against_the_enumeration
+   recon_first vectors: 15338 lines, all run; OK 12144, NOT_DETERMINED 1809, NO_SOLUTION 1385; count 0/1/2 4204/1332/9802; 696 lines with m or A above a million
+ok   reconstruct_first_vectors
+   sets vectors: 8610 lines, all run; set_rat 5490 (OK 3612, DOMAIN 1878), forget 3120 (OK 2375, DOMAIN 745); contains_rat inside 3612, outside 125037
+ok   set_rat_and_forget_vectors
+   verify_result: 363048 results, all accepted; changed claims refused/accepted-and-true: status 1089144/0, numerator 30623/332425, denominator 25544/337504, sign 25544/337504, certificate 431989/272651, kind 125078/237970
+ok   verify_result_accepts_every_result_and_refuses_changed_claims
+   verify_result on the vectors: 15338 lines; accepted 15338, not decided 0 (of which 453 have X above a word); a status flipped: refused 9802, accepted and true 0
+ok   verify_result_on_the_vectors
+ok   verify_result_when_X_is_above_a_word
+ok   verify_result_outside_the_problem
+17 tests, 7607041 checks, 0 failed checks, 0 failed tests
+== build/test_rfunc
+ok   vectors_real
+ok   odd_roots_of_negative_and_zero
+ok   non_finite_inputs
+ok   huge_arguments_never_give_a_nonfinite_ok
+ok   prec_below_two_is_two
+ok   domain_table
+ok   known_values
+ok   sball_at_statuses_and_places
+8 tests, 59145 checks, 0 failed checks, 0 failed tests
+== build/test_roots_bigp
+ok   both_routes_give_the_same_roots_below_the_bound
+ok   planted_roots_above_the_bound_give_exactly_the_planted_list
+ok   statuses_above_the_bound
+ok   a_wrong_candidate_list_is_refused
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+adelefeld: adf_roots_padic: internal error: a polynomial of the search is 0 modulo p
+ok   the_zero_polynomial_modulo_p_aborts
+5 tests, 825 checks, 0 failed checks, 0 failed tests
+== build/test_roots_forged
+ok   a_composite_place_is_refused
+ok   the_same_shape_at_a_prime_is_accepted
+2 tests, 26 checks, 0 failed checks, 0 failed tests
+== build/test_roots_padic
+enumeration: 8640 runs (p = 2, 3, 5, 7; 40 polynomials each; prec 1 to 6, depth 0 to 8): complete 7902, incomplete 738, empty 1572, with s > 0 2820; 8594 approximate roots, 14910 balls counted, 7200 nested pairs; 0 polynomials skipped (enumeration above 1048576); least depth found for 160, of them >= 1 for 75; 0 failures
+ok   every_run_against_the_enumeration
+vectors: 650 lines (248 of PADIC_CASES), OK 540, NOT_DETERMINED 90, DOMAIN 20; numbers of roots compared 54; least depths 540 (199 refused one below); 0 differ
+ok   vectors_s2_slice2_every_line
+ok   x2_plus_1_at_2_and_the_examples_of_3_11
+ok   zero_polynomial_constants_degree_one_and_repeated_factors
+changed lists: a certificate dropped 321 of 321 refused; two balls merged 185 of 185 refused; a ball moved off its root 321 of 321 refused; a ball doubled 321 of 321 refused; a false n 136 of 136 refused; a class kept with complete = 1 128 of 128 refused; a depth one below the least 79 of 79 refused; seed lists 1794 of 1794 refused
+ok   verify_complete_refuses_changed_lists_seed_lists_and_the_example
+ok   domain_unsupported_and_limit_before_any_allocation_L_untouched
+ok   limits_during_the_search_and_exponent_overflow
+ok   get_unresolved_and_aliasing
+8 tests, 55135 checks, 0 failed checks, 0 failed tests
+== build/test_roots_real
+   REAL_CASES: 72 runs (18 polynomials, prec 2, 20, 53, 200), 72 lists true by the oracle
+ok   real_cases_against_the_sturm_chain_of_the_test
+   planted, prec 2: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 5 of 6 balls exact
+   planted, prec 20: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 5 of 6 balls exact
+   planted, prec 53: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 5 of 6 balls exact
+ok   planted_roots_repeated_large_close_and_dyadic
+   precision: 6 polynomials at prec 2, 10, 53, 200, 2000 and 1, 0, -5, WORD_MIN; 108 nested pairs
+ok   precision_accuracy_below_2_and_nesting
+   ball removed                  51 changed lists,  51 refused (  0 of them by verify_entries)
+   two balls merged              24 changed lists,  24 refused ( 24 of them by verify_entries)
+   ball moved off its root       15 changed lists,  15 refused ( 15 of them by verify_entries)
+   ball widened over two roots   12 changed lists,  12 refused ( 12 of them by verify_entries)
+   false count                   33 changed lists,  33 refused ( 33 of them by verify_entries)
+   false n                       15 changed lists,  15 refused ( 15 of them by verify_entries)
+   g replaced by f                4 changed lists,   4 refused (  4 of them by verify_entries)
+   one root twice                12 changed lists,  12 refused ( 12 of them by verify_entries)
+ok   verifiers_accept_every_result_and_refuse_changed_lists
+ok   predicate_at_the_real_place
+ok   finish_widening_accuracy_after_widening_and_the_count
+ok   statuses_constants_untouched_and_aliasing
+   tests/ref/vectors/s2-slice3/real.jsonl: 163 lines, 161 OK (385 roots), 2 DOMAIN
+ok   vectors_s2_slice3_every_line
+8 tests, 10744 checks, 0 failed checks, 0 failed tests
+== build/test_roots_real_isolate
+   isolate: 68 runs on the 17 nonconstant REAL_CASES, 68 true by the oracle
+ok   isolate_on_real_cases
+   REAL_CASES: 90 runs (prec 2, 20, 53, 200, 2000), 90 lists true by the oracle
+ok   real_cases_end_to_end
+   pair: e up to 10000, the slowest call 0.0009 s (bound 10.0 s)
+   thirds: e up to 10000, the slowest call 0.0330 s (bound 10.0 s)
+ok   slow_family_pair_with_a_bound_on_the_time
+   close: e up to 10000, the slowest call 0.0009 s (bound 10.0 s)
+   cthirds: e up to 10000, the slowest call 0.0104 s (bound 10.0 s)
+ok   close_small_roots
+ok   wilkinson_20_and_mignotte
+ok   dyadic_roots_and_zero_are_exact_balls
+ok   no_root_degree_one_multiple_and_negative_lead
+   touching cells: 7 sets at 15 precisions, 98 nested pairs of lists
+ok   touching_cells_and_nesting
+   random: 330 calls, 221 roots in the random integer polynomials
+ok   random_planted_and_random_polynomials
+ok   limit_for_roots_outside_the_admissible_size
+   high precision: the slowest call 0.7919 s (bound 30 s)
+ok   high_precision_with_a_bound_on_the_time
+11 tests, 19165 checks, 0 failed checks, 0 failed tests
+== build/test_roots_seed
+ok   layout_pins
+ok   init_value_and_accessors
+enumeration: 1918512 calls (p = 2, 3, 5, 7, 11; 18 polynomials each; every seed in [0, p^4); prec 1 to 6): OK 341322 (s > 0 in 2694), NOT_DETERMINED 1577190; 833 enumerations of balls; strong form of f and of g differ at 10781 seeds; 0 failures
+ok   every_seed_below_p4_against_the_enumeration
+seeds with v(g(a)) = 2 v(g'(a)): 26304, refused with L untouched: 26304
+ok   seeds_with_equality_are_refused_and_L_untouched
+ok   conrad_examples_4_2_4_3_4_4
+ok   normalised_polynomial_27X_repeated_factor_and_the_prime_2
+ok   precision_and_nested_balls
+ok   large_primes_and_large_precision
+FLINT allocations: an OK call 10; LIMIT calls 0, 0, 0
+ok   limit_of_the_precision_is_decided_before_any_allocation
+ok   limits_give_LIMIT_and_leave_L_untouched
+ok   domain_statuses_leave_L_untouched
+ok   aliasing_f_is_L_g_and_a_is_L_a
+ok   get_fball_is_the_canonical_cylinder
+entries verifier: 2200 seed lists, 2200 pass
+changed lists, centre moved off the root (a + t p^(K-1))   : 10984 tried, 10496 refused,  488 accepted and true, 0 accepted and false
+changed lists, K raised by one, centre not lifted          :  2200 tried,  1383 refused,  817 accepted and true, 0 accepted and false
+changed lists, s raised by one                             :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+changed lists, s lowered by one                            :    75 tried,    75 refused,    0 accepted and true, 0 accepted and false
+changed lists, g replaced by f (f != g*)                   :  1545 tried,  1545 refused,    0 accepted and true, 0 accepted and false
+changed lists, two balls of one root (PARTITION, n = 2)    :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+changed lists, centre not reduced (a + p^K)                :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+changed lists, SEED list with complete = 1                 :  2200 tried,  2200 refused,    0 accepted and true, 0 accepted and false
+ok   verifier_accepts_every_seed_list_and_refuses_changed_lists
+ok   verifier_and_predicate_on_hand_made_lists
+vectors: 7262 lines, OK 2062, NOT_DETERMINED 5196, DOMAIN 4, p above 32 bits 144; 0 differ
+ok   vectors_s2_slice1_every_line
+16 tests, 5347209 checks, 0 failed checks, 0 failed tests
+== build/test_s13_repair
+ok   verify_result_hand_certificates_of_the_reviewer_limit_zero
+   grid: 500192 claims, 125048 accepted, 375144 refused; results OK 15181, NO_SOLUTION 41551, NOT_UNIQUE 38596, NOT_DETERMINED 29720
+ok   verify_result_is_the_status_of_the_function_on_the_grid
+   verifier with B = 5e9: six calls, 0.015 s of CPU
+ok   verify_result_cost_is_bounded_by_the_limit
+ok   linsolve_fball_refuses_before_any_allocation
+4 tests, 649359 checks, 0 failed checks, 0 failed tests
+== build/test_sball
+ok   layout_and_init
+ok   set_swap_identical
+ok   is_canonical_rejects_each_clause
+ok   set_arb_lballs
+ok   accessors
+ok   vectors_project
+ok   projection_enumeration
+ok   project_orders_and_statuses
+ok   project_limit_names_the_first_failing_prime
+ok   vectors_predicates
+ok   predicates_by_hand
+ok   vectors_ops
+ok   tuples_of_points_through_the_operations
+ok   domain_unsupported_and_where
+ok   limit_names_the_first_failing_prime
+ok   the_example_of_the_brief
+16 tests, 873696 checks, 0 failed checks, 0 failed tests
+== build/test_scaffold
+ok   flint_is_version_3_x
+ok   fmpz_two_plus_three_is_five
+ok   public_header_version
+3 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_scaled
+ok   life_cycle_and_predicate
+ok   set_rat_stores_the_exact_rational
+ok   set_fball_loss_exactly_when_the_set_changes
+ok   set_context_examples
+ok   set_context_loss_grid_and_best
+ok   context_rule_add
+ok   context_rule_sub
+ok   context_rule_mul
+ok   context_rule_mul_tight
+ok   exact_values_keep_the_tag
+ok   literal_rows_of_the_specification
+ok   product_loses_the_factor_h
+ok   neg_and_mul_rat_are_exact_as_sets
+ok   add_rat_lost_and_best
+ok   lcm_contexts_meet_losslessly
+ok   equal_sets_equal_data
+ok   aliasing_binary_ops
+ok   aliasing_unary_and_scalar_ops
+ok   one_word_and_4096_bit_moduli
+ok   exact_zero_and_zero_residues
+ok   tight_and_scaled_policies_containment
+ok   set_fball_converts_a_local_value_as_its_set
+ok   exact_results_store_a_zero_residue
+23 tests, 88410 checks, 0 failed checks, 0 failed tests
+== build/test_scaled_alias
+ok   set_context_alias_exhaustive
+ok   set_context_alias_exact
+ok   set_context_alias_random
+ok   add_rat_alias
+ok   binary_ops_alias
+ok   binary_domain_alias_untouched
+ok   neg_mul_rat_alias
+ok   set_fball_overwrite_and_lost
+ok   cap_alias
+9 tests, 142938 checks, 0 failed checks, 0 failed tests
+== build/test_scaled_vectors
+ok   vectors_policies_convert_from_tight
+ok   vectors_policies_scaled_add
+ok   vectors_policies_scaled_mul
+ok   vectors_lane_neg
+ok   vectors_lane_scale
+ok   vectors_lane_sub
+ok   vectors_lane_mul_exact
+ok   vectors_lane_mul_tight
+ok   vectors_lane_add_rat
+ok   vectors_lane_set_context
+ok   vectors_lane_to_fball
+11 tests, 62707 checks, 0 failed checks, 0 failed tests
+== build/test_status
+ok   the_numeric_values_of_the_status_codes
+ok   the_values_of_the_point_comparison
+ok   every_status_code_has_the_name_of_the_list
+ok   the_names_carry_no_prefix
+ok   the_names_are_distinct
+ok   a_code_outside_the_list_has_the_name_UNKNOWN
+ok   the_name_of_a_code_is_stable
+7 tests, 122 checks, 0 failed checks, 0 failed tests
+== build/test_support
+ok   jsonl_reads_every_vector_file
+ok   jsonl_reads_the_documented_records
+ok   jsonl_keeps_integers_as_text
+ok   jsonl_refuses_malformed_lines
+ok   jsonl_encodes_a_unicode_escape
+ok   jsonl_errors_name_the_line
+ok   jsonl_bounds_the_nesting
+ok   jsonl_refuses_a_value_of_the_wrong_kind
+ok   golden_reads_every_golden_file
+ok   golden_decodes_the_escapes
+ok   golden_decodes_the_hostile_inputs
+ok   golden_expands_generated_inputs
+ok   golden_refuses_malformed_lines
+ok   golden_bounds_a_generated_input
+ok   golden_reads_the_documented_vectors
+ok   golden_accepts_a_file_without_a_vector
+16 tests, 295239 checks, 0 failed checks, 0 failed tests
+== build/test_text_adele
+ok   every_row_of_the_golden_file_adele
+ok   every_row_of_the_golden_file_cadele
+ok   every_row_of_the_golden_file_realball_read
+ok   every_row_of_the_golden_file_realball_print
+ok   every_random_print_of_the_reference
+ok   every_random_adele_text_of_the_reference
+ok   every_random_cadele_text_of_the_reference
+ok   a_dyadic_ball_is_read_exactly_at_every_prec
+ok   the_radius_mantissa_bound_of_2_to_the_30
+ok   random_decimals_are_enclosed_at_small_prec
+ok   the_extreme_exponents_of_the_default_limits
+ok   the_printers_write_the_templates
+ok   the_digits_argument
+ok   print_then_parse_encloses_the_value
+ok   parse_print_parse_encloses_the_first_value
+ok   max_exp10_at_the_limit_and_one_above
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_bytes_and_ends_of_memory
+ok   the_earlier_stage_decides_the_status
+ok   the_grammar_of_real_and_complex
+20 tests, 84390 checks, 0 failed checks, 0 failed tests
+== build/test_text_classify
+ok   the_kinds_are_numbered_as_in_9_7
+ok   every_row_of_the_golden_file_dispatch
+ok   the_texts_of_every_type_file_are_of_that_type
+ok   every_text_of_the_reference
+ok   one_text_of_each_kind
+ok   signs_and_denominators_of_the_other_literals
+ok   limits_hostile_bytes_and_the_order_of_checks
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+8 tests, 20776 checks, 0 failed checks, 0 failed tests
+== build/test_text_fball
+ok   every_row_of_the_golden_file_fball
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template
+ok   random_balls_round_trip
+ok   the_parser_canonicalises
+ok   the_output_may_hold_any_value_before
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_and_forbidden_bytes
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+ok   the_earlier_stage_decides_the_status
+10 tests, 21545 checks, 0 failed checks, 0 failed tests
+== build/test_text_limits
+ok   printer_bound_adele_midpoint
+ok   printer_bound_adele_radius
+ok   printer_bound_cadele_imaginary_midpoint
+ok   printer_bound_cadele_imaginary_radius
+ok   printer_bound_cadele_real_part
+ok   fball_printer_never_null
+ok   exp10_limit_of_nineteen_digits
+ok   exp10_limit_of_nineteen_significant_digits
+ok   exp10_limit_of_twenty_digits
+ok   exp10_limit_negative_and_zero
+ok   value_at_exp10_boundary_prints_one_above
+11 tests, 105 checks, 0 failed checks, 0 failed tests
+== build/test_text_r3r9
+ok   the_reviewers_input_is_not_printed_at_the_default_limits
+ok   every_value_at_the_default_limits_prints_text_that_reads_back
+ok   a_cadele_at_the_exponent_boundary_is_refused_like_an_adele
+ok   a_printed_text_is_read_back_with_limits_that_admit_it
+ok   prec_two_and_digits_one_on_the_value_forms_with_a_real_part
+ok   prec_two_reaches_a_wider_ball_than_a_larger_prec
+ok   the_bare_rat_and_fball_value_forms_round_trip
+   the old scheme on the same texts: 94 accepted, 1 prec values, 1 digits values
+   the corpus of the text target: 287 files, 94 accepted adele or cadele texts, 67 of 190 prec values, 30 of 30 digits values, prec = 2 reached: 1
+ok   the_committed_corpus_reaches_prec_two_and_digits_one
+8 tests, 148 checks, 0 failed checks, 0 failed tests
+== build/test_text_rat
+ok   every_row_of_the_golden_file_rat
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template_q
+ok   huge_operands_print_their_digits_and_come_back
+ok   random_values_round_trip
+ok   max_len_at_the_limit_and_one_above
+ok   empty_and_null_input
+ok   a_nul_byte_anywhere_is_a_parse_error
+ok   every_byte_outside_the_alphabet_is_a_parse_error
+ok   input_at_the_end_of_a_heap_block_of_exact_size
+ok   input_at_the_end_of_a_page
+ok   the_earlier_stage_decides_the_status
+ok   canonicalisation_on_input
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+== build/test_ucoset
+ok   layout_is_16_bytes_c_then_N
+ok   init_is_the_exact_unit_one
+ok   is_canonical_is_the_predicate_of_conventions_5_6
+ok   set_swap_identical
+ok   set_fmpz2_reduces_c_and_keeps_N
+ok   set_fmpz2_refuses_and_leaves_x_untouched
+ok   normalise_removes_the_factor_2_and_reduces
+ok   examples_of_spec_5_and_the_exact_factor
+ok   aliasing_of_mul_and_inv
+enumeration: 4356 ordered pairs at 3 levels, 8712 product sets, 132 inverse sets
+ok   enumeration_mul_inv_predicates
+vectors: 1803 lines: 373 set (152 DOMAIN), 1386 mul with 3 predicates, 44 inv
+ok   vectors_of_the_reference
+11 tests, 43178 checks, 0 failed checks, 0 failed tests
+check passed: all 68 test programs
