@@ -131,6 +131,24 @@ else
 fi
 rm -f "$idmap_output"
 
+# ---- 2e. the value form of ideles (milestone 2, lane t-slice1): tests/julia/text_idele.jl, its own process ----
+
+text_idele_output=$(mktemp)
+if "$JULIA" --startup-file=no tests/julia/text_idele.jl "$so" > "$text_idele_output" 2>&1; then
+    cat "$text_idele_output"
+elif grep -q '__gmpn_modexact_1_odd' "$text_idele_output" 2>/dev/null \
+        && text_idele_gmp=$(ldconfig -p 2> /dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$text_idele_gmp" ] \
+        && LD_PRELOAD="$text_idele_gmp" "$JULIA" --startup-file=no tests/julia/text_idele.jl "$so"; then
+    echo "== tests/julia/text_idele.jl passed with LD_PRELOAD=$text_idele_gmp"
+else
+    cat "$text_idele_output"
+    rm -f "$text_idele_output"
+    echo "test_julia: tests/julia/text_idele.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$text_idele_output"
+
 # ---- 3. run the smoke test ----
 
 run_output=$(mktemp)

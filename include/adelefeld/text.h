@@ -1,12 +1,15 @@
 /* adelefeld/text.h: the value form (parse and print) for adf_rat, adf_fball, adf_adele,
-   adf_cadele; limits; classification of a text.
+   adf_cadele, adf_ucoset, adf_idele and adf_idclass; limits; classification of a text.
 
    Contract: docs/conventions.md 0.4, section 8 (interface 8.1, alphabet 8.2, tokens 8.3, limits
    8.4, order of checks 8.5), section 9 (grammar 9.1, 9.2; semantic constraints 9.3; printing
    templates 9.4; real balls 9.5; round trips 9.6; type of a text 9.7), 4.2 and 12.8 (string
    ownership); docs/SPEC.md 10, item 2 and item 4. Reference implementation: proto/text_grammar.py;
    golden vectors: tests/golden/{rat,fball,adele,cadele,dispatch,realball_read,realball_print}.tsv
-   (conventions 11). Implemented in work package 1.4 (docs/PLAN.md section 6).
+   (conventions 11). Implemented in work package 1.4 (docs/PLAN.md section 6). The unit coset, the
+   idele and the idele class (conventions 5.6, 5.7, 9.2 ucoset_v, idele_v, idclass_v; golden vectors
+   tests/golden/{ucoset,idele,idclass}.tsv) are added by lane t-slice1 (milestone 2); their
+   functions are in src/text_idele.c and are declared at the end of this header.
 
    Rules common to every parser adf_x_set_str (conventions 8.1, 8.5, 4.3):
    - The input is the len bytes at s. It need not be NUL-terminated; a NUL byte inside it is
@@ -53,6 +56,9 @@
 #include "adelefeld/rat.h"
 #include "adelefeld/fball.h"
 #include "adelefeld/adele.h"
+#include "adelefeld/ucoset.h"
+#include "adelefeld/idele.h"
+#include "adelefeld/idclass.h"
 
 /* Defaults of conventions 8.4 (CV-27) and 8.1. */
 #define ADF_TEXT_MAX_LEN_DEFAULT    ((size_t) 1048576)
@@ -173,6 +179,59 @@ int adf_cadele_set_str(adf_cadele_t x, const char * s, size_t len, slong prec,
 
 /* adf_cadele_get_str(len, x, digits): "((r(re)) + (r(im))*i ; F)" (conventions 9.4). */
 char * adf_cadele_get_str(size_t * len, const adf_cadele_t x, slong digits);
+
+/* ---- adf_ucoset, adf_idele, adf_idclass (milestone 2, lane t-slice1) ----
+
+   Grammar (conventions 9.2): ucoset_v = "[" int ["mod" uint] "]"; idele_v = "(" real ";" urat "*" ucoset
+   ")"; idclass_v = "<" real ";" ucoset ">". Semantic constraints (9.3): a unit coset with N >= 1 needs
+   gcd(c, N) = 1, with N = 0 or absent it needs c = 1 or c = -1 (ADF_DOMAIN); an idele needs a real interval
+   that excludes 0 and a content r > 0 (ADF_DOMAIN); a class needs a real interval inside (0, infinity)
+   (ADF_DOMAIN). Canonicalisation on input (9.3): leading zeros removed, the content reduced, the residue of
+   the unit reduced into 1..N; the modulus stays as written (CV-17, so [5 mod 6] is stored (5, 6)), "mod 0"
+   is dropped. Printing (9.4): the unit coset in its normal form (5.6), "[c mod N]" with 1 <= c <= N or "[1]"
+   and "[-1]"; the idele "(r(x_inf) ; q(r) * U)"; the class "<r(t) ; U>", "q(r)" also for r = 1.
+
+   Statuses of the two readers with a real part, adf_idele_set_str and adf_idclass_set_str: those of
+   adf_adele_set_str (ADF_OK, ADF_PARSE, ADF_LIMIT, ADF_DOMAIN; the stages of conventions 8.5 in that order)
+   and ADF_NOT_DETERMINED (stage 7): the exact decimal interval satisfies the sign condition and no ball at
+   the working precision p = max(prec, 2) does. The reader first forms the enclosing ball of conventions 9.5
+   ("Reading"; exact for a dyadic input that fits, so the tightness of 9.5 holds); if that ball does not
+   satisfy the condition it forms the ball of the real kernel B of adelefeld/idele.h (api-2.md Statement E)
+   from the end points of the exact interval rounded outwards at p bits, which fails only when the end
+   points are more than p binades apart (ADF_NOT_DETERMINED). A prec above ADF_IDELE_PREC_MAX gives ADF_LIMIT,
+   decided from prec alone before the text is read, as for every function of idele.h (the rule of that
+   header; conventions 8.5 has no stage for it). The output is untouched on every status other than ADF_OK.
+   adf_ucoset_set_str has no real part and no prec: its statuses are ADF_OK, ADF_PARSE, ADF_LIMIT (len >
+   max_len only: an integer of the unit coset has no limit of its own, conventions 8.4), ADF_DOMAIN.
+
+   Printers: the rules of adf_x_get_str above. The real part of an idele or a class is printed by the
+   constrained printing of conventions 9.5 (the least k >= 2 for which the printed interval still excludes 0,
+   respectively is positive; repeated until the text is a fixed point of printing). The printed interval
+   contains the stored ball, so re-reading the text at a sufficient prec gives a ball that contains the
+   original one (9.6). The printer returns NULL, *len = 0, under the same condition as adf_adele_get_str
+   (decision M1-D6); adf_ucoset_get_str never returns NULL. The value must satisfy its predicate (5.6,
+   5.7); otherwise the behaviour is undefined (conventions 4.4). digits: 1 <= digits <= 10^6. */
+
+/* adf_ucoset_set_str(x, s, len, lim): x = the unit coset of the text, residue in 1..N, modulus as written.
+   Golden: tests/golden/ucoset.tsv. */
+int adf_ucoset_set_str(adf_ucoset_t x, const char * s, size_t len, const adf_text_limits_t * lim);
+
+/* adf_ucoset_get_str(len, x): the normal form of x (conventions 5.6, 9.4): "[c mod N]" or "[1]", "[-1]". */
+char * adf_ucoset_get_str(size_t * len, const adf_ucoset_t x);
+
+/* adf_idele_set_str(x, s, len, prec, lim): x = the idele of the text at working precision prec (see above).
+   Golden: tests/golden/idele.tsv. */
+int adf_idele_set_str(adf_idele_t x, const char * s, size_t len, slong prec, const adf_text_limits_t * lim);
+
+/* adf_idele_get_str(len, x, digits): "(r(x_inf) ; q(r) * U)", U the normal form of the unit of x. */
+char * adf_idele_get_str(size_t * len, const adf_idele_t x, slong digits);
+
+/* adf_idclass_set_str(x, s, len, prec, lim): x = the class of the text at working precision prec.
+   Golden: tests/golden/idclass.tsv. */
+int adf_idclass_set_str(adf_idclass_t x, const char * s, size_t len, slong prec, const adf_text_limits_t * lim);
+
+/* adf_idclass_get_str(len, x, digits): "<r(t) ; U>", U the normal form of the unit of x. */
+char * adf_idclass_get_str(size_t * len, const adf_idclass_t x, slong digits);
 
 /* Layout queries for the limits struct (conventions 12.4). Header-inline and exported. */
 ADF_INLINE size_t adf_sizeof_text_limits(void) { return sizeof(adf_text_limits_t); }

@@ -1,0 +1,77 @@
+{"N": "3", "c": "2", "cls": "ucoset", "expected": "[2 mod 3]", "file": "ucoset", "hex": "5b32206d6f6420335d", "kind": "ucoset", "line": 2}
+{"N": "36", "c": "5", "cls": "ucoset", "expected": "[5 mod 36]", "file": "ucoset", "hex": "5b35206d6f642033365d", "kind": "ucoset", "line": 3}
+{"N": "1", "c": "1", "cls": "ucoset", "expected": "[1 mod 1]", "file": "ucoset", "hex": "5b31206d6f6420315d", "kind": "ucoset", "line": 4}
+{"N": "4", "c": "3", "cls": "ucoset", "expected": "[3 mod 4]", "file": "ucoset", "hex": "5b33206d6f6420345d", "kind": "ucoset", "line": 5}
+{"N": "0", "c": "1", "cls": "ucoset", "expected": "[1]", "file": "ucoset", "hex": "5b315d", "kind": "ucoset", "line": 6}
+{"N": "0", "c": "-1", "cls": "ucoset", "expected": "[-1]", "file": "ucoset", "hex": "5b2d315d", "kind": "ucoset", "line": 7}
+{"N": "6", "c": "5", "cls": "ucoset", "expected": "[2 mod 3]", "file": "ucoset", "hex": "5b35206d6f6420365d", "kind": "ucoset", "line": 9}
+{"N": "1", "c": "1", "cls": "ucoset", "expected": "[1 mod 1]", "file": "ucoset", "hex": "5b30206d6f6420315d", "kind": "ucoset", "line": 11}
+{"N": "2", "c": "1", "cls": "ucoset", "expected": "[1 mod 1]", "file": "ucoset", "hex": "5b31206d6f6420325d", "kind": "ucoset", "line": 12}
+{"N": "2", "c": "1", "cls": "ucoset", "expected": "[1 mod 1]", "file": "ucoset", "hex": "5b33206d6f6420325d", "kind": "ucoset", "line": 13}
+{"N": "0", "c": "1", "cls": "ucoset", "expected": "[1]", "file": "ucoset", "hex": "5b31206d6f6420305d", "kind": "ucoset", "line": 14}
+{"N": "0", "c": "-1", "cls": "ucoset", "expected": "[-1]", "file": "ucoset", "hex": "5b2d31206d6f6420305d", "kind": "ucoset", "line": 15}
+{"N": "6", "c": "5", "cls": "ucoset", "expected": "[2 mod 3]", "file": "ucoset", "hex": "5b2d31206d6f6420365d", "kind": "ucoset", "line": 16}
+{"N": "10", "c": "7", "cls": "ucoset", "expected": "[2 mod 5]", "file": "ucoset", "hex": "5b37206d6f642031305d", "kind": "ucoset", "line": 17}
+{"N": "12", "c": "1", "cls": "ucoset", "expected": "[1 mod 12]", "file": "ucoset", "hex": "5b3133206d6f642031325d", "kind": "ucoset", "line": 18}
+{"N": "12", "c": "7", "cls": "ucoset", "expected": "[7 mod 12]", "file": "ucoset", "hex": "5b2d35206d6f642031325d", "kind": "ucoset", "line": 19}
+{"N": "18", "c": "5", "cls": "ucoset", "expected": "[5 mod 9]", "file": "ucoset", "hex": "5b35206d6f642031385d", "kind": "ucoset", "line": 20}
+{"N": "30", "c": "11", "cls": "ucoset", "expected": "[11 mod 15]", "file": "ucoset", "hex": "5b3131206d6f642033305d", "kind": "ucoset", "line": 21}
+{"N": "6", "c": "5", "cls": "ucoset", "expected": "[2 mod 3]", "file": "ucoset", "hex": "5b2035206d6f642036205d", "kind": "ucoset", "line": 22}
+{"N": "6", "c": "5", "cls": "ucoset", "expected": "[2 mod 3]", "file": "ucoset", "hex": "5b356d6f64365d", "kind": "ucoset", "line": 23}
+{"N": "10", "c": "7", "cls": "ucoset", "expected": "[2 mod 5]", "file": "ucoset", "hex": "5b303037206d6f64203031305d", "kind": "ucoset", "line": 24}
+{"N": "2000000000000000000000000000002", "c": "1", "cls": "ucoset", "expected": "[1 mod 1000000000000000000000000000001]", "file": "ucoset", "hex": "5b31206d6f6420323030303030303030303030303030303030303030303030303030303030325d", "kind": "ucoset", "line": 25}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b32206d6f6420345d", "kind": "ucoset", "line": 27}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b30206d6f6420365d", "kind": "ucoset", "line": 28}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b33206d6f6420365d", "kind": "ucoset", "line": 29}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b32206d6f6420365d", "kind": "ucoset", "line": 30}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b35206d6f6420305d", "kind": "ucoset", "line": 31}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b305d", "kind": "ucoset", "line": 32}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b325d", "kind": "ucoset", "line": 33}
+{"cls": "ucoset", "expected": "!DOMAIN", "file": "ucoset", "hex": "5b2d325d", "kind": "ucoset", "line": 34}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "ucoset", "hex": "5b35206d6f64202d365d", "kind": "ucoset", "line": 35}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "ucoset", "hex": "5b35206d6f6420362f315d", "kind": "ucoset", "line": 36}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "ucoset", "hex": "5b312f32206d6f6420335d", "kind": "ucoset", "line": 37}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "ucoset", "hex": "5b35206d6f642036", "kind": "ucoset", "line": 38}
+{"cls": "fball", "expected": "!PARSE", "file": "ucoset", "hex": "35206d6f642036", "kind": "ucoset", "line": 39}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "ucoset", "hex": "5b5d", "kind": "ucoset", "line": 40}
+{"cls": "lball", "expected": "!PARSE", "file": "ucoset", "hex": "5b703d353a20335d", "kind": "ucoset", "line": 41}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "ucoset", "hex": "5b31206d6f6420315d00", "kind": "ucoset", "line": 42}
+{"N": "36", "c": "5", "cls": "idele", "expected": "(2.5 +/- 1e-9 ; 3/2 * [5 mod 36])", "file": "idele", "gap": 0, "hex": "28322e35202b2f2d2031652d39203b20332f32202a205b35206d6f642033365d29", "kind": "idele", "line": 2, "parts": [{"md": "25", "me": -1, "rd": "1", "re": -9}], "r": "3/2"}
+{"N": "0", "c": "1", "cls": "idele", "expected": "(1 ; 1 * [1])", "file": "idele", "gap": 0, "hex": "2831203b2031202a205b315d29", "kind": "idele", "line": 3, "parts": [{"md": "1", "me": 0, "rd": "0", "re": 0}], "r": "1/1"}
+{"N": "0", "c": "-1", "cls": "idele", "expected": "(-1 ; 1 * [-1])", "file": "idele", "gap": 0, "hex": "282d31203b2031202a205b2d315d29", "kind": "idele", "line": 4, "parts": [{"md": "-1", "me": 0, "rd": "0", "re": 0}], "r": "1/1"}
+{"N": "1", "c": "1", "cls": "idele", "expected": "(-0.5 +/- 0.25 ; 1/7 * [1 mod 1])", "file": "idele", "gap": 1, "hex": "282d302e35202b2f2d20302e3235203b20312f37202a205b31206d6f6420315d29", "kind": "idele", "line": 5, "parts": [{"md": "-5", "me": -1, "rd": "25", "re": -2}], "r": "1/7"}
+{"N": "0", "c": "-1", "cls": "idele", "expected": "(-1 +/- 0.99 ; 1 * [-1])", "file": "idele", "gap": 7, "hex": "282d31202b2f2d20302e3939203b2031202a205b2d315d29", "kind": "idele", "line": 6, "parts": [{"md": "-1", "me": 0, "rd": "99", "re": -2}], "r": "1/1"}
+{"N": "0", "c": "1", "cls": "idele", "expected": "(1 +/- 0.999999 ; 1 * [1])", "file": "idele", "gap": 20, "hex": "2831202b2f2d20302e393939393939203b2031202a205b315d29", "kind": "idele", "line": 8, "parts": [{"md": "1", "me": 0, "rd": "999999", "re": -6}], "r": "1/1"}
+{"N": "0", "c": "1", "cls": "idele", "expected": "(1.04 +/- 1 ; 1 * [1])", "file": "idele", "gap": 6, "hex": "28312e3034202b2f2d2031203b2031202a205b315d29", "kind": "idele", "line": 9, "parts": [{"md": "104", "me": -2, "rd": "1", "re": 0}], "r": "1/1"}
+{"N": "6", "c": "5", "cls": "idele", "expected": "(2.5 +/- 1e-9 ; 3/2 * [2 mod 3])", "file": "idele", "gap": 0, "hex": "28322e35202b2f2d2031652d39203b20332f32202a205b35206d6f6420365d29", "kind": "idele", "line": 11, "parts": [{"md": "25", "me": -1, "rd": "1", "re": -9}], "r": "3/2"}
+{"N": "36", "c": "5", "cls": "idele", "expected": "(2.5 +/- 1e-9 ; 3/2 * [5 mod 36])", "file": "idele", "gap": 0, "hex": "28322e35202b2f2d2031652d39203b20362f34202a205b3431206d6f642033365d29", "kind": "idele", "line": 12, "parts": [{"md": "25", "me": -1, "rd": "1", "re": -9}], "r": "3/2"}
+{"N": "0", "c": "1", "cls": "idele", "expected": "(1 ; 1 * [1])", "file": "idele", "gap": 0, "hex": "2831203b2031202a205b31206d6f6420305d29", "kind": "idele", "line": 13, "parts": [{"md": "1", "me": 0, "rd": "0", "re": 0}], "r": "1/1"}
+{"N": "0", "c": "1", "cls": "idele", "expected": "(1 ; 1 * [1])", "file": "idele", "gap": 0, "hex": "28313b312a5b315d29", "kind": "idele", "line": 14, "parts": [{"md": "1", "me": 0, "rd": "0", "re": 0}], "r": "1/1"}
+{"N": "0", "c": "1", "cls": "idele", "expected": "(2 +/- 0.13 ; 1 * [1])", "file": "idele", "gap": 1, "hex": "2832202b2f2d20302e313233203b2031202a205b315d29", "kind": "idele", "line": 15, "parts": [{"md": "2", "me": 0, "rd": "123", "re": -3}], "r": "1/1"}
+{"cls": "idele", "expected": "!DOMAIN", "file": "idele", "hex": "2830203b2031202a205b315d29", "kind": "idele", "line": 17}
+{"cls": "idele", "expected": "!DOMAIN", "file": "idele", "hex": "2831202b2f2d2031203b2031202a205b315d29", "kind": "idele", "line": 18}
+{"cls": "idele", "expected": "!DOMAIN", "file": "idele", "hex": "2831202b2f2d2032203b2031202a205b315d29", "kind": "idele", "line": 19}
+{"cls": "idele", "expected": "!DOMAIN", "file": "idele", "hex": "2831203b2030202a205b315d29", "kind": "idele", "line": 20}
+{"cls": "idele", "expected": "!DOMAIN", "file": "idele", "hex": "2831203b20312f30202a205b315d29", "kind": "idele", "line": 21}
+{"cls": "idele", "expected": "!DOMAIN", "file": "idele", "hex": "2831203b2031202a205b32206d6f6420345d29", "kind": "idele", "line": 22}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idele", "hex": "2831203b202d31202a205b315d29", "kind": "idele", "line": 23}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idele", "hex": "2831203b205b315d29", "kind": "idele", "line": 24}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idele", "hex": "2831203b2031205b315d29", "kind": "idele", "line": 25}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idele", "hex": "282a203b2031202a205b315d29", "kind": "idele", "line": 26}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idele", "hex": "2831203b2031202a205b315d", "kind": "idele", "line": 27}
+{"cls": "idele", "expected": "!LIMIT", "file": "idele", "hex": "283165313030303031203b2031202a205b315d29", "kind": "idele", "line": 28}
+{"N": "36", "c": "5", "cls": "idclass", "expected": "<1.25 +/- 1e-30 ; [5 mod 36]>", "file": "idclass", "gap": 0, "hex": "3c312e3235202b2f2d2031652d3330203b205b35206d6f642033365d3e", "kind": "idclass", "line": 2, "parts": [{"md": "125", "me": -2, "rd": "1", "re": -30}]}
+{"N": "0", "c": "1", "cls": "idclass", "expected": "<1 ; [1]>", "file": "idclass", "gap": 0, "hex": "3c31203b205b315d3e", "kind": "idclass", "line": 3, "parts": [{"md": "1", "me": 0, "rd": "0", "re": 0}]}
+{"N": "1", "c": "1", "cls": "idclass", "expected": "<1 ; [1 mod 1]>", "file": "idclass", "gap": 0, "hex": "3c31203b205b31206d6f6420315d3e", "kind": "idclass", "line": 4, "parts": [{"md": "1", "me": 0, "rd": "0", "re": 0}]}
+{"N": "0", "c": "1", "cls": "idclass", "expected": "<1 +/- 0.999999 ; [1]>", "file": "idclass", "gap": 20, "hex": "3c31202b2f2d20302e393939393939203b205b315d3e", "kind": "idclass", "line": 5, "parts": [{"md": "1", "me": 0, "rd": "999999", "re": -6}]}
+{"N": "6", "c": "5", "cls": "idclass", "expected": "<0.5 +/- 0.25 ; [2 mod 3]>", "file": "idclass", "gap": 1, "hex": "3c302e35202b2f2d20302e3235203b205b35206d6f6420365d3e", "kind": "idclass", "line": 7, "parts": [{"md": "5", "me": -1, "rd": "25", "re": -2}]}
+{"N": "0", "c": "1", "cls": "idclass", "expected": "<2 +/- 0.13 ; [1]>", "file": "idclass", "gap": 1, "hex": "3c32202b2f2d20302e313233203b205b315d3e", "kind": "idclass", "line": 8, "parts": [{"md": "2", "me": 0, "rd": "123", "re": -3}]}
+{"N": "0", "c": "1", "cls": "idclass", "expected": "<1 ; [1]>", "file": "idclass", "gap": 0, "hex": "3c2031203b205b2031206d6f642030205d203e", "kind": "idclass", "line": 9, "parts": [{"md": "1", "me": 0, "rd": "0", "re": 0}]}
+{"cls": "idclass", "expected": "!DOMAIN", "file": "idclass", "hex": "3c30203b205b315d3e", "kind": "idclass", "line": 11}
+{"cls": "idclass", "expected": "!DOMAIN", "file": "idclass", "hex": "3c2d31203b205b315d3e", "kind": "idclass", "line": 12}
+{"cls": "idclass", "expected": "!DOMAIN", "file": "idclass", "hex": "3c31202b2f2d2031203b205b315d3e", "kind": "idclass", "line": 13}
+{"cls": "idclass", "expected": "!DOMAIN", "file": "idclass", "hex": "3c31203b205b32206d6f6420345d3e", "kind": "idclass", "line": 14}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idclass", "hex": "3c31203b2031202a205b315d3e", "kind": "idclass", "line": 15}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idclass", "hex": "3c31203b205b35206d6f6420365d", "kind": "idclass", "line": 16}
+{"cls": "!PARSE", "expected": "!PARSE", "file": "idclass", "hex": "3c31203b205b315d3e3e", "kind": "idclass", "line": 17}
+{"cls": "idclass", "expected": "!LIMIT", "file": "idclass", "hex": "3c3165313030303031203b205b315d3e", "kind": "idclass", "line": 18}

@@ -71,6 +71,15 @@ that the one chosen is unambiguous.
 | `recover` | three: a finite ball and two bounds | the rational of a residue class in a box (SPEC 9.2) |
 | `project` | two: a value and a list of places | the partial ball of a rational, finite ball or adele over the places (SPEC 9.3.1) |
 | `exp_at`, `log_at` | two: a value and one place | `exp`, `log` at the place, a prime or `real` (SPEC 9.3.1, 9.3.2) |
+| `inv` | one | `1/x` of a unit coset, an idele, an idele class or a rational (ideles and classes below) |
+| `pow`, `powtight` | two: a unit coset, idele or class, and an integer | the power `x^k`, `pow` by the default enclosure, `powtight` by the smallest coset |
+| `norm` | one: an idele or a class | the norm, a positive real ball |
+| `class` | one: an idele | the idele class of the idele |
+| `idele` | one: a rational | the idele of the rational |
+| `hull`, `hullsimple` | one: an idele | the adele that contains the idele: the smallest ball, the simple ball |
+| `unitof` | one: an adele | the idele of an adele that certifies one |
+| `valuation` | two: an idele and a prime | `v_p` of the content |
+| `abs` | two: an idele and a place | `abs(x_p)_p` at a prime, `abs(x_inf)` at `real` |
 | `prec <bits>` | a setting | the precision of the real coordinate, 1 to `ADF_PRINT_EXP_MAX`, default 64 |
 | `digits <n>` | a setting | the digits of the real-ball printer, 1 to 1000000, default 20 (`ADF_DIGITS_DEFAULT`) |
 
@@ -104,8 +113,9 @@ never fails.  `load` reads a dump form and writes the value in the value form of
 conventions 9.4.  The driver has no context, so the two commands cover the values of the
 global backend only, which is where every value of the value form is (conventions 9.8,
 A11): a dump with a context occurrence is `error: UNSUPPORTED`, and so is a body of
-section 10 that the driver has no type for (`scaled`, `ucoset`, `idele`, `idclass`,
-`lball`, `sball`, `qclass`, `ffun`, `rfun`, `char`, `modctx`).  A fourth token that is no
+section 10 that the driver has no dump for (`scaled`, `ucoset`, `idele`, `idclass`,
+`lball`, `sball`, `qclass`, `ffun`, `rfun`, `char`, `modctx`; `dump` of a unit coset, an idele or a class is
+`error: UNSUPPORTED` although the driver reads and prints them: their dump form is not implemented yet).  A fourth token that is no
 body of section 10 at all is `error: PARSE`, and a text that does not begin `adf1 Q ` is
 read by the loader of `adf_rat`, whose status is then the status of the text: the version,
 the field and the syntax of section 10.1 do not depend on the body.  The dump form has no
@@ -231,10 +241,10 @@ the label: `5: 349831 + O(5^8)` for `exp_at 5 with 5` at `prec 8`; `real: 1` for
 
 ### Types of the operands, and the pairs that are refused
 
-The driver reads four of the thirteen kinds of the value form: `adf_rat`, `adf_fball`,
-`adf_adele` and `adf_cadele`.  A kind with no typed parser in this build (`adf_ucoset`,
-`adf_idele`, `adf_idclass`, `adf_lball`, `adf_sball`, `adf_qclass`, `adf_ffun`,
-`adf_rfun`, `adf_char`; work packages 1.8 and later) gives `error: UNSUPPORTED`.  `type`
+The driver reads seven of the thirteen kinds of the value form: `adf_rat`, `adf_fball`,
+`adf_adele`, `adf_cadele`, and, since lane t-slice1 (milestone 2), `adf_ucoset`, `adf_idele` and
+`adf_idclass`.  A kind with no typed parser in this build (`adf_lball`, `adf_sball`, `adf_qclass`,
+`adf_ffun`, `adf_rfun`, `adf_char`; work packages 1.8 and later) gives `error: UNSUPPORTED`.  `type`
 still names those kinds, since the classifier knows all thirteen.
 
 ### The order of the checks
@@ -253,7 +263,7 @@ One command is decided in this order, and the driver stops at the first step tha
 3. **The kind of every operand, in order.**  A kind of conventions 9.7 with no typed parser
    in this build is `error: UNSUPPORTED`, and it is decided before any value of the line is
    read, because a request on a type that version 1 does not implement is not a proved
-   domain error (conventions 3.1).  So `add [5 mod 6] with 1/0` is `error: UNSUPPORTED` and
+   domain error (conventions 3.1).  So `add [p=5: 3] with 1/0` is `error: UNSUPPORTED` and
    not `error: DOMAIN` for the zero denominator, and the two end points of `reconstruct`
    are read by the same rule as every other operand.
 4. **The value of every operand, in order**, by the typed parser of its kind: the limits of
@@ -291,6 +301,39 @@ rational operand is accepted; every other type is `error: DOMAIN`, because the
 specification defines no set predicate on an adele or a complex adele and the driver does
 not invent one.  `cap` needs a finite ball as its first operand; an adele or a complex
 adele is `error: UNSUPPORTED` and a rational is `error: DOMAIN`.
+
+### Ideles and classes
+
+Lane t-slice1 (milestone 2) gives the driver the unit coset `[5 mod 36]`, the idele `(2.5 +/- 0.125 ; 3/2 * [5 mod 36])`
+and the idele class `<1.25 +/- 0.25 ; [5 mod 36]>` (conventions 9.2, 9.3, 9.4; `adf_text_classify` classifies them as
+`ucoset`, `idele`, `idclass`).  The real part is read at the setting `prec` and printed by the constrained printing
+of conventions 9.5 with the setting `digits` (an idele's real part excludes 0, a class's is positive, and so is the
+printed text's).  The tests are `tests/driver/i-01-show-type.cmd` to `i-06-status.cmd`; their expected lines were
+written by hand and are re-derived with exact rationals by `lanes/t-slice1/check_driver_cases.py`.
+
+| Command | Operands | Result |
+|---|---|---|
+| `mul X with Y` | ucoset * ucoset, idele * idele, class * class; idele * rational, rational * idele | the product (SPEC 5); with a rational `adf_idele_mul_rat`, and `0` is `NOT_UNIT` |
+| `div X with Y` | the same pairs but not rational / idele; an adele by an idele | `X * Y^-1`: the inverse, then the product (two roundings); with a rational the exact inverse; adele / idele by `adf_adele_div_idele` (conventions 5.7) |
+| `neg X` | a unit coset, an idele | the unit coset times `[-1]`; every coordinate of an idele negated, exactly, `(-X, r, [-1] u)`; a class has no negation (the class of `-x` is the class of `x`): `DOMAIN` |
+| `inv X` | a unit coset, an idele, a class, a rational | `adf_ucoset_inv`, `adf_idele_inv`, `adf_idclass_inv`; `0` is `NOT_UNIT` |
+| `pow X with K`, `powtight X with K` | a unit coset, an idele or a class; `K` an integer that fits a word | `adelefeld/idpow.h`; `K` not an integer is `DOMAIN`, beyond a word `LIMIT` |
+| `norm X` | an idele or a class | the real ball `abs(x_inf) / r`, resp. `t` (`adf_idele_norm`, `adf_idclass_norm`), printed as a real part |
+| `class X` | an idele | `adf_idclass_set_idele` |
+| `idele Q` | a rational | `adf_idele_set_rat` at `prec`; `0` is `NOT_UNIT` |
+| `hull X`, `hullsimple X` | an idele | `adf_adele_set_idele`, `adf_adele_set_idele_simple` |
+| `unitof A` | an adele | `adf_idele_set_adele`: `NOT_UNIT`, `UNIT_NOT_CERTIFIED` |
+| `valuation X with P`, `abs X with PLACE` | an idele; a prime, or `real` for `abs` | `v_p(r)`; `abs(x_p)_p` as a rational, `abs(x_inf)` as a real ball; `real` for `valuation` and a non-prime are `DOMAIN`; a second operand of more than one token is `PARSE` |
+| `equal`, `contains`, `overlaps` | two unit cosets | `adf_ucoset_equal_set`, `adf_ucoset_contains`, `adf_ucoset_overlaps`; ideles and classes have no set predicate (`docs/api-2.md` 3.5, i3-1): `DOMAIN` |
+| `add`, `sub`, `cap`, `compare`, `reconstruct` | with an operand of these kinds | `DOMAIN` |
+| `dump`, `load` | | `UNSUPPORTED`: the dump form of the three kinds is not implemented |
+
+Every other pair is `error: DOMAIN`.  The statuses of the library are the statuses of the command:
+`NOT_DETERMINED` when the real kernel cannot certify the sign of a result (or of a text read at the setting `prec`;
+`prec 30` and `show (1 +/- 0.99999999999 ; 1 * [1])` is one), `NOT_UNIT`, `UNIT_NOT_CERTIFIED`.  The order of the checks is
+the one below: the kinds of these operands are supported, so step 3 does not refuse them, and the rules above are step 5.
+For `valuation` and `abs` the second operand is a place read as in `project` (`real` or a prime in decimal without a
+leading zero): its syntax is decided in step 2 (`PARSE`), its value after the first operand's (`DOMAIN`).
 
 ## Output and exit status
 

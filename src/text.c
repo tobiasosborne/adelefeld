@@ -12,6 +12,12 @@
      (419-544), _prep (547-556), _check_limits (577-599), _rat (618-628), _dec (631-638), _fin
      (651-656), print_real_detail (187-216), fmt_decimal (146-167), classify (907-922).
 
+   Lane t-slice1 (milestone 2) appends the reader and the printer of the unit coset, the idele and the
+   idele class at the end of this file (section "adf_ucoset, adf_idele, adf_idclass"): the machinery of
+   this file (cursor, literals, exact decimals, the enclosing ball, the printer of 9.5) is used by them, so
+   it stays in this translation unit, and src/text_idele.c reaches it through the two hidden functions
+   adf_tx_read_unit_form and adf_tx_write_unit_form (hidden visibility: tests/test_exports.sh).
+
    This file reads untrusted input. The rules of the lane (lanes/m1-text/brief.md):
    - The parser works over (s, len); it never needs a NUL terminator and never calls strlen,
      strtol, sscanf or atoi on the input, and never gives raw input to a FLINT string function.
@@ -36,6 +42,7 @@
 
 #include "adelefeld/text.h"
 #include "invariants.h"
+#include "idele_internal.h"
 
 /* ------------------------------------------------------------------------------------------------
    Stages 1 and 2 (conventions 8.5 items 1 and 2, lines 1079-1080; proto/text_grammar.py _prep,
@@ -1553,4 +1560,511 @@ adf_text_classify(adf_text_kind * kind, const char * s, size_t len, const adf_te
         }
     }
     return ADF_PARSE;
+}
+
+/* ------------------------------------------------------------------------------------------------
+   adf_ucoset, adf_idele, adf_idclass (lane t-slice1, milestone 2). Sources, read before the code:
+   docs/conventions.md 5.6 (predicate; residue range 1..N; modulus as supplied, CV-17; normal form), 5.7
+   (predicates of the idele and the class), 9.2 (ucoset_v, idele_v, idclass_v), 9.3 (constraints and
+   canonicalisation on input), 9.4 (templates), 9.5 (reading; "Constrained printing"), 8.5 (order of
+   checks); proto/text_grammar.py: Parser.ucoset (351-359), _syntax idele and idclass (449-464), _ucoset
+   (668-680), ucoset_normal (683-692), _fmt_ucoset (736-740), _check_real (772-775), _build_and_print idele
+   and idclass (822-836), _ceil_k (178-181), print_real_detail (189-218), _satisfies (221-228), print_real
+   (231-250); docs/api-2.md 1.3 Statement E (kernel B) and src/idele_internal.h
+   (adf_idele_ball_from_ends); refs/src/flint-3.0.1/arf.rst:676 (arf_fmpz_div_fmpz: correct rounding to prec
+   bits), fmpz.rst:1142 (fmpz_remove). The two functions at the end of the section are the interface to
+   src/text_idele.c and are hidden. */
+
+#ifndef ADF_TX_HIDDEN
+#if defined(__GNUC__) || defined(__clang__)
+#define ADF_TX_HIDDEN __attribute__((visibility("hidden")))
+#else
+#define ADF_TX_HIDDEN
+#endif
+#endif
+
+#define ADF_TX_FORM_UCOSET 0
+#define ADF_TX_FORM_IDELE 1
+#define ADF_TX_FORM_IDCLASS 2
+
+/* ucoset = "[" int ["mod" uint] "]" with the literals kept (proto Parser.ucoset, 351-359). */
+typedef struct
+{
+    tx_num c;
+    int has_mod;
+    tx_num N;
+} tx_uc;
+
+static int
+tx_ucoset_scan(tx_cur * c, tx_uc * u)
+{
+    tx_uc t;
+
+    memset(&t, 0, sizeof(t));
+    if (!tx_expect(c, '[') || !tx_scan_rat(c, 1, 0, &t.c))
+        return 0;
+    if (TX_KW(c, "mod"))
+    {
+        if (!tx_scan_rat(c, 0, 0, &t.N))
+            return 0;
+        t.has_mod = 1;
+    }
+    if (!tx_expect(c, ']'))
+        return 0;
+    *u = t;
+    return 1;
+}
+
+/* Stage 6 for a unit coset (conventions 9.3; proto _ucoset, 668-680). c and N are set to the unit as stored:
+   N as written (0 when "mod" is absent or 0), c a residue in 1..N, or +-1 for N = 0 (5.6, CV-15 to CV-17).
+   ADF_DOMAIN, c and N unspecified, if N = 0 and c is not +-1, or N >= 1 and gcd(c, N) != 1. */
+static int
+tx_unit_build(fmpz_t c, fmpz_t N, const char * s, const tx_uc * u)
+{
+    fmpz_t g;
+    int ok;
+
+    tx_fmpz_digits(c, s, u->c.ib, u->c.ie);
+    if (u->c.neg)
+        fmpz_neg(c, c);
+    if (u->has_mod)
+        tx_fmpz_digits(N, s, u->N.ib, u->N.ie);
+    else
+        fmpz_zero(N);
+    if (fmpz_is_zero(N))
+        return fmpz_is_pm1(c) ? ADF_OK : ADF_DOMAIN;
+    fmpz_init(g);
+    fmpz_gcd(g, c, N);
+    ok = fmpz_is_one(g);
+    fmpz_clear(g);
+    if (!ok)
+        return ADF_DOMAIN;
+    fmpz_fdiv_r(c, c, N);
+    if (fmpz_is_zero(c))
+        fmpz_set(c, N);
+    return ADF_OK;
+}
+
+/* The exact rational value of an accepted decimal (tx_dec_value), reduced. */
+static void
+tx_dec_fmpq(fmpq_t q, const char * s, const tx_num * n)
+{
+    fmpz_t num, den;
+
+    fmpz_init(num);
+    fmpz_init(den);
+    tx_dec_value(num, den, s, n);
+    fmpq_set_fmpz_frac(q, num, den);
+    fmpz_clear(num);
+    fmpz_clear(den);
+}
+
+/* lo = m - r and hi = m + r, the exact interval of an accepted real (conventions 9.5, "Reading"). */
+static void
+tx_real_interval(fmpq_t lo, fmpq_t hi, const char * s, const tx_real * r)
+{
+    fmpq_t m, d;
+
+    fmpq_init(m);
+    fmpq_init(d);
+    tx_dec_fmpq(m, s, &r->m);
+    if (r->has_r)
+        tx_dec_fmpq(d, s, &r->r);
+    fmpq_sub(lo, m, d);
+    fmpq_add(hi, m, d);
+    fmpq_clear(m);
+    fmpq_clear(d);
+}
+
+/* z = the ball of the reader for a real whose exact interval [lo, hi] satisfies the condition (conventions
+   9.3: excludes 0 for an idele, lies in (0, infinity) for a class), or ADF_NOT_DETERMINED (stage 7), z
+   untouched. First the enclosing ball of 9.5 (exact for a dyadic input that fits: the tightness of 9.5);
+   if it does not satisfy the condition, kernel B of api-2.md Statement E on the end points of the absolute
+   interval rounded outwards at p = max(prec, 2) bits: lo' = RD_p(a) and hi' = RU_p(b) are dyadic with at
+   most p bits, 0 < lo' <= hi', so adf_idele_ball_from_ends applies; it returns ADF_NOT_DETERMINED exactly
+   when e(hi') - e(lo') > p (B1), and otherwise a ball that contains sign * [lo', hi'], hence [lo, hi], and
+   excludes 0. */
+static int
+tx_real_ball_signed(arb_t z, const char * s, const tx_real * r, const fmpq_t lo, const fmpq_t hi, int positive,
+                    slong prec)
+{
+    arb_t t;
+    fmpq_t a, b;
+    arf_t l, h;
+    slong p = prec < 2 ? 2 : prec;
+    int sign, st;
+
+    arb_init(t);
+    tx_arb_from_real(t, s, r, prec);
+    if (positive ? arb_is_positive(t) : arb_is_nonzero(t))
+    {
+        arb_swap(z, t);
+        arb_clear(t);
+        return ADF_OK;
+    }
+    fmpq_init(a);
+    fmpq_init(b);
+    arf_init(l);
+    arf_init(h);
+    if (fmpq_sgn(lo) > 0)
+    {
+        sign = 1;
+        fmpq_set(a, lo);
+        fmpq_set(b, hi);
+    }
+    else
+    {
+        sign = -1;              /* hi < 0: the absolute interval is [-hi, -lo] */
+        fmpq_neg(a, hi);
+        fmpq_neg(b, lo);
+    }
+    (void) arf_fmpz_div_fmpz(l, fmpq_numref(a), fmpq_denref(a), p, ARF_RND_FLOOR);
+    (void) arf_fmpz_div_fmpz(h, fmpq_numref(b), fmpq_denref(b), p, ARF_RND_CEIL);
+    st = adf_idele_ball_from_ends(t, l, h, sign, p);
+    if (st == ADF_OK)
+        arb_swap(z, t);
+    fmpq_clear(a);
+    fmpq_clear(b);
+    arf_clear(l);
+    arf_clear(h);
+    arb_clear(t);
+    return st;
+}
+
+/* The stages 1 to 7 of conventions 8.5 for the three forms. On ADF_OK: c, N the unit as stored (tx_unit_build);
+   for the idele and the class also inf, for the idele also r (the reduced content, > 0). Nothing is written on
+   another status. A prec above ADF_IDELE_PREC_MAX is ADF_LIMIT before everything (the rule of adelefeld/idele.h;
+   the ucoset form has no prec). */
+ADF_TX_HIDDEN int adf_tx_read_unit_form(int form, arb_t inf, fmpq_t r, fmpz_t c, fmpz_t N, const char * s,
+                                        size_t len, slong prec, const adf_text_limits_t * lim);
+
+int
+adf_tx_read_unit_form(int form, arb_t inf, fmpq_t r, fmpz_t c, fmpz_t N, const char * s, size_t len, slong prec,
+                      const adf_text_limits_t * lim)
+{
+    adf_text_limits_t store;
+    tx_cur cur;
+    tx_real real;
+    tx_num content;
+    tx_uc u;
+    fmpz_t cc, NN;
+    fmpq_t rr, lo, hi;
+    arb_t t;
+    int st, syntax;
+
+    if (form != ADF_TX_FORM_UCOSET && prec > ADF_IDELE_PREC_MAX)
+        return ADF_LIMIT;
+    lim = tx_limits(lim, &store);
+    st = tx_prep(s, len, lim);
+    if (st != ADF_OK)
+        return st;
+    cur.s = s;
+    cur.len = len;
+    cur.i = 0;
+    memset(&real, 0, sizeof(real));
+    memset(&content, 0, sizeof(content));
+    memset(&u, 0, sizeof(u));
+    if (form == ADF_TX_FORM_UCOSET)
+        syntax = tx_ucoset_scan(&cur, &u);
+    else if (form == ADF_TX_FORM_IDELE)      /* idele_v = "(" real ";" urat "*" ucoset ")" */
+        syntax = tx_expect(&cur, '(') && tx_real_syntax(&cur, &real) && tx_expect(&cur, ';')
+                 && tx_scan_rat(&cur, 0, 1, &content) && tx_expect(&cur, '*') && tx_ucoset_scan(&cur, &u)
+                 && tx_expect(&cur, ')');
+    else                                     /* idclass_v = "<" real ";" ucoset ">" */
+        syntax = tx_expect(&cur, '<') && tx_real_syntax(&cur, &real) && tx_expect(&cur, ';')
+                 && tx_ucoset_scan(&cur, &u) && tx_expect(&cur, '>');
+    if (!syntax || !tx_at_end(&cur))
+        return ADF_PARSE;
+    /* stage 4: decimal exponents (the literals of a unit coset and of the content have no limit, 8.4) */
+    if (form != ADF_TX_FORM_UCOSET && tx_real_over(s, &real, lim))
+        return ADF_LIMIT;
+    /* stage 6: a zero denominator of the content, then the unit, the content and the real part (all DOMAIN) */
+    if (form == ADF_TX_FORM_IDELE && tx_den_zero(s, &content))
+        return ADF_DOMAIN;
+    fmpz_init(cc);
+    fmpz_init(NN);
+    fmpq_init(rr);
+    fmpq_init(lo);
+    fmpq_init(hi);
+    arb_init(t);
+    st = tx_unit_build(cc, NN, s, &u);
+    if (st == ADF_OK && form == ADF_TX_FORM_IDELE)
+    {
+        tx_fmpq_rat(rr, s, &content);
+        if (fmpq_sgn(rr) <= 0)
+            st = ADF_DOMAIN;
+    }
+    if (st == ADF_OK && form != ADF_TX_FORM_UCOSET)
+    {
+        tx_real_interval(lo, hi, s, &real);
+        if (form == ADF_TX_FORM_IDELE ? !(fmpq_sgn(lo) > 0 || fmpq_sgn(hi) < 0) : !(fmpq_sgn(lo) > 0))
+            st = ADF_DOMAIN;
+    }
+    /* stage 7: the ball at the working precision */
+    if (st == ADF_OK && form != ADF_TX_FORM_UCOSET)
+        st = tx_real_ball_signed(t, s, &real, lo, hi, form == ADF_TX_FORM_IDCLASS, prec);
+    if (st == ADF_OK)
+    {
+        fmpz_swap(c, cc);
+        fmpz_swap(N, NN);
+        if (form != ADF_TX_FORM_UCOSET)
+            arb_swap(inf, t);
+        if (form == ADF_TX_FORM_IDELE)
+            fmpq_swap(r, rr);
+    }
+    fmpz_clear(cc);
+    fmpz_clear(NN);
+    fmpq_clear(rr);
+    fmpq_clear(lo);
+    fmpq_clear(hi);
+    arb_clear(t);
+    return st;
+}
+
+/* ---- the constrained printer of conventions 9.5 ("Constrained printing"; proto print_real_detail with k,
+   189-218, _satisfies 221-228, print_real 231-250). All arithmetic is exact. ---- */
+
+/* R = ceil_k(E), E > 0: E rounded up to k significant digits, k >= 2 (proto _ceil_k, 178-181); returns the unit
+   exponent X(E) - k + 1, of which R is a multiple. tx_ceil2 is the case k = 2. */
+static slong
+tx_ceil_k(fmpq_t R, const fmpq_t E, slong k)
+{
+    slong unit = tx_floor_log10(E) - k + 1;
+    fmpq_t u;
+    fmpz_t f;
+
+    fmpq_init(u);
+    fmpz_init(f);
+    tx_pow10_fmpq(u, unit);
+    fmpq_div(R, E, u);
+    fmpz_cdiv_q(f, fmpq_numref(R), fmpq_denref(R));
+    fmpq_mul_fmpz(R, u, f);
+    fmpq_clear(u);
+    fmpz_clear(f);
+    return unit;
+}
+
+/* An exponent q <= 0 such that the decimal fraction y (a rational whose denominator has no prime factor but 2 and
+   5) is a multiple of 10^q: q = -max(v_2(d), v_5(d)) for y = n/d in lowest terms (fmpz_remove, fmpz.rst:1142). */
+static slong
+tx_dec_multiple_exp(const fmpq_t y)
+{
+    fmpz_t d, five;
+    slong a, b;
+
+    fmpz_init(d);
+    fmpz_init_set_ui(five, 5);
+    a = (slong) fmpz_val2(fmpq_denref(y));
+    b = (slong) fmpz_remove(d, fmpq_denref(y), five);
+    fmpz_clear(d);
+    fmpz_clear(five);
+    return -FLINT_MAX(a, b);
+}
+
+/* One level k of the algorithm of 9.5 (proto print_real_detail(mid, rad, n, k), 189-218) for exact rationals
+   mid and rad >= 0, mid a decimal fraction (a dyadic midpoint, or a printed value) and rad likewise: the text
+   is appended to b, and M, R are the printed midpoint and radius (R = 0 when the text has no radius). The
+   text of level 2 is the text of the unconstrained printer tx_put_real. */
+static void
+tx_real_level(tx_buf * b, fmpq_t M, fmpq_t R, const fmpq_t mid, const fmpq_t rad, slong n, slong k)
+{
+    slong nk = n + k - 2, q, q2, unit;
+    fmpq_t t;
+
+    fmpq_init(t);
+    /* step 1: rad = 0 and mid a decimal of at most n + k - 2 significant digits (0 included) */
+    if (fmpq_is_zero(rad))
+    {
+        size_t kd = 0;
+        slong E, qm = 0;
+
+        if (!fmpq_is_zero(mid))
+        {
+            qm = tx_dec_multiple_exp(mid);
+            flint_free(tx_decimal_digits(mid, qm, &kd, &E));
+        }
+        if ((slong) kd <= nk)
+        {
+            tx_put_fmt(b, mid, qm);
+            fmpq_set(M, mid);
+            fmpq_zero(R);
+            goto done;
+        }
+    }
+    /* step 2: mid = 0 */
+    if (fmpq_is_zero(mid))
+    {
+        tx_puts(b, "0 +/- ");
+        unit = tx_ceil_k(R, rad, k);
+        tx_put_fmt(b, R, unit);
+        fmpq_zero(M);
+        goto done;
+    }
+    /* step 3 */
+    q = tx_floor_log10(mid) - nk + 1;
+    if (!fmpq_is_zero(rad))
+        q = FLINT_MAX(q, tx_floor_log10(rad) - k + 1);
+    /* steps 4 and 5 */
+    for (;;)
+    {
+        tx_round_q(M, mid, q);
+        fmpq_sub(t, M, mid);
+        fmpq_abs(t, t);
+        fmpq_add(t, t, rad);
+        if (fmpq_is_zero(t))            /* proto: if R == 0: return fmt(M); not reached (see tx_put_real) */
+        {
+            fmpq_zero(R);
+            tx_put_fmt(b, M, q);
+            goto done;
+        }
+        unit = tx_ceil_k(R, t, k);
+        if (fmpq_is_zero(M))
+            q2 = tx_floor_log10(R) - k + 1;
+        else
+            q2 = FLINT_MAX(tx_floor_log10(M) - nk + 1, tx_floor_log10(R) - k + 1);
+        if (tx_is_multiple(M, q2))
+            break;
+        q = q2;
+    }
+    /* step 6 */
+    tx_put_fmt(b, M, q);
+    tx_puts(b, " +/- ");
+    tx_put_fmt(b, R, unit);
+done:
+    fmpq_clear(t);
+}
+
+/* The interval [M - R, M + R] satisfies the condition: it excludes 0, or (positive) lies in (0, infinity). */
+static int
+tx_interval_sat(const fmpq_t M, const fmpq_t R, int positive)
+{
+    fmpq_t lo, hi;
+    int ok;
+
+    fmpq_init(lo);
+    fmpq_init(hi);
+    fmpq_sub(lo, M, R);
+    fmpq_add(hi, M, R);
+    ok = positive ? fmpq_sgn(lo) > 0 : (fmpq_sgn(lo) > 0 || fmpq_sgn(hi) < 0);
+    fmpq_clear(lo);
+    fmpq_clear(hi);
+    return ok;
+}
+
+/* The constrained printer (conventions 9.5): the least level k >= 2 at which the printed interval satisfies the
+   condition; then the text is read back exactly and printed again until it does not change (proto print_real
+   with cond, 231-250). The arb satisfies the condition (a precondition of the callers); if it did not, no k
+   would exist and the loop would not end, so the unconstrained text (k = 2) is written instead. */
+static void
+tx_put_real_cond(tx_buf * b, const arb_t x, slong n, int positive)
+{
+    fmpq_t mid, rad, M, R;
+    arf_t r;
+    char * prev = NULL;
+    size_t prevlen = 0;
+    tx_buf lb;
+
+    fmpq_init(mid);
+    fmpq_init(rad);
+    fmpq_init(M);
+    fmpq_init(R);
+    arf_init(r);
+    (void) tx_arf_get_fmpq(mid, arb_midref(x));
+    arf_set_mag(r, arb_radref(x));        /* exact (arf.h:1035-1051) */
+    (void) tx_arf_get_fmpq(rad, r);
+    if (!tx_interval_sat(mid, rad, positive))
+    {
+        tx_buf_init(&lb);
+        tx_real_level(&lb, M, R, mid, rad, n, 2);
+        tx_put(b, lb.p, lb.len);
+        flint_free(lb.p);
+        goto done;
+    }
+    for (;;)
+    {
+        slong k = 2;
+
+        for (;;)
+        {
+            tx_buf_init(&lb);
+            tx_real_level(&lb, M, R, mid, rad, n, k);
+            if (tx_interval_sat(M, R, positive))
+                break;
+            flint_free(lb.p);
+            k++;
+        }
+        if (prev != NULL && prevlen == lb.len && memcmp(prev, lb.p, lb.len) == 0)
+        {
+            tx_put(b, lb.p, lb.len);
+            flint_free(lb.p);
+            break;
+        }
+        flint_free(prev);
+        prev = lb.p;
+        prevlen = lb.len;
+        fmpq_set(mid, M);
+        fmpq_set(rad, R);
+    }
+    flint_free(prev);
+done:
+    fmpq_clear(mid);
+    fmpq_clear(rad);
+    fmpq_clear(M);
+    fmpq_clear(R);
+    arf_clear(r);
+}
+
+/* The unit coset as printed (conventions 9.4): "[c]" for N = 0, else "[c mod N]"; c and N are the normal form. */
+static void
+tx_put_unit(tx_buf * b, const fmpz_t c, const fmpz_t N)
+{
+    tx_put(b, "[", 1);
+    tx_put_fmpz(b, c);
+    if (!fmpz_is_zero(N))
+    {
+        tx_puts(b, " mod ");
+        tx_put_fmpz(b, N);
+    }
+    tx_put(b, "]", 1);
+}
+
+/* The templates of conventions 9.4: "[c mod N]" (c, N the normal form), "(r(x_inf) ; q(r) * U)" and
+   "<r(t) ; U>", the real part by the constrained printer of 9.5 (nonzero for the idele, positive for the
+   class). NULL with *len = 0 when the real ball is beyond the bound of decision M1-D6. */
+ADF_TX_HIDDEN char * adf_tx_write_unit_form(size_t * len, int form, const arb_t inf, const fmpq_t r,
+                                            const fmpz_t c, const fmpz_t N, slong digits);
+
+char *
+adf_tx_write_unit_form(size_t * len, int form, const arb_t inf, const fmpq_t r, const fmpz_t c, const fmpz_t N,
+                       slong digits)
+{
+    tx_buf b;
+
+    if (form != ADF_TX_FORM_UCOSET && !tx_arb_printable(inf))
+    {
+        *len = 0;
+        return NULL;
+    }
+    tx_buf_init(&b);
+    if (form == ADF_TX_FORM_UCOSET)
+        tx_put_unit(&b, c, N);
+    else if (form == ADF_TX_FORM_IDELE)
+    {
+        tx_put(&b, "(", 1);
+        tx_put_real_cond(&b, inf, digits, 0);
+        tx_puts(&b, " ; ");
+        tx_put_q(&b, r);
+        tx_puts(&b, " * ");
+        tx_put_unit(&b, c, N);
+        tx_put(&b, ")", 1);
+    }
+    else
+    {
+        tx_put(&b, "<", 1);
+        tx_put_real_cond(&b, inf, digits, 1);
+        tx_puts(&b, " ; ");
+        tx_put_unit(&b, c, N);
+        tx_put(&b, ">", 1);
+    }
+    return tx_finish(&b, len);
 }

@@ -593,3 +593,107 @@ its checks against Bernoulli denominators (no source on disk for the fact that `
 | i3-10 | Adele to idele when the real ball contains 0 but is not the exact 0 | `UNIT_NOT_CERTIFIED` (the input is not certified, conventions 3.1) | `NOT_DETERMINED` (the row of conventions 3.2 admits it, for a result sign) |
 | i3-11 | Division of an adele by an exact rational | `adf_adele_div_rat` of milestone 1, tested here against P18 | a second function in `idmap.h` |
 | i3-12 | Name of the default hull | `adf_adele_set_idele` is the smallest hull (the brief; d-ideles D2-5); the simple one has the suffix `_simple` | the reverse |
+
+## 4. Slice 4: the value form of unit cosets, ideles and classes, and the driver
+
+Status: written by lane `t-slice1` on 2026-09-30; not reviewed. It closes milestone 2 except for the dump form of
+the three types (not done: see 4.5). Header: `include/adelefeld/text.h` (a new block at its end, and three new
+includes). Code: `src/text.c` (a new section at the end: the reader, the constrained printer, the two hidden
+functions), `src/text_idele.c` (the six public functions). Tests: `tests/test_text_idele.c` (13 tests),
+vectors `tests/ref/vectors/t-slice1/` written by `lanes/t-slice1/gen_vectors.py` from `proto/text_grammar.py`,
+`tests/driver/i-*.cmd` and `.out` (6 scripts, checked by `lanes/t-slice1/check_driver_cases.py`), the fuzz target
+`tests/fuzz/fuzz_text_idele.c`, Julia `tests/julia/text_idele.jl`. The grammar, the constraints and the
+templates are those of `docs/conventions.md` 9.2 to 9.5; nothing in them is changed.
+
+### 4.1 Functions
+
+| Function | Result | Source | Statuses |
+|---|---|---|---|
+| `adf_ucoset_set_str(x, s, len, lim)` | the unit coset of `"[" int ["mod" uint] "]"`: residue in `1..N`, modulus as written (CV-17), `mod 0` dropped | conventions 9.2, 9.3, 5.6; `proto/text_grammar.py` `_ucoset` (668) | `OK`, `PARSE`, `LIMIT` (`len` only), `DOMAIN` |
+| `adf_ucoset_get_str(len, x)` | the normal form `[c mod N]`, `[c]` for `N = 0` | 9.4, 5.6; `_fmt_ucoset` (736) | none (never NULL) |
+| `adf_idele_set_str(x, s, len, prec, lim)` | the idele of `"(" real ";" urat "*" ucoset ")"` | 9.2, 9.3, 9.5; Statement P | `OK`, `PARSE`, `LIMIT`, `DOMAIN`, `NOT_DETERMINED` |
+| `adf_idele_get_str(len, x, digits)` | `(r(x_inf) ; q(r) * U)`, `x_inf` by the constrained printing (excludes 0) | 9.4, 9.5; Statement Q | NULL, `*len = 0` beyond the bound of M1-D6 |
+| `adf_idclass_set_str(x, s, len, prec, lim)` | the class of `"<" real ";" ucoset ">"` | as the idele; the real part lies in `(0, infinity)` | as the idele |
+| `adf_idclass_get_str(len, x, digits)` | `<r(t) ; U>`, `t` by the constrained printing (positive) | 9.4, 9.5; Statement Q | as the idele |
+
+`adf_text_classify` already recognised the three kinds (conventions 9.7); `tests/test_text_idele.c` checks it on
+every golden row and on 2200 generated and mutated texts against the reference.
+
+### 4.2 Statements to add
+
+**Statement P (reading the real part of an idele or a class).** Let `[lo, hi]` be the exact decimal interval of
+the real part (conventions 9.5) and `p = max(prec, 2)`. The conditions are decided on `[lo, hi]` first, in
+exact rational arithmetic (`DOMAIN`, stage 6 of conventions 8.5). Then the ball is built:
+1. the enclosing ball `B0` of conventions 9.5 ("Reading"), exact when `m` is dyadic with an odd mantissa of at
+   most `p` bits and `r` dyadic with an odd mantissa below `2^30` (the tightness of 9.5). If `B0` satisfies the
+   condition (excludes 0, respectively is positive) it is the result.
+2. else kernel B of Statement E, on the end points of the absolute interval `[a, b]` (`a = lo`, `b = hi` if
+   `lo > 0`, else `a = -hi`, `b = -lo`): `l = RD_p(a)`, `h = RU_p(b)`, both dyadic with at most `p` bits and
+   `0 < l <= h`; `adf_idele_ball_from_ends` returns a ball that contains `sign * [l, h]`, so `[lo, hi]`, and
+   excludes 0, or `NOT_DETERMINED` when `e(h) - e(l) > p` (B1).
+Consequences (proved from B1, `e(RD_p(a)) = e(a)` and `e(RU_p(b)) <= e(b) + 1`): the status is `OK` whenever
+`e(b) - e(a) <= p - 1`; it can be `NOT_DETERMINED` only when `e(b) - e(a) >= p`; and for every text a `prec`
+large enough gives `OK` (the sentence of conventions 9.3, "a higher prec will succeed", holds; it would be false
+for step 1 alone, because the radius of an `arb` has 30 bits whatever `prec` is: `1 +/- 0.99999999999` is
+`[1e-11, 2 - 1e-11]` and the enclosing ball `1 +/- 1` contains 0 at every `prec`). The oracle of
+`tests/test_text_idele.c` is exactly this gap rule (the vectors carry `e(b) - e(a)`).
+
+**Statement Q (constrained printing, as implemented).** `tx_put_real_cond` of `src/text.c` is the algorithm of
+conventions 9.5 ("Constrained printing"): one level `k` is `proto/text_grammar.py` `print_real_detail(mid, rad, n,
+k)` with exact rationals (`tx_real_level`; `tx_ceil_k` is `_ceil_k`); the least `k >= 2` for which the printed
+interval `[M - R, M + R]` satisfies the condition is taken; the text is then read back exactly (`mid = M`,
+`rad = R`) and printed again until the text does not change (`print_real`, 231 to 250). The text equals the text
+of the reference for the exact interval of the `arb`: `tests/test_text_idele.c` compares 1500 dyadic balls
+(`tests/ref/vectors/t-slice1/print_constrained.jsonl`) with it, the real part of the printed idele or class
+character by character. The value must satisfy the predicate of conventions 5.7; if the ball did not (a violated
+precondition), the loop would not end, and the printer writes the unconstrained text (`k = 2`) instead.
+Cost: `k` grows with the number of leading digits that the radius and the midpoint share (about the number of
+decimal digits of `|mid| / (|mid| - rad)`), and a level costs the size of the numbers: the ball `2^b + 1 +/- 2^b`
+prints in 0.10 s for `b = 4000`, 2.1 s for `b = 16000`, 24 s for `b = 40000`; the bound of decision M1-D6 admits
+`b` up to 10^5, about seven minutes. An avoidable cost: a lower bound of the least `k` would skip the levels that
+must fail; none is proved here (the levels are not nested), so the search is linear, as the specification says.
+
+### 4.3 The driver
+
+`adf` accepts the three kinds in `show`, `type`, `mul`, `div`, `neg`, `equal`, `contains`, `overlaps` and has the
+new commands `inv`, `pow`, `powtight`, `norm`, `class`, `idele`, `hull`, `hullsimple`, `unitof`, `valuation`,
+`abs`; the table is in `tools/adf/README.md` ("Ideles and classes") and in the comment of `adf_drv_units_op`.
+Every pair of types that an operation does not define is `DOMAIN`; `dump` of the three kinds is `UNSUPPORTED`
+(4.5). The expected lines of `tests/driver/i-*.out` were written by hand and are re-derived by
+`lanes/t-slice1/check_driver_cases.py` with exact integers and rationals (207 lines, 0 disagreements); the script
+also checks the facts behind each expected `NOT_DETERMINED` (the enclosing ball contains 0, the gap of the end
+points exceeds `prec`).
+
+### 4.4 Decisions taken in this slice
+
+| Id | Question | Taken | Alternatives |
+|---|---|---|---|
+| t-1 | `prec` above `ADF_IDELE_PREC_MAX` in the two readers with a real part | `LIMIT`, decided from `prec` alone before the text is read (the rule of `idele.h`; conventions 8.5 has no stage for it) | no limit, as `adf_adele_set_str` (which allocates `prec` bits: the defect that `i-review1` found in `set_rat`); `LIMIT` at stage 4 (after the grammar) |
+| t-2 | The real ball of the readers | enclosing ball first, kernel B from the exact end points if that ball fails the sign condition (Statement P) | the enclosing ball only (`NOT_DETERMINED` at every `prec` for `1 +/- 0.99999999999`, against conventions 9.3); kernel B only (never tight for a dyadic input whose end points need more than `p` bits, against conventions 9.5) |
+| t-3 | The value form of the unit in the printers | the normal form (5.6, 9.4), by `adf_ucoset_normalise` | the stored pair (would print `[5 mod 6]` for `[2 mod 3]`) |
+| t-4 | Where the code lives | reader and printers in `src/text.c` (they use its cursor, literals, exact decimals and printer), the six public functions in `src/text_idele.c`, joined by two hidden functions (`adf_tx_read_unit_form`, `adf_tx_write_unit_form`); the two declarations are repeated in both files | `#include "text.c"`; a header `src/text_internal.h` (not in the list of files of the lane); a second copy of the tokenizer |
+| t-5 | `neg` of an idele | every coordinate negated, exactly: `(-X, r, [-1] u)` (no rounding, never fails) | multiplication by the idele of `-1` (a kernel B pass, `NOT_DETERMINED` possible) |
+| t-6 | `neg` of a class | `DOMAIN`: the class of `-x` is the class of `x` (the idele `-1` of `Q^x` is trivial in `A^x/Q^x`), and `[-1] u'` is another class, not the negative | multiply by the class `<1 ; [-1]>` (a different operation) |
+| t-7 | `equal`, `contains`, `overlaps` of ideles and classes | `DOMAIN`; unit cosets have them (`equal_set`, `contains`, `overlaps`) | `adf_idele_identical` (the identity of a representation, not a set predicate, conventions 2.1); none offered by the library (decision i3-1) |
+| t-8 | Products with an exact rational | `idele * rational` and `rational * idele` (`adf_idele_mul_rat`; `0` is `NOT_UNIT`), `idele / rational` as the product with the exact inverse; `rational / idele` is `DOMAIN` | refuse all mixed pairs; offer `rational / idele` through `adf_idele_inv` (two roundings) |
+| t-9 | Second operand of `valuation` and `abs` | a place, read as in `project` (`real` or a prime in decimal); exactly one token, else `PARSE`; `real` gives `DOMAIN` for `valuation` and the real ball `|x_inf|` for `abs`; a non-prime is `DOMAIN` | a value-form operand (a rational); the place list of `project` |
+| t-10 | Exponent of `pow`, `powtight` | an exact rational that is an integer; another type or a denominator other than 1 is `DOMAIN`; an integer beyond a word is `LIMIT` | `DOMAIN` for a big integer |
+| t-11 | Output of `norm` and of `abs ... with real` | the real ball as the text of 9.5 without a sign condition (the helper of the solver commands) | the constrained printing (positive) |
+| t-12 | Existing driver cases that used `[5 mod 6]` as "a kind with no typed parser" | `[p=5: 3]` in `06_pairs`, `07_status`, `12_status_order`, `13_dump` (the expected files are unchanged; `type [5 mod 6]` still gives `ucoset`) | delete the cases; keep `[5 mod 6]` and change the expected lines |
+
+### 4.5 Not done, findings
+
+Not done: the dump form (conventions 10) of the three types (`adf_ucoset_dump_str`, `_load_str` and the same for
+`adf_idele`, `adf_idclass`; `adf_drv_load` and `dump` of the driver have no body for them): it needs the
+loader of `src/dump.c`, which is not this lane's, and the work is not small (the grammar of 10.1 has the bodies
+`ucoset`, `idele`, `idclass`).
+
+Findings: (1) the example of `PLAN.md` 5, `(2.5 +/- 1e-9 ; 3/2 * [5 mod 36])`, prints back from C as
+`(2.5 +/- 1.1e-9 ; 3/2 * [5 mod 36])`: the radius `1e-9` is rounded up to 30 bits, and two significant digits
+then round it up again (`<1.25 +/- 1e-30 ; [5 mod 36]>` prints `1.1e-30`). This is conventions 9.6 (C value texts
+enclose and need not be fixed points); the golden files hold the reference text. (2) conventions 5.7 names the
+accessors `adf_idclass_t_get` and `adf_idclass_unit_get`; the code has `adf_idclass_get_t` and
+`adf_idclass_get_unit`; the code stands (as in the brief). (3) conventions 3.2 has no `LIMIT` for the functions
+of ideles; the code has it (`prec` above `ADF_IDELE_PREC_MAX`), and so has this slice. (4) the sentence of
+conventions 9.3 about stage 7 holds only with Statement P (see 4.2). (5) conventions 9.3 leaves the order of the
+`DOMAIN` checks among themselves open; all are `DOMAIN`, so no status depends on it.

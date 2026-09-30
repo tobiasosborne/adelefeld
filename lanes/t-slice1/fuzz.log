@@ -1,0 +1,27 @@
+fuzz.log of lane t-slice1 (2026-09-30). These runs are SMOKE TESTS, not the long differential run of docs/workflow.md 5.
+
+1. tests/fuzz/fuzz_text_idele.c, built with `make fuzz-build FUZZ_TARGET=text_idele` (clang 18.1.3, libFuzzer, address
+   and undefined-behaviour sanitizers), seeded with build/fuzz/corpus/text_idele/ (547 seeds written by
+   lanes/t-slice1/seed_corpus.py: the golden rows of the three kinds and 1 in 7 of the generated texts):
+
+       timeout 200 build/fuzz/text_idele build/fuzz/corpus/text_idele -max_total_time=120 -rss_limit_mb=2048
+
+   Result: "Done 3908379 runs in 121 second(s)", 32300 executions per second, 2888 new units added to the corpus,
+   peak RSS 463 MB, exit status 0, no crash, no sanitizer report.
+
+   The brief asked for `ulimit -v 4000000`. The sanitized target cannot run under it: AddressSanitizer reserves its
+   shadow memory (15392894357504 bytes) and stops with "ReserveShadowMemoryRange failed ... Perhaps you're using ulimit
+   -v" (tried, 10 s run). The libFuzzer limit -rss_limit_mb=2048 was used instead.
+
+2. tests/fuzz/fuzz_driver.c (the existing target, unchanged), built again with the new tools/adf/adf.c, seeded with its
+   committed corpus and one seed of ten of the new commands (build/fuzz/corpus/driver/i-seed1):
+
+       build/fuzz/driver build/fuzz/corpus/driver -max_total_time=60 -rss_limit_mb=2048
+
+   Result: "Done 27666 runs in 61 second(s)", 453 executions per second, peak RSS 686 MB, no crash.
+
+What these runs assert: fuzz_text_idele.c asserts the contract listed in its header comment (statuses, agreement of
+classify and the parsers, the output untouched on a status, the predicate of the value, the printed text well formed
+and of the same kind, the re-reading of the printed text encloses); fuzz_driver.c asserts what its header says.
+What they do not do: run for an hour or more, compare with the Python reference (the comparison with the reference
+is the vector test tests/test_text_idele.c: 2200 texts, and 1500 balls for the printer), or run alone at night.
