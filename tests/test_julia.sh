@@ -113,6 +113,24 @@ else
 fi
 rm -f "$idclass_output"
 
+# ---- 2d. powers, hulls, division (milestone 2, slice 3, lane i-slice3): tests/julia/idmap.jl, its own process ----
+
+idmap_output=$(mktemp)
+if "$JULIA" --startup-file=no tests/julia/idmap.jl "$so" > "$idmap_output" 2>&1; then
+    cat "$idmap_output"
+elif grep -q '__gmpn_modexact_1_odd' "$idmap_output" 2>/dev/null \
+        && idmap_gmp=$(ldconfig -p 2> /dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$idmap_gmp" ] \
+        && LD_PRELOAD="$idmap_gmp" "$JULIA" --startup-file=no tests/julia/idmap.jl "$so"; then
+    echo "== tests/julia/idmap.jl passed with LD_PRELOAD=$idmap_gmp"
+else
+    cat "$idmap_output"
+    rm -f "$idmap_output"
+    echo "test_julia: tests/julia/idmap.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$idmap_output"
+
 # ---- 3. run the smoke test ----
 
 run_output=$(mktemp)

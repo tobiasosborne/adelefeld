@@ -346,3 +346,239 @@ integer divisible by `p^k` has at least `k log2(p) >= k` bits. 3: E1. 4: P14.2 a
 | i2-7 | The unit of the class of an idele | `adf_ucoset_mul(u, [sign X])`, normal form (a result of an operation, D2-1) | the stored pair of `u` with `c` negated and reduced, modulus as stored |
 | i2-8 | `adf_idele_mul_rat` by 0 | `NOT_UNIT`, output untouched (conventions 3.2: `NOT_UNIT` only for an exact zero input) | `DOMAIN` |
 | i2-9 | Where the kernel lives | `src/idele_internal.h`, hidden symbols of `src/idele.c`, as `src/modctx_internal.h` | a copy in `src/idclass.c` (the brief forbids it) |
+
+## 3. Slice 3: powers, hulls, division
+
+Status: written by lane `i-slice3` on 2026-09-30, the rest of work packages 2.1 (powers), 2.3 (the maps between
+ideles and adeles) and 2.4 (division); not reviewed. With it milestone 2 is complete except for the text and dump
+forms of the three types. Headers: `include/adelefeld/idpow.h`, `include/adelefeld/idmap.h` (new). Code:
+`src/idpow.c`, `src/idmap.c`. Tests: `tests/test_idpow.c`, `tests/test_idmap.c`, vectors
+`tests/ref/vectors/i-slice3/` written by `lanes/i-slice3/gen_vectors.py` from `proto/ideles_checks.py` (part 4).
+Julia: `tests/julia/idmap.jl`. No new type.
+
+### 3.1 Functions
+
+| Function | Result | Source | Statuses |
+|---|---|---|---|
+| `adf_ucoset_pow(y, x, k)` | `c'^k U(N')` of the normal form `(c', N')`; `[e^k]` for an exact unit; `[1]` for `k = 0` | `ideles.md` P13.4 (284), P13.6 (288); Statement J.1 | void |
+| `adf_ucoset_pow_tight(y, x, k)` | `chat^k U(M_k)`, the smallest coset containing the powers | P13.2, P13.3 (279, 282); Statement J.2 | void |
+| `adf_idele_pow(z, x, k, prec)`, `adf_idele_pow_tight` | `(Z, r^k, u^k)`, the unit by the two rules above; `k = 0` the exact idele 1 | P3 (67); Statements K, L | `OK`, `NOT_DETERMINED`, `LIMIT` (prec, and the bits of `r^k`) |
+| `adf_idclass_pow(z, x, k, prec)`, `adf_idclass_pow_tight` | `(T^k, u^k)`; `k = 0` the exact class 1 | P15.1 (370); Statements K, L.3 | `OK`, `NOT_DETERMINED`, `LIMIT` |
+| `adf_adele_set_idele(y, x)` | `(X ; r c' + r lcm(N, 2) Zhat)`, `c'` odd; exact `r e` for an exact unit | P16.2, P16.3 (410, 411); Statement M.1 | void |
+| `adf_adele_set_idele_simple(y, x)` | `(X ; r c' + r N' Zhat)` of the normal form | P16.1, P16.4 (409, 412); Statement M.2 | void |
+| `adf_idele_set_adele(y, x)` | `(X, abs(a), [sign a])` for an exact finite part `a != 0` and `X` excluding 0 | P3.4 (80), P17 (443); Statement N | `OK`, `UNIT_NOT_CERTIFIED`, `NOT_UNIT` |
+| `adf_adele_div_idele(z, x, y, prec)` | finite part `(a e)/r + (gcd(abs(a) L, M)/r) Zhat`; real part `arb_div` | P18, P19 (462, 472); Statement O | `OK`, `NOT_DETERMINED` (a non-finite `arb_div`), `LIMIT` |
+
+On every status other than `OK` the output is untouched (conventions 4.3). Aliasing: the output may be the input
+of its type (conventions 4.1); an adele and an idele are different types. The limit `ADF_IDELE_PREC_MAX` of
+section 2.2 holds for every function with a `prec`. `ADF_IDELE_POW_BITS_MAX = 2^26` (in `idpow.h`) bounds the
+content of a power (Statement L.4). The division of an adele by an exact rational is `adf_adele_div_rat` of
+milestone 1; `tests/test_idmap.c` checks it against P18. There is no division by an adele (SPEC 4.5): the way
+from an adele to a divisor is `adf_idele_set_adele`, which returns `UNIT_NOT_CERTIFIED` for a finite part of
+positive radius.
+
+Not in this slice: text and dump forms of unit cosets, ideles and classes; set predicates of ideles and classes
+(decision i3-1); characters.
+
+### 3.2 Examples (computed by the C and by the reference)
+
+- `[1 mod 1]^2`: `adf_ucoset_pow` gives `[1 mod 1]`, `adf_ucoset_pow_tight` gives `[1 mod 24]` (P13.5).
+  `[2 mod 5]^2`: `[4 mod 5]` and `[49 mod 120]`. `[5 mod 6]^1`: `[2 mod 3]` for both (P13.4: `M_1 = Nbar = 3`,
+  not `N = 6`; finding 1 of lane i-slice1 against `PLAN.md` 2.1 stands, and the code follows P13.4).
+- `U(1)^(-2^63)` tight: `[1 mod 2^65 * 3 * 5 * 17 * 257 * 65537]` (the Fermat primes are the `p` with `p - 1`
+  dividing `2^63`).
+- The idele of `-6/35` squared is `(real ball ; content 36/1225, unit [1 mod 0])`; its smallest hull is the adele
+  with the exact finite part `36/1225`; the adele of `1/2` divided by it has the exact finite part `1225/72`
+  (`tests/julia/idmap.jl`).
+- `(3 ; 1 [2 mod 3])` has the smallest hull `5 mod 6` and the simple hull `2 mod 3`; `(1 ; 1 mod 4)` divided by
+  `(3 ; [1 mod 1])` has the finite part `1 mod 2` (the example of P19).
+
+### 3.3 Statements to add
+
+**Statement J (the two powers of a unit coset, as computed).** Let `x` be a canonical unit coset value, `k` an
+integer, and `P_k = {u^k : u in x}`.
+
+1. (`adf_ucoset_pow`) For `k = 0`, `P_0 = {1}` and the result `[1]` is that set (P13.6, line 288: no coset with
+   `N >= 1` is). For an exact unit `[e]`, `P_k = {e^k}`, and `e^k = e` for odd `k`, `1` for even `k`. For
+   `x = c U(N)`, `N >= 1`, with normal form `(c', N')` (the same set, Statement B): if `N' = 1` the result is
+   `U(1) = Zhat^x`, which contains every unit; if `N' >= 2` the result is `(c'^k mod N') U(N')`, `c'^k` the power
+   of the inverse of `c'` modulo `N'` for `k < 0` (it exists: `gcd(c', N') = 1`). It contains `P_k` by P13.4
+   (line 284) applied to `(c', N')`. The stored residue is a unit modulo `N' >= 2`, so it is not 0 and lies in
+   `1..N'`; `N'` is normal; so the result is in normal form.
+2. (`adf_ucoset_pow_tight`) For `x = c U(N)`, `N >= 1`, `k != 0`, normal form `(c', N')`, `a_p = v_p(N')`,
+   `e_p = v_p(k)`, put `A = N' * prod_{p | N'} p^(e_p)` and `B = 2^(2 + e_2)` if `N'` is odd and `k` even, else 1,
+   times `p^(1 + e_p)` for every odd prime `p` that does not divide `N'` and for which `p - 1` divides `k`. Then
+   `A B = M_k` of P13, `gcd(A, B) = 1`, and the residue `rho` with `rho = c'^k` modulo `A` and `rho = 1` modulo
+   `B` is `chat^k` modulo `M_k` for an integer `chat` admissible in P13.2. So `rho U(M_k)` is the smallest coset
+   containing `P_k` (P13.3), and it is stored in normal form.
+3. For `k = 1` and `k = -1` the two results are the same pair.
+4. `bits(M_k) <= bits(N') + bits(abs(k)) + 2 + 64 (tau(abs(k)) - 1)`, `tau` the number of divisors.
+
+*Proof.*
+1. Written in the item.
+2. (a) *Prime by prime.* For `p | N'` (so `a_p >= 1`, and `a_2 >= 2` because `N'` is normal):
+   `v_p(A) = a_p + e_p`, the row "`a_p >= 1`" (odd `p`) or "`a_2 >= 2`" of the table of P13
+   (`ideles.md:267-274`), and `v_p(B) = 0` because every prime of `B` does not divide `N'` (the factor 2 enters
+   `B` only for odd `N'`). For `p = 2` not dividing `N'`: `v_2(A) = 0` and `v_2(B) = 2 + e_2` for even `k`, 0 for
+   odd `k`: the rows "`a_2 = 0`". For an odd `p` not dividing `N'`: `v_p(A) = 0` and `v_p(B) = 1 + e_p` when
+   `p - 1` divides `k`, else 0: the rows "`a_p = 0`". So `A B = prod p^(b_p) = M_k`. The primes of `A` divide
+   `N'` and those of `B` do not, so `gcd(A, B) = 1`.
+   (b) *Completeness of the search.* An odd prime `p` with `(p - 1) | k` has `p - 1 = d` for a divisor `d >= 2`
+   of `abs(k)`, so it is among the `d + 1` that the code tests; every `d + 1` is tested by `n_is_prime`, a proof of
+   primality below `2^64` (`refs/src/flint-3.0.1/ulong_extras.rst:833-840`), and `d + 1 <= 2^63 + 1`.
+   `e_p = v_p(abs(k))` is read from the factorisation of `abs(k)` (`n_factor`, `ulong_extras.rst:1203`), 0 when
+   `p` is not one of its primes. The divisors are enumerated by a counter over the exponent vectors of that
+   factorisation, which visits each divisor once.
+   (c) *The residue.* Let `chat` be the integer in `[0, M_k)` with `chat = c'` modulo `A` and `chat = 1` modulo
+   `B` (Chinese remainder theorem, `gcd(A, B) = 1`). `N'` divides `A`, so `chat = c'` modulo `N'`, which is the
+   condition of P13.2 (line 279) for the set `c' U(N') = c U(N)`. `gcd(chat, M_k) = 1`: a prime of `A` divides
+   `N'` and not `c'`; a prime of `B` does not divide `chat = 1` modulo it. Then `chat^k = c'^k` modulo `A` (for
+   `k < 0`, the inverses of `chat` and of `c'` modulo `A` agree, as the two numbers do) and `chat^k = 1` modulo
+   `B`, so `rho = chat^k` modulo `M_k`. P13.2 gives the containment and P13.3 (line 282) the minimality.
+   (d) *Normal form.* `v_2(M_k) = b_2` is 0 or at least 2 (P13.1), so `M_k` is not 2 modulo 4; `rho` is stored in
+   `1..M_k` and `gcd(rho, M_k) = 1` by (c).
+3. P13.4: `M_k = N'` for `k = +-1`. In the construction `e_p = 0` for every `p`, so `A = N'`; no odd prime has
+   `p - 1 | +-1` and `k` is odd, so `B = 1`; `rho = c'^(+-1)` modulo `N'`, the residue of item 1.
+4. `s = prod_{p | N'} p^(e_p)`, the factor `2^(e_2)` of `B` (when present) and `prod p^(e_p)` over the odd `p` of
+   `B` are products of the exact prime powers `p^(v_p(k))` over disjoint sets of primes, so their product divides
+   `abs(k)`. Hence `M_k <= 4 N' abs(k) prod_{p in P} p`, `P` the set of odd primes of `B`. Each `p` in `P` is
+   `d + 1` for a divisor `d >= 2` of `abs(k)`, so `P` has at most `tau(abs(k)) - 1` elements, each below `2^64`.
+   `bits(u v) <= bits(u) + bits(v)`.
+
+**Statement K (the real kernel of a power).** Let `X = [m +- rho]` be a finite ball that does not contain 0,
+`sigma` its sign, `p >= 2`, `k != 0`, `n = abs(k)`, and `l, h` the ends of Statement E1 (`0 < l <= abs(xi) <= h`
+for `xi` in `X`). The code sets `lo = hi = 1`, `bl = l`, `bh = h`, and for each bit of `n` from the lowest: if the
+bit is 1, `lo = RD_p(lo * bl)`, `hi = RU_p(hi * bh)`; then, if a higher bit remains, `bl = RD_p(bl^2)`,
+`bh = RU_p(bh^2)`. For `k < 0` it then sets `lo, hi = RD_p(1/hi), RU_p(1/lo)`.
+
+1. After the bits `0 .. i` are processed, `0 < bl <= t^(2^i) <= bh` (while it is formed) and
+   `0 < lo <= t^(n mod 2^(i+1)) <= hi` for every `t` in `[l, h]`; at the end `0 < lo <= t^n <= hi`, and `lo`, `hi`
+   have at most `p` bits.
+2. For `k < 0`: `0 < lo <= t^k <= hi` for every `t` in `[l, h]`.
+3. Kernel B (Statement E5) on `lo`, `hi` and the sign `sigma^k` (`sigma` for odd `k`, `+1` for even `k`) returns
+   a ball that contains `{xi^k : xi in X}` and excludes 0, or `NOT_DETERMINED` (B1). The status is a function of
+   `X`, `k` and `p`.
+4. If `rho = 0`, `k > 0` and `abs(m)^k` has at most `p` bits (odd mantissa), then `lo = hi = abs(m)^k` and the
+   result is the exact ball `m^k`.
+
+*Proof.*
+1. Induction over the bits. At the start `lo = hi = 1 = t^0` and `bl = l <= t <= h = bh`. A product of positive
+   numbers is monotone in each factor: `0 < a <= alpha` and `0 < b <= beta` give `a b <= alpha beta`. Rounding a
+   positive number down gives a positive number no larger (the proof of E1), rounding up one no smaller (correct
+   rounding, `arf.rst:24-39`). So `RD_p(lo bl) <= t^(n mod 2^i) t^(2^i)` when bit `i` is 1, and likewise for the
+   upper end and for the squares `t^(2^(i+1)) = (t^(2^i))^2`. Every `lo`, `hi` after the first multiplication is a
+   rounding to `p` bits; `n >= 1`, so there is one.
+2. `t -> 1/t` is decreasing on `t > 0`; `RD_p(1/hi) <= 1/t^n <= RU_p(1/lo)`, both positive (E3).
+3. Every `xi` in `X` has the sign `sigma` (E1), so `xi^k = sigma^k abs(xi)^k` with `abs(xi)` in `[l, h]`; by 1
+   and 2 `abs(xi)^k` lies in `[lo, hi]`. E5 gives the ball. Every rounding is correct, so unique, and the sequence
+   of operations is fixed by `k`; B1 is decided by `lo` and `hi` alone (as E6).
+4. `l = h = abs(m)` (E1 with `rho = 0`: `abs(m)` has at most `p` bits, and both roundings return it). Every number
+   formed is `abs(m)^j` with `1 <= j <= n` as long as no rounding changed anything; the odd mantissa of
+   `abs(m)^j` is `w^j` for the odd mantissa `w >= 1` of `abs(m)`, and `w^j <= w^n` has at most `p` bits, so every
+   rounding is exact. Then `lo = hi` and B2 returns the exact ball `sigma^k abs(m)^k = m^k`.
+
+The ends are not the correctly rounded `RD_p(l^n)`, `RU_p(h^n)`: each product rounds once, and a squaring doubles
+the relative error of its input, so the relative gap between `lo` and `l^n` grows roughly linearly in `n` (not
+proved here as a bound; nothing depends on it). The reference (`ref_real_pow`) makes the same sequence of
+roundings, so the status and the ends agree bit for bit (the vectors check `lo`, `hi` and the status).
+
+**Statement L (the power of an idele value and of a class value).**
+
+1. For a point `(xi, r w)` of `S = (X, r, u)` and an integer `k`, the power in the ring `A` is
+   `(xi^k, r^k w^k)` (ideles are units, so `k < 0` is allowed), and its decomposition is `(r^k, w^k)` (P3,
+   uniqueness, line 78: `r^k > 0` is rational, `w^k` a unit). `w^k` lies in `P_k(u)`, hence in the unit of
+   `adf_ucoset_pow` and of `adf_ucoset_pow_tight` (Statement J); `xi^k` lies in `Z` (Statement K). So the power lies
+   in the result value; the content `r^k` is exact.
+2. For `k = 0` every point has the power `(1, 1 * 1)`, the idele 1; the result is the exact idele 1.
+3. For a class value `C(T, v)` (Statement G): `Phi` is an isomorphism of groups onto `R_{>0} x Zhat^x` (P15.1,
+   line 370), so the `k`-th power of the class `(tau, w)` is `(tau^k, w^k)`; `tau^k` lies in `Z` (K with
+   `sigma = +1`), `w^k` in the unit of the result. `k = 0` gives the exact class 1.
+4. (The limit.) For `r = n/d` in lowest terms, `r^k` is `n^k/d^k` or `d^(-k)/n^(-k)`, again in lowest terms, and
+   `bits(n^j) <= j bits(n)` (`n < 2^b` gives `n^j < 2^(j b)`). So the test
+   `abs(k) (bits(n) + bits(d)) > ADF_IDELE_POW_BITS_MAX` bounds both integers of `r^k` before they are formed; it
+   reads two bit counts and makes one integer division, `abs(k) > floor(MAX / b)` (for integers
+   `abs(k) b > MAX` exactly then), without overflow and without allocation. For `r = 1` there is no limit. For
+   `r != 1`, `bits(n) + bits(d) >= 3`, so `k = WORD_MIN` always gives `LIMIT` and `fmpq_pow_si` (`fmpq.rst:480`)
+   is never called with it.
+5. (Against repeated multiplication.) The product of `abs(k)` independent copies of `x` by `adf_idele_mul` has
+   the content `r^abs(k)` and, by Statement C.1 applied `abs(k) - 1` times at the one modulus `N'`, the unit
+   `c'^abs(k) U(N')`: the default power loses nothing against the product rule, and its real part encloses the
+   subset `{xi^k}` of the product set. `tests/test_idpow.c` checks this, and that the tight unit lies inside.
+
+**Statement M (the two hulls, as computed).** For `x = (X, r, u)`, `u = (c, N)` as stored, `r = n/d`:
+
+1. `N >= 1`: `adf_adele_set_idele` stores `F = r c' + r L Zhat`, `L = lcm(N, 2)`, `c' = c` for odd `c` and
+   `c + N` for even `c` (then `N` is odd and `c + N` is odd). By P16.2 (line 410) `F` contains the finite part
+   `r w` of every point, by P16.3 (line 411) every finite ball that contains them contains `F`, and by P16.4
+   (line 412) it depends only on the set: for `N = 2 mod 4` the normal modulus `N/2` is odd and
+   `lcm(N/2, 2) = N = lcm(N, 2)`, and an odd integer congruent to `c` modulo `N/2` is congruent to `c` modulo `N`.
+   The ball is `(n c' + n L Zhat)/d`, stored as its canonical triple by `adf_fball_set_fmpz3`, a function of the
+   set (`fball.h`).
+2. `adf_adele_set_idele_simple` stores `r c'' + r N'' Zhat` for the normal form `(c'', N'')` of `u`. It contains
+   `r c'' U(N'') = r c U(N)` (P16.1, line 409; Statement B). It equals the smallest hull exactly when `N''` is even
+   and has twice its radius when `N''` is odd (P16.4 for `(c'', N'')`).
+3. `N = 0`: the finite parts are the one rational `r e`; both functions store it exactly (SPEC 5).
+4. The real coordinate is `X` itself, so every point `(xi, r w)` of `x` lies in the adele value.
+
+**Statement N (adele to idele).** A point `(t, f)` of `A = R x A_f` is a unit exactly when `t != 0` and `f` is a
+unit of `A_f`. For the adele value `(I ; F)`:
+
+1. If `F` is the exact rational `a != 0` and `I` excludes 0, every point `(t, a)` is a unit (the rational `a` is
+   invertible in `A_f`), and the set of points is the set of the idele value `(I, abs(a), [sign a])`
+   (Statement D: its points are `(xi, abs(a) sign(a)) = (xi, a)`; P3.4, line 80).
+2. If `F` is the exact 0 or `I` is the exact 0, no point is a unit: `NOT_UNIT` is proved (conventions 3.1).
+3. If `F` has a positive radius, it contains non-units (P17, line 443) and units (its non-zero rational points;
+   it has infinitely many rational points and at most one is 0): no idele value has this set, and invertibility
+   is not certified: `UNIT_NOT_CERTIFIED` (SPEC 4.5). The same if `I` contains 0 and a non-zero real.
+4. When several apply the maximum of conventions 3.3 is returned: `NOT_UNIT` as soon as one coordinate proves
+   that no point is a unit. A local finite part is never exact (`fball.h`), so it gives `UNIT_NOT_CERTIFIED`.
+
+**Statement O (the division, as computed).** Let `x = (I ; a + M Zhat)` and `y = (Y, r, u)`, `u = c U(N)` or an
+exact unit. A quotient of points is `(t/eta, f/g)` componentwise.
+
+1. `N >= 1`: `adf_ucoset_inv` gives the normal form of `c* U(N)` (P10.2, line 200; Statement C.2), and the
+   smallest hull of M.1 with content 1 gives `e + L Zhat`, `L = lcm(N, 2)`, `e` odd and `e = c*` modulo `N` (M.1,
+   a function of the set). `adf_fball_mul` gives `a e + gcd(a L, e M, M L) Zhat` (precision.md Proposition 2,
+   line 34), which is `a e + gcd(abs(a) L, M) Zhat` because `gcd(e, L) = 1` (P19.6, line 506). `adf_fball_div_rat`
+   by the exact `r > 0` gives `(a e)/r + (gcd(abs(a) L, M)/r) Zhat` (P18, line 462), the smallest ball that
+   contains the finite parts of all quotients (P19, line 472).
+2. `N = 0`, `u = [e]`: the inverse unit is `[e]` (A.2) and its hull is the exact `e`; the product rule with a
+   factor of radius 0 gives `a e + gcd(0, e M, 0) Zhat = a e + M Zhat`; divided by `r`, `(a e)/r + (M/r) Zhat`, the
+   set of the quotients by the exact rational `e r` (P18; conventions 5.7).
+3. The real part `arb_div(I, Y, p)` contains every `t/eta` (`arb.rst:9-11`: the result "contains the result of
+   the (mathematically exact) operation applied to any choice of points in the input balls"); `Y` excludes 0, so
+   the case "If y contains zero, z is set to 0 +- inf" (`arb.rst:870-871`) does not arise. A non-finite result is
+   never stored (conventions 4.4, CV-08): `NOT_DETERMINED`. No input that reaches it is known; the probe
+   `Y = [1 + 2^-100 +- 1]` gives a finite (wide) ball at every precision from 2 to 256.
+4. `adf_fball_set_global` does not change the set; the result is global.
+
+### 3.4 What was taken from the design lane d-ideles
+
+The unreviewed reference of lane d-ideles (worktree `agent-acc17965b8910c1f2`, `proto/ideles_checks.py` part 2)
+was read. Taken, each proved again above before use: the tight modulus as a product of a part at the primes of
+`N'` and a part at the other primes with the centre `c'^k` modulo the first and 1 modulo the second (its
+"statement E3", lines 583-602; here Statement J.2, with the part at the primes of `N'` taken from the
+factorisation of `k` and not by its gcd loop `smooth_part`); binary powering of the ends with directed rounding
+(lines 891-904; here Statement K); the limit on the bits of `r^k` with the value `2^26` (line 476); the
+statuses of adele to idele (lines 1281-1299; here Statement N); the smallest hull with an odd representative and
+the simple hull of the normal form (its decisions D2-4, D2-5); the finite part of the division by the formula of
+P19 (lines 1302-1310), which the reference of part 4 keeps as the independent oracle of Statement O. Not taken:
+its checks against Bernoulli denominators (no source on disk for the fact that `M_k(1, k)` is the denominator of
+`B_k/(2k)`), and its unit-coset functions of slice 1, which are already on master.
+
+### 3.5 Decisions taken in this slice
+
+| Id | Question | Taken | Alternatives |
+|---|---|---|---|
+| i3-1 | Set predicates of ideles and classes | not offered: conventions 2.1 and SPEC 4.2 name `equal_set`, `overlaps`, `contains` for finite balls; the unit cosets have them (slice 1); `adf_adele` has none, and no plan item asks for them | offer them (real part as closed intervals, content by equality, unit by the coset predicates) |
+| i3-2 | Type of the exponent | `slong`, every value; `abs(k)` as a `ulong` | `fmpz` (any size: `M_k` and the real part would allow it, the content needs the limit anyway) |
+| i3-3 | Limit of the content of a power | `ADF_IDELE_POW_BITS_MAX = 2^26` on `abs(k) (bits(n) + bits(d))`, before `r^k` is formed; `LIMIT` | `2^24` (shorter calls); a limit tested after the power (unbounded memory first); none (`k = 2^40` would exhaust memory) |
+| i3-4 | Simple hull of the stored pair or of the normal form | the normal form: a function of the set | the stored pair (`[5 mod 6]` and `[2 mod 3]` would give different balls for one set) |
+| i3-5 | Real part of a power | binary powering of the E1 ends, directed rounding after each product, then kernel B (Statement K) | the correctly rounded `RD_p(l^n)` (needs `l^n` exactly, `abs(k) p` bits); `arb_pow_ui` and a sign test (loses the sign as `arb_mul` does, SPEC 5) |
+| i3-6 | `adf_ucoset_pow_tight`: void or a status | void: the size of `M_k` is bounded by a function of `k` (J.4), and the search costs `tau(abs(k))` primality tests of a word | `LIMIT` above a size of `M_k` |
+| i3-7 | Real part of the division | `arb_div` at `p` bits ("rounded as usual", SPEC 5); `NOT_DETERMINED` for a non-finite ball (CV-08) | the inverse of `Y` by kernel B, then `arb_mul` (two roundings; fails where kernel B fails) |
+| i3-8 | Finite part of the division | the product rule of `fball.h` with the smallest hull of the inverse coset, then the exact division by `r`: one code path with the tested ring rules; P19.6 proves it equal to P19 | the formula of P19 directly (the reference does this, as the oracle) |
+| i3-9 | Backend of the finite part of a result | global always (`adf_fball_set_fmpz3`, and `adf_fball_set_global` after the division) | keep a local result where `fball.h` would keep one |
+| i3-10 | Adele to idele when the real ball contains 0 but is not the exact 0 | `UNIT_NOT_CERTIFIED` (the input is not certified, conventions 3.1) | `NOT_DETERMINED` (the row of conventions 3.2 admits it, for a result sign) |
+| i3-11 | Division of an adele by an exact rational | `adf_adele_div_rat` of milestone 1, tested here against P18 | a second function in `idmap.h` |
+| i3-12 | Name of the default hull | `adf_adele_set_idele` is the smallest hull (the brief; d-ideles D2-5); the simple one has the suffix `_simple` | the reverse |

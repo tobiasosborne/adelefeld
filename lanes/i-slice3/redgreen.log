@@ -1,0 +1,38 @@
+# Lane i-slice3: red and green runs (times from `date`)
+
+## tests/test_idpow.c
+
+- 01:42 red 1: `make -j2 build/test_idpow`: link errors only (undefined adf_idele_pow, adf_idele_pow_tight,
+  adf_ucoset_pow, ...); the file compiles without warnings under -Werror.
+- 01:45 red 2: stub src/idpow.c (every power returns a copy of its input with ADF_OK): `./build/test_idpow`:
+  "6 tests, 10356 checks, 5582 failed checks, 6 failed tests" (ucoset_pow_against_enumeration 765,
+  ucoset_pow_hand_cases_and_aliasing 17, vectors_of_the_reference 4641, idele_pow_hand_cases_statuses_aliasing
+  27, idele_pow_against_repeated_multiplication 119, idclass_pow_hand_cases 13).
+  Before that run, a first attempt aborted in the test's reader: the generator had written k = 6 (2^61 - 1),
+  which is above 2^63; the exponent list was changed to 3 (2^61 - 1) and the vectors regenerated (a defect of
+  my generator, not a weakened check).
+- 01:44 first build of the real src/idpow.c: compile error (n_factor_t needs <flint/ulong_extras.h>; flint_ctz
+  does not exist in FLINT 3.0.1, v_2(k) is now read from the factorisation).
+- 01:45 first run: "6 tests, 10120 checks, 3 failed checks": three checks of mine expected OK for
+  (-3 +- 1/4)^3 at prec 2, where the ends are 8 and 64 (e(hi) - e(lo) = 3 > 2): NOT_DETERMINED is the contract
+  (B1). The check was replaced by the property the header states (prec 0, 1, WORD_MIN give what prec 2 gives:
+  OK on the exact -3, NOT_DETERMINED on -3 +- 1/4, output untouched) and an OK at prec 3; not weakened.
+- 01:45 green: "6 tests, 10122 checks, 0 failed checks, 0 failed tests" (enumeration 296 cases, 118 levels too
+  large; vectors 1573 lines: 642 ucoset, 509 idele, 422 class; 322 NOT_DETERMINED, 15 LIMIT, 114 exact).
+
+## tests/test_idmap.c
+
+- 01:48 red 1: `make -j2 build/test_idmap`: 35 undefined references (adf_adele_set_idele, ...), no warnings.
+- 01:48 red 2: stub src/idmap.c (both hulls the exact r; set_adele always OK with the idele 1; div a copy of x):
+  "6 tests, 54197 checks, 25574 failed checks, 5 failed tests" (division_against_enumeration_and_the_inverse
+  18033, hulls 6409, vectors 1111, set_adele 12, division_statuses 9). The sixth test,
+  division_by_an_exact_rational_is_P18, checks adf_adele_div_rat of milestone 1 against P18 and passes on the
+  stub, as it must.
+- 01:49 green at the first run of the real src/idmap.c: "6 tests, 54197 checks, 0 failed checks, 0 failed
+  tests" (hulls 1680 cases, simple strictly coarser in 1392; division 4736 cases against enumeration, 600 by
+  exact units, 64 with a = M = 0; vectors 774 lines).
+
+## Final runs (in the suites of 02:23 to 02:38, after the last code edit)
+
+- test_idpow: "6 tests, 10122 checks, 0 failed checks, 0 failed tests" in check-all, SAN=1, CC=clang, INV=1.
+- test_idmap: "6 tests, 54197 checks, 0 failed checks, 0 failed tests" in the same four.

@@ -1078,17 +1078,448 @@ def check_api_classes():
            f"{n_exact}")
 
 
+# ======================================================================================================
+# Part 4: reference of slice 3 of milestone 2 (docs/api-2.md section 3), lane i-slice3, 2026-09-30
+# ======================================================================================================
+#
+# Adapted from the unreviewed part 2 of lane d-ideles (worktree agent-acc17965b8910c1f2, proto/ideles_checks.py
+# lines 561-602 ref_uc_pow, smooth_part, ref_uc_pow_tight (its "statement E3"), 891-904 ref_real_pow, 1032-1042
+# ref_idele_pow, 1242-1310 fb, ref_hull_simple, ref_hull, ref_idele_set_adele, ref_div_fin). Taken: the formulas,
+# each proved again in docs/api-2.md 3.3 (Statements J to O) before use. Changed: the tight modulus is built
+# from the factorisation of |k| alone, prime by prime (A = N' s and B of Statement J), not from smooth_part by
+# gcds and a divisor list by trial division of |k|; the powers carry the rounded ends (lo, hi) as part 2 does;
+# the limits of prec and of the bits of r^k; the simple hull is of the normal form (as d-ideles recommended);
+# the checks use enumeration in Z/M, exact points of the input sets and the table M_k of part 1.
+# An adele is (ball, (A, H, d)), the canonical triple of its finite ball (SPEC 4.1).
+
+UNIT_NOT_CERTIFIED, LIMIT = "UNIT_NOT_CERTIFIED", "LIMIT"
+IDELE_PREC_MAX = 2097152          # include/adelefeld/idele.h
+IDELE_POW_BITS_MAX = 1 << 26      # include/adelefeld/idpow.h
+PRECEDENCE = {OK: 0, NOT_DETERMINED: 1, UNIT_NOT_CERTIFIED: 2, NOT_UNIT: 6, DOMAIN: 7, LIMIT: 10}  # conv. 3.1
+
+try:
+    from sympy import factorint as _factorint, isprime as _isprime
+except ImportError:                 # the oracle is then trial division (slow for a large prime factor)
+    _factorint = None
+    _isprime = None
+
+
+def factor_word(n):
+    """{p: e} with n = product p^e, for 1 <= n < 2^64."""
+    assert 1 <= n < 1 << 64
+    if _factorint is not None:
+        return {int(p): int(e) for p, e in _factorint(n).items()}
+    return trial_factor(n)
+
+
+def is_prime_word(n):
+    if _isprime is not None:
+        return bool(_isprime(n))
+    return n >= 2 and trial_factor(n) == {n: 1}
+
+
+def divisors_of(fac):
+    ds = [1]
+    for p, e in fac.items():
+        ds = [d * p ** j for d in ds for j in range(e + 1)]
+    return ds
+
+
+def crt_pair(a, m, b, n):
+    """x in [0, m n) with x = a mod m, x = b mod n; gcd(m, n) = 1."""
+    assert gcd(m, n) == 1
+    return (a + m * (((b - a) * pow(m, -1, n)) % n if n > 1 else 0)) % (m * n)
+
+
+def ref_uc_pow(u, k):
+    """adf_ucoset_pow (Statement J.1): c'^k U(N') for the normal form (c', N'); exact units; k = 0 gives [1]."""
+    if k == 0:
+        return (1, 0)
+    c, N = u
+    if N == 0:
+        return (c if k % 2 else 1, 0)
+    c, N = ref_uc_normal(u)
+    if N == 1:
+        return (1, 1)
+    return ref_uc_set(pow(c, k, N), N)[1]
+
+
+def ref_tight_parts(Nb, k):
+    """(A, B) of Statement J.2 for the normal modulus Nb >= 1 and k != 0: M_k = A B."""
+    fac = factor_word(abs(k))
+    A = Nb
+    for p, e in fac.items():
+        if Nb % p == 0:
+            A *= p ** e
+    B = 1
+    if Nb % 2 == 1 and k % 2 == 0:
+        B *= 2 ** (2 + fac.get(2, 0))
+    for d in divisors_of(fac):
+        p = d + 1
+        if p > 2 and Nb % p != 0 and is_prime_word(p):
+            B *= p ** (1 + fac.get(p, 0))
+    return A, B
+
+
+def ref_uc_pow_tight(u, k):
+    """adf_ucoset_pow_tight (Statement J.2): the residue c'^k mod A and 1 mod B, modulus M_k = A B."""
+    if k == 0:
+        return (1, 0)
+    c, N = u
+    if N == 0:
+        return (c if k % 2 else 1, 0)
+    c, N = ref_uc_normal(u)
+    A, B = ref_tight_parts(N, k)
+    return ref_uc_set(crt_pair(pow(c, k, A) if A > 1 else 0, A, 1 % B, B), A * B)[1]
+
+
+def ref_real_pow(x, k, p):
+    """Statement K and kernel B, k != 0: binary powering of the ends of |X| with directed rounding at p bits
+    after every product, from the lowest bit of |k|; the inverse for k < 0. Returns (status, ball, step, lo, hi,
+    sign)."""
+    p = max(p, 2)
+    bl, bh = abs_bounds(x, p)
+    lo, hi, n = F(1), F(1), abs(k)
+    while n:
+        if n & 1:
+            lo, hi = rd(lo * bl, p), ru(hi * bh, p)
+        n >>= 1
+        if n:
+            bl, bh = rd(bl * bl, p), ru(bh * bh, p)
+    if k < 0:
+        lo, hi = rd(1 / hi, p), ru(1 / lo, p)
+    s = sgn(x) if k % 2 else 1
+    return kernel_B(lo, hi, s, p) + (lo, hi, s)
+
+
+def pow_bits_exceeded(r, k):
+    """The limit of the content (Statement L.4): r != 1 and |k| (bits(n) + bits(d)) > ADF_IDELE_POW_BITS_MAX."""
+    return r != 1 and abs(k) * (r.numerator.bit_length() + r.denominator.bit_length()) > IDELE_POW_BITS_MAX
+
+
+def ref_idele_pow(x, k, prec, tight=False):
+    """adf_idele_pow, adf_idele_pow_tight (Statement L)."""
+    if prec > IDELE_PREC_MAX or pow_bits_exceeded(x[1], k):
+        return LIMIT, None
+    if k == 0:
+        return OK, ((F(1), F(0)), F(1), (1, 0))
+    st, ball = ref_real_pow(x[0], k, prec)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, x[1] ** k, (ref_uc_pow_tight if tight else ref_uc_pow)(x[2], k))
+
+
+def ref_idclass_pow(x, k, prec, tight=False):
+    """adf_idclass_pow, adf_idclass_pow_tight (Statement L.3)."""
+    if prec > IDELE_PREC_MAX:
+        return LIMIT, None
+    if k == 0:
+        return OK, ((F(1), F(0)), (1, 0))
+    st, ball = ref_real_pow(x[0], k, prec)[:2]
+    if st != OK:
+        return st, None
+    return OK, (ball, (ref_uc_pow_tight if tight else ref_uc_pow)(x[1], k))
+
+
+def fb(a, R):
+    """The canonical triple (A, H, d) of the finite ball a + R Zhat (SPEC 4.1; conventions 5.2): d the least
+    common denominator, 0 <= A < H for H > 0 (then gcd(A, H, d) = 1 by the minimality of d)."""
+    a, R = F(a), F(R)
+    assert R >= 0
+    d = lcm(a.denominator, R.denominator)
+    A, H = int(a * d), int(R * d)
+    if H > 0:
+        A %= H
+    assert gcd(gcd(A, H), d) == 1
+    return A, H, d
+
+
+def odd_rep(c, N):
+    """An odd integer congruent to c modulo N (N >= 1, gcd(c, N) = 1): c itself for even N."""
+    return c if c % 2 else c + N
+
+
+def ref_hull(x):
+    """adf_adele_set_idele (Statement M.1; ideles P16.2): the smallest ball r c' + r lcm(N, 2) Zhat, c' odd;
+    for an exact unit the exact r e. From the stored pair (P16.4: the same ball as from the normal form)."""
+    ball, r, (c, N) = x
+    if N == 0:
+        return ball, fb(r * c, 0)
+    return ball, fb(r * odd_rep(c, N), r * lcm(N, 2))
+
+
+def ref_hull_simple(x):
+    """adf_adele_set_idele_simple (Statement M.2; P16.1): r c' + r N' Zhat of the normal form (c', N')."""
+    ball, r, u = x
+    c, N = ref_uc_normal(u)
+    if N == 0:
+        return ball, fb(r * c, 0)
+    return ball, fb(r * c, r * N)
+
+
+def ref_idele_set_adele(ball, fin):
+    """adf_idele_set_adele (Statement N). fin the canonical triple (A, H, d). Statuses by the maximum."""
+    A, H, d = fin
+    m, rho = ball
+    sts = [OK]
+    if (H == 0 and A == 0) or (m == 0 and rho == 0):
+        sts.append(NOT_UNIT)
+    if H > 0 or (abs(m) <= rho and not (m == 0 and rho == 0)):
+        sts.append(UNIT_NOT_CERTIFIED)
+    st = max(sts, key=lambda s: PRECEDENCE[s])
+    if st != OK:
+        return st, None
+    a = F(A, d)
+    return OK, (ball, abs(a), (1 if a > 0 else -1, 0))
+
+
+def ref_div_fin(fin, y):
+    """The finite part of adf_adele_div_idele by the formula of ideles P19 (N >= 1) and P18 (N = 0), not by the
+    product rule the C uses (Statement O proves that the two agree). fin = (A, H, d)."""
+    A, H, d = fin
+    a, M = F(A, d), F(H, d)
+    _, r, (c, N) = y
+    if N == 0:
+        return fb(a * c / r, M / r)
+    cs = pow(c, -1, N) if N > 1 else 1
+    return fb(a * odd_rep(cs, N) / r, qgcd(abs(a) * lcm(N, 2), M) / r)
+
+
+def fb_contains(ball, x):
+    A, H, d = ball
+    y = F(x) * d - A
+    return y == 0 if H == 0 else (y.denominator == 1 and y.numerator % H == 0)
+
+
+def check_api_powers():
+    """Statement J against the table M_k of part 1 (itself checked against enumeration by check_power and
+    check_power_local), against enumeration in Z/M, against repeated multiplication; Statement K against exact end
+    points; Statement L against exact points of the input sets."""
+    ok = True
+    n_tab = n_enum = n_cent = n_real = npts = nd = 0
+    # J.2 against the table of P13 (part 1): every prime p with (p - 1) | k is at most |k| + 1 < 200
+    ks = [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 16, 18, 20, 24, 27, 30, 36, 40, 60, 64, 72, 100, 120, 126, 180, 196]
+    for N in range(1, 61):
+        cs_ = [c for c in range(1, N + 1) if gcd(c, N) == 1][:3]
+        for c in cs_:
+            for k in ks + [-k for k in ks]:
+                t = ref_uc_pow_tight((c, N), k)
+                ok &= t[1] == M_k(N, k) and ref_uc_is_normal(t)
+                ok &= ref_uc_contains(t, ref_uc_pow((c, N), k))          # the tight coset is inside the default
+                if k in (1, -1):
+                    ok &= t == ref_uc_pow((c, N), k) and t[1] == ref_uc_normal((c, N))[1]   # P13.4
+                # the centre: chat^k mod M_k for random chat = c mod N' coprime to M_k (P13.2)
+                Nb = ref_uc_normal((c, N))[1]
+                for _ in range(3):
+                    ch = c + Nb * RNG.randint(0, 10 ** 6)
+                    while gcd(ch, t[1]) != 1:
+                        ch += Nb
+                    ok &= (pow(ch, k, t[1]) - t[0]) % t[1] == 0
+                    n_cent += 1
+                n_tab += 1
+    # tightness and containment by enumeration: the hull of P_k at a level M (as check_power)
+    for N in range(1, 11):
+        for c in units(N):
+            for k in (-4, -3, -2, -1, 1, 2, 3, 4, 6):
+                t = ref_uc_pow_tight((c, N), k)
+                e = ref_uc_pow((c, N), k)
+                extra = 4
+                for p in PRIMES:
+                    if p <= max(abs(k) + 2, 7) or N % p == 0:
+                        extra *= p
+                M = lcm(t[1], N) * extra
+                if M > 400000:
+                    continue
+                P = {pow(w, k, M) for w in img(c, N, M)}
+                D = reduce(gcd, [w - min(P) for w in P], M)
+                ok &= canon(0, D)[1] == t[1]                                   # the smallest coset (P13.3)
+                ok &= all((w - t[0]) % t[1] == 0 for w in P)                    # its residue
+                ok &= e[1] == 0 or all((w - e[0]) % e[1] == 0 for w in P)       # the default encloses
+                # repeated multiplication (independent factors) gives the default coset
+                prod = (c, N)
+                for _ in range(abs(k) - 1):
+                    prod = ref_uc_mul(prod, (c, N))
+                if k < 0:
+                    prod = ref_uc_inv(prod)
+                ok &= ref_uc_equal_set(prod, e)
+                n_enum += 1
+    # exact units, k = 0, the examples of the header and of SPEC 5
+    for k in (-3, -2, -1, 0, 1, 2, 3, 1 << 62, -(1 << 63)):
+        for e in (1, -1):
+            want = (e if k % 2 else 1, 0) if k else (1, 0)
+            ok &= ref_uc_pow((e, 0), k) == want and ref_uc_pow_tight((e, 0), k) == want
+        ok &= ref_uc_pow((5, 12), 0) == (1, 0) and ref_uc_pow_tight((5, 12), 0) == (1, 0)
+    ok &= ref_uc_pow_tight((1, 1), 2) == (1, 24) and ref_uc_pow_tight((2, 5), 2) == (49, 120)
+    ok &= ref_uc_pow((2, 5), 2) == (4, 5) and ref_uc_pow_tight((5, 6), 1) == (2, 3)
+    ok &= ref_uc_pow((5, 6), 1) == (2, 3) and ref_uc_pow((3, 7), -(1 << 63)) == (pow(3, -(1 << 63), 7), 7)
+    t = ref_uc_pow_tight((1, 1), -(1 << 63))       # 2^(65) * 3 * 5 * 17 * 257 * 65537
+    ok &= t == (1, 2 ** 65 * 3 * 5 * 17 * 257 * 65537)
+    t = ref_uc_pow_tight((3, 4), 1 << 62)            # A = 4 * 2^62, B = 3 * 5 * 17 * 257 * 65537
+    ok &= t[1] == 2 ** 64 * 3 * 5 * 17 * 257 * 65537 and t[0] % (2 ** 64) == 1
+    # Statement K: the ends against exact end points; L: points of the idele set
+    cos = some_cosets(12)
+    for _ in range(3000):
+        p = RNG.choice([2, 3, 8, 16, 53, 64, 128])
+        x = random_ball(RNG, RNG.choice([0, 0, 3, 20, 60]))
+        k = RNG.choice([-7, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 8, 13])
+        st, ball, step, lo, hi, s = ref_real_pow(x, k, p)
+        a0, a1 = abs(x[0]) - x[1], abs(x[0]) + x[1]
+        L, H = (a0 ** k, a1 ** k) if k > 0 else (a1 ** k, a0 ** k)
+        ok &= 0 < lo <= L <= H <= hi and s == (sgn(x) if k % 2 else 1)
+        if st == OK:
+            m, rr = ball
+            ok &= m - rr <= s * L <= m + rr and m - rr <= s * H <= m + rr and ((m - rr > 0) if s > 0 else (m + rr < 0))
+            if x[1] == 0 and k > 0 and bits(x[0]) <= max(p, 2) and bits(x[0] ** k) <= max(p, 2):
+                ok &= ball == (x[0] ** k, 0)                                    # K.4: exact
+        else:
+            ok &= st == NOT_DETERMINED
+            nd += 1
+        n_real += 1
+        # the idele and the class
+        xi = (x, F(RNG.randint(1, 40), RNG.randint(1, 40)), RNG.choice(cos))
+        M = max(xi[2][1], 1) * 60
+        for tight in (False, True):
+            st, z = ref_idele_pow(xi, k, p, tight)
+            if st != OK:
+                ok &= st == NOT_DETERMINED
+                continue
+            Mz = lcm(M, z[2][1]) if z[2][1] else M
+            ok &= not inside(0, z[0]) and z[1] == xi[1] ** k and ref_uc_is_normal(z[2])
+            for _k in range(3):
+                pt = random_point(xi, Mz)
+                ok &= inside(pt[0] ** k, z[0]) and pow(pt[2], k, Mz) in level_set(z[2], Mz)
+                npts += 1
+            stc, zc = ref_idclass_pow(((abs(x[0]), x[1]), xi[2]), k, p, tight)
+            ok &= stc == OK and zc[0] == ((abs(z[0][0]), z[0][1]) if k % 2 else z[0]) and zc[1] == z[2]
+    # the limits and k = 0
+    x = ((F(-3), F(1)), F(3, 2), (5, 12))
+    ok &= ref_idele_pow(x, 0, 64) == (OK, ((F(1), F(0)), F(1), (1, 0)))
+    ok &= ref_idele_pow(x, 1 << 40, 64)[0] == LIMIT and ref_idele_pow(x, 0, IDELE_PREC_MAX + 1)[0] == LIMIT
+    ok &= ref_idele_pow(((F(-3), F(1)), F(1), (5, 12)), 1 << 12, 64)[0] == NOT_DETERMINED    # r = 1: no limit
+    ok &= ref_idele_pow(((F(-1), F(0)), F(1), (5, 12)), -(1 << 63), 64) == (OK, ((F(1), F(0)), F(1), (1, 12)))
+    st, z = ref_idele_pow(x, 2, 64)
+    ok &= st == OK and z[0][0] > 0 and z[1] == F(9, 4) and z[2] == (1, 12)
+    report("check_api_powers (api-2.md J, K, L; P13)", ok,
+           f"{n_tab} (coset, k) against the table M_k, {n_cent} centres by random chat; {n_enum} against "
+           f"enumeration (smallest coset, residue, default enclosure, repeated multiplication); {n_real} real "
+           f"powers against exact ends ({nd} NOT_DETERMINED), {npts} points of idele powers")
+
+
+def check_api_hulls():
+    """Statements M and N: every unit of the coset at a level M (every point of the finite part) is in both
+    hulls; the radius of the small hull is r times the gcd of the differences (tightness); the refusals of
+    adele to idele."""
+    ok = True
+    n = strict = 0
+    for u in some_cosets(30):
+        for r in (F(1), F(3, 2), F(2, 9), F(10, 7), F(1, 4), F(5, 1)):
+            x = ((F(1), F(0)), r, u)
+            hm, hs = ref_hull(x)[1], ref_hull_simple(x)[1]
+            c, N = u
+            if N == 0:
+                ok &= hm == hs == fb(r * c, 0)
+                n += 1
+                continue
+            M = lcm(N, 2) * 2 * 3 * 5 * 7
+            I = sorted(img(c, N, M))
+            ok &= all(fb_contains(hm, r * w) and fb_contains(hs, r * w) for w in I)
+            D = reduce(gcd, [w - I[0] for w in I], M)
+            ok &= F(hm[1], hm[2]) == r * D                                        # tight (P16.3)
+            ok &= F(hs[1], hs[2]) / F(hm[1], hm[2]) in (F(1), F(1, 2))
+            ok &= fb_contains(hs, F(hm[0], hm[2]))                                # small inside simple
+            ok &= ref_hull(((F(1), F(0)), r, ref_uc_normal(u)))[1] == hm          # a function of the set
+            strict += hs != hm
+            n += 1
+    ok &= ref_hull(((F(1), F(0)), F(1), (5, 6)))[1] == ref_hull(((F(1), F(0)), F(1), (2, 3)))[1] == (5, 6, 1)
+    ok &= ref_hull_simple(((F(1), F(0)), F(1), (5, 6)))[1] == (2, 3, 1)
+    ok &= ref_hull(((F(1), F(0)), F(3, 2), (-1, 0)))[1] == (-3, 0, 2)
+    table = [((F(2), F(1)), fb(F(-3, 4), 0), OK), ((F(2), F(1)), fb(1, 6), UNIT_NOT_CERTIFIED),
+             ((F(2), F(1)), fb(0, 0), NOT_UNIT), ((F(0), F(0)), fb(1, 0), NOT_UNIT),
+             ((F(0), F(0)), fb(1, 6), NOT_UNIT), ((F(1), F(1)), fb(1, 0), UNIT_NOT_CERTIFIED),
+             ((F(0), F(1)), fb(0, 0), NOT_UNIT), ((F(1), F(2)), fb(F(1, 2), 1), UNIT_NOT_CERTIFIED),
+             ((F(-1), F(1, 2)), fb(F(-5, 3), 0), OK)]
+    for ball, f, want in table:
+        st, y = ref_idele_set_adele(ball, f)
+        ok &= st == want
+        if st == OK:
+            a = F(f[0], f[2])
+            ok &= y == (ball, abs(a), (1 if a > 0 else -1, 0))
+            ok &= ref_hull(y)[1] == f                                               # the round trip
+    report("check_api_hulls (api-2.md M, N; P16, P17)", ok,
+           f"{n} (coset, content): every unit at level 210 lcm(N, 2) in both hulls, small hull radius = r gcd of "
+           f"differences; simple hull coarser in {strict}; {len(table)} adeles to ideles")
+
+
+def check_api_division():
+    """Statement O: the finite part against enumeration of (A + B z) w modulo Mod (w the inverse units), the
+    same ball for the normal form of the divisor, agreement with the product rule on the small hull of the
+    inverse, P18 for exact units."""
+    ok = True
+    n = n_exact = n_zero = 0
+    for _ in range(2500):
+        a = F(RNG.randint(-6, 6), RNG.randint(1, 4))
+        M = F(RNG.randint(0, 8), RNG.randint(1, 3))
+        r = F(RNG.randint(1, 9), RNG.randint(1, 9))
+        u = RNG.choice(some_cosets(12))
+        y = ((F(1), F(0)), r, u)
+        res = ref_div_fin(fb(a, M), y)
+        c, N = u
+        if N == 0:
+            q = c * r
+            ok &= res == fb(a / q, M / abs(q))
+            ok &= all(fb_contains(res, (a + M * z) / q) for z in range(-3, 4))
+            n_exact += 1
+            n += 1
+            continue
+        if a == 0 and M == 0:
+            ok &= res == (0, 0, 1)
+            n_zero += 1
+            n += 1
+            continue
+        D = lcm(a.denominator, M.denominator)
+        A, B = int(D * a), int(D * M)
+        L = lcm(N, 2)
+        Mod = 6
+        for t in (B, abs(A) * L, L):
+            if t:
+                Mod = lcm(Mod, t)
+        zs = range(Mod // B) if B else [0]
+        W = [pow(w, -1, Mod) for w in img(c, N, Mod)]
+        if len(zs) * len(W) > 40000:
+            continue
+        S = sorted({((A + B * z) * w) % Mod for z in zs for w in W})
+        hull = reduce(gcd, [s - S[0] for s in S], Mod)
+        ok &= F(res[1], res[2]) == F(hull, D) / r                    # the radius against enumeration
+        ok &= all(fb_contains(res, F(s, D) / r) for s in S)          # every quotient inside
+        ok &= ref_div_fin(fb(a, M), ((F(1), F(0)), r, ref_uc_normal(u))) == res
+        # the product rule with the small hull of the inverse (Statement O, P19.6)
+        hb = ref_hull(((F(1), F(0)), 1 / r, ref_uc_inv(u)))[1]
+        hc, hr = F(hb[0], hb[2]), F(hb[1], hb[2])
+        ok &= res == fb(a * hc, qgcd(a * hr, hc * M, M * hr))
+        n += 1
+    ok &= ref_div_fin(fb(1, 4), (None, F(1), (1, 1))) == (1, 2, 1)
+    ok &= ref_div_fin(fb(0, 6), (None, F(3, 2), (5, 12))) == (0, 4, 1)
+    ok &= ref_div_fin(fb(3, 12), (None, F(1), (-1, 0))) == (9, 12, 1)
+    ok &= ref_div_fin(fb(F(1, 2), 0), (None, F(36, 1225), (1, 0))) == fb(F(1225, 72), 0)
+    report("check_api_division (api-2.md O; P18, P19)", ok,
+           f"{n} quotients: radius and containment against enumeration, normal form of the divisor, product rule "
+           f"on the small hull of the inverse; {n_exact} by exact units; {n_zero} with a = M = 0")
+
+
 PART1 = [check_decomposition, check_unit_cosets, check_canonical, check_products, check_lte, check_power,
          check_power_local, check_norm, check_class_map, check_idele_to_adele, check_noninvertible,
          check_division]
 PART2 = [check_api_ucoset, check_api_real_kernel, check_api_idele]
 PART3 = [check_api_classes]
+PART4 = [check_api_powers, check_api_hulls, check_api_division]
 
 if __name__ == "__main__":
     if sys.argv[1:] == ["part3"]:
         todo = PART3
+    elif sys.argv[1:] == ["part4"]:
+        todo = PART4
     else:
-        todo = PART2 if sys.argv[1:] == ["part2"] else PART1 + PART2 + PART3
+        todo = PART2 if sys.argv[1:] == ["part2"] else PART1 + PART2 + PART3 + PART4
     for f in todo:
         f()
     if FAILURES:

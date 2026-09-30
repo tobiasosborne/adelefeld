@@ -29,7 +29,9 @@
      adelefeld/dump.h     dump form
      adelefeld/ucoset.h   adf_ucoset, unit cosets and the exact units (milestone 2, slice 1)
      adelefeld/idele.h    adf_idele, ideles: product, inverse, the idele of a rational (slice 1)
-     adelefeld/idclass.h  adf_idclass, idele classes, the class map; valuations and norm (slice 2) */
+     adelefeld/idclass.h  adf_idclass, idele classes, the class map; valuations and norm (slice 2)
+     adelefeld/idpow.h    powers of unit cosets, ideles and classes: c^k U(N) and the tight M_k (slice 3)
+     adelefeld/idmap.h    idele -> adele (two hulls), adele -> idele, adele / idele (slice 3) */
 
 #ifndef ADELEFELD_H
 #define ADELEFELD_H
@@ -63,5 +65,7 @@
 #include "adelefeld/ucoset.h"
 #include "adelefeld/idele.h"
 #include "adelefeld/idclass.h"
+#include "adelefeld/idpow.h"
+#include "adelefeld/idmap.h"
 
 #endif /* ADELEFELD_H */

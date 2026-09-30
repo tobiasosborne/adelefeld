@@ -1,0 +1,47 @@
+== H1: 1 changed line(s)
+<             ulong e = 1;
+>             ulong e = 0;
+   test_idpow: exit 1; 6 tests, 10258 checks, 731 failed checks, 3 failed tests
+      FAIL ucoset_pow_against_enumeration (tests/test_idpow.c:418, 152 failed checks)
+      FAIL ucoset_pow_hand_cases_and_aliasing (tests/test_idpow.c:507, 5 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idpow.c:608, 574 failed checks)
+   test_idmap: exit 0; 6 tests, 54197 checks, 0 failed checks, 0 failed tests
+== H2: 1 changed line(s)
+<     st = adf_idele_ball_from_ends(z, lo, hi, k % 2 != 0 ? s : 1, p);
+>     st = adf_idele_ball_from_ends(z, lo, hi, s, p);
+   test_idpow: exit 1; 6 tests, 10122 checks, 214 failed checks, 3 failed tests
+      FAIL vectors_of_the_reference (tests/test_idpow.c:608, 173 failed checks)
+      FAIL idele_pow_hand_cases_statuses_aliasing (tests/test_idpow.c:802, 5 failed checks)
+      FAIL idele_pow_against_repeated_multiplication (tests/test_idpow.c:916, 36 failed checks)
+   test_idmap: exit 0; 6 tests, 54197 checks, 0 failed checks, 0 failed tests
+== H3: 1 changed line(s)
+<         arf_ui_div(t, 1, hi, p, ARF_RND_FLOOR);
+>         arf_ui_div(t, 1, lo, p, ARF_RND_FLOOR);
+   test_idpow: exit 1; 6 tests, 10122 checks, 699 failed checks, 4 failed tests
+      FAIL vectors_of_the_reference (tests/test_idpow.c:608, 672 failed checks)
+      FAIL idele_pow_hand_cases_statuses_aliasing (tests/test_idpow.c:802, 2 failed checks)
+      FAIL idele_pow_against_repeated_multiplication (tests/test_idpow.c:916, 24 failed checks)
+      FAIL idclass_pow_hand_cases (tests/test_idpow.c:962, 1 failed checks)
+   test_idmap: exit 0; 6 tests, 54197 checks, 0 failed checks, 0 failed tests
+== H4: 1 changed line(s)
+<             fmpz_mul_2exp(H, H, 1);                     /* lcm(N, 2) = 2 N for odd N */
+>             fmpz_mul_2exp(H, H, 0);                     /* lcm(N, 2) = 2 N for odd N */
+   test_idpow: exit 0; 6 tests, 10122 checks, 0 failed checks, 0 failed tests
+   test_idmap: exit 1; 6 tests, 54197 checks, 4235 failed checks, 4 failed tests
+      FAIL hulls_contain_every_point_and_the_small_one_is_tight (tests/test_idmap.c:413, 2492 failed checks)
+      FAIL division_against_enumeration_and_the_inverse (tests/test_idmap.c:796, 1457 failed checks)
+      FAIL division_statuses_aliasing_local_and_prec (tests/test_idmap.c:862, 1 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idmap.c:1000, 285 failed checks)
+== H5: 1 changed line(s)
+<     adf_ucoset_inv(w, &y->u);                           /* c* U(N), normal form (P10.2) */
+>     adf_ucoset_set(w, &y->u);                           /* c* U(N), normal form (P10.2) */
+   test_idpow: exit 0; 6 tests, 10122 checks, 0 failed checks, 0 failed tests
+   test_idmap: exit 1; 6 tests, 54197 checks, 750 failed checks, 2 failed tests
+      FAIL division_against_enumeration_and_the_inverse (tests/test_idmap.c:796, 672 failed checks)
+      FAIL vectors_of_the_reference (tests/test_idmap.c:1000, 78 failed checks)
+== H6: 1 changed line(s)
+<     return abs_k(k) > (ulong) ADF_IDELE_POW_BITS_MAX / b;
+>     return abs_k(k) >= (ulong) ADF_IDELE_POW_BITS_MAX / b;
+   test_idpow: exit 1; 6 tests, 10122 checks, 2 failed checks, 1 failed tests
+      FAIL idele_pow_hand_cases_statuses_aliasing (tests/test_idpow.c:802, 2 failed checks)
+   test_idmap: exit 0; 6 tests, 54197 checks, 0 failed checks, 0 failed tests
