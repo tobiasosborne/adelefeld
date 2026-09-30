@@ -9,6 +9,13 @@ should write interchangeable code.
 
 ## Change log
 
+- **0.4, edit of 2026-09-30 (lane `i-repair1`, pass over the documents).** The code and the headers stand; the
+  text follows them. 3.2: rows for `adf_lball`, `adf_sball`, the series at a prime (`lfunc.h`), the real functions
+  on `arb` and at a place; `LIMIT` in the row of unit cosets, ideles and classes (each row is read from its
+  header). 5.6: the exponent of a power is an `slong`. 5.7: the accessors are `adf_idclass_get_t` and
+  `adf_idclass_get_unit`, as the code, and `adf_idele_get_unit`; the simple ball is formed from the normal form.
+  2.2 and 7: `adf_places_t` was named and defined nowhere; a set of places is an array of `adf_place_t` and a
+  length `n`, as in `sball.h` (finding of lane `f-slice1`, `docs/api-1f.md` line 246).
 - **0.4 (2026-09-28), closure edits applied.** The edits of the milestone-0 gate closure check
   (`docs/reviews/m0-gate/closure.md`) are applied verbatim: E1 (4.6: the shared-pointer check covers
   `adf_scaled_mul_tight`, unary and exact-scalar operations; contexts are immutable, matching blocks permit
@@ -126,7 +133,12 @@ do not rely on FLINT's wording.
 Outputs; then optional output reports (`adf_place_t * where`, `int * lost`); then inputs; then integer parameters
 (degree, limits, number of digits); then `slong prec`; then a context argument, if any. Example:
 
-    int adf_adele_exp_at(adf_sball_t y, adf_place_t * where, const adf_adele_t x, const adf_places_t S, slong prec);
+    int adf_sball_project(adf_sball_t y, adf_place_t * where, const adf_adele_t x,
+                          const adf_place_t * places, slong n);
+    int adf_sball_add(adf_sball_t z, adf_place_t * where, const adf_sball_t x, const adf_sball_t y, slong prec);
+
+A set of places is an array of `adf_place_t` and a length `n` (`slong`), as in `sball.h`; there is no `adf_places_t`
+type.
 
 `prec` is the real working precision in bits, as in `arb` (`arb.h:382`); a `prec` below 2 is taken as 2 (M1-D4). It is an argument of every operation that
 computes a real or complex ball, including the parser of the value form (a decimal is read into an `arb` at `prec`).
@@ -196,7 +208,16 @@ to prove the opposite.
 | Conversion between scaled contexts | `OK`; best enclosure; loss reported through `int *lost` |
 | Conversion from tight to scaled | `OK` always; loss is reported in `int * lost` (`SPEC.md` 4.4: "says so") |
 | Adele to idele; inversion of an adele-like value | `OK`, `UNIT_NOT_CERTIFIED`, `NOT_UNIT`, `NOT_DETERMINED` |
-| Unit coset, idele, idele class arithmetic | `OK`, `NOT_DETERMINED` (the required real sign is not certified on the result, 5.7, gate finding G5); `NOT_UNIT` only for an exact zero input where one is accepted |
+| Unit coset, idele, idele class arithmetic | `OK`, `NOT_DETERMINED` (the required real sign is not certified on the result, 5.7, gate finding G5), `LIMIT` (a `prec` above `ADF_IDELE_PREC_MAX`, decided from `prec` alone before every other status; for `adf_idele_pow` also a content power above `ADF_IDELE_POW_BITS_MAX` bits); `NOT_UNIT` only for an exact zero input where one is accepted (`adf_idele_set_rat`, `adf_idele_mul_rat` with `q = 0`); `DOMAIN` (`adf_idele_set_parts`, `adf_idclass_set_parts`; a valuation or absolute value at the archimedean place) (`idele.h`, `idclass.h`, `idpow.h`, `idmap.h`) |
+| `adf_lball`: constructors and accessors (`set_rat`, `set_rat_ball`, `set_fball`, `get_prec`, `get_center`, `teichmuller`) | `OK`, `DOMAIN` (the archimedean place; an exact value has no precision; `p` divides the residue of `teichmuller`), `LIMIT` (an exponent above `ADF_LBALL_EXP_MAX`, or a power `p^k` above `ADF_LBALL_BITS_MAX` bits); the outputs are untouched on a status (`lball.h`) |
+| `adf_lball` arithmetic (`neg`, `add`, `sub`, `mul`, `inv`, `div`) | `OK`, `DOMAIN` (two different primes; checked first), `LIMIT` (an input or the result outside the limits of `lball.h`), and for `inv`, `div`: `NOT_UNIT` (the exact 0), `UNIT_NOT_CERTIFIED` (a ball that contains 0) |
+| `adf_lball` valuation, absolute value, decomposition (`valuation`, `abs`, `decompose`, `decompose_teich`, `frac`, `unit_mod`) | `OK`, `NOT_DETERMINED` (a ball that contains 0; `frac`: a ball with `N < 0`; `unit_mod`: `k` above the relative precision), `DOMAIN` (the exact 0 for `decompose`, `decompose_teich`, `unit_mod`; `k < 0`), `LIMIT` |
+| `adf_lball_pow_si` | `OK`, `LIMIT`, and for `k < 0`: `NOT_UNIT` (the exact 0), `UNIT_NOT_CERTIFIED` (a ball that contains 0); `k = 0` gives the exact 1 for every `x` (`lball.h`) |
+| `adf_sball`: constructors, projection, and accessors (`set_arb_lballs`, `project`, `get_place`, `get_lball`, `get_arb`) | `OK`, `DOMAIN` (a non-finite real ball, a non-canonical component, a repeated place, `n < 0`, an index or place that the value does not have), `LIMIT` (`project`: the projection to a prime, as `adf_lball_set_fball`); `where` names the place on a status other than `OK` (`sball.h`) |
+| `adf_sball` operations (`neg`, `add`, `sub`, `mul`) | `OK`, `DOMAIN` (different sets of places or tags, checked first), `UNSUPPORTED` (a complex archimedean component), `LIMIT` (`prec` above `ADF_REAL_PREC_MAX`, decided first, `where` the archimedean place; an `adf_lball` limit at a prime); the combined status is the maximum of 3.3 and `where` the first place with it |
+| Series at a prime (`adf_lball_exp`, `adf_lball_log`, `adf_lball_Log`, `lfunc.h`) | `OK`, `DOMAIN` (the input does not meet the domain; the exact 0 under `Log`), `NOT_DETERMINED` (the input meets the domain and its complement; a ball that contains 0 under `Log`), `LIMIT` (an exponent above `ADF_LBALL_EXP_MAX`, or a working modulus `p^W` above `ADF_LBALL_BITS_MAX` bits) |
+| Real functions on `arb` (`adf_real_exp`, `_log`, `_log_abs`, `_sin`, `_cos`, `_sqrt`, `_root`, `rfunc.h`) | `OK`, `DOMAIN` (every point outside the domain; a non-finite input ball; the root of degree 0), `NOT_DETERMINED` (a ball that meets the domain and its complement; a result that `arb` returns non-finite, CV-08), `LIMIT` (`prec` above `ADF_REAL_PREC_MAX`, decided first) |
+| Functions of `adf_sball` at one place (`adf_sball_exp_at`, `_log_at`, `_Log_at`, `_log_abs_at`, `_sin_at`, `_cos_at`, `_sqrt_at`, `_root_at`, with `where`) | as the two rows above, at the archimedean place (`prec` above the limit first) and at a prime through `lfunc.h` (where `prec` is an absolute `p`-adic precision, and no limit on it applies except those of `lfunc.h`); further `DOMAIN` (`v` is not a place of `x`; a root of degree 0), `UNSUPPORTED` (a complex tag at the archimedean place; `log_abs`, `sin`, `cos`, `sqrt`, `root` at a prime); `where` = the place |
 | Functions at places (`_at`) and all-places functions (`SPEC.md` 9.3) | `OK`, `DOMAIN` (with place), `NOT_DETERMINED`, `NEEDS_SPLIT`, `UNSUPPORTED`, `LIMIT` |
 | Quotient by `Q` | `OK`, `NEEDS_SPLIT`, `LIMIT` |
 | Characters, Gauss sums, local factors | `OK`, `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `DOMAIN` (for an exact pole), `UNSUPPORTED` |
@@ -590,11 +611,12 @@ Predicate:
   `c = c'` modulo `N'bar`; they meet exactly when `c = c'` modulo `gcd(N, N')`. For exact units: `[e mod 0]` is
   inside `c' U(N')` when `e = c'` modulo `N'bar` (`N' >= 1`), and two exact units are equal when equal.
 - Product at moduli `N`, `N'`: `c c' U(gcd(N, N'))`, the smallest coset containing the product set (ideles P11).
-- **Power.** `adf_ucoset_pow(y, x, k)` returns the enclosure `c^k U(N)` (`c^k` modulo the normal modulus, the
-  inverse for `k < 0`), and the exact unit 1 for `k = 0`; `adf_ucoset_pow_tight(y, x, k)` returns the smallest coset
-  `chat^k U(M_k)` of `proofs/ideles.md` Proposition 13 (both coincide for `k = 1` and `k = -1`, P13.4).
-  DECISION CV-49 (D6); reason (orchestrator): the simple rule is the default; the tight modulus `M_k` needs the
-  table of P13, including the primes `p` with `p - 1` dividing `k`, and is offered under its own name.
+- **Power.** `adf_ucoset_pow(y, x, k)`, the exponent `k` an `slong`, returns the enclosure `c^k U(N)` (`c^k` modulo
+  the normal modulus, the inverse for `k < 0`), and the exact unit 1 for `k = 0`; `adf_ucoset_pow_tight(y, x, k)`
+  returns the smallest coset `chat^k U(M_k)` of `proofs/ideles.md` Proposition 13 (both coincide for `k = 1` and
+  `k = -1`, P13.4). DECISION CV-49 (D6); reason (orchestrator): the simple rule is the default; the tight modulus
+  `M_k` needs the table of P13, including the primes `p` with `p - 1` dividing `k`, and is offered under its own
+  name.
 
 ### 5.7 `adf_idele` and `adf_idclass`
 
@@ -617,11 +639,13 @@ Predicate:
 - Init: the exact idele 1: `inf = 1` exact, `r = 1`, `u = [1 mod 0]`. Class init: `<1 ; [1 mod 0]>`.
 - **Names** (seams R5, adopted by D8): the positive rational `r` is the **content** of the idele (for `Q` the
   positive generator of the content ideal); its accessor is `adf_idele_content`, never "scale". The class
-  coordinates `(t, u')` and the sign rule are accessors special to `Q` (`adf_idclass_t_get`,
-  `adf_idclass_unit_get`); class-level operations (multiply, norm, character value) do not expose them. The struct
-  field keeps the short name `r`; the field name is not part of the contract.
-- Idele to adele (`proofs/ideles.md` P16): the simple ball `r c + r N Zhat`, and the smallest ball
-  `r c' + r lcm(N, 2) Zhat` with `c'` odd; the smallest depends only on the set.
+  coordinates `(t, u')` and the sign rule are accessors special to `Q` (`adf_idclass_get_t`, `adf_idclass_get_unit`,
+  as `adf_idele_get_unit` for the unit of an idele); class-level operations (multiply, norm, character value) do not
+  expose them. The struct field keeps the short name `r`; the field name is not part of the contract.
+- Idele to adele (`proofs/ideles.md` P16): the simple ball `r c'' + r N'' Zhat`, formed from the normal form
+  `(c'', N'')` of the unit (`adf_adele_set_idele_simple`), and the smallest ball `r c' + r lcm(N, 2) Zhat` with
+  `c'` odd (`adf_adele_set_idele`); both depend only on the set. The two are equal when `N''` is even; when `N''`
+  is odd the radius of the simple ball is half that of the smallest, so it is the coarser set.
 - **Division of an adele by an idele** `adf_adele_div_idele(z, x, y, prec)` returns, for `x = I x (a + M Zhat)` and
   `y = (Y, r, c U(N))`, the real part `I / Y` rounded as usual and the finite part
   `(a e)/r + (gcd(abs(a) lcm(N, 2), M) / r) Zhat`, with `e` odd and `e = c^-1` modulo `N`; this is the smallest ball
@@ -1024,8 +1048,9 @@ DECISION CV-18 (D8, seams R1), revised from version 0.1: **a place is an opaque 
   (`adf_place_cmp`). It is the order of printing (9.4), of `adf_sball` storage (5.9), of per-place reports and of
   the tie-break of section 3.3. For fields with several places above one prime this order will need a tie-break
   among them (seams R1); version 1 has none to make.
-- A set of places (`adf_places_t`) is stored sorted in this order, without repetition; constructors sort and reject
-  repetitions with `ADF_DOMAIN`.
+- A set of places is an array of `adf_place_t` and a length `n` (there is no `adf_places_t` type, as `sball.h`
+  says); a stored set (`adf_sball`, 5.9) is sorted in this order, without repetition; constructors accept the array
+  in any order, sort it and reject repetitions with `ADF_DOMAIN`.
 
 ## 8. Text: general rules
 

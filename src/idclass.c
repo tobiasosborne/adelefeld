@@ -99,9 +99,9 @@ adf_idclass_set_idele(adf_idclass_t c, const adf_idele_t x, slong prec)
     arb_t t;
     int st;
 
-    IC_INV_IDELE(x);
     if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
+    IC_INV_IDELE(x);
     arb_init(t);
     st = adf_idele_norm(t, x, prec);   /* T: the norm, Statement I.4 (also the limit and B1) */
     if (st == ADF_OK)
@@ -154,10 +154,10 @@ adf_idclass_mul(adf_idclass_t z, const adf_idclass_t x, const adf_idclass_t y, s
     arb_t t;
     int st;
 
+    if (prec > ADF_IDELE_PREC_MAX)
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
     IC_INV(x);
     IC_INV(y);
-    if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
     arf_init(lx);
     arf_init(hx);
     arf_init(ly);
@@ -198,9 +198,9 @@ adf_idclass_inv(adf_idclass_t y, const adf_idclass_t x, slong prec)
     arb_t t;
     int st;
 
-    IC_INV(x);
     if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
+    IC_INV(x);
     arf_init(lx);
     arf_init(hx);
     arf_init(lo);

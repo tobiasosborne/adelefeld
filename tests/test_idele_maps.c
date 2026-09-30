@@ -1034,3 +1034,129 @@ ADF_TEST(vectors_of_the_reference)
     adf_idele_clear(z);
     adf_idele_clear(keep);
 }
+
+/* ---- LIMIT is decided from prec alone, before any allocation, also under ADF_CHECK_INVARIANTS (lane
+   i-repair1, finding F1 of docs/reviews/m2/review-slices-2-3.md; SPEC 15.4 N-D8). The oracle is the FLINT
+   allocator: refs/src/flint-3.0.1/memory.rst:16-21. The idele has a content and a modulus of thousands of bits,
+   so that the entry check of the debug build (integer gcds) allocates. ---- */
+
+static void *(*orig_malloc)(size_t);
+static void *(*orig_realloc)(void *, size_t);
+static void *(*orig_calloc)(size_t, size_t);
+static void (*orig_free)(void *);
+static size_t alloc_calls;
+static int alloc_tracking;
+
+static void *
+hook_malloc(size_t n)
+{
+    alloc_calls += alloc_tracking;
+    return orig_malloc(n);
+}
+
+static void *
+hook_realloc(void * p, size_t n)
+{
+    alloc_calls += alloc_tracking;
+    return orig_realloc(p, n);
+}
+
+static void *
+hook_calloc(size_t n, size_t s)
+{
+    alloc_calls += alloc_tracking;
+    return orig_calloc(n, s);
+}
+
+static void
+hook_free(void * p)
+{
+    orig_free(p);
+}
+
+static void
+set_big_idele(adf_idele_t x)
+{
+    fmpz_one(fmpq_numref(x->r));
+    fmpz_mul_2exp(fmpq_numref(x->r), fmpq_numref(x->r), 4096);
+    fmpz_add_ui(fmpq_numref(x->r), fmpq_numref(x->r), 3);
+    fmpz_one(fmpq_denref(x->r));
+    fmpz_mul_2exp(fmpq_denref(x->r), fmpq_denref(x->r), 2048);
+    fmpz_add_ui(fmpq_denref(x->r), fmpq_denref(x->r), 7);
+    fmpq_canonicalise(x->r);
+    fmpz_one(x->u.c);
+    fmpz_one(x->u.N);
+    fmpz_mul_2exp(x->u.N, x->u.N, 2048);
+    fmpz_add_ui(x->u.N, x->u.N, 1);
+}
+
+ADF_TEST(LIMIT_before_any_allocation_of_the_idele_functions)
+{
+    adf_idele_t x, y, z;
+    adf_rat_t q;
+    arb_t t;
+    size_t calls[5];
+    int st[5], i;
+
+    adf_idele_init(x);
+    adf_idele_init(y);
+    adf_idele_init(z);
+    adf_rat_init(q);
+    arb_init(t);
+    set_big_idele(x);
+    adf_idele_set(y, x);
+    rat_set_si(q, 5, 7);
+    ADF_CHECK(adf_idele_is_canonical(x));
+    __flint_get_memory_functions(&orig_malloc, &orig_calloc, &orig_realloc, &orig_free);
+    __flint_set_memory_functions(hook_malloc, hook_calloc, hook_realloc, hook_free);
+    for (i = 0; i < 5; i++)
+    {
+        flint_cleanup();
+        alloc_calls = 0;
+        alloc_tracking = 1;
+        if (i == 0)
+            st[i] = adf_idele_norm(t, x, ADF_IDELE_PREC_MAX + 1);
+        else if (i == 1)
+            st[i] = adf_idele_mul(z, x, y, ADF_IDELE_PREC_MAX + 1);
+        else if (i == 2)
+            st[i] = adf_idele_inv(z, x, ADF_IDELE_PREC_MAX + 1);
+        else if (i == 3)
+            st[i] = adf_idele_mul_rat(z, x, q, ADF_IDELE_PREC_MAX + 1);
+        else
+            st[i] = adf_idele_set_rat(z, q, ADF_IDELE_PREC_MAX + 1);
+        alloc_tracking = 0;
+        calls[i] = alloc_calls;
+    }
+    __flint_set_memory_functions(orig_malloc, orig_calloc, orig_realloc, orig_free);
+    for (i = 0; i < 5; i++)
+        ADF_CHECK_MSG(st[i] == ADF_LIMIT && calls[i] == 0, "function %d: status %d, %zu allocator calls", i, st[i],
+                      calls[i]);
+    arb_clear(t);
+    adf_rat_clear(q);
+    adf_idele_clear(x);
+    adf_idele_clear(y);
+    adf_idele_clear(z);
+}
+
+/* F2 (the header of idele.h, "t is the exact 1 when the real ball of q is exact"): the exactness of the norm of
+   a rational needs the ball of q to be exact at the precision of the norm call. The norm rounds the ends of the
+   real ball to p bits (E1) and again after the exact rational factor (Statement F): 5 is 3 bits, so at p = 2
+   the ends are 4 and 6, the norm is 1 +/- 1/2, an enclosure of 1 that is not exact. At p = 3 it is exact. */
+ADF_TEST(norm_of_an_exact_rational_is_exact_only_when_it_fits_the_norm_precision)
+{
+    adf_idele_t x;
+    adf_rat_t q;
+    arb_t t;
+
+    adf_idele_init(x);
+    adf_rat_init(q);
+    arb_init(t);
+    rat_set_si(q, 5, 1);
+    ADF_CHECK(adf_idele_set_rat(x, q, 64) == ADF_OK && arb_is_exact(x->inf));
+    ADF_CHECK(adf_idele_norm(t, x, 2) == ADF_OK && arb_contains_si(t, 1) && !arb_is_exact(t));
+    ADF_CHECK(adf_idele_norm(t, x, 3) == ADF_OK && arb_is_one(t));
+    ADF_CHECK(adf_idele_norm(t, x, 64) == ADF_OK && arb_is_one(t));
+    arb_clear(t);
+    adf_rat_clear(q);
+    adf_idele_clear(x);
+}

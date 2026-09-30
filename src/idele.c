@@ -254,9 +254,9 @@ adf_idele_set_rat(adf_idele_t x, const adf_rat_t q, slong prec)
     arb_t t;
     int s;
 
-    ADF_INV_RAT(q);
     if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;                  /* before any allocation (the orchestrator, 2026-09-30) */
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
+    ADF_INV_RAT(q);
     if (fmpq_is_zero(q->q))
         return ADF_NOT_UNIT;
     s = fmpz_sgn(fmpq_numref(q->q));
@@ -295,10 +295,10 @@ adf_idele_mul(adf_idele_t z, const adf_idele_t x, const adf_idele_t y, slong pre
     arb_t t;
     int sx, sy, st;
 
+    if (prec > ADF_IDELE_PREC_MAX)
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
     ID_INV(x);
     ID_INV(y);
-    if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
     arf_init(lx);
     arf_init(hx);
     arf_init(ly);
@@ -344,9 +344,9 @@ adf_idele_inv(adf_idele_t y, const adf_idele_t x, slong prec)
     arb_t t;
     int sx, st;
 
-    ID_INV(x);
     if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
+    ID_INV(x);
     arf_init(lx);
     arf_init(hx);
     arf_init(lo);
@@ -393,10 +393,10 @@ adf_idele_mul_rat(adf_idele_t z, const adf_idele_t x, const adf_rat_t q, slong p
     arb_t t;
     int sx, sq, st;
 
+    if (prec > ADF_IDELE_PREC_MAX)
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
     ID_INV(x);
     ADF_INV_RAT(q);
-    if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
     if (fmpq_is_zero(q->q))
         return ADF_NOT_UNIT;
     sq = fmpz_sgn(fmpq_numref(q->q));
@@ -518,9 +518,9 @@ adf_idele_norm(arb_t t, const adf_idele_t x, slong prec)
     arb_t b;
     int st;
 
-    ID_INV(x);
     if (prec > ADF_IDELE_PREC_MAX)
-        return ADF_LIMIT;
+        return ADF_LIMIT;                  /* first: from prec alone, before the entry checks (N-D8, F1) */
+    ID_INV(x);
     arf_init(lx);
     arf_init(hx);
     arf_init(lo);

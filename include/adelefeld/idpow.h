@@ -86,7 +86,9 @@ void adf_ucoset_pow_tight(adf_ucoset_t y, const adf_ucoset_t x, slong k);
    respectively up, at p = max(prec, 2) bits after every product, then for k < 0 the ends RD_p(1/hi),
    RU_p(1/lo); the sign is sign(X) for odd k and +1 for even k.
    k = 0: z is the exact idele 1 (inf = 1 exact, r = 1, u = [1]) for every x: xi^0 = 1, r^0 = 1, w^0 = 1.
-   If X is exact and |m|^|k| (m the midpoint) has at most p bits, Z is exact (K.4).
+   If k > 0, X is exact and |m|^k (m the midpoint) has at most p bits, Z is exact (K.4). For k < 0 the promise
+   is not made: 1/|m|^|k| is a binary number only when |m| is a power of 2 (exact 3, k = -1, p = 2: Z is
+   1/4 +/- 1/8, a ball around 1/3).
    Status: ADF_OK, z written; ADF_NOT_DETERMINED (B1: e(hi) - e(lo) > p) if the real part cannot be certified
    free of 0 at p bits, z untouched; ADF_LIMIT, z untouched, if prec > ADF_IDELE_PREC_MAX, or if r != 1 and
    |k| (bits(n) + bits(d)) > ADF_IDELE_POW_BITS_MAX for r = n/d (both decided before any allocation, before

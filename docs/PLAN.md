@@ -11,6 +11,12 @@ F1-F6), and TJO's decision that elementary functions belong to the basic package
 (`reviews/astra-2026-09-27-r2/review.md`) and adds the catalogue of functions (`SPEC.md` 9.3.7). Draft 3 applies
 review round 3 (R1 to R6). Section numbers of `SPEC.md` refer to its version 1.3.
 
+**Change log of the edit of 2026-09-30** (lane `i-repair1`, pass over the documents; no version number). Row 2.1:
+the sentence "`k = 1, -1` give `M_k = N`" is replaced by `M_k = Nbar`, the normal modulus, as `proofs/ideles.md`
+Proposition 13, item 4 (lines 284-285) holds (reported by lanes of the night). Row 1F.4: "our wrapper around FLINT's
+centre evaluation" is replaced by the library's own series, as decision N-D9 (`SPEC.md` 15.4) says. Section 6:
+status tables for milestones 1F, 2 and S, in the form of the table for milestone 0.
+
 **Change log of version 1.3** (2026-09-28): the milestone 0 gate closure check (`reviews/m0-gate/closure.md`) is
 applied. Section 4: the scaled shared-pointer check covers `adf_scaled_mul_tight` and unary and exact-scalar
 operations (E1); a context constructor overwrites only the pointer slot of `*out` and version 1 offers no inline
@@ -265,21 +271,47 @@ marked **gate** have an exit criterion instead of an estimate.
 | 1F.1 | `adf_sball` and `f_at`: partial balls over named places, with the real or complex tag; projection from adeles | the result names its places; failure at one place is reported with that place and no value |
 | 1F.2 | Archimedean wrappers around `arb`/`acb`: `exp`, `log`, `log_abs`, trigonometric and hyperbolic functions, roots (odd and even degree), special functions | wrapper tests only: projection, guard digits, translation of statuses, balls crossing 0 or a branch cut. Not a test of `arb` |
 | 1F.3 | `adf_lball`: arithmetic; decomposition `p^m w u`; valuation, absolute value, fractional part | enumeration modulo small prime powers |
-| 1F.4 | Local `exp`, `log`, `Log`: our wrapper around FLINT's centre evaluation | the regression of review N4 (`exp 3` and `exp 12` at precision 8); the precision cases of `SPEC.md` 9.3.2 including the losses at `x = 3, 12` (`p = 3`) and `x = 2, 10` (`p = 2`); `log(-1) = 0` at 2; balls at the edge of the domain; uncertain zero |
+| 1F.4 | Local `exp`, `log`, `Log`: the library's own series on `fmpz` modulo a working power of `p` (N-D9, `SPEC.md` 15.4; FLINT's `padic_exp`, `padic_log` are a second opinion in the tests) | the regression of review N4 (`exp 3` and `exp 12` at precision 8); the precision cases of `SPEC.md` 9.3.2 including the losses at `x = 3, 12` (`p = 3`) and `x = 2, 10` (`p = 2`); `log(-1) = 0` at 2; balls at the edge of the domain; uncertain zero |
 | 1F.5 | Local roots: existence conditions, all branches with identifiers or a seed, precision formula and its guard; square roots at 2; degree divisible by `p` | 3 has no square root in `Q_2`, 9 has; counts `gcd(n, p-1)`; loss of one digit at 2; input balls outside the guard |
 | 1F.6 | Powers: integer; rational through roots; principal units; (the quasi-character comes with milestone 3) | `exp(Log p) = 1` is not `p`; compatibility of principal-unit powers with integer powers |
 | 1F.7 | `sin`, `cos`, `sinh`, `cosh` at a prime by power series with proved truncation | comparison with `exp` at `p = 5` and `13` (where `sqrt(-1)` is in `Q_p`); `sinh`, `cosh` against `exp` at every prime; independent exact truncations with tail bounds at `p = 2, 3`: `cos 4 = 9 mod 16`, `sin 3 = 3 mod 9`; a stated output precision is required, identities alone do not count |
 | 1F.8 | All-places forms: the five series on values with finite part exactly 0; `Log` on ideles as the enclosure `4 Zhat` refined at named primes; the rational root of an exact rational (by integer root tests; both signs optional for even degree; 0; degree 1); `NOT_DETERMINED` for roots of degree at least 2 of ideles; branches are listed only over named places | after milestone 2. 1 has rational square roots `1` and `-1` and the function does not claim to list the adelic ones; 8 has the cube root 2; 2 has no square root |
 | 1F.9 | Catalogue, Tier A, as the types arrive: Legendre, Jacobi, Kronecker and Hilbert symbols; local zeta factors; profinite power, and its finest-modulus variant as a separately named operation; binomial coefficients; content; cyclotomic action as two functions named by their formula, `z -> z^(1/u')` and `z -> z^(u')` (M0-D10). (Gauss sums and local constants: milestone 3 and 5; theta series: milestone 4) | `(1/2) = +1` against `(3/2) = -1`; Hilbert symbol: product formula on rationals, solvability modulo 16, 9, 25 on reduced coefficients, all 64 pairs of square classes at 2, undetermined cases for ideles, the unit part with the cofactor of the scale (`r = s = 3`, unit 1: `(3,3)_2 = -1`); profinite power: the criterion, the coarsening to `D`, negative exponents, canonical moduli, exponent 0 gives the exact unit, the finest modulus `canon(F)` with its CRT centre (`N = 5, c = 2, e = 2, M = 4`: `F = 120`, centre 49, not `c^e`); binomials: enclosure and the smallest ball by enumeration, `(a, N, k) = (0, 8, 4)` gives radius 2; cyclotomic action: the test vector of the specification; local factors at and near their poles: a ball containing a pole returns the pole status, never a finite or unbounded ball |
 
+**Status of milestone 1F on 2026-09-30** (from `git log` and the result files in `lanes/`; the tracker was not
+read):
+
+| WP | State | Record |
+|---|---|---|
+| 1F.1 | done for `Q` | `cb86d23`: `adf_sball`, projection of an adele to places, ring operations over one set of places (lane `f-slice2`); review `docs/reviews/f1/review-sball-rfunc.md` (5 major, 3 minor); repairs R3 to R8 in `508f3bb`; functions at one place of a partial ball, real and prime: `9c872a7` (lane `f-slice6`). Complex components are stored and compared only; arithmetic on them is `UNSUPPORTED` |
+| 1F.2 | first slice done | `cb86d23`: `exp`, `log`, `log_abs`, `sin`, `cos`, `sqrt`, `root` on a real ball and at the real place. Left: `sinh`, `cosh`, complex balls (`acb`), special functions |
+| 1F.3 | done | `a017219`: `adf_lball`, arithmetic, valuation, decomposition (lane `f-slice1`); review `docs/reviews/f1/review-lball.md` (4 major, 2 minor), repairs `61586e9`; `8767d90`: Teichmueller decomposition, fractional part, unit modulo `p^k`, integer powers (lane `f-slice3`; not reviewed) |
+| 1F.4 | done, reviewed, one cost finding open | `20e0a61`: `exp`, `log`, `Log` at a prime on local balls (lane `f-slice4`); review `docs/reviews/f1/review-lfunc.md`: no wrong enclosure, one major finding of cost (`log(1 + p)` at a prime of one word, `N = 10000`: 59 s); the lane `f-slice5` has a brief and no result |
+| 1F.5 | not started | local roots |
+| 1F.6 | partly | integer power of a local ball is `adf_lball_pow_si` (in `8767d90`); rational powers, principal-unit powers and the rest are not started |
+| 1F.7 | not started | `sin`, `cos`, `sinh`, `cosh` at a prime |
+| 1F.8 | not started | all-places forms |
+| 1F.9 | not started | catalogue, Tier A |
+
 ### Milestone 2: ideles (M)
 
 | WP | Content | Tests |
 |---|---|---|
-| 2.1 | `adf_ucoset` with the exact units (modulus 0; printed `[1]`, `[-1]`; M0-D1), `adf_idele`, `adf_idclass`: multiply, invert, power. Power: the default enclosure `c^k U(N)`, and the smallest coset `chat^k U(M_k)` of `proofs/ideles.md` Proposition 13 as a separately named operation (M0-D6); exponent 0 gives the exact unit | exact coset identities at a fixed modulus; `gcd` rule at mixed moduli, including an exact factor (`gcd(0, N) = N`); the point 1 is in `x * x^-1`; powers against enumeration modulo small `M_k` (squares: `M_2 = 24` for `N = 1`); `k = 1, -1` give `M_k = N` |
+| 2.1 | `adf_ucoset` with the exact units (modulus 0; printed `[1]`, `[-1]`; M0-D1), `adf_idele`, `adf_idclass`: multiply, invert, power. Power: the default enclosure `c^k U(N)`, and the smallest coset `chat^k U(M_k)` of `proofs/ideles.md` Proposition 13 as a separately named operation (M0-D6); exponent 0 gives the exact unit | exact coset identities at a fixed modulus; `gcd` rule at mixed moduli, including an exact factor (`gcd(0, N) = N`); the point 1 is in `x * x^-1`; powers against enumeration modulo small `M_k` (squares: `M_2 = 24` for `N = 1`); `k = 1, -1` give `M_k = Nbar`, the normal modulus (`proofs/ideles.md` P13.4) |
 | 2.2 | Absolute values, valuations at a named prime (by divisibility, no factorisation), norm | negative rationals; norm exact before rounding |
 | 2.3 | Maps: rational to idele (exact unit `sign(q)`, M0-D1); idele to class (with the sign on the unit); idele to adele, both hulls | containment; tightness of the small hull; an exact unit gives the exact rational `r c` |
 | 2.4 | Division of an adele by an idele (the smallest ball of `proofs/ideles.md` Proposition 19, M0-D7) or an exact rational | against multiplication by the inverse; the radius `gcd(|a| lcm(N, 2), M)/r` against enumeration, with `a = 0`, `M = 0`, odd `N`; status when the divisor is only an adele |
+
+**Status of milestone 2 on 2026-09-30** (from `git log` and the result files in `lanes/`; the tracker was not read):
+
+| WP | State | Record |
+|---|---|---|
+| 2.1 | done | `dac1688`: `adf_ucoset` with exact units, `adf_idele`, product, inverse, idele of a rational (lane `i-slice1`); `3837a55`: powers of unit cosets, ideles and classes, default and tight (lane `i-slice3`) |
+| 2.2 | done | `937a908`: valuations and absolute values at a prime, absolute value at infinity, norm, the limit `ADF_IDELE_PREC_MAX` (lane `i-slice2`) |
+| 2.3 | done | `937a908`: `adf_idclass`, the class map with the sign on the unit; `3837a55`: idele to adele, both hulls, adele to idele |
+| 2.4 | done | `3837a55`: division of an adele by an idele, smallest ball (P19) |
+| reviews | done, repaired | bug hunt `lanes/i-review1/result.md` (unit cosets and slice 1: no defect); `docs/reviews/m2/review-slices-2-3.md` (codex `gpt-6.1-sol`: no wrong enclosure, one major finding, the order of the checks under `INV=1`, and four minor findings of text); repair: lane `i-repair1` |
+| left | text and dump forms | the value form of unit cosets, ideles and classes and the driver arithmetic on ideles are in work in lane `t-slice1`; the dump forms are not started |
 
 ### Milestone 3: quotient and characters (M)
 
@@ -326,6 +358,16 @@ Slice 1 is partial rational reconstruction in the range `2 A B < m`. The design 
 | S.3 | Partial rational reconstruction from a residue (`adf_resid`), with certified one/none/several statuses and an explicit limited-search `NOT_DETERMINED` result; complete classification when the search is allowed to finish. Certificate pair and enumeration as in `proofs/solvers.md` section 1 |
 | S.1 | Systems modulo `N`: particular solution, canonical kernel (Howell form of `[A^T \| I]`), certificate checked by matrix products, vector of non-solvability; right-hand sides that are finite balls (`proofs/solvers.md` section 2). The Hermite form over `Z` is an equivalent engine (Proposition 2.12); FLINT's Smith form returns no transformations |
 | S.2 | Roots in `Z_p` by search and Hensel lifting, with certificates and a completeness status; real roots with a completeness status (`proofs/solvers.md` section 3) |
+
+**Status of milestone S on 2026-09-30** (from `git log` and the result files in `lanes/`; the tracker was not read):
+
+| WP | State | Record |
+|---|---|---|
+| S.3 | done | `745f02f`, `29845cc`, `1d546f7`: `adf_resid_reconstruct` in the whole range, certificates, the rest of `resid.h`; reviews `docs/reviews/s3`, `docs/reviews/s13` |
+| S.1 | done | `5d7c92e`, `0f393bb`: `adf_linsolve_mod`, the verifier, the rest of `linsolve.h`; reviews `docs/reviews/s1`, `docs/reviews/s13`; repair `3526cbf` |
+| S.2 | done, one cost finding open | roots at a prime: `88e8ac8`, `0fdaf4f`, and for every prime of a place `9be3fab`; real roots by exact isolation: `3fe43d0`, `fdc6831`; reviews `docs/reviews/s2`, `bf1bc26`, `lanes/r-review1/report.md`, `lanes/r-review2/result.md` (no wrong list; a dense polynomial of degree 50 with coefficients of 10^4 bits takes more than 5 s in FLINT's real-root count) |
+| driver | done | `dc66c5f`: commands `roots`, `realroots`, `recover` |
+| left | | a long differential run of the route above the evaluation bound of `roots_padic` (HANDOFF.md of 2026-09-29, 21:10: the long runs ended before the change; the new route had one of 180 s); the cost of `adf_roots_real` for a dense polynomial of high degree |
 
 ### Milestone 6: the second field (after version 1)
 

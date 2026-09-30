@@ -538,6 +538,45 @@ Used by: `SPEC.md` 4.5, 5; `PLAN.md` 2.4 ("against multiplication by the inverse
 | P18 | division by an exact rational | proved here | `check_division` |
 | P19 | division by an idele, smallest ball `gcd(abs(a) L, M)/r` | proved here | `check_division` |
 
+### Statements proved in `docs/api-2.md` (not copied into this file)
+
+The lanes of milestone 2 proved Statements A to O in `docs/api-2.md`, stepwise, because this file has no statement
+for what the code computes (the unit cosets and ideles as stored, the real kernel, powers, hulls, division). They
+are NOT copied here (decision of 2026-09-30, lane i-repair1); this table names each, the line where it is proved and
+its review status as the reviews give it. There is no "Statement index and proof status" heading in this file: its
+table is "Table of statements" above. Reviews: i-review1 = `lanes/i-review1/result.md` (Claude Sonnet, bug hunt
+through the unit cosets and ideles of slice 1: no defect; one crash at a `prec` of LONG_MAX, handed to slice 2 as
+the precision limit); i-review2 = `docs/reviews/m2/review-slices-2-3.md` (codex gpt-6.1-sol, slices 2 and 3: no
+wrong enclosure, findings F1 to F5). "No defect" means: tested by enumeration or by the reviewer's own oracle, none
+found. Lines are those of `docs/api-2.md` after the repair of lane i-repair1.
+
+| Statement | Content | Proved at | Review status |
+|---|---|---|---|
+| A | exact units | api-2.md:61 | no defect (i-review1: 153188 checks) |
+| B | normal form | api-2.md:91 | no defect (i-review1) |
+| C | product and inverse of unit cosets | api-2.md:100 | no defect (i-review1) |
+| D | the set of an idele value, product, inverse | api-2.md:114 | no defect (i-review1) |
+| E | the real kernel: end points, then a ball | api-2.md:130 | no defect (i-review1: 543000 cases) |
+| F | the real kernel with an exact rational factor | api-2.md:254 | no defect (i-review2); see F2 |
+| G | class value: product, inverse, invariance, class map | api-2.md:282 | i-review2 F2 (MINOR, G.5); repaired |
+| H | an idele times an exact rational | api-2.md:310 | no defect (i-review2: 22000 cases) |
+| I | valuations, absolute values, norm | api-2.md:319 | no defect (i-review2: 8744 cases) |
+| J | the two powers of a unit coset | api-2.md:398 | read, no false step (i-review2); 19384 inputs |
+| K | the real kernel of a power | api-2.md:448 | no defect (i-review2); F3 concerns the header |
+| L | powers of an idele value and of a class value | api-2.md:485 | i-review2 F4 (MINOR, L.5); corrected |
+| M | the two hulls | api-2.md:515 | i-review2 F5 (MINOR, M.2); corrected |
+| N | adele to idele | api-2.md:534 | no defect (i-review2: 20 status combinations) |
+| O | division of an adele by an idele | api-2.md:547 | no defect (i-review2: 4028 cases) |
+
+i-review2 F2: the text of `idclass.h` (the class of a rational is exact) lacked the condition of G.5, and the text
+of `idele.h` (the norm rounds each end once) did not say that the ends of the real ball are rounded to p bits first
+(Statement F takes rounded ends as input; the exact ends could need unbounded memory, `arf.rst:103-106`). Both texts
+are corrected. F3: `idpow.h` promised exactness for negative exponents, K.4 is for k > 0; corrected. F4: L.5 used
+the copies of x for k < 0 instead of the copies of the inverse; corrected. F5: M.2 gave the ratio of the radii of
+the two hulls in the wrong direction; corrected. F1 (MAJOR) is not a statement: LIMIT is now decided before the
+entry checks of the debug build. Statement J was attacked first by the reviewer with an independent enumeration of
+the local cosets (884736 checks); no statement of this table was refuted.
+
 ## Review record
 
 Date 2026-09-27. Reviewer: codex gpt-6-astra, `docs/reviews/m0-proofs/ideles-review.md` (checks

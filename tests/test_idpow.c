@@ -1020,3 +1020,164 @@ ADF_TEST(idclass_pow_hand_cases)
     adf_idclass_clear(keep);
     adf_idclass_clear(one);
 }
+
+/* ---- LIMIT is decided from prec alone, before any allocation, also under ADF_CHECK_INVARIANTS (lane
+   i-repair1, finding F1 of docs/reviews/m2/review-slices-2-3.md; SPEC 15.4 N-D8). The oracle is the FLINT
+   allocator: refs/src/flint-3.0.1/memory.rst:16-21. The values have a content and a modulus of thousands of
+   bits, so that the entry check of the debug build (integer gcds) allocates. ---- */
+
+static void *(*orig_malloc)(size_t);
+static void *(*orig_realloc)(void *, size_t);
+static void *(*orig_calloc)(size_t, size_t);
+static void (*orig_free)(void *);
+static size_t alloc_calls;
+static int alloc_tracking;
+
+static void *
+hook_malloc(size_t n)
+{
+    alloc_calls += alloc_tracking;
+    return orig_malloc(n);
+}
+
+static void *
+hook_realloc(void * p, size_t n)
+{
+    alloc_calls += alloc_tracking;
+    return orig_realloc(p, n);
+}
+
+static void *
+hook_calloc(size_t n, size_t s)
+{
+    alloc_calls += alloc_tracking;
+    return orig_calloc(n, s);
+}
+
+static void
+hook_free(void * p)
+{
+    orig_free(p);
+}
+
+static void
+hooks_on(void)
+{
+    __flint_get_memory_functions(&orig_malloc, &orig_calloc, &orig_realloc, &orig_free);
+    __flint_set_memory_functions(hook_malloc, hook_calloc, hook_realloc, hook_free);
+}
+
+static void
+hooks_off(void)
+{
+    __flint_set_memory_functions(orig_malloc, orig_calloc, orig_realloc, orig_free);
+}
+
+static void
+count_begin(void)
+{
+    flint_cleanup();
+    alloc_calls = 0;
+    alloc_tracking = 1;
+}
+
+static size_t
+count_end(void)
+{
+    alloc_tracking = 0;
+    return alloc_calls;
+}
+
+static void
+set_big_idele(adf_idele_t x)
+{
+    fmpz_one(fmpq_numref(x->r));
+    fmpz_mul_2exp(fmpq_numref(x->r), fmpq_numref(x->r), 4096);
+    fmpz_add_ui(fmpq_numref(x->r), fmpq_numref(x->r), 3);
+    fmpz_one(fmpq_denref(x->r));
+    fmpz_mul_2exp(fmpq_denref(x->r), fmpq_denref(x->r), 2048);
+    fmpz_add_ui(fmpq_denref(x->r), fmpq_denref(x->r), 7);
+    fmpq_canonicalise(x->r);
+    fmpz_one(x->u.c);
+    fmpz_one(x->u.N);
+    fmpz_mul_2exp(x->u.N, x->u.N, 2048);
+    fmpz_add_ui(x->u.N, x->u.N, 1);
+}
+
+ADF_TEST(LIMIT_before_any_allocation_of_the_power_functions)
+{
+    adf_idele_t x, z;
+    adf_idclass_t c, w;
+    arb_t one;
+    size_t calls[6];
+    int st[6], i;
+
+    adf_idele_init(x);
+    adf_idele_init(z);
+    adf_idclass_init(c);
+    adf_idclass_init(w);
+    arb_init(one);
+    arb_one(one);
+    set_big_idele(x);
+    ADF_CHECK(adf_idele_is_canonical(x));
+    ADF_CHECK(adf_idclass_set_parts(c, one, &x->u) == ADF_OK);
+    hooks_on();
+    for (i = 0; i < 6; i++)
+    {
+        count_begin();
+        if (i == 0)
+            st[i] = adf_idele_pow(z, x, 0, ADF_IDELE_PREC_MAX + 1);
+        else if (i == 1)
+            st[i] = adf_idele_pow_tight(z, x, 0, ADF_IDELE_PREC_MAX + 1);
+        else if (i == 2)
+            st[i] = adf_idele_pow(z, x, 3, WORD_MAX);
+        else if (i == 3)
+            st[i] = adf_idclass_pow(w, c, 0, ADF_IDELE_PREC_MAX + 1);
+        else if (i == 4)
+            st[i] = adf_idclass_pow_tight(w, c, 5, ADF_IDELE_PREC_MAX + 1);
+        else
+            st[i] = adf_idele_pow_tight(z, x, -1, WORD_MAX);
+        calls[i] = count_end();
+    }
+    hooks_off();
+    for (i = 0; i < 6; i++)
+        ADF_CHECK_MSG(st[i] == ADF_LIMIT && calls[i] == 0, "function %d: status %d, %zu allocator calls", i, st[i],
+                      calls[i]);
+    arb_clear(one);
+    adf_idele_clear(x);
+    adf_idele_clear(z);
+    adf_idclass_clear(c);
+    adf_idclass_clear(w);
+}
+
+/* F3 (the header of idpow.h): the exactness promise holds for k > 0 (Statement K.4). For k < 0 the power of an
+   exact 3 is 1/3, which is not a binary number: exact 3, k = -1, p = 2 gives 1/4 +/- 1/8, which contains 1/3. For
+   k > 0 and |m|^k of at most p bits it is exact. */
+ADF_TEST(exact_power_only_for_positive_exponents)
+{
+    adf_idele_t x, z;
+    arb_t three;
+    fmpq_t r;
+    adf_ucoset_t u;
+
+    adf_idele_init(x);
+    adf_idele_init(z);
+    adf_ucoset_init(u);
+    arb_init(three);
+    fmpq_init(r);
+    arb_set_si(three, 3);
+    fmpq_one(r);
+    ADF_CHECK(adf_idele_set_parts(x, three, r, u) == ADF_OK && arb_is_exact(x->inf));
+    ADF_CHECK(adf_idele_pow(z, x, -1, 2) == ADF_OK && !arb_is_exact(z->inf));
+    fmpq_set_si(r, 1, 3);
+    ADF_CHECK(adf_idele_pow(z, x, -1, 2) == ADF_OK && arb_contains_fmpq(z->inf, r));
+    fmpq_one(r);
+    ADF_CHECK(adf_idele_pow(z, x, -1, 64) == ADF_OK && !arb_is_exact(z->inf));
+    ADF_CHECK(adf_idele_pow(z, x, 1, 2) == ADF_OK && arb_is_exact(z->inf) && arb_contains_si(z->inf, 3));
+    ADF_CHECK(adf_idele_pow_tight(z, x, 1, 2) == ADF_OK && arb_is_exact(z->inf));
+    arb_clear(three);
+    fmpq_clear(r);
+    adf_ucoset_clear(u);
+    adf_idele_clear(x);
+    adf_idele_clear(z);
+}

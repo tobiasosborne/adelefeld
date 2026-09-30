@@ -1,0 +1,59 @@
+== BEFORE  (Wed Sep 30 03:11:13 AM CEST 2026)
+-- limit_alloc, INV=1 archive
+function=0 status=LIMIT allocator_calls=14 requested_bytes=135160
+function=1 status=LIMIT allocator_calls=14 requested_bytes=135160
+function=2 status=LIMIT allocator_calls=14 requested_bytes=135160
+function=3 status=LIMIT allocator_calls=14 requested_bytes=135160
+-- limit_alloc, default archive
+function=0 status=LIMIT allocator_calls=0 requested_bytes=0
+function=1 status=LIMIT allocator_calls=0 requested_bytes=0
+function=2 status=LIMIT allocator_calls=0 requested_bytes=0
+function=3 status=LIMIT allocator_calls=0 requested_bytes=0
+-- findings, default archive
+F1 rational construction: OK input_exact=1
+F1 class status=OK t: 1.000000000000000000000000 +/- 0.50000 exact=0
+F1 norm status=OK t: 1.000000000000000000000000 +/- 0.50000 exact=0
+F2 negative power: status=OK real: 0.2500000000000000000000000 +/- 0.12500 exact=0
+F2 |m|^|k|=3, bits=2, prec=2; true power=1/3
+F3 k=-1 status=OK power: 0.5000000000000000000000000 +/- 0 exact=1
+product of |k|=1 copies: 2.000000000000000000000000 +/- 0 exact=1
+F3 power content=1/2 product content=2
+F4 simple radius=3 smallest radius=6
+
+== RED: the new tests against the unchanged code (INV=1 build, 03:13:44; output copied from the run)
+test_idele_maps: 12 tests, 10476 checks, 4 failed checks (norm, mul, inv, mul_rat: "status 10, 14 allocator calls";
+                 set_rat: 0 calls already, its check came first after a cheap rational check)
+test_idclass:    LIMIT_before_any_allocation_of_the_class_functions: 1 failed check (set_idele: 14 allocator calls;
+                 class mul, inv: 0 calls, the class check does not allocate for the class used)
+                 [a second failure, of my own check of the class unit in class_of_an_exact_rational..., was an error of
+                 the test (u->N is not 1 for [1]); corrected to adf_ucoset_identical against adf_ucoset_one]
+test_idpow:      LIMIT_before_any_allocation_of_the_power_functions: 4 failed checks (pow, pow_tight, k = 0 and k != 0;
+                 14 allocator calls each)
+test_idmap:      LIMIT_before_any_allocation_of_the_division: 2 failed checks (14 allocator calls each)
+The default build passes them all (0 calls: no entry check). The tests of F2 (norm and class of an exact 5 at p = 2, 3)
+and F3 (exact 3, k = -1 and k = 1) pass on the old code: they pin true statements that the text had wrong.
+
+== GREEN: after the change (first: the four tests, INV=1)
+test_idele_maps 12 tests, 10476 checks, 0 failed; test_idclass 16 / 9752 / 0; test_idpow 8 / 10136 / 0;
+test_idmap 7 / 54200 / 0.
+== AFTER  (Wed Sep 30 03:35:30 AM CEST 2026)
+-- limit_alloc, INV=1 archive
+function=0 status=LIMIT allocator_calls=0 requested_bytes=0
+function=1 status=LIMIT allocator_calls=0 requested_bytes=0
+function=2 status=LIMIT allocator_calls=0 requested_bytes=0
+function=3 status=LIMIT allocator_calls=0 requested_bytes=0
+-- limit_alloc, default archive
+function=0 status=LIMIT allocator_calls=0 requested_bytes=0
+function=1 status=LIMIT allocator_calls=0 requested_bytes=0
+function=2 status=LIMIT allocator_calls=0 requested_bytes=0
+function=3 status=LIMIT allocator_calls=0 requested_bytes=0
+-- findings, default archive
+F1 rational construction: OK input_exact=1
+F1 class status=OK t: 1.000000000000000000000000 +/- 0.50000 exact=0
+F1 norm status=OK t: 1.000000000000000000000000 +/- 0.50000 exact=0
+F2 negative power: status=OK real: 0.2500000000000000000000000 +/- 0.12500 exact=0
+F2 |m|^|k|=3, bits=2, prec=2; true power=1/3
+F3 k=-1 status=OK power: 0.5000000000000000000000000 +/- 0 exact=1
+product of |k|=1 copies: 2.000000000000000000000000 +/- 0 exact=1
+F3 power content=1/2 product content=2
+F4 simple radius=3 smallest radius=6

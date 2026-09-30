@@ -105,8 +105,9 @@ int adf_idclass_set_parts(adf_idclass_t x, const arb_t t, const adf_ucoset_t u);
    the factor 1/r is exact before the rounding. The sign on the unit is essential: without it the map
    is not constant on classes (P15.3, line 375).
    The class of the idele of a rational q is <T ; [1]> with T containing 1 (P15.1, kernel Q^x), the
-   exact <1 ; [1]> when the real ball of q is exact; the class of q times x equals the class of x as a
-   set (Statement G.3).
+   exact <1 ; [1]> when the real ball of q is exact and q has at most p = max(prec, 2) bits, prec of this
+   call (Statement G.5; for a q of more bits T is a ball around 1); the class of q times x equals the class
+   of x as a set (Statement G.3).
    Status (SPEC 5: the rule applies to the idele-to-class conversion): ADF_OK, c written;
    ADF_NOT_DETERMINED (B1) if T cannot be certified positive at p bits, c untouched; ADF_LIMIT if
    prec > ADF_IDELE_PREC_MAX, c untouched.
