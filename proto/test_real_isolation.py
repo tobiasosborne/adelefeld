@@ -251,6 +251,22 @@ class SlowFamily(unittest.TestCase):
                 self.assertTrue(planted_ok(res[2], roots), (fam.__name__, e, prec))
                 self.assertLess(t, 10.0, (fam.__name__, e, prec))
 
+    def test_scale_limit(self):
+        old = ri.KMIN
+        try:
+            ri.KMIN = -10
+            self.assertEqual(ri.real_roots([-1, 1 << 11], 2)[0], ri.LIMIT)
+            self.assertEqual(ri.real_roots([-1, 1 << 8], 2)[0], ri.OK)
+        finally:
+            ri.KMIN = old
+
+    def test_count_zero_and_one(self):
+        for f, n in (([1, 0, 1], 0), ([-3, 1], 1), ([0, -1, 0, 1], 3)):
+            res = ri.real_roots(f, 2)
+            self.assertTrue(contract_ok(f, 2, res, n))
+            if n == 0:
+                self.assertEqual(res[3]["nodes"], 0)
+
     def test_cost_is_counted(self):
         """The bounds of the design (section 5): for the pair with non-dyadic roots the tree has at most
         2 (e + 4) + 3 nodes of each sign, and the bits of every end point are at most e + prec + 8."""
@@ -259,7 +275,7 @@ class SlowFamily(unittest.TestCase):
             res = ri.real_roots(f, 2)
             stats = res[3]
             self.assertLessEqual(stats["nodes"], 4 * (e + 4) + 6)
-            self.assertGreaterEqual(stats["nodes"], e)          # the chain is there: no Newton step yet
+            self.assertLessEqual(stats["nodes"], 8 * e.bit_length())  # certified geometric contraction
             for lo, hi in res[2]:
                 for x in (lo, hi):
                     self.assertLessEqual(x.numerator.bit_length() + x.denominator.bit_length(), e + 2 + 16)

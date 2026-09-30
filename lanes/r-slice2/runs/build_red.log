@@ -1,0 +1,27 @@
+mkdir -p lanes/r-slice2/build
+mkdir -p lanes/r-slice2/build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/r-slice2/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/r-slice2/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/r-slice2/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/r-slice2/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/r-slice2/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/r-slice2/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/r-slice2/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/r-slice2/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/r-slice2/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/r-slice2/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/r-slice2/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/r-slice2/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/r-slice2/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/r-slice2/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/r-slice2/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/r-slice2/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/r-slice2/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/r-slice2/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/r-slice2/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/r-slice2/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/r-slice2/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/r-slice2/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/r-slice2/build/support/jsonl.o
+ar rcs lanes/r-slice2/build/libadelefeld.a lanes/r-slice2/build/adele.o lanes/r-slice2/build/cap.o lanes/r-slice2/build/common.o lanes/r-slice2/build/dump.o lanes/r-slice2/build/fball.o lanes/r-slice2/build/fball_local.o lanes/r-slice2/build/idele.o lanes/r-slice2/build/inlines.o lanes/r-slice2/build/lball.o lanes/r-slice2/build/linsolve.o lanes/r-slice2/build/modctx.o lanes/r-slice2/build/place.o lanes/r-slice2/build/rat.o lanes/r-slice2/build/recon.o lanes/r-slice2/build/resid.o lanes/r-slice2/build/roots.o lanes/r-slice2/build/roots_real.o lanes/r-slice2/build/scaled.o lanes/r-slice2/build/status.o lanes/r-slice2/build/text.o lanes/r-slice2/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_roots_real_isolate.c lanes/r-slice2/build/support/golden.o lanes/r-slice2/build/support/jsonl.o lanes/r-slice2/build/libadelefeld.a -lflint -lgmp -lm -o lanes/r-slice2/build/test_roots_real_isolate

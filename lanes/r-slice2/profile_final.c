@@ -1,3 +1,8 @@
+#define _POSIX_C_SOURCE 200809L
+#include <time.h>
+#include <stdio.h>
+static double qt, vt; static long qc, vc;
+static double wall(void) {struct timespec t; clock_gettime(CLOCK_MONOTONIC,&t); return t.tv_sec+t.tv_nsec*1e-9;}
 /* roots_real.c: the candidates of Algorithm RR (the real roots) by an exact isolation and refinement (lane
    r-slice1, issue adf-8di). The design, its statements and their proofs: docs/design/real-roots.md
    (Lemma R1, Algorithm D with Propositions R2 and R3, Algorithm F with Proposition R4, Proposition R5). The
@@ -142,7 +147,7 @@ poly_value_2exp(fmpz_t r, const fmpz_poly_t g, const fmpz_t m, slong e)
 /* Values in a fixed local coordinate. q(X) is a positive multiple of
    g((origin + X) 2^scale). All refinement points have e <= scale.
    The common multiplier cancels in the secant ratio; signs do not change.
-   docs/design/real-roots.md:338 (R8) proves that no refinement decision or ball changes. */
+   Design R8 proves that this changes no refinement decision or ball. */
 typedef struct
 {
     fmpz_poly_t q;
@@ -153,12 +158,14 @@ typedef struct
 static void
 value_2exp(fmpz_t r, const local_eval * g, const fmpz_t m, slong e)
 {
+    double start = wall();
     fmpz_t x;
     fmpz_init(x);
     fmpz_mul_2exp(x, g->origin, (ulong) (g->scale - e));
     fmpz_sub(x, m, x);
     poly_value_2exp(r, g->q, x, e - g->scale);
     fmpz_clear(x);
+    vt += wall() - start; vc++;
 }
 
 /* Arb is only a filter for exact decisions. An uncertain interval falls back
@@ -315,7 +322,7 @@ var01(const fmpz_poly_t q, fmpz * tmp)
     return v;
 }
 
-/* Endpoint contraction, docs/design/real-roots.md:291 (R6). q is the polynomial on (0,1).
+/* Endpoint contraction, design Proposition R6. q is the polynomial on (0,1).
    Only skip a chain if the retained cell still has v >= 2, its new endpoint is clean,
    and the entire discarded interval has v = 0. All skipped siblings then have v = 0
    by refs/src/sagraloff-mehlhorn/tex/arxivfinal.tex:571-575. No status is decided here. */
@@ -663,6 +670,7 @@ gallop(fmpz_t c, slong * k, int * point, int * lo_clean, int * hi_clean, int * s
 static int
 qir_step(fmpz_t c, slong * k, int * point, const local_eval * g, int s_lo, slong jj)
 {
+    double start = wall();
     fmpz_t a, b, fa, fb, D, t;
     slong e = *k - jj;
     int s, s2, r = 0;
@@ -733,6 +741,7 @@ qir_step(fmpz_t c, slong * k, int * point, const local_eval * g, int s_lo, slong
     fmpz_clear(fb);
     fmpz_clear(D);
     fmpz_clear(t);
+    qt += wall() - start; qc++;
     return r;
 }
 
@@ -906,8 +915,7 @@ items_sort(items_t * it)
     fmpz_clear(e);
 }
 
-/* adf_roots_real_isolate_counted(cand, m, g, prec, count): count is the trusted real-root count of g
-   (docs/design/real-roots.md:319, R7); g the normalised polynomial of adf_roots_real (degree >= 1,
+/* adf_roots_real_isolate(cand, m, g, prec): g the normalised polynomial of adf_roots_real (degree >= 1,
    squarefree, primitive, positive leading coefficient), prec >= 2, cand an initialised vector of at least
    deg g balls. On ADF_OK: *m balls in cand[0, m), in increasing order, each either exact (a root of g) or with
    exact end points lo < hi that are not roots, g(lo) g(hi) < 0 and exactly one root of g inside; hi_i <
@@ -1002,6 +1010,7 @@ adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slo
         if (st == ADF_OK)
             *m = it.n;
     }
+    fprintf(stderr,"Q_steps=%ld Q_seconds=%.9f exact_values=%ld exact_value_seconds=%.9f\n",qc,qt,vc,vt);
     fmpz_poly_clear(h);
     fmpz_poly_clear(dg);
     items_clear(&it);
@@ -1012,7 +1021,7 @@ adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slo
 }
 
 /* Compatibility entry for the direct candidate tests. The public caller passes its
-   already computed trusted count to the counted entry (docs/design/real-roots.md:319, R7). */
+   already computed trusted count to the counted entry (design Proposition R7). */
 int
 adf_roots_real_isolate(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec)
 {

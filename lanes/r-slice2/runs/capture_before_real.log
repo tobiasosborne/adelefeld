@@ -1,0 +1,23 @@
+   REAL_CASES: 72 runs (18 polynomials, prec 2, 20, 53, 200), 72 lists true by the oracle
+ok   real_cases_against_the_sturm_chain_of_the_test
+   planted, prec 2: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 5 of 6 balls exact
+   planted, prec 20: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 5 of 6 balls exact
+   planted, prec 53: 0, 1/2, -3/4, 5/8, 2^-30, 1/3: 5 of 6 balls exact
+ok   planted_roots_repeated_large_close_and_dyadic
+   precision: 6 polynomials at prec 2, 10, 53, 200, 2000 and 1, 0, -5, WORD_MIN; 108 nested pairs
+ok   precision_accuracy_below_2_and_nesting
+   ball removed                  51 changed lists,  51 refused (  0 of them by verify_entries)
+   two balls merged              24 changed lists,  24 refused ( 24 of them by verify_entries)
+   ball moved off its root       15 changed lists,  15 refused ( 15 of them by verify_entries)
+   ball widened over two roots   12 changed lists,  12 refused ( 12 of them by verify_entries)
+   false count                   33 changed lists,  33 refused ( 33 of them by verify_entries)
+   false n                       15 changed lists,  15 refused ( 15 of them by verify_entries)
+   g replaced by f                4 changed lists,   4 refused (  4 of them by verify_entries)
+   one root twice                12 changed lists,  12 refused ( 12 of them by verify_entries)
+ok   verifiers_accept_every_result_and_refuse_changed_lists
+ok   predicate_at_the_real_place
+ok   finish_widening_accuracy_after_widening_and_the_count
+ok   statuses_constants_untouched_and_aliasing
+   tests/ref/vectors/s2-slice3/real.jsonl: 163 lines, 161 OK (385 roots), 2 DOMAIN
+ok   vectors_s2_slice3_every_line
+8 tests, 10744 checks, 0 failed checks, 0 failed tests

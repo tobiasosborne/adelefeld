@@ -1,3 +1,7 @@
+#define _POSIX_C_SOURCE 200809L
+#include <time.h>
+#include <stdio.h>
+static double wall(void) {struct timespec t; clock_gettime(CLOCK_MONOTONIC,&t); return t.tv_sec+t.tv_nsec*1e-9;}
 /* roots_real.c: the candidates of Algorithm RR (the real roots) by an exact isolation and refinement (lane
    r-slice1, issue adf-8di). The design, its statements and their proofs: docs/design/real-roots.md
    (Lemma R1, Algorithm D with Propositions R2 and R3, Algorithm F with Proposition R4, Proposition R5). The
@@ -29,8 +33,7 @@
           arf_set_fmpz_2exp, arf.rst:227 to 229 (m 2^e, exact); arf_cmp, arf.rst:330; mag_set_ui_2exp_si,
           mag.rst:149 to 151 (an upper bound of 1 2^y, exact since 1 fits the mantissa); mag_zero, mag.rst:87.
 
-   Every decision is an exact sign, an exact grid integer or a comparison of exact dyadic numbers.
-   Arb filters certify the same sign or grid integer; uncertainty falls back to integer arithmetic. Exponents are slong; the
+   Every decision is the sign of an integer or a comparison of exact dyadic numbers. Exponents are slong; the
    products that give shifts are checked (S-D18). A cell is (c, k): the open interval (c 2^k, (c + 1) 2^k); a
    point is (c, k): the number c 2^k. No cell with k < 2 - ADF_ROOTS_BITS_MAX is formed: the function returns
    ADF_LIMIT instead (then the ball of the cell, of radius 2^(k-1), would not be of admissible size). */
@@ -112,7 +115,7 @@ items_push(items_t * it, const fmpz_t c, slong k, int point)
    r = r m + g_i 2^(t (d - i)), i = d - 1, ..., 0, from r = g_d (as real_sign_at, src/roots.c). Two points
    with the same e get the same factor, so their values may be compared. t <= ADF_ROOTS_BITS_MAX - 2 here. */
 static void
-poly_value_2exp(fmpz_t r, const fmpz_poly_t g, const fmpz_t m, slong e)
+value_2exp(fmpz_t r, const fmpz_poly_t g, const fmpz_t m, slong e)
 {
     slong i, d = fmpz_poly_degree(g), t;
     fmpz_t x;
@@ -139,89 +142,12 @@ poly_value_2exp(fmpz_t r, const fmpz_poly_t g, const fmpz_t m, slong e)
     fmpz_clear(x);
 }
 
-/* Values in a fixed local coordinate. q(X) is a positive multiple of
-   g((origin + X) 2^scale). All refinement points have e <= scale.
-   The common multiplier cancels in the secant ratio; signs do not change.
-   docs/design/real-roots.md:338 (R8) proves that no refinement decision or ball changes. */
-typedef struct
-{
-    fmpz_poly_t q;
-    fmpz_t origin;
-    slong scale;
-} local_eval;
-
-static void
-value_2exp(fmpz_t r, const local_eval * g, const fmpz_t m, slong e)
-{
-    fmpz_t x;
-    fmpz_init(x);
-    fmpz_mul_2exp(x, g->origin, (ulong) (g->scale - e));
-    fmpz_sub(x, m, x);
-    poly_value_2exp(r, g->q, x, e - g->scale);
-    fmpz_clear(x);
-}
-
-/* Arb is only a filter for exact decisions. An uncertain interval falls back
-   to the integer computation. refs/src/flint-3.0.1/arb.rst:155-165, :531-553,
-   :639-650, :735-737 describe rounding, unique integers, signs and absolute value. */
-static void
-local_ball(arb_t r, const local_eval * g, const fmpz_t m, slong e, slong prec)
-{
-    fmpz_t x, exp;
-    arb_t a, t;
-    slong i;
-    fmpz_init(x); fmpz_init(exp);
-    arb_init(a); arb_init(t);
-    fmpz_mul_2exp(x, g->origin, (ulong) (g->scale - e));
-    fmpz_sub(x, m, x);
-    fmpz_set_si(exp, e - g->scale);
-    arb_set_round_fmpz_2exp(a, x, exp, prec);
-    arb_zero(r);
-    for (i = fmpz_poly_degree(g->q); i >= 0; i--)
-    {
-        arb_mul(r, r, a, prec);
-        arb_set_round_fmpz(t, g->q->coeffs + i, prec);
-        arb_add(r, r, t, prec);
-    }
-    arb_clear(a); arb_clear(t); fmpz_clear(x); fmpz_clear(exp);
-}
-
 static int
-secant_grid(fmpz_t t, const local_eval * g, const fmpz_t a, const fmpz_t b, slong e, slong jj)
-{
-    arb_t fa, fb, r;
-    int ok;
-    slong prec = jj <= WORD_MAX - 64 ? jj + 64 : WORD_MAX;
-    if (fmpz_poly_degree(g->q) < 8)
-        return 0;
-    arb_init(fa); arb_init(fb); arb_init(r);
-    local_ball(fa, g, a, e, prec); local_ball(fb, g, b, e, prec);
-    arb_abs(fa, fa); arb_abs(fb, fb);
-    arb_add(r, fa, fb, prec);
-    arb_div(r, fa, r, prec);
-    arb_mul_2exp_si(r, r, jj + 1);
-    arb_add_ui(r, r, 1, prec); arb_mul_2exp_si(r, r, -1);
-    arb_floor(r, r, prec);
-    ok = arb_get_unique_fmpz(t, r);
-    arb_clear(fa); arb_clear(fb); arb_clear(r);
-    return ok;
-}
-
-static int
-sign_2exp(const local_eval * g, const fmpz_t m, slong e)
+sign_2exp(const fmpz_poly_t g, const fmpz_t m, slong e)
 {
     fmpz_t r;
-    arb_t ball;
     int s;
-    if (fmpz_poly_degree(g->q) >= 8)
-    {
-        arb_init(ball);
-        local_ball(ball, g, m, e, 64);
-        s = arb_is_positive(ball) ? 1 : arb_is_negative(ball) ? -1 : 0;
-        arb_clear(ball);
-        if (s != 0)
-            return s;
-    }
+
     fmpz_init(r);
     value_2exp(r, g, m, e);
     s = fmpz_sgn(r);
@@ -315,7 +241,7 @@ var01(const fmpz_poly_t q, fmpz * tmp)
     return v;
 }
 
-/* Endpoint contraction, docs/design/real-roots.md:291 (R6). q is the polynomial on (0,1).
+/* Endpoint contraction, design Proposition R6. q is the polynomial on (0,1).
    Only skip a chain if the retained cell still has v >= 2, its new endpoint is clean,
    and the entire discarded interval has v = 0. All skipped siblings then have v = 0
    by refs/src/sagraloff-mehlhorn/tex/arxivfinal.tex:571-575. No status is decided here. */
@@ -441,6 +367,7 @@ isolate_positive(items_t * it, const fmpz_poly_t h, slong count)
                         }
                         fmpz_poly_swap(p->q, left);
                         p->k -= jump;
+                        fprintf(stderr,"jump %ld hi %d k %ld at %.3f\n",jump,hi,p->k,wall());
                         p->jump = jump <= WORD_MAX / 2 ? 2 * jump : jump;
                         accepted = 1;
                     }
@@ -551,7 +478,7 @@ above(const fmpz_t c, slong k, const arf_t floor)
    cell only. anchor_hi = 0: p = c 2^k; anchor_hi = 1: p = (c + 1) 2^k. */
 static int
 gallop(fmpz_t c, slong * k, int * point, int * lo_clean, int * hi_clean, int * s_lo, int anchor_hi,
-       const local_eval * g, const local_eval * dg)
+       const fmpz_poly_t g, const fmpz_poly_t dg)
 {
     slong lo_t, hi_t, t, step, mid;
     int sigma = anchor_hi ? -1 : 1, v0, s = 0, found = 0;
@@ -661,7 +588,7 @@ gallop(fmpz_t c, slong * k, int * point, int * lo_clean, int * hi_clean, int * s
    the grid cell with a sign change, a subcell of the old cell with end points that are not roots), 0 if it
    fails (the cell is unchanged). */
 static int
-qir_step(fmpz_t c, slong * k, int * point, const local_eval * g, int s_lo, slong jj)
+qir_step(fmpz_t c, slong * k, int * point, const fmpz_poly_t g, int s_lo, slong jj)
 {
     fmpz_t a, b, fa, fb, D, t;
     slong e = *k - jj;
@@ -677,18 +604,15 @@ qir_step(fmpz_t c, slong * k, int * point, const local_eval * g, int s_lo, slong
     fmpz_one(b);
     fmpz_mul_2exp(b, b, (ulong) jj);            /* b = N */
     fmpz_add(b, a, b);                          /* b = a + N, the right end */
-    if (!secant_grid(t, g, a, b, e, jj))
-    {
-        value_2exp(fa, g, a, e);
-        value_2exp(fb, g, b, e);
-        fmpz_abs(fa, fa);
-        fmpz_abs(fb, fb);
-        fmpz_add(D, fa, fb);
-        fmpz_mul_2exp(t, fa, (ulong) jj + 1);       /* 2 N |fa| */
-        fmpz_add(t, t, D);
-        fmpz_mul_2exp(D, D, 1);
-        fmpz_fdiv_q(t, t, D);                       /* t = floor((2 N |fa| + D) / (2 D)) */
-    }
+    value_2exp(fa, g, a, e);
+    value_2exp(fb, g, b, e);
+    fmpz_abs(fa, fa);
+    fmpz_abs(fb, fb);
+    fmpz_add(D, fa, fb);
+    fmpz_mul_2exp(t, fa, (ulong) jj + 1);       /* 2 N |fa| */
+    fmpz_add(t, t, D);
+    fmpz_mul_2exp(D, D, 1);
+    fmpz_fdiv_q(t, t, D);                       /* t = floor((2 N |fa| + D) / (2 D)) */
     fmpz_add(a, a, t);                          /* a = m' */
     fmpz_sub(b, b, a);                          /* b = N - t */
     s = sign_2exp(g, a, e);
@@ -744,7 +668,7 @@ qir_step(fmpz_t c, slong * k, int * point, const local_eval * g, int s_lo, slong
    KMIN. Algorithm F: at each step, G if the cell has an anchor, else the stop test, else Q while
    N > 2, else one bisection. */
 static int
-refine_local(fmpz_t c, slong * k, int * point, const local_eval * g, const local_eval * dg, const arf_t floor,
+refine_cell(fmpz_t c, slong * k, int * point, const fmpz_poly_t g, const fmpz_poly_t dg, const arf_t floor,
             int has_floor, slong need)
 {
     fmpz_t x;
@@ -828,31 +752,6 @@ refine_local(fmpz_t c, slong * k, int * point, const local_eval * g, const local
     return ADF_OK;
 }
 
-/* Keep the original cell and stop coordinates. Only evaluation is translated. */
-static int
-refine_cell(fmpz_t c, slong * k, int * point, const fmpz_poly_t g, const fmpz_poly_t dg,
-            const arf_t floor, int has_floor, slong need)
-{
-    local_eval f, df;
-    int st;
-    (void) dg;
-    fmpz_poly_init(f.q); fmpz_poly_init(df.q);
-    fmpz_init(f.origin); fmpz_init(df.origin);
-    if (fmpz_poly_degree(g) >= 8)
-        fmpz_set(f.origin, c);
-    fmpz_set(df.origin, f.origin);
-    f.scale = df.scale = *k;
-    fmpz_poly_set(f.q, g);
-    _fmpz_poly_scale_2exp(f.q->coeffs, fmpz_poly_length(f.q), *k);
-    _fmpz_poly_taylor_shift(f.q->coeffs, f.origin, fmpz_poly_length(f.q));
-    _fmpz_poly_remove_content_2exp(f.q->coeffs, fmpz_poly_length(f.q));
-    fmpz_poly_derivative(df.q, f.q);
-    st = refine_local(c, k, point, &f, &df, floor, has_floor, need);
-    fmpz_clear(f.origin); fmpz_clear(df.origin);
-    fmpz_poly_clear(f.q); fmpz_poly_clear(df.q);
-    return st;
-}
-
 /* ---- the whole: Algorithm RR2 of the design without its final tests (those are real_finish of roots.c) ---- */
 
 /* the right end of the closed set of item i: (c + 1) 2^k for a cell, c 2^k for a point */
@@ -906,8 +805,7 @@ items_sort(items_t * it)
     fmpz_clear(e);
 }
 
-/* adf_roots_real_isolate_counted(cand, m, g, prec, count): count is the trusted real-root count of g
-   (docs/design/real-roots.md:319, R7); g the normalised polynomial of adf_roots_real (degree >= 1,
+/* adf_roots_real_isolate(cand, m, g, prec): g the normalised polynomial of adf_roots_real (degree >= 1,
    squarefree, primitive, positive leading coefficient), prec >= 2, cand an initialised vector of at least
    deg g balls. On ADF_OK: *m balls in cand[0, m), in increasing order, each either exact (a root of g) or with
    exact end points lo < hi that are not roots, g(lo) g(hi) < 0 and exactly one root of g inside; hi_i <
@@ -959,6 +857,7 @@ adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slo
             }
         }
     }
+    fprintf(stderr,"isolation complete at %.3f, items %ld\n",wall(),it.n);
     if (st == ADF_OK)
     {
         items_sort(&it);
@@ -973,7 +872,9 @@ adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slo
                     item_right(floor, &it, i - 1);
                 fmpz_set(c, it.c + i);
                 k = it.k[i];
+                fprintf(stderr,"refine item %ld k %ld at %.3f\n",i,k,wall());
                 st = refine_cell(c, &k, &point, g, dg, floor, i > 0, need);
+                fprintf(stderr,"refine done k %ld at %.3f\n",k,wall());
                 if (st != ADF_OK)
                     break;
             }
@@ -1012,7 +913,7 @@ adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slo
 }
 
 /* Compatibility entry for the direct candidate tests. The public caller passes its
-   already computed trusted count to the counted entry (docs/design/real-roots.md:319, R7). */
+   already computed trusted count to the counted entry (design Proposition R7). */
 int
 adf_roots_real_isolate(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec)
 {

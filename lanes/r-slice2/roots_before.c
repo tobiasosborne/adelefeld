@@ -1429,8 +1429,7 @@ adf_rootlist_get_unresolved(fmpz_t a, slong * e, const adf_rootlist_t L, slong i
 ADF_ROOTS_HIDDEN int adf_roots_real_finish(adf_rootlist_t L, const fmpz_poly_t f, slong count, arb_srcptr in,
                                            slong m, slong prec);
 /* the candidates of step 4 (src/roots_real.c, lane r-slice1) */
-ADF_ROOTS_HIDDEN int adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g,
-                                                 slong prec, slong count);
+ADF_ROOTS_HIDDEN int adf_roots_real_isolate(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec);
 
 /* 1 if the ball x is of admissible size (roots.h, "Real balls"): finite, a midpoint mantissa of at most
    ADF_ROOTS_BITS_MAX bits, a midpoint and a radius that are 0 or strictly between 2^-M and 2^M in absolute
@@ -1506,37 +1505,6 @@ real_entry_ok(const fmpz_poly_t g, const fmpz_t a, const fmpz_t b, const fmpz_t 
         return real_sign_at(g, a, e) == 0;
     if (fmpz_cmp(a, b) > 0)
         return 0;
-    /* Evaluate in a dyadic translate only when it shortens both mantissas.
-       Exact polynomial identity and positive scale: docs/design/real-roots.md:338 (R8).
-       The certificate still evaluates both exact endpoints, independently of isolation. */
-    if (fmpz_poly_degree(g) >= 5 && fmpz_bits(a) > 4096)
-    {
-        fmpz_t origin, x, y, local_e;
-        fmpz_poly_t h;
-        slong bits = (slong) fmpz_bits(a), scale;
-        int use;
-        fmpz_init(origin); fmpz_init(x); fmpz_init(y); fmpz_init(local_e);
-        fmpz_one(origin); fmpz_mul_2exp(origin, origin, (ulong) (bits - 1));
-        if (fmpz_sgn(a) < 0)
-            fmpz_neg(origin, origin);
-        fmpz_sub(x, a, origin); fmpz_sub(y, b, origin);
-        use = FLINT_MAX(fmpz_bits(x), fmpz_bits(y)) < (ulong) bits / 2;
-        if (use)
-        {
-            fmpz_poly_init(h); fmpz_poly_set(h, g);
-            scale = fmpz_get_si(e) + bits - 1;
-            _fmpz_poly_scale_2exp(h->coeffs, h->length, scale);
-            fmpz_set_si(origin, fmpz_sgn(a));
-            _fmpz_poly_taylor_shift(h->coeffs, origin, h->length);
-            _fmpz_poly_remove_content_2exp(h->coeffs, h->length);
-            fmpz_set_si(local_e, 1 - bits);
-            sl = real_sign_at(h, x, local_e); sh = real_sign_at(h, y, local_e);
-            fmpz_poly_clear(h);
-        }
-        fmpz_clear(origin); fmpz_clear(x); fmpz_clear(y); fmpz_clear(local_e);
-        if (use)
-            return sl * sh < 0;
-    }
     sl = real_sign_at(g, a, e);
     sh = real_sign_at(g, b, e);
     return sl * sh < 0;
@@ -1695,60 +1663,6 @@ adf_roots_real_finish(adf_rootlist_t L, const fmpz_poly_t f, slong count, arb_sr
     return st;
 }
 
-/* Count on a small rational translate when it removes a large offset.
-   h(X) = b^d g((X+a)/b), b > 0, has exactly the same real roots in bijection.
-   FLINT's count remains the trusted count (S-D11); docs/design/real-roots.md:366 (R9).
-   The bit cutoff bounds preprocessing cost, not validity or a return status.
-   Taylor shift: refs/src/flint-3.0.1/fmpz_poly.rst:2492-2498. */
-static slong
-real_count(const fmpz_poly_t g)
-{
-    slong d = fmpz_poly_degree(g), i, count, scale = 0;
-    fmpq_t center;
-    fmpz_t power;
-    fmpz_poly_t h;
-    int translate;
-
-    if (d < 3 || FLINT_ABS(fmpz_poly_max_bits(g)) < 1024)
-        return fmpz_poly_num_real_roots(g);
-    fmpq_init(center);
-    if (!fmpz_is_zero(g->coeffs + d - 1))
-    {
-        fmpz_neg(fmpq_numref(center), g->coeffs + d - 1);
-        fmpz_mul_ui(fmpq_denref(center), g->coeffs + d, (ulong) d);
-        fmpq_canonicalise(center);
-    }
-    translate = d >= 5 && !fmpq_is_zero(center) &&
-        fmpz_bits(fmpq_numref(center)) + fmpz_bits(fmpq_denref(center)) <= 16;
-    if (!fmpz_is_zero(g->coeffs))
-        scale = ((slong) fmpz_bits(g->coeffs) - (slong) fmpz_bits(g->coeffs + d)) / d;
-    if (!translate && scale >= -32)
-    {
-        fmpq_clear(center);
-        return fmpz_poly_num_real_roots(g);
-    }
-    fmpz_init_set_ui(power, 1);
-    fmpz_poly_init(h); fmpz_poly_set(h, g);
-    if (translate)
-    {
-        for (i = d - 1; i >= 0; i--)
-        {
-            fmpz_mul(power, power, fmpq_denref(center));
-            fmpz_mul(h->coeffs + i, h->coeffs + i, power);
-        }
-        _fmpz_poly_taylor_shift(h->coeffs, fmpq_numref(center), d + 1);
-        fmpz_poly_primitive_part(h, h);
-        if (!fmpz_is_zero(h->coeffs))
-            scale = ((slong) fmpz_bits(h->coeffs) - (slong) fmpz_bits(h->coeffs + d)) / d;
-        else
-            scale = 0;
-    }
-    _fmpz_poly_scale_2exp(h->coeffs, d + 1, scale);
-    count = fmpz_poly_num_real_roots(h);
-    fmpz_poly_clear(h); fmpz_clear(power); fmpq_clear(center);
-    return count;
-}
-
 /* Algorithm RR (solvers.md:1401 to 1417; real_roots_ref, proto/solvers_checks.py:2555): roots.h. */
 int
 adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec)
@@ -1772,12 +1686,12 @@ adf_roots_real(adf_rootlist_t L, const fmpz_poly_t f, slong prec)
     if (d > 0)
     {
         /* step 3: the count of P3.9(1), on the squarefree g */
-        count = real_count(g);
+        count = fmpz_poly_num_real_roots(g);
         /* step 4: the candidates of the exact isolation and refinement (src/roots_real.c, lane r-slice1;
            docs/design/real-roots.md, Proposition R5), in increasing order; ADF_LIMIT for a cell below
            2^(2 - ADF_ROOTS_BITS_MAX) */
         cand = _arb_vec_init(d);
-        st = adf_roots_real_isolate_counted(cand, &m, g, prec, count);
+        st = adf_roots_real_isolate(cand, &m, g, prec);
         /* steps 5 to 7, unchanged: the certificate does not trust the candidates */
         if (st == ADF_OK)
         {

@@ -1,0 +1,5 @@
+normalise_s=0.000025773 gcd_degree=0 degree=2
+count_s=0.000000451 count=2
+Q_steps=42 Q_seconds=0.496059450 exact_values=176 exact_value_seconds=0.379211108
+isolate_refine_s=0.496975920 status=0 m=2
+finish_with_normalise_s=0.201822189 status=0

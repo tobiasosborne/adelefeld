@@ -1,0 +1,9 @@
+   review input 0: 0.213632 s, status 0, roots 4
+   review input 1: 0.026295 s, status 0, roots 0
+   review input 2: 0.003641 s, status 0, roots 0
+   review input 3: 0.001205 s, status 1, roots 0
+FAIL /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/bite_tests.c:1243: review_cost_inputs: check failed: st == ADF_OK
+FAIL /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/bite_tests.c:1244: review_cost_inputs: check failed: L->n == (j == 0 ? 4 : j == 3 ? 2 : 0)
+FAIL /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/bite_tests.c:1246: review_cost_inputs: check failed: adf_rootlist_verify_entries(L, f)
+FAIL /home/tobias/Projects/adelefeld-wt/r-slice2/lanes/r-slice2/bite_tests.c:1247: review_cost_inputs: check failed: adf_rootlist_verify_complete(L, f, 0)
+planted checks 34 failures 4

@@ -1,0 +1,9 @@
+stop_early exit 1 ld-wt/r-slice2/lanes/r-slice2/bite_tests.c:1247: review_cost_inputs: check failed: adf_rootlist_verify_complete(L, f, 0)
+planted checks 34 failures 4
+unchecked_fast exit 1 7 s, status 0, roots 0
+   review input 2: 0.004385 s, status 0, roots 0
+   review input 3: 0.001758 s, status 0, roots 2
+planted checks 34 failures 4
+zero_count_one exit 1 -wt/r-slice2/lanes/r-slice2/bite_tests.c:1303: count_guided_regions: check failed: adf_rootlist_verify_complete(L, f, 0)
+planted checks 34 failures 4
+bite: 3 of 3 planted faults caught

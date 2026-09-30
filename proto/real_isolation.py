@@ -29,7 +29,7 @@ cell (c, k) is the open interval (c 2^k, (c + 1) 2^k).
 from fractions import Fraction as F
 from math import gcd
 
-OK, NOT_DETERMINED, DOMAIN = "OK", "NOT_DETERMINED", "DOMAIN"
+OK, NOT_DETERMINED, DOMAIN, LIMIT = "OK", "NOT_DETERMINED", "DOMAIN", "LIMIT"
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -175,54 +175,127 @@ def root_bound_exp(g):
 # ---------------------------------------------------------------------------------------------------------------
 # Algorithm D: isolation
 
-def isolate_positive(g, stats):
-    """The positive roots of the squarefree g, g(0) != 0: a list of exact roots (c, k), meaning c 2^k, and a
-    list of cells (c, k), each an open interval with exactly one root of g, no root of g elsewhere in (0, oo)."""
+KMIN = 2 - (1 << 24)
+
+
+def contract_edge(q, jump, hi):
+    """Design R6: skip only v >= 2 cells with a clean new endpoint and a v = 0 complement."""
+    n, w = len(q) - 1, (1 << jump) - 1
+    base = _strip2([x << (jump * (n - i)) for i, x in enumerate(q)])
+    def shift(q, a):
+        q = list(q)
+        for i in range(len(q) - 1):
+            for j in range(len(q) - 2, i - 1, -1):
+                q[j] += a * q[j + 1]
+        return q
+    out = shift(base, w) if hi else base
+    if (out[0] if hi else sum(out)) == 0 or var01(out) < 2:
+        return None
+    outside = base if hi else shift1(base)
+    outside = [x * w ** i for i, x in enumerate(outside)]
+    return _strip2(out) if var01(outside) == 0 else None
+
+
+def isolate_positive(g, stats, remaining=None):
+    """C Algorithm D, including count stopping and the certified endpoint contraction."""
     d = len(g) - 1
-    K = root_bound_exp(g)
-    if K >= 0:
-        q = [g[i] << (K * i) for i in range(d + 1)]
-    else:
-        q = [g[i] << (-K * (d - i)) for i in range(d + 1)]
-    points, cells, work = [], [], [(_strip2(q), 0, K)]
-    while work:
-        q, c, k = work.pop()
-        if len(q) == 1:
-            continue
-        stats["nodes"] += 1
-        stats["bits"] = max(stats["bits"], max(abs(x).bit_length() for x in q))
+    if remaining == 0:
+        return [], []
+    K = max(root_bound_exp(g), KMIN)
+    q = ([g[i] << (K * i) for i in range(d + 1)] if K >= 0 else
+         [g[i] << (-K * (d - i)) for i in range(d + 1)])
+    points, cells, work = [], [], []
+    def add(q, c, k, jump):
+        if len(q) < 2:
+            return
         v = var01(q)
-        if v == 0:
-            continue
         if v == 1:
             cells.append((c, k))
+        elif v >= 2:
+            work.append((_strip2(q), c, k, jump))
+    add(q, 0, K, 2)
+    while work and (remaining is None or len(points) + len(cells) < remaining):
+        q, c, k, jump = work.pop()
+        stats["nodes"] += 1
+        stats["bits"] = max(stats["bits"], max(abs(x).bit_length() for x in q))
+        trial = min(jump, k - KMIN)
+        accepted = False
+        if trial >= 2:
+            for hi in (False, True):
+                out = contract_edge(q, trial, hi)
+                if out is not None:
+                    c = (c << trial) + ((1 << trial) - 1 if hi else 0)
+                    work.append((out, c, k - trial, 2 * trial))
+                    accepted = True
+                    break
+        if accepted:
             continue
+        jump = max(2, jump // 2)
+        if k - 1 < KMIN:
+            raise OverflowError("cell below KMIN")
         n = len(q) - 1
-        left = [q[i] << (n - i) for i in range(n + 1)]             # 2^n q(X / 2): the left half on (0, 1)
-        right = shift1(left)                                       # the right half on (0, 1)
-        if right[0] == 0:                                          # the midpoint is a root: exact, divided out
+        left = [q[i] << (n - i) for i in range(n + 1)]
+        right = shift1(left)
+        if right[0] == 0:
             points.append((2 * c + 1, k - 1))
-            right = right[1:]                                      # by X
-            left = _divexact(left, [-1, 1])                        # by X - 1
-        work.append((_strip2(left), 2 * c, k - 1))
-        work.append((_strip2(right), 2 * c + 1, k - 1))
+            right = right[1:]
+            left = _divexact(left, [-1, 1])
+        for child, cc in ((left, 2 * c), (right, 2 * c + 1)):
+            if remaining is not None and len(points) + len(cells) >= remaining:
+                break
+            add(_strip2(child), cc, k - 1, jump)
     return points, cells
 
 
+def count_real(g):
+    """The same equivalent input as C real_count, counted by the independent rational-chain oracle."""
+    try:
+        from .solvers_checks import sturm_count
+    except ImportError:
+        from solvers_checks import sturm_count
+    d = len(g) - 1
+    if d < 3 or max(abs(x).bit_length() for x in g) < 1024:
+        return sturm_count(g)
+    center = F(-g[d - 1], d * g[d])
+    translate = d >= 5 and center != 0 and (
+        abs(center.numerator).bit_length() + center.denominator.bit_length() <= 16)
+    def exponent(q):
+        if q[0] == 0:
+            return 0
+        z = abs(q[0]).bit_length() - abs(q[-1]).bit_length()
+        return sgn(z) * (abs(z) // d)  # C truncates towards zero
+    scale = exponent(g)
+    if not translate and scale >= -32:
+        return sturm_count(g)
+    h = list(g)
+    if translate:
+        h = [x * center.denominator ** (d - i) for i, x in enumerate(h)]
+        for i in range(d):
+            for j in range(d - 1, i - 1, -1):
+                h[j] += center.numerator * h[j + 1]
+        h = _primitive(h)
+        scale = exponent(h)
+    h = ([x << (scale * i) for i, x in enumerate(h)] if scale >= 0 else
+         [x << (-scale * (d - i)) for i, x in enumerate(h)])
+    return sturm_count(_strip2(h))
+
+
 def isolate(g, stats):
-    """All real roots of the squarefree g of degree >= 1: (points, cells), cells (c, k) with c of any sign."""
+    """All real roots. The independent oracle supplies the count trusted in C (S-D11)."""
+    count = count_real(g) if len(g) > 1 else 0
     points, cells = [], []
+    if count == 0:
+        return points, cells
     if g[0] == 0:
         points.append((0, 0))
-        g = g[1:]                                                  # squarefree: g(0) != 0 now
+        g = g[1:]
     if len(g) > 1:
-        p, c = isolate_positive(g, stats)
-        points += p
-        cells += c
-        h = [x if i % 2 == 0 else -x for i, x in enumerate(g)]     # g(-X)
-        p, c = isolate_positive(h, stats)
+        p, c = isolate_positive(g, stats, count - len(points))
+        points += p; cells += c
+        h = [x if i % 2 == 0 else -x for i, x in enumerate(g)]
+        p, c = isolate_positive(h, stats, count - len(points) - len(cells))
         points += [(-m, k) for m, k in p]
-        cells += [(-m - 1, k) for m, k in c]                       # (m 2^k, (m+1) 2^k) mirrored
+        cells += [(-m - 1, k) for m, k in c]
     return points, cells
 
 
@@ -254,7 +327,9 @@ def gallop(g, dg, c, k, anchor_hi, sign_at):
 
     hi_t, lo_t, step = k, None, 1
     while lo_t is None:                                            # galloping: t = k - 1, k - 2, k - 4, ...
-        t = min(k - step, hi_t - 1)
+        t = min(max(k - step, KMIN), hi_t - 1)
+        if t < KMIN:
+            raise OverflowError("gallop below KMIN")
         s = sign_at(at(t), t)
         if s == 0:
             return ("point", at(t), t)
@@ -262,6 +337,8 @@ def gallop(g, dg, c, k, anchor_hi, sign_at):
             lo_t = t
         else:
             hi_t = t
+        if t == KMIN and lo_t is None:
+            raise OverflowError("gallop below KMIN")
         step *= 2
     while hi_t - lo_t > 1:                                         # bisection of the exponent
         mid = (lo_t + hi_t) // 2
@@ -283,9 +360,20 @@ def refine(g, dg, c, k, floor, need, method, stats):
     g(lo) g(hi) < 0, lo > floor (if floor is not None), and accuracy >= need; [lo, hi] lies in the closed cell.
     floor is the right end of the previous item as isolated (static), so the sequence of cells does not depend
     on need nor on floor (design R4(4)). method "qir" uses step Q, "bisect" does not; both use step G."""
+    origin, scale = (c if len(g) - 1 >= 8 else 0), k
+    n = len(g) - 1
+    local = ([x << (scale * i) for i, x in enumerate(g)] if scale >= 0 else
+             [x << (-scale * (n - i)) for i, x in enumerate(g)])
+    local = list(local)
+    for i in range(n):
+        for j0 in range(n - 1, i - 1, -1):
+            local[j0] += origin * local[j0 + 1]
+    local = _strip2(local)
+    def local_value(m, e):
+        return ev(local, m - (origin << (scale - e)), e - scale)
     def sign_at(m, e):
         stats["evaluations"] += 1
-        return sgn(ev(g, m, e))
+        return sgn(local_value(m, e))
 
     s_lo = sign_at(c, k)
     lo_clean = s_lo != 0
@@ -313,11 +401,11 @@ def refine(g, dg, c, k, floor, need, method, stats):
         apart = floor is None or value(c, k) > floor
         if apart and accuracy(c, k) >= need:
             return value(c, k), value(c + 1, k)
-        if method == "qir" and j > 1:
-            jj = j                                                 # no cap: the sequence must not depend on need
+        if method == "qir" and j > 1 and k - KMIN >= 2:
+            jj = min(j, k - KMIN)                                  # only the scale limit caps N
             e = k - jj
             a = c << jj
-            fa, fb = ev(g, a, e), ev(g, a + (1 << jj), e)          # the same scaling: the ratio is exact
+            fa, fb = local_value(a, e), local_value(a + (1 << jj), e)          # the same scaling: the ratio is exact
             stats["evaluations"] += 2
             num, den = abs(fa) << jj, abs(fa) + abs(fb)
             t = (2 * num + den) // (2 * den)                       # round(N fa / (fa - fb)), [KS]:288
@@ -345,6 +433,8 @@ def refine(g, dg, c, k, floor, need, method, stats):
                 continue
         # one bisection; after it N = 4 ([KS]:340 to 341)
         j = 2
+        if k - 1 < KMIN:
+            raise OverflowError("refinement below KMIN")
         s = sign_at(2 * c + 1, k - 1)
         if s == 0:
             return value(2 * c + 1, k - 1), value(2 * c + 1, k - 1)
@@ -378,11 +468,16 @@ def real_roots(f, prec, refine="qir", count=None):
     f = ptrim(f)
     if not f:
         return DOMAIN, 0, [], stats
+    if prec > (1 << 21):
+        return LIMIT, 0, [], stats
     need = max(prec, 2)
     g = squarefree_part(f)
     if len(g) == 1:
         return OK, 0, [], stats
-    points, cells = isolate(g, stats)
+    try:
+        points, cells = isolate(g, stats)
+    except OverflowError:
+        return LIMIT, 0, [], stats
     items = sorted([(value(m, k), 0, m, k) for m, k in points] + [(value(c, k), 1, c, k) for c, k in cells])
     dg = pderiv(g)
     balls, floor = [], None
@@ -390,9 +485,26 @@ def real_roots(f, prec, refine="qir", count=None):
         if kind == 0:
             ball = (x, x)
         else:
-            ball = globals()["refine"](g, dg, c, k, floor, need, refine, stats)
+            try:
+                ball = globals()["refine"](g, dg, c, k, floor, need, refine, stats)
+            except OverflowError:
+                return LIMIT, 0, [], stats
         balls.append(ball)
         floor = x if kind == 0 else value(c + 1, k)                 # static: the item as isolated (design R4(4))
+    def admitted(x, midpoint=False):
+        if x == 0:
+            return True
+        m = abs(x.numerator)
+        e = -(x.denominator.bit_length() - 1)
+        z = (m & -m).bit_length() - 1
+        m >>= z
+        e += z
+        top = m.bit_length() - 1 + e
+        M = 1 << 24
+        return (not midpoint or m.bit_length() <= M) and top < M and (
+            top > -M or (top == -M and m != 1))
+    if any(not admitted((lo + hi) / 2, True) or not admitted((hi - lo) / 2) for lo, hi in balls):
+        return LIMIT, 0, [], stats
     # the final tests, on the balls that are output (solvers.md 3.10, steps 5 to 7)
     ok = all(entry_ok(g, lo, hi) for lo, hi in balls)
     ok = ok and all(balls[i][1] < balls[i + 1][0] for i in range(len(balls) - 1))

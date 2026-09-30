@@ -1,3 +1,4 @@
+#define ADF_TEST_NO_MAIN
 /* tests/test_roots_real_isolate.c: the real roots by exact isolation (lane r-slice1, issue adf-8di):
    adf_roots_real of include/adelefeld/roots.h with the candidates of src/roots_real.c, and that hidden
    function itself.
@@ -1302,4 +1303,13 @@ ADF_TEST(count_guided_regions)
         ADF_CHECK(adf_rootlist_verify_complete(L, f, 0));
     }
     fmpz_poly_clear(f); adf_rootlist_clear(L);
+}
+
+int main(void) {
+    for (adf_test *t = adf_test_head; t; t = t->next) {
+        if (strcmp(t->name, "review_cost_inputs") && strcmp(t->name, "count_guided_regions")) continue;
+        adf_test_current = t->name; t->fn();
+    }
+    printf("planted checks %lu failures %lu\n", adf_test_checks, adf_test_failures);
+    return adf_test_failures ? 1 : 0;
 }
