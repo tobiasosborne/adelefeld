@@ -1,0 +1,5 @@
+nines=1000 kind=idele length=2022 limit=False
+nines=1000 kind=class length=2018 limit=False
+nines=1500 kind=idele length=12 limit=True
+nines=1500 kind=class length=12 limit=True
+driver_exit=1 stderr_bytes=0 failures=0

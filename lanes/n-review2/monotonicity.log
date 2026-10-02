@@ -1,0 +1,6 @@
+mid=793/512 rad=741/512 exact_lower=13/128 digits=1
+k=2 text='2 +/- 1.9' loops=1 lower=1/10 satisfies=True
+k=3 text='1.5 +/- 1.5' loops=1 lower=0 satisfies=False
+k=4 text='1.55 +/- 1.449' loops=1 lower=101/1000 satisfies=True
+k=5 text='1.549 +/- 1.4475' loops=1 lower=203/2000 satisfies=True
+checks=4 failures=0

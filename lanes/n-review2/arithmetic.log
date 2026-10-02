@@ -1,0 +1,3 @@
+b=7462 D=2245 S=7463 work=33538722 refused=False
+b=7463 D=2246 S=7464 work=33558144 refused=True
+exact_checks=5 failures=0

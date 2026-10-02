@@ -1,0 +1,2 @@
+digits=1 mid_exp=1 rad_exp=0 null=0 len=29 seconds=0.480888 levels=2 passes=2 work=2000005 attempt=2000005 S0=1000001 Smax=1000004 class_null=0 failures=0
+text=(1 +/- 1.1e-301030 ; 1 * [1])
