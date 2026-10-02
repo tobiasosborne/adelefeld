@@ -2,6 +2,78 @@
 
 # HANDOFF: adelefeld
 
+## Session 2026-10-02 13:12 to the evening (orchestrator Claude Fable; codex astra lanes only): START HERE
+
+(The machine slept during the session; the clock read 2026-10-03 00:12 to 00:35 when it woke and 21:31 on 2026-10-02 at the end, so the times after the sleep in this entry and in the worklog are from a clock that was wrong one way or the other.)
+
+**One line.** Five codex `gpt-6-astra` xhigh lanes: the P1 fixture repair (adf-6fe) landed; milestone 1F gained 1F.7
+(`sin`, `cos`, `sinh`, `cosh` at a prime) and 1F.5 (local roots), both merged with proofs, oracles and driver
+commands; the repairs of n-repair1 were reviewed (no blocker or major; monotonicity of the printer's level condition
+refuted, a lower bound proved); the review of 1F.7 (lane f-review5) was still running when the session wound up.
+Everything named here is merged and pushed; the lane branches are pushed too.
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    cat ../adelefeld-wt/f-review5/lanes/f-review5/lane.log; ls ../adelefeld-wt/f-review5/lanes/f-review5/report.md
+    make clean && make -j2 check-all 2>&1 | tail -1     # expect: check-all passed: ... (73 programs)
+    make clean && make -j2 check SAN=1 2>&1 | tail -1; make clean && make -j2 check CC=clang 2>&1 | tail -1
+    make clean && make -j2 check INV=1 2>&1 | tail -1; sh lanes/m1-headers/check_headers.sh | tail -1
+    ~/Projects/quota-app/target/release/quota; date
+
+**Master.** `make clean && make -j2 check-all` on `2fa244b` (the code of HEAD): 73 test programs, driver, exports, Julia, both self-tests pass (log read at the end of the session). `check_headers.sh` passed at 14:20 on `c09663a`. NOT run on master this session
+(battery): `SAN=1`, `CC=clang`, `INV=1`. Run them first on mains power. Each lane ran its own new test programs under
+ASan/UBSan (`detect_leaks=0`) and f-slice8 ran `check-all` in its worktree (passed).
+
+**Rules of TJO for this session** (2026-10-02): use the codex quota; only codex `gpt-6-astra` xhigh subagents; at
+most two concurrent; avoid compute-heavy tests, the machine is on battery. The rules of 2026-09-29 (HANDOFF below,
+memory `orchestration-model-tiers`) stand otherwise.
+
+**What landed** (brief `lanes/<lane>/brief.md`, report `lanes/<lane>/report.md`; details `docs/worklog/2026-10-02.md`).
+
+| Lane | What | Review |
+|---|---|---|
+| f-fixture1 | adf-6fe: `tests/ref/vectors/f-slice5/stored_large.jsonl`, 465 old-code rows, F8 and F9 at every prime; six planted faults fail the new comparison | closes f-review4 MAJOR 1; MINOR 2 (small-N regression) left open |
+| f-slice7 | 1F.7: `adf_lball_sin`, `cos`, `sinh`, `cosh`; `_at` forms at both places; driver `sin_at` etc.; F10 to F14 in `docs/api-1f4.md`; N-D12 | f-review5 RUNNING (see below) |
+| n-review2 | review of n-repair1 (N-D11 bound, D1, C1, R5, C2) | `docs/reviews/m2/review-nd11-repairs.md`: 0 blocker, 0 major, 2 minor (texts corrected in `7f67f88`); adf-7yz (optional lower-bound skip) |
+| f-slice8 | 1F.5: `include/adelefeld/lroot.h`, `src/lroot.c` (count, seeded branch, all branches); seeded `_at` forms; driver `roots_at`, `root_at`; R1 to R7 in `docs/api-1f5.md`; N-D13 | NOT reviewed |
+
+Also: the wall-clock guard of `constrained_printer_ends_in_bounded_time` is 30 s (adf-4j8; 2 s failed on battery);
+`tools/orch/codex_lane.sh` passes `-m MODEL` on resume (a resume had fallen back to gpt-6.1-sol).
+
+**Running at the session end: lane f-review5** (review of f-slice7, codex astra, started 14:47; the machine slept for
+hours in between). Its notes (`lanes/f-review5/progress.md`, WIP commit `a159880` on `lane/f-review5`, pushed) say:
+enumeration, limits, large `N`, regression of `exp`/`log`/`Log` against `27f7e5f` (1008 cases, 0 differences), real
+probe, driver: 0 failures; two MINOR findings being written (an F13 sentence lacks a qualifier; the absent parity
+doubles the Horner work, 76 ms against 36 ms at `N = 2000`). If `report.md` exists in the worktree: read it, commit
+it there, merge `lane/f-review5`, copy the report to `docs/reviews/f1/review-lfunc-trig.md`. If the process died
+without a report: `MAXRETRY=2 tools/orch/wt_lane.sh f-review5 codex gpt-6-astra xhigh` resumes its session
+(`session.id` exists), or treat `progress.md` as the report (it is nearly complete).
+
+**The next steps**, in this order:
+1. The suites not run on master (above). Then f-review5 as above.
+2. A review of f-slice8 (local roots; the one with the widest interface decision, N-D13: a ball input returns the
+   exact image exponent regardless of the requested `N`, unlike `lfunc.h`). Codex astra with its own oracle, the
+   pattern of `lanes/f-review5/brief.md`.
+3. Milestone 1F continues: 1F.6 (rational powers through the branches of `lroot.h`; principal-unit powers
+   `exp(s log u)`, Propositions 17, 18), then 1F.8, 1F.9. Text forms of `adf_lball`, `adf_sball` (conventions 9).
+4. Milestone 2: dump forms of the three types. Then milestone 3: a first slice.
+5. Left: adf-7yz (optional), adf-4dj, f-review4 MINOR 2, the f-slice8 cost note (all branches recompute the log),
+   benchmarks on a quiet machine, adf-mds, adf-7gc. Two 2.9 MB logs of f-slice8 could be deleted from the tree.
+
+**Waits for TJO.** Nothing blocks. Open to reversal: N-D12, N-D13 (`docs/SPEC.md` 15.4), N-D1 to N-D11 as before.
+
+**Things to know** (in addition to the list of 2026-09-30).
+- The codex content filter refused n-review2 once after 8 minutes of work ("possible cybersecurity risk"), as it
+  did n-review1; the runner's resume then continued the session and finished. Ask lanes to write `progress.md`
+  as they go (all five did).
+- A brief that says "no run of more than 3 minutes" also caps the lane's `check-all` (about 6 minutes on this
+  machine): say `timeout 900` for the one acceptance run explicitly.
+- `pkill -f "codex exec resume"` kills the orchestrator's own shell when its command line contains the pattern.
+- The lanes' worktrees under `../adelefeld-wt/` of this session (f-fixture1, f-slice7, n-review2, f-slice8) are
+  merged and may be removed; f-review5 is not.
+- The `.beads` permission warning (0775) in every worktree is noise from `bd`'s hook.
+
 ## Session 2026-09-29 22:37 to 2026-09-30 (night; orchestrator Claude Fable): START HERE
 
 **One line.** Fourteen lanes landed in one night: milestone S is closed (reviewed), the real roots are fast
