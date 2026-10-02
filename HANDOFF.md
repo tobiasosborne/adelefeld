@@ -17,7 +17,10 @@ f-repair4); the two minors of f-review5 are repaired (lane f-repair3). Everythin
     tools/orch/suites.sh -j2                    # all, san, clang, inv, headers in parallel build dirs; one line each
     bd ready | head -20                         # the tracker was NOT available in the cloud container (below)
 
-**Master.** Unchanged this session (`c1494d1`). On it, in the container: `make check` 73 programs, driver,
+**Master.** Unchanged this session (`c1494d1`). The session branch after all four merges: `make -j3 check-all` passed
+(74 programs; driver 49 cases, 100916 lines; exports 424 of 424; Julia; both self-tests). Not rerun on the final
+branch: `SAN=1`, `CC=clang`, `INV=1` as whole suites (the changed programs ran under ASan/UBSan in the lanes and
+by the orchestrator); run `tools/orch/suites.sh -j2` after the merge into master. On it, in the container: `make check` 73 programs, driver,
 exports, Julia (real Julia 1.13.1), mutate and memcheck self-tests, `SAN=1` 73 of 73, `CC=clang` 73 of 73, `INV=1`
 73 of 73, `check_headers.sh`: all passed. On the session branch after the three merges: `make -j3 check-all`
 (all steps green after the repair of `tools/adf/Makefile` below) and the three changed test programs under
