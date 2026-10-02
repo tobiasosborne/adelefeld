@@ -16,7 +16,7 @@ while [ $attempt -le "${MAXRETRY:-4}" ]; do
       -o "$D/last.md" "$PROMPT" >> "$OUT" 2>&1 < /dev/null; rc=$?
     grep -oE 'session id: [0-9a-f-]{36}' "$OUT" | tail -1 | awk '{print $3}' > "$SID" 2>/dev/null || true
   else
-    codex exec resume -c "model_reasoning_effort=\"$EFFORT\"" -c 'sandbox_mode="workspace-write"' --skip-git-repo-check \
+    codex exec resume -m "$MODEL" -c "model_reasoning_effort=\"$EFFORT\"" -c 'sandbox_mode="workspace-write"' --skip-git-repo-check \
       -o "$D/last.md" "$(cat "$SID")" "You were interrupted. Keep what is written, read $D/brief.md and your files again, continue from the first unfinished item, and finish with $D/report.md." >> "$OUT" 2>&1 < /dev/null; rc=$?
   fi
   echo "$(date -Is) attempt $attempt exit $rc" >> "$LOG"
