@@ -338,6 +338,7 @@ Start F = 1, A = epsilon_L. For k = L,L-1,...,1, do
 
 reducing each result modulo p^W. Then p^D divides the final residues A and F, F/p^D is
 a unit modulo p^K, and (A/p^D) (F/p^D)^(-1) modulo p^K is f(a) modulo p^K.
+The code performs these steps two at a time; F15 proves that the residues are the same.
 
 Proof.
 
@@ -420,7 +421,8 @@ Proof.
 1. After the input check, E=2M-v_p(2) has magnitude at most 2^61+1, within slong.
    Domain membership ensures M>=c when this centred-ball expression is used. The threshold
    2v(a)-v_p(2) is also safe. N is only compared, never added or negated, so LONG_MIN is allowed
-   as an argument and returns LIMIT unless an exact-zero result ignores it.
+   as an argument. In the order above it returns LIMIT only for an input that passes the input limits and
+   the domain test and is not exact zero: at p=2 exact 2 gives DOMAIN and 2 Z_2 gives NOT_DETERMINED.
 2. K is bounded before arithmetic with it. Before forming a nonconstant sum, K bits(p)<=2^26
    is checked, so K<=2^25. The count satisfies C<=2K (F7); L<C and D<=L imply W<=3K.
    The products (p-1)K and (p-1)w are formed in fmpz, including at p=2^64-59. No word product
@@ -454,3 +456,37 @@ Proof.
 Tests compare every new oracle case through _at, including aliasing, and real sinh/cosh with
 arb at the same precision and with three image points evaluated at 250 bits. Overflow at input 2^1000
 must be NOT_DETERMINED with no output, the same loss rule as exp_at.
+
+## F15 (paired parity Horner steps; lane f-repair3)
+
+Under the hypotheses of F11, the following loop ends with the same integers A and F as the loop of F11.
+Put x2 = a_r^2 modulo p^W. Start F = 1, A = epsilon_L. For k = L, L-2, ..., while k >= 2, do
+
+    F = k (k-1) F, A = x2 A + epsilon_(k-2) F,
+
+reducing each result modulo p^W. If L is odd, finish with A = a_r A modulo p^W.
+
+Proof.
+
+1. L has the retained parity (F10), and the F11 step at k leads to degree k-1. From k = L down the steps
+   therefore alternate: the step at k with k = L modulo 2 adds epsilon_(k-1) F, and epsilon_(k-1) = 0
+   because k-1 has the other parity; the step at k-1 adds epsilon_(k-2) F, with k-2 of the retained parity.
+2. Let (F, A) be the state before the step at k, k = L modulo 2, k >= 2. The first step gives F' = kF and
+   A' = a_r A. The second gives F'' = (k-1) F' = k(k-1) F and A'' = a_r A' + epsilon_(k-2) F''
+   = a_r^2 A + epsilon_(k-2) F''. These are identities of integers before any reduction.
+3. Reduction modulo p^W is a ring homomorphism from Z onto Z/p^W Z. Both loops evaluate the same
+   expressions of a_r, k and epsilon in that ring, so after each pair their states are congruent modulo p^W.
+   Both store the least nonnegative residue after every operation (fmpz_mod,
+   refs/src/flint-3.0.1/fmpz.rst:880-883), so the stored integers are equal.
+4. For even L the pairs cover k = L, ..., 2 and end at degree 0, as F11 does. For odd L they cover
+   k = L, ..., 3 and end at degree 1. The last F11 step, at k = 1, gives F = 1 F and A = a_r A + epsilon_0 F
+   with epsilon_0 = 0 (degree 0 is even): the final multiplication by a_r. For L = 1 there is no pair.
+5. The division by p^D and the inverse of F/p^D modulo p^K act on the same integers, so the result is the
+   same residue. L, D, W, K, the domain test, the exponent rule and the statuses are fixed before the loop.
+
+The product k(k-1)F is formed by fmpz_mul2_uiui (refs/src/flint-3.0.1/fmpz.rst:758-760), with no word
+product of k and k-1. A pair costs one multiplication of A, one of F and two reductions; F11's two steps
+cost two of each. Check: lanes/f-repair3/compare.c runs the code of F11 (src/lfunc.c before this change)
+against the paired loop on 3300 random and 14 fixed inputs of the four functions, distinct and aliased;
+the residues pinned in tests/test_lfunc_trig.c (pinned_residues_odd_and_even_top_degree) were computed
+before the change.

@@ -1,0 +1,12 @@
+inputs 3300 (exact nonzero 1317, noncentred balls 971, balls about 0 690, exact zero 322; 0 draws refused by set_rat_ball)
+calls 13256 distinct (56 of them fixed edge calls), 12084 aliased
+sin  sums formed 1687: term count C even 812, odd 875; L=1 417, L=2 0, max L 3993; status OK 2539 DOMAIN 652 NOT_DETERMINED 114 LIMIT 9
+cos  sums formed 1397: term count C even 588, odd 809; L=1 0, L=2 250, max L 3994; status OK 2539 DOMAIN 652 NOT_DETERMINED 114 LIMIT 9
+sinh sums formed 1687: term count C even 812, odd 875; L=1 417, L=2 0, max L 3993; status OK 2539 DOMAIN 652 NOT_DETERMINED 114 LIMIT 9
+cosh sums formed 1397: term count C even 588, odd 809; L=1 0, L=2 250, max L 3994; status OK 2539 DOMAIN 652 NOT_DETERMINED 114 LIMIT 9
+sums formed at p = 2, 3, 5, 7, 13, 65537, 2^64-59 (with the edge calls): 808 1682 864 884 930 542 458
+differences 0
+
+real	0m4.422s
+user	0m4.280s
+sys	0m0.054s

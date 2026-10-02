@@ -319,3 +319,54 @@ ADF_TEST(circular_exp_with_hensel_i)
     adf_lball_clear(en); adf_lball_clear(rhs); adf_lball_clear(div); adf_lball_clear(y);
     fmpq_clear(q); fmpq_clear(iq); jsonl_close(f);
 }
+
+/* f-repair3: residues of the parity Horner sum pinned at odd (sin, sinh) and even (cos, cosh) top degree L,
+   so that a change of the summation (lane f-repair3 paired its steps) is caught by the suite. The values were
+   computed by src/lfunc.c before the paired loop (lanes/f-repair3/gen_pins.c) and agree with the Fraction
+   oracle proto/lfunc_trig_checks.py point() (lanes/f-repair3/check_pins.py, 20 of 20). C is F10's count,
+   L the top degree; both parities of C occur. Each residue r is p^v u of the result, 0 <= r < p^N, at K = N. */
+ADF_TEST(pinned_residues_odd_and_even_top_degree)
+{
+    static const struct
+    {
+        ulong p; slong num, den, N; const char *r[4];
+    } cs[] = {
+        /* p=3, x=3/2, w=1, N=20: C=39 (odd); L=37 for sin/sinh, L=38 for cos/cosh */
+        {3, 3, 2, 20, {"3168081969", "2838301057", "1926456855", "2169655354"}},
+        /* p=3, x=9/2, w=2, N=21: C=14 (even); L=13, L=12 */
+        {3, 9, 2, 21, {"7077663567", "6849623575", "3032135415", "5248672345"}},
+        /* p=5, x=35/3, w=1, N=12: C=16 (even); L=15, L=14 */
+        {5, 35, 3, 12, {"105647845", "85990801", "211082595", "93232951"}},
+        /* p=2, x=12/5, w=2, N=30: C=29 (odd); L=27, L=28 */
+        {2, 12, 5, 30, {"534315644", "1010450137", "852560316", "915693545"}},
+        /* p=2^64-59, x=3p, w=1, N=4: C=5 (odd); L=3, L=4 */
+        {UWORD(18446744073709551557), 3, 0, 4,
+         {"57896044618658096942840529919475564181354450997768997699819720662034468736053",
+          "57896044618658096971087487728715627346049327498531788214734208108064742847881",
+          "57896044618658096999334445537955690513806745301583024881339305279143644387290",
+          "57896044618658096971087487728715627349111868800820234366314137368671112966122"}},
+    };
+    adf_lball_t x, y;
+    fmpq_t q;
+    fmpz_t r, want;
+    adf_lball_init(x); adf_lball_init(y); fmpq_init(q); fmpz_init(r); fmpz_init(want);
+    for (size_t i = 0; i < sizeof cs / sizeof cs[0]; i++)
+    for (int f = 0; f < 4; f++)
+    {
+        ulong p = cs[i].p;
+        if (cs[i].den)
+            fmpq_set_si(q, cs[i].num, cs[i].den);
+        else
+        {
+            fmpz_set_ui(fmpq_numref(q), p); fmpz_mul_si(fmpq_numref(q), fmpq_numref(q), cs[i].num);
+            fmpz_one(fmpq_denref(q));
+        }
+        setq(x, p, q, 1, 0);
+        ADF_CHECK(fs[f](y, x, cs[i].N) == ADF_OK && !y->exact && y->N == cs[i].N && y->p == p);
+        ADF_CHECK(fmpz_is_one(fmpq_denref(y->u)));
+        fmpz_set_ui(r, p); fmpz_pow_ui(r, r, (ulong) y->v); fmpz_mul(r, r, fmpq_numref(y->u));
+        ADF_CHECK(fmpz_set_str(want, cs[i].r[f], 10) == 0);
+        ADF_CHECK_MSG(fmpz_equal(r, want), "%s p=%lu case %zu residue", names[f], p, i);
+    }
+    adf_lball_clear(x); adf_lball_clear(y); fmpq_clear(q); fmpz_clear(r); fmpz_clear(want);
+}

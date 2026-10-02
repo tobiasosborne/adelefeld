@@ -1,0 +1,9 @@
+ok   exact_reference_all_rows_and_aliases
+enumeration: 1296 balls/requests, 18108 point enclosures, 480 hull witnesses
+ok   every_ball_and_every_grid_point
+ok   independent_small_truncations
+ok   statuses_limits_and_no_power_shortcuts
+ok   hyperbolic_exp_containment
+ok   circular_exp_with_hensel_i
+ok   pinned_residues_odd_and_even_top_degree
+7 tests, 2174090 checks, 0 failed checks, 0 failed tests

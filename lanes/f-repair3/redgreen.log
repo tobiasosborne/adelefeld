@@ -1,0 +1,44 @@
+# f-repair3 red-green log (times UTC)
+
+## Step 1: reference comparison, before the change (20:5x)
+lanes/f-repair3/ref_lfunc.c = src/lfunc.c (sha256 5951d2231a03...7f6edc0) with adf_lball_{sin,cos,sinh,cosh,exp,log,Log}
+renamed ref_lball_* (exp/log/Log too: the archive's lfunc.o is linked for sin and would define them twice).
+  timeout 600 lanes/f-repair3/build/compare
+  -> 3300 random inputs + 56 fixed edge calls; 13256 distinct calls, 12084 aliased; differences 0; exit 0
+     (passes trivially: library and reference are the same code).
+Detection check: a planted copy (parity_centre loop `k >= 2` instead of `k >= 1`) linked as the reference:
+  timeout 600 lanes/f-repair3/build/compare_planted -> differences 11714 (the program can fail).
+
+## Step 2: pinned residues (tests/test_lfunc_trig.c, pinned_residues_odd_and_even_top_degree)
+Values printed by lanes/f-repair3/gen_pins.c from the current library (lanes/f-repair3/pins.txt), 20 residues:
+5 cases (p=3 x=3/2 N=20 C=39; p=3 x=9/2 N=21 C=14; p=5 x=35/3 N=12 C=16; p=2 x=12/5 N=30 C=29;
+p=2^64-59 x=3p N=4 C=5) x 4 functions; L odd for sin/sinh (37,13,15,27,3), even for cos/cosh (38,12,14,28,4).
+  timeout 120 python3 lanes/f-repair3/check_pins.py -> 20 compared with the Fraction oracle, 0 mismatches.
+Green against the current code:
+  timeout 300 lanes/f-repair3/build/test_lfunc_trig -> 7 tests, 2174090 checks, 0 failed.
+Red: the same test linked against a scratch archive whose lfunc.o has the planted loop fault (`k >= 2`):
+  -> exit 1; pinned residue checks failed: 20 of 20; 7 tests, 2174090 checks, 8584 failed checks, 6 failed tests
+
+## Step 3: the change (src/lfunc.c parity_centre: paired Horner; parity_coefficient -> parity_sign)
+## Step 4: green
+  timeout 600 lanes/f-repair3/build/compare -> 3300 inputs + 56 edge calls; 13256 distinct, 12084 aliased calls;
+     sums formed (sin, cos, sinh, cosh) 1687/1397/1687/1397; C even/odd 812/875 (odd fns), 588/809 (even fns);
+     differences 0; exit 0 (lanes/f-repair3/compare.log).
+  test_lfunc_trig 7 tests 2174090 checks 0 failed; test_lfunc 13 tests 473031 checks 0 failed;
+  test_rfunc_prime 14 tests 521939 checks 0 failed.
+  python3 proto/lfunc_trig_checks.py -> 3 truncations, 462 identity checks, 0 failures.
+  SAN=1 test_lfunc_trig -> 7 tests 2174090 checks 0 failed; 0 sanitizer lines.
+  SAN compare (library and reference both instrumented) -> differences 0; 0 sanitizer lines.
+  compare --time (one run): ref 51.659/49.930/49.469/49.730 ms, paired 25.031/24.586/24.809/26.308 ms; identical.
+
+## Step 5: mutation testing (lanes/f-repair3/mutate.log)
+  ASAN_OPTIONS=hard_rss_limit_mb=3000 timeout 1300 python3 tools/mutate/mutate.py --files src/lfunc.c --limit 60
+    --seed 1 --jobs 2 --san --timeout 150 --scratch <scratchpad>/mutate
+    --make "make -s -j1 INV=1 build/test_lfunc_trig build/test_lfunc && ./build/test_lfunc_trig && ./build/test_lfunc"
+  -> 545 mutants, 60 run in 1193.3 s: 41 killed, 14 survived, 4 not compiled, 1 timed out (exit 1: survivors).
+  (A first start with `ulimit -v` was stopped at once by me: ASan reserves more virtual memory than any such
+   limit; the RSS limit of ASan is used instead.)
+  Targeted: timeout 1200 python3 lanes/f-repair3/loop_mutants.py <scratchpad>/loopm 690 739
+  -> 51 mutants (every tool mutant on those lines; no sanitizer; test_lfunc_trig and compare):
+     37 killed by the test, 1 killed by compare only (a timeout), 13 survived (lanes/f-repair3/loop_mutants.log).
+Final rerun 21:33: test_lfunc_trig 7/2174090/0, test_lfunc 13/473031/0, test_rfunc_prime 14/521939/0.
