@@ -51,6 +51,8 @@ typedef enum
     F_LOG_IW,   /* the Iwasawa logarithm Log: at the real place log (domain t > 0), at a prime adf_lball_Log */
     F_SIN,
     F_COS,
+    F_SINH,
+    F_COSH,
     F_ROOT   /* degree n >= 1; the square root is F_ROOT with n = 2 */
 } rfn;
 
@@ -185,6 +187,14 @@ real_apply(arb_t y, const arb_t x, rfn f, ulong n, slong prec)
         case F_COS:
             arb_cos(t, x, prec);
             break;
+        case F_SINH:
+            /* refs/src/flint-3.0.1/arb.rst:1209-1219; F14, docs/api-1f4.md. */
+            arb_sinh(t, x, prec);
+            break;
+        case F_COSH:
+            /* refs/src/flint-3.0.1/arb.rst:1211-1219; F14, docs/api-1f4.md. */
+            arb_cosh(t, x, prec);
+            break;
         case F_ROOT:
             root_of_checked(t, x, n, prec);
             break;
@@ -245,7 +255,8 @@ adf_real_root(arb_t y, const arb_t x, ulong n, slong prec)
    (include/adelefeld/lfunc.h) on the component of x at v, with N = prec, the absolute precision (docs/api-1f.md,
    section "Slice 1F.4-b"). The result is the partial ball over v: arch NONE, inf = 0, len 1, loc[0] = the result.
    Statuses of lfunc.h are passed on with where = v. The component is copied first, so y may be x. Every other
-   function is UNSUPPORTED with where = v (a later slice). */
+   function except the four parity series is UNSUPPORTED with where = v (a later slice).
+   F14 (docs/api-1f4.md) extends this component rule to sin, cos, sinh, cosh. */
 static int
 at_prime(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, rfn f, slong N)
 {
@@ -253,7 +264,8 @@ at_prime(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v,
     adf_sball_t t;
     int st;
 
-    if (f != F_EXP && f != F_LOG && f != F_LOG_IW)
+    if (f != F_EXP && f != F_LOG && f != F_LOG_IW &&
+        f != F_SIN && f != F_COS && f != F_SINH && f != F_COSH)
     {
         if (where != NULL)
             *where = v;
@@ -268,8 +280,16 @@ at_prime(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v,
             st = adf_lball_exp(r, c, N);
         else if (f == F_LOG)
             st = adf_lball_log(r, c, N);
-        else
+        else if (f == F_LOG_IW)
             st = adf_lball_Log(r, c, N);
+        else if (f == F_SIN)
+            st = adf_lball_sin(r, c, N);
+        else if (f == F_COS)
+            st = adf_lball_cos(r, c, N);
+        else if (f == F_SINH)
+            st = adf_lball_sinh(r, c, N);
+        else
+            st = adf_lball_cosh(r, c, N);
     }
     if (st == ADF_OK)
     {
@@ -370,6 +390,21 @@ int
 adf_sball_cos_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec)
 {
     return at_place(y, where, x, v, F_COS, 0, prec);
+}
+
+/* F14; docs/proofs/functions.md:24,26,140,299,725: component series and image enclosure.
+   At real: refs/src/flint-3.0.1/arb.rst:1209-1219; real_apply enforces CV-08 on lost finiteness. */
+int
+adf_sball_sinh_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec)
+{
+    return at_place(y, where, x, v, F_SINH, 0, prec);
+}
+
+/* F14; same component, aliasing and status proof as sinh_at. */
+int
+adf_sball_cosh_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec)
+{
+    return at_place(y, where, x, v, F_COSH, 0, prec);
 }
 
 int

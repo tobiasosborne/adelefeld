@@ -1,0 +1,63 @@
+--- a/tests/test_rfunc.c
++++ b/tests/test_rfunc.c
+@@ -624,7 +624,7 @@
+ }
+ 
+ /* The order of the checks on v: not a place -> DOMAIN (where = v); a prime of x -> exp, log: the function at the prime,
+-   the others UNSUPPORTED (where = v) (changed by lane f-slice6; before: every function UNSUPPORTED); a COMPLEX
++   sin/cos also have their local domains; the others UNSUPPORTED (where = v); a COMPLEX
+    tag -> UNSUPPORTED (where = inf); then the status of the real function with where = inf. y untouched on each. A
+    function that checked the real failure first, or wrote y, fails. */
+ ADF_TEST(sball_at_statuses_and_places)
+@@ -660,9 +660,9 @@
+         v = place_of(5);
+         where = mark;
+         st = k < NFNS ? FNS[k].g(y, &where, x, v, 53) : adf_sball_root_at(y, &where, x, v, 3, 53);
+-        /* f-slice6: exp and log exist at a prime now; for the value 2/3 both are DOMAIN at 5 and at 2 (v_5(2/3) = 0,
++        /* exp, log, sin and cos at 2/3 are DOMAIN at 5 and at 2 (v_5(2/3) = 0,
+            v_2(2/3) = 1 < 2; v(2/3 - 1) = 0): lfunc.h, tests/test_rfunc_prime.c. The others are UNSUPPORTED. */
+-        want_p = (k == 0 || k == 1) ? ADF_DOMAIN : ADF_UNSUPPORTED;
++        want_p = (k == 0 || k == 1 || k == 3 || k == 4) ? ADF_DOMAIN : ADF_UNSUPPORTED;
+         ADF_CHECK_MSG(st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x), "k=%lu",
+                       (unsigned long) k);
+         v = place_of(2);
+--- a/tests/julia/sball.jl
++++ b/tests/julia/sball.jl
+@@ -212,7 +212,7 @@
+     st, _, where = unary_at(:adf_sball_exp_at, s, p2)
+     @test st == DOMAIN && primeof(where) == 2   # lane f-slice6: exp exists at a prime; 2/3 has v_2 = 1 < 2: DOMAIN
+     st, _, where = unary_at(:adf_sball_sin_at, s, p2)
+-    @test st == UNSUPPORTED && primeof(where) == 2   # sin at a prime is a later slice
++    @test st == DOMAIN && primeof(where) == 2   # v_2(2/3)=1 is outside 4 Z_2
+     # log of a negative real ball: DOMAIN at the real place; the odd root and the exp are fine
+     neg = adele_of(-2, 3)
+     st, sn, _ = project(neg, [ARCH, p2])
+--- a/tests/julia/f_at.jl
++++ b/tests/julia/f_at.jl
+@@ -218,9 +218,13 @@
+     # the statuses and the place reported: 3 is not a place of the projection
+     st, _, where = at(:adf_sball_exp_at, s, p3, 12)
+     @test st == DOMAIN && primeof(where) == 3
+-    # sin at a prime: a valid request, not yet implemented: UNSUPPORTED with where = 5
+-    st, _, where = at(:adf_sball_sin_at, s, p5, 12)
+-    @test st == UNSUPPORTED && primeof(where) == 5
++    # sin(5/3) at 5, absolute N=12. Lemma 5 bounds the tail after degree 81 above 60.
++    st, sine, _ = at(:adf_sball_sin_at, s, p5, 12)
++    @test st == OK && nplaces(sine) == 1 && arch(sine) == ARCH_NONE
++    stc, cs = getlball(sine, p5)
++    partial = sum((-1)^div(k-1, 2) * (big(5)//3)^k / factorial(big(k)) for k in 1:2:81)
++    @test stc == OK && !isexact(cs) && prec(cs) == 12 && den(cs) == 1
++    @test big(5)^val(cs) * num(cs) == modp(partial, 5, 12)
+ 
+     # exp at 5 of 6 (a unit at 5): DOMAIN; of 25/3: v_5 = 2, OK, and the value differs from that of 5/3 at digit 1
+     a6 = adele_of(6, 1)
+--- a/tests/driver/f-places-hostile.cmd
++++ b/tests/driver/f-places-hostile.cmd
+@@ -50,5 +50,5 @@
+ exp_at [p=5: 3 + O(5^4)] with 4
+ exp_at ((1) + (2)*i ; 5 mod 18) with 5
+ log_at ((1) + (2)*i ; 6 mod 18) with real
+-# sin and cos are not commands; the name is not one of the table: PARSE
+-sin_at 5 with 5
++# tan is not a command; the name is not one of the table: PARSE
++tan_at 5 with 5

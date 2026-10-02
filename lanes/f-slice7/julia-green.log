@@ -1,0 +1,7 @@
+sin(5) at 5: 91977224184255 + O(5^20)
+cos(5) at 5: 15188663525926 + O(5^20)
+sinh(5) at 5: 28956828517630 + O(5^20)
+cosh(4) at 2: 954473 + O(2^20)
+sin(1) at 5: DOMAIN
+Test Summary:                            | Pass  Total  Time
+local sin, cos, sinh, cosh through ccall |   25     25  0.1s

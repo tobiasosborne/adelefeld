@@ -71,6 +71,7 @@ that the one chosen is unambiguous.
 | `recover` | three: a finite ball and two bounds | the rational of a residue class in a box (SPEC 9.2) |
 | `project` | two: a value and a list of places | the partial ball of a rational, finite ball or adele over the places (SPEC 9.3.1) |
 | `exp_at`, `log_at` | two: a value and one place | `exp`, `log` at the place, a prime or `real` (SPEC 9.3.1, 9.3.2) |
+| `sin_at`, `cos_at`, `sinh_at`, `cosh_at` | two: a value and one place | factorial series at a prime or `real` |
 | `inv` | one | `1/x` of a unit coset, an idele, an idele class or a rational (ideles and classes below) |
 | `pow`, `powtight` | two: a unit coset, idele or class, and an integer | the power `x^k`, `pow` by the default enclosure, `powtight` by the smallest coset |
 | `norm` | one: an idele or a class | the norm, a positive real ball |
@@ -420,3 +421,20 @@ bound on printing is read from the library, never copied.
 The fuzzer is `tests/fuzz/fuzz_driver.c`; `make fuzz FUZZ_TARGET=driver FUZZ_SECONDS=120`
 runs it over `tests/fuzz/corpus/driver/`, whose seeds are the scripts of `tests/driver/`
 and the hostile inputs.
+
+### The four factorial-series commands (1F.7)
+
+`sin_at X with PLACE`, `cos_at X with PLACE`, `sinh_at X with PLACE` and
+`cosh_at X with PLACE` use the same operands, one-place syntax, status reporting and output
+labels as `exp_at`. At `real` they apply the real function with arb's enclosure and working
+precision in bits. At a prime p they use the corresponding series on p^c Z_p, with c=1 for
+odd p and c=2 at 2. The setting `prec` is the requested absolute output precision N there.
+
+Exact zero gives exact 0 for sin/sinh and exact 1 for cos/cosh. Other exact inputs give a
+ball of exponent N. A ball a+p^M Z_p gives exponent min(N,M), except that cos/cosh of a
+centred ball p^M Z_p gives the smaller enclosure 1+p^min(N,2M-v_p(2)) Z_p. A ball that
+meets the domain and its complement is `NOT_DETERMINED`; a disjoint input is `DOMAIN`.
+
+For example, at `prec 8`, `cos_at (* ; 0 mod 4) with 2` prints `2: 1 + O(2^3)`;
+`sin_at 2 with 2` gives `error: DOMAIN`, while `sin_at (* ; 0 mod 2) with 2` gives
+`error: NOT_DETERMINED`. The fixtures are `tests/driver/trig-*.cmd` and `.out`.

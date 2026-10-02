@@ -287,3 +287,170 @@ Proof.
 The tree and factor proof above are our own. FLINT describes rectangular log splitting in
 `refs/src/flint-3.0.1/padic.rst:509-516`, and balancing chunk size against valuation for exp in
 `:440-447`. No FLINT padic function is called by the library (N-D9).
+
+## Slice 1F.7: the four parity series (lane f-slice7)
+
+Functions: adf_lball_sin, adf_lball_cos, adf_lball_sinh, adf_lball_cosh; the corresponding
+adf_sball functions with suffix _at; driver commands sin_at, cos_at, sinh_at, cosh_at.
+The header blocks give their complete contracts. The old exp, log and Log implementations are unchanged.
+
+Decision: use E = M for sin and sinh. For cos and cosh use E = 2M - v_p(2) on the centred
+ball p^M Z_p, and E = M elsewhere. The alternative is the safe exponent M on every ball.
+This choice uses the centred hull already proved in Proposition 10. It makes no tightness claim
+for a noncentred cosine ball. All four cap E by requested N, and only exact zero gives an exact result.
+At a prime the _at precision is absolute N; at real it is arb working bits, as for exp_at (N-D10).
+
+## F10 (counts for the four parity series)
+
+Let w = v_p(a) >= c for a nonzero centre a and let K be the requested centre precision. Put
+
+    d = (p-1)w - 1,
+    C = max(1, ceildiv((p-1)K - 1, d)),
+    T_odd = floor(C/2), T_even = ceildiv(C,2).
+
+Sin and sinh retain odd degrees 1,3,...,2T_odd-1; cos and cosh retain even degrees
+0,2,...,2T_even-2. A zero odd count means an empty sum. Thus L, when a nonconstant
+sum is needed, is the greatest integer below C of the selected parity. These are precisely
+Proposition 7's counts (docs/proofs/functions.md:165-195), including the constant term.
+
+Proof.
+
+1. Lemma 5 (functions.md:117-138) gives v_p(a^k/k!) >= k w - (k-1)/(p-1)
+   = (k d+1)/(p-1) for every k >= 1. The sign of a coefficient does not change this bound.
+2. d > 0 on the domain. For k >= C the bound is at least K and tends to infinity with k.
+3. The first omitted odd degree is 2 floor(C/2)+1 >= C. The first omitted even degree is
+   2 ceildiv(C,2) >= C. Hence every omitted term in each of the four sums lies in p^K Z_p.
+4. Every finite tail has valuation at least K by the ultrametric inequality. Completeness and
+   closedness of p^K Z_p give the same bound for the infinite tail. Cancellation cannot worsen it.
+
+Check: the exact Fraction oracle uses the degree bound with three extra digits, independent of
+this closed count. The fixtures specify N on every row. The planted short-count fault removes
+one whole retained parity term, rather than an absent coefficient of the other parity.
+
+## F11 (parity Horner sum and working precision)
+
+Assume a nonconstant partial sum of F10, largest degree L, K > w >= c. Write
+D = v_p(L!), W = K+D, and a_r = a modulo p^W. For each degree j let epsilon_j be 0
+for the other parity, 1 for a hyperbolic term, or (-1)^floor(j/2) for a circular term.
+Start F = 1, A = epsilon_L. For k = L,L-1,...,1, do
+
+    F = k F, A = a_r A + epsilon_(k-1) F,
+
+reducing each result modulo p^W. Then p^D divides the final residues A and F, F/p^D is
+a unit modulo p^K, and (A/p^D) (F/p^D)^(-1) modulo p^K is f(a) modulo p^K.
+
+Proof.
+
+1. Before reduction, induction on descending k gives F = L!/(k-1)! and
+   A = sum_(j=k-1)^L epsilon_j (L!/j!) a_r^(j-k+1). At the start the degree-L
+   expression is epsilon_L. Multiplying by a_r and adding the next coefficient proves the step.
+2. At the end F=L! and A=sum_(j=0)^L epsilon_j (L!/j!) a_r^j. Division by L!
+   is exactly the selected finite factorial sum, with its signs and missing degrees.
+3. This numerator polynomial has integer coefficients. Replacing a by a_r modulo p^W
+   changes its value by p^W Z_p, by factoring each difference of powers. Reducing any
+   intermediate sum or product modulo p^W changes no final residue. Signs cause no precision loss.
+4. For j>=1, j w-v_p(j!) >= 0 by Lemma 5. Thus every nonzero summand
+   (L!/j!) a^j has valuation at least D. The possible constant term L! also has valuation D.
+   W=K+D>D, so the least nonnegative residue A is divisible by p^D as an integer.
+5. L!=p^D U with U a unit. The residue F/p^D is U modulo p^K, so is invertible.
+   Dividing A and F by p^D loses exactly D available absolute digits. Unit inversion loses none.
+   The ratio is the exact finite sum modulo p^K. F10 supplies the infinite-tail error in p^K Z_p.
+6. This is Proposition 8's working precision (functions.md:227-263): the largest retained
+   denominator valuation is v_p(L!), and max(w,K+D)=K+D because K>w. It works for rational
+   centres: reduce their unit numerator times the inverse of the unit denominator, then multiply by p^w.
+
+The implementation makes no call to FLINT's padic module. It uses fmpz exact division, nonnegative
+modulus and modular inverse (refs/src/flint-3.0.1/fmpz.rst:852-859,880-883,1154-1160).
+
+## F12 (whole-ball enclosure, exact values and constant-centre shortcuts)
+
+For B=a+p^M Z_p contained in p^c Z_p, with canonical centre a, define E as follows:
+
+    sin, sinh: E=M;
+    cos, cosh: E=2M-v_p(2) if a=0, E=M otherwise.
+
+A ball input returns f(a)+p^K Z_p, K=min(N,E); an exact nonzero input returns
+f(a)+p^N Z_p. Exact zero returns exactly 0 for sin/sinh and 1 for cos/cosh, at every N.
+For sin/sinh the ball at K=E is the image itself. For centred cos/cosh it is the smallest
+ball containing the image. The latter statement does not assert that every point of the hull occurs.
+
+Proof.
+
+1. Proposition 6 (functions.md:140) gives the common domain. F1 applies its inside/disjoint/overlap
+   test to all four. In particular 2 Z_2 meets both the domain and its complement, whereas exact 2
+   is outside: NOT_DETERMINED and DOMAIN, respectively.
+2. Proposition 10 (functions.md:299-334) gives distance preservation for sin/sinh, exponent M
+   safe for cos/cosh, and the centred cosine hull exponent 2M-v_p(2). Therefore each image lies
+   in f(a)+p^E Z_p. Replacing the centre by its residue modulo p^K, K<=E, preserves enclosure.
+3. For completeness the odd image is onto its hull. Write f(t)=t+h(t). The degree-difference
+   estimate in Proposition 10's step 1 gives v_p(h(u)-h(t)) >= v_p(u-t)+1 on the domain.
+   For b in f(a)+p^M Z_p iterate t_0=a, t_(j+1)=b-h(t_j). If t_j is in B then
+   t_(j+1)-a=(b-f(a))-(h(t_j)-h(a)) lies in p^M Z_p, so every iterate is in B.
+   Successive differences gain at least one valuation at each step. Completeness gives a limit t in B;
+   the same estimate gives continuity of h and t=b-h(t), hence f(t)=b. This proves surjectivity
+   on B, without requiring a globally chosen inverse. Distance preservation also proves hull minimality.
+4. On p^M Z_p, the even quadratic term has valuation at least 2M-v_p(2). Every higher even
+   term has greater valuation, as proved in Proposition 10 steps 4-5. The values at 0 and p^M
+   differ with valuation exactly 2M-v_p(2). They witness the smallest hull. For noncentred balls
+   only the safe E=M is claimed. Tests explicitly require this exponent as well as the centred gain.
+5. At exact zero all positive degree terms vanish, so the constant terms are exact. A ball centred
+   at zero contains nonzero points. The witnesses in steps 3-4 forbid replacing its image by a singleton.
+   No claim about other rational values of these functions is needed: nonzero exact inputs give balls.
+6. Setting one argument to zero in Proposition 10 shows v_p(sin(a))=v_p(sinh(a))=w.
+   The quadratic dominance argument gives v_p(cos(a)-1)=v_p(cosh(a)-1)=2w-v_p(2).
+   Thus K<=w for odd functions, or K<=2w-v_p(2) for even functions, determines the centre
+   as 0 or 1 without a sum. A zero centre also needs no sum. For K<=0 all four values are integral,
+   and their canonical residue is 0. If the even shortcut does not apply, K>2w-v_p(2)>=w;
+   the odd case also has K>w. F11's hypotheses therefore hold whenever it is called.
+
+Checks: all domain balls with c<=M<=c+2 at p=2,3,5,7; every representative modulo p^(c+3),
+with oracle output precision at least E+1. The tests demand containment and the exact promised K;
+when smallest hulls are claimed they also demand two values different modulo p^(E+1).
+The independent values cos(4)=9 mod 16 at 2, sin(3)=3 mod 9 at 3, and v_3(cos(3)-1)=2
+are tested at absolute output precisions 4, 2, and 5, respectively.
+
+## F13 (limits and output transaction)
+
+The limits are those of lfunc.h: input |v| or |M| beyond 2^60 first; then the domain;
+then exact zero; then |K| beyond 2^60; then a required working power whose W bits(p)
+exceeds 2^26. Outputs are untouched on failure, including y=x. Known-centre shortcuts need no power.
+
+Proof.
+
+1. After the input check, E=2M-v_p(2) has magnitude at most 2^61+1, within slong.
+   Domain membership ensures M>=c when this centred-ball expression is used. The threshold
+   2v(a)-v_p(2) is also safe. N is only compared, never added or negated, so LONG_MIN is allowed
+   as an argument and returns LIMIT unless an exact-zero result ignores it.
+2. K is bounded before arithmetic with it. Before forming a nonconstant sum, K bits(p)<=2^26
+   is checked, so K<=2^25. The count satisfies C<=2K (F7); L<C and D<=L imply W<=3K.
+   The products (p-1)K and (p-1)w are formed in fmpz, including at p=2^64-59. No word product
+   at that prime can overflow the count. W is tested before forming any power p^W.
+3. The centred hull can have E>2^60 while K remains valid when N<=2^60. Test the bounded
+   result K, not the uncapped E. With N>=E>2^60 return LIMIT. This distinguishes input and result limits.
+4. All computation is in a temporary local ball. Only OK swaps it into y. Input data remains alive
+   until the final swap, so distinct and aliased calls give identical results and failures change nothing.
+
+## F14 (partial balls and real hyperbolic functions)
+
+S8 of docs/api-1f.md extends to sin, cos, sinh and cosh: at a prime of a partial ball, call the
+local function on that component with unchanged absolute N, and on OK retain only that prime.
+Failures set where to the requested prime and preserve y; OK preserves where. At real, sinh_at
+and cosh_at use arb_sinh and arb_cosh with the precision and finiteness rules of exp_at.
+
+Proof.
+
+1. Projection to the named prime reads exactly the component whose image F12 encloses.
+   Constructing a partial ball with that one component is the one-place tuple of Proposition 22
+   (functions.md:725). The other components do not occur in the output. Copying the component
+   before writing y proves the same rule when y=x. There is no rounding or clamping of local N.
+2. At real, refs/src/flint-3.0.1/arb.rst:1209-1219 specifies the hyperbolic calls. The enclosure
+   convention for arb arithmetic is refs/src/flint-3.0.1/arb.rst:4-12. A finite arb result contains
+   the image, including its propagated input error; this wrapper makes no smallest-interval claim.
+   The existing real_apply rules clamp prec below 2, reject it above ADF_REAL_PREC_MAX, and map
+   a non-finite computed result to NOT_DETERMINED. Only finite results are swapped into y.
+3. The existing at_place check order and status reporting are unchanged. A missing prime is DOMAIN;
+   a COMPLEX tag affects only the real place. At real, LIMIT from prec is checked before place membership.
+
+Tests compare every new oracle case through _at, including aliasing, and real sinh/cosh with
+arb at the same precision and with three image points evaluated at 250 bits. Overflow at input 2^1000
+must be NOT_DETERMINED with no output, the same loss rule as exp_at.

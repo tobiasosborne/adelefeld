@@ -1,0 +1,17 @@
+ok   vectors_real
+ok   odd_roots_of_negative_and_zero
+ok   non_finite_inputs
+ok   huge_arguments_never_give_a_nonfinite_ok
+ok   prec_below_two_is_two
+ok   domain_table
+ok   known_values
+FAIL tests/test_rfunc.c:666: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x) | k=3
+FAIL tests/test_rfunc.c:671: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x)
+FAIL tests/test_rfunc.c:674: sball_at_statuses_and_places: check failed: st == want_p
+FAIL tests/test_rfunc.c:666: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x) | k=4
+FAIL tests/test_rfunc.c:671: sball_at_statuses_and_places: check failed: st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x)
+FAIL tests/test_rfunc.c:674: sball_at_statuses_and_places: check failed: st == want_p
+FAIL sball_at_statuses_and_places (tests/test_rfunc.c:630, 6 failed checks)
+ok   prec_limit
+ok   LIMIT_before_any_allocation_of_the_functions_at_a_place
+10 tests, 59700 checks, 6 failed checks, 1 failed tests

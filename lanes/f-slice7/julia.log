@@ -1,0 +1,16 @@
+ERROR: LoadError: could not load library "libflint.so.18"
+/lib/x86_64-linux-gnu/libflint.so.18: undefined symbol: __gmpn_modexact_1_odd
+Stacktrace:
+ [1] #dlopen#3
+   @ ./libdl.jl:120 [inlined]
+ [2] dlopen(s::String, flags::UInt32)
+   @ Base.Libc.Libdl ./libdl.jl:119
+ [3] top-level scope
+   @ ~/Projects/adelefeld-wt/f-slice7/tests/julia/lfunc_trig.jl:11
+ [4] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [5] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [6] _start()
+   @ Base ./client.jl:550
+in expression starting at /home/tobias/Projects/adelefeld-wt/f-slice7/tests/julia/lfunc_trig.jl:11

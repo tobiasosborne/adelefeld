@@ -218,9 +218,13 @@ end
     # the statuses and the place reported: 3 is not a place of the projection
     st, _, where = at(:adf_sball_exp_at, s, p3, 12)
     @test st == DOMAIN && primeof(where) == 3
-    # sin at a prime: a valid request, not yet implemented: UNSUPPORTED with where = 5
-    st, _, where = at(:adf_sball_sin_at, s, p5, 12)
-    @test st == UNSUPPORTED && primeof(where) == 5
+    # sin(5/3) at 5, absolute N=12. Lemma 5 bounds the tail after degree 81 above 60.
+    st, sine, _ = at(:adf_sball_sin_at, s, p5, 12)
+    @test st == OK && nplaces(sine) == 1 && arch(sine) == ARCH_NONE
+    stc, cs = getlball(sine, p5)
+    partial = sum((-1)^div(k-1, 2) * (big(5)//3)^k / factorial(big(k)) for k in 1:2:81)
+    @test stc == OK && !isexact(cs) && prec(cs) == 12 && den(cs) == 1
+    @test big(5)^val(cs) * num(cs) == modp(partial, 5, 12)
 
     # exp at 5 of 6 (a unit at 5): DOMAIN; of 25/3: v_5 = 2, OK, and the value differs from that of 5/3 at digit 1
     a6 = adele_of(6, 1)

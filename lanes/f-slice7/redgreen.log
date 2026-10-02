@@ -1,0 +1,28 @@
+Header declarations and tests preceded production implementations.
+RED 1: timeout 180 make -j2 BUILD=lanes/f-slice7/build lanes/f-slice7/build/test_lfunc_trig
+Result: make exit 2; undefined references to all four new local functions. red-link.log.
+RED 2: compiled tests/test_lfunc_trig.c against scratch red-stubs.c (UNSUPPORTED).
+Command: timeout 180 lanes/f-slice7/build/red-trig
+Result: exit 1; 6 tests, 168374 checks, 11333 failed checks, 6 failed tests. red-assertions.log.
+RED 3: compiled tests/test_rfunc_prime.c against scratch stubs and existing sin_at/cos_at.
+Command: timeout 180 lanes/f-slice7/build/red-at
+Result: exit 1; 12 tests, 279045 checks, 11452 failed checks, 3 failed tests. red-at.log.
+RED 4: timeout 180 lanes/f-slice7/build/adf-red < tests/driver/trig-prime.cmd
+Result: exit 1; all 56 commands PARSE; expected output differs (115-line unified diff).
+GREEN local: timeout 180 lanes/f-slice7/build/test_lfunc_trig
+Result: exit 0; 6 tests, 2173970 checks, 0 failed checks, 0 failed tests.
+GREEN at: timeout 180 lanes/f-slice7/build/test_rfunc_prime
+Result: exit 0; 12 tests, 279015 checks, 0 failed checks, 0 failed tests.
+GREEN driver: timeout 180 sh -c loop over tests/driver/trig-*.cmd (each driver timeout 30).
+Result: exit 0; all 96 expected lines equal; each driver exit 1 as specified by #!exit 1.
+Regression: timeout 180 lanes/f-slice7/build/test_lfunc
+Result: exit 0; 12 tests, 454429 checks, 0 failed checks, 0 failed tests.
+Julia direct: timeout 60 julia --startup-file=no tests/julia/lfunc_trig.jl lanes/f-slice7/build/libadelefeld.so
+Result: exit 1 before tests, documented __gmpn_modexact_1_odd loader failure.
+Julia preload attempt: same command with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10.
+Result: exit 1, syntax error `k div 2` in new test. Corrected to div(k,2).
+Julia green: LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10 JULIA_NUM_THREADS=1 timeout 60 julia
+--startup-file=no tests/julia/lfunc_trig.jl lanes/f-slice7/build/libadelefeld.so
+Result: exit 0, 25/25 tests. julia-green.log.
+Faults: timeout 180 python3 -B lanes/f-slice7/faults.py
+Result: exit 0; 5 faults, all five test processes exit 1. Counts in faults.log.

@@ -1,0 +1,6 @@
+one_term_short exit 1 6 tests, 2173970 checks, 857 failed checks, 4 failed tests
+input_exponent exit 1 6 tests, 2173970 checks, 2412 failed checks, 3 failed tests
+uncertain_zero_exact exit 1 6 tests, 2173970 checks, 9186 failed checks, 3 failed tests
+alternating_sign exit 1 6 tests, 2173970 checks, 1680 failed checks, 3 failed tests
+guard_digit exit 1 6 tests, 2173970 checks, 910 failed checks, 5 failed tests
+five planted faults: 5 rejected, 0 survived

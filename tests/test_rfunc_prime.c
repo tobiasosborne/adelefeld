@@ -506,7 +506,7 @@ ADF_TEST(prec_is_the_absolute_precision_at_a_prime)
         ADF_CHECK(adf_sball_Log_at(y, &where, x, place_of(5), big[j]) == ADF_OK && y->len == 1 &&
                   y->loc[0].exact == 1 && fmpq_is_zero(y->loc[0].u));
         /* a request that does not exist at a prime: UNSUPPORTED, not LIMIT */
-        ADF_CHECK(adf_sball_sin_at(y, &where, x, place_of(5), big[j]) == ADF_UNSUPPORTED &&
+        ADF_CHECK(adf_sball_log_abs_at(y, &where, x, place_of(5), big[j]) == ADF_UNSUPPORTED &&
                   adf_place_equal(where, place_of(5)));
     }
     /* (b) small and negative N */
@@ -557,8 +557,7 @@ ADF_TEST(other_functions_and_place_checks)
     {
         const char * name;
         int (*g)(adf_sball_t, adf_place_t *, const adf_sball_t, adf_place_t, slong);
-    } others[] = {{"log_abs", adf_sball_log_abs_at}, {"sin", adf_sball_sin_at}, {"cos", adf_sball_cos_at},
-                  {"sqrt", adf_sball_sqrt_at}};
+    } others[] = {{"log_abs", adf_sball_log_abs_at}, {"sqrt", adf_sball_sqrt_at}};
     at_fn three[3] = {adf_sball_exp_at, adf_sball_log_at, adf_sball_Log_at};
     size_t k;
     int st;
@@ -572,7 +571,7 @@ ADF_TEST(other_functions_and_place_checks)
     lb_exact(c[0], 5, 5, 1);
     lb_exact(c[1], 2, 4, 1);
     make_sball(x, 2, (adf_lball_struct[]){c[0][0], c[1][0]}, 2);
-    for (k = 0; k < 4; k++)
+    for (k = 0; k < sizeof others / sizeof others[0]; k++)
     {
         sentinel(y);
         where = mark;
@@ -871,4 +870,125 @@ ADF_TEST(exp_of_five_by_hand)
     adf_sball_clear(y);
     fmpz_clear(cen);
     fmpz_clear(m);
+}
+
+/* 1F.7: all exact oracle rows at a prime of a multi-place input, also aliased. A wrong
+   dispatch, lost component precision, wrong where or changed failure output fails a row. */
+ADF_TEST(trig_reference_at_prime)
+{
+    at_fn fs[] = {adf_sball_sin_at, adf_sball_cos_at, adf_sball_sinh_at, adf_sball_cosh_at};
+    const char *names[] = {"sin", "cos", "sinh", "cosh"};
+    jsonl_file *f = open_vectors("tests/ref/vectors/f-slice7/cases.jsonl");
+    adf_lball_t c[2], want;
+    adf_sball_t x, y, z;
+    adf_place_t mark = place_of(1000003), where;
+    if (!f) return;
+    ADF_CHECK(jsonl_count(f) == 4064);
+    adf_lball_init(c[0]); adf_lball_init(c[1]); adf_lball_init(want);
+    adf_sball_init(x); adf_sball_init(y); adf_sball_init(z);
+    for (size_t row = 0; row < jsonl_count(f); row++)
+    {
+        const jsonl_value *r = jsonl_record(f, row);
+        const char *name = member_str(r, "f");
+        int k = 0, st, ast, expected = status_from_name(member_str(r, "status"));
+        slong N = member_slong(r, "N");
+        while (k < 3 && strcmp(name, names[k])) k++;
+        lb_from_json(c[0], member(r, "x")); lb_exact(c[1], 17, 19, 1);
+        make_sball(x, 3, (adf_lball_struct[]){c[0][0], c[1][0]}, 2);
+        sentinel(y); adf_sball_set(z, x); where = mark;
+        st = fs[k](y, &where, x, place_of(c[0]->p), N);
+        ADF_CHECK_MSG(st == expected, "trig row %zu status", row+1);
+        if (expected == ADF_OK)
+        {
+            lb_from_json(want, member(r, "y"));
+            ADF_CHECK(is_one_place(y, c[0]->p, want) && adf_place_equal(where, mark));
+        }
+        else
+            ADF_CHECK(is_sentinel(y) && adf_place_equal(where, place_of(c[0]->p)));
+        ast = fs[k](z, NULL, z, place_of(c[0]->p), N);
+        ADF_CHECK(ast == expected && adf_sball_identical(z, expected == ADF_OK ? y : x));
+    }
+    adf_lball_clear(c[0]); adf_lball_clear(c[1]); adf_lball_clear(want);
+    adf_sball_clear(x); adf_sball_clear(y); adf_sball_clear(z); jsonl_close(f);
+}
+
+ADF_TEST(trig_at_limits_and_places)
+{
+    at_fn fs[] = {adf_sball_sin_at, adf_sball_cos_at, adf_sball_sinh_at, adf_sball_cosh_at};
+    adf_sball_t x, y, z;
+    adf_lball_t c;
+    adf_place_t where, p = place_of(2), missing = place_of(7), mark = place_of(11);
+    adf_sball_init(x); adf_sball_init(y); adf_sball_init(z); adf_lball_init(c);
+    for (int k = 0; k < 4; k++)
+    for (int j = 0; j < 7; j++)
+    {
+        slong N = LONG_MAX;
+        int st = ADF_LIMIT;
+        lb_exact(c, 2, 4, 1);
+        if (j == 1) { lb_exact(c, 2, 2, 1); st = ADF_DOMAIN; }
+        if (j == 2) { lb_ball(c, 2, 0, 1, 1); st = ADF_NOT_DETERMINED; }
+        if (j == 3) { lb_exact(c, 2, 0, 1); st = ADF_OK; }
+        if (j == 4) { N = 8; st = ADF_OK; }
+        if (j == 5) { N = -3; st = ADF_OK; }
+        if (j == 6) lb_raw(c, 2, 0, 0, 0, EMAX+1);
+        make_sball(x, 1, c, 1);
+        x->arch = ADF_ARCH_COMPLEX; arb_one(acb_imagref(x->inf));
+        sentinel(y); adf_sball_set(z, x); where = mark;
+        ADF_CHECK(fs[k](y, &where, x, p, N) == st);
+        ADF_CHECK(adf_place_equal(where, st == ADF_OK ? mark : p));
+        if (st != ADF_OK) ADF_CHECK(is_sentinel(y));
+        ADF_CHECK(fs[k](z, NULL, z, p, N) == st && adf_sball_identical(z, st == ADF_OK ? y : x));
+        sentinel(y);
+        ADF_CHECK(fs[k](y, &where, x, missing, N) == ADF_DOMAIN && adf_place_equal(where, missing));
+        ADF_CHECK(is_sentinel(y));
+        ADF_CHECK(fs[k](y, &where, x, adf_place_inf(), 53) == ADF_UNSUPPORTED);
+        ADF_CHECK(adf_place_is_archimedean(where) && is_sentinel(y));
+    }
+    adf_lball_clear(c); adf_sball_clear(x); adf_sball_clear(y); adf_sball_clear(z);
+}
+
+/* Real sinh/cosh use exactly arb's enclosure and loss rule. Test a finite width around
+   zero and away from zero, endpoints at 250 bits, prec clamping, limits and overflow. */
+ADF_TEST(hyperbolic_at_real_arb_and_loss)
+{
+    at_fn fs[] = {adf_sball_sinh_at, adf_sball_cosh_at};
+    adf_sball_t x, y, z;
+    adf_place_t where, mark = place_of(11), inf = adf_place_inf();
+    arb_t r, expected, point, value;
+    adf_sball_init(x); adf_sball_init(y); adf_sball_init(z);
+    arb_init(r); arb_init(expected); arb_init(point); arb_init(value);
+    for (int f = 0; f < 2; f++)
+    {
+        for (int j = -2; j <= 2; j++)
+        for (int wide = 0; wide < 2; wide++)
+        for (int low = 0; low < 2; low++)
+        {
+            slong prec = low ? -3 : 100, work = low ? 2 : 100;
+            arb_set_si(r, j);
+            if (wide) arb_add_error_2exp_si(r, -3);
+            ADF_CHECK(adf_sball_set_arb_lballs(x, NULL, r, NULL, 0) == ADF_OK);
+            if (f) arb_cosh(expected, r, work); else arb_sinh(expected, r, work);
+            where = mark; adf_sball_set(z, x);
+            ADF_CHECK(fs[f](y, &where, x, inf, prec) == ADF_OK && adf_place_equal(where, mark));
+            ADF_CHECK(y->arch == ADF_ARCH_REAL && y->len == 0 && arb_equal(acb_realref(y->inf), expected));
+            ADF_CHECK(fs[f](z, NULL, z, inf, prec) == ADF_OK && adf_sball_identical(y, z));
+            for (int s = -1; s <= 1; s++)
+            {
+                arb_set_si(point, j*8 + (wide ? s : 0)); arb_mul_2exp_si(point, point, -3);
+                if (f) arb_cosh(value, point, 250); else arb_sinh(value, point, 250);
+                ADF_CHECK(arb_contains(acb_realref(y->inf), value));
+            }
+        }
+        sentinel(y); where = mark;
+        ADF_CHECK(fs[f](y, &where, x, inf, ADF_REAL_PREC_MAX+1) == ADF_LIMIT);
+        ADF_CHECK(adf_place_is_archimedean(where) && is_sentinel(y));
+        arb_one(r); arb_mul_2exp_si(r, r, 1000);
+        ADF_CHECK(adf_sball_set_arb_lballs(x, NULL, r, NULL, 0) == ADF_OK);
+        adf_sball_set(z, x);
+        ADF_CHECK(fs[f](y, &where, x, inf, 100) == ADF_NOT_DETERMINED);
+        ADF_CHECK(is_sentinel(y) && adf_place_is_archimedean(where));
+        ADF_CHECK(fs[f](z, NULL, z, inf, 100) == ADF_NOT_DETERMINED && adf_sball_identical(z, x));
+    }
+    arb_clear(r); arb_clear(expected); arb_clear(point); arb_clear(value);
+    adf_sball_clear(x); adf_sball_clear(y); adf_sball_clear(z);
 }

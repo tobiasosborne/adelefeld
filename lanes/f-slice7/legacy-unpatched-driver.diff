@@ -1,0 +1,8 @@
+--- tests/driver/f-places-hostile.out	2026-10-02 13:27:29.072281810 +0200
++++ lanes/f-slice7/legacy-unpatched-driver.out	2026-10-02 14:01:57.873799786 +0200
+@@ -35,4 +35,4 @@
+ error: UNSUPPORTED
+ error: UNSUPPORTED
+ error: UNSUPPORTED
+-error: PARSE
++5: 183217364544126367560362924030968136892153005 + O(5^64)
