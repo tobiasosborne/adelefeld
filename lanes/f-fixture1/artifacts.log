@@ -1,0 +1,11 @@
+rows=465 input mismatches=0 bytes=534848
+functions={'log': 220, 'Log': 217, 'exp': 28}
+exact=241 balls=224 negative_Log=168
+p=2 functions={'log': 31, 'Log': 31, 'exp': 4} exact=34 negative_Log=24
+p=3 functions={'log': 31, 'Log': 31, 'exp': 4} exact=34 negative_Log=24
+p=5 functions={'log': 31, 'Log': 31, 'exp': 4} exact=34 negative_Log=24
+p=7 functions={'log': 31, 'Log': 31, 'exp': 4} exact=34 negative_Log=24
+p=11 functions={'log': 31, 'Log': 31, 'exp': 4} exact=34 negative_Log=24
+p=65537 functions={'log': 31, 'Log': 31, 'exp': 4} exact=34 negative_Log=24
+p=18446744073709551557 functions={'log': 34, 'Log': 31, 'exp': 4} exact=37 negative_Log=24
+lines_over_116=[]

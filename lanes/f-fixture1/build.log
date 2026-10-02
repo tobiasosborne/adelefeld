@@ -1,0 +1,34 @@
+mkdir -p lanes/f-fixture1/build
+mkdir -p lanes/f-fixture1/build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f-fixture1/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f-fixture1/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-fixture1/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f-fixture1/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f-fixture1/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f-fixture1/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f-fixture1/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-fixture1/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f-fixture1/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f-fixture1/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-fixture1/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-fixture1/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f-fixture1/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f-fixture1/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-fixture1/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f-fixture1/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-fixture1/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-fixture1/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f-fixture1/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-fixture1/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f-fixture1/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-fixture1/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f-fixture1/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f-fixture1/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f-fixture1/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-fixture1/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f-fixture1/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f-fixture1/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f-fixture1/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f-fixture1/build/support/jsonl.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f-fixture1/build/support/golden.o
+ar rcs lanes/f-fixture1/build/libadelefeld.a lanes/f-fixture1/build/adele.o lanes/f-fixture1/build/cap.o lanes/f-fixture1/build/common.o lanes/f-fixture1/build/dump.o lanes/f-fixture1/build/fball.o lanes/f-fixture1/build/fball_local.o lanes/f-fixture1/build/idclass.o lanes/f-fixture1/build/idele.o lanes/f-fixture1/build/idmap.o lanes/f-fixture1/build/idpow.o lanes/f-fixture1/build/inlines.o lanes/f-fixture1/build/lball.o lanes/f-fixture1/build/lball_decomp.o lanes/f-fixture1/build/lfunc.o lanes/f-fixture1/build/linsolve.o lanes/f-fixture1/build/modctx.o lanes/f-fixture1/build/place.o lanes/f-fixture1/build/rat.o lanes/f-fixture1/build/recon.o lanes/f-fixture1/build/resid.o lanes/f-fixture1/build/rfunc.o lanes/f-fixture1/build/roots.o lanes/f-fixture1/build/roots_real.o lanes/f-fixture1/build/sball.o lanes/f-fixture1/build/scaled.o lanes/f-fixture1/build/status.o lanes/f-fixture1/build/text.o lanes/f-fixture1/build/text_idele.o lanes/f-fixture1/build/ucoset.o

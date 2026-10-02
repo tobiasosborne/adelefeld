@@ -1,0 +1,7 @@
+FAIL tests/test_lfunc.c:279: stored_large_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored large row 33
+FAIL tests/test_lfunc.c:280: stored_large_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored large alias row 33
+FAIL tests/test_lfunc.c:279: stored_large_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored large row 34
+FAIL tests/test_lfunc.c:280: stored_large_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored large alias row 34
+timeout: the monitored command dumped core
+Command terminated by signal 11
+elapsed=0.29 user=0.00 sys=0.04

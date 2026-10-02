@@ -1,0 +1,3 @@
+f8_digit: exit 1; stored_before_optimisation failed checks: 650; all failing tests: {'stored_large_before_optimisation': 390, 'stored_before_optimisation': 650, 'cases_from_the_reference': 30, 'identities_as_containment': 429, 'flint_second_opinion': 209}; summary: 13 tests, 473091 checks, 1708 failed checks, 5 failed tests
+   probe (small): exit 0; cases: 7440; diff_bal: 3272; diff_old: 3272; diff_sum: 3272; oracle_fail: 3272; point_fail: 2012
+elapsed=65.44 user=64.77 sys=0.78

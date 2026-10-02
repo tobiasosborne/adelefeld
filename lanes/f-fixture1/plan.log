@@ -1,0 +1,8 @@
+p=2 rows=66 boundary=57 routes={'F8': 30, 'word': 8, 'F9': 24, 'exp': 4} K39..64=38 K65..3000=24 deep=17
+p=3 rows=66 boundary=36 routes={'F8': 35, 'F9': 24, 'word': 3, 'exp': 4} K39..64=32 K65..3000=24 deep=17
+p=5 rows=66 boundary=24 routes={'F8': 35, 'F9': 24, 'word': 3, 'exp': 4} K39..64=32 K65..3000=24 deep=17
+p=7 rows=66 boundary=21 routes={'F8': 35, 'F9': 24, 'word': 3, 'exp': 4} K39..64=32 K65..3000=24 deep=16
+p=11 rows=66 boundary=16 routes={'F8': 35, 'F9': 24, 'word': 3, 'exp': 4} K39..64=32 K65..3000=24 deep=17
+p=65537 rows=66 boundary=3 routes={'F8': 35, 'F9': 24, 'word': 3, 'exp': 4} K39..64=32 K65..3000=24 deep=17
+p=18446744073709551557 rows=69 boundary=0 routes={'F8': 35, 'F9': 24, 'shortcut': 6, 'exp': 4} K39..64=32 K65..3000=24 deep=17
+rows=465 routes={'F8': 240, 'word': 23, 'F9': 168, 'exp': 28, 'shortcut': 6}

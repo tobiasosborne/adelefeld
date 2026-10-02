@@ -1,0 +1,5 @@
+f9_valuation: exit -11; stored_before_optimisation failed checks: 0; all failing tests: {}; summary:  tests/test_lfunc.c:279: stored_large_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored large row 34
+FAIL tests/test_lfunc.c:280: stored_large_before_optimisation: check failed: ast == expected && fields_equal(z, st == ADF_OK ? want : x) | stored large alias row 34
+
+   probe (small): exit 1; 
+elapsed=5.84 user=4.54 sys=0.69
