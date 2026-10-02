@@ -35,9 +35,16 @@ if ! command -v julia >/dev/null 2>&1; then
   ln -sf "$HOME/.juliaup/bin/julia" /usr/local/bin/julia
 fi
 
-# 4. The sources (about 81 MB; refs/fetch_sources.sh skips what is present and verifies the manifests).
+# 4. The sources (about 81 MB; refs/fetch_sources.sh skips what is present). In fetch mode the script
+# REWRITES the two manifests from what is on disk; the committed manifests are the record of the ground
+# truth, so they are restored afterwards and the disk is verified against them. Expected failures of the
+# check: the 507 files of TJO's scan of Tate's thesis (refs/README.md: not fetchable), and the files of the
+# live clone src/adeles-pkg/adeles/ whose upstream HEAD moved after 2026-09-27 (the pinned snapshot under
+# src/adeles-pkg/snapshot/ is what the project quotes, and it verifies).
 if [ ! -d refs/src/flint-3.0.1 ] || [ ! -d refs/src/tate-poonen ]; then
   (cd refs && ./fetch_sources.sh >/dev/null 2>&1) || echo "session-start: WARNING: refs/fetch_sources.sh failed; sources incomplete" >&2
+  git checkout -q -- refs/manifest.sha256 refs/manifest-extra.sha256
+  (cd refs && ./fetch_sources.sh --check 2>&1 | grep -c ': OK$' | sed 's/^/session-start: sources verified: /' >&2) || true
 fi
 
 FLINT_VER=$(awk '/define __FLINT_VERSION / {a=$3} /define __FLINT_VERSION_MINOR / {b=$3} /define __FLINT_VERSION_PATCHLEVEL / {c=$3} END {print a"."b"."c}' /usr/include/flint/flint.h)
