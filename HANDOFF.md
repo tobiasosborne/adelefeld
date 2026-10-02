@@ -26,7 +26,7 @@ checks, `test_lfunc_trig` 7 tests 2174090 checks; 0 failed).
 
 **Rules of TJO for this session** (2026-10-02 20:40): orchestrate; Claude Opus subagents only for coding and
 review, Sonnet for miscellany; stop at 45% of the weekly quota; install what is needed, create what tools are
-needed. The weekly quota read 0.37 at the start and 0.39 at 21:35 (the session's `rate_limit_event` records,
+needed. The weekly quota read 0.37 at the start, 0.39 at 21:35 and 0.40 at 23:00 (the session's `rate_limit_event` records,
 `seven_day.utilization`; 0.42 with overage included).
 
 **What landed** (brief `lanes/<lane>/brief.md`, result `lanes/<lane>/result.md`; details in the worklog).
@@ -35,6 +35,7 @@ needed. The weekly quota read 0.37 at the start and 0.39 at 21:35 (the session's
 |---|---|---|
 | f-review6 | review of f-slice8 (local roots), own oracle in exact integers, 330015 cases | `docs/reviews/f1/review-lroot.md`: 0 blocker, 0 major, 4 minor (F1 to F4); recommends reversing N-D13: taken as N-D14 |
 | f-repair3 | f-review5 R1 (F13 sentence), R2 (paired Horner steps, statement F15) | identical residues on 25340 compared calls; 50 ms to 25 ms; 60 mutants, 14 survivors, none a test gap; NOT reviewed again (minors) |
+| f-slice9 | 1F.6: `lpow.h`: `adf_lball_powrat` (rational powers through the branches of `lroot.h`), `adf_lball_powunit` (`exp(s log u)`, Proposition 18 exact image); `_at` forms; driver `powrat_at`, `powunit_at`; Julia; P1 to P8 in `docs/api-1f6.md`; decision N-D15 | NOT reviewed; check-all passed in its worktree and on the merged tree (below) |
 | f-repair4 | N-D14; F1 (no power pre-check), F2 (branches `t0 zeta^i` from a primitive root, statement R8; `LIMIT` before listing; the principal-unit root once per call), F4 (R7 step 2 for `j >= 0`) | byte-identical where `K` is unchanged, 111487 cases; listing 65536 branches 5.8 s to 14 ms; the 51.8 s case under 1 ms; 60 mutants, 9 survivors, 1 test gap closed; NOT reviewed |
 
 Also: `.claude/hooks/session-start.sh` (cloud sessions only: FLINT 3.0.1, pdftotext, python-flint, sympy, mpmath,
@@ -46,19 +47,23 @@ the two 2.9 MB logs of f-slice8 removed.
 2. A review of f-repair4 is not strictly needed (the reviewer's own oracle and attacks were rerun by the lane
    against N-D14, 0 failures), but the new enumeration (R8, `dth_root` by CRT and a digit-by-digit split) is new
    code that only the lane's tests saw: a short Opus review with its own oracle at `p = 65537` and `2^64 - 59`.
-3. Lane f-slice9 (1F.6) was launched at the end of the session (brief `lanes/f-slice9/brief.md`); if its
-   worktree `../adelefeld-wt/f-slice9` holds a `result.md`, commit and merge it as the others; if not, the lane
-   was cut off by the quota stop and `progress.md` says where it was.
-4. Milestone 1F continues after it: 1F.6 (rational powers through the branches of `lroot.h`; principal-unit powers
-   `exp(s log u)`, Propositions 17, 18; at 2 the odd-unit form `w^(s mod 2) exp(s log u)`), then 1F.8, 1F.9. Text
+3. A review of f-slice9 (1F.6, powers: `src/lpow.c`, P1 to P8; the 2-adic hull decision of N-D15 in particular) with
+   its own oracle, as f-review6 did for the roots; the review of f-repair4's `dth_root` can go in the same lane.
+4. Milestone 1F continues: 1F.8 (all-places forms; the lane proposes it next: the rational-root contract and the
+   rational power of an exact rational at all places need only `lroot.h` and `lpow.h`), then 1F.9. Text
    forms of `adf_lball`, `adf_sball` (conventions 9). Then milestone 2 dump forms; milestone 3.
-5. Left: one Teichmueller lift per branch in `adf_lball_roots` (44.6 s for `d = 299756` at `N = 20`; the lift is
+5. Left: the mutation tool's `--san` is defeated by `ASAN_OPTIONS` in the `--make` command and a run of 60
+   uncompiled mutants printed "passed" (f-slice9); N-D14 made two behaviours explicit (a ball with `N <= j` gives
+   the zero ball at `N`; a ball whose capped exponent leaves the limits is `LIMIT` where N-D13 gave `OK`); one
+   Teichmueller lift per branch in `adf_lball_roots` (44.6 s for `d = 299756` at `N = 20`; the lift is
    multiplicative, two lifts and `d` products would do; f-repair4 finding 3); the mutation tool's `swap_args`
    generates a no-op mutant when both arguments are the same expression (f-repair3 finding); `count_exp`'s
    `max(1, ...)` branch is unreachable (f-repair3); adf-7yz, adf-4dj, f-review4 MINOR 2, benchmarks on a quiet
    machine, adf-mds, adf-7gc.
 
-**Waits for TJO.** Nothing blocks. Open to reversal: N-D14 (and N-D12, N-D13 as before).
+**Waits for TJO.** Nothing blocks. Open to reversal: N-D14, N-D15 (and N-D12, N-D13 as before). N-D15 reads
+"take the union" of SPEC 9.3.4 and Proposition 18 step 5 as "the smallest ball containing it" (the union is not a
+ball); say if you want `NEEDS_SPLIT` or `NOT_DETERMINED` there instead.
 
 **Things to know.**
 - The beads tracker is unusable in a cloud container: its data is an embedded Dolt database under
