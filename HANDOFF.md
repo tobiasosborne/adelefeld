@@ -2,6 +2,78 @@
 
 # HANDOFF: adelefeld
 
+## Session 2026-10-02 20:30 to about 22:30 UTC (orchestrator Claude Fable, cloud container; Claude Opus lanes only): START HERE
+
+**One line.** In a cloud container (FLINT absent at the start, installed): the five suites the previous session
+could not run on master are green; the local roots (1F.5) are reviewed (lane f-review6: no wrong result, 4 minor)
+and repaired with decision N-D14 (`K = min(N, E)` for ball roots, reversing the open item of N-D13; lane
+f-repair4); the two minors of f-review5 are repaired (lane f-repair3). Everything is on the SESSION BRANCH
+`ccr-f62bc633-f7fnqs`, pushed, NOT on master: merge it (`git merge origin/ccr-f62bc633-f7fnqs` on master, or a PR).
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git fetch origin && git log --oneline master..origin/ccr-f62bc633-f7fnqs | cat
+    git merge origin/ccr-f62bc633-f7fnqs        # or review the branch first; then
+    tools/orch/suites.sh -j2                    # all, san, clang, inv, headers in parallel build dirs; one line each
+    bd ready | head -20                         # the tracker was NOT available in the cloud container (below)
+
+**Master.** Unchanged this session (`c1494d1`). On it, in the container: `make check` 73 programs, driver,
+exports, Julia (real Julia 1.13.1), mutate and memcheck self-tests, `SAN=1` 73 of 73, `CC=clang` 73 of 73, `INV=1`
+73 of 73, `check_headers.sh`: all passed. On the session branch after the three merges: `make -j3 check-all`
+(all steps green after the repair of `tools/adf/Makefile` below) and the three changed test programs under
+ASan/UBSan with leak detection on (`test_lroot` 10 tests 1308401 checks, `test_rfunc_prime` 14 tests 521989
+checks, `test_lfunc_trig` 7 tests 2174090 checks; 0 failed).
+
+**Rules of TJO for this session** (2026-10-02 20:40): orchestrate; Claude Opus subagents only for coding and
+review, Sonnet for miscellany; stop at 45% of the weekly quota; install what is needed, create what tools are
+needed. The weekly quota read 0.37 at the start and 0.39 at 21:35 (the session's `rate_limit_event` records,
+`seven_day.utilization`; 0.42 with overage included).
+
+**What landed** (brief `lanes/<lane>/brief.md`, result `lanes/<lane>/result.md`; details in the worklog).
+
+| Lane | What | Review |
+|---|---|---|
+| f-review6 | review of f-slice8 (local roots), own oracle in exact integers, 330015 cases | `docs/reviews/f1/review-lroot.md`: 0 blocker, 0 major, 4 minor (F1 to F4); recommends reversing N-D13: taken as N-D14 |
+| f-repair3 | f-review5 R1 (F13 sentence), R2 (paired Horner steps, statement F15) | identical residues on 25340 compared calls; 50 ms to 25 ms; 60 mutants, 14 survivors, none a test gap; NOT reviewed again (minors) |
+| f-repair4 | N-D14; F1 (no power pre-check), F2 (branches `t0 zeta^i` from a primitive root, statement R8; `LIMIT` before listing; the principal-unit root once per call), F4 (R7 step 2 for `j >= 0`) | byte-identical where `K` is unchanged, 111487 cases; listing 65536 branches 5.8 s to 14 ms; the 51.8 s case under 1 ms; 60 mutants, 9 survivors, 1 test gap closed; NOT reviewed |
+
+Also: `.claude/hooks/session-start.sh` (cloud sessions only: FLINT 3.0.1, pdftotext, python-flint, sympy, mpmath,
+Julia, `refs/src`; idempotent, synchronous; once on master every cloud session gets it); `tools/orch/suites.sh`;
+the two 2.9 MB logs of f-slice8 removed.
+
+**The next steps**, in this order:
+1. Merge the session branch into master and run `tools/orch/suites.sh -j2` on master.
+2. A review of f-repair4 is not strictly needed (the reviewer's own oracle and attacks were rerun by the lane
+   against N-D14, 0 failures), but the new enumeration (R8, `dth_root` by CRT and a digit-by-digit split) is new
+   code that only the lane's tests saw: a short Opus review with its own oracle at `p = 65537` and `2^64 - 59`.
+3. Lane f-slice9 (1F.6) was launched at the end of the session (brief `lanes/f-slice9/brief.md`); if its
+   worktree `../adelefeld-wt/f-slice9` holds a `result.md`, commit and merge it as the others; if not, the lane
+   was cut off by the quota stop and `progress.md` says where it was.
+4. Milestone 1F continues after it: 1F.6 (rational powers through the branches of `lroot.h`; principal-unit powers
+   `exp(s log u)`, Propositions 17, 18; at 2 the odd-unit form `w^(s mod 2) exp(s log u)`), then 1F.8, 1F.9. Text
+   forms of `adf_lball`, `adf_sball` (conventions 9). Then milestone 2 dump forms; milestone 3.
+5. Left: one Teichmueller lift per branch in `adf_lball_roots` (44.6 s for `d = 299756` at `N = 20`; the lift is
+   multiplicative, two lifts and `d` products would do; f-repair4 finding 3); the mutation tool's `swap_args`
+   generates a no-op mutant when both arguments are the same expression (f-repair3 finding); `count_exp`'s
+   `max(1, ...)` branch is unreachable (f-repair3); adf-7yz, adf-4dj, f-review4 MINOR 2, benchmarks on a quiet
+   machine, adf-mds, adf-7gc.
+
+**Waits for TJO.** Nothing blocks. Open to reversal: N-D14 (and N-D12, N-D13 as before).
+
+**Things to know.**
+- The beads tracker is unusable in a cloud container: its data is an embedded Dolt database under
+  `.beads/dolt/`, gitignored and absent from the clone; `bd prime` in the hooks fails silently. Issues opened or
+  closed this session are therefore recorded here and in the worklog only: f-review5 R1 and R2 repaired;
+  f-review6 F1 to F4 repaired; new open items in step 4 above.
+- `tools/adf/Makefile` never rebuilt the driver's library `build/drv-plain/libadelefeld.a` after the first build
+  (a rule without prerequisites), so `test_driver.sh` on a tree with a changed `src/` ran a STALE driver; repaired
+  this session (`FORCE`). Trees built before the fix: `rm -rf build/drv-plain build/adf` once.
+- `refs/fetch_sources.sh` rewrites both manifests in fetch mode; restore them with `git checkout` afterwards
+  (the hook does). Five files of the live `adeles` clone have moved upstream; the pinned snapshot verifies.
+- A Claude subagent cannot write a file named `report.md` (COMMON.md rule 8); the lanes of this session wrote
+  `result.md`.
+- Lane worktrees under `../adelefeld-wt/` (f-review6, f-repair3, f-repair4) are merged and may be removed.
+
 ## Session 2026-10-02 13:12 to the evening (orchestrator Claude Fable; codex astra lanes only): START HERE
 
 (The machine slept during the session; the clock read 2026-10-03 00:12 to 00:35 when it woke and 21:31 on 2026-10-02 at the end, so the times after the sleep in this entry and in the worklog are from a clock that was wrong one way or the other.)
@@ -48,7 +120,10 @@ Also: the wall-clock guard of `constrained_printer_ends_in_bounded_time` is 30 s
 2. A review of f-slice8 (local roots; the one with the widest interface decision, N-D13: a ball input returns the
    exact image exponent regardless of the requested `N`, unlike `lfunc.h`). Codex astra with its own oracle, the
    pattern of `lanes/f-review5/brief.md`.
-3. Milestone 1F continues: 1F.6 (rational powers through the branches of `lroot.h`; principal-unit powers
+3. Lane f-slice9 (1F.6) was launched at the end of the session (brief `lanes/f-slice9/brief.md`); if its
+   worktree `../adelefeld-wt/f-slice9` holds a `result.md`, commit and merge it as the others; if not, the lane
+   was cut off by the quota stop and `progress.md` says where it was.
+4. Milestone 1F continues after it: 1F.6 (rational powers through the branches of `lroot.h`; principal-unit powers
    `exp(s log u)`, Propositions 17, 18), then 1F.8, 1F.9. Text forms of `adf_lball`, `adf_sball` (conventions 9).
 4. Milestone 2: dump forms of the three types. Then milestone 3: a first slice.
 5. Left: adf-7yz (optional), adf-4dj, f-review4 MINOR 2, the f-slice8 cost note (all branches recompute the log),

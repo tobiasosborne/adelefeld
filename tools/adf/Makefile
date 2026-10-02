@@ -54,8 +54,13 @@ $(BIN): adf.c $(LIB)
 
 # The library of the driver; built on demand, with the same SAN setting, in its own
 # directory below build/ (see above).
-$(LIB):
+# The library is rebuilt by the incremental make of the repository on EVERY run: a rule without prerequisites
+# built it once and never again, so build/adf ran against a stale library after src/ changed (found on
+# 2026-10-02, when the driver goldens of lane f-repair4 failed on the merged tree and passed in its worktree).
+$(LIB): FORCE
 	$(MAKE) -C $(ROOT) BUILD=$(DRVBUILD) SAN=$(SAN) all
+
+FORCE:
 
 clean:
 	rm -f $(BUILD)/adf $(BUILD)/adf-san
