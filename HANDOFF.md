@@ -50,8 +50,10 @@ the two 2.9 MB logs of f-slice8 removed.
 2. A review of f-repair4 is not strictly needed (the reviewer's own oracle and attacks were rerun by the lane
    against N-D14, 0 failures), but the new enumeration (R8, `dth_root` by CRT and a digit-by-digit split) is new
    code that only the lane's tests saw: a short Opus review with its own oracle at `p = 65537` and `2^64 - 59`.
-3. A review of f-slice9 (1F.6, powers: `src/lpow.c`, P1 to P8; the 2-adic hull decision of N-D15 in particular) with
-   its own oracle, as f-review6 did for the roots; the review of f-repair4's `dth_root` can go in the same lane.
+3. Lane f-review7 (review of f-slice9 and of f-repair4's `dth_root`; brief `lanes/f-review7/brief.md`) was launched
+   at 23:18 at the end of the session: if its worktree `../adelefeld-wt/f-review7` holds a `result.md`, commit and
+   merge it and record it under `docs/reviews/f1/`; if not, the lane was cut off by the quota stop and
+   `progress.md` says where it was. Its findings decide whether a repair lane follows.
 4. Milestone 1F continues: 1F.8 (all-places forms; the lane proposes it next: the rational-root contract and the
    rational power of an exact rational at all places need only `lroot.h` and `lpow.h`), then 1F.9. Text
    forms of `adf_lball`, `adf_sball` (conventions 9). Then milestone 2 dump forms; milestone 3.
