@@ -291,7 +291,7 @@ exp_centre(adf_lball_struct * res, ulong p, const fmpq_t t, slong w, slong K)
 }
 
 int
-adf_lball_exp(adf_lball_t y, const adf_lball_t x, slong N)
+ref_lball_exp(adf_lball_t y, const adf_lball_t x, slong N)
 {
     adf_lball_t res;
     int st;
@@ -660,7 +660,7 @@ Log_core(adf_lball_t y, const adf_lball_struct * x, slong N)
 }
 
 int
-adf_lball_log(adf_lball_t y, const adf_lball_t x, slong N)
+ref_lball_log(adf_lball_t y, const adf_lball_t x, slong N)
 {
     int st;
     ADF_INV_LBALL(x);
@@ -675,7 +675,7 @@ adf_lball_log(adf_lball_t y, const adf_lball_t x, slong N)
 }
 
 int
-adf_lball_Log(adf_lball_t y, const adf_lball_t x, slong N)
+ref_lball_Log(adf_lball_t y, const adf_lball_t x, slong N)
 {
     ADF_INV_LBALL(x);
     if (!in_bounds(x))
@@ -687,24 +687,26 @@ adf_lball_Log(adf_lball_t y, const adf_lball_t x, slong N)
 
 /* ----------------------------------------------------------------------- sin, cos, sinh, cosh (slice 1F.7) */
 
-/* Definition 1, docs/proofs/functions.md:23-26: the sign epsilon_j of the degree j term of a parity series,
-   for a degree j of the retained parity: (-1)^floor(j/2) for sin and cos, 1 for sinh and cosh. */
-static int
-parity_sign(slong j, int alternating)
-{
-    return alternating && (j / 2) % 2 ? -1 : 1;
-}
-
-/* F10-F11 and F15, docs/api-1f4.md: the count of Proposition 7:165 retains exactly the degrees < count_exp
-   with the required parity; L is the largest of them. Horner with denominator L!, two degrees per step.
+/* Definition 1, docs/proofs/functions.md:23-26: parity coefficients of the factorial series.
+   F10-F11, docs/api-1f4.md: the count of Proposition 7:165 retains exactly the degrees < count_exp
+   with the required parity. Horner with denominator L! includes zero coefficients of the other parity.
+   A starts at epsilon_L, F at 1. At degree k-1: F = L!/(k-1)!, A = x A + epsilon_(k-1) F.
    All operations stay modulo p^W; only the final division loses D digits (Proposition 8:227).
    Existing exp, log and Log are not changed. */
+static int
+parity_coefficient(slong k, int odd, int alternating)
+{
+    if (k % 2 != odd)
+        return 0;
+    return alternating && (k / 2) % 2 ? -1 : 1;
+}
+
 static int
 parity_centre(adf_lball_struct * res, ulong p, const fmpq_t t, slong w, slong K,
               int odd, int alternating)
 {
     slong L = count_exp(p, K, w) - 1, D, W, k;
-    fmpz_t P, PD, PK, x, x2, A, F, tmp;
+    fmpz_t P, PD, PK, x, A, F, tmp;
     if (L % 2 != odd)
         L--;
     /* The caller's constant-centre shortcuts ensure L >= 1 and K > w (F12). */
@@ -712,7 +714,7 @@ parity_centre(adf_lball_struct * res, ulong p, const fmpq_t t, slong w, slong K,
     W = K + D;
     if (!pow_ok(p, W))
         return ADF_LIMIT;
-    fmpz_init(P); fmpz_init(PD); fmpz_init(PK); fmpz_init(x); fmpz_init(x2);
+    fmpz_init(P); fmpz_init(PD); fmpz_init(PK); fmpz_init(x);
     fmpz_init(A); fmpz_init(F); fmpz_init(tmp);
     fmpz_ui_pow_ui(P, p, (ulong) W);
     fmpz_ui_pow_ui(PD, p, (ulong) D);
@@ -720,30 +722,23 @@ parity_centre(adf_lball_struct * res, ulong p, const fmpq_t t, slong w, slong K,
     rat_mod(x, t, P);
     fmpz_ui_pow_ui(tmp, p, (ulong) w);
     fmpz_mul(x, x, tmp); fmpz_mod(x, x, P);
-    fmpz_mul(x2, x, x); fmpz_mod(x2, x2, P);
-    fmpz_set_si(A, parity_sign(L, alternating));
+    fmpz_set_si(A, parity_coefficient(L, odd, alternating));
     fmpz_one(F);
-    /* F15: the two F11 steps from k (coefficient epsilon_(k-1) = 0) and k-1 in one: F = k (k-1) F,
-       A = x^2 A + epsilon_(k-2) F, modulo p^W; the same residues. fmpz_mul2_uiui multiplies by k and k-1
-       (refs/src/flint-3.0.1/fmpz.rst:758-760); fmpz_mod is the nonnegative remainder (880-883). */
-    for (k = L; k >= 2; k -= 2)
+    for (k = L; k >= 1; k--)
     {
-        fmpz_mul2_uiui(F, F, (ulong) k, (ulong) (k - 1)); fmpz_mod(F, F, P);
-        fmpz_mul(A, A, x2);
-        if (parity_sign(k - 2, alternating) > 0) fmpz_add(A, A, F); else fmpz_sub(A, A, F);
+        int sign = parity_coefficient(k - 1, odd, alternating);
+        fmpz_mul_ui(F, F, (ulong) k); fmpz_mod(F, F, P);
+        fmpz_mul(A, A, x);
+        if (sign > 0) fmpz_add(A, A, F);
+        if (sign < 0) fmpz_sub(A, A, F);
         fmpz_mod(A, A, P);
-    }
-    if (odd)
-    {
-        /* F15: the last F11 step, k = 1 (F = 1 F, epsilon_0 = 0 for an odd series): A = x A */
-        fmpz_mul(A, A, x); fmpz_mod(A, A, P);
     }
     /* F11: every retained term is p-integral, so p^D divides the final numerator residue.
        refs/src/flint-3.0.1/fmpz.rst:852-859,880-883,1154-1160: exact division, mod, unit inverse. */
     fmpz_divexact(A, A, PD); fmpz_divexact(F, F, PD);
     fmpz_invmod(tmp, F, PK); fmpz_mul(A, A, tmp); fmpz_mod(A, A, PK);
     set_ball_residue(res, p, A, K);
-    fmpz_clear(P); fmpz_clear(PD); fmpz_clear(PK); fmpz_clear(x); fmpz_clear(x2);
+    fmpz_clear(P); fmpz_clear(PD); fmpz_clear(PK); fmpz_clear(x);
     fmpz_clear(A); fmpz_clear(F); fmpz_clear(tmp);
     return ADF_OK;
 }
@@ -791,28 +786,28 @@ parity_apply(adf_lball_t y, const adf_lball_t x, slong N, int odd, int alternati
 
 /* F10-F13; docs/proofs/functions.md:23,140,165,227,299: sine series, domain, count, precision, hull. */
 int
-adf_lball_sin(adf_lball_t y, const adf_lball_t x, slong N)
+ref_lball_sin(adf_lball_t y, const adf_lball_t x, slong N)
 {
     return parity_apply(y, x, N, 1, 1);
 }
 
 /* F10-F13; docs/proofs/functions.md:25,140,165,227,299: cosine, including its centred hull. */
 int
-adf_lball_cos(adf_lball_t y, const adf_lball_t x, slong N)
+ref_lball_cos(adf_lball_t y, const adf_lball_t x, slong N)
 {
     return parity_apply(y, x, N, 0, 1);
 }
 
 /* F10-F13; docs/proofs/functions.md:24,140,165,227,299: hyperbolic sine and its hull. */
 int
-adf_lball_sinh(adf_lball_t y, const adf_lball_t x, slong N)
+ref_lball_sinh(adf_lball_t y, const adf_lball_t x, slong N)
 {
     return parity_apply(y, x, N, 1, 0);
 }
 
 /* F10-F13; docs/proofs/functions.md:26,140,165,227,299: hyperbolic cosine and its centred hull. */
 int
-adf_lball_cosh(adf_lball_t y, const adf_lball_t x, slong N)
+ref_lball_cosh(adf_lball_t y, const adf_lball_t x, slong N)
 {
     return parity_apply(y, x, N, 0, 0);
 }

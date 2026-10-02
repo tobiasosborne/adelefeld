@@ -1,0 +1,4 @@
+sin  p=3 N=2000 x=3/2: reference 51.659 ms, library 25.031 ms, status 0 0, identical 1, N 2000
+cos  p=3 N=2000 x=3/2: reference 49.930 ms, library 24.586 ms, status 0 0, identical 1, N 2000
+sinh p=3 N=2000 x=3/2: reference 49.469 ms, library 24.809 ms, status 0 0, identical 1, N 2000
+cosh p=3 N=2000 x=3/2: reference 49.730 ms, library 26.308 ms, status 0 0, identical 1, N 2000

@@ -1,0 +1,205 @@
+mutate: src/lfunc.c: 545 mutants
+mutate: 545 mutants, 60 of them run (--limit 60, --seed 1)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (40.4 s)
+
+SURVIVED src/lfunc.c:739:28 drop_call: 'fmpz_mod(A, A, P);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -737,5 +737,5 @@
+       {
+           /* F15: the last F11 step, k = 1 (F = 1 F, epsilon_0 = 0 for an odd series): A = x A */
+  -        fmpz_mul(A, A, x); fmpz_mod(A, A, P);
+  +        fmpz_mul(A, A, x); 
+       }
+       /* F11: every retained term is p-integral, so p^D divides the final numerator residue.
+
+
+SURVIVED src/lfunc.c:437:28 swap_args: 'fmpz_add(A, A, tmp)' -> 'fmpz_add(A, tmp, A)'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -435,5 +435,5 @@
+           log_split(C, D, U, q, m, b);
+           fmpz_mul(tmp, R, C); fmpz_mul(tmp, tmp, B);
+  -        fmpz_mul(A, A, D); fmpz_add(A, A, tmp);
+  +        fmpz_mul(A, A, D); fmpz_add(A, tmp, A);
+           fmpz_mul(B, B, D); fmpz_mul(R, R, U);
+           fmpz_clear(C); fmpz_clear(D); fmpz_clear(U); fmpz_clear(tmp);
+
+
+TIMED OUT src/lfunc.c:392:19 op: '%' -> '/'
+  the tests did not finish in 150 s
+
+SURVIVED src/lfunc.c:388:9 drop_call: 'fmpz_divexact(Q, Q, tmp);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -386,5 +386,5 @@
+           slong e = 0, bound = floor_log((ulong) k, p), H;
+           fmpz_ui_pow_ui(tmp, p, (ulong) (vz - (bound - previous)));
+  -        fmpz_divexact(Q, Q, tmp);
+  +        
+           previous = bound;
+           fmpz_mul(zk, zk, b); fmpz_mod(zk, zk, Q);
+
+
+SURVIVED src/lfunc.c:137:24 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -135,5 +135,5 @@
+       fmpz_sub_ui(b, b, 1);                          /* (p-1) w - 1 >= 1 because w >= c */
+       fmpz_cdiv_q(a, a, b);
+  -    K = fmpz_cmp_si(a, 1) < 0 ? 1 : fmpz_get_si(a); /* at most 2n (api-1f4.md F7), and n <= 2^25: fits */
+  +    K = fmpz_cmp_si(a, 0) < 0 ? 1 : fmpz_get_si(a); /* at most 2n (api-1f4.md F7), and n <= 2^25: fits */
+       fmpz_clear(a);
+       fmpz_clear(b);
+
+
+SURVIVED src/lfunc.c:722:5 swap_args: 'fmpz_mul(x, x, tmp)' -> 'fmpz_mul(x, tmp, x)'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -720,5 +720,5 @@
+       rat_mod(x, t, P);
+       fmpz_ui_pow_ui(tmp, p, (ulong) w);
+  -    fmpz_mul(x, x, tmp); fmpz_mod(x, x, P);
+  +    fmpz_mul(x, tmp, x); fmpz_mod(x, x, P);
+       fmpz_mul(x2, x, x); fmpz_mod(x2, x2, P);
+       fmpz_set_si(A, parity_sign(L, alternating));
+
+
+SURVIVED src/lfunc.c:643:15 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -641,5 +641,5 @@
+           r = x->N - x->v;
+           E = r >= c ? r : 2;
+  -        K = N < E ? N : E;
+  +        K = N <= E ? N : E;
+       }
+       if (!exp_ok(K))
+
+
+SURVIVED src/lfunc.c:130:29 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -128,5 +128,5 @@
+       fmpz_t a, b;
+       slong K;
+  -    fmpz_init_set_ui(a, p - 1);
+  +    fmpz_init_set_ui(a, p - 0);
+       fmpz_init_set_ui(b, p - 1);
+       fmpz_mul_si(a, a, n);
+
+
+SURVIVED src/lfunc.c:570:41 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -568,5 +568,5 @@
+              when the bound on the valuation increases), then vz = min(v_p(z_r), W) */
+           slong Tc = count_log(p, K, 1);
+  -        W = K + floor_log((ulong) (Tc > 0 ? Tc : 1), p);
+  +        W = K + floor_log((ulong) (Tc > 1 ? Tc : 1), p);
+           if (!pow_ok(p, W))
+           {
+
+
+NOT COMPILED src/lfunc.c:555:9 drop_assign: 'T = count_log(p, K, vz);' -> '' (the statement is removed)
+  src/lfunc.c:602:9: error: ‘T’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/lfunc.c:270:5 swap_args: 'fmpz_mul(x, x, tmp)' -> 'fmpz_mul(x, tmp, x)'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -268,5 +268,5 @@
+       rat_mod(x, t, P);
+       fmpz_ui_pow_ui(tmp, p, (ulong) w);
+  -    fmpz_mul(x, x, tmp);
+  +    fmpz_mul(x, tmp, x);
+       fmpz_mod(x, x, P);
+       fmpz_one(A);
+
+
+SURVIVED src/lfunc.c:358:9 swap_args: 'fmpz_mul(term, term, inv)' -> 'fmpz_mul(term, inv, term)'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -356,5 +356,5 @@
+           fmpz_set_ui(kk, kp);
+           fmpz_invmod(inv, kk, P);
+  -        fmpz_mul(term, term, inv);
+  +        fmpz_mul(term, inv, term);
+           if (k % 2 == 1)
+               fmpz_add(S, S, term);
+
+
+SURVIVED src/lfunc.c:382:53 drop_call: 'fmpz_zero(S);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -380,5 +380,5 @@
+       fmpz_ui_pow_ui(pv, p, (ulong) vz);
+       fmpz_divexact(b, zr, pv);
+  -    fmpz_set(Q, PK); fmpz_one(scale); fmpz_one(zk); fmpz_zero(S);
+  +    fmpz_set(Q, PK); fmpz_one(scale); fmpz_one(zk); 
+       for (k = 1; k <= T; k++)
+       {
+
+
+SURVIVED src/lfunc.c:110:12 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -108,5 +108,5 @@
+           return 0;                                  /* k = 1 already works: J = 1 */
+       hi = (2 * n + (2 * v - 1) - 1) / (2 * v - 1);
+  -    if (hi < 1)
+  +    if (hi <= 1)
+           hi = 1;
+       while (lo < hi)                               /* invariant: J in [lo, hi] */
+
+
+SURVIVED src/lfunc.c:594:13 drop_call: 'fmpz_zero(S);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -592,5 +592,5 @@
+           if (vz >= K)
+           {
+  -            fmpz_zero(S);
+  +            
+               goto done;
+           }
+
+
+NOT COMPILED src/lfunc.c:506:5 drop_assign: 'a = fmpz_remove(r, fmpq_numref(q), P);' -> '' (the statement is removed)
+  src/lfunc.c:510:14: error: ‘a’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/lfunc.c:451:5 drop_call: 'log_split(A, B, R, q, 1, (ulong) T + 1);' -> '' (the statement is removed)
+  src/lfunc.c:447:11: error: unused variable ‘T’ [-Werror=unused-variable]
+
+NOT COMPILED src/lfunc.c:195:5 drop_call: 'set_ball_residue(y, p, one, K);' -> '' (the statement is removed)
+  src/lfunc.c:191:33: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+SURVIVED src/lfunc.c:510:14 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/lfunc.c
+  +++ b/src/lfunc.c
+  @@ -508,5 +508,5 @@
+       fmpz_clear(P);
+       fmpz_clear(r);
+  -    return a - b;
+  +    return a + b;
+   }
+   
+
+
+mutate: 60 mutants in 1193.3 s: 41 killed, 14 survived, 4 not compiled, 1 timed out, 0 excused
+mutate: FAILED: 14 mutant(s) survived; each one is a claim the tests do not check
+exit=1

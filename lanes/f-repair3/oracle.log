@@ -1,0 +1,5 @@
+oracle: 3 independent truncations, 462 identity checks, 0 failures
+
+real	0m0.151s
+user	0m0.135s
+sys	0m0.007s
