@@ -251,6 +251,39 @@ open_vectors(const char * name)
     return f;
 }
 
+/* Additional old-code fixtures, seed 20261002, generated from commit 1cf0e42 by
+   lanes/f-fixture1/gen_stored_large.py. Each of seven primes has 24 F9 rows and at least 20 F8 rows,
+   including K=64/65 and the actual tagged-word boundary. Compare every field, status and alias call. */
+ADF_TEST(stored_large_before_optimisation)
+{
+    jsonl_file *f = NULL;
+    jsonl_error_t err;
+    size_t i;
+    adf_lball_t x, y, z, want;
+    ADF_CHECK_MSG(jsonl_open("tests/ref/vectors/f-slice5/stored_large.jsonl", &f, &err),
+                  "%s", jsonl_error_message(&err));
+    if (!f) return;
+    ADF_CHECK(jsonl_count(f) == 465);
+    adf_lball_init(x); adf_lball_init(y); adf_lball_init(z); adf_lball_init(want);
+    for (i = 0; i < jsonl_count(f); i++)
+    {
+        const jsonl_value *rec = jsonl_record(f, i);
+        lfn_t fn = fn_of(member_str(rec, "f"));
+        int st, ast, expected = (int) member_slong(rec, "st");
+        slong N = member_slong(rec, "N");
+        lb_from_json(x, member(rec, "x")); lb_from_json(want, member(rec, "y"));
+        /* The saved probe's unchanged-output sentinel. */
+        y->p = 7; y->v = -3; y->N = 0; y->exact = 1; fmpq_set_si(y->u, 17, 19);
+        adf_lball_set(z, x);
+        st = fn(y, x, N); ast = fn(z, z, N);
+        ADF_CHECK_MSG(st == expected && fields_equal(y, want), "stored large row %lu", (ulong) i+1);
+        ADF_CHECK_MSG(ast == expected && fields_equal(z, st == ADF_OK ? want : x),
+                      "stored large alias row %lu", (ulong) i+1);
+    }
+    adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(z); adf_lball_clear(want);
+    jsonl_close(f);
+}
+
 /* Old-code fixtures, seed 930505. Compare every stored field and status, including aliasing.
    2000 inputs at six primes, balls and exact rationals, N through 3000 and negative Log valuations. */
 ADF_TEST(stored_before_optimisation)

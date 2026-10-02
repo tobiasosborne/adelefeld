@@ -1,0 +1,3 @@
+control_unmodified: exit 0; stored_before_optimisation failed checks: 0; all failing tests: {}; summary: 13 tests, 473031 checks, 0 failed checks, 0 failed tests
+   probe (small): exit 0; cases: 7440
+elapsed=64.71 user=63.83 sys=0.96

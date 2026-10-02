@@ -1,0 +1,3 @@
+f9_inverse_bigp: exit 1; stored_before_optimisation failed checks: 0; all failing tests: {'stored_large_before_optimisation': 42, 'precision_2000': 2}; summary: 13 tests, 473031 checks, 44 failed checks, 2 failed tests
+   probe (small): exit 0; cases: 7440; diff_bal: 160; diff_old: 160; diff_sum: 160; oracle_fail: 160; point_fail: 128
+elapsed=65.58 user=64.69 sys=0.98

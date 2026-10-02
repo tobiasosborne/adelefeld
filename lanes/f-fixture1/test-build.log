@@ -1,0 +1,1 @@
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_lfunc.c lanes/f-fixture1/build/support/golden.o lanes/f-fixture1/build/support/jsonl.o lanes/f-fixture1/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f-fixture1/build/test_lfunc

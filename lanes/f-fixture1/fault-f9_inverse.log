@@ -1,0 +1,3 @@
+f9_inverse: exit 1; stored_before_optimisation failed checks: 10; all failing tests: {'stored_large_before_optimisation': 242, 'stored_before_optimisation': 10, 'flint_second_opinion': 266, 'precision_2000': 2}; summary: 13 tests, 473031 checks, 520 failed checks, 4 failed tests
+   probe (small): exit 0; cases: 7440; diff_bal: 824; diff_old: 824; diff_sum: 824; oracle_fail: 824; point_fail: 758
+elapsed=46.54 user=46.04 sys=0.57

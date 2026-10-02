@@ -1,0 +1,18 @@
+check-all completed programs 46 checks 38613598 failed 0
+last: make: *** [Makefile:123: check-all] Terminated
+final-lfunc completed programs 1 checks 473031 failed 0
+last: 13 tests, 473031 checks, 0 failed checks, 0 failed tests
+fault-control_unmodified.log control_unmodified: exit 0; stored_before_optimisation failed checks: 0; all failing tests: {}; summary: 13 tests, 473031 checks, 0 failed checks, 0 failed tests
+fault-f8_digit.log f8_digit: exit 1; stored_before_optimisation failed checks: 650; all failing tests: {'stored_large_before_optimisation': 390, 'stored_before_optimisation': 650, 'cases_from_the_reference': 30, 'identities_as_containment': 429, 'flint_second_opinion': 209}; summary: 13 tests, 473091 checks, 1708 failed checks, 5 failed tests
+fault-f8_digit_K40.log f8_digit_K40: exit 1; stored_before_optimisation failed checks: 0; all failing tests: {'stored_large_before_optimisation': 346, 'cases_from_the_reference': 1, 'flint_second_opinion': 40}; summary: 13 tests, 473033 checks, 387 failed checks, 3 failed tests
+fault-f9_inverse.log f9_inverse: exit 1; stored_before_optimisation failed checks: 10; all failing tests: {'stored_large_before_optimisation': 242, 'stored_before_optimisation': 10, 'flint_second_opinion': 266, 'precision_2000': 2}; summary: 13 tests, 473031 checks, 520 failed checks, 4 failed tests
+fault-f9_inverse_bigp.log f9_inverse_bigp: exit 1; stored_before_optimisation failed checks: 0; all failing tests: {'stored_large_before_optimisation': 42, 'precision_2000': 2}; summary: 13 tests, 473031 checks, 44 failed checks, 2 failed tests
+fault-f9_tree.log f9_tree: exit 1; stored_before_optimisation failed checks: 18; all failing tests: {'stored_large_before_optimisation': 336, 'stored_before_optimisation': 18, 'cases_from_the_reference': 2, 'flint_second_opinion': 336, 'precision_2000': 8}; summary: 13 tests, 473035 checks, 700 failed checks, 5 failed tests
+fault-f9_valuation-assertions.log FAIL tests/test_lfunc.c:279: stored_large_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored large row 33
+fault-f9_valuation.log f9_valuation: exit -11; stored_before_optimisation failed checks: 0; all failing tests: {}; summary:  tests/test_lfunc.c:279: stored_large_before_optimisation: check failed: st == expected && fields_equal(y, want) | stored large row 34
+check-san completed programs 15 checks 428223 failed 0
+last: make: *** [Makefile:102: check] Terminated
+asan/ubsan diagnostics 0
+san-lfunc completed programs 1 checks 473031 failed 0
+last: 13 tests, 473031 checks, 0 failed checks, 0 failed tests
+asan/ubsan diagnostics 0

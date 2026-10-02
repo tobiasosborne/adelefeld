@@ -1,0 +1,3 @@
+tests/ref/vectors/f-slice5/stored.jsonl: OK
+src/lfunc.c: OK
+docs/SPEC.md: OK
