@@ -1,0 +1,14 @@
+red first exit=2
+red link exit=2 (undefined local-root symbols)
+red stubs exit=1
+first implementation exit=1
+compiled implementation exit=0
+red _at exit=1
+green _at exit=0
+red driver exit=1
+driver values exit=0
+driver status exit=1 (expected 1)
+extended local tests exit=0
+trailing separator red diff exit=1
+trailing separator green driver exit=1 (expected 1)
+trailing separator green diff exit=0

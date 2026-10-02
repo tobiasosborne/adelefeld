@@ -992,3 +992,140 @@ ADF_TEST(hyperbolic_at_real_arb_and_loss)
     arb_clear(r); arb_clear(expected); arb_clear(point); arb_clear(value);
     adf_sball_clear(x); adf_sball_clear(y); adf_sball_clear(z);
 }
+
+/* R6: each oracle row through seeded _at; the independent fixtures also supply the expected
+   status. Exact local results compare with the local function; other components must vanish. */
+ADF_TEST(local_roots_at_prime)
+{
+    adf_lball_t c,want;
+    adf_lball_struct roots[6];
+    adf_sball_t x,y,z;
+    adf_place_t where,mark=place_of(11);
+    ulong ids[6];
+    slong len=-1;
+    adf_lball_init(c); adf_lball_init(want);
+    for (int i=0;i<6;i++) adf_lball_init(roots+i);
+    adf_sball_init(x); adf_sball_init(y); adf_sball_init(z);
+    for (int mode=0;mode<6;mode++)
+    {
+        ulong p=mode==1 || mode==2 ? 2 : 5;
+        ulong seed=mode==0 ? 2 : 1;
+        int st=mode==1 ? ADF_DOMAIN : mode==2 || mode==3 ? ADF_NOT_DETERMINED :
+               mode==4 ? ADF_LIMIT : ADF_OK;
+        slong N=mode==4 ? LONG_MAX : 20;
+        if (mode==0) lb_exact(c,p,9,1);
+        if (mode==1) lb_exact(c,p,3,1);
+        if (mode==2) lb_ball(c,p,1,1,2);
+        if (mode==3) lb_ball(c,p,0,1,4);
+        if (mode==4) lb_exact(c,p,6,1);
+        if (mode==5) lb_ball(c,p,1,1,4);
+        ADF_CHECK(adf_sball_set_arb_lballs(x,NULL,NULL,c,1)==ADF_OK);
+        for (int square=0;square<2;square++)
+        {
+            sentinel(y); adf_sball_set(z,x); where=mark;
+            int got=square ? adf_sball_sqrt_seed_at(y,&where,x,place_of(p),seed,N) :
+                             adf_sball_root_seed_at(y,&where,x,place_of(p),2,seed,N);
+            ADF_CHECK(got==st);
+            if (st==ADF_OK)
+            {
+                ADF_CHECK(adf_lball_root_seed(want,c,2,seed,N)==ADF_OK);
+                ADF_CHECK(y->arch==ADF_ARCH_NONE && y->len==1 && adf_lball_identical(y->loc,want));
+                ADF_CHECK(adf_place_equal(where,mark));
+            }
+            else ADF_CHECK(is_sentinel(y) && adf_place_equal(where,place_of(p)));
+            got=square ? adf_sball_sqrt_seed_at(z,NULL,z,place_of(p),seed,N) :
+                         adf_sball_root_seed_at(z,NULL,z,place_of(p),2,seed,N);
+            ADF_CHECK(got==st && adf_sball_identical(z,st==ADF_OK ? y : x));
+        }
+        where=mark;
+        ADF_CHECK(adf_sball_roots_at(roots,ids,&len,6,&where,x,place_of(p),2,N)==st);
+        ADF_CHECK(adf_place_equal(where,st==ADF_OK ? mark : place_of(p)));
+        if (st==ADF_OK) ADF_CHECK(len==2);
+    }
+    sentinel(y); where=mark;
+    ADF_CHECK(adf_sball_root_seed_at(y,&where,x,place_of(7),2,1,20)==ADF_DOMAIN);
+    ADF_CHECK(is_sentinel(y) && adf_place_equal(where,place_of(7)));
+    ADF_CHECK(adf_sball_root_seed_at(y,&where,x,place_of(5),0,1,20)==ADF_DOMAIN);
+    ADF_CHECK(is_sentinel(y) && adf_place_equal(where,place_of(5)));
+    lb_exact(c,5,9,1);
+    ADF_CHECK(adf_sball_set_arb_lballs(x,NULL,NULL,c,1)==ADF_OK);
+    ADF_CHECK(adf_sball_root_seed_at(y,&where,x,place_of(5),2,0,20)==ADF_DOMAIN);
+    /* Explicitly keep both old seedless prime calls unsupported. */
+    ADF_CHECK(adf_sball_root_at(y,&where,x,place_of(5),2,20)==ADF_UNSUPPORTED);
+    ADF_CHECK(adf_sball_sqrt_at(y,&where,x,place_of(5),20)==ADF_UNSUPPORTED);
+    adf_lball_clear(c); adf_lball_clear(want);
+    for (int i=0;i<6;i++) adf_lball_clear(roots+i);
+    adf_sball_clear(x); adf_sball_clear(y); adf_sball_clear(z);
+}
+
+ADF_TEST(local_roots_at_all_reference_rows)
+{
+    jsonl_file *f=NULL;
+    jsonl_error_t error;
+    adf_sball_t x,y,z;
+    adf_lball_t c,want;
+    adf_lball_struct listed[6];
+    ulong ids[6];
+    adf_place_t where,mark=place_of(11);
+    arb_t real;
+    ADF_CHECK(jsonl_open("tests/ref/vectors/f-slice8/balls.jsonl",&f,&error));
+    if (!f) return;
+    ADF_CHECK(jsonl_count(f)==8110);
+    adf_sball_init(x); adf_sball_init(y); adf_sball_init(z);
+    adf_lball_init(c); adf_lball_init(want); arb_init(real); arb_set_si(real,12);
+    for (int i=0;i<6;i++) adf_lball_init(listed+i);
+    for (size_t k=0;k<jsonl_count(f);k++)
+    {
+        const jsonl_value *r=jsonl_record(f,k);
+        ulong p=strtoul(member_int(r,"p"),NULL,10), n=strtoul(member_int(r,"n"),NULL,10);
+        slong m=strtol(member_int(r,"m"),NULL,10), M=strtol(member_int(r,"M"),NULL,10), len=-1;
+        int status=atoi(member_int(r,"s"));
+        c->p=p; c->v=m; c->N=M; c->exact=0;
+        fmpq_set_si(c->u,strtol(member_int(r,"a"),NULL,10),1);
+        ADF_CHECK(adf_sball_set_arb_lballs(x,NULL,real,c,1)==ADF_OK);
+        size_t branches=jsonl_size(member(r,"ids"));
+        if (!status)
+        {
+            where=mark;
+            ADF_CHECK(adf_sball_roots_at(listed,ids,&len,6,&where,x,place_of(p),n,30)==ADF_OK);
+            ADF_CHECK(len==(slong)branches && adf_place_equal(where,mark));
+        }
+        for (size_t i=0;i<(branches ? branches : 1);i++)
+        {
+            ulong seed=status ? 1 : strtoul(jsonl_int_text(jsonl_at(member(r,"ids"),i,NULL),NULL),NULL,10);
+            sentinel(y); adf_sball_set(z,x); where=mark;
+            ADF_CHECK(adf_sball_root_seed_at(y,&where,x,place_of(p),n,seed,30)==status);
+            ADF_CHECK(adf_sball_root_seed_at(z,NULL,z,place_of(p),n,seed,30)==status);
+            if (status)
+            {
+                ADF_CHECK(is_sentinel(y) && adf_sball_identical(z,x));
+                ADF_CHECK(adf_place_equal(where,place_of(p)));
+            }
+            else
+            {
+                if (n==1) adf_lball_set(want,c);
+                else
+                {
+                    want->p=p; want->v=m/(slong)n; want->N=strtol(member_int(r,"E"),NULL,10);
+                    want->exact=0;
+                    fmpq_set_si(want->u,
+                        strtol(jsonl_int_text(jsonl_at(member(r,"bs"),i,NULL),NULL),NULL,10),1);
+                }
+                ADF_CHECK(y->arch==ADF_ARCH_NONE && y->len==1 && acb_is_zero(y->inf));
+                ADF_CHECK(adf_lball_identical(y->loc,want) && adf_sball_identical(z,y));
+                ADF_CHECK(adf_lball_identical(listed+i,want) && ids[i]==seed);
+                ADF_CHECK(adf_place_equal(where,mark));
+            }
+        }
+    }
+    /* Place checks precede prime-only support; complex tags do not alter a prime request. */
+    where=mark; sentinel(y);
+    ADF_CHECK(adf_sball_root_seed_at(y,&where,x,adf_place_inf(),2,1,20)==ADF_UNSUPPORTED);
+    ADF_CHECK(is_sentinel(y) && adf_place_is_archimedean(where));
+    ADF_CHECK(adf_sball_roots_at(listed,ids,&(slong){-1},6,&where,x,adf_place_inf(),2,20)==ADF_UNSUPPORTED);
+    x->arch=ADF_ARCH_COMPLEX;
+    ADF_CHECK(adf_sball_root_seed_at(y,&where,x,place_of(7),1,0,20)==ADF_OK);
+    for (int i=0;i<6;i++) adf_lball_clear(listed+i);
+    arb_clear(real); adf_lball_clear(c); adf_lball_clear(want);
+    adf_sball_clear(x); adf_sball_clear(y); adf_sball_clear(z); jsonl_close(f);
+}

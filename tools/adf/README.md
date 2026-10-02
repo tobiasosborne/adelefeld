@@ -43,7 +43,7 @@ that the one chosen is unambiguous.
    derives no sentence of any of the thirteen start symbols: a value text cannot contain
    the four letters `with`, and therefore cannot contain ` with ` either.
 3. The separator of the driver is the byte string ` with ` (a space, the word, a space).
-   The driver splits a line at the first and the second occurrence of that byte string, so
+   The driver splits a line at successive occurrences of that byte string, so
    an operand can never contain it, and every operand is the exact text between two
    separators, with no trimming: the value form allows whitespace before the first token
    and after the last one (conventions 8.2), so a command may be written with spaces
@@ -438,3 +438,36 @@ meets the domain and its complement is `NOT_DETERMINED`; a disjoint input is `DO
 For example, at `prec 8`, `cos_at (* ; 0 mod 4) with 2` prints `2: 1 + O(2^3)`;
 `sin_at 2 with 2` gives `error: DOMAIN`, while `sin_at (* ; 0 mod 2) with 2` gives
 `error: NOT_DETERMINED`. The fixtures are `tests/driver/trig-*.cmd` and `.out`.
+
+### Local roots and their branches (1F.5)
+
+    roots_at X with PRIME with DEGREE
+    root_at X with PRIME with DEGREE with SEED
+
+`X` is a rational, finite ball or adele, as for `exp_at`. Both commands project to the named prime.
+`roots_at` lists every branch in increasing identifier order. `root_at` selects one branch.
+The degree and seed are exact integer operands; the degree is in 1..2^64-1.
+At an odd prime the seed is the nonzero residue of the root's unit part modulo the prime.
+At 2 the seed is a sign: `1` selects unit 1 modulo 4 and `-1` selects unit 3 modulo 4.
+The API identifier `3` is also accepted for the latter. Zero uses identifier `0`; degree 1
+is the identity, uses identifier `0` and ignores the seed.
+
+The output labels each branch, for example:
+
+    roots_at 9 with 5 with 2
+    5 [2]: -3; 5 [3]: 3
+    roots_at 9 with 2 with 2
+    2 [+1]: -3; 2 [-1]: 3
+    roots_at (* ; 1 mod 16) with 2 with 2
+    2 [+1]: 1 + O(2^3); 2 [-1]: 7 + O(2^3)
+
+The sign at 2 labels the torsion factor, not the real sign of a rational root.
+For exact inputs, rational roots print exactly; irrational roots use absolute precision `prec`.
+For ball inputs the result has the exact image exponent of Proposition 15, independent of `prec`.
+The strong guard is retained. Thus `roots_at (* ; 1 mod 4) with 2 with 2` reports
+`error: NOT_DETERMINED`. So do balls containing zero, except at degree 1.
+A failed existence criterion on the entire guarded ball reports `error: DOMAIN`.
+Invalid seeds and degree 0 also give `DOMAIN`; excess operands or malformed text give `PARSE`.
+`real` is `UNSUPPORTED` for these local-root commands. The old polynomial `roots` command is unchanged.
+The all-branch command has the coefficient-count limit `ADF_LROOT_BRANCH_MAX` of `lroot.h`;
+seeded evaluation has no branch-array cost. Limits leave no partial output line.

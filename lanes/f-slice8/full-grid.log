@@ -1,0 +1,7 @@
+  oracle rows: 8110
+ok   enumeration_all_rows
+ok   exact_branches_limits_and_aliasing
+ok   large_prime_and_word_degrees
+ok   seeded_small_ball_comparisons
+ok   boundaries_and_transaction_after_one_branch
+5 tests, 339966 checks, 0 failed checks, 0 failed tests
