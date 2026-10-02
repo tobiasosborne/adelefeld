@@ -41,3 +41,15 @@ MINOR: the acknowledged absent parity costs 3997/3998 steps instead of 1999 on x
 One cost_probe run gives original/paired milliseconds 76.225436/36.009152 (sin),
 71.580113/34.905123 (cos), 68.015647/33.988612 (sinh), 86.436150/36.421342 (cosh).
 All 4 residues agree. No repeated timing or general performance claim is made.
+
+Final F13 reproducer: ASAN_OPTIONS=detect_leaks=0 timeout 10 lanes/f-review5/build/probe
+with f13.in as stdin: exit 0, 8 rows, 138 checks, four DOMAIN and four NOT_DETERMINED, zero LIMIT.
+The output sentinel remains p=19, u=-23/29, v=N=0, exact=1 in every row.
+
+Final evidence audit: timeout 10 python3 -B lanes/f-review5/audit.py, exit 0.
+The 24519 bytes / 686 lines of old_lfunc.c equal the current source prefix exactly.
+5856 stream cases have matching input/output row counts and zero recorded failures.
+Seven sanitizer logs contain zero AddressSanitizer/runtime-error diagnostics.
+Eight authored source/note files have zero lines over 116 characters.
+No repository source, test, specification, or fixture was written. No repository suite was executed.
+The two findings and the completed attack coverage are ready for the final report.
