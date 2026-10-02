@@ -1,0 +1,45 @@
+== attack1 seed 1 N-D14 oracle
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1085), (('A', 'NOT_DETERMINED'), 110), (('A', 'OK'), 1637), (('C', 'DOMAIN'), 1085), (('C', 'NOT_DETERMINED'), 110), (('C', 'OK'), 1637), (('S', 'DOMAIN'), 16337), (('S', 'NOT_DETERMINED'), 687), (('S', 'OK'), 4628)]
+oracle14 counts {'coarse': 1520, 'image': 1812}
+== attack1 seed 1 N-D13 oracle (reviewer's, unchanged)
+FAIL exponent 2, exact image 3 | S 2 3 1 0 3 0 3 3 2 0 -> OK 0 0 2 3
+cases 27316 fail 1164 [(('A', 'DOMAIN'), 1085), (('A', 'NOT_DETERMINED'), 110), (('A', 'OK'), 1637), (('C', 'DOMAIN'), 1085), (('C', 'NOT_DETERMINED'), 110), (('C', 'OK'), 1637), (('S', 'DOMAIN'), 16337), (('S', 'NOT_DETERMINED'), 687), (('S', 'OK'), 4628)]
+== attack1 seed 2 N-D14 oracle
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1093), (('A', 'NOT_DETERMINED'), 107), (('A', 'OK'), 1632), (('C', 'DOMAIN'), 1093), (('C', 'NOT_DETERMINED'), 107), (('C', 'OK'), 1632), (('S', 'DOMAIN'), 16356), (('S', 'NOT_DETERMINED'), 650), (('S', 'OK'), 4646)]
+oracle14 counts {'coarse': 1535, 'image': 1741}
+== attack1 seed 2 N-D13 oracle (reviewer's, unchanged)
+FAIL exponent 3, exact image 4 | S 2 61 1 -6 0 0 3 1 3 0 -> OK 0 -2 3 5
+cases 27316 fail 1186 [(('A', 'DOMAIN'), 1093), (('A', 'NOT_DETERMINED'), 107), (('A', 'OK'), 1632), (('C', 'DOMAIN'), 1093), (('C', 'NOT_DETERMINED'), 107), (('C', 'OK'), 1632), (('S', 'DOMAIN'), 16356), (('S', 'NOT_DETERMINED'), 650), (('S', 'OK'), 4646)]
+== attack1 seed 3 N-D14 oracle
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1074), (('A', 'NOT_DETERMINED'), 113), (('A', 'OK'), 1645), (('C', 'DOMAIN'), 1074), (('C', 'NOT_DETERMINED'), 113), (('C', 'OK'), 1645), (('S', 'DOMAIN'), 16340), (('S', 'NOT_DETERMINED'), 708), (('S', 'OK'), 4604)]
+oracle14 counts {'coarse': 1493, 'image': 1853}
+== attack1 seed 3 N-D13 oracle (reviewer's, unchanged)
+FAIL exponent 0, exact image 4 | S 2 9 1 0 4 0 3 1 0 0 -> OK 0 0 0 0
+cases 27316 fail 1172 [(('A', 'DOMAIN'), 1074), (('A', 'NOT_DETERMINED'), 113), (('A', 'OK'), 1645), (('C', 'DOMAIN'), 1074), (('C', 'NOT_DETERMINED'), 113), (('C', 'OK'), 1645), (('S', 'DOMAIN'), 16340), (('S', 'NOT_DETERMINED'), 708), (('S', 'OK'), 4604)]
+== attack1 seed 4 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1093), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1532, 'image': 1782}
+== attack1 seed 5 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1086), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1407, 'image': 1881}
+== attack1 seed 6 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1090), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1461, 'image': 1797}
+== attack1 seed 7 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1075), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1411, 'image': 1903}
+== attack1 seed 8 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1083), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1479, 'image': 1781}
+== attack1 seed 9 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1058), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1475, 'image': 1859}
+== attack1 seed 10 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1081), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1477, 'image': 1837}
+== attack1 seed 11 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1070), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1414, 'image': 1832}
+== attack1 seed 12 N-D14
+cases 27316 fail 0 [(('A', 'DOMAIN'), 1098), (('A', 'NOT_DET
+oracle14 counts {'coarse': 1424, 'image': 1864}

@@ -1,0 +1,6 @@
+cases 27316 identical 26152 differ by N-D14 (ball, Nreq < E) 1164 old LIMIT -> new OK 0 other 0
+cases 27316 identical 26130 differ by N-D14 (ball, Nreq < E) 1186 old LIMIT -> new OK 0 other 0
+cases 27316 identical 26144 differ by N-D14 (ball, Nreq < E) 1172 old LIMIT -> new OK 0 other 0
+cases 27316 identical 26118 differ by N-D14 (ball, Nreq < E) 1198 old LIMIT -> new OK 0 other 0
+cases 1092 identical 1028 differ by N-D14 (ball, Nreq < E) 64 old LIMIT -> new OK 0 other 0
+cases 1131 identical 1059 differ by N-D14 (ball, Nreq < E) 72 old LIMIT -> new OK 0 other 0

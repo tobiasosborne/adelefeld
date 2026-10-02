@@ -1,0 +1,46 @@
+  oracle rows: 8110
+FAIL enumeration_all_rows (tests/test_lroot.c:54, 11100 failed checks)
+ok   exact_branches_limits_and_aliasing
+ok   large_prime_and_word_degrees
+FAIL seeded_small_ball_comparisons (tests/test_lroot.c:237, 10171 failed checks)
+FAIL boundaries_and_transaction_after_one_branch (tests/test_lroot.c:286, 4 failed checks)
+  exact oracle rows: 1408
+ok   exact_finite_ring_reference
+FAIL nd14_ball_result_exponent_is_min_of_N_and_E (tests/test_lroot.c:407, 26 failed checks)
+FAIL f1_unit_one_ball_needs_no_power (tests/test_lroot.c:476, 21 failed checks)
+  identifier lists compared: 61324
+ok   f2_identifiers_against_residue_search
+FAIL f2_all_branches_cost_and_early_limit (tests/test_lroot.c:569, 3 failed checks)
+10 tests, 1308396 checks, 21325 failed checks, 6 failed tests
+  11100 FAIL tests/test_lroot.c:112: enumeration_all_rows
+  10171 FAIL tests/test_lroot.c:270: seeded_small_ball_comparisons
+      1 FAIL tests/test_lroot.c:305: boundaries_and_transaction_after_one_branch
+      1 FAIL tests/test_lroot.c:306: boundaries_and_transaction_after_one_branch
+      1 FAIL tests/test_lroot.c:307: boundaries_and_transaction_after_one_branch
+      1 FAIL tests/test_lroot.c:308: boundaries_and_transaction_after_one_branch
+      1 FAIL tests/test_lroot.c:420: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:423: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:432: nd14_ball_result_exponent_is_min_of_N_and_E
+      4 FAIL tests/test_lroot.c:437: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:443: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:444: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:449: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:450: nd14_ball_result_exponent_is_min_of_N_and_E
+     13 FAIL tests/test_lroot.c:460: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:464: nd14_ball_result_exponent_is_min_of_N_and_E
+      1 FAIL tests/test_lroot.c:465: nd14_ball_result_exponent_is_min_of_N_and_E
+      2 FAIL tests/test_lroot.c:491: f1_unit_one_ball_needs_no_power
+      2 FAIL tests/test_lroot.c:492: f1_unit_one_ball_needs_no_power
+      2 FAIL tests/test_lroot.c:493: f1_unit_one_ball_needs_no_power
+      2 FAIL tests/test_lroot.c:495: f1_unit_one_ball_needs_no_power
+      2 FAIL tests/test_lroot.c:499: f1_unit_one_ball_needs_no_power
+      2 FAIL tests/test_lroot.c:502: f1_unit_one_ball_needs_no_power
+      2 FAIL tests/test_lroot.c:503: f1_unit_one_ball_needs_no_power
+      2 FAIL tests/test_lroot.c:504: f1_unit_one_ball_needs_no_power
+      1 FAIL tests/test_lroot.c:509: f1_unit_one_ball_needs_no_power
+      1 FAIL tests/test_lroot.c:510: f1_unit_one_ball_needs_no_power
+      1 FAIL tests/test_lroot.c:511: f1_unit_one_ball_needs_no_power
+      1 FAIL tests/test_lroot.c:516: f1_unit_one_ball_needs_no_power
+      1 FAIL tests/test_lroot.c:519: f1_unit_one_ball_needs_no_power
+      1 FAIL tests/test_lroot.c:588: f2_all_branches_cost_and_early_limit
+      2 FAIL tests/test_lroot.c:600: f2_all_branches_cost_and_early_limit

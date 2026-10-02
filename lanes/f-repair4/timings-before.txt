@@ -1,0 +1,21 @@
+Fri Oct  2 21:18:26 UTC 2026
+== polyroots 65537 65536
+p=65537 d=65536 ok=1 poly roots 5.656 s; generator listing 0.000565 s (w back to 1: 1)
+== polyroots 2^64-59 6028
+p=18446744073709551557 d=6028 ok=1 poly roots 5.700 s; generator listing 0.000436 s (w back to 1: 1)
+== perf
+len=16 ids0=3 exact0=1
+roots (16 branches): 27.161 ms; one seeded branch: 1.923 ms; Log at N: 0.379 ms; exp at N: 0.888 ms
+== perf irr
+len=16 ids0=3 exact0=0
+roots (16 branches): 26.275 ms; one seeded branch: 2.103 ms; Log at N: 0.552 ms; exp at N: 1.296 ms
+== h roots exact 1 at 65537 n=65536 N=2^40
+/bin/bash: line 1: /usr/bin/time: No such file or directory
+== nd13 100000
+canonical 1, R=100000
+root_seed N=10: OK, N_out=99999, 50.279 s | Log N=10: OK 0.0000 s | Log N=R: OK 0.111 s
+exit 0
+Fri Oct  2 21:19:29 UTC 2026
+== h roots exact 1 at 65537 n=65536 N=2^40
+LIMIT -7
+elapsed 6.016171862 s

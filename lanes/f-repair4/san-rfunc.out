@@ -1,0 +1,17 @@
+  vectors_exact_at_prime: 1824 lines, OK 876 (exact 132), DOMAIN 948
+ok   vectors_exact_at_prime
+  vectors_of_lfunc_through_at: 790 lines, OK 649, DOMAIN 100, NOT_DETERMINED 41, LIMIT 0
+ok   vectors_of_lfunc_through_at
+ok   statuses_arrive_with_the_prime
+ok   prec_is_the_absolute_precision_at_a_prime
+ok   other_functions_and_place_checks
+ok   Log_at_the_real_place
+ok   projected_adele_at_every_place
+ok   aliasing_at_a_prime
+ok   exp_of_five_by_hand
+ok   trig_reference_at_prime
+ok   trig_at_limits_and_places
+ok   hyperbolic_at_real_arb_and_loss
+ok   local_roots_at_prime
+ok   local_roots_at_all_reference_rows
+14 tests, 521989 checks, 0 failed checks, 0 failed tests

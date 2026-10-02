@@ -463,11 +463,13 @@ The output labels each branch, for example:
 
 The sign at 2 labels the torsion factor, not the real sign of a rational root.
 For exact inputs, rational roots print exactly; irrational roots use absolute precision `prec`.
-For ball inputs the result has the exact image exponent of Proposition 15, independent of `prec`.
+For ball inputs the result has the exponent `min(prec, E)`, `E` the exact image exponent of
+Proposition 15 (decision N-D14): at `prec 3`, `root_at (* ; 9 mod 15625) with 5 with 2 with 3` prints
+`5 [3]: 3 + O(5^3)`; with `prec` at least 6 it prints the image `3 + O(5^6)`.
 The strong guard is retained. Thus `roots_at (* ; 1 mod 4) with 2 with 2` reports
 `error: NOT_DETERMINED`. So do balls containing zero, except at degree 1.
 A failed existence criterion on the entire guarded ball reports `error: DOMAIN`.
 Invalid seeds and degree 0 also give `DOMAIN`; excess operands or malformed text give `PARSE`.
 `real` is `UNSUPPORTED` for these local-root commands. The old polynomial `roots` command is unchanged.
-The all-branch command has the coefficient-count limit `ADF_LROOT_BRANCH_MAX` of `lroot.h`;
+The all-branch command has the branch-count limit `ADF_LROOT_BRANCH_MAX` of `lroot.h`;
 seeded evaluation has no branch-array cost. Limits leave no partial output line.

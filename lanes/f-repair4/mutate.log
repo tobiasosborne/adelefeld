@@ -1,0 +1,142 @@
+Fri Oct  2 21:41:58 UTC 2026
+mutate: src/lroot.c: 448 mutants
+mutate: 448 mutants, 60 of them run (--limit 60, --seed 1)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (4.9 s)
+
+NOT COMPILED src/lroot.c:392:5 drop_assign: 'st=early_status(&sh,x,n,d,index);' -> '' (the statement is removed)
+  src/lroot.c:357:12: error: ‘early_status’ defined but not used [-Werror=unused-function]
+
+SURVIVED src/lroot.c:64:32 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -62,5 +62,5 @@
+       {
+           if (!x->exact) return ADF_NOT_DETERMINED;
+  -        *count=1; *index=0; *s=0; return ADF_OK;
+  +        *count=1; *index=0; *s=1; return ADF_OK;
+       }
+       *s=valuation(n,x->p);
+
+
+SURVIVED src/lroot.c:26:11 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -24,5 +24,5 @@
+   { return a>=-ADF_LBALL_EXP_MAX && a<=ADF_LBALL_EXP_MAX; }
+   static int power_ok(ulong p, slong k)
+  -{ return k>=0 && k<=ADF_LBALL_BITS_MAX/(slong)FLINT_BIT_COUNT(p); }
+  +{ return k>0 && k<=ADF_LBALL_BITS_MAX/(slong)FLINT_BIT_COUNT(p); }
+   static slong valuation(ulong n, ulong p)
+   {
+
+
+SURVIVED src/lroot.c:361:12 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -359,5 +359,5 @@
+       ulong general=d-(ulong)sh->nrat, plain=0;
+       int st;
+  -    if (n==1 || fmpq_is_zero(x->u) || general==0) return ADF_OK;
+  +    if (n==0 || fmpq_is_zero(x->u) || general==0) return ADF_OK;
+       if (!exponent_ok(sh->K)) return ADF_LIMIT;
+       if (sh->K<=sh->j) return ADF_OK;
+
+
+NOT COMPILED src/lroot.c:241:5 drop_assign: 'st=criterion(&d,&index,&s,x,n);' -> '' (the statement is removed)
+  src/lroot.c:236:11: error: unused variable ‘d’ [-Werror=unused-variable]
+
+NOT COMPILED src/lroot.c:81:21 op: '*' -> '+'
+  src/lroot.c:81:21: error: wrong type argument to unary plus
+
+NOT COMPILED src/lroot.c:265:27 op: '*' -> '+'
+  src/lroot.c:265:27: error: expected ‘)’ before ‘+’ token
+
+SURVIVED src/lroot.c:370:20 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -368,5 +368,5 @@
+           ulong seed=k ? x->p-1 : 1;
+           int rational=0;
+  -        for (int i=0;i<sh->nrat;i++) rational|=sh->rid[i]==seed;
+  +        for (int i=1;i<sh->nrat;i++) rational|=sh->rid[i]==seed;
+           if (!rational && power_mod(seed,n,x->p)==index) plain++;
+       }
+
+
+SURVIVED src/lroot.c:68:24 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -66,5 +66,5 @@
+       *s=valuation(n,x->p);
+       if (!x->exact && x->N-x->v<c+*s) return ADF_NOT_DETERMINED;
+  -    abs_m=(ulong)(x->v<0 ? -x->v : x->v);
+  +    abs_m=(ulong)(x->v<1 ? -x->v : x->v);
+       if (abs_m%n) return ADF_DOMAIN;
+       adf_lball_init(u); adf_lball_init(l); fmpz_init(r);
+
+
+SURVIVED src/lroot.c:153:44 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -151,5 +151,5 @@
+   {
+       slong E;
+  -    sh->s=s; sh->st0=-1; sh->nrat=0; sh->L=0;
+  +    sh->s=s; sh->st0=-1; sh->nrat=0; sh->L=1;
+       adf_lball_init(sh->z0); adf_lball_init(sh->rat[0]); adf_lball_init(sh->rat[1]);
+       /* n<=|m|<=2^60 here when m!=0 (R6 step 1); zero and degree 1 do not use j */
+
+
+SURVIVED src/lroot.c:68:23 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -66,5 +66,5 @@
+       *s=valuation(n,x->p);
+       if (!x->exact && x->N-x->v<c+*s) return ADF_NOT_DETERMINED;
+  -    abs_m=(ulong)(x->v<0 ? -x->v : x->v);
+  +    abs_m=(ulong)(x->v<=0 ? -x->v : x->v);
+       if (abs_m%n) return ADF_DOMAIN;
+       adf_lball_init(u); adf_lball_init(l); fmpz_init(r);
+
+
+NOT COMPILED src/lroot.c:298:9 drop_assign: 'Q=n_pow(q,a);' -> '' (the statement is removed)
+  src/lroot.c:300:66: error: ‘Q’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/lroot.c:363:5 negate_if: 'if(sh->K<=sh->j)' -> 'if(!(sh->K<=sh->j))'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -361,5 +361,5 @@
+       if (n==1 || fmpq_is_zero(x->u) || general==0) return ADF_OK;
+       if (!exponent_ok(sh->K)) return ADF_LIMIT;
+  -    if (sh->K<=sh->j) return ADF_OK;
+  +    if (!(sh->K<=sh->j)) return ADF_OK;
+       st=principal(sh,x,n);
+       if (st!=ADF_OK || x->p==2) return st;
+
+
+SURVIVED src/lroot.c:373:56 status: 'ADF_LIMIT' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -371,5 +371,5 @@
+           if (!rational && power_mod(seed,n,x->p)==index) plain++;
+       }
+  -    if (general>plain && !power_ok(x->p,sh->L)) return ADF_LIMIT;
+  +    if (general>plain && !power_ok(x->p,sh->L)) return ADF_OK;
+       return ADF_OK;
+   }
+
+
+mutate: 60 mutants in 279.3 s: 46 killed, 9 survived, 5 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 9 mutant(s) survived; each one is a claim the tests do not check
+exit 1
+Fri Oct  2 21:46:38 UTC 2026
