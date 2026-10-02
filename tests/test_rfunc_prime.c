@@ -1153,3 +1153,114 @@ ADF_TEST(local_roots_at_all_reference_rows)
     arb_clear(real); adf_lball_clear(c); adf_lball_clear(want);
     adf_sball_clear(x); adf_sball_clear(y); adf_sball_clear(z); jsonl_close(f);
 }
+
+/* ------------------------------------------------------------------ powers at a prime (lane f-slice9, 1F.6) */
+
+/* adf_sball_powrat_at and adf_sball_powunit_at (rfunc.h; lpow.h; docs/api-1f6.md P8): the result is the partial ball
+   over the one prime v with the component of the lpow.h function (identical fields); every status of lpow.h arrives
+   with where = v and y untouched; a place missing from x (or from s) is DOMAIN with where = v, the real place
+   UNSUPPORTED, both before the function; OK leaves where untouched; where may be NULL; y may be x, s, or both
+   (x = s the same object). Fails on: a result with other components or other fields, a where other than v on a
+   failure or a written where on OK, a written y on a failure, an aliased call that differs. */
+ADF_TEST(powers_at_prime)
+{
+    adf_lball_struct loc[3];
+    adf_lball_t c, sc, want;
+    adf_sball_t x, s, y, z, w;
+    adf_place_t where, mark = place_of(11);
+    adf_lball_init(c); adf_lball_init(sc); adf_lball_init(want);
+    for (int i = 0; i < 3; i++) adf_lball_init(loc + i);
+    adf_sball_init(x); adf_sball_init(s); adf_sball_init(y); adf_sball_init(z); adf_sball_init(w);
+    /* x = {real 7; 3: 4 + 3^5 Z_3; 5: 9; 7: 2}, s = {real 7; 3: 1/2; 5: 1/2 + 5^4 Z_5; 7: 7/2} */
+    lb_ball(loc + 0, 3, 4, 1, 5); lb_exact(loc + 1, 5, 9, 1); lb_exact(loc + 2, 7, 2, 1);
+    make_sball(x, 7, loc, 3);
+    lb_exact(loc + 0, 3, 1, 2); lb_ball(loc + 1, 5, 1, 2, 4); lb_exact(loc + 2, 7, 7, 2);
+    make_sball(s, 7, loc, 3);
+    /* powrat_at: 9^(3/2) at 5 on both branches (27 and -27 exactly), 2^(1/2) at 7, (4 + 3^5 Z_3)^(-1/2) at 3 */
+    const ulong ps[4] = { 5, 5, 7, 3 }, seeds[4] = { 3, 2, 3, 2 };
+    const slong es[4] = { 3, 3, 1, -1 };
+    for (int k = 0; k < 4; k++)
+    {
+        ADF_CHECK(adf_sball_get_lball(c, x, place_of(ps[k])) == ADF_OK);
+        ADF_CHECK(adf_lball_powrat(want, c, es[k], 2, seeds[k], 20) == ADF_OK);
+        sentinel(y); where = mark;
+        ADF_CHECK(adf_sball_powrat_at(y, &where, x, place_of(ps[k]), es[k], 2, seeds[k], 20) == ADF_OK);
+        ADF_CHECK(is_one_place(y, ps[k], want) && adf_place_equal(where, mark));
+        adf_sball_set(z, x);
+        ADF_CHECK(adf_sball_powrat_at(z, NULL, z, place_of(ps[k]), es[k], 2, seeds[k], 20) == ADF_OK);
+        ADF_CHECK(adf_sball_identical(z, y));
+    }
+    ADF_CHECK(adf_sball_powrat_at(y, NULL, x, place_of(5), 3, 2, 3, 20) == ADF_OK);
+    ADF_CHECK(y->len == 1 && y->loc[0].exact && fmpz_equal_si(fmpq_numref(y->loc[0].u), 27));
+    /* failures: missing place, real place, a lpow.h status (seed 1 is no root of 9 at 5; 0/0), with where = v */
+    {
+        const ulong fp[4] = { 11, 0, 5, 5 };
+        const ulong fn[4] = { 2, 2, 2, 0 };
+        const int fst[4] = { ADF_DOMAIN, ADF_UNSUPPORTED, ADF_DOMAIN, ADF_DOMAIN };
+        for (int k = 0; k < 4; k++)
+        {
+            adf_place_t v = fp[k] ? place_of(fp[k]) : adf_place_inf();
+            sentinel(y); where = mark;
+            ADF_CHECK(adf_sball_powrat_at(y, &where, x, v, 3, fn[k], 1, 20) == fst[k]);
+            ADF_CHECK(is_sentinel(y) && adf_place_equal(where, v));
+            adf_sball_set(z, x);
+            ADF_CHECK(adf_sball_powrat_at(z, NULL, z, v, 3, fn[k], 1, 20) == fst[k] && adf_sball_identical(z, x));
+        }
+    }
+    /* powunit_at at 3: (4 + 3^5)^(1/2) and at 5: 9^(1/2 + 5^4 Z_5) is DOMAIN (9 is not 1 mod 5); at 7: 2 is not
+       1 mod 7 (DOMAIN) */
+    lb_exact(loc + 0, 3, 4, 1); lb_exact(loc + 1, 5, 6, 1); lb_exact(loc + 2, 7, 8, 1);
+    make_sball(w, 7, loc, 3);                       /* {real 7; 3: 4; 5: 6; 7: 8} */
+    for (ulong p = 3; p <= 7; p += 2)
+    {
+        adf_sball_t *bases[2] = { &x, &w };
+        for (int b = 0; b < 2; b++)
+        {
+            ADF_CHECK(adf_sball_get_lball(c, *bases[b], place_of(p)) == ADF_OK);
+            ADF_CHECK(adf_sball_get_lball(sc, s, place_of(p)) == ADF_OK);
+            int st = adf_lball_powunit(want, c, sc, 20);
+            sentinel(y); where = mark;
+            ADF_CHECK(adf_sball_powunit_at(y, &where, *bases[b], s, place_of(p), 20) == st);
+            if (st == ADF_OK) ADF_CHECK(is_one_place(y, p, want) && adf_place_equal(where, mark));
+            else ADF_CHECK(is_sentinel(y) && adf_place_equal(where, place_of(p)));
+            if (b == 1) ADF_CHECK(st == ADF_OK);
+            if (b == 0 && p != 3) ADF_CHECK(st == ADF_DOMAIN);
+            /* y = x, y = s */
+            adf_sball_set(z, *bases[b]);
+            ADF_CHECK(adf_sball_powunit_at(z, NULL, z, s, place_of(p), 20) == st);
+            ADF_CHECK(adf_sball_identical(z, st == ADF_OK ? y : *bases[b]));
+            adf_sball_set(z, s);
+            ADF_CHECK(adf_sball_powunit_at(z, NULL, *bases[b], z, place_of(p), 20) == st);
+            ADF_CHECK(adf_sball_identical(z, st == ADF_OK ? y : s));
+        }
+    }
+    /* x = s the same object, and y = x = s: s^s at 3 is 3^(...)... take the partial ball {3: 1 + 3 Z_3}:
+       (1 + 3 Z_3)^(1 + 3 Z_3) = 1 + 3 Z_3 (Proposition 18: u0 = 1, s0 = 1, A = B = 1, R = min(1, INF, 2) = 1) */
+    lb_ball(loc + 0, 3, 1, 1, 1);
+    make_sball(z, 0, loc, 1);
+    ADF_CHECK(adf_sball_powunit_at(y, NULL, z, z, place_of(3), 20) == ADF_OK && is_one_place(y, 3, loc + 0));
+    ADF_CHECK(adf_sball_powunit_at(z, NULL, z, z, place_of(3), 20) == ADF_OK && adf_sball_identical(z, y));
+    /* place checks: v missing from s only, from x only, the real place; then a status inside */
+    lb_exact(loc + 0, 5, 1, 2);
+    make_sball(z, 0, loc, 1);                       /* s' = {5: 1/2}: no 3, no real */
+    sentinel(y); where = mark;
+    ADF_CHECK(adf_sball_powunit_at(y, &where, w, z, place_of(3), 20) == ADF_DOMAIN);
+    ADF_CHECK(is_sentinel(y) && adf_place_equal(where, place_of(3)));
+    where = mark;
+    ADF_CHECK(adf_sball_powunit_at(y, &where, z, w, place_of(3), 20) == ADF_DOMAIN);
+    ADF_CHECK(is_sentinel(y) && adf_place_equal(where, place_of(3)));
+    where = mark;
+    ADF_CHECK(adf_sball_powunit_at(y, &where, w, z, adf_place_inf(), 20) == ADF_DOMAIN);   /* z has no real */
+    ADF_CHECK(is_sentinel(y) && adf_place_is_archimedean(where));
+    where = mark;
+    ADF_CHECK(adf_sball_powunit_at(y, &where, w, s, adf_place_inf(), 20) == ADF_UNSUPPORTED);
+    ADF_CHECK(is_sentinel(y) && adf_place_is_archimedean(where));
+    lb_exact(loc + 0, 5, 1, 5);
+    make_sball(z, 0, loc, 1);                       /* s' = {5: 1/5}, outside Z_5 */
+    where = mark;
+    ADF_CHECK(adf_sball_powunit_at(y, &where, w, z, place_of(5), 20) == ADF_DOMAIN);
+    ADF_CHECK(is_sentinel(y) && adf_place_equal(where, place_of(5)));
+    for (int i = 0; i < 3; i++) adf_lball_clear(loc + i);
+    adf_lball_clear(c); adf_lball_clear(sc); adf_lball_clear(want);
+    adf_sball_clear(x); adf_sball_clear(s); adf_sball_clear(y); adf_sball_clear(z); adf_sball_clear(w);
+}

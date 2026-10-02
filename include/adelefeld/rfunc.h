@@ -178,6 +178,26 @@ int adf_sball_sqrt_seed_at(adf_sball_t y, adf_place_t *where, const adf_sball_t 
 int adf_sball_roots_at(adf_lball_ptr y, ulong *ids, slong *len, slong capacity, adf_place_t *where,
                        const adf_sball_t x, adf_place_t v, ulong n, slong N);
 
+/* Rational power at a PRIME (SPEC 9.3.4 item 2; lane f-slice9): y = the partial ball over the one prime v whose
+   component is adf_lball_powrat(component of x at v, e, n, seed, N) (lpow.h; docs/api-1f6.md P1 to P3, P8;
+   functions.md Proposition 17, line 577, Proposition 22, line 725). The fraction is reduced first; seed is the
+   identifier of the root of degree n/gcd(e, n) of lroot.h; the exponent of a ball result is min(N, E'),
+   E' = e' j + (M - m) - v_p(n') + v_p(e'); the exact cases, statuses and limits are those of lpow.h.
+   Order: v not a place of x: ADF_DOMAIN; v the archimedean place: ADF_UNSUPPORTED (the real rational power is not
+   in this slice); then the statuses of adf_lball_powrat. On failure y is untouched and *where = v (where may be
+   NULL); OK leaves where untouched. Aliasing y = x is allowed. */
+int adf_sball_powrat_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x, adf_place_t v,
+                        slong e, ulong n, ulong seed, slong N);
+
+/* Power of a principal unit at a PRIME (SPEC 9.3.4 item 3; lane f-slice9): y = the partial ball over the one prime
+   v whose component is adf_lball_powunit(component of x at v, component of s at v, N) (lpow.h; api-1f6.md P4 to
+   P6, P8; functions.md Propositions 17, 18, lines 577, 616). The exponent s is a partial ball too: its component
+   at v must lie in Z_p. Order: v not a place of x, or not a place of s: ADF_DOMAIN; v the archimedean place:
+   ADF_UNSUPPORTED; then the statuses of adf_lball_powunit (DOMAIN, NOT_DETERMINED, LIMIT). On failure y is
+   untouched and *where = v (where may be NULL); OK leaves where untouched. Aliasing: y may be x, s or both. */
+int adf_sball_powunit_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x, const adf_sball_t s,
+                         adf_place_t v, slong N);
+
 #ifdef __cplusplus
 }
 #endif

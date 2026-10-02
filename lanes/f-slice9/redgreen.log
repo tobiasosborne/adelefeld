@@ -1,0 +1,16 @@
+# f-slice9 red-green log (times from `date`, UTC)
+22:25 RED  test_lpow (whole file, first build): link error, undefined reference to adf_lball_powrat / powunit
+           (header include/adelefeld/lpow.h written first; no src/lpow.c yet).
+22:25 RED  test_lpow with a stub src/lpow.c returning ADF_UNSUPPORTED: 9 tests, 2420391 checks, 861185 failed checks, 9 failed tests (assertions).
+22:28 RED  first implementation of src/lpow.c: powrat all green (6 tests); powunit_rows 3078 failed checks
+           (LIMIT at N = BIG: alpha was computed by Log at precision min(A, N - B), which is N for an exact base),
+           powrat_limits 2 failed (1 + 5^(2^60) Z_5 to the 1/2 at N = BIG: unit_mod formed 5^(2^60) for the centre 1),
+           statuses test 5 failed (two non-canonical test inputs, and a wrong hand value 21 for sqrt(6) mod 25:
+           it is 16; the test was wrong, recomputed by hand in the comment).
+22:28 GREEN alpha = v(w0 u0 - 1) by the isometry of log (P6), no Log; the power taken as is when it already
+           has exponent K, centre 1 without unit_mod: 9 tests, 2760383 checks, 0 failed (8.6 s).
+22:29 RED  test_rfunc_prime powers_at_prime with stubs of the two _at forms returning UNSUPPORTED: 70 failed checks.
+22:29 GREEN _at forms in src/rfunc.c: test_rfunc_prime 15 tests, 522217 checks, 0 failed.
+22:31 RED  driver: tests/driver/pow-values.cmd and pow-status.cmd (expected lines by hand and by integer enumeration) before the commands exist: every line error: PARSE (lanes/f-slice9/drv.sh).
+22:31 GREEN driver commands powrat_at, powunit_at in tools/adf/adf.c: pow-values (25 lines), pow-status (20 lines) agree.
+22:33 Julia example tests/julia/lpow.jl: 7 of 7 pass (written after the code, as the brief orders).

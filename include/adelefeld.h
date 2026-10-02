@@ -22,6 +22,7 @@
      adelefeld/sball.h    adf_sball, partial balls over a set of places (milestone 1F.1)
      adelefeld/rfunc.h    exp, log, sin, cos, sqrt, roots at the real place (milestone 1F.2)
      adelefeld/lfunc.h    exp, log and the Iwasawa Log on a local ball at a prime (milestone 1F.4)
+     adelefeld/lpow.h     rational powers and powers of principal units at a prime (milestone 1F.6)
      adelefeld/recon.h    rational reconstruction from a full ball
      adelefeld/text.h     value form, limits, adf_text_classify
      adelefeld/modctx.h   contexts, descriptors, local-backend conversions
@@ -55,6 +56,7 @@
 #include "adelefeld/rfunc.h"
 #include "adelefeld/lfunc.h"
 #include "adelefeld/lroot.h"
+#include "adelefeld/lpow.h"
 #include "adelefeld/recon.h"
 #include "adelefeld/resid.h"
 #include "adelefeld/linsolve.h"

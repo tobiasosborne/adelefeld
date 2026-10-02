@@ -18,7 +18,8 @@
    outside the alphabet of conventions 8.2 exists and why "with" cannot occur in a value
    text.  The settings are "prec <bits>" and "digits <n>", one per line.  The operations
    are show, type, add, sub, mul, neg, div, equal, contains, overlaps, compare, reconstruct,
-   cap, dump, load, roots, realroots, recover, project, exp_at and log_at, and, for the unit coset, the idele and
+   cap, dump, load, roots, realroots, recover, project, exp_at and log_at (with the other functions at places, among
+   them powrat_at and powunit_at of lane f-slice9), and, for the unit coset, the idele and
    the idele class (lane t-slice1, milestone 2), inv, pow, powtight, norm, class, idele, hull, hullsimple, unitof,
    valuation and abs (the section "the unit coset, the idele and the idele class" below);
    reconstruct takes either one operand (an adele)
@@ -151,6 +152,8 @@ typedef enum
     ADF_DRV_COSH_AT,
     ADF_DRV_ROOT_AT,
     ADF_DRV_ROOTS_AT,
+    ADF_DRV_POWRAT_AT,
+    ADF_DRV_POWUNIT_AT,
     ADF_DRV_INV,
     ADF_DRV_POW,
     ADF_DRV_POWTIGHT,
@@ -199,6 +202,8 @@ static const struct
     { "cosh_at", ADF_DRV_COSH_AT, 2 },
     { "roots_at", ADF_DRV_ROOTS_AT, 3 },
     { "root_at", ADF_DRV_ROOT_AT, 4 },
+    { "powrat_at", ADF_DRV_POWRAT_AT, 4 },
+    { "powunit_at", ADF_DRV_POWUNIT_AT, 3 },
     { "inv", ADF_DRV_INV, 1 },
     { "pow", ADF_DRV_POW, 2 },
     { "powtight", ADF_DRV_POWTIGHT, 2 },
@@ -1799,6 +1804,84 @@ done:
     return status;
 }
 
+/* Powers at a prime (lane f-slice9, 1F.6; tools/adf/README.md, "Powers at a prime"):
+
+     powrat_at X with PRIME with E/N with SEED     x^(E/N) on the branch SEED, adf_sball_powrat_at
+     powunit_at X with PRIME with S                x^s for a principal unit x and s in Z_p, adf_sball_powunit_at
+
+   The exponent E/N of powrat_at is the value text of an exact rational (so it is already reduced, N >= 1); another
+   type is ADF_DOMAIN, a numerator beyond a slong or a denominator beyond a word ADF_LIMIT (as the exponent of pow).
+   SEED is read as the seed of root_at: a word, -1 accepted for the identifier 3 at 2; it names the root of degree N
+   of X (lpow.h). The line is "<p> [<id>]: <value>" as for root_at, the identifier 0 for N = 1 and for the zero.
+   S of powunit_at is a value as X is (a rational, a finite ball, an adele), projected to the prime; the line is the
+   partial ball, "<p>: <value>", as for exp_at. */
+
+/* adf_drv_ratexp(e, n, s, len, prec): the exponent E/N of powrat_at, read by the typed parser. */
+static int
+adf_drv_ratexp(slong *e, ulong *n, const char *s, size_t len, slong prec)
+{
+    adf_drv_value value;
+    adf_text_kind kind;
+    fmpq_t q;
+    int status;
+    adf_drv_value_init(&value); fmpq_init(q);
+    status=adf_text_classify(&kind,s,len,NULL);
+    if (status==ADF_OK) status=adf_drv_value_read(&value,kind,s,len,prec);
+    if (status==ADF_OK && value.type!=ADF_DRV_RAT) status=ADF_DOMAIN;
+    if (status==ADF_OK)
+    {
+        adf_rat_get_fmpq(q,value.r);
+        if (!fmpz_fits_si(fmpq_numref(q)) || fmpz_cmp_ui(fmpq_denref(q),UWORD_MAX)>0) status=ADF_LIMIT;
+        else { *e=fmpz_get_si(fmpq_numref(q)); *n=fmpz_get_ui(fmpq_denref(q)); }
+    }
+    fmpq_clear(q); adf_drv_value_clear(&value);
+    return status;
+}
+
+/* adf_drv_value_adele(a, x, has_real, prec): the adele of X or S of the commands at places: a rational is (q ; q) at
+   prec, a finite ball has no real coordinate (ADF_DOMAIN when the real place is named), an adele is itself; another
+   type is ADF_UNSUPPORTED (README, "The commands at places"). */
+static int
+adf_drv_value_adele(adf_adele_t a, const adf_drv_value *x, int has_real, slong prec)
+{
+    arb_t r0;
+    int status=ADF_OK;
+    if (x->type!=ADF_DRV_RAT && x->type!=ADF_DRV_FBALL && x->type!=ADF_DRV_ADELE) return ADF_UNSUPPORTED;
+    if (x->type==ADF_DRV_FBALL)
+    {
+        if (has_real) return ADF_DOMAIN;
+        arb_init(r0);
+        status=adf_adele_set_arb_fball(a,r0,x->f);
+        arb_clear(r0);
+    }
+    else if (x->type==ADF_DRV_RAT) adf_adele_set_rat(a,x->r,prec);
+    else adf_adele_set(a,x->a);
+    return status;
+}
+
+/* The line of powrat_at: the component at the prime with the identifier of the branch, formed before printing. */
+static int
+adf_drv_powrat_result(FILE *out, const adf_sball_t x, adf_place_t p, slong e, ulong n, ulong seed, slong N)
+{
+    adf_sball_t y;
+    adf_lball_t c;
+    char *text=NULL;
+    ulong id=n==1 ? 0 : seed, prime;
+    int status;
+    adf_sball_init(y); adf_lball_init(c);
+    status=adf_sball_powrat_at(y,NULL,x,p,e,n,seed,N);
+    if (status==ADF_OK) status=adf_sball_get_lball(c,y,p);
+    if (status==ADF_OK && (text=adf_drv_lball_text(c))==NULL) status=ADF_LIMIT;
+    if (status==ADF_OK)
+    {
+        prime=adf_place_prime_get(p);
+        if (prime==2 && id) flint_fprintf(out,"%wu [%s]: %s\n",prime,id==1 ? "+1" : "-1",text);
+        else flint_fprintf(out,"%wu [%wu]: %s\n",prime,id,text);
+    }
+    flint_free(text); adf_sball_clear(y); adf_lball_clear(c);
+    return status;
+}
+
 /* adf_drv_places(out, op, l, st): project, exp_at and log_at, the steps of the command at the top of the
    file: 2. the syntax of X (adf_text_classify) and of the list of places; 3. the kind of X; 4. its value;
    5. the operation: the places, the type of X against them, the projection, the function; 6. the printer. */
@@ -1812,9 +1895,17 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     adf_adele_t a;
     arb_t r0;
     slong n = 0, i;
-    ulong degree=0, seed=0;
+    ulong degree=0, seed=0, pden=1;
+    slong pnum=0;
+    adf_drv_value sv;
+    adf_text_kind skind = ADF_TEXT_RAT;
+    adf_sball_t ss;
+    adf_adele_t sa;
     int status, place_status = ADF_OK, has_real = 0;
 
+    adf_drv_value_init(&sv);
+    adf_sball_init(ss);
+    adf_adele_init(sa);
     adf_drv_value_init(&x);
     adf_sball_init(s);
     adf_sball_init(y);
@@ -1848,6 +1939,20 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
             if (status!=ADF_OK) goto done;
         }
     }
+    if (op==ADF_DRV_POWRAT_AT)
+    {
+        int sign_seed=place_status==ADF_OK && !adf_place_is_archimedean(places[0]) &&
+                      adf_place_prime_get(places[0])==2;
+        status=adf_drv_ratexp(&pnum,&pden,l->s[2],l->n[2],st->prec);
+        if (status==ADF_OK) status=adf_drv_root_word(&seed,l->s[3],l->n[3],sign_seed,st->prec);
+        if (status!=ADF_OK) goto done;
+    }
+    if (op==ADF_DRV_POWUNIT_AT)
+    {
+        /* the syntax of S belongs to step 2, as that of X */
+        status=adf_text_classify(&skind,l->s[2],l->n[2],NULL);
+        if (status!=ADF_OK) goto done;
+    }
     /* step 3 and step 4: the kind and the value of X */
     if (adf_drv_kind_type(kind) == ADF_DRV_OTHER)
     {
@@ -1857,6 +1962,12 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     status = adf_drv_value_read(&x, kind, l->s[0], l->n[0], st->prec);
     if (status != ADF_OK)
         goto done;
+    if (op==ADF_DRV_POWUNIT_AT)
+    {
+        if (adf_drv_kind_type(skind)==ADF_DRV_OTHER) { status=ADF_UNSUPPORTED; goto done; }
+        status=adf_drv_value_read(&sv,skind,l->s[2],l->n[2],st->prec);
+        if (status!=ADF_OK) goto done;
+    }
     /* step 5: the places, then the type, then the projection and the function */
     if (place_status != ADF_OK)
     {
@@ -1897,6 +2008,19 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
         status=adf_drv_root_result(out,s,places[0],degree,seed,op==ADF_DRV_ROOTS_AT,st->prec);
         goto done;
     }
+    if (op==ADF_DRV_POWRAT_AT)
+    {
+        status=adf_drv_powrat_result(out,s,places[0],pnum,pden,seed,st->prec);
+        goto done;
+    }
+    if (op==ADF_DRV_POWUNIT_AT)
+    {
+        status=adf_drv_value_adele(sa,&sv,has_real,st->prec);
+        if (status==ADF_OK) status=adf_sball_project(ss,NULL,sa,places,n);
+        if (status==ADF_OK) status=adf_sball_powunit_at(y,NULL,s,ss,places[0],st->prec);
+        if (status==ADF_OK) status=adf_drv_put_sball(out,y,st->digits);
+        goto done;
+    }
     if (op == ADF_DRV_PROJECT)
         adf_sball_swap(y, s);
     else if (op == ADF_DRV_EXP_AT)
@@ -1920,6 +2044,9 @@ done:
     adf_sball_clear(s);
     adf_sball_clear(y);
     adf_drv_value_clear(&x);
+    adf_drv_value_clear(&sv);
+    adf_sball_clear(ss);
+    adf_adele_clear(sa);
     return status;
 }
 
@@ -2367,7 +2494,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||
         op == ADF_DRV_SIN_AT || op == ADF_DRV_COS_AT || op == ADF_DRV_SINH_AT || op == ADF_DRV_COSH_AT ||
-        op == ADF_DRV_ROOT_AT || op == ADF_DRV_ROOTS_AT)
+        op == ADF_DRV_ROOT_AT || op == ADF_DRV_ROOTS_AT || op == ADF_DRV_POWRAT_AT || op == ADF_DRV_POWUNIT_AT)
         return adf_drv_places(out, op, l, st);
     if (op == ADF_DRV_VALUATION || op == ADF_DRV_ABS)
         return adf_drv_valabs(out, op, l, st);

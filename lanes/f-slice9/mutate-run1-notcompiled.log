@@ -1,0 +1,187 @@
+mutate: src/lpow.c: 297 mutants
+mutate: 297 mutants, 60 of them run (--limit 60, --seed 1)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (13.3 s)
+
+NOT COMPILED src/lpow.c:248:22 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:167:5 negate_if: 'if(exact)' -> 'if(!(exact))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:91:25 cmp: '==' -> '!='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:220:30 cmp: '<' -> '<='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:294:68 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:47:5 negate_if: 'if(ae == 0 || aj == 0)' -> 'if(!(ae == 0 || aj == 0))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:142:14 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:117:9 drop_call: 'zero_ball(res, p, K);' -> '' (the statement is removed)
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:105:5 drop_assign: 'st = adf_lball_root_seed(r, x, n1, seed, Nr);' -> '' (the statement is removed)
+  src/lpow.c:77:40: error: variable ‘Nr’ set but not used [-Werror=unused-but-set-variable]
+
+NOT COMPILED src/lpow.c:220:5 negate_if: 'if(st == ADF_OK && sign < 0)' -> 'if(!(st == ADF_OK && sign < 0))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:157:44 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:91:5 drop_assign: 'divisible = am % n1 == 0;' -> '' (the statement is removed)
+  src/lpow.c:76:21: error: variable ‘am’ set but not used [-Werror=unused-but-set-variable]
+
+NOT COMPILED src/lpow.c:294:51 cmp: '==' -> '!='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:46:23 cmp: '!=' -> '=='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:195:9 negate_if: 'if(A < INF)' -> 'if(!(A < INF))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:259:36 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:47:36 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:166:43 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:252:31 drop_assign: 'st = ADF_NOT_DETERMINED;' -> '' (the statement is removed)
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:102:49 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:196:15 cmp: '<' -> '<='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:37:57 cmp: '<' -> '<='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:262:26 logic: '||' -> '&&'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:191:5 negate_if: 'if(A >= INF && B >= INF)' -> 'if(!(A >= INF && B >= INF))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:262:34 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:269:13 drop_assign: 'st = adf_lball_unit_mod(r, u, 2);' -> '' (the statement is removed)
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:264:25 logic: '||' -> '&&'
+  src/lpow.c:264:25: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/lpow.c:249:5 drop_assign: 'du = where_in(u, D1);' -> '' (the statement is removed)
+  src/lpow.c:251:12: error: ‘du’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/lpow.c:251:16 logic: '||' -> '&&'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:242:5 negate_if: 'if(u->p != s->p)' -> 'if(!(u->p != s->p))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:270:20 cmp: '!=' -> '=='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:211:5 negate_if: 'if(K <= c || fmpq_is_zero(s->u))' -> 'if(!(K <= c || fmpq_is_zero(s->u)))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:214:42 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:55:21 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:90:17 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:146:12 cmp: '==' -> '!='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:115:11 cmp: '<=' -> '<'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:144:5 drop_assign: 'g = n_gcd(ae, n);' -> '' (the statement is removed)
+  src/lpow.c:145:8: error: ‘g’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/lpow.c:146:28 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:94:5 negate_if: 'if(divisible)' -> 'if(!(divisible))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:45:20 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:191:23 cmp: '>=' -> '>'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:208:9 drop_assign: 'K = min2(Nc, R);' -> '' (the statement is removed)
+  src/lpow.c:33:66: error: ‘K’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/lpow.c:144:9 swap_args: 'n_gcd(ae, n)' -> 'n_gcd(n, ae)'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:189:76 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:243:5 negate_if: 'if(!in_bounds(u) || !in_bounds(s))' -> 'if(!(!in_bounds(u) || !in_bounds(s)))'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:55:14 op: '%' -> '/'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:190:68 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:190:101 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:211:11 cmp: '<=' -> '<'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:276:63 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:77:23 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:252:26 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:259:33 zero_one: '1' -> '0'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:111:9 drop_assign: 'st = adf_lball_pow_si(res, r, e1);' -> '' (the statement is removed)
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:77:45 zero_one: '0' -> '1'
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:96:9 drop_assign: 'j = x->v / (slong) n1;' -> '' (the statement is removed)
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:40:48 cmp: '<' -> '<='
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:128:5 drop_call: 'fmpq_set_fmpz(res->u, c);' -> '' (the statement is removed)
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+NOT COMPILED src/lpow.c:223:9 drop_call: 'zero_ball(zb, p, K);' -> '' (the statement is removed)
+  /home/user/adelefeld-wt/f-slice9/tests/support/golden.c:148:(.text+0xb8): undefined reference to `__ubsan_handle_type_mismatch_v1'
+
+mutate: 60 mutants in 103.4 s: 0 killed, 0 survived, 60 not compiled, 0 timed out, 0 excused
+mutate: passed: every mutant was killed, or is excused in tools/mutate/equivalent.txt

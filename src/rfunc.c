@@ -467,3 +467,55 @@ int adf_sball_roots_at(adf_lball_ptr y, ulong *ids, slong *len, slong capacity, 
     adf_lball_clear(c);
     return st;
 }
+
+/* lane f-slice9 (1F.6): rational power at a prime, rfunc.h; docs/api-1f6.md P8 (the pattern of R6 step 5 of
+   api-1f5.md): place membership first, then the real place (UNSUPPORTED), then lpow.h on the projected component;
+   the partial ball over v alone (Proposition 22, docs/proofs/functions.md:725). The component is copied before the
+   transaction, so y may be x; a failure leaves y untouched and sets where = v. */
+int adf_sball_powrat_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x, adf_place_t v,
+                        slong e, ulong n, ulong seed, slong N)
+{
+    adf_lball_t c,r;
+    adf_sball_t t;
+    int st;
+    ADF_INV_SBALL(x);
+    adf_lball_init(c); adf_lball_init(r); adf_sball_init(t);
+    if (!adf_sball_has_place(x,v)) st=ADF_DOMAIN;
+    else if (adf_place_is_archimedean(v)) st=ADF_UNSUPPORTED;
+    else
+    {
+        st=adf_sball_get_lball(c,x,v);
+        if (st==ADF_OK) st=adf_lball_powrat(r,c,e,n,seed,N);
+        if (st==ADF_OK) st=adf_sball_set_arb_lballs(t,NULL,NULL,r,1);
+        if (st==ADF_OK) adf_sball_set(y,t);
+    }
+    if (st!=ADF_OK && where) *where=v;
+    adf_lball_clear(c); adf_lball_clear(r); adf_sball_clear(t);
+    return st;
+}
+
+/* lane f-slice9 (1F.6): power of a principal unit at a prime, rfunc.h; api-1f6.md P8. v must be a place of x and of
+   s; both components are copied before the transaction, so y may be x, s or both, and x may be s. */
+int adf_sball_powunit_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x, const adf_sball_t s,
+                         adf_place_t v, slong N)
+{
+    adf_lball_t c,e,r;
+    adf_sball_t t;
+    int st;
+    ADF_INV_SBALL(x);
+    ADF_INV_SBALL(s);
+    adf_lball_init(c); adf_lball_init(e); adf_lball_init(r); adf_sball_init(t);
+    if (!adf_sball_has_place(x,v) || !adf_sball_has_place(s,v)) st=ADF_DOMAIN;
+    else if (adf_place_is_archimedean(v)) st=ADF_UNSUPPORTED;
+    else
+    {
+        st=adf_sball_get_lball(c,x,v);
+        if (st==ADF_OK) st=adf_sball_get_lball(e,s,v);
+        if (st==ADF_OK) st=adf_lball_powunit(r,c,e,N);
+        if (st==ADF_OK) st=adf_sball_set_arb_lballs(t,NULL,NULL,r,1);
+        if (st==ADF_OK) adf_sball_set(y,t);
+    }
+    if (st!=ADF_OK && where) *where=v;
+    adf_lball_clear(c); adf_lball_clear(e); adf_lball_clear(r); adf_sball_clear(t);
+    return st;
+}

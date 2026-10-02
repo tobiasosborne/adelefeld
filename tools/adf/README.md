@@ -72,6 +72,8 @@ that the one chosen is unambiguous.
 | `project` | two: a value and a list of places | the partial ball of a rational, finite ball or adele over the places (SPEC 9.3.1) |
 | `exp_at`, `log_at` | two: a value and one place | `exp`, `log` at the place, a prime or `real` (SPEC 9.3.1, 9.3.2) |
 | `sin_at`, `cos_at`, `sinh_at`, `cosh_at` | two: a value and one place | factorial series at a prime or `real` |
+| `powrat_at` | four: a value, a prime, a rational exponent, a seed | `x^(e/n)` on a root branch at the prime (SPEC 9.3.4 item 2) |
+| `powunit_at` | three: a value, a prime, a value | `u^s` for a principal unit `u` and `s` in `Z_p` (SPEC 9.3.4 item 3) |
 | `inv` | one | `1/x` of a unit coset, an idele, an idele class or a rational (ideles and classes below) |
 | `pow`, `powtight` | two: a unit coset, idele or class, and an integer | the power `x^k`, `pow` by the default enclosure, `powtight` by the smallest coset |
 | `norm` | one: an idele or a class | the norm, a positive real ball |
@@ -473,3 +475,35 @@ Invalid seeds and degree 0 also give `DOMAIN`; excess operands or malformed text
 `real` is `UNSUPPORTED` for these local-root commands. The old polynomial `roots` command is unchanged.
 The all-branch command has the branch-count limit `ADF_LROOT_BRANCH_MAX` of `lroot.h`;
 seeded evaluation has no branch-array cost. Limits leave no partial output line.
+
+### Powers at a prime (1F.6)
+
+    powrat_at X with PRIME with E/N with SEED
+    powunit_at X with PRIME with S
+
+`X` and `S` are rationals, finite balls or adeles, as for `exp_at`; each is projected to the named prime.
+`powrat_at` is `adf_sball_powrat_at` (`include/adelefeld/lpow.h`): the root of degree `N` of `X` on the branch
+`SEED` (the identifier of `root_at`: the unit residue at an odd prime, `1` or `-1` at 2, `0` for the zero),
+raised to the power `E`. `E/N` is the value text of an exact rational, so the fraction is already reduced, as
+the library requires; another type is `error: DOMAIN`, a numerator beyond a signed word or a denominator beyond
+a word is `error: LIMIT`. An integer exponent (`N = 1`) is the integer power, whatever the seed. The line
+carries the identifier, as for `root_at` (`[0]` for `N = 1` and for the zero):
+
+    powrat_at 9 with 5 with 3/2 with 3
+    5 [3]: 27
+    powrat_at 9 with 2 with 3/2 with -1
+    2 [-1]: 27
+
+For a ball the exponent is `min(prec, E')`, `E' = e' j + (M - m) - v_p(n') + v_p(e')` (`docs/api-1f6.md` P2): at
+`prec 3`, `powrat_at (* ; 9 mod 15625) with 5 with 3/2 with 3` prints `5 [3]: 27 + O(5^3)`, at `prec 10` the image
+`5 [3]: 27 + O(5^6)`. The statuses are those of `root_at` (`DOMAIN`, `NOT_DETERMINED` outside the guard and for a
+ball around 0), and `NOT_UNIT` for the exact 0 with a negative exponent.
+
+`powunit_at` is `adf_sball_powunit_at`: `u^s = exp(s log u)` for `u` in `1 + p Z_p` and `s` in `Z_p`, at 2
+`w^(s mod 2) exp(s log u')` for every odd `u = w u'` (Proposition 17). The line is the partial ball, as for
+`exp_at`. The precision of a ball result is `min(prec, R)`, `R = min(A + beta, B + alpha, A + B)` of
+Proposition 18: `powunit_at 6 with 5 with (* ; 2 mod 25)` is `5: 36 + O(5^3)`. At 2, where the sign of `u` or the
+parity of `s` is not fixed, the result is the hull `1 + 2 Z_2`: `powunit_at -1 with 2 with (* ; 0 mod 1)` prints
+`2: 1 + O(2^1)`. `u` outside `1 + p Z_p` or `s` outside `Z_p` is `error: DOMAIN`; a ball that meets the domain and
+its complement is `error: NOT_DETERMINED`; `real` is `UNSUPPORTED` for both commands. The fixtures are
+`tests/driver/pow-values.cmd` and `pow-status.cmd`, with the reason of every expected line in a comment.
