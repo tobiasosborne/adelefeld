@@ -1,0 +1,4 @@
+case=0 null=1 len=0
+case=1 null=1 len=0
+case=2 null=1 len=0
+allocation_events=7086 peak_live=4071 final_live=0 failures=0

@@ -1,0 +1,4 @@
+k=2 text=2 +/- 1.9 satisfies=1
+k=3 text=1.5 +/- 1.5 satisfies=0
+k=4 text=1.55 +/- 1.449 satisfies=1
+k=5 text=1.549 +/- 1.4475 satisfies=1
