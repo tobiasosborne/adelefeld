@@ -50,5 +50,5 @@ exp_at 5 with 3
 exp_at [p=5: 3 + O(5^4)] with 4
 exp_at ((1) + (2)*i ; 5 mod 18) with 5
 log_at ((1) + (2)*i ; 6 mod 18) with real
-# sin and cos are not commands; the name is not one of the table: PARSE
-sin_at 5 with 5
+# tan is not a command; the name is not one of the table: PARSE
+tan_at 5 with 5

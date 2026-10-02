@@ -624,7 +624,7 @@ make_adele(adf_adele_t a, slong num, slong den, slong prec)
 }
 
 /* The order of the checks on v: not a place -> DOMAIN (where = v); a prime of x -> exp, log: the function at the prime,
-   the others UNSUPPORTED (where = v) (changed by lane f-slice6; before: every function UNSUPPORTED); a COMPLEX
+   sin/cos also have their local domains; the others UNSUPPORTED (where = v); a COMPLEX
    tag -> UNSUPPORTED (where = inf); then the status of the real function with where = inf. y untouched on each. A
    function that checked the real failure first, or wrote y, fails. */
 ADF_TEST(sball_at_statuses_and_places)
@@ -660,9 +660,9 @@ ADF_TEST(sball_at_statuses_and_places)
         v = place_of(5);
         where = mark;
         st = k < NFNS ? FNS[k].g(y, &where, x, v, 53) : adf_sball_root_at(y, &where, x, v, 3, 53);
-        /* f-slice6: exp and log exist at a prime now; for the value 2/3 both are DOMAIN at 5 and at 2 (v_5(2/3) = 0,
+        /* exp, log, sin and cos at 2/3 are DOMAIN at 5 and at 2 (v_5(2/3) = 0,
            v_2(2/3) = 1 < 2; v(2/3 - 1) = 0): lfunc.h, tests/test_rfunc_prime.c. The others are UNSUPPORTED. */
-        want_p = (k == 0 || k == 1) ? ADF_DOMAIN : ADF_UNSUPPORTED;
+        want_p = (k == 0 || k == 1 || k == 3 || k == 4) ? ADF_DOMAIN : ADF_UNSUPPORTED;
         ADF_CHECK_MSG(st == want_p && adf_place_equal(where, v) && adf_sball_identical(y, x), "k=%lu",
                       (unsigned long) k);
         v = place_of(2);

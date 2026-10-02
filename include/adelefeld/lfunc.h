@@ -98,6 +98,50 @@ int adf_lball_log(adf_lball_t y, const adf_lball_t x, slong N);
    or F9's balanced factor sums, as described above. */
 int adf_lball_Log(adf_lball_t y, const adf_lball_t x, slong N);
 
+/* The four parity series below: docs/api-1f4.md F10-F13. N is absolute precision.
+   Domain and statuses are exactly those of exp: p^c Z_p, c = 1 for odd p, 2 at p = 2;
+   ADF_DOMAIN if disjoint, ADF_NOT_DETERMINED if meeting both the domain and its complement.
+   Input bounds are checked first. ADF_LIMIT if |v| or |M| of the input exceeds ADF_LBALL_EXP_MAX,
+   if the result exponent |K| exceeds it, or if a required working power has
+   W bits(p) > ADF_LBALL_BITS_MAX. Here W = K + v_p(L!), L the largest retained degree (F10-F11).
+   No power limit applies when the centre follows without a sum: centre zero, or K <= v(a) for
+   sin/sinh, or K <= 2v(a) - v_p(2) for cos/cosh. Exact zero ignores requested N.
+   A nonzero exact input always returns a ball; no irrationality claim is needed.
+   Each output encloses the image of EVERY input point, is canonical, and may alias x.
+   Every non-OK status leaves y untouched. Cost: O(L) modular Horner steps, plus inverses for
+   the input unit denominator and the unit part of the final factorial denominator.
+   Existing exp/log/Log rules above are unchanged. */
+
+/* adf_lball_sin: y encloses sum j>=0 (-1)^j t^(2j+1)/(2j+1)! for every t in x.
+   Definition 1, docs/proofs/functions.md:23; domain Proposition 6:140; counts/precision 7:165, 8:227.
+   Proposition 10:299 and F12: E = M for a ball a + p^M Z_p; K = min(N,E), or N for an exact input.
+   For N >= E this is the smallest enclosing ball. Exact sin(0) = 0 only for exact zero.
+   Aliasing y = x allowed; OK, DOMAIN, NOT_DETERMINED, LIMIT and untouched outputs as above. */
+int adf_lball_sin(adf_lball_t y, const adf_lball_t x, slong N);
+
+/* adf_lball_cos: y encloses sum j>=0 (-1)^j t^(2j)/(2j)! for every t in x.
+   Definition 1, docs/proofs/functions.md:25; domain Proposition 6:140; counts/precision 7:165, 8:227.
+   Proposition 10:299 and F12: E = M for a noncentred ball, E = 2M - v_p(2) for p^M Z_p.
+   K = min(N,E), or N for exact input. The centred hull is smallest when N >= E; elsewhere M is safe.
+   Exact cos(0) = 1 only for exact zero. Aliasing y = x allowed; OK, DOMAIN, NOT_DETERMINED, LIMIT
+   and untouched outputs as above. The centred result is a hull, not a claim of surjectivity. */
+int adf_lball_cos(adf_lball_t y, const adf_lball_t x, slong N);
+
+/* adf_lball_sinh: y encloses sum j>=0 t^(2j+1)/(2j+1)! for every t in x.
+   Definition 1, docs/proofs/functions.md:24; domain Proposition 6:140; counts/precision 7:165, 8:227.
+   Proposition 10:299 and F12: E = M for a ball a + p^M Z_p; K = min(N,E), or N for an exact input.
+   For N >= E this is the smallest enclosing ball. Exact sinh(0) = 0 only for exact zero.
+   Aliasing y = x allowed; OK, DOMAIN, NOT_DETERMINED, LIMIT and untouched outputs as above. */
+int adf_lball_sinh(adf_lball_t y, const adf_lball_t x, slong N);
+
+/* adf_lball_cosh: y encloses sum j>=0 t^(2j)/(2j)! for every t in x.
+   Definition 1, docs/proofs/functions.md:26; domain Proposition 6:140; counts/precision 7:165, 8:227.
+   Proposition 10:299 and F12: E = M for a noncentred ball, E = 2M - v_p(2) for p^M Z_p.
+   K = min(N,E), or N for exact input. The centred hull is smallest when N >= E; elsewhere M is safe.
+   Exact cosh(0) = 1 only for exact zero. Aliasing y = x allowed; OK, DOMAIN, NOT_DETERMINED, LIMIT
+   and untouched outputs as above. The centred result is a hull, not a claim of surjectivity. */
+int adf_lball_cosh(adf_lball_t y, const adf_lball_t x, slong N);
+
 #ifdef __cplusplus
 }
 #endif

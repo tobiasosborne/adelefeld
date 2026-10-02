@@ -1,0 +1,11 @@
+ok   vectors_real
+ok   odd_roots_of_negative_and_zero
+ok   non_finite_inputs
+ok   huge_arguments_never_give_a_nonfinite_ok
+ok   prec_below_two_is_two
+ok   domain_table
+ok   known_values
+ok   sball_at_statuses_and_places
+ok   prec_limit
+ok   LIMIT_before_any_allocation_of_the_functions_at_a_place
+10 tests, 59700 checks, 0 failed checks, 0 failed tests

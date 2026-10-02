@@ -684,3 +684,130 @@ adf_lball_Log(adf_lball_t y, const adf_lball_t x, slong N)
         return x->exact ? ADF_DOMAIN : ADF_NOT_DETERMINED;
     return Log_core(y, x, N);
 }
+
+/* ----------------------------------------------------------------------- sin, cos, sinh, cosh (slice 1F.7) */
+
+/* Definition 1, docs/proofs/functions.md:23-26: parity coefficients of the factorial series.
+   F10-F11, docs/api-1f4.md: the count of Proposition 7:165 retains exactly the degrees < count_exp
+   with the required parity. Horner with denominator L! includes zero coefficients of the other parity.
+   A starts at epsilon_L, F at 1. At degree k-1: F = L!/(k-1)!, A = x A + epsilon_(k-1) F.
+   All operations stay modulo p^W; only the final division loses D digits (Proposition 8:227).
+   Existing exp, log and Log are not changed. */
+static int
+parity_coefficient(slong k, int odd, int alternating)
+{
+    if (k % 2 != odd)
+        return 0;
+    return alternating && (k / 2) % 2 ? -1 : 1;
+}
+
+static int
+parity_centre(adf_lball_struct * res, ulong p, const fmpq_t t, slong w, slong K,
+              int odd, int alternating)
+{
+    slong L = count_exp(p, K, w) - 1, D, W, k;
+    fmpz_t P, PD, PK, x, A, F, tmp;
+    if (L % 2 != odd)
+        L--;
+    /* The caller's constant-centre shortcuts ensure L >= 1 and K > w (F12). */
+    D = val_fac((ulong) L, p);
+    W = K + D;
+    if (!pow_ok(p, W))
+        return ADF_LIMIT;
+    fmpz_init(P); fmpz_init(PD); fmpz_init(PK); fmpz_init(x);
+    fmpz_init(A); fmpz_init(F); fmpz_init(tmp);
+    fmpz_ui_pow_ui(P, p, (ulong) W);
+    fmpz_ui_pow_ui(PD, p, (ulong) D);
+    fmpz_ui_pow_ui(PK, p, (ulong) K);
+    rat_mod(x, t, P);
+    fmpz_ui_pow_ui(tmp, p, (ulong) w);
+    fmpz_mul(x, x, tmp); fmpz_mod(x, x, P);
+    fmpz_set_si(A, parity_coefficient(L, odd, alternating));
+    fmpz_one(F);
+    for (k = L; k >= 1; k--)
+    {
+        int sign = parity_coefficient(k - 1, odd, alternating);
+        fmpz_mul_ui(F, F, (ulong) k); fmpz_mod(F, F, P);
+        fmpz_mul(A, A, x);
+        if (sign > 0) fmpz_add(A, A, F);
+        if (sign < 0) fmpz_sub(A, A, F);
+        fmpz_mod(A, A, P);
+    }
+    /* F11: every retained term is p-integral, so p^D divides the final numerator residue.
+       refs/src/flint-3.0.1/fmpz.rst:852-859,880-883,1154-1160: exact division, mod, unit inverse. */
+    fmpz_divexact(A, A, PD); fmpz_divexact(F, F, PD);
+    fmpz_invmod(tmp, F, PK); fmpz_mul(A, A, tmp); fmpz_mod(A, A, PK);
+    set_ball_residue(res, p, A, K);
+    fmpz_clear(P); fmpz_clear(PD); fmpz_clear(PK); fmpz_clear(x);
+    fmpz_clear(A); fmpz_clear(F); fmpz_clear(tmp);
+    return ADF_OK;
+}
+
+/* Proposition 6, docs/proofs/functions.md:140, and F1: the same whole-ball domain test as exp.
+   Proposition 10:299 and F12: E=M except centred cos/cosh, where E=2M-v_p(2).
+   F13: limits before allocation, result swapped only on success, hence aliasing and unchanged failures. */
+static int
+parity_apply(adf_lball_t y, const adf_lball_t x, slong N, int odd, int alternating)
+{
+    adf_lball_t res;
+    ulong p = x->p;
+    slong E, K, threshold;
+    int st;
+    ADF_INV_LBALL(x);
+    if (!in_bounds(x))
+        return ADF_LIMIT;
+    st = domain_status(x, F_EXP);
+    if (st != ADF_OK)
+        return st;
+    adf_lball_init(res);
+    if (x->exact && fmpq_is_zero(x->u))
+    {
+        set_exact_small(res, p, odd ? 0 : 1);
+        return finish(y, res, ADF_OK);
+    }
+    E = !odd && fmpq_is_zero(x->u) ? 2 * x->N - (p == 2) : x->N;
+    K = x->exact || N < E ? N : E;
+    if (!exp_ok(K))
+        return finish(y, res, ADF_LIMIT);
+    threshold = odd ? x->v : 2 * x->v - (p == 2);
+    if (fmpq_is_zero(x->u) || K <= threshold)
+    {
+        fmpz_t constant;
+        fmpz_init_set_ui(constant, odd ? 0 : 1);
+        set_ball_residue(res, p, constant, K);
+        fmpz_clear(constant);
+        return finish(y, res, ADF_OK);
+    }
+    if (!pow_ok(p, K))
+        return finish(y, res, ADF_LIMIT);
+    st = parity_centre(res, p, x->u, x->v, K, odd, alternating);
+    return finish(y, res, st);
+}
+
+/* F10-F13; docs/proofs/functions.md:23,140,165,227,299: sine series, domain, count, precision, hull. */
+int
+adf_lball_sin(adf_lball_t y, const adf_lball_t x, slong N)
+{
+    return parity_apply(y, x, N, 1, 1);
+}
+
+/* F10-F13; docs/proofs/functions.md:25,140,165,227,299: cosine, including its centred hull. */
+int
+adf_lball_cos(adf_lball_t y, const adf_lball_t x, slong N)
+{
+    return parity_apply(y, x, N, 0, 1);
+}
+
+/* F10-F13; docs/proofs/functions.md:24,140,165,227,299: hyperbolic sine and its hull. */
+int
+adf_lball_sinh(adf_lball_t y, const adf_lball_t x, slong N)
+{
+    return parity_apply(y, x, N, 1, 0);
+}
+
+/* F10-F13; docs/proofs/functions.md:26,140,165,227,299: hyperbolic cosine and its centred hull. */
+int
+adf_lball_cosh(adf_lball_t y, const adf_lball_t x, slong N)
+{
+    return parity_apply(y, x, N, 0, 0);
+}

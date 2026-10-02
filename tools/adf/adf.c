@@ -145,6 +145,10 @@ typedef enum
     ADF_DRV_PROJECT,
     ADF_DRV_EXP_AT,
     ADF_DRV_LOG_AT,
+    ADF_DRV_SIN_AT,
+    ADF_DRV_COS_AT,
+    ADF_DRV_SINH_AT,
+    ADF_DRV_COSH_AT,
     ADF_DRV_INV,
     ADF_DRV_POW,
     ADF_DRV_POWTIGHT,
@@ -187,6 +191,10 @@ static const struct
     { "project", ADF_DRV_PROJECT, 2 },
     { "exp_at", ADF_DRV_EXP_AT, 2 },
     { "log_at", ADF_DRV_LOG_AT, 2 },
+    { "sin_at", ADF_DRV_SIN_AT, 2 },
+    { "cos_at", ADF_DRV_COS_AT, 2 },
+    { "sinh_at", ADF_DRV_SINH_AT, 2 },
+    { "cosh_at", ADF_DRV_COSH_AT, 2 },
     { "inv", ADF_DRV_INV, 1 },
     { "pow", ADF_DRV_POW, 2 },
     { "powtight", ADF_DRV_POWTIGHT, 2 },
@@ -1509,11 +1517,12 @@ done:
 
 /* ---- the commands at places (milestone 1F, lane f-slice6) ---- */
 
-/* Three commands read a set of places as their second operand, which the value form does not have:
+/* These commands read places as their second operand, which the value form does not have:
 
      project X with PLACES    the partial ball of X over the places, adf_sball_project
      exp_at X with PLACE      exp of X at the one place, adf_sball_exp_at
      log_at X with PLACE      log of X at the one place, adf_sball_log_at
+     sin_at, cos_at, sinh_at, cosh_at X with PLACE: the corresponding adf_sball function (1F.7)
 
    X is an exact rational, a finite ball or an adele of the value form.  A rational is converted to the
    adele (q ; q) at the setting prec (SPEC 4.1); a finite ball has no real coordinate, so the place "real"
@@ -1522,7 +1531,7 @@ done:
    or the word real.  A token of another shape (a sign other than "-", a leading zero, a letter, two
    spaces in a row) is ADF_PARSE.  A negative number, 0, 1, a composite and a number of more than 64 bits
    are not places: ADF_DOMAIN, as for the solver commands.  A place twice is ADF_DOMAIN (adf_sball_project).
-   exp_at and log_at take exactly one place.
+   Each function command takes exactly one place.
 
    The precision: at the place real, the setting prec is the working precision in bits of arb; at a prime
    it is the requested ABSOLUTE p-adic precision N of adelefeld/lfunc.h (include/adelefeld/rfunc.h, "A
@@ -1738,7 +1747,7 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     }
     if (op != ADF_DRV_PROJECT && n != 1)
     {
-        status = ADF_PARSE;      /* exp_at and log_at take exactly one place */
+        status = ADF_PARSE;      /* each function command takes exactly one place */
         goto done;
     }
     /* step 3 and step 4: the kind and the value of X */
@@ -1789,6 +1798,14 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
         adf_sball_swap(y, s);
     else if (op == ADF_DRV_EXP_AT)
         status = adf_sball_exp_at(y, NULL, s, places[0], st->prec);
+    else if (op == ADF_DRV_SIN_AT)
+        status = adf_sball_sin_at(y, NULL, s, places[0], st->prec);
+    else if (op == ADF_DRV_COS_AT)
+        status = adf_sball_cos_at(y, NULL, s, places[0], st->prec);
+    else if (op == ADF_DRV_SINH_AT)
+        status = adf_sball_sinh_at(y, NULL, s, places[0], st->prec);
+    else if (op == ADF_DRV_COSH_AT)
+        status = adf_sball_cosh_at(y, NULL, s, places[0], st->prec);
     else
         status = adf_sball_log_at(y, NULL, s, places[0], st->prec);
     if (status == ADF_OK)
@@ -2245,7 +2262,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
-    if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT)
+    if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||
+        op == ADF_DRV_SIN_AT || op == ADF_DRV_COS_AT || op == ADF_DRV_SINH_AT || op == ADF_DRV_COSH_AT)
         return adf_drv_places(out, op, l, st);
     if (op == ADF_DRV_VALUATION || op == ADF_DRV_ABS)
         return adf_drv_valabs(out, op, l, st);

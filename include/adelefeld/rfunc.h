@@ -90,10 +90,11 @@ int adf_real_root(arb_t y, const arb_t x, ulong n, slong prec);
    where = the archimedean place, decided before every other status, also before the check that x has the place
    (only when v is the archimedean place; for a prime see below).
 
-   A PRIME (slice 1F.4, lane f-slice6). Three functions exist at a prime, through adelefeld/lfunc.h:
+   A PRIME (slices 1F.4 and 1F.7). These functions exist at a prime, through adelefeld/lfunc.h:
        adf_sball_exp_at   : adf_lball_exp on the component of x at v;
        adf_sball_log_at   : adf_lball_log on it (the series; domain 1 + p Z_p);
        adf_sball_Log_at   : adf_lball_Log on it (the Iwasawa logarithm; domain every x != 0).
+       adf_sball_sin_at, cos_at, sinh_at, cosh_at: the corresponding local factorial series on p^c Z_p.
    y is the partial ball over v (arch = NONE, inf = 0, len = 1, loc[0] = the result of the lfunc.h function, the
    identical fields). At a prime `prec` is NOT a number of bits: it is the requested ABSOLUTE p-adic precision N of
    lfunc.h (the error set of the result is p^K Z_p, K = N for an exact input, K = min(N, exponent of the image) for a
@@ -102,7 +103,7 @@ int adf_real_root(arb_t y, const arb_t x, ulong n, slong prec);
    result exponent above it, the working modulus p^W above ADF_LBALL_BITS_MAX bits): ADF_LIMIT with where = v.
    The statuses of lfunc.h arrive unchanged with where = v: ADF_DOMAIN (x does not meet the domain; the exact 0 under
    Log), ADF_NOT_DETERMINED (x meets the domain and its complement; a ball that contains 0 under Log), ADF_LIMIT.
-   The other functions (log_abs, sin, cos, sqrt, root) at a prime are ADF_UNSUPPORTED with where = v, a valid request
+   The other functions (log_abs, sqrt, root) at a prime are ADF_UNSUPPORTED with where = v, a valid request
    that a later slice implements; the check that v is a place of x comes first. A COMPLEX tag concerns the
    archimedean place only and does not affect a prime.
 
@@ -120,8 +121,33 @@ int adf_sball_exp_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, ad
 int adf_sball_log_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_Log_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_log_abs_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
+/* sin_at encloses sin(t) for every t in the component at v; only v remains in y (Proposition 22,
+   docs/proofs/functions.md:725). At a prime: adf_lball_sin, domain Proposition 6:140, E = M,
+   K = min(prec,E) for a ball, K = prec for an exact input; exact zero gives exact zero (F10-F13).
+   At real: arb_sin at max(2,prec) bits, refs/src/flint-3.0.1/arb.rst:1101.
+   Aliasing y = x allowed. OK leaves where untouched; DOMAIN, NOT_DETERMINED, LIMIT, UNSUPPORTED
+   (COMPLEX real component) leave y untouched and set where = v; limits and place checks as above. */
 int adf_sball_sin_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
+/* cos_at encloses cos(t) for every t at v; only v remains (Proposition 22, functions.md:725).
+   At a prime: adf_lball_cos, domain Proposition 6:140; E = M, or 2M-v_p(2) for a centred ball;
+   K = min(prec,E) for a ball, prec for exact input. Exact zero gives exact one (F10-F13).
+   At real: arb_cos, refs/src/flint-3.0.1/arb.rst:1103, max(2,prec) bits. Aliasing y = x allowed.
+   OK, DOMAIN, NOT_DETERMINED, LIMIT, UNSUPPORTED and untouched output/where rules as for sin_at. */
 int adf_sball_cos_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
+/* sinh_at encloses sinh(t) for every t at v; only v remains (Proposition 22, functions.md:725).
+   At a prime: adf_lball_sinh, domain Proposition 6:140; E = M, K = min(prec,E) for a ball,
+   prec for exact input. Exact zero gives exact zero (F10-F13). At real: domain R, arb_sinh,
+   refs/src/flint-3.0.1/arb.rst:1209, max(2,prec) bits, with arb's radius propagation as exp_at.
+   A non-finite result is NOT_DETERMINED. Aliasing y = x allowed. OK, DOMAIN, NOT_DETERMINED,
+   LIMIT, UNSUPPORTED and untouched output/where rules as for sin_at, including the real precision limit. */
+int adf_sball_sinh_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
+/* cosh_at encloses cosh(t) for every t at v; only v remains (Proposition 22, functions.md:725).
+   At a prime: adf_lball_cosh, domain Proposition 6:140; E = M, or 2M-v_p(2) for a centred ball;
+   K = min(prec,E) for a ball, prec for exact input. Exact zero gives exact one (F10-F13).
+   At real: domain R, arb_cosh, refs/src/flint-3.0.1/arb.rst:1211, max(2,prec) bits, with arb's
+   radius propagation as exp_at; a non-finite result is NOT_DETERMINED. Aliasing y = x allowed.
+   OK, DOMAIN, NOT_DETERMINED, LIMIT, UNSUPPORTED and untouched output/where rules as for sin_at. */
+int adf_sball_cosh_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_sqrt_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, slong prec);
 int adf_sball_root_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, ulong n,
                       slong prec);
