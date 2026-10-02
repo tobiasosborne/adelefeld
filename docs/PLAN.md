@@ -289,7 +289,7 @@ read):
 | 1F.4 | done, reviewed, one cost finding open | `20e0a61`: `exp`, `log`, `Log` at a prime on local balls (lane `f-slice4`); review `docs/reviews/f1/review-lfunc.md`: no wrong enclosure, one major finding of cost (`log(1 + p)` at a prime of one word, `N = 10000`: 59 s); the lane `f-slice5` has a brief and no result |
 | 1F.5 | not started | local roots |
 | 1F.6 | partly | integer power of a local ball is `adf_lball_pow_si` (in `8767d90`); rational powers, principal-unit powers and the rest are not started |
-| 1F.7 | not started | `sin`, `cos`, `sinh`, `cosh` at a prime |
+| 1F.7 | done, not reviewed | `c09663a`: `adf_lball_sin`, `cos`, `sinh`, `cosh` and the `_at` forms at both places, driver commands, statements F10 to F14 (lane `f-slice7`; decision N-D12) |
 | 1F.8 | not started | all-places forms |
 | 1F.9 | not started | catalogue, Tier A |
 
