@@ -1,0 +1,17 @@
+Fri Oct  2 21:32:54 UTC 2026
+== perf
+len=16 ids0=3 exact0=1
+roots (16 branches): 5.366 ms; one seeded branch: 1.628 ms; Log at N: 0.416 ms; exp at N: 0.877 ms
+== perf irr
+len=16 ids0=3 exact0=0
+roots (16 branches): 5.134 ms; one seeded branch: 2.639 ms; Log at N: 0.640 ms; exp at N: 1.576 ms
+== h A 65537 1 n=65536 N=2^40
+LIMIT -7
+elapsed .017092633 s
+== nd13 100000
+canonical 1, R=100000
+root_seed N=10: OK, N_out=10, 0.000 s | Log N=10: OK 0.0000 s | Log N=R: OK 0.091 s
+== nd13 400000
+canonical 1, R=400000
+root_seed N=10: OK, N_out=10, 0.000 s | Log N=10: OK 0.0001 s | Log N=R: OK 0.761 s
+Fri Oct  2 21:32:55 UTC 2026

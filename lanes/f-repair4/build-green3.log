@@ -1,0 +1,25 @@
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-repair4/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f-repair4/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-repair4/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f-repair4/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f-repair4/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-repair4/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-repair4/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f-repair4/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f-repair4/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-repair4/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f-repair4/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-repair4/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-repair4/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-repair4/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f-repair4/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-repair4/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f-repair4/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f-repair4/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-repair4/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f-repair4/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f-repair4/build/ucoset.o
+ar rcs lanes/f-repair4/build/libadelefeld.a lanes/f-repair4/build/adele.o lanes/f-repair4/build/cap.o lanes/f-repair4/build/common.o lanes/f-repair4/build/dump.o lanes/f-repair4/build/fball.o lanes/f-repair4/build/fball_local.o lanes/f-repair4/build/idclass.o lanes/f-repair4/build/idele.o lanes/f-repair4/build/idmap.o lanes/f-repair4/build/idpow.o lanes/f-repair4/build/inlines.o lanes/f-repair4/build/lball.o lanes/f-repair4/build/lball_decomp.o lanes/f-repair4/build/lfunc.o lanes/f-repair4/build/linsolve.o lanes/f-repair4/build/lroot.o lanes/f-repair4/build/modctx.o lanes/f-repair4/build/place.o lanes/f-repair4/build/rat.o lanes/f-repair4/build/recon.o lanes/f-repair4/build/resid.o lanes/f-repair4/build/rfunc.o lanes/f-repair4/build/roots.o lanes/f-repair4/build/roots_real.o lanes/f-repair4/build/sball.o lanes/f-repair4/build/scaled.o lanes/f-repair4/build/status.o lanes/f-repair4/build/text.o lanes/f-repair4/build/text_idele.o lanes/f-repair4/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_lroot.c lanes/f-repair4/build/support/golden.o lanes/f-repair4/build/support/jsonl.o lanes/f-repair4/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f-repair4/build/test_lroot
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_rfunc_prime.c lanes/f-repair4/build/support/golden.o lanes/f-repair4/build/support/jsonl.o lanes/f-repair4/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f-repair4/build/test_rfunc_prime
+make: 'lanes/f-repair4/build/libadelefeld.a' is up to date.

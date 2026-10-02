@@ -105,4 +105,8 @@ end
     println("sqrt(1 + 4 Z_2): NOT_DETERMINED")
     st, y = root(ball(2, 1, 1, 4), 2, 3, 20)
     @test st == OK && !isexact(y) && prec(y) == 3 && num(y) == 7
+    # N-D14 (SPEC 15.4): exponent min(N, E); E = 3 here, so N = 2 gives -1 mod 4 = 3 at exponent 2.
+    st, y = root(ball(2, 1, 1, 4), 2, 3, 2)
+    @test st == OK && !isexact(y) && prec(y) == 2 && num(y) == 3
+    println("sqrt(1 + 16 Z_2) [-1] at N = 2: ", num(y), " + O(2^", prec(y), ")")
 end

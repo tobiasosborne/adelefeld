@@ -1,0 +1,37 @@
+mkdir -p lanes/f-repair4/build-before
+mkdir -p lanes/f-repair4/build-before/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f-repair4/build-before/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f-repair4/build-before/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-repair4/build-before/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f-repair4/build-before/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f-repair4/build-before/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f-repair4/build-before/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f-repair4/build-before/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-repair4/build-before/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f-repair4/build-before/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f-repair4/build-before/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-repair4/build-before/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-repair4/build-before/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f-repair4/build-before/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f-repair4/build-before/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-repair4/build-before/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f-repair4/build-before/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f-repair4/build-before/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-repair4/build-before/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-repair4/build-before/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f-repair4/build-before/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-repair4/build-before/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f-repair4/build-before/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-repair4/build-before/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f-repair4/build-before/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f-repair4/build-before/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f-repair4/build-before/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-repair4/build-before/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f-repair4/build-before/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f-repair4/build-before/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f-repair4/build-before/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f-repair4/build-before/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f-repair4/build-before/support/jsonl.o
+ar rcs lanes/f-repair4/build-before/libadelefeld.a lanes/f-repair4/build-before/adele.o lanes/f-repair4/build-before/cap.o lanes/f-repair4/build-before/common.o lanes/f-repair4/build-before/dump.o lanes/f-repair4/build-before/fball.o lanes/f-repair4/build-before/fball_local.o lanes/f-repair4/build-before/idclass.o lanes/f-repair4/build-before/idele.o lanes/f-repair4/build-before/idmap.o lanes/f-repair4/build-before/idpow.o lanes/f-repair4/build-before/inlines.o lanes/f-repair4/build-before/lball.o lanes/f-repair4/build-before/lball_decomp.o lanes/f-repair4/build-before/lfunc.o lanes/f-repair4/build-before/linsolve.o lanes/f-repair4/build-before/lroot.o lanes/f-repair4/build-before/modctx.o lanes/f-repair4/build-before/place.o lanes/f-repair4/build-before/rat.o lanes/f-repair4/build-before/recon.o lanes/f-repair4/build-before/resid.o lanes/f-repair4/build-before/rfunc.o lanes/f-repair4/build-before/roots.o lanes/f-repair4/build-before/roots_real.o lanes/f-repair4/build-before/sball.o lanes/f-repair4/build-before/scaled.o lanes/f-repair4/build-before/status.o lanes/f-repair4/build-before/text.o lanes/f-repair4/build-before/text_idele.o lanes/f-repair4/build-before/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_lroot.c lanes/f-repair4/build-before/support/golden.o lanes/f-repair4/build-before/support/jsonl.o lanes/f-repair4/build-before/libadelefeld.a -lflint -lgmp -lm -o lanes/f-repair4/build-before/test_lroot
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_rfunc_prime.c lanes/f-repair4/build-before/support/golden.o lanes/f-repair4/build-before/support/jsonl.o lanes/f-repair4/build-before/libadelefeld.a -lflint -lgmp -lm -o lanes/f-repair4/build-before/test_rfunc_prime

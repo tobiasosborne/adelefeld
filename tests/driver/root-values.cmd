@@ -10,3 +10,11 @@ roots_at (* ; 1 mod 125) with 5 with 2
 roots_at (* ; 1 mod 16) with 2 with 2
 roots_at (* ; 1 mod 27) with 3 with 3
 roots_at (* ; 1 mod 2) with 2 with 1
+# N-D14 (SPEC 15.4): a ball result has exponent min(prec, E); 9 + 5^6 Z_5 has E = 6.
+prec 3
+root_at (* ; 9 mod 15625) with 5 with 2 with 3
+roots_at (* ; 9 mod 15625) with 5 with 2
+prec 6
+roots_at (* ; 9 mod 15625) with 5 with 2
+prec 9
+roots_at (* ; 9 mod 15625) with 5 with 2
