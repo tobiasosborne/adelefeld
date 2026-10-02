@@ -1,0 +1,2 @@
+rows=252 checks=4286 failures=0
+mode=enumerate cases=252 failures=0 point_checks=2088 hull_witnesses=116

@@ -1,0 +1,2 @@
+rows=1008 checks=21170 failures=0
+mode=regression cases=1008 failures=0 point_checks=0 hull_witnesses=0

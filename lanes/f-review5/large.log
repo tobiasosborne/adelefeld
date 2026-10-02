@@ -1,0 +1,2 @@
+rows=32 checks=546 failures=0
+mode=large cases=32 failures=0 point_checks=0 hull_witnesses=0
