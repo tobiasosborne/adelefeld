@@ -1,0 +1,10 @@
+old_source_bytes=24519 old_source_lines=686 prefix_equal=1
+mode=local input_rows=2016 output_rows=2016 failures=0
+mode=enumerate input_rows=252 output_rows=252 failures=0
+mode=limits input_rows=2548 output_rows=2548 failures=0
+mode=large input_rows=32 output_rows=32 failures=0
+mode=regression input_rows=1008 output_rows=1008 failures=0
+sanitizer_logs=7 diagnostics=0
+f13_counterexamples=8 domain=4 not_determined=4 limit=0
+line_audit_files=8 lines_over_116=0
+total_stream_cases=5856
