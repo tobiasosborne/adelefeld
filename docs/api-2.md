@@ -661,15 +661,17 @@ found cheaply; that is not proved either (only the sufficient direction is: the 
 one by at most `10^q + 10^(X(E) - k + 1)`, which tends to 0). So the search stays linear and is bounded instead. Let
 `S` be the largest bit length of the four integers of `mid` and `rad` of the pass (at least 64): one level costs a
 number of operations that grows with `S`. The printer adds `S` to a counter for every level it forms, over the whole
-call (the levels of the search and of the repetitions). When the counter passes `TX_COND_WORK_MAX = 2^25` the printer
-stops and writes nothing: `adf_idele_get_str` and `adf_idclass_get_str` return NULL with `*len = 0`, as for M1-D6,
-and the driver prints `error: LIMIT`. A ball whose passes need together at most `2^25 / S` levels is printed by the
-same algorithm as before, so the text is the same (the golden files and the vectors of `t-slice1` pass unchanged).
-Measured (`lanes/n-repair1/printer-times.log`, the ball `2^(b-1) + 1/2 +/- 2^(b-1)`, one core): `b = 4000` prints in
-0.10 s (2438 bytes, as before); `b = 8000` is refused after 0.37 s, `b = 16000` after 0.50 s, `b = 40000` after
-0.80 s, `b = 10^5` after 1.17 s. What is refused now and was printed before: balls that need more than about
-`2^25 / S` levels; for this family from `b` about 5500 on (`b = 16000` printed in 2.0 s before). An avoidable cost
-that remains: a level rebuilds `10^q` and the floor of its logarithm and does not reuse the level before.
+call (the levels of the search and of the repetitions). When the counter passes `TX_COND_WORK_MAX = 2^25` the
+printer stops and writes nothing: `adf_idele_get_str` and `adf_idclass_get_str` return NULL with `*len = 0`, as for
+M1-D6, and the driver prints `error: LIMIT`. A ball whose passes need together at most `2^25 / S` levels is printed
+by the same algorithm as before, so the text is the same (the golden files and the vectors of `t-slice1` pass
+unchanged). Measured (`lanes/n-repair1/printer-times.log`, the ball `2^(b-1) + 1/2 +/- 2^(b-1)`, one core): `b =
+4000` prints in 0.10 s (2438 bytes, as before); `b = 8000` is refused after 0.37 s, `b = 16000` after 0.50 s, `b =
+40000` after 0.80 s, `b = 10^5` after 1.17 s. What is refused now and was printed before: balls that need more than
+about `2^25 / S` levels; for this family from `b = 7463` on, exactly (review n-review2 F1: the search needs `2(D +
+2)` levels, `D = X(2^(b-1))`, each of `S = b + 1` bits; the lane had estimated 5500; `b = 16000` printed in 2.0 s
+before). An avoidable cost that remains: a level rebuilds `10^q` and the floor of its logarithm and does not reuse
+the level before.
 
 ### 4.3 The driver
 
@@ -698,7 +700,7 @@ points exceeds `prec`).
 | t-10 | Exponent of `pow`, `powtight` | an exact rational that is an integer; another type or a denominator other than 1 is `DOMAIN`; an integer beyond a word is `LIMIT` | `DOMAIN` for a big integer |
 | t-11 | Output of `norm` and of `abs ... with real` | the real ball as the text of 9.5 without a sign condition (the helper of the solver commands) | the constrained printing (positive) |
 | t-12 | Existing driver cases that used `[5 mod 6]` as "a kind with no typed parser" | `[p=5: 3]` in `06_pairs`, `07_status`, `12_status_order`, `13_dump` (the expected files are unchanged; `type [5 mod 6]` still gives `ucoset`) | delete the cases; keep `[5 mod 6]` and change the expected lines |
-| N-D11 | The constrained printer on a ball that M1-D6 admits but that needs more work than a bound | a work bound `TX_COND_WORK_MAX = 2^25` (levels times bits); over it NULL with `*len = 0`, the driver prints `error: LIMIT` (Statement Q, n-repair1, D2) | a proved lower bound of the level (none exists, see Statement Q); a search logarithmic in the level (the levels are not monotone); a bound of `b` alone (would refuse the balls that print in milliseconds); no bound (a hang on admitted input) |
+| N-D11 | The constrained printer on a ball that M1-D6 admits but that needs more work than a bound | a work bound `TX_COND_WORK_MAX = 2^25` (levels times bits); over it NULL with `*len = 0`, the driver prints `error: LIMIT` (Statement Q, n-repair1, D2) | a proved lower bound of the level (review n-review2 F2 proves `k >= X(rad) - X(mid - rad) + 1` without monotonicity; it skips levels and does not change the bound; not applied); a search logarithmic in the level (the levels are not monotone: n-review2 gives `793/512 +/- 741/512`, level 2 satisfies, 3 does not); a bound of `b` alone (would refuse the balls that print in milliseconds); no bound (a hang on admitted input) |
 
 ### 4.5 Not done, findings
 
