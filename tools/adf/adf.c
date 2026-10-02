@@ -149,6 +149,8 @@ typedef enum
     ADF_DRV_COS_AT,
     ADF_DRV_SINH_AT,
     ADF_DRV_COSH_AT,
+    ADF_DRV_ROOT_AT,
+    ADF_DRV_ROOTS_AT,
     ADF_DRV_INV,
     ADF_DRV_POW,
     ADF_DRV_POWTIGHT,
@@ -195,6 +197,8 @@ static const struct
     { "cos_at", ADF_DRV_COS_AT, 2 },
     { "sinh_at", ADF_DRV_SINH_AT, 2 },
     { "cosh_at", ADF_DRV_COSH_AT, 2 },
+    { "roots_at", ADF_DRV_ROOTS_AT, 3 },
+    { "root_at", ADF_DRV_ROOT_AT, 4 },
     { "inv", ADF_DRV_INV, 1 },
     { "pow", ADF_DRV_POW, 2 },
     { "powtight", ADF_DRV_POWTIGHT, 2 },
@@ -645,15 +649,13 @@ adf_drv_is_ws(char c)
     return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 }
 
-/* The operands of one line: the word of the operation, and up to four operands.  A fifth
-   operand is not looked for; a line with four of them is refused by the arity check, so
-   the last operand may hold the separator and no harm is done. */
+/* Four operands are supported. The fifth slot detects excess operands; no command accepts it. */
 typedef struct
 {
     const char * word;
     size_t wlen;
-    const char * s[4];
-    size_t n[4];
+    const char * s[5];
+    size_t n[5];
     int nops;
 } adf_drv_line;
 
@@ -686,14 +688,17 @@ adf_drv_split(const char * line, size_t len, adf_drv_line * l)
     l->wlen = i - start;
 
     l->nops = 0;
-    while (k < 4 && i < len)
+    while (k < 5 && i < len)
     {
         const char * sep;
 
         while (i < len && adf_drv_is_blank(line[i]))
             i++;
         if (i >= len)
+        {
+            k = 5; /* A separator followed only by whitespace leaves a missing operand. */
             break;
+        }
         start = i;
         sep = adf_drv_find(line + i, len - i, ADF_DRV_SEP, ADF_DRV_SEP_LEN);
         l->s[k] = line + start;
@@ -701,6 +706,11 @@ adf_drv_split(const char * line, size_t len, adf_drv_line * l)
         {
             l->n[k] = (size_t) (sep - (line + start));
             i = (size_t) (sep - line) + ADF_DRV_SEP_LEN;
+            if (i == len)
+            {
+                k = 5; /* A trailing separator is syntax, not an absent optional operand. */
+                break;
+            }
         }
         else
         {
@@ -1714,6 +1724,81 @@ adf_drv_put_sball(FILE * out, const adf_sball_t y, slong digits)
     return status;
 }
 
+/* Root degree/seed: use the ordinary typed value parser, then require a word integer.
+   At 2 the user sign -1 is the API's residue identifier 3. */
+static int
+adf_drv_root_word(ulong *word, const char *s, size_t len, int sign_seed, slong prec)
+{
+    adf_drv_value value;
+    adf_text_kind kind;
+    fmpz_t z;
+    int status;
+    adf_drv_value_init(&value); fmpz_init(z);
+    status=adf_text_classify(&kind,s,len,NULL);
+    if (status==ADF_OK) status=adf_drv_value_read(&value,kind,s,len,prec);
+    if (status==ADF_OK) status=adf_drv_int_value(z,&value);
+    if (status==ADF_OK)
+    {
+        if (sign_seed && fmpz_equal_si(z,-1)) *word=3;
+        else if (fmpz_sgn(z)<0 || fmpz_cmp_ui(z,UWORD_MAX)>0) status=ADF_DOMAIN;
+        else *word=fmpz_get_ui(z);
+    }
+    fmpz_clear(z); adf_drv_value_clear(&value);
+    return status;
+}
+
+/* N-D10 component text plus the branch identifier. Form every string before printing. */
+static int
+adf_drv_root_result(FILE *out, const adf_sball_t x, adf_place_t p, ulong degree,
+                    ulong seed, int all, slong N)
+{
+    adf_lball_t c;
+    adf_lball_ptr roots=NULL;
+    ulong count=1, *ids=NULL;
+    slong len=0;
+    char **texts=NULL;
+    int status;
+    if (adf_place_is_archimedean(p)) return ADF_UNSUPPORTED;
+    adf_lball_init(c);
+    status=adf_sball_get_lball(c,x,p);
+    if (status==ADF_OK && all) status=adf_lball_root_count(&count,c,degree);
+    if (status==ADF_OK && count>(ulong)ADF_LROOT_BRANCH_MAX) status=ADF_LIMIT;
+    if (status!=ADF_OK) goto done;
+    roots=flint_malloc(count*sizeof(adf_lball_struct));
+    ids=flint_malloc(count*sizeof(ulong)); texts=flint_calloc(count,sizeof(char *));
+    for (ulong i=0;i<count;i++) adf_lball_init(roots+i);
+    if (all) status=adf_sball_roots_at(roots,ids,&len,(slong)count,NULL,x,p,degree,N);
+    else
+    {
+        adf_sball_t selected;
+        adf_sball_init(selected);
+        status=adf_sball_root_seed_at(selected,NULL,x,p,degree,seed,N);
+        if (status==ADF_OK) status=adf_sball_get_lball(roots,selected,p);
+        adf_sball_clear(selected);
+        ids[0]=degree==1 ? 0 : seed; len=1;
+    }
+    for (slong i=0;status==ADF_OK && i<len;i++)
+    {
+        texts[i]=adf_drv_lball_text(roots+i);
+        if (!texts[i]) status=ADF_LIMIT;
+    }
+    if (status==ADF_OK)
+    {
+        for (slong i=0;i<len;i++)
+        {
+            if (i) fputs("; ",out);
+            if (c->p==2 && ids[i])
+                flint_fprintf(out,"%wu [%s]: %s",c->p,ids[i]==1 ? "+1" : "-1",texts[i]);
+            else flint_fprintf(out,"%wu [%wu]: %s",c->p,ids[i],texts[i]);
+        }
+        fputc('\n',out);
+    }
+    for (ulong i=0;i<count;i++) { adf_lball_clear(roots+i); flint_free(texts[i]); }
+done:
+    flint_free(roots); flint_free(ids); flint_free(texts); adf_lball_clear(c);
+    return status;
+}
+
 /* adf_drv_places(out, op, l, st): project, exp_at and log_at, the steps of the command at the top of the
    file: 2. the syntax of X (adf_text_classify) and of the list of places; 3. the kind of X; 4. its value;
    5. the operation: the places, the type of X against them, the projection, the function; 6. the printer. */
@@ -1727,6 +1812,7 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     adf_adele_t a;
     arb_t r0;
     slong n = 0, i;
+    ulong degree=0, seed=0;
     int status, place_status = ADF_OK, has_real = 0;
 
     adf_drv_value_init(&x);
@@ -1749,6 +1835,18 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     {
         status = ADF_PARSE;      /* each function command takes exactly one place */
         goto done;
+    }
+    if (op==ADF_DRV_ROOT_AT || op==ADF_DRV_ROOTS_AT)
+    {
+        status=adf_drv_root_word(&degree,l->s[2],l->n[2],0,st->prec);
+        if (status!=ADF_OK) goto done;
+        if (op==ADF_DRV_ROOT_AT)
+        {
+            int sign_seed=place_status==ADF_OK && !adf_place_is_archimedean(places[0]) &&
+                          adf_place_prime_get(places[0])==2;
+            status=adf_drv_root_word(&seed,l->s[3],l->n[3],sign_seed,st->prec);
+            if (status!=ADF_OK) goto done;
+        }
     }
     /* step 3 and step 4: the kind and the value of X */
     if (adf_drv_kind_type(kind) == ADF_DRV_OTHER)
@@ -1794,6 +1892,11 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
         status = adf_sball_project(s, NULL, a, places, n);
     if (status != ADF_OK)
         goto done;
+    if (op==ADF_DRV_ROOT_AT || op==ADF_DRV_ROOTS_AT)
+    {
+        status=adf_drv_root_result(out,s,places[0],degree,seed,op==ADF_DRV_ROOTS_AT,st->prec);
+        goto done;
+    }
     if (op == ADF_DRV_PROJECT)
         adf_sball_swap(y, s);
     else if (op == ADF_DRV_EXP_AT)
@@ -2263,7 +2366,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||
-        op == ADF_DRV_SIN_AT || op == ADF_DRV_COS_AT || op == ADF_DRV_SINH_AT || op == ADF_DRV_COSH_AT)
+        op == ADF_DRV_SIN_AT || op == ADF_DRV_COS_AT || op == ADF_DRV_SINH_AT || op == ADF_DRV_COSH_AT ||
+        op == ADF_DRV_ROOT_AT || op == ADF_DRV_ROOTS_AT)
         return adf_drv_places(out, op, l, st);
     if (op == ADF_DRV_VALUATION || op == ADF_DRV_ABS)
         return adf_drv_valabs(out, op, l, st);

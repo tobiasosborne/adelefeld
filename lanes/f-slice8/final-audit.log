@@ -1,0 +1,7 @@
+lines over 116: 0 []
+fixture files: 2 bytes: 643421
+check-all exit=0
+san-build exit=0
+san-lroot exit=0
+san-rfunc-prime exit=0
+final audit: 0 formatting failures; 2 fixtures; 4 final exits equal 0

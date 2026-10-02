@@ -418,3 +418,52 @@ adf_sball_root_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_p
 {
     return at_place(y, where, x, v, F_ROOT, n, prec);
 }
+
+/* R6, docs/api-1f5.md: projection then Proposition 13/15 on that entire component.
+   Copy the input before the transaction, including when an output aliases a component. */
+int adf_sball_root_seed_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x,
+                          adf_place_t v, ulong n, ulong seed, slong N)
+{
+    adf_lball_t c,r;
+    adf_sball_t t;
+    int st;
+    ADF_INV_SBALL(x);
+    adf_lball_init(c); adf_lball_init(r); adf_sball_init(t);
+    if (!adf_sball_has_place(x,v)) st=ADF_DOMAIN;
+    else if (adf_place_is_archimedean(v)) st=ADF_UNSUPPORTED;
+    else
+    {
+        st=adf_sball_get_lball(c,x,v);
+        if (st==ADF_OK) st=adf_lball_root_seed(r,c,n,seed,N);
+        if (st==ADF_OK) st=adf_sball_set_arb_lballs(t,NULL,NULL,r,1);
+        if (st==ADF_OK) adf_sball_set(y,t);
+    }
+    if (st!=ADF_OK && where) *where=v;
+    adf_lball_clear(c); adf_lball_clear(r); adf_sball_clear(t);
+    return st;
+}
+
+/* Proposition 13 step 3, functions.md:435; same transaction as root_seed_at. */
+int adf_sball_sqrt_seed_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x,
+                          adf_place_t v, ulong seed, slong N)
+{ return adf_sball_root_seed_at(y,where,x,v,2,seed,N); }
+
+/* R6; functions.md:410,:463,:725. The local list function owns the output transaction. */
+int adf_sball_roots_at(adf_lball_ptr y, ulong *ids, slong *len, slong capacity, adf_place_t *where,
+                      const adf_sball_t x, adf_place_t v, ulong n, slong N)
+{
+    adf_lball_t c;
+    int st;
+    ADF_INV_SBALL(x);
+    adf_lball_init(c);
+    if (!adf_sball_has_place(x,v)) st=ADF_DOMAIN;
+    else if (adf_place_is_archimedean(v)) st=ADF_UNSUPPORTED;
+    else
+    {
+        st=adf_sball_get_lball(c,x,v);
+        if (st==ADF_OK) st=adf_lball_roots(y,ids,len,capacity,c,n,N);
+    }
+    if (st!=ADF_OK && where) *where=v;
+    adf_lball_clear(c);
+    return st;
+}

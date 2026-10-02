@@ -1,0 +1,69 @@
+  vectors_exact_at_prime: 1824 lines, OK 876 (exact 132), DOMAIN 948
+ok   vectors_exact_at_prime
+  vectors_of_lfunc_through_at: 790 lines, OK 649, DOMAIN 100, NOT_DETERMINED 41, LIMIT 0
+ok   vectors_of_lfunc_through_at
+ok   statuses_arrive_with_the_prime
+ok   prec_is_the_absolute_precision_at_a_prime
+ok   other_functions_and_place_checks
+ok   Log_at_the_real_place
+ok   projected_adele_at_every_place
+ok   aliasing_at_a_prime
+ok   exp_of_five_by_hand
+ok   trig_reference_at_prime
+ok   trig_at_limits_and_places
+ok   hyperbolic_at_real_arb_and_loss
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1032: local_roots_at_prime: check failed: y->arch==ADF_ARCH_NONE && y->len==1 && adf_lball_identical(y->loc,want)
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1032: local_roots_at_prime: check failed: y->arch==ADF_ARCH_NONE && y->len==1 && adf_lball_identical(y->loc,want)
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1041: local_roots_at_prime: check failed: adf_sball_roots_at(roots,ids,&len,6,&where,x,place_of(p),2,N)==st
+FAIL tests/test_rfunc_prime.c:1043: local_roots_at_prime: check failed: len==2
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1041: local_roots_at_prime: check failed: adf_sball_roots_at(roots,ids,&len,6,&where,x,place_of(p),2,N)==st
+FAIL tests/test_rfunc_prime.c:1042: local_roots_at_prime: check failed: adf_place_equal(where,st==ADF_OK ? mark : place_of(p))
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1041: local_roots_at_prime: check failed: adf_sball_roots_at(roots,ids,&len,6,&where,x,place_of(p),2,N)==st
+FAIL tests/test_rfunc_prime.c:1042: local_roots_at_prime: check failed: adf_place_equal(where,st==ADF_OK ? mark : place_of(p))
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1041: local_roots_at_prime: check failed: adf_sball_roots_at(roots,ids,&len,6,&where,x,place_of(p),2,N)==st
+FAIL tests/test_rfunc_prime.c:1042: local_roots_at_prime: check failed: adf_place_equal(where,st==ADF_OK ? mark : place_of(p))
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1035: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(p))
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1041: local_roots_at_prime: check failed: adf_sball_roots_at(roots,ids,&len,6,&where,x,place_of(p),2,N)==st
+FAIL tests/test_rfunc_prime.c:1042: local_roots_at_prime: check failed: adf_place_equal(where,st==ADF_OK ? mark : place_of(p))
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1032: local_roots_at_prime: check failed: y->arch==ADF_ARCH_NONE && y->len==1 && adf_lball_identical(y->loc,want)
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1028: local_roots_at_prime: check failed: got==st
+FAIL tests/test_rfunc_prime.c:1032: local_roots_at_prime: check failed: y->arch==ADF_ARCH_NONE && y->len==1 && adf_lball_identical(y->loc,want)
+FAIL tests/test_rfunc_prime.c:1038: local_roots_at_prime: check failed: got==st && adf_sball_identical(z,st==ADF_OK ? y : x)
+FAIL tests/test_rfunc_prime.c:1041: local_roots_at_prime: check failed: adf_sball_roots_at(roots,ids,&len,6,&where,x,place_of(p),2,N)==st
+FAIL tests/test_rfunc_prime.c:1043: local_roots_at_prime: check failed: len==2
+FAIL tests/test_rfunc_prime.c:1046: local_roots_at_prime: check failed: adf_sball_root_seed_at(y,&where,x,place_of(7),2,1,20)==ADF_DOMAIN
+FAIL tests/test_rfunc_prime.c:1047: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(7))
+FAIL tests/test_rfunc_prime.c:1048: local_roots_at_prime: check failed: adf_sball_root_seed_at(y,&where,x,place_of(5),0,1,20)==ADF_DOMAIN
+FAIL tests/test_rfunc_prime.c:1049: local_roots_at_prime: check failed: is_sentinel(y) && adf_place_equal(where,place_of(5))
+FAIL tests/test_rfunc_prime.c:1052: local_roots_at_prime: check failed: adf_sball_root_seed_at(y,&where,x,place_of(5),2,0,20)==ADF_DOMAIN
+FAIL local_roots_at_prime (tests/test_rfunc_prime.c:998, 53 failed checks)
+13 tests, 279181 checks, 53 failed checks, 1 failed tests

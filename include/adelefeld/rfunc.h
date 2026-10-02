@@ -152,6 +152,32 @@ int adf_sball_sqrt_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, a
 int adf_sball_root_at(adf_sball_t y, adf_place_t * where, const adf_sball_t x, adf_place_t v, ulong n,
                       slong prec);
 
+/* Seeded local roots at a PRIME, SPEC 9.3.3; functions.md Propositions 13/15 (:410,:463),
+   Proposition 22 (:725), docs/api-1f5.md R6. y contains only place v. The branch identifier,
+   exact rational results, ball exponent E=M-v_p(n)-(n-1)v_p(b), exact-input precision N,
+   DOMAIN/NOT_DETERMINED/LIMIT and exponent limits are those of lroot.h. Invalid seed or n=0
+   is DOMAIN. Missing place is DOMAIN first; a real place is UNSUPPORTED (use root_at there).
+   On failure y is untouched and where=v; OK leaves where untouched; where may be NULL.
+   Aliasing y=x is allowed. Existing seedless sqrt_at/root_at remain UNSUPPORTED at primes. */
+int adf_sball_root_seed_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x,
+                           adf_place_t v, ulong n, ulong seed, slong N);
+
+/* Square root selected by its unit residue (odd prime) or sign 1/3 (at 2).
+   root_seed_at with n=2: same exact values, exponent E, statuses, limits and y=x rule.
+   functions.md:435 (square criterion; modulo 8 at 2), :463 (precision); api-1f5.md R6. */
+int adf_sball_sqrt_seed_at(adf_sball_t y, adf_place_t *where, const adf_sball_t x,
+                           adf_place_t v, ulong seed, slong N);
+
+/* Every local root at the PRIME v, increasing identifiers. Functions.md:410,:463,:725; R6.
+   y is a caller-owned initialized lball array, with the capacity and aliasing rules of lroot.h
+   roots; its storage must be disjoint from x and x->loc. Each output has prime v and exponent E, or an exact
+   rational value / exact-input ball at N as in lroot.h. Missing place: DOMAIN; real: UNSUPPORTED.
+   Other statuses: DOMAIN (criterion/invalid degree), NOT_DETERMINED (uncertain zero/guard),
+   LIMIT (exponents, working powers or capacity), as lroot.h. No outputs change on failure
+   except optional where=v. OK preserves where. ids, len, where and y are distinct objects. */
+int adf_sball_roots_at(adf_lball_ptr y, ulong *ids, slong *len, slong capacity, adf_place_t *where,
+                       const adf_sball_t x, adf_place_t v, ulong n, slong N);
+
 #ifdef __cplusplus
 }
 #endif

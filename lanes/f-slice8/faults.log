@@ -1,0 +1,6 @@
+guard-one-low: exit 1; 6 tests, 380751 checks, 698 failed checks, 2 failed tests
+omit-valuation-term: exit 1; 6 tests, 380751 checks, 7799 failed checks, 2 failed tests
+missing-branch: exit 1; 6 tests, 356333 checks, 1808 failed checks, 4 failed tests
+square-mod-four: exit 1; 6 tests, 380751 checks, 16 failed checks, 1 failed tests
+omit-log-division: exit 1; 6 tests, 380751 checks, 23146 failed checks, 6 failed tests
+5 faults, 5 caught by assertions, 0 timeouts

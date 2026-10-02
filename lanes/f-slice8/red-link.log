@@ -1,0 +1,34 @@
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_lroot.c lanes/f-slice8/build/support/golden.o lanes/f-slice8/build/support/jsonl.o lanes/f-slice8/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f-slice8/build/test_lroot
+/usr/bin/ld: /tmp/ccwYBkrO.o: in function `adf_test_fn_enumeration_all_rows':
+/home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:57:(.text+0x683): undefined reference to `adf_lball_root_count'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:58:(.text+0x70e): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:77:(.text+0x973): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:78:(.text+0x9fd): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:80:(.text+0xc4c): undefined reference to `adf_lball_sqrt_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:64:(.text+0xf13): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:65:(.text+0xf91): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /tmp/ccwYBkrO.o: in function `adf_test_fn_large_prime_and_word_degrees':
+/home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:183:(.text+0x128f): undefined reference to `adf_lball_sqrt_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:189:(.text+0x139e): undefined reference to `adf_lball_root_count'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:190:(.text+0x1462): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:193:(.text+0x162c): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:196:(.text+0x16ed): undefined reference to `adf_lball_root_count'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:197:(.text+0x1776): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /tmp/ccwYBkrO.o: in function `adf_test_fn_exact_branches_limits_and_aliasing':
+/home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:102:(.text+0x1bd7): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:107:(.text+0x1ce7): undefined reference to `adf_lball_sqrt_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:110:(.text+0x1ddc): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:114:(.text+0x204a): undefined reference to `adf_lball_root_count'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:116:(.text+0x2107): undefined reference to `adf_lball_root_count'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:121:(.text+0x220e): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:121:(.text+0x249e): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:132:(.text+0x25de): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:139:(.text+0x272a): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:145:(.text+0x29c3): undefined reference to `adf_lball_roots'
+/usr/bin/ld: /tmp/ccwYBkrO.o:/home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:146: more undefined references to `adf_lball_roots' follow
+/usr/bin/ld: /tmp/ccwYBkrO.o: in function `adf_test_fn_exact_branches_limits_and_aliasing':
+/home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:160:(.text+0x2c08): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:162:(.text+0x2c9b): undefined reference to `adf_lball_root_seed'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice8/tests/test_lroot.c:166:(.text+0x2f2c): undefined reference to `adf_lball_root_seed'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f-slice8/build/test_lroot] Error 1

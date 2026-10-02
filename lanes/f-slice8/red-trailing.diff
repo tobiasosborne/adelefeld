@@ -1,0 +1,8 @@
+--- tests/driver/root-status.out	2026-10-02 14:48:33.699815618 +0200
++++ lanes/f-slice8/red-trailing.out	2026-10-02 14:48:33.707815744 +0200
+@@ -12,4 +12,4 @@
+ error: DOMAIN
+ error: DOMAIN
+ error: PARSE
+-error: PARSE
++5 [3]: 3
