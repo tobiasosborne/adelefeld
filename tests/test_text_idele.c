@@ -1697,7 +1697,9 @@ ADF_TEST(round_trips_enclose)
    30000-digit numbers (it did not end in 170 s).  The printer now counts the work (levels times the size of the
    numbers in bits) and returns NULL with *len = 0 when the work passes ADF_PRINT_COND_WORK_MAX (docs/api-2.md 4.2,
    Statement Q; decision N-D11): the driver prints "error: LIMIT".  What would make a case fail: a text where NULL
-   is due, NULL where the text is small, or a time above 2 s. */
+   is due, NULL where the text is small, or a time above 30 s. The bound is a guard against the non-termination
+   that N-D11 repaired (170 s and more), not a measurement: the refusal takes 1.2 s on mains power and 2.75 s on
+   battery in the powersave governor (2026-10-02), so a bound of 2 s failed on battery. */
 static void
 ball_two_pow(arb_t x, slong b, slong e, int negative)
 {
@@ -1735,7 +1737,7 @@ ADF_TEST(constrained_printer_ends_in_bounded_time)
     s = adf_idele_get_str(&len, x, 1);
     sec = (double) (clock() - t0) / CLOCKS_PER_SEC;
     ADF_CHECK_MSG(s == NULL && len == 0, "idele: NULL, len 0 expected (len %zu)", len);
-    ADF_CHECK_MSG(sec < 2.0, "idele: %.2f s (bound 2 s)", sec);
+    ADF_CHECK_MSG(sec < 30.0, "idele: %.2f s (bound 30 s)", sec);
     if (s != NULL)
         adf_str_free(s);
     arb_set(c->t, x->inf);
@@ -1745,7 +1747,7 @@ ADF_TEST(constrained_printer_ends_in_bounded_time)
     s = adf_idclass_get_str(&len, c, 1);
     sec = (double) (clock() - t0) / CLOCKS_PER_SEC;
     ADF_CHECK_MSG(s == NULL && len == 0, "class: NULL, len 0 expected (len %zu)", len);
-    ADF_CHECK_MSG(sec < 2.0, "class: %.2f s (bound 2 s)", sec);
+    ADF_CHECK_MSG(sec < 30.0, "class: %.2f s (bound 30 s)", sec);
     if (s != NULL)
         adf_str_free(s);
     /* the negative ball, likewise */
@@ -1754,7 +1756,7 @@ ADF_TEST(constrained_printer_ends_in_bounded_time)
     t0 = clock();
     s = adf_idele_get_str(&len, x, 1);
     sec = (double) (clock() - t0) / CLOCKS_PER_SEC;
-    ADF_CHECK_MSG(s == NULL && len == 0 && sec < 2.0, "negative idele: %.2f s, len %zu", sec, len);
+    ADF_CHECK_MSG(s == NULL && len == 0 && sec < 30.0, "negative idele: %.2f s, len %zu", sec, len);
     if (s != NULL)
         adf_str_free(s);
     /* a ball of 4000 bits needs about 1200 levels: inside the bound, printed as before (it takes 0.1 s) */
