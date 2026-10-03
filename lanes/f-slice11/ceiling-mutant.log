@@ -1,0 +1,16 @@
+ok   conservative_Log
+ok   other_slice_A_calls
+local_selection: 6776 rows, 20 complete H=5 images, 101035 memberships
+ok   local_selection
+real_selection: 6 intervals, 5 precisions, 120 wrapper calls, mpmath 800-bit endpoints
+ok   real_selection
+ok   slice_A_status_and_limits
+large_prime_routes: p=65537, restricted comparison/additivity at N=3, witness at N=2
+large_prime_routes: p=18446744073709551557, restricted comparison/additivity at N=3, witness at N=2
+ok   large_prime_routes
+ok   compact_lifts_and_large_content
+FAIL tests/test_gfunc_log.c:339: real_precision_ceiling: check failed: adf_idele_Log(y,&w,x,ADF_REAL_PREC_MAX)==ADF_OK
+FAIL tests/test_gfunc_log.c:340: real_precision_ceiling: check failed: arb_is_zero(y->inf) && adf_place_equal(w,prime(97))
+FAIL tests/test_gfunc_log.c:341: real_precision_ceiling: check failed: adf_idele_log_abs(y,NULL,x,ADF_REAL_PREC_MAX)==ADF_OK
+FAIL real_precision_ceiling (tests/test_gfunc_log.c:331, 3 failed checks)
+8 tests, 318570 checks, 3 failed checks, 1 failed tests

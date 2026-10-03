@@ -1,0 +1,13 @@
+F1 absolute m+k image exponent exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 3 fields
+F2 missing input valuation then subtract m exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 5 fields
+F3 content translation dropped exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 804 fields
+F4 unrestricted 2 gives 2 Z_2 exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 4 fields
+F5 unrestricted odd gives Z_p exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 1515 fields
+F6 requested cap ignored exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 1 fields
+F7 stored k=1 treated as ordinary exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 292 fields
+F8 exact unit treated as unrestricted exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 5977 fields
+O1 Log silently takes absolute value exit 1 FAIL tests/test_gfunc_log.c:177: real_selection: check failed: adf_idele_Log(y,&w,x,ps[j])==want
+O2 real coordinate from content exit 1 FAIL tests/test_gfunc_log.c:31: conservative_Log: check failed: arb_is_zero(y->inf)
+O3 baseline factor four replaced by two exit 1 FAIL tests/test_gfunc_log.c:32: conservative_Log: check failed: fmpz_is_zero(y->fin.A) && fmpz_equal_ui(y->fin.H, 4) && fmpz_is_one(y->fin.d)
+O4 OK writes where exit 1 FAIL tests/test_gfunc_log.c:117: local_selection: check failed: adf_place_equal(w,prime(97)) && adf_idele_identical(x,original)
+faults: compiled and rejected 12

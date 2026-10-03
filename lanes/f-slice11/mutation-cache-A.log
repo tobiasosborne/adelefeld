@@ -1,0 +1,29 @@
+src/text.c: In function ‘adf_lball_get_str’:
+src/text.c:2623:27: error: stray ‘#’ in program
+ 2623 |                 __func__, #x);
+      |                           ^
+src/text.c:2622:73: error: format ‘%s’ expects argument of type ‘char *’, but argument 4 has type ‘const adf_lball_struct *’ [-Werror=format=]
+ 2622 |         fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_lball\n",
+      |                                                                        ~^
+      |                                                                         |
+      |                                                                         char *
+ 2623 |                 __func__, #x);
+      |                            ~                                             
+      |                            |
+      |                            const adf_lball_struct *
+src/text.c: In function ‘adf_sball_get_str’:
+src/text.c:2943:27: error: stray ‘#’ in program
+ 2943 |                 __func__, #x);
+      |                           ^
+src/text.c:2942:73: error: format ‘%s’ expects argument of type ‘char *’, but argument 4 has type ‘const adf_sball_struct *’ [-Werror=format=]
+ 2942 |         fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_sball\n",
+      |                                                                        ~^
+      |                                                                         |
+      |                                                                         char *
+ 2943 |                 __func__, #x);
+      |                            ~                                             
+      |                            |
+      |                            const adf_sball_struct *
+cc1: all warnings being treated as errors
+make: *** [Makefile:90: lanes/f-slice11/build/text.o] Error 1
+make: *** Waiting for unfinished jobs....

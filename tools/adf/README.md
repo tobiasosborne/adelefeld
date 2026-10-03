@@ -572,3 +572,48 @@ An exact finite part other than 0 is `error: DOMAIN` (the library names the firs
 is `error: NOT_DETERMINED`, without a look at the primes of its modulus (`exp (0 ; 0 mod 4)`). A real part that arb
 cannot evaluate is `error: NOT_DETERMINED` (`exp (1e300 ; 0)`), unless the finite part is `DOMAIN`, which is the
 larger status. The fixture is `tests/driver/gfunc-series.cmd`.
+
+### Log on ideles (1F.8, slice A)
+
+    Log X
+    logabs X
+    Log_at X with PLACE
+    log_abs_at X with PLACE
+
+X is an idele. Log returns an adele with real log of X's real coordinate and finite ball
+0 + 4 Zhat. The positive real coordinate is required. logabs (also spelled log_abs) uses
+log of the absolute value and accepts either sign. Even exact input gives the conservative
+finite ball. These commands use gfunc.h, IL1-IL5 of docs/design/idele-log.md and api-1f8.md G7-G9.
+
+Log_at returns only the named place. At real it uses the same real log. At a prime it uses
+the exact local image, capped at the setting prec: K=min(prec,E), E=max(v_p(M),d), where
+M is the unit modulus and d=2 at 2, 1 at odd primes. An unrestricted prime gives p^d Z_p.
+An exact unit uses prec digits, except for the proved exact local zero. log_abs_at is
+real-only and gives UNSUPPORTED at a prime. The setting prec is bits at real and absolute
+p-adic digits at a prime. A kind other than idele gives DOMAIN. The old log_at is the series
+operation on an additive projection and keeps its meaning.
+
+For example, at prec 5, Log_at (1 ; 4 * [1 mod 9]) with 3 prints 3: 3 + O(3^2).
+At 5 it prints 5: 0 + O(5^1). Log of the same idele prints (0 ; 0 mod 4).
+Golden files gfunc-log-values and gfunc-log-status use exact real log(1)=0; real log(2)
+is checked by the C endpoint fixtures and the Julia example.
+
+### All-places Log with named refinements (1F.8, slice B)
+
+    Log_refine X with 2 3 5
+    log_abs_refine X with 2 3 5
+    Log_refine X with none
+
+The places are primes separated by one space, following the existing project grammar.
+Commas are PARSE; repeats and real are DOMAIN. none denotes an empty list. The alias
+logabs_refine is accepted. X must be an idele. The setting prec supplies both requested
+absolute finite precision N and real working bits; the C API has separate arguments.
+
+The finite result intersects 4 Zhat with the local Log enclosures at the listed primes.
+Unlisted odd primes remain Z_p; the factor 4 at 2 remains even when N<2 or 2 is absent.
+An exact local zero is enclosed at N here, because a singleton at one prime cannot be a
+global finite ball. Integer CRT forms a + R Zhat. At prec 5,
+Log_refine (1 ; 4 * [1 mod 9]) with 3 prints (0 ; 12 mod 36).
+With 3 5 the result is (0 ; 120 mod 180). An empty list has the same result as Log.
+These are enclosures at all places, with the named factors refined; they contain integral
+coordinates at unlisted odd primes without imposing p Z_p there. See IL5 and api-1f8.md G10-G12.

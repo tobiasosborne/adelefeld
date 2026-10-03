@@ -1,0 +1,80 @@
+mutate: src/gfunc_log.c: 137 mutants
+mutate: 137 mutants, 30 of them run (--limit 30, --seed 1)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (1.9 s)
+
+SURVIVED src/gfunc_log.c:133:42 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/gfunc_log.c
+  +++ b/src/gfunc_log.c
+  @@ -131,5 +131,5 @@
+       }
+       if (!exp_ok(d.K)) { st = ADF_LIMIT; goto done_desc; }
+  -    if (d.K <= c || (!d.exact && (d.k == 0 || (p == 2 && d.k == 1))) ||
+  +    if (d.K <= c || (!d.exact && (d.k == 1 || (p == 2 && d.k == 1))) ||
+           (fmpq_is_one(d.unit) && fmpz_is_one(x->u.c)))
+       {
+
+
+NOT COMPILED src/gfunc_log.c:184:28 op: '*' -> '/'
+  src/gfunc_log.c:184:28: error: expected expression before ‘/’ token
+
+NOT COMPILED src/gfunc_log.c:46:5 drop_assign: 'st = real_log(t->inf, x, prec, at);' -> '' (the statement is removed)
+  src/gfunc_log.c:35:67: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/gfunc_log.c:41:28 op: '*' -> '/'
+  src/gfunc_log.c:41:28: error: expected expression before ‘/’ token
+
+NOT COMPILED src/gfunc_log.c:211:38 prec: 'prec' -> '2'
+  src/gfunc_log.c:209:99: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+SURVIVED src/gfunc_log.c:81:41 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/gfunc_log.c
+  +++ b/src/gfunc_log.c
+  @@ -79,5 +79,5 @@
+   exp_ok(slong K)
+   {
+  -    return K >= -ADF_LBALL_EXP_MAX && K <= ADF_LBALL_EXP_MAX;
+  +    return K >= -ADF_LBALL_EXP_MAX && K < ADF_LBALL_EXP_MAX;
+   }
+   
+
+
+NOT COMPILED src/gfunc_log.c:65:38 prec: 'prec' -> '2'
+  src/gfunc_log.c:63:81: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+SURVIVED src/gfunc_log.c:97:14 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/gfunc_log.c
+  +++ b/src/gfunc_log.c
+  @@ -95,5 +95,5 @@
+       a = fmpz_remove(fmpq_numref(d->unit), fmpq_numref(x->r), prime);
+       b = fmpz_remove(fmpq_denref(d->unit), fmpq_denref(x->r), prime);
+  -    d->m = a - b;
+  +    d->m = a + b;
+       d->k = d->exact ? 0 : fmpz_remove(stripped, x->u.N, prime);
+       E = p == 2 ? 2 : 1;
+
+
+SURVIVED src/gfunc_log.c:39:14 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/gfunc_log.c
+  +++ b/src/gfunc_log.c
+  @@ -37,5 +37,5 @@
+       adf_adele_t t;
+       int st;
+  -    if (prec > ADF_REAL_PREC_MAX)
+  +    if (prec >= ADF_REAL_PREC_MAX)
+       {
+           if (where != NULL) *where = adf_place_inf();
+
+
+NOT COMPILED src/gfunc_log.c:98:27 drop_call: 'fmpz_remove(stripped, x->u.N, prime);' -> '' (the statement is removed)
+  src/gfunc_log.c:99:7: error: lvalue required as left operand of assignment
+
+NOT COMPILED src/gfunc_log.c:60:38 prec: 'prec' -> '2'
+  src/gfunc_log.c:58:77: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+mutate: 30 mutants in 31.9 s: 19 killed, 4 survived, 7 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 4 mutant(s) survived; each one is a claim the tests do not check

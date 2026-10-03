@@ -179,6 +179,117 @@ int adf_adele_sinh(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slon
 int adf_adele_cos(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec);
 int adf_adele_cosh(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec);
 
+/* ---- Log on ideles: slice A (docs/design/idele-log.md IL1-IL8; docs/api-1f8.md G7-G9) ---- */
+
+#include "adelefeld/sball.h"
+
+/* Common contract for the idele Log declarations below. Inputs are initialised canonical values;
+   places are valid handles. Invalid values are undefined and abort under ADF_CHECK_INVARIANTS.
+   NULL where is allowed. Values are untouched on every non-OK status; where is untouched on OK.
+   Outputs cannot overlap each other, an input part, or a borrowed place array. The different
+   input/output types admit no value alias. prec > ADF_REAL_PREC_MAX is LIMIT at infinity first,
+   before allocation, other checks or invariant checks, for all-places calls and _at at infinity.
+   Real prec < 2 is taken as 2. At a prime prec is N unchanged, with no real-precision bound.
+   Local result |K| and content valuation |m| must be <= ADF_LBALL_EXP_MAX. No absolute input
+   exponent m+k or input ball at that exponent is formed. Required working powers satisfy
+   W bits(p) <= ADF_LBALL_BITS_MAX as in lfunc.h; exact-zero and no-sum shortcuts avoid powers.
+   A finite unit modulus always gives a ball, even when the centre's Log is exactly zero. */
+
+/* adf_idele_Log(y, where, x, prec): x = (I,r,c U(M)). On OK, y is
+   (real_log(I); 0 + 4 Zhat). This contains Log of every point of x (IL5;
+   functions.md P12:386-406). The finite answer deliberately uses this same
+   conservative ball also for M=0 and r=1; it is not promised smallest.
+   Status: OK, y written; DOMAIN for negative I, where=infinity;
+   NOT_DETERMINED if the real evaluator cannot certify a finite result,
+   where=infinity; LIMIT for prec above ADF_REAL_PREC_MAX, where=infinity,
+   decided first. Other statuses cannot occur on valid inputs. Common contract
+   above applies, including no cross-type aliasing and output preservation.
+   Cost: one adf_real_log and construction of the constant finite ball. */
+int adf_idele_Log(adf_adele_t y, adf_place_t *where,
+                  const adf_idele_t x, slong prec);
+
+/* adf_idele_log_abs(y, where, x, prec): same finite result as adf_idele_Log;
+   real coordinate adf_real_log_abs(I), enclosing log(abs(t)) for every t in I.
+   Every valid idele excludes real zero, including a negative I, so no real
+   DOMAIN is possible. Status: OK; NOT_DETERMINED for a non-finite computed
+   real enclosure; LIMIT for prec above the maximum, decided first.
+   On failure where=infinity and y is untouched. Common contract applies.
+   Cost: one adf_real_log_abs and construction of the constant finite ball. */
+int adf_idele_log_abs(adf_adele_t y, adf_place_t *where,
+                     const adf_idele_t x, slong prec);
+
+/* adf_idele_Log_at(y, where, x, v, prec): only the named place v remains in y.
+   At infinity: real_log(I) at max(prec,2) bits, as adf_sball_Log_at.
+   At p: the local image IL2-IL4 enclosed at K=min(prec,E) when M>0;
+   E=max(v_p(M),d). If M=0, evaluate Log(r c) at prec digits; return exact
+   zero for r=p^m as lfunc.h does, otherwise a ball of exponent prec.
+   A prime not dividing M is always determined: centre 0, E=d. The raw
+   stored case v_2(M)=1 has E=2. Use no additive hull at unrestricted odd p.
+   Status: OK; DOMAIN at infinity for negative I; NOT_DETERMINED at infinity
+   only if the real evaluator cannot certify a finite enclosure; LIMIT at
+   infinity for excessive real precision, decided first, or at p for a local
+   resource bound above. where=v on each failure. No missing-place status:
+   an idele has a coordinate at every valid place. Common contract applies.
+   Cost at p: removals of p from M and r, a centre Log at K where needed;
+   unrestricted primes need no series or modular power. */
+int adf_idele_Log_at(adf_sball_t y, adf_place_t *where,
+                     const adf_idele_t x, adf_place_t v, slong prec);
+
+/* adf_idele_log_abs_at(y, where, x, v, prec): at infinity, only the real
+   coordinate log(abs(I)), as rfunc.h log_abs_at; OK for either sign.
+   At a prime: UNSUPPORTED with where=v, matching rfunc.h:106; use Log_at
+   there. NOT_DETERMINED for a non-finite real computed enclosure; LIMIT for
+   excessive real precision at infinity, decided first. On these failures
+   where=v and y is untouched. No DOMAIN on valid idele inputs.
+   Common contract applies. Cost: one adf_real_log_abs at infinity. */
+int adf_idele_log_abs_at(adf_sball_t y, adf_place_t *where,
+                        const adf_idele_t x, adf_place_t v, slong prec);
+
+/* ---- bounded all-places refinements (IL5, IL8; docs/api-1f8.md G10-G12) ---- */
+
+#define ADF_IDLOG_PLACES_MAX ((slong) 65536)
+#define ADF_IDLOG_CRT_BITS_MAX ADF_LBALL_BITS_MAX
+
+/* The common contract above also applies here. The prime list is borrowed and may be
+   unsorted; n=0 permits NULL. A sorted copy allocates at most 65536 place handles.
+   Shape checks follow the real precision check and precede
+   component evaluation. Sort before reporting repetitions or equal prime failures.
+   Bound the sum L_p bits(p), including the baseline factor at 2, before any CRT power.
+   Known local exponent/compact-power failures take precedence over that aggregate bound;
+   otherwise an aggregate refusal leaves where untouched and precedes evaluations.
+   Component statuses combine by numeric maximum, ties by infinity then increasing primes.
+   No value alias or overlap with the place array is permitted. */
+
+/* adf_idele_Log_refine(y, where, x, primes, n, N, prec): an all-places
+   enclosure (real_log(I); a + R Zhat). The finite ball is exactly C_S of
+   IL5 for S=primes[0..n-1], with K=min(N,E) for M>0, K=N for M=0.
+   Exact local zero is rounded to 0+p^N Z_p here, before intersection with
+   4 Zhat. The result remains inside 4 Zhat even when N<2. n=0 permits
+   primes=NULL and gives exactly the conservative form's set.
+   Status: OK; LIMIT for excessive real prec first (where=infinity), for
+   n>ADF_IDLOG_PLACES_MAX or CRT size above its bound (where untouched), or
+   a local computation beyond lfunc limits (where=that prime); DOMAIN for
+   n<0 (where untouched), a repeated prime (where=first repeated place in
+   canonical order), infinity in the prime list (where=infinity), or negative
+   I (where=infinity); NOT_DETERMINED if the real evaluator cannot certify a
+   finite result (where=infinity). Shape checks precede evaluation; component
+   failures combine by maximum with canonical place tie breaking. Values
+   unchanged on any failure. Common contract and no cross-type aliasing apply.
+   Cost: n local evaluations at capped precision, integer CRT, one real log. */
+int adf_idele_Log_refine(adf_adele_t y, adf_place_t *where,
+                         const adf_idele_t x, const adf_place_t *primes,
+                         slong n, slong N, slong prec);
+
+/* adf_idele_log_abs_refine(y, where, x, primes, n, N, prec): same finite
+   ball, precisions, limits, shape statuses, failure preservation and cost as
+   Log_refine; the real evaluator is adf_real_log_abs. Negative I is admitted.
+   Thus DOMAIN occurs only for the stated list-shape errors on valid inputs;
+   NOT_DETERMINED is only a non-finite computed real enclosure. Common
+   contract and maximum/canonical-place status combination apply. */
+int adf_idele_log_abs_refine(adf_adele_t y, adf_place_t *where,
+                            const adf_idele_t x, const adf_place_t *primes,
+                            slong n, slong N, slong prec);
+
 #ifdef __cplusplus
 }
 #endif

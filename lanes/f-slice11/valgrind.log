@@ -1,0 +1,673 @@
+==6== Memcheck, a memory error detector
+==6== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==6== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==6== Command: build/test_gfunc_log
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x112631: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:222)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x11265C: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:223)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x11268A: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:224)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x1126AB: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:225)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x1126CF: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:226)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x1126FF: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:228)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x11284E: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:236)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x112C0C: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:252)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x10F542: fail_at (test_gfunc_log.c:210)
+==6==    by 0x112C4C: adf_test_fn_slice_A_status_and_limits (test_gfunc_log.c:254)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x111F0D: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:460)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x111F3F: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:461)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x111F72: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:462)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x111FA0: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:463)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x111FD6: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:464)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x11200D: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:465)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x11212A: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:473)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x112183: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:477)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x1121B2: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:478)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x112206: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:481)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x11223E: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:482)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x112274: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:483)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x11232D: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:488)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x112381: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:491)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x48524EE: bcmp (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x110110: fail_refine (test_gfunc_log.c:445)
+==6==    by 0x1123EA: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:495)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+ok   conservative_Log
+ok   other_slice_A_calls
+local_selection: 6784 rows, 20 complete H=5 images, 101035 memberships
+ok   local_selection
+real_selection: 6 intervals, 5 precisions, 120 wrapper calls, mpmath 800-bit endpoints
+ok   real_selection
+ok   slice_A_status_and_limits
+large_prime_routes: p=65537, restricted comparison/additivity at N=3, witness at N=2
+large_prime_routes: p=18446744073709551557, restricted comparison/additivity at N=3, witness at N=2
+ok   large_prime_routes
+ok   compact_lifts_and_large_content
+ok   real_precision_ceiling
+ok   refinement_witness
+refinement_selection: 280 rows, 525 local projections, 73056 two-period memberships
+ok   refinement_selection
+ok   refinement_status_and_limits
+ok   large_prime_torsion_routes
+12 tests, 2194049 checks, 0 failed checks, 0 failed tests
+==6== 
+==6== HEAP SUMMARY:
+==6==     in use at exit: 577,640 bytes in 4,072 blocks
+==6==   total heap usage: 613,570 allocs, 609,498 frees, 460,557,435 bytes allocated
+==6== 
+==6== 16 bytes in 1 blocks are possibly lost in loss record 1 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5388CD6: __gmpz_realloc2 (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49AF8FC: _fmpz_clear_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x11E244: fmpz_clear (fmpz.h:70)
+==6==    by 0x11E244: local_log (gfunc_log.c:163)
+==6==    by 0x11E8E9: refine (gfunc_log.c:315)
+==6==    by 0x11F0C6: adf_idele_Log_refine (gfunc_log.c:366)
+==6==    by 0x110285: fail_refine (test_gfunc_log.c:446)
+==6==    by 0x112381: adf_test_fn_refinement_status_and_limits (test_gfunc_log.c:491)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 24 bytes in 1 blocks are possibly lost in loss record 2 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x125439: log_sum (lfunc.c:382)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x111773: adf_test_fn_large_prime_routes (test_gfunc_log.c:289)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 24 bytes in 1 blocks are possibly lost in loss record 3 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x125439: log_sum (lfunc.c:382)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x1117CD: adf_test_fn_large_prime_routes (test_gfunc_log.c:291)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 24 bytes in 1 blocks are possibly lost in loss record 4 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x1256E6: log_sum (lfunc.c:410)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x1117CD: adf_test_fn_large_prime_routes (test_gfunc_log.c:291)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 24 bytes in 1 blocks are possibly lost in loss record 5 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x1256E6: log_sum (lfunc.c:410)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x111897: adf_test_fn_large_prime_routes (test_gfunc_log.c:294)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 24 bytes in 1 blocks are possibly lost in loss record 6 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49BD0E9: fmpz_remove (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x12506E: set_ball_residue (lfunc.c:185)
+==6==    by 0x12506E: set_ball_residue (lfunc.c:170)
+==6==    by 0x126760: Log_centre (lfunc.c:613)
+==6==    by 0x126760: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x110812: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:512)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are still reachable in loss record 7 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x495656A: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49565ED: flint_register_cleanup_function (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4DED700: _arf_add_mpn (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4DEEC26: arf_addmul (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4E06862: arb_addmul_arf (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4FAA47A: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49598EF: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 8 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5386F13: __gmpz_sub (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49BE107: fmpz_sub (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x125724: log_sum (lfunc.c:411)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x11153B: adf_test_fn_large_prime_routes (test_gfunc_log.c:280)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 9 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5386F13: __gmpz_sub (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49BE107: fmpz_sub (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x125724: log_sum (lfunc.c:411)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x111621: adf_test_fn_large_prime_routes (test_gfunc_log.c:284)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 10 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5386F13: __gmpz_sub (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49BE107: fmpz_sub (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x125724: log_sum (lfunc.c:411)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x111773: adf_test_fn_large_prime_routes (test_gfunc_log.c:289)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 11 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x537B0F8: __gmpz_add_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49A5F8C: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x1256FB: log_sum (lfunc.c:411)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x1117CD: adf_test_fn_large_prime_routes (test_gfunc_log.c:291)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 12 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x125568: log_sum (lfunc.c:390)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x1117CD: adf_test_fn_large_prime_routes (test_gfunc_log.c:291)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 13 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5386324: __gmpz_mul_si (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x124E17: rat_mod (lfunc.c:150)
+==6==    by 0x1268F9: Log_centre (lfunc.c:563)
+==6==    by 0x1268F9: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x111897: adf_test_fn_large_prime_routes (test_gfunc_log.c:294)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 14 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x125568: log_sum (lfunc.c:390)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x111897: adf_test_fn_large_prime_routes (test_gfunc_log.c:294)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 32 bytes in 1 blocks are possibly lost in loss record 15 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x125568: log_sum (lfunc.c:390)
+==6==    by 0x1266AB: Log_centre (lfunc.c:602)
+==6==    by 0x1266AB: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x110A74: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:522)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 48 bytes in 1 blocks are possibly lost in loss record 16 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x12670B: Log_centre (lfunc.c:609)
+==6==    by 0x12670B: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x110A74: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:522)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 17 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x11DF19: local_log (gfunc_log.c:148)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x11153B: adf_test_fn_large_prime_routes (test_gfunc_log.c:280)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 18 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x1268DF: Log_centre (lfunc.c:562)
+==6==    by 0x1268DF: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x11153B: adf_test_fn_large_prime_routes (test_gfunc_log.c:280)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 19 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x1268DF: Log_centre (lfunc.c:562)
+==6==    by 0x1268DF: Log_core (lfunc.c:659)
+==6==    by 0x111621: adf_test_fn_large_prime_routes (test_gfunc_log.c:284)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 20 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x11DF19: local_log (gfunc_log.c:148)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x1117CD: adf_test_fn_large_prime_routes (test_gfunc_log.c:291)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 21 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x126097: Log_centre (lfunc.c:525)
+==6==    by 0x126097: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x1117CD: adf_test_fn_large_prime_routes (test_gfunc_log.c:291)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 22 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x126097: Log_centre (lfunc.c:525)
+==6==    by 0x126097: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x111897: adf_test_fn_large_prime_routes (test_gfunc_log.c:294)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 23 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x1107F4: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:511)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 24 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x11DF19: local_log (gfunc_log.c:148)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x110812: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:512)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 25 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x126584: Log_centre (lfunc.c:576)
+==6==    by 0x126584: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x110812: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:512)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 26 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x126097: Log_centre (lfunc.c:525)
+==6==    by 0x126097: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x110920: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:517)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 27 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x11DF19: local_log (gfunc_log.c:148)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x11096A: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:519)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 28 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x126097: Log_centre (lfunc.c:525)
+==6==    by 0x126097: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x11096A: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:519)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 56 bytes in 1 blocks are possibly lost in loss record 29 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x126584: Log_centre (lfunc.c:576)
+==6==    by 0x126584: Log_core (lfunc.c:659)
+==6==    by 0x11DFD9: local_log (gfunc_log.c:156)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x11096A: adf_test_fn_large_prime_torsion_routes (test_gfunc_log.c:519)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 376 bytes in 1 blocks are possibly lost in loss record 30 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49BD0E9: fmpz_remove (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x121F0E: val_fmpz (lball.c:94)
+==6==    by 0x121F0E: lb_make (lball.c:155)
+==6==    by 0x122CE1: adf_lball_set_rat (lball.c:352)
+==6==    by 0x11104C: adf_test_fn_compact_lifts_and_large_content (test_gfunc_log.c:325)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 376 bytes in 1 blocks are possibly lost in loss record 31 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49BD0E9: fmpz_remove (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x11DC46: describe (gfunc_log.c:97)
+==6==    by 0x11DDF4: local_log (gfunc_log.c:126)
+==6==    by 0x11E596: one_place (gfunc_log.c:196)
+==6==    by 0x11109C: adf_test_fn_compact_lifts_and_large_content (test_gfunc_log.c:327)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 384 bytes in 1 blocks are possibly lost in loss record 32 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x53863C4: __gmpz_mul_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x111007: adf_test_fn_compact_lifts_and_large_content (test_gfunc_log.c:322)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 7,320 bytes in 1 blocks are still reachable in loss record 33 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x495656A: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4DED082: _arf_add_mpn (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4DEEC26: arf_addmul (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4E06862: arb_addmul_arf (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4FAA47A: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49598EF: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49598B1: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49598B1: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49598B1: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6== 
+==6== 7,832 bytes in 1 blocks are still reachable in loss record 34 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x495656A: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4DEEE8C: arf_addmul (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4E06862: arb_addmul_arf (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4FAA47A: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49598EF: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6== 
+==6== 32,768 bytes in 1 blocks are still reachable in loss record 35 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x495656A: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49AF141: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49AF1C0: _fmpz_promote (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49BD961: fmpz_set_ui_array (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49BFA45: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49C20B3: fmpz_set_str (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x10E1A3: adf_test_fn_real_selection (test_gfunc_log.c:170)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 64,528 bytes in 4,033 blocks are possibly lost in loss record 36 of 40
+==6==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x53728D4: __gmp_default_allocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x53840C7: __gmpz_init2 (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==6==    by 0x49AF0DC: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49AF1C0: _fmpz_promote (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49BD961: fmpz_set_ui_array (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49BFA45: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49C20B3: fmpz_set_str (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x10E1A3: adf_test_fn_real_selection (test_gfunc_log.c:170)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 65,536 bytes in 1 blocks are still reachable in loss record 37 of 40
+==6==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x495EC89: n_compute_primes (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x495EEF7: n_primes_arr_readonly (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x495EF4B: n_is_oddprime_binary (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x128E37: adf_place_prime (place.c:59)
+==6==    by 0x10DD36: prime (test_gfunc_log.c:13)
+==6==    by 0x11149E: adf_test_fn_large_prime_routes (test_gfunc_log.c:276)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 65,536 bytes in 1 blocks are still reachable in loss record 38 of 40
+==6==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x495ECAE: n_compute_primes (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x495EEF7: n_primes_arr_readonly (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x495EF4B: n_is_oddprime_binary (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x128E37: adf_place_prime (place.c:59)
+==6==    by 0x10DD36: prime (test_gfunc_log.c:13)
+==6==    by 0x11149E: adf_test_fn_large_prime_routes (test_gfunc_log.c:276)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 69,632 bytes in 1 blocks are possibly lost in loss record 39 of 40
+==6==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49AF001: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49AF1C0: _fmpz_promote (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49BD961: fmpz_set_ui_array (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49BFA45: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49C20B3: fmpz_set_str (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x10E1A3: adf_test_fn_real_selection (test_gfunc_log.c:170)
+==6==    by 0x10D778: main (test_runner.h:162)
+==6== 
+==6== 262,152 bytes in 1 blocks are still reachable in loss record 40 of 40
+==6==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6==    by 0x495656A: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4DF958C: _arf_set_round_mpn (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4DFA882: arf_mul_rnd_down (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4E36FB8: arb_mul_arf (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4FAA468: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x49598EF: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4959872: flint_parallel_binary_splitting (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4FAF3A6: arb_hypgeom_sum (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4FB3B5A: arb_hypgeom_infsum (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6==    by 0x4E136C5: arb_const_log2_hypgeom_eval (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==6== 
+==6== LEAK SUMMARY:
+==6==    definitely lost: 0 bytes in 0 blocks
+==6==    indirectly lost: 0 bytes in 0 blocks
+==6==      possibly lost: 136,464 bytes in 4,065 blocks
+==6==    still reachable: 441,176 bytes in 7 blocks
+==6==         suppressed: 0 bytes in 0 blocks
+==6== 
+==6== Use --track-origins=yes to see where uninitialised values come from
+==6== For lists of detected and suppressed errors, rerun with: -s
+==6== ERROR SUMMARY: 100 errors from 57 contexts (suppressed: 0 from 0)

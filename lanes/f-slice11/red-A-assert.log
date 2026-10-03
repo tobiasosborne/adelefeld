@@ -1,0 +1,6 @@
+ok   conservative_Log
+FAIL tests/test_gfunc_log.c:43: other_slice_A_calls: check failed: adf_idele_log_abs(y, NULL, x, 64) == ADF_OK
+FAIL tests/test_gfunc_log.c:44: other_slice_A_calls: check failed: adf_idele_Log_at(s, NULL, x, prime(3), 5) == ADF_OK
+FAIL tests/test_gfunc_log.c:45: other_slice_A_calls: check failed: adf_idele_log_abs_at(s, NULL, x, adf_place_inf(), 64) == ADF_OK
+FAIL other_slice_A_calls (tests/test_gfunc_log.c:36, 3 failed checks)
+2 tests, 12 checks, 3 failed checks, 1 failed tests

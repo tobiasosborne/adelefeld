@@ -1,0 +1,18 @@
+ok   conservative_Log
+ok   other_slice_A_calls
+local_selection: 6776 rows, 20 complete H=5 images, 101035 memberships
+ok   local_selection
+real_selection: 6 intervals, 5 precisions, 120 wrapper calls, mpmath 800-bit endpoints
+ok   real_selection
+ok   slice_A_status_and_limits
+large_prime_routes: p=65537, restricted comparison/additivity at N=3, witness at N=2
+large_prime_routes: p=18446744073709551557, restricted comparison/additivity at N=3, witness at N=2
+ok   large_prime_routes
+ok   compact_lifts_and_large_content
+ok   real_precision_ceiling
+FAIL tests/test_gfunc_log.c:352: refinement_witness: check failed: adf_idele_Log_refine(y,&w,x,ps,1,5,64)==ADF_OK
+FAIL tests/test_gfunc_log.c:353: refinement_witness: check failed: fmpz_equal_ui(y->fin.A,12) && fmpz_equal_ui(y->fin.H,36) && fmpz_is_one(y->fin.d)
+FAIL tests/test_gfunc_log.c:355: refinement_witness: check failed: adf_idele_log_abs_refine(y,&w,x,ps,1,5,64)==ADF_OK
+FAIL tests/test_gfunc_log.c:356: refinement_witness: check failed: fmpz_equal_ui(y->fin.A,12) && fmpz_equal_ui(y->fin.H,36)
+FAIL refinement_witness (tests/test_gfunc_log.c:346, 4 failed checks)
+9 tests, 318577 checks, 4 failed checks, 1 failed tests
