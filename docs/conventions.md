@@ -238,6 +238,10 @@ Over several places (an all-places function, `f_at` over a set `S`, a family suc
 2. The reported place is the first place, in the canonical order of places (section 7), whose status equals the
    combined status.
 3. The result is `ADF_OK` exactly when every part is `ADF_OK`.
+4. A failure of the finite part as a whole that names no prime (the all-places root of an exact rational without a
+   rational root: the failing prime is not computed, `SPEC.md` 15.4 N-D16) leaves the report `where` untouched; rule
+   2 applies to the places that the function examines. Counterexample to "every `DOMAIN` of an all-places function
+   carries a place": `adf_rat_root` of 2 with `n = 2` (finding 1 of lane `f-slice10`).
 
 DECISION (proposed) CV-04: precedence by maximum, ties by canonical place order; reason: proved failures dominate
 failures that more precision may repair, so a caller does not raise the precision in vain, and the reported place
