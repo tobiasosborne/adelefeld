@@ -1,0 +1,4 @@
+mkdir -p lanes/f-review9/build/support
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f-review9/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f-review9/build/support/jsonl.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_gfunc.c lanes/f-review9/build/support/golden.o lanes/f-review9/build/support/jsonl.o lanes/f-review9/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f-review9/build/test_gfunc

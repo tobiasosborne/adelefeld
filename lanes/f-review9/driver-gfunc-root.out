@@ -1,0 +1,43 @@
+1
+-1
+1
+2
+error: DOMAIN
+error: DOMAIN
+-2
+error: DOMAIN
+3/2
+-3/2
+3/2
+error: DOMAIN
+0
+-5/3
+error: DOMAIN
+2
+error: DOMAIN
+-1
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+(2 ; 3/2)
+(-2 ; -3/2)
+error: DOMAIN
+error: DOMAIN
+(0 ; 0)
+(2 ; 3)
+error: NOT_DETERMINED
+error: NOT_DETERMINED
+(2 ; 2 * [1])
+(-2 ; 2 * [-1])
+error: DOMAIN
+error: DOMAIN
+error: NOT_DETERMINED
+(4 ; 4 * [1 mod 8])
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: PARSE
+error: PARSE
