@@ -9,7 +9,10 @@
    (conventions 11). Implemented in work package 1.4 (docs/PLAN.md section 6). The unit coset, the
    idele and the idele class (conventions 5.6, 5.7, 9.2 ucoset_v, idele_v, idclass_v; golden vectors
    tests/golden/{ucoset,idele,idclass}.tsv) are added by lane t-slice1 (milestone 2); their
-   functions are in src/text_idele.c and are declared at the end of this header.
+   functions are in src/text_idele.c and are declared at the end of this header. The local ball and
+   the partial ball (conventions 5.8, 5.9, 9.2 lball_v, lcoord, sball_v, sentry; golden vectors
+   tests/golden/{lball,sball}.tsv) are added by lane t-slice2; their functions are in
+   src/text.c (its last section) and are declared in the block "adf_lball, adf_sball" below.
 
    Rules common to every parser adf_x_set_str (conventions 8.1, 8.5, 4.3):
    - The input is the len bytes at s. It need not be NUL-terminated; a NUL byte inside it is
@@ -65,6 +68,8 @@
 #include "adelefeld/ucoset.h"
 #include "adelefeld/idele.h"
 #include "adelefeld/idclass.h"
+#include "adelefeld/lball.h"
+#include "adelefeld/sball.h"
 
 /* Defaults of conventions 8.4 (CV-27) and 8.1. */
 #define ADF_TEXT_MAX_LEN_DEFAULT    ((size_t) 1048576)
@@ -238,6 +243,103 @@ int adf_idclass_set_str(adf_idclass_t x, const char * s, size_t len, slong prec,
 
 /* adf_idclass_get_str(len, x, digits): "<r(t) ; U>", U the normal form of the unit of x. */
 char * adf_idclass_get_str(size_t * len, const adf_idclass_t x, slong digits);
+
+/* ---- adf_lball, adf_sball (milestone 1F types in the value form, lane t-slice2) ----
+
+   Grammar (conventions 9.2, lines 1117 and 1127-1128):
+       lball_v = "[" "p" "=" uint ":" lcoord "]"
+       lcoord  = rat ["+" "O" "(" uint ["^" sint] ")"]
+       sball_v = "{" [ sentry {";" sentry} "}"
+       sentry  = "inf" ":" (real | complex)  |  "p" "=" uint ":" lcoord
+   The label of the archimedean place is "inf" (seams R9, D8); a real entry and a complex entry are told
+   apart by the syntax of the ball, and they are the two tags of adf_sball (conventions 5.9).
+
+   Semantic constraints (conventions 9.3, lines 1155-1160): the prime p of a local entry satisfies p < 2^64
+   (ADF_UNSUPPORTED) and p is prime (n_is_prime, ADF_DOMAIN); the base inside "O(...)" equals p, else
+   ADF_DOMAIN; every "/" of the centre has a denominator that is not 0, else ADF_DOMAIN; a partial ball has
+   at most one "inf" entry and no prime twice, else ADF_DOMAIN. abs(N) <= max_prec is a limit of stage 4
+   (ADF_LIMIT, checked on the digit string before any number is formed, decision M1-D7).
+
+   Canonicalisation on input (conventions 9.3, line 1174, and 5.8): a local coordinate with an O-term is
+   stored as the canonical centre p^v u in [0, p^N) of conventions 5.8, by adf_lball_set_rat_ball (the
+   statement L1 of docs/api-1f.md); "O(p)" is stored as N = 1 and printed "O(p^1)"; a centre without an
+   O-term is the exact rational of Q_p as adf_lball_set_rat stores it (p^v u with u a unit at p); the
+   entries of a partial ball are sorted into the canonical order of places (conventions 7: the
+   archimedean place first, then the primes increasing), which is the storage order of 5.9.
+
+   Printing (conventions 9.4, lines 1206-1207): the local coordinate L is "q(p^v u)" when it is exact and
+   "q(c) + O(p^N)" otherwise, with c the canonical centre as an integer and N in signed decimal; adf_lball is
+   "[p=P: L]" with P in decimal. adf_sball is "{E; E; ...}" in the canonical order of places, E is
+   "inf: r(x)" for the real tag, "inf: z(x)" for the complex tag, and "p=P: L" at a prime; a partial ball
+   with no place is "{}". r is the printing of a real ball of conventions 9.5 with n = digits (no
+   constraint on its sign: the archimedean component of a partial ball has none) and z(x) is
+   "(r(re)) + (r(im))*i".
+
+   The real ball of an "inf" entry (conventions 9.5, "Reading"): the entry denotes the exact interval
+   [m - r, m + r]; the stored arb contains it at working precision prec and equals it when m is dyadic with
+   at most prec bits of odd mantissa and r is dyadic with odd mantissa below 2^30. There is no sign
+   condition, so ADF_NOT_DETERMINED (stage 7 of conventions 8.5) cannot occur. A prec above
+   ADF_REAL_PREC_MAX (sball.h) is ADF_LIMIT, decided from prec alone before the text is read, as every
+   function of prec in sball.h decides it (conventions 8.5 has no stage for it). A prec below 2 is taken as
+   2 (decision M1-D4, conventions 8.1).
+
+   Two limits of the library, both ADF_LIMIT, are in addition to those of conventions 8.4: (1) abs(N) above
+   ADF_LBALL_EXP_MAX (the bound of lball.h, checked on the digit string after max_prec, so that N fits a
+   slong); (2) a canonical centre that would need a power p^k with k bits(p) > ADF_LBALL_BITS_MAX
+   (adf_lball_set_rat_ball returns ADF_LIMIT for it). Both are decided before anything is stored.
+
+   On every status other than ADF_OK the output value is untouched (conventions 4.3, 8.5). s is read during
+   the call only and never retained; lim = NULL means the defaults of conventions 8.4. The readers write a
+   canonical value and every output satisfies its predicate (conventions 5.8, 5.9). Aliasing: there is
+   none to state, the value is the only object of its type in the call.
+
+   Printers (the rules of adf_x_get_str above): the caller frees the string with adf_str_free.
+   adf_lball_get_str returns NULL with *len = 0 when the exact value needs a power p^|v| with |v| bits(p) >
+   ADF_LBALL_BITS_MAX (adf_lball_get_center returns ADF_LIMIT; the centre of a ball is the stored integer
+   and is never refused). adf_sball_get_str returns NULL with *len = 0 when a real or complex component of
+   the partial ball is not printable (decision M1-D6, the same condition as adf_adele_get_str). digits:
+   1 <= digits <= 10^6, ADF_DIGITS_DEFAULT = 20.
+
+   Round trips (conventions 9.6): adf_lball has no real part, so parse(print(v)) = v as a set for every v
+   the printer admits, and print(parse(t)) is canonical. For adf_sball without an archimedean place the same
+   holds. With an archimedean place, parse(print(v)) is a partial ball whose component contains the
+   component of v, and the text of a printed value read back and printed again is a fixed point when the
+   real ball is read at a prec that admits the printed text (the value form of a real ball is a decimal
+   enclosure, not a lossless form: docs/SPEC.md 10.2, gate finding G4). Golden vectors:
+   tests/golden/lball.tsv, tests/golden/sball.tsv. */
+
+/* adf_lball_set_str(x, s, len, lim): x = the local ball of the text "[p=P: L]" at the prime P.
+   Statuses: ADF_OK, x written;
+   ADF_PARSE (the grammar; also a forbidden byte and an embedded NUL, stages 2 and 3 of conventions 8.5);
+   ADF_LIMIT (len > max_len, stage 1; abs(N) > max_prec, stage 4; abs(N) > ADF_LBALL_EXP_MAX; a centre that
+   needs too large a power, from adf_lball_set_rat_ball);
+   ADF_UNSUPPORTED (P >= 2^64, stage 5);
+   ADF_DOMAIN (P is not prime; the base inside "O(...)" is not P; a denominator of the centre is 0,
+   stage 6).
+   The output is untouched on every status other than ADF_OK. Cost: one n_is_prime, one primality test of
+   the centre. */
+int adf_lball_set_str(adf_lball_t x, const char * s, size_t len, const adf_text_limits_t * lim);
+
+/* adf_lball_get_str(len, x): "[p=P: L]" of conventions 9.4, L the canonical centre of 5.8 (the exact value
+   q(p^v u) when x is exact). Never NULL except for the centre that does not fit (see above). */
+char * adf_lball_get_str(size_t * len, const adf_lball_t x);
+
+/* adf_sball_set_str(x, s, len, prec, lim): x = the partial ball of the text at working precision prec for
+   its archimedean component (see above).
+   Statuses: ADF_OK, x written;
+   ADF_LIMIT (prec > ADF_REAL_PREC_MAX, decided first; len > max_len; more than max_items entries; a decimal
+   exponent above max_exp10; abs(N) above max_prec or above ADF_LBALL_EXP_MAX);
+   ADF_PARSE (stage 2 and stage 3);
+   ADF_UNSUPPORTED (a prime p >= 2^64 in any entry, stage 5);
+   ADF_DOMAIN (a prime that is not prime; a base inside "O(...)" different from its p; a denominator of a
+   centre that is 0; two "inf" entries; the same prime twice, stage 6).
+   The output is untouched on every status other than ADF_OK. Cost: one n_is_prime per entry, one
+   allocation of len elements, one sort. */
+int adf_sball_set_str(adf_sball_t x, const char * s, size_t len, slong prec, const adf_text_limits_t * lim);
+
+/* adf_sball_get_str(len, x, digits): "{E; E; ...}" in the canonical order of places (conventions 7), E as
+   above; "{}" when x has no place. NULL with *len = 0 when a component is not printable (M1-D6). */
+char * adf_sball_get_str(size_t * len, const adf_sball_t x, slong digits);
 
 /* Layout queries for the limits struct (conventions 12.4). Header-inline and exported. */
 ADF_INLINE size_t adf_sizeof_text_limits(void) { return sizeof(adf_text_limits_t); }

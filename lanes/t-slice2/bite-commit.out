@@ -1,0 +1,12 @@
+ok   every_row_of_the_golden_file_lball
+ok   lball_stored_fields
+ok   every_row_of_the_golden_file_sball
+ok   sball_the_complex_tag
+ok   sball_the_canonical_order
+ok   the_reference_on_generated_texts
+ok   round_trips_of_generated_values
+FAIL tests/test_text_local.c:415: hostile_input: check failed: lball_is_sentinel(x) | N = ADF_LBALL_EXP_MAX: the centre of 1/3 needs too large a power: the output changed on status LIMIT
+FAIL hostile_input (tests/test_text_local.c:1256, 1 failed checks)
+ok   the_order_of_the_stages
+ok   printer_bounds_and_digits
+10 tests, 68863 checks, 1 failed checks, 1 failed tests

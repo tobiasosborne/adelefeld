@@ -1,0 +1,15 @@
+ok   every_row_of_the_golden_file_lball
+ok   lball_stored_fields
+ok   every_row_of_the_golden_file_sball
+FAIL tests/test_text_local.c:434: sball_the_complex_tag: check failed: adf_sball_is_canonical(x) | a complex entry and two primes, out of order: the result is not canonical
+FAIL tests/test_text_local.c:792: sball_the_complex_tag: check failed: x->loc[0].p == 2 && x->loc[1].p == 7 | the primes are in the canonical order
+FAIL tests/test_text_local.c:793: sball_the_complex_tag: check failed: adf_sball_is_canonical(x)
+FAIL tests/test_text_local.c:795: sball_the_complex_tag: check failed: strcmp(t, "{inf: (1) + (2)*i; p=2: 3 + O(2^3); p=7: 1}") == 0 | printed "{inf: (1) + (2)*i; p=7: 1; p=2: 0}"
+FAIL sball_the_complex_tag (tests/test_text_local.c:773, 4 failed checks)
+ok   sball_the_canonical_order
+ok   the_reference_on_generated_texts
+ok   round_trips_of_generated_values
+ok   hostile_input
+ok   the_order_of_the_stages
+ok   printer_bounds_and_digits
+10 tests, 68863 checks, 4 failed checks, 1 failed tests

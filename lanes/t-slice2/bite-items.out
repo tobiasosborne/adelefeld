@@ -1,0 +1,16 @@
+ok   every_row_of_the_golden_file_lball
+ok   lball_stored_fields
+ok   every_row_of_the_golden_file_sball
+ok   sball_the_complex_tag
+ok   sball_the_canonical_order
+ok   the_reference_on_generated_texts
+ok   round_trips_of_generated_values
+FAIL tests/test_text_local.c:429: hostile_input: check failed: st == want | 10000 entries, max_items = 9999: status 7 (DOMAIN), expected 10 (LIMIT)
+FAIL tests/test_text_local.c:429: hostile_input: check failed: st == want | 4 entries, max_items = 3: status 0 (OK), expected 10 (LIMIT)
+FAIL tests/test_text_local.c:429: hostile_input: check failed: st == want | 2 entries, max_items = 1: status 0 (OK), expected 10 (LIMIT)
+FAIL tests/test_text_local.c:429: hostile_input: check failed: st == want | 1 entry, max_items = 0: status 0 (OK), expected 10 (LIMIT)
+FAIL hostile_input (tests/test_text_local.c:1256, 4 failed checks)
+FAIL tests/test_text_local.c:429: the_order_of_the_stages: check failed: st == want | the count before primality: status 7 (DOMAIN), expected 10 (LIMIT)
+FAIL the_order_of_the_stages (tests/test_text_local.c:1481, 1 failed checks)
+ok   printer_bounds_and_digits
+10 tests, 68848 checks, 5 failed checks, 2 failed tests

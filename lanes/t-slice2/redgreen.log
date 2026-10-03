@@ -1,0 +1,43 @@
+# lane t-slice2: red and green
+
+## Red 1 (the test before the code)
+
+    timeout 900 make -j2 BUILD=lanes/t-slice2/build lanes/t-slice2/build/test_text_local
+    -> tests/test_text_local.c compiles with -Wall -Wextra -Wpedantic -Werror (no warning);
+       the link fails with 35 "undefined reference" lines: adf_lball_set_str, adf_lball_get_str,
+       adf_sball_set_str, adf_sball_get_str are declared in include/adelefeld/text.h and defined nowhere.
+       (lanes/t-slice2/red1.out)
+
+The first build of the test file had 12 compile errors of the test itself (a composite literal, a wrong
+argument of adf_lball_set_rat, arf_is_zero on an arb, fmpq_set_si wrapped in ADF_CHECK, flint_snprintf
+instead of snprintf, a cast of a pointer to char, two unused helpers). They were repaired before the red run
+above; they are not red-green failures of the library.
+
+## Green
+
+(filled in below as the runs happen)
+## Green 1
+
+    timeout 900 make -j2 BUILD=lanes/t-slice2/build lanes/t-slice2/build/test_text_local
+    timeout 300 ./lanes/t-slice2/build/test_text_local
+    -> "10 tests, 68852 checks, 0 failed checks, 0 failed tests", 0.15 s
+
+Three defects of the reader and the printer were found by the tests between the red run and this one, and
+repaired (lanes/t-slice2/green1.out is the output of the run above):
+
+1. **the centre of a ball was printed as the stored unit u instead of p^v u.** `[p=5: 1/5 + O(5^2)]` printed
+   `[p=5: 1 + O(5^2)]`; the predicate of conventions 5.8 gives v = -1, u = 1 and the centre c = p^v u = 1/5.
+   8 golden rows failed (lines 8, 9, 10, 18, 21, 25 and their round trips). The printer now always forms the
+   centre with adf_lball_get_center, exactly as for an exact value.
+2. **the separator of the entries was written twice** when a partial ball has an archimedean component and at
+   least one prime: `{inf: 1.5 +/- 1.1e-9; ; p=2: 1 + O(2^3); p=5: 3 + O(5^4)}`. The text is not a text of the
+   grammar, so the reader refused it (the round trip of sball.tsv line 7).
+3. **a ';' at the end of the entries was accepted**: `{p=5: 1;}` gave ADF_OK, the golden row (line 18) asks for
+   ADF_PARSE. The grammar of conventions 9.2 is `"{" [sentry {";" sentry}] "}"`: after a ';' an entry must
+   follow.
+
+Twelve defects of the test file itself (a wrong length constant, "inf: " cut at 4 bytes instead of 5, the
+expectation of a fixed point of printing where conventions 9.6 promises only an enclosure, max_items set to 3
+where the text has three entries, a text of 1/2 where the grammar of a real part is a decimal, ...) are
+recorded in the progress notes of the lane; none of them weakened a check of the library: each one made the
+test wrong, and the check was written again in the form the contract asks for.

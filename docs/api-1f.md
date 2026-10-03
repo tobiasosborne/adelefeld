@@ -635,3 +635,103 @@ arb allocates for (finding R5 of the review of the real functions). At a prime t
 of `2^21` would refuse valid requests (an exact result needs no work at any `N`). The test
 `prec_is_the_absolute_precision_at_a_prime` runs `exp(0)`, `log(1)`, `Log(5)` at `N = 2^21 + 1`, `2^21 + 2` and
 `LONG_MAX` and gets the exact results, and `exp(5)` at `N = LONG_MAX` gets `LIMIT` from `lfunc.h` with `where` = 5.
+
+## Slice 1F.5-c: the value form of `adf_lball` and `adf_sball` (lane t-slice2, 2026-10-03)
+
+Header: `include/adelefeld/text.h`, the block "adf_lball, adf_sball" (two includes, `lball.h` and `sball.h`,
+and the four declarations). Code: the last section of `src/text.c`. Tests: `tests/test_text_local.c` (10 tests, 68863 checks),
+the vectors `tests/ref/vectors/t-slice2/vectors_local.jsonl` written by `lanes/t-slice2/gen_vectors.py` from the reference
+`proto/text_grammar.py`, Julia `tests/julia/text_local.jl` and a block in `tests/test_julia.sh`. The golden
+vectors are `tests/golden/lball.tsv` (52) and `tests/golden/sball.tsv` (25). Sources: `docs/conventions.md`
+5.8, 5.9, 7, 8.1 to 8.5, 9.2 to 9.7; `docs/api-1f.md` L1 (the canonical centre of a local ball); the headers
+`lball.h`, `sball.h` and `place.h`; the reference `proto/text_grammar.py` (`Parser.lcoord` 359-372,
+`Parser.sentry` 382-394, `_syntax` 465-481, `_check_limits` 579-599, `_check_unsupported` 607-617, `_lcoord`
+702-714, `_padic_centre` 716-729, `_fmt_lcoord` 751-757, `_build_and_print` 834-856). Nothing in the grammar,
+the constraints or the templates is changed by this slice.
+
+### Functions
+
+| Function | Accepts / returns | Statuses |
+|---|---|---|
+| `adf_lball_set_str(x, s, len, lim)` | `"[" "p" "=" uint ":" lcoord "]"` with `lcoord = rat ["+" "O" "(" uint ["^" sint] ")"]`; stores the canonical centre of conventions 5.8 (by `adf_lball_set_rat_ball`, statement L1) or the exact rational (`adf_lball_set_rat`) | `OK`, `PARSE`, `LIMIT` (`len > max_len`; `abs(N) > max_prec`; `abs(N) > ADF_LBALL_EXP_MAX`; a centre that needs too large a power), `UNSUPPORTED` (`p >= 2^64`), `DOMAIN` (`p` not prime; the base inside `O(...)` is not `p`; a denominator of the centre is 0) |
+| `adf_lball_get_str(len, x)` | `"[p=P: L]"`, `L` = `q(p^v u)` when exact, `q(c) + O(p^N)` otherwise (the centre `c = p^v u` of conventions 5.8, `N` in signed decimal) | none; `NULL`, `*len = 0` when the centre needs `p^|v|` with `|v| bits(p) > ADF_LBALL_BITS_MAX` |
+| `adf_sball_set_str(x, s, len, prec, lim)` | `"{" [sentry {";" sentry] "}"`, `sentry` = `"inf:" real`, `"inf:" complex` or `"p=" uint ":" lcoord`; the entries are sorted into the canonical order of places (conventions 7), one `inf` at most, no prime twice | `OK`, `PARSE`, `LIMIT` (`prec > ADF_REAL_PREC_MAX`, decided first; `len > max_len`; more than `max_items` entries; a decimal exponent above `max_exp10`; `abs(N) > max_prec` or `> ADF_LBALL_EXP_MAX`), `UNSUPPORTED` (a prime `>= 2^64`), `DOMAIN` (`p` not prime; the base is not `p`; a denominator is 0; two `inf` entries; the same prime twice) |
+| `adf_sball_get_str(len, x, digits)` | `"{E; E; ...}"` in the canonical order of places, `E` = `inf: r(x)`, `inf: z(x)` or `p=P: L`, `"{}"` for no place; the real balls by the printer of conventions 9.5 (no sign condition) | none; `NULL`, `*len = 0` when a component is beyond `ADF_PRINT_EXP_MAX` (decision M1-D6) |
+
+The round trips of conventions 9.6: `adf_lball` has no real part, so `parse(print(v))` is `v` field by field
+and `print(parse(t))` is canonical, for every value the printer admits. The same holds for a partial ball
+without an archimedean place. With one, `parse(print(v))` has a component that contains the component of `v`
+and the same places; the text is a fixed point of printing when the real part is read exactly, and every pass
+widens the ball a little when it is not (gate finding G4: "Repeated C value-text round trips may widen the
+value and change their text on every pass"). `tests/test_text_local.c` checks the equality field by field on
+2000 generated local balls and 2000 generated partial balls, the containment on the 805 valid texts of the
+vectors, and the fixed point where it is promised.
+
+### Decisions taken in this slice (each with the alternative)
+
+| Id | Question | Taken | Alternative |
+|---|---|---|---|
+| u-1 | Where the code lives | the last section of `src/text.c`. The lane, for which `src/text.c` was read-only, wrote a file `src/text_local.c` whose first 1008 lines copied the static machinery of `src/text.c`; the orchestrator joined the lane's 847 lines to `src/text.c` on 2026-10-04 so that the machinery exists once (same 68868 checks of `test_text_local`, the seven other text test programs unchanged) | a shared `src/text_internal.h` with the machinery; the two hidden functions of `src/text_idele.c` extended to the two new forms |
+| u-2 | A complex `inf` entry | read, and stored with the tag `ADF_ARCH_COMPLEX` (`sball.h` 5.9, the archimedean place carries the tag real or complex; the golden file has `{inf: (1) + (2)*i}`). `acb_t inf` holds it, and the printer writes `z(x)` | `ADF_UNSUPPORTED` (as every arithmetic function of `sball.h` does on a COMPLEX tag, but reading text is not arithmetic, and the conventions put the syntax of the archimedean entry in 9.2 for both tags) |
+| u-3 | `prec` in `adf_sball_set_str` | `ADF_LIMIT` for `prec > ADF_REAL_PREC_MAX`, decided from `prec` alone before the text is read, as every function of `prec` of `sball.h` decides it (conventions 8.5 has no stage for it), including when the text has no archimedean entry | no limit (as `adf_adele_set_str`, which allocates `prec` bits); `LIMIT` at stage 4 |
+| u-4 | The two limits that are not in conventions 8.4 | `abs(N) > ADF_LBALL_EXP_MAX` is `LIMIT`, checked on the digit string after `max_prec` so that `N` fits a `slong`; a canonical centre that needs `p^k` with `k bits(p) > ADF_LBALL_BITS_MAX` is `LIMIT`, from `adf_lball_set_rat_ball`. Both are `LIMIT` on `x` untouched | let the constructor decide both (it would need `N` to fit a word first); no limit at all |
+| u-5 | The order of the `DOMAIN` checks among themselves | free: two `inf` entries and the repetition of a prime are decided before the components are built, the rest in the order of the text. All are `DOMAIN`, so no status depends on it (conventions 9.3 leaves it open) | one fixed order in the reference's walk of the entries |
+| u-6 | The storage of the entries | the components are built into an array of `adf_lball_struct` in the canonical order (`qsort`), and the value is handed to `adf_sball_set_arb_lballs` for the tags `NONE` and `REAL`; only the tag `COMPLEX` fills the struct by hand, as a binding does (the comment of the struct in `sball.h`) | fill the struct by hand in the three cases (less code, but then the constructor of `sball.h` is not used and its checks are not run) |
+| u-7 | The order of places inside a partial ball | the explicit `qsort` is redundant for the tags `NONE` and `REAL`: `adf_sball_set_arb_lballs` sorts the components itself. It is needed for the repetition check before the build (the constructor would also give `DOMAIN`, one component later) and for the tag `COMPLEX`, which fills the array by hand. The fault "order" of `lanes/t-slice2/bite.py` shows what happens without it | rely on the constructor alone (then the repetition is found by the constructor and the array may be unsorted when the tag is `COMPLEX`) |
+| u-8 | `adf_lball_get_str` when the centre does not fit | `NULL` with `*len = 0`, as `adf_adele_get_str` does for a real part beyond the bound of decision M1-D6 | refuse the value in the reader too (it does not: the value is canonical, only its decimal form is large) |
+
+### Statements
+
+**L14 (reading a local coordinate).** Let `p` be a prime below `2^64` and `L` a `lcoord` of conventions 9.2 for
+`p`: either a rational `a`, or `a + O(p^N)` with `N` the exponent or 1. Then `adf_lball_set_str` stores, with
+`p` and the fields of conventions 5.8, the exact rational `a` as `p^v u` when there is no `O`-term, and the ball
+`a + p^N Z_p` as the canonical centre `p^v u` of `[0, p^N)` when there is one.
+
+*Proof.* The value is built by the constructors of `lball.h`: `adf_lball_set_rat` writes `v = v_p(a)` and
+`u = a/p^v`, a unit at `p` (its header), which is the exact form of the predicate of conventions 5.8 for
+`exact = 1`; `adf_lball_set_rat_ball` writes the ball with the canonical centre (its header, statement L1: the
+centre `c = p^v u` is the unique element of `Z[1/p]` in `[0, p^N)` that lies in the ball, proved in the header
+of `lball.h` from `Z[1/p] ∩ p^N Z_p = p^N Z`). Nothing else is computed. The checks before the build are the
+stages of conventions 8.5: the grammar, `abs(N) <= max_prec` and `abs(N) <= ADF_LBALL_EXP_MAX` on the digits,
+`p < 2^64` on the digits, then `DOMAIN` for a denominator that is 0, for a base inside `O(...)` that is not `p`,
+and for a prime that is not prime (`n_is_prime` through `adf_place_prime`). A ball around 0 (`u = 0, v = 0`)
+and the exact 0 (`exact = 1, u = 0`) are different values, and the golden file has both
+(`[p=5: 3 + O(5^0)]` and `[p=5: 0]`). *Check:* `tests/test_text_local.c` `lball_stored_fields` compares the
+fields `p`, `u`, `v`, `N`, `exact` of 12 hand-computed cases (`1/3 + O(5^4)` has the centre 417 because
+`3 * 417 = 2 * 625 + 1`; `1/125 + O(5^-2)` has `v = -3`, `u = 1`; `1/8` at 2 has `v = -3` and at 7 has `v = 0`),
+and every row of `tests/golden/lball.tsv` is read, printed and compared with the reference.
+
+**L15 (the printed centre of a local ball is `p^v u`, not `u`).** Let `x` be a canonical local ball
+(conventions 5.8) with fields `p`, `u`, `v`, `N`, `exact`. The text of `adf_lball_get_str` contains the centre
+`q(p^v u)` when `x` is exact, and `q(p^v u) + O(p^N)` when it is not.
+
+*Proof.* The predicate of conventions 5.8 says that for `exact = 0` the centre `c = p^v u` is the unique
+element of `Z[1/p]` in `[0, p^N)` that lies in the ball, and `c` is that integer times `p^v`; when `v < 0` (a
+ball around a point with negative valuation, as `1/5 + O(5^2)`) `c` is a rational and `u` is not it. The printer
+takes the centre from `adf_lball_get_center`, which returns the rational `p^v u` of the header. *Check:* the six
+golden rows with a centre that is not the unit (`[p=5: 1/5 + O(5^2)]`, `[p=5: 1/125 + O(5^-2)]`,
+`[p=3: 2/3 + O(3^0)]`, `[p=5: 1/10 + O(5)]`, `[p=5: 1/25 + O(5^-2)]`, `[p=5: 26/125 + O(5^-2)]`) and the
+fault "centre" of `lanes/t-slice2/bite.py` (7818 failed checks, 7 failed tests).
+
+### Not done, findings
+
+Not done: the dump form (conventions 10) of the two types (`adf_lball_dump_str`, `_load_str` and the same for
+`adf_sball`): it needs the loader and the dumper of `src/dump.c`, which is not this lane's. No fuzz run and no
+mutation run (the brief replaces the mutation run by the faults above).
+
+Findings:
+
+1. **The C round trip of a partial ball with a decimal archimedean component is not a fixed point**, as
+   conventions 9.6 and gate finding G4 say it may not be: `{inf: 1.5 +/- 1e-9}` prints from C as
+   `{inf: 1.5 +/- 1.1e-9}` and the next pass as `{inf: 1.5 +/- 1.2e-9}` (the radius `1/10^9` is rounded up to 30
+   bits, then to two digits, at every pass). The golden files hold the text of the reference, which is exact;
+   the test compares the text character by character only where the real part is read exactly, and elsewhere
+   compares containment. The same is already reported for ideles in `docs/api-2.md` 4.5 (1).
+2. **`adf_sball_is_canonical` is not called by the reader of a COMPLEX value** (the array is filled by hand, as
+   a binding does); with `-DADF_CHECK_INVARIANTS` the reader checks it before it returns, and
+   `tests/test_text_local.c` checks it on every value it reads. The header of `sball.h` promises the predicate
+   of conventions 5.9, which the two paths meet.
+3. An avoidable cost (COMMON-C rule 7): the explicit `qsort` of the components is redundant for the tags
+   `NONE` and `REAL` (decision u-7), and the reader walks the text three times (grammar, limits, semantics)
+   where one walk with the entries kept would do; the second walk buys the bounded memory (only two `size_t`
+   per entry are held, not the whole entry).

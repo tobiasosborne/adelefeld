@@ -149,6 +149,24 @@ else
 fi
 rm -f "$text_idele_output"
 
+# ---- 2f. the value form of local balls and partial balls (lane t-slice2): tests/julia/text_local.jl ----
+
+text_local_output=$(mktemp)
+if "$JULIA" --startup-file=no tests/julia/text_local.jl "$so" > "$text_local_output" 2>&1; then
+    cat "$text_local_output"
+elif grep -q '__gmpn_modexact_1_odd' "$text_local_output" 2>/dev/null \
+        && text_local_gmp=$(ldconfig -p 2> /dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$text_local_gmp" ] \
+        && LD_PRELOAD="$text_local_gmp" "$JULIA" --startup-file=no tests/julia/text_local.jl "$so"; then
+    echo "== tests/julia/text_local.jl passed with LD_PRELOAD=$text_local_gmp"
+else
+    cat "$text_local_output"
+    rm -f "$text_local_output"
+    echo "test_julia: tests/julia/text_local.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$text_local_output"
+
 # ---- 3. run the smoke test ----
 
 run_output=$(mktemp)
