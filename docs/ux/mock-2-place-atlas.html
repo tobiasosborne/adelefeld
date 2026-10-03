@@ -1,0 +1,427 @@
+<title>Place Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;600;800&family=Chivo+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a map, dark first. Ruler on top, a shelf of p-adic trees, a fog bank; the guide's tour below. */
+:root {
+  --bg: #0e1522; --panel: #152033; --panel-2: #1b2940; --line: #2c3c57; --fg: #e3e9f2; --fg-2: #a7b4c8; --fg-3: #74829a;
+  --thA: #f2b35b; --thB: #72c6e2; --both: #e3e9f2; --fog-a: #1a2538; --fog-b: #223049; --gate: #c9837a;
+  --f-disp: "Chivo", "Helvetica Neue", Arial, sans-serif; --f-mono: "Chivo Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #eef2f7; --panel: #ffffff; --panel-2: #f5f7fb; --line: #cfd8e4; --fg: #142033; --fg-2: #46556c; --fg-3: #7a8799;
+    --thA: #a85f00; --thB: #1a7398; --both: #142033; --fog-a: #e3e8f0; --fog-b: #f1f4f8; --gate: #9b4a40; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #eef2f7; --panel: #ffffff; --panel-2: #f5f7fb; --line: #cfd8e4; --fg: #142033; --fg-2: #46556c; --fg-3: #7a8799;
+  --thA: #a85f00; --thB: #1a7398; --both: #142033; --fog-a: #e3e8f0; --fog-b: #f1f4f8; --gate: #9b4a40; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-disp); font-size: 15px; line-height: 1.5;
+  padding-inline: 16px; padding-block: 0 40px; }
+.bar { max-width: 1240px; margin: 0 auto; padding-block: 18px 12px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.bar h1 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: 0.02em; }
+.addr { font-family: var(--f-mono); font-size: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 5px 12px; color: var(--fg); min-width: 0; }
+.lens { display: flex; gap: 6px; flex-wrap: wrap; }
+.lens span { font-family: var(--f-mono); font-size: 12.5px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 20px; color: var(--fg-2); }
+.lens span.on { border-color: var(--fg); color: var(--fg); }
+.places { margin-left: auto; font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); }
+.mapwrap { max-width: 1240px; margin: 0 auto; overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
+svg.atlas { display: block; width: 100%; min-width: 860px; height: auto; font-family: var(--f-mono); }
+.axis { stroke: var(--fg-2); stroke-width: 1.5; } .tick { stroke: var(--fg-3); stroke-width: 1; }
+.tlab { fill: var(--fg-3); font-size: 12px; }
+.plabel { fill: var(--fg); font-family: var(--f-disp); font-weight: 800; font-size: 17px; }
+.psub { fill: var(--fg-3); font-size: 11.5px; }
+.panel { fill: var(--panel); stroke: var(--line); stroke-width: 1; }
+.edge { stroke: var(--line); stroke-width: 1; }
+.edge.lit { stroke-width: 2.6; } .edge.tA { stroke: var(--thA); } .edge.tB { stroke: var(--thB); } .edge.tAB { stroke: var(--both); }
+.node { fill: var(--fg-3); }
+.bead { stroke: var(--panel); stroke-width: 2; } .tA { fill: var(--thA); } .tB { fill: var(--thB); } .tAB { fill: var(--both); }
+.tAt { fill: var(--thA); color: var(--thA); } .tBt { fill: var(--thB); color: var(--thB); }
+.tAs { stroke: var(--thA); } .tBs { stroke: var(--thB); }
+.dlab { fill: var(--fg-2); font-size: 11px; }
+.seed { font-size: 12.5px; font-weight: 500; }
+.tail { stroke-width: 2.6; stroke-dasharray: 2 4; fill: none; }
+.drop { stroke-width: 1.2; stroke-dasharray: 3 3; opacity: 0.7; }
+.lane { stroke-width: 3; } .lanelab { font-size: 13px; font-weight: 500; }
+.exp { fill: var(--fg); font-size: 13px; } .per { text-decoration: overline; }
+.fogbg { fill: var(--fog-a); } .fogst { fill: var(--fog-b); } .fogpanel { stroke: var(--line); }
+.fogcard { fill: var(--panel); stroke: var(--line); }
+.fp { fill: var(--fg); font-family: var(--f-disp); font-weight: 800; font-size: 14px; }
+.fs { font-size: 12px; } .fs2 { fill: var(--fg-2); font-size: 11.5px; }
+figcaption { max-width: 1240px; margin: 8px auto 0; font-size: 13px; color: var(--fg-3); }
+.below { max-width: 1240px; margin: 22px auto 0; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 22px; }
+@media (max-width: 860px) { .below { grid-template-columns: minmax(0, 1fr); } }
+.box { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }
+.box h2 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--fg-2); font-weight: 600; }
+ol.tour { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+ol.tour li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; }
+.step { font-family: var(--f-mono); font-size: 12px; color: var(--fg-3); padding-top: 2px; }
+.say { font-size: 14.5px; }
+.rec { font-family: var(--f-mono); font-size: 12px; color: var(--fg-2); margin-top: 3px; overflow-x: auto; white-space: nowrap; }
+.rec b { color: var(--fg); font-weight: 500; }
+li.now .step { color: var(--fg); }
+li.next { opacity: 0.6; }
+.argue { font-style: italic; color: var(--fg-2); }
+.wheel { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { font: 500 13px var(--f-mono); color: var(--fg); background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.btn:focus-visible { outline: 2px solid var(--thB); outline-offset: 2px; }
+.braid { display: grid; gap: 8px; font-size: 14px; }
+.braid .row { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; font-family: var(--f-mono); font-size: 13px; align-items: baseline; }
+.braid .k { color: var(--fg-3); }
+.note { font-size: 13.5px; color: var(--fg-2); }
+.gate { color: var(--gate); font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; }
+.foot { max-width: 1240px; margin: 22px auto 0; font-size: 12px; color: var(--fg-3); }
+</style>
+
+<header class="bar">
+  <h1>Place Atlas</h1>
+  <span class="addr">9</span>
+  <div class="lens" aria-label="Lens"><span>identity</span><span class="on">square roots</span><span>exp</span><span>Log</span><span>x ↦ x²</span></div>
+  <span class="places">places: R · 2 · 3 · 5 · fog</span>
+</header>
+
+<figure style="margin:0">
+<div class="mapwrap">
+<svg viewBox="0 0 1200 650" role="img" aria-label="The square roots of 9 at the real place and at 2, 3, 5: two rational roots, 3 and -3, lit as paths in each p-adic tree and joined by two threads" class="atlas">
+<defs><pattern id="fogp" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" class="fogbg"/><rect width="3" height="8" class="fogst"/></pattern></defs>
+<text x="24" y="30" class="plabel">R</text><text x="44" y="30" class="psub">real place · realroots −9 0 1</text>
+<line x1="60" y1="74" x2="1140" y2="74" class="axis"/>
+<line x1="60.0" y1="69" x2="60.0" y2="79" class="tick"/>
+<text x="60.0" y="96" class="tlab" text-anchor="middle">−5</text>
+<line x1="168.0" y1="69" x2="168.0" y2="79" class="tick"/>
+<text x="168.0" y="96" class="tlab" text-anchor="middle">−4</text>
+<line x1="276.0" y1="69" x2="276.0" y2="79" class="tick"/>
+<text x="276.0" y="96" class="tlab" text-anchor="middle">−3</text>
+<line x1="384.0" y1="69" x2="384.0" y2="79" class="tick"/>
+<text x="384.0" y="96" class="tlab" text-anchor="middle">−2</text>
+<line x1="492.0" y1="69" x2="492.0" y2="79" class="tick"/>
+<text x="492.0" y="96" class="tlab" text-anchor="middle">−1</text>
+<line x1="600.0" y1="69" x2="600.0" y2="79" class="tick"/>
+<text x="600.0" y="96" class="tlab" text-anchor="middle">0</text>
+<line x1="708.0" y1="69" x2="708.0" y2="79" class="tick"/>
+<text x="708.0" y="96" class="tlab" text-anchor="middle">1</text>
+<line x1="816.0" y1="69" x2="816.0" y2="79" class="tick"/>
+<text x="816.0" y="96" class="tlab" text-anchor="middle">2</text>
+<line x1="924.0" y1="69" x2="924.0" y2="79" class="tick"/>
+<text x="924.0" y="96" class="tlab" text-anchor="middle">3</text>
+<line x1="1032.0" y1="69" x2="1032.0" y2="79" class="tick"/>
+<text x="1032.0" y="96" class="tlab" text-anchor="middle">4</text>
+<line x1="1140.0" y1="69" x2="1140.0" y2="79" class="tick"/>
+<text x="1140.0" y="96" class="tlab" text-anchor="middle">5</text>
+<circle cx="924.0" cy="74" r="7" class="tA bead"/>
+<circle cx="276.0" cy="74" r="7" class="tB bead"/>
+<rect x="40" y="110" width="300" height="450" rx="6" class="panel"/>
+<text x="54" y="132" class="plabel">2</text><text x="78" y="132" class="psub">ℤ₂ · depth 4 · 2 branches</text>
+<line x1="190.0" y1="194.0" x2="124.0" y2="275.0" class="edge"/>
+<line x1="190.0" y1="194.0" x2="256.0" y2="275.0" class="edge lit tAB"/>
+<line x1="124.0" y1="275.0" x2="91.0" y2="356.0" class="edge"/>
+<line x1="124.0" y1="275.0" x2="157.0" y2="356.0" class="edge"/>
+<line x1="256.0" y1="275.0" x2="223.0" y2="356.0" class="edge lit tB"/>
+<line x1="256.0" y1="275.0" x2="289.0" y2="356.0" class="edge lit tA"/>
+<line x1="91.0" y1="356.0" x2="74.5" y2="437.0" class="edge"/>
+<line x1="91.0" y1="356.0" x2="107.5" y2="437.0" class="edge"/>
+<line x1="157.0" y1="356.0" x2="140.5" y2="437.0" class="edge"/>
+<line x1="157.0" y1="356.0" x2="173.5" y2="437.0" class="edge"/>
+<line x1="223.0" y1="356.0" x2="206.5" y2="437.0" class="edge"/>
+<line x1="223.0" y1="356.0" x2="239.5" y2="437.0" class="edge lit tB"/>
+<line x1="289.0" y1="356.0" x2="272.5" y2="437.0" class="edge lit tA"/>
+<line x1="289.0" y1="356.0" x2="305.5" y2="437.0" class="edge"/>
+<line x1="74.5" y1="437.0" x2="66.2" y2="518.0" class="edge"/>
+<line x1="74.5" y1="437.0" x2="82.8" y2="518.0" class="edge"/>
+<line x1="107.5" y1="437.0" x2="99.2" y2="518.0" class="edge"/>
+<line x1="107.5" y1="437.0" x2="115.8" y2="518.0" class="edge"/>
+<line x1="140.5" y1="437.0" x2="132.2" y2="518.0" class="edge"/>
+<line x1="140.5" y1="437.0" x2="148.8" y2="518.0" class="edge"/>
+<line x1="173.5" y1="437.0" x2="165.2" y2="518.0" class="edge"/>
+<line x1="173.5" y1="437.0" x2="181.8" y2="518.0" class="edge"/>
+<line x1="206.5" y1="437.0" x2="198.2" y2="518.0" class="edge"/>
+<line x1="206.5" y1="437.0" x2="214.8" y2="518.0" class="edge"/>
+<line x1="239.5" y1="437.0" x2="231.2" y2="518.0" class="edge"/>
+<line x1="239.5" y1="437.0" x2="247.8" y2="518.0" class="edge lit tB"/>
+<line x1="272.5" y1="437.0" x2="264.2" y2="518.0" class="edge lit tA"/>
+<line x1="272.5" y1="437.0" x2="280.8" y2="518.0" class="edge"/>
+<line x1="305.5" y1="437.0" x2="297.2" y2="518.0" class="edge"/>
+<line x1="305.5" y1="437.0" x2="313.8" y2="518.0" class="edge"/>
+<circle cx="190.0" cy="194.0" r="6" class="tAB bead"/>
+<circle cx="124.0" cy="275.0" r="2.2" class="node"/>
+<circle cx="256.0" cy="275.0" r="5" class="tAB bead"/>
+<text x="256.0" y="265.0" class="dlab" text-anchor="middle">1</text>
+<circle cx="91.0" cy="356.0" r="2.2" class="node"/>
+<circle cx="157.0" cy="356.0" r="2.2" class="node"/>
+<circle cx="223.0" cy="356.0" r="5" class="tB bead"/>
+<text x="223.0" y="346.0" class="dlab" text-anchor="middle">0</text>
+<circle cx="289.0" cy="356.0" r="5" class="tA bead"/>
+<text x="289.0" y="346.0" class="dlab" text-anchor="middle">1</text>
+<circle cx="74.5" cy="437.0" r="2.2" class="node"/>
+<circle cx="107.5" cy="437.0" r="2.2" class="node"/>
+<circle cx="140.5" cy="437.0" r="2.2" class="node"/>
+<circle cx="173.5" cy="437.0" r="2.2" class="node"/>
+<circle cx="206.5" cy="437.0" r="2.2" class="node"/>
+<circle cx="239.5" cy="437.0" r="5" class="tB bead"/>
+<text x="239.5" y="427.0" class="dlab" text-anchor="middle">1</text>
+<circle cx="272.5" cy="437.0" r="5" class="tA bead"/>
+<text x="272.5" y="427.0" class="dlab" text-anchor="middle">0</text>
+<circle cx="305.5" cy="437.0" r="2.2" class="node"/>
+<circle cx="66.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="82.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="99.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="115.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="132.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="148.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="165.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="181.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="198.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="214.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="231.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="247.8" cy="518.0" r="5" class="tB bead"/>
+<text x="247.8" y="508.0" class="dlab" text-anchor="middle">1</text>
+<circle cx="264.2" cy="518.0" r="5" class="tA bead"/>
+<text x="264.2" y="508.0" class="dlab" text-anchor="middle">0</text>
+<circle cx="280.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="297.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="313.8" cy="518.0" r="2.2" class="node"/>
+<text x="301.0" y="360.0" class="seed tAt" text-anchor="start">[−1]</text>
+<line x1="264.2" y1="524.0" x2="264.2" y2="552.0" class="tail tAs"/>
+<text x="211.0" y="360.0" class="seed tBt" text-anchor="end">[+1]</text>
+<line x1="247.8" y1="524.0" x2="247.8" y2="552.0" class="tail tBs"/>
+<text x="54" y="152" class="exp"><tspan class="tAt">3</tspan> = …<tspan class="per">0</tspan>11  <tspan class="psub">[−1]</tspan></text>
+<text x="54" y="169" class="exp"><tspan class="tBt">−3</tspan> = …<tspan class="per">1</tspan>01  <tspan class="psub">[+1]</tspan></text>
+<rect x="360" y="110" width="340" height="450" rx="6" class="panel"/>
+<text x="374" y="132" class="plabel">3</text><text x="398" y="132" class="psub">ℤ₃ · depth 3 · 2 branches</text>
+<line x1="530.0" y1="194.0" x2="428.7" y2="302.0" class="edge lit tAB"/>
+<line x1="530.0" y1="194.0" x2="530.0" y2="302.0" class="edge"/>
+<line x1="530.0" y1="194.0" x2="631.3" y2="302.0" class="edge"/>
+<line x1="428.7" y1="302.0" x2="394.9" y2="410.0" class="edge"/>
+<line x1="428.7" y1="302.0" x2="428.7" y2="410.0" class="edge lit tA"/>
+<line x1="428.7" y1="302.0" x2="462.4" y2="410.0" class="edge lit tB"/>
+<line x1="530.0" y1="302.0" x2="496.2" y2="410.0" class="edge"/>
+<line x1="530.0" y1="302.0" x2="530.0" y2="410.0" class="edge"/>
+<line x1="530.0" y1="302.0" x2="563.8" y2="410.0" class="edge"/>
+<line x1="631.3" y1="302.0" x2="597.6" y2="410.0" class="edge"/>
+<line x1="631.3" y1="302.0" x2="631.3" y2="410.0" class="edge"/>
+<line x1="631.3" y1="302.0" x2="665.1" y2="410.0" class="edge"/>
+<line x1="394.9" y1="410.0" x2="383.6" y2="518.0" class="edge"/>
+<line x1="394.9" y1="410.0" x2="394.9" y2="518.0" class="edge"/>
+<line x1="394.9" y1="410.0" x2="406.1" y2="518.0" class="edge"/>
+<line x1="428.7" y1="410.0" x2="417.4" y2="518.0" class="edge lit tA"/>
+<line x1="428.7" y1="410.0" x2="428.7" y2="518.0" class="edge"/>
+<line x1="428.7" y1="410.0" x2="439.9" y2="518.0" class="edge"/>
+<line x1="462.4" y1="410.0" x2="451.2" y2="518.0" class="edge"/>
+<line x1="462.4" y1="410.0" x2="462.4" y2="518.0" class="edge"/>
+<line x1="462.4" y1="410.0" x2="473.7" y2="518.0" class="edge lit tB"/>
+<line x1="496.2" y1="410.0" x2="485.0" y2="518.0" class="edge"/>
+<line x1="496.2" y1="410.0" x2="496.2" y2="518.0" class="edge"/>
+<line x1="496.2" y1="410.0" x2="507.5" y2="518.0" class="edge"/>
+<line x1="530.0" y1="410.0" x2="518.7" y2="518.0" class="edge"/>
+<line x1="530.0" y1="410.0" x2="530.0" y2="518.0" class="edge"/>
+<line x1="530.0" y1="410.0" x2="541.3" y2="518.0" class="edge"/>
+<line x1="563.8" y1="410.0" x2="552.5" y2="518.0" class="edge"/>
+<line x1="563.8" y1="410.0" x2="563.8" y2="518.0" class="edge"/>
+<line x1="563.8" y1="410.0" x2="575.0" y2="518.0" class="edge"/>
+<line x1="597.6" y1="410.0" x2="586.3" y2="518.0" class="edge"/>
+<line x1="597.6" y1="410.0" x2="597.6" y2="518.0" class="edge"/>
+<line x1="597.6" y1="410.0" x2="608.8" y2="518.0" class="edge"/>
+<line x1="631.3" y1="410.0" x2="620.1" y2="518.0" class="edge"/>
+<line x1="631.3" y1="410.0" x2="631.3" y2="518.0" class="edge"/>
+<line x1="631.3" y1="410.0" x2="642.6" y2="518.0" class="edge"/>
+<line x1="665.1" y1="410.0" x2="653.9" y2="518.0" class="edge"/>
+<line x1="665.1" y1="410.0" x2="665.1" y2="518.0" class="edge"/>
+<line x1="665.1" y1="410.0" x2="676.4" y2="518.0" class="edge"/>
+<circle cx="530.0" cy="194.0" r="6" class="tAB bead"/>
+<circle cx="428.7" cy="302.0" r="5" class="tAB bead"/>
+<text x="428.7" y="292.0" class="dlab" text-anchor="middle">0</text>
+<circle cx="530.0" cy="302.0" r="2.2" class="node"/>
+<circle cx="631.3" cy="302.0" r="2.2" class="node"/>
+<circle cx="394.9" cy="410.0" r="2.2" class="node"/>
+<circle cx="428.7" cy="410.0" r="5" class="tA bead"/>
+<text x="428.7" y="400.0" class="dlab" text-anchor="middle">1</text>
+<circle cx="462.4" cy="410.0" r="5" class="tB bead"/>
+<text x="462.4" y="400.0" class="dlab" text-anchor="middle">2</text>
+<circle cx="496.2" cy="410.0" r="2.2" class="node"/>
+<circle cx="530.0" cy="410.0" r="2.2" class="node"/>
+<circle cx="563.8" cy="410.0" r="2.2" class="node"/>
+<circle cx="597.6" cy="410.0" r="2.2" class="node"/>
+<circle cx="631.3" cy="410.0" r="2.2" class="node"/>
+<circle cx="665.1" cy="410.0" r="2.2" class="node"/>
+<circle cx="383.6" cy="518.0" r="2.2" class="node"/>
+<circle cx="394.9" cy="518.0" r="2.2" class="node"/>
+<circle cx="406.1" cy="518.0" r="2.2" class="node"/>
+<circle cx="417.4" cy="518.0" r="5" class="tA bead"/>
+<text x="417.4" y="508.0" class="dlab" text-anchor="middle">0</text>
+<circle cx="428.7" cy="518.0" r="2.2" class="node"/>
+<circle cx="439.9" cy="518.0" r="2.2" class="node"/>
+<circle cx="451.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="462.4" cy="518.0" r="2.2" class="node"/>
+<circle cx="473.7" cy="518.0" r="5" class="tB bead"/>
+<text x="473.7" y="508.0" class="dlab" text-anchor="middle">2</text>
+<circle cx="485.0" cy="518.0" r="2.2" class="node"/>
+<circle cx="496.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="507.5" cy="518.0" r="2.2" class="node"/>
+<circle cx="518.7" cy="518.0" r="2.2" class="node"/>
+<circle cx="530.0" cy="518.0" r="2.2" class="node"/>
+<circle cx="541.3" cy="518.0" r="2.2" class="node"/>
+<circle cx="552.5" cy="518.0" r="2.2" class="node"/>
+<circle cx="563.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="575.0" cy="518.0" r="2.2" class="node"/>
+<circle cx="586.3" cy="518.0" r="2.2" class="node"/>
+<circle cx="597.6" cy="518.0" r="2.2" class="node"/>
+<circle cx="608.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="620.1" cy="518.0" r="2.2" class="node"/>
+<circle cx="631.3" cy="518.0" r="2.2" class="node"/>
+<circle cx="642.6" cy="518.0" r="2.2" class="node"/>
+<circle cx="653.9" cy="518.0" r="2.2" class="node"/>
+<circle cx="665.1" cy="518.0" r="2.2" class="node"/>
+<circle cx="676.4" cy="518.0" r="2.2" class="node"/>
+<text x="416.7" y="414.0" class="seed tAt" text-anchor="end">[1]</text>
+<line x1="417.4" y1="524.0" x2="417.4" y2="552.0" class="tail tAs"/>
+<text x="474.4" y="414.0" class="seed tBt" text-anchor="start">[2]</text>
+<line x1="473.7" y1="524.0" x2="473.7" y2="552.0" class="tail tBs"/>
+<text x="374" y="152" class="exp"><tspan class="tAt">3</tspan> = …<tspan class="per">0</tspan>10  <tspan class="psub">[1]</tspan></text>
+<text x="374" y="169" class="exp"><tspan class="tBt">−3</tspan> = …<tspan class="per">2</tspan>0  <tspan class="psub">[2]</tspan></text>
+<rect x="720" y="110" width="280" height="450" rx="6" class="panel"/>
+<text x="734" y="132" class="plabel">5</text><text x="758" y="132" class="psub">ℤ₅ · depth 2 · 2 branches</text>
+<line x1="860.0" y1="194.0" x2="762.4" y2="356.0" class="edge"/>
+<line x1="860.0" y1="194.0" x2="811.2" y2="356.0" class="edge"/>
+<line x1="860.0" y1="194.0" x2="860.0" y2="356.0" class="edge lit tB"/>
+<line x1="860.0" y1="194.0" x2="908.8" y2="356.0" class="edge lit tA"/>
+<line x1="860.0" y1="194.0" x2="957.6" y2="356.0" class="edge"/>
+<line x1="762.4" y1="356.0" x2="742.9" y2="518.0" class="edge"/>
+<line x1="762.4" y1="356.0" x2="752.6" y2="518.0" class="edge"/>
+<line x1="762.4" y1="356.0" x2="762.4" y2="518.0" class="edge"/>
+<line x1="762.4" y1="356.0" x2="772.2" y2="518.0" class="edge"/>
+<line x1="762.4" y1="356.0" x2="781.9" y2="518.0" class="edge"/>
+<line x1="811.2" y1="356.0" x2="791.7" y2="518.0" class="edge"/>
+<line x1="811.2" y1="356.0" x2="801.4" y2="518.0" class="edge"/>
+<line x1="811.2" y1="356.0" x2="811.2" y2="518.0" class="edge"/>
+<line x1="811.2" y1="356.0" x2="821.0" y2="518.0" class="edge"/>
+<line x1="811.2" y1="356.0" x2="830.7" y2="518.0" class="edge"/>
+<line x1="860.0" y1="356.0" x2="840.5" y2="518.0" class="edge"/>
+<line x1="860.0" y1="356.0" x2="850.2" y2="518.0" class="edge"/>
+<line x1="860.0" y1="356.0" x2="860.0" y2="518.0" class="edge"/>
+<line x1="860.0" y1="356.0" x2="869.8" y2="518.0" class="edge"/>
+<line x1="860.0" y1="356.0" x2="879.5" y2="518.0" class="edge lit tB"/>
+<line x1="908.8" y1="356.0" x2="889.3" y2="518.0" class="edge lit tA"/>
+<line x1="908.8" y1="356.0" x2="899.0" y2="518.0" class="edge"/>
+<line x1="908.8" y1="356.0" x2="908.8" y2="518.0" class="edge"/>
+<line x1="908.8" y1="356.0" x2="918.6" y2="518.0" class="edge"/>
+<line x1="908.8" y1="356.0" x2="928.3" y2="518.0" class="edge"/>
+<line x1="957.6" y1="356.0" x2="938.1" y2="518.0" class="edge"/>
+<line x1="957.6" y1="356.0" x2="947.8" y2="518.0" class="edge"/>
+<line x1="957.6" y1="356.0" x2="957.6" y2="518.0" class="edge"/>
+<line x1="957.6" y1="356.0" x2="967.4" y2="518.0" class="edge"/>
+<line x1="957.6" y1="356.0" x2="977.1" y2="518.0" class="edge"/>
+<circle cx="860.0" cy="194.0" r="6" class="tAB bead"/>
+<circle cx="762.4" cy="356.0" r="2.2" class="node"/>
+<circle cx="811.2" cy="356.0" r="2.2" class="node"/>
+<circle cx="860.0" cy="356.0" r="5" class="tB bead"/>
+<text x="860.0" y="346.0" class="dlab" text-anchor="middle">2</text>
+<circle cx="908.8" cy="356.0" r="5" class="tA bead"/>
+<text x="908.8" y="346.0" class="dlab" text-anchor="middle">3</text>
+<circle cx="957.6" cy="356.0" r="2.2" class="node"/>
+<circle cx="742.9" cy="518.0" r="2.2" class="node"/>
+<circle cx="752.6" cy="518.0" r="2.2" class="node"/>
+<circle cx="762.4" cy="518.0" r="2.2" class="node"/>
+<circle cx="772.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="781.9" cy="518.0" r="2.2" class="node"/>
+<circle cx="791.7" cy="518.0" r="2.2" class="node"/>
+<circle cx="801.4" cy="518.0" r="2.2" class="node"/>
+<circle cx="811.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="821.0" cy="518.0" r="2.2" class="node"/>
+<circle cx="830.7" cy="518.0" r="2.2" class="node"/>
+<circle cx="840.5" cy="518.0" r="2.2" class="node"/>
+<circle cx="850.2" cy="518.0" r="2.2" class="node"/>
+<circle cx="860.0" cy="518.0" r="2.2" class="node"/>
+<circle cx="869.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="879.5" cy="518.0" r="5" class="tB bead"/>
+<text x="879.5" y="508.0" class="dlab" text-anchor="middle">4</text>
+<circle cx="889.3" cy="518.0" r="5" class="tA bead"/>
+<text x="889.3" y="508.0" class="dlab" text-anchor="middle">0</text>
+<circle cx="899.0" cy="518.0" r="2.2" class="node"/>
+<circle cx="908.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="918.6" cy="518.0" r="2.2" class="node"/>
+<circle cx="928.3" cy="518.0" r="2.2" class="node"/>
+<circle cx="938.1" cy="518.0" r="2.2" class="node"/>
+<circle cx="947.8" cy="518.0" r="2.2" class="node"/>
+<circle cx="957.6" cy="518.0" r="2.2" class="node"/>
+<circle cx="967.4" cy="518.0" r="2.2" class="node"/>
+<circle cx="977.1" cy="518.0" r="2.2" class="node"/>
+<text x="920.8" y="360.0" class="seed tAt" text-anchor="start">[3]</text>
+<line x1="889.3" y1="524.0" x2="889.3" y2="552.0" class="tail tAs"/>
+<text x="848.0" y="360.0" class="seed tBt" text-anchor="end">[2]</text>
+<line x1="879.5" y1="524.0" x2="879.5" y2="552.0" class="tail tBs"/>
+<text x="734" y="152" class="exp"><tspan class="tAt">3</tspan> = …<tspan class="per">0</tspan>3  <tspan class="psub">[3]</tspan></text>
+<text x="734" y="169" class="exp"><tspan class="tBt">−3</tspan> = …<tspan class="per">4</tspan>2  <tspan class="psub">[2]</tspan></text>
+<rect x="1020" y="110" width="160" height="450" rx="6" fill="url(#fogp)" class="fogpanel"/>
+<text x="1032" y="132" class="plabel">fog bank</text>
+<text x="1032" y="152" class="psub">every other prime</text>
+<rect x="1030" y="188" width="140" height="58" rx="4" class="fogcard"/>
+<text x="1040" y="206" class="fp">7</text>
+<text x="1040" y="222" class="fs"><tspan class="tAt">[3] 3</tspan></text>
+<text x="1040" y="238" class="fs"><tspan class="tBt">[4] −3</tspan></text>
+<rect x="1030" y="258" width="140" height="58" rx="4" class="fogcard"/>
+<text x="1040" y="276" class="fp">11</text>
+<text x="1040" y="292" class="fs"><tspan class="tAt">[3] 3</tspan></text>
+<text x="1040" y="308" class="fs"><tspan class="tBt">[8] −3</tspan></text>
+<rect x="1030" y="328" width="140" height="58" rx="4" class="fogcard"/>
+<text x="1040" y="346" class="fp">13</text>
+<text x="1040" y="362" class="fs"><tspan class="tAt">[3] 3</tspan></text>
+<text x="1040" y="378" class="fs"><tspan class="tBt">[10] −3</tspan></text>
+<text x="1032" y="414" class="fs2">computed: 7, 11, 13</text>
+<text x="1032" y="432" class="fs2">argued: every p ≥ 7,</text>
+<text x="1032" y="448" class="fs2">two branches 3, −3</text>
+<text x="1032" y="466" class="fs2">not drawn</text>
+<text x="36" y="604" class="lanelab tAt" text-anchor="end">+3</text>
+<line x1="40" y1="600" x2="1180" y2="600" class="lane tAs"/>
+<line x1="264.2" y1="552.0" x2="264.2" y2="600" class="drop tAs"/>
+<circle cx="264.2" cy="600" r="3.5" class="tA bead"/>
+<line x1="417.4" y1="552.0" x2="417.4" y2="600" class="drop tAs"/>
+<circle cx="417.4" cy="600" r="3.5" class="tA bead"/>
+<line x1="889.3" y1="552.0" x2="889.3" y2="600" class="drop tAs"/>
+<circle cx="889.3" cy="600" r="3.5" class="tA bead"/>
+<text x="36" y="632" class="lanelab tBt" text-anchor="end">−3</text>
+<line x1="40" y1="628" x2="1180" y2="628" class="lane tBs"/>
+<line x1="247.8" y1="552.0" x2="247.8" y2="628" class="drop tBs"/>
+<circle cx="247.8" cy="628" r="3.5" class="tB bead"/>
+<line x1="473.7" y1="552.0" x2="473.7" y2="628" class="drop tBs"/>
+<circle cx="473.7" cy="628" r="3.5" class="tB bead"/>
+<line x1="879.5" y1="552.0" x2="879.5" y2="628" class="drop tBs"/>
+<circle cx="879.5" cy="628" r="3.5" class="tB bead"/>
+</svg>
+</div>
+<figcaption>Scene “roots of 9”. Each tree is ℤ<sub>p</sub>, root at the top, the child at depth k is the digit of p<sup>k−1</sup>. Lit paths are the two square roots; a dotted tail means the path goes on forever (exact rational, period overlined). Flags are branch seeds as the driver prints them.</figcaption>
+</figure>
+
+<section class="below">
+  <div class="box" aria-label="Guide">
+    <h2>Guide · tour “where do the square roots of 9 live”</h2>
+    <ol class="tour">
+      <li><span class="step">1</span><div><div class="say">At the real place, two roots: −3 and 3.</div>
+        <div class="rec">realroots −9 0 1 → <b>−3; 3</b> · OK · complete</div></div></li>
+      <li><span class="step">2</span><div><div class="say">At 2 they part at depth 2, where the unit is fixed modulo 4.</div>
+        <div class="rec">roots_at 9 with 2 with 2 → <b>2 [+1]: −3; 2 [−1]: 3</b> · OK</div></div></li>
+      <li><span class="step">3</span><div><div class="say">At 3, nine is 3² times a unit; the roots are 3·(±1) and part at depth 2.</div>
+        <div class="rec">roots_at 9 with 3 with 2 → <b>3 [1]: 3; 3 [2]: −3</b> · OK</div></div></li>
+      <li class="now"><span class="step">4</span><div><div class="say">At 5 they part at once: first digits 3 and 2. Both paths are rational, so each thread runs through every place.</div>
+        <div class="rec">roots_at 9 with 5 with 2 → <b>5 [2]: −3; 5 [3]: 3</b> · OK</div></div></li>
+      <li class="next"><span class="step">5</span><div><div class="say argue">Next: pick +3 at R and 2, −3 at 3 and 5. The threads break; that braid is a square root of 9 over {R, 2, 3, 5} and not a rational.</div></div></li>
+    </ol>
+    <div class="wheel"><button class="btn" type="button" id="take">Take the wheel</button><button class="btn" type="button" id="cont">Continue tour</button></div>
+  </div>
+  <div class="box" aria-label="Same scene with −1">
+    <h2>Change 9 to −1</h2>
+    <div class="braid">
+      <div class="row"><span class="k">R</span><span><span class="gate">DOMAIN</span> &nbsp;no real square root</span></div>
+      <div class="row"><span class="k">2</span><span><span class="gate">DOMAIN</span> &nbsp;−1 is 7 mod 8, not 1</span></div>
+      <div class="row"><span class="k">3</span><span><span class="gate">DOMAIN</span> &nbsp;−1 is 2 mod 3, not a square</span></div>
+      <div class="row"><span class="k">5</span><span>[2] 280182 + O(5⁸) · [3] 110443 + O(5⁸)</span></div>
+    </div>
+    <p class="note">The gates are drawn on the places, where the library reports them. At 5 the paths end in fog at depth 8: no thread, because no rational squares to −1.</p>
+  </div>
+</section>
+<p class="foot">Concept mock for brief 2 (docs/ux). Static; tree positions and digits are computed (−3 = …4442 in ℤ₅, …1101 in ℤ₂, …2220 in ℤ₃).</p>

@@ -1,0 +1,172 @@
+<title>Claim Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<style>
+/* Layout: a register of claims on the left, the open claim's card on the right; one column on phones. */
+:root {
+  --paper: #eef1ec;
+  --leaf: #fbfcfa;
+  --ink: #1c2420;
+  --ink-2: #4d5852;
+  --ink-3: #7f8a84;
+  --rule: #cdd5cd;
+  --sealed: #2d6a4c;
+  --refuted: #a2402e;
+  --open: #93650f;
+  --argued: #44598a;
+  --hl: #e3eae2;
+  --f-text: "IBM Plex Serif", Georgia, serif;
+  --f-code: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --f-label: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #141816; --leaf: #1b201d; --ink: #e2e8e3; --ink-2: #a9b4ad; --ink-3: #75817a; --rule: #2e3631;
+    --sealed: #7cc39d; --refuted: #e88c78; --open: #e0b25a; --argued: #9db1e0; --hl: #232a26; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #141816; --leaf: #1b201d; --ink: #e2e8e3; --ink-2: #a9b4ad; --ink-3: #75817a; --rule: #2e3631;
+  --sealed: #7cc39d; --refuted: #e88c78; --open: #e0b25a; --argued: #9db1e0; --hl: #232a26; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-text); font-size: 15px; line-height: 1.5;
+  padding-inline: 16px; padding-block: 0 40px; }
+.head { max-width: 1240px; margin: 0 auto; padding-block: 20px 14px; display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: baseline;
+  border-bottom: 2px solid var(--ink); }
+.head h1 { margin: 0; font-family: var(--f-label); font-weight: 600; font-size: 20px; letter-spacing: 0.06em; text-transform: uppercase; }
+.head .q { font-style: italic; color: var(--ink-2); min-width: 0; }
+.counts { margin-left: auto; font-family: var(--f-label); font-size: 13px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.counts b { color: var(--ink); font-weight: 600; }
+.grid { max-width: 1240px; margin: 18px auto 0; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; }
+@media (max-width: 940px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.list { min-width: 0; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; }
+th { font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);
+  text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--rule); }
+td { padding: 9px 8px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+td.n { font-family: var(--f-code); font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+td.st { font-family: var(--f-text); }
+td.by { font-family: var(--f-label); font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
+tr.sel td { background: var(--hl); }
+tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--open); }
+.state { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; }
+.state svg { width: 16px; height: 16px; flex: none; }
+.s-sealed { color: var(--sealed); } .s-refuted { color: var(--refuted); } .s-open { color: var(--open); }
+.s-argued { color: var(--argued); } .s-ratified { color: var(--sealed); } .s-proposed { color: var(--ink-3); }
+/* footprint */
+.fp { display: inline-flex; align-items: center; gap: 2px; font-family: var(--f-code); font-size: 10.5px; white-space: nowrap; }
+.fp span { display: inline-block; min-width: 18px; height: 18px; line-height: 16px; text-align: center; border: 1px solid var(--rule); color: var(--ink-3); border-radius: 2px; padding: 0 2px; }
+.fp span.c { background: var(--ink); color: var(--leaf); border-color: var(--ink); }
+.fp span.wide { min-width: 58px; }
+.fp span.tail { min-width: 40px; border-style: dashed; }
+.fp span.tail.arg { border: 1px solid var(--argued); background: repeating-linear-gradient(135deg, transparent 0 3px, var(--argued) 3px 4px); color: transparent; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-family: var(--f-label); font-size: 12px; color: var(--ink-2); align-items: center; }
+/* card */
+.card { background: var(--leaf); border: 1px solid var(--rule); border-radius: 4px; padding: 18px 20px; min-width: 0; display: grid; gap: 14px; align-content: start; }
+.card .top { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.card .id { font-family: var(--f-code); font-size: 12px; color: var(--ink-3); }
+.card h2 { margin: 0; font-size: 19px; font-weight: 600; line-height: 1.35; text-wrap: balance; }
+.sec { display: grid; gap: 4px; }
+.sec .k { font-family: var(--f-label); font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+pre { margin: 0; font-family: var(--f-code); font-size: 13px; background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; padding: 8px 10px; overflow-x: auto; }
+.res { border: 1.5px dashed var(--open); border-radius: 3px; padding: 8px 10px; display: grid; gap: 4px; }
+.res .code { font-family: var(--f-label); font-weight: 600; letter-spacing: 0.08em; color: var(--open); font-size: 13px; }
+.res p { margin: 0; font-size: 14px; }
+.kids { display: grid; gap: 8px; }
+.kid { border: 1px solid var(--rule); border-radius: 3px; padding: 8px 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: start; }
+.kid .t { font-size: 14px; }
+.kid .r { grid-column: 1 / -1; font-family: var(--f-code); font-size: 12.5px; color: var(--ink-2); overflow-x: auto; white-space: nowrap; }
+.seal { font-family: var(--f-code); font-size: 11.5px; color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 8px; overflow-wrap: anywhere; }
+.arg { font-style: italic; color: var(--argued); font-size: 14px; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: 0.04em; background: var(--leaf); color: var(--ink); border: 1px solid var(--ink-2); border-radius: 3px; padding: 6px 12px; cursor: pointer; }
+.btn[disabled] { color: var(--ink-3); border-color: var(--rule); cursor: not-allowed; }
+.btn:focus-visible { outline: 2px solid var(--argued); outline-offset: 2px; }
+.why { font-size: 12.5px; color: var(--ink-3); font-family: var(--f-label); }
+.foot { max-width: 1240px; margin: 22px auto 0; font-size: 12px; color: var(--ink-3); font-family: var(--f-label); }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.5" height="4" fill="currentColor"/></pattern>
+  </defs>
+</svg>
+
+<header class="head">
+  <h1>Ledger</h1>
+  <span class="q">What is true about Log, exp and square roots at small primes? · agent batch of the night of 2 October</span>
+  <span class="counts"><span><b>31</b> sealed</span><span><b>4</b> refuted</span><span><b>3</b> open</span><span><b>2</b> argued</span><span><b>26</b> ratified</span></span>
+</header>
+
+<div class="grid">
+<section class="list" aria-label="Claims">
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>#</th><th>Claim</th><th>Places</th><th>State</th><th>By</th></tr></thead>
+    <tbody>
+      <tr><td class="n">17</td><td class="st">exp(Log 5) = 1 at 5</td>
+        <td><span class="fp"><span>R</span><span>2</span><span>3</span><span class="c">5</span><span>7</span><span class="tail">…</span></span></td>
+        <td><span class="state s-sealed"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="currentColor"/></svg>SEALED</span></td><td class="by">agent · 02:14</td></tr>
+      <tr><td class="n">16</td><td class="st">exp(Log 5) = 5 at 5</td>
+        <td><span class="fp"><span>R</span><span>2</span><span>3</span><span class="c">5</span><span>7</span><span class="tail">…</span></span></td>
+        <td><span class="state s-refuted"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="2.5" y1="13.5" x2="13.5" y2="2.5" stroke="currentColor" stroke-width="1.8"/></svg>REFUTED</span></td><td class="by">agent · 02:11</td></tr>
+      <tr><td class="n">15</td><td class="st">x² + 1 has a root in ℤ₂</td>
+        <td><span class="fp"><span>R</span><span class="c">2</span><span>3</span><span>5</span><span>7</span><span class="tail">…</span></span></td>
+        <td><span class="state s-refuted"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="2.5" y1="13.5" x2="13.5" y2="2.5" stroke="currentColor" stroke-width="1.8"/></svg>REFUTED</span></td><td class="by">agent · 01:58</td></tr>
+      <tr class="sel"><td class="n">14</td><td class="st">the square roots of 1 + 4ℤ₂ are determined to 2 digits</td>
+        <td><span class="fp"><span>R</span><span class="c">2</span><span>3</span><span>5</span><span>7</span><span class="tail">…</span></span></td>
+        <td><span class="state s-open"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2"/></svg>OPEN · 2 children</span></td><td class="by">agent · 01:40</td></tr>
+      <tr><td class="n">13</td><td class="st">2 is a square in ℚ<sub>p</sub> iff p ≡ 1, 7 mod 8 (p odd)</td>
+        <td><span class="fp"><span>R</span><span>2</span><span class="c wide">3 … 97</span><span class="tail arg">all</span></span></td>
+        <td><span class="state s-argued"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="url(#hatch)" stroke="currentColor" stroke-width="1.6"/></svg>ARGUED · no source</span></td><td class="by">agent · 01:22</td></tr>
+      <tr><td class="n">12</td><td class="st">|6/35|<sub>v</sub> multiply to 1 over all places</td>
+        <td><span class="fp"><span class="c">R</span><span class="c">2</span><span class="c">3</span><span class="c">5</span><span class="c">7</span><span class="tail arg">all</span></span></td>
+        <td><span class="state s-ratified"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M4.8 8.3 7 10.4 11.3 5.6" fill="none" stroke="var(--leaf)" stroke-width="1.8"/></svg>RATIFIED</span></td><td class="by">agent, TJO</td></tr>
+      <tr><td class="n">11</td><td class="st">cos(4) ≡ 9 mod 16 in ℤ₂</td>
+        <td><span class="fp"><span>R</span><span class="c">2</span><span>3</span><span>5</span><span>7</span><span class="tail">…</span></span></td>
+        <td><span class="state s-ratified"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M4.8 8.3 7 10.4 11.3 5.6" fill="none" stroke="var(--leaf)" stroke-width="1.8"/></svg>RATIFIED</span></td><td class="by">agent, TJO</td></tr>
+      <tr><td class="n">10</td><td class="st">the roots of x² − 2 in ℤ₇ are exactly [3] and [4]</td>
+        <td><span class="fp"><span>R</span><span>2</span><span>3</span><span>5</span><span class="c">7</span><span class="tail">…</span></span></td>
+        <td><span class="state s-proposed"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>PROPOSED</span></td><td class="by">agent · 01:02</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend">
+    <span class="fp"><span class="c">5</span></span> computed at this place
+    <span class="fp"><span class="tail arg">all</span></span> argued for every other place
+    <span class="fp"><span class="tail">…</span></span> not claimed
+  </div>
+</section>
+
+<article class="card" aria-label="Claim 14">
+  <div class="top"><span class="id">claim 14 · agent · night of 2 October</span>
+    <span class="state s-open"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2"/></svg>OPEN</span></div>
+  <h2>The square roots of 1 + 4ℤ₂ are determined to 2 digits.</h2>
+  <div class="sec"><span class="k">Script</span>
+<pre>prec 8
+roots_at (* ; 1 mod 4) with 2 with 2</pre></div>
+  <div class="sec"><span class="k">Expected</span><span>two branches, each a ball of radius 2<sup>2</sup> or finer</span></div>
+  <div class="sec"><span class="k">Library</span>
+    <div class="res"><span class="code">NOT_DETERMINED · at 2</span>
+      <p>The ball is outside the guard of SPEC 9.3.3: N − m = 2, a square root at 2 needs N − m ≥ c + v(n) = 3. The ball holds the squares 1, 9, 17 and the non-squares 5, 13.</p></div></div>
+  <div class="sec"><span class="k">Children (split proposed by the agent)</span>
+    <div class="kids">
+      <div class="kid"><span class="t">14.1 · on 1 + 8ℤ₂ there are two roots</span>
+        <span class="state s-sealed"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="currentColor"/></svg>SEALED</span>
+        <span class="r">roots_at (* ; 1 mod 8) with 2 with 2 → 2 [+1]: 1 + O(2^2); 2 [-1]: 3 + O(2^2)</span></div>
+      <div class="kid"><span class="t">14.2 · on 5 + 8ℤ₂ there is no root</span>
+        <span class="state s-sealed"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="currentColor"/></svg>SEALED</span>
+        <span class="r">roots_at (* ; 5 mod 8) with 2 with 2 → error: DOMAIN</span></div>
+    </div></div>
+  <div class="sec"><span class="k">Argument</span>
+    <p class="arg" style="margin:0">The claim is false as stated: 1 + 4ℤ₂ is the union of the two children, one with two roots and one with none. Proposed: retract 14 and keep 14.1 and 14.2.</p></div>
+  <div class="btns"><button class="btn" type="button" id="retract">Retract 14, keep children</button><button class="btn" type="button" id="ratify" disabled>Ratify</button></div>
+  <span class="why">Ratify is off: an open claim cannot be ratified. Only the sealer can seal; only a person can ratify.</span>
+  <div class="seal">children sealed by adf-seal · libadelefeld 1F.6 (lpow) · FLINT 3.0.1 · build 8f57a51 · 2026-10-03 02:03 · record sha256 9c41…e07a</div>
+</article>
+</div>
+
+<p class="foot">Concept mock for brief 3 (docs/ux). Static. The values follow tools/adf/README.md and SPEC 9.3.3; the image exponent of 14.1 is N − v(2) = 3 − 1 = 2. The record hash is a placeholder.</p>

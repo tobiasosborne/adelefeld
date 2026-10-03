@@ -1,0 +1,188 @@
+<title>Sweep Bench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a plate-reader wall (places x inputs) with a stop line, the agent team on top, findings on the right. */
+:root {
+  --bg: #e9edf1; --plate: #f8fafb; --well-bg: #dfe5eb; --ink: #17212b; --ink-2: #4b5967; --ink-3: #7d8a97; --rule: #cbd3dc;
+  --ok: #1d6b86; --ok-ink: #ffffff; --no: #6c7a88; --nd: #a3680c; --arg: #5b4f94; --stop: #17212b;
+  --f-label: "Barlow Semi Condensed", "Arial Narrow", sans-serif; --f-mono: "Roboto Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --plate: #1a2129; --well-bg: #252e38; --ink: #e2e8ee; --ink-2: #a6b2be; --ink-3: #74818e; --rule: #2f3943;
+    --ok: #5cb6d4; --ok-ink: #0e1a21; --no: #8d9aa7; --nd: #e5ab4f; --arg: #ab9fe6; --stop: #e2e8ee; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --plate: #1a2129; --well-bg: #252e38; --ink: #e2e8ee; --ink-2: #a6b2be; --ink-3: #74818e; --rule: #2f3943;
+  --ok: #5cb6d4; --ok-ink: #0e1a21; --no: #8d9aa7; --nd: #e5ab4f; --arg: #ab9fe6; --stop: #e2e8ee; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-label); font-size: 15px; line-height: 1.45;
+  padding-inline: 16px; padding-block: 0 40px; }
+.wrap { max-width: 1260px; margin: 0 auto; }
+.q { padding-block: 18px 10px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; }
+.q .lab { font-weight: 700; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.q h1 { margin: 0; font-size: 22px; font-weight: 600; text-wrap: balance; }
+.q .cost { margin-left: auto; font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); }
+.team { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+@media (max-width: 760px) { .team { grid-template-columns: minmax(0, 1fr); } }
+.agent { background: var(--plate); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; display: grid; gap: 2px; min-width: 0; }
+.agent .nm { font-weight: 700; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+.agent .doing { font-size: 14px; color: var(--ink-2); }
+.agent .meter { height: 4px; border-radius: 2px; background: var(--well-bg); overflow: hidden; margin-top: 4px; }
+.agent .meter i { display: block; height: 100%; background: var(--ok); border-radius: 2px; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+@media (max-width: 1000px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.plate { background: var(--plate); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 12px 14px; min-width: 0; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--ink-2); }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; }
+.seg button { font: 600 13px var(--f-label); background: transparent; color: var(--ink-2); border: 0; padding: 4px 12px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--plate); }
+.seg button:focus-visible { outline: 2px solid var(--ok); outline-offset: -2px; }
+.scroll { overflow-x: auto; }
+table { border-collapse: separate; border-spacing: 0; min-width: 760px; width: 100%; }
+thead th { font-weight: 600; font-size: 13px; color: var(--ink-2); padding: 4px 4px 8px; text-align: center; vertical-align: bottom; border-bottom: 1px solid var(--rule); }
+thead th .in { font-family: var(--f-mono); font-size: 13px; color: var(--ink); display: block; }
+thead th .fp { font-size: 11px; color: var(--ink-3); display: block; font-weight: 500; }
+thead th.first { text-align: left; }
+tbody th { text-align: left; font-family: var(--f-mono); font-weight: 500; font-size: 13.5px; padding: 3px 10px 3px 4px; white-space: nowrap; }
+tbody th .m8 { font-family: var(--f-label); font-size: 11px; color: var(--ink-3); margin-left: 8px; font-weight: 400; }
+tbody tr.arch th { color: var(--ok); }
+tbody tr.arch td, tbody tr.arch th { border-bottom: 1px dashed var(--rule); }
+td { text-align: center; padding: 3px 4px; white-space: nowrap; }
+td.ball, thead th.ball { background: color-mix(in srgb, var(--well-bg) 35%, transparent); }
+td.poly, thead th.poly { border-left: 1px solid var(--rule); }
+.w { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font: 600 12px var(--f-mono); vertical-align: middle; }
+.w.ok { background: var(--ok); color: var(--ok-ink); }
+.w.ok.sm { width: 20px; height: 20px; font-size: 11px; }
+.w.no { border: 1.5px solid var(--no); position: relative; }
+.w.no::after { content: ""; position: absolute; width: 2px; height: 24px; background: var(--no); transform: rotate(45deg); top: -1.5px; left: 9.5px; }
+.w.nd { border: 1.8px dashed var(--nd); color: var(--nd); background: transparent; }
+.w.na { color: var(--ink-3); border-radius: 0; }
+.pr { font-family: var(--f-mono); font-size: 11px; color: var(--ink-2); margin-left: 4px; }
+tr.hl td { background: color-mix(in srgb, var(--ok) 10%, transparent); }
+tr.grp th { font: 700 11px var(--f-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); padding-top: 10px; text-align: left; }
+.stop { margin-top: 0; border-top: 3px solid var(--stop); padding: 8px 4px 0; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
+.stop b { font-size: 14px; }
+.stop span { font-size: 13px; color: var(--ink-2); }
+.argband { margin-top: 8px; border: 1.5px solid var(--arg); border-radius: 4px; padding: 6px 10px; font-size: 13.5px; color: var(--ink);
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--arg) 12%, transparent) 0 6px, transparent 6px 12px); }
+.argband b { color: var(--arg); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 13px; color: var(--ink-2); align-items: center; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.rail { display: grid; gap: 10px; min-width: 0; }
+.rail h2 { margin: 0; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-weight: 700; }
+.find { background: var(--plate); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; display: grid; gap: 4px; min-width: 0; }
+.find .id { font-family: var(--f-mono); font-size: 11.5px; color: var(--ink-3); }
+.find .t { font-size: 15px; font-weight: 500; }
+.find .ev { font-size: 13px; color: var(--ink-2); }
+.badge { justify-self: start; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 1px 8px; border-radius: 3px; border: 1.5px solid currentColor; }
+.b-pattern { color: var(--ok); } .b-argued { color: var(--arg); border-style: solid; background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--arg) 14%, transparent) 0 3px, transparent 3px 6px); }
+.b-open { color: var(--nd); border-style: dashed; } .b-stat { color: var(--no); }
+.foot { margin-top: 20px; font-size: 12px; color: var(--ink-3); }
+@media (prefers-reduced-motion: no-preference) { tr { transition: background-color .15s; } }
+</style>
+
+<div class="wrap">
+<header class="q">
+  <span class="lab">Question</span>
+  <h1>Which small n are squares at which places?</h1>
+  <span class="cost">9 inputs × 16 places = 144 calls · priced before run · 0.3 s</span>
+</header>
+
+<section class="team" aria-label="Agent team">
+  <div class="agent"><span class="nm">Sweeper</span><span class="doing">144 of 144 calls done; next: extend column 2 to p &lt; 1000 (168 calls), waiting for you</span><span class="meter"><i style="width:100%"></i></span></div>
+  <div class="agent"><span class="nm">Pattern finder</span><span class="doing">wrote F1, F2, F3; reading the last column</span><span class="meter"><i style="width:70%"></i></span></div>
+  <div class="agent"><span class="nm">Skeptic</span><span class="doing">attacking F4: rational roots, scope above 47</span><span class="meter"><i style="width:40%"></i></span></div>
+</section>
+
+<div class="main">
+<section class="plate" aria-label="Wall of places">
+  <div class="tools">
+    <span>rows</span>
+    <span class="seg" role="group" aria-label="Row order"><button type="button" id="ord-p" aria-pressed="true">by p</button><button type="button" id="ord-8" aria-pressed="false">by p mod 8</button></span>
+    <span>cell: roots of x² − n at the place</span>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr>
+      <th class="first">place</th>
+      <th><span class="in">−1</span></th><th><span class="in">2</span></th><th><span class="in">−2</span></th><th><span class="in">3</span></th>
+      <th><span class="in">5</span></th><th><span class="in">6</span></th><th><span class="in">7</span></th>
+      <th class="ball"><span class="in">9 mod 5⁶</span><span class="fp">information at 5 only</span></th>
+      <th class="poly"><span class="in">(x²−13)(x²−17)(x²−221)</span><span class="fp">a root here, via</span></th>
+    </tr></thead>
+    <tbody id="wall">
+<tr data-p="0" data-m8="" class="arch"><th scope="row">R<span class="m8"></span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td class="ball"><span class="w na" title="a finite ball has no real coordinate">—</span></td><td class="poly"><span class="w ok sm" title="x² − 13 has roots here">✓</span><span class="pr">x² − 13</span></td></tr>
+<tr data-p="2" data-m8="" class=""><th scope="row">2<span class="m8"></span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 17 has roots here">✓</span><span class="pr">x² − 17</span></td></tr>
+<tr data-p="3" data-m8="3" class=""><th scope="row">3<span class="m8">mod 8: 3</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 13 has roots here">✓</span><span class="pr">x² − 13</span></td></tr>
+<tr data-p="5" data-m8="5" class=""><th scope="row">5<span class="m8">mod 8: 5</span></th><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w ok">2</span><span class="pr">O(5⁶)</span></td><td class="poly"><span class="w ok sm" title="x² − 221 has roots here">✓</span><span class="pr">x² − 221</span></td></tr>
+<tr data-p="7" data-m8="7" class=""><th scope="row">7<span class="m8">mod 8: 7</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 221 has roots here">✓</span><span class="pr">x² − 221</span></td></tr>
+<tr data-p="11" data-m8="3" class=""><th scope="row">11<span class="m8">mod 8: 3</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 221 has roots here">✓</span><span class="pr">x² − 221</span></td></tr>
+<tr data-p="13" data-m8="5" class=""><th scope="row">13<span class="m8">mod 8: 5</span></th><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 17 has roots here">✓</span><span class="pr">x² − 17</span></td></tr>
+<tr data-p="17" data-m8="1" class=""><th scope="row">17<span class="m8">mod 8: 1</span></th><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 13 has roots here">✓</span><span class="pr">x² − 13</span></td></tr>
+<tr data-p="19" data-m8="3" class=""><th scope="row">19<span class="m8">mod 8: 3</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 17 has roots here">✓</span><span class="pr">x² − 17</span></td></tr>
+<tr data-p="23" data-m8="7" class=""><th scope="row">23<span class="m8">mod 8: 7</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 13 has roots here">✓</span><span class="pr">x² − 13</span></td></tr>
+<tr data-p="29" data-m8="5" class=""><th scope="row">29<span class="m8">mod 8: 5</span></th><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 13 has roots here">✓</span><span class="pr">x² − 13</span></td></tr>
+<tr data-p="31" data-m8="7" class=""><th scope="row">31<span class="m8">mod 8: 7</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 221 has roots here">✓</span><span class="pr">x² − 221</span></td></tr>
+<tr data-p="37" data-m8="5" class=""><th scope="row">37<span class="m8">mod 8: 5</span></th><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 221 has roots here">✓</span><span class="pr">x² − 221</span></td></tr>
+<tr data-p="41" data-m8="1" class=""><th scope="row">41<span class="m8">mod 8: 1</span></th><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 221 has roots here">✓</span><span class="pr">x² − 221</span></td></tr>
+<tr data-p="43" data-m8="3" class=""><th scope="row">43<span class="m8">mod 8: 3</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 13 has roots here">✓</span><span class="pr">x² − 13</span></td></tr>
+<tr data-p="47" data-m8="7" class=""><th scope="row">47<span class="m8">mod 8: 7</span></th><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w no" title="none, proved: DOMAIN"></span></td><td><span class="w ok" title="two roots">2</span></td><td><span class="w ok" title="two roots">2</span></td><td class="ball"><span class="w nd" title="NOT_DETERMINED: the ball is all of Z_p here and contains 0">?</span></td><td class="poly"><span class="w ok sm" title="x² − 17 has roots here">✓</span><span class="pr">x² − 17</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="stop"><b>p ≥ 53: not swept.</b><span>Nothing below this line is computed. A finding may cover it only by an argument.</span></div>
+  <div class="argband"><b>Argued, last column, every p not dividing 2·13·17:</b> if neither 13 nor 17 is a square mod p, then 221 = 13·17 is (the Legendre symbol is multiplicative).</div>
+  <div class="legend" aria-label="Legend">
+    <span><span class="w ok">2</span> two roots (OK)</span>
+    <span><span class="w no"></span> none, proved (DOMAIN)</span>
+    <span><span class="w nd">?</span> not determined</span>
+    <span><span class="w na">—</span> no meaning at this place</span>
+  </div>
+</section>
+
+<aside class="rail" aria-label="Findings">
+  <h2>Findings</h2>
+  <div class="find"><span class="id">F1 · column 2 · pattern finder</span><span class="t">Two roots exactly when p ≡ 1 or 7 mod 8 (p odd).</span>
+    <span class="ev">7, 17, 23, 31, 41, 47; no exception among the 14 odd primes swept.</span><span class="badge b-pattern">pattern · source not on disk</span></div>
+  <div class="find"><span class="id">F2 · column −1 · pattern finder</span><span class="t">Two roots exactly when p ≡ 1 mod 4.</span>
+    <span class="ev">5, 13, 17, 29, 37, 41; none at 2 or R.</span><span class="badge b-pattern">pattern · 14 primes</span></div>
+  <div class="find"><span class="id">F3 · column 9 mod 5⁶ · pattern finder</span><span class="t">A finite ball says nothing outside its modulus.</span>
+    <span class="ev">At 5 two roots to O(5⁶); at every other prime the ball is all of ℤ<sub>p</sub>, contains 0, and the root is not determined.</span><span class="badge b-stat">statuses as a result</span></div>
+  <div class="find"><span class="id">F4 · last column · skeptic attacking</span><span class="t">A root at every place, no rational root.</span>
+    <span class="ev">Computed at R and every p ≤ 47; argued for the rest (band below the wall). SPEC 9.2 states it as proved (M12).</span><span class="badge b-open">under attack</span></div>
+</aside>
+</div>
+
+<p class="foot">Concept mock for brief 4 (docs/ux). Static except the row order. Every well is computed: v<sub>p</sub>(n) even and the unit part a square mod p (mod 8 at 2), n &gt; 0 at R.</p>
+</div>
+
+<script>
+(function () {
+  var tbody = document.getElementById('wall');
+  var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr[data-p]'));
+  var bP = document.getElementById('ord-p'), b8 = document.getElementById('ord-8');
+  function clear() { Array.prototype.slice.call(tbody.querySelectorAll('tr.grp')).forEach(function (r) { r.remove(); }); }
+  function byP() {
+    clear(); rows.forEach(function (r) { r.classList.remove('hl'); tbody.appendChild(r); });
+    bP.setAttribute('aria-pressed', 'true'); b8.setAttribute('aria-pressed', 'false');
+  }
+  function by8() {
+    clear();
+    var groups = [['', 'R and 2'], ['1', 'p ≡ 1 mod 8'], ['7', 'p ≡ 7 mod 8'], ['3', 'p ≡ 3 mod 8'], ['5', 'p ≡ 5 mod 8']];
+    groups.forEach(function (g) {
+      var h = document.createElement('tr'); h.className = 'grp';
+      var th = document.createElement('th'); th.colSpan = 10; th.textContent = g[1]; h.appendChild(th); tbody.appendChild(h);
+      rows.filter(function (r) { return r.getAttribute('data-m8') === g[0]; }).forEach(function (r) {
+        r.classList.toggle('hl', g[0] === '1' || g[0] === '7'); tbody.appendChild(r);
+      });
+    });
+    bP.setAttribute('aria-pressed', 'false'); b8.setAttribute('aria-pressed', 'true');
+  }
+  bP.addEventListener('click', byP); b8.addEventListener('click', by8);
+})();
+</script>

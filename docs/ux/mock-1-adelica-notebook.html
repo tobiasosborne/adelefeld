@@ -1,0 +1,239 @@
+<title>Adelica Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one notebook column of In/Out cells, with a right margin that belongs to the agent; stacks on phones. */
+:root {
+  --paper: #f4f6f8;
+  --sheet: #ffffff;
+  --ink: #18212d;
+  --ink-2: #4a5566;
+  --ink-3: #7d8796;
+  --rule: #dde2e8;
+  --accent: #245a8c;
+  --accent-soft: #e4edf6;
+  --agent: #6a4c9c;
+  --agent-soft: #f1ecf8;
+  --open: #9a5d08;
+  --open-soft: #fbf2e3;
+  --proved: #3f5a52;
+  --proved-soft: #e8f0ed;
+  --fog-a: #e6e9ee;
+  --fog-b: #f6f7f9;
+  --f-ui: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --f-code: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-math: "STIX Two Text", "STIX Two Math", Cambria, Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11151b; --sheet: #171c24; --ink: #e4e8ee; --ink-2: #aab3c0; --ink-3: #7c8594; --rule: #2a313c;
+    --accent: #8cb5df; --accent-soft: #1d2a38; --agent: #b8a0e4; --agent-soft: #241e33;
+    --open: #e2a64e; --open-soft: #2c2214; --proved: #9cc3b6; --proved-soft: #1a2824;
+    --fog-a: #252c36; --fog-b: #1a1f27; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11151b; --sheet: #171c24; --ink: #e4e8ee; --ink-2: #aab3c0; --ink-3: #7c8594; --rule: #2a313c;
+  --accent: #8cb5df; --accent-soft: #1d2a38; --agent: #b8a0e4; --agent-soft: #241e33;
+  --open: #e2a64e; --open-soft: #2c2214; --proved: #9cc3b6; --proved-soft: #1a2824;
+  --fog-a: #252c36; --fog-b: #1a1f27; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-ui); font-size: 15px; line-height: 1.5;
+  padding-inline: 16px; padding-block: 0 48px; }
+.top { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px;
+  padding-block: 18px 14px; border-bottom: 1px solid var(--rule); }
+.top h1 { font-size: 17px; font-weight: 700; margin: 0; letter-spacing: 0.01em; }
+.top .file { font-family: var(--f-code); font-size: 13px; color: var(--ink-2); }
+.top .kernel { margin-left: auto; font-size: 12px; color: var(--ink-3); font-family: var(--f-code); }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px;
+  padding-top: 22px; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+.col { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.cell { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px 14px;
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 10px; }
+.lbl { font-family: var(--f-code); font-size: 12px; color: var(--ink-3); padding-top: 2px; }
+.lbl.out { color: var(--accent); }
+.in { font-family: var(--f-code); font-size: 14px; color: var(--ink); overflow-x: auto; white-space: pre; min-width: 0; }
+.in .k { color: var(--accent); }
+.in .pin { background: var(--accent-soft); border-radius: 3px; padding: 0 3px; }
+.out { min-width: 0; }
+.scroll { overflow-x: auto; }
+/* place strip */
+.strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(104px, auto); border: 1px solid var(--rule);
+  border-radius: 4px; width: max-content; min-width: 100%; }
+.pl { padding: 8px 12px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; gap: 2px; }
+.pl:last-child { border-right: 0; }
+.pl .name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); font-weight: 600; }
+.pl .val { font-family: var(--f-math); font-size: 17px; }
+.pl .sub { font-family: var(--f-code); font-size: 12px; color: var(--ink-2); }
+.pl.rest { background: repeating-linear-gradient(135deg, var(--fog-a) 0 6px, var(--fog-b) 6px 12px); }
+.pl.rest .val { font-family: var(--f-ui); font-size: 14px; color: var(--ink-2); }
+.pl.real .val .unc { color: var(--ink-3); }
+.note { font-size: 13px; color: var(--ink-2); margin-top: 8px; font-family: var(--f-math); }
+.note b { font-weight: 600; color: var(--ink); }
+/* p-adic digits */
+.dig { font-family: var(--f-code); font-size: 15px; letter-spacing: 0.12em; white-space: nowrap; }
+.dig .per { text-decoration: overline; text-decoration-thickness: 1.5px; }
+.dig .fog { display: inline-block; width: 74px; height: 1.05em; vertical-align: -2px; margin-right: 4px; border-radius: 2px;
+  background: repeating-linear-gradient(135deg, var(--fog-a) 0 4px, var(--fog-b) 4px 8px); }
+.dig .ell { color: var(--ink-3); letter-spacing: 0; }
+/* branch fan */
+.fan { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; display: grid; gap: 2px; min-width: 0;
+  background: var(--sheet); cursor: pointer; text-align: left; color: var(--ink); font: inherit; }
+.chip:hover, .chip:focus-visible { border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px var(--accent-soft); }
+.chip .seed { font-family: var(--f-code); font-size: 12px; color: var(--accent); }
+.chip .v { font-family: var(--f-math); font-size: 18px; }
+.chip.picked { border-color: var(--accent); background: var(--accent-soft); }
+.fanhead { font-size: 12px; color: var(--ink-3); margin-bottom: 8px; }
+.fanhead b { color: var(--ink-2); font-weight: 600; }
+/* status card */
+.status { border: 1.5px dashed var(--open); background: var(--open-soft); border-radius: 6px; padding: 10px 14px;
+  display: grid; gap: 6px; }
+.status .nm { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--open); }
+.status .why { font-family: var(--f-math); font-size: 15px; }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.act { font-family: var(--f-code); font-size: 12.5px; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink);
+  border-radius: 4px; padding: 3px 8px; }
+.split { display: grid; gap: 8px; margin-top: 4px; }
+.split .row { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 14px; }
+.split .row .b { font-family: var(--f-code); font-size: 13px; }
+.proved { border: 1.5px solid var(--proved); background: var(--proved-soft); border-radius: 4px; padding: 1px 7px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--proved); }
+.okv { font-family: var(--f-math); }
+/* ghost cell */
+.cell.ghost { border: 1.5px dashed var(--agent); background: var(--agent-soft); }
+.cell.ghost .lbl { color: var(--agent); }
+.cell.ghost .in, .cell.ghost .out { color: var(--ink-2); }
+.ghostbar { grid-column: 2; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: var(--agent); }
+kbd { font-family: var(--f-code); font-size: 11px; border: 1px solid var(--agent); border-radius: 3px; padding: 0 5px; }
+/* agent margin */
+.margin { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.margin h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--agent); margin: 0; }
+.mnote { border-left: 2px solid var(--agent); padding: 2px 0 2px 12px; font-size: 13.5px; color: var(--ink-2); }
+.mnote .anchor { font-family: var(--f-code); font-size: 11.5px; color: var(--agent); display: block; margin-bottom: 2px; }
+.mnote .tag { font-size: 11px; color: var(--ink-3); display: block; margin-top: 4px; }
+.legend { border-top: 1px solid var(--rule); padding-top: 12px; display: grid; gap: 8px; font-size: 12.5px; color: var(--ink-2); }
+.legend .sw { display: inline-block; width: 26px; height: 12px; vertical-align: -1px; margin-right: 8px; border-radius: 2px; }
+.sw.fogsw { background: repeating-linear-gradient(135deg, var(--fog-a) 0 4px, var(--fog-b) 4px 8px); border: 1px solid var(--rule); }
+.sw.opensw { border: 1.5px dashed var(--open); }
+.sw.agsw { border: 1.5px dashed var(--agent); }
+.sw.prsw { border: 1.5px solid var(--proved); }
+.foot { max-width: 1180px; margin: 28px auto 0; font-size: 12px; color: var(--ink-3); }
+@media (max-width: 520px) { .cell { grid-template-columns: minmax(0, 1fr); } .ghostbar { grid-column: 1; } .split .row { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+</style>
+
+<header class="top">
+  <h1>Adelica</h1>
+  <span class="file">squares-at-five.jl</span>
+  <span class="kernel">libadelefeld 1F.6 · FLINT 3.0.1 · replay: byte-identical</span>
+</header>
+
+<div class="wrap">
+<main class="col" aria-label="Notebook cells">
+
+  <section class="cell" aria-label="Cell 1">
+    <div class="lbl">In [1]</div>
+    <div class="in">x = <span class="k">6//35</span></div>
+    <div class="lbl out">Out[1]</div>
+    <div class="out">
+      <div class="scroll">
+        <div class="strip" role="table" aria-label="6/35 at every place">
+          <div class="pl real"><span class="name">R</span><span class="val">0.171428571428…</span><span class="sub">exact · |x| = 6/35</span></div>
+          <div class="pl"><span class="name">2</span><span class="val">v = 1</span><span class="sub">|x|₂ = 1/2</span></div>
+          <div class="pl"><span class="name">3</span><span class="val">v = 1</span><span class="sub">|x|₃ = 1/3</span></div>
+          <div class="pl"><span class="name">5</span><span class="val">v = −1</span><span class="sub">|x|₅ = 5</span></div>
+          <div class="pl"><span class="name">7</span><span class="val">v = −1</span><span class="sub">|x|₇ = 7</span></div>
+          <div class="pl rest"><span class="name">every other p</span><span class="val">unit</span><span class="sub">|x|ₚ = 1</span></div>
+        </div>
+      </div>
+      <p class="note">product of all |x|<sub>v</sub> = <b>6/35 · 1/2 · 1/3 · 5 · 7 = 1</b>, exact</p>
+    </div>
+  </section>
+
+  <section class="cell" aria-label="Cell 2">
+    <div class="lbl">In [2]</div>
+    <div class="in">roots(<span class="k">9</span>, 2; at = <span class="k">5</span>)</div>
+    <div class="lbl out">Out[2]</div>
+    <div class="out">
+      <div class="fanhead"><b>2 branches</b> · gcd(2, 5 − 1) = 2 · complete · click a branch to pin its seed</div>
+      <div class="fan">
+        <button class="chip" type="button" id="b2"><span class="seed">5 [2]</span><span class="v">−3</span>
+          <span class="dig"><span class="ell">…</span><span class="per">4</span>442</span></button>
+        <button class="chip picked" type="button" id="b3"><span class="seed">5 [3] · pinned in In [3]</span><span class="v">3</span>
+          <span class="dig"><span class="ell">…</span><span class="per">0</span>003</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cell" aria-label="Cell 3">
+    <div class="lbl">In [3]</div>
+    <div class="in">root(<span class="k">-1</span>, 2; at = <span class="k">5</span>, <span class="pin">seed = 2</span>, <span class="pin">prec = 8</span>)</div>
+    <div class="lbl out">Out[3]</div>
+    <div class="out">
+      <div class="fan">
+        <div class="chip picked" style="cursor:default"><span class="seed">5 [2] · 8 digits known</span>
+          <span class="dig"><span class="fog" aria-label="unknown digits"></span>32431212</span>
+          <span class="v">280182 + O(5<sup>8</sup>)</span></div>
+      </div>
+      <p class="note">fog: the digits above 5<sup>8</sup> are not known · drag its edge, or <kbd style="border-color:var(--rule)">Alt ←</kbd>, for more</p>
+    </div>
+  </section>
+
+  <section class="cell ghost" aria-label="Agent proposal">
+    <div class="lbl">agent</div>
+    <div class="in">equal(teichmuller(<span class="k">2</span>; at = <span class="k">5</span>, prec = 8), Out[3])</div>
+    <div class="lbl">preview</div>
+    <div class="out">
+      <span class="okv">true</span> · the same ball 280182 + O(5<sup>8</sup>) &nbsp;·&nbsp; compare(…) = <span class="okv">undecided</span>
+      <p class="note">equal sets, points not proved equal by the library. The argument is in the margin.</p>
+    </div>
+    <div class="ghostbar"><kbd>Tab</kbd> accept and recompute <kbd>Esc</kbd> dismiss <kbd>E</kbd> edit</div>
+  </section>
+
+  <section class="cell" aria-label="Cell 4">
+    <div class="lbl">In [4]</div>
+    <div class="in">roots(<span class="k">1 mod 4</span>, 2; at = <span class="k">2</span>)</div>
+    <div class="lbl out">Out[4]</div>
+    <div class="out">
+      <div class="status" role="status">
+        <span class="nm">NOT_DETERMINED · at 2</span>
+        <span class="why">The ball 1 + 4ℤ₂ is outside the guard: N − m = 2, and a square root at 2 needs N − m ≥ c + v(n) = 3.
+          The ball holds squares (1, 9, 17, …) and non-squares (5, 13, …).</span>
+        <div class="acts"><span class="act">split into 1 mod 8, 5 mod 8</span><span class="act">refine the input at 2</span></div>
+        <div class="split" aria-label="After split">
+          <div class="row"><span class="b">1 + 8ℤ₂</span><span class="okv">2 [+1]: 1 + O(2<sup>2</sup>) · 2 [−1]: 3 + O(2<sup>2</sup>)</span></div>
+          <div class="row"><span class="b">5 + 8ℤ₂</span><span><span class="proved">DOMAIN</span> &nbsp;<span class="okv">a unit is a square at 2 only if it is 1 mod 8</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<aside class="margin" aria-label="Agent margin">
+  <h2>Agent margin</h2>
+  <div class="mnote"><span class="anchor">→ Out[1], column R and 2…7</span>
+    The four interesting primes are the factors of 6 and 35. Their absolute values cancel the real one: the product
+    formula, exact here because 6/35 is an exact rational.<span class="tag">computed · 5 calls</span></div>
+  <div class="mnote"><span class="anchor">→ Out[2], branch [2]</span>
+    Both branches are rational: ±3. At every odd prime other than 3 the fan is the same pair; at 3 they are 3 = 10₃ and −3.
+    <span class="tag">computed for 3, 7, 11, 13 · argued for the rest</span></div>
+  <div class="mnote"><span class="anchor">→ agent cell</span>
+    Branch [2] of √−1 is the Teichmüller lift ω(2): ω(2)² = ω(4) = ω(−1) = −1, because 4 = −1 mod 5.
+    <span class="tag">argument, not computed</span></div>
+  <div class="mnote"><span class="anchor">→ Out[4]</span>
+    I split the ball as the card proposes. Half of it has two roots, the other half none; no single answer exists for 1 mod 4.
+    <span class="tag">computed · 2 calls</span></div>
+  <div class="legend" aria-label="Legend">
+    <span><span class="sw fogsw"></span>unknown digits, or no information at a place</span>
+    <span><span class="sw opensw"></span>open status: more work may help</span>
+    <span><span class="sw prsw"></span>proved: the answer is no</span>
+    <span><span class="sw agsw"></span>written by the agent, not yet accepted</span>
+  </div>
+</aside>
+</div>
+
+<p class="foot">Concept mock for brief 1 (docs/ux). Static; every number is computed: 280182² ≡ −1 mod 5⁸, digits written low digit on the right.</p>
