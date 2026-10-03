@@ -1,0 +1,61 @@
+# f-review7 progress (running notes; the report if the session is cut off)
+
+- Archive built: `timeout 600 make -j2 BUILD=lanes/f-review7/build lanes/f-review7/build/libadelefeld.a` (exit 0).
+- Harness `h.c` (raw lball fields per line; modes P powrat, W powunit, I pow_si, S root_seed, A roots; aliasing
+  y = x, y = u, y = s, u = s compared inside), built plain (`h`) and with ASan+UBSan (`hsan`).
+- Own oracle `oracle.py` (exact integers; certified Hensel roots; principal powers by integer powers modulo p^H).
+
+## Findings so far
+
+1. MINOR (stale header sentence): lpow.h "Cost: one Log at min(A, N - B) for alpha" -- the code computes alpha by
+   one exact subtraction (src/lpow.c principal(), adf_lball_sub), decision 10 of api-1f6.md. No Log for alpha.
+2. MINOR (LIMIT for a small result): powunit((6 + 5^(2^40) Z_5), 1 or 2, N = 2^40) is LIMIT, while the image is
+   6 + 5^(2^40) Z_5 (36 + ... for s = 2) and pow_si returns it OK. limits.in lines 2-4. Within the header's
+   letter (Log at K forms p^K), as f-review6 F1 was.
+3. MINOR (false sentence in lanes/f-repair4/result.md): "early_status() now returns, before the listing, every
+   LIMIT that some branch would return". Ball 1 + 7^(2^40) Z_7, n = 2, N = LONG_MAX: general = plain = 2, so
+   early_status returns OK; branch 1 is computed (OK), branch 6 then returns LIMIT from unit_mod (centre
+   7^K - 1). Same at 2 for 1 + 2^(2^27) Z_2, n = 2 (early_status returns after principal at p = 2). Status is
+   right (LIMIT, outputs untouched); the order claim is false. early.in lines 8-13.
+
+## Attacks run (all 0 failures unless stated)
+
+- A1 attack_powrat.py: 3 x 3000 + 2000 random cases at p in 2,3,5,7,13 (statuses; n' = 1 byte-equal to pow_si;
+  exponent min(N, E'); centre by certified root; enclosure of 4 points; tightness pair at distance p^E').
+- A2 attack_powunit.py: 8 x 4000 cases, image enumerated modulo p^(K+1) (enclosure, tightness when K < N,
+  exactness checked modulo p^24, image fullness).
+- A3 attack_big.py: 150+150+4x120 cases at 2, 3, 5, 65537, 2^64-59, 64/500/3000-bit inputs, N up to 700.
+- B1 attack_roots.py: every odd p < 300, n = 2..40, 2 units each, exact and ball (9516 lists) against a search
+  over all residues: ids, order, count gcd(n, p-1), DOMAIN; certified roots inside each ball (28526 branches).
+- B2 attack_roots_big.py: p = 65537 (d = 2..65536), p = 2^64 - 59 (d = 2..824329, several Sylow parts):
+  sorted, distinct, t^n = U, count d; sampled enclosure. roots_big.log.
+- B3 attack_shared.py: 3000 lists, 8594 branches: roots entry identical to root_seed.
+- limits.in, early.in: LIMIT / N-D14 edge cases (LONG_MIN, LONG_MAX, 2^60) by hand.
+- Driver drv1.cmd, drv2.cmd: real place UNSUPPORTED, fifth operand PARSE, exponent types, 2-adic -1 seed.
+
+## Orchestrator's addendum (2026-10-03, 00:00 to 00:10 UTC; written by the orchestrator, not by the lane)
+
+The lane was cut off at 23:54 on 2026-10-02 by a restart of the cloud container, not by the quota stop (the weekly
+quota read 0.41, 0.43 with overage included, at 00:00; the stop is at 0.45). It wrote no `result.md`; the notes
+above end at 23:39 and the lane kept working until 23:54. The programs it left after 23:39 (`at.c`,
+`attack_chain.py`, `attack_early.py`, `attack_extreme.py`, `attack_powunit2.py`, the last `attack_powrat.py`) were
+rebuilt (`-std=gnu11`, needed for `clock_gettime`; the lane's archive `build/libadelefeld.a`; the tree unchanged
+at `4478685`) and rerun by the orchestrator on 2026-10-03:
+
+| Program | Command | Result |
+|---|---|---|
+| `at.c`: the `_at` forms (the component at `v`, `where`, outputs untouched on failure, aliasing `y = x`, `y = s`, `u = s`, the real place `UNSUPPORTED`) | `./at` | 12304 checks, 0 failures |
+| A1 `attack_powrat.py`, final version | `python3 attack_powrat.py 3000 1` | 3000 cases, 0 failures |
+| A2b `attack_powunit2.py`: `p = 2`, every combination of `A`, `u0`, `s`, `B`, `N` listed in its docstring | `python3 attack_powunit2.py` | 11562 cases, 0 failures; 1265 hull results with `N > 1` |
+| A4 `attack_chain.py`: `powrat` with `n' >= 2` against `root_seed` then `pow_si`, statuses included | `python3 attack_chain.py 1 1500` | 1500 cases, 1490 identical, 0 different; the 10 others are exact inputs with an irrational branch, where the two balls may legitimately differ, counted apart by the script |
+| A5 `attack_extreme.py`: `n` near `2^64`, `e` and `N` at `LONG_MIN`, `LONG_MAX`, seeds near `2^64`, under ASan and UBSan | `python3 attack_extreme.py 3 800` | 1031 lines, 128 value-checked, 0 failures, no sanitizer report |
+| B4 `attack_early.py`: status of `adf_lball_roots` against the statuses of `root_seed` over all valid seeds; outputs untouched on `LIMIT` | `python3 attack_early.py` | 1200 lists, 2590 seeded calls, 0 differences (311 OK, 444 LIMIT, 445 DOMAIN) |
+
+Not committed: the binaries `h`, `hsan`, `at`, `adf`, the directory `build/`, and the input dumps `big1.in`,
+`chain1.in`, `early_all.in`, `ext3.in`, `ext4.in` with `ext4.out` (each dump is regenerated by
+`DUMP=<file> python3 <attack> <args>`).
+
+Not done by the lane, as far as its notes say: the refereeing of P1 to P8 and R8 as proofs (brief, "A false step");
+the cost measurement and the search for a lane test that cannot fail (brief, last bullet). Whether the lane got
+to any of it between 23:39 and 23:54 is not recorded. The three findings above are all MINOR; no wrong enclosure,
+exponent, status or branch list was found in any attack, the lane's or the reruns.
