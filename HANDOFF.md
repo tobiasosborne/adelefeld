@@ -6,7 +6,7 @@
 
 **One line.** The cloud session branch is merged; milestone 1F is complete through 1F.8: the root at all places
 and the five series on a finite part exactly 0 (f-slice10, N-D16; reviewed f-review9, repaired f-repair7) and
-`Log` on ideles (design d-idlog, code f-slice11, N-D17; its review f-review10 was RUNNING when this was written);
+`Log` on ideles (design d-idlog, code f-slice11, N-D17; bug hunt f-review10: no finding);
 the powers at a prime are reviewed to the end and repaired (f-review8, f-repair5, f-repair6); the value form of
 `adf_lball` and `adf_sball` exists (t-slice2); the mutation tool is repaired (m-tool2); four design briefs for
 the interaction plane are in `docs/ux/`. Everything named here is merged and pushed.
@@ -14,7 +14,6 @@ the interaction plane are in `docs/ux/`. Everything named here is merged and pus
 **First commands.**
 
     cd ~/Projects/adelefeld && git pull && bd ready | head -20
-    git worktree list | grep f-review10; ls .claude/worktrees/*/lanes/f-review10/result.md 2>/dev/null
     tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
     ~/Projects/quota-app/target/release/quota; date
 
@@ -47,7 +46,7 @@ codex and pi lanes; details `docs/worklog/2026-10-03-evening.md`).
 | f-review9 | codex sol | review of f-slice10: `docs/reviews/f1/review-gfunc.md`: 0 blocker; 1 MAJOR test gap (an inexact idele of degree 4 or more returned `OK` passed the tests); 3 MINOR | repaired by f-repair7 |
 | f-repair7 | pi bunny | f-review9 F1 to F4: the two test gaps; debug invariant entry checks in `gfunc.c` (release code byte-identical); G1 step (`|r| >= 2`); two word-size bounds stated with limits and marked source pending | all 13 faults of the review fail `test_gfunc` now |
 | d-idlog | codex sol | design before code of `Log` on ideles: `docs/design/idele-log.md` (IL1 to IL8, six declarations, test plan), oracle `proto/idlog_checks.py` | not reviewed (the review f-review10 checks the code against its own oracle) |
-| f-slice11 | codex sol | 1F.8 part 3: `src/gfunc_log.c`: `adf_idele_Log`, `log_abs`, `Log_at`, `log_abs_at`, `Log_refine`, `log_abs_refine`; driver commands of the same names; `gfunc_log.jl`; G7 to G12; N-D17; `test_gfunc_log` 2194049 checks | f-review10 (Sonnet), RUNNING |
+| f-slice11 | codex sol | 1F.8 part 3: `src/gfunc_log.c`: `adf_idele_Log`, `log_abs`, `Log_at`, `log_abs_at`, `Log_refine`, `log_abs_refine`; driver commands of the same names; `gfunc_log.jl`; G7 to G12; N-D17; `test_gfunc_log` 2194049 checks | f-review10 (Sonnet): no finding |
 | t-slice2 | pi bunny | value form of `adf_lball`, `adf_sball` (`adf_lball_set_str`, `get_str`, `adf_sball_set_str`, `get_str`); `test_text_local` 68868 checks | none. The lane's file began with a 1008-line copy of `src/text.c`; the orchestrator joined its code to `src/text.c` (`lanes/t-slice2/orchestrator-note.md`) and later repaired two debug entry checks that did not compile under `INV=1` and two missing final newlines |
 | m-tool2 | pi bunny | mutation tool: `--san` asks for the make variable `SAN`; a run with more than half of the mutants not compiled fails (exit 2); no `swap_args` mutant of equal arguments | self-test rerun by the orchestrator |
 | UX | Opus | `docs/ux/`: four design briefs (adelica notebook, place atlas, claim ledger, sweep bench), a static HTML mock each, README with three questions for TJO | TJO reads |
@@ -56,13 +55,14 @@ Also: `tools/orch/suites.sh`: the `all` suite builds in `build/` (a `BUILD` on t
 `tools/adf/Makefile` and the golden test ran a stale `build/adf`); N-D15 wording (f-review8 F10); SPEC 9.3.1,
 9.3.3 and conventions 3.3 rule 4 follow the findings of f-slice10; PLAN rows 1F.6 to 1F.8.
 
-**Running.** Lane f-review10 (Sonnet medium, a Claude subagent in a worktree under `.claude/worktrees/`, since
-01:27): bug hunt through `src/gfunc_log.c` with its own oracle (brief `lanes/f-review10/brief.md`). If this
-session ended before it reported: its notes are `lanes/f-review10/progress.md` in its worktree; commit them,
-merge, record under `docs/reviews/f1/review-gfunc-log.md`, and repair what it found.
+**Nothing is running.** Lane f-review10 (Sonnet medium; bug hunt through `src/gfunc_log.c` with its own oracle)
+landed at 01:40: NO finding (`docs/reviews/f1/review-gfunc-log.md`: 1060 local images compared as sets, 700 CRT
+refinements, statuses, two reproducers under ASan/UBSan with leak detection, 52 hostile driver lines). It did
+not referee the proofs IL1 to IL8 and G7 to G12: nobody has.
 
 **The next steps**, in this order:
-1. f-review10 (above) and its repairs. PLAN row 1F.8 then reads "reviewed".
+1. All five suites on master (they passed on `f7a1a2f`; only review files and records came after). A referee
+   of the proofs of `Log` on ideles (IL1 to IL8, G7 to G12) by a model that is not codex, when Claude quota allows.
 2. 1F.9 (catalogue, Tier A: Legendre, Jacobi, Kronecker, Hilbert symbols first; PLAN line 279), as thin slices,
    each with a design note first where the specification leaves the interface open (the pattern of d-idlog
    then f-slice11 worked: 27 minutes of design, 63 minutes of code, no rework).
