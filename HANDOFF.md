@@ -55,7 +55,7 @@ Also: `tools/orch/suites.sh`: the `all` suite builds in `build/` (a `BUILD` on t
 `tools/adf/Makefile` and the golden test ran a stale `build/adf`); N-D15 wording (f-review8 F10); SPEC 9.3.1,
 9.3.3 and conventions 3.3 rule 4 follow the findings of f-slice10; PLAN rows 1F.6 to 1F.8.
 
-**Running.** Lane f-slice12 (codex `gpt-6.1-sol` xhigh, `../adelefeld-wt/f-slice12`, since 01:45): 1F.9 first
+**Running.** Lane f-slice12 (codex `gpt-6.1-sol` xhigh, `../adelefeld-wt/f-slice12`, since 01:40): 1F.9 first
 slices (Legendre, Jacobi, Kronecker symbols; the Hilbert symbol at a place; new `symbol.h`, `src/symbol.c`;
 proposed N-D18). When `lanes/f-slice12/lane.log` in its worktree ends in `DONE`: read `report.md`, commit in the
 worktree, merge, ALL FIVE suites, record N-D18, PLAN row 1F.9, then a review by a model that is not codex.
