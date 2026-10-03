@@ -1,0 +1,74 @@
+# red runs before the repair (tools/mutate/selftest.py, the three items of the brief)
+
+== red 1: swap_args of fmpz_mul(x2, x, x) (item 4 of the self-test)
+== generation rules
+FAIL swap_args of fmpz_mul(x2, x, x) is not offered at all: ["t.c:1:16 swap_args: 'fmpz_mul(x2, x, x)' -> 'fmpz_mul(x2, x, x)'"]
+ok   swap_args of fmpz_mul(x2, x, y) is still offered
+RED  generation rules
+== san decision
+FAIL the command 'make check' does not set SAN: got None, want False
+FAIL the command 'make -s -j2 check' does not set SAN: got None, want False
+FAIL the command 'ASAN_OPTIONS=detect_leaks=0 make check' does not set SAN: got None, want False
+FAIL the command 'ASAN_OPTIONS=detect_leaks=0 make -s -j2 check' does not set SAN: got None, want False
+FAIL the command 'make check UBSAN_OPTIONS=x' does not set SAN: got None, want False
+FAIL the command 'make check SANITIZER=1' does not set SAN: got None, want False
+FAIL the command 'make -s -j2 check INV=1' does not set SAN: got None, want False
+FAIL the command 'SAN=1 make check' sets SAN: got None, want True
+FAIL the command 'make check SAN=1' sets SAN: got None, want True
+FAIL the command 'make -s -j2 SAN=1 check' sets SAN: got None, want True
+FAIL the command 'SAN=0 make check' sets SAN: got None, want True
+RED  san decision
+== a build that does not work
+FAIL the run does not print 'every mutant was killed': ['mutate: passed: every mutant was killed, or is excused in ../../../../../../../../../dev/null']
+FAIL the run ends with a non-zero exit code: exit 0
+FAIL the failure names the build command, not the mutants: mutate: passed: every mutant was killed, or is excused in ../../../../../../../../../dev/null
+RED  a build that does not work
+
+== green runs after the repair (same three items)
+== generation rules
+ok   a unary & is not an op mutant
+ok   a binary & is still an op mutant
+ok   a dereference/declarator * is not an op mutant
+ok   a binary * is still an op mutant
+ok   a unary - after return is not an op mutant
+ok   a binary - is still an op mutant
+ok   && is mutated only by logic, to ||
+ok   || is mutated only by logic, to &&
+ok   -> is never split into a - mutant
+ok   gcd_lcm renames my_gcd to my_lcm when my_lcm is declared
+ok   gcd_lcm drops the rename when nothing declares my_lcm
+ok   swap_args of a 3-argument call keeps the first argument fixed
+ok   swap_args of a 2-argument call exchanges both
+ok   swap_args of fmpz_mul(x2, x, x) is not offered at all
+ok   swap_args of fmpz_mul(x2, x, y) is still offered
+ok   status turns ADF_UNSUPPORTED into ADF_OK
+ok   status turns ADF_OK into ADF_DOMAIN
+ok   drop_call removes a bare call statement
+ok   drop_call excludes _init and _clear
+ok   call_swap renames my_add to my_sub when my_sub is declared
+ok   call_swap drops the rename when nothing declares my_sub
+ok   prec replaces the argument with 2
+ok   prec leaves the parameter declaration alone
+ok   generation rules
+== san decision
+ok   the command 'make check' does not set SAN
+ok   the command 'make -s -j2 check' does not set SAN
+ok   the command 'ASAN_OPTIONS=detect_leaks=0 make check' does not set SAN
+ok   the command 'ASAN_OPTIONS=detect_leaks=0 make -s -j2 check' does not set SAN
+ok   the command 'make check UBSAN_OPTIONS=x' does not set SAN
+ok   the command 'make check SANITIZER=1' does not set SAN
+ok   the command 'make -s -j2 check INV=1' does not set SAN
+ok   the command 'SAN=1 make check' sets SAN
+ok   the command 'make check SAN=1' sets SAN
+ok   the command 'make -s -j2 SAN=1 check' sets SAN
+ok   the command 'SAN=0 make check' sets SAN
+ok   san decision
+== a build that does not work
+ok   the copy of the example is built once with the judge
+ok   the baseline of the judge builds
+ok   the run reports its counts
+ok   every mutant is reported as not compiled
+ok   the run does not print 'every mutant was killed'
+ok   the run ends with a non-zero exit code
+ok   the failure names the build command, not the mutants
+ok   a build that does not work
