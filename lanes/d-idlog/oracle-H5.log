@@ -1,0 +1,7 @@
+components {"H": 5, "cases": 4280, "normalized_by": "p^m", "points": 4108800}
+images {"H": 5, "Hprime": 5, "by_prime": {"2": [1080, 9440], "3": [1140, 61200], "5": [940, 581000], "7": [1120, 3457160]}, "cap_checks": 34240, "cases": 4280, "enumerated_units": 4108800}
+factor_two {"H": 5, "pairs": 1644}
+exact {"H": 5, "cases": 160, "exact_zero_cases": 40, "sign_pairs": 80}
+kernel {"H": 5, "isometry_checks": 68320, "output_classes": 3115, "square_checks": 16, "teich_checks": 17068, "units": 17084}
+crt {"N": [-2, 0, 1, 2, 3], "cases": 120, "memberships": 91160}
+faults {"H": 5, "ids": [1, 2, 3, 4, 5, 6, 7, 8], "planted": 8, "rejected": 8}

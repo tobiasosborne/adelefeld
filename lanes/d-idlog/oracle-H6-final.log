@@ -1,0 +1,2 @@
+components {"H": 6, "cases": 4280, "normalized_by": "p^m", "points": 27307600}
+images {"H": 6, "Hprime": 6, "by_prime": {"2": [1080, 18880], "3": [1140, 183600], "5": [940, 2905000], "7": [1120, 24200120]}, "cap_checks": 34240, "cases": 4280, "enumerated_units": 27307600}
