@@ -2,27 +2,26 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-10-03 22:37 to 2026-10-04 (CEST; orchestrator Claude Fable on the laptop; Opus, codex sol and pi lanes): START HERE
+## Session 2026-10-03 22:37 to 2026-10-04 01:30 (CEST; orchestrator Claude Fable on the laptop; Opus, codex sol, pi and Sonnet lanes): START HERE
 
-**One line.** The cloud session branch is merged into master (all five suites green after a repair of
-`tools/orch/suites.sh`); 1F.8 has its first two parts (the root at all places, the five series on a finite part
-exactly 0: lane f-slice10, decision N-D16) and the design of the third (`Log` on ideles: lane d-idlog); the
-powers at a prime are reviewed to the end (f-review8: 0 blocker, 3 MAJOR test gaps) and the minors of f-review7
-repaired (f-repair5); the value form of `adf_lball` and `adf_sball` exists (t-slice2); the mutation tool's three
-defects are repaired (m-tool2); four design briefs for the interaction plane are in `docs/ux/`. Everything named
-here is merged and pushed. THREE CODEX LANES WERE RUNNING when this was written: see "Running".
+**One line.** The cloud session branch is merged; milestone 1F is complete through 1F.8: the root at all places
+and the five series on a finite part exactly 0 (f-slice10, N-D16; reviewed f-review9, repaired f-repair7) and
+`Log` on ideles (design d-idlog, code f-slice11, N-D17; its review f-review10 was RUNNING when this was written);
+the powers at a prime are reviewed to the end and repaired (f-review8, f-repair5, f-repair6); the value form of
+`adf_lball` and `adf_sball` exists (t-slice2); the mutation tool is repaired (m-tool2); four design briefs for
+the interaction plane are in `docs/ux/`. Everything named here is merged and pushed.
 
 **First commands.**
 
     cd ~/Projects/adelefeld && git pull && bd ready | head -20
-    for l in f-review9 f-repair6 f-slice11; do tail -2 ../adelefeld-wt/$l/lanes/$l/lane.log; ls ../adelefeld-wt/$l/lanes/$l/report.md; done
+    git worktree list | grep f-review10; ls .claude/worktrees/*/lanes/f-review10/result.md 2>/dev/null
     tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
     ~/Projects/quota-app/target/release/quota; date
 
-**Master.** `268e024` (pushed). `tools/orch/suites.sh -j 2 all san` passed on it at 00:14 on 2026-10-04: check-all
-(76 test programs, driver 51 cases, exports 436 of 436, Julia, both self-tests) and `SAN=1` (76). `CC=clang`,
-`INV=1` and `check_headers` last passed at 22:50 on the merged session branch (74 programs), before the lanes of
-this session were merged: run all five first.
+**Master.** `f7a1a2f` (pushed). All five suites pass on its code: `tools/orch/suites.sh -j 1` at 01:10 on
+2026-10-04 gave check-all (77 test programs, driver 55 cases, exports 442 of 442, Julia, both self-tests),
+`SAN=1` (77, leak detection on), `INV=1` (77), `check_headers`; `CC=clang` (77) passed at 01:25 after two files
+got their final newline (`src/text.c`, `tests/test_text_local.c`: clang `-Wnewline-eof`).
 
 **Rules of TJO for this session** (2026-10-03 22:40; memory `orchestration-model-tiers`, top block): orchestrate;
 stay UNDER pace on Claude and Codex (quota app); no Fable and no `gpt-6-astra` subagents; Opus for coding, Sonnet
@@ -31,8 +30,9 @@ use); the pi agent with `stealth/space-bunny-alpha` is free, does not count agai
 launched only through `tools/orch/pi_lane.sh`; at most 4 lanes; synchronise quota and machine load with the
 other Claude session on the laptop (initech-os) by cross-session messages. Agreed with that session: about 5
 points of Claude weekly for this one on 2026-10-03, stop of new Claude lanes below 4 points under pace. At 23:40
-the two sessions together burnt about 5 points an hour, so NO Claude subagent was started after 22:55; the work
-went to codex and the pi lane. Quota at 00:10: Claude weekly 55.0%, 5.8 under pace; Codex weekly 2.0%, 7.3 under.
+the two sessions together burnt about 5 points an hour, so no Claude subagent was started between 22:55 and
+01:27; the work went to codex and the pi lane. Quota at 01:27: Claude weekly 56.0%, 5.6 under pace; Codex weekly
+3.0%, 7.0 under (seven codex sol xhigh lanes cost 2 points of Codex weekly).
 
 **What landed** (brief `lanes/<lane>/brief.md`; report `lanes/<lane>/result.md` for Claude lanes, `report.md` for
 codex and pi lanes; details `docs/worklog/2026-10-03-evening.md`).
@@ -40,11 +40,15 @@ codex and pi lanes; details `docs/worklog/2026-10-03-evening.md`).
 | Lane | Model | What | Review |
 |---|---|---|---|
 | (merge) | | `ccr-f62bc633-f7fnqs` fast-forwarded into master: f-review6, f-repair3, f-repair4, f-slice9, f-review7 (see the two entries below) | |
-| f-repair5 | Opus | minors of f-review7: `lpow.h` cost sentence; an exact integer exponent of `powunit` goes through `pow_si` (P9: only a `LIMIT` can become `OK`); `early_status` decides every `LIMIT` before the listing (R6 step 6); one Teichmueller lift per branch list (R9; `d = 299756`: 44.6 s to 1.3 s) | not reviewed again (minors; old against new: 0 differences in 186107 branches) |
-| f-review8 | codex sol | referee of P1 to P8 and R8, tests that cannot fail, cost: `docs/reviews/f1/review-lpow.md` (with f-review7): 0 blocker; 3 MAJOR test gaps (F6, F7 at `p = 65537`; F8 an unsampled root lift); 7 MINOR; 0 of 36 cost ratios above 1.5 | repairs: f-repair6 (running) |
-| f-slice10 | Opus | 1F.8 parts 1 and 2: `gfunc.h`: `adf_rat_root`, `adf_adele_root`, `adf_idele_root`, `adf_adele_exp`, `sin`, `sinh`, `cos`, `cosh`; driver `root X with N [with SIGN]`, `exp X` ...; G1 to G6 in `docs/api-1f8.md`; N-D16 | f-review9 (running) |
-| d-idlog | codex sol | design before code of `Log` on ideles: `docs/design/idele-log.md` (IL1 to IL8, six declarations, test plan), oracle `proto/idlog_checks.py` | none; implementation f-slice11 (running) |
-| t-slice2 | pi bunny | value form of `adf_lball`, `adf_sball` (`adf_lball_set_str`, `get_str`, `adf_sball_set_str`, `get_str`); `test_text_local` 68868 checks | none. The lane's file `src/text_local.c` began with a 1008-line copy of `src/text.c`; the orchestrator joined its code to `src/text.c` instead (`lanes/t-slice2/orchestrator-note.md`) |
+| f-repair5 | Opus | minors of f-review7: `lpow.h` cost sentence; an exact integer exponent of `powunit` goes through `pow_si` (P9: only a `LIMIT` can become `OK`); `early_status` decides every `LIMIT` before the listing (R6 step 6); one Teichmueller lift per branch list (R9; `d = 299756`: 44.6 s to 1.3 s) | not reviewed again (old against new: 0 differences in 186107 branches) |
+| f-review8 | codex sol | referee of P1 to P8 and R8, tests that cannot fail, cost: `docs/reviews/f1/review-lpow.md` (with f-review7): 0 blocker; 3 MAJOR test gaps; 7 MINOR; 0 of 36 cost ratios above 1.5 | repaired by f-repair6 |
+| f-repair6 | codex sol | f-review8 F1 to F9: 186 fixture rows in exact integers at 65537 and `2^64 - 59`; every branch of the six large root lists checked (106850 centres); a CPU guard on the early `LIMIT`; sentences of P1, P3, P7, P8, R8; `src/` unchanged | all 16 faults of the review fail a test program now |
+| f-slice10 | Opus | 1F.8 parts 1 and 2: `gfunc.h`: `adf_rat_root`, `adf_adele_root`, `adf_idele_root`, `adf_adele_exp`, `sin`, `sinh`, `cos`, `cosh`; driver `root X with N [with SIGN]`, `exp X` ...; G1 to G6 in `docs/api-1f8.md`; N-D16 | f-review9 |
+| f-review9 | codex sol | review of f-slice10: `docs/reviews/f1/review-gfunc.md`: 0 blocker; 1 MAJOR test gap (an inexact idele of degree 4 or more returned `OK` passed the tests); 3 MINOR | repaired by f-repair7 |
+| f-repair7 | pi bunny | f-review9 F1 to F4: the two test gaps; debug invariant entry checks in `gfunc.c` (release code byte-identical); G1 step (`|r| >= 2`); two word-size bounds stated with limits and marked source pending | all 13 faults of the review fail `test_gfunc` now |
+| d-idlog | codex sol | design before code of `Log` on ideles: `docs/design/idele-log.md` (IL1 to IL8, six declarations, test plan), oracle `proto/idlog_checks.py` | not reviewed (the review f-review10 checks the code against its own oracle) |
+| f-slice11 | codex sol | 1F.8 part 3: `src/gfunc_log.c`: `adf_idele_Log`, `log_abs`, `Log_at`, `log_abs_at`, `Log_refine`, `log_abs_refine`; driver commands of the same names; `gfunc_log.jl`; G7 to G12; N-D17; `test_gfunc_log` 2194049 checks | f-review10 (Sonnet), RUNNING |
+| t-slice2 | pi bunny | value form of `adf_lball`, `adf_sball` (`adf_lball_set_str`, `get_str`, `adf_sball_set_str`, `get_str`); `test_text_local` 68868 checks | none. The lane's file began with a 1008-line copy of `src/text.c`; the orchestrator joined its code to `src/text.c` (`lanes/t-slice2/orchestrator-note.md`) and later repaired two debug entry checks that did not compile under `INV=1` and two missing final newlines |
 | m-tool2 | pi bunny | mutation tool: `--san` asks for the make variable `SAN`; a run with more than half of the mutants not compiled fails (exit 2); no `swap_args` mutant of equal arguments | self-test rerun by the orchestrator |
 | UX | Opus | `docs/ux/`: four design briefs (adelica notebook, place atlas, claim ledger, sweep bench), a static HTML mock each, README with three questions for TJO | TJO reads |
 
@@ -52,47 +56,51 @@ Also: `tools/orch/suites.sh`: the `all` suite builds in `build/` (a `BUILD` on t
 `tools/adf/Makefile` and the golden test ran a stale `build/adf`); N-D15 wording (f-review8 F10); SPEC 9.3.1,
 9.3.3 and conventions 3.3 rule 4 follow the findings of f-slice10; PLAN rows 1F.6 to 1F.8.
 
-**Running** (codex `gpt-6.1-sol` xhigh, each in `../adelefeld-wt/<lane>` on branch `lane/<lane>`; the runner
-`tools/orch/wt_lane.sh` resumes a session by itself; `lanes/<lane>/lane.log` ends in `DONE` when the report exists):
-- f-review9 (since 23:50): adversarial review of f-slice10. When done: commit in the worktree, merge, record
-  under `docs/reviews/f1/review-gfunc.md`, a repair lane for its findings.
-- f-repair6 (since 00:00): f-review8 F1 to F9 (tests and sentences; `src/` is read-only for it). When done:
-  commit, merge, `suites.sh`, close the beads issue, PLAN row 1F.6 to "reviewed, repaired".
-- f-slice11 (since 00:15): `Log` on ideles from the design, slice A (`Log`, `log_abs`, `_at`) then slice B
-  (`_refine` by CRT), in a new file `src/gfunc_log.c`. When done: commit, merge (expect small conflicts in
-  `tools/adf/adf.c`, `gfunc.h`, `docs/api-1f8.md` if a repair of f-review9 landed first), `suites.sh`, record
-  N-D17 (the five recommendations of the design's section 6, taken by the orchestrator in the brief), PLAN 1F.8
-  done; then a review by a model of another family (Opus or Sonnet: the author is codex).
+**Running.** Lane f-review10 (Sonnet medium, a Claude subagent in a worktree under `.claude/worktrees/`, since
+01:27): bug hunt through `src/gfunc_log.c` with its own oracle (brief `lanes/f-review10/brief.md`). If this
+session ended before it reported: its notes are `lanes/f-review10/progress.md` in its worktree; commit them,
+merge, record under `docs/reviews/f1/review-gfunc-log.md`, and repair what it found.
 
 **The next steps**, in this order:
-1. The three running lanes (above). All five suites on master.
-2. 1F.9 (catalogue, Tier A: Legendre, Jacobi, Kronecker, Hilbert symbols first; PLAN line 279), as thin slices.
+1. f-review10 (above) and its repairs. PLAN row 1F.8 then reads "reviewed".
+2. 1F.9 (catalogue, Tier A: Legendre, Jacobi, Kronecker, Hilbert symbols first; PLAN line 279), as thin slices,
+   each with a design note first where the specification leaves the interface open (the pattern of d-idlog
+   then f-slice11 worked: 27 minutes of design, 63 minutes of code, no rework).
 3. The driver reads and prints `adf_lball`, `adf_sball` through the library (`adf_drv_put_sball` is the driver's
    own code); dump forms of the three types of milestone 2 and of `adf_lball`, `adf_sball`. Then milestone 3.
 4. TJO's answers on the UX briefs (`docs/ux/README.md`, three questions); the demands on the core that all four
    briefs share are listed there for SPEC section 10.
-5. Left: the per-place variant of SPEC 9.3.1; `x^(e/n)` of an exact rational at all places; three stale entries
+5. Left: the per-place variant of SPEC 9.3.1; `x^(e/n)` of an exact rational at all places; a public function
+   for the local component of an idele (N-D17: needs a type for multiplicative local cosets); three stale entries
    of `tools/mutate/equivalent.txt` (lines 88, 112, 157; `check_equivalent.py` is not in check-all); the tool's
-   `--timeout` also bounds the baseline; `adf_real_root` at `prec` 2 returns a ball containing 0 for a positive
-   input (f-slice10 finding 3); adf-7yz, adf-4dj, f-review4 MINOR 2, adf-mds, adf-7gc; about 100 merged
-   worktrees under `../adelefeld-wt/` and `.claude/worktrees/` and eleven branches with only "WIP autosave"
-   commits of 2026-09-29 may be removed (not done: deleting is TJO's call).
+   `--timeout` also bounds the baseline and a run stopped by its bound loses the killed count; `adf_real_root`
+   at `prec` 2 returns a ball containing 0 for a positive input (f-slice10 finding 3); two bounds marked source
+   pending in `docs/api-1f8.md` (G1(c), G6(d)); adf-7yz, adf-4dj, f-review4 MINOR 2, adf-mds, adf-7gc; about 110
+   merged worktrees under `../adelefeld-wt/` and `.claude/worktrees/` and eleven branches with only "WIP
+   autosave" commits of 2026-09-29 may be removed (not done: deleting is TJO's call).
 
 **Waits for TJO.** Nothing blocks. Open to reversal: N-D16 (an idele with an exact unit follows the rational root
 contract, where SPEC 9.3.3 said `NOT_DETERMINED` for every idele; `DOMAIN` without a place when only the finite
-part fails), the five choices for `Log` on ideles (design section 6), N-D12 to N-D15 as before. The UX questions.
+part fails), N-D17 (the conservative ball `0 + 4 Zhat` also for exact inputs; no public local-component function
+yet), N-D12 to N-D15 as before. The UX questions.
 
 **Things to know.**
-- `suites.sh` takes `-j 2`, not `-j2`; a pipe to `tail` hides its exit code.
+- `suites.sh` takes `-j 2`, not `-j2`; a pipe to `tail` hides its exit code. Run ALL FIVE suites after merging
+  a lane that did not run them itself: this session merged t-slice2 after `all` and `san` only, and master did
+  not build under `INV=1` or clang for an hour (found by lane f-slice11 and by the next full run).
 - A Claude subagent with `isolation: "worktree"` starts from the PUSHED commit: push the brief first. After
   inspecting such a worktree with `cd`, the harness may treat it as the working directory: use `git -C`.
-- The pi lane behaved: two lanes, one attempt each, no empty responses (21 and 56 minutes). Its weakness was a
-  design shortcut (the copied machinery), not flakiness: say in a brief what to do when a needed function is
-  static in a read-only file. It leaves scratch files in `/tmp`.
-- Codex sol xhigh lanes took 27 to 57 minutes each and the Codex weekly meter moved from 1% to 2% over three of
-  them. An Opus lane cost about 1 point of Claude weekly; the Fable orchestrator thread is not cheap either.
+- The pi lane behaved: three lanes, one attempt each, no empty responses (21, 56 and 34 minutes). Its weakness
+  was a design shortcut (the copied machinery) and small portability slips (no final newline, a `#x` outside a
+  macro in debug-only code), not flakiness: say in a brief what to do when a needed function is static in a
+  read-only file, and ask for `INV=1` and `CC=clang` builds of the files it writes. It leaves files in `/tmp`.
+- Codex sol xhigh lanes took 27 to 63 minutes each. The codex sandbox cannot run LeakSanitizer (ptrace): the
+  orchestrator's `san` suite is the leak check. An Opus lane cost about 1 point of Claude weekly.
 - The driver's adele text takes a decimal real part: `exp (0.5 ; 0)`, not `(1/2 ; 0)` (`PARSE`).
-- `lanes/d-idlog/fixtures.jsonl` (3.1 MB) is not committed; `proto/idlog_checks.py --fixtures` writes it.
+- Not committed, regenerable: `lanes/d-idlog/fixtures.jsonl` (`proto/idlog_checks.py --fixtures`), the binaries,
+  `.tsv` files and fault trees of f-review9, the fault trees of f-repair7.
+- A tracker filter by lane name closes too much (`grep f-review9` matched the issue of f-repair7, whose title
+  names the review): close issues by id.
 
 ## Session 2026-10-03 00:00 to about 00:15 UTC (orchestrator Claude Fable, cloud container, after a container restart; no lanes): START HERE
 
