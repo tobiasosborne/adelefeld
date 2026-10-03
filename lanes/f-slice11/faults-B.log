@@ -1,0 +1,13 @@
+F1 absolute m+k image exponent exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 3 fields
+F2 missing input valuation then subtract m exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 5 fields
+F3 content translation dropped exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 804 fields
+F4 unrestricted 2 gives 2 Z_2 exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 4 fields
+F5 unrestricted odd gives Z_p exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 1515 fields
+F6 requested cap ignored exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 1 fields
+F7 stored k=1 treated as ordinary exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 292 fields
+F8 exact unit treated as unrestricted exit 1 FAIL tests/test_gfunc_log.c:116: local_selection: check failed: adf_lball_identical(l,e) | local row 5977 fields
+B1 CRT baseline dropped exit 1 FAIL tests/test_gfunc_log.c:353: refinement_witness: check failed: fmpz_equal_ui(y->fin.A,12) && fmpz_equal_ui(y->fin.H,36) && fmpz_is_one(y->fin.d)
+B2 exact zero not rounded exit 1 FAIL tests/test_gfunc_log.c:385: refinement_selection: check failed: fmpz_equal(y->fin.A,A) && fmpz_equal(y->fin.H,R) && fmpz_is_one(y->fin.d) | CRT row 180 triple
+B3 stop before larger prime status exit 1 FAIL tests/test_gfunc_log.c:443: refinement_status_and_limits: check failed: st==want | refine status 7 want 10 n=1 N=33554432
+B4 CRT centre always zero exit 1 FAIL tests/test_gfunc_log.c:353: refinement_witness: check failed: fmpz_equal_ui(y->fin.A,12) && fmpz_equal_ui(y->fin.H,36) && fmpz_is_one(y->fin.d)
+faults: compiled and rejected 12

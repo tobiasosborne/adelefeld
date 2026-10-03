@@ -1,0 +1,17 @@
+ok   conservative_Log
+ok   other_slice_A_calls
+local_selection: 6776 rows, 20 complete H=5 images, 101035 memberships
+ok   local_selection
+real_selection: 6 intervals, 5 precisions, 120 wrapper calls, mpmath 800-bit endpoints
+ok   real_selection
+ok   slice_A_status_and_limits
+large_prime_routes: p=65537, restricted comparison/additivity at N=3, witness at N=2
+large_prime_routes: p=18446744073709551557, restricted comparison/additivity at N=3, witness at N=2
+ok   large_prime_routes
+ok   compact_lifts_and_large_content
+ok   real_precision_ceiling
+ok   refinement_witness
+refinement_selection: 280 rows, 525 local projections, 73056 two-period memberships
+ok   refinement_selection
+ok   refinement_status_and_limits
+11 tests, 2193775 checks, 0 failed checks, 0 failed tests

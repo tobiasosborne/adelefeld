@@ -270,3 +270,206 @@ up to `k = 59` make the C search walk 60 odd primes).
 G1 to G6 are proved here. Not done: `Log` on ideles at all places (the next lane; draft questions 8 and 9), the
 rational power `x^(e/n)` of an exact rational at all places (draft question 10), the optional per-place variant of
 SPEC 9.3.1. No source is pending.
+
+## Log on ideles (lane f-slice11, slice A)
+
+This section implements the choices in the assigned brief, to be recorded as N-D17.
+The design docs/design/idele-log.md IL1-IL8 is unchanged. The earlier scope paragraph
+predates this section. Log and log_abs return an adele. A named-place call returns an sball.
+No public function claims that an additive hull is the exact local component of an idele.
+
+### G7 (conservative image and real coordinate)
+
+adf_idele_Log and adf_idele_log_abs return (J ; 0 + 4 Zhat). The real ball J is identical
+to adf_sball_Log_at or adf_sball_log_abs_at at infinity on I. At a prime, both functions
+enclose the finite Log of every point. The finite answer is constant even for exact units.
+
+Proof.
+
+1. The idele predicate makes I finite and excludes zero. At infinity the real-place API
+   applies Log to positive I, or log_abs to either sign. Its stored ball is copied unchanged.
+2. IL2-IL4 put each finite value in p^d Z_p. IL5 identifies its integral tuple with a finite
+   adele and proves inclusion in 4 Zhat. Its canonical global triple is (0,4,1).
+3. The real and finite coordinates are independent. Their product encloses the whole image.
+   The result can contain real zero, which the adele predicate permits.
+4. Only the real part can fail. The real API's statuses and place are retained. Excess real
+   precision is LIMIT at infinity before allocation or invariant checks. A temporary is
+   swapped into y only on OK. No cross-type alias is permitted by conventions 4.1.
+
+Check: conservative_Log, real_selection, slice_A_status_and_limits and the driver and Julia calls.
+
+### G8 (private descriptor and local cases)
+
+At p the descriptor stores exact=(M=0), m=v_p(r), k=v_p(M) for M>0, r'=r/p^m and
+K=N for exact input, min(N,max(k,d)) otherwise. It never stores an additive shell as an input
+ball and never forms m+k. adf_idele_Log_at returns the IL2-IL4 image enclosed at K.
+adf_idele_log_abs_at is the real-only function; at p its status is UNSUPPORTED.
+
+Proof.
+
+1. Removing p from the numerator and denominator gives positive coprime p-free integers a,b.
+   Their two nonnegative valuations fit slong, and their difference also fits slong. The
+   ratio a/b is r'. fmpz_remove has this contract in refs/src/flint-3.0.1/fmpz.rst:1142-1149.
+2. IL1 gives the exact point for M=0, the restricted coset for k>=1, and the unrestricted
+   shell for k=0. At 2 the stored k=1 is that same shell. IL2-IL4 give the descriptor's E.
+   This handles the valid stored (1,2) pair without normalising or rejecting it.
+3. Exact r'=1 gives exact local zero for either sign, independent of N (IL4). No other
+   branch returns an exact value. Unrestricted input gives centre zero; at 2 k=1 does too.
+4. If K<=d all Log values agree with zero modulo p^K. A rational centre equal to 1 has zero
+   Log at every K. These branches form no modular power. They still return a finite ball.
+5. Otherwise K>d. Form q=p^K and the unit residue A=a c b^(-1) mod q. The inverse exists
+   because b is p-free. A is nonzero and prime to p. It defines an exact rational unit.
+6. If t is the true rational centre r'c, then t/A belongs to 1+p^K Z_p. Lemma 9 and
+   Proposition 11 give Log(t)-Log(A) in p^K Z_p. Thus any higher digits supplied by the
+   integer representative A give the correct centre modulo p^K. Call adf_lball_Log at K.
+7. The existing local evaluator returns a ball at K or exact zero for this representative.
+   Exact zero is replaced by 0+p^K Z_p. This prevents a compact representative equal to
+   1 from accidentally turning an inexact input into a singleton. For exact input with
+   r'!=1 the value is also a ball, even if its compact representative is torsion.
+8. For M>0 the image is Log(t)+p^E Z_p. If K=E the result is exactly that image; if K<E
+   it is its unique enclosing ball of exponent K. Exact input is enclosed at N (IL8).
+
+Check: local_selection compares all 6784 selected rows, including the eight design witnesses,
+both exact signs and
+positive/negative content valuations. Its 20 complete H=5 images compare membership in both
+directions. large_prime_routes compares a restricted input at N=3, additivity at N=3 and the
+witness Log(1+p)=p mod p^2 at p=65537 and p=2^64-59. There is no enumeration at these primes.
+
+### G9 (working precision, limits and preservation)
+
+The wrapper bounds |m| and the resulting |K| by ADF_LBALL_EXP_MAX. The exact-zero _at
+shortcut ignores N after checking m. Required compact and working powers obey N-D7.
+
+Proof.
+
+1. The descriptor uses comparisons and max/min; it never adds m+k or two arbitrary signed
+   exponents. Its valuation subtraction is justified in G8 step 1. Checking K with lower
+   and upper comparisons avoids negating WORD_MIN. k need not be bounded just to cap it.
+2. Before the compact power is formed, K<=ADF_LBALL_BITS_MAX/bits(p) is required. The
+   division expresses the product bound without overflowing slong. It precedes that power.
+3. At the compact exact unit the existing local Log evaluator computes its actual truncation
+   degree and W=K+floor(log_p(T)) as in F5-F6 and Proposition 8. It tests W bits(p) before
+   forming the working power. Agreement modulo K, proved in G8, makes this higher working
+   precision valid even though the arbitrary compact lift differs at higher digits.
+4. No full input ball or power p^k is constructed. An unrestricted prime requires only
+   factor removals, comparisons and a zero-centred finite output, even for very large N.
+5. The named-place result contains only that place. A temporary sball is committed on OK;
+   every failure retains y and names v. Reusing an initialised output is valid; input/output
+   overlap is forbidden because their types differ. NULL where is accepted.
+6. Infinity calls the existing real-place API, with the N-D8 precision check first. At a
+   prime N is passed unchanged. log_abs_at returns UNSUPPORTED there, independent of N.
+
+Check: slice_A_status_and_limits tests exponent and compact-power refusals, a working-power
+refusal, exact zero with WORD_MIN/WORD_MAX N, huge N with small E, and a 100000-bit stored
+modulus with N=4. Failure checks compare every field and the struct bytes. Finite valid input
+cannot induce DOMAIN or NOT_DETERMINED. The real evaluator's non-finite failure is tested
+by an injected scratch evaluator, recorded in the lane report.
+
+Sources pending inherited from the design: the conventional names and normalisation of Iwasawa
+Log and Teichmueller, and the real analytic facts of functions.md Lemma 2. The finite proofs use
+the defined series and the stepwise proofs. No nonzero rational-value theorem is required.
+
+### G10 (bounded named intersections and exact-zero rounding)
+
+adf_idele_Log_refine and adf_idele_log_abs_refine return (J ; a + R Zhat), exactly the
+intersection C_S of IL5 for the rounded local enclosures. At p in S, K=min(N,E) for
+finite M, K=N for exact M=0, and L=max(K,beta_p), beta_2=2 and beta_p=0 at odd p.
+An exact local zero is rounded before this intersection. The global result remains
+inside 4 Zhat, including for N<=0 and an empty list.
+
+Proof.
+
+1. IL2-IL4 and G8 give the exact local images and their unique enclosing balls at K.
+   At M=0 a singleton zero has no positive-radius global finite-ball representation
+   as a condition at only one prime. Replace it by 0+p^N Z_p as IL5 step 8 prescribes.
+2. Each exact image belongs to p^d Z_p, hence to p^beta_p Z_p. If K<=beta_p, its enclosing
+   ball contains the baseline factor, and the intersection leaves that factor unchanged.
+   Otherwise its centre is integral and gives the stronger congruence modulo p^K.
+3. Begin with a=0, R=4. At 2 with L>2 replace this baseline by b+2^L Z_2; its centre b
+   is divisible by 4. At L<=2 retain the baseline. The sorted list puts 2 first.
+4. At each odd prime with L>0 impose z=b modulo p^L. The current modulus has only
+   distinct previously named primes and 2, so it is coprime to p^L. Integer CRT gives
+   one congruence class modulo their product. Its nonnegative representative is unique
+   (refs/src/baker-padic/padicnotes.txt:374-387; FLINT fmpz.rst:1292-1304).
+5. At odd L=0 no congruence is imposed. Induction gives R=2^L_2 product_(odd p in S) p^L_p,
+   with L_2=2 if 2 is absent or less refined, and 0<=a<R. Both directions of CRT membership
+   hold. Thus the finite output is precisely C_S, with canonical global triple (a,R,1).
+6. In particular a and R are divisible by 4. At unlisted odd primes R is a unit and a is
+   integral, so the output factor is Z_p. This is the advertised enclosure, without claiming
+   the smaller p Z_p condition there. n=0 leaves exactly the conservative result.
+7. The real ball is G7's ball, independent of N and the prime list. The product therefore
+   encloses the whole idele image. log_abs_refine changes only the real evaluator.
+
+Check: refinement_selection reads all 280 CRT rows, compares every global triple, projects
+525 named factors and the unlisted factor at 11, and compares 73056 memberships over two
+full periods for R<=4096. Larger rows are triple and projection checks. Negative real balls
+use log_abs_refine with the same finite result. refinement_witness demands (12,36,1).
+
+### G11 (preflight bounds and canonical failure reports)
+
+The prime list has at most 65536 entries. The conservative aggregate bound is
+sum L_p bits(p)<=2^26, including the baseline 2^2. The preflight and actual evaluators
+preserve the maximum/canonical-place status contract.
+
+Proof.
+
+1. Excessive real prec is LIMIT at infinity first. Negative n is DOMAIN with no place;
+   n>65536 is LIMIT with no place. Both length checks precede array allocation. A sorted
+   copy then rejects infinity or the first canonical repeated prime, before evaluating x.
+2. The bounded copy uses at most 65536*sizeof(adf_place_t) bytes. Its entries are borrowed
+   from valid place handles. The sorted copy is owned for the call and freed on every path.
+3. The descriptor checks |m| and the rounded K, also for exact zero. A necessary compact
+   power is checked by K<=2^26/bits(p), before forming it. Centre-free branches avoid it.
+   This distinguishes exact-zero _at from finite rounding in _refine at extreme N.
+4. Known local refusals precede the aggregate test. If one is found, earlier sorted primes
+   are evaluated to detect an earlier actual working-power LIMIT as well. All their compact
+   powers already passed preflight. This preserves the first-prime tie rule. LIMIT outranks
+   every possible real status once the real precision check has passed.
+5. Charge the baseline by 2 bits(2)=4. For named 2 charge only (L_2-2) bits(2) in addition;
+   for odd p charge L_p bits(p). Every charge is nonnegative. Compare L against the remaining
+   budget divided by bits(p) before multiplying. Once a charge fails, keep the failure flag
+   and continue the local preflight. All additions that are made remain within the bound.
+6. If no local preflight refusal exists and the aggregate exceeds its bound, return LIMIT
+   with where untouched, before evaluations and all CRT powers. This is a refusal of the
+   combined modulus. The design does not specify its order relative to an uncomputed local
+   working-power refusal. The chosen order prevents work after a known aggregate refusal.
+7. On passing preflight, evaluate real and sorted local components. A local working-power
+   LIMIT still dominates real DOMAIN or NOT_DETERMINED. No finite status exceeds LIMIT;
+   after the first finite LIMIT the remaining primes cannot change the canonical report.
+8. Every CRT power and product is bounded: log2(R)<=sum L_p log2(p)<sum L_p bits(p).
+   The larger conservative bit sum was checked before those powers. G9's local working bound
+   still applies separately, because a centre may need W>K. No m+k is ever constructed.
+9. Real DOMAIN/NOT_DETERMINED with no finite failure names infinity. Success leaves where
+   untouched. Whole-modulus failure leaves it untouched. All value writes are a final swap
+   after both components succeed. The other output and input overlap rules are unchanged.
+
+Check: refinement_status_and_limits includes all shape errors, canonical repeats, the length
+ceiling, exact-zero rounding outside the exponent limit, positive exponent boundary versus
+aggregate refusal, local compact and working bounds, aggregate size, negative-real/prime
+precedence, earlier working/later compact ties, and real prec at its ceiling. Outputs are
+compared by fields and struct bytes on every failure, including NULL where calls.
+
+### G12 (implementation choices and proof scope)
+
+The six functions are proved by G7-G11 and IL1-IL8. The descriptor is private. Compact
+centres use only p^K; working precision is delegated to the proved local Log evaluator.
+The list and CRT limits follow the brief's selected recommendations. The implementation
+uses no copied helper from gfunc.c and adds no public local-component function.
+
+The design leaves the following ordering choice implicit: known local exponent/compact
+refusals precede aggregate refusal; an aggregate refusal precedes uncomputed actual local
+working-power evaluation. The alternative is to evaluate every local centre before checking
+the aggregate, which can do substantial work for a request whose combined modulus is refused.
+If a known local refusal is present, earlier actual local refusals are still checked to keep
+canonical place ties. The header states this choice.
+
+The driver uses space-separated primes, matching project, with none for the empty list.
+Comma-separated primes would require a second place-list grammar. The setting prec supplies
+both finite N and real bits, while the library keeps the arguments separate. The spelling
+logabs is an alias for log_abs, as requested in the brief. Only idele operands are accepted
+by the new driver commands; the existing lower-case log_at keeps its additive-series meaning.
+
+Avoidable costs: descriptor removals are repeated in preflight and evaluation; real wrapping
+copies the input/output balls; each prime has an independent local evaluation and sequential
+CRT step. No optimisation or cost bound beyond the explicit resource limits is claimed.
+The lane report records mutation survivors and the full-INV/LeakSanitizer environment blocks.

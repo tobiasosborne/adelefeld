@@ -1,0 +1,10 @@
+Log (2 ; 4 * [5 mod 6]): (0.693147180559945309417232121458 +/- 1.8e-31 ; 0 mod 4)
+Log at 2: [p=2: 0 + O(2^2)]
+Log at 3: [p=3: 0 + O(3^1)]
+Log at 5: [p=5: 0 + O(5^1)]
+Test Summary:     | Pass  Total  Time
+idele Log slice A |   59     59  0.2s
+Log refined at 2,3,5 for modulus 6: (* ; 0 mod 60)
+Log refined at 3 with content 4, modulus 9: (* ; 12 mod 36)
+Test Summary:     | Pass  Total  Time
+idele Log slice B |   22     22  0.0s

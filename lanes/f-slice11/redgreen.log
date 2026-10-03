@@ -1,0 +1,10 @@
+A first test, link red: exit 2
+A conservative Log green: exit 0
+A log_abs, Log_at, log_abs_at assertion red: exit 1
+A complete test build: exit 0
+A complete assertions green: exit 0
+A expanded green exit 0
+B Log_refine and log_abs_refine assertion red exit 1
+B green exit 0
+B green with canonical working-limit tie exit 0
+B expanded final assertions exit 0

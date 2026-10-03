@@ -1,0 +1,50 @@
+mutate: src/gfunc_log.c: 287 mutants
+mutate: 287 mutants, 30 of them run (--limit 30, --seed 1)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (21.2 s)
+
+NOT COMPILED src/gfunc_log.c:61:38 prec: 'prec' -> '2'
+  src/gfunc_log.c:59:77: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/gfunc_log.c:196:9 drop_assign: 'st = local_log(l, x, adf_place_prime_get(v), prec);' -> '' (the statement is removed)
+  src/gfunc_log.c:197:12: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/gfunc_log.c:226:14 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/gfunc_log.c
+  +++ b/src/gfunc_log.c
+  @@ -224,5 +224,5 @@
+   max_exp(slong a, slong b)
+   {
+  -    return a > b ? a : b;
+  +    return a >= b ? a : b;
+   }
+   
+
+
+NOT COMPILED src/gfunc_log.c:248:29 drop_assign: 'bits = (slong) fmpz_bits(pz);' -> '' (the statement is removed)
+  src/gfunc_log.c:251:72: error: ‘bits’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/gfunc_log.c:251:72 logic: '&&' -> '||'
+  src/gfunc_log.c:250:50: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/gfunc_log.c:96:5 drop_assign: 'a = fmpz_remove(fmpq_numref(d->unit), fmpq_numref(x->r), prime);' -> '' (the statement is removed)
+  src/gfunc_log.c:98:14: error: ‘a’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/gfunc_log.c:324:5 drop_assign: 'st_real = real_log(t->inf, x, prec, at);' -> '' (the statement is removed)
+  src/gfunc_log.c:273:76: error: unused parameter ‘at’ [-Werror=unused-parameter]
+
+NOT COMPILED src/gfunc_log.c:42:28 op: '*' -> '/'
+  src/gfunc_log.c:42:28: error: expected expression before ‘/’ token
+
+NOT COMPILED src/gfunc_log.c:275:17 op: '*' -> '/'
+  src/gfunc_log.c:275:17: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/gfunc_log.c:97:5 drop_assign: 'b = fmpz_remove(fmpq_denref(d->unit), fmpq_denref(x->r), prime);' -> '' (the statement is removed)
+  src/gfunc_log.c:98:14: error: ‘b’ is used uninitialized [-Werror=uninitialized]
+
+NOT COMPILED src/gfunc_log.c:134:18 logic: '||' -> '&&'
+  src/gfunc_log.c:134:18: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+mutate: 30 mutants in 266.6 s: 19 killed, 1 survived, 10 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check

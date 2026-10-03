@@ -177,6 +177,12 @@ typedef enum
     ADF_DRV_SINH,
     ADF_DRV_COS,
     ADF_DRV_COSH,
+    ADF_DRV_IDLOG,
+    ADF_DRV_IDLOGABS,
+    ADF_DRV_IDLOG_AT,
+    ADF_DRV_IDLOGABS_AT,
+    ADF_DRV_IDLOG_REFINE,
+    ADF_DRV_IDLOGABS_REFINE,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -234,6 +240,14 @@ static const struct
     { "sinh", ADF_DRV_SINH, 1 },
     { "cos", ADF_DRV_COS, 1 },
     { "cosh", ADF_DRV_COSH, 1 },
+    { "Log", ADF_DRV_IDLOG, 1 },
+    { "logabs", ADF_DRV_IDLOGABS, 1 },
+    { "log_abs", ADF_DRV_IDLOGABS, 1 },
+    { "Log_at", ADF_DRV_IDLOG_AT, 2 },
+    { "log_abs_at", ADF_DRV_IDLOGABS_AT, 2 },
+    { "Log_refine", ADF_DRV_IDLOG_REFINE, 2 },
+    { "log_abs_refine", ADF_DRV_IDLOGABS_REFINE, 2 },
+    { "logabs_refine", ADF_DRV_IDLOGABS_REFINE, 2 },
     { "prec", ADF_DRV_PREC, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
@@ -2591,6 +2605,61 @@ adf_drv_units_involved(adf_drv_op op, const adf_drv_value * x, const adf_drv_val
            || (nops > 2 && adf_drv_is_unit_type(w->type));
 }
 
+/* Idele Log (IL1-IL5). Place syntax uses the existing space-separated grammar.
+   Syntax, kind, value, operation, printer run in the driver's documented order. */
+static int
+adf_drv_idlog(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_drv_value x, y;
+    adf_sball_t s;
+    adf_text_kind kind;
+    adf_place_t v = adf_place_inf();
+    slong n = 0;
+    adf_place_t *places = NULL;
+    int local = op == ADF_DRV_IDLOG_AT || op == ADF_DRV_IDLOGABS_AT;
+    int refined = op == ADF_DRV_IDLOG_REFINE || op == ADF_DRV_IDLOGABS_REFINE;
+    int status, place_status = ADF_OK;
+    adf_drv_value_init(&x); adf_drv_value_init(&y); adf_sball_init(s);
+    status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK) goto done;
+    if (local || refined)
+    {
+        if (!(refined && l->n[1] == 4 && memcmp(l->s[1], "none", 4) == 0))
+        {
+            places = flint_malloc((l->n[1] / 2 + 2) * sizeof(adf_place_t));
+            place_status = adf_drv_place_list(l->s[1], l->n[1], places, &n);
+        }
+        if (place_status == ADF_PARSE || (local && n != 1)) { status = ADF_PARSE; goto done; }
+        if (local) v = places[0];
+    }
+    if (adf_drv_kind_type(kind) == ADF_DRV_OTHER) { status = ADF_UNSUPPORTED; goto done; }
+    status = adf_drv_value_read(&x, kind, l->s[0], l->n[0], st->prec);
+    if (status != ADF_OK) goto done;
+    if (place_status != ADF_OK) { status = place_status; goto done; }
+    if (x.type != ADF_DRV_IDELE) { status = ADF_DOMAIN; goto done; }
+    if (local)
+    {
+        status = op == ADF_DRV_IDLOG_AT ? adf_idele_Log_at(s,NULL,x.i,v,st->prec) :
+                                       adf_idele_log_abs_at(s,NULL,x.i,v,st->prec);
+        if (status == ADF_OK) status = adf_drv_put_sball(out,s,st->digits);
+    }
+    else
+    {
+        y.type = ADF_DRV_ADELE;
+        if (refined)
+            status = op == ADF_DRV_IDLOG_REFINE ?
+                adf_idele_Log_refine(y.a,NULL,x.i,places,n,st->prec,st->prec) :
+                adf_idele_log_abs_refine(y.a,NULL,x.i,places,n,st->prec,st->prec);
+        else
+            status = op == ADF_DRV_IDLOG ? adf_idele_Log(y.a,NULL,x.i,st->prec) :
+                                        adf_idele_log_abs(y.a,NULL,x.i,st->prec);
+        if (status == ADF_OK) status = adf_drv_value_print(out,&y,st->digits);
+    }
+done:
+    flint_free(places); adf_sball_clear(s); adf_drv_value_clear(&x); adf_drv_value_clear(&y);
+    return status;
+}
+
 /* ---- one command ---- */
 
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
@@ -2614,6 +2683,10 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         op == ADF_DRV_SIN_AT || op == ADF_DRV_COS_AT || op == ADF_DRV_SINH_AT || op == ADF_DRV_COSH_AT ||
         op == ADF_DRV_ROOT_AT || op == ADF_DRV_ROOTS_AT || op == ADF_DRV_POWRAT_AT || op == ADF_DRV_POWUNIT_AT)
         return adf_drv_places(out, op, l, st);
+    if (op == ADF_DRV_IDLOG || op == ADF_DRV_IDLOGABS ||
+        op == ADF_DRV_IDLOG_AT || op == ADF_DRV_IDLOGABS_AT ||
+        op == ADF_DRV_IDLOG_REFINE || op == ADF_DRV_IDLOGABS_REFINE)
+        return adf_drv_idlog(out, op, l, st);
     if (op == ADF_DRV_VALUATION || op == ADF_DRV_ABS)
         return adf_drv_valabs(out, op, l, st);
 

@@ -1,0 +1,19 @@
+mutate: the unmutated tree does not pass, so no mutant can be judged:
+ok   conservative_Log
+ok   other_slice_A_calls
+local_selection: 6776 rows, 20 complete H=5 images, 101035 memberships
+ok   local_selection
+real_selection: 6 intervals, 5 precisions, 120 wrapper calls, mpmath 800-bit endpoints
+ok   real_selection
+ok   slice_A_status_and_limits
+large_prime_routes: p=65537, restricted comparison/additivity at N=3, witness at N=2
+large_prime_routes: p=18446744073709551557, restricted comparison/additivity at N=3, witness at N=2
+ok   large_prime_routes
+ok   compact_lifts_and_large_content
+7 tests, 318563 checks, 0 failed checks, 0 failed tests
+==136==LeakSanitizer has encountered a fatal error.
+==136==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==136==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+mutate: src/gfunc_log.c: 137 mutants
+mutate: 137 mutants, 30 of them run (--limit 30, --seed 1)
