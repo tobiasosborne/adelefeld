@@ -1,0 +1,11 @@
+{
+  "custom_cases": 156,
+  "exit": 1,
+  "mismatches": []
+}
+{"golden": "gfunc-root", "lines": 43, "exit": 1, "equal": true}
+{"golden": "gfunc-series", "lines": 23, "exit": 1, "equal": true}
+{"golden": "10_line_language", "lines": 6, "exit": 0, "equal": true}
+{"golden": "12_status_order", "lines": 13, "exit": 1, "equal": true}
+{"golden": "root-status", "lines": 15, "exit": 1, "equal": true}
+{"golden": "pow-status", "lines": 20, "exit": 1, "equal": true}

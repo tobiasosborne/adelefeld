@@ -1,0 +1,14 @@
+exp (1/2 ; 0): (1.648721271 +/- 3e-10 ; 1)
+cos (0 ; 0): (1 ; 1)
+exp 1 = exp (1 ; 1): DOMAIN at the prime 2
+Test Summary:                 | Pass  Total  Time
+the five series at all places |    4      4  0.1s
+root 8 with 3: 2//1
+root 2 with 2: DOMAIN (no place named)
+root 1 with 2 with 1: 1//1
+root 1 with 2 with -1: -1//1
+root -4 with 2: DOMAIN at the real place
+root (4 ; 4 * [1]) with 2: (2 ; 2 * [1])
+root (4 ; 4 * [1 mod 8]) with 2: NOT_DETERMINED
+Test Summary:          | Pass  Total  Time
+the root at all places |    7      7  0.1s
