@@ -1,0 +1,6 @@
+P1 cyclic-group comparisons=20800, failures=0
+P1 zero-ball domain/complement witness comparisons=6048, failures=0
+P7 H=1 at 2 integer power comparisons=4096, failures=0
+R8 R=1 CRT comparisons=1443, failures=0
+P3 precision endpoint: rel_r=20, Nr=10, K=0; P8 magnitude endpoint=9223372036854775808
+R9 test comment: w=5016686989854155913, 3^n mod p^2=101245085488030368830923462363895328769, difference/p mod p=5488507081980157208

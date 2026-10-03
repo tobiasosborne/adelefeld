@@ -68,6 +68,7 @@ int adf_lball_sqrt_seed(adf_lball_t y, const adf_lball_t x, ulong seed, slong N)
    of a Teichmueller power p^L, of the centre modulo p^(K-j), which the branch p-1 needs even
    when the branch 1 needs none: 1+7^(2^40) Z_7, n=2, N=LONG_MAX), are decided before
    branches are listed (R6 step 6; before lane f-repair5 the last one came after the branch 1).
+   This order bounds refusal cost; tests/test_lroot.c checks a large refusal within 0.02 CPU seconds (F9).
    Every branch is the same as root_seed returns for its identifier; the list lifts two
    Teichmueller representatives, not one per branch (R9).
    len, ids, y are distinct; x may alias any slot of y, even an unused slot. Transactional on

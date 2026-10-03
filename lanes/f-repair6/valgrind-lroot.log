@@ -1,0 +1,759 @@
+==4== Memcheck, a memory error detector
+==4== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==4== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==4== Command: lanes/f-repair6/build/test_lroot
+==4== 
+  oracle rows: 8110
+ok   enumeration_all_rows
+ok   exact_branches_limits_and_aliasing
+ok   large_prime_and_word_degrees
+ok   seeded_small_ball_comparisons
+ok   boundaries_and_transaction_after_one_branch
+  exact oracle rows: 1408
+ok   exact_finite_ring_reference
+ok   nd14_ball_result_exponent_is_min_of_N_and_E
+ok   f1_unit_one_ball_needs_no_power
+  identifier lists compared: 61324
+ok   f2_identifiers_against_residue_search
+  certified 65536 centres at p=65537 n=65536 K=20 in 3.474 s CPU
+  certified 6028 centres at p=18446744073709551557 n=6028 K=20 in 2.090 s CPU
+  certified 4096 centres at p=65537 n=12288 K=20 in 0.180 s CPU
+ok   f2_all_branches_cost_and_early_limit
+ok   review7_f3_branch_limit_after_a_good_branch
+FAIL tests/test_lroot.c:713: r9_one_teichmuller_lift_per_list: check failed: sec<GUARD_R9 | n=24068: all branches in 0.722 s
+  n=24068 d=24068 N=20: all branches in 0.722 s CPU
+FAIL tests/test_lroot.c:589: r9_one_teichmuller_lift_per_list: check failed: sec < 5.0 | p=18446744073709551557 n=24068: verify 24068 centres in 9.454 s CPU
+  certified 24068 centres at p=18446744073709551557 n=24068 K=20 in 9.454 s CPU
+  n=1094 d=1094 N=20: all branches in 0.044 s CPU
+  certified 1094 centres at p=18446744073709551557 n=1094 K=20 in 0.395 s CPU
+  n=6028 d=6028 N=20: all branches in 0.246 s CPU
+  certified 6028 centres at p=18446744073709551557 n=6028 K=20 in 2.685 s CPU
+  branches compared with root_seed: 7371
+FAIL r9_one_teichmuller_lift_per_list (tests/test_lroot.c:694, 2 failed checks)
+  certified 2 centres at p=65537 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=4 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=4 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=4 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=4 in 0.000 s CPU
+ok   repair6_seed42_integer_certificates
+  early LIMIT d=824329 in 0.000442 s CPU, guard=0.02 s
+ok   repair6_early_limit_cost
+14 tests, 2361423 checks, 2 failed checks, 1 failed tests
+==4== 
+==4== HEAP SUMMARY:
+==4==     in use at exit: 17,115,328 bytes in 134,151 blocks
+==4==   total heap usage: 628,414 allocs, 494,263 frees, 131,697,941 bytes allocated
+==4== 
+==4== 8 bytes in 1 blocks are still reachable in loss record 1 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x4956588: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49565ED: flint_register_cleanup_function (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EC5B: n_compute_primes (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EEF7: n_primes_arr_readonly (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4961B1A: n_factor_trial_range (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49621C3: n_factor (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4962675: n_primitive_root_prime (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x121376: identifiers (lroot.c:346)
+==4==    by 0x121376: adf_lball_roots (lroot.c:489)
+==4==    by 0x114E6A: adf_test_fn_enumeration_all_rows (test_lroot.c:79)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 40 bytes in 1 blocks are possibly lost in loss record 2 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49AFEDD: fmpz_mul_2exp (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4A1354B: fmpz_mod_ctx_init (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x121D9E: all_branches (lroot.c:419)
+==4==    by 0x121D9E: adf_lball_roots (lroot.c:493)
+==4==    by 0x111916: adf_test_fn_repair6_seed42_integer_certificates (test_lroot.c:755)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 48 bytes in 1 blocks are possibly lost in loss record 3 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x128ADF: Log_centre (lfunc.c:562)
+==4==    by 0x128ADF: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x120D0E: branch (lroot.c:212)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x11316D: adf_test_fn_f1_unit_one_ball_needs_no_power (test_lroot.c:521)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 48 bytes in 1 blocks are possibly lost in loss record 4 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x129A01: exp_centre (lfunc.c:266)
+==4==    by 0x129A01: adf_lball_exp (lfunc.c:324)
+==4==    by 0x120413: principal (lroot.c:188)
+==4==    by 0x120D0E: branch (lroot.c:212)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x11316D: adf_test_fn_f1_unit_one_ball_needs_no_power (test_lroot.c:521)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 56 bytes in 1 blocks are possibly lost in loss record 5 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1299D3: exp_centre (lfunc.c:264)
+==4==    by 0x1299D3: adf_lball_exp (lfunc.c:324)
+==4==    by 0x120413: principal (lroot.c:188)
+==4==    by 0x120D0E: branch (lroot.c:212)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x11316D: adf_test_fn_f1_unit_one_ball_needs_no_power (test_lroot.c:521)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 72 bytes in 1 blocks are possibly lost in loss record 6 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x11EE2D: pow_p (lball_decomp.c:68)
+==4==    by 0x11EE2D: teich_mod.constprop.0 (lball_decomp.c:127)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x120F16: branch (lroot.c:218)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x111834: adf_test_fn_repair6_seed42_integer_certificates (test_lroot.c:751)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 72 bytes in 1 blocks are possibly lost in loss record 7 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x1201B0: pow_p (lball_decomp.c:68)
+==4==    by 0x1201B0: adf_lball_unit_mod (lball_decomp.c:380)
+==4==    by 0x120D92: branch (lroot.c:224)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x111834: adf_test_fn_repair6_seed42_integer_certificates (test_lroot.c:751)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 72 bytes in 1 blocks are possibly lost in loss record 8 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x128784: Log_centre (lfunc.c:576)
+==4==    by 0x128784: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x120D0E: branch (lroot.c:212)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x111834: adf_test_fn_repair6_seed42_integer_certificates (test_lroot.c:751)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 120 bytes in 1 blocks are possibly lost in loss record 9 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x537AC33: __gmpz_add (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A6017: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273AB: log_split (lfunc.c:437)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127345: log_split (lfunc.c:434)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4== 
+==4== 160 bytes in 1 blocks are possibly lost in loss record 10 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5380894: __gmpz_divexact (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A6EEF: fmpz_divexact (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x127622: log_sum (lfunc.c:381)
+==4==    by 0x1288AB: Log_centre (lfunc.c:602)
+==4==    by 0x1288AB: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 160 bytes in 1 blocks are possibly lost in loss record 11 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x127639: log_sum (lfunc.c:382)
+==4==    by 0x1288AB: Log_centre (lfunc.c:602)
+==4==    by 0x1288AB: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 160 bytes in 1 blocks are possibly lost in loss record 12 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1278E6: log_sum (lfunc.c:410)
+==4==    by 0x1288AB: Log_centre (lfunc.c:602)
+==4==    by 0x1288AB: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 168 bytes in 1 blocks are possibly lost in loss record 13 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x53863C4: __gmpz_mul_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x11EE7C: teich_mod.constprop.0 (lball_decomp.c:132)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CC6: all_branches (lroot.c:413)
+==4==    by 0x121CC6: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 192 bytes in 1 blocks are possibly lost in loss record 14 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273C9: log_split (lfunc.c:438)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127345: log_split (lfunc.c:434)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4== 
+==4== 200 bytes in 1 blocks are possibly lost in loss record 15 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x11EE2D: pow_p (lball_decomp.c:68)
+==4==    by 0x11EE2D: teich_mod.constprop.0 (lball_decomp.c:127)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CC6: all_branches (lroot.c:413)
+==4==    by 0x121CC6: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 200 bytes in 1 blocks are possibly lost in loss record 16 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x11CC27: fmpz_pow_p (lball.c:77)
+==4==    by 0x11CC27: adf_lball_is_canonical (lball.c:326)
+==4==    by 0x10F770: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:635)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 200 bytes in 1 blocks are possibly lost in loss record 17 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x128784: Log_centre (lfunc.c:576)
+==4==    by 0x128784: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 200 bytes in 1 blocks are possibly lost in loss record 18 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x129A01: exp_centre (lfunc.c:266)
+==4==    by 0x129A01: adf_lball_exp (lfunc.c:324)
+==4==    by 0x120413: principal (lroot.c:188)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 200 bytes in 1 blocks are possibly lost in loss record 19 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538CAF8: __gmpz_n_pow_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49C1C75: fmpz_ui_pow_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x10EE93: certify_all_centres (test_lroot.c:579)
+==4==    by 0x111052: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:715)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 304 bytes in 1 blocks are possibly lost in loss record 20 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x127768: log_sum (lfunc.c:390)
+==4==    by 0x1288AB: Log_centre (lfunc.c:602)
+==4==    by 0x1288AB: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 320 bytes in 1 blocks are possibly lost in loss record 21 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11EE98: teich_mod.constprop.0 (lball_decomp.c:135)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CC6: all_branches (lroot.c:413)
+==4==    by 0x121CC6: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 320 bytes in 1 blocks are possibly lost in loss record 22 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11EE98: teich_mod.constprop.0 (lball_decomp.c:135)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CFA: all_branches (lroot.c:414)
+==4==    by 0x121CFA: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 320 bytes in 1 blocks are possibly lost in loss record 23 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x12890B: Log_centre (lfunc.c:609)
+==4==    by 0x12890B: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 320 bytes in 1 blocks are possibly lost in loss record 24 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4A12CF5: _fmpz_mod_mulN (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x121E26: fmpz_mod_mul (fmpz_mod.h:111)
+==4==    by 0x121E26: all_branches (lroot.c:423)
+==4==    by 0x121E26: adf_lball_roots (lroot.c:493)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 328 bytes in 1 blocks are possibly lost in loss record 25 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5386F13: __gmpz_sub (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49BE107: fmpz_sub (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11EEA6: teich_mod.constprop.0 (lball_decomp.c:136)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CC6: all_branches (lroot.c:413)
+==4==    by 0x121CC6: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 328 bytes in 1 blocks are possibly lost in loss record 26 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5386F13: __gmpz_sub (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49BE107: fmpz_sub (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11EEA6: teich_mod.constprop.0 (lball_decomp.c:136)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CFA: all_branches (lroot.c:414)
+==4==    by 0x121CFA: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 328 bytes in 1 blocks are possibly lost in loss record 27 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x537B0F8: __gmpz_add_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A5FB1: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x129AF7: exp_centre (lfunc.c:279)
+==4==    by 0x129AF7: adf_lball_exp (lfunc.c:324)
+==4==    by 0x120413: principal (lroot.c:188)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 328 bytes in 1 blocks are possibly lost in loss record 28 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5386F13: __gmpz_sub (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49BE107: fmpz_sub (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11EEA6: teich_mod.constprop.0 (lball_decomp.c:136)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CC6: all_branches (lroot.c:413)
+==4==    by 0x121CC6: adf_lball_roots (lroot.c:493)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 384 bytes in 1 blocks are possibly lost in loss record 29 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273C9: log_split (lfunc.c:438)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127345: log_split (lfunc.c:434)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4== 
+==4== 416 bytes in 1 blocks are possibly lost in loss record 30 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x537AC33: __gmpz_add (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A6017: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273AB: log_split (lfunc.c:437)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127345: log_split (lfunc.c:434)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4== 
+==4== 416 bytes in 2 blocks are possibly lost in loss record 31 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x537AC33: __gmpz_add (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A6017: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273AB: log_split (lfunc.c:437)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127345: log_split (lfunc.c:434)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4== 
+==4== 816 bytes in 2 blocks are possibly lost in loss record 32 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x537AC33: __gmpz_add (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A6017: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273AB: log_split (lfunc.c:437)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4== 
+==4== 928 bytes in 2 blocks are possibly lost in loss record 33 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273C9: log_split (lfunc.c:438)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127345: log_split (lfunc.c:434)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x122055: early_status (lroot.c:460)
+==4==    by 0x122055: adf_lball_roots (lroot.c:486)
+==4== 
+==4== 960 bytes in 3 blocks are possibly lost in loss record 34 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11EE98: teich_mod.constprop.0 (lball_decomp.c:135)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x121CFA: all_branches (lroot.c:414)
+==4==    by 0x121CFA: adf_lball_roots (lroot.c:493)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 1,216 bytes in 3 blocks are possibly lost in loss record 35 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x537AC33: __gmpz_add (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A6017: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x1273AB: log_split (lfunc.c:437)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127372: log_split (lfunc.c:435)
+==4==    by 0x127345: log_split (lfunc.c:434)
+==4==    by 0x127E27: log_short (lfunc.c:451)
+==4==    by 0x127E27: log_balanced (lfunc.c:479)
+==4==    by 0x128B2A: Log_centre (lfunc.c:604)
+==4==    by 0x128B2A: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4== 
+==4== 1,216 bytes in 4 blocks are possibly lost in loss record 36 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49B38F0: ??? (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x127768: log_sum (lfunc.c:390)
+==4==    by 0x1288AB: Log_centre (lfunc.c:602)
+==4==    by 0x1288AB: Log_core (lfunc.c:659)
+==4==    by 0x120386: principal (lroot.c:178)
+==4==    by 0x120D0E: branch (lroot.c:212)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x1110CC: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:718)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 1,312 bytes in 4 blocks are possibly lost in loss record 37 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x537B0F8: __gmpz_add_ui (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49A5FB1: fmpz_add (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x129AF7: exp_centre (lfunc.c:279)
+==4==    by 0x129AF7: adf_lball_exp (lfunc.c:324)
+==4==    by 0x120413: principal (lroot.c:188)
+==4==    by 0x120D0E: branch (lroot.c:212)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x1110CC: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:718)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 5,248 bytes in 16 blocks are possibly lost in loss record 38 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5386F13: __gmpz_sub (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49BE107: fmpz_sub (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11EEA6: teich_mod.constprop.0 (lball_decomp.c:136)
+==4==    by 0x11F0F0: adf_lball_teichmuller (lball_decomp.c:173)
+==4==    by 0x120F16: branch (lroot.c:218)
+==4==    by 0x121083: adf_lball_root_seed (lroot.c:256)
+==4==    by 0x1110CC: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:718)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 32,768 bytes in 1 blocks are still reachable in loss record 39 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EC89: n_compute_primes (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EEF7: n_primes_arr_readonly (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4961B1A: n_factor_trial_range (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49621C3: n_factor (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4962675: n_primitive_root_prime (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x121376: identifiers (lroot.c:346)
+==4==    by 0x121376: adf_lball_roots (lroot.c:489)
+==4==    by 0x114E6A: adf_test_fn_enumeration_all_rows (test_lroot.c:79)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 32,768 bytes in 1 blocks are still reachable in loss record 40 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495ECAE: n_compute_primes (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EEF7: n_primes_arr_readonly (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4961B1A: n_factor_trial_range (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49621C3: n_factor (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x4962675: n_primitive_root_prime (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x121376: identifiers (lroot.c:346)
+==4==    by 0x121376: adf_lball_roots (lroot.c:489)
+==4==    by 0x114E6A: adf_test_fn_enumeration_all_rows (test_lroot.c:79)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 48,704 bytes in 3,044 blocks are possibly lost in loss record 41 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x53728D4: __gmp_default_allocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x53840C7: __gmpz_init2 (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x49AF0DC: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF1C0: _fmpz_promote (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49BBC84: fmpz_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11CA54: fmpq_set (fmpq.h:80)
+==4==    by 0x11CA54: lb_copy (lball.c:225)
+==4==    by 0x11CA54: adf_lball_set (lball.c:280)
+==4==    by 0x121F32: adf_lball_roots (lroot.c:496)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 65,536 bytes in 1 blocks are still reachable in loss record 42 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EC89: n_compute_primes (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EEF7: n_primes_arr_readonly (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EF4B: n_is_oddprime_binary (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11CB21: adf_lball_is_canonical (lball.c:297)
+==4==    by 0x10EC76: raw (test_lroot.c:45)
+==4==    by 0x10F2E9: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:612)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 65,536 bytes in 1 blocks are still reachable in loss record 43 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495ECAE: n_compute_primes (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EEF7: n_primes_arr_readonly (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x495EF4B: n_is_oddprime_binary (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11CB21: adf_lball_is_canonical (lball.c:297)
+==4==    by 0x10EC76: raw (test_lroot.c:45)
+==4==    by 0x10F2E9: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:612)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 69,632 bytes in 1 blocks are possibly lost in loss record 44 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF001: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF445: _fmpz_init_promote_set_ui (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x10FD0B: fmpz_init_set_ui (fmpz.h:102)
+==4==    by 0x10FD0B: adf_test_fn_large_prime_and_word_degrees (test_lroot.c:213)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 1,114,112 bytes in 16 blocks are possibly lost in loss record 45 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF001: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF1C0: _fmpz_promote (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49BBC84: fmpz_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x121B7C: fmpq_set_fmpz (fmpq.h:138)
+==4==    by 0x121B7C: all_branches (lroot.c:428)
+==4==    by 0x121B7C: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 1,114,112 bytes in 16 blocks are possibly lost in loss record 46 of 51
+==4==    at 0x4846828: malloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x49550D5: flint_malloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF001: _fmpz_new_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF1C0: _fmpz_promote (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49BBC84: fmpz_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11CA54: fmpq_set (fmpq.h:80)
+==4==    by 0x11CA54: lb_copy (lball.c:225)
+==4==    by 0x11CA54: adf_lball_set (lball.c:280)
+==4==    by 0x121F32: adf_lball_roots (lroot.c:496)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 1,417,488 bytes in 17,386 blocks are possibly lost in loss record 47 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x11CA54: fmpq_set (fmpq.h:80)
+==4==    by 0x11CA54: lb_copy (lball.c:225)
+==4==    by 0x11CA54: adf_lball_set (lball.c:280)
+==4==    by 0x121F32: adf_lball_roots (lroot.c:496)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 2,097,152 bytes in 1 blocks are still reachable in loss record 48 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x495656A: flint_realloc (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x49AF93E: _fmpz_clear_mpz (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==4==    by 0x11CA14: fmpz_clear (fmpz.h:70)
+==4==    by 0x11CA14: fmpq_clear (fmpq.h:36)
+==4==    by 0x11CA14: adf_lball_clear (lball.c:273)
+==4==    by 0x10F9EB: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:642)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 3,343,976 bytes in 65,521 blocks are possibly lost in loss record 49 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x121B7C: fmpq_set_fmpz (fmpq.h:138)
+==4==    by 0x121B7C: all_branches (lroot.c:428)
+==4==    by 0x121B7C: adf_lball_roots (lroot.c:493)
+==4==    by 0x10F63E: timed_roots (test_lroot.c:566)
+==4==    by 0x10F63E: adf_test_fn_f2_all_branches_cost_and_early_limit (test_lroot.c:628)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 3,846,240 bytes in 24,039 blocks are possibly lost in loss record 50 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x121B7C: fmpq_set_fmpz (fmpq.h:138)
+==4==    by 0x121B7C: all_branches (lroot.c:428)
+==4==    by 0x121B7C: adf_lball_roots (lroot.c:493)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== 3,849,120 bytes in 24,057 blocks are possibly lost in loss record 51 of 51
+==4==    at 0x484DB80: realloc (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4==    by 0x5372928: __gmp_default_reallocate (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x5384133: __gmpz_realloc (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x538693B: __gmpz_set (in /usr/lib/x86_64-linux-gnu/libgmp.so.10.5.0)
+==4==    by 0x11CA54: fmpq_set (fmpq.h:80)
+==4==    by 0x11CA54: lb_copy (lball.c:225)
+==4==    by 0x11CA54: adf_lball_set (lball.c:280)
+==4==    by 0x121F32: adf_lball_roots (lroot.c:496)
+==4==    by 0x110E0C: timed_roots (test_lroot.c:566)
+==4==    by 0x110E0C: adf_test_fn_r9_one_teichmuller_lift_per_list (test_lroot.c:711)
+==4==    by 0x10D4B8: main (test_runner.h:162)
+==4== 
+==4== LEAK SUMMARY:
+==4==    definitely lost: 0 bytes in 0 blocks
+==4==    indirectly lost: 0 bytes in 0 blocks
+==4==      possibly lost: 14,821,560 bytes in 134,145 blocks
+==4==    still reachable: 2,293,768 bytes in 6 blocks
+==4==         suppressed: 0 bytes in 0 blocks
+==4== 
+==4== For lists of detected and suppressed errors, rerun with: -s
+==4== ERROR SUMMARY: 45 errors from 45 contexts (suppressed: 0 from 0)

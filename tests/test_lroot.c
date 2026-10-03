@@ -567,6 +567,30 @@ static double timed_roots(int *st, adf_lball_ptr y, ulong *ids, slong *len, slon
     return (double)(clock()-t0)/CLOCKS_PER_SEC;
 }
 
+/* F8: every listed centre solves t^n=x modulo p^K. These lists have j=0, p not
+   dividing n and integral centres (including exact +-1). Integer modular powers
+   are independent of root_seed and of the chain used by the list.
+   refs/src/flint-3.0.1/fmpz.rst:923-931. Measure verification separately from listing. */
+static void certify_all_centres(adf_lball_srcptr rs, slong len, const adf_lball_t x, ulong n, slong K)
+{
+    fmpz_t modulus, value, target;
+    clock_t start = clock();
+    fmpz_init(modulus); fmpz_init(value); fmpz_init(target);
+    fmpz_ui_pow_ui(modulus, x->p, (ulong) K);
+    fmpz_mod(target, fmpq_numref(x->u), modulus);
+    ADF_CHECK(x->v == 0 && fmpz_is_one(fmpq_denref(x->u)) && n % x->p != 0);
+    for (slong i = 0; i < len; i++)
+    {
+        ADF_CHECK(rs[i].v == 0 && fmpz_is_one(fmpq_denref(rs[i].u)));
+        fmpz_powm_ui(value, fmpq_numref(rs[i].u), n, modulus);
+        ADF_CHECK_MSG(fmpz_equal(value, target), "p=%lu n=%lu branch=%ld K=%ld", x->p, n, i, K);
+    }
+    double sec = (double)(clock()-start)/CLOCKS_PER_SEC;
+    ADF_CHECK_MSG(sec < 5.0, "p=%lu n=%lu: verify %ld centres in %.3f s CPU", x->p, n, len, sec);
+    printf("  certified %ld centres at p=%lu n=%lu K=%ld in %.3f s CPU\n", len, x->p, n, K, sec);
+    fmpz_clear(modulus); fmpz_clear(value); fmpz_clear(target);
+}
+
 /* F2 of review f-review6: LIMIT is decided before the enumeration, and the d branches are listed
    as t0 zeta^i (R8). Guards in CPU seconds: 2 s where the old code took 5.7 to 6 s (Rabin's
    method on T^d-w^e), 10 s for the evaluation of all branches. Identifiers: d distinct, increasing,
@@ -612,14 +636,7 @@ ADF_TEST(f2_all_branches_cost_and_early_limit)
                 if (!pass) ADF_CHECK(rs[i].exact || (fmpq_is_zero(rs[i].u) && rs[i].N==0));
                 else ADF_CHECK(rs[i].exact || (rs[i].v==0 && rs[i].N==20));
             }
-            /* a sample of 16 branches: x lies inside y^n */
-            for (slong i=0;pass && i<len;i+=len/16 ? len/16 : 1)
-            {
-                adf_lball_t z;
-                adf_lball_init(z);
-                ADF_CHECK(adf_lball_pow_si(z,rs+i,(slong)n)==ADF_OK && adf_lball_contains(x,z));
-                adf_lball_clear(z);
-            }
+            if (pass) certify_all_centres(rs,len,x,n,N);
         }
     }
     for (slong i=0;i<65536;i++) adf_lball_clear(rs+i);
@@ -668,11 +685,12 @@ ADF_TEST(review7_f3_branch_limit_after_a_good_branch)
 }
 
 /* R9 (lane f-repair5): adf_lball_roots lifts two Teichmueller representatives, not one per branch.
-   p=2^64-59, x=3^n+p^30 Z_p (z0 a ball), n=d=24068, N=20: all branches. Guard in CPU seconds, as
+   p=2^64-59, x=w+p^30 Z_p, w=3^n mod p (z0 a ball), n=d=24068, N=20: all branches. Guard in CPU seconds, as
    above: GUARD_R9 s; the timings of both codes are in lanes/f-repair5/result.md. Every listed branch
    is identical (all fields) to adf_lball_root_seed at its seed, which lifts its own representative:
    all of them at d=1094 and d=6028 (exact x=1, the branches 1 and p-1 rational), every 97th at
-   d=24068. Fails on the time, a status, a count, or a branch that differs in any field. */
+   d=24068. Every centre is also certified by integer powering. Fails on the time, a status,
+   a count, a wrong centre equation, or a branch that differs in any field. */
 #define GUARD_R9 0.45
 ADF_TEST(r9_one_teichmuller_lift_per_list)
 {
@@ -695,6 +713,7 @@ ADF_TEST(r9_one_teichmuller_lift_per_list)
         ADF_CHECK_MSG(st==ADF_OK && len==(slong)d,"n=%lu: status %d len %ld",n,st,(long)len);
         if (cs[c].ball) ADF_CHECK_MSG(sec<GUARD_R9,"n=%lu: all branches in %.3f s",n,sec);
         printf("  n=%lu d=%lu N=20: all branches in %.3f s CPU\n",n,d,sec);
+        if (st==ADF_OK) certify_all_centres(rs,len,x,n,20);
         for (slong i=0;st==ADF_OK && i<len;i+=cs[c].step)
         {
             ADF_CHECK(adf_lball_root_seed(y,x,n,ids[i],20)==ADF_OK);
@@ -705,4 +724,70 @@ ADF_TEST(r9_one_teichmuller_lift_per_list)
     printf("  branches compared with root_seed: %lu\n",compared);
     for (slong i=0;i<24068;i++) adf_lball_clear(rs+i);
     flint_free(rs); flint_free(ids); adf_lball_clear(x); adf_lball_clear(y);
+}
+
+/* F8: the seed-42 reproducer, including its alias and the complete two-branch list.
+   Python certificates are the residues of the exact roots +-42, K=2,3,4. */
+ADF_TEST(repair6_seed42_integer_certificates)
+{
+    jsonl_file *f = NULL;
+    jsonl_error_t err;
+    adf_lball_t x, y, want;
+    adf_lball_struct rs[2];
+    ulong ids[2];
+    ADF_CHECK(jsonl_open("tests/ref/vectors/f-repair6/roots.jsonl", &f, &err));
+    if (!f) return;
+    ADF_CHECK(jsonl_count(f) == 12);
+    adf_lball_init(x); adf_lball_init(y); adf_lball_init(want);
+    for (int i = 0; i < 2; i++) adf_lball_init(rs+i);
+    for (size_t k = 0; k < jsonl_count(f); k++)
+    {
+        const jsonl_value *r = jsonl_record(f, k);
+        ulong p = strtoul(jsonl_int_text(field(r, "p"), NULL), NULL, 10);
+        ulong seed = strtoul(jsonl_int_text(field(r, "seed"), NULL), NULL, 10);
+        slong K = num(r, "K"), len = -1;
+        raw(x, p, 1764, 0, K, 0); raw(want, p, 1, 0, K, 0);
+        ADF_CHECK(fmpz_set_str(fmpq_numref(want->u), jsonl_int_text(field(r, "c"), NULL), 10) == 0);
+        ADF_CHECK(adf_lball_is_canonical(want));
+        ADF_CHECK(adf_lball_root_seed(y, x, 2, seed, K) == ADF_OK);
+        ADF_CHECK_MSG(adf_lball_identical(y, want), "p=%lu seed=%lu K=%ld", p, seed, K);
+        adf_lball_set(y, x);
+        ADF_CHECK(adf_lball_root_seed(y, y, 2, seed, K) == ADF_OK && adf_lball_identical(y, want));
+        int st = adf_lball_roots(rs, ids, &len, 2, x, 2, K);
+        ADF_CHECK(st == ADF_OK && len == 2);
+        if (st == ADF_OK && len == 2)
+        {
+            ADF_CHECK(ids[0] == 42 && ids[1] == p-42);
+            ADF_CHECK(adf_lball_identical(rs+(seed == 42 ? 0 : 1), want));
+            certify_all_centres(rs, len, x, 2, K);
+        }
+    }
+    for (int i = 0; i < 2; i++) adf_lball_clear(rs+i);
+    adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(want); jsonl_close(f);
+}
+
+/* F9: early_status is a cost property. A valid 824329-branch listing at p=2^64-59,
+   N=40 cost 4.131082 s CPU on this machine (lanes/f-repair6/early-cost.log), over
+   200 times this 0.02 s guard. Refusal at K beyond the exponent bound needs no
+   identifiers; the baseline call cost 0.000279 s. Measure only the call, with
+   all caller storage already initialized. Every slot and scalar must stay untouched. */
+ADF_TEST(repair6_early_limit_cost)
+{
+    const ulong p = UWORD(18446744073709551557), d = 824329;
+    adf_lball_t x, saved;
+    adf_lball_ptr rs = flint_malloc(d*sizeof(adf_lball_struct));
+    ulong *ids = flint_malloc(d*sizeof(ulong));
+    slong len = -1;
+    int st;
+    adf_lball_init(x); adf_lball_init(saved);
+    raw(x, p, 1, 0, 0, 1); raw(saved, 11, 17, 0, 0, 1);
+    for (ulong i = 0; i < d; i++) { adf_lball_init(rs+i); adf_lball_set(rs+i, saved); ids[i] = 99; }
+    double sec = timed_roots(&st, rs, ids, &len, (slong)d, x, d, ADF_LBALL_EXP_MAX+1);
+    ADF_CHECK_MSG(st == ADF_LIMIT && sec < 0.02, "early LIMIT: status=%d CPU=%.6f", st, sec);
+    ADF_CHECK(len == -1);
+    for (ulong i = 0; i < d; i++)
+        ADF_CHECK(ids[i] == 99 && adf_lball_identical(rs+i, saved));
+    printf("  early LIMIT d=%lu in %.6f s CPU, guard=0.02 s\n", d, sec);
+    for (ulong i = 0; i < d; i++) adf_lball_clear(rs+i);
+    flint_free(rs); flint_free(ids); adf_lball_clear(x); adf_lball_clear(saved);
 }

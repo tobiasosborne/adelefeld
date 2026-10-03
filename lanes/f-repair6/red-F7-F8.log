@@ -1,0 +1,6 @@
+{"fault": "powrat_wrong_centre_65537", "test": "test_lpow", "exit": 1, "counts": [12, 3074134, 288, 1]}
+{"fault": "powrat_wrong_centre_65537", "test": "test_lroot", "exit": 0, "counts": [13, 1537090, 0, 0]}
+{"fault": "powrat_wrong_centre_65537", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 144, 1]}
+{"fault": "root_wrong_unsampled_lift", "test": "test_lpow", "exit": 1, "counts": [12, 3074134, 72, 1]}
+{"fault": "root_wrong_unsampled_lift", "test": "test_lroot", "exit": 1, "counts": [13, 1537090, 6, 1]}
+{"fault": "root_wrong_unsampled_lift", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 36, 1]}

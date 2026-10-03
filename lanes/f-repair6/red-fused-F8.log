@@ -1,0 +1,3 @@
+{"fault": "root_wrong_fused_lift", "test": "test_lpow", "exit": 0, "counts": [12, 3074134, 0, 0], "emitted_failed_checks": 0}
+{"fault": "root_wrong_fused_lift", "test": "test_lroot", "exit": 1, "counts": [14, 2361423, 10, 2], "emitted_failed_checks": 10}
+{"fault": "root_wrong_fused_lift", "test": "test_rfunc_prime", "exit": 0, "counts": [16, 526806, 0, 0], "emitted_failed_checks": 0}

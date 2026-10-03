@@ -922,3 +922,98 @@ ADF_TEST(powunit_integer_exponent_is_pow_si)
     printf("  integer exponents against pow_si: calls %lu\n", cases);
     adf_lball_clear(u); adf_lball_clear(s); adf_lball_clear(want); adf_lball_clear(img);
 }
+
+/* F6: each term is uniquely minimal, at 3,5,7,65537 and 2^64-59. The Python oracle exhausts
+   sets modulo p^H at the small primes; at the large primes it certifies two integer image
+   points whose difference has valuation R, H=R+1. Those witnesses refute any radius R+1.
+   fmpz_powm: refs/src/flint-3.0.1/fmpz.rst:923-931. No expected value comes from lpow/lroot. */
+ADF_TEST(repair6_powunit_integer_witnesses)
+{
+    jsonl_file *f = open_vectors("tests/ref/vectors/f-repair6/powunit.jsonl");
+    adf_lball_t u, s, img, want, y, point, tighter;
+    fmpz_t a, b, exponent, value, modulus, delta, PR;
+    if (!f) return;
+    ADF_CHECK(jsonl_count(f) == 30);
+    adf_lball_init(u); adf_lball_init(s); adf_lball_init(img); adf_lball_init(want);
+    adf_lball_init(y); adf_lball_init(point); adf_lball_init(tighter);
+    fmpz_init(a); fmpz_init_set_ui(b, 1); fmpz_init(exponent); fmpz_init(value);
+    fmpz_init(modulus); fmpz_init(delta); fmpz_init(PR);
+    for (size_t k = 0; k < jsonl_count(f); k++)
+    {
+        const jsonl_value *r = jsonl_record(f, k);
+        ulong p = strtoul(itext(member(r, "p")), NULL, 10);
+        slong R = num(r, "R"), H = num(r, "H");
+        fz(a, member(r, "u")); ball_fz(u, p, a, 0, num(r, "A"));
+        fz(a, member(r, "su")); ball_fz(s, p, a, num(r, "sv"), num(r, "B"));
+        fz(a, member(r, "c")); ball_fz(img, p, a, 0, R); ball_fz(tighter, p, a, 0, R+1);
+        for (slong N = R-1; N <= R+1; N++)
+        {
+            coarse(want, img, N);
+            check_powunit(u, s, N, ADF_OK, want);
+        }
+        int st = adf_lball_powunit(y, u, s, H);
+        ADF_CHECK(st == ADF_OK);
+        fmpz_ui_pow_ui(modulus, p, (ulong) H);
+        fmpz_ui_pow_ui(PR, p, (ulong) R);
+        int misses = 0;
+        for (int i = 1; i <= 2; i++)
+        {
+            fz(a, member(r, i == 1 ? "u1" : "u2")); exact_fz(point, p, a, b, 0);
+            ADF_CHECK(adf_lball_contains(point, u));
+            fz(exponent, member(r, i == 1 ? "s1" : "s2"));
+            rat_lb(point, p, exponent, b); ADF_CHECK(adf_lball_contains(point, s));
+            fmpz_powm(value, a, exponent, modulus);
+            fz(a, member(r, i == 1 ? "y1" : "y2")); ADF_CHECK(fmpz_equal(a, value));
+            exact_fz(point, p, a, b, 0);
+            if (st == ADF_OK) ADF_CHECK(adf_lball_contains(point, y));
+            misses += !adf_lball_contains(point, tighter);
+            if (i == 1) fmpz_set(delta, a); else fmpz_sub(delta, a, delta);
+        }
+        ADF_CHECK(misses > 0 && fmpz_divisible(delta, PR) && !fmpz_divisible(delta, modulus));
+    }
+    printf("  repair6 powunit: %zu rows, 60 image points, H=R+1\n", jsonl_count(f));
+    fmpz_clear(a); fmpz_clear(b); fmpz_clear(exponent); fmpz_clear(value);
+    fmpz_clear(modulus); fmpz_clear(delta); fmpz_clear(PR);
+    adf_lball_clear(u); adf_lball_clear(s); adf_lball_clear(img); adf_lball_clear(want);
+    adf_lball_clear(y); adf_lball_clear(point); adf_lball_clear(tighter); jsonl_close(f);
+}
+
+/* F7: powered centres lifted in Python by t^n=x^e modulo p^K, K=2,3,4, n>=2.
+   Compare every field and both output/input aliases to that independent certificate.
+   Negative e uses an integer inverse modulo p^K, never another local power call. */
+ADF_TEST(repair6_powrat_hensel_centres)
+{
+    jsonl_file *f = open_vectors("tests/ref/vectors/f-repair6/powrat.jsonl");
+    adf_lball_t x, want;
+    fmpz_t a, c, modulus, target, value;
+    if (!f) return;
+    ADF_CHECK(jsonl_count(f) == 144);
+    adf_lball_init(x); adf_lball_init(want);
+    fmpz_init(a); fmpz_init(c); fmpz_init(modulus); fmpz_init(target); fmpz_init(value);
+    for (size_t k = 0; k < jsonl_count(f); k++)
+    {
+        const jsonl_value *r = jsonl_record(f, k);
+        ulong p = strtoul(itext(member(r, "p")), NULL, 10);
+        ulong n = (ulong) num(r, "n"), seed = strtoul(itext(member(r, "seed")), NULL, 10);
+        slong e = num(r, "e"), K = num(r, "K");
+        fz(a, member(r, "x")); ball_fz(x, p, a, 0, num(r, "M"));
+        fz(c, member(r, "c")); ball_fz(want, p, c, 0, K);
+        fmpz_ui_pow_ui(modulus, p, (ulong) K);
+        fmpz_powm_ui(value, c, n, modulus);
+        fz(target, member(r, "target")); ADF_CHECK(fmpz_equal(value, target));
+        if (e < 0) ADF_CHECK(fmpz_invmod(a, a, modulus));
+        fmpz_powm_ui(value, a, e < 0 ? -(ulong) e : (ulong) e, modulus);
+        ADF_CHECK(fmpz_equal(value, target));
+        check_powrat(x, e, n, seed, K, ADF_OK, want);
+        check_powrat(x, e, n, seed, K+2, ADF_OK, want);
+    }
+    printf("  repair6 powrat: %zu Hensel centres, K=2,3,4\n", jsonl_count(f));
+    /* P8's admitted numerator endpoint, and P9's slong integer endpoint. */
+    ball_si(x, 5, 1, 0, 3); ball_si(want, 5, 1, 0, 3);
+    check_powrat(x, LONG_MIN, 3, 1, 3, ADF_OK, want);
+    adf_lball_t s;
+    adf_lball_init(s); exact_si(s, 5, LONG_MIN, 1, 0);
+    check_powunit(x, s, 3, ADF_OK, want); adf_lball_clear(s);
+    fmpz_clear(a); fmpz_clear(c); fmpz_clear(modulus); fmpz_clear(target); fmpz_clear(value);
+    adf_lball_clear(x); adf_lball_clear(want); jsonl_close(f);
+}

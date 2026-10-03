@@ -1,0 +1,21 @@
+  oracle rows: 8110
+ok   enumeration_all_rows
+ok   exact_branches_limits_and_aliasing
+ok   large_prime_and_word_degrees
+ok   seeded_small_ball_comparisons
+ok   boundaries_and_transaction_after_one_branch
+  exact oracle rows: 1408
+ok   exact_finite_ring_reference
+ok   nd14_ball_result_exponent_is_min_of_N_and_E
+ok   f1_unit_one_ball_needs_no_power
+  identifier lists compared: 61324
+ok   f2_identifiers_against_residue_search
+ok   f2_all_branches_cost_and_early_limit
+ok   review7_f3_branch_limit_after_a_good_branch
+  n=24068 d=24068 N=20: all branches in 0.033 s CPU
+  n=1094 d=1094 N=20: all branches in 0.001 s CPU
+  n=6028 d=6028 N=20: all branches in 0.007 s CPU
+  branches compared with root_seed: 7371
+ok   r9_one_teichmuller_lift_per_list
+12 tests, 1323173 checks, 0 failed checks, 0 failed tests
+CPU user=1.10 sys=0.01 wall=1.11
