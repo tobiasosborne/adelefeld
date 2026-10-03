@@ -1,0 +1,30 @@
+rat_root_vectors: 5814 rows, 34884 calls, 1234 checked root^n = a
+ok   rat_root_vectors
+ok   rat_root_named_cases
+adele_root_real_vectors: 558 rows, 11160 calls, 1062 OK results checked
+ok   adele_root_real_vectors
+adele_root_rat_vectors: 5814 rows, 46512 calls
+ok   adele_root_rat_vectors
+ok   adele_root_statuses
+idele_root_rat_vectors: 5814 rows, 23208 calls
+ok   idele_root_rat_vectors
+idele_root_statuses: (1 +- (1 - 2^-20), 1, [1]), n = 2, prec 2: NOT_DETERMINED
+idele_root_statuses: (1 +- (1 - 2^-20), 1, [1]), n = 3, prec 2: NOT_DETERMINED
+idele_root_statuses: (1 +- (1 - 2^-20), 1, [1]), n = 2, prec 8: NOT_DETERMINED
+idele_root_statuses: (1 +- (1 - 2^-20), 1, [1]), n = 3, prec 8: OK
+ok   idele_root_statuses
+idele_root_inexact_units: 480 calls
+ok   idele_root_inexact_units
+ok   degree_one_is_an_exact_copy
+series_real_vectors: 327 rows, 1962 calls
+ok   series_real_vectors
+series_place_vectors: 988 rows, 9880 calls
+ok   series_place_vectors
+series_statuses: exp(2^1000) at the real place: NOT_DETERMINED
+series_statuses: sin(2^1000) at the real place: OK
+series_statuses: sinh(2^1000) at the real place: NOT_DETERMINED
+series_statuses: cos(2^1000) at the real place: OK
+series_statuses: cosh(2^1000) at the real place: NOT_DETERMINED
+ok   series_statuses
+ok   entry_check_of_the_public_functions
+13 tests, 1091382 checks, 0 failed checks, 0 failed tests

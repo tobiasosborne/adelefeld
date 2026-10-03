@@ -1,0 +1,29 @@
+=== lane f-repair7: red-green for F1 and F2 (docs/reviews/f1/review-gfunc.md)
+
+--- 1. the test of the slice (before this lane), against the unmodified library
+$ timeout 600 make -j2 BUILD=lanes/f-repair7/build lanes/f-repair7/build/test_gfunc
+$ timeout 300 lanes/f-repair7/build/test_gfunc
+10 tests, 1088693 checks, 0 failed checks, 0 failed tests
+
+--- 2. the NEW test_gfunc against the unmodified library (green)
+$ timeout 600 make -j2 BUILD=lanes/f-repair7/build lanes/f-repair7/build/test_gfunc
+$ timeout 300 lanes/f-repair7/build/test_gfunc
+12 tests, 1091373 checks, 0 failed checks, 0 failed tests
+
+--- 3. the NEW test_gfunc against fault F13 (inexact idele unit, n >= 4) = red
+$ timeout 900 python3 lanes/f-repair7/faults.py F13_inexact_idele_high_degree
+$ timeout 300 lanes/f-repair7/faults/F13_inexact_idele_high_degree/build/test_gfunc
+12 tests, 1091173 checks, 100 failed checks, 1 failed tests
+FAIL tests/test_gfunc.c:675: idele_root_inexact_units: check failed: got == st | unit 0, real ball 0 line 0 n=4 sign=1: status 0, want 1
+
+--- 4. the NEW test_gfunc against fault F11 (idele degree one normalised) = red
+$ timeout 900 python3 lanes/f-repair7/faults.py F11_inexact_idele_degree_one_normalised
+$ timeout 300 lanes/f-repair7/faults/F11_inexact_idele_degree_one_normalised/build/test_gfunc
+12 tests, 1091373 checks, 12 failed checks, 1 failed tests
+FAIL tests/test_gfunc.c:932: degree_one_is_an_exact_copy: check failed: adf_idele_identical(j, i) | sign 1, prec 2: the copy differs
+
+--- 5. bonus: the NEW test_gfunc against fault F06 (adele degree one rounded), which the slice missed too
+$ timeout 900 python3 lanes/f-repair7/faults.py F06_degree_one_rounding
+$ timeout 300 lanes/f-repair7/faults/F06_degree_one_rounding/build/test_gfunc
+12 tests, 1091373 checks, 162 failed checks, 2 failed tests
+FAIL tests/test_gfunc.c:959: degree_one_is_an_exact_copy: check failed: adf_adele_identical(y, x) | sign 1: the copy of the real ball was rounded

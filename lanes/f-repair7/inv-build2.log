@@ -1,0 +1,62 @@
+mkdir -p lanes/f-repair7/build-inv2
+mkdir -p lanes/f-repair7/build-inv2/support
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f-repair7/build-inv2/adele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f-repair7/build-inv2/cap.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-repair7/build-inv2/common.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f-repair7/build-inv2/dump.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f-repair7/build-inv2/fball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f-repair7/build-inv2/fball_local.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/f-repair7/build-inv2/gfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f-repair7/build-inv2/idclass.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-repair7/build-inv2/idele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f-repair7/build-inv2/idmap.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f-repair7/build-inv2/idpow.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-repair7/build-inv2/inlines.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-repair7/build-inv2/lball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f-repair7/build-inv2/lball_decomp.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f-repair7/build-inv2/lfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-repair7/build-inv2/linsolve.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/f-repair7/build-inv2/lpow.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f-repair7/build-inv2/lroot.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f-repair7/build-inv2/modctx.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-repair7/build-inv2/place.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-repair7/build-inv2/rat.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f-repair7/build-inv2/recon.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-repair7/build-inv2/resid.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f-repair7/build-inv2/rfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-repair7/build-inv2/roots.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f-repair7/build-inv2/roots_real.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f-repair7/build-inv2/sball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f-repair7/build-inv2/scaled.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-repair7/build-inv2/status.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f-repair7/build-inv2/text.o
+src/text.c: In function ‘adf_lball_get_str’:
+src/text.c:2623:27: error: stray ‘#’ in program
+ 2623 |                 __func__, #x);
+      |                           ^
+src/text.c:2622:73: error: format ‘%s’ expects argument of type ‘char *’, but argument 4 has type ‘const adf_lball_struct *’ [-Werror=format=]
+ 2622 |         fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_lball\n",
+      |                                                                        ~^
+      |                                                                         |
+      |                                                                         char *
+ 2623 |                 __func__, #x);
+      |                            ~                                             
+      |                            |
+      |                            const adf_lball_struct *
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f-repair7/build-inv2/text_idele.o
+src/text.c: In function ‘adf_sball_get_str’:
+src/text.c:2943:27: error: stray ‘#’ in program
+ 2943 |                 __func__, #x);
+      |                           ^
+src/text.c:2942:73: error: format ‘%s’ expects argument of type ‘char *’, but argument 4 has type ‘const adf_sball_struct *’ [-Werror=format=]
+ 2942 |         fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_sball\n",
+      |                                                                        ~^
+      |                                                                         |
+      |                                                                         char *
+ 2943 |                 __func__, #x);
+      |                            ~                                             
+      |                            |
+      |                            const adf_sball_struct *
+cc1: all warnings being treated as errors
+make: *** [Makefile:90: lanes/f-repair7/build-inv2/text.o] Error 1
+make: *** Waiting for unfinished jobs....

@@ -1,0 +1,38 @@
+mkdir -p lanes/f-repair7/build
+mkdir -p lanes/f-repair7/build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f-repair7/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f-repair7/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-repair7/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f-repair7/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f-repair7/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f-repair7/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/f-repair7/build/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f-repair7/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-repair7/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f-repair7/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f-repair7/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-repair7/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-repair7/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f-repair7/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f-repair7/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-repair7/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/f-repair7/build/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f-repair7/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f-repair7/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-repair7/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-repair7/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f-repair7/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-repair7/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f-repair7/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-repair7/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f-repair7/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f-repair7/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f-repair7/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-repair7/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f-repair7/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f-repair7/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f-repair7/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f-repair7/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f-repair7/build/support/jsonl.o
+ar rcs lanes/f-repair7/build/libadelefeld.a lanes/f-repair7/build/adele.o lanes/f-repair7/build/cap.o lanes/f-repair7/build/common.o lanes/f-repair7/build/dump.o lanes/f-repair7/build/fball.o lanes/f-repair7/build/fball_local.o lanes/f-repair7/build/gfunc.o lanes/f-repair7/build/idclass.o lanes/f-repair7/build/idele.o lanes/f-repair7/build/idmap.o lanes/f-repair7/build/idpow.o lanes/f-repair7/build/inlines.o lanes/f-repair7/build/lball.o lanes/f-repair7/build/lball_decomp.o lanes/f-repair7/build/lfunc.o lanes/f-repair7/build/linsolve.o lanes/f-repair7/build/lpow.o lanes/f-repair7/build/lroot.o lanes/f-repair7/build/modctx.o lanes/f-repair7/build/place.o lanes/f-repair7/build/rat.o lanes/f-repair7/build/recon.o lanes/f-repair7/build/resid.o lanes/f-repair7/build/rfunc.o lanes/f-repair7/build/roots.o lanes/f-repair7/build/roots_real.o lanes/f-repair7/build/sball.o lanes/f-repair7/build/scaled.o lanes/f-repair7/build/status.o lanes/f-repair7/build/text.o lanes/f-repair7/build/text_idele.o lanes/f-repair7/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_gfunc.c lanes/f-repair7/build/support/golden.o lanes/f-repair7/build/support/jsonl.o lanes/f-repair7/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f-repair7/build/test_gfunc
