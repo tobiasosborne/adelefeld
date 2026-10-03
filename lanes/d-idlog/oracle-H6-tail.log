@@ -1,0 +1,5 @@
+factor_two {"H": 6, "pairs": 1644}
+exact {"H": 6, "cases": 160, "exact_zero_cases": 40, "sign_pairs": 80}
+kernel {"H": 6, "isometry_checks": 569268, "output_classes": 20191, "square_checks": 32, "teich_checks": 113828, "units": 113860}
+crt {"N": [-2, 0, 1, 2, 3], "cases": 120, "memberships": 91160}
+faults {"H": 5, "ids": [1, 2, 3, 4, 5, 6, 7, 8], "planted": 8, "rejected": 8}

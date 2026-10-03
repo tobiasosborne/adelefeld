@@ -1,0 +1,7 @@
+lines path=docs/design/idele-log.md count=679 over_116=0
+lines path=proto/idlog_checks.py count=463 over_116=0
+lines path=lanes/d-idlog/progress.md count=78 over_116=0
+lines path=lanes/d-idlog/check_artifacts.py count=53 over_116=0
+syntax_checks=2 errors=0
+fixtures {"exact_input": 480, "exact_zero": 120, "inexact_input": 21400, "rows": 21880}
+fixture_primes=4 content_valuations=5 canonical_field_errors=0
