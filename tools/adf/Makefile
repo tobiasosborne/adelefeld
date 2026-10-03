@@ -21,7 +21,10 @@
 # `SAN=1 sh tests/test_driver.sh` over the plain archive watched only the driver.)
 
 ROOT  := ../..
-BUILD := $(ROOT)/build
+# override: a BUILD given on the command line of the top-level make (make BUILD=... check-all) reaches this
+# Makefile through MAKEFLAGS and would move the driver away from build/adf, where tests/test_driver.sh
+# looks for it.
+override BUILD := $(ROOT)/build
 
 CC       ?= cc
 CFLAGS   ?= -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror

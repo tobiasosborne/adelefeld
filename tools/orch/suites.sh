@@ -5,8 +5,12 @@
 #
 # SUITE is one or more of: all (make check-all), san (make check SAN=1), clang (make check CC=clang),
 # inv (make check INV=1), headers (lanes/m1-headers/check_headers.sh). The default is all four make suites
-# and headers. Each make suite builds into build/suite-<name>/ (the Makefile's BUILD variable), so the
+# and headers. san, clang and inv build into build/suite-<name>/ (the Makefile's BUILD variable), so the
 # suites do not share objects and can run at the same time; `make clean` is not needed between them.
+# all builds into build/ itself: the scripts of check-all (tests/test_driver.sh and the others) use the
+# fixed paths build/adf, build/driver/, and a BUILD given on the command line is inherited by the
+# sub-make of tools/adf, which then put the driver under tools/adf/build/suite-all/ while the golden test
+# ran a stale build/adf (found on 2026-10-03, the first run of this suite on a tree with an old build/).
 # -j N is the make parallelism of EACH suite (default 1). Logs go to LOGDIR (default
 # build/suite-logs/), one file per suite; the summary is the last line of each log and the exit code.
 # The script exits non-zero if any suite failed.
@@ -33,7 +37,7 @@ mkdir -p "$LOGDIR"
 run_suite() { # run_suite NAME -- runs one suite, writes LOGDIR/NAME.log, returns its exit code
   name=$1; log="$LOGDIR/$name.log"
   case "$name" in
-    all)     make -j"$J" BUILD=build/suite-all check-all ;;
+    all)     make -j"$J" check-all ;;
     san)     make -j"$J" BUILD=build/suite-san check SAN=1 ;;
     clang)   make -j"$J" BUILD=build/suite-clang check CC=clang ;;
     inv)     make -j"$J" BUILD=build/suite-inv check INV=1 ;;
