@@ -2620,7 +2620,7 @@ adf_lball_get_str(size_t * len, const adf_lball_t x)
     if (!adf_lball_is_canonical(x))
     {
         fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_lball\n",
-                __func__, #x);
+                __func__, "x");
         fflush(stderr);
         flint_abort();
     }
@@ -2940,7 +2940,7 @@ adf_sball_get_str(size_t * len, const adf_sball_t x, slong digits)
     if (!adf_sball_is_canonical(x))
     {
         fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_sball\n",
-                __func__, #x);
+                __func__, "x");
         fflush(stderr);
         flint_abort();
     }
