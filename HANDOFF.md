@@ -2,6 +2,37 @@
 
 # HANDOFF: adelefeld
 
+## Session 2026-10-03 00:00 to about 00:15 UTC (orchestrator Claude Fable, cloud container, after a container restart; no lanes): START HERE
+
+**One line.** The cloud container restarted at about 23:55 on 2026-10-02 and killed lane f-review7 (the review of
+f-slice9's powers and of f-repair4's `dth_root`) before it wrote `result.md`. Its work is committed as it stood,
+with `lanes/f-review7/progress.md` as the record: 3 MINOR, 0 blocker, 0 major; the five attacks it wrote after its
+last note were rerun by the orchestrator, 0 failures. No source file changed. Everything is on the SESSION BRANCH
+`ccr-f62bc633-f7fnqs`, pushed, NOT on master: merge it as the entry below says.
+
+**First commands.** Those of the entry below (merge the session branch, `tools/orch/suites.sh -j2` on master).
+
+**Quota.** 0.41 (0.43 with overage included) at 00:00 against the 0.45 stop of TJO's rules; the evening's four
+Opus lanes cost 0.04 between them. A fresh review lane was not launched for that reason.
+
+**The next steps**, replacing step 3 of the entry below (its steps 1, 2, 4, 5 stand):
+1. Merge the session branch into master; `tools/orch/suites.sh -j2`.
+2. Read `lanes/f-review7/progress.md` (the lane's notes, then the orchestrator's addendum with the reruns). Its
+   three minors are the material of one small repair lane: the stale cost sentence of `lpow.h`; the `LIMIT` for
+   a small `powunit` result (the same shape as f-review6 F1 and its repair in f-repair4); the false order sentence
+   in `lanes/f-repair4/result.md`. What the review did not get to: refereeing P1 to P8 and R8 as proofs, a cost
+   measurement, a lane test that cannot fail. Either a second review lane for those three bullets (brief
+   `lanes/f-review7/brief.md`, trimmed to them), or accept the review as partial and record it under
+   `docs/reviews/f1/` from `progress.md`.
+3. Then step 4 of the entry below (1F.8, the all-places forms).
+
+**Things to know.**
+- The lane's binaries (`h`, `hsan`, `at`, `adf`), its `build/` and its input dumps are not committed;
+  `progress.md` says how to regenerate the dumps. `h.c` needs `-std=gnu11` (`clock_gettime`).
+- The worktree `../adelefeld-wt/f-review7` (branch `lane/f-review7`) is merged and may be removed with the others.
+- The quota check-in routine (`send_later`, one shot) has fired and ended; nothing is scheduled.
+- The worklog of this session: `docs/worklog/2026-10-03.md`.
+
 ## Session 2026-10-02 20:30 to about 22:30 UTC (orchestrator Claude Fable, cloud container; Claude Opus lanes only): START HERE
 
 **One line.** In a cloud container (FLINT absent at the start, installed): the five suites the previous session
