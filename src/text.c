@@ -2119,3 +2119,856 @@ refused:            /* the work bound of the constrained printer (TX_COND_WORK_M
     *len = 0;
     return NULL;
 }
+
+/* ================================================================================================
+   The value form of adf_lball and adf_sball (conventions 9.2 lball_v, sentry, sball_v; lane t-slice2,
+   2026-10-04). Written by the lane as the second half of a file src/text_local.c whose first half was a
+   verbatim copy of the static machinery above; the orchestrator joined it to this file instead, so that
+   the machinery exists once. docs/api-1f.md, section "Slice 1F.5-c".
+   ================================================================================================ */
+
+#include <stdio.h>
+#include <stdlib.h>   /* qsort */
+
+/* The invariant check of the debug build (conventions 4.4, CV-09; src/invariants.h has none for the two
+   types, src/lball.c has one of its own for adf_lball). The output of the reader is not checked on a
+   status; on ADF_OK it always satisfies the predicate (the components come from the constructors). */
+#ifdef ADF_CHECK_INVARIANTS
+#define ADF_INV_LBALL_OUT(x)                                                                           \
+    do                                                                                                \
+    {                                                                                                 \
+        if (!adf_lball_is_canonical(x))                                                               \
+            flint_abort();                                                                             \
+    }                                                                                                 \
+    while (0)
+#else
+#define ADF_INV_LBALL_OUT(x) ((void) 0)
+#endif
+
+/* ------------------------------------------------------------------------------------------------
+   Comparisons on digit strings. Every limit of stage 4 and the word restriction of stage 5 are decided on
+   the digits of the literal, before any number is formed (conventions 8.5 items 4 and 5; decision M1-D7;
+   the reference compares the same strings, proto/text_grammar.py _check_limits lines 579-599 and
+   _check_unsupported lines 607-617). */
+
+/* 1 if the integer of the digits [b, e) of s (leading zeros allowed, e > b) is above m, m >= 0 a slong.
+   The digit string may be as long as the input. */
+static int
+tl_digits_over_slong(const char * s, size_t b, size_t e, slong m)
+{
+    char lbuf[24];
+    size_t ld = 0, nd, i;
+    slong t = m;
+
+    while (b < e && s[b] == '0')
+        b++;
+    if (b == e)
+        return 0;                        /* the value is 0, which no positive m exceeds */
+    while (t > 0)
+    {
+        lbuf[ld++] = (char) ('0' + (int) (t % 10));
+        t /= 10;
+    }
+    nd = e - b;
+    if (nd != ld)
+        return nd > ld;
+    for (i = 0; i < nd; i++)
+    {
+        char sc = s[b + i];
+        char lc = lbuf[ld - 1 - i];
+
+        if (sc != lc)
+            return sc > lc;
+    }
+    return 0;
+}
+
+/* -1, 0, 1 as the integer of the digits [b, e) of s compares with the integer of the decimal digits d
+   (which has no leading zero). */
+static int
+tl_digits_cmp_str(const char * s, size_t b, size_t e, const char * d)
+{
+    size_t i;
+
+    while (b < e && s[b] == '0')
+        b++;
+    if (e - b != strlen(d))
+        return (e - b < strlen(d)) ? -1 : 1;
+    for (i = 0; i < e - b; i++)
+        if (s[b + i] != d[i])
+            return s[b + i] < d[i] ? -1 : 1;
+    return 0;
+}
+
+/* 1 if the prime literal n is at least 2^64: ADF_UNSUPPORTED at stage 5 (conventions 9.3 line 1155; the
+   reference, _check_unsupported: len(v) > 20 or int(v) >= WORD). 2^64 = 18446744073709551616. */
+static int
+tl_prime_over_word(const char * s, const tx_num * n)
+{
+    return tl_digits_cmp_str(s, n->ib, n->ie, "18446744073709551616") >= 0;
+}
+
+/* The value of a sint literal n, with |value| <= ADF_LBALL_EXP_MAX (2^60), so that it fits a slong: the
+   callers have compared the digits with max_prec and with ADF_LBALL_EXP_MAX first. */
+static slong
+tl_sint_value(const char * s, const tx_num * n)
+{
+    slong v = 0;
+    size_t b;
+
+    for (b = n->ib; b < n->ie; b++)
+        v = 10 * v + (s[b] - '0');
+    return n->neg ? -v : v;
+}
+
+/* The base inside "O(...)" as an unsigned long, or UINTP_MAX when the literal is at least 2^64 (the
+   comparison with the prime then fails and the status is ADF_DOMAIN, stage 6; the base has no word
+   restriction of its own, conventions 9.3 names it only in "the base inside O(...) equals p"). */
+static int
+tl_base_get_ulong(const char * s, const tx_num * n, ulong * out)
+{
+    fmpz_t z;
+
+    if (tl_prime_over_word(s, n))
+        return 0;
+    fmpz_init(z);
+    tx_fmpz_digits(z, s, n->ib, n->ie);
+    *out = fmpz_get_ui(z);
+    fmpz_clear(z);
+    return 1;
+}
+
+/* ------------------------------------------------------------------------------------------------
+   lcoord = rat ["+" "O" "(" uint ["^" sint] ")"] (conventions 9.2 line 1116; the reference, Parser.lcoord
+   lines 359-372: a, then "+" "O" "(" uint, an optional "^" sint, and ")"). The literals are kept as
+   offsets into the input; nothing is converted here. */
+
+typedef struct
+{
+    tx_num a;             /* the centre, a rat literal */
+    int has_O;            /* an O-term follows */
+    tx_num base;          /* the base inside O(...), a uint literal */
+    tx_num ex;            /* the exponent, a sint literal */
+    int has_exp;          /* "^" exponent present; else N = 1 */
+} tl_lcoord;
+
+static int
+tl_lcoord_syntax(tx_cur * c, tl_lcoord * l)
+{
+    tl_lcoord t;
+
+    memset(&t, 0, sizeof(t));
+    if (!tx_scan_rat(c, 1, 1, &t.a))
+        return 0;
+    if (tx_peek(c, '+'))
+    {
+        c->i++;
+        t.has_O = 1;
+        if (!TX_KW(c, "O") || !tx_expect(c, '(') || !tx_scan_rat(c, 0, 0, &t.base))
+            return 0;
+        if (tx_expect(c, '^'))
+        {
+            if (!tx_scan_rat(c, 1, 0, &t.ex))
+                return 0;
+            t.has_exp = 1;
+        }
+        if (!tx_expect(c, ')'))
+            return 0;
+    }
+    if (l != NULL)
+        *l = t;
+    return 1;
+}
+
+/* One entry of a partial ball: the archimedean place (real or complex) or a prime with its local
+   coordinate (sentry of conventions 9.2 line 1127; the reference, Parser.sentry lines 382-394: "inf" and
+   ":" and a complex when "(" follows, else a real; or "p" "=" uint ":" lcoord). */
+#define TL_INF_REAL 0
+#define TL_INF_COMPLEX 1
+#define TL_PRIME 2
+
+typedef struct
+{
+    int kind;
+    tx_num p;             /* the prime literal, a uint */
+    tx_real re, im;       /* the archimedean parts */
+    tl_lcoord lc;
+} tl_entry;
+
+static int
+tl_sentry_syntax(tx_cur * c, tl_entry * e)
+{
+    tl_entry t;
+
+    memset(&t, 0, sizeof(t));
+    if (TX_KW(c, "inf"))
+    {
+        if (!tx_expect(c, ':'))
+            return 0;
+        if (tx_peek(c, '('))
+        {
+            t.kind = TL_INF_COMPLEX;
+            if (!tx_complex_syntax(c, &t.re, &t.im))
+                return 0;
+        }
+        else
+        {
+            t.kind = TL_INF_REAL;
+            if (!tx_real_syntax(c, &t.re))
+                return 0;
+        }
+    }
+    else
+    {
+        t.kind = TL_PRIME;
+        if (!TX_KW(c, "p") || !tx_expect(c, '=') || !tx_scan_rat(c, 0, 0, &t.p) || !tx_expect(c, ':'))
+            return 0;
+        if (!tl_lcoord_syntax(c, &t.lc))
+            return 0;
+    }
+    if (e != NULL)
+        *e = t;
+    return 1;
+}
+
+/* Stage 3 for lball_v = "[" "p" "=" uint ":" lcoord "]" (conventions 9.2 line 1126; the reference,
+   _syntax lball, lines 465-471): the entry of a prime place, the closing bracket, and nothing else. The
+   reader below calls tl_sentry_syntax_prime directly, so the whole input is checked with tx_at_end. */
+
+/* the "p" "=" uint ":" lcoord of a local entry, without the archimedean alternatives */
+static int
+tl_sentry_syntax_prime(tx_cur * c, tl_entry * e)
+{
+    tl_entry t;
+
+    memset(&t, 0, sizeof(t));
+    t.kind = TL_PRIME;
+    if (!TX_KW(c, "p") || !tx_expect(c, '=') || !tx_scan_rat(c, 0, 0, &t.p) || !tx_expect(c, ':'))
+        return 0;
+    if (!tl_lcoord_syntax(c, &t.lc))
+        return 0;
+    if (e != NULL)
+        *e = t;
+    return 1;
+}
+
+/* ------------------------------------------------------------------------------------------------
+   The byte range of one entry of a partial ball. sball_v = "{" [sentry {";" sentry}] "}" (conventions 9.2
+   line 1128; the reference, _syntax sball, lines 472-481). The ranges are recorded instead of the entries
+   themselves: the passes of stages 4 to 6 then walk the input again and nothing of the size of the number
+   of entries is held. The number of entries is bounded by the length of the input (each entry needs at
+   least five bytes: "p=2:"). */
+typedef struct
+{
+    size_t b, e;
+} tl_range;
+
+typedef struct
+{
+    tl_range * r;
+    size_t n, cap;
+} tl_list;
+
+static void
+tl_list_init(tl_list * l)
+{
+    l->r = NULL;
+    l->n = 0;
+    l->cap = 0;
+}
+
+static void
+tl_list_clear(tl_list * l)
+{
+    flint_free(l->r);
+    l->r = NULL;
+    l->n = 0;
+    l->cap = 0;
+}
+
+static int
+tl_list_push(tl_list * l, size_t b, size_t e)
+{
+    if (l->n == l->cap)
+    {
+        size_t cap = l->cap ? 2 * l->cap : 8;
+        tl_range * r = (tl_range *) flint_realloc(l->r, cap * sizeof(tl_range));
+
+        l->r = r;
+        l->cap = cap;
+    }
+    l->r[l->n].b = b;
+    l->r[l->n].e = e;
+    l->n++;
+    return 1;
+}
+
+static int
+tl_sball_syntax(tx_cur * c, tl_list * l)
+{
+    if (!tx_expect(c, '{'))
+        return 0;
+    /* "{" [sentry {";" sentry}] "}": a ';' must be followed by an entry, so "{p=5: 1;}" is ADF_PARSE */
+    if (!tx_peek(c, '}'))
+    {
+        for (;;)
+        {
+            size_t b;
+
+            tx_ws(c);
+            b = c->i;
+            if (!tl_sentry_syntax(c, NULL))
+                return 0;
+            (void) tl_list_push(l, b, c->i);
+            if (!tx_peek(c, ';'))
+                break;
+            c->i++;
+        }
+    }
+    return tx_expect(c, '}') && tx_at_end(c);
+}
+
+/* The entry of the range [b, e) of the input, re-read with a cursor of its own. The text passed stage 3, so
+   the return value is 1; 0 is kept as a safety net and would give ADF_PARSE. */
+static int
+tl_entry_at(const char * s, size_t b, size_t e, tl_entry * out)
+{
+    tx_cur c;
+
+    c.s = s;
+    c.len = e;
+    c.i = b;
+    return tl_sentry_syntax(&c, out) && tx_at_end(&c);
+}
+
+/* ------------------------------------------------------------------------------------------------
+   The two limits of the library that are not in conventions 8.4, and the value of N. */
+
+/* 1 if the O-term of the entry has an exponent above lim->max_prec (stage 4, ADF_LIMIT) or above
+   ADF_LBALL_EXP_MAX, the bound of lball.h (also ADF_LIMIT; a second limit of the library, decided on the
+   digits so that N fits a slong). No exponent means N = 1, which no bound rejects. */
+static int
+tl_exp_over(const char * s, const tl_entry * e, const adf_text_limits_t * lim)
+{
+    if (e->kind != TL_PRIME || !e->lc.has_O || !e->lc.has_exp)
+        return 0;
+    if (tl_digits_over_slong(s, e->lc.ex.ib, e->lc.ex.ie, lim->max_prec))
+        return 1;
+    return tl_digits_over_slong(s, e->lc.ex.ib, e->lc.ex.ie, ADF_LBALL_EXP_MAX);
+}
+
+/* The absolute precision N of the O-term: the exponent as written, 1 when it is absent ("O(p)" means
+   N = 1, conventions 9.2 and 9.3). The caller has checked the two bounds of tl_exp_over. */
+static slong
+tl_exp_value(const char * s, const tl_entry * e)
+{
+    if (!e->lc.has_exp)
+        return 1;
+    return tl_sint_value(s, &e->lc.ex);
+}
+
+/* Stage 4 of one entry of a partial ball: the decimal exponents of the archimedean parts (max_exp10) and
+   the exponent of an O-term (max_prec). */
+static int
+tl_entry_over(const char * s, const tl_entry * e, const adf_text_limits_t * lim)
+{
+    switch (e->kind)
+    {
+        case TL_INF_REAL:
+            return tx_real_over(s, &e->re, lim);
+        case TL_INF_COMPLEX:
+            return tx_real_over(s, &e->re, lim) || tx_real_over(s, &e->im, lim);
+        default:
+            return tl_exp_over(s, e, lim);
+    }
+}
+
+/* ------------------------------------------------------------------------------------------------
+   The value of one entry. The local components are built with the constructors of lball.h, so that they
+   satisfy the predicate of conventions 5.8 and the output of the reader needs no further check. */
+
+/* x = the local coordinate of the entry at the prime p of the place v. The canonical centre of
+   conventions 5.8 is formed by adf_lball_set_rat_ball (statement L1 of docs/api-1f.md): the centre is the
+   unique element of Z[1/p] in [0, p^N) that lies in the ball, and an exact value is stored as p^v u by
+   adf_lball_set_rat. Statuses: ADF_OK; ADF_LIMIT from the constructor (a centre that needs too large a
+   power); ADF_DOMAIN only for the archimedean place, which the caller has excluded. */
+static int
+tl_lball_build(adf_lball_t x, adf_place_t v, const char * s, const tl_entry * e, slong N)
+{
+    adf_rat_t q;
+    int st;
+
+    adf_rat_init(q);
+    tx_fmpq_rat(q->q, s, &e->lc.a);
+    if (e->lc.has_O)
+        st = adf_lball_set_rat_ball(x, v, q, N);
+    else
+        st = adf_lball_set_rat(x, v, q);
+    adf_rat_clear(q);
+    return st;
+}
+
+/* ------------------------------------------------------------------------------------------------
+   adf_lball (lane t-slice2). */
+
+int
+adf_lball_set_str(adf_lball_t x, const char * s, size_t len, const adf_text_limits_t * lim)
+{
+    adf_text_limits_t store;
+    tx_cur c;
+    tl_entry e;
+    adf_lball_t t;
+    adf_place_t v;
+    ulong p;
+    fmpz_t pz;
+    int st;
+
+    /* stage 1 (len > max_len, before any byte is read) and stage 2 (the alphabet of conventions 8.2) */
+    lim = tx_limits(lim, &store);
+    st = tx_prep(s, len, lim);
+    if (st != ADF_OK)
+        return st;
+    /* stage 3: the grammar, and the whole input */
+    c.s = s;
+    c.len = len;
+    c.i = 0;
+    if (!(tx_expect(&c, '[') && tl_sentry_syntax_prime(&c, &e) && tx_expect(&c, ']') && tx_at_end(&c)))
+        return ADF_PARSE;
+    /* stage 4: abs(N) <= max_prec, and abs(N) <= ADF_LBALL_EXP_MAX (a bound of lball.h); both on the
+       digits of the literal, before any number is formed */
+    if (tl_exp_over(s, &e, lim))
+        return ADF_LIMIT;
+    /* stage 5: p < 2^64 */
+    if (tl_prime_over_word(s, &e.p))
+        return ADF_UNSUPPORTED;
+    /* stage 6: a denominator of the centre that is 0, the base inside O(...) that is not p, and a prime
+       that is not prime (n_is_prime through adf_place_prime). All DOMAIN, so the order is free. */
+    if (tx_den_zero(s, &e.lc.a))
+        return ADF_DOMAIN;
+    fmpz_init(pz);
+    tx_fmpz_digits(pz, s, e.p.ib, e.p.ie);
+    p = fmpz_get_ui(pz);
+    fmpz_clear(pz);
+    if (e.lc.has_O)
+    {
+        ulong base;
+
+        if (!tl_base_get_ulong(s, &e.lc.base, &base) || base != p)
+            return ADF_DOMAIN;
+    }
+    st = adf_place_prime(&v, p);
+    if (st != ADF_OK)
+        return st;                       /* ADF_DOMAIN: not a prime; *v untouched */
+    /* build in a temporary and move it in only on ADF_OK (conventions 4.3) */
+    adf_lball_init(t);
+    st = tl_lball_build(t, v, s, &e, tl_exp_value(s, &e));
+    if (st == ADF_OK)
+    {
+        adf_lball_swap(x, t);
+        ADF_INV_LBALL_OUT(x);
+    }
+    adf_lball_clear(t);
+    return st;
+}
+
+/* The local coordinate L of conventions 9.4 (line 1206): "q(p^v u)" when the value is exact, and
+   "q(c) + O(p^N)" otherwise, with c the canonical centre of conventions 5.8 (the rational p^v u, which is
+   the unique element of Z[1/p] in [0, p^N) that lies in the ball) and N in signed decimal. Returns 0 when
+   the centre does not fit, which adf_lball_get_center reports as ADF_LIMIT (|v| bits(p) >
+   ADF_LBALL_BITS_MAX), and the caller then refuses the text. */
+static int
+tl_put_lcoord(tx_buf * b, const adf_lball_t x)
+{
+    adf_rat_t c;
+    int st;
+
+    adf_rat_init(c);
+    st = adf_lball_get_center(c, x);
+    if (st == ADF_OK)
+        tx_put_q(b, c->q);
+    adf_rat_clear(c);
+    if (st != ADF_OK)
+        return 0;
+    if (x->exact)
+        return 1;
+    tx_puts(b, " + O(");
+    {
+        fmpz_t pz;
+
+        fmpz_init_set_ui(pz, x->p);
+        tx_put_fmpz(b, pz);
+        fmpz_clear(pz);
+    }
+    tx_put(b, "^", 1);
+    {
+        char nbuf[32];
+
+        flint_sprintf(nbuf, "%wd", x->N);
+        tx_puts(b, nbuf);
+    }
+    tx_put(b, ")", 1);
+    return 1;
+}
+
+char *
+adf_lball_get_str(size_t * len, const adf_lball_t x)
+{
+    tx_buf b;
+
+#ifdef ADF_CHECK_INVARIANTS
+    /* conventions 4.4, CV-09: a function that reads a value checks its predicate on entry */
+    if (!adf_lball_is_canonical(x))
+    {
+        fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_lball\n",
+                __func__, #x);
+        fflush(stderr);
+        flint_abort();
+    }
+#endif
+    tx_buf_init(&b);
+    tx_puts(&b, "[p=");
+    {
+        fmpz_t pz;
+
+        fmpz_init_set_ui(pz, x->p);
+        tx_put_fmpz(&b, pz);
+        fmpz_clear(pz);
+    }
+    tx_puts(&b, ": ");
+    if (!tl_put_lcoord(&b, x))
+    {
+        /* the centre of an exact value needs p^v with |v| bits(p) > ADF_LBALL_BITS_MAX: refused, as the
+           printers of the value form refuse a real part beyond the bound of decision M1-D6 */
+        flint_free(b.p);
+        *len = 0;
+        return NULL;
+    }
+    tx_put(&b, "]", 1);
+    return tx_finish(&b, len);
+}
+
+/* ------------------------------------------------------------------------------------------------
+   adf_sball (lane t-slice2). */
+
+/* The keyed local components, sorted into the canonical order of places (conventions 7: the archimedean
+   place first, then the primes increasing). The sort is qsort, as in src/sball.c. */
+typedef struct
+{
+    ulong p;
+    size_t idx;
+} tl_keyed;
+
+static int
+tl_keyed_cmp(const void * a, const void * b)
+{
+    const tl_keyed * x = (const tl_keyed *) a;
+    const tl_keyed * y = (const tl_keyed *) b;
+
+    if (x->p < y->p)
+        return -1;
+    if (x->p > y->p)
+        return 1;
+    return 0;
+}
+
+int
+adf_sball_set_str(adf_sball_t x, const char * s, size_t len, slong prec, const adf_text_limits_t * lim)
+{
+    adf_text_limits_t store;
+    tx_cur c;
+    tl_list list;
+    tl_entry * entries = NULL;
+    tl_keyed * keys = NULL;
+    adf_lball_struct * loc = NULL;
+    acb_t z;
+    slong i, n, m = 0, ninf = 0, inf_at = -1;
+    int arch = ADF_ARCH_NONE, st = ADF_OK;
+
+    /* The bound of prec of sball.h, decided from prec alone before the text is read (as every function of
+       prec in sball.h decides it; conventions 8.5 has no stage for it). */
+    if (prec > ADF_REAL_PREC_MAX)
+        return ADF_LIMIT;
+    lim = tx_limits(lim, &store);
+    st = tx_prep(s, len, lim);
+    if (st != ADF_OK)
+        return st;
+    /* stage 3: the grammar of sball_v, and the whole input */
+    tl_list_init(&list);
+    c.s = s;
+    c.len = len;
+    c.i = 0;
+    if (!tl_sball_syntax(&c, &list))
+    {
+        tl_list_clear(&list);
+        return ADF_PARSE;
+    }
+    n = (slong) list.n;
+    /* stage 4: the number of entries (max_items, the "items" of conventions 8.4), checked on the count
+       and before any semantic check of stage 6 (gate finding G8) */
+    if (lim->max_items < 0 || (size_t) lim->max_items < list.n)
+    {
+        tl_list_clear(&list);
+        return ADF_LIMIT;
+    }
+    /* stage 4 for every entry: the decimal exponents and the exponent of every O-term */
+    entries = (tl_entry *) flint_malloc((list.n ? list.n : 1) * sizeof(tl_entry));
+    for (i = 0; i < n; i++)
+    {
+        if (!tl_entry_at(s, list.r[i].b, list.r[i].e, &entries[i]))
+        {
+            tl_list_clear(&list);
+            flint_free(entries);
+            return ADF_PARSE;
+        }
+        if (tl_entry_over(s, &entries[i], lim))
+        {
+            tl_list_clear(&list);
+            flint_free(entries);
+            return ADF_LIMIT;
+        }
+        if (entries[i].kind != TL_PRIME)
+        {
+            ninf++;
+            inf_at = i;
+        }
+        else
+            m++;
+    }
+    /* stage 6: at most one inf entry and no prime twice (conventions 9.3 line 1159), checked before the
+       entries themselves, because both are DOMAIN and the status does not depend on the order */
+    if (ninf > 1)
+    {
+        tl_list_clear(&list);
+        flint_free(entries);
+        return ADF_DOMAIN;
+    }
+    keys = (tl_keyed *) flint_malloc((m > 0 ? (size_t) m : 1) * sizeof(tl_keyed));
+    m = 0;
+    for (i = 0; i < n; i++)
+    {
+        tl_entry * ee = &entries[i];
+
+        if (ee->kind != TL_PRIME)
+            continue;
+        /* stage 5: the prime is below 2^64 */
+        if (tl_prime_over_word(s, &ee->p))
+        {
+            st = ADF_UNSUPPORTED;
+            goto done;
+        }
+        /* stage 6: a denominator of the centre that is 0, the base inside O(...) that is not the prime,
+           and a prime that is not prime. All DOMAIN. */
+        if (tx_den_zero(s, &ee->lc.a))
+        {
+            st = ADF_DOMAIN;
+            goto done;
+        }
+        {
+            fmpz_t pz;
+            ulong p;
+
+            fmpz_init(pz);
+            tx_fmpz_digits(pz, s, ee->p.ib, ee->p.ie);
+            p = fmpz_get_ui(pz);
+            fmpz_clear(pz);
+            if (ee->lc.has_O)
+            {
+                ulong base;
+
+                if (!tl_base_get_ulong(s, &ee->lc.base, &base) || base != p)
+                {
+                    st = ADF_DOMAIN;
+                    goto done;
+                }
+            }
+            keys[m].p = p;
+            keys[m].idx = (size_t) i;
+            m++;
+        }
+    }
+    /* the canonical order of the primes, and the refusal of a repetition (conventions 7) */
+    qsort(keys, (size_t) m, sizeof(tl_keyed), tl_keyed_cmp);
+    for (i = 1; i < m; i++)
+        if (keys[i - 1].p == keys[i].p)
+        {
+            st = ADF_DOMAIN;
+            goto done;
+        }
+    /* the components, in the canonical order */
+    if (m > 0)
+        loc = (adf_lball_struct *) flint_malloc((size_t) m * sizeof(adf_lball_struct));
+    for (i = 0; i < m; i++)
+        adf_lball_init(&loc[i]);
+    for (i = 0; i < m; i++)
+    {
+        tl_entry * ee = &entries[keys[i].idx];
+        adf_place_t v;
+        int s2;
+
+        if (adf_place_prime(&v, keys[i].p) != ADF_OK)
+        {
+            st = ADF_DOMAIN;
+            goto done;
+        }
+        s2 = tl_lball_build(&loc[i], v, s, ee, tl_exp_value(s, ee));
+        if (s2 != ADF_OK)
+        {
+            st = s2;
+            goto done;
+        }
+    }
+    /* the archimedean component: the enclosing ball of conventions 9.5 ("Reading"). There is no sign
+       condition on it (9.3), so stage 7 does not occur. */
+    acb_init(z);
+    if (ninf == 1)
+    {
+        tl_entry * ee = &entries[inf_at];
+
+        arch = (ee->kind == TL_INF_COMPLEX) ? ADF_ARCH_COMPLEX : ADF_ARCH_REAL;
+        tx_arb_from_real(acb_realref(z), s, &ee->re, prec);
+        if (arch == ADF_ARCH_COMPLEX)
+            tx_arb_from_real(acb_imagref(z), s, &ee->im, prec);
+    }
+    /* commit: the value of x is replaced only now (conventions 4.3) */
+    {
+        adf_sball_t t;
+
+        adf_sball_init(t);
+        if (arch != ADF_ARCH_COMPLEX)
+        {
+            /* the constructor of sball.h, which sorts, copies and checks the components */
+            st = adf_sball_set_arb_lballs(t, NULL, arch == ADF_ARCH_REAL ? acb_realref(z) : NULL, loc, m);
+        }
+        else
+        {
+            /* no function of sball.h makes a COMPLEX value; the struct is filled as a binding does (the
+               comment of the struct in sball.h) */
+            slong k;
+
+            t->arch = ADF_ARCH_COMPLEX;
+            acb_set(t->inf, z);
+            t->len = m;
+            t->loc = (adf_lball_struct *) flint_malloc((m > 0 ? (size_t) m : 1) * sizeof(adf_lball_struct));
+            for (k = 0; k < m; k++)
+            {
+                adf_lball_init(&t->loc[k]);
+                adf_lball_set(&t->loc[k], &loc[k]);
+            }
+            st = ADF_OK;
+        }
+        if (st == ADF_OK)
+        {
+            slong k;
+
+            /* release what x holds (what adf_sball_clear releases) and take t */
+            for (k = 0; k < x->len; k++)
+                adf_lball_clear(&x->loc[k]);
+            flint_free(x->loc);
+            x->arch = t->arch;
+            acb_swap(x->inf, t->inf);
+            x->len = t->len;
+            x->loc = t->loc;
+            t->arch = ADF_ARCH_NONE;
+            acb_zero(t->inf);
+            t->len = 0;
+            t->loc = NULL;
+            /* conventions 4.4: every output written satisfies the predicate of conventions 5.9 */
+#ifdef ADF_CHECK_INVARIANTS
+            if (!adf_sball_is_canonical(x))
+                flint_abort();
+#endif
+        }
+        adf_sball_clear(t);
+    }
+    acb_clear(z);
+done:
+    if (loc != NULL)
+    {
+        slong k;
+
+        for (k = 0; k < m; k++)
+            adf_lball_clear(&loc[k]);
+        flint_free(loc);
+    }
+    flint_free(keys);
+    flint_free(entries);
+    tl_list_clear(&list);
+    return st;
+}
+
+/* One entry of the printed text (conventions 9.4 line 1207): "inf: r(x)" for the real tag, "inf: z(x)" for
+   the complex tag, "p=P: L" at a prime. Returns 0 when a local centre does not fit (tl_put_lcoord), and the
+   caller then refuses the text as adf_lball_get_str does. */
+static int
+tl_put_entry(tx_buf * b, int arch, const acb_t inf, const adf_lball_t l, slong digits)
+{
+    if (arch == ADF_ARCH_REAL || arch == ADF_ARCH_COMPLEX)
+    {
+        tx_puts(b, "inf: ");
+        if (arch == ADF_ARCH_COMPLEX)
+            tx_puts(b, "(");
+        tx_put_real(b, acb_realref(inf), digits);
+        if (arch == ADF_ARCH_COMPLEX)
+        {
+            tx_puts(b, ") + (");
+            tx_put_real(b, acb_imagref(inf), digits);
+            tx_puts(b, ")*i");
+        }
+    }
+    else
+    {
+        fmpz_t pz;
+
+        tx_puts(b, "p=");
+        fmpz_init_set_ui(pz, l->p);
+        tx_put_fmpz(b, pz);
+        fmpz_clear(pz);
+        tx_puts(b, ": ");
+        if (!tl_put_lcoord(b, l))
+            return 0;
+    }
+    return 1;
+}
+
+char *
+adf_sball_get_str(size_t * len, const adf_sball_t x, slong digits)
+{
+    tx_buf b;
+    slong i;
+
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_sball_is_canonical(x))
+    {
+        fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_sball\n",
+                __func__, #x);
+        fflush(stderr);
+        flint_abort();
+    }
+#endif
+    /* decision M1-D6: a real or complex part beyond the bound of the printer is refused before any
+       conversion (include/adelefeld/text.h, the rules of every printer) */
+    if (x->arch != ADF_ARCH_NONE
+        && (!tx_arb_printable(acb_realref(x->inf)) || !tx_arb_printable(acb_imagref(x->inf))))
+    {
+        *len = 0;
+        return NULL;
+    }
+    tx_buf_init(&b);
+    tx_put(&b, "{", 1);
+    if (x->arch != ADF_ARCH_NONE)
+        (void) tl_put_entry(&b, x->arch, x->inf, NULL, digits);
+    for (i = 0; i < x->len; i++)
+    {
+        if (i > 0 || x->arch != ADF_ARCH_NONE)
+            tx_puts(&b, "; ");
+        if (!tl_put_entry(&b, ADF_ARCH_NONE, NULL, &x->loc[i], digits))
+        {
+            /* a local centre that does not fit: no text, as for M1-D6 */
+            flint_free(b.p);
+            *len = 0;
+            return NULL;
+        }
+    }
+    tx_put(&b, "}", 1);
+    return tx_finish(&b, len);
+}

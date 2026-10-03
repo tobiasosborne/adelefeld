@@ -1,0 +1,17 @@
+FAIL tests/test_text_local.c:412: every_row_of_the_golden_file_lball: check failed: st == want | lball.tsv line 36: status 0 (OK), expected 7 (DOMAIN)
+FAIL every_row_of_the_golden_file_lball (tests/test_text_local.c:440, 1 failed checks)
+ok   lball_stored_fields
+ok   every_row_of_the_golden_file_sball
+ok   sball_the_complex_tag
+ok   sball_the_canonical_order
+FAIL tests/test_text_local.c:412: the_reference_on_generated_texts: check failed: st == want | vectors line 114: status 0 (OK), expected 7 (DOMAIN)
+FAIL tests/test_text_local.c:946: the_reference_on_generated_texts: check failed: well_formed(t, len) && len == rl && memcmp(t, ref, len) == 0 | vectors line 114: printed "[p=3: 1 + O(3^1)]", the reference says "!DOMAIN"
+FAIL tests/test_text_local.c:412: the_reference_on_generated_texts: check failed: st == want | vectors line 679: status 0 (OK), expected 7 (DOMAIN)
+FAIL tests/test_text_local.c:946: the_reference_on_generated_texts: check failed: well_formed(t, len) && len == rl && memcmp(t, ref, len) == 0 | vectors line 679: printed "[p=18446744073709551557: 0 + O(18446744073709551557^0)]", the reference says "!DOMAIN"
+FAIL the_reference_on_generated_texts (tests/test_text_local.c:888, 4 failed checks)
+ok   round_trips_of_generated_values
+ok   hostile_input
+FAIL tests/test_text_local.c:412: the_order_of_the_stages: check failed: st == want | the base is not the prime: status 0 (OK), expected 7 (DOMAIN)
+FAIL the_order_of_the_stages (tests/test_text_local.c:1481, 1 failed checks)
+ok   printer_bounds_and_digits
+10 tests, 68857 checks, 6 failed checks, 3 failed tests

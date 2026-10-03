@@ -1,0 +1,52 @@
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_text_local.c lanes/t-slice2/build/support/golden.o lanes/t-slice2/build/support/jsonl.o lanes/t-slice2/build/libadelefeld.a -lflint -lgmp -lm -o lanes/t-slice2/build/test_text_local
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `lball_entry_text':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:444:(.text+0x23): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_round_trips_of_generated_values':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1055:(.text+0xf7d): undefined reference to `adf_lball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1060:(.text+0xfce): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1125:(.text+0x17c4): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1127:(.text+0x183f): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1142:(.text+0x1971): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `parse_lball':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:411:(.text+0x1eb2): undefined reference to `adf_lball_set_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_every_row_of_the_golden_file_lball':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:491:(.text+0x25a9): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:503:(.text+0x2698): undefined reference to `adf_lball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:507:(.text+0x26db): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `parse_sball':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:428:(.text+0x2c37): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `sball_text':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:382:(.text+0x2c8e): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:382:(.text+0x2ca3): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_every_row_of_the_golden_file_sball':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:738:(.text+0x33c2): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:748:(.text+0x39f8): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_sball_the_complex_tag':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:784:(.text+0x4418): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:793:(.text+0x45d5): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:798:(.text+0x464e): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_the_reference_on_generated_texts':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:892:(.text+0x4c89): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:909:(.text+0x4d31): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:975:(.text+0x532c): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:981:(.text+0x541b): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_hostile_input':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1297:(.text+0x6222): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1295:(.text+0x6296): undefined reference to `adf_lball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1304:(.text+0x62bf): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1304:(.text+0x633d): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_sball_the_canonical_order':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:817:(.text+0x6a5c): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_the_order_of_the_stages':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1441:(.text+0x71c9): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1442:(.text+0x71f3): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /tmp/cc6iX5fY.o: in function `adf_test_fn_printer_bounds_and_digits':
+/home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1476:(.text+0x7563): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1481:(.text+0x75d0): undefined reference to `adf_lball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1494:(.text+0x764b): undefined reference to `adf_sball_set_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1495:(.text+0x7665): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1496:(.text+0x7678): undefined reference to `adf_sball_get_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice2/tests/test_text_local.c:1512:(.text+0x7764): undefined reference to `adf_sball_get_str'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/t-slice2/build/test_text_local] Error 1
+exit 2

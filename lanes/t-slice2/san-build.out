@@ -1,0 +1,38 @@
+mkdir -p lanes/t-slice2/build-san
+mkdir -p lanes/t-slice2/build-san/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/adele.c -o lanes/t-slice2/build-san/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/cap.c -o lanes/t-slice2/build-san/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/common.c -o lanes/t-slice2/build-san/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/dump.c -o lanes/t-slice2/build-san/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball.c -o lanes/t-slice2/build-san/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball_local.c -o lanes/t-slice2/build-san/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idclass.c -o lanes/t-slice2/build-san/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idele.c -o lanes/t-slice2/build-san/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idmap.c -o lanes/t-slice2/build-san/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idpow.c -o lanes/t-slice2/build-san/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/inlines.c -o lanes/t-slice2/build-san/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lball.c -o lanes/t-slice2/build-san/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lball_decomp.c -o lanes/t-slice2/build-san/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lfunc.c -o lanes/t-slice2/build-san/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/linsolve.c -o lanes/t-slice2/build-san/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lpow.c -o lanes/t-slice2/build-san/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lroot.c -o lanes/t-slice2/build-san/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/modctx.c -o lanes/t-slice2/build-san/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/place.c -o lanes/t-slice2/build-san/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rat.c -o lanes/t-slice2/build-san/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/recon.c -o lanes/t-slice2/build-san/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/resid.c -o lanes/t-slice2/build-san/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rfunc.c -o lanes/t-slice2/build-san/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots.c -o lanes/t-slice2/build-san/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots_real.c -o lanes/t-slice2/build-san/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/sball.c -o lanes/t-slice2/build-san/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/scaled.c -o lanes/t-slice2/build-san/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/status.c -o lanes/t-slice2/build-san/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text.c -o lanes/t-slice2/build-san/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text_idele.c -o lanes/t-slice2/build-san/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text_local.c -o lanes/t-slice2/build-san/text_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/ucoset.c -o lanes/t-slice2/build-san/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/golden.c -o lanes/t-slice2/build-san/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/jsonl.c -o lanes/t-slice2/build-san/support/jsonl.o
+ar rcs lanes/t-slice2/build-san/libadelefeld.a lanes/t-slice2/build-san/adele.o lanes/t-slice2/build-san/cap.o lanes/t-slice2/build-san/common.o lanes/t-slice2/build-san/dump.o lanes/t-slice2/build-san/fball.o lanes/t-slice2/build-san/fball_local.o lanes/t-slice2/build-san/idclass.o lanes/t-slice2/build-san/idele.o lanes/t-slice2/build-san/idmap.o lanes/t-slice2/build-san/idpow.o lanes/t-slice2/build-san/inlines.o lanes/t-slice2/build-san/lball.o lanes/t-slice2/build-san/lball_decomp.o lanes/t-slice2/build-san/lfunc.o lanes/t-slice2/build-san/linsolve.o lanes/t-slice2/build-san/lpow.o lanes/t-slice2/build-san/lroot.o lanes/t-slice2/build-san/modctx.o lanes/t-slice2/build-san/place.o lanes/t-slice2/build-san/rat.o lanes/t-slice2/build-san/recon.o lanes/t-slice2/build-san/resid.o lanes/t-slice2/build-san/rfunc.o lanes/t-slice2/build-san/roots.o lanes/t-slice2/build-san/roots_real.o lanes/t-slice2/build-san/sball.o lanes/t-slice2/build-san/scaled.o lanes/t-slice2/build-san/status.o lanes/t-slice2/build-san/text.o lanes/t-slice2/build-san/text_idele.o lanes/t-slice2/build-san/text_local.o lanes/t-slice2/build-san/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_text_local.c lanes/t-slice2/build-san/support/golden.o lanes/t-slice2/build-san/support/jsonl.o lanes/t-slice2/build-san/libadelefeld.a -lflint -lgmp -lm -o lanes/t-slice2/build-san/test_text_local
