@@ -1,15 +1,17 @@
 /* Local roots by exp(Log(unit)/n), with explicit torsion branches.
    docs/proofs/functions.md:410,428-438 (criterion and construction), :463-489 (exact image),
-   :538 (rational roots). docs/api-1f5.md R1-R8 prove the finite tests and precision bookkeeping.
+   :538 (rational roots). docs/api-1f5.md R1-R9 prove the finite tests and precision bookkeeping.
    The exponent of a ball result is K=min(N,E) (decision N-D14, docs/SPEC.md 15.4; R2, R4).
    FLINT APIs: refs/src/flint-3.0.1/fmpz.rst:983-988 (exact integer root), :923-930 (powm),
    :1154-1160 (invmod); ulong_extras.rst:1410 (n_primitive_root_prime), :1203 (n_factor),
    :1078 (n_remove), :140 (n_pow), :216 (n_preinvert_limb), :368 (n_mulmod2_preinv),
-   :537 (n_powmod2_ui_preinv), :477 (n_invmod).
+   :537 (n_powmod2_ui_preinv), :477 (n_invmod); fmpq.rst:140 (fmpq_is_pm1); fmpz_mod.rst:20
+   (fmpz_mod_ctx_init), :85 (fmpz_mod_mul).
    No p-adic root iteration is used, including when p divides n. */
 #include <stdlib.h>
 #include <adelefeld.h>
 #include <flint/ulong_extras.h>
+#include <flint/fmpz_mod.h>
 #include "invariants.h"
 
 static void check_input(const adf_lball_t x, const char *fn)
@@ -319,11 +321,15 @@ static ulong dth_root(ulong A, ulong d, ulong p, ulong g)
 
 /* R5, R8: d=gcd(n,p-1), h=(p-1)/d, e=(n/d)^(-1) mod h. The torsion test proves index^h=1.
    The roots of T^d-index^e are the n-th roots of index (R5); they are t0 zeta^i, i<d,
-   zeta=g^h for a primitive root g (R8), sorted. No polynomial is formed. */
-static int identifiers(ulong *ids, ulong p, ulong n, ulong d, ulong index)
+   zeta=g^h for a primitive root g (R8), sorted. *t0_out=t0, *zeta_out=zeta for the order of
+   evaluation (R9); *zeta_out=0 where there is no such chain (zero, p=2, d=1). No polynomial is
+   formed. */
+static int identifiers(ulong *ids, ulong *t0_out, ulong *zeta_out, ulong p, ulong n, ulong d,
+                       ulong index)
 {
     fmpz_t a,h;
     ulong A, e, g, zeta, t0, pinv;
+    *t0_out=0; *zeta_out=0;
     if (index==0) { ids[0]=0; return ADF_OK; }
     if (p==2)
     {
@@ -346,31 +352,119 @@ static int identifiers(ulong *ids, ulong p, ulong n, ulong d, ulong index)
     ids[0]=t0;
     for (ulong i=1;i<d;i++) ids[i]=n_mulmod2_preinv(ids[i-1],zeta,p,pinv);
     qsort(ids,(size_t)d,sizeof(ulong),compare_words);
+    *t0_out=t0; *zeta_out=zeta;
     return ADF_OK;
 }
 
-/* F2(b) of review f-review6: a LIMIT that some branch must return is returned before the
-   enumeration. general = branches that are not rational (R3). If general>0 the exponent K
-   and z0 are needed (R4). At odd p a general branch whose seed is not 1 or p-1 needs the
-   Teichmueller factor at L, a power p^L (lball.h: adf_lball_teichmuller); seeds 1 and p-1
-   are branches iff index=1, (-1)^n=index. Every status here is one a branch would return. */
+/* The position of seed in the increasing list ids[0..d) (it is there, R8 (b)). */
+static ulong position(const ulong *ids, ulong d, ulong seed)
+{
+    ulong lo=0, hi=d;
+    while (hi-lo>1)
+    {
+        ulong mid=lo+(hi-lo)/2;
+        if (ids[mid]<=seed) lo=mid; else hi=mid;
+    }
+    return lo;
+}
+
+static int rational_seed(const shared_t *sh, ulong seed)
+{
+    for (int i=0;i<sh->nrat;i++) if (sh->rid[i]==seed) return 1;
+    return 0;
+}
+
+/* R9 (lane f-repair5): every branch of the sorted list ids, evaluated in the order t0 zeta^i of
+   R8 (each into its own slot of tmp). At odd p the first general branch whose seed is not 1 or
+   p-1 (the two seeds with a rational Teichmueller representative, lball.h) lifts omega(seed) and
+   omega(zeta) at L: two lifts for the list, when z0 is exact or has relative precision >= K-j
+   (always, by R4; otherwise every branch lifts its own, as root_seed does). With kq=K-j and c0
+   the unit of z0 modulo p^kq, y = c0 omega(seed) modulo p^kq, multiplied by omega(zeta) modulo
+   p^kq at each step, is the centre that branch() computes for the seed of that step (z=z0*omega,
+   then unit_mod at kq), and the branch is p^j y + p^K Z_p (R9). Without a chain (zeta=0: p=2,
+   d=1, zero) the branches are taken in the order of ids. */
+static int all_branches(adf_lball_ptr tmp, const ulong *ids, ulong t0, ulong zeta, shared_t *sh,
+                        const adf_lball_t x, ulong n, ulong d)
+{
+    adf_lball_t om, w;
+    fmpz_t M, y, cw, c0;
+    fmpz_mod_ctx_t cM;
+    ulong p=x->p, pinv=zeta ? n_preinvert_limb(p) : 0, seed=t0;
+    int st=ADF_OK, chain=0;
+    adf_lball_init(om); adf_lball_init(w); fmpz_init(M); fmpz_init(y); fmpz_init(cw); fmpz_init(c0);
+    for (ulong i=0;i<d && st==ADF_OK;i++)
+    {
+        ulong k;
+        int plain;
+        if (zeta==0) { k=i; seed=ids[i]; }
+        else
+        {
+            if (i) seed=n_mulmod2_preinv(seed,zeta,p,pinv);    /* ulong_extras.rst:368 */
+            k=position(ids,d,seed);
+        }
+        plain=seed==1 || seed==p-1;
+        if (chain) fmpz_mod_mul(y,y,cw,cM);                    /* fmpz_mod.rst:85 */
+        else if (zeta!=0 && !plain && exponent_ok(sh->K) && sh->K>sh->j && !rational_seed(sh,seed) &&
+                 (sh->z0->exact || sh->z0->N-sh->z0->v>=sh->K-sh->j))
+        {
+            /* sh->L is set: early_status ran principal(), as this branch is general and K>j;
+               K-j <= L (R4). The lifts need p^L, unit_mod p^(K-j) (lball.h). */
+            slong kq=sh->K-sh->j;
+            st=adf_lball_teichmuller(om,adf_lball_place(x),seed,sh->L);
+            if (st==ADF_OK) st=adf_lball_teichmuller(w,adf_lball_place(x),zeta,sh->L);
+            if (st==ADF_OK) st=adf_lball_unit_mod(c0,sh->z0,kq);
+            if (st!=ADF_OK) break;
+            chain=1;
+            fmpz_set_ui(M,p); fmpz_pow_ui(M,M,(ulong)kq);
+            fmpz_mod_ctx_init(cM,M);                           /* fmpz_mod.rst:20 */
+            if (w->exact) fmpz_sub_ui(cw,M,1);                 /* omega(p-1)=-1 (zeta=p-1, d=2) */
+            else fmpz_mod(cw,fmpq_numref(w->u),M);
+            fmpz_mod(y,fmpq_numref(om->u),M);                  /* omega(seed) is a ball: seed != +-1 */
+            fmpz_mod_mul(y,y,c0,cM);
+        }
+        if (chain && !plain && !rational_seed(sh,seed))
+        {
+            tmp[k].p=p; tmp[k].v=sh->j; tmp[k].N=sh->K; tmp[k].exact=0;
+            fmpq_set_fmpz(tmp[k].u,y);
+        }
+        else st=branch(tmp+k,sh,x,n,seed);
+    }
+    if (chain) fmpz_mod_ctx_clear(cM);
+    adf_lball_clear(om); adf_lball_clear(w); fmpz_clear(M); fmpz_clear(y); fmpz_clear(cw); fmpz_clear(c0);
+    return st;
+}
+
+/* 1 if seed is a branch (R5: seed^n=index at odd p; at 2 the identifiers of identifiers()) that
+   is not rational (R3). */
+static int general_seed(const shared_t *sh, ulong p, ulong n, ulong index, ulong seed)
+{
+    if (rational_seed(sh,seed)) return 0;
+    if (p==2) return n%2 ? seed==index : (seed==1 || seed==3);
+    return power_mod(seed,n,p)==index;
+}
+
+/* R6 step 6 (F2(b) of review f-review6; finding 3 of review f-review7, lane f-repair5): the
+   status of the whole evaluation, decided before the enumeration. general = branches that are
+   not rational (R3). If general>0: the exponent K, then z0 (R4). After that a general branch
+   with torsion factor t forms z=z0*t and, unless z is the exact 1, the centre modulo p^(K-j);
+   every power it forms is at most p^L, and a branch with z not the exact 1 returns LIMIT exactly
+   when p^L is beyond the bound. z is the exact 1 for at most one seed: z0 exactly +-1 and t=z0
+   (t is exact only for the seeds 1 and p-1, or 3 at 2: lball.h teichmuller). */
 static int early_status(shared_t *sh, const adf_lball_t x, ulong n, ulong d, ulong index)
 {
-    ulong general=d-(ulong)sh->nrat, plain=0;
+    ulong general=d-(ulong)sh->nrat, one=0, p=x->p;
     int st;
     if (n==1 || fmpq_is_zero(x->u) || general==0) return ADF_OK;
     if (!exponent_ok(sh->K)) return ADF_LIMIT;
     if (sh->K<=sh->j) return ADF_OK;
     st=principal(sh,x,n);
-    if (st!=ADF_OK || x->p==2) return st;
-    for (int k=0;k<2;k++)
+    if (st!=ADF_OK) return st;
+    if (sh->z0->exact && fmpq_is_pm1(sh->z0->u))   /* refs/src/flint-3.0.1/fmpq.rst:140 */
     {
-        ulong seed=k ? x->p-1 : 1;
-        int rational=0;
-        for (int i=0;i<sh->nrat;i++) rational|=sh->rid[i]==seed;
-        if (!rational && power_mod(seed,n,x->p)==index) plain++;
+        ulong seed=fmpq_is_one(sh->z0->u) ? 1 : (p==2 ? 3 : p-1);
+        one=(ulong)general_seed(sh,p,n,index,seed);
     }
-    if (general>plain && !power_ok(x->p,sh->L)) return ADF_LIMIT;
+    if (general>one && !power_ok(p,sh->L)) return ADF_LIMIT;
     return ADF_OK;
 }
 
@@ -378,7 +472,7 @@ static int early_status(shared_t *sh, const adf_lball_t x, ulong n, ulong d, ulo
 int adf_lball_roots(adf_lball_ptr y, ulong *ids, slong *len, slong capacity,
                    const adf_lball_t x, ulong n, slong N)
 {
-    ulong d,index,*tmpids;
+    ulong d,index,t0,zeta,*tmpids;
     slong s;
     adf_lball_ptr tmp;
     shared_t sh;
@@ -392,11 +486,11 @@ int adf_lball_roots(adf_lball_ptr y, ulong *ids, slong *len, slong capacity,
     st=early_status(&sh,x,n,d,index);
     if (st!=ADF_OK) { shared_clear(&sh); return st; }
     tmpids=flint_malloc((size_t)d*sizeof(ulong));
-    st=identifiers(tmpids,x->p,n,d,index);
+    st=identifiers(tmpids,&t0,&zeta,x->p,n,d,index);
     if (st!=ADF_OK) { flint_free(tmpids); shared_clear(&sh); return st; }
     tmp=flint_malloc((size_t)d*sizeof(adf_lball_struct));
     for (ulong i=0;i<d;i++) adf_lball_init(tmp+i);
-    for (ulong i=0;i<d && st==ADF_OK;i++) st=branch(tmp+i,&sh,x,n,tmpids[i]);
+    st=all_branches(tmp,tmpids,t0,zeta,&sh,x,n,d);
     if (st==ADF_OK)
     {
         for (ulong i=0;i<d;i++) { adf_lball_set(y+i,tmp+i); ids[i]=tmpids[i]; }

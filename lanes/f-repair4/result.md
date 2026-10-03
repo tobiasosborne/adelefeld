@@ -210,3 +210,15 @@ No entry was added to `tools/mutate/equivalent.txt`. Nothing to report about the
      `lroot.h` text says that N bounds the work through the relative precision max(K-j, c).
 5. No false statement was found in R1-R6 besides F4. The review's oracle facts O1 to O3 were used as given, through
    `oracle.py`.
+
+**Erratum (2026-10-03, lane f-repair5; review f-review7, finding 3).** The sentence of item (b) above,
+"`early_status()` now returns, before the listing, every LIMIT that some branch would return" (and the summary
+line "`early_status()` decides LIMIT before the listing"), was false for the code of this lane. Its rule counted the
+seeds 1 and p-1 as free of powers, but the branch p-1 has z = -1 and needs the centre p^(K-j) - 1. For
+1 + 7^(2^40) Z_7, n = 2, N = LONG_MAX `early_status()` returned OK, the branch 1 was computed, and the branch 6
+returned LIMIT from `unit_mod`; the same at 2 for 1 + 2^(2^27) Z_2, n = 2 (`lanes/f-review7/early.in` lines 8 to
+13). The status (LIMIT) and the untouched outputs were right; only the order was not as stated, and R6 step 6 of
+`docs/api-1f5.md` claimed the same. Lane f-repair5 changed the rule (LIMIT exactly when more general branches than
+the one with z = 1 exist and p^L is beyond the bound), proved it as the new R6 step 6, and added the two inputs as
+the test `review7_f3_branch_limit_after_a_good_branch` in `tests/test_lroot.c`. Item 3 of the findings (one lift
+per branch) is repaired by the same lane (R9).

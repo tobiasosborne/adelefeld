@@ -1,0 +1,1 @@
+lines 7821 (lists and seeded calls): failures 0; branches compared 186107; statuses {'A DOMAIN': 1641, 'A LIMIT': 2555, 'A NOT_DETERMINED': 85, 'A OK': 1719, 'S DOMAIN': 1239, 'S LIMIT': 99, 'S NOT_DETERMINED': 22, 'S OK': 461}

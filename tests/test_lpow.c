@@ -843,3 +843,82 @@ ADF_TEST(powunit_identities)
     adf_lball_clear(a); adf_lball_clear(b); adf_lball_clear(c); adf_lball_clear(d); adf_lball_clear(uv);
     flint_randclear(st);
 }
+
+/* ------------------------------------------------------------- 9. an exact integer exponent: pow_si (P9) */
+
+/* P9 of api-1f6.md (lane f-repair5): for a ball u in the domain and the exact integer s = k, the value of powunit
+   is the ball of exponent min(N, R) that contains the image pow_si(u, k), R its exponent; k = 0 gives the exact 1.
+   1. Review f-review7, finding 2 (lanes/f-review7/limits.in lines 2 to 4): (6 + 5^(2^40) Z_5)^1 and ^2 at N = 2^40
+      were LIMIT (a Log modulo 5^(2^40)); the image is 6 + 5^(2^40) Z_5 and 36 + 5^(2^40) Z_5 (L12: rel' = rel +
+      v_5(k)), which pow_si returns. Also N = 2^40 - 1 (the ball at N that contains the image, centre 6, no power),
+      and at 2 the sign factor: (3 + 2^(2^30) Z_2)^3 = 27 + 2^(2^30) Z_2, ^2 = 9 + 2^(2^30 + 1) Z_2 (v_2(2) = 1).
+      k = -1 at 5 stays LIMIT: the centre 1/6 modulo 5^(2^40) needs the power, in pow_si and in the old path.
+   2. The grid: p = 2, 3, 5, 7 and 65537, every centre of 1 + p Z_p (every odd centre at 2) modulo p^A, A = 1 to 4
+      (fewer at 7, 65537), k = -7..7, N = -2, 0, 1, 2, A - 1, A, A + 1, A + 3, BIG: the result must be identical
+      (all fields, with every aliasing of check_powunit) to the coarse ball of pow_si. The old code (one Log, one
+      product, one exp, Proposition 18) met these rows before the route of P9 existed (red-green log), so the route
+      changes no result that was OK. Fails on a status or a field. */
+ADF_TEST(powunit_integer_exponent_is_pow_si)
+{
+    const ulong ps[5] = { 2, 3, 5, 7, 65537 };
+    const slong Amax[5] = { 4, 4, 4, 3, 2 };
+    const slong E40 = (slong) 1 << 40, E30 = (slong) 1 << 30;
+    adf_lball_t u, s, want, img;
+    cases = 0;
+    adf_lball_init(u); adf_lball_init(s); adf_lball_init(want); adf_lball_init(img);
+    /* 1. the inputs of finding 2 */
+    ball_si(u, 5, 6, 0, E40);
+    exact_si(s, 5, 1, 1, 0);
+    ball_si(want, 5, 6, 0, E40);
+    check_powunit(u, s, E40, ADF_OK, want);
+    check_powunit(u, s, BIG, ADF_OK, want);
+    ball_si(want, 5, 6, 0, E40 - 1);
+    check_powunit(u, s, E40 - 1, ADF_OK, want);
+    exact_si(s, 5, 2, 1, 0);
+    ball_si(want, 5, 36, 0, E40);
+    check_powunit(u, s, E40, ADF_OK, want);
+    ADF_CHECK(adf_lball_pow_si(img, u, 2) == ADF_OK && adf_lball_identical(img, want));
+    exact_si(s, 5, -1, 1, 0);
+    check_powunit(u, s, E40, ADF_LIMIT, NULL);
+    ball_si(u, 2, 3, 0, E30);
+    exact_si(s, 2, 3, 1, 0);
+    ball_si(want, 2, 27, 0, E30);
+    check_powunit(u, s, BIG, ADF_OK, want);
+    exact_si(s, 2, 1, 1, 1);
+    ball_si(want, 2, 9, 0, E30 + 1);
+    check_powunit(u, s, BIG, ADF_OK, want);
+    ball_si(want, 2, 9, 0, E30);
+    check_powunit(u, s, E30, ADF_OK, want);
+    /* 2. the grid */
+    for (int ip = 0; ip < 5; ip++)
+    {
+        ulong p = ps[ip];
+        for (slong A = 1; A <= Amax[ip]; A++)
+        {
+            fmpz_t PA, c;
+            fmpz_init(PA); fmpz_init(c);
+            fmpz_set_ui(PA, p); fmpz_pow_ui(PA, PA, (ulong) A);
+            /* centres c = 1 mod p (odd p) or odd (p = 2), 0 < c < p^A; at 65537 the first 40 */
+            for (fmpz_set_ui(c, p == 2 ? 1 : 1); fmpz_cmp(c, PA) < 0; fmpz_add_ui(c, c, p == 2 ? 2 : p))
+            {
+                if (p == 65537 && fmpz_cmp_ui(c, 40 * p) > 0) break;
+                ball_fz(u, p, c, 0, A);
+                for (slong k = -7; k <= 7; k++)
+                {
+                    const slong Ns[9] = { -2, 0, 1, 2, A - 1, A, A + 1, A + 3, BIG };
+                    rat_lb_si(s, p, k, 1);
+                    if (k != 0) ADF_CHECK(adf_lball_pow_si(img, u, k) == ADF_OK);
+                    for (int t = 0; t < 9; t++)
+                    {
+                        if (k == 0) exact_si(want, p, 1, 1, 0);
+                        else coarse(want, img, Ns[t] < img->N ? Ns[t] : img->N);
+                        check_powunit(u, s, Ns[t], ADF_OK, want);
+                    }
+                }
+            }
+            fmpz_clear(PA); fmpz_clear(c);
+        }
+    }
+    printf("  integer exponents against pow_si: calls %lu\n", cases);
+    adf_lball_clear(u); adf_lball_clear(s); adf_lball_clear(want); adf_lball_clear(img);
+}

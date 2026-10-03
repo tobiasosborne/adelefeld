@@ -107,13 +107,23 @@ int adf_lball_powrat(adf_lball_t y, const adf_lball_t x, slong e, ulong n, ulong
        the image exactly when A = 1 and the parity is odd or B = 0, and strictly larger than the image when w = -1
        and B = 0 (P5; returned as a ball, not as ADF_NOT_DETERMINED: the domain is certain, only the image is not
        one coset of 1 + 4 Z_2; lball.h pow_si does the same for a ball around 0).
+   An exact integer exponent (P9 of docs/api-1f6.md). For a ball u and an exact s that is a rational integer k
+   fitting a slong, the image is {t^k : t in u}, which is adf_lball_pow_si(u, k) (L12), and the result above is
+   computed from it: pow_si's ball when N >= R, else that ball plus p^N Z_p. The value is the same ball as by
+   Proposition 18 (P9 proves the exponent R of P5 equal to that of L12, the sign factor at 2 included); only a
+   LIMIT can turn into OK. If pow_si (or the sum) returns LIMIT, the general computation is tried, so the status
+   is LIMIT only when both ways return LIMIT. Example (review f-review7, finding 2): (6 + 5^(2^40)
+   Z_5)^s for s = 1, 2 at N = 2^40 is 6 + 5^(2^40) Z_5 and 36 + 5^(2^40) Z_5, OK; s = -1 stays LIMIT (the centre
+   6^(-1) modulo 5^(2^40) needs the power), and so does s = 1/2 (not an integer). An exact u keeps decision 8:
+   the ball at N, also for an integer s.
    Statuses (in this order): ADF_DOMAIN if u and s are at different primes (lball.h); ADF_LIMIT for an input
    exponent; ADF_DOMAIN, ADF_NOT_DETERMINED as above (DOMAIN wins: a pair is in the domain only if both
    coordinates are); then ADF_LIMIT (K outside the bounds, a working power).
    Aliasing: y may be u, s, or both; u and s may be the same object, which is then read as two independent sets
-   (the set {a^b : a in u, b in s}). Cost: one Log at
-   min(A, N - B) for alpha (only when the exponent ball is not exact and the base is a ball or an exact
-   unit other than 1), one Log at max(K - beta, c), one exact product, one exp at K (P6). */
+   (the set {a^b : a in u, b in s}). Cost: one exact subtraction for alpha (P6 (a), decision 10 of api-1f6.md;
+   only when the exponent ball is not exact), one Log at max(K - beta, c), one exact product, one exp at K (P6);
+   for a ball u and an exact integer s fitting a slong, one pow_si and at most one sum instead (P9), and the
+   general computation only after a LIMIT of these. */
 int adf_lball_powunit(adf_lball_t y, const adf_lball_t u, const adf_lball_t s, slong N);
 
 #ifdef __cplusplus

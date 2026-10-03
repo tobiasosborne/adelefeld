@@ -3,7 +3,7 @@
 Lane f-slice9, 2026-10-02. The contract is the comment block of each declaration in `include/adelefeld/lpow.h` and
 the two added declarations of `include/adelefeld/rfunc.h`. The implementation is `src/lpow.c`, with the named-place
 forms in `src/rfunc.c` and the driver commands in `tools/adf/adf.c`. This document adds the statements P1 to P8, in
-the style of `docs/api-1f5.md`. It does not change SPEC 9.3.4.
+the style of `docs/api-1f5.md`, and P9 (lane f-repair5). It does not change SPEC 9.3.4.
 
 Sources used, all on disk: `docs/proofs/functions.md` Lemma 3 (line 55), Proposition 4 (line 92), Lemma 9 (line
 265), Proposition 11 (line 336), Proposition 13 (line 410), Proposition 15 (line 463), Proposition 17 (line 577),
@@ -57,6 +57,12 @@ L12 (integer powers); `docs/api-1f4.md` F1 (domain test), F6 (precision of exp a
 11. Driver: the exponent `E/N` is the value text of an exact rational, so it arrives reduced; the seed is required
     as for `root_at` (also for `N = 1`, where it is ignored), `-1` is accepted at 2. Alternative: a pair
     `E with N`; it would make the line five operands long and test nothing the library does not test.
+12. (Lane f-repair5, 2026-10-03; review f-review7, finding 2.) A ball `u` with an exact integer exponent `k` that
+    fits a `slong` is computed as `pow_si(u, k)`, plus `p^N Z_p` when `N < R` (P9). `(6 + 5^(2^40) Z_5)^1` at
+    `N = 2^40` was `LIMIT` (the `Log` needs `5^(2^40)`); the image `6 + 5^(2^40) Z_5` is small and `pow_si` returns
+    it. P9 proves that the two ways give the same ball, so no result that was `OK` changes; a `LIMIT` of `pow_si` or
+    of the sum falls back to the general way. Alternative: keep the `LIMIT` and state it; rejected because the
+    proof holds. An exact `u` keeps decision 8.
 
 ## P1 (the fraction, the order of root and power, the degree 1)
 
@@ -307,7 +313,8 @@ grid.
    `e' j` before it is stored as a valuation.
 2. `LIMIT` from `lroot.h`, `lfunc.h` and `lball.h` passes through unchanged: those functions test the powers they
    form. The results known without a power form none: the exact results, `p^K Z_p`, a centre 1 (`K <= c`, `s0 = 0`,
-   a unit 1 of `pow_si`), the ball at `K` returned as it is (P3 step 4).
+   a unit 1 of `pow_si`), the ball at `K` returned as it is (P3 step 4). One exception (P9): a `LIMIT` of `pow_si`
+   or of the sum on the integer-exponent way of `powunit` is not returned; the general way is tried after it.
 3. Every result is built in temporaries and copied to `y` only on `OK`; so `y` may be `x`, `u`, `s` or both, and
    `u` and `s` may be one object (read as two independent sets).
 4. The `_at` forms (the pattern of R6 step 5): membership of the place in `x` (and in `s`) first (`DOMAIN`,
@@ -318,9 +325,68 @@ grid.
 Check: `powrat_limits`, `powunit_statuses_and_limits`, the aliasing in every `check_powrat`/`check_powunit` call
 (`y = x`; `y = u`; `y = s`; `u = s`), `powers_at_prime` in `tests/test_rfunc_prime.c`.
 
+## P9 (an exact integer exponent: the result of `pow_si`)
+
+Lane f-repair5, 2026-10-03 (decision 12). Let `u` be a ball inside `1 + p Z_p` (P4: `v = 0`, exponent `A >= 1`,
+centre `u0` an integer prime to `p`) and `s` the exact integer `k != 0` with `|k| < 2^63`. Let `I = pow_si(u, k)`.
+(a) `I` is the set `{t^k : t in u}`; it is the ball `u0^k + p^R' Z_p`, `R' = A + v_p(k) + e`, `e = 1` exactly when
+    `p = 2`, `A = 1` and `k` is even (L12, `docs/api-1f.md:497`).
+(b) The image of P5 for `(u, s)` is the same set, and its exponent `R` (P5 (c), (d), (e)) equals `R'`.
+(c) The result of `powunit` (P5 step 8: the ball of exponent `K = min(N, R)` that contains the image) is `I` when
+    `N >= R`, and `I + p^N Z_p` (the sum of L2, the smallest ball containing the sums) when `N < R`.
+(d) If the way through `pow_si` and the general way (P5, P6) both return `OK`, the two results have identical
+    fields. If the way through `pow_si` returns another status, it is `LIMIT`.
+(e) Hence routing the exact integer exponents of a ball `u` through `pow_si`, and falling back to the general way
+    after its `LIMIT`, changes no result that was `OK`, keeps every other status, and turns a `LIMIT` into `OK`
+    exactly when `pow_si` (and the sum) can form the result.
+
+Proof.
+
+1. (a) is L12 for `x = u`, `v = 0`, `rel = A`, `n = |k|`; for `k < 0` the set of inverses keeps `rel'` (L12, last
+   part). `u` does not contain 0 (`v(u0) = 0 < A`), so the set is a ball, not only enclosed by one.
+2. (b), the set. Proposition 17 (`docs/proofs/functions.md:585`): `u^s` "agrees with every integer power", at odd
+   `p` and at 2 (where `u^s = w^(s mod 2) exp(s log u')`). So for the single exponent `k` the image of P5 is
+   `{t^k : t in u}`, the set of (a).
+3. (b), the exponent, case by case (`B = INF` because `s` is exact, `beta = v_p(k)`, finite as `k != 0`):
+   - odd `p`: P5 (c), `R = A + beta = A + v_p(k)` (the terms with `B` are absent); L12: `e = 0`, `R' = A +
+     v_p(k)`.
+   - `p = 2`, `A >= 2`: `w0` is fixed and `s` exact, so P5 (c) applies, `R = A + v_2(k)`; L12: `rel = A >= 2`,
+     `e = 0`, `R' = A + v_2(k)`. The sign factor: P5's centre is `w0^(k mod 2) exp(k ell)` with `ell = log(w0 u0)`;
+     `u0^k = w0^k (w0 u0)^k = w0^(k mod 2) exp(k ell)` (`w0 = +-1`; `(w0 u0)^k = exp(k log(w0 u0))` for the
+     principal unit `w0 u0`, Lemma 9), so the point `u0^k` of `I` is P5's centre itself.
+   - `p = 2`, `A = 1`, `k` even: P5 (d), `R = 2 + min(beta, B) = 2 + v_2(k)`; L12: `e = 1`, `R' = 1 + v_2(k) + 1`.
+   - `p = 2`, `A = 1`, `k` odd: P5 (e), the hull `1 + 2 Z_2` is the image (equality for `A = 1`), exponent 1;
+     L12: `e = 0`, `R' = 1 + 0 = 1`.
+   The case `w0 = -1`, `B = 0` of P5 (e) does not occur: `s` is exact. In every case the two sets are equal by
+   step 2, so their exponents agree also without this list; the list checks it against both statements.
+4. (c) For `N >= R`, `K = R` and the result is the image, which is `I`. For `N < R`, `I` lies in the ball of
+   exponent `N` around any of its points, which is the unique ball of exponent `N` containing the image (P2 step
+   5); the sums `{a + b : a in I, b in p^N Z_p}` are exactly that ball, and `adf_lball_add` returns the smallest
+   ball containing the sums (L2), so it returns that ball (for `N <= 0` the ball `p^N Z_p` around 0, as `I` lies in
+   `Z_p`). `N` below `-2^60` is `LIMIT` on both ways (P8 step 1).
+5. (d) A canonical value is determined by its set (`lball.h`: the centre of a ball is the unique element of
+   `Z[1/p]` in `[0, p^N)` in the ball, with `v` the valuation of its points). Both ways return the canonical ball of
+   (c), so their fields are identical. `pow_si` of a ball not containing 0 returns `OK` or `LIMIT` (`lball.h`:
+   `NOT_UNIT` and `UNIT_NOT_CERTIFIED` need 0 in the input); `add` of two balls at one prime returns `OK` or
+   `LIMIT`.
+6. (e) The domain and the exact 1 are decided before the route (`src/lpow.c`), so `DOMAIN`, `NOT_DETERMINED` and the
+   exact 1 are unchanged. After the route returns `OK` the result is the one of (c); after `LIMIT` the general way
+   runs as before P9. By (d), a result that the general way returned `OK` is returned unchanged; a former `LIMIT`
+   becomes `OK` exactly when the route succeeds.
+7. Not routed: an exact `u` (decision 8: the ball at `N`, while `pow_si` gives the exact power, a different value),
+   `s = 0` (the exact 1 first, as `pow_si(u, 0)`), a ball `s`, an `s` that is not an integer, or one beyond a
+   `slong` (`|s| >= p^v >= 2^v`, so `v >= 64` is beyond it and `p^v` is formed only for `v < 64`).
+
+Check: `powunit_integer_exponent_is_pow_si` in `tests/test_lpow.c`: the three inputs of review f-review7
+(`lanes/f-review7/limits.in` lines 2 to 4) and four more (`N = 2^40 - 1`; `3 + 2^(2^30) Z_2` to the 3 and 2) red on
+the code before P9 (`LIMIT`) and green after, `k = -1` still `LIMIT`; a grid of 41723 calls (`p = 2, 3, 5, 7,
+65537`, every centre of `1 + p Z_p` modulo `p^A`, `A <= 4`, `k = -7..7`, nine `N`) identical to the coarse ball of
+`pow_si` on the code before P9 and after. `lanes/f-repair5/diff_powunit.py`: 10000 random inputs through the old and
+the new library, every old `OK` identical, every old `LIMIT` that became `OK` equal to the coarse ball of `pow_si`.
+
 ## Scope
 
-P1 to P8 are proved here. The analytic facts rely on the proofs listed at the top. Not done: the real place of
-both operations (`UNSUPPORTED`), all-places forms (1F.8), the quasi-character (milestone 3). No new external source
-is pending; the naming sources already pending in `functions.md` (Teichmueller representative, Iwasawa `Log`) remain
-pending there.
+P1 to P9 are proved here (P9 by lane f-repair5). The analytic facts rely on the proofs listed at the top. Not done:
+the real place of both operations (`UNSUPPORTED`), all-places forms (1F.8), the quasi-character (milestone 3). No
+new external source is pending; the naming sources already pending in `functions.md` (Teichmueller representative,
+Iwasawa `Log`) remain pending there.

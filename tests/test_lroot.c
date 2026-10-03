@@ -626,3 +626,83 @@ ADF_TEST(f2_all_branches_cost_and_early_limit)
     flint_free(rs); flint_free(ids);
     adf_lball_clear(x); adf_lball_clear(saved);
 }
+
+/* Finding 3 of review f-review7 (lanes/f-review7/early.in lines 8 to 13): the branch p-1 (or 3 at 2)
+   of a unit ball 1+p^R Z_p with the exact z0=1 needs the centre p^(K-j)-1 (R4 step 4), LIMIT for
+   K-j beyond the bit bound; the branch 1 needs no power. 1+7^(2^40) Z_7 and 1+2^(2^27) Z_2, n=2,
+   N=LONG_MAX: the list is LIMIT (decided before the listing since lane f-repair5, R6 step 6) and
+   every output is untouched; seed 1 is OK with the image, seed p-1 (3 at 2) is LIMIT. Fails on
+   another status, a written slot, id or len, or another value of seed 1. */
+ADF_TEST(review7_f3_branch_limit_after_a_good_branch)
+{
+    const struct { ulong p; slong R; ulong neg; } cs[2]={{7,WORD(1)<<40,6},{2,WORD(1)<<27,3}};
+    adf_lball_t x,y,want,saved;
+    adf_lball_struct rs[3];
+    ulong ids[3];
+    slong len;
+    adf_lball_init(x); adf_lball_init(y); adf_lball_init(want); adf_lball_init(saved);
+    raw(saved,11,17,0,0,1);
+    for (int i=0;i<3;i++) adf_lball_init(rs+i);
+    for (int c=0;c<2;c++)
+    {
+        ulong p=cs[c].p;
+        slong R=cs[c].R;
+        for (int i=0;i<3;i++) { adf_lball_set(rs+i,saved); ids[i]=99; }
+        len=-7;
+        raw(x,p,1,0,R,0);
+        ADF_CHECK_MSG(adf_lball_roots(rs,ids,&len,3,x,2,LONG_MAX)==ADF_LIMIT,"p=%lu",p);
+        ADF_CHECK(len==-7);
+        for (int i=0;i<3;i++) ADF_CHECK(ids[i]==99 && adf_lball_identical(rs+i,saved));
+        /* the same with x aliasing a slot */
+        adf_lball_set(rs+1,x);
+        ADF_CHECK(adf_lball_roots(rs,ids,&len,3,rs+1,2,LONG_MAX)==ADF_LIMIT && len==-7);
+        ADF_CHECK(adf_lball_identical(rs+1,x) && adf_lball_identical(rs,saved) && ids[0]==99);
+        /* seed 1: the image 1+p^(R-s) Z_p, s=v_p(2); seed p-1: LIMIT */
+        raw(want,p,1,0,p==2 ? R-1 : R,0);
+        ADF_CHECK(adf_lball_root_seed(y,x,2,1,LONG_MAX)==ADF_OK && adf_lball_identical(y,want));
+        adf_lball_set(y,saved);
+        ADF_CHECK(adf_lball_root_seed(y,x,2,cs[c].neg,LONG_MAX)==ADF_LIMIT && adf_lball_identical(y,saved));
+    }
+    for (int i=0;i<3;i++) adf_lball_clear(rs+i);
+    adf_lball_clear(x); adf_lball_clear(y); adf_lball_clear(want); adf_lball_clear(saved);
+}
+
+/* R9 (lane f-repair5): adf_lball_roots lifts two Teichmueller representatives, not one per branch.
+   p=2^64-59, x=3^n+p^30 Z_p (z0 a ball), n=d=24068, N=20: all branches. Guard in CPU seconds, as
+   above: GUARD_R9 s; the timings of both codes are in lanes/f-repair5/result.md. Every listed branch
+   is identical (all fields) to adf_lball_root_seed at its seed, which lifts its own representative:
+   all of them at d=1094 and d=6028 (exact x=1, the branches 1 and p-1 rational), every 97th at
+   d=24068. Fails on the time, a status, a count, or a branch that differs in any field. */
+#define GUARD_R9 0.45
+ADF_TEST(r9_one_teichmuller_lift_per_list)
+{
+    const ulong P64=UWORD(18446744073709551557);
+    const struct { ulong n; int ball; slong step; } cs[3]={{24068,1,97},{1094,0,1},{6028,0,1}};
+    adf_lball_t x,y;
+    adf_lball_ptr rs=flint_malloc(24068*sizeof(adf_lball_struct));
+    ulong *ids=flint_malloc(24068*sizeof(ulong)), compared=0;
+    slong len=-1;
+    int st;
+    double sec;
+    adf_lball_init(x); adf_lball_init(y);
+    for (slong i=0;i<24068;i++) adf_lball_init(rs+i);
+    for (int c=0;c<3;c++)
+    {
+        ulong n=cs[c].n, d=n_gcd(n,P64-1);
+        if (cs[c].ball) { raw(x,P64,1,0,30,0); fmpz_set_ui(fmpq_numref(x->u),n_powmod2(3,n,P64)); }
+        else raw(x,P64,1,0,0,1);
+        sec=timed_roots(&st,rs,ids,&len,24068,x,n,20);
+        ADF_CHECK_MSG(st==ADF_OK && len==(slong)d,"n=%lu: status %d len %ld",n,st,(long)len);
+        if (cs[c].ball) ADF_CHECK_MSG(sec<GUARD_R9,"n=%lu: all branches in %.3f s",n,sec);
+        printf("  n=%lu d=%lu N=20: all branches in %.3f s CPU\n",n,d,sec);
+        for (slong i=0;st==ADF_OK && i<len;i+=cs[c].step)
+        {
+            ADF_CHECK(adf_lball_root_seed(y,x,n,ids[i],20)==ADF_OK);
+            ADF_CHECK_MSG(adf_lball_identical(y,rs+i),"n=%lu seed %lu differs",n,ids[i]);
+            compared++;
+        }
+    }
+    printf("  branches compared with root_seed: %lu\n",compared);
+    for (slong i=0;i<24068;i++) adf_lball_clear(rs+i);
+    flint_free(rs); flint_free(ids); adf_lball_clear(x); adf_lball_clear(y);
+}
