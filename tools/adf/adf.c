@@ -21,7 +21,9 @@
    cap, dump, load, roots, realroots, recover, project, exp_at and log_at (with the other functions at places, among
    them powrat_at and powunit_at of lane f-slice9), and, for the unit coset, the idele and
    the idele class (lane t-slice1, milestone 2), inv, pow, powtight, norm, class, idele, hull, hullsimple, unitof,
-   valuation and abs (the section "the unit coset, the idele and the idele class" below);
+   valuation and abs (the section "the unit coset, the idele and the idele class" below), and root, the root at all
+   places of a rational, an adele or an idele (lane f-slice10; adf_drv_root_all below), which takes two or three
+   operands, and exp, sin, sinh, cos and cosh at all places of an adele (adf_drv_series_all below);
    reconstruct takes either one operand (an adele)
    or three (a finite
    ball and an interval given as two exact rationals), which is the one documented extension
@@ -83,6 +85,7 @@
    with a binary exponent of about k - p, so above the cap a result of magnitude about 1 or
    below cannot be printed, and a larger one can. */
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -122,6 +125,9 @@
 #define ADF_DRV_RECON_LIMIT ((slong) 1000)
 
 /* ---- the operations ---- */
+
+/* The arity of an operation that takes two or three operands (root X with N [with SIGN]). */
+#define ADF_DRV_ARITY_2_OR_3 (-2)
 
 typedef enum
 {
@@ -165,6 +171,12 @@ typedef enum
     ADF_DRV_UNITOF,
     ADF_DRV_VALUATION,
     ADF_DRV_ABS,
+    ADF_DRV_ROOT,              /* lane f-slice10 (WP 1F.8): the root at all places */
+    ADF_DRV_EXP,               /* lane f-slice10: exp, sin, sinh, cos, cosh at all places */
+    ADF_DRV_SIN,
+    ADF_DRV_SINH,
+    ADF_DRV_COS,
+    ADF_DRV_COSH,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -173,7 +185,8 @@ static const struct
 {
     const char * name;
     adf_drv_op op;
-    int arity;                 /* 0: the operation has two arities (reconstruct) */
+    int arity;                 /* 0: the operation has two arities (reconstruct, one or three operands);
+                                  ADF_DRV_ARITY_2_OR_3: two or three operands (root) */
 } adf_drv_ops[] = {
     { "show", ADF_DRV_SHOW, 1 },
     { "type", ADF_DRV_TYPE, 1 },
@@ -215,6 +228,12 @@ static const struct
     { "unitof", ADF_DRV_UNITOF, 1 },
     { "valuation", ADF_DRV_VALUATION, 2 },
     { "abs", ADF_DRV_ABS, 2 },
+    { "root", ADF_DRV_ROOT, ADF_DRV_ARITY_2_OR_3 },
+    { "exp", ADF_DRV_EXP, 1 },
+    { "sin", ADF_DRV_SIN, 1 },
+    { "sinh", ADF_DRV_SINH, 1 },
+    { "cos", ADF_DRV_COS, 1 },
+    { "cosh", ADF_DRV_COSH, 1 },
     { "prec", ADF_DRV_PREC, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
@@ -2448,6 +2467,105 @@ done:
     return status;
 }
 
+/* The root at all places (lane f-slice10, WP 1F.8; include/adelefeld/gfunc.h; tools/adf/README.md, "Roots at all
+   places"):
+
+     root X with N [with SIGN]
+
+   X is a rational (adf_rat_root), an adele (adf_adele_root at the setting prec) or an idele (adf_idele_root at the
+   setting prec); any other type is ADF_DOMAIN (a pair of types the operation does not define). N is the degree, an
+   integer from 0 to 2^64 - 1; another value is ADF_DOMAIN (as the degree of roots_at). SIGN is the branch, +1 when
+   it is omitted; an integer that fits an int is passed on as it is (the library answers DOMAIN for a value other
+   than +1 and -1 when n >= 2), another value is ADF_DOMAIN. The line is the value text of the root, of the type of
+   X, or "error: <STATUS>"; the place that the library reports is not printed. The steps are those at the top of
+   the file: the three operands are read by the typed parsers in step 4, and everything here is step 5. */
+static int
+adf_drv_root_all(FILE * out, const adf_drv_value * x, const adf_drv_value * nv, const adf_drv_value * sv,
+                 const adf_drv_state * st)
+{
+    adf_drv_value r;
+    fmpz_t z;
+    ulong n = 0;
+    int sign = 1, status;
+
+    fmpz_init(z);
+    adf_drv_value_init(&r);
+    status = adf_drv_int_value(z, nv);
+    if (status == ADF_OK && (fmpz_sgn(z) < 0 || fmpz_cmp_ui(z, UWORD_MAX) > 0))
+        status = ADF_DOMAIN;
+    if (status == ADF_OK)
+        n = fmpz_get_ui(z);
+    if (status == ADF_OK && sv != NULL)
+    {
+        status = adf_drv_int_value(z, sv);
+        if (status == ADF_OK && (fmpz_cmp_si(z, INT_MIN) < 0 || fmpz_cmp_si(z, INT_MAX) > 0))
+            status = ADF_DOMAIN;
+        if (status == ADF_OK)
+            sign = (int) fmpz_get_si(z);
+    }
+    if (status == ADF_OK)
+    {
+        r.type = x->type;
+        if (x->type == ADF_DRV_RAT)
+            status = adf_rat_root(r.r, NULL, x->r, n, sign);
+        else if (x->type == ADF_DRV_ADELE)
+            status = adf_adele_root(r.a, NULL, x->a, n, sign, st->prec);
+        else if (x->type == ADF_DRV_IDELE)
+            status = adf_idele_root(r.i, NULL, x->i, n, sign, st->prec);
+        else
+            status = ADF_DOMAIN;
+    }
+    if (status == ADF_OK)
+        status = adf_drv_value_print(out, &r, st->digits);
+    adf_drv_value_clear(&r);
+    fmpz_clear(z);
+    return status;
+}
+
+/* The five factorial series at all places (lane f-slice10, WP 1F.8; include/adelefeld/gfunc.h; tools/adf/README.md,
+   "The series at all places"):
+
+     exp X, sin X, sinh X, cos X, cosh X
+
+   X is an adele (adf_adele_exp ... at the setting prec) or a rational q, read as the adele (q ; q) at prec, as the
+   commands at places do; any other type is ADF_DOMAIN. The line is the adele, or "error: <STATUS>"; the place that
+   the library reports (the real place, or the first prime outside the domain) is not printed. Step 5. */
+static int
+adf_drv_series_all(FILE * out, adf_drv_op op, const adf_drv_value * x, const adf_drv_state * st)
+{
+    adf_drv_value r;
+    adf_adele_t a;
+    int status = ADF_OK;
+
+    adf_drv_value_init(&r);
+    adf_adele_init(a);
+    if (x->type == ADF_DRV_RAT)
+        adf_adele_set_rat(a, x->r, st->prec);
+    else if (x->type == ADF_DRV_ADELE)
+        adf_adele_set(a, x->a);
+    else
+        status = ADF_DOMAIN;
+    if (status == ADF_OK)
+    {
+        r.type = ADF_DRV_ADELE;
+        if (op == ADF_DRV_EXP)
+            status = adf_adele_exp(r.a, NULL, a, st->prec);
+        else if (op == ADF_DRV_SIN)
+            status = adf_adele_sin(r.a, NULL, a, st->prec);
+        else if (op == ADF_DRV_SINH)
+            status = adf_adele_sinh(r.a, NULL, a, st->prec);
+        else if (op == ADF_DRV_COS)
+            status = adf_adele_cos(r.a, NULL, a, st->prec);
+        else
+            status = adf_adele_cosh(r.a, NULL, a, st->prec);
+    }
+    if (status == ADF_OK)
+        status = adf_drv_value_print(out, &r, st->digits);
+    adf_adele_clear(a);
+    adf_drv_value_clear(&r);
+    return status;
+}
+
 /* adf_drv_units_involved(op, x, y, w, nops): 1 for a new command, and for any command with an operand of one of the
    three kinds among its first nops operands. */
 static int
@@ -2557,6 +2675,16 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             goto done;
     }
 
+    if (op == ADF_DRV_ROOT)
+    {
+        status = adf_drv_root_all(out, &x, &y, nops == 3 ? &w : NULL, st);
+        goto done;
+    }
+    if (op == ADF_DRV_EXP || op == ADF_DRV_SIN || op == ADF_DRV_SINH || op == ADF_DRV_COS || op == ADF_DRV_COSH)
+    {
+        status = adf_drv_series_all(out, op, &x, st);
+        goto done;
+    }
     if (adf_drv_units_involved(op, &x, &y, &w, nops))
     {
         /* the new commands, and every command with an operand of the kinds ucoset, idele, idclass */
@@ -2678,6 +2806,8 @@ adf_driver_line(FILE * out, const char * line, size_t len, adf_drv_state * st, s
         arity = adf_drv_arity(op);
         if (arity == 0)
             status = (l.nops == 1 || l.nops == 3) ? ADF_OK : ADF_PARSE;
+        else if (arity == ADF_DRV_ARITY_2_OR_3)
+            status = (l.nops == 2 || l.nops == 3) ? ADF_OK : ADF_PARSE;
         else
             status = (l.nops == arity) ? ADF_OK : ADF_PARSE;
         if (status == ADF_OK)

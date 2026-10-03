@@ -1,0 +1,5 @@
+B1 the constants of sin and cos exchanged: exit 1; 10 tests, 1088693 checks, 77 failed checks, 3 failed tests
+B2 the exact non-zero finite part accepted: exit 1; 10 tests, 1104590 checks, 10599 failed checks, 3 failed tests
+B3 the place of DOMAIN off by one prime: exit 1; 10 tests, 1088693 checks, 2205 failed checks, 2 failed tests
+B4 the 2-adic domain taken as 2 Z_2 (c = 1 at 2): exit 1; 10 tests, 1088693 checks, 615 failed checks, 1 failed tests
+B5 a finite ball read as its centre: exit 1; 10 tests, 1089710 checks, 359 failed checks, 2 failed tests
