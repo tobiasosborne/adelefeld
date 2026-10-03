@@ -122,6 +122,29 @@ def exact_cases():
           f'{path.stat().st_size} bytes')
 
 
+def repair6_rows():
+    """F8 smaller reproducer and word-prime counterpart, K=2,3,4.
+    Exact witnesses 42 and -42 solve t^2=1764; their canonical residues modulo
+    p^K are certified by integer powering. Ball input means both outputs are balls.
+    """
+    rows = []
+    for p in (65537, 2**64-59):
+        for K in (2, 3, 4):
+            for seed, root in ((42, 42), (p-42, -42)):
+                centre = root % p**K
+                assert centre % p == seed and pow(centre, 2, p**K) == 1764
+                rows.append(dict(p=p, n=2, x=1764, K=K, seed=seed, c=centre))
+    out = Path('tests/ref/vectors/f-repair6/roots.jsonl')
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(''.join(json.dumps(r, separators=(',', ':'))+'\n' for r in rows))
+    print(f'repair6 roots: {len(rows)} rows, centre/equation precision K=2,3,4; '
+          f'{out.stat().st_size} bytes')
+
+
 if __name__ == '__main__':
-    generate()
-    exact_cases()
+    import sys
+    if sys.argv[1:] == ['--repair6']:
+        repair6_rows()
+    else:
+        generate()
+        exact_cases()

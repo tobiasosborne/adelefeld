@@ -1,0 +1,3 @@
+{"fault": "early_status_after_identifiers", "test": "test_lpow", "exit": 0, "counts": [12, 3074149, 0, 0], "emitted_failed_checks": 0}
+{"fault": "early_status_after_identifiers", "test": "test_lroot", "exit": 1, "counts": [14, 2361423, 1, 1], "emitted_failed_checks": 1}
+{"fault": "early_status_after_identifiers", "test": "test_rfunc_prime", "exit": 0, "counts": [16, 526806, 0, 0], "emitted_failed_checks": 0}

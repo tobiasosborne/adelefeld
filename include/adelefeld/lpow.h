@@ -22,8 +22,10 @@
    or a valuation beyond it, or when a power p^W with W bits(p) > ADF_LBALL_BITS_MAX would be formed: the working
    powers of lroot.h and lfunc.h (Log, exp) and of lball.h (pow_si, unit_mod), and the stored centre of the result.
    No power is formed where the result is known without it: the exact results below, a centre 1 (K <= c), a
-   result p^K Z_p around 0. No cost bound is promised; the working precisions are bounded by K (P3, P6), so the
-   requested N bounds the cost of a ball result as well (N-D14). */
+   result p^K Z_p around 0. No cost bound is promised. For powrat, P3 requests the root at Nr=j+rel_r,
+   rel_r=max(1, K-e'j-v_p(e')); its working precisions follow R4 of api-1f5.md. For powunit, P6 uses Log at
+   P=max(K-beta,c) and a product at P+beta<=max(K,c)+beta. N controls these requests for fixed valuations
+   and degree; absolute N alone does not bound relative work (j=-10, e'=2, K=0 needs rel_r=20). */
 
 #ifndef ADELEFELD_LPOW_H
 #define ADELEFELD_LPOW_H
@@ -53,9 +55,11 @@ extern "C" {
    at odd p the residue modulo p of the unit of the root, in [1, p - 1]; at 2 the value 1 (sign +1) or 3 (sign
    -1); 0 for the exact 0. The value is b^e', b the root of t on that branch: the root FIRST, then the integer
    power. For a reduced fraction the other order gives the same set of values, labelled by the roots of x^e'
-   instead (P1); the identifier is that of the root of x, which is why the fraction is reduced first: for
-   gcd(e, n) > 1 the branches of the n-th root of x do not give distinct values (with 2/2 at 5, x = 4 has the roots
-   2 and 3, whose squares are both 4) and the seed would not name one value.
+   instead (P1). Each seed names one root and one powered value even before reduction; distinct roots give
+   distinct values exactly when gcd(e,gcd(n,p-1))=1 at odd p, with p-1 replaced by 2 at 2 (P1 step 2).
+   Reduction is sufficient, not necessary, for this injectivity and makes the request independent of the
+   fraction's representation. With 2/2 at 5, x=4 has roots 2 and -2 (residues 2 and 3), both with square 4;
+   unreduced 3/3 at 5 on x=1 is injective.
    The exponent. With m = v(x), j = m/n', M the exponent of a ball x, the image of the ball under the branch is
    exactly the ball b^e' + p^E' Z_p with
        E' = e' j + (M - m) - v_p(n') + v_p(e')                                       (P2: R2 composed with L12)

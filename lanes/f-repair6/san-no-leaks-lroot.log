@@ -1,0 +1,41 @@
+  oracle rows: 8110
+ok   enumeration_all_rows
+ok   exact_branches_limits_and_aliasing
+ok   large_prime_and_word_degrees
+ok   seeded_small_ball_comparisons
+ok   boundaries_and_transaction_after_one_branch
+  exact oracle rows: 1408
+ok   exact_finite_ring_reference
+ok   nd14_ball_result_exponent_is_min_of_N_and_E
+ok   f1_unit_one_ball_needs_no_power
+  identifier lists compared: 61324
+ok   f2_identifiers_against_residue_search
+  certified 65536 centres at p=65537 n=65536 K=20 in 0.060 s CPU
+  certified 6028 centres at p=18446744073709551557 n=6028 K=20 in 0.039 s CPU
+  certified 4096 centres at p=65537 n=12288 K=20 in 0.003 s CPU
+ok   f2_all_branches_cost_and_early_limit
+ok   review7_f3_branch_limit_after_a_good_branch
+  n=24068 d=24068 N=20: all branches in 0.037 s CPU
+  certified 24068 centres at p=18446744073709551557 n=24068 K=20 in 0.169 s CPU
+  n=1094 d=1094 N=20: all branches in 0.001 s CPU
+  certified 1094 centres at p=18446744073709551557 n=1094 K=20 in 0.006 s CPU
+  n=6028 d=6028 N=20: all branches in 0.006 s CPU
+  certified 6028 centres at p=18446744073709551557 n=6028 K=20 in 0.039 s CPU
+  branches compared with root_seed: 7371
+ok   r9_one_teichmuller_lift_per_list
+  certified 2 centres at p=65537 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=4 in 0.000 s CPU
+  certified 2 centres at p=65537 n=2 K=4 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=2 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=3 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=4 in 0.000 s CPU
+  certified 2 centres at p=18446744073709551557 n=2 K=4 in 0.000 s CPU
+ok   repair6_seed42_integer_certificates
+  early LIMIT d=824329 in 0.000007 s CPU, guard=0.02 s
+ok   repair6_early_limit_cost
+14 tests, 2361423 checks, 0 failed checks, 0 failed tests

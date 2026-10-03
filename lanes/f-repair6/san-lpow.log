@@ -1,0 +1,30 @@
+  powrat grid rows 6930, OK branch rows 19152, calls 260496
+ok   powrat_grid_balls
+  powrat exact rows 3024: exact results 1096, balls 1160, calls 18090
+ok   powrat_exact_rows
+  pow_si and root_seed agreement: calls 35360
+ok   degree_one_is_pow_si_and_numerator_one_is_root
+  zero and hand values: calls 27
+ok   powrat_zero_and_hand_values
+  2^64-59 and 3000-bit inputs: calls 204
+ok   powrat_large_prime_and_big_inputs
+  limits: calls 13
+ok   powrat_limits
+  powunit rows 4352: exact 305, exact-input balls 276, images 3748, 2-adic hulls 23; calls 28721
+ok   powunit_rows
+  statuses and limits: calls 31
+ok   powunit_statuses_and_limits
+  identities: groups 964
+ok   powunit_identities
+  integer exponents against pow_si: calls 41723
+ok   powunit_integer_exponent_is_pow_si
+  repair6 powunit: 30 rows, 60 image points, H=R+1
+ok   repair6_powunit_integer_witnesses
+  repair6 powrat: 144 Hensel centres, K=2,3,4
+ok   repair6_powrat_hensel_centres
+12 tests, 3074149 checks, 0 failed checks, 0 failed tests
+==5==LeakSanitizer has encountered a fatal error.
+==5==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==5==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+Command exited with non-zero status 1
+CPU user=6.19 sys=0.16 wall=6.36

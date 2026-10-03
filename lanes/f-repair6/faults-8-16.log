@@ -1,0 +1,24 @@
+{"fault": "powunit_K_N", "test": "test_lpow", "exit": 1, "counts": [12, 3068871, 10102, 3], "emitted_failed_checks": 10102}
+{"fault": "powunit_K_N", "test": "test_lroot", "exit": 0, "counts": [14, 2361423, 0, 0], "emitted_failed_checks": 0}
+{"fault": "powunit_K_N", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 61, 2], "emitted_failed_checks": 61}
+{"fault": "root_K_N", "test": "test_lpow", "exit": 1, "counts": [12, 3074149, 3796, 1], "emitted_failed_checks": 3796}
+{"fault": "root_K_N", "test": "test_lroot", "exit": 1, "counts": [14, 2196884, 32155, 6], "emitted_failed_checks": 32155}
+{"fault": "root_K_N", "test": "test_rfunc_prime", "exit": -11, "counts": null, "emitted_failed_checks": 13}
+{"fault": "zeta_order_d_over_q", "test": "test_lpow", "exit": 0, "counts": [12, 3074149, 0, 0], "emitted_failed_checks": 0}
+{"fault": "zeta_order_d_over_q", "test": "test_lroot", "exit": 1, "counts": [14, 2361424, 180609, 9], "emitted_failed_checks": 180609}
+{"fault": "zeta_order_d_over_q", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 3617, 2], "emitted_failed_checks": 3617}
+{"fault": "CRT_swap_two_idempotents", "test": "test_lpow", "exit": 0, "counts": [12, 3074149, 0, 0], "emitted_failed_checks": 0}
+{"fault": "CRT_swap_two_idempotents", "test": "test_lroot", "exit": 1, "counts": [14, 2356593, 501, 1], "emitted_failed_checks": 501}
+{"fault": "CRT_swap_two_idempotents", "test": "test_rfunc_prime", "exit": 0, "counts": [16, 526806, 0, 0], "emitted_failed_checks": 0}
+{"fault": "early_status_always_OK", "test": "test_lpow", "exit": 0, "counts": [12, 3074149, 0, 0], "emitted_failed_checks": 0}
+{"fault": "early_status_always_OK", "test": "test_lroot", "exit": 1, "counts": [14, 1873492, 1919, 9], "emitted_failed_checks": 1919}
+{"fault": "early_status_always_OK", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 2120, 2], "emitted_failed_checks": 2120}
+{"fault": "seed_mod_p_minus1", "test": "test_lpow", "exit": 1, "counts": [12, 2941296, 210847, 6], "emitted_failed_checks": 210847}
+{"fault": "seed_mod_p_minus1", "test": "test_lroot", "exit": 1, "counts": [14, 2361423, 53985, 9], "emitted_failed_checks": 53985}
+{"fault": "seed_mod_p_minus1", "test": "test_rfunc_prime", "exit": -11, "counts": null, "emitted_failed_checks": 11}
+{"fault": "powrat_wrong_centre_65537", "test": "test_lpow", "exit": 1, "counts": [12, 3074149, 288, 1], "emitted_failed_checks": 288}
+{"fault": "powrat_wrong_centre_65537", "test": "test_lroot", "exit": 0, "counts": [14, 2361423, 0, 0], "emitted_failed_checks": 0}
+{"fault": "powrat_wrong_centre_65537", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 144, 1], "emitted_failed_checks": 144}
+{"fault": "root_wrong_unsampled_lift", "test": "test_lpow", "exit": 1, "counts": [12, 3074149, 72, 1], "emitted_failed_checks": 72}
+{"fault": "root_wrong_unsampled_lift", "test": "test_lroot", "exit": 1, "counts": [14, 2361423, 6, 1], "emitted_failed_checks": 6}
+{"fault": "root_wrong_unsampled_lift", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 36, 1], "emitted_failed_checks": 36}

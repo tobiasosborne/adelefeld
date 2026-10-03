@@ -1161,7 +1161,9 @@ ADF_TEST(local_roots_at_all_reference_rows)
    with where = v and y untouched; a place missing from x (or from s) is DOMAIN with where = v, the real place
    UNSUPPORTED, both before the function; OK leaves where untouched; where may be NULL; y may be x, s, or both
    (x = s the same object). Fails on: a result with other components or other fields, a where other than v on a
-   failure or a written where on OK, a written y on a failure, an aliased call that differs. */
+   failure or a written where on OK, a written y on a failure, an aliased call that differs.
+   Most expectations below come from the local routine: they certify the wrapper contract,
+   not independent centres or radii. repair6_power_certificates_at supplies independent values. */
 ADF_TEST(powers_at_prime)
 {
     adf_lball_struct loc[3];
@@ -1263,4 +1265,64 @@ ADF_TEST(powers_at_prime)
     for (int i = 0; i < 3; i++) adf_lball_clear(loc + i);
     adf_lball_clear(c); adf_lball_clear(sc); adf_lball_clear(want);
     adf_sball_clear(x); adf_sball_clear(s); adf_sball_clear(y); adf_sball_clear(z); adf_sball_clear(w);
+}
+
+/* F6/F7: every new independent fixture through the named-prime interface. Expected balls
+   come from exact integer witnesses and Hensel certificates, not the local implementation. */
+ADF_TEST(repair6_power_certificates_at)
+{
+    adf_lball_t c, sc, want;
+    adf_sball_t x, s, y, z;
+    adf_place_t mark = place_of(11), where;
+    const char *paths[2] = { "tests/ref/vectors/f-repair6/powunit.jsonl",
+                           "tests/ref/vectors/f-repair6/powrat.jsonl" };
+    adf_lball_init(c); adf_lball_init(sc); adf_lball_init(want);
+    adf_sball_init(x); adf_sball_init(s); adf_sball_init(y); adf_sball_init(z);
+    for (int kind = 0; kind < 2; kind++)
+    {
+        jsonl_file *f = NULL;
+        jsonl_error_t err;
+        ADF_CHECK(jsonl_open(paths[kind], &f, &err));
+        if (!f) continue;
+        ADF_CHECK(jsonl_count(f) == (kind ? 144 : 30));
+        for (size_t k = 0; k < jsonl_count(f); k++)
+        {
+            const jsonl_value *r = jsonl_record(f, k);
+            ulong p = strtoul(member_int(r, "p"), NULL, 10);
+            slong K = strtol(member_int(r, kind ? "K" : "R"), NULL, 10);
+            c->p = p; c->v = 0; c->exact = 0;
+            c->N = strtol(member_int(r, kind ? "M" : "A"), NULL, 10);
+            ADF_CHECK(fmpz_set_str(fmpq_numref(c->u), member_int(r, kind ? "x" : "u"), 10) == 0);
+            fmpz_one(fmpq_denref(c->u));
+            want->p = p; want->v = 0; want->N = K; want->exact = 0;
+            ADF_CHECK(fmpz_set_str(fmpq_numref(want->u), member_int(r, "c"), 10) == 0);
+            fmpz_one(fmpq_denref(want->u));
+            make_sball(x, 7, c, 1); sentinel(y); where = mark;
+            if (kind)
+            {
+                slong e = strtol(member_int(r, "e"), NULL, 10);
+                ulong n = strtoul(member_int(r, "n"), NULL, 10);
+                ulong seed = strtoul(member_int(r, "seed"), NULL, 10);
+                ADF_CHECK(adf_sball_powrat_at(y, &where, x, place_of(p), e, n, seed, K) == ADF_OK);
+                adf_sball_set(z, x);
+                ADF_CHECK(adf_sball_powrat_at(z, NULL, z, place_of(p), e, n, seed, K) == ADF_OK);
+            }
+            else
+            {
+                sc->p = p; sc->v = strtol(member_int(r, "sv"), NULL, 10); sc->exact = 0;
+                sc->N = strtol(member_int(r, "B"), NULL, 10);
+                ADF_CHECK(fmpz_set_str(fmpq_numref(sc->u), member_int(r, "su"), 10) == 0);
+                fmpz_one(fmpq_denref(sc->u)); make_sball(s, 7, sc, 1);
+                ADF_CHECK(adf_sball_powunit_at(y, &where, x, s, place_of(p), K+1) == ADF_OK);
+                adf_sball_set(z, x);
+                ADF_CHECK(adf_sball_powunit_at(z, NULL, z, s, place_of(p), K+1) == ADF_OK);
+            }
+            ADF_CHECK_MSG(is_one_place(y, p, want), "kind=%d p=%lu row=%zu", kind, p, k);
+            ADF_CHECK(is_one_place(z, p, want) && adf_place_equal(where, mark));
+        }
+        printf("  repair6 named-prime certificates: kind=%d rows=%zu\n", kind, jsonl_count(f));
+        jsonl_close(f);
+    }
+    adf_lball_clear(c); adf_lball_clear(sc); adf_lball_clear(want);
+    adf_sball_clear(x); adf_sball_clear(s); adf_sball_clear(y); adf_sball_clear(z);
 }

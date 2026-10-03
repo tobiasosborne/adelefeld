@@ -1,0 +1,3 @@
+{"fault": "R_drop_A_B_65537", "test": "test_lpow", "exit": 1, "counts": [12, 3074134, 8, 1]}
+{"fault": "R_drop_A_B_65537", "test": "test_lroot", "exit": 0, "counts": [13, 1537090, 0, 0]}
+{"fault": "R_drop_A_B_65537", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 4, 1]}

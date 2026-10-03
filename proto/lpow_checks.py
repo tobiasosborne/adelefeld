@@ -357,7 +357,90 @@ def powunit_rows():
     return rows, witnesses, hulls
 
 
+def hensel_unit(p, n, target, seed, K):
+    """Own digit proof: if y^n=T mod p^k, y+d*p^k corrects the next digit by
+    n*y^(n-1)*d = (T-y^n)/p^k mod p. The derivative is a unit in these rows.
+    The final equation and seed are checked separately, using exact integer powers.
+    """
+    assert n % p and seed % p
+    y = seed % p
+    assert (pow(y, n, p) - target) % p == 0
+    for k in range(1, K):
+        modulus = p**(k + 1)
+        error = (target - pow(y, n, modulus)) % modulus
+        assert error % p**k == 0
+        derivative = n * pow(y, n - 1, p) % p
+        digit = error // p**k * pow(derivative, -1, p) % p
+        y += digit * p**k
+    assert pow(y, n, p**K) == target % p**K
+    assert y % p == seed % p
+    return y
+
+
+def repair6_rows():
+    """F6/F7: integer certificates; no C library, log or exp.
+
+    powunit: H=R+1, exhaustive sets at 3,5,7; two certified image points at the
+    exact distance p^R at 65537 and 2^64-59. Even p^2 residues at 65537 are too
+    many to enumerate. The witnesses certify tightness, not finite-set equality.
+    powrat: M=K=2,3,4, j=0, n prime to p, gcd(e,n)=1. Lift the powered value
+    directly from seed^e by t^n=x^e mod p^K, rather than use a library root.
+    """
+    rows_u, rows_r = [], []
+    for p in (3, 5, 7, 65537, 2**64 - 59):
+        # A, B, base centre, exponent centre, unique minimum, witness input pairs.
+        params = [(2, 2, 1+p, 1, 0, (1+p, 1), (1+p+p**2, 1)),
+                  (3, 4, 1+p, p, 0, (1+p, p), (1+p+p**3, p)),
+                  (3, 0, 1+p, 0, 1, (1+p, 0), (1+p, 1)),
+                  (3, 1, 1+p, 0, 1, (1+p, 0), (1+p, p)),
+                  (1, 0, 1, 0, 2, (1, 0), (1+p, 1)),
+                  (2, 1, 1, 0, 2, (1, 0), (1+p**2, p))]
+        for A, B, u, s, term, w1, w2 in params:
+            terms = [A+vp(s, p), B+vp(u-1, p), A+B]
+            R = terms[term]
+            assert all(R < t for i, t in enumerate(terms) if i != term)
+            H = R+1
+            modulus = p**H
+            outputs = []
+            for wu, ws in (w1, w2):
+                assert (wu-u) % p**A == 0 and (ws-s) % p**B == 0
+                outputs.append(pow(wu, ws, modulus))
+            assert vp((outputs[1]-outputs[0]) % modulus, p) == R
+            centre = pow(u, s, p**R)
+            assert all((w-centre) % p**R == 0 for w in outputs)
+            assert any((w-centre) % p**(R+1) != 0 for w in outputs)
+            if p < 100:
+                actual = powunit_value_set(p, H, 'b', u, A, 'b', s, B)
+                assert actual == {centre+p**R*t for t in range(p)}
+            sv = vp(s, p) if s else 0
+            rows_u.append(dict(p=p, A=A, B=B, u=u, su=s//p**sv, sv=sv,
+                               R=R, H=H, term=term, c=centre, enumerated=int(p < 100),
+                               u1=w1[0], s1=w1[1], y1=outputs[0],
+                               u2=w2[0], s2=w2[1], y2=outputs[1]))
+    for p in (65537, 2**64 - 59):
+        for n, e in ((2, 1), (2, 3), (3, 2), (3, -2), (4, -1), (5, 2)):
+            for K in (2, 3, 4):
+                for seed, extra in ((1, 0), (2, 1), (42, 2), (p-2, 3)):
+                    x = (seed**n + extra*p) % p**K
+                    target = pow(x, e, p**K)
+                    powered_seed = pow(seed, e, p)
+                    centre = hensel_unit(p, n, target, powered_seed, K)
+                    rows_r.append(dict(p=p, n=n, e=e, seed=seed, x=x, M=K,
+                                       K=K, c=centre, target=target))
+    out = Path('tests/ref/vectors/f-repair6')
+    out.mkdir(parents=True, exist_ok=True)
+    for name, rows in (('powunit.jsonl', rows_u), ('powrat.jsonl', rows_r)):
+        (out/name).write_text(''.join(json.dumps(r, separators=(',', ':'))+'\n' for r in rows))
+    print(f'repair6 powunit: {len(rows_u)} rows, H=R+1=2..5; '
+          f'{sum(r["enumerated"] for r in rows_u)} exhaustive sets, '
+          f'{sum(not r["enumerated"] for r in rows_u)} witness pairs')
+    print(f'repair6 powrat: {len(rows_r)} rows, centre/equation precision K=2,3,4')
+
+
 def main():
+    if sys.argv[1:] == ['--repair6']:
+        repair6_rows()
+        return 0
     OUT.mkdir(parents=True, exist_ok=True)
     rb, wb = powrat_balls()
     re_ = powrat_exact()

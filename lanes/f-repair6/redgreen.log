@@ -1,0 +1,45 @@
+F6/F7/F8 were run before the unchanged-library green run.
+Command prefix: timeout 150 python3 -B lanes/f-repair6/mutations.py
+Initial commands: prepare; 6 7; 14 16; baseline.
+After F9: prepare; 12 13; 16 17.
+After LONG_MIN checks: prepare; 17 18; baseline.
+Fault copies were compiled and linked before the unchanged archive.
+The 16 original fault definitions are retained; early_status text is adapted to f-repair5.
+
+== red-F6.log
+{"fault": "R_drop_A_B_65537", "test": "test_lpow", "exit": 1, "counts": [12, 3074134, 8, 1]}
+{"fault": "R_drop_A_B_65537", "test": "test_lroot", "exit": 0, "counts": [13, 1537090, 0, 0]}
+{"fault": "R_drop_A_B_65537", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 4, 1]}
+
+== red-F7-F8.log
+{"fault": "powrat_wrong_centre_65537", "test": "test_lpow", "exit": 1, "counts": [12, 3074134, 288, 1]}
+{"fault": "powrat_wrong_centre_65537", "test": "test_lroot", "exit": 0, "counts": [13, 1537090, 0, 0]}
+{"fault": "powrat_wrong_centre_65537", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 144, 1]}
+{"fault": "root_wrong_unsampled_lift", "test": "test_lpow", "exit": 1, "counts": [12, 3074134, 72, 1]}
+{"fault": "root_wrong_unsampled_lift", "test": "test_lroot", "exit": 1, "counts": [13, 1537090, 6, 1]}
+{"fault": "root_wrong_unsampled_lift", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 36, 1]}
+
+== green.log
+{"fault": "baseline", "test": "test_lpow", "exit": 0, "counts": [12, 3074134, 0, 0]}
+{"fault": "baseline", "test": "test_lroot", "exit": 0, "counts": [13, 1537090, 0, 0]}
+{"fault": "baseline", "test": "test_rfunc_prime", "exit": 0, "counts": [16, 526806, 0, 0]}
+
+== red-F9.log
+{"fault": "early_status_always_OK", "test": "test_lpow", "exit": 0, "counts": [12, 3074134, 0, 0], "emitted_failed_checks": 0}
+{"fault": "early_status_always_OK", "test": "test_lroot", "exit": 1, "counts": [14, 1873492, 1919, 9], "emitted_failed_checks": 1919}
+{"fault": "early_status_always_OK", "test": "test_rfunc_prime", "exit": 1, "counts": [16, 526806, 2120, 2], "emitted_failed_checks": 2120}
+
+== red-fused-F8.log
+{"fault": "root_wrong_fused_lift", "test": "test_lpow", "exit": 0, "counts": [12, 3074134, 0, 0], "emitted_failed_checks": 0}
+{"fault": "root_wrong_fused_lift", "test": "test_lroot", "exit": 1, "counts": [14, 2361423, 10, 2], "emitted_failed_checks": 10}
+{"fault": "root_wrong_fused_lift", "test": "test_rfunc_prime", "exit": 0, "counts": [16, 526806, 0, 0], "emitted_failed_checks": 0}
+
+== red-deferral-F9.log
+{"fault": "early_status_after_identifiers", "test": "test_lpow", "exit": 0, "counts": [12, 3074149, 0, 0], "emitted_failed_checks": 0}
+{"fault": "early_status_after_identifiers", "test": "test_lroot", "exit": 1, "counts": [14, 2361423, 1, 1], "emitted_failed_checks": 1}
+{"fault": "early_status_after_identifiers", "test": "test_rfunc_prime", "exit": 0, "counts": [16, 526806, 0, 0], "emitted_failed_checks": 0}
+
+== green-final.log
+{"fault": "baseline", "test": "test_lpow", "exit": 0, "counts": [12, 3074149, 0, 0], "emitted_failed_checks": 0}
+{"fault": "baseline", "test": "test_lroot", "exit": 0, "counts": [14, 2361423, 0, 0], "emitted_failed_checks": 0}
+{"fault": "baseline", "test": "test_rfunc_prime", "exit": 0, "counts": [16, 526806, 0, 0], "emitted_failed_checks": 0}
