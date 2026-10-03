@@ -10,10 +10,48 @@
    decides its own domain (Proposition 14) and never stores a non-finite ball.
 
    Every function computes into temporaries and writes y only on ADF_OK, so y may be x and a status leaves y
-   untouched. */
+   untouched.
+
+   The debug build -DADF_CHECK_INVARIANTS checks each argument that is read on entry and calls flint_abort with
+   one line on stderr (docs/conventions.md 4.4, DECISION CV-09, line 288; src/invariants.h:53-57). The macros of
+   src/invariants.h exist for adf_rat and adf_adele; adf_idele has none, so ADF_INV_IDELE is defined here in the
+   pattern of ADF_INV_LBALL of src/lball.c:33-46. ADF_LIMIT from prec alone is decided before the entry checks
+   (N-D8; as src/idele.c:258, "from prec alone, before the entry checks"). Without the flag every macro is empty
+   and the object code is the one of before. */
 
 #include <adelefeld.h>
 #include <flint/ulong_extras.h>
+#include "invariants.h"
+
+#ifdef ADF_CHECK_INVARIANTS
+#include <stdio.h>
+#include <flint/flint.h>
+#define ADF_INV_IDELE(x)                                                                                    \
+    do                                                                                                      \
+    {                                                                                                       \
+        if (!adf_idele_is_canonical(x))                                                                     \
+        {                                                                                                   \
+            fprintf(stderr, "adelefeld: ADF_CHECK_INVARIANTS: %s: argument %s is not a canonical adf_idele\n", \
+                    __func__, #x);                                                                          \
+            fflush(stderr);                                                                                 \
+            flint_abort();                                                                                  \
+        }                                                                                                   \
+    }                                                                                                       \
+    while (0)
+#else
+#define ADF_INV_IDELE(x) ((void) 0)
+#endif
+
+/* The entry check of x, after the ADF_LIMIT of a prec above the cap: series() decides that status before it
+   reads anything (N-D8; as src/idele.c:258), so the check stands only for a prec at or below the cap. Without
+   -DADF_CHECK_INVARIANTS both halves are empty and no code is generated. */
+#define ADF_INV_ADELE_LIM(x, prec)                                                                         \
+    do                                                                                                     \
+    {                                                                                                      \
+        if ((prec) <= ADF_REAL_PREC_MAX)                                                                   \
+            ADF_INV_ADELE(x);                                                                              \
+    }                                                                                                      \
+    while (0)
 
 /* r = the exact n-th root of the integer a >= 0 and 1, or 0 if a is not an n-th power; n >= 2.
    docs/api-1f5.md R3 step 4 (lines 124-126): an integer q >= 2 with an integer root >= 2 has q >= 2^n, so bits(q)
@@ -111,6 +149,7 @@ adf_rat_root(adf_rat_t y, adf_place_t * where, const adf_rat_t a, ulong n, int s
     fmpq_t r;
     int st, real;
 
+    ADF_INV_RAT(a);
     if (n == 0)
         return ADF_DOMAIN;
     if (n == 1)
@@ -154,6 +193,7 @@ adf_adele_root(adf_adele_t y, adf_place_t * where, const adf_adele_t x, ulong n,
             *where = adf_place_inf();
         return ADF_LIMIT;
     }
+    ADF_INV_ADELE(x);
     if (n == 0)
         return ADF_DOMAIN;
     if (n == 1)
@@ -208,6 +248,7 @@ adf_idele_root(adf_idele_t y, adf_place_t * where, const adf_idele_t x, ulong n,
             *where = adf_place_inf();
         return ADF_LIMIT;
     }
+    ADF_INV_IDELE(x);
     if (n == 0)
         return ADF_DOMAIN;
     if (n == 1)
@@ -255,10 +296,12 @@ typedef int (*series_at_fn)(adf_sball_t, adf_place_t *, const adf_sball_t, adf_p
 /* The first prime p, in increasing order, with v_p(q) < c_p for the exact rational q != 0 (c_2 = 2, c_p = 1 at
    odd p): the domain of the five series at p is p^c Z_p (Proposition 6, functions.md:140). With q = A/B in lowest
    terms: v_2(q) >= 2 exactly when 4 divides A (if 2 divides B, A is odd); at odd p, v_p(q) >= 1 exactly when p
-   divides A. So the answer is 2 unless 4 | A, and otherwise the first odd prime that does not divide A. G6: if the
-   first k odd primes divide A != 0, their product, at least 3^k, divides |A|, so at most floor(log_3 |A|) + 1 odd
-   primes are tried; each is below 2^64 for any A that fits in memory. n_nextprime (refs/src/flint-3.0.1/
-   ulong_extras.rst:688-692: "Returns the next prime after n"); fmpz_fdiv_ui (fmpz.rst:845-850). */
+   divides A. So the answer is 2 unless 4 | A, and otherwise the first odd prime that does not divide A. G6 (c): if
+   the first k odd primes divide A != 0, their product, at least 3^k, divides |A|, so at most floor(log_3 |A|) + 1
+   odd primes are tried. G6 (d): the candidate fits a ulong while the numerator has at most 365651249660515264 bits
+   (docs/api-1f8.md, proof step 4); above that the loop has no guard and n_nextprime's assumption
+   (refs/src/flint-3.0.1/ulong_extras.rst:688-692) would fail. n_nextprime ("Returns the next prime after n");
+   fmpz_fdiv_ui (fmpz.rst:845-850). */
 static ulong
 first_failing_prime(const fmpz_t A)
 {
@@ -273,7 +316,10 @@ first_failing_prime(const fmpz_t A)
 /* G5, G6: y = (f at the real place of the real ball ; the exact constant f(0)) when the finite part is exactly 0.
    The real coordinate by the function at the real place of rfunc.h (adf_sball_exp_at ...: arb_exp, arb_sin,
    arb_sinh, arb_cos, arb_cosh), the finite part by Proposition 12 step 1 (functions.md:394). The statuses combine
-   by conventions 3.3: the real place first, then the finite part, whose DOMAIN names its first failing prime. */
+   by conventions 3.3: the real place first, then the finite part, whose DOMAIN names its first failing prime.
+
+   The caller has already entered with the entry check done for a prec at or below ADF_REAL_PREC_MAX; the status
+   of a prec above the cap is decided here, before anything is read (N-D8). */
 static int
 series(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec, series_at_fn at, slong constant)
 {
@@ -329,29 +375,34 @@ series(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec, seri
 int
 adf_adele_exp(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec)
 {
+    ADF_INV_ADELE_LIM(x, prec);
     return series(y, where, x, prec, adf_sball_exp_at, 1);
 }
 
 int
 adf_adele_sin(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec)
 {
+    ADF_INV_ADELE_LIM(x, prec);
     return series(y, where, x, prec, adf_sball_sin_at, 0);
 }
 
 int
 adf_adele_sinh(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec)
 {
+    ADF_INV_ADELE_LIM(x, prec);
     return series(y, where, x, prec, adf_sball_sinh_at, 0);
 }
 
 int
 adf_adele_cos(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec)
 {
+    ADF_INV_ADELE_LIM(x, prec);
     return series(y, where, x, prec, adf_sball_cos_at, 1);
 }
 
 int
 adf_adele_cosh(adf_adele_t y, adf_place_t * where, const adf_adele_t x, slong prec)
 {
+    ADF_INV_ADELE_LIM(x, prec);
     return series(y, where, x, prec, adf_sball_cosh_at, 1);
 }

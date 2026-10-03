@@ -1,0 +1,13 @@
+{"fault": "F01_real_sign_only", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 1078 failed checks, 7 failed tests"]}
+{"fault": "F02_where_on_OK", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 3940 failed checks, 5 failed tests"]}
+{"fault": "F03_idele_unit_one", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 471 failed checks, 2 failed tests"]}
+{"fault": "F04_real_prec_minus_one", "build": 0, "test": 1, "summary": ["12 tests, 1091375 checks, 1028 failed checks, 2 failed tests"]}
+{"fault": "F05_prime_search_at_three", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 3097 failed checks, 3 failed tests"]}
+{"fault": "F06_degree_one_rounding", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 162 failed checks, 2 failed tests"]}
+{"fault": "F07_LIMIT_after_degree_zero", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 2 failed checks, 1 failed tests"]}
+{"fault": "F08_tie_where_untouched", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 4408 failed checks, 4 failed tests"]}
+{"fault": "F09_negative_idele_content", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 941 failed checks, 2 failed tests"]}
+{"fault": "F10_adele_zero_selector_rejected", "build": 0, "test": 1, "summary": ["12 tests, 1091376 checks, 13 failed checks, 3 failed tests"]}
+{"fault": "F11_inexact_idele_degree_one_normalised", "build": 0, "test": 1, "summary": ["12 tests, 1091373 checks, 12 failed checks, 1 failed tests"]}
+{"fault": "F12_series_low_prec_not_clamped", "build": 0, "test": 1, "summary": ["12 tests, 1091343 checks, 20 failed checks, 1 failed tests"]}
+{"fault": "F13_inexact_idele_high_degree", "build": 0, "test": 1, "summary": ["12 tests, 1091173 checks, 100 failed checks, 1 failed tests"]}

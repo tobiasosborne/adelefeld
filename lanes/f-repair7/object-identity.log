@@ -1,0 +1,19 @@
+# the release object of src/gfunc.c is unchanged by the entry checks
+$ git show HEAD:src/gfunc.c > lanes/f-repair7/tmp/gfunc-orig.c
+$ cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -c lanes/f-repair7/tmp/gfunc-orig.c -o lanes/f-repair7/tmp/gfunc-orig.o
+$ objcopy -O binary --only-section=.text <each> /dev/stdout | cmp
+cmp: identical (exit 0): the .text sections are equal byte for byte
+$ objdump -d --no-show-raw-insn <each> | diff
+diff: no difference: the disassembly is equal line for line
+$ size -A <each> | head -4
+lanes/f-repair7/tmp/gfunc-orig.o  :
+section               size   addr
+.text                 3638      0
+.data                    0      0
+.bss                     0      0
+lanes/f-repair7/build/gfunc.o  :
+section               size   addr
+.text                 3638      0
+.data                    0      0
+.bss                     0      0
+(only the DWARF sections differ in size: the line numbers of the file moved)

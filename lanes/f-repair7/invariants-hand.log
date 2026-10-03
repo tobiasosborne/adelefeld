@@ -1,0 +1,20 @@
+--- repro_invariants 
+adelefeld: ADF_CHECK_INVARIANTS: adf_adele_root: argument x is not a canonical adf_adele
+timeout: the monitored command dumped core
+/bin/bash: line 1: 461043 Aborted                 timeout 60 lanes/f-repair7/tmp/repro_invariants $a
+exit=134
+--- repro_invariants idele
+adelefeld: ADF_CHECK_INVARIANTS: adf_idele_root: argument x is not a canonical adf_idele
+timeout: the monitored command dumped core
+/bin/bash: line 1: 461050 Aborted                 timeout 60 lanes/f-repair7/tmp/repro_invariants $a
+exit=134
+--- repro_invariants series
+adelefeld: ADF_CHECK_INVARIANTS: adf_adele_exp: argument x is not a canonical adf_adele
+timeout: the monitored command dumped core
+/bin/bash: line 1: 461059 Aborted                 timeout 60 lanes/f-repair7/tmp/repro_invariants $a
+exit=134
+--- repro_invariants control
+adelefeld: ADF_CHECK_INVARIANTS: adf_adele_set: argument x is not a canonical adf_adele
+timeout: the monitored command dumped core
+/bin/bash: line 1: 461071 Aborted                 timeout 60 lanes/f-repair7/tmp/repro_invariants $a
+exit=134

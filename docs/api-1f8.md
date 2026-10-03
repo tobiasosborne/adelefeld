@@ -68,10 +68,22 @@ Proof.
    `(sign(a) s/t)^n = a`, for even `n` and `a > 0` both `(s/t)^n` and `(-s/t)^n` equal `a`. `gcd(s, t) = 1`
    because a common prime would divide `|A|` and `B`. By Proposition 14 (functions.md:446) these are all the real
    roots, so all the rational ones. This is R3 steps 1-2 (`docs/api-1f5.md:117-122`) with `p^m` removed.
-2. (b) If `q = r^n` with an integer `r`, then `r >= 2` (as `q >= 2`), so `q >= 2^n` and `bits(q) >= n + 1`
+2. (b) If `q = r^n` with an integer `r`, then `|r| >= 2`, not `r >= 2`: `|r| <= 1` would give `q <= 1`, but
+   `q >= 2`; the sign of `r` is free (`q = 4`, `n = 2`, `r = -2` has `q = r^n` and `r < 2`). Finding F4 of
+   `docs/reviews/f1/review-gfunc.md`: this step as it stood said `r >= 2`, which is false for that input. With
+   `|r| >= 2` the two conclusions are unchanged: `q = |r|^n >= 2^n` and `bits(q) >= n + 1`
    (R3 step 4, `api-1f5.md:124-126`).
 3. (c) `fmpz_root(r, f, n)` "returns 1 if the root was exact" and requires `n > 0` and `f >= 0` for even `n`
    (`fmpz.rst:983-988`); it is called with `f = |A|` or `B`, both `>= 2`, and `2 <= n < bits(f) <= WORD_MAX`.
+   What is on disk about the two ends of that chain: `fmpz_bits` returns `flint_bitcnt_t` and "the number of bits
+   required to store the absolute value of `f`" (`fmpz.rst:605-608`); `flint_bitcnt_t` is `ulong`
+   (`refs/src/flint-src-3.0.1/flint.h.in:112`) and "a bit offset within an array of limbs" (`flint.rst:110-111`);
+   `WORD_MAX` is `LLONG_MAX` (`flint.h.in:176`); the limbs of an `fmpz` are allocated through `flint_malloc`,
+   which wraps the system `malloc` (`memory.rst:16-21`) with a `size_t` argument (`flint.rst:121`). No file
+   under `refs/` gives a bound on the number of limbs of an `fmpz`, so the step
+   `[source pending: explicit FLINT/GMP representation bound implying fmpz_bits(f) <= WORD_MAX on this target]`
+   is not closed here; it is the same source as the review lists for G1(c). The cast `(slong) n` is therefore
+   proved safe under that bound only, and `n` is read before the cast.
 
 Check: `rat_root_vectors` (5814 rows of `proto/gfunc_checks.py`: two independent integer roots, Newton and the
 bisection of `proto/lpow_checks.py:70`; for `|A|, B <= 2^20` also the valuation criterion), `rat_root_named_cases`.
@@ -219,6 +231,8 @@ functions.md:142).
 (b) The first prime `p` with `q` outside `p^c Z_p` is 2 if 4 does not divide `A`, else the first odd prime that does
     not divide `A`; it exists.
 (c) The search 3, 5, 7, ... ends after at most `floor(log_3 |A|) + 1` odd primes.
+(d) The prime that the search returns is below `2^64`, so it fits a `ulong`, for every numerator `A` of at most
+    `3.66 * 10^17` bits. Above that size the code has no guard; see the proof and the note after it.
 
 Proof.
 
@@ -227,6 +241,25 @@ Proof.
 2. (b) Order the primes; (a) decides each. Existence: by (c).
 3. (c) If the first `k` odd primes all divide `A`, their product divides `|A|`; it is at least `3^k`, so
    `3^k <= |A|`, `k <= log_3 |A|`. So among the first `floor(log_3 |A|) + 1` odd primes one does not divide `A`.
+4. (d) Let `B = bits(A)` and let `k` be the number of odd primes the search tries. By (c),
+   `k <= floor(log_3 |A|) + 1`, and `|A| < 2^B`, so `k <= 0.6309297536 * B + 1` (`log_3 2 = 0.6309297535714574`,
+   rounded up here).
+   The last candidate is the k-th prime `p_k`. With
+   `[source pending: the inequality p_k < 2 k ln k for k >= 3, for which no file under refs/ was found]`:
+   `k -> 2 k ln k` is increasing, `2 * 230700252851841000 * ln(230700252851841000) = 18446744073709551582` and
+   `2 * 230700252851841001 * ln(230700252851841001) = 18446744073709551664`, while `2^64 = 18446744073709551616`
+   (the three numbers computed with 30 decimal digits), so `p_k < 2^64` for every `k <= 230700252851841000`, and
+   hence for every `B` with `0.6309297536 * B + 1 <= 230700252851841000`, that is `B <= 365651249660515264` bits,
+   about `4.57e16` bytes of numerator.
+   Note on what is proved. No file under `refs/` bounds the memory of a machine below that size, and the library's
+   own cap `ADF_LBALL_BITS_MAX = 67108864` (`lball.h:68`) bounds the bits of the powers `p^k` it forms, not the
+   numerator of an exact rational, which `adf_fball` holds at any size that fits in memory. So (d) is a limit of
+   the code, not a theorem about every numerator the library can hold; what the code does beyond it: nothing. The
+   loop of `src/gfunc.c` calls `n_nextprime(p, 1)`, which "Assumes the result will fit in an `ulong`"
+   (`ulong_extras.rst:688-692`), so beyond the limit that assumption fails. Before it is reached the search would
+   try about `2.3e17` primes, each a division of the whole numerator by a word, so no machine finishes it.
+   `[source pending: an explicit FLINT/GMP or platform bound on the number of limbs of an fmpz that would make
+   (d) hold for every representable numerator instead of for every numerator below the stated size]`.
 
 Check: `series_place_vectors` (988 rationals; the oracle `first_failing_prime` of `proto/gfunc_checks.py` tries the
 primes up to 2000 with exact valuations, and asserts the bound (c) on every row; numerators `4 * 3 * 5 * ... * p_k`

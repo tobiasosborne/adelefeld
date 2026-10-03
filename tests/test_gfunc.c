@@ -19,6 +19,8 @@
       untouched or the real place); every aliasing combination (y = x).
    What would make a case fail is stated at each test. */
 
+#define _POSIX_C_SOURCE 200809L   /* fork, pipe: the entry check of the debug build at the end of this file */
+
 #include <limits.h>
 #include <string.h>
 #include <adelefeld.h>
@@ -29,6 +31,16 @@
 #include <flint/mag.h>
 #include "support/jsonl.h"
 #include "test_runner.h"
+
+#ifdef ADF_CHECK_INVARIANTS
+#include <signal.h>
+#include <sys/resource.h>
+#ifdef __linux__
+#include <sys/prctl.h>
+#endif
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
 
 #define WMAX ((ulong) WORD_MAX)
 
@@ -739,6 +751,22 @@ static void idele_mk(adf_idele_t x, slong m, slong rad, slong rn, slong rd, slon
     arb_clear(I); fmpq_clear(r); adf_ucoset_clear(u); fmpz_clear(cc); fmpz_clear(NN);
 }
 
+/* x = ([m] ; 1 ; [1 mod (2^bits + 1)]): a canonical unit coset of a modulus of `bits` bits, inexact. */
+static void
+idele_mk_mod_bits(adf_idele_t x, slong m, ulong bits)
+{
+    arb_t I;
+    fmpq_t r;
+    adf_ucoset_t u;
+    fmpz_t c, N;
+    arb_init(I); fmpq_init(r); adf_ucoset_init(u); fmpz_init(c); fmpz_init(N);
+    arb_set_si(I, m); fmpq_one(r); fmpz_one(c);
+    fmpz_one(N); fmpz_mul_2exp(N, N, bits); fmpz_add_ui(N, N, 1);
+    ADF_CHECK(adf_ucoset_set_fmpz2(u, c, N) == ADF_OK);
+    ADF_CHECK(adf_idele_set_parts(x, I, r, u) == ADF_OK);
+    arb_clear(I); fmpq_clear(r); adf_ucoset_clear(u); fmpz_clear(c); fmpz_clear(N);
+}
+
 /* Every status of adf_idele_root (gfunc.h): n = 0, 1, 2, 3; exact and inexact units; real balls of both signs; the
    combination; LIMIT; aliasing. A case fails on the status, the place or the value in its comment. */
 ADF_TEST(idele_root_statuses)
@@ -823,6 +851,115 @@ ADF_TEST(idele_root_statuses)
     idele_mk(x, -4, 0, 4, 1, 1, 0);
     ADF_CHECK(adf_idele_root(y, NULL, x, 2, 1, 64) == ADF_DOMAIN);
     adf_idele_clear(x); adf_idele_clear(y);
+}
+
+/* An idele whose unit coset is not exact cannot be certified to have an n-th root at all places for n >= 2
+   (gfunc.h, adf_idele_root; Proposition 16 steps 1-2, functions.md:549-557): NOT_DETERMINED, `where` untouched,
+   at every degree and both signs, unless a larger status comes first: an idele is never 0, so odd n with sign = -1
+   is DOMAIN (an invalid selector, `where` untouched), and a negative real ball with even n is DOMAIN at the real
+   place (N-D16, the maximum of DOMAIN and NOT_DETERMINED).
+   Finding F1 of docs/reviews/f1/review-gfunc.md: the tests of the slice used an inexact unit at degrees 2 and 3
+   only, so a mutant that treats an inexact unit as exact from n = 4 on (the reviewer's fault F13, x = (1 ; 1 *
+   [1 mod 8]), n = 4) passed them. The degrees here include 4, 5, 6, 7, 8, 12 and above. A case fails on the status,
+   on `where` where it must be untouched or named, or on an output written on a status. */
+ADF_TEST(idele_root_inexact_units)
+{
+    static const ulong degrees[] = {2, 3, 4, 5, 6, 7, 8, 12, 64, (ulong) 1 << 32, WMAX, UWORD_MAX};
+    static const slong uc[4] = {1, 5, 2, 1}, uN[4] = {8, 6, 3, 5};
+    /* which of the five cosets is in normal form (N = 0 or N != 2 mod 4, ucoset.h:71-73): only [5 mod 6] is not */
+    static const int unormal[5] = {1, 0, 1, 1, 1};
+    adf_idele_t x, y;
+    unsigned long before = cases;
+    adf_idele_init(x); adf_idele_init(y);
+    for (int unit = 0; unit < 5; unit++)
+        for (int ball = 0; ball < 2; ball++)
+        {
+            char what[64];
+            if (unit < 4)
+                idele_mk(x, ball ? -1 : 1, 0, 1, 1, uc[unit], uN[unit]);
+            else
+                idele_mk_mod_bits(x, ball ? -1 : 1, 200);
+            ADF_CHECK(adf_idele_is_canonical(x) && !adf_ucoset_is_exact(&x->u));
+            ADF_CHECK_MSG(adf_ucoset_is_normal(&x->u) == unormal[unit], "unit %d: normal form", unit);
+            snprintf(what, sizeof what, "unit %d, real ball %d", unit, ball);
+            for (size_t i = 0; i < sizeof degrees / sizeof *degrees; i++)
+                for (int sign = 1; sign >= -1; sign -= 2)
+                {
+                    ulong n = degrees[i];
+                    int st, named;
+                    if (sign == -1 && n % 2 == 1)
+                    {
+                        st = ADF_DOMAIN;         /* an idele is never 0: sign = -1 names no branch */
+                        named = 0;
+                    }
+                    else if (ball && n % 2 == 0)
+                    {
+                        st = ADF_DOMAIN;         /* every point of a negative ball has no real root */
+                        named = 1;
+                    }
+                    else
+                    {
+                        st = ADF_NOT_DETERMINED;
+                        named = 0;
+                    }
+                    run_idele(y, x, n, sign, 64, st, named, what, 0);
+                }
+        }
+    printf("idele_root_inexact_units: %lu calls\n", cases - before);
+    adf_idele_clear(x); adf_idele_clear(y);
+}
+
+/* Degree 1 is the identity and an EXACT copy (gfunc.h:129-130; docs/api-1f8.md decision 7: "n = 1: the identity,
+   an exact copy (the real ball is not rounded to prec)"). The unit of the idele below is canonical and NOT normal
+   ([5 mod 6], whose normal form is [2 mod 3], ucoset.h:75-78): a copy must keep the stored pair, and the real ball
+   of the adele has an inexact finite part and a midpoint of 300 bits with a radius of 2^-600, which a rounding to
+   prec = 2 would change. Finding F2 of docs/reviews/f1/review-gfunc.md: a mutant that normalises the unit after
+   the degree-1 copy passed the tests of the slice, whose only identity input used [1 mod 8], already normal.
+   A case fails if any field differs. */
+ADF_TEST(degree_one_is_an_exact_copy)
+{
+    adf_idele_t i, j;
+    adf_adele_t x, y;
+    adf_idele_init(i); adf_idele_init(j);
+    adf_adele_init(x); adf_adele_init(y);
+    idele_mk(i, 1, 0, 1, 1, 5, 6);
+    ADF_CHECK(adf_idele_is_canonical(i) && adf_ucoset_is_canonical(&i->u) && !adf_ucoset_is_normal(&i->u));
+    ADF_CHECK(fmpz_equal_si(i->u.c, 5) && fmpz_equal_si(i->u.N, 6));
+    for (int sign = 1; sign >= -1; sign -= 2)
+        for (slong prec = 2; prec <= 64; prec += 62)
+        {
+            run_idele(j, i, 1, sign, prec, ADF_OK, 0, "(1, 1, [5 mod 6]), n = 1", 0);
+            ADF_CHECK_MSG(adf_idele_identical(j, i), "sign %d, prec %ld: the copy differs", sign, (long) prec);
+            ADF_CHECK_MSG(arb_equal(j->inf, i->inf) && fmpq_equal(j->r, i->r)
+                              && fmpz_equal(j->u.c, i->u.c) && fmpz_equal(j->u.N, i->u.N),
+                          "sign %d, prec %ld: a field of the copy differs", sign, (long) prec);
+            ADF_CHECK_MSG(fmpz_equal_si(j->u.c, 5) && fmpz_equal_si(j->u.N, 6),
+                          "sign %d, prec %ld: the unit was normalised", sign, (long) prec);
+        }
+    /* an adele with an inexact finite part and a real ball of 300 bits: an exact copy at prec = 2 */
+    adele_mk(x, 0, 0, 2, 4, 1);
+    {
+        fmpz_t v, e;
+        fmpz_init(v); fmpz_init_set_si(e, -300);
+        fmpz_one(v); fmpz_mul_2exp(v, v, 300); fmpz_add_ui(v, v, 12345);   /* 301 bits */
+        arb_set_fmpz_2exp(x->inf, v, e);
+        mag_set_ui_2exp_si(arb_radref(x->inf), 1, -600);
+        fmpz_clear(v); fmpz_clear(e);
+    }
+    {
+        arb_t r;
+        arb_init(r);
+        arb_set_round(r, x->inf, 2);      /* a rounding to prec 2 changes this ball */
+        ADF_CHECK(adf_adele_is_canonical(x) && !adf_fball_is_exact(&x->fin) && !arb_equal(r, x->inf));
+        arb_clear(r);
+    }
+    for (int sign = 1; sign >= -1; sign -= 2)
+    {
+        run_adele(y, x, 1, sign, 2, ADF_OK, 0, "((2^300 + 12345) 2^-300 +- 2^-600 ; 2 + 4 Zhat), n = 1", 0);
+        ADF_CHECK_MSG(adf_adele_identical(y, x), "sign %d: the copy of the real ball was rounded", sign);
+    }
+    adf_idele_clear(i); adf_idele_clear(j);
+    adf_adele_clear(x); adf_adele_clear(y);
 }
 
 /* ============================================================= slice B: exp, sin, sinh, cos, cosh at all places */
@@ -1065,3 +1202,126 @@ comment. */ ADF_TEST(series_statuses)
     ADF_CHECK(arb_overlaps(y->inf, J) && mag_cmp_2exp_si(arb_radref(y->inf), -60) <= 0);
     adf_adele_clear(x); adf_adele_clear(y); arb_clear(J);
 }
+
+#ifdef ADF_CHECK_INVARIANTS
+/* ------------------------------------------------------------------------------------ the entry check (F3) */
+
+/* conventions 4.4, DECISION CV-09, line 288: with -DADF_CHECK_INVARIANTS every public function checks
+   adf_<type>_is_canonical on each argument it reads and calls flint_abort with one line on stderr; the predicates
+   never abort themselves (M1-D2, src/invariants.h:53-57). Finding F3 of docs/reviews/f1/review-gfunc.md:
+   src/gfunc.c had no entry check. One root function and one series function are checked here, one per argument
+   type, each in a child process: the forged argument must end by SIGABRT with a line naming the function and the
+   type, and the canonical control must return normally and silently. The output argument is never read. */
+
+enum { IC_RAT, IC_IDELE, IC_SERIES, IC_COUNT };
+
+static const char * const ic_name[IC_COUNT] = {"adf_rat_root", "adf_idele_root", "adf_adele_exp"};
+static const char * const ic_type[IC_COUNT] = {"adf_rat", "adf_idele", "adf_adele"};
+
+/* forged = 1: the argument read by the call is not canonical (the rational 2/4, a NaN real ball). */
+static void
+ic_child(int which, int forged)
+{
+    adf_rat_t a, b;
+    adf_adele_t x, y;
+    adf_idele_t i, j;
+    adf_rat_init(a); adf_rat_init(b); adf_adele_init(x); adf_adele_init(y); adf_idele_init(i); adf_idele_init(j);
+    fmpz_set_si(fmpq_numref(a->q), forged ? 2 : 1);
+    fmpz_set_si(fmpq_denref(a->q), 4);                       /* 2/4 is not canonical, 1/4 is */
+    fmpq_canonicalise(a->q);                                 /* only the forged case keeps the fraction */
+    fmpq_one(i->r);                                         /* the exact idele 1 */
+    adf_ucoset_one(&i->u);
+    arb_one(i->inf);
+    adf_fball_set_si(&x->fin, 1);
+    arb_one(x->inf);
+    if (forged)
+    {
+        if (which == IC_RAT)
+            fmpz_set_si(fmpq_numref(a->q), 2), fmpz_set_si(fmpq_denref(a->q), 4);
+        else if (which == IC_IDELE)
+            arb_indeterminate(i->inf);
+        else
+            arb_indeterminate(x->inf);
+    }
+    if (which == IC_RAT)
+        (void) adf_rat_root(b, NULL, a, 2, 1);
+    else if (which == IC_IDELE)
+        (void) adf_idele_root(j, NULL, i, 2, 1, 64);
+    else
+        (void) adf_adele_exp(y, NULL, x, 64);
+    /* the control returns here: the values are canonical again, so they can be cleared */
+    fmpq_canonicalise(a->q);
+    arb_one(i->inf);
+    arb_one(x->inf);
+    adf_rat_clear(a); adf_rat_clear(b);
+    adf_adele_clear(x); adf_adele_clear(y);
+    adf_idele_clear(i); adf_idele_clear(j);
+    flint_cleanup();
+}
+
+/* Runs the child; returns the signal (0 if it exited) and copies stderr into err. */
+static int
+ic_run(int which, int forged, int * exit_code, char * err, size_t cap)
+{
+    int fd[2], st = 0;
+    size_t n = 0;
+    pid_t pid;
+    struct rlimit nocore = {0, 0};
+    fflush(stdout);
+    fflush(stderr);
+    if (pipe(fd) != 0)
+        abort();
+    pid = fork();
+    if (pid < 0)
+        abort();
+    if (pid == 0)
+    {
+        setrlimit(RLIMIT_CORE, &nocore);
+#ifdef __linux__
+        prctl(PR_SET_DUMPABLE, 0);
+#endif
+        close(fd[0]);
+        dup2(fd[1], 2);
+        close(fd[1]);
+        ic_child(which, forged);
+        _exit(0);
+    }
+    close(fd[1]);
+    while (n < cap - 1)
+    {
+        ssize_t r = read(fd[0], err + n, cap - 1 - n);
+        if (r <= 0)
+            break;
+        n += (size_t) r;
+    }
+    err[n] = 0;
+    {
+        char junk[256];
+        while (read(fd[0], junk, sizeof junk) > 0)
+            ;
+    }
+    close(fd[0]);
+    if (waitpid(pid, &st, 0) != pid)
+        abort();
+    *exit_code = WIFEXITED(st) ? WEXITSTATUS(st) : -1;
+    return WIFSIGNALED(st) ? WTERMSIG(st) : 0;
+}
+
+ADF_TEST(entry_check_of_the_public_functions)
+{
+    int i, code;
+    char err[512];
+    for (i = 0; i < IC_COUNT; i++)
+    {
+        int sig = ic_run(i, 0, &code, err, sizeof err);
+        ADF_CHECK_MSG(sig == 0 && code == 0 && err[0] == 0,
+                      "%s (case %d): control: signal %d, exit %d, stderr '%s'", ic_name[i], i, sig, code, err);
+        sig = ic_run(i, 1, &code, err, sizeof err);
+        ADF_CHECK_MSG(sig == SIGABRT, "%s (case %d): a forged argument did not abort (signal %d, exit %d)",
+                      ic_name[i], i, sig, code);
+        ADF_CHECK_MSG(strstr(err, "ADF_CHECK_INVARIANTS") != NULL && strstr(err, ic_name[i]) != NULL
+                          && strstr(err, ic_type[i]) != NULL,
+                      "%s (case %d): stderr '%s'", ic_name[i], i, err);
+    }
+}
+#endif /* ADF_CHECK_INVARIANTS */
