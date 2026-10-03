@@ -1,0 +1,58 @@
+mutate_lines: src/lroot.c: 106 of 526 mutants on changed lines
+mutate: src/lroot.c: 106 mutants
+mutate: 106 mutants, 40 of them run (--limit 40, --seed 1)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (44.8 s)
+
+NOT COMPILED src/lroot.c:425:29 logic: '&&' -> '||'
+  src/lroot.c:425:19: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/lroot.c:407:26 logic: '&&' -> '||'
+  src/lroot.c:407:100: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/lroot.c:407:100 logic: '&&' -> '||'
+  src/lroot.c:407:73: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/lroot.c:423:13 swap_args: 'fmpz_mod_mul(y, y, c0, cM)' -> 'fmpz_mod_mul(y, c0, y, cM)'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -421,5 +421,5 @@
+               else fmpz_mod(cw,fmpq_numref(w->u),M);
+               fmpz_mod(y,fmpq_numref(om->u),M);                  /* omega(seed) is a ball: seed != +-1 */
+  -            fmpz_mod_mul(y,y,c0,cM);
+  +            fmpz_mod_mul(y,c0,y,cM);
+           }
+           if (chain && !plain && !rational_seed(sh,seed))
+
+
+TIMED OUT src/lroot.c:363:17 cmp: '>' -> '>='
+  the tests did not finish in 240 s
+
+SURVIVED src/lroot.c:464:62 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -462,5 +462,5 @@
+       if (sh->z0->exact && fmpq_is_pm1(sh->z0->u))   /* refs/src/flint-3.0.1/fmpq.rst:140 */
+       {
+  -        ulong seed=fmpq_is_one(sh->z0->u) ? 1 : (p==2 ? 3 : p-1);
+  +        ulong seed=fmpq_is_one(sh->z0->u) ? 1 : (p==2 ? 3 : p+1);
+           one=(ulong)general_seed(sh,p,n,index,seed);
+       }
+
+
+SURVIVED src/lroot.c:442:51 logic: '||' -> '&&'
+  the tests pass with the mutant
+  --- a/src/lroot.c
+  +++ b/src/lroot.c
+  @@ -440,5 +440,5 @@
+   {
+       if (rational_seed(sh,seed)) return 0;
+  -    if (p==2) return n%2 ? seed==index : (seed==1 || seed==3);
+  +    if (p==2) return n%2 ? seed==index : (seed==1 && seed==3);
+       return power_mod(seed,n,p)==index;
+   }
+
+mutate: stopped by signal 15: 2 running command(s) killed, scratch removed
+exit 124

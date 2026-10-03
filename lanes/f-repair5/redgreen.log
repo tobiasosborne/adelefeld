@@ -1,0 +1,32 @@
+# f-repair5 red-green log (build: BUILD=lanes/f-repair5/build, tree 8f57a51 plus the new tests)
+
+## RED 2026-10-03 ~23:00, code unchanged (src/ as at 8f57a51)
+
+test_lpow (new test powunit_integer_exponent_is_pow_si, item 2):
+  FAIL x7 cases (each with its two aliased calls, 21 failed checks), all status 10 (LIMIT), expected OK:
+    5: (6 + 5^(2^40) Z_5)^1 at N = 2^40, 2^60, 2^40 - 1; ^2 at N = 2^40
+    2: (3 + 2^(2^30) Z_2)^3 at N = 2^60; ^2 at N = 2^60 and N = 2^30
+  passed on the old code: k = -1 LIMIT; the grid (41723 calls in all, the 7 above included): every grid row
+  identical to the coarse ball of pow_si already before the route (this is the "OK before" half of P9).
+  10 tests, 3066260 checks, 21 failed checks, 1 failed test.
+
+test_lroot:
+  review7_f3_branch_limit_after_a_good_branch (item 3): ok on the old code. Expected: the status was right
+  before (LIMIT, outputs untouched); the defect was the order (decided after branch 1). The order is not
+  observable through the API (the branches computed before the LIMIT are at most the seed 1, which needs no
+  power), so this test cannot be red; it guards the status and the untouched outputs.
+  r9_one_teichmuller_lift_per_list (item 4): FAIL sec < 0.5: all 24068 branches in 2.307 s CPU (old code).
+    identity with root_seed: 7371 branches compared, 0 differences (old code).
+  12 tests, 1323173 checks, 1 failed check, 1 failed test.
+
+## GREEN 2026-10-03 ~23:30, code of this lane (src/lpow.c: integer_exponent, via_pow_si; src/lroot.c:
+## early_status rule, all_branches with the chain, position)
+
+test_lpow: 10 tests, 3066274 checks, 0 failed (powunit_integer_exponent_is_pow_si: 41723 calls).
+test_lroot: 12 tests, 1323173 checks, 0 failed. r9 guard (GUARD_R9 lowered from 0.5 to 0.45 s CPU before the final
+  runs, so that the old code misses it by >= 5 at its fastest, 2.307 s): new code 0.039 to 0.089 s CPU over 13 runs
+  on a machine at load average 6 to 9 (other sessions); old code against the same test file 2.307, 3.937, 5.317,
+  7.770 s CPU. 7371 branches identical to root_seed.
+test_rfunc_prime: 15 tests, 522217 checks, 0 failed.
+Intermediate versions of all_branches (each green on the identity checks): adf_lball_mul chain 0.16 s; fmpz chain
+  into branch() 0.17 s; fused centre with two products 0.07 to 0.11 s; one fused chain 0.04 to 0.09 s (kept).

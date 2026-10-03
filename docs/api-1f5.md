@@ -4,7 +4,8 @@ The contract is in `include/adelefeld/lroot.h` and the added declarations in `rf
 The implementation is `src/lroot.c`, with named-place wrappers in `src/rfunc.c`.
 The proofs used from `docs/proofs/functions.md` are Lemma 3:55, Proposition 4:92, Lemma 9:265,
 Proposition 11:336, Proposition 13:410, Proposition 15:463 and Proposition 16:538.
-This document adds statements R1 to R8. It does not change SPEC 9.3.3.
+This document adds statements R1 to R9 (R9 and the present R6 step 6 by lane f-repair5).
+It does not change SPEC 9.3.3.
 Decision N-D14 (`docs/SPEC.md` 15.4, last row; lane f-repair4) replaced the exponent rule of N-D13 for ball
 inputs by `K = min(N, E)`; the statements below are written for that rule.
 
@@ -56,6 +57,11 @@ inputs by `K = min(N, E)`; the statements below are written for that rule.
 10. Driver commands are `roots_at X with PRIME with DEGREE` and
     `root_at X with PRIME with DEGREE with SEED`. At 2 the driver accepts sign -1 as identifier 3.
     It prints every root with its identifier and forms the entire line before writing it.
+11. (Lane f-repair5, 2026-10-03.) `roots` lifts two Teichmueller representatives for the whole list and
+    multiplies (R9); `root_seed` lifts the one of its seed. Lane f-repair4 measured 149 us per branch for the lift
+    at p = 2^64-59, N = 20 (44.6 s for d = 299756). Alternative: one lift per branch; rejected as an avoidable
+    cost. The list is evaluated in the order t0 zeta^i of R8 and written in increasing order; the values are
+    identical to those of one lift per branch (R9 (b)).
 
 ## R1 (constant existence test on a guarded ball)
 
@@ -200,8 +206,9 @@ Proof.
    (refs/src/flint-3.0.1/ulong_extras.rst:368-373); n_powmod2_ui_preinv takes a base below the
    modulus and every word exponent (:537-541), and every base passed is a residue modulo p.
 4. Count uses temporary scalar outputs. A selected root uses temporary lballs; all branches are
-   evaluated in temporary arrays before any caller array is touched. Even a late LIMIT after an
-   exact first branch preserves the whole caller array. Reading x is finished before outputs are copied.
+   evaluated in temporary arrays before any caller array is touched. Step 6 decides the status
+   before the list; were a branch to fail after others had been computed, the whole caller array
+   would still be preserved. Reading x is finished before outputs are copied.
    This covers x aliasing any output slot, including an unused one. Overwritten output values are not checked.
 5. The _at wrapper checks place membership first, copies the component, evaluates locally and builds
    a partial ball with arch NONE and one prime. That is Proposition 22:725 restricted to one place.
@@ -209,11 +216,33 @@ Proof.
    success preserves where. The all-local-roots array is disjoint from the enclosing partial-ball storage.
 6. Listing capacity is checked after the input criterion. Negative capacity is invalid (DOMAIN);
    insufficient nonnegative capacity or an excessive count is LIMIT. No partial list is published.
-   Both are decided before the list. So is a LIMIT that a branch would return: of K, of z0 (R4),
-   or of the Teichmueller factor at L, needed by a branch that is not rational and whose seed
-   is not 1 or p-1 (only those two have rational representatives, lball.h); seeds 1 and p-1
-   are branches iff index=1 and (-1)^n=index modulo p. Every failure of a branch is LIMIT, so
-   the early status is the status the evaluation would return.
+   Both are decided before the list. So is every status that the evaluation of the branches
+   would return (`early_status`, rewritten by lane f-repair5 after review f-review7, finding 3).
+   Let general be the number of branches that are not rational (R3).
+   a. general=0, degree 1 or exact zero: every branch is copied, OK. Else if K is outside the
+      exponent bound, every general branch returns LIMIT. Else if K<=j, every general branch
+      is the zero ball at K (R4 step 5), OK. Else every general branch needs z0 (R4), computed
+      once: its status, if not OK, is the status of every general branch (Log, div, exp).
+   b. With z0 computed and K>j, a general branch of seed t forms the torsion factor omega(t)
+      (exact +-1 for t=1, p-1 and at 2; else the ball at L, lball.h teichmuller), z=z0*omega(t),
+      and, unless z is the exact 1, the unit of z modulo p^(K-j). The powers formed are p^L (the
+      lift and the product, both of valuation 0 and exponent at most L) and p^(K-j)<=p^L
+      (unit_mod), and z has relative precision >= L >= K-j (R4), so unit_mod is not
+      NOT_DETERMINED. Hence: if p^L is within the bound (power_ok), the branch is OK; if not, then
+      L>c (p^c is always within it), L=K-j, and unit_mod at K-j returns LIMIT (it tests the bound
+      before anything else, lball.h), unless the lift or the product returned LIMIT before it.
+      So a general branch returns LIMIT exactly when p^L is beyond the bound and z is not the
+      exact 1.
+   c. z is the exact 1 only if both factors are exact (a product with a ball is a ball): z0 is
+      the exact w=+-1 and omega(t)=w^(-1)=w, which names one seed (1 for w=1; p-1, or 3 at 2,
+      for w=-1). So at most one general branch has z=1, and the evaluation returns LIMIT
+      exactly when general exceeds that number (0 or 1) and p^L is beyond the bound. This is
+      the test of `early_status`; it returns the status of the evaluation, before the list.
+   The rule before lane f-repair5 counted the seeds 1 and p-1 both as free of powers. It missed
+   the centre p^(K-j)-1 of the branch p-1 (z=-1): 1+7^(2^40) Z_7, n=2, N=LONG_MAX, and
+   1+2^(2^27) Z_2, n=2, N=LONG_MAX, returned LIMIT only after the branch 1 had been computed
+   (review f-review7, finding 3; `lanes/f-review7/early.in` lines 8 to 13). The status was the
+   same; only the order was not as stated here.
 
 ## R7 (what the exhaustive oracle proves at its stated precision)
 
@@ -285,9 +314,64 @@ Proof.
     Measured: 14 ms at p=65537, d=65536; 1.7 ms at p=2^64-59, d=6028; 84 ms for d=299756, all
     at N=0 (zero balls, so the time is the listing).
 
+## R9 (one Teichmueller lift for the list; lane f-repair5, 2026-10-03)
+
+For odd p, write omega(a) for the Teichmueller representative of a nonzero residue a: the unique
+root of T^(p-1)-1 in Z_p that reduces to a (Lemma 3 item 2, functions.md:61; Proposition 4,
+functions.md:99-100; lball.h adf_lball_teichmuller). Let d>=2, t0 and zeta as in R8, seed_i =
+t0 zeta^i mod p, K>j, L=max(K-j,c) and kq=K-j<=L.
+(a) omega(ab mod p)=omega(a) omega(b) for nonzero residues a, b; so omega(seed_i) =
+    omega(seed_i0) omega(zeta)^(i-i0) for i>=i0.
+(b) If z0 is exact or has relative precision >= kq, let c0 be the unit of z0 modulo p^kq
+    (unit_mod), and y_i0 = c0 omega(seed_i0) mod p^kq, y_(i+1) = y_i (omega(zeta) mod p^kq) mod
+    p^kq. Then y_i is the centre that branch() computes for seed_i when seed_i is general and not
+    +-1: for z=z0*t, t the ball at L of omega(seed_i) (lball.h teichmuller), unit_mod(z,kq) = y_i,
+    and the branch is the ball p^j y_i + p^K Z_p (v=j, N=K), identical in all fields to that of
+    root_seed.
+(c) The listing computes in this way: two lifts (omega(seed_i0) at the first general branch
+    whose seed is not +-1, and omega(zeta)), then one product modulo p^kq for each later i. It
+    returns no status that the code with one lift per branch would not return.
+
+Proof.
+
+1. (a) omega(a)omega(b) is a root of T^(p-1)-1, since (omega(a)omega(b))^(p-1)=1*1, and it reduces
+   to ab mod p. The derivative (p-1)T^(p-2) is a unit at every nonzero residue, so Lemma 3 item 2
+   gives exactly one such root in Z_p: it is omega(ab mod p). By induction on i, using
+   seed_(i+1)=seed_i zeta mod p (R8: the identifiers are t0 zeta^i), omega(seed_i) =
+   omega(seed_i0) omega(zeta)^(i-i0).
+2. (b) By (a) and induction, y_i = c0 omega(seed_i) mod p^kq: the residue of a product modulo p^kq
+   is the product of the residues. In branch(), t=teichmuller(seed_i, L) is the ball at L that
+   contains omega(seed_i) (seed_i is not +-1, so it is a ball); z=mul(z0,t) is the smallest ball
+   containing the products (lball.h), of valuation 0 and exponent min(N(z0), L) >= kq (or L for
+   an exact z0), and it contains the point c0' omega(seed_i), c0' the centre of z0 (the value
+   for an exact z0). unit_mod(z, kq) is defined (kq <= the relative precision of z) and is the
+   unit modulo p^kq of every point of z (lball.h, L11 of api-1f.md), so it is c0' omega(seed_i)
+   mod p^kq. c0 = unit_mod(z0, kq) is c0' mod p^kq for the same reason. So unit_mod(z,kq) = y_i.
+   z is a ball, never the exact 1, so branch() always goes through unit_mod here, and it writes
+   v=j, N=K and the centre y_i (an integer in (0, p^kq), a unit): the canonical ball of (b).
+   root_seed calls branch() for the one seed, with the same z0 (computed by the same principal()
+   from the same x, n, N), so its result is identical.
+3. (c) The seeds 1 and p-1 (omega exact), the rational seeds (R3) and every seed before the chain
+   starts go through branch() as before; K<=j or K outside the bound start no chain. The chain
+   forms p^L (two lifts) and p^kq <= p^L and calls unit_mod(z0, kq). It starts at a general
+   seed that is not +-1; such a branch with z not the exact 1 (z is a ball) exists, so R6
+   step 6 b, c has already returned LIMIT unless p^L is within the bound; then no step of the
+   chain returns LIMIT. The condition on z0 holds always (R4: exp at L gives z0 of relative
+   precision L >= kq); it is tested, and if it failed every branch would lift its own
+   representative, as before.
+4. Identity, not only equality as sets, is the right test: a canonical ball is determined by its
+   set (lball.h: the centre is the unique element of Z[1/p] in [0,p^N) in the ball).
+
+Measured (CPU seconds; p=2^64-59, N=20; machine shared with other jobs, load average 6 to 9):
+d=24068, x=3^n+p^30 Z_p: 2.3 s before (3.9 to 7.8 s under heavier load), 0.04 to 0.09 s after;
+d=299756, x=1: 44.6 s before (lane f-repair4), 1.2 s after. The guard of
+`r9_one_teichmuller_lift_per_list` is 0.45 s. The test also compares every branch at d=1094 and
+d=6028 and every 97th at d=24068 with root_seed (7371 branches, identical fields).
+
 ## Scope
 
-R1-R8 are proved here. The analytic bijections and the criterion rely on the existing proofs listed above.
+R1-R9 are proved here (R9 and the rewritten R6 step 6 by lane f-repair5).
+The analytic bijections and the criterion rely on the existing proofs listed above.
 No rational-power API, principal-unit variable-exponent API or all-places root API is added.
 The optional Remark 15r is not implemented. No new external mathematical source is pending.
 The naming sources already pending in functions.md for Teichmueller representatives and Iwasawa Log

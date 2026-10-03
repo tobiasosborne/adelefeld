@@ -64,8 +64,12 @@ int adf_lball_sqrt_seed(adf_lball_t y, const adf_lball_t x, ulong seed, slong N)
    are written on OK; others stay untouched. R5, R8, Propositions 13/15, functions.md:410,:463.
    Exponents, exact values, DOMAIN and NOT_DETERMINED are as above. LIMIT also if capacity
    cannot hold the count or the count exceeds ADF_LROOT_BRANCH_MAX; negative capacity is DOMAIN.
-   These, and a LIMIT of K, of Log/exp or of a Teichmueller power that some branch would
-   return, are decided before branches are listed.
+   These, and every LIMIT that the evaluation of some branch would return (of K, of Log/exp,
+   of a Teichmueller power p^L, of the centre modulo p^(K-j), which the branch p-1 needs even
+   when the branch 1 needs none: 1+7^(2^40) Z_7, n=2, N=LONG_MAX), are decided before
+   branches are listed (R6 step 6; before lane f-repair5 the last one came after the branch 1).
+   Every branch is the same as root_seed returns for its identifier; the list lifts two
+   Teichmueller representatives, not one per branch (R9).
    len, ids, y are distinct; x may alias any slot of y, even an unused slot. Transactional on
    every failure, including LIMIT partway through evaluation. Internal temporary arrays use
    flint_malloc/flint_free and are released before return. */

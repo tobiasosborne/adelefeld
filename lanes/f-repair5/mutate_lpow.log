@@ -1,0 +1,79 @@
+mutate_lines: src/lpow.c: 33 of 329 mutants on changed lines
+mutate: src/lpow.c: 33 mutants
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (25.1 s)
+
+NOT COMPILED src/lpow.c:307:9 drop_assign: 'st = via_pow_si(res, u, k, Nc);' -> '' (the statement is removed)
+  src/lpow.c:254:12: error: ‘via_pow_si’ defined but not used [-Werror=unused-function]
+
+SURVIVED src/lpow.c:238:74 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/lpow.c
+  +++ b/src/lpow.c
+  @@ -236,5 +236,5 @@
+       fmpz_t t;
+       int ok;
+  -    if (!s->exact || !fmpz_is_one(fmpq_denref(s->u)) || s->v < 0 || s->v >= 64) return 0;
+  +    if (!s->exact || !fmpz_is_one(fmpq_denref(s->u)) || s->v < 0 || s->v > 64) return 0;
+       fmpz_init(t);
+       fmpz_set_ui(t, s->p);
+
+
+NOT COMPILED src/lpow.c:238:54 logic: '||' -> '&&'
+  src/lpow.c:238:54: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/lpow.c:244:13 op: '*' -> '+'
+  src/lpow.c:244:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/lpow.c:243:5 drop_assign: 'ok = fmpz_fits_si(t);' -> '' (the statement is removed)
+  src/lpow.c:244:8: error: ‘ok’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/lpow.c:262:18 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/lpow.c
+  +++ b/src/lpow.c
+  @@ -260,5 +260,5 @@
+       if (st == ADF_OK)
+       {
+  -        if (P->N <= Nc) adf_lball_swap(res, P);
+  +        if (P->N < Nc) adf_lball_swap(res, P);
+           else if (!exponent_ok(Nc)) st = ADF_LIMIT;
+           else
+
+
+SURVIVED src/lpow.c:267:18 swap_args: 'adf_lball_add(res, P, zb)' -> 'adf_lball_add(res, zb, P)'
+  the tests pass with the mutant
+  --- a/src/lpow.c
+  +++ b/src/lpow.c
+  @@ -265,5 +265,5 @@
+           {
+               zero_ball(zb, u->p, Nc);
+  -            st = adf_lball_add(res, P, zb);
+  +            st = adf_lball_add(res, zb, P);
+           }
+       }
+
+
+NOT COMPILED src/lpow.c:238:19 logic: '||' -> '&&'
+  src/lpow.c:238:19: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/lpow.c:259:5 drop_assign: 'st = adf_lball_pow_si(P, u, k);' -> '' (the statement is removed)
+  src/lpow.c:254:67: error: unused parameter ‘k’ [-Werror=unused-parameter]
+
+SURVIVED src/lpow.c:267:18 call_swap: 'adf_lball_add' -> 'adf_lball_sub'
+  the tests pass with the mutant
+  --- a/src/lpow.c
+  +++ b/src/lpow.c
+  @@ -265,5 +265,5 @@
+           {
+               zero_ball(zb, u->p, Nc);
+  -            st = adf_lball_add(res, P, zb);
+  +            st = adf_lball_sub(res, P, zb);
+           }
+       }
+
+
+NOT COMPILED src/lpow.c:238:66 logic: '||' -> '&&'
+  src/lpow.c:238:66: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+mutate: stopped by signal 15: 2 running command(s) killed, scratch removed
+exit 124

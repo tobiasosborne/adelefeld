@@ -229,13 +229,55 @@ done:
     return st;
 }
 
-/* SPEC 9.3.4 item 3; functions.md:577 (Proposition 17), :616 (Proposition 18); P4 to P6 of api-1f6.md. */
+/* *k = s if s is an exact integer that fits a slong (P9). s lies in Z_p here (P4), so v >= 0; v < 64 bounds p^v
+   (|s| >= 2^v otherwise, beyond a slong). */
+static int integer_exponent(slong *k, const adf_lball_t s)
+{
+    fmpz_t t;
+    int ok;
+    if (!s->exact || !fmpz_is_one(fmpq_denref(s->u)) || s->v < 0 || s->v >= 64) return 0;
+    fmpz_init(t);
+    fmpz_set_ui(t, s->p);
+    fmpz_pow_ui(t, t, (ulong) s->v);
+    fmpz_mul(t, t, fmpq_numref(s->u));
+    ok = fmpz_fits_si(t);
+    if (ok) *k = fmpz_get_si(t);
+    fmpz_clear(t);
+    return ok;
+}
+
+/* P9 of api-1f6.md: u a ball in 1 + p Z_p, s the exact integer k != 0. pow_si(u, k) is the image {t^k : t in u}, a
+   ball of exponent R (L12, docs/api-1f.md:497), and the value of P5 is the ball of exponent K = min(N, R) that
+   contains it: the image for N >= R, else image + p^N Z_p (lball.h add: the smallest ball containing the sums).
+   Any status other than OK (pow_si or add: LIMIT only, P9 step 4) is returned and the caller takes the general
+   path, so a result that the general path returned OK is never changed (P9 step 5). */
+static int via_pow_si(adf_lball_t res, const adf_lball_t u, slong k, slong Nc)
+{
+    adf_lball_t P, zb;
+    int st;
+    adf_lball_init(P); adf_lball_init(zb);
+    st = adf_lball_pow_si(P, u, k);
+    if (st == ADF_OK)
+    {
+        if (P->N <= Nc) adf_lball_swap(res, P);
+        else if (!exponent_ok(Nc)) st = ADF_LIMIT;
+        else
+        {
+            zero_ball(zb, u->p, Nc);
+            st = adf_lball_add(res, P, zb);
+        }
+    }
+    adf_lball_clear(P); adf_lball_clear(zb);
+    return st;
+}
+
+/* SPEC 9.3.4 item 3; functions.md:577 (Proposition 17), :616 (Proposition 18); P4 to P6, P9 of api-1f6.md. */
 int adf_lball_powunit(adf_lball_t y, const adf_lball_t u, const adf_lball_t s, slong N)
 {
     adf_lball_t D1, Zp, res;
     fmpz_t r;
     ulong p;
-    slong A, B, beta, Nc = clamp(N), w0 = 1;
+    slong A, B, beta, Nc = clamp(N), w0 = 1, k;
     int du, ds, st = ADF_OK, par, par_known, sign_known;
     check_input(u, __func__, "u");
     check_input(s, __func__, "s");
@@ -258,6 +300,13 @@ int adf_lball_powunit(adf_lball_t y, const adf_lball_t u, const adf_lball_t s, s
     {
         st = signed_one(res, p, 1, 0, 1);
         goto done;
+    }
+    /* an exact integer exponent and a ball u: the image is pow_si's (P9); an exact u keeps decision 8 */
+    if (!u->exact && integer_exponent(&k, s))
+    {
+        st = via_pow_si(res, u, k, Nc);
+        if (st == ADF_OK) goto done;
+        st = ADF_OK;                                /* LIMIT: the general path, as before P9 */
     }
     par_known = s->exact || B >= 1;
     par = !fmpq_is_zero(s->u) && beta == 0;         /* s0 odd; read only where par_known */
