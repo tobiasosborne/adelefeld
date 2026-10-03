@@ -1,0 +1,5 @@
+A1 the sign of the even root taken for odd n: exit 1; 7 tests, 1004258 checks, 1117 failed checks, 6 failed tests
+A2 the denominator not tested: exit 1; 7 tests, 1008050 checks, 18909 failed checks, 6 failed tests
+A3 n above the bit length passed to fmpz_root: exit -6; no summary line (aborted)
+A4 the real part computed from the finite part: exit -6; no summary line (aborted)
+A5 the inexact idele of degree 2 returned as OK: exit 1; 7 tests, 1004254 checks, 2 failed checks, 1 failed tests

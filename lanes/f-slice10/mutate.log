@@ -1,0 +1,73 @@
+mutate: src/gfunc.c: 242 mutants
+mutate: 242 mutants, 60 of them run (--limit 60, --seed 1)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (0.7 s)
+
+NOT COMPILED src/gfunc.c:176:5 drop_assign: 'st_real = real_branch(t->inf, x->inf, n, sign, prec);' -> '' (the statement is removed)
+  src/gfunc.c:101:9: error: ‘st_real’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/gfunc.c:235:5 drop_assign: 'st = combine(where, st_real, st_fin);' -> '' (the statement is removed)
+  src/gfunc.c:203:18: error: variable ‘st_fin’ set but not used [-Werror=unused-but-set-variable]
+
+SURVIVED src/gfunc.c:54:27 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/gfunc.c
+  +++ b/src/gfunc.c
+  @@ -52,5 +52,5 @@
+           return ADF_OK;
+       }
+  -    if (n % 2 == 0 && s < 0)
+  +    if (n % 2 == 0 && s < 1)
+       {
+           *real = 1;
+
+
+NOT COMPILED src/gfunc.c:350:32 prec: 'prec' -> '2'
+  src/gfunc.c:348:78: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+SURVIVED src/gfunc.c:101:22 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/gfunc.c
+  +++ b/src/gfunc.c
+  @@ -99,5 +99,5 @@
+   combine(adf_place_t * where, int st_real, int st_fin)
+   {
+  -    int st = st_real > st_fin ? st_real : st_fin;
+  +    int st = st_real >= st_fin ? st_real : st_fin;
+       if (st != ADF_OK && st == st_real && where != NULL)
+           *where = adf_place_inf();
+
+
+NOT COMPILED src/gfunc.c:289:13 op: '*' -> '+'
+  src/gfunc.c:289:13: error: wrong type argument to unary plus
+
+SURVIVED src/gfunc.c:268:61 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/gfunc.c
+  +++ b/src/gfunc.c
+  @@ -266,5 +266,5 @@
+       if (fmpz_fdiv_ui(A, 4) != 0)
+           return 2;
+  -    for (p = 3; fmpz_fdiv_ui(A, p) == 0; p = n_nextprime(p, 1))
+  +    for (p = 3; fmpz_fdiv_ui(A, p) == 0; p = n_nextprime(p, 0))
+           ;
+       return p;
+
+
+NOT COMPILED src/gfunc.c:314:13 op: '*' -> '+'
+  src/gfunc.c:314:13: error: wrong type argument to unary plus
+
+NOT COMPILED src/gfunc.c:225:5 drop_assign: 'st_real = real_branch(t->inf, x->inf, n, sign, prec);' -> '' (the statement is removed)
+  src/gfunc.c:226:8: error: ‘st_real’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/gfunc.c:131:5 drop_assign: 'st = rat_root_core(r, &real, a->q, n, sign);' -> '' (the statement is removed)
+  src/gfunc.c:132:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/gfunc.c:314:13 op: '*' -> '/'
+  src/gfunc.c:314:13: error: expected expression before ‘/’ token
+
+NOT COMPILED src/gfunc.c:289:13 op: '*' -> '/'
+  src/gfunc.c:289:13: error: expected expression before ‘/’ token
+
+mutate: 60 mutants in 106.9 s: 48 killed, 3 survived, 9 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 3 mutant(s) survived; each one is a claim the tests do not check

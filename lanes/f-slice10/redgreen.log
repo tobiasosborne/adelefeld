@@ -1,0 +1,41 @@
+# Red-green log of lane f-slice10 (build: lanes/f-slice10/build)
+
+## Slice A: the root
+
+about 23:01 RED 1 (link): tests/test_gfunc.c written before src/gfunc.c existed:
+      undefined reference to `adf_rat_root', `adf_adele_root', `adf_idele_root' (first test of the file).
+about 23:02 RED 2 (assertions): src/gfunc.c as a stub returning ADF_UNSUPPORTED for the three functions:
+      7 tests, 786886 checks, 130053 failed checks, 7 failed tests
+        rat_root_vectors 49097, rat_root_named_cases 103, adele_root_real_vectors 6786,
+        adele_root_rat_vectors 56543, adele_root_statuses 44, idele_root_rat_vectors 17442,
+        idele_root_statuses 38 failed checks.
+about 23:04 first implementation: 19 failed checks in 3 tests:
+        adele_root_real_vectors 16: the radius bound of test_rfunc's tight rows fails for the real root of
+          2^1000 +- 2^960 and 2^-1000 +- 2^-1040 at prec 2 (n = 3, 7, 12): adf_real_root's ball, identical to ours,
+          has a relative radius near 2 (probe lanes/f-slice10/build/probe.c). Not a defect of gfunc.c (the identity
+          check passed); the bound is now asserted from 24 bits on and the case is finding 3 of result.md.
+        adele_root_statuses 1, idele_root_statuses 2: the test assumed arb_root_ui(8, 3) exact; it is
+          1.99999999999999999989 +- 1.2e-19 (probe). Test corrected to "contains -2" (the hand value is right, the
+          exactness was my assumption).
+      Test defect also found: member_int read the JSON strings of num/den with jsonl_int_text (strings refused);
+      replaced by jsonl_int_text_or_string.
+23:06 GREEN: 7 tests, 1004258 checks, 0 failed checks, 0 failed tests (0.27 s).
+23:09 driver: tests/driver/gfunc-root.cmd/.out written by hand (43 lines). RED: the driver of HEAD (git show
+      HEAD:tools/adf/adf.c, built in lanes/f-slice10/build/adf_head) prints 43 x "error: PARSE" (no command root).
+      GREEN after the command `root` was added: the output equals gfunc-root.out byte for byte, exit 1.
+23:10 Julia tests/julia/gfunc.jl: RED against a shared object of src/ without gfunc.c (lanes/f-slice10/julia.sh red):
+      1 errored (adf_rat_root: undefined symbol). GREEN with the full src/: 7 of 7 pass (after the LD_PRELOAD retry of
+      the system libgmp, the environment quirk that tests/test_julia.sh also handles).
+
+## Slice B: exp, sin, sinh, cos, cosh at all places
+
+23:22 RED 1 (link): the slice B tests appended to tests/test_gfunc.c: undefined reference to adf_adele_exp, sin,
+      sinh, cos, cosh.
+23:23 RED 2 (assertions): stubs returning ADF_UNSUPPORTED: 10 tests, 1075302 checks, 11347 failed checks,
+      3 failed tests (series_real_vectors 1308, series_place_vectors 9865, series_statuses 174); slice A green.
+23:24 GREEN (first implementation): 10 tests, 1088693 checks, 0 failed checks, 0 failed tests.
+23:27 driver: tests/driver/gfunc-series.cmd/.out (23 lines). RED on the HEAD driver: 23 x "error: PARSE". GREEN: equal
+      byte for byte. The five inexact lines were taken from the output and checked by hand against the constants
+      (comment in the .cmd); the other 18 were written by hand before the run.
+23:29 Julia slice B testset: RED against a shared object with the slice A gfunc.c only (1 errored: undefined symbol
+      adf_adele_exp); GREEN 4 of 4 (and the slice A testset 7 of 7).

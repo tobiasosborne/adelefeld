@@ -83,6 +83,8 @@ that the one chosen is unambiguous.
 | `unitof` | one: an adele | the idele of an adele that certifies one |
 | `valuation` | two: an idele and a prime | `v_p` of the content |
 | `abs` | two: an idele and a place | `abs(x_p)_p` at a prime, `abs(x_inf)` at `real` |
+| `root` | two or three: a rational, adele or idele; a degree; optionally a sign | the root at all places, the rational branch (SPEC 9.3.3; below) |
+| `exp`, `sin`, `sinh`, `cos`, `cosh` | one: a rational or adele | the series at all places, finite part exactly 0 (SPEC 9.3.2; below) |
 | `prec <bits>` | a setting | the precision of the real coordinate, 1 to `ADF_PRINT_EXP_MAX`, default 64 |
 | `digits <n>` | a setting | the digits of the real-ball printer, 1 to 1000000, default 20 (`ADF_DIGITS_DEFAULT`) |
 
@@ -507,3 +509,66 @@ parity of `s` is not fixed, the result is the hull `1 + 2 Z_2`: `powunit_at -1 w
 `2: 1 + O(2^1)`. `u` outside `1 + p Z_p` or `s` outside `Z_p` is `error: DOMAIN`; a ball that meets the domain and
 its complement is `error: NOT_DETERMINED`; `real` is `UNSUPPORTED` for both commands. The fixtures are
 `tests/driver/pow-values.cmd` and `pow-status.cmd`, with the reason of every expected line in a comment.
+
+### Roots at all places (1F.8)
+
+    root X with N
+    root X with N with SIGN
+
+The root of degree `N` of `X` at all places at once (SPEC 9.3.3 lines 636-646; `include/adelefeld/gfunc.h`;
+`docs/api-1f8.md` G1 to G4). `X` is a rational (`adf_rat_root`), an adele (`adf_adele_root`) or an idele
+(`adf_idele_root`), the two last at the setting `prec`; a finite ball, a unit coset, a class or a complex adele is
+`error: DOMAIN`. `N` is an integer from 0 to 2^64 - 1 (another value is `error: DOMAIN`). `SIGN` selects the branch:
+`1` (the default) is the non-negative root for even `N` and the only root for odd `N`; `-1` is the non-positive
+root for even `N`, in every coordinate. The result is the RATIONAL root, found by integer root tests of the
+numerator and the denominator; the command does not list the adelic roots (1 has continuum many):
+
+    root 1 with 2
+    1
+    root 1 with 2 with -1
+    -1
+    root 8 with 3
+    2
+    root 2 with 2
+    error: DOMAIN
+    root (4 ; 9/4) with 2 with -1
+    (-2 ; -3/2)
+    root (4 ; 4 * [1]) with 2
+    (2 ; 2 * [1])
+
+`error: DOMAIN` for a rational with no rational root (no adelic root exists either, Proposition 16), for a negative
+real coordinate with even `N`, for `N = 0`, for a sign other than `1` and `-1` (and `-1` with odd `N`, except for
+the zero, whose root is 0 for either sign). `N = 1` is the identity, the sign ignored. `error: NOT_DETERMINED` for
+an adele whose finite part is not exactly a rational (`root (4 ; 2 mod 4) with 2`: no prime of the modulus is
+examined), for a real coordinate that meets both signs with even `N`, and for an idele of finite precision
+(`root (4 ; 4 * [1 mod 8]) with 2`: some unit outside the modulus has no square root). An idele with an exact unit
+follows the rational contract. The library reports the failing place (the real place, or none for the finite part);
+the driver prints the status only. The fixture is `tests/driver/gfunc-root.cmd`, with the reason of every expected
+line in a comment.
+
+### The series at all places (1F.8)
+
+    exp X
+    sin X
+    sinh X
+    cos X
+    cosh X
+
+The five factorial series at all places at once (SPEC 9.3.2 lines 588-596; `include/adelefeld/gfunc.h`;
+`docs/api-1f8.md` G5, G6). `X` is an adele, or a rational `q`, read as the adele `(q ; q)` at the setting `prec`;
+another type is `error: DOMAIN`. At a prime `p` the series converge exactly on `p^c Z_p` (`c = 2` at 2), so the
+common finite domain contains no ball of positive radius and no rational but 0: the commands apply to an adele whose
+finite part is exactly 0, with any real part. The result is the real function at `prec` bits and the exact constant
+`f(0)`, 1 for `exp`, `cos`, `cosh` and 0 for `sin`, `sinh`:
+
+    exp (0 ; 0)
+    (1 ; 1)
+    digits 10
+    exp (0.5 ; 0)
+    (1.648721271 +/- 3e-10 ; 1)
+
+An exact finite part other than 0 is `error: DOMAIN` (the library names the first prime outside the domain: 2 for
+`1`, 3 for `4`, 5 for `12`; the driver prints the status only), and so is `exp 1`. A finite part of positive radius
+is `error: NOT_DETERMINED`, without a look at the primes of its modulus (`exp (0 ; 0 mod 4)`). A real part that arb
+cannot evaluate is `error: NOT_DETERMINED` (`exp (1e300 ; 0)`), unless the finite part is `DOMAIN`, which is the
+larger status. The fixture is `tests/driver/gfunc-series.cmd`.
