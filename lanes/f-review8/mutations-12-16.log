@@ -1,0 +1,11 @@
+{"fault": "early_status_always_OK", "test": "test_lpow", "exit": 0, "counts": [9, 2760383, 0, 0]}
+{"fault": "early_status_always_OK", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "early_status_always_OK", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}
+{"fault": "seed_mod_p_minus1", "test": "test_lpow", "exit": 1, "counts": [9, 2627722, 210559, 5]}
+{"fault": "seed_mod_p_minus1", "test": "test_lroot", "exit": 1, "counts": [10, 1308401, 39228, 6]}
+{"fault": "seed_mod_p_minus1", "test": "test_rfunc_prime", "exit": -11, "counts": null}
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/f-review8/lanes/f-review8/mutations.py", line 85, in <module>
+    assert text.count(old) == 1, (old, text.count(old))
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('if (st == ADF_OK) adf_lball_set(y, res);', 2)

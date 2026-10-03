@@ -1,0 +1,12 @@
+{"fault": "R_drop_A_beta", "test": "test_lpow", "exit": 1, "counts": [9, 2759437, 4875, 2]}
+{"fault": "R_drop_A_beta", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "R_drop_A_beta", "test": "test_rfunc_prime", "exit": 1, "counts": [15, 522217, 1, 1]}
+{"fault": "R_drop_B_alpha", "test": "test_lpow", "exit": 1, "counts": [9, 2758547, 4213, 2]}
+{"fault": "R_drop_B_alpha", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "R_drop_B_alpha", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}
+{"fault": "R_drop_A_B_65537", "test": "test_lpow", "exit": 0, "counts": [9, 2760383, 0, 0]}
+{"fault": "R_drop_A_B_65537", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "R_drop_A_B_65537", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}
+{"fault": "hull_one_negative_sign", "test": "test_lpow", "exit": 1, "counts": [9, 2760383, 30, 1]}
+{"fault": "hull_one_negative_sign", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "hull_one_negative_sign", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}

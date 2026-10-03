@@ -1,0 +1,5 @@
+fn=powrat p=18446744073709551557 N=1000 ball=1 compiler=13.3.0 flags=-std=gnu11,-O2,-g FLINT=3.0.1 GMP=6.3.0 cpu=0 threads=1 kind=call_rate warm_output=1 internal_allocating=1 seed=0 clock=CLOCK_MONOTONIC_RAW input_bits=65,2 trials=3
+trial=0 total=0.724549648 components=0.692342272 first=0.686499286 second=0.005842986 third=0.000000000 status=0 component_status=0 equal=1 output_bits=63998
+trial=1 total=0.661571460 components=0.665245123 first=0.659672159 second=0.005572964 third=0.000000000 status=0 component_status=0 equal=1 output_bits=63998
+trial=2 total=0.658162587 components=0.678455945 first=0.672362115 second=0.006093830 third=0.000000000 status=0 component_status=0 equal=1 output_bits=63998
+ROW powrat 18446744073709551557 1000 ball 0.658162587 0.661571460 0.724549648 0.665245123 0.678455945 0.692342272 0.975113 0 1365396

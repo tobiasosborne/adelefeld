@@ -1,0 +1,4 @@
+phase=total fn=powunit p=18446744073709551557 N=10000 ball=1 cpu=0 threads=1 trials=1 compiler=13.3.0 flags=-std=gnu11,-O2,-g FLINT=3.0.1 GMP=6.3.0 kind=call_rate output_reused=1 internal_allocating=1 seed=0 clock=CLOCK_MONOTONIC_RAW input_bits=64,2
+INSTR powunit 18446744073709551557 10000 ball 103.417689118 103.417622837 0.109779076 0.002914162 103.304929599
+completed phase=total seconds=103.417689118 status=0 first=0.000000000 second=0.000000000 third=0.000000000
+PHASE powunit 18446744073709551557 10000 ball total 103.417689118 valid=1 output_bits=128 checksum=326821

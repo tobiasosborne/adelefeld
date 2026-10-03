@@ -1,0 +1,11 @@
+P1 exact: 3^2=9 !=4; (-2)^2=4; residues at 5: 2,3
+P1 injectivity cases=5760 failures=0 precision=exact_cyclic_group
+P2 point comparisons=43200 tightness_pairs=8640 failures=0 precision=exact_Fraction
+P2 witness [{"p": 3, "n": 3, "e": -2, "j": -1, "M": -1, "Eprime": 3, "x": "1/27", "x1": "64/27", "y": "9", "y1": "9/16"}]
+P3 precision inequalities=89950 exceptional_2adic=3280 failures=0 precision=exact_integers
+P5 unions=2112 fixed_sign_missed_classes=44 full_hulls=48 cosets=1592 failures=0 H=3,4,5,6
+P7 exponent_period comparisons=9636 failures=0 H=1..4 extra_period=H+1
+P3/P8 library endpoint outputs:
+OK 0 -2 0 1
+OK 0 -1 1 1
+OK 0 0 3 1

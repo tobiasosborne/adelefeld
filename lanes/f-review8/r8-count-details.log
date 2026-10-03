@@ -1,0 +1,3 @@
+R8 cases=15972 nonsolvable=13485 failures=0 precision=exact_Fp
+p=17 d=2 A=4 t=15 counted_word_products=8 powering_calls=11 claimed_bound=6
+digit_explicit_products=5 digit_power_calls=6 own_binary_power_reference_products=11 loop_bound=6

@@ -1,0 +1,6 @@
+powrat stored rows 6930 nprime1 1260 independently_enumerated_branch_images 4788
+lroot generated scaled rows 250 source lines 72-75; proof scaling, not new enumeration
+powrat_exact rows 3024
+powunit rows 4352
+Julia and driver certificates: 6520516^2 mod 5^10= 6 379^3 mod 2^10= 3 516 mod 5^4= 516
+N-D15 literal exact-image counterexample: actual_count 9 returned_count 27 precision=3^4 extra_point=4

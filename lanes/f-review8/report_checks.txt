@@ -1,0 +1,24 @@
+## Fault tests and assertions
+
+The final fault table reports failed checks over completed checks, not merely exit status.
+A positive failed-check count means exit 1. Zero means exit 0. The two SIGSEGV cells have
+13 and 11 failed assertions before exit -11; their runners do not reach a summary.
+The original programs have no crash. There are 16 final faults and 48 final test runs.
+An earlier one-sign approximation adds 3 superseded runs, and baseline adds 3 runs:
+54 actual test executions, 0 test timeouts. The final one-sign fault computes the exact
+odd-parity component through principal() with exponent ball 1+2 Z_2.
+
+The first four faults perturb separately e'j, M-m, v_p(n') and v_p(e') in E'. Two pairs
+have the same algebraic effect; their equal counts are expected. The three R faults omit
+A+beta, B+alpha and A+B respectively; the last is restricted to 65537 to differ from the
+prior unconditional omission. K=N is tested in both powunit and the root implementation.
+The other faults alter zeta's order to d/q, exchange CRT projectors, bypass early_status,
+compare the seed's power modulo p-1, shift a power centre, and shift an unsampled root lift.
+
+Build/run method: compile each selected test object once; compile the altered source into
+its own object; link that object before the unchanged archive. The archive is never rebuilt.
+Every compile/link uses timeout 150, -std=gnu11 -O2 -g, -Iinclude -Itests -Isrc, and links
+-lflint -lgmp -lm. Every test run is
+`timeout 150 lanes/f-review8/build/faults/<fault>/test_<lpow|lroot|rfunc_prime>`.
+Full source copies, compile/link logs, runner logs and results.jsonl are under build/faults/.
+No assertion or fixture was edited.

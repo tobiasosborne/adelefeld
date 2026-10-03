@@ -1,0 +1,12 @@
+{"fault": "E_ej_plus1", "test": "test_lpow", "exit": 1, "counts": [9, 2720829, 61763, 3]}
+{"fault": "E_ej_plus1", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "E_ej_plus1", "test": "test_rfunc_prime", "exit": 1, "counts": [15, 522217, 5, 1]}
+{"fault": "E_relative_minus1", "test": "test_lpow", "exit": 1, "counts": [9, 2760383, 80476, 5]}
+{"fault": "E_relative_minus1", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "E_relative_minus1", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}
+{"fault": "E_denominator_plus1", "test": "test_lpow", "exit": 1, "counts": [9, 2760383, 80476, 5]}
+{"fault": "E_denominator_plus1", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "E_denominator_plus1", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}
+{"fault": "E_numerator_plus1", "test": "test_lpow", "exit": 1, "counts": [9, 2720829, 61763, 3]}
+{"fault": "E_numerator_plus1", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "E_numerator_plus1", "test": "test_rfunc_prime", "exit": 1, "counts": [15, 522217, 5, 1]}

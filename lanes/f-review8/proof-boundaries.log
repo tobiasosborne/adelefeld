@@ -1,0 +1,2 @@
+P3 word-endpoint precision inequalities=11296 failures=0 precision=exact_integers
+P8 unsigned abs LONG_MIN=9223372036854775808; signed magnitude bound is <=2^63, not <2^63

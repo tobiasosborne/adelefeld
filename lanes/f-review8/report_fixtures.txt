@@ -1,0 +1,40 @@
+## Fixture generators and tests that can agree with a wrong library
+
+proto/lpow_checks.py computes Erel=r-s+v_p(e') and R from the displayed formulas, but
+then checks their predicted cosets against independent modular integer power sets.
+The 4788 unscaled powrat image witnesses and 3748 powunit image witnesses therefore
+do more than store the implementation's formula. The exact-input power centres come
+from modular integer root enumeration, not the log/exp construction. The 23 hull rows
+check both signs and full versus strict hulls modulo 16. The exact rational tests do
+integer root tests, but their integer implementation differs from the C fmpz_root API.
+No unscaled successful image row was found to rely only on a copied radius formula.
+
+The formula-only transformations are these:
+
+- test_lpow.c:222-250 derives runtime scaled expectations from the stored unscaled row
+  by e'j+E for j=-1,1,2, rather than enumerate each scaled image independently.
+- Its 1260 stored n'=1 rows get the expected result from pow_si, which verifies the
+  composition/delegation contract but cannot independently detect a shared pow_si defect.
+- proto/lroot_checks.py:72-75 adds 250 scaled unit rows with E+shift, shift=-1 or 1,
+  reusing the original centre and identifiers. These check that algebraic regression.
+
+P7(c) and the scaling proof justify these transformations; they do not make them new
+independent numerical oracles. A shared error in the transformation could survive them.
+
+powers_at_prime in test_rfunc_prime.c:1185 and :1221 computes want from powrat or powunit
+and compares the wrapper with that result. Those checks hold for many wrong local
+libraries. Their useful contract is projection, places, statuses, transactions and aliases.
+The exact-27 and independent 1+3 Z_3 expectations cover two additional mathematical cases.
+The root wrapper also has hand values 3 and 122/15622 at capped and image precisions,
+so it is not wholly dependent on local expectations. Its small-prime fixture tests detect
+some enumeration faults. The table records which actual faults each whole program catches.
+
+f-repair4's large-list test_lroot.c:610-620 proves all identifiers are distinct and valid,
+and checks shapes/exponents for all outputs. Its 16 powered-centre samples do not prove
+all lifts are correct. F8 demonstrates an incorrect canonical centre that passes them.
+
+Julia and driver fixtures were read without rerunning their prior campaigns. Their
+nontrivial displayed centres satisfy the independent equations 6520516^2=6 modulo 5^10
+and 379^3=3 modulo 2^10; 6520516 modulo 5^4 is 516. The ball radii in the driver comments
+are hand instances of the same formulas, so those radius lines guard against regression
+at the stated inputs. They are not an independent proof of the general formulas.
