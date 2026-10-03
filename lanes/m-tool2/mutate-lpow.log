@@ -1,0 +1,20 @@
+mutate: src/lpow.c: 297 mutants
+mutate: 297 mutants, 6 of them run (--limit 6, --seed 1)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (22.5 s)
+
+SURVIVED src/lpow.c:220:30 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/lpow.c
+  +++ b/src/lpow.c
+  @@ -218,5 +218,5 @@
+       if (st == ADF_OK) st = adf_lball_mul(t, l, sc);          /* s0 ell + p^(P + beta) Z_p, inside p^c Z_p */
+       if (st == ADF_OK) st = adf_lball_exp(z, t, K);           /* exponent min(K, P + beta) = K, or exact 1 */
+  -    if (st == ADF_OK && sign < 0) st = adf_lball_neg(z, z);
+  +    if (st == ADF_OK && sign <= 0) st = adf_lball_neg(z, z);
+       if (st == ADF_OK)
+       {
+
+
+mutate: 6 mutants in 120.4 s: 5 killed, 1 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check

@@ -66,6 +66,17 @@ tool itself crashes.
      that was edited, a mutant that is gone), an entry twice, a line that is not an entry, and an
      entry of the old line-number form each make it exit with 1 and name the entry.
 
+  12. test_san_decision() calls the function of mutate.py that decides whether a --make command
+     sets the make variable SAN itself, on commands that do and on commands that only hold the
+     three letters somewhere (`ASAN_OPTIONS=', `UBSAN_OPTIONS='): --san must add SAN=1 to the
+     environment of a command that does not set SAN, and must leave alone one that does.
+
+  13. test_a_build_that_does_not_work_fails() runs the tool over the example with a judge in
+     which the baseline builds and no mutant builds (a stale object in the tree, the shape of
+     the run of lanes/f-slice9).  Such a run must fail with a non-zero exit code and must not say
+     that every mutant was killed: a mutant that did not build was not tested, and when more than
+     half of them do not build the cause is the build command, not the mutants.
+
     python3 tools/mutate/selftest.py
     make mutate-selftest
 """
@@ -232,6 +243,62 @@ build/test_tiny: src/tiny.c src/tiny.h tests/test_tiny.c
 clean:
 \trm -rf build san.txt
 """
+
+# The judge of test_a_build_that_does_not_work_fails(), written into a copy of
+# tools/mutate/example/ (item 13).  It compiles src/example.c with -fsanitize=undefined and links
+# the test program without the sanitizer, so the link of a freshly compiled src/example.o fails
+# with an `undefined reference to __ubsan_handle_...'.  The self-test builds the copy with this
+# judge once, so the copy carries lib/example.o and build/example, both built with the sanitizer,
+# and copy_tree keeps the times of the files: the baseline finds everything up to date and runs
+# the program it was given, and a mutant, written into the copy after the copy was made, is
+# newer than lib/example.o, so make rebuilds it and the link fails for that mutant.  This is the
+# shape of the run of lanes/f-slice9 (lanes/f-slice9/mutate-run1-notcompiled.log), where the tree
+# carried a sanitized archive and the command did not build the mutants against it: 60 of 60
+# mutants did not compile, and the run was reported as passed with exit code 0.
+JUDGE_MAKEFILE = """# judge.mk: a judge in which the baseline builds and no mutant builds.  src/example.c is
+# compiled with the sanitizer and the test program is linked without it, so a fresh object does
+# not link; the objects already in the tree do, because they were linked with the sanitizer
+# (`make -f judge.mk stale' builds that pair once, and the self-test runs it before the run).
+CC     ?= cc
+CFLAGS ?= -std=c11 -O1 -g -Wall -Wextra -Werror
+CPPFLAGS ?= -Isrc -Iinclude
+UFLAGS  = -fsanitize=undefined
+TEST   ?= tests/test_weak.c
+BIN    = build/example
+OBJ    = lib/example.o
+
+.PHONY: check stale clean
+
+check: $(BIN)
+\t./$(BIN)
+
+stale:
+\tmkdir -p lib build
+\t$(CC) $(CPPFLAGS) $(CFLAGS) $(UFLAGS) -c src/example.c -o $(OBJ)
+\t$(CC) $(CPPFLAGS) $(CFLAGS) $(UFLAGS) $(TEST) $(OBJ) -o $(BIN)
+
+$(OBJ): src/example.c src/example.h
+\tmkdir -p lib
+\t$(CC) $(CPPFLAGS) $(CFLAGS) $(UFLAGS) -c src/example.c -o $(OBJ)
+
+$(BIN): $(OBJ) $(TEST)
+\tmkdir -p build
+\t$(CC) $(CPPFLAGS) $(CFLAGS) $(TEST) $(OBJ) -o $(BIN)
+
+clean:
+\trm -rf lib build
+"""
+
+
+def prepare_stale_judge(name):
+    """A copy of the example with judge.mk in it, built once with that judge (item 13).
+
+    Returns (directory, exit code of that build)."""
+    work = prepare(name)
+    _write(work, "judge.mk", JUDGE_MAKEFILE)
+    proc = subprocess.run(["make", "-s", "-f", "judge.mk", "stale"], cwd=work,
+                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    return work, proc.returncode
 
 
 def write_tiny_tree(name):
@@ -644,6 +711,107 @@ def test_san_mode():
     return ok, lines
 
 
+def test_san_decision():
+    """--san adds SAN=1 unless the --make command sets the make variable SAN itself (item 12).
+
+    The decision was made by looking for the three letters `SAN' anywhere in the command, so
+    `ASAN_OPTIONS=detect_leaks=0 make -s -j2 check' -- a command that does not build with the
+    sanitizers at all -- was taken for one that does, and the mutants were built without the
+    sanitizers against an archive that had been built with them: none of the 60 mutants of
+    lanes/f-slice9 compiled (lanes/f-slice9/mutate-run1-notcompiled.log).  So the question is
+    whether the command sets SAN, that is whether a word `SAN=...' stands at the start of the
+    command or after white space.  Returns (ok, lines)."""
+    mutate = _load_mutate()
+    cases = [("make check", False),
+             ("make -s -j2 check", False),
+             ("ASAN_OPTIONS=detect_leaks=0 make check", False),
+             ("ASAN_OPTIONS=detect_leaks=0 make -s -j2 check", False),
+             ("make check UBSAN_OPTIONS=x", False),
+             ("make check SANITIZER=1", False),
+             ("make -s -j2 check INV=1", False),
+             ("SAN=1 make check", True),
+             ("make check SAN=1", True),
+             ("make -s -j2 SAN=1 check", True),
+             ("SAN=0 make check", True)]
+    ok = True
+    lines = []
+    for command, want in cases:
+        try:
+            got = mutate.command_sets_san(command)
+        except AttributeError:
+            got = None
+        good = got == want
+        lines.append(("ok   " if good else "FAIL ") +
+                     ("the command %r sets SAN" % command if want else
+                      "the command %r does not set SAN" % command)
+                     + ("" if good else ": got %s, want %s" % (got, want)))
+        ok = ok and good
+    return ok, lines
+
+
+def test_a_build_that_does_not_work_fails():
+    """A run in which the mutants do not build fails, and says so (item 13).
+
+    A mutant that did not compile was not tested, so a run that reports such a mutant as killed
+    reports something that did not happen: the run of lanes/f-slice9 built 60 of 60 mutants
+    against a stale sanitized archive, and printed `passed: every mutant was killed' with exit
+    code 0.  So over a copy of the example with the judge of prepare_stale_judge() -- the baseline
+    builds, no mutant builds -- the run must
+
+      * end with a non-zero exit code,
+      * not print `every mutant was killed',
+      * report every mutant as not compiled,
+      * name the build command as the likely cause, and not the mutants.
+
+    A few not-compiled mutants among many are normal and do not fail a run (the strong run of
+    this self-test has 7 of 54), but their count stands in the last line.  Returns (ok, lines)."""
+    ok = True
+    lines = []
+    work, built = prepare_stale_judge("stale-judge")
+    lines.append(("ok   " if built == 0 else "FAIL ") + "the copy of the example is built once "
+                 "with the judge" + ("" if built == 0 else ": exit %d" % built))
+    if built != 0:
+        shutil.rmtree(work, ignore_errors=True)
+        return False, lines
+    ok = ok and True
+    scratch = os.path.join(SCRATCH, "scratch-stale-judge")
+    shutil.rmtree(scratch, ignore_errors=True)
+    judge = "make -s -f judge.mk check"
+    code, output = _run_tool(["--root", work, "--scratch", scratch, "--files", "src/example.c",
+                              "--limit", "6", "--timeout", "30", "--jobs", "2", "--make", judge,
+                              "--copy", "Makefile", "judge.mk", "include", "src", "tests", "lib",
+                              "build", "--equivalent", "/dev/null"])
+
+    def check(name, cond, detail=""):
+        lines.append(("ok   " if cond else "FAIL ") + name + ("" if cond else ": " + str(detail)))
+
+    check("the baseline of the judge builds", "the baseline passes" in output, output[-400:])
+    counts = _counts(output)
+    check("the run reports its counts", counts is not None, output[-400:])
+    if counts is None:
+        shutil.rmtree(scratch, ignore_errors=True)
+        shutil.rmtree(work, ignore_errors=True)
+        return False, lines
+    ok = ok and True
+    every = counts["total"] > 0 and counts["not compiled"] == counts["total"]
+    check("every mutant is reported as not compiled", every, counts)
+    ok = ok and every
+    check("the run does not print 'every mutant was killed'",
+          "every mutant was killed" not in output,
+          [l for l in output.splitlines() if "every mutant was killed" in l])
+    ok = ok and "every mutant was killed" not in output
+    failed = code != 0
+    check("the run ends with a non-zero exit code", failed, "exit %d" % code)
+    ok = ok and failed
+    blames = "did not build" in output and judge in output
+    check("the failure names the build command, not the mutants", blames,
+          output.splitlines()[-1] if output.splitlines() else "")
+    ok = ok and blames
+    shutil.rmtree(scratch, ignore_errors=True)
+    shutil.rmtree(work, ignore_errors=True)
+    return ok, lines
+
+
 def test_concurrent_runs_share_scratch_safely():
     """Two invocations of mutate.py, the same seed and files, started at the same time and
     sharing one --scratch path -- the ordinary case, since --scratch defaults to the same
@@ -824,6 +992,19 @@ def test_generation_rules():
     m = mutants("long f(long a, long b) { return my_add(a, b); }\n")
     check("swap_args of a 2-argument call exchanges both",
           has(m, "swap_args", old="my_add(a, b)", new="my_add(b, a)"),
+          [str(x) for x in m if x.kind == "swap_args"])
+
+    # swap_args is not offered when the two arguments are the same text. Exchanging them gives
+    # the original line back, so the mutant is the original source: it cannot be killed, it is
+    # always reported as survived, and it costs a run (lanes/f-repair3, line 121:
+    # `fmpz_mul(x2, x, x)` -> `fmpz_mul(x2, x, x)`).
+    m = mutants("void f(void) { fmpz_mul(x2, x, x); }\n")
+    check("swap_args of fmpz_mul(x2, x, x) is not offered at all",
+          not any(mm.kind == "swap_args" for mm in m),
+          [str(x) for x in m if x.kind == "swap_args"])
+    m = mutants("void f(void) { fmpz_mul(x2, x, y); }\n")
+    check("swap_args of fmpz_mul(x2, x, y) is still offered",
+          has(m, "swap_args", old="fmpz_mul(x2, x, y)", new="fmpz_mul(x2, y, x)"),
           [str(x) for x in m if x.kind == "swap_args"])
 
     # status: a bare `return ADF_X;` of a name status.h declares.
@@ -1015,6 +1196,10 @@ def main():
                       ("--keep judges as the ordinary run (item 7)", test_keep_judges_as_the_normal_run),
                       ("SIGTERM leaves nothing behind (item 8)", test_sigterm_leaves_nothing),
                       ("--san builds with SAN=1 (item 9)", test_san_mode),
+                      ("the decision whether a --make command sets SAN (item 12)",
+                       test_san_decision),
+                      ("a run in which no mutant builds fails (item 13)",
+                       test_a_build_that_does_not_work_fails),
                       ("a survivor is logged when it is found (adf-4lj)",
                        test_survivors_are_printed_as_they_are_found),
                       ("--make and a file outside src/ (adf-4lj)",

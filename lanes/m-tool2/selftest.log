@@ -1,0 +1,617 @@
+python3 tools/mutate/selftest.py
+/tmp/tmpgon4wun9/equivalent.txt:1: not an entry (expected FILE | KIND | LINE | 'old' -> 'new'): src/example.c:43:swap_args
+/tmp/tmpgon4wun9/equivalent.txt:1: not an entry (expected FILE | KIND | LINE | 'old' -> 'new'): src/example.c:43:swap_args
+== the generation rules (mutants_of() directly, no build)
+ok   a unary & is not an op mutant
+ok   a binary & is still an op mutant
+ok   a dereference/declarator * is not an op mutant
+ok   a binary * is still an op mutant
+ok   a unary - after return is not an op mutant
+ok   a binary - is still an op mutant
+ok   && is mutated only by logic, to ||
+ok   || is mutated only by logic, to &&
+ok   -> is never split into a - mutant
+ok   gcd_lcm renames my_gcd to my_lcm when my_lcm is declared
+ok   gcd_lcm drops the rename when nothing declares my_lcm
+ok   swap_args of a 3-argument call keeps the first argument fixed
+ok   swap_args of a 2-argument call exchanges both
+ok   swap_args of fmpz_mul(x2, x, x) is not offered at all
+ok   swap_args of fmpz_mul(x2, x, y) is still offered
+ok   status turns ADF_UNSUPPORTED into ADF_OK
+ok   status turns ADF_OK into ADF_DOMAIN
+ok   drop_call removes a bare call statement
+ok   drop_call excludes _init and _clear
+ok   call_swap renames my_add to my_sub when my_sub is declared
+ok   call_swap drops the rename when nothing declares my_sub
+ok   prec replaces the argument with 2
+ok   prec leaves the parameter declaration alone
+== the key of an equivalent entry (item 5)
+ok   the example has the two adf_example_gcd swaps
+ok   an entry of the new form is read to the key of the mutant
+ok   the entry excuses that mutant and not the other one
+ok   an entry of the old line-number form excuses nothing
+ok   the same mutant is one line further down after an edit above it
+ok   its key does not mention the line number
+ok   two identical statements give two mutants with the same text
+ok   the two of them are told apart by an occurrence number
+ok   an entry with an occurrence number names that one mutant
+ok   an entry with the occurrence number 1 names the first mutant
+ok   entry_text of every mutant is read back to its own key
+ok   an entry without a number matches neither mutant of a group of two
+== every entry of an equivalent file matches one mutant (item 11)
+ok   an entry that names one mutant passes
+ok   an entry that names no mutant fails and is named
+ok   the same entry twice fails
+ok   an entry of the old line-number form fails and is named
+ok   a line that is not an entry fails
+ok   --keys prints an entry for every mutant, and each reads back to the key of its mutant
+== the report of a compile error (item 6)
+ok   the run reports its counts
+ok   exactly one mutant is reported as not compiled (the one that does not build)
+ok   the report of it is the compiler's own diagnostic
+ok   the mutant that loops is timed out and the killed ones are killed
+ok   the run does not crash
+== --keep judges as the ordinary run (item 7)
+ok   --keep gives the same counts and the same exit status as the ordinary run
+ok   the ordinary run judges a mutant that does not build and one that loops
+ok   --keep reports the same survivors
+ok   --keep leaves one copy per mutant behind (12)
+== SIGTERM leaves nothing behind (item 8)
+ok   a mutant was being built when the signal was sent
+ok   the tool stops with a non-zero status
+ok   the scratch directory is removed after SIGTERM
+ok   no program of a mutant is left running
+== --san builds with SAN=1 (item 9)
+ok   a run without --san builds with SAN=0
+ok   a run with --san builds with SAN=1
+== the decision whether a --make command sets SAN (item 12)
+ok   the command 'make check' does not set SAN
+ok   the command 'make -s -j2 check' does not set SAN
+ok   the command 'ASAN_OPTIONS=detect_leaks=0 make check' does not set SAN
+ok   the command 'ASAN_OPTIONS=detect_leaks=0 make -s -j2 check' does not set SAN
+ok   the command 'make check UBSAN_OPTIONS=x' does not set SAN
+ok   the command 'make check SANITIZER=1' does not set SAN
+ok   the command 'make -s -j2 check INV=1' does not set SAN
+ok   the command 'SAN=1 make check' sets SAN
+ok   the command 'make check SAN=1' sets SAN
+ok   the command 'make -s -j2 SAN=1 check' sets SAN
+ok   the command 'SAN=0 make check' sets SAN
+== a run in which no mutant builds fails (item 13)
+ok   the copy of the example is built once with the judge
+ok   the baseline of the judge builds
+ok   the run reports its counts
+ok   every mutant is reported as not compiled
+ok   the run does not print 'every mutant was killed'
+ok   the run ends with a non-zero exit code
+ok   the failure names the build command, not the mutants
+== a survivor is logged when it is found (adf-4lj)
+ok   a survivor is in the log while the run goes on (1 found so far)
+ok   the run was still going when its first survivor was logged
+ok   the log keeps the survivors of the stopped run (1)
+ok   the stopped run is not reported as a finished run
+== --make and a file outside src/ (adf-4lj)
+ok   --make is the command that judges a mutant
+ok   the run reports the mutants of a file that is not under src/
+ok   the run reports its counts for that file
+== two concurrent runs sharing one --scratch path
+ok   neither concurrent run crashes
+ok   both runs report the same counts
+ok   both runs agree on which mutants survive
+== the weak test
+mutate: src/example.c: 54 mutants
+mutate: the baseline passes (0.1 s)
+
+NOT COMPILED src/example.c:130:5 drop_call: 'adf_example_box_set(&a, x);' -> '' (the statement is removed)
+  src/example.c:123:27: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+SURVIVED src/example.c:147:27 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -145,5 +145,5 @@
+       if (unit == 0)
+           return value;
+  -    return (value / unit) * unit;
+  +    return (value / unit) / unit;
+   }
+   
+
+
+SURVIVED src/example.c:57:11 cmp: '==' -> '!='
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -55,5 +55,5 @@
+       long g = adf_example_gcd(n, m);
+   
+  -    if (g == 0)
+  +    if (g != 0)
+           return 0;
+       return (n / g) * m;
+
+
+SURVIVED src/example.c:31:5 negate_if: 'while(m != 0)' -> 'while(!(m != 0))'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -29,5 +29,5 @@
+   adf_example_gcd(long n, long m)
+   {
+  -    while (m != 0)
+  +    while (!(m != 0))
+       {
+           long t = n % m;
+
+
+NOT COMPILED src/example.c:116:5 drop_call: 'adf_example_box_set(&a, x);' -> '' (the statement is removed)
+  src/example.c:109:26: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+SURVIVED src/example.c:147:19 op: '/' -> '*'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -145,5 +145,5 @@
+       if (unit == 0)
+           return value;
+  -    return (value / unit) * unit;
+  +    return (value * unit) * unit;
+   }
+   
+
+
+SURVIVED src/example.c:105:19 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -103,5 +103,5 @@
+   adf_example_box_sub(adf_example_box * out, const adf_example_box * a, const adf_example_box * b)
+   {
+  -    out->v = a->v - b->v;
+  +    out->v = a->v + b->v;
+   }
+   
+
+
+SURVIVED src/example.c:67:11 cmp: '==' -> '!='
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -65,5 +65,5 @@
+       if (n < 0)
+           return ADF_DOMAIN;
+  -    if (n == 0)
+  +    if (n != 0)
+           return ADF_UNSUPPORTED;
+       return ADF_OK;
+
+
+SURVIVED src/example.c:75:12 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -73,5 +73,5 @@
+   adf_example_box_init(adf_example_box * b)
+   {
+  -    b->v = 0;
+  +    b->v = 1;
+   }
+   
+
+
+SURVIVED src/example.c:65:5 negate_if: 'if(n < 0)' -> 'if(!(n < 0))'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -63,5 +63,5 @@
+   adf_example_status(long n)
+   {
+  -    if (n < 0)
+  +    if (!(n < 0))
+           return ADF_DOMAIN;
+       if (n == 0)
+
+
+SURVIVED src/example.c:25:20 op: '%' -> '/'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -23,5 +23,5 @@
+       if (h == 0)
+           return a == b;
+  -    return (a - b) % h == 0;
+  +    return (a - b) / h == 0;
+   }
+   
+
+
+EXCUSED src/example.c:43:12 swap_args: 'adf_example_gcd(n, m)' -> 'adf_example_gcd(m, n)'
+  adf_example_gcd is symmetric: gcd(n, m) = gcd(m, n) for every n, m >= 0, so the exchange computes the same value.
+
+SURVIVED src/example.c:118:5 call_swap: 'adf_example_box_add' -> 'adf_example_box_sub'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -116,5 +116,5 @@
+       adf_example_box_set(&a, x);
+       adf_example_box_set(&b, y);
+  -    adf_example_box_add(&out, &a, &b);
+  +    adf_example_box_sub(&out, &a, &b);
+       return adf_example_box_get(&out);
+   }
+
+
+SURVIVED src/example.c:145:5 negate_if: 'if(unit == 0)' -> 'if(!(unit == 0))'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -143,5 +143,5 @@
+   adf_example_scale(long value, long unit)
+   {
+  -    if (unit == 0)
+  +    if (!(unit == 0))
+           return value;
+       return (value / unit) * unit;
+
+
+SURVIVED src/example.c:132:5 drop_call: 'adf_example_box_sub(&out, &a, &b);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -130,5 +130,5 @@
+       adf_example_box_set(&a, x);
+       adf_example_box_set(&b, y);
+  -    adf_example_box_sub(&out, &a, &b);
+  +    
+       return adf_example_box_get(&out);
+   }
+
+
+SURVIVED src/example.c:69:12 status: 'ADF_OK' -> 'ADF_DOMAIN'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -67,5 +67,5 @@
+       if (n == 0)
+           return ADF_UNSUPPORTED;
+  -    return ADF_OK;
+  +    return ADF_DOMAIN;
+   }
+   
+
+
+SURVIVED src/example.c:67:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -65,5 +65,5 @@
+       if (n < 0)
+           return ADF_DOMAIN;
+  -    if (n == 0)
+  +    if (n == 1)
+           return ADF_UNSUPPORTED;
+       return ADF_OK;
+
+
+SURVIVED src/example.c:59:20 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -57,5 +57,5 @@
+       if (g == 0)
+           return 0;
+  -    return (n / g) * m;
+  +    return (n / g) + m;
+   }
+   
+
+
+SURVIVED src/example.c:145:14 cmp: '==' -> '!='
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -143,5 +143,5 @@
+   adf_example_scale(long value, long unit)
+   {
+  -    if (unit == 0)
+  +    if (unit != 0)
+           return value;
+       return (value / unit) * unit;
+
+
+SURVIVED src/example.c:59:20 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -57,5 +57,5 @@
+       if (g == 0)
+           return 0;
+  -    return (n / g) * m;
+  +    return (n / g) / m;
+   }
+   
+
+
+SURVIVED src/example.c:57:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -55,5 +55,5 @@
+       long g = adf_example_gcd(n, m);
+   
+  -    if (g == 0)
+  +    if (g == 1)
+           return 0;
+       return (n / g) * m;
+
+
+SURVIVED src/example.c:65:11 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -63,5 +63,5 @@
+   adf_example_status(long n)
+   {
+  -    if (n < 0)
+  +    if (n <= 0)
+           return ADF_DOMAIN;
+       if (n == 0)
+
+
+SURVIVED src/example.c:31:14 cmp: '!=' -> '=='
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -29,5 +29,5 @@
+   adf_example_gcd(long n, long m)
+   {
+  -    while (m != 0)
+  +    while (m == 0)
+       {
+           long t = n % m;
+
+
+NOT COMPILED src/example.c:131:5 drop_call: 'adf_example_box_set(&b, y);' -> '' (the statement is removed)
+  src/example.c:123:35: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+SURVIVED src/example.c:147:27 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -145,5 +145,5 @@
+       if (unit == 0)
+           return value;
+  -    return (value / unit) * unit;
+  +    return (value / unit) + unit;
+   }
+   
+
+
+SURVIVED src/example.c:34:9 drop_assign: 'n = m;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -32,5 +32,5 @@
+       {
+           long t = n % m;
+  -        n = m;
+  +        
+           m = t;
+       }
+
+
+SURVIVED src/example.c:67:5 negate_if: 'if(n == 0)' -> 'if(!(n == 0))'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -65,5 +65,5 @@
+       if (n < 0)
+           return ADF_DOMAIN;
+  -    if (n == 0)
+  +    if (!(n == 0))
+           return ADF_UNSUPPORTED;
+       return ADF_OK;
+
+
+SURVIVED src/example.c:132:5 call_swap: 'adf_example_box_sub' -> 'adf_example_box_add'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -130,5 +130,5 @@
+       adf_example_box_set(&a, x);
+       adf_example_box_set(&b, y);
+  -    adf_example_box_sub(&out, &a, &b);
+  +    adf_example_box_add(&out, &a, &b);
+       return adf_example_box_get(&out);
+   }
+
+
+SURVIVED src/example.c:68:16 status: 'ADF_UNSUPPORTED' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -66,5 +66,5 @@
+           return ADF_DOMAIN;
+       if (n == 0)
+  -        return ADF_UNSUPPORTED;
+  +        return ADF_OK;
+       return ADF_OK;
+   }
+
+
+SURVIVED src/example.c:58:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -56,5 +56,5 @@
+   
+       if (g == 0)
+  -        return 0;
+  +        return 1;
+       return (n / g) * m;
+   }
+
+
+SURVIVED src/example.c:99:19 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -97,5 +97,5 @@
+   adf_example_box_add(adf_example_box * out, const adf_example_box * a, const adf_example_box * b)
+   {
+  -    out->v = a->v + b->v;
+  +    out->v = a->v - b->v;
+   }
+   
+
+
+SURVIVED src/example.c:118:5 drop_call: 'adf_example_box_add(&out, &a, &b);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -116,5 +116,5 @@
+       adf_example_box_set(&a, x);
+       adf_example_box_set(&b, y);
+  -    adf_example_box_add(&out, &a, &b);
+  +    
+       return adf_example_box_get(&out);
+   }
+
+
+EXCUSED src/example.c:118:5 swap_args: 'adf_example_box_add(&out, &a, &b)' -> 'adf_example_box_add(&out, &b, &a)'
+  adf_example_box_add is a commutative sum: exchanging its two non-output arguments computes the same value.
+
+SURVIVED src/example.c:65:13 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -63,5 +63,5 @@
+   adf_example_status(long n)
+   {
+  -    if (n < 0)
+  +    if (n < 1)
+           return ADF_DOMAIN;
+       if (n == 0)
+
+
+NOT COMPILED src/example.c:55:14 gcd_lcm: 'adf_example_gcd' -> 'adf_example_lcm'
+  src/example.c:53:1: error: infinite recursion detected [-Werror=infinite-recursion]
+
+NOT COMPILED src/example.c:153:37 prec: 'prec' -> '2'
+  src/example.c:151:36: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+SURVIVED src/example.c:66:16 status: 'ADF_DOMAIN' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -64,5 +64,5 @@
+   {
+       if (n < 0)
+  -        return ADF_DOMAIN;
+  +        return ADF_OK;
+       if (n == 0)
+           return ADF_UNSUPPORTED;
+
+
+SURVIVED src/example.c:81:12 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -79,5 +79,5 @@
+   adf_example_box_clear(adf_example_box * b)
+   {
+  -    b->v = 0;
+  +    b->v = 1;
+   }
+   
+
+
+EXCUSED src/example.c:55:14 swap_args: 'adf_example_gcd(n, m)' -> 'adf_example_gcd(m, n)'
+  adf_example_gcd is symmetric: gcd(n, m) = gcd(m, n) for every n, m >= 0, so the exchange computes the same value.
+
+NOT COMPILED src/example.c:117:5 drop_call: 'adf_example_box_set(&b, y);' -> '' (the statement is removed)
+  src/example.c:109:34: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+SURVIVED src/example.c:57:5 negate_if: 'if(g == 0)' -> 'if(!(g == 0))'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -55,5 +55,5 @@
+       long g = adf_example_gcd(n, m);
+   
+  -    if (g == 0)
+  +    if (!(g == 0))
+           return 0;
+       return (n / g) * m;
+
+
+SURVIVED src/example.c:59:15 op: '/' -> '*'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -57,5 +57,5 @@
+       if (g == 0)
+           return 0;
+  -    return (n / g) * m;
+  +    return (n * g) * m;
+   }
+   
+
+
+SURVIVED src/example.c:145:17 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/example.c
+  +++ b/src/example.c
+  @@ -143,5 +143,5 @@
+   adf_example_scale(long value, long unit)
+   {
+  -    if (unit == 0)
+  +    if (unit == 1)
+           return value;
+       return (value / unit) * unit;
+
+
+NOT COMPILED src/example.c:35:9 drop_assign: 'm = t;' -> '' (the statement is removed)
+  src/example.c:33:14: error: unused variable ‘t’ [-Werror=unused-variable]
+
+mutate: 54 mutants in 4.2 s: 10 killed, 34 survived, 7 not compiled, 0 timed out, 3 excused
+mutate: FAILED: 34 mutant(s) survived; each one is a claim the tests do not check
+== the strong test
+mutate: src/example.c: 54 mutants
+mutate: the baseline passes (0.2 s)
+
+NOT COMPILED src/example.c:130:5 drop_call: 'adf_example_box_set(&a, x);' -> '' (the statement is removed)
+  src/example.c:123:27: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+NOT COMPILED src/example.c:116:5 drop_call: 'adf_example_box_set(&a, x);' -> '' (the statement is removed)
+  src/example.c:109:26: error: unused parameter ‘x’ [-Werror=unused-parameter]
+
+EXCUSED src/example.c:43:12 swap_args: 'adf_example_gcd(n, m)' -> 'adf_example_gcd(m, n)'
+  adf_example_gcd is symmetric: gcd(n, m) = gcd(m, n) for every n, m >= 0, so the exchange computes the same value.
+
+NOT COMPILED src/example.c:131:5 drop_call: 'adf_example_box_set(&b, y);' -> '' (the statement is removed)
+  src/example.c:123:35: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+EXCUSED src/example.c:118:5 swap_args: 'adf_example_box_add(&out, &a, &b)' -> 'adf_example_box_add(&out, &b, &a)'
+  adf_example_box_add is a commutative sum: exchanging its two non-output arguments computes the same value.
+
+NOT COMPILED src/example.c:55:14 gcd_lcm: 'adf_example_gcd' -> 'adf_example_lcm'
+  src/example.c:53:1: error: infinite recursion detected [-Werror=infinite-recursion]
+
+NOT COMPILED src/example.c:153:37 prec: 'prec' -> '2'
+  src/example.c:151:36: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+TIMED OUT src/example.c:33:20 op: '%' -> '/'
+  the tests did not finish in 5 s
+
+EXCUSED src/example.c:55:14 swap_args: 'adf_example_gcd(n, m)' -> 'adf_example_gcd(m, n)'
+  adf_example_gcd is symmetric: gcd(n, m) = gcd(m, n) for every n, m >= 0, so the exchange computes the same value.
+
+NOT COMPILED src/example.c:117:5 drop_call: 'adf_example_box_set(&b, y);' -> '' (the statement is removed)
+  src/example.c:109:34: error: unused parameter ‘y’ [-Werror=unused-parameter]
+
+NOT COMPILED src/example.c:35:9 drop_assign: 'm = t;' -> '' (the statement is removed)
+  src/example.c:33:14: error: unused variable ‘t’ [-Werror=unused-variable]
+
+mutate: 54 mutants in 8.7 s: 43 killed, 0 survived, 7 not compiled, 1 timed out, 3 excused
+mutate: passed: every mutant that built was killed, or is excused in ../equivalent-strong.txt; 7 of 54 did not build
+selftest: passed: the weak test leaves a survivor, the strong test leaves none, and no process of a mutant is left

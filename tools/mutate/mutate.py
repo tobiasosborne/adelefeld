@@ -19,7 +19,10 @@ A mutant is one source file with one token changed. The mutations are:
     swap_args     two arguments of a call to a commutative-looking function exchanged. For a
                   call of 3 or more arguments the first argument is never one of the two: it is
                   treated as the FLINT-style output slot, so the mutant never tries to pass a
-                  `const` input where the output belongs (adf-obp)
+                  `const` input where the output belongs (adf-obp). No mutant is offered when
+                  the two arguments are the same text: exchanging them gives the original line
+                  back, so the mutant is the original source, it cannot be killed and it costs a
+                  run (`fmpz_mul(x2, x, x)`, lanes/f-repair3 line 121)
     status        a returned status constant: `ADF_OK` becomes `ADF_DOMAIN`, and any other
                   status constant (docs/conventions.md 3.1, `include/adelefeld/status.h`)
                   becomes `ADF_OK` — only in a bare `return ADF_X;`
@@ -50,12 +53,30 @@ reports the mutant as
     not compiled  the mutant does not build
     timed out     the tests do not finish in the time given
 
+A mutant that did not build was not tested, so a run never says that every mutant was killed
+when one of them did not build. A few not-compiled mutants among many are normal -- a mutant can
+be a type error, and the strong run of the self-test has 7 of 54 -- and the run then passes, with
+the count of the mutants that did not build in its last line. When more than half of them do not
+build the run fails with exit code 2 and a message that names the build command, because a build
+that fails for nearly every mutant is a build command that does not work and not a set of bad
+mutants (lanes/f-slice9: 60 of 60, reported as `passed: every mutant was killed' with exit 0,
+lanes/f-slice9/mutate-run1-notcompiled.log).
+
+The exit codes are 0 for a run in which nothing survived, 1 for a run with a survivor, and 2 for
+a run that cannot be judged: the unmutated tree does not pass, the scratch directory is in the
+wrong place, or more than half of the mutants did not build.
+
 `--keep` keeps the scratch copy of every mutant and changes nothing else: a mutant is judged
 exactly as it is without it (surface R2, where a kept copy was reported as killed whatever had
 happened). `--san` builds and runs every mutant with `SAN=1` in its environment, so that a
 mutant that only reads or writes out of bounds, or only leaks, is killed (issue adf-pf5); it
-roughly doubles the time of a run. `--keys` prints, for every mutant, the line of equivalent.txt that
-would excuse it (the reason is the word REASON), and runs nothing.
+roughly doubles the time of a run. `SAN=1` is added only when the `--make` command does not set
+the make variable `SAN` itself (a word `SAN=...` at the start of the command or after white
+space, `command_sets_san`); the letters in `ASAN_OPTIONS=detect_leaks=0` are not that variable,
+and a command holding them was here taken for one that builds with the sanitizers, so the mutants
+were built without them against an archive that had been built with them. `--keys` prints, for
+every mutant, the line of equivalent.txt that would excuse it (the reason is the word REASON),
+and runs nothing.
 
 The source tree is never written to: the copy is the only place a mutant exists. The tool
 fails if a mutant survives, unless tools/mutate/equivalent.txt lists it with a reason. A key of
@@ -657,8 +678,12 @@ def mutants_of(path, text, root="."):
                     a_s, a_e = args[i]
                     b_s, b_e = args[j]
                     a_text, b_text = text[a_s:a_e], text[b_s:b_e]
-                    if a_text.strip() and b_text.strip() and "(" not in a_text and \
-                            "(" not in b_text:
+                    # No mutant when the two arguments are the same text: exchanging them writes
+                    # the original line back, so the mutant is the original source. It can never
+                    # be killed, it is reported as survived, and it costs a run (lanes/f-repair3,
+                    # line 121: `fmpz_mul(x2, x, x)` -> `fmpz_mul(x2, x, x)`).
+                    if a_text.strip() and b_text.strip() and a_text.strip() != b_text.strip() \
+                            and "(" not in a_text and "(" not in b_text:
                         stripped = [text[s:e].strip() for s, e in args]
                         old_call = "%s(%s)" % (tok.text, ", ".join(stripped))
                         swapped = list(stripped)
@@ -909,6 +934,20 @@ def install_signal_handlers(remove_scratch):
             pass
 
 
+def command_sets_san(command):
+    """1 if the command sets the make variable SAN itself.
+
+    The question is whether a word `SAN=...' stands at the start of the command or after white
+    space, which is how a shell hands a make variable to make (`SAN=1 make check', `make check
+    SAN=1'). It is not whether the three letters occur somewhere: `ASAN_OPTIONS=detect_leaks=0
+    make -s -j2 check' holds them and sets no make variable at all, so a --san run with such a
+    command built every mutant without the sanitizers against an archive that had been built with
+    them, and none of the 60 mutants compiled (lanes/f-slice9/mutate-run1-notcompiled.log).
+    `UBSAN_OPTIONS=...' and `SANITIZER=...' are left alone for the same reason: `SAN' is a word
+    followed by `=', not a prefix of a longer name."""
+    return re.search(r"(?:^|\s)SAN\s*=", command) is not None
+
+
 def check_mutant(mutant, root, scratch, entries, command, timeout, number, env=None,
                  keep=False):
     """Build and run the tests with one mutant; return its status and a one-line reason.
@@ -1061,9 +1100,11 @@ def run_mutate(args, root, scratch):
     # --san puts SAN=1 into the environment of every command, so the Makefile's own
     # `SAN ?= 0` / `ifeq ($(SAN),1)` turns the sanitizers on (the Makefile is not changed for
     # this, and `make check SAN=1` is what the environment amounts to). A --make that sets SAN
-    # itself is left alone: the environment only says what is missing.
+    # itself is left alone: the environment only says what is missing. Whether the command sets
+    # it is asked of the command as a make variable (command_sets_san), not of the letters the
+    # command happens to hold.
     env = {}
-    if args.san and "SAN" not in args.command:
+    if args.san and not command_sets_san(args.command):
         env["SAN"] = "1"
     base = os.path.join(scratch, "baseline")
     copy_tree(root, args.copy, base)
@@ -1075,7 +1116,9 @@ def run_mutate(args, root, scratch):
         return 2
     shutil.rmtree(base, ignore_errors=True)
     if args.san:
-        print("mutate: every mutant is built and run with SAN=1")
+        # the command sets SAN itself in this case, so the tool says where SAN=1 comes from
+        print("mutate: every mutant is built and run with SAN=1" if env else
+              "mutate: every mutant is built and run by the --make command, which sets SAN itself")
     print("mutate: the baseline passes (%.1f s)" % (time.time() - start))
 
     def run(number):
@@ -1120,13 +1163,27 @@ def run_mutate(args, root, scratch):
     # The survivors, the ones that did not build and the ones that timed out are already in the
     # log: each was printed by report() as soon as it was judged. Only the counts are left.
     total = len(mutants)
+    not_compiled = counts["not compiled"]
     print("\nmutate: %d mutants in %.1f s: %d killed, %d survived, %d not compiled, %d timed out, "
           "%d excused" % (total, time.time() - start, counts["killed"], counts["survived"],
-                          counts["not compiled"], counts["timed out"], counts["excused"]))
+                          not_compiled, counts["timed out"], counts["excused"]))
     if survivors:
         print("mutate: FAILED: %d mutant(s) survived; each one is a claim the tests do not check"
               % len(survivors))
         return 1
+    if not_compiled * 2 > total:
+        # A mutant that did not build was not tested, so it cannot be counted as killed. A few
+        # are normal; more than half of them is a build command that does not work, and the
+        # cause is that command, not the mutants (lanes/f-slice9/mutate-run1-notcompiled.log:
+        # 60 of 60, and the run was reported as passed).
+        print("mutate: FAILED: %d of %d mutants did not build, so they were not tested; a build "
+              "that fails for this many of them is the build command and not the mutants: "
+              "--make '%s'" % (not_compiled, total, args.command))
+        return 2
+    if not_compiled:
+        print("mutate: passed: every mutant that built was killed, or is excused in %s; %d of %d "
+              "did not build" % (os.path.relpath(args.equivalent, root), not_compiled, total))
+        return 0
     print("mutate: passed: every mutant was killed, or is excused in %s"
           % os.path.relpath(args.equivalent, root))
     return 0
