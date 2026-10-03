@@ -1,0 +1,278 @@
+# f-review8
+
+## Findings
+
+F1. MINOR. P1's exact counterexample and its conclusion about seeds are false as written.
+The input is x=4 at 5, e/n=2/2. api-1f6.md:81-82 and lpow.h:55-56 call 3 a root of 4 and
+say that duplicate powered values prevent the seed from naming one value. In Q_5 the exact
+roots are 2 and -2. The residue of -2 is 3; the rational integer 3 has square 9, not 4.
+Both actual roots square to 4. A seed still selects a unique root and its unique powered
+value when two different seeds give the same value. Reduction avoids duplicate outputs and
+dependence on the representation of the fraction. It is sufficient for the bijection, but
+it is not necessary for a seed to be well defined. At a fixed odd p, injectivity holds
+exactly when gcd(e,gcd(n,p-1))=1; at 2 replace p-1 by 2. For example, 3/3 at 5 on x=1 is
+injective despite being unreduced. The implementation reduces correctly and does not rely
+on the false explanation. Reproduce with `timeout 180 python3 -B lanes/f-review8/proof_checks.py`:
+exact integers and finite cyclic groups; 5760 injectivity comparisons, 0 comparison failures.
+
+F2. MINOR. The header's bound on working precision is false.
+lpow.h:23-24 says that working precisions are bounded by K. At 5 take
+x=5^-30*(2+5^21 Z_5), e/n=2/3, seed=3, N=0. Then j=-10, E'=1, K=0,
+rel_r=20 and Nr=10. The library returns centre 52272049199934, valuation -20, exponent 0.
+Its intermediate root is centred at 43329840692803, valuation -10, exponent 10.
+Both need 20 relative digits. P3's actual formula is sufficient and correctly implemented.
+The absolute request N does not bound work independently of valuation: in the family
+j=-L, r=2L+1, e/n=2/3, N=0, the output and intermediate root need 2L relative digits.
+Reproduce with `timeout 30 lanes/f-review8/build/h < lanes/f-review8/working_precision.in`.
+Two OK calls; comparisons use exact parameter arithmetic and residues modulo 5^20.
+
+F3. MINOR. P8's strict numerator bound excludes an admitted endpoint.
+api-1f6.md:307 says |e'|<2^63. e=LONG_MIN, n=3 is reduced and has |e'|=2^63.
+The code uses unsigned magnitudes and a guarded product, so the endpoint is safe.
+At 5, x=1+5^3 Z_5, seed=1, N=3, it returns 1+5^3 Z_5 with OK.
+The proof should use <=2^63. Reproduce with
+`timeout 30 lanes/f-review8/build/h < lanes/f-review8/proof-inputs.in`, third line,
+and `timeout 30 python3 -B lanes/f-review8/proof_boundaries.py`.
+The latter checks 11296 exact integer precision inequalities, with 0 failures.
+
+F4. MINOR. Three endpoint arguments are omitted; the claims remain true.
+In P1 step 5, zero witnesses root existence but not existence of a negative rational power.
+For e'<0 use p^(n' l), with n' l>=N, as the nonzero domain witness. A p^k with n' not
+ dividing k still witnesses the complement. In P7(b) the base-congruence proof explicitly
+uses H>=c. At 2 and H=1 every power of every odd unit is odd, so the missing case is
+constant modulo 2. R8's eps_R formula needs the trivial-component convention at R=1:
+set A_R=t_R=1 and omit its inverse, as the code does. These arguments require no external
+source. P7's H=1 endpoint is included in the 9636 period comparisons of proof_checks.py.
+R=1 and q=2 with p=3 mod 4 are included in repro_r8's 15972 exact finite-field cases.
+
+F5. MINOR. R8 step 10 omits modular powering from its cost accounting.
+api-1f5.md:283-284 bounds the digit-loop word products by sum((a-b)q), without accounting
+for the two modular powering calls in each digit. At p=17,d=2,A=4, the loop has 5 explicit
+products and 6 powering calls. Its explicit-product bound 6 holds. An independently written
+binary-power reference needs 11 further products for those calls. The whole root routine
+has 8 explicit modular products and 11 powering calls, including setup and reconstruction.
+Those last totals are not a counterexample to the loop-only bound. The incomplete cost
+sentence needs the powering work as well: an own binary-power implementation costs
+O(sum((a-b)(q+log P))) word products, plus CRT setup and final checking.
+No numeric FLINT internal multiplication count is claimed.
+[source pending: FLINT 3.0.1 n_powmod2_ui_preinv implementation for its exact internal count]
+Reproduce with `timeout 180 python3 -B lanes/f-review8/r8_count_details.py`.
+Counters surround actual calls; all value comparisons are exact in F_p.
+
+F6. MAJOR test gap. Every reviewed C program passes a missing A+B term at p=65537.
+The fault drops that term only at this prime. The unconditional omission was already
+planted by f-slice9, so this is a different fault. At p=65537 take u=1+p Z_p,
+s=Z_p, N=2. The original returns 1+p Z_p; the mutant returns 1+p^2 Z_p.
+The exact input points u=65538 and s=1 give 65538, outside the mutant ball.
+A=1, B=0, N=2 are the first domain-allowed exponents that distinguish this fault.
+The mutant's consequence would be BLOCKER. This finding concerns missing test coverage,
+not an observed defect in the current library. There are no fixtures at 65537, and the
+word-prime identities use exact bases/exponents or cases where A+B is not needed.
+Reproduce with `timeout 180 python3 -B lanes/f-review8/reproduce_survivors.py`.
+Comparison precision is p^2; the witness is an exact integer power.
+
+F7. MAJOR test gap. Every reviewed C program passes a wrong powrat centre at p=65537.
+The fault adds p to a nonzero ball centre while keeping its valuation and exponent.
+Take x=1+p^2 Z_p, e/n=1/2, seed=1, N=2. The original centre is 1 and the mutant centre
+is 65538. The input point 1 has root 1, which the mutant excludes modulo p^2.
+n'=2 and two relative output digits are the first parameters that lose a point under this
+fault. At one digit the shifted representative already violates canonical form.
+The mutant's consequence would be BLOCKER. The local tests have no nontrivial 65537
+power rows. powers_at_prime obtains most expected answers from the same local routine,
+so those wrapper equalities do not certify its centre or radius. A separate hand assertion
+for the exact value 27 does not cover this prime or ball case.
+Reproduce with `timeout 180 python3 -B lanes/f-review8/reproduce_survivors.py`.
+
+F8. MAJOR test gap. The large all-branch test passes an incorrect unsampled root lift.
+The fault adds p to the nonzero result centre only for p=65537 and seed=42.
+At x=1, n=65536, N=20, the f-repair4 test checks every identifier, ordering, canonical
+shape and exponent, but raises only 16 sampled roots to n. Seed 42 is not sampled.
+All three programs pass. At N=2 the original seed-42 centre is 3467431638; the mutant
+centre is 3467497175, whose 65536-th power is 511319675 modulo p^2, not 1.
+A smaller reproducer uses x=1764+p^2 Z_p, n=2, seed=42, N=2. Its exact point 1764 has
+root 42. The mutant returns 65579+p^2 Z_p and excludes 42.
+The mutant's consequence would be BLOCKER. A valid identifier, canonical centre and
+correct exponent do not prove the branch's centre is correct.
+Reproduce with `timeout 30 python3 -B lanes/f-review8/survivor_minimal.py` and
+`timeout 180 python3 -B lanes/f-review8/reproduce_survivors.py`. Precision is p^2.
+
+F9. MINOR test gap. early_status always OK passes all three C programs.
+At 3, x=-2 exact, n=2, N=2^60+1, the original calls identifiers 0 times before LIMIT;
+the faulty version calls it 1 time. Both leave len=-1 and return LIMIT.
+The test's 2-second bound cannot detect one inexpensive enumeration. This does not
+repeat the known false order sentence: it records the requested fault's survival and
+shows what the existing timing assertion fails to certify. Reproduce with
+`timeout 180 python3 -B lanes/f-review8/early_probe_build.py`.
+Two instrumented builds and two calls, both exit 0; counts are exact, not timings.
+
+## Findings against the specification
+
+F10. MINOR wording. N-D15 calls min(N,R) the exact image, which is false when N<R.
+At 3 take u=1+9 Z_3, s=1 exact, N=1. The image is 1+9 Z_3, while the library returns
+1+3 Z_3. Modulo 3^4 they contain 9 and 27 residues respectively. The extra point 4 is
+in the returned ball and outside the image. N-D14 and the detailed header correctly
+specify an enclosure at N. No specification file was changed.
+Reproduce with `timeout 30 lanes/f-review8/build/h < lanes/f-review8/spec_precision.in`
+and `timeout 30 python3 -B lanes/f-review8/audit_fixtures.py`.
+
+## Statement-by-statement checks
+
+P1. Claim: after reduction, root-then-power labels each nonzero value uniquely and
+preserves rationality in both directions. Step 1: if a e'+k n'=1, the explicit inverse
+q -> q^a x^k has n'-th power x and e'-th power q. This proves both directions without
+counting roots and works for negative e'. Step 2 has F1. Step 3 gives rationality by the
+same formula, since x and q are nonzero rationals. Step 4 is the degree-one identity,
+including its pow_si statuses. Step 5 gives the exact-zero cases and a mixed zero ball;
+F4 supplies its negative-power witness. The 5760 group comparisons would fail if the
+claimed injectivity criterion disagreed with the number of distinct powered roots.
+All comparisons are exact, without p-adic truncation.
+
+P2. Claim: the guarded branch power image is exactly b^e'+p^E' Z_p.
+Step 1: write the root image as b(1+p^(r-s) Z_p). Steps 2 and 3: log maps its relative
+factor onto p^(r-s) Z_p; multiplying by nonzero e' maps that onto
+p^(r-s+v_p(e')) Z_p; exp maps it onto 1+p^(r-s+v_p(e')) Z_p.
+The strong guard gives r-s>=c. Scaling by b^e' adds e'j to difference valuations.
+Negative e' is a nonzero scalar with the same valuation rule; inversion of a unit
+preserves relative precision. Negative j changes only the last scaling.
+Step 4 repeats these bijections from the input factor a(1+p^r Z_p).
+p cannot divide both reduced e' and n'. Unreduced simultaneous divisibility is removed
+before this statement applies. Step 5 follows by ball nesting and constant valuation.
+Step 6 applies the same containment to the exact point of an irrational branch.
+For exactness, the points b^e' and b^e'+p^E' belong to the image: reverse the bijections
+to attain each. Their difference has valuation E', ruling out exponent E'+1.
+The program checks 43200 exact Fraction point comparisons and 8640 tightness pairs.
+Example: p=3,n'=3,e'=-2,j=-1,M=-1,E'=3. Roots 1/3 and 4/3 give input points
+1/27 and 64/27, outputs 9 and 9/16. Their difference has valuation 3.
+A case fails if an input difference is below M, an output difference is below E',
+or the tightness pair's difference valuation differs from E'. No truncation is used.
+
+P3. Claim: rel_r=max(1,K-e'j-v_p(e')) suffices for every branch centre that succeeds.
+Step 1: K<=E' implies rel_r<=r-s for a ball input, so the coarse root ball contains the
+whole root image. For an exact input it contains the selected point, or is exact.
+Step 2: integer powers add v_p(e') relative digits. At 2 with rel_r=1 and even e',
+they add one extra digit. This extra digit is harmless. An even power removes the
+unfixed sign of the coarse root ball. For odd e', rel_r=1 requests only one relative
+digit, so the larger root ball still suffices. Step 3: rel_r+v_p(e')>=K-e'j,
+with a strict inequality when the max selects 1 unnecessarily. Reducing that centre
+to K cannot lose an image point. Steps 4 and 5: P at K can be returned directly;
+at K=E' the root precision is r-s>=c, so the power gives the exact image.
+Step 6: K<=e'j permits the zero-centred ball after status/rationality checks.
+Large |e'| and very negative j affect valuations, not this inequality. Saturation cannot
+silently undercompute a successful centre: positive saturated e'j yields the zero ball;
+negative saturated e'j plus r-s+v_p(e') is still below the result exponent bound.
+Out-of-bound auxiliary requests fail transactionally rather than return a false centre.
+89950 small-parameter inequalities include 3280 exceptional 2-adic gains. Another
+11296 inequalities use word endpoints and large prime powers. All are exact integers.
+The two nontrivial library calls in working_precision.in have 20 relative output digits.
+A failed inequality or a successful result based on fewer relative digits would refute P3.
+F2 concerns the header's separate cost-bound sentence, not this sufficiency proof.
+
+P4. Claim: domain membership is membership in a product of two discs.
+Step 1: the product meets the domain exactly when both factors meet their coordinate
+ domains; it lies inside exactly when both lie inside. An offending outside coordinate
+paired with any point of the other factor proves noncontainment. A meeting point in each
+factor proves intersection. Thus DOMAIN wins when either misses, otherwise partial
+membership is NOT_DETERMINED. Steps 2 and 3: canonical exact values and nested or
+disjoint balls make overlap/containment exact. At 2 the base domain is all odd units.
+No log isometry on 1+2 Z_2 is used here. Original test_lpow's domain/status checks pass
+as part of its 2760383 checks. The proof uses exact set membership, not a sample test.
+
+P5. Claim: each fixed-sign image is the radius ball; changing sign/parity has the stated union or hull.
+Steps 1 and 2: the exact zero exponent and base 1 give 1; exact base -1 depends on parity.
+Step 3: sign multiplication preserves A. Log is bijective on the principal disc; the
+independent product of ell+p^A Z_p and s0+p^B Z_p fills the ball of radius R.
+If both centres are outside their error ideals, hold the centre of the factor whose
+linear term has minimum valuation fixed and vary the other. If only one centre is
+outside, hold it fixed and vary the centred-ideal factor. If both are in their ideals,
+fix one factor to p^A and vary the other. These cases prove both inclusions, including
+infinite alpha/beta and either exact input. Exp sends that product ball bijectively
+onto the stated unit coset. Step 4: at A=1 and even exponent, signs disappear, log
+principal parts range over 4 Z_2, and products fill 2^(2+min(beta,B)) Z_2.
+Steps 5 and 6: an available odd exponent maps each of the two signs and the principal
+disc bijectively; hence the full odd-unit image at A=1. Points 1 and -1 force hull
+exponent 1. Step 7: for sign -1 and B=0, even powers lie in 1+8 Z_2 and odd powers
+are 3 mod 4. Thus 5+8 Z_2 is missed, including exact base -1.
+Step 8 follows by nesting the ball at K over that exact image or smallest hull.
+2112 independently enumerated unions use H=3,4,5,6: 44 strict hulls, 48 full hulls,
+1592 radius cosets, and the remaining exact cases. A missing residue of a claimed
+coset, an extra residue in an exact image, failure to attain both signs, or any value
+5 mod 8 in a fixed-negative-sign B=0 image would fail the checks. Failures: 0.
+
+P6. Claim: alpha is an exact difference valuation in case P5(c), and centre precision is sufficient.
+Step 1: w0*u0 is in 1+p^c Z_p. The log series has its linear term at valuation
+v_p(w0*u0-1), and every later term has strictly greater valuation there. Thus the
+logarithm has that valuation. The subtraction u0-w0 used by the code differs by
+multiplication by the unit w0. At A=1 the public function takes a separate path;
+for exact -1 it handles the exact zero logarithm and parity before principal().
+Step 2: s0*ell is in p^c Z_p, so its exponential is 1 modulo p^K for K<=c.
+If s0=0 the centre is exactly that sign. Step 3: Log precision P=max(K-beta,c)
+produces exponent P or exact zero; multiplication by exact s0 produces exponent
+P+beta>=K. Exp at K then determines the required centre. If it is exact 1, adding
+p^K Z_p gives the prescribed ball. Step 4's max(K,c)+beta bound holds; F2 notes
+that the header's shorter bound by K does not. alpha.c checks 10 exact subtractions
+and their prescribed valuations against Log at 12 digits, plus the A=1 Log image
+at exponent 2. Failures: 0. Its Log comparisons are a component cross-check, not an
+independent log implementation; the series linear-term argument supplies the proof.
+
+P7. Claim: the enumerated finite residues exhaust the promised output residues.
+Step 1: C(k,i)=(k/i)C(k-1,i-1) gives nonlinear term valuation at least
+v_p(k)-v_p(i)+i e. For i>=2, (i-1)e>v_p(i) on the principal disc. The linear
+term is the unique minimum for unit t, proving the equality witness. Negative powers
+follow by unit inversion. h>=c and h+s>=r make the modular root test independent of
+representatives. For exact input, a solution modulo p^(h+s) lifts without changing
+its p^h residue: log of the residual ratio can be divided by n' into p^h Z_p.
+Distinct roots in one branch cannot differ below h, by the same power estimate.
+Step 2: changing s by p^k changes the principal exponential by valuation >=k+c;
+at 2, k>=1 also fixes parity. Every Z_p residue modulo p^k has an integer
+representative. The exponent ball has exactly the residues s0+p^B t for
+0<=t<p^max(0,k-B). This proves H' suffices, without assuming finite-grid evidence
+proves an infinite set equality. Exact rational exponents reduce modulo p^k; negative
+integers use their nonnegative representatives. F4 handles H=1 at 2.
+Step 3 is exact valuation scaling. Step 4 corrects a root modulo p^(c+s) by the
+principal residual exponential; a missing valid seed is therefore DOMAIN.
+The oracle's h=r-s+1+v_p(e') is more than sufficient for its power comparison.
+9636 comparisons of the prescribed exponent period with the larger period H+1
+use H=1..4 and p=2,3,5,7. Any difference of their finite image sets fails. Failures: 0.
+
+P8. Claim: limits cannot overflow, failures preserve outputs, aliases are supported,
+and named-place wrappers preserve the local contract. Sentence 1: bounded input
+M-m and s fit signed words; when INF is not absorbed the sum lies between -2^63 and 2^63-2 before clamping, and unsigned magnitude division guards the product. K and each stored
+valuation are checked. F3 corrects the strict LONG_MIN bound. Sentence 2: each
+component enforces its own power limits, and the known-centre shortcuts skip reduction
+powers. Sentence 3: commits follow every possible failure; the zero-input route
+composes two transactional routines. No read follows a commit, so each stated alias
+is valid. Inputs aliased to each other still denote independent sets.
+Sentence 4: membership is checked before local evaluation; copied components and
+temporary partial balls preserve outputs on failure and where on success.
+F2 identifies the separate header sentence the code does not keep. No failure of
+transaction or aliasing was found. The selected tests' baseline checks cover these
+branches; no repetition of f-review7's aliasing or driver campaigns was performed.
+
+R8. Claim: CRT computes one d-th root, and a primitive d-th root of unity enumerates all branches.
+Steps 1 and 2: ord(g^h)=d; t0*zeta^i are d distinct roots. The kernel of the d-th
+power map, or the degree bound, proves completeness. Sorting preserves that set.
+Step 3: the Q=q^v_q(P) for q|d, and R=P/product(Q), are pairwise coprime. Each
+CRT exponent is 1 at its component and 0 at all others. Their sum is 1 modulo P,
+so the powered components multiply to A. F4 supplies the trivial R=1 component.
+Step 4: gcd(d,R)=1 permits its inverse. Step 5: the q-primary exponent k is
+ divisible by q^b because A is a d-th power and b=v_q(d)<=v_q(P).
+Step 6: start with b zero digits; subtract known lower digits and raise to
+q^(a-1-i). Higher digits vanish modulo Q and the next digit has q distinct candidates.
+Each inner search ends within q trials, and the outer loop has a-b iterations.
+Repeated prime factors in d change b, without changing the argument. At q=2 and
+p=3 mod 4, a=b=1 and the loop is empty; its component is 1.
+q<=d<=ADF_LROOT_BRANCH_MAX<2^20. D and Q divide P, so their products fit a word.
+The final qi update reaches Q, and each accumulated k stays below Q.
+Step 7: d/q^b is invertible modulo Q, and dividing k by q^b before multiplication
+recovers a root of A_q. Step 8: multiplying the root components gives d-th power A;
+the final certificate is checked before publishing. A nonsolvable public torsion
+request fails criterion's w^h=1 test as DOMAIN before identifiers. Its equivalence
+follows by writing w=g^k: w^h=1 iff d divides k. The internal NOT_DETERMINED
+certificate failure is not a claimed proof of nonexistence. Step 9 follows from R5:
+(n/d)e=1 mod h, so these d-th roots are exactly the n-th roots of w.
+Step 10 has F5. repro_r8 checks dth_root directly against integer power enumeration
+for every odd p<150, every d>=2 dividing p-1, and every nonzero A. It is a raw CRT
+algorithm check, not a repeat of f-review7's public branch-list campaign.
+15972 cases include 13485 nonsolvable equations; 0 differences. All comparisons are
+exact in F_p. A false existence decision, wrong returned d-th power, nontermination,
+or missing digit would fail. The count instrumentation repeats these 15972 cases once.

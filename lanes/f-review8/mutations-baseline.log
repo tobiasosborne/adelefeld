@@ -1,0 +1,3 @@
+{"fault": "baseline", "test": "test_lpow", "exit": 0, "counts": [9, 2760383, 0, 0]}
+{"fault": "baseline", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "baseline", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}

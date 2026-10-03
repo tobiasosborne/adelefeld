@@ -1,0 +1,59 @@
+## Cost
+
+P64 means 18446744073709551557. The machine reports Intel Core i7-1365U, x86_64,
+Linux 6.8.0-146. These are call rates, reused initialized output objects, internally
+allocating library calls, one FLINT thread, seed 0, CLOCK_MONOTONIC_RAW.
+Compiler: GCC 13.3.0, -std=gnu11 -O2 -g. FLINT 3.0.1; GMP 6.3.0.
+Calls are pinned to logical cpu 0 or 1; at most two calls run concurrently. Other sessions
+can load the laptop, so wall times are provisional. No conversion to cycles is made.
+
+powrat input: x=1+2p exact, or (1+2p)+p^(N+3) Z_p; exponent -5/2, seed 1.
+j=0 and v_p(-5)=0 at the measured primes, so Nr=N. Input centre bits are 3,18,65
+at the three primes. The named reference is one root_seed at N and one pow_si(-5).
+The output is a nonzero ball at N, with dense unit centre modulo p^N.
+
+powunit input: u=1+p exact, s=2 exact; or u=(1+p)+p^(N+3) Z_p and
+s=2+p^(N+2) Z_p. Input centre bits are 3,17,64 for u and 2 for s.
+R=N+3 and K=N on these ball inputs. The named reference is Log of the exact base
+centre at N, one product by the exact exponent centre, and exp at N. The result
+centre is the small integer (1+p)^2. The exact subtraction for alpha and final ball
+addition are outside that reference. This is the code's current component composition.
+
+The ratio is median total over median component sum, a REFERENCE upper-bound comparison,
+not a lower-bound ratio. Min/median/max are shown. A one-trial row repeats that one
+observation in all three columns; it supplies no estimate of timing spread.
+Three-trial rows execute the total and then the separate components in each trial.
+Five final one-trial rows instrument the named component calls inside the same public
+call, avoiding a second hundred-second computation. This changes only timing probes
+in a scratch lpow.c. Full modular output certificates run outside the timed region.
+The powrat certificate is y^2*x^5=1 modulo p^N and y=1 modulo p. Since 2 is a unit
+and the branch is fixed, it identifies the correct full residue. The powunit certificate
+compares the complete centre with (1+p)^2 modulo p^N. Other completed paired trials
+compare equal_set outside both timed regions. The same-call probes include their small
+clock-reading overhead in the numerator.
+
+0 of the 36 final median ratios exceed 1.5. There is no qualifying reviewed-code line
+to identify for those matched comparisons. The largest costs are in the named component
+calls, not extra composition work: root_seed at lpow.c:105 and exp at lpow.c:219.
+The dense-input exp Horner multiplication/reduction is lfunc.c:276-280; it accounts for
+most of the long rows. This is component cost, not a new composition-overhead finding.
+
+Eight raw first-trial ratios exceed 1.5, all at N=100. powrat at 3 gives 5.736/5.086
+(exact/ball), at 65537 gives 4.014/3.934. powunit at 3 gives 4.619/4.213, at 65537
+2.400/2.374. These are unmatched initial-state comparisons: cost.c:51-53 times the
+first total before cost.c:59-68 times the component sequence. The later trials have
+reused outputs and prior arithmetic calls. The run does not isolate initialization,
+clock changes or cache effects from wrapper overhead. These eight numbers cannot be
+assigned to a particular lpow.c line or used as an avoidable cost finding. They are
+retained in cold-ratios.log and in each row's maximum rather than silently dropped.
+
+Timeouts are part of this record. The initial 180-second supervisor ended during the
+second trial of the 65537 N=10000 ball row; one complete validated pair is retained.
+At P64,N=10000, a total-only phase completed in 112.001818964 seconds, but its subsequent
+component recomputation ran into the 150-second process cap. Two concurrent separate
+phases also hit that cap. An isolated component phase completed in 96.725110058 seconds
+with a full residue certificate. Those partial attempts are retained in phase logs.
+The final P64 exact row uses one fully certified same-call measurement instead; the
+incomplete first attempt is not counted as a completed comparative trial.
+There was no optimization or benchmark sweep between these measurements. The change
+of measurement method was required to complete the comparisons under the process cap.

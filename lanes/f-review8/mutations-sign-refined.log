@@ -1,0 +1,3 @@
+{"fault": "hull_one_negative_sign", "test": "test_lpow", "exit": 1, "counts": [9, 2760383, 30, 1]}
+{"fault": "hull_one_negative_sign", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "hull_one_negative_sign", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}

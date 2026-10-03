@@ -1,0 +1,4 @@
+phase=total fn=powrat p=18446744073709551557 N=10000 ball=0 cpu=0 threads=1 trials=1 compiler=13.3.0 flags=-std=gnu11,-O2,-g FLINT=3.0.1 GMP=6.3.0 kind=call_rate output_reused=1 internal_allocating=1 seed=0 clock=CLOCK_MONOTONIC_RAW input_bits=65,2
+INSTR powrat 18446744073709551557 10000 exact 107.684523965 107.684518407 107.585298730 0.099219677 0.000000000
+completed phase=total seconds=107.684523965 status=0 first=0.000000000 second=0.000000000 third=0.000000000
+PHASE powrat 18446744073709551557 10000 exact total 107.684523965 valid=1 output_bits=640000 checksum=102293

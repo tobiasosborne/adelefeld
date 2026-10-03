@@ -1,0 +1,12 @@
+{"fault": "powunit_K_N", "test": "test_lpow", "exit": 1, "counts": [9, 2754423, 11212, 2]}
+{"fault": "powunit_K_N", "test": "test_lroot", "exit": 0, "counts": [10, 1308401, 0, 0]}
+{"fault": "powunit_K_N", "test": "test_rfunc_prime", "exit": 1, "counts": [15, 522217, 1, 1]}
+{"fault": "root_K_N", "test": "test_lpow", "exit": 1, "counts": [9, 2760383, 3796, 1]}
+{"fault": "root_K_N", "test": "test_lroot", "exit": 1, "counts": [10, 1143862, 32153, 5]}
+{"fault": "root_K_N", "test": "test_rfunc_prime", "exit": -11, "counts": null}
+{"fault": "zeta_order_d_over_q", "test": "test_lpow", "exit": 0, "counts": [9, 2760383, 0, 0]}
+{"fault": "zeta_order_d_over_q", "test": "test_lroot", "exit": 1, "counts": [10, 1308402, 119841, 7]}
+{"fault": "zeta_order_d_over_q", "test": "test_rfunc_prime", "exit": 1, "counts": [15, 522217, 2296, 2]}
+{"fault": "CRT_swap_two_idempotents", "test": "test_lpow", "exit": 0, "counts": [9, 2760383, 0, 0]}
+{"fault": "CRT_swap_two_idempotents", "test": "test_lroot", "exit": 1, "counts": [10, 1303571, 501, 1]}
+{"fault": "CRT_swap_two_idempotents", "test": "test_rfunc_prime", "exit": 0, "counts": [15, 522217, 0, 0]}

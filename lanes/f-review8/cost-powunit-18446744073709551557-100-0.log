@@ -1,0 +1,8 @@
+fn=powunit p=18446744073709551557 N=100 ball=0 compiler=13.3.0 flags=-std=gnu11,-O2,-g FLINT=3.0.1 GMP=6.3.0 cpu=1 threads=1 kind=call_rate warm_output=1 internal_allocating=1 seed=0 clock=CLOCK_MONOTONIC_RAW input_bits=64,2 trials=3
+completed_total trial=0 seconds=0.001663653 status=0
+trial=0 total=0.001663653 components=0.001576801 first=0.000088941 second=0.000005897 third=0.001481963 status=0 component_status=0 equal=1 output_bits=128
+completed_total trial=1 seconds=0.001599832 status=0
+trial=1 total=0.001599832 components=0.001591160 first=0.000085530 second=0.000004074 third=0.001501556 status=0 component_status=0 equal=1 output_bits=128
+completed_total trial=2 seconds=0.001585965 status=0
+trial=2 total=0.001585965 components=0.001584223 first=0.000081564 second=0.000003989 third=0.001498670 status=0 component_status=0 equal=1 output_bits=128
+ROW powunit 18446744073709551557 100 exact 0.001585965 0.001599832 0.001663653 0.001576801 0.001584223 0.001591160 1.009853 0 980463

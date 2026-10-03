@@ -1,0 +1,3 @@
+fault_runs 54 final_faults 16 test_timeouts 0 baseline_runs 3
+survivors ['R_drop_A_B_65537', 'early_status_always_OK', 'powrat_wrong_centre_65537', 'root_wrong_unsampled_lift']
+completed_cost_rows 35 above_1_5 []
