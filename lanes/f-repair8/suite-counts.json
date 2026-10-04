@@ -1,0 +1,11 @@
+{
+  "C_programs": 79,
+  "C_tests": 865,
+  "C_checks": 66888560,
+  "failed_checks": 0,
+  "failed_tests": 0,
+  "mutate_selftest_ok_lines": 84,
+  "mutate_selftest_fail_lines": 0,
+  "memcheck_selftest_ok_lines": 16,
+  "memcheck_selftest_fail_lines": 0
+}

@@ -1,0 +1,150 @@
+{
+  "phase": "native",
+  "requests": 20000,
+  "differences": 0,
+  "first_differences": [],
+  "old": "requests=20000 large_N=6698 empty=2502 negative_n=1672 status0=4951 status7=7992 status10=7057\n",
+  "new": "requests=20000 large_N=6698 empty=2502 negative_n=1672 status0=4951 status7=7992 status10=7057\n",
+  "commands": [
+    {
+      "command": [
+        "timeout",
+        "170",
+        "cc",
+        "-Iinclude",
+        "-Isrc",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-c",
+        "lanes/f-repair8/build/differential/native-old/gfunc_log.c",
+        "-o",
+        "lanes/f-repair8/build/differential/native-old/gfunc_log.o"
+      ],
+      "exit": 0,
+      "wall": 0.163956,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "timeout",
+        "170",
+        "ar",
+        "r",
+        "lanes/f-repair8/build/differential/native-old/libadelefeld.a",
+        "lanes/f-repair8/build/differential/native-old/gfunc_log.o"
+      ],
+      "exit": 0,
+      "wall": 0.020314,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "timeout",
+        "170",
+        "cc",
+        "-Iinclude",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "lanes/f-repair8/differential.c",
+        "lanes/f-repair8/build/differential/native-old/libadelefeld.a",
+        "-lflint",
+        "-lgmp",
+        "-lm",
+        "-o",
+        "lanes/f-repair8/build/differential/native-old/compare"
+      ],
+      "exit": 0,
+      "wall": 0.17255,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "timeout",
+        "170",
+        "lanes/f-repair8/build/differential/native-old/compare",
+        "20000"
+      ],
+      "exit": 0,
+      "wall": 5.263865,
+      "stderr": "requests=20000 large_N=6698 empty=2502 negative_n=1672 status0=4951 status7=7992 status10=7057\n"
+    },
+    {
+      "command": [
+        "timeout",
+        "170",
+        "cc",
+        "-Iinclude",
+        "-Isrc",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-c",
+        "lanes/f-repair8/build/differential/native-new/gfunc_log.c",
+        "-o",
+        "lanes/f-repair8/build/differential/native-new/gfunc_log.o"
+      ],
+      "exit": 0,
+      "wall": 0.291866,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "timeout",
+        "170",
+        "ar",
+        "r",
+        "lanes/f-repair8/build/differential/native-new/libadelefeld.a",
+        "lanes/f-repair8/build/differential/native-new/gfunc_log.o"
+      ],
+      "exit": 0,
+      "wall": 0.02669,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "timeout",
+        "170",
+        "cc",
+        "-Iinclude",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "lanes/f-repair8/differential.c",
+        "lanes/f-repair8/build/differential/native-new/libadelefeld.a",
+        "-lflint",
+        "-lgmp",
+        "-lm",
+        "-o",
+        "lanes/f-repair8/build/differential/native-new/compare"
+      ],
+      "exit": 0,
+      "wall": 0.257725,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "timeout",
+        "170",
+        "lanes/f-repair8/build/differential/native-new/compare",
+        "20000"
+      ],
+      "exit": 0,
+      "wall": 0.10462,
+      "stderr": "requests=20000 large_N=6698 empty=2502 negative_n=1672 status0=4951 status7=7992 status10=7057\n"
+    }
+  ]
+}

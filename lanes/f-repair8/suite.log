@@ -1,0 +1,1 @@
+{"command": "timeout 1700 make -j2 check-all", "cwd": "/home/tobias/Projects/adelefeld-wt/f-repair8/lanes/f-repair8/build/suite", "exit": 0, "wall": 576.091388}

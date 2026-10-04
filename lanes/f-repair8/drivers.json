@@ -1,0 +1,52 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "cc",
+      "-Iinclude",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "tools/adf/adf.c",
+      "lanes/f-repair8/build/plain/libadelefeld.a",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-o",
+      "lanes/f-repair8/build/plain/adf"
+    ],
+    "exit": 0
+  },
+  {
+    "command": "timeout 60 lanes/f-repair8/build/plain/adf < tests/driver/gfunc-log-values.cmd",
+    "exit": 0,
+    "expected_exit": 0,
+    "lines": 12,
+    "differences": 0
+  },
+  {
+    "command": "timeout 60 lanes/f-repair8/build/plain/adf < tests/driver/gfunc-log-status.cmd",
+    "exit": 1,
+    "expected_exit": 1,
+    "lines": 7,
+    "differences": 0
+  },
+  {
+    "command": "timeout 60 lanes/f-repair8/build/plain/adf < tests/driver/gfunc-log-refine-values.cmd",
+    "exit": 0,
+    "expected_exit": 0,
+    "lines": 11,
+    "differences": 0
+  },
+  {
+    "command": "timeout 60 lanes/f-repair8/build/plain/adf < tests/driver/gfunc-log-refine-status.cmd",
+    "exit": 1,
+    "expected_exit": 1,
+    "lines": 7,
+    "differences": 0
+  }
+]

@@ -334,6 +334,9 @@ both exact signs and
 positive/negative content valuations. Its 20 complete H=5 images compare membership in both
 directions. large_prime_routes compares a restricted input at N=3, additivity at N=3 and the
 witness Log(1+p)=p mod p^2 at p=65537 and p=2^64-59. There is no enumeration at these primes.
+repair8_restricted_centres adds 2358 rows at p=2,3,5,7, k=1..3 with r'=1 and r'!=1,
+including 63 complete H=5 images and 2088 rows with c not congruent to +-1 mod p^k.
+Both the series oracle and the independent exponential-table oracle agree on every new row.
 
 ### G9 (working precision, limits and preservation)
 
@@ -421,9 +424,10 @@ Proof.
 3. The descriptor checks |m| and the rounded K, also for exact zero. A necessary compact
    power is checked by K<=2^26/bits(p), before forming it. Centre-free branches avoid it.
    This distinguishes exact-zero _at from finite rounding in _refine at extreme N.
-4. Known local refusals precede the aggregate test. If one is found, earlier sorted primes
-   are evaluated to detect an earlier actual working-power LIMIT as well. All their compact
-   powers already passed preflight. This preserves the first-prime tie rule. LIMIT outranks
+4. Known local refusals precede the aggregate test. If one is found, check the working exponent
+   at each earlier sorted prime, without evaluating a series or forming a modular power.
+   Steps 10-15 prove that these checks give exactly the earlier actual working-power LIMITs.
+   This preserves the first-prime tie rule, also when the aggregate is exceeded. LIMIT outranks
    every possible real status once the real precision check has passed.
 5. Charge the baseline by 2 bits(2)=4. For named 2 charge only (L_2-2) bits(2) in addition;
    for odd p charge L_p bits(p). Every charge is nonnegative. Compare L against the remaining
@@ -442,17 +446,55 @@ Proof.
 9. Real DOMAIN/NOT_DETERMINED with no finite failure names infinity. Success leaves where
    untouched. Whole-modulus failure leaves it untouched. All value writes are a final swap
    after both components succeed. The other output and input overlap rules are unchanged.
+10. Consider an earlier prime whose descriptor, exponent and compact bounds passed. The
+    evaluator's only remaining failure is LIMIT from W bits(p)>2^26. Its exact-zero,
+    unrestricted, K<=d and r'=c=1 shortcuts are decided directly by the descriptor. They
+    succeed without a working power. Otherwise K>d and the compact residue A is a p-unit.
+11. Put e(j)=floor(log_p(j)), J(K,h)=min{j>=1: j h-e(j)>=K}, T=J-1 and
+    W(K,h)=K+e(max(1,T)). These are exactly the evaluator's count and working exponent
+    (functions.md Propositions 7b and 8). For h>=d, J<=ceil(2K/(2h-1)); binary search
+    computes J using word integers. Here 0<K<=2^25 and 1<=h<K; 2K+2h-2<2^27 and
+    mid*h<=2K+h<2^27 throughout the search, so its arithmetic fits slong. Increasing h
+    cannot increase J, T or W. Thus if
+    W(K,d) bits(p)<=2^26 every possible branch succeeds and no centre arithmetic is needed.
+12. Write t=r'c=a/b with b prime to p. The compact residue A agrees with t modulo p^K.
+    If A=1 then v_p(t-1)>=K and the exact-unit shortcut succeeds. At odd p with t!=1
+    modulo p, the evaluator selects the powered route and checks W(K,1) before computing
+    A^(p-1). This refusal is independent of the powered residue or its eventual valuation.
+13. At odd p with t=1 modulo p, the evaluator instead uses h=v_p(A-1). If h<K then
+    h=v_p(t-1)=v_p(a-b), because b is a unit and A-t has valuation at least K. If the
+    latter valuation is at least K, it returns zero before the working-power test. Thus
+    the branch and its exact refusal are computed from a-b without constructing p^K.
+14. At 2, choose s=+1 when a-b is divisible by 4, and s=-1 otherwise. Since K>2,
+    this is the same sign as for A. The preceding argument applies to sA-1 and sa-b:
+    if v_2(sa-b)>=K the evaluator succeeds before its working-power test; otherwise that
+    valuation is its h. A zero difference is treated as valuation at least K. This also
+    covers A=2^K-1, whose signed difference has valuation K.
+15. For every earlier prime, the shortcuts and steps 11-14 therefore decide exactly OK
+    or LIMIT from comparisons, factor removals and the integer W formula. No log sum,
+    torsion power, compact power or CRT is needed. Choose the first earlier LIMIT, or the
+    known refusal if none exists. The status and canonical place equal full evaluation.
+
+For x=(2 ; 2 * [1]), N=1048577, the primes 3 through 47 have fitting working exponents.
+Adding 2^64-59 gives a known compact refusal there. The result is LIMIT with where=2^64-59,
+whether those fourteen primes are present, only 3 is present, or no earlier prime is present.
+Without 2^64-59, the fourteen-prime list exceeds the aggregate and leaves where untouched.
 
 Check: refinement_status_and_limits includes all shape errors, canonical repeats, the length
 ceiling, exact-zero rounding outside the exponent limit, positive exponent boundary versus
 aggregate refusal, local compact and working bounds, aggregate size, negative-real/prime
 precedence, earlier working/later compact ties, and real prec at its ceiling. Outputs are
 compared by fields and struct bytes on every failure, including NULL where calls.
+repair8_refinement_failures pins both baseline-charge boundary inputs, excessive real precision
+before either invalid list length, a positive-real finite refusal, an earlier working refusal after
+the aggregate is exceeded, and a main-phase refusal at 5 after success at 2.
+repair8_known_limit_cost requires the fifteen-prime refusal above within 1 s of CPU.
 
 ### G12 (implementation choices and proof scope)
 
 The six functions are proved by G7-G11 and IL1-IL8. The descriptor is private. Compact
-centres use only p^K; working precision is delegated to the proved local Log evaluator.
+centres use only p^K; admitted local values use the proved local Log evaluator.
+Known-refusal ties use its working-exponent formula without evaluating the value.
 The list and CRT limits follow the brief's selected recommendations. The implementation
 uses no copied helper from gfunc.c and adds no public local-component function.
 
@@ -461,7 +503,8 @@ refusals precede aggregate refusal; an aggregate refusal precedes uncomputed act
 working-power evaluation. The alternative is to evaluate every local centre before checking
 the aggregate, which can do substantial work for a request whose combined modulus is refused.
 If a known local refusal is present, earlier actual local refusals are still checked to keep
-canonical place ties. The header states this choice.
+canonical place ties, using only the descriptor and working-exponent checks of G11 steps 10-15.
+No local series, modular power or CRT work is done on this refusal path. The header states this choice.
 
 The driver uses space-separated primes, matching project, with none for the empty list.
 Comma-separated primes would require a second place-list grammar. The setting prec supplies
@@ -471,5 +514,7 @@ by the new driver commands; the existing lower-case log_at keeps its additive-se
 
 Avoidable costs: descriptor removals are repeated in preflight and evaluation; real wrapping
 copies the input/output balls; each prime has an independent local evaluation and sequential
-CRT step. No optimisation or cost bound beyond the explicit resource limits is claimed.
-The lane report records mutation survivors and the full-INV/LeakSanitizer environment blocks.
+CRT step on admitted requests. Refused requests use descriptor preflight and, for a known local
+refusal, integer working-exponent checks at earlier primes. No bound independent of input size
+is claimed for the factor removals or numerator differences.
+The implementation and repair reports record their mutation checks and environment limits.
