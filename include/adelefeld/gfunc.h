@@ -275,7 +275,12 @@ int adf_idele_log_abs_at(adf_sball_t y, adf_place_t *where,
    finite result (where=infinity). Shape checks precede evaluation; component
    failures combine by maximum with canonical place tie breaking. Values
    unchanged on any failure. Common contract and no cross-type aliasing apply.
-   Cost: n local evaluations at capped precision, integer CRT, one real log. */
+   Known local refusals precede the aggregate bound. Earlier prime ties are
+   decided from working exponents without series or modular powers. Otherwise
+   an aggregate refusal leaves where untouched before component evaluation.
+   Cost on admission: n local evaluations at capped precision, integer CRT,
+   one real log. A known refusal needs only descriptors, integer working
+   exponents and, near the bound, signed numerator differences. */
 int adf_idele_Log_refine(adf_adele_t y, adf_place_t *where,
                          const adf_idele_t x, const adf_place_t *primes,
                          slong n, slong N, slong prec);

@@ -3,6 +3,7 @@
    A wrong field, residue set, status, place, changed failed output, or missed endpoint fails. */
 #include <limits.h>
 #include <string.h>
+#include <time.h>
 #include <adelefeld.h>
 #include "support/jsonl.h"
 #define main gfunc_log_test_main
@@ -21,6 +22,29 @@ static void mk(adf_idele_t x, slong a, ulong b, slong c, ulong M)
     fmpq_set_si(x->r, a, b);
     fmpz_set_si(x->u.c, c); fmpz_set_ui(x->u.N, M);
     ADF_CHECK(adf_idele_is_canonical(x));
+}
+/* f-review13 F9: a later known refusal needs only earlier working-exponent checks.
+   Measure only the call, following repair6_early_limit_cost in test_lroot.c.
+   The old fifteen-prime call did not finish in 170 s; the guard is 1 s CPU. */
+ADF_TEST(repair8_known_limit_cost)
+{
+    const ulong values[]={3,5,7,11,13,17,19,23,29,31,37,41,43,47,UWORD_MAX-58};
+    adf_place_t ps[15], w=prime(97);
+    adf_idele_t x;
+    adf_adele_t y, before;
+    adf_idele_init(x); adf_adele_init(y); adf_adele_init(before);
+    mk(x,2,1,1,0);
+    arb_set_si(y->inf,5); fmpz_set_ui(y->fin.A,3); fmpz_set_ui(y->fin.H,11);
+    adf_adele_set(before,y);
+    for (size_t i=0;i<15;i++) ps[i]=prime(values[i]);
+    printf("repair8_known_limit_cost: starting fifteen-prime call\n"); fflush(stdout);
+    clock_t start=clock();
+    int st=adf_idele_Log_refine(y,&w,x,ps,15,1048577,64);
+    double sec=(double)(clock()-start)/CLOCKS_PER_SEC;
+    ADF_CHECK_MSG(st==ADF_LIMIT && sec<1.0,"known LIMIT: status=%d CPU=%.6f",st,sec);
+    ADF_CHECK(adf_place_equal(w,ps[14]) && adf_adele_identical(y,before));
+    printf("repair8_known_limit_cost: LIMIT where=%lu CPU=%.6f guard=1.0\n",values[14],sec);
+    adf_idele_clear(x); adf_adele_clear(y); adf_adele_clear(before);
 }
 ADF_TEST(conservative_Log)
 {
@@ -94,9 +118,9 @@ static void expected(adf_lball_t l, const jsonl_value *row, adf_place_t p)
     else ADF_CHECK(adf_lball_set_rat_ball(l,p,q,number(r,"exponent")) == ADF_OK);
     adf_rat_clear(q);
 }
-ADF_TEST(local_selection)
+static void check_local_selection(const char *path, const char *label)
 {
-    jsonl_file *f = vectors("tests/ref/vectors/f-slice11/local.jsonl");
+    jsonl_file *f = vectors(path);
     adf_idele_t x, original;
     adf_sball_t s;
     adf_lball_t e, l;
@@ -143,10 +167,43 @@ ADF_TEST(local_selection)
             adf_rat_clear(q); image_rows++;
         }
     }
-    printf("local_selection: %zu rows, %lu complete H=5 images, %lu memberships\n",
-           jsonl_count(f),image_rows,membership);
+    printf("%s: %zu rows, %lu complete H=5 images, %lu memberships\n",
+           label,jsonl_count(f),image_rows,membership);
     adf_idele_clear(x); adf_idele_clear(original); adf_sball_clear(s);
     adf_lball_clear(e); adf_lball_clear(l); jsonl_close(f);
+}
+ADF_TEST(local_selection)
+{
+    check_local_selection("tests/ref/vectors/f-slice11/local.jsonl", "local_selection");
+}
+ADF_TEST(repair8_restricted_centres)
+{
+    check_local_selection("tests/ref/vectors/f-repair8/local.jsonl", "repair8_restricted_centres");
+}
+
+/* f-review13 F1 and F5: literal nonzero centres and a real-place success sentinel. */
+ADF_TEST(repair8_literal_centres_and_where)
+{
+    adf_idele_t x;
+    adf_sball_t s;
+    adf_adele_t y;
+    adf_rat_t q;
+    adf_place_t w=prime(97), ps[]={prime(3)};
+    adf_idele_init(x); adf_sball_init(s); adf_adele_init(y); adf_rat_init(q);
+    mk(x,1,1,3,8); arb_one(x->inf);
+    ADF_CHECK(adf_idele_Log_at(s,&w,x,prime(2),3)==ADF_OK);
+    ADF_CHECK(!s->loc[0].exact && s->loc[0].N==3);
+    ADF_CHECK(adf_lball_get_center(q,&s->loc[0])==ADF_OK && fmpq_equal_si(q->q,4));
+    mk(x,1,1,2,9); arb_one(x->inf);
+    ADF_CHECK(adf_idele_Log_at(s,&w,x,prime(3),2)==ADF_OK);
+    ADF_CHECK(!s->loc[0].exact && s->loc[0].N==2);
+    ADF_CHECK(adf_lball_get_center(q,&s->loc[0])==ADF_OK && fmpq_equal_si(q->q,6));
+    ADF_CHECK(adf_idele_Log_refine(y,&w,x,ps,1,2,64)==ADF_OK);
+    ADF_CHECK(fmpz_equal_ui(y->fin.A,24) && fmpz_equal_ui(y->fin.H,36) && fmpz_is_one(y->fin.d));
+    mk(x,4,1,1,9);
+    ADF_CHECK(adf_idele_Log_at(s,&w,x,adf_place_inf(),64)==ADF_OK);
+    ADF_CHECK_MSG(adf_place_equal(w,prime(97)),"Log_at at infinity changed where on OK");
+    adf_idele_clear(x); adf_sball_clear(s); adf_adele_clear(y); adf_rat_clear(q);
 }
 
 ADF_TEST(real_selection)
@@ -518,6 +575,35 @@ ADF_TEST(refinement_status_and_limits)
     adf_place_t big[]={prime(UWORD_MAX-58)};
     mk(x,2,1,1,0); arb_set_si(x->inf,-2);
     fail_refine(y,x,big,1,ADF_LBALL_BITS_MAX/64+1,64,ADF_LIMIT,big[0],1,0);
+    adf_idele_clear(x); adf_adele_clear(y);
+}
+/* f-review13 F2-F4 and F6-F8: pin precedence, the baseline charge and failure state.
+   The F8 input passes both preflight bounds and fails in the main phase at the second prime. */
+ADF_TEST(repair8_refinement_failures)
+{
+    adf_idele_t x;
+    adf_adele_t y;
+    adf_place_t p2[]={prime(2)}, p3[]={prime(3)}, all[]={prime(2),prime(3),prime(5)};
+    adf_place_t mainphase[]={prime(2),prime(5)};
+    adf_idele_init(x); adf_adele_init(y);
+    arb_set_si(y->inf,5); fmpz_set_ui(y->fin.A,3); fmpz_set_ui(y->fin.H,11);
+    mk(x,1,1,1,0);
+    for (int a=0;a<2;a++)
+    {
+        fail_refine(y,x,NULL,-1,5,ADF_REAL_PREC_MAX+1,ADF_LIMIT,adf_place_inf(),1,a);
+        fail_refine(y,x,NULL,ADF_IDLOG_PLACES_MAX+1,5,ADF_REAL_PREC_MAX+1,
+                    ADF_LIMIT,adf_place_inf(),1,a);
+        fail_refine(y,x,p3,1,ADF_IDLOG_CRT_BITS_MAX/2-1,64,ADF_LIMIT,prime(97),0,a);
+        fail_refine(y,x,p2,1,ADF_IDLOG_CRT_BITS_MAX/2+1,64,ADF_LIMIT,prime(97),0,a);
+    }
+    mk(x,3,1,1,0); /* Valid positive real part: a finite failure must retain y. */
+    for (int a=0;a<2;a++)
+    {
+        fail_refine(y,x,p2,1,ADF_LBALL_BITS_MAX/2,64,ADF_LIMIT,prime(2),1,a);
+        fail_refine(y,x,all,3,ADF_LBALL_BITS_MAX/2,64,ADF_LIMIT,prime(2),1,a);
+    }
+    mk(x,1,1,2,5); fmpz_pow_ui(x->u.N,x->u.N,22369620);
+    fail_refine(y,x,mainphase,2,22369620,64,ADF_LIMIT,prime(5),1,0);
     adf_idele_clear(x); adf_adele_clear(y);
 }
 ADF_TEST(large_prime_torsion_routes)

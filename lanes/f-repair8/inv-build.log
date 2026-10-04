@@ -1,0 +1,41 @@
+mkdir -p lanes/f-repair8/build/inv
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f-repair8/build/inv/adele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f-repair8/build/inv/cap.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/f-repair8/build/inv/catalogue.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-repair8/build/inv/common.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f-repair8/build/inv/dump.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f-repair8/build/inv/fball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f-repair8/build/inv/fball_local.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/f-repair8/build/inv/gfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/f-repair8/build/inv/gfunc_log.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f-repair8/build/inv/idclass.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-repair8/build/inv/idele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f-repair8/build/inv/idmap.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f-repair8/build/inv/idpow.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-repair8/build/inv/inlines.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-repair8/build/inv/lball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f-repair8/build/inv/lball_decomp.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f-repair8/build/inv/lfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-repair8/build/inv/linsolve.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/f-repair8/build/inv/lpow.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f-repair8/build/inv/lroot.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f-repair8/build/inv/modctx.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-repair8/build/inv/place.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-repair8/build/inv/rat.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f-repair8/build/inv/recon.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-repair8/build/inv/resid.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f-repair8/build/inv/rfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-repair8/build/inv/roots.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f-repair8/build/inv/roots_real.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f-repair8/build/inv/sball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f-repair8/build/inv/scaled.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-repair8/build/inv/status.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/f-repair8/build/inv/symbol.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f-repair8/build/inv/text.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f-repair8/build/inv/text_idele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f-repair8/build/inv/ucoset.o
+ar rcs lanes/f-repair8/build/inv/libadelefeld.a lanes/f-repair8/build/inv/adele.o lanes/f-repair8/build/inv/cap.o lanes/f-repair8/build/inv/catalogue.o lanes/f-repair8/build/inv/common.o lanes/f-repair8/build/inv/dump.o lanes/f-repair8/build/inv/fball.o lanes/f-repair8/build/inv/fball_local.o lanes/f-repair8/build/inv/gfunc.o lanes/f-repair8/build/inv/gfunc_log.o lanes/f-repair8/build/inv/idclass.o lanes/f-repair8/build/inv/idele.o lanes/f-repair8/build/inv/idmap.o lanes/f-repair8/build/inv/idpow.o lanes/f-repair8/build/inv/inlines.o lanes/f-repair8/build/inv/lball.o lanes/f-repair8/build/inv/lball_decomp.o lanes/f-repair8/build/inv/lfunc.o lanes/f-repair8/build/inv/linsolve.o lanes/f-repair8/build/inv/lpow.o lanes/f-repair8/build/inv/lroot.o lanes/f-repair8/build/inv/modctx.o lanes/f-repair8/build/inv/place.o lanes/f-repair8/build/inv/rat.o lanes/f-repair8/build/inv/recon.o lanes/f-repair8/build/inv/resid.o lanes/f-repair8/build/inv/rfunc.o lanes/f-repair8/build/inv/roots.o lanes/f-repair8/build/inv/roots_real.o lanes/f-repair8/build/inv/sball.o lanes/f-repair8/build/inv/scaled.o lanes/f-repair8/build/inv/status.o lanes/f-repair8/build/inv/symbol.o lanes/f-repair8/build/inv/text.o lanes/f-repair8/build/inv/text_idele.o lanes/f-repair8/build/inv/ucoset.o
+mkdir -p lanes/f-repair8/build/inv/support
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f-repair8/build/inv/support/golden.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f-repair8/build/inv/support/jsonl.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_gfunc_log.c lanes/f-repair8/build/inv/support/golden.o lanes/f-repair8/build/inv/support/jsonl.o lanes/f-repair8/build/inv/libadelefeld.a -lflint -lgmp -lm -pthread -o lanes/f-repair8/build/inv/test_gfunc_log

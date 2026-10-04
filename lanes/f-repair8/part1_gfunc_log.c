@@ -226,74 +226,6 @@ max_exp(slong a, slong b)
     return a > b ? a : b;
 }
 
-/* G11's tie check: the same integer count as lfunc.c's count_log, from functions.md
-   Proposition 7b:198-225, and W from Proposition 8:227-240. No sum or power is formed. */
-static slong
-log_degree_digits(ulong k, ulong p)
-{
-    slong e = 0;
-    while (k >= p) { k /= p; e++; }
-    return e;
-}
-
-static slong
-log_working_exp(ulong p, slong K, slong h)
-{
-    slong lo = 1, hi = (2 * K + 2 * h - 2) / (2 * h - 1);
-    while (lo < hi)
-    {
-        slong mid = lo + (hi - lo) / 2;
-        if (mid * h - log_degree_digits((ulong) mid, p) >= K) hi = mid;
-        else lo = mid + 1;
-    }
-    return K + log_degree_digits((ulong) (lo > 1 ? lo - 1 : 1), p);
-}
-
-/* Earlier primes have passed refine_budget. Their only remaining failure is W bits(p).
-   G11 steps 10-15 show that the compact lift's branch and valuation below K are determined
-   by r'c itself. First use the upper W for h=d; almost all calls stop there. Near the bound,
-   remove p from the signed numerator difference, without constructing p^K or p^W.
-   fmpz_remove: refs/src/flint-3.0.1/fmpz.rst:1142-1150; zero is handled before removal. */
-static int
-local_working_status(const adf_idele_t x, ulong p, slong N)
-{
-    local_desc d;
-    fmpz_t a, z, pz;
-    slong bits = 0, h = p == 2 ? 2 : 1, bound;
-    int st;
-    fmpq_init(d.unit);
-    st = describe(&d, x, p, N);
-    if (st != ADF_OK || (d.exact && fmpq_is_one(d.unit)) || d.K <= h ||
-        (!d.exact && (d.k == 0 || (p == 2 && d.k == 1))) ||
-        (fmpq_is_one(d.unit) && fmpz_is_one(x->u.c)))
-        goto done;
-    for (ulong q = p; q != 0; q >>= 1) bits++;
-    bound = ADF_LBALL_BITS_MAX / bits;
-    if (log_working_exp(p, d.K, h) <= bound) goto done;
-    fmpz_init(a); fmpz_init(z); fmpz_init_set_ui(pz, p);
-    fmpz_mul(a, fmpq_numref(d.unit), x->u.c);
-    fmpz_sub(z, a, fmpq_denref(d.unit));
-    if (p == 2)
-    {
-        if (fmpz_fdiv_ui(z, 4) != 0) fmpz_add(z, a, fmpq_denref(d.unit));
-    }
-    else if (fmpz_fdiv_ui(z, p) != 0)
-    {
-        st = ADF_LIMIT; /* powered route tests W(K,1), before torsion removal */
-        goto done_ints;
-    }
-    if (!fmpz_is_zero(z))
-    {
-        h = fmpz_remove(a, z, pz);
-        if (h < d.K && log_working_exp(p, d.K, h) > bound) st = ADF_LIMIT;
-    }
-done_ints:
-    fmpz_clear(a); fmpz_clear(z); fmpz_clear(pz);
-done:
-    fmpq_clear(d.unit);
-    return st;
-}
-
 /* List size and shape have already been checked. Detect local exponent and compact
    power bounds before the aggregate bound. Aggregate work is measured by L bits(p),
    including 2^2. Compare with a remaining budget before multiplying or allocating.
@@ -376,11 +308,13 @@ refine(adf_adele_t y, adf_place_t *where, const adf_idele_t x,
     {
         if (known >= 0)
         {
-            /* G11: preserve the first-prime tie by checking W, without local series,
-               compact powers or CRT work, even if the aggregate bound was exceeded. */
+            /* A preceding prime can hit its actual working-power bound, also LIMIT.
+               Evaluate those primes to preserve canonical ties with the known LIMIT. */
+            adf_lball_init(l);
             for (slong i = 0; i < known; i++)
-                if (local_working_status(x, adf_place_prime_get(ps[i]), N) != ADF_OK)
+                if (local_log(l, x, adf_place_prime_get(ps[i]), N) != ADF_OK)
                 { wp = ps[i]; break; }
+            adf_lball_clear(l);
             if (where != NULL) *where = wp;
         }
         flint_free(ps); return st;
