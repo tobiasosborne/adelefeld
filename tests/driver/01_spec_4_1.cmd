@@ -1,5 +1,5 @@
 # SPEC 4.1: values. Expected lines written from docs/SPEC.md 4.1, not from the program.
-#!exit 1
+#!exit 0
 # the table of 4.1: the exact rational is a type of its own
 type 7/3
 show 7/3
@@ -12,8 +12,8 @@ show (* ; 15 mod 12)
 # the table of 4.1: an adele and a complex adele
 show (1 ; 5 mod 18)
 show ((1) + (2)*i ; 5 mod 18)
-# the table of 4.1: a local ball and a partial ball are kinds of the value form (9.7),
-# but work package 1.8 has no typed parser for them in this build
+# the table of 4.1: a local ball and a partial ball are kinds of the value form (9.7); the driver
+# reads and prints them through the library since lane drv-ball (conventions 9.4)
 show [p=5: 3 + O(5^4)]
 show {inf: 1; p=5: 2 + O(5^2)}
 # 4.1: "It stays exact under arithmetic with other exact values"

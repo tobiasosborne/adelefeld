@@ -66,8 +66,11 @@
    coordinate where it is inexact, SPEC 4.1), and an adele with a complex adele (the
    embedding of SPEC 4.1, "The type adf_cadele"), and the pairs of the unit coset, the idele and the class listed
    in the section named above.  Every other pair is ADF_DOMAIN.  A kind of the value form with no typed
-   parser in this build (the local ball, the partial ball, the quotient class, the functions and the
-   character, work packages 1.8 and later) is ADF_UNSUPPORTED.
+   parser in this build (the quotient class, the functions and the character, work packages 1.8 and
+   later) is ADF_UNSUPPORTED.  The local ball and the partial ball have typed parsers and printers
+   since lane drv-ball (adf_lball_set_str, adf_sball_set_str and their printers); they are values the
+   driver holds, `show` prints them, every pair with another type is ADF_DOMAIN and their negation is
+   ADF_UNSUPPORTED.
 
    Output: one line per command on standard output, either the value text, "true" or
    "false", one of "equal", "different" and "undecided" for compare, a name of a kind for
@@ -296,6 +299,8 @@ typedef enum
     ADF_DRV_UCOSET,      /* milestone 2: the unit coset, the idele and the idele class */
     ADF_DRV_IDELE,
     ADF_DRV_IDCLASS,
+    ADF_DRV_LBALL,       /* lane drv-ball: the local ball and the partial ball (conventions 5.8, 5.9) */
+    ADF_DRV_SBALL,
     ADF_DRV_OTHER        /* a kind of the value form with no typed parser in this build */
 } adf_drv_type;
 
@@ -309,6 +314,8 @@ typedef struct
     adf_ucoset_t u;
     adf_idele_t i;
     adf_idclass_t k;
+    adf_lball_t b;
+    adf_sball_t s;
 } adf_drv_value;
 
 typedef struct
@@ -328,6 +335,8 @@ adf_drv_value_init(adf_drv_value * v)
     adf_ucoset_init(v->u);
     adf_idele_init(v->i);
     adf_idclass_init(v->k);
+    adf_lball_init(v->b);
+    adf_sball_init(v->s);
 }
 
 static void
@@ -340,12 +349,15 @@ adf_drv_value_clear(adf_drv_value * v)
     adf_ucoset_clear(v->u);
     adf_idele_clear(v->i);
     adf_idclass_clear(v->k);
+    adf_lball_clear(v->b);
+    adf_sball_clear(v->s);
     v->type = ADF_DRV_OTHER;
 }
 
 /* adf_drv_kind_type(kind): the type the driver works with for that kind of conventions 9.7,
-   ADF_DRV_OTHER for the kinds with no typed parser in this build (work packages 1.8 and
-   later).  A caller answers ADF_UNSUPPORTED for ADF_DRV_OTHER before any value is read. */
+   ADF_DRV_OTHER for the kinds with no typed parser in this build (the quotient class, the
+   functions and the character, work packages 1.8 and later).  A caller answers ADF_UNSUPPORTED
+   for ADF_DRV_OTHER before any value is read. */
 static adf_drv_type
 adf_drv_kind_type(adf_text_kind kind)
 {
@@ -365,6 +377,10 @@ adf_drv_kind_type(adf_text_kind kind)
             return ADF_DRV_IDELE;
         case ADF_TEXT_IDCLASS:
             return ADF_DRV_IDCLASS;
+        case ADF_TEXT_LBALL:
+            return ADF_DRV_LBALL;
+        case ADF_TEXT_SBALL:
+            return ADF_DRV_SBALL;
         default:
             return ADF_DRV_OTHER;
     }
@@ -395,6 +411,10 @@ adf_drv_value_read(adf_drv_value * v, adf_text_kind kind, const char * s, size_t
             return adf_idele_set_str(v->i, s, len, prec, NULL);
         case ADF_TEXT_IDCLASS:
             return adf_idclass_set_str(v->k, s, len, prec, NULL);
+        case ADF_TEXT_LBALL:
+            return adf_lball_set_str(v->b, s, len, NULL);
+        case ADF_TEXT_SBALL:
+            return adf_sball_set_str(v->s, s, len, prec, NULL);
         default:
             return ADF_OK;      /* ADF_DRV_OTHER, which the caller has already refused */
     }
@@ -435,6 +455,12 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
             break;
         case ADF_DRV_IDCLASS:
             s = adf_idclass_get_str(&len, v->k, digits);
+            break;
+        case ADF_DRV_LBALL:
+            s = adf_lball_get_str(&len, v->b);
+            break;
+        case ADF_DRV_SBALL:
+            s = adf_sball_get_str(&len, v->s, digits);
             break;
         default:
             return ADF_UNSUPPORTED;
@@ -891,6 +917,14 @@ adf_drv_arith(adf_drv_op op, const adf_drv_value * x, const adf_drv_value * y,
              || (x->type == ADF_DRV_CADELE && y->type == ADF_DRV_ADELE))
         t = ADF_DRV_CADELE;            /* the adeles are in C x A_f (SPEC 4.1) */
     else
+    {
+        adf_rat_clear(nq);
+        return ADF_DOMAIN;
+    }
+    /* a local ball and a partial ball are values the driver reads and prints, but SPEC 4.1
+       combines no pair of types with them: ADF_DOMAIN, as for every other pair the operation
+       does not define */
+    if (t != ADF_DRV_RAT && t != ADF_DRV_FBALL && t != ADF_DRV_ADELE && t != ADF_DRV_CADELE)
     {
         adf_rat_clear(nq);
         return ADF_DOMAIN;
@@ -1596,13 +1630,17 @@ done:
      log_at X with PLACE      log of X at the one place, adf_sball_log_at
      sin_at, cos_at, sinh_at, cosh_at X with PLACE: the corresponding adf_sball function (1F.7)
 
-   X is an exact rational, a finite ball or an adele of the value form.  A rational is converted to the
+   X is an exact rational, a finite ball, an adele or a partial ball of the value form (lane drv-ball).  A
+   rational is converted to the
    adele (q ; q) at the setting prec (SPEC 4.1); a finite ball has no real coordinate, so the place "real"
-   is ADF_DOMAIN for it; a complex adele is ADF_UNSUPPORTED (the complex functions are not in this slice,
+   is ADF_DOMAIN for it; a partial ball is not made into an adele, its component at each place is taken
+   (adf_drv_sball_restrict), and a place that is no place of it is ADF_DOMAIN; a complex adele and a complex
+   partial ball are ADF_UNSUPPORTED (the complex functions are not in this slice,
    include/adelefeld/sball.h).  PLACES is a list of places separated by single spaces: a prime in decimal
    or the word real.  A token of another shape (a sign other than "-", a leading zero, a letter, two
    spaces in a row) is ADF_PARSE.  A negative number, 0, 1, a composite and a number of more than 64 bits
-   are not places: ADF_DOMAIN, as for the solver commands.  A place twice is ADF_DOMAIN (adf_sball_project).
+   are not places: ADF_DOMAIN, as for the solver commands.  A place twice is ADF_DOMAIN (adf_sball_project,
+   and adf_sball_set_arb_lballs for a partial ball).
    Each function command takes exactly one place.
 
    The precision: at the place real, the setting prec is the working precision in bits of arb; at a prime
@@ -1616,7 +1654,10 @@ done:
                                    printed as the driver prints a rational, and N its absolute precision
 
    This is a text of the driver and not a value form of the library (the value form of a partial ball,
-   conventions 9.2, is a different text and has no printer in this build; decision N-D1 is the pattern).
+   conventions 9.2, is "{E; E; ...}" with the labels "inf: " and "p=<p>: "; the library printer
+   adf_sball_get_str prints that text, and lane drv-ball compares the two on every fixture line:
+   lanes/drv-ball/printer-diff.md.  They differ in every line, so this line keeps the text of the
+   driver and adf_drv_put_sball is not replaced by the printer of the library).
    The statuses of the library are the statuses of the command; the place reported by the library is not
    printed. */
 
@@ -1916,6 +1957,93 @@ adf_drv_value_adele(adf_adele_t a, const adf_drv_value *x, int has_real, slong p
     return status;
 }
 
+/* adf_drv_sball_restrict(y, x, places, n): y = the partial ball of the partial ball x over the n places,
+   that is the component of x at each of them (docs/proofs/functions.md Proposition 22 for the projection of
+   an adele, read on the partial ball itself: the component of the projection is the component, since the
+   projection takes no component away).  The places of x are in the canonical order and distinct, so only a
+   place that is no place of x can fail.  Status: ADF_OK, y written; ADF_DOMAIN when a place of the list is
+   no place of x, and ADF_DOMAIN when a place of the list occurs twice (adf_sball_set_arb_lballs answers
+   DOMAIN for a repeated prime); ADF_LIMIT from adf_sball_set_arb_lballs; ADF_UNSUPPORTED when the
+   archimedean tag of x is complex, because the functions at places are the real ones
+   (include/adelefeld/sball.h, "A PRIME").  Every place of the list is checked before any component is
+   copied, so the status does not depend on the order of the list. */
+static int
+adf_drv_sball_restrict(adf_sball_t y, const adf_sball_t x, const adf_place_t * places, slong n)
+{
+    adf_lball_struct * loc;
+    arb_t r;
+    slong i, m = 0;
+    int status = ADF_OK, real = 0;
+
+    if (adf_sball_arch(x) == ADF_ARCH_COMPLEX)
+        return ADF_UNSUPPORTED;
+    for (i = 0; i < n; i++)
+    {
+        adf_place_t v = places[i];
+        slong j;
+
+        if (!adf_sball_has_place(x, v))
+            return ADF_DOMAIN;
+        for (j = 0; j < i; j++)
+            if (adf_place_equal(places[j], v))
+                return ADF_DOMAIN;      /* a place named twice, as adf_sball_project answers it */
+    }
+    loc = flint_calloc(n > 0 ? n : 1, sizeof(adf_lball_struct));
+    arb_init(r);
+    for (i = 0; i < n; i++)
+    {
+        adf_place_t v = places[i];
+
+        if (adf_place_is_archimedean(v))
+        {
+            status = adf_sball_get_arb(r, x, v);
+            real = 1;
+            if (status != ADF_OK)
+                break;
+            continue;
+        }
+        adf_lball_init(loc + m);
+        status = adf_sball_get_lball(loc + m, x, v);
+        if (status != ADF_OK)
+        {
+            adf_lball_clear(loc + m);
+            break;
+        }
+        m++;
+    }
+    if (status == ADF_OK)
+        status = adf_sball_set_arb_lballs(y, NULL, real ? r : NULL, loc, m);
+    arb_clear(r);
+    for (i = 0; i < m; i++)
+        adf_lball_clear(loc + i);
+    flint_free(loc);
+    return status;
+}
+
+/* adf_drv_value_sball(y, x, places, n, has_real, prec): the partial ball of the value x over the n places, which is
+   the operand X of the commands at places.  A rational, a finite ball and an adele go through the adele and
+   adf_sball_project, as before; a partial ball is restricted to the places (adf_drv_sball_restrict).  A complex
+   adele, a unit coset, an idele and a class are ADF_UNSUPPORTED here and their fields must not be read as an adele
+   (review n-review1 D1).  Statuses: those of the two, and ADF_DOMAIN for a finite ball with the place real. */
+static int
+adf_drv_value_sball(adf_sball_t y, const adf_drv_value * x, const adf_place_t * places, slong n, int has_real,
+                    slong prec)
+{
+    adf_adele_t a;
+    int status;
+
+    if (x->type == ADF_DRV_SBALL)
+        return adf_drv_sball_restrict(y, x->s, places, n);
+    if (x->type != ADF_DRV_RAT && x->type != ADF_DRV_FBALL && x->type != ADF_DRV_ADELE)
+        return ADF_UNSUPPORTED;
+    adf_adele_init(a);
+    status = adf_drv_value_adele(a, x, has_real, prec);
+    if (status == ADF_OK)
+        status = adf_sball_project(y, NULL, a, places, n);
+    adf_adele_clear(a);
+    return status;
+}
+
 /* The line of powrat_at: the component at the prime with the identifier of the branch, formed before printing. */
 static int
 adf_drv_powrat_result(FILE *out, const adf_sball_t x, adf_place_t p, slong e, ulong n, ulong seed, slong N)
@@ -1949,24 +2077,19 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     adf_text_kind kind;
     adf_place_t * places = NULL;
     adf_sball_t s, y;
-    adf_adele_t a;
-    arb_t r0;
     slong n = 0, i;
     ulong degree=0, seed=0, pden=1;
     slong pnum=0;
     adf_drv_value sv;
     adf_text_kind skind = ADF_TEXT_RAT;
     adf_sball_t ss;
-    adf_adele_t sa;
     int status, place_status = ADF_OK, has_real = 0;
 
     adf_drv_value_init(&sv);
     adf_sball_init(ss);
-    adf_adele_init(sa);
     adf_drv_value_init(&x);
     adf_sball_init(s);
     adf_sball_init(y);
-    adf_adele_init(a);
 
     /* step 2: the syntax of X, then of the places (at most one token to two bytes of the operand) */
     status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
@@ -2031,9 +2154,11 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
         status = place_status;
         goto done;
     }
-    /* the domain of these commands is a rational, a finite ball or an adele (README); a complex adele, a unit coset,
-       an idele and a class are not, and their fields must not be read as an adele (review n-review1 D1) */
-    if (x.type != ADF_DRV_RAT && x.type != ADF_DRV_FBALL && x.type != ADF_DRV_ADELE)
+    /* the domain of these commands is a rational, a finite ball, an adele or a partial ball (README); a complex
+       adele, a unit coset, an idele and a class are not, and their fields must not be read as an adele
+       (review n-review1 D1) */
+    if (x.type != ADF_DRV_RAT && x.type != ADF_DRV_FBALL && x.type != ADF_DRV_ADELE &&
+        x.type != ADF_DRV_SBALL)
     {
         status = ADF_UNSUPPORTED;
         goto done;
@@ -2041,23 +2166,12 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     for (i = 0; i < n; i++)
         if (adf_place_is_archimedean(places[i]))
             has_real = 1;
-    if (x.type == ADF_DRV_FBALL)
+    if (x.type == ADF_DRV_FBALL && has_real)
     {
-        if (has_real)
-        {
-            status = ADF_DOMAIN;     /* a finite ball has no real coordinate */
-            goto done;
-        }
-        arb_init(r0);
-        status = adf_adele_set_arb_fball(a, r0, x.f);
-        arb_clear(r0);
+        status = ADF_DOMAIN;     /* a finite ball has no real coordinate */
+        goto done;
     }
-    else if (x.type == ADF_DRV_RAT)
-        adf_adele_set_rat(a, x.r, st->prec);
-    else
-        adf_adele_set(a, x.a);
-    if (status == ADF_OK)
-        status = adf_sball_project(s, NULL, a, places, n);
+    status = adf_drv_value_sball(s, &x, places, n, has_real, st->prec);
     if (status != ADF_OK)
         goto done;
     if (op==ADF_DRV_ROOT_AT || op==ADF_DRV_ROOTS_AT)
@@ -2072,8 +2186,7 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
     }
     if (op==ADF_DRV_POWUNIT_AT)
     {
-        status=adf_drv_value_adele(sa,&sv,has_real,st->prec);
-        if (status==ADF_OK) status=adf_sball_project(ss,NULL,sa,places,n);
+        status=adf_drv_value_sball(ss,&sv,places,n,has_real,st->prec);
         if (status==ADF_OK) status=adf_sball_powunit_at(y,NULL,s,ss,places[0],st->prec);
         if (status==ADF_OK) status=adf_drv_put_sball(out,y,st->digits);
         goto done;
@@ -2097,13 +2210,11 @@ adf_drv_places(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state 
 
 done:
     flint_free(places);
-    adf_adele_clear(a);
     adf_sball_clear(s);
     adf_sball_clear(y);
     adf_drv_value_clear(&x);
     adf_drv_value_clear(&sv);
     adf_sball_clear(ss);
-    adf_adele_clear(sa);
     return status;
 }
 
@@ -3005,6 +3116,15 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             status = adf_drv_value_print(out, &x, st->digits);
             break;
         case ADF_DRV_NEG:
+            /* the negation is defined for the four types of the top of the file and for the three
+               kinds of milestone 2, which adf_drv_units_involved has taken; a local ball and a
+               partial ball are a request on a combination this driver does not implement */
+            if (x.type != ADF_DRV_RAT && x.type != ADF_DRV_FBALL && x.type != ADF_DRV_ADELE &&
+                x.type != ADF_DRV_CADELE)
+            {
+                status = ADF_UNSUPPORTED;
+                break;
+            }
             adf_drv_neg(&z, &x);
             z.type = x.type;
             status = adf_drv_value_print(out, &z, st->digits);
