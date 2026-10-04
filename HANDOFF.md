@@ -2,12 +2,14 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-10-03 22:37 to 2026-10-04 02:35 (CEST; orchestrator Claude Fable on the laptop; Opus, codex sol, pi and Sonnet lanes): START HERE
+## Session 2026-10-03 22:37 to 2026-10-04 03:35 (CEST; orchestrator Claude Fable on the laptop; Opus, codex sol, pi and Sonnet lanes): START HERE
 
 **One line.** The cloud session branch is merged; milestone 1F is complete through 1F.8: the root at all places
 and the five series on a finite part exactly 0 (f-slice10, N-D16; reviewed f-review9, repaired f-repair7) and
 `Log` on ideles (design d-idlog, code f-slice11, N-D17; bug hunt f-review10: no finding); 1F.9 has its first
-slices (the quadratic symbols and the Hilbert symbol: f-slice12, N-D18; bug hunt f-review11: no finding);
+two groups (the quadratic symbols and the Hilbert symbol: f-slice12, N-D18; bug hunt f-review11: no finding;
+binomials, the profinite power, the cyclotomic action: f-slice13, N-D19, not reviewed), so that of milestone 1F
+only the local zeta factors are left;
 the powers at a prime are reviewed to the end and repaired (f-review8, f-repair5, f-repair6); the value form of
 `adf_lball` and `adf_sball` exists (t-slice2); the mutation tool is repaired (m-tool2); four design briefs for
 the interaction plane are in `docs/ux/`. Everything named here is merged and pushed.
@@ -18,9 +20,9 @@ the interaction plane are in `docs/ux/`. Everything named here is merged and pus
     tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
     ~/Projects/quota-app/target/release/quota; date
 
-**Master.** All five suites pass on `f8ba27b` (the merge of f-slice12; only records came after it):
-`tools/orch/suites.sh -j 2` from 02:27 to 02:33 on 2026-10-04: check-all (78 test programs, driver 57 cases,
-exports 455 of 455, Julia, both self-tests), `SAN=1` (78, leak detection on), `CC=clang` (78), `INV=1` (78),
+**Master.** All five suites pass on `e63593a` (the merge of f-slice13; only records came after it):
+`tools/orch/suites.sh -j 2` from 03:26 to 03:31 on 2026-10-04: check-all (79 test programs, driver 61 cases,
+exports 462 of 462, Julia, both self-tests), `SAN=1` (79, leak detection on), `CC=clang` (79), `INV=1` (79),
 `check_headers`.
 
 **Rules of TJO for this session** (2026-10-03 22:40; memory `orchestration-model-tiers`, top block): orchestrate;
@@ -32,7 +34,8 @@ other Claude session on the laptop (initech-os) by cross-session messages. Agree
 points of Claude weekly for this one on 2026-10-03, stop of new Claude lanes below 4 points under pace. At 23:40
 the two sessions together burnt about 5 points an hour, so no Claude subagent was started between 22:55 and
 01:27; the work went to codex and the pi lane. Quota at 01:27: Claude weekly 56.0%, 5.6 under pace; Codex weekly
-3.0%, 7.0 under (seven codex sol xhigh lanes cost 2 points of Codex weekly).
+3.0%, 7.0 under. At 03:32: Claude weekly 59.0%, 3.8 under pace (the stop); Codex weekly 5.0%, 6.3 under (nine
+codex sol xhigh lanes cost 4 points of Codex weekly). Two Sonnet hunts ran after 01:27, above the stop.
 
 **What landed** (brief `lanes/<lane>/brief.md`; report `lanes/<lane>/result.md` for Claude lanes, `report.md` for
 codex and pi lanes; details `docs/worklog/2026-10-03-evening.md`).
@@ -49,6 +52,7 @@ codex and pi lanes; details `docs/worklog/2026-10-03-evening.md`).
 | d-idlog | codex sol | design before code of `Log` on ideles: `docs/design/idele-log.md` (IL1 to IL8, six declarations, test plan), oracle `proto/idlog_checks.py` | not reviewed (the review f-review10 checks the code against its own oracle) |
 | f-slice11 | codex sol | 1F.8 part 3: `src/gfunc_log.c`: `adf_idele_Log`, `log_abs`, `Log_at`, `log_abs_at`, `Log_refine`, `log_abs_refine`; driver commands of the same names; `gfunc_log.jl`; G7 to G12; N-D17; `test_gfunc_log` 2194049 checks | f-review10 (Sonnet): no finding |
 | f-slice12 | codex sol | 1F.9 first slices: `symbol.h`, `src/symbol.c`: Legendre, Jacobi, Kronecker on integers, finite balls, unit cosets; the Hilbert symbol at a place on local balls, real balls, rationals, ideles; driver `legendre`, `jacobi`, `kronecker`, `hilbert_at`; Y1 to Y8 in `docs/api-1f9.md`; N-D18; `test_symbol` 719322 checks | f-review11 (Sonnet): no finding |
+| f-slice13 | codex sol | 1F.9 second group: `catalogue.h`, `src/catalogue.c`: `adf_fball_binom`, `binom_tight`; `adf_ucoset_profpow`, `profpow_coarse`, `profpow_fine`; `adf_idclass_cyclo_exp_u`, `cyclo_exp_uinv`; Haar volume and content reuse existing functions; driver `binom`, `binomtight`, `profpow`, `profpowcoarse`, `profpowfine`, `haar_volume`, `cyclo_exp_u`, `cyclo_exp_uinv`; Y9 to Y15; N-D19; `test_catalogue` 131636 checks | NOT reviewed (two PLAN vectors recomputed by the orchestrator: radius 2 for `(0, 8, 4)`; `[49 mod 120]`) |
 | t-slice2 | pi bunny | value form of `adf_lball`, `adf_sball` (`adf_lball_set_str`, `get_str`, `adf_sball_set_str`, `get_str`); `test_text_local` 68868 checks | none. The lane's file began with a 1008-line copy of `src/text.c`; the orchestrator joined its code to `src/text.c` (`lanes/t-slice2/orchestrator-note.md`) and later repaired two debug entry checks that did not compile under `INV=1` and two missing final newlines |
 | m-tool2 | pi bunny | mutation tool: `--san` asks for the make variable `SAN`; a run with more than half of the mutants not compiled fails (exit 2); no `swap_args` mutant of equal arguments | self-test rerun by the orchestrator |
 | UX | Opus | `docs/ux/`: four design briefs (adelica notebook, place atlas, claim ledger, sweep bench), a static HTML mock each, README with three questions for TJO | TJO reads |
@@ -57,10 +61,8 @@ Also: `tools/orch/suites.sh`: the `all` suite builds in `build/` (a `BUILD` on t
 `tools/adf/Makefile` and the golden test ran a stale `build/adf`); N-D15 wording (f-review8 F10); SPEC 9.3.1,
 9.3.3 and conventions 3.3 rule 4 follow the findings of f-slice10; PLAN rows 1F.6 to 1F.8.
 
-**Running when this was written (02:53):** lane f-slice13 (codex sol xhigh, `../adelefeld-wt/f-slice13`, since
-02:36: 1F.9 second group: binomials, profinite power, Haar volume, cyclotomic action; proposed N-D19). When its
-`lanes/f-slice13/lane.log` ends in `DONE`: read `report.md`, commit in the worktree, merge, ALL FIVE suites,
-record N-D19, PLAN row 1F.9, then a review by a model that is not codex (pattern `lanes/f-review11/brief.md`).
+**Nothing is running.** The session stopped dispatching at 03:32: Claude weekly 59.0%, 3.8 points under pace,
+below the stop of 4 agreed with the other session (Codex weekly 5.0%, 6.3 under).
 
 **Landed last.** Lane f-review11 (Sonnet; bug hunt through `src/symbol.c`, own oracle): NO finding
 (`docs/reviews/f1/review-symbol.md`). Lane f-review10 (Sonnet medium; bug hunt through `src/gfunc_log.c` with its own oracle)
@@ -69,13 +71,15 @@ refinements, statuses, two reproducers under ASan/UBSan with leak detection, 52 
 not referee the proofs IL1 to IL8 and G7 to G12: nobody has.
 
 **The next steps**, in this order:
-1. Lane f-slice13 (above). A referee of the proofs of `Log` on ideles (IL1 to IL8, G7 to G12) and of the symbols
-   (Y1 to Y8) by a model that is not codex, when Claude quota allows: the two Sonnet hunts tested values, not
-   proofs, and did not plant faults against the lanes' tests.
-2. The rest of 1F.9 (PLAN line 279): local zeta factors; the profinite power and its finest-modulus variant;
-   binomial coefficients; content; the cyclotomic action; as thin slices, the header with the proposed decision
-   first (f-slice12 did this well), or a design note first where the interface is open (d-idlog then f-slice11:
-   27 minutes of design, 63 minutes of code, no rework).
+1. A review of f-slice13 (`catalogue.h`) by a model that is not codex, with its own oracle (the pattern is
+   `lanes/f-review11/brief.md`; a Sonnet hunt took 11 to 18 minutes and about 160k tokens). Then a referee of the
+   proofs of `Log` on ideles (IL1 to IL8, G7 to G12) and of the catalogue (Y1 to Y15) by a model that is not
+   codex, with faults planted against `test_gfunc_log`, `test_symbol`, `test_catalogue`: the two Sonnet hunts
+   tested values, not proofs or tests. Both are in beads.
+2. The last item of 1F.9: local zeta factors (complex balls; a ball containing a pole returns the pole status,
+   never a finite or unbounded ball: PLAN line 279, SPEC 9.3.7). A design note first (complex balls are not
+   used by any function at places yet: `rfunc.h` has real balls only), then the code: the pattern of d-idlog
+   then f-slice11 (27 minutes of design, 63 minutes of code, no rework). Then milestone 1F is complete.
 3. The driver reads and prints `adf_lball`, `adf_sball` through the library (`adf_drv_put_sball` is the driver's
    own code); dump forms of the three types of milestone 2 and of `adf_lball`, `adf_sball`. Then milestone 3.
 4. TJO's answers on the UX briefs (`docs/ux/README.md`, three questions); the demands on the core that all four
@@ -92,8 +96,8 @@ not referee the proofs IL1 to IL8 and G7 to G12: nobody has.
 **Waits for TJO.** Nothing blocks. Open to reversal: N-D16 (an idele with an exact unit follows the rational root
 contract, where SPEC 9.3.3 said `NOT_DETERMINED` for every idele; `DOMAIN` without a place when only the finite
 part fails), N-D17 (the conservative ball `0 + 4 Zhat` also for exact inputs; no public local-component function
-yet), N-D18 (the conservative certificate for symbols of finite-precision inputs), N-D12 to N-D15 as before. The
-UX questions.
+yet), N-D18 (the conservative certificate for symbols of finite-precision inputs), N-D19 (strict as the default
+of the profinite power; the caps on `k` and `g`), N-D12 to N-D15 as before. The UX questions.
 
 **Things to know.**
 - `suites.sh` takes `-j 2`, not `-j2`; a pipe to `tail` hides its exit code. Run ALL FIVE suites after merging
@@ -105,7 +109,9 @@ UX questions.
   was a design shortcut (the copied machinery) and small portability slips (no final newline, a `#x` outside a
   macro in debug-only code), not flakiness: say in a brief what to do when a needed function is static in a
   read-only file, and ask for `INV=1` and `CC=clang` builds of the files it writes. It leaves files in `/tmp`.
-- Codex sol xhigh lanes took 27 to 63 minutes each. The codex sandbox cannot run LeakSanitizer (ptrace): the
+- Codex sol xhigh lanes took 27 to 63 minutes each; three of them failed their one `check-all` on something
+  small of their own (a memcheck self-test, fixture exit metadata) and did not rerun it: the orchestrator's
+  five suites after the merge are the acceptance. The codex sandbox cannot run LeakSanitizer (ptrace): the
   orchestrator's `san` suite is the leak check. An Opus lane cost about 1 point of Claude weekly.
 - The driver's adele text takes a decimal real part: `exp (0.5 ; 0)`, not `(1/2 ; 0)` (`PARSE`).
 - Not committed, regenerable: `lanes/d-idlog/fixtures.jsonl` (`proto/idlog_checks.py --fixtures`), the binaries,
