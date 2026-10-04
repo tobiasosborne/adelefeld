@@ -21,7 +21,7 @@ compare (* ; 0 mod 2) with (* ; 1 mod 4)
 # the predicates of SPEC 4.2 are predicates of two finite balls; an adele is not one
 compare (1 ; 0) with 1/2
 # a kind with no typed parser is UNSUPPORTED, before any value is read
-compare (0.5 ; 0) + Q with 1/2
+compare rfun() with 1/2
 # dump: the dump form of conventions 10.1 of a value the driver read.  Every value of the
 # value form is in the global backend (conventions 9.8, A11), so its dump has the form "g"
 # and no context occurrence.

@@ -66,6 +66,6 @@ digits 0
 digits -1
 digits 1000001
 # ADF_UNSUPPORTED: a valid request that version 1 does not implement
-show (0.5 ; 0) + Q
+show rfun()
 reconstruct ((1) + (2)*i ; 0)
 cap (1 ; 1) with 2

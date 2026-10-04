@@ -1,0 +1,2 @@
+tests/ref/vectors/q-slice1/translation.jsonl: 1000 translations, 2000 membership witnesses
+tests/ref/vectors/q-slice1/golden.jsonl: 4 golden lifts, exact enclosure and printer expectations

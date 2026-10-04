@@ -61,6 +61,7 @@
 #define ADELEFELD_TEXT_H
 
 #include "adelefeld/common.h"
+#include "adelefeld/qclass.h"
 #include "adelefeld/status.h"
 #include "adelefeld/rat.h"
 #include "adelefeld/fball.h"
@@ -179,6 +180,22 @@ int adf_adele_set_str(adf_adele_t x, const char * s, size_t len, slong prec,
    (9.5, "Properties"). Re-reading the text in C encloses x; it need not be a fixed point (9.6,
    gate finding G4). Golden: tests/golden/adele.tsv, realball_print.tsv. */
 char * adf_adele_get_str(size_t * len, const adf_adele_t x, slong digits);
+
+/* Slice 3.1-a: read (r ; F) + Q as LIFT, enclosing the real interval at prec.
+   Union syntax gives ADF_UNSUPPORTED after byte, grammar, exponent and count checks
+   (conventions 8.5 stages 1-4), before value semantics. Full union input is slice 3.1-d.
+   OK writes x; PARSE, LIMIT, UNSUPPORTED, DOMAIN leave x untouched.
+   prec > ADF_REAL_PREC_MAX gives LIMIT first (api-3.md 1). Other real parsing and
+   printing limits are those of adf_adele_set_str/get_str. max_items bounds union entries.
+   Source: docs/api-3.md 2.5, 7; conventions 9.2, 9.4. */
+int adf_qclass_set_str(adf_qclass_t x, const char *s, size_t len, slong prec,
+                      const adf_text_limits_t *lim);
+
+/* Allocate the LIFT value form (r ; F) + Q with flint_malloc; *len excludes NUL.
+   Free with adf_str_free. NULL and *len=0 when not printable under M1-D6.
+   In this slice PIECES also returns NULL and *len=0; its printer is slice 3.1-d.
+   The printed lift encloses the stored set; value text is not lossless (conventions 9.6). */
+char *adf_qclass_get_str(size_t *len, const adf_qclass_t x, slong digits);
 
 /* ---- adf_cadele: start symbol cadele_v = "(" complex ";" fin ")"; template (z(x_inf) ; F) ---- */
 

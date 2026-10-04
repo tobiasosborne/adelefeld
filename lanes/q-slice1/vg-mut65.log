@@ -1,0 +1,335 @@
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1121AA: canonical (test_qclass.c:129)
+==30==    by 0x1121AA: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1121AA: canonical (test_qclass.c:129)
+==30==    by 0x1121AA: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4849845: free (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30==    by 0x4DFCC57: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1121AA: canonical (test_qclass.c:129)
+==30==    by 0x1121AA: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AA: end_cmp (qclass.c:61)
+==30== 
+==30== Invalid free() / delete / delete[] / realloc()
+==30==    at 0x484988F: free (in /home/tobias/.local/opt/valgrind/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==30==    by 0x4DFCC57: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1121AA: canonical (test_qclass.c:129)
+==30==    by 0x1121AA: main (test_qclass.c:473)
+==30==  Address 0x119b54 is in the Text segment of /home/tobias/Projects/adelefeld-wt/q-slice1/lanes/q-slice1/qclass-vg-mut65
+==30==    at 0x119B54: adf_inv_check_fball (invariants.h:79)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x112231: canonical (test_qclass.c:133)
+==30==    by 0x112231: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x112231: canonical (test_qclass.c:133)
+==30==    by 0x112231: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1122BC: canonical (test_qclass.c:137)
+==30==    by 0x1122BC: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1122BC: canonical (test_qclass.c:137)
+==30==    by 0x1122BC: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x11239F: canonical (test_qclass.c:145)
+==30==    by 0x11239F: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x11239F: canonical (test_qclass.c:145)
+==30==    by 0x11239F: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1123C7: canonical (test_qclass.c:146)
+==30==    by 0x1123C7: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1123C7: canonical (test_qclass.c:146)
+==30==    by 0x1123C7: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1123FD: canonical (test_qclass.c:148)
+==30==    by 0x1123FD: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1123FD: canonical (test_qclass.c:148)
+==30==    by 0x1123FD: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x1123FD: canonical (test_qclass.c:148)
+==30==    by 0x1123FD: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x1123FD: canonical (test_qclass.c:148)
+==30==    by 0x1123FD: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x11242C: canonical (test_qclass.c:149)
+==30==    by 0x11242C: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x11242C: canonical (test_qclass.c:149)
+==30==    by 0x11242C: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x11242C: canonical (test_qclass.c:149)
+==30==    by 0x11242C: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x11242C: canonical (test_qclass.c:149)
+==30==    by 0x11242C: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x112457: canonical (test_qclass.c:150)
+==30==    by 0x112457: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x112457: canonical (test_qclass.c:150)
+==30==    by 0x112457: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x112457: canonical (test_qclass.c:150)
+==30==    by 0x112457: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x112457: canonical (test_qclass.c:150)
+==30==    by 0x112457: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x112482: canonical (test_qclass.c:151)
+==30==    by 0x112482: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x112482: canonical (test_qclass.c:151)
+==30==    by 0x112482: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x112482: canonical (test_qclass.c:151)
+==30==    by 0x112482: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x112482: canonical (test_qclass.c:151)
+==30==    by 0x112482: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1124BB: canonical (test_qclass.c:153)
+==30==    by 0x1124BB: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1124BB: canonical (test_qclass.c:153)
+==30==    by 0x1124BB: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x1124BB: canonical (test_qclass.c:153)
+==30==    by 0x1124BB: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB87: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DE2D: adf_qclass_is_canonical (qclass.c:102)
+==30==    by 0x1124BB: canonical (test_qclass.c:153)
+==30==    by 0x1124BB: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCB6F: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1125D9: canonical (test_qclass.c:160)
+==30==    by 0x1125D9: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCBE0: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1125D9: canonical (test_qclass.c:160)
+==30==    by 0x1125D9: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AC: end_cmp (qclass.c:61)
+==30== 
+==30== Conditional jump or move depends on uninitialised value(s)
+==30==    at 0x4DFCBEA: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1125D9: canonical (test_qclass.c:160)
+==30==    by 0x1125D9: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AB: end_cmp (qclass.c:61)
+==30== 
+==30== Use of uninitialised value of size 8
+==30==    at 0x4DFCBFC: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1125D9: canonical (test_qclass.c:160)
+==30==    by 0x1125D9: main (test_qclass.c:473)
+==30==  Uninitialised value was created by a stack allocation
+==30==    at 0x10D6AA: end_cmp (qclass.c:61)
+==30== 
+==30== 
+==30== Process terminating with default action of signal 11 (SIGSEGV)
+==30==  Bad permissions for mapped region at address 0x119B54
+==30==    at 0x4DFCBFC: arf_set (in /usr/lib/x86_64-linux-gnu/libflint.so.18.0.1)
+==30==    by 0x10D728: end_cmp (qclass.c:67)
+==30==    by 0x10DD65: adf_qclass_is_canonical (qclass.c:101)
+==30==    by 0x1125D9: canonical (test_qclass.c:160)
+==30==    by 0x1125D9: main (test_qclass.c:473)
+timeout: the monitored command dumped core

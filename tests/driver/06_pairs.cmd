@@ -1,6 +1,6 @@
 # Every operation with each pair of operand types, the refused pairs included.
 # The operands are  R = 1/2, F = (* ; 3 mod 12), A = (1 ; 5 mod 18),
-# C = ((1) + (2)*i ; 5 mod 18) and O = (0.5 ; 0) + Q (a kind of the value form with no
+# C = ((1) + (2)*i ; 5 mod 18) and O = rfun() (a kind of the value form with no
 # typed parser in this build).  Expected lines written by hand from SPEC 4.1 to 4.3.
 #!exit 1
 # ---- add: all 16 pairs
@@ -149,22 +149,22 @@ cap 1/2 with 2
 cap (1 ; 1) with 2
 cap ((1) + (2)*i ; 1) with 2
 # ---- a kind of the value form with no typed parser: UNSUPPORTED, before every other check
-add 1/2 with (0.5 ; 0) + Q
-sub 1/2 with (0.5 ; 0) + Q
-mul 1/2 with (0.5 ; 0) + Q
-neg (0.5 ; 0) + Q
-div 1/2 with (0.5 ; 0) + Q
-equal 1/2 with (0.5 ; 0) + Q
-contains 1/2 with (0.5 ; 0) + Q
-overlaps 1/2 with (0.5 ; 0) + Q
-reconstruct (0.5 ; 0) + Q
-cap (0.5 ; 0) + Q with 2
+add 1/2 with rfun()
+sub 1/2 with rfun()
+mul 1/2 with rfun()
+neg rfun()
+div 1/2 with rfun()
+equal 1/2 with rfun()
+contains 1/2 with rfun()
+overlaps 1/2 with rfun()
+reconstruct rfun()
+cap rfun() with 2
 # ---- show and type
 show 1/2
 show (* ; 3 mod 12)
 show (1 ; 5 mod 18)
 show ((1) + (2)*i ; 5 mod 18)
-show (0.5 ; 0) + Q
+show rfun()
 type 1/2
 type (* ; 3 mod 12)
 type (1 ; 5 mod 18)

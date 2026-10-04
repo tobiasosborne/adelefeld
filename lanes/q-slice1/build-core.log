@@ -1,0 +1,17 @@
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/q-slice1/plain/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/q-slice1/plain/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/q-slice1/plain/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/q-slice1/plain/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/q-slice1/plain/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/q-slice1/plain/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/q-slice1/plain/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/q-slice1/plain/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/q-slice1/plain/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/q-slice1/plain/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/q-slice1/plain/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/q-slice1/plain/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/q-slice1/plain/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/q-slice1/plain/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/q-slice1/plain/support/jsonl.o
+ar rcs lanes/q-slice1/plain/libadelefeld.a lanes/q-slice1/plain/adele.o lanes/q-slice1/plain/cap.o lanes/q-slice1/plain/catalogue.o lanes/q-slice1/plain/common.o lanes/q-slice1/plain/dump.o lanes/q-slice1/plain/fball.o lanes/q-slice1/plain/fball_local.o lanes/q-slice1/plain/gfunc.o lanes/q-slice1/plain/gfunc_log.o lanes/q-slice1/plain/idclass.o lanes/q-slice1/plain/idele.o lanes/q-slice1/plain/idmap.o lanes/q-slice1/plain/idpow.o lanes/q-slice1/plain/inlines.o lanes/q-slice1/plain/lball.o lanes/q-slice1/plain/lball_decomp.o lanes/q-slice1/plain/lfunc.o lanes/q-slice1/plain/linsolve.o lanes/q-slice1/plain/localfactor.o lanes/q-slice1/plain/lpow.o lanes/q-slice1/plain/lroot.o lanes/q-slice1/plain/modctx.o lanes/q-slice1/plain/place.o lanes/q-slice1/plain/qclass.o lanes/q-slice1/plain/rat.o lanes/q-slice1/plain/recon.o lanes/q-slice1/plain/resid.o lanes/q-slice1/plain/rfunc.o lanes/q-slice1/plain/roots.o lanes/q-slice1/plain/roots_real.o lanes/q-slice1/plain/sball.o lanes/q-slice1/plain/scaled.o lanes/q-slice1/plain/status.o lanes/q-slice1/plain/symbol.o lanes/q-slice1/plain/text.o lanes/q-slice1/plain/text_idele.o lanes/q-slice1/plain/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_qclass.c lanes/q-slice1/plain/support/golden.o lanes/q-slice1/plain/support/jsonl.o lanes/q-slice1/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/q-slice1/plain/test_qclass

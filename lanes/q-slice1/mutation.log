@@ -1,0 +1,107 @@
+mutate: src/qclass.c: 138 mutants
+mutate: 138 mutants, 60 of them run (--limit 60, --seed 3101)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (5.5 s)
+
+NOT COMPILED src/qclass.c:95:40 logic: '||' -> '&&'
+  src/qclass.c:95:40: error: '&&' within '||' [-Werror,-Wlogical-op-parentheses]
+
+SURVIVED src/qclass.c:65:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -63,5 +63,5 @@
+       arf_t sum;
+       int i, c;
+  -    for (i = 0; i < 4; i++) arf_init(terms + i);
+  +    for (i = 1; i < 4; i++) arf_init(terms + i);
+       arf_init(sum);
+       arf_set(terms, arb_midref(x));
+
+
+SURVIVED src/qclass.c:128:5 drop_call: 'ADF_INV_ADELE(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -126,5 +126,5 @@
+   {
+       adf_qclass_t t;
+  -    ADF_INV_ADELE(x);
+  +    
+       adf_qclass_init(t);
+       adf_adele_set(t->piece, x);
+
+
+SURVIVED src/qclass.c:171:5 drop_call: 'ADF_INV_QCLASS(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -169,5 +169,5 @@
+   void adf_qclass_add_rat(adf_qclass_t y, const adf_qclass_t x, const adf_rat_t q)
+   {
+  -    ADF_INV_QCLASS(x); ADF_INV_RAT(q);
+  +     ADF_INV_RAT(q);
+       (void) q;
+       adf_qclass_set(y, x);
+
+
+NOT COMPILED src/qclass.c:74:5 drop_assign: 'c = arf_sgn(sum);' -> '' (the statement is removed)
+  src/qclass.c:77:12: error: variable 'c' is uninitialized when used here [-Werror,-Wuninitialized]
+
+SURVIVED src/qclass.c:87:82 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -85,5 +85,5 @@
+       slong i;
+       int ok = 1;
+  -    if ((x->form != ADF_QCLASS_LIFT && x->form != ADF_QCLASS_PIECES) || x->len < 1 || !x->piece)
+  +    if ((x->form != ADF_QCLASS_LIFT && x->form != ADF_QCLASS_PIECES) || x->len < 0 || !x->piece)
+           return 0;
+       if (x->form == ADF_QCLASS_LIFT)
+
+
+SURVIVED src/qclass.c:76:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -74,5 +74,5 @@
+       c = arf_sgn(sum);
+       arf_clear(sum);
+  -    for (i = 0; i < 4; i++) arf_clear(terms + i);
+  +    for (i = 1; i < 4; i++) arf_clear(terms + i);
+       return c;
+   }
+
+
+SURVIVED src/qclass.c:107:9 drop_call: 'fmpz_set(prevA, A);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -105,5 +105,5 @@
+               if (c >= 0) { ok = 0; break; }
+           }
+  -        fmpz_set(prevA, A); fmpz_set(prevH, H);
+  +         fmpz_set(prevH, H);
+       }
+       fmpz_clear(A); fmpz_clear(H); fmpz_clear(d); fmpz_clear(prevA); fmpz_clear(prevH);
+
+
+SURVIVED src/qclass.c:99:50 logic: '||' -> '&&'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -97,5 +97,5 @@
+           adf_fball_get_fmpz3(A, H, d, &a->fin);
+           if (!fmpz_is_one(d) || fmpz_sgn(H) < 0 ||
+  -            (fmpz_sgn(H) > 0 && (fmpz_sgn(A) < 0 || fmpz_cmp(A, H) >= 0))) { ok = 0; break; }
+  +            (fmpz_sgn(H) > 0 && (fmpz_sgn(A) < 0 && fmpz_cmp(A, H) >= 0))) { ok = 0; break; }
+           if (i > 0) {
+               c = end_cmp(x->piece[i-1].inf, a->inf, 0);
+
+
+NOT COMPILED src/qclass.c:173:5 drop_call: 'adf_qclass_set(y, x);' -> '' (the statement is removed)
+  src/qclass.c:169:38: error: unused parameter 'y' [-Werror,-Wunused-parameter]
+
+mutate: 60 mutants in 135.6 s: 50 killed, 7 survived, 3 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 7 mutant(s) survived; each one is a claim the tests do not check

@@ -713,3 +713,19 @@ exclusion of the poles is not certified, is `NOT_DETERMINED`; at `real` a ball w
 that is not `real` or a decimal is `PARSE`, and a number that is not a prime below 2^64 is `DOMAIN`. The order of
 the checks: the syntax of S, the syntax of the place token, the kind of S, the value of S, the place, the call.
 Tests: `tests/driver/localfactor-values.cmd`, `tests/driver/localfactor-status.cmd`.
+
+## The quotient class (lane q-slice1, slice 3.1-a of `docs/api-3.md`)
+
+`qclass` is a value kind the driver holds, lift form only, and `qadd_rat X with R` translates a class by a
+rational:
+
+```text
+show (0.5 ; 0) + Q
+type (0.5 ; 0) + Q
+qadd_rat (0 ; 1/3) + Q with -7/3
+```
+
+These print `(0.5 ; 0) + Q`, `qclass`, and `(0 ; 1/3) + Q`. Rational translation preserves
+the stored lift exactly. Pair arithmetic and set queries give `DOMAIN` in this slice.
+Union input is `UNSUPPORTED` after syntax and text-limit checks. Reduction, union printing,
+dump, and the character belong to later slices. Julia calls are in `tests/julia/qclass.jl`.

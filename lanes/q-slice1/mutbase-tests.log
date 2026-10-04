@@ -1,0 +1,2 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_fball_swap: argument x is not a canonical adf_fball
+timeout: the monitored command dumped core

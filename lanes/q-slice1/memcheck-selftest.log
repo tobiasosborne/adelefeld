@@ -1,0 +1,22 @@
+== a use before the first init in text order is reported (surface R1)
+ok   s0 (no init at all): one use-before-init
+ok   s1 (fmpz_add_ui before fmpz_init): one use-before-init, at the line of the use
+ok   s1: the exit status is 1
+ok   s4 (adf_fball_add before adf_fball_init): one use-before-init, at the line of the use
+== no false positive on correct code
+ok   init, use, clear in order (also memset before the init): no finding, exit 0
+ok   a memset is not an init: the use after it is reported
+== the limits named in tools/memcheck/README.md are the limits of the code (surface R4)
+ok   s2_init_on_one_branch.c (an init on one branch only): no finding, as the README says
+ok   s3_array_element.c (an array element): no finding, as the README says
+ok   s5_goto_skips_init.c (a goto over the init): no finding, as the README says
+== the tree has no finding
+FAIL src/*.c tests/*.c tools/adf/adf.c (121 files): no finding: ['tests/test_qclass.c:230: a: init-without-clear: precise', 'tests/test_qclass.c:230: q: init-without-clear: precise']
+== valgrind
+ok   run.sh finds valgrind although it is not on PATH (`run.sh --valgrind-path`)
+ok   s0_control.c: valgrind reports the defect (exit 77)
+ok   s1_use_then_init.c: valgrind reports the defect (exit 77)
+ok   s2_init_on_one_branch.c: valgrind reports the defect (exit 77)
+ok   s3_array_element.c: valgrind reports the defect (exit 77)
+ok   s5_goto_skips_init.c: valgrind reports the defect (exit 77)
+selftest: FAILED: 1 check(s): src/*.c tests/*.c tools/adf/adf.c (121 files): no finding

@@ -47,7 +47,7 @@ project 5 with real real
 # the function fails at the place: DOMAIN (a unit at 5; a rational with 5 in the denominator)
 exp_at 5 with 3
 # a value that the driver cannot use, decided before the places are judged: UNSUPPORTED before DOMAIN
-exp_at (0.5 ; 0) + Q with 4
+exp_at rfun() with 4
 exp_at ((1) + (2)*i ; 5 mod 18) with 5
 log_at ((1) + (2)*i ; 6 mod 18) with real
 # tan is not a command; the name is not one of the table: PARSE

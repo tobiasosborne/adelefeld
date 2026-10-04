@@ -1,0 +1,45 @@
+make: Entering directory '/home/tobias/Projects/adelefeld-wt/q-slice1/tools/adf'
+make -C ../.. BUILD=build/drv-plain SAN=0 all
+make[1]: Entering directory '/home/tobias/Projects/adelefeld-wt/q-slice1'
+mkdir -p build/drv-plain
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o build/drv-plain/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o build/drv-plain/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o build/drv-plain/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o build/drv-plain/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o build/drv-plain/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o build/drv-plain/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o build/drv-plain/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o build/drv-plain/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o build/drv-plain/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o build/drv-plain/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o build/drv-plain/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o build/drv-plain/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o build/drv-plain/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o build/drv-plain/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o build/drv-plain/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o build/drv-plain/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o build/drv-plain/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o build/drv-plain/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o build/drv-plain/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o build/drv-plain/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o build/drv-plain/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o build/drv-plain/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o build/drv-plain/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o build/drv-plain/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o build/drv-plain/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o build/drv-plain/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o build/drv-plain/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o build/drv-plain/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o build/drv-plain/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o build/drv-plain/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o build/drv-plain/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o build/drv-plain/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o build/drv-plain/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o build/drv-plain/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o build/drv-plain/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o build/drv-plain/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o build/drv-plain/ucoset.o
+ar rcs build/drv-plain/libadelefeld.a build/drv-plain/adele.o build/drv-plain/cap.o build/drv-plain/catalogue.o build/drv-plain/common.o build/drv-plain/dump.o build/drv-plain/fball.o build/drv-plain/fball_local.o build/drv-plain/gfunc.o build/drv-plain/gfunc_log.o build/drv-plain/idclass.o build/drv-plain/idele.o build/drv-plain/idmap.o build/drv-plain/idpow.o build/drv-plain/inlines.o build/drv-plain/lball.o build/drv-plain/lball_decomp.o build/drv-plain/lfunc.o build/drv-plain/linsolve.o build/drv-plain/localfactor.o build/drv-plain/lpow.o build/drv-plain/lroot.o build/drv-plain/modctx.o build/drv-plain/place.o build/drv-plain/qclass.o build/drv-plain/rat.o build/drv-plain/recon.o build/drv-plain/resid.o build/drv-plain/rfunc.o build/drv-plain/roots.o build/drv-plain/roots_real.o build/drv-plain/sball.o build/drv-plain/scaled.o build/drv-plain/status.o build/drv-plain/symbol.o build/drv-plain/text.o build/drv-plain/text_idele.o build/drv-plain/ucoset.o
+make[1]: Leaving directory '/home/tobias/Projects/adelefeld-wt/q-slice1'
+cc -I../../include -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror  adf.c ../../build/drv-plain/libadelefeld.a -lflint -lgmp -lm -o ../../build/adf
+make: Leaving directory '/home/tobias/Projects/adelefeld-wt/q-slice1/tools/adf'

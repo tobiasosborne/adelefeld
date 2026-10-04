@@ -169,6 +169,23 @@ rm -f "$text_local_output"
 
 # ---- 3. run the smoke test ----
 
+# Slice 3.1-a: quotient lift, storage access and rational translation.
+qclass_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass.jl "$so" > "$qclass_output" 2>&1; then
+    cat "$qclass_output"
+elif grep -q '__gmpn_modexact_1_odd' "$qclass_output" 2>/dev/null \
+        && qclass_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$qclass_gmp" ] \
+        && LD_PRELOAD="$qclass_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/qclass.jl "$so"; then
+    echo "== tests/julia/qclass.jl passed with LD_PRELOAD=$qclass_gmp"
+else
+    cat "$qclass_output"
+    rm -f "$qclass_output"
+    echo "test_julia: tests/julia/qclass.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$qclass_output"
+
 run_output=$(mktemp)
 if "$JULIA" --startup-file=no tests/julia/smoke.jl "$so" > "$run_output" 2>&1; then
     cat "$run_output"

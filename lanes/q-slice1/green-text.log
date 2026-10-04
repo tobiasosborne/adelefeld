@@ -1,0 +1,2 @@
+golden line 3: got (3.14159 +/- 1.1e-5 ; 5/3 mod 6) + Q, want (3.14159 +/- 1e-5 ; 5/3 mod 6) + Q
+tests/test_qclass.c:266: s != NULL && n == r->expected_len && !memcmp(s, r->expected, n)
