@@ -1,0 +1,21 @@
+{
+  "kind": "finite-poles",
+  "p": 0,
+  "start": 0,
+  "count_requested": 250,
+  "cases": 978,
+  "ok": 61,
+  "nd": 917,
+  "domain": 0,
+  "limit": 0,
+  "samples": 1220,
+  "failures": 0,
+  "bounds": 0,
+  "derivative_samples": 0,
+  "fallback": 0,
+  "exact_rationals": 0,
+  "max_derivative_ratio": "0.0",
+  "seconds": 11.096,
+  "bridge": "bridge calls=978 output_errors=0",
+  "findings": []
+}

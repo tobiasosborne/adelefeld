@@ -1,0 +1,26 @@
+[
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 64 real 0 1",
+    "exit": 0,
+    "seconds": 0.003916,
+    "output": "start p=0 prec=64 axis=real mantissa=1 exponent=0\nstatus=0 seconds=0.000141 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 4096 real 0 1",
+    "exit": 0,
+    "seconds": 0.004186,
+    "output": "start p=0 prec=4096 axis=real mantissa=1 exponent=0\nstatus=0 seconds=0.000776 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 65536 real 0 1",
+    "exit": 0,
+    "seconds": 0.032287,
+    "output": "start p=0 prec=65536 axis=real mantissa=1 exponent=0\nstatus=0 seconds=0.028712 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 1048576 real 0 1",
+    "exit": 0,
+    "seconds": 1.299115,
+    "output": "start p=0 prec=1048576 axis=real mantissa=1 exponent=0\nstatus=0 seconds=1.294944 preserved=1 finite=1\n"
+  }
+]

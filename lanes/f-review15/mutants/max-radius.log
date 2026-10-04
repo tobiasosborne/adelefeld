@@ -1,0 +1,109 @@
+ok   prime_exact_values
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=-3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=-3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=-2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=-2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=-1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=-1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=0 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=0 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=-3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=-3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=-2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=-2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=-1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=-1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=0 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=0 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=3 k=3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=-3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=-3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=-2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=-2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=-1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=-1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=0 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=0 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=5 k=3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=-3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=-3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=-2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=-2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=-1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=-1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=0 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=0 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=7 k=3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=-3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=-3 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=-2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=-2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=-1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=-1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=0 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=0 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=1 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=1 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=2 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=2 j=1 sign=1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=3 j=1 sign=-1: reference outside
+FAIL tests/test_localfactor.c:570: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=65537 k=3 j=1 sign=1: reference outside
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+FAIL prime_pole_lattice (tests/test_localfactor.c:524, 70 failed checks)
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 11: sample 0 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 11: sample 1 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 12: sample 3 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 12: sample 4 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 55: sample 0 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 55: sample 1 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 56: sample 3 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 56: sample 4 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 111: sample 0 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 111: sample 1 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 112: sample 3 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 112: sample 4 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 218: sample 0 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 218: sample 1 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 218: sample 3 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 218: sample 4 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 238: sample 0 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 238: sample 1 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 238: sample 3 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 238: sample 4 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 239: sample 0 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 239: sample 1 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 239: sample 3 outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 239: sample 4 outside
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+FAIL prime_vectors (tests/test_localfactor.c:710, 24 failed checks)
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+ok   real_recurrence
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 0, raised certificates 0
+ok   real_vectors
+10 tests, 36725 checks, 94 failed checks, 2 failed tests

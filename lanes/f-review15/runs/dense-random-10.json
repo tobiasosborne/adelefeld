@@ -1,0 +1,21 @@
+{
+  "kind": "bounds",
+  "p": 0,
+  "start": 10,
+  "count_requested": 10,
+  "cases": 10,
+  "ok": 10,
+  "nd": 0,
+  "domain": 0,
+  "limit": 0,
+  "samples": 810,
+  "failures": 0,
+  "bounds": 10,
+  "derivative_samples": 810,
+  "fallback": 1,
+  "exact_rationals": 0,
+  "max_derivative_ratio": "0.234614626896140954407696287178",
+  "seconds": 31.581,
+  "bridge": "bridge calls=10 output_errors=0",
+  "findings": []
+}

@@ -1,0 +1,5 @@
+{"fault": "half-B", "distinguished": true, "cases": 4, "input": {"id": "thin-minus-near-zero-4-14", "p": 0, "prec": 256, "s": [["-1", "-4"], ["0", "0"], ["1", "-14"], ["0", "0"]]}, "bad_samples": 9, "derivative_ratio": "1.1093715842849024110299305002044854329182386467133016292434"}
+{"fault": "lower-E", "distinguished": true, "cases": 1, "input": {"id": "zero-at-closed-left", "p": 2, "prec": 128, "s": [["1", "0"], ["0", "0"], ["1", "0"], ["0", "0"]]}, "bad_samples": 0, "derivative_ratio": null}
+{"fault": "open-integer", "distinguished": true, "cases": 1, "input": {"id": "far-left-closed-left", "p": 0, "prec": 64, "s": [["-399", "-1"], ["0", "0"], ["1", "-1"], ["0", "0"]]}, "bad_samples": 0, "derivative_ratio": null}
+{"fault": "no-logpi-B", "distinguished": false, "cases": 18, "input": null, "bad_samples": 0, "derivative_ratio": "0.666666650111033966490777515550425136513215681181856564548975"}
+{"fault": "no-M0-B", "distinguished": false, "cases": 18, "input": null, "bad_samples": 0, "derivative_ratio": "0.999999973924787580134300430266783898351509231247736594942792"}

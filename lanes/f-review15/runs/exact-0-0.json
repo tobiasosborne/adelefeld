@@ -1,0 +1,21 @@
+{
+  "kind": "exact",
+  "p": 0,
+  "start": 0,
+  "count_requested": 250,
+  "cases": 288,
+  "ok": 288,
+  "nd": 0,
+  "domain": 0,
+  "limit": 0,
+  "samples": 288,
+  "failures": 0,
+  "bounds": 0,
+  "derivative_samples": 0,
+  "fallback": 0,
+  "exact_rationals": 288,
+  "max_derivative_ratio": "0.0",
+  "seconds": 0.37,
+  "bridge": "bridge calls=288 output_errors=0",
+  "findings": []
+}

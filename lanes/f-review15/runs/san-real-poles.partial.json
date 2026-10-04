@@ -1,0 +1,16 @@
+{
+  "cases": 1530,
+  "ok": 4,
+  "nd": 1024,
+  "domain": 170,
+  "limit": 332,
+  "samples": 80,
+  "failures": 0,
+  "bounds": 2,
+  "derivative_samples": 0,
+  "fallback": 337,
+  "exact_rationals": 0,
+  "last_id": "real-pole-496561-8",
+  "seconds": 12.983,
+  "findings": []
+}

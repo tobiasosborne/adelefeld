@@ -1,0 +1,16 @@
+{
+  "cases": 970,
+  "ok": 61,
+  "nd": 909,
+  "domain": 0,
+  "limit": 0,
+  "samples": 1220,
+  "failures": 0,
+  "bounds": 0,
+  "derivative_samples": 0,
+  "fallback": 0,
+  "exact_rationals": 0,
+  "last_id": "prime-reach-18446744073709551557-581780",
+  "seconds": 11.074,
+  "findings": []
+}

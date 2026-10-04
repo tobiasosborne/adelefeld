@@ -1,0 +1,240 @@
+ok   prime_exact_values
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-3 j=4
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=3 j=4
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=3 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=5 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=7 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=65537 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=-1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=1 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=1 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=1 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=2 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=2 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=2 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=3 j=12
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=3 j=30
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=3 j=60
+FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=18446744073709551557 k=3 j=60
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+FAIL prime_pole_lattice (tests/test_localfactor.c:524, 182 failed checks)
+ok   prime_statuses_and_outputs
+ok   prime_handles
+FAIL tests/test_localfactor.c:697: prime_extreme_arguments: check failed: acb_contains(y, ref)
+FAIL tests/test_localfactor.c:700: prime_extreme_arguments: check failed: call(y, s, v, 128) == ADF_NOT_DETERMINED
+FAIL prime_extreme_arguments (tests/test_localfactor.c:647, 2 failed checks)
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 186: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 186: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 187: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 187: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 196: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 196: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 197: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 197: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 198: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 198: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 205: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 205: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 206: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 206: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 207: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 207: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 215: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 215: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 216: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 216: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 223: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 223: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 224: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 224: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 225: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 225: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 226: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 226: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 227: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 227: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 229: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 229: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 233: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 233: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 234: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 234: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 235: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 235: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 236: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 236: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 240: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 240: sample 0 outside
+FAIL tests/test_localfactor.c:342: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 257: midpoint value outside
+FAIL tests/test_localfactor.c:351: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 257: sample 0 outside
+FAIL tests/test_localfactor.c:325: prime_vectors: check failed: got == want || (want == ADF_OK && got == ADF_NOT_DETERMINED) | row 257 (2, huge_imaginary, line 258): status 0, oracle NOT_DETERMINED
+status differs from the simulation: line 258 kind huge_imaginary place 2 prec 128: 0, oracle NOT_DETERMINED
+FAIL tests/test_localfactor.c:187: prime_vectors: check failed: jsonl_field(r, key, &v, &e) | missing samples
+FAIL tests/test_localfactor.c:187: prime_vectors: check failed: jsonl_field(r, key, &v, &e) | missing point_error
+FAIL tests/test_localfactor.c:187: prime_vectors: check failed: jsonl_field(r, key, &v, &e) | missing value
+timeout: the monitored command dumped core

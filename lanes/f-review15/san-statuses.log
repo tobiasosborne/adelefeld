@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/statuses.py", line 37, in <module>
+    print(json.dumps({'cases': len(rows), 'failures': fail, 'bridge': bridge.close()}))
+                                                                      ^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/oracle.py", line 66, in close
+    assert st == 0, (st, msg)
+           ^^^^^^^
+AssertionError: (1, 'bridge calls=48 output_errors=0\n==24==LeakSanitizer has encountered a fatal error.\n==24==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==24==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)')

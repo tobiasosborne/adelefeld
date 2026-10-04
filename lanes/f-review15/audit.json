@@ -1,0 +1,91 @@
+{
+  "source_sha256": "e5efca95e7cb11c9c90139af41d62f79debb63bcb85286cad82ccb9f08f01dba",
+  "completed_oracle_files": 36,
+  "random_records": {
+    "2": {
+      "cases": 5000,
+      "ok": 4355,
+      "nd": 645,
+      "domain": 0,
+      "limit": 0,
+      "samples": 87100,
+      "derivative_samples": 0,
+      "failures": 0
+    },
+    "3": {
+      "cases": 5000,
+      "ok": 4344,
+      "nd": 656,
+      "domain": 0,
+      "limit": 0,
+      "samples": 86880,
+      "derivative_samples": 0,
+      "failures": 0
+    },
+    "5": {
+      "cases": 5000,
+      "ok": 4314,
+      "nd": 686,
+      "domain": 0,
+      "limit": 0,
+      "samples": 86280,
+      "derivative_samples": 0,
+      "failures": 0
+    },
+    "7": {
+      "cases": 5000,
+      "ok": 4362,
+      "nd": 638,
+      "domain": 0,
+      "limit": 0,
+      "samples": 87240,
+      "derivative_samples": 0,
+      "failures": 0
+    },
+    "65537": {
+      "cases": 5000,
+      "ok": 4266,
+      "nd": 734,
+      "domain": 0,
+      "limit": 0,
+      "samples": 85320,
+      "derivative_samples": 0,
+      "failures": 0
+    },
+    "18446744073709551557": {
+      "cases": 5000,
+      "ok": 4237,
+      "nd": 763,
+      "domain": 0,
+      "limit": 0,
+      "samples": 84740,
+      "derivative_samples": 0,
+      "failures": 0
+    },
+    "0": {
+      "cases": 5111,
+      "ok": 4551,
+      "nd": 526,
+      "domain": 0,
+      "limit": 34,
+      "samples": 91020,
+      "derivative_samples": 1200,
+      "failures": 0
+    }
+  },
+  "distinct_random_boxes": {
+    "2": 5000,
+    "3": 5000,
+    "5": 5000,
+    "7": 5000,
+    "65537": 5000,
+    "18446744073709551557": 5000,
+    "0": 5000
+  },
+  "faults": 13,
+  "survivors": 5,
+  "report_lines": 588,
+  "report_lines_over_116": 0,
+  "cleanup_build_exists_before": true,
+  "cleanup_build_exists_after": false
+}

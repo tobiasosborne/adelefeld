@@ -1,0 +1,21 @@
+{
+  "kind": "random",
+  "p": 2,
+  "start": 0,
+  "count_requested": 250,
+  "cases": 250,
+  "ok": 219,
+  "nd": 31,
+  "domain": 0,
+  "limit": 0,
+  "samples": 4380,
+  "failures": 0,
+  "bounds": 0,
+  "derivative_samples": 0,
+  "fallback": 0,
+  "exact_rationals": 0,
+  "max_derivative_ratio": "0.0",
+  "seconds": 3.423,
+  "bridge": "bridge calls=250 output_errors=0",
+  "findings": []
+}
