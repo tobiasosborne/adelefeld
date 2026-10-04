@@ -398,3 +398,109 @@ named prime. Examples: hilbert_at 3 with 3 with 2 prints -1;
 hilbert_at [p=2: 1 + O(2^2)] with [p=2: 2] with 2 reports NOT_DETERMINED.
 The real-ball form uses partial-ball text, for example {inf: -3}.
 Library calls accept any permitted pair of their declared type; inputs may coincide.
+
+## Local zeta factors (N-D20, lane f-slice14)
+
+Decision N-D20 (orchestrator, from docs/design/local-zeta.md section 3): one function
+`adf_local_zeta_factor_at(y, where, s, v, prec)` on raw `acb_t`, the name of conventions CV-60 (line 953),
+in include/adelefeld/localfactor.h and src/localfactor.c. The place handle selects the prime or the real place;
+primes are the word primes of place.h. No reciprocal, no product over places, no character (milestones 3, 5).
+
+### Y16: the value and its certificate
+
+The function returns, for the closed rectangle S = [x - rx, x + rx] + i [y - ry, y + ry] of the input, an enclosure
+of the image of L_v on S: L_p(s) = (1 - p^(-s))^(-1) = 1/(1 - exp(-s log p)) at a prime
+(refs/src/tate-poonen/notes.txt:1733 for Re(s) > 0, continued meromorphically by design Z1), and
+L_inf(s) = pi^(-s/2) Gamma(s/2) at the real place (notes.txt:1014-1016; continuation, poles and absence of zeros
+of Gamma at :62-64; design Z2). The poles are 2 pi i k / log p at p and 0, -2, -4, ... at infinity, all simple
+(Z1, Z2). The exact dyadic poles are 0 at p and the non-positive even integers at infinity (Z3; at p this rests on
+the pending Gelfond-Schneider source, which the code does not use: it recognises only the exact 0, and an exact
+point it cannot separate from a pole is NOT_DETERMINED). The procedure is the decision rule Z4 with its proof of
+soundness (local-zeta.md:107-170), at the working precision w = max(2, prec) + 32, rounded outward to
+max(2, prec) bits at the end. No relative accuracy and no smallest ball are promised.
+
+The steps the code adds to the design's procedure, and why each keeps the enclosure:
+
+1. At p, the variation radius E+ of Z4 step 3 is computed in mag arithmetic: a lower bound of a |x| as the
+   lower product of lower bounds of log p and |x| (arb_get_mag_lower, arf_get_mag_lower, mag_mul_lower), then
+   mag_expinv, an upper bound of exp(-t); an upper bound of a R from the upper bound of log p and mag_hypot(rx, ry)
+   (an upper bound of the Euclidean radius R, not max(rx, ry)), then mag_expm1, an upper bound of exp(t) - 1.
+   Every rounding enlarges E+, so E+ >= exp(-a |x|)(exp(a R) - 1) and proof step 2 applies.
+2. The intersection of D0 with 1 - T0 is made per component and only when arb_intersection reports an overlap;
+   otherwise D0 is kept. Both enclose 1 - exp(b m), so either set, and their intersection, encloses it.
+3. At infinity the integer geometry of Z4 step 2 uses the endpoints of Re(S) rounded outward at w bits
+   (arb_get_lbound_arf, arb_get_ubound_arf), halved exactly. The test is: an imaginary interval that excludes 0
+   excludes every pole; else [lo, min(hi, 0)] contains an integer iff floor(min(hi, 0)) >= lo (arf_floor and
+   arf_cmp, exact for every exponent, arf.rst:39). The outward interval contains the true one, so it can only
+   find more integers: rounding can cause a refusal, never an acceptance.
+4. The shift of Z4 step 4 is n = 1 - floor(lo) for lo < 1, else 0, from the outward lo <= min Re(S/2), so
+   min Re(S/2 + n) >= lo + n >= 1 holds; n is at most one more than with exact endpoints. lo below -64 gives
+   n > 64 at once, without forming floor(lo) of a large number.
+5. The product Q = z (z+1) ... (z+n-1) is a loop of acb_mul, each of which encloses its product, so Q encloses
+   Q(t) for every t of z = S/2; Gamma(z+n)/Q encloses Gamma(z) by the recurrence (Z2 step 4) or is not finite.
+   acb_rising_ui is not used: on FLINT 3.0.1 it returned for z = -2 +/- 0.05 + i (0.8 +/- 0.05), n = 6, a ball
+   of radius about 110 containing 0, where the loop excludes 0 (lanes/f-slice14/probes/rec_probe.c).
+6. The derivative bound B of Z6 (step 7) is computed with every quantity rounded so that B grows:
+   A >= lo + n rounded down; ceil(B0) <= ceil(hi + n rounded up) <= 64; 1/A and the factorials as mag upper
+   bounds; delta_j >= sqrt(dx^2 + dy^2), dx and dy lower bounds of the distances of Re(z) from -j and of Im(z)
+   from 0 (arb_get_mag_lower; Euclidean distance to the rectangle is at least this), with mag lower arithmetic;
+   P as the lower product; sum 1/delta_j with mag_inv upper bounds; pi^(-min Re(S)/2) <= exp(-lo log pi).
+   A delta_j bound of 0 makes B infinite, and then the refinement is skipped.
+7. The midpoint value of Z4 step 5 is the candidate procedure (direct Gamma, then the recurrence with the
+   midpoint's own shift, at most n) on the exact midpoint, which lies in the pole-free rectangle. Enlarged by R B
+   in both components it encloses the image (Z6 step 1); intersecting with the candidate per component, when
+   the two overlap, keeps an enclosure. A non-finite midpoint value or B leaves the candidate unchanged.
+8. Every result is computed into a temporary, rounded outward (acb_set_round), tested with acb_is_finite, and
+   only then swapped into y.
+
+Check: test_localfactor: prime_exact_values (s = 1, 2, -1 at p = 2, 3, five precisions), prime_pole_lattice
+(42 poles 2 pi i k / log p, k = -3..3, six primes up to 2^64 - 59, radii 10^-1 .. 10^-60: 1260 calls),
+real_exact_values (every integer -41..41 that is not a pole, against closed forms without Gamma),
+real_poles (0..-40, 630 calls),
+real_recurrence (the design's direct-Gamma counterexample), prime_vectors and real_vectors (the 273 rows of
+tests/ref/vectors/f-slice14/zeta.jsonl; with ADF_ZETA_FIXTURES the 1371 rows with an input of the full
+oracle file: 701 OK rows, 5845 certified samples contained, 643 width checks at factor 64, 0 missed, every
+status equal to the simulation). Driver: tests/driver/localfactor-values.cmd. Julia: tests/julia/localfactor.jl.
+
+### Y17: statuses, outputs, aliasing, limits, cost
+
+Statuses, in the order of the checks: LIMIT for prec above ADF_REAL_PREC_MAX = 2^21, before every other check;
+then (debug build only) the entry check that v is the archimedean place or a certified prime (a forged handle
+aborts, conventions 4.4); DOMAIN for a non-finite input (acb_is_finite false); then at p: DOMAIN for the exact
+0, NOT_DETERMINED for a denominator enclosure that contains 0 or a non-finite bound, value or rounded value;
+at infinity: DOMAIN for an exact non-positive even integer with imaginary part exactly 0, NOT_DETERMINED when
+the geometry finds a possible pole, LIMIT when direct Gamma is not finite and the shift needs more than
+ADF_LOCAL_ZETA_SHIFT_MAX = 64 factors, NOT_DETERMINED for a non-finite candidate or rounded value. Otherwise OK.
+No other status is returned. The row of conventions.md:223 does not list LIMIT yet; the orchestrator adds it
+with N-D20 (brief of lane f-slice14, decision 3). A ball containing a pole is never OK (Z4 proof step 3 at p,
+step 5 at infinity); on OK the ball is finite and contains L_v(t) for every t of S.
+
+Outputs: on OK y is written once and where is untouched; on every other status y is untouched (its
+representation: tests compare with acb_equal against a nontrivial sentinel) and *where = v, also for LIMIT;
+where may be NULL. Aliasing: y may be s; where overlaps neither. Limits: the precision cap and the 64 factors;
+every prime below 2^64; no cap on the size of s (Re(s) = +-2^1000 and Im(s) = 2^1000 at p = 2 are tested; at the
+real place 2^1000 + i is NOT_DETERMINED on FLINT 3.0.1 because acb_gamma returns a non-finite ball).
+FLINT 3.0.1 behaviour that the statuses depend on: acb_gamma of the design's box [-2.1, -1.9] + i [1.5, 1.7]
+halved is non-finite at 48, 160 and 288 bits, as the design observed on 3.3.1, so the recurrence gives the OK
+value; the same holds for the boxes of the recurrence limit (lanes/f-slice14/probes/gamma_probe.c).
+Cost: at p one arb_log_ui, one acb_exp and one acb_expm1 at the midpoint, a few mag operations and one complex
+division (or a division and a negation); no loop over poles or over Im(s). At infinity endpoint arithmetic, one
+acb_exp and one acb_gamma; when Gamma is not finite a second acb_gamma and at most 64 products; for a ball of
+positive radius with n <= 64 and max Re(S/2 + n) <= 64 at most two further acb_gamma calls (the midpoint) and the
+O(n) bound of Z6. Measured: test_localfactor, 37005 checks, about 3 s (one core); the call at the cap
+prec = 2^21 at p = 2, s = 1 is part of it. Avoidable cost noted: the midpoint refinement evaluates Gamma at the
+midpoint even when the candidate is already narrow, and computes the prefactor exp(-z log pi) a second time.
+
+Check: prime_statuses_and_outputs (exact 0, NaN and infinite components and radius, LIMIT before DOMAIN, prec
+-5, 1, 2, the cap, where on OK and on failure), prime_handles (0, 1, 4, 9, 65535, 2^64 - 1, 2^64 - 57 refused by
+adf_place_prime, which leaves its output untouched; 2^64 - 59 accepted), prime_extreme_arguments, real_poles,
+real_recurrence (n = 64 not LIMIT, n = 65 and 67 LIMIT, LIMIT before DOMAIN), debug_entry_check (INV=1), and the
+helper call() of the test, which runs every call three times (separate y, y = s, where = NULL) and checks the
+outputs after each status. Driver: tests/driver/localfactor-status.cmd.
+
+## Local zeta user calls
+
+Driver: `local_zeta_factor_at S with PLACE`; S is the text of a complex adele, the carrier of s (its finite
+coordinate is ignored); PLACE is real or a prime. The line is the complex ball `(re) + (im)*i` or `error: STATUS`.
+At prec 128 and digits 5, `local_zeta_factor_at ((2) + (0)*i ; 0) with 2` prints `(1.3333 +/- 3.4e-5) + (0)*i`.
+Julia calls the export with a 96-byte acb (the documented target ABI) and a cadele as text carrier.

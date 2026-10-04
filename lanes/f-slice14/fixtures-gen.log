@@ -1,0 +1,7 @@
+poles_and_residues: 63; residual 1e-230, residue error <1e-70 max(1,|residue|)
+independent_gamma_integral: 7; certified reference margin <=1e-200 max(1,|value|)
+precision_pairs: 12; low-precision refusals: 6; high-precision OK: 6
+case_groups: {"around": 315, "closed_boundary": 5, "exact": 27, "huge_imaginary": 2, "huge_real": 2, "imaginary_point": 6, "invalid_prime": 5, "limit_first": 1, "near": 315, "near_imaginary": 105, "near_negative": 210, "recurrence_limit": 1, "regular": 49, "regular_ball": 13, "segment": 315, "wide_free": 6}
+statuses: {"DOMAIN": 32, "LIMIT": 2, "NOT_DETERMINED": 642, "OK": 701}
+certified_samples: 5845; positive image-width witnesses: 643; width factor: 64
+exit=0

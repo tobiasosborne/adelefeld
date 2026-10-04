@@ -198,6 +198,7 @@ typedef enum
     ADF_DRV_HAAR_VOLUME,
     ADF_DRV_CYCLO_EXP_U,
     ADF_DRV_CYCLO_EXP_UINV,
+    ADF_DRV_LOCAL_ZETA_AT,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -276,6 +277,7 @@ static const struct
     { "cyclo_exp_u", ADF_DRV_CYCLO_EXP_U, 2 },
     { "cyclo_exp_uinv", ADF_DRV_CYCLO_EXP_UINV, 2 },
     { "hilbert_at", ADF_DRV_HILBERT_AT, 3 },
+    { "local_zeta_factor_at", ADF_DRV_LOCAL_ZETA_AT, 2 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -2911,6 +2913,50 @@ done:
     return status;
 }
 
+/* WP 1F.9, lane f-slice14: local_zeta_factor_at S with PLACE (localfactor.h; docs/api-1f9.md Y16, Y17). S is
+   the text of a complex adele, the carrier of the complex number s: its complex coordinate is s and its finite
+   coordinate is read and ignored (design local-zeta.md:394-397, :458-464). The order of the checks: the syntax
+   of S, the syntax of the place token (PARSE); the kind of S, which must be a complex adele (UNSUPPORTED);
+   the value of S; the place value (DOMAIN); the status of the library. The result is the plain complex ball,
+   printed as the complex coordinate of the cadele printer, "(re) + (im)*i", without the finite part. */
+static int
+adf_drv_local_zeta(FILE *out, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind kind;
+    adf_cadele_t c;
+    adf_fball_t zero;
+    acb_t s, y;
+    adf_place_t v = adf_place_inf();
+    int status, place_status;
+    char *text = NULL;
+    size_t len = 0;
+    adf_cadele_init(c); adf_fball_init(zero);
+    acb_init(s); acb_init(y);
+    status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK) goto done;
+    place_status = adf_drv_place_token(l->s[1], l->n[1], &v);
+    if (place_status == ADF_PARSE) { status = place_status; goto done; }
+    if (kind != ADF_TEXT_CADELE) { status = ADF_UNSUPPORTED; goto done; }
+    status = adf_cadele_set_str(c, l->s[0], l->n[0], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (place_status != ADF_OK) { status = place_status; goto done; }
+    adf_cadele_get_complex(s, c);
+    status = adf_local_zeta_factor_at(y, NULL, s, v, st->prec);
+    if (status != ADF_OK) goto done;
+    status = adf_cadele_set_acb_fball(c, y, zero);
+    if (status != ADF_OK) goto done;
+    text = adf_cadele_get_str(&len, c, st->digits);
+    if (text == NULL) { status = ADF_LIMIT; goto done; }
+    /* "((re) + (im)*i ; 0)": drop the first byte and the final " ; 0)" */
+    if (len < 7 || memcmp(text + len - 5, " ; 0)", 5) != 0) status = ADF_LIMIT;
+    else fprintf(out, "%.*s\n", (int) (len - 6), text + 1);
+done:
+    adf_str_free(text);
+    adf_cadele_clear(c); adf_fball_clear(zero);
+    acb_clear(s); acb_clear(y);
+    return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3038,6 +3084,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
                    ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, ADF_LIMIT, &st->prec)
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
     if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
+    if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

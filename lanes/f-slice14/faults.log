@@ -1,0 +1,85 @@
+fault 1: finite poles tested only at k = 0 (the denominator test replaced by a test of s against 0)
+  exit 0, caught: False; 10 tests, 36986 checks, 0 failed checks, 0 failed tests
+fault 1+7: fault 1 together with fault 7 (without the final finiteness check, 1 alone is masked by it)
+  exit -11, caught: True; (no summary)
+  FAIL prime_pole_lattice (tests/test_localfactor.c:524, 2880 failed checks)
+  FAIL prime_extreme_arguments (tests/test_localfactor.c:647, 4 failed checks)
+  first: FAIL tests/test_localfactor.c:92: prime_pole_lattice: check failed: acb_is_finite(mode == 1 ? t : y)
+  first: FAIL tests/test_localfactor.c:92: prime_pole_lattice: check failed: acb_is_finite(mode == 1 ? t : y)
+fault 2: DOMAIN on a positive-radius pole ball (at p: a denominator that contains 0)
+  exit 1, caught: True; 10 tests, 36986 checks, 976 failed checks, 3 failed tests
+  FAIL prime_pole_lattice (tests/test_localfactor.c:524, 840 failed checks)
+  FAIL prime_extreme_arguments (tests/test_localfactor.c:647, 1 failed checks)
+  FAIL prime_vectors (tests/test_localfactor.c:710, 135 failed checks)
+  first: FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=1
+  first: FAIL tests/test_localfactor.c:553: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=1
+fault 2r: DOMAIN on a positive-radius pole ball (at infinity: the geometry)
+  exit 1, caught: True; 10 tests, 36986 checks, 439 failed checks, 2 failed tests
+  FAIL real_poles (tests/test_localfactor.c:824, 424 failed checks)
+  FAIL real_vectors (tests/test_localfactor.c:976, 15 failed checks)
+  first: FAIL tests/test_localfactor.c:847: real_poles: check failed: call(y, s, inf, 256) == ADF_NOT_DETERMINED | around 0 j=1
+  first: FAIL tests/test_localfactor.c:849: real_poles: check failed: call(y, s, inf, 16) == ADF_NOT_DETERMINED
+fault 3: the exponent sign reversed, the stable ratio unchanged
+  exit -11, caught: True; (no summary)
+  FAIL prime_exact_values (tests/test_localfactor.c:409, 30 failed checks)
+  FAIL prime_pole_lattice (tests/test_localfactor.c:524, 420 failed checks)
+  FAIL prime_statuses_and_outputs (tests/test_localfactor.c:584, 2 failed checks)
+  FAIL prime_extreme_arguments (tests/test_localfactor.c:647, 6 failed checks)
+  first: FAIL tests/test_localfactor.c:429: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=1 prec=2
+  first: FAIL tests/test_localfactor.c:429: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=1 prec=16
+fault 4: Gamma(s) instead of Gamma(s/2)
+  exit 1, caught: True; 10 tests, 36986 checks, 374 failed checks, 3 failed tests
+  FAIL real_exact_values (tests/test_localfactor.c:759, 160 failed checks)
+  FAIL real_poles (tests/test_localfactor.c:824, 188 failed checks)
+  FAIL real_vectors (tests/test_localfactor.c:976, 26 failed checks)
+  first: FAIL tests/test_localfactor.c:776: real_exact_values: check failed: arb_contains(acb_realref(y), r) | s=1 prec=2: value outside
+  first: FAIL tests/test_localfactor.c:776: real_exact_values: check failed: arb_contains(acb_realref(y), r) | s=1 prec=16: value outside
+fault 5: pi^(-s) instead of pi^(-s/2)
+  exit 1, caught: True; 10 tests, 36986 checks, 501 failed checks, 4 failed tests
+  FAIL real_exact_values (tests/test_localfactor.c:759, 248 failed checks)
+  FAIL real_poles (tests/test_localfactor.c:824, 201 failed checks)
+  FAIL real_recurrence (tests/test_localfactor.c:916, 2 failed checks)
+  FAIL real_vectors (tests/test_localfactor.c:976, 50 failed checks)
+  first: FAIL tests/test_localfactor.c:776: real_exact_values: check failed: arb_contains(acb_realref(y), r) | s=-41 prec=2: value outside
+  first: FAIL tests/test_localfactor.c:776: real_exact_values: check failed: arb_contains(acb_realref(y), r) | s=-41 prec=16: value outside
+fault 6: y written before the status is decided
+  exit 1, caught: True; 10 tests, 36986 checks, 4467 failed checks, 7 failed tests
+  FAIL prime_pole_lattice (tests/test_localfactor.c:524, 2520 failed checks)
+  FAIL prime_statuses_and_outputs (tests/test_localfactor.c:584, 4 failed checks)
+  FAIL prime_extreme_arguments (tests/test_localfactor.c:647, 3 failed checks)
+  FAIL prime_vectors (tests/test_localfactor.c:710, 417 failed checks)
+  FAIL real_poles (tests/test_localfactor.c:824, 1399 failed checks)
+  FAIL real_recurrence (tests/test_localfactor.c:916, 14 failed checks)
+  FAIL real_vectors (tests/test_localfactor.c:976, 110 failed checks)
+  first: FAIL tests/test_localfactor.c:82: prime_pole_lattice: check failed: acb_equal(y, before) | y changed on status 1
+  first: FAIL tests/test_localfactor.c:75: prime_pole_lattice: check failed: acb_equal(t, before) | aliased y changed on status 1
+fault 7: the final finiteness checks omitted (at p both, at infinity the candidate and the rounded value)
+  exit 1, caught: True; 10 tests, 36995 checks, 6 failed checks, 1 failed tests
+  FAIL real_recurrence (tests/test_localfactor.c:916, 6 failed checks)
+  first: FAIL tests/test_localfactor.c:92: real_recurrence: check failed: acb_is_finite(mode == 1 ? t : y)
+  first: FAIL tests/test_localfactor.c:92: real_recurrence: check failed: acb_is_finite(mode == 1 ? t : y)
+fault 8: where not written on failure
+  exit 1, caught: True; 10 tests, 36986 checks, 3003 failed checks, 7 failed tests
+  FAIL prime_pole_lattice (tests/test_localfactor.c:524, 1680 failed checks)
+  FAIL prime_statuses_and_outputs (tests/test_localfactor.c:584, 19 failed checks)
+  FAIL prime_extreme_arguments (tests/test_localfactor.c:647, 2 failed checks)
+  FAIL prime_vectors (tests/test_localfactor.c:710, 282 failed checks)
+  FAIL real_poles (tests/test_localfactor.c:824, 934 failed checks)
+  FAIL real_recurrence (tests/test_localfactor.c:916, 12 failed checks)
+  FAIL real_vectors (tests/test_localfactor.c:976, 74 failed checks)
+  first: FAIL tests/test_localfactor.c:87: prime_pole_lattice: check failed: adf_place_equal(w, v) | where is not v on status 1
+  first: FAIL tests/test_localfactor.c:87: prime_pole_lattice: check failed: adf_place_equal(w, v) | where is not v on status 1
+fault 8b: where written on OK
+  exit 1, caught: True; 10 tests, 36986 checks, 2031 failed checks, 9 failed tests
+  FAIL prime_exact_values (tests/test_localfactor.c:409, 60 failed checks)
+  FAIL prime_pole_lattice (tests/test_localfactor.c:524, 840 failed checks)
+  FAIL prime_statuses_and_outputs (tests/test_localfactor.c:584, 7 failed checks)
+  FAIL prime_extreme_arguments (tests/test_localfactor.c:647, 6 failed checks)
+  FAIL prime_vectors (tests/test_localfactor.c:710, 162 failed checks)
+  FAIL real_exact_values (tests/test_localfactor.c:759, 498 failed checks)
+  FAIL real_poles (tests/test_localfactor.c:824, 422 failed checks)
+  FAIL real_recurrence (tests/test_localfactor.c:916, 8 failed checks)
+  FAIL real_vectors (tests/test_localfactor.c:976, 28 failed checks)
+  first: FAIL tests/test_localfactor.c:86: prime_exact_values: check failed: adf_place_equal(w, mark) | where written on OK
+  first: FAIL tests/test_localfactor.c:86: prime_exact_values: check failed: adf_place_equal(w, mark) | where written on OK
+caught: 10 of 11 {'1': False, '1+7': True, '2': True, '2r': True, '3': True, '4': True, '5': True, '6': True, '7': True, '8': True, '8b': True}
