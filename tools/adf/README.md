@@ -687,3 +687,22 @@ integer N for the two conventions of cyclotomic action. X is an idele class; its
 The unit's normal modulus must be divisible by the normal form of N, else NOT_DETERMINED.
 An exact unit always determines the action. `cyclo_exp_u <17 ; [2 mod 3]> with 6` prints `5`.
 The exponent for N=1 is `0`; nonpositive N gives DOMAIN. The convention names are fixed by CV-53.
+
+# Local zeta factors (WP 1F.9, lane f-slice14)
+
+`local_zeta_factor_at S with PLACE` returns the local zeta factor of the trivial character at one place:
+`(1 - p^(-s))^(-1)` at a prime p below 2^64, `pi^(-s/2) Gamma(s/2)` at `real` (library call
+`adf_local_zeta_factor_at`, `include/adelefeld/localfactor.h`; `docs/api-1f9.md` Y16, Y17).
+S is the text of a complex adele, used only as the carrier of the complex number s: its complex coordinate is s
+and its finite coordinate is read and ignored, so `((2) + (0)*i ; 5 mod 7)` and `((2) + (0)*i ; 0)` give the
+same line. The output is the complex ball `(re) + (im)*i`, printed as the complex coordinate of a complex
+adele, with no finite part. `prec` is the working precision of the parse and of the call.
+For example, at `prec 128` and `digits 5`, `local_zeta_factor_at ((2) + (0)*i ; 0) with 2` prints
+`(1.3333 +/- 3.4e-5) + (0)*i` (4/3) and `local_zeta_factor_at ((2) + (0)*i ; 0) with real` prints
+`(0.31831 +/- 1.2e-7) + (0)*i` (1/pi).
+An exact pole (0 at a prime; 0, -2, -4, ... at `real`) is `DOMAIN`; a ball that meets a pole, or whose
+exclusion of the poles is not certified, is `NOT_DETERMINED`; at `real` a ball whose Gamma value needs more than
+64 recurrence factors is `LIMIT`. Another kind of S (a rational, a real adele) is `UNSUPPORTED`; a place token
+that is not `real` or a decimal is `PARSE`, and a number that is not a prime below 2^64 is `DOMAIN`. The order of
+the checks: the syntax of S, the syntax of the place token, the kind of S, the value of S, the place, the call.
+Tests: `tests/driver/localfactor-values.cmd`, `tests/driver/localfactor-status.cmd`.

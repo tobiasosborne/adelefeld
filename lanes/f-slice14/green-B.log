@@ -1,0 +1,17 @@
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 222, OK 81, samples contained 201, width checked 30, width missed 0, status differs 0, raised certificates 26
+lanes/f-slice14/zeta-fixtures.jsonl (places 0): rows 918, OK 483, samples contained 3939, width checked 432, width missed 0, status differs 0, raised certificates 52
+ok   prime_vectors
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+ok   real_recurrence
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 51, OK 14, samples contained 42, width checked 7, width missed 0, status differs 0, raised certificates 52
+lanes/f-slice14/zeta-fixtures.jsonl (places 1): rows 453, OK 218, samples contained 1906, width checked 211, width missed 0, status differs 0, raised certificates 52
+ok   real_vectors
+10 tests, 132283 checks, 0 failed checks, 0 failed tests

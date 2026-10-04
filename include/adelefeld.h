@@ -74,5 +74,6 @@
 #include "adelefeld/gfunc.h"
 #include "adelefeld/symbol.h"
 #include "adelefeld/catalogue.h"
+#include "adelefeld/localfactor.h"
 
 #endif /* ADELEFELD_H */

@@ -1,0 +1,173 @@
+mutate: src/localfactor.c: 218 mutants
+mutate: 218 mutants, 40 of them run (--limit 40, --seed 14)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (47.1 s)
+
+SURVIVED src/localfactor.c:231:9 drop_call: 'mag_mul_lower(d, dx, dx);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -229,5 +229,5 @@
+           arb_add_si(c, acb_realref(z), j, w);
+           arb_get_mag_lower(dx, c);                    /* distance of Re(z) from -j */
+  -        mag_mul_lower(d, dx, dx);
+  +        
+           mag_mul_lower(f, dy, dy);
+           mag_add_lower(d, d, f);
+
+
+SURVIVED src/localfactor.c:329:17 negate_if: 'if(arb_intersection(c, acb_realref(cand), acb_realref(ym), w))' -> 'if(!(arb_intersection(c, acb_realref(cand), acb_realref(ym), w)))'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -327,5 +327,5 @@
+                   arb_init(c);
+                   acb_add_error_mag(ym, B);
+  -                if (arb_intersection(c, acb_realref(cand), acb_realref(ym), w)) arb_swap(acb_realref(cand), c);
+  +                if (!(arb_intersection(c, acb_realref(cand), acb_realref(ym), w))) arb_swap(acb_realref(cand), c);
+                   if (arb_intersection(c, acb_imagref(cand), acb_imagref(ym), w)) arb_swap(acb_imagref(cand), c);
+                   arb_clear(c);
+
+
+SURVIVED src/localfactor.c:212:5 drop_call: 'arf_add_si(t, lo, n, w, ARF_RND_FLOOR);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -210,5 +210,5 @@
+       mag_init(dx); mag_init(dy); mag_init(d); mag_init(lp);
+   
+  -    arf_add_si(t, lo, n, w, ARF_RND_FLOOR);         /* A >= t >= 1 */
+  +             /* A >= t >= 1 */
+       arf_get_mag_lower(f, t);
+       mag_inv(inva, f);                                /* >= 1/A */
+
+
+SURVIVED src/localfactor.c:313:5 negate_if: 'if(!acb_is_exact(s) && n <= ADF_LOCAL_ZETA_SHIFT_MAX && arf_cmp_si(h, 64) <= 0)' -> 'if(!(!acb_is_exact(s) && n <= ADF_LOCAL_ZETA_SHIFT_MAX && arf_cmp_si(h, 64) <= 0))'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -311,5 +311,5 @@
+          step 5, :165-166). A non-finite midpoint value or bound leaves the candidate as it is. */
+       arf_add_si(h, hi, n, w, ARF_RND_CEIL);
+  -    if (!acb_is_exact(s) && n <= ADF_LOCAL_ZETA_SHIFT_MAX && arf_cmp_si(h, 64) <= 0)
+  +    if (!(!acb_is_exact(s) && n <= ADF_LOCAL_ZETA_SHIFT_MAX && arf_cmp_si(h, 64) <= 0))
+       {
+           arf_t ml;
+
+
+NOT COMPILED src/localfactor.c:272:56 logic: '&&' -> '||'
+  src/localfactor.c:272:25: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/localfactor.c:219:5 swap_args: 'mag_add(m0, inva, f)' -> 'mag_add(m0, f, inva)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -217,5 +217,5 @@
+       cb = arf_get_si(t, ARF_RND_CEIL);                /* ceil(B0) <= cb, 1 <= cb <= 64 */
+       mag_fac_ui(f, (ulong) (cb - 1));
+  -    mag_add(m0, inva, f);
+  +    mag_add(m0, f, inva);
+       mag_mul(m1, inva, inva);
+       mag_fac_ui(f, (ulong) cb);
+
+
+SURVIVED src/localfactor.c:62:47 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -60,5 +60,5 @@
+          intersected with 1 - T0 (both enclose the same number; the direct one is kept if expm1 is not finite).
+          The uncertainty of log p is in the arb a and enters both calls. */
+  -    neg = arf_sgn(arb_midref(acb_realref(s))) < 0;
+  +    neg = arf_sgn(arb_midref(acb_realref(s))) <= 0;
+       arb_log_ui(a, p, w);
+       if (neg) arb_set(b, a);
+
+
+SURVIVED src/localfactor.c:241:5 drop_call: 'mag_mul(sum, sum, m0);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -239,5 +239,5 @@
+       arb_get_mag(lp, logpi);
+       mag_add(sum, sum, lp);
+  -    mag_mul(sum, sum, m0);
+  +    
+       mag_add(sum, sum, m1);
+       mag_div(sum, sum, P);
+
+
+SURVIVED src/localfactor.c:289:61 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -287,5 +287,5 @@
+       arf_mul_2exp_si(lo, lo, -1);
+       arf_mul_2exp_si(hi, hi, -1);
+  -    if (arb_contains_zero(acb_imagref(s)) && arf_sgn(lo) <= 0)
+  +    if (arb_contains_zero(acb_imagref(s)) && arf_sgn(lo) <= 1)
+       {
+           if (arf_sgn(hi) > 0) arf_zero(h);
+
+
+NOT COMPILED src/localfactor.c:368:36 drop_call: 'fail(st, where, v);' -> '' (the statement is removed)
+  src/localfactor.c:369:1: error: expected expression before ‘}’ token
+
+SURVIVED src/localfactor.c:319:9 negate_if: 'if(real_candidate(ym, zm, logpi, shift_of(ml), w) == ADF_OK)' -> 'if(!(real_candidate(ym, zm, logpi, shift_of(ml), w) == ADF_OK))'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -317,5 +317,5 @@
+           acb_get_mid(zm, z);
+           arf_set(ml, arb_midref(acb_realref(zm)));
+  -        if (real_candidate(ym, zm, logpi, shift_of(ml), w) == ADF_OK)
+  +        if (!(real_candidate(ym, zm, logpi, shift_of(ml), w) == ADF_OK))
+           {
+               mag_hypot(R, arb_radref(acb_realref(s)), arb_radref(acb_imagref(s)));
+
+
+SURVIVED src/localfactor.c:222:5 swap_args: 'mag_add(m1, m1, f)' -> 'mag_add(m1, f, m1)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -220,5 +220,5 @@
+       mag_mul(m1, inva, inva);
+       mag_fac_ui(f, (ulong) cb);
+  -    mag_add(m1, m1, f);
+  +    mag_add(m1, f, m1);
+   
+       mag_one(P);
+
+
+NOT COMPILED src/localfactor.c:251:5 drop_call: 'mag_mul(B, sum, f);' -> '' (the statement is removed)
+  src/localfactor.c:200:29: error: unused parameter ‘B’ [-Werror=unused-parameter]
+
+SURVIVED src/localfactor.c:240:5 drop_call: 'mag_add(sum, sum, lp);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -238,5 +238,5 @@
+       }
+       arb_get_mag(lp, logpi);
+  -    mag_add(sum, sum, lp);
+  +    
+       mag_mul(sum, sum, m0);
+       mag_add(sum, sum, m1);
+
+
+SURVIVED src/localfactor.c:157:17 swap_args: 'acb_mul(q, q, f, w)' -> 'acb_mul(q, f, q, w)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -155,5 +155,5 @@
+               {
+                   acb_add_ui(f, z, (ulong) j, w);
+  -                acb_mul(q, q, f, w);
+  +                acb_mul(q, f, q, w);
+               }
+               acb_clear(f);
+
+
+mutate: 40 mutants in 541.4 s: 25 killed, 12 survived, 3 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 12 mutant(s) survived; each one is a claim the tests do not check
+exit=1

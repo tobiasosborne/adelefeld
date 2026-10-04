@@ -1,0 +1,56 @@
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 222, OK 81, samples contained 201, width checked 30, width missed 0, status differs 0, raised certificates 26
+ok   prime_vectors
+FAIL real_exact_values (tests/test_localfactor.c:758, 497 failed checks)
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+FAIL real_poles (tests/test_localfactor.c:823, 465 failed checks)
+FAIL real_recurrence (tests/test_localfactor.c:915, 6 failed checks)
+status differs from the simulation: line 139 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 141 kind near place real prec 256: 1, oracle OK
+status differs from the simulation: line 142 kind near_imaginary place real prec 256: 1, oracle OK
+status differs from the simulation: line 146 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 150 kind near place real prec 256: 1, oracle OK
+status differs from the simulation: line 151 kind near_imaginary place real prec 256: 1, oracle OK
+status differs from the simulation: line 153 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 154 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 155 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 156 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 157 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 158 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 159 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 160 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 161 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 162 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 163 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 164 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 165 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 166 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 167 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 168 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 169 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 170 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 171 kind exact place real prec 128: 1, oracle DOMAIN
+status differs from the simulation: line 173 kind near place real prec 256: 1, oracle OK
+status differs from the simulation: line 174 kind near_imaginary place real prec 256: 1, oracle OK
+status differs from the simulation: line 244 kind regular place real prec 128: 1, oracle OK
+status differs from the simulation: line 245 kind regular place real prec 128: 1, oracle OK
+status differs from the simulation: line 246 kind regular place real prec 128: 1, oracle OK
+status differs from the simulation: line 247 kind regular place real prec 128: 1, oracle OK
+status differs from the simulation: line 248 kind regular place real prec 128: 1, oracle OK
+status differs from the simulation: line 249 kind regular place real prec 128: 1, oracle OK
+status differs from the simulation: line 250 kind regular place real prec 128: 1, oracle OK
+status differs from the simulation: line 251 kind recurrence_limit place real prec 256: 1, oracle LIMIT
+status differs from the simulation: line 252 kind regular_ball place real prec 128: 1, oracle OK
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 51, OK 0, samples contained 0, width checked 0, width missed 0, status differs 36, raised certificates 26
+FAIL real_vectors (tests/test_localfactor.c:975, 22 failed checks)
+10 tests, 34447 checks, 990 failed checks, 4 failed tests
+FAIL tests/test_localfactor.c:774: real_exact_values: check failed: call(y, s, inf, precs[i]) == ADF_OK | s=-41 prec=2
+FAIL tests/test_localfactor.c:775: real_exact_values: check failed: arb_contains(acb_realref(y), r) | s=-41 prec=2: value outside
+FAIL tests/test_localfactor.c:774: real_exact_values: check failed: call(y, s, inf, precs[i]) == ADF_OK | s=-41 prec=16
+FAIL tests/test_localfactor.c:775: real_exact_values: check failed: arb_contains(acb_realref(y), r) | s=-41 prec=16: value outside
+FAIL tests/test_localfactor.c:774: real_exact_values: check failed: call(y, s, inf, precs[i]) == ADF_OK | s=-41 prec=64
