@@ -1,0 +1,35 @@
+binom 0 mod 8 with +3
+binom 0 mod 8 with 03
+binom 0 mod 8 with 4
+binom   0 mod 8   with   4
+binom 0 mod 8 with 9223372036854775808
+binom 0 mod 8 with 9223372036854775807
+binom 0 mod 8 with 0x10
+binom 0 mod 8 with -0
+binom 0 mod 8 with 2/1
+binom 0 mod 8 with 6/3
+binomtight 0 mod 8 with 18446744073709551615
+binomtight 3/2 mod 3 with 18446744073709551616
+binomtight 3/2 mod 3 with -1
+binomtight 3/2 mod 3 with 0
+binom 4/2 mod 6/2 with 2
+binom 7 mod 3 with 4
+profpow [2 mod 5] with 2 mod 4/2
+profpow [2 mod 5] with 4/2 mod 4
+profpow [2 mod 5] with 2 mod 6/3
+profpowfine [2 mod 5] with -2 mod -4
+profpowfine [2 mod 5] with 6 mod 0
+profpowfine [1 mod 1] with 3
+profpow [1 mod 2] with 3
+profpowfine [1 mod 2] with 4
+profpowfine [3 mod 8] with 2
+cyclo_exp_u <-17 ; [2 mod 3]> with 6
+cyclo_exp_u <17 ; [2 mod 3]> with 06
+cyclo_exp_u <17 ; [-1]> with 6
+cyclo_exp_u <17 ; [1 mod 1]> with 2
+cyclo_exp_u <17 ; [1 mod 1]> with 1
+cyclo_exp_uinv <17 ; [1 mod 2]> with 4
+cyclo_exp_uinv <17 ; [3 mod 4]> with 4
+cyclo_exp_uinv <17 ; [3 mod 4]> with 8
+cyclo_exp_uinv <17 ; [3 mod 4]> with 12
+cyclo_exp_uinv <17 ; [1 mod 6]> with 12
