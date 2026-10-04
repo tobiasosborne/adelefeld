@@ -1,7 +1,8 @@
 # A local ball and a partial ball in the commands that combine values (lane drv-ball).  Expected lines
 # written from tools/adf/README.md ("The order of the checks") and the report of lane drv-ball, not from the
 # program: the two kinds have typed parsers, so step 3 passes; SPEC 4.1 combines no pair of types with them,
-# so step 5 answers DOMAIN; the negation and the dump are not implemented for them: UNSUPPORTED.
+# so step 5 answers DOMAIN; the negation is not implemented for them: UNSUPPORTED; the dump is the body
+# lball of conventions 10.1 (lane u-dump1): the exact 3 at 5 is "x num(u) den(u) v" = "x 3 1 0".
 #!exit 1
 add 1/2 with [p=5: 3]
 sub 1/2 with [p=5: 3]

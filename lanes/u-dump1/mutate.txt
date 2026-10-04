@@ -1,0 +1,36 @@
+mutate: src/dump.c: 1349 mutants
+mutate: 1349 mutants, 40 of them run (--limit 40, --seed 7)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (62.1 s)
+
+NOT COMPILED src/dump.c:1329:22 logic: '&&' -> '||'
+  src/dump.c:1329:39: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/dump.c:1323:68 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -1321,5 +1321,5 @@
+           unsigned char b = (unsigned char) s[i];
+   
+  -        if ((b < 0x20 && b != 0x09 && b != 0x0a && b != 0x0d) || b > 0x7e)
+  +        if ((b < 0x20 && b != 0x09 && b != 0x0a && b != 0x0d) || b >= 0x7e)
+               return ADF_PARSE;
+       }
+
+
+NOT COMPILED src/dump.c:2479:36 op: '*' -> '+'
+  src/dump.c:2479:35: error: expected ‘)’ before ‘+’ token
+
+NOT COMPILED src/dump.c:2130:6 op: '*' -> '/'
+  src/dump.c:2130:6: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1955:92 op: '*' -> '/'
+  src/dump.c:1955:92: error: expected ‘;’, ‘,’ or ‘)’ before ‘/’ token
+
+NOT COMPILED src/dump.c:1995:6 op: '*' -> '/'
+  src/dump.c:1995:6: error: expected identifier or ‘(’ before ‘/’ token
+
+mutate: 40 mutants in 682.4 s: 34 killed, 1 survived, 5 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check
+exit 1

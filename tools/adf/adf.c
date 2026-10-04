@@ -498,6 +498,21 @@ adf_drv_value_dump(FILE * out, const adf_drv_value * v)
         case ADF_DRV_CADELE:
             s = adf_cadele_dump_str(&len, v->c);
             break;
+        case ADF_DRV_UCOSET:
+            s = adf_ucoset_dump_str(&len, v->u);
+            break;
+        case ADF_DRV_IDELE:
+            s = adf_idele_dump_str(&len, v->i);
+            break;
+        case ADF_DRV_IDCLASS:
+            s = adf_idclass_dump_str(&len, v->k);
+            break;
+        case ADF_DRV_LBALL:
+            s = adf_lball_dump_str(&len, v->b);
+            break;
+        case ADF_DRV_SBALL:
+            s = adf_sball_dump_str(&len, v->s);
+            break;
         default:
             return ADF_UNSUPPORTED;
     }
@@ -508,7 +523,7 @@ adf_drv_value_dump(FILE * out, const adf_drv_value * v)
     return ADF_OK;
 }
 
-/* The bodies of the grammar of conventions 10.1.  The driver reads and writes the four it has
+/* The bodies of the grammar of conventions 10.1.  The driver reads and writes the nine it has
    a type for; the others are valid requests on a type that this build does not implement. */
 static const char * const adf_drv_dump_bodies[] = {
     "rat", "fball", "scaled", "adele", "cadele", "ucoset", "idele", "idclass", "lball",
@@ -519,12 +534,13 @@ static const size_t adf_drv_dump_body_count =
     sizeof(adf_drv_dump_bodies) / sizeof(adf_drv_dump_bodies[0]);
 
 /* adf_drv_body_slot(name): the adf_drv_type of a body the driver has a value for, or
-   ADF_DRV_OTHER for a body of section 10 that it has none.  The four constants of
-   adf_drv_type are in the order of the four names, so the index of the name is the type. */
+   ADF_DRV_OTHER for a body of section 10 that it has none.  The nine constants of
+   adf_drv_type are in the order of the nine names, so the index of the name is the type. */
 static adf_drv_type
 adf_drv_body_slot(const char * name)
 {
-    static const char * const mine[] = { "rat", "fball", "adele", "cadele" };
+    static const char * const mine[] = { "rat", "fball", "adele", "cadele", "ucoset", "idele",
+                                         "idclass", "lball", "sball" };
     size_t i;
 
     for (i = 0; i < sizeof(mine) / sizeof(mine[0]); i++)
@@ -599,8 +615,23 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
         case ADF_DRV_ADELE:
             status = adf_adele_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
-        default:
+        case ADF_DRV_CADELE:
             status = adf_cadele_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        case ADF_DRV_UCOSET:
+            status = adf_ucoset_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        case ADF_DRV_IDELE:
+            status = adf_idele_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        case ADF_DRV_IDCLASS:
+            status = adf_idclass_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        case ADF_DRV_LBALL:
+            status = adf_lball_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        default:
+            status = adf_sball_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
     }
     if (status != ADF_OK)
@@ -616,8 +647,18 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
             return adf_fball_load_str(v->f, s, len, NULL, NULL);
         case ADF_DRV_ADELE:
             return adf_adele_load_str(v->a, s, len, NULL, NULL);
-        default:
+        case ADF_DRV_CADELE:
             return adf_cadele_load_str(v->c, s, len, NULL, NULL);
+        case ADF_DRV_UCOSET:
+            return adf_ucoset_load_str(v->u, s, len, NULL, NULL);
+        case ADF_DRV_IDELE:
+            return adf_idele_load_str(v->i, s, len, NULL, NULL);
+        case ADF_DRV_IDCLASS:
+            return adf_idclass_load_str(v->k, s, len, NULL, NULL);
+        case ADF_DRV_LBALL:
+            return adf_lball_load_str(v->b, s, len, NULL, NULL);
+        default:
+            return adf_sball_load_str(v->s, s, len, NULL, NULL);
     }
 }
 

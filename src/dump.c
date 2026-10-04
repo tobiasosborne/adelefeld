@@ -37,7 +37,21 @@
    Assumptions about the types of other lanes (listed in lanes/m1-dump/report.md): the fields of
    adf_scaled_struct and of a local adf_fball_struct are read and written directly as
    include/adelefeld/scaled.h and fball.h lay them out; a local value owns res, allocated with
-   flint_malloc and freed by adf_fball_clear with flint_free (src/fball.c adf_fball_clear). */
+   flint_malloc and freed by adf_fball_clear with flint_free (src/fball.c adf_fball_clear).
+   Lane u-dump1 adds the bodies of the unit coset, the idele, the idele class, the local ball and
+   the partial ball. For adf_ucoset, adf_idele and adf_idclass the loaders go through the public
+   constructors (adf_ucoset_set_fmpz2, adf_idele_set_parts, adf_idclass_set_parts) and the dumpers
+   read the fields of include/adelefeld/idele.h:52 and idclass.h:47, which that header lays out as
+   the contract of a binding that allocates the struct inline (conventions 12.4). For adf_lball and
+   adf_sball there is no constructor from raw data, so the fields of the two structs are written and
+   read directly, as include/adelefeld/lball.h:81-90 and sball.h:82-92 lay them out: "The field p is
+   read through adf_lball_place; the fields are otherwise the contract of a binding that allocates
+   the struct inline (conventions 12.4)", and for the partial ball "loc is an array of len
+   initialised adf_lball_struct allocated with flint_malloc (NULL when len = 0); adf_sball_clear
+   releases each component and the array with flint_free. A binding that fills the struct by hand
+   allocates it the same way." The complex tag of a partial ball has no constructor at all
+   (sball.h:60: "No function of this header makes a COMPLEX value; a binding that fills the struct by
+   hand may"), so the fields are the only way. */
 
 #include <string.h>
 
@@ -60,10 +74,9 @@
 #endif
 
 /* Stage 6 of a body that has no context occurrence and whose predicates this file does not
-   check (ucoset, idele, idclass, lball, sball, ffun, rfun, char). Only
-   adf_dump_ctx_occurrence sees it, and there the answer is DOMAIN whatever the predicates say:
-   occurrence index out of range, or a failed predicate (conventions 10.2). Never returned by a
-   public function. */
+   check (ffun, rfun, char). Only adf_dump_ctx_occurrence sees it, and there the answer is DOMAIN
+   whatever the predicates say: occurrence index out of range, or a failed predicate
+   (conventions 10.2). Never returned by a public function. */
 #define DP_NOSEM (-1)
 
 /* ADF_DUMP_QCLASS_EXP_MAX (adelefeld/dump.h; docs/SPEC.md 15 row M1-D9; conventions 8.4): the bound
@@ -124,6 +137,14 @@ static int
 dp_zero(dp_span t)
 {
     return t.n == 1 && t.p[0] == '0';
+}
+
+/* 1 if the validated token is a positive integer. A token of 10.1 has no leading zeros, so the
+   only non-positive one that is not negative is the token "0". */
+static int
+dp_pos(dp_span t)
+{
+    return !dp_neg(t) && !dp_zero(t);
 }
 
 /* A validated h token as a word: 1 and *v if 0 <= value < 2^64, else 0. */
@@ -299,6 +320,21 @@ typedef struct
     size_t q0;                         /* offset of the first block token (k >= 1) */
 } dp_ctx;
 
+/* The unit coset of conventions 5.6: c U(N), two fields. */
+typedef struct
+{
+    dp_span c, N;
+} dp_uco;
+
+/* One local ball of conventions 5.8, in the grammar of 10.1: p, the form ('x' or 'b'), and the
+   three fields: num(u) den(u) v for the exact form, u v N for the ball. */
+typedef struct
+{
+    dp_span p;
+    int form;
+    dp_span a, b, c;
+} dp_lb;
+
 typedef struct
 {
     int local;
@@ -324,9 +360,16 @@ typedef struct
     int form;                          /* scaled: 'x' or 's' */
     dp_span a, b, c;                   /* rat: num den; scaled: num den [u] */
     size_t narch;                      /* adele, cadele: the archimedean count */
-    dp_arb arb[2];                     /* adele: arb[0]; cadele: arb[0] real, arb[1] imaginary */
+    dp_arb arb[2];                     /* adele: arb[0]; cadele: arb[0] real, arb[1] imaginary;
+                                         sball: the real ball (form "r") or real and imaginary
+                                         (form "c") */
     dp_fb fb;                          /* fball, adele, cadele */
     dp_ctx ctx;                        /* scaled, modctx */
+    dp_uco u;                          /* ucoset, idele, idclass */
+    dp_lb lb;                          /* lball */
+    int sform;                         /* sball: 0 (tag "n"), 'r' or 'c' */
+    size_t nlb;                        /* sball: the number of local balls */
+    size_t lb0;                        /* sball: offset of the first lb token */
 } dp_node;
 
 /* The walk of a body runs once per stage of 8.5 (conventions 8.5, CV-28), so that the first
@@ -542,6 +585,155 @@ dp_v_fb(const dp_cur * c, const dp_fb * f, fmpz_t A, fmpz_t H, fmpz_t d)
     return ok;
 }
 
+/* conventions 5.6 (line 588): ( N >= 1 and 1 <= c <= N and gcd(c, N) = 1 ) or ( N = 0 and c in
+   {1, -1} ) (proto _v_ucoset, lines 1243-1248). The modulus is the one of the text: a dump holds
+   the modulus as stored (conventions 10.2, "Unit moduli are dumped as stored", CV-17), so no
+   normal form is required of N. */
+static int
+dp_v_ucoset(dp_span c, dp_span N)
+{
+    fmpz_t a, b, g;
+    int ok;
+
+    if (dp_zero(N))
+        return (c.n == 1 && c.p[0] == '1') || (c.n == 2 && c.p[0] == '-' && c.p[1] == '1');
+    if (dp_neg(N))
+        return 0;                      /* N < 0 */
+    fmpz_init(a);
+    fmpz_init(b);
+    fmpz_init(g);
+    dp_fmpz(a, c);
+    dp_fmpz(b, N);
+    ok = fmpz_cmp_ui(a, 1) >= 0 && fmpz_cmp(a, b) <= 0;
+    if (ok)
+    {
+        fmpz_gcd(g, a, b);
+        ok = fmpz_is_one(g);
+    }
+    fmpz_clear(a);
+    fmpz_clear(b);
+    fmpz_clear(g);
+    return ok;
+}
+
+/* The sign of the ball of a validated arb: +1 if every point is positive, -1 if every point is
+   negative, 0 if the ball contains 0 (conventions 5.7 uses the first for the t of a class and the
+   third for the inf of an idele; proto _arb_sign, lines 1122-1143). The two powers are compared as
+   |m| 2^me and rm 2^re. Their exponents are read as fmpz, so a token of any length is decided and
+   no word bound hides behind the comparison (conventions 8.4, M1-D7). */
+static int
+dp_arb_sign(const dp_arb * a)
+{
+    fmpz_t m, e, l1, l2;
+    dp_span am = a->m;
+    ulong rm = 0, rt;
+    slong bm, br, t;
+    int sgn, res;
+
+    if (dp_zero(a->m))
+        return 0;                      /* the ball 0 (a zero mantissa with the exponent 0) */
+    sgn = dp_neg(a->m) ? -1 : 1;
+    if (dp_zero(a->rm))
+        return sgn;                    /* an exact ball away from 0 */
+    (void) dp_word(a->rm, &rm);        /* stage 6 has accepted the token: odd and below 2^30 */
+    if (dp_neg(am))
+        am.p++;                        /* |m| */
+    fmpz_init(m);
+    fmpz_init(e);
+    fmpz_init(l1);
+    fmpz_init(l2);
+    dp_fmpz(m, am);
+    bm = (slong) fmpz_sizeinbase(m, 2);        /* m != 0, so bm >= 1 */
+    br = (slong) FLINT_BIT_COUNT(rm);
+    dp_fmpz(e, a->e);
+    fmpz_add_ui(l1, e, (ulong) bm);            /* |m| 2^me in [2^(l1 - 1), 2^l1) */
+    dp_fmpz(e, a->re);
+    fmpz_add_ui(l2, e, (ulong) br);            /* rm 2^re in [2^(l2 - 1), 2^l2) */
+    res = fmpz_cmp(l1, l2);
+    if (res == 0)                      /* the same binade: the leading bits decide.  br is the bit
+                                       length of a radius mantissa, which is below 2^30
+                                       (conventions 10.2, mag.h:117), so t <= 30 and the top t
+                                       bits of |m| are below 2^30: fmpz_get_ui is the whole of them */
+    {
+        t = bm < br ? bm : br;
+        fmpz_fdiv_q_2exp(m, m, (ulong) (bm - t));
+        rt = rm >> (br - t);
+        res = fmpz_get_ui(m) > rt ? 1 : 0;
+    }
+    fmpz_clear(m);
+    fmpz_clear(e);
+    fmpz_clear(l1);
+    fmpz_clear(l2);
+    return res > 0 ? sgn : 0;
+}
+
+/* conventions 5.8 (line 610): p a prime, and the form 'x' (the exact rational p^v u: N = 0, and
+   either u = 0 with v = 0 or p divides neither the numerator nor the denominator of u) or the form
+   'b' (u an integer, and either u = 0 with v = 0 or v < N, p does not divide u and 0 < u <
+   p^(N - v)); proto _v_lb, lines 1251-1277. The limits of stage 4 and the word restriction of
+   stage 5 are decided in dp_w_lb. The power p^(N - v) is not formed when it is larger than u: with
+   k = N - v >= 1 and b the bit length of u, u < 2^b <= p^k as soon as k >= b, since p >= 2
+   (the same comparison of bit lengths as adf_lball_is_canonical, lball.h:105-107). */
+static int
+dp_v_lb(const dp_lb * lb)
+{
+    fmpz_t u, v, N, k, pw;
+    ulong p = 0;
+    int ok = 0;
+
+    if (!dp_word(lb->p, &p) || p < 2 || !n_is_prime(p))
+        return 0;                      /* n_is_prime (ulong_extras.h:335), conventions 5.8 */
+    fmpz_init(u);
+    fmpz_init(v);
+    fmpz_init(N);
+    fmpz_init(k);
+    fmpz_init(pw);
+    if (lb->form == 'x')
+    {
+        if (!dp_v_fmpq(lb->a, lb->b))
+            goto out;
+        dp_fmpz(u, lb->a);              /* the numerator of u */
+        dp_fmpz(v, lb->c);              /* the valuation; the precision of an exact value is 0 */
+        if (fmpz_is_zero(u))
+            ok = fmpz_is_zero(v);
+        else
+        {
+            dp_fmpz(N, lb->b);          /* the denominator of u */
+            ok = fmpz_fdiv_ui(u, p) != 0 && fmpz_fdiv_ui(N, p) != 0;
+        }
+    }
+    else
+    {
+        dp_fmpz(u, lb->a);
+        dp_fmpz(v, lb->b);
+        dp_fmpz(N, lb->c);
+        if (fmpz_is_zero(u))
+            ok = fmpz_is_zero(v);
+        else
+        {
+            fmpz_sub(k, N, v);                 /* the relative precision, an exact difference */
+            if (fmpz_sgn(k) < 1 || fmpz_sgn(u) < 1)
+                ok = 0;
+            else if (fmpz_cmp_ui(k, (ulong) fmpz_sizeinbase(u, 2)) >= 0)
+                ok = 1;                         /* u < 2^b <= p^k */
+            else
+            {
+                fmpz_ui_pow_ui(pw, p, (ulong) fmpz_get_ui(k));
+                ok = fmpz_cmp(u, pw) < 0;
+            }
+            if (ok)
+                ok = fmpz_fdiv_ui(u, p) != 0;  /* p does not divide u */
+        }
+    }
+out:
+    fmpz_clear(u);
+    fmpz_clear(v);
+    fmpz_clear(N);
+    fmpz_clear(k);
+    fmpz_clear(pw);
+    return ok;
+}
+
 /* ================================================================================================
    The grammar of conventions 10.1, one function per nonterminal, each run in the mode of the
    state. In DP_SYNTAX a failure is ADF_PARSE; in the later modes the grammar is known to hold. */
@@ -669,10 +861,27 @@ dp_w_arch(dp_cur * c, dp_state * st, size_t per, size_t * n, dp_arb * first)
     return 1;
 }
 
-/* lb = p ("x" num den v | "b" u v N) (conventions 10.1, lines 1337-1338). Stage 4: |v|, |N| at
-   most max_prec (8.4); stage 5: p below 2^64 (8.5 item 5; proto _dump_validate, 1291-1298). */
+/* A validated h token whose value fits in an slong (the fields v and N of a local ball are slongs,
+   lball.h:85-88). Decided on the digits: 15 digits always fit, a sixteenth fits if the first one
+   is at most 7 (a slong holds 63 bits), and a negative sign takes one digit off.  */
 static int
-dp_w_lb(dp_cur * c, dp_state * st)
+dp_fits_si(dp_span t)
+{
+    size_t n = t.n - (dp_neg(t) ? 1 : 0);
+
+    if (n <= 15)
+        return 1;
+    if (n > 16)
+        return 0;
+    return dp_hexval(t.p[dp_neg(t) ? 1 : 0]) <= 7;
+}
+
+/* lb = p ("x" num(u) den(u) v | "b" u v N) (conventions 10.1, lines 1337-1338). Stage 4: |v|, |N| at
+   most max_prec (8.4) and at most what an slong of the type holds (the value of a local ball has
+   no v or N outside a machine word); stage 5: p below 2^64 (8.5 item 5; proto _dump_validate,
+   1291-1298). lb may be NULL when the caller keeps no spans. */
+static int
+dp_w_lb(dp_cur * c, dp_state * st, dp_lb * lb)
 {
     dp_span p, f, a, b, d;
 
@@ -683,9 +892,19 @@ dp_w_lb(dp_cur * c, dp_state * st)
     {
         if (dp_abs_over(d, st->lim->max_prec) || (dp_kw_is(f, "b") && dp_abs_over(b, st->lim->max_prec)))
             return dp_fail(st, ADF_LIMIT);
+        if (!dp_fits_si(d) || (dp_kw_is(f, "b") && !dp_fits_si(b)))
+            return dp_fail(st, ADF_LIMIT);
     }
     if (st->mode == DP_WORDS && dp_over_word(p))
         return dp_fail(st, ADF_UNSUPPORTED);
+    if (lb != NULL)
+    {
+        lb->p = p;
+        lb->form = f.p[0];
+        lb->a = a;
+        lb->b = b;
+        lb->c = d;
+    }
     return 1;
 }
 
@@ -832,59 +1051,17 @@ dp_w_qclass(dp_cur * c, dp_state * st)
 }
 
 /* The bodies without a context occurrence and without a typed loader in this file (conventions
-   10.1): grammar, stage 4 and stage 5 as in proto _dump_syntax and _dump_validate; stage 6 is
-   DP_NOSEM. */
+   10.1): ffun, rfun and char: grammar, stage 4 and stage 5 as in proto _dump_syntax and
+   _dump_validate; stage 6 is DP_NOSEM. */
 static int
 dp_w_other(dp_cur * c, dp_state * st, int kind)
 {
     dp_span t, u;
     size_t n, i, j;
-    dp_arb a[2], tmp;                  /* a: the first ball of an arch; tmp: parsed, not kept */
+    dp_arb tmp;                       /* parsed, not kept */
 
     switch (kind)
     {
-        case DP_UCOSET:
-            if (!dp_h(c, &t) || !dp_h(c, &u))
-                return dp_parse_fail(st);
-            break;
-        case DP_IDELE:
-            if (!dp_w_arch(c, st, 4, &n, a))
-                return 0;
-            for (i = 0; i < 4; i++)
-                if (!dp_h(c, &t))
-                    return dp_parse_fail(st);
-            break;
-        case DP_IDCLASS:
-            if (!dp_w_arb(c, st, &tmp) || !dp_h(c, &t) || !dp_h(c, &u))
-                return dp_parse_fail(st);
-            break;
-        case DP_LBALL:
-            if (!dp_w_lb(c, st))
-                return 0;
-            break;
-        case DP_SBALL:
-            if (!dp_next(c, &t))
-                return dp_parse_fail(st);
-            if (dp_kw_is(t, "r"))
-            {
-                if (!dp_w_arb(c, st, &tmp))
-                    return 0;
-            }
-            else if (dp_kw_is(t, "c"))
-            {
-                if (!dp_w_arb(c, st, &tmp) || !dp_w_arb(c, st, &tmp))
-                    return 0;
-            }
-            else if (!dp_kw_is(t, "n"))
-                return dp_parse_fail(st);
-            if (!dp_count(c, 5, &n))
-                return dp_parse_fail(st);
-            if (st->mode == DP_LIMITS && dp_over_items(n, st->lim))
-                return dp_fail(st, ADF_LIMIT);
-            for (i = 0; i < n; i++)
-                if (!dp_w_lb(c, st))
-                    return 0;
-            break;
         case DP_FFUN:
         {
             /* D M, then D M complex balls; D < 0, M < 0 or 8 D M above the tokens left is a
@@ -1011,6 +1188,93 @@ dp_w_body(dp_cur * c, dp_state * st, int kind)
             return 1;
         case DP_QCLASS:
             return dp_w_qclass(c, st);
+        case DP_UCOSET:
+            /* ucoset c N (conventions 10.1, line 1345; conventions 5.6) */
+            if (!dp_h(c, &nd->u.c) || !dp_h(c, &nd->u.N))
+                return dp_parse_fail(st);
+            if (st->mode == DP_SEM && !dp_v_ucoset(nd->u.c, nd->u.N))
+                return dp_fail(st, ADF_DOMAIN);
+            return 1;
+        case DP_IDELE:
+            /* idele <arch> num(r) den(r) c N: the archimedean count, then the balls, then the
+               content and the unit (conventions 10.1, line 1346). For Q the count is 1, as for an
+               adele (conventions 10.1, line 1358; proto _one, line 1163). */
+            if (!dp_w_arch(c, st, 4, &nd->narch, nd->arb) || !dp_h(c, &nd->a) || !dp_h(c, &nd->b)
+                || !dp_h(c, &nd->u.c) || !dp_h(c, &nd->u.N))
+                return dp_parse_fail(st);
+            if (st->mode == DP_SEM
+                && (nd->narch != 1 || !dp_v_arb(&nd->arb[0]) || dp_arb_sign(&nd->arb[0]) == 0
+                    || !dp_v_fmpq(nd->a, nd->b) || !dp_pos(nd->a)
+                    || !dp_v_ucoset(nd->u.c, nd->u.N)))
+                return dp_fail(st, ADF_DOMAIN);
+            return 1;
+        case DP_IDCLASS:
+            /* idclass <arb> c N: the type is special to Q, so there is no count (10.1, 1347) */
+            if (!dp_w_arb(c, st, &nd->arb[0]) || !dp_h(c, &nd->u.c) || !dp_h(c, &nd->u.N))
+                return dp_parse_fail(st);
+            if (st->mode == DP_SEM
+                && (!dp_v_arb(&nd->arb[0]) || dp_arb_sign(&nd->arb[0]) != 1
+                    || !dp_v_ucoset(nd->u.c, nd->u.N)))
+                return dp_fail(st, ADF_DOMAIN);
+            return 1;
+        case DP_LBALL:
+            /* lball <lb> (conventions 10.1, line 1348) */
+            if (!dp_w_lb(c, st, &nd->lb))
+                return 0;
+            if (st->mode == DP_SEM && !dp_v_lb(&nd->lb))
+                return dp_fail(st, ADF_DOMAIN);
+            return 1;
+        case DP_SBALL:
+            /* sball (n | r <arb> | c <acb>) <count> {<lb>} (conventions 10.1, line 1349;
+               conventions 5.9). The count is the number of places of 8.4, a limit of stage 4. */
+        {
+            size_t i;
+            ulong prev = 0;
+            dp_lb lb;
+
+            if (!dp_next(c, &t))
+                return dp_parse_fail(st);
+            nd->sform = 0;
+            if (dp_kw_is(t, "r"))
+            {
+                nd->sform = 'r';
+                if (!dp_w_arb(c, st, &nd->arb[0]))
+                    return 0;
+            }
+            else if (dp_kw_is(t, "c"))
+            {
+                nd->sform = 'c';
+                if (!dp_w_arb(c, st, &nd->arb[0]) || !dp_w_arb(c, st, &nd->arb[1]))
+                    return 0;
+            }
+            else if (!dp_kw_is(t, "n"))
+                return dp_parse_fail(st);
+            if (st->mode == DP_SEM && nd->sform != 0 && !dp_v_arb(&nd->arb[0]))
+                return dp_fail(st, ADF_DOMAIN);
+            if (st->mode == DP_SEM && nd->sform == 'c' && !dp_v_arb(&nd->arb[1]))
+                return dp_fail(st, ADF_DOMAIN);
+            if (!dp_count(c, 5, &nd->nlb))
+                return dp_parse_fail(st);
+            if (st->mode == DP_LIMITS && dp_over_items(nd->nlb, st->lim))
+                return dp_fail(st, ADF_LIMIT);
+            nd->lb0 = c->pos;
+            for (i = 0; i < nd->nlb; i++)
+            {
+                ulong q = 0;
+                if (!dp_w_lb(c, st, &lb))
+                    return 0;
+                if (st->mode == DP_SEM)
+                {
+                    if (!dp_v_lb(&lb))
+                        return dp_fail(st, ADF_DOMAIN);
+                    (void) dp_word(lb.p, &q);    /* stage 6 has accepted it as a word */
+                    if (q <= prev)               /* strictly increasing primes (5.9) */
+                        return dp_fail(st, ADF_DOMAIN);
+                    prev = q;
+                }
+            }
+            return 1;
+        }
         case DP_MODCTX:
             if (!dp_w_ctx(c, st, &nd->ctx))
                 return 0;
@@ -1413,6 +1677,16 @@ dp_sb_fmpz(dp_sb * b, const fmpz_t x)
     b->n += strlen(b->p + b->n);       /* our own output, NUL-terminated by fmpz_get_str */
 }
 
+/* The entry check of the debug build for the five types of lane u-dump1, whose predicates
+   src/invariants.h does not define: the same adf_inv_fail with the predicate of the type
+   (conventions 4.4, CV-09; the same shape as ID_INV of src/idele.c:33-36). */
+#ifdef ADF_CHECK_INVARIANTS
+#define DP_INV(x, pred, name)                                                                          \
+    do { if (!(pred)) adf_inv_fail(__func__, #x, name); } while (0)
+#else
+#define DP_INV(x, pred, name) ((void) 0)
+#endif
+
 static void
 dp_sb_ui(dp_sb * b, ulong v)
 {
@@ -1429,6 +1703,19 @@ dp_sb_ui(dp_sb * b, ulong v)
     b->p[b->n++] = ' ';
     for (i = 0; i < n; i++)
         b->p[b->n++] = tmp[n - 1 - i];
+}
+
+/* " " then an slong as a hexadecimal integer (the fields v and N of a local ball, conventions
+   5.8; the exponents of the other bodies are fmpz and go through dp_sb_fmpz). */
+static void
+dp_sb_si(dp_sb * b, slong v)
+{
+    fmpz_t z;
+
+    fmpz_init(z);
+    fmpz_set_si(z, v);
+    dp_sb_fmpz(b, z);
+    fmpz_clear(z);
 }
 
 static char *
@@ -1852,4 +2139,403 @@ adf_cadele_dump_str(size_t * len, const adf_cadele_t x)
     dp_sb_arb(&b, acb_imagref(x->inf));
     dp_sb_fb(&b, &x->fin);
     return dp_sb_finish(&b, len);
+}
+
+/* ---- adf_ucoset: body "ucoset c N" (conventions 10.1, 5.6). The value is built with the public
+   constructor adf_ucoset_set_fmpz2, which keeps the modulus as supplied (CV-17), so the stored
+   pair of the loaded value is the pair of the text. ---- */
+
+static int
+dp_load_ucoset(adf_ucoset_t x, const char * s, size_t len, const adf_modctx_struct * const * binds,
+               size_t nbinds, const adf_text_limits_t * lim)
+{
+    dp_parsed P;
+    fmpz_t c, N;
+    int r = dp_prepare(&P, DP_UCOSET, s, len, binds, nbinds, lim);
+
+    if (r != ADF_OK)
+        return r;
+    fmpz_init(c);
+    fmpz_init(N);
+    dp_fmpz(c, P.node.u.c);
+    dp_fmpz(N, P.node.u.N);
+    if (adf_ucoset_set_fmpz2(x, c, N) != ADF_OK)
+        flint_abort();                 /* cannot happen: stage 6 checked the predicate of 5.6 */
+    fmpz_clear(c);
+    fmpz_clear(N);
+    return ADF_OK;
+}
+
+int
+adf_ucoset_load_str(adf_ucoset_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
+                    const adf_text_limits_t * lim)
+{
+    (void) ctx;                        /* no occurrence: the one-context form is no binding */
+    return dp_load_ucoset(x, s, len, NULL, 0, lim);
+}
+
+int
+adf_ucoset_load_str_binds(adf_ucoset_t x, const char * s, size_t len,
+                          const adf_modctx_struct * const * binds, size_t nbinds,
+                          const adf_text_limits_t * lim)
+{
+    return dp_load_ucoset(x, s, len, binds, dp_count_of(nbinds), lim);
+}
+
+char *
+adf_ucoset_dump_str(size_t * len, const adf_ucoset_t x)
+{
+    dp_sb b;
+
+    DP_INV(x, adf_ucoset_is_canonical(x), "adf_ucoset");
+    dp_sb_init(&b);
+    dp_sb_lit(&b, "adf1 Q ucoset");
+    dp_sb_fmpz(&b, x->c);
+    dp_sb_fmpz(&b, x->N);
+    return dp_sb_finish(&b, len);
+}
+
+int
+adf_ucoset_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s, size_t len,
+                        const adf_text_limits_t * lim)
+{
+    return dp_inspect(DP_UCOSET, nctx, descs, s, len, lim);
+}
+
+/* ---- adf_idele: body "idele 1 <arb> num(r) den(r) c N" (conventions 10.1, 5.7). ---- */
+
+static int
+dp_load_idele(adf_idele_t x, const char * s, size_t len, const adf_modctx_struct * const * binds,
+              size_t nbinds, const adf_text_limits_t * lim)
+{
+    dp_parsed P;
+    arb_t inf;
+    fmpq_t r;
+    adf_ucoset_t u;
+    int st = dp_prepare(&P, DP_IDELE, s, len, binds, nbinds, lim);
+
+    if (st != ADF_OK)
+        return st;
+    arb_init(inf);
+    fmpq_init(r);
+    adf_ucoset_init(u);
+    dp_set_arb(inf, &P.node.arb[0]);
+    dp_fmpz(fmpq_numref(r), P.node.a);
+    dp_fmpz(fmpq_denref(r), P.node.b);
+    dp_fmpz(u->c, P.node.u.c);
+    dp_fmpz(u->N, P.node.u.N);
+    st = adf_idele_set_parts(x, inf, r, u);
+    if (st != ADF_OK)
+        flint_abort();                 /* cannot happen: stage 6 checked the predicate of 5.7 */
+    adf_ucoset_clear(u);
+    fmpq_clear(r);
+    arb_clear(inf);
+    return ADF_OK;
+}
+
+int
+adf_idele_load_str(adf_idele_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
+                   const adf_text_limits_t * lim)
+{
+    (void) ctx;                        /* no occurrence */
+    return dp_load_idele(x, s, len, NULL, 0, lim);
+}
+
+int
+adf_idele_load_str_binds(adf_idele_t x, const char * s, size_t len,
+                         const adf_modctx_struct * const * binds, size_t nbinds,
+                         const adf_text_limits_t * lim)
+{
+    return dp_load_idele(x, s, len, binds, dp_count_of(nbinds), lim);
+}
+
+char *
+adf_idele_dump_str(size_t * len, const adf_idele_t x)
+{
+    dp_sb b;
+
+    DP_INV(x, adf_idele_is_canonical(x), "adf_idele");
+    dp_sb_init(&b);
+    dp_sb_lit(&b, "adf1 Q idele 1");
+    dp_sb_arb(&b, x->inf);
+    dp_sb_fmpz(&b, fmpq_numref(x->r));
+    dp_sb_fmpz(&b, fmpq_denref(x->r));
+    dp_sb_fmpz(&b, x->u.c);
+    dp_sb_fmpz(&b, x->u.N);
+    return dp_sb_finish(&b, len);
+}
+
+int
+adf_idele_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s, size_t len,
+                       const adf_text_limits_t * lim)
+{
+    return dp_inspect(DP_IDELE, nctx, descs, s, len, lim);
+}
+
+/* ---- adf_idclass: body "idclass <arb> c N" (conventions 10.1, 5.7). ---- */
+
+static int
+dp_load_idclass(adf_idclass_t x, const char * s, size_t len, const adf_modctx_struct * const * binds,
+                size_t nbinds, const adf_text_limits_t * lim)
+{
+    dp_parsed P;
+    arb_t t;
+    adf_ucoset_t u;
+    int st = dp_prepare(&P, DP_IDCLASS, s, len, binds, nbinds, lim);
+
+    if (st != ADF_OK)
+        return st;
+    arb_init(t);
+    adf_ucoset_init(u);
+    dp_set_arb(t, &P.node.arb[0]);
+    dp_fmpz(u->c, P.node.u.c);
+    dp_fmpz(u->N, P.node.u.N);
+    st = adf_idclass_set_parts(x, t, u);
+    if (st != ADF_OK)
+        flint_abort();                 /* cannot happen: stage 6 checked the predicate of 5.7 */
+    adf_ucoset_clear(u);
+    arb_clear(t);
+    return ADF_OK;
+}
+
+int
+adf_idclass_load_str(adf_idclass_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
+                     const adf_text_limits_t * lim)
+{
+    (void) ctx;                        /* no occurrence */
+    return dp_load_idclass(x, s, len, NULL, 0, lim);
+}
+
+int
+adf_idclass_load_str_binds(adf_idclass_t x, const char * s, size_t len,
+                           const adf_modctx_struct * const * binds, size_t nbinds,
+                           const adf_text_limits_t * lim)
+{
+    return dp_load_idclass(x, s, len, binds, dp_count_of(nbinds), lim);
+}
+
+char *
+adf_idclass_dump_str(size_t * len, const adf_idclass_t x)
+{
+    dp_sb b;
+
+    DP_INV(x, adf_idclass_is_canonical(x), "adf_idclass");
+    dp_sb_init(&b);
+    dp_sb_lit(&b, "adf1 Q idclass");
+    dp_sb_arb(&b, x->t);
+    dp_sb_fmpz(&b, x->u.c);
+    dp_sb_fmpz(&b, x->u.N);
+    return dp_sb_finish(&b, len);
+}
+
+int
+adf_idclass_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s, size_t len,
+                         const adf_text_limits_t * lim)
+{
+    return dp_inspect(DP_IDCLASS, nctx, descs, s, len, lim);
+}
+
+/* ---- adf_lball: body "lball p (x num(u) den(u) v | b u v N)" (conventions 10.1, 5.8).
+   There is no constructor of adf_lball from raw data, so the fields of the struct are written as
+   include/adelefeld/lball.h:81-90 lays them out ("The field p is read through adf_lball_place; the
+   fields are otherwise the contract of a binding that allocates the struct inline
+   (conventions 12.4)"). The output is built in a temporary and swapped in (conventions 4.3); the
+   swap checks the predicate under -DADF_CHECK_INVARIANTS (src/lball.c:284-289), which stage 6 has
+   guaranteed. ---- */
+
+/* The five tokens of one lb of a validated body: 5 tokens per lb, the first at *pos (conventions
+   10.1). out is an initialised value (adf_lball_init): its fmpq u is written, the rest is plain
+   data. p is a word (stage 5), v and N are slongs (stage 4), and the exact form has N = 0 and a
+   canonical rational u, the ball form an integer u (predicate of 5.8). */
+static void
+dp_read_lb(adf_lball_struct * out, const char * s, size_t len, size_t * pos)
+{
+    fmpz_t a, b, c;
+    dp_span t;
+
+    t = dp_tok_at(s, len, pos);
+    (void) dp_word(t, &out->p);                /* a prime below 2^64 (stage 5, stage 6) */
+    t = dp_tok_at(s, len, pos);
+    out->exact = dp_kw_is(t, "x");
+    fmpz_init(a);
+    fmpz_init(b);
+    fmpz_init(c);
+    dp_fmpz(a, dp_tok_at(s, len, pos));
+    dp_fmpz(b, dp_tok_at(s, len, pos));
+    dp_fmpz(c, dp_tok_at(s, len, pos));
+    if (out->exact)
+    {
+        fmpz_set(fmpq_numref(out->u), a);
+        fmpz_set(fmpq_denref(out->u), b);
+        out->v = fmpz_get_si(c);
+        out->N = 0;
+    }
+    else
+    {
+        fmpz_set(fmpq_numref(out->u), a);
+        fmpz_one(fmpq_denref(out->u));         /* a ball has an integer centre (5.8) */
+        out->v = fmpz_get_si(b);
+        out->N = fmpz_get_si(c);
+    }
+    fmpz_clear(a);
+    fmpz_clear(b);
+    fmpz_clear(c);
+}
+
+static int
+dp_load_lball(adf_lball_t x, const char * s, size_t len, const adf_modctx_struct * const * binds,
+              size_t nbinds, const adf_text_limits_t * lim)
+{
+    dp_parsed P;
+    adf_lball_t t;
+    size_t pos;
+    int st = dp_prepare(&P, DP_LBALL, s, len, binds, nbinds, lim);
+
+    if (st != ADF_OK)
+        return st;
+    adf_lball_init(t);
+    pos = P.body;
+    dp_read_lb(t, P.s, P.len, &pos);
+    adf_lball_swap(x, t);
+    adf_lball_clear(t);
+    return ADF_OK;
+}
+
+int
+adf_lball_load_str(adf_lball_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
+                   const adf_text_limits_t * lim)
+{
+    (void) ctx;                        /* no occurrence */
+    return dp_load_lball(x, s, len, NULL, 0, lim);
+}
+
+int
+adf_lball_load_str_binds(adf_lball_t x, const char * s, size_t len,
+                         const adf_modctx_struct * const * binds, size_t nbinds,
+                         const adf_text_limits_t * lim)
+{
+    return dp_load_lball(x, s, len, binds, dp_count_of(nbinds), lim);
+}
+
+/* One lb of a dump: p, the form, then the three fields (conventions 10.1, lines 1337-1338). */
+static void
+dp_sb_lb(dp_sb * b, const adf_lball_struct * l)
+{
+    dp_sb_ui(b, l->p);
+    dp_sb_lit(b, l->exact ? " x" : " b");
+    dp_sb_fmpz(b, fmpq_numref(l->u));
+    if (l->exact)
+        dp_sb_fmpz(b, fmpq_denref(l->u));
+    dp_sb_si(b, l->v);
+    if (!l->exact)
+        dp_sb_si(b, l->N);
+}
+
+char *
+adf_lball_dump_str(size_t * len, const adf_lball_t x)
+{
+    dp_sb b;
+
+    DP_INV(x, adf_lball_is_canonical(x), "adf_lball");
+    dp_sb_init(&b);
+    dp_sb_lit(&b, "adf1 Q lball");
+    dp_sb_lb(&b, x);
+    return dp_sb_finish(&b, len);
+}
+
+int
+adf_lball_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s, size_t len,
+                       const adf_text_limits_t * lim)
+{
+    return dp_inspect(DP_LBALL, nctx, descs, s, len, lim);
+}
+
+/* ---- adf_sball: body "sball (n | r <arb> | c <acb>) <count> {<lb>}" (conventions 10.1, 5.9).
+   As for a local ball, the fields of the struct are written as include/adelefeld/sball.h:82-92
+   lays them out, and loc is the array of len components that adf_sball_clear releases with
+   flint_free (sball.h:84-86). The COMPLEX tag has no constructor in the library (sball.h:60). ---- */
+
+static int
+dp_load_sball(adf_sball_t x, const char * s, size_t len, const adf_modctx_struct * const * binds,
+              size_t nbinds, const adf_text_limits_t * lim)
+{
+    dp_parsed P;
+    adf_sball_t t;
+    size_t i, pos;
+    int st = dp_prepare(&P, DP_SBALL, s, len, binds, nbinds, lim);
+
+    if (st != ADF_OK)
+        return st;
+    adf_sball_init(t);
+    t->arch = P.node.sform == 'c' ? ADF_ARCH_COMPLEX : (P.node.sform == 'r' ? ADF_ARCH_REAL
+                                                                            : ADF_ARCH_NONE);
+    if (P.node.sform != 0)               /* the tag "n" carries no ball (conventions 5.9) */
+        dp_set_arb(acb_realref(t->inf), &P.node.arb[0]);
+    if (P.node.sform == 'c')
+        dp_set_arb(acb_imagref(t->inf), &P.node.arb[1]);
+    t->len = (slong) P.node.nlb;
+    if (t->len > 0)
+    {
+        t->loc = (adf_lball_struct *) flint_malloc((size_t) t->len * sizeof(adf_lball_struct));
+        pos = P.node.lb0;
+        for (i = 0; i < (size_t) t->len; i++)
+        {
+            adf_lball_init(&t->loc[i]);
+            dp_read_lb(&t->loc[i], P.s, P.len, &pos);
+        }
+    }
+    adf_sball_swap(x, t);
+    adf_sball_clear(t);
+    return ADF_OK;
+}
+
+int
+adf_sball_load_str(adf_sball_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
+                   const adf_text_limits_t * lim)
+{
+    (void) ctx;                        /* no occurrence */
+    return dp_load_sball(x, s, len, NULL, 0, lim);
+}
+
+int
+adf_sball_load_str_binds(adf_sball_t x, const char * s, size_t len,
+                         const adf_modctx_struct * const * binds, size_t nbinds,
+                         const adf_text_limits_t * lim)
+{
+    return dp_load_sball(x, s, len, binds, dp_count_of(nbinds), lim);
+}
+
+char *
+adf_sball_dump_str(size_t * len, const adf_sball_t x)
+{
+    dp_sb b;
+    slong i;
+
+    DP_INV(x, adf_sball_is_canonical(x), "adf_sball");
+    dp_sb_init(&b);
+    dp_sb_lit(&b, "adf1 Q sball");
+    if (x->arch == ADF_ARCH_NONE)
+        dp_sb_lit(&b, " n");
+    else if (x->arch == ADF_ARCH_REAL)
+    {
+        dp_sb_lit(&b, " r");
+        dp_sb_arb(&b, acb_realref(x->inf));
+    }
+    else
+    {
+        dp_sb_lit(&b, " c");
+        dp_sb_arb(&b, acb_realref(x->inf));
+        dp_sb_arb(&b, acb_imagref(x->inf));
+    }
+    dp_sb_ui(&b, (ulong) x->len);
+    for (i = 0; i < x->len; i++)
+        dp_sb_lb(&b, &x->loc[i]);
+    return dp_sb_finish(&b, len);
+}
+
+int
+adf_sball_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s, size_t len,
+                       const adf_text_limits_t * lim)
+{
+    return dp_inspect(DP_SBALL, nctx, descs, s, len, lim);
 }
