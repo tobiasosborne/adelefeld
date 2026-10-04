@@ -1,0 +1,39 @@
+adf1 Q lball 5 b 3 0 4
+adf1 Q lball 2 b 1 0 3
+adf1 Q lball 5 x 1 3 0
+adf1 Q lball 5 x 1 1 -1
+adf1 Q lball 2 x 0 1 0
+adf1 Q lball 5 b 0 0 4
+adf1 Q sball n 0
+adf1 Q sball r 3 -1 0 0 0
+adf1 Q sball r 3 -1 0 0 1 2 b 1 0 3
+adf1 Q sball c 1 0 0 0 1 1 0 0 1 7 b 1 0 2
+[p=5: 3 + O(5^4)]
+[p=2: 1 + O(2^3)]
+[p=5: 1/3]
+[p=5: 1/5]
+[p=2: 0]
+{}
+{inf: 1.5; p=2: 1 + O(2^3)}
+{inf: (1) + (2)*i; p=7: 1 + O(7^2)}
+adf1 Q sball r 3 -1 0 0 1 2 b 1 0 3
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: LIMIT
+error: UNSUPPORTED
+error: PARSE
+error: PARSE
+error: PARSE
+error: PARSE
+error: PARSE
+error: UNSUPPORTED
+error: UNSUPPORTED

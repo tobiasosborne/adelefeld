@@ -118,16 +118,23 @@ never fails.  `load` reads a dump form and writes the value in the value form of
 conventions 9.4.  The driver has no context, so the two commands cover the values of the
 global backend only, which is where every value of the value form is (conventions 9.8,
 A11): a dump with a context occurrence is `error: UNSUPPORTED`, and so is a body of
-section 10 that the driver has no dump for (`scaled`, `ucoset`, `idele`, `idclass`,
-`lball`, `sball`, `qclass`, `ffun`, `rfun`, `char`, `modctx`; `dump` of a unit coset, an idele, a class,
-a local ball or a partial ball is
-`error: UNSUPPORTED` although the driver reads and prints the first three, and the last two since lane drv-ball:
-their dump form is not implemented yet).  A fourth token that is no
+section 10 that the driver has no dump for (`scaled`, `qclass`, `ffun`, `rfun`, `char`,
+`modctx`).  The nine bodies the driver reads and writes are `rat`, `fball`, `adele`, `cadele`,
+`ucoset`, `idele`, `idclass`, `lball` and `sball`; the five of lane `u-dump1` since this text was
+written: `dump` of a unit coset, an idele, a class, a local ball or a partial ball answers
+`error: UNSUPPORTED` no more, although the driver read and printed the first three, and the last
+two since lane `drv-ball`.  A fourth token that is no
 body of section 10 at all is `error: PARSE`, and a text that does not begin `adf1 Q ` is
 read by the loader of `adf_rat`, whose status is then the status of the text: the version,
 the field and the syntax of section 10.1 do not depend on the body.  The dump form has no
 whitespace other than the single spaces of its tokens (conventions 8.2), so `load` does not
 trim its operand.
+
+The bodies of the five kinds hold no context occurrence (conventions 10.2), so `load` of a
+valid text of one of them needs no context and answers with the value form of 9.4.  A text
+that breaks the predicate of the type (conventions 5.6 to 5.9) is `error: DOMAIN`; the two
+fixtures `tests/driver/u-dump-units` and `tests/driver/u-dump-local` hold the lines, and
+`tests/test_dump_units.c` and `tests/test_dump_local.c` the statuses of the texts.
 
 ### The commands of the solvers: `roots`, `realroots` and `recover`
 
@@ -271,8 +278,8 @@ through `adf_lball_get_str` and `adf_sball_get_str` (the setting `digits` for th
 `tests/driver/drv-ball-values.cmd`), and every other operation answers as the section "the pairs that are refused"
 says: `add`, `sub`, `mul`, `div`, `cap`, `equal`, `contains`, `overlaps`, `compare` and `reconstruct` are
 `error: DOMAIN` for them, because SPEC 4.1 combines no pair of types with a local ball or a partial ball, and
-`neg` is `error: UNSUPPORTED`, because the driver implements no negation of them.  `dump` is `error: UNSUPPORTED`,
-as for every kind whose dump form section 10 names and the driver has no body for.  The commands at places take a
+`neg` is `error: UNSUPPORTED`, because the driver implements no negation of them.  `dump` is the dump form
+of 10.1, as for every other kind, since lane `u-dump1`.  The commands at places take a
 partial ball as **X** (see the section above); a local ball is `error: UNSUPPORTED` there.
 
 ### The order of the checks
@@ -354,7 +361,7 @@ written by hand and are re-derived with exact rationals by `lanes/t-slice1/check
 | `valuation X with P`, `abs X with PLACE` | an idele; a prime, or `real` for `abs` | `v_p(r)`; `abs(x_p)_p` as a rational, `abs(x_inf)` as a real ball; `real` for `valuation` and a non-prime are `DOMAIN`; a second operand of more than one token is `PARSE` |
 | `equal`, `contains`, `overlaps` | two unit cosets | `adf_ucoset_equal_set`, `adf_ucoset_contains`, `adf_ucoset_overlaps`; ideles and classes have no set predicate (`docs/api-2.md` 3.5, i3-1): `DOMAIN` |
 | `add`, `sub`, `cap`, `compare`, `reconstruct` | with an operand of these kinds | `DOMAIN` |
-| `dump`, `load` | | `UNSUPPORTED`: the dump form of the three kinds is not implemented |
+| `dump`, `load` | | the dump form of the three kinds is the dump form of 10.1 (lane `u-dump1`) |
 
 Every other pair is `error: DOMAIN`.  The statuses of the library are the statuses of the command:
 `NOT_DETERMINED` when the real kernel cannot certify the sign of a result (or of a text read at the setting `prec`;

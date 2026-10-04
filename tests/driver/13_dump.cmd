@@ -47,6 +47,8 @@ dump ((1) + (0.5)*i ; 2 mod 6)
 # 10.2: one occurrence per local finite ball)
 load adf1 Q fball l 1 6 2 2 3 0 2
 # a body of 10.1 that the driver has no type for
+load adf1 Q modctx 6 2 2 3
+# a local ball: the body lball of 10.1, "b u v N" (lane u-dump1)
 load adf1 Q lball 5 b 3 0 4
 # "real" is not a body of 10.1, so the text is not a sentence of the grammar of section 10
 load adf1 Q real 7 3

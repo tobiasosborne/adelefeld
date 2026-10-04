@@ -18,6 +18,7 @@ error: DOMAIN
 adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1
 error: UNSUPPORTED
 error: UNSUPPORTED
+[p=5: 3 + O(5^4)]
 error: PARSE
 error: UNSUPPORTED
 error: UNSUPPORTED
