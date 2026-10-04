@@ -119,8 +119,10 @@ conventions 9.4.  The driver has no context, so the two commands cover the value
 global backend only, which is where every value of the value form is (conventions 9.8,
 A11): a dump with a context occurrence is `error: UNSUPPORTED`, and so is a body of
 section 10 that the driver has no dump for (`scaled`, `ucoset`, `idele`, `idclass`,
-`lball`, `sball`, `qclass`, `ffun`, `rfun`, `char`, `modctx`; `dump` of a unit coset, an idele or a class is
-`error: UNSUPPORTED` although the driver reads and prints them: their dump form is not implemented yet).  A fourth token that is no
+`lball`, `sball`, `qclass`, `ffun`, `rfun`, `char`, `modctx`; `dump` of a unit coset, an idele, a class,
+a local ball or a partial ball is
+`error: UNSUPPORTED` although the driver reads and prints the first three, and the last two since lane drv-ball:
+their dump form is not implemented yet).  A fourth token that is no
 body of section 10 at all is `error: PARSE`, and a text that does not begin `adf1 Q ` is
 read by the loader of `adf_rat`, whose status is then the status of the text: the version,
 the field and the syntax of section 10.1 do not depend on the body.  The dump form has no
@@ -209,11 +211,18 @@ unchanged: one operation name and two operands separated by ` with `; a wrong nu
     exp_at X with PLACE       exp of X at the one place (adf_sball_exp_at)
     log_at X with PLACE       log of X at the one place (adf_sball_log_at)
 
-**X** is an exact rational, a finite ball or an adele.  A rational is made into the adele `(q ; q)` at the setting
-`prec` (SPEC 4.1).  A finite ball has no real coordinate: the place `real` is `error: DOMAIN` for it.  A complex adele
+**X** is an exact rational, a finite ball, an adele or, since lane drv-ball, a partial ball.  A rational is made
+into the adele `(q ; q)` at the setting `prec` (SPEC 4.1).  A finite ball has no real coordinate: the place
+`real` is `error: DOMAIN` for it.  A partial ball is not made into an adele: the partial ball over the places is
+its component at each of them (`adf_sball_get_arb` and `adf_sball_get_lball`, put together with
+`adf_sball_set_arb_lballs`, the three functions of `include/adelefeld/sball.h` that the driver needs; the
+projection takes no component away, docs/proofs/functions.md Proposition 22).  A place of **PLACES** that is no
+place of the partial ball is `error: DOMAIN`: there is no component to take.  A complex partial ball is
+`error: UNSUPPORTED` (the functions at places are the real ones).  A complex adele
 is `error: UNSUPPORTED` (the complex functions are later), and so is a kind of the value form with no typed parser,
 and so is a unit coset, an idele or a class (`tests/driver/f-cross.cmd`, review n-review1 D1: the driver used to read
-the field of another type and printed a wrong value, `project (5 ; 5 * [1]) with 5` gave `5: 0`).
+the field of another type and printed a wrong value, `project (5 ; 5 * [1]) with 5` gave `5: 0`).  The test cases of
+the partial ball as an operand are `tests/driver/drv-ball-ops.cmd`.
 
 **PLACES** is a list of places separated by single spaces: a prime in decimal, or the word `real`.  A token that is
 neither is `error: PARSE` (a `+`, a letter, a leading zero, a decimal point, two spaces in a row, a blank at the end).
@@ -240,19 +249,31 @@ primes in increasing order), separated by `; `, each
                                   precision
 
 This is a text of the driver, not a value form of the library: the value form of a partial ball (conventions 9.2) is
-a different text, `{inf: ...; p=5: ...}`, and the driver has no typed parser or printer for it in this build
-(decision N-D1 is the pattern).  `exp_at` and `log_at` print the partial ball over the one place, so their line has
+a different text, `{inf: ...; p=5: ...}`.  The driver has a typed parser for it since lane drv-ball (a value of the
+kind `sball` is read by `adf_sball_set_str` and printed by `adf_sball_get_str` in `show`, `type` and the
+commands at places), but the line of the commands at places keeps the text above and is not changed by it
+(`lanes/drv-ball/printer-diff.md`, step 3: the two texts differ in every line of every fixture).  `exp_at` and
+`log_at` print the partial ball over the one place, so their line has
 the label: `5: 349831 + O(5^8)` for `exp_at 5 with 5` at `prec 8`; `real: 1` for `exp_at 0 with real`; `2: 0` for
 `log_at -1 with 2` (`log(-1) = 0` exactly at 2).  A centre with a negative valuation prints as a rational: `project
 (* ; 1/5 mod 25) with 5` is `5: 1/5 + O(5^2)`.
 
 ### Types of the operands, and the pairs that are refused
 
-The driver reads seven of the thirteen kinds of the value form: `adf_rat`, `adf_fball`,
+The driver reads nine of the thirteen kinds of the value form: `adf_rat`, `adf_fball`,
 `adf_adele`, `adf_cadele`, and, since lane t-slice1 (milestone 2), `adf_ucoset`, `adf_idele` and
-`adf_idclass`.  A kind with no typed parser in this build (`adf_lball`, `adf_sball`, `adf_qclass`,
-`adf_ffun`, `adf_rfun`, `adf_char`; work packages 1.8 and later) gives `error: UNSUPPORTED`.  `type`
-still names those kinds, since the classifier knows all thirteen.
+`adf_idclass`, and, since lane drv-ball, `adf_lball` and `adf_sball`.  A kind with no typed parser in this build
+(`adf_qclass`, `adf_ffun`, `adf_rfun`, `adf_char`; work packages 1.8 and later) gives `error: UNSUPPORTED`.
+`type` still names those kinds, since the classifier knows all thirteen.
+
+The two kinds that lane drv-ball added are values, and not operands of the operations: `show` prints them
+through `adf_lball_get_str` and `adf_sball_get_str` (the setting `digits` for the partial ball, as for an adele;
+`tests/driver/drv-ball-values.cmd`), and every other operation answers as the section "the pairs that are refused"
+says: `add`, `sub`, `mul`, `div`, `cap`, `equal`, `contains`, `overlaps`, `compare` and `reconstruct` are
+`error: DOMAIN` for them, because SPEC 4.1 combines no pair of types with a local ball or a partial ball, and
+`neg` is `error: UNSUPPORTED`, because the driver implements no negation of them.  `dump` is `error: UNSUPPORTED`,
+as for every kind whose dump form section 10 names and the driver has no body for.  The commands at places take a
+partial ball as **X** (see the section above); a local ball is `error: UNSUPPORTED` there.
 
 ### The order of the checks
 

@@ -1,0 +1,13 @@
+2: 4
+2: 4
+2: 77 + O(2^8)
+2: 77 + O(2^8)
+2: 4; 5: 1
+5: 1
+2: 4 + O(2^3)
+real: 0; 2: 0
+real: 0; 2: 0
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: UNSUPPORTED
