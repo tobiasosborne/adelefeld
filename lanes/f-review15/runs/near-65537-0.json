@@ -1,0 +1,21 @@
+{
+  "kind": "near",
+  "p": 65537,
+  "start": 0,
+  "count_requested": 300,
+  "cases": 300,
+  "ok": 205,
+  "nd": 95,
+  "domain": 0,
+  "limit": 0,
+  "samples": 4100,
+  "failures": 0,
+  "bounds": 0,
+  "derivative_samples": 0,
+  "fallback": 0,
+  "exact_rationals": 0,
+  "max_derivative_ratio": "0.0",
+  "seconds": 17.208,
+  "bridge": "bridge calls=300 output_errors=0",
+  "findings": []
+}

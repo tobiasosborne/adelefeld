@@ -1,0 +1,6 @@
+start p=2 prec=4096 axis=real mantissa=1 exponent=0
+status=0 seconds=0.003252 preserved=1 finite=1
+start p=0 prec=4096 axis=real mantissa=1 exponent=0
+status=0 seconds=0.005157 preserved=1 finite=1
+start p=0 prec=64 axis=real-imag mantissa=-1 exponent=1152921504606846976
+status=10 seconds=0.002634 preserved=1 finite=1

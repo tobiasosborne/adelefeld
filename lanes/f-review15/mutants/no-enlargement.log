@@ -1,0 +1,267 @@
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+ok   prime_vectors
+ok   real_exact_values
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near 0 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary 0 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near 0 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary 0 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near 0 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary 0 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near 0 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary 0 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near 0 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary 0 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -2 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -2 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -2 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -2 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -2 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -2 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -2 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -2 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -2 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -2 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -4 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -4 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -4 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -4 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -4 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -4 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -4 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -4 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -4 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -4 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -6 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -6 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -6 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -6 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -6 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -6 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -6 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -6 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -6 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -6 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -8 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -8 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -8 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -8 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -8 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -8 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -8 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -8 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -8 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -8 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -10 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -10 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -10 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -10 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -10 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -10 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -10 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -10 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -10 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -10 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -12 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -12 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -12 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -12 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -12 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -12 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -12 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -12 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -12 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -12 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -14 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -14 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -14 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -14 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -14 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -14 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -14 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -14 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -14 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -14 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -16 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -16 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -16 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -16 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -16 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -16 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -16 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -16 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -16 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -16 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -18 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -18 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -18 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -18 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -18 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -18 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -18 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -18 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -18 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -18 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -20 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -20 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -20 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -20 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -20 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -20 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -20 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -20 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -20 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -20 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -22 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -22 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -22 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -22 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -22 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -22 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -22 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -22 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -22 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -22 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -24 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -24 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -24 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -24 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -24 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -24 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -24 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -24 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -24 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -24 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -26 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -26 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -26 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -26 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -26 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -26 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -26 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -26 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -26 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -26 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -28 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -28 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -28 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -28 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -28 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -28 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -28 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -28 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -28 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -28 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -30 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -30 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -30 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -30 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -30 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -30 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -30 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -30 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -30 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -30 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -32 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -32 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -32 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -32 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -32 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -32 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -32 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -32 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -32 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -32 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -34 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -34 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -34 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -34 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -34 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -34 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -34 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -34 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -34 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -34 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -36 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -36 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -36 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -36 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -36 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -36 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -36 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -36 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -36 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -36 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -38 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -38 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -38 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -38 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -38 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -38 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -38 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -38 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -38 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -38 j=60: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -40 j=1: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -40 j=1: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -40 j=4: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -40 j=4: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -40 j=12: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -40 j=12: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -40 j=30: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -40 j=30: reference outside
+FAIL tests/test_localfactor.c:866: real_poles: check failed: real_contains_corners(y, s) | near -40 j=60: reference outside
+FAIL tests/test_localfactor.c:874: real_poles: check failed: real_contains_corners(y, s) | near_imaginary -40 j=60: reference outside
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+FAIL real_poles (tests/test_localfactor.c:824, 210 failed checks)
+FAIL tests/test_localfactor.c:934: real_recurrence: check failed: real_contains_corners(y, s)
+FAIL tests/test_localfactor.c:937: real_recurrence: check failed: real_contains_corners(y, s)
+FAIL real_recurrence (tests/test_localfactor.c:916, 2 failed checks)
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 141: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 141: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 141: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 141: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 142: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 142: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 142: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 142: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 150: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 150: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 150: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 150: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 151: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 151: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 151: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 151: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 154: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 154: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 154: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 154: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 156: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 156: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 156: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 156: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 158: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 158: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 158: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 158: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 160: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 160: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 160: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 160: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 177: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 177: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 177: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 177: sample 4 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 249: sample 0 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 249: sample 1 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 249: sample 3 outside
+FAIL tests/test_localfactor.c:351: real_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 249: sample 4 outside
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 0, raised certificates 0
+FAIL real_vectors (tests/test_localfactor.c:976, 40 failed checks)
+10 tests, 36725 checks, 252 failed checks, 3 failed tests

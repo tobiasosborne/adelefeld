@@ -1,0 +1,50 @@
+[
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 2 64 real-imag 1000 1",
+    "exit": 0,
+    "seconds": 0.003902,
+    "output": "start p=2 prec=64 axis=real-imag mantissa=1 exponent=1000\nstatus=0 seconds=0.000426 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 2 64 real-imag 1000 -1",
+    "exit": 0,
+    "seconds": 0.003714,
+    "output": "start p=2 prec=64 axis=real-imag mantissa=-1 exponent=1000\nstatus=0 seconds=0.000409 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 2 64 imag 1000 1",
+    "exit": 0,
+    "seconds": 0.003108,
+    "output": "start p=2 prec=64 axis=imag mantissa=1 exponent=1000\nstatus=0 seconds=0.000064 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 2 64 imag 1000 -1",
+    "exit": 0,
+    "seconds": 0.003303,
+    "output": "start p=2 prec=64 axis=imag mantissa=-1 exponent=1000\nstatus=0 seconds=0.000061 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 64 real-imag 1000 1",
+    "exit": 0,
+    "seconds": 0.003573,
+    "output": "start p=0 prec=64 axis=real-imag mantissa=1 exponent=1000\nstatus=1 seconds=0.000495 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 64 real-imag 1000 -1",
+    "exit": 0,
+    "seconds": 0.003667,
+    "output": "start p=0 prec=64 axis=real-imag mantissa=-1 exponent=1000\nstatus=1 seconds=0.000497 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 64 imag 1000 1",
+    "exit": 0,
+    "seconds": 0.003572,
+    "output": "start p=0 prec=64 axis=imag mantissa=1 exponent=1000\nstatus=0 seconds=0.000503 preserved=1 finite=1\n"
+  },
+  {
+    "command": "timeout 60 /home/tobias/Projects/adelefeld-wt/f-review15/lanes/f-review15/build/cost 0 64 imag 1000 -1",
+    "exit": 0,
+    "seconds": 0.003661,
+    "output": "start p=0 prec=64 axis=imag mantissa=-1 exponent=1000\nstatus=0 seconds=0.000463 preserved=1 finite=1\n"
+  }
+]

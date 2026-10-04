@@ -1,0 +1,3 @@
+{"fault": "half-B", "input": {"id": "min-half-4-8-16", "p": 0, "prec": 16, "s": [["-1", "-4"], ["0", "0"], ["1", "-8"], ["0", "0"]]}, "tried": 364, "bad_endpoints": 1}
+{"fault": "lower-E", "input": {"id": "min-lower-E", "p": 2, "prec": 2, "s": [["1", "0"], ["0", "0"], ["1", "0"], ["0", "0"]]}, "tried": 1, "bad_endpoints": 0}
+{"fault": "open-integer", "input": {"id": "min-open", "p": 0, "prec": 2, "s": [["-255", "-1"], ["0", "0"], ["1", "-1"], ["0", "0"]]}, "tried": 1, "bad_endpoints": 0}

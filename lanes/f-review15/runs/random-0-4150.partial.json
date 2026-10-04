@@ -1,0 +1,16 @@
+{
+  "cases": 500,
+  "ok": 442,
+  "nd": 53,
+  "domain": 0,
+  "limit": 5,
+  "samples": 8840,
+  "failures": 0,
+  "bounds": 313,
+  "derivative_samples": 0,
+  "fallback": 27,
+  "exact_rationals": 0,
+  "last_id": "random-0-4649",
+  "seconds": 74.946,
+  "findings": []
+}

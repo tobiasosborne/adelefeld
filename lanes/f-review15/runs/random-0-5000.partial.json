@@ -1,0 +1,16 @@
+{
+  "cases": 110,
+  "ok": 101,
+  "nd": 9,
+  "domain": 0,
+  "limit": 0,
+  "samples": 2020,
+  "failures": 0,
+  "bounds": 62,
+  "derivative_samples": 0,
+  "fallback": 3,
+  "exact_rationals": 0,
+  "last_id": "random-0-5109",
+  "seconds": 15.144,
+  "findings": []
+}

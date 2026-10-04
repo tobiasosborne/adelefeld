@@ -1,0 +1,21 @@
+{
+  "kind": "real-poles",
+  "p": 0,
+  "start": 0,
+  "count_requested": 250,
+  "cases": 1530,
+  "ok": 4,
+  "nd": 1024,
+  "domain": 170,
+  "limit": 332,
+  "samples": 80,
+  "failures": 0,
+  "bounds": 2,
+  "derivative_samples": 0,
+  "fallback": 337,
+  "exact_rationals": 0,
+  "max_derivative_ratio": "0.0",
+  "seconds": 9.655,
+  "bridge": "bridge calls=1530 output_errors=0",
+  "findings": []
+}

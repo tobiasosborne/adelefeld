@@ -1,0 +1,19 @@
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+ok   prime_vectors
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+FAIL tests/test_localfactor.c:949: real_recurrence: check failed: call(y, s, inf, 128) == ADF_LIMIT
+FAIL tests/test_localfactor.c:955: real_recurrence: check failed: call(y, s, inf, 256) == ADF_LIMIT
+FAIL real_recurrence (tests/test_localfactor.c:916, 2 failed checks)
+FAIL tests/test_localfactor.c:325: real_vectors: check failed: got == want || (want == ADF_OK && got == ADF_NOT_DETERMINED) | row 247 (real, recurrence_limit, line 248): status 1, oracle LIMIT
+status differs from the simulation: line 248 kind recurrence_limit place real prec 256: 1, oracle LIMIT
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 1, raised certificates 0
+FAIL real_vectors (tests/test_localfactor.c:976, 1 failed checks)
+10 tests, 36725 checks, 3 failed checks, 2 failed tests

@@ -1,0 +1,8 @@
+{
+  "fault": "wrong-Gamma-scale",
+  "build_exit": 0,
+  "test_exit": 1,
+  "first_failure": "FAIL tests/test_localfactor.c:775: real_exact_values: check failed: call(y, s, inf, precs[i]) == ADF_OK | s=-41 prec=2",
+  "totals": "10 tests, 36317 checks, 617 failed checks, 4 failed tests",
+  "seconds": 3.824
+}

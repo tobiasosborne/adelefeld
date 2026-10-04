@@ -1,0 +1,5 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_zeta_factor_at: argument v is not a canonical adf_place_t
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_zeta_factor_at: argument v is not a canonical adf_place_t
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_zeta_factor_at: argument v is not a canonical adf_place_t
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_zeta_factor_at: argument v is not a canonical adf_place_t
+handle checks=13 failures=0
