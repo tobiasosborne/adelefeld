@@ -1,0 +1,17 @@
+(* ; 0 mod 2)
+(* ; 0 mod 1)
+(* ; 1 mod 9)
+(* ; 1 mod 3)
+(* ; 15)
+(* ; 1)
+(* ; 1)
+error: DOMAIN
+error: NOT_DETERMINED
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: LIMIT
+error: LIMIT
+error: UNSUPPORTED
+error: PARSE
+error: PARSE

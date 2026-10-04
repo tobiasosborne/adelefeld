@@ -187,6 +187,14 @@ typedef enum
     ADF_DRV_JACOBI,
     ADF_DRV_KRONECKER,
     ADF_DRV_HILBERT_AT,
+    ADF_DRV_BINOM,
+    ADF_DRV_BINOMTIGHT,
+    ADF_DRV_PROFPOW,
+    ADF_DRV_PROFPOWCOARSE,
+    ADF_DRV_PROFPOWFINE,
+    ADF_DRV_HAAR_VOLUME,
+    ADF_DRV_CYCLO_EXP_U,
+    ADF_DRV_CYCLO_EXP_UINV,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -256,6 +264,14 @@ static const struct
     { "legendre", ADF_DRV_LEGENDRE, 2 },
     { "jacobi", ADF_DRV_JACOBI, 2 },
     { "kronecker", ADF_DRV_KRONECKER, 2 },
+    { "binom", ADF_DRV_BINOM, 2 },
+    { "binomtight", ADF_DRV_BINOMTIGHT, 2 },
+    { "profpow", ADF_DRV_PROFPOW, 2 },
+    { "profpowcoarse", ADF_DRV_PROFPOWCOARSE, 2 },
+    { "profpowfine", ADF_DRV_PROFPOWFINE, 2 },
+    { "haar_volume", ADF_DRV_HAAR_VOLUME, 1 },
+    { "cyclo_exp_u", ADF_DRV_CYCLO_EXP_U, 2 },
+    { "cyclo_exp_uinv", ADF_DRV_CYCLO_EXP_UINV, 2 },
     { "hilbert_at", ADF_DRV_HILBERT_AT, 3 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
@@ -2778,6 +2794,82 @@ adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_v
     return st;
 }
 
+/* WP 1F.9, catalogue.h: k is a nonnegative integer, integral finite input or exact integer. */
+static int
+adf_drv_binomial(FILE *out, adf_drv_op op, const adf_drv_value *x,
+                 const adf_drv_value *k, adf_drv_value *z, adf_drv_state *state)
+{
+    adf_fball_t f;
+    int st;
+    ulong degree;
+    if (k->type!=ADF_DRV_RAT) return ADF_UNSUPPORTED;
+    if (!fmpz_is_one(fmpq_denref(k->r->q)) || fmpq_sgn(k->r->q)<0) return ADF_DOMAIN;
+    if (!fmpz_abs_fits_ui(fmpq_numref(k->r->q))) return ADF_LIMIT;
+    degree=fmpz_get_ui(fmpq_numref(k->r->q));
+    if (x->type!=ADF_DRV_RAT && x->type!=ADF_DRV_FBALL) return ADF_UNSUPPORTED;
+    adf_fball_init(f);
+    if (x->type==ADF_DRV_RAT) adf_fball_set_rat(f,x->r);
+    else adf_fball_set(f,x->f);
+    st=op==ADF_DRV_BINOM ? adf_fball_binom(z->f,NULL,f,degree) :
+                          adf_fball_binom_tight(z->f,NULL,f,degree);
+    adf_fball_clear(f);
+    z->type=ADF_DRV_FBALL;
+    if (st==ADF_OK) st=adf_drv_value_print(out,z,state->digits);
+    return st;
+}
+
+/* Continuous profinite exponent, independent of the signed-word integer pow command. */
+static int
+adf_drv_profpow(FILE *out, adf_drv_op op, const adf_drv_value *a,
+                const adf_drv_value *x, adf_drv_value *z, adf_drv_state *state)
+{
+    adf_fball_t exponent;
+    int status;
+    if (a->type!=ADF_DRV_UCOSET || (x->type!=ADF_DRV_RAT && x->type!=ADF_DRV_FBALL))
+        return ADF_UNSUPPORTED;
+    adf_fball_init(exponent);
+    if (x->type==ADF_DRV_RAT) adf_fball_set_rat(exponent,x->r);
+    else adf_fball_set(exponent,x->f);
+    if (op==ADF_DRV_PROFPOW) status=adf_ucoset_profpow(z->u,NULL,a->u,exponent);
+    else if (op==ADF_DRV_PROFPOWCOARSE) status=adf_ucoset_profpow_coarse(z->u,NULL,a->u,exponent);
+    else status=adf_ucoset_profpow_fine(z->u,NULL,a->u,exponent);
+    adf_fball_clear(exponent);
+    z->type=ADF_DRV_UCOSET;
+    if (status==ADF_OK) status=adf_drv_value_print(out,z,state->digits);
+    return status;
+}
+
+/* Reuse the existing exact Haar-volume accessor, catalogue Proposition 10. */
+static int
+adf_drv_volume(FILE *out, const adf_drv_value *x, adf_drv_value *z, adf_drv_state *state)
+{
+    adf_fball_t f;
+    if (x->type!=ADF_DRV_RAT && x->type!=ADF_DRV_FBALL) return ADF_UNSUPPORTED;
+    adf_fball_init(f);
+    if (x->type==ADF_DRV_RAT) adf_fball_set_rat(f,x->r);
+    else adf_fball_set(f,x->f);
+    adf_fball_haar_volume(z->r,f);
+    adf_fball_clear(f);
+    z->type=ADF_DRV_RAT;
+    return adf_drv_value_print(out,z,state->digits);
+}
+
+/* Return an exact exponent modulo the order; two names fixed by CV-53/M0-D10. */
+static int
+adf_drv_cyclo(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *n)
+{
+    fmpz_t j;
+    int status;
+    if (x->type!=ADF_DRV_IDCLASS || n->type!=ADF_DRV_RAT) return ADF_UNSUPPORTED;
+    if (!fmpz_is_one(fmpq_denref(n->r->q))) return ADF_DOMAIN;
+    fmpz_init(j);
+    status=op==ADF_DRV_CYCLO_EXP_U ? adf_idclass_cyclo_exp_u(j,NULL,x->k,fmpq_numref(n->r->q)) :
+                                  adf_idclass_cyclo_exp_uinv(j,NULL,x->k,fmpq_numref(n->r->q));
+    if (status==ADF_OK) { fmpz_fprint(out,j); fputc('\n',out); }
+    fmpz_clear(j);
+    return status;
+}
+
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
    when a line was written (or a setting was made), else the status to report.  The steps
    are those of the comment at the top of the file and of the README of tools/adf. */
@@ -2868,6 +2960,26 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
     if (op == ADF_DRV_ROOT)
     {
         status = adf_drv_root_all(out, &x, &y, nops == 3 ? &w : NULL, st);
+        goto done;
+    }
+    if (op == ADF_DRV_BINOM || op == ADF_DRV_BINOMTIGHT)
+    {
+        status=adf_drv_binomial(out,op,&x,&y,&z,st);
+        goto done;
+    }
+    if (op==ADF_DRV_PROFPOW || op==ADF_DRV_PROFPOWCOARSE || op==ADF_DRV_PROFPOWFINE)
+    {
+        status=adf_drv_profpow(out,op,&x,&y,&z,st);
+        goto done;
+    }
+    if (op==ADF_DRV_HAAR_VOLUME)
+    {
+        status=adf_drv_volume(out,&x,&z,st);
+        goto done;
+    }
+    if (op==ADF_DRV_CYCLO_EXP_U || op==ADF_DRV_CYCLO_EXP_UINV)
+    {
+        status=adf_drv_cyclo(out,op,&x,&y);
         goto done;
     }
     if (op == ADF_DRV_LEGENDRE || op == ADF_DRV_JACOBI || op == ADF_DRV_KRONECKER)

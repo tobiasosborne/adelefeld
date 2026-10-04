@@ -1,0 +1,15 @@
+/usr/bin/ld: /tmp/ccP2pxcV.o: in function `adf_test_fn_binomial_plan_limits_huge':
+/home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:78:(.text+0x368): undefined reference to `adf_fball_binom_tight'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:79:(.text+0x3ac): undefined reference to `adf_fball_binom'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:80:(.text+0x426): undefined reference to `adf_fball_binom_tight'
+/usr/bin/ld: /tmp/ccP2pxcV.o: in function `binom_call':
+/home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x56a): undefined reference to `adf_fball_binom'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x61b): undefined reference to `adf_fball_binom_tight'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x72d): undefined reference to `adf_fball_binom_tight'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x7e3): undefined reference to `adf_fball_binom_tight'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x911): undefined reference to `adf_fball_binom'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x991): undefined reference to `adf_fball_binom'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x1000): undefined reference to `adf_fball_binom_tight'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice13/tests/test_catalogue.c:25:(.text+0x10c1): undefined reference to `adf_fball_binom'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f-slice13/build/test_catalogue] Error 1

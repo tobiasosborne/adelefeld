@@ -1,0 +1,197 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_fball_binom: argument x is not a canonical adf_fball
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_fball_binom_tight: argument x is not a canonical adf_fball
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_ucoset_profpow: argument a is not a canonical adf_ucoset
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_ucoset_profpow_coarse: argument a is not a canonical adf_ucoset
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_ucoset_profpow_fine: argument a is not a canonical adf_ucoset
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_ucoset_profpow: argument x is not a canonical adf_fball
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_ucoset_profpow_coarse: argument x is not a canonical adf_fball
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_ucoset_profpow_fine: argument x is not a canonical adf_fball
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_idclass_cyclo_exp_u: argument x is not a canonical adf_idclass
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_idclass_cyclo_exp_uinv: argument x is not a canonical adf_idclass
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_idclass_cyclo_exp_u: argument x is not a canonical adf_idclass
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_idclass_cyclo_exp_uinv: argument x is not a canonical adf_idclass
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+adelefeld: ADF_CHECK_INVARIANTS: adf_fball_haar_volume: argument x is not a canonical adf_fball
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+ok   catalogue_debug_entries
+10 tests, 131675 checks, 0 failed checks, 0 failed tests

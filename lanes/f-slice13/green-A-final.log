@@ -1,0 +1,5 @@
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+3 tests, 25527 checks, 0 failed checks, 0 failed tests

@@ -204,6 +204,7 @@ if "$JULIA" --startup-file=no tests/julia/smoke.jl "$so" > "$run_output" 2>&1; t
     timeout 60 "$JULIA" --startup-file=no tests/julia/gfunc.jl "$so" || exit 1
     timeout 60 "$JULIA" --startup-file=no tests/julia/gfunc_log.jl "$so" || exit 1
     timeout 60 "$JULIA" --startup-file=no tests/julia/symbol.jl "$so" || exit 1
+    timeout 60 "$JULIA" --startup-file=no tests/julia/catalogue.jl "$so" || exit 1
     echo "test_julia: passed"
     exit 0
 fi
@@ -242,6 +243,7 @@ if grep -q '__gmpn_modexact_1_odd' "$run_output" 2>/dev/null; then
             LD_PRELOAD="$sys_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/gfunc.jl "$so" || exit 1
             LD_PRELOAD="$sys_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/gfunc_log.jl "$so" || exit 1
             LD_PRELOAD="$sys_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/symbol.jl "$so" || exit 1
+            LD_PRELOAD="$sys_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/catalogue.jl "$so" || exit 1
             echo "test_julia: passed (with LD_PRELOAD=$sys_gmp)"
             exit 0
         fi

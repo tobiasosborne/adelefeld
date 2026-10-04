@@ -1,0 +1,13 @@
+01: exit=0; src/catalogue.c:38:9 swap_args: 'fmpz_mul(z, z, t)' -> 'fmpz_mul(z, t, z)'; 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+03: exit=2; src/catalogue.c:80:5 drop_call: 'ADF_INV_FBALL(x);' -> '' (the statement is removed); 10 tests, 131701 checks, 2 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:476: catalogue_debug_entries: check failed: WIFSIGNALED(status) && WTERMSIG(status)==SIGABRT
+16: exit=0; src/catalogue.c:144:5 swap_args: 'fmpz_mul(t, A, B)' -> 'fmpz_mul(t, B, A)'; 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+22: exit=0; src/catalogue.c:99:20 cmp: '<' -> '<='; 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+24: exit=0; src/catalogue.c:61:26 zero_one: '1' -> '0'; 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+26: exit=0; src/catalogue.c:60:13 drop_call: 'fmpz_zero(R);' -> '' (the statement is removed); 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+36: exit=0; src/catalogue.c:96:27 drop_call: 'fmpz_zero(r);' -> '' (the statement is removed); 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+38: exit=2; src/catalogue.c:214:20 drop_call: 'ADF_INV_FBALL(x);' -> '' (the statement is removed); 10 tests, 131701 checks, 1 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:477: catalogue_debug_entries: check failed: strstr(message,names[which])!=NULL
+43: exit=0; src/catalogue.c:65:17 swap_args: 'fmpz_gcd(R, R, b)' -> 'fmpz_gcd(R, b, R)'; 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+48: exit=2; src/catalogue.c:221:5 drop_call: 'CAT_INV_UC(a);' -> '' (the statement is removed); 10 tests, 131701 checks, 1 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:477: catalogue_debug_entries: check failed: strstr(message,names[which])!=NULL
+49: exit=0; src/catalogue.c:125:9 swap_args: 'fmpz_mul(A, A, h)' -> 'fmpz_mul(A, h, A)'; 10 tests, 131701 checks, 0 failed checks, 0 failed tests; no failure
+51: exit=2; src/catalogue.c:207:5 drop_call: 'CAT_INV_UC(a);' -> '' (the statement is removed); 10 tests, 131701 checks, 1 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:477: catalogue_debug_entries: check failed: strstr(message,names[which])!=NULL
+58: exit=2; src/catalogue.c:214:5 drop_call: 'CAT_INV_UC(a);' -> '' (the statement is removed); 10 tests, 131701 checks, 1 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:477: catalogue_debug_entries: check failed: strstr(message,names[which])!=NULL
