@@ -1,0 +1,6 @@
+FAIL lanes/f-slice12/red-B.c:14: each_public_hilbert_function: check failed: adf_lball_hilbert(&z,NULL,b,b)==ADF_OK && z==1
+FAIL lanes/f-slice12/red-B.c:15: each_public_hilbert_function: check failed: adf_real_hilbert(&z,NULL,r,r)==ADF_OK && z==1
+FAIL lanes/f-slice12/red-B.c:16: each_public_hilbert_function: check failed: adf_rat_hilbert_at(&z,NULL,a,a,p)==ADF_OK && z==1
+FAIL lanes/f-slice12/red-B.c:17: each_public_hilbert_function: check failed: adf_idele_hilbert_at(&z,NULL,i,i,p)==ADF_OK && z==1
+FAIL each_public_hilbert_function (lanes/f-slice12/red-B.c:3, 4 failed checks)
+1 tests, 6 checks, 4 failed checks, 1 failed tests

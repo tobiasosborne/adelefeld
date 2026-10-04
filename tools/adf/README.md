@@ -617,3 +617,26 @@ Log_refine (1 ; 4 * [1 mod 9]) with 3 prints (0 ; 12 mod 36).
 With 3 5 the result is (0 ; 120 mod 180). An empty list has the same result as Log.
 These are enclosures at all places, with the named factors refined; they contain integral
 coordinates at unlisted odd primes without imposing p Z_p there. See IL5 and api-1f8.md G10-G12.
+
+Arithmetic residue symbols (WP 1F.9, proposed N-D18):
+
+- `legendre X with P`: P is an odd prime below 2^64.
+- `jacobi X with B`: B is a positive odd integer.
+- `kronecker X with B`: B is any integer for exact X; finite precision requires B > 0.
+
+X is an integer, an integral finite ball, or a unit coset. The line is `-1`, `0`, `1`, or
+`error: STATUS`. Finite certification uses the sufficient modulus in `symbol.h` and requires that
+it divide the input modulus. For Kronecker at an even B it uses 8 times the odd part of B.
+For example, `kronecker 1 with 2` prints `1` and `kronecker 3 with 2` prints `-1`.
+`kronecker 1 mod 4 with 2` reports `NOT_DETERMINED`: 1 and 5 give different symbols.
+See `docs/api-1f9.md` for the conservative refusals and the nonintegral-ball domain test.
+
+`hilbert_at X with Y with PLACE` computes the Hilbert symbol at one prime or at `real`.
+X and Y have the same kind: exact rationals, ideles, local balls (`[p=2: 3]`), or partial balls
+(`{inf: -3}`, `{p=2: 1 + O(2^3)}`). A local ball must match PLACE; partial balls supply their
+component there. The result is `-1` or `1`, or `error: STATUS`.
+For example, `hilbert_at 3 with 3 with 2` prints `-1`.
+The idele form includes the scale cofactor in its local unit square class; it uses the real
+coordinate at `real`. Coarse inputs return a sign whenever it is constant on every allowed
+square class, and `NOT_DETERMINED` otherwise. Zero-containing inputs are `NOT_DETERMINED`;
+either exact zero makes the pair `DOMAIN`. See `docs/api-1f9.md` Y5-Y8.

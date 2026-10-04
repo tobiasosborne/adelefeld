@@ -1,0 +1,6 @@
+tests/test_symbol.c: In function ‘adf_test_fn_residue_debug_entry_checks’:
+tests/test_symbol.c:246:19: error: ignoring return value of ‘freopen’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
+  246 |             (void)freopen("/dev/null","w",stderr);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/f-slice12/build-inv/test_symbol] Error 1

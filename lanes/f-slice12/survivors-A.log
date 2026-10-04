@@ -1,0 +1,3 @@
+entry-check-removed: compile=0 run=1; FAIL tests/test_symbol.c:259: residue_debug_entry_checks: check failed: WIFSIGNALED(st) && WTERMSIG(st)==SIGABRT
+gcd-removed: compile=0 run=1; FAIL tests/test_symbol.c:79: residue_vectors: check failed: st == status | row 3545: got 7 want 1
+odd-kron-overprecision: compile=0 run=1; FAIL tests/test_symbol.c:79: residue_vectors: check failed: st == status | row 3310: got 1 want 0

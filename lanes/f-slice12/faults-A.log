@@ -1,0 +1,6 @@
+two-residues: compile=0 run=1; FAIL tests/test_symbol.c:80: residue_vectors: check failed: z == want | row 419: value -1 want 1
+even-nonzero: compile=0 run=1; FAIL tests/test_symbol.c:80: residue_vectors: check failed: z == want | row 395: value 1 want 0
+coarse-accepted: compile=0 run=1; FAIL tests/test_symbol.c:79: residue_vectors: check failed: st == status | row 2459: got 0 want 1
+odd-jacobi: compile=0 run=1; FAIL tests/test_symbol.c:79: residue_vectors: check failed: st == status | row 393: got 7 want 0
+value-clobber: compile=0 run=1; FAIL tests/test_symbol.c:80: residue_vectors: check failed: z == want | row 2459: value 0 want 99
+where-missing: compile=0 run=1; FAIL tests/test_symbol.c:81: residue_vectors: check failed: adf_place_equal(w,kind==0 && st!=ADF_OK ? place(fmpz_get_ui(b)) : sentinel)

@@ -183,6 +183,10 @@ typedef enum
     ADF_DRV_IDLOGABS_AT,
     ADF_DRV_IDLOG_REFINE,
     ADF_DRV_IDLOGABS_REFINE,
+    ADF_DRV_LEGENDRE,
+    ADF_DRV_JACOBI,
+    ADF_DRV_KRONECKER,
+    ADF_DRV_HILBERT_AT,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -249,6 +253,10 @@ static const struct
     { "log_abs_refine", ADF_DRV_IDLOGABS_REFINE, 2 },
     { "logabs_refine", ADF_DRV_IDLOGABS_REFINE, 2 },
     { "prec", ADF_DRV_PREC, 1 },
+    { "legendre", ADF_DRV_LEGENDRE, 2 },
+    { "jacobi", ADF_DRV_JACOBI, 2 },
+    { "kronecker", ADF_DRV_KRONECKER, 2 },
+    { "hilbert_at", ADF_DRV_HILBERT_AT, 3 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -2259,7 +2267,9 @@ adf_drv_units_neg(adf_drv_value * z, const adf_drv_value * x)
         adf_ucoset_init(u);
         adf_ucoset_init(m);
         arb_neg(inf, x->i->inf);
-        adf_idele_content(r, x->i);
+        /* This typed parser supplied a canonical idele, as for inf and u below.
+           Copying the field avoids GCC 13's false array-parameter subobject overread. */
+        fmpq_set(r, x->i->r);
         adf_ucoset_minus_one(m);
         adf_ucoset_mul(u, &x->i->u, m);
         status = adf_idele_set_parts(z->i, inf, r, u);
@@ -2662,6 +2672,112 @@ done:
 
 /* ---- one command ---- */
 
+/* WP 1F.9: Hilbert at one named place, on pairs of one supported input kind. */
+static int
+adf_drv_hilbert(FILE *out, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_drv_value x[2];
+    adf_lball_struct local[2];
+    adf_sball_struct partial[2];
+    arb_t ar,br;
+    adf_text_kind kind[2];
+    adf_place_t v=adf_place_inf();
+    int status,z,place_status;
+    for(int i=0;i<2;i++)
+    {
+        adf_drv_value_init(x+i); adf_lball_init(local+i); adf_sball_init(partial+i);
+    }
+    arb_init(ar); arb_init(br);
+    for(int i=0;i<2;i++)
+    {
+        status=adf_text_classify(kind+i,l->s[i],l->n[i],NULL);
+        if(status!=ADF_OK) goto done;
+    }
+    place_status=adf_drv_place_token(l->s[2],l->n[2],&v);
+    if(place_status==ADF_PARSE) { status=place_status; goto done; }
+    if(kind[0]!=kind[1]) { status=ADF_UNSUPPORTED; goto done; }
+    if(kind[0]!=ADF_TEXT_RAT && kind[0]!=ADF_TEXT_IDELE &&
+       kind[0]!=ADF_TEXT_LBALL && kind[0]!=ADF_TEXT_SBALL)
+    { status=ADF_UNSUPPORTED; goto done; }
+    for(int i=0;i<2;i++)
+    {
+        if(kind[i]==ADF_TEXT_LBALL)
+            status=adf_lball_set_str(local+i,l->s[i],l->n[i],NULL);
+        else if(kind[i]==ADF_TEXT_SBALL)
+            status=adf_sball_set_str(partial+i,l->s[i],l->n[i],st->prec,NULL);
+        else status=adf_drv_value_read(x+i,kind[i],l->s[i],l->n[i],st->prec);
+        if(status!=ADF_OK) goto done;
+    }
+    if(place_status!=ADF_OK) { status=place_status; goto done; }
+    if(kind[0]==ADF_TEXT_RAT) status=adf_rat_hilbert_at(&z,NULL,x[0].r,x[1].r,v);
+    else if(kind[0]==ADF_TEXT_IDELE) status=adf_idele_hilbert_at(&z,NULL,x[0].i,x[1].i,v);
+    else
+    {
+        if(kind[0]==ADF_TEXT_SBALL)
+        {
+            if(adf_place_is_archimedean(v))
+            {
+                status=adf_sball_get_arb(ar,partial,v);
+                if(status==ADF_OK) status=adf_sball_get_arb(br,partial+1,v);
+                if(status==ADF_OK) status=adf_real_hilbert(&z,NULL,ar,br);
+                goto printed;
+            }
+            for(int i=0;i<2;i++)
+            {
+                status=adf_sball_get_lball(local+i,partial+i,v);
+                if(status!=ADF_OK) goto done;
+            }
+        }
+        if(!adf_place_equal(adf_lball_place(local),v) ||
+           !adf_place_equal(adf_lball_place(local+1),v)) { status=ADF_DOMAIN; goto done; }
+        status=adf_lball_hilbert(&z,NULL,local,local+1);
+    }
+printed:
+    if(status==ADF_OK) fprintf(out,"%d\n",z);
+done:
+    arb_clear(ar); arb_clear(br);
+    for(int i=0;i<2;i++)
+    {
+        adf_drv_value_clear(x+i); adf_lball_clear(local+i); adf_sball_clear(partial+i);
+    }
+    return status;
+}
+
+/* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
+static int
+adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
+{
+    adf_place_t p = adf_place_inf();
+    int z, st;
+    if (y->type != ADF_DRV_RAT) return ADF_UNSUPPORTED;
+    if (!fmpz_is_one(fmpq_denref(y->r->q))) return ADF_DOMAIN;
+    if (op == ADF_DRV_LEGENDRE)
+    {
+        const fmpz *b = fmpq_numref(y->r->q);
+        if (fmpz_sgn(b) <= 0 || !fmpz_abs_fits_ui(b)) return ADF_DOMAIN;
+        st = adf_place_prime(&p,fmpz_get_ui(b));
+        if (st != ADF_OK) return st;
+    }
+    if (x->type == ADF_DRV_RAT)
+    {
+        if (!fmpz_is_one(fmpq_denref(x->r->q))) return ADF_DOMAIN;
+        st = op == ADF_DRV_LEGENDRE ? adf_fmpz_legendre(&z,NULL,fmpq_numref(x->r->q),p) :
+             op == ADF_DRV_JACOBI ? adf_fmpz_jacobi(&z,NULL,fmpq_numref(x->r->q),fmpq_numref(y->r->q)) :
+             adf_fmpz_kronecker(&z,NULL,fmpq_numref(x->r->q),fmpq_numref(y->r->q));
+    }
+    else if (x->type == ADF_DRV_FBALL)
+        st = op == ADF_DRV_LEGENDRE ? adf_fball_legendre(&z,NULL,x->f,p) :
+             op == ADF_DRV_JACOBI ? adf_fball_jacobi(&z,NULL,x->f,fmpq_numref(y->r->q)) :
+             adf_fball_kronecker(&z,NULL,x->f,fmpq_numref(y->r->q));
+    else if (x->type == ADF_DRV_UCOSET)
+        st = op == ADF_DRV_LEGENDRE ? adf_ucoset_legendre(&z,NULL,x->u,p) :
+             op == ADF_DRV_JACOBI ? adf_ucoset_jacobi(&z,NULL,x->u,fmpq_numref(y->r->q)) :
+             adf_ucoset_kronecker(&z,NULL,x->u,fmpq_numref(y->r->q));
+    else return ADF_UNSUPPORTED;
+    if (st == ADF_OK) fprintf(out,"%d\n",z);
+    return st;
+}
+
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
    when a line was written (or a setting was made), else the status to report.  The steps
    are those of the comment at the top of the file and of the README of tools/adf. */
@@ -2677,6 +2793,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return (op == ADF_DRV_PREC)
                    ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, ADF_LIMIT, &st->prec)
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
+    if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||
@@ -2751,6 +2868,11 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
     if (op == ADF_DRV_ROOT)
     {
         status = adf_drv_root_all(out, &x, &y, nops == 3 ? &w : NULL, st);
+        goto done;
+    }
+    if (op == ADF_DRV_LEGENDRE || op == ADF_DRV_JACOBI || op == ADF_DRV_KRONECKER)
+    {
+        status = adf_drv_symbol(out,op,&x,&y);
         goto done;
     }
     if (op == ADF_DRV_EXP || op == ADF_DRV_SIN || op == ADF_DRV_SINH || op == ADF_DRV_COS || op == ADF_DRV_COSH)

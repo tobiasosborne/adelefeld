@@ -1,0 +1,6 @@
+epsilon-omitted: compile=0 run=1; FAIL tests/test_symbol.c:302: hilbert_vectors: check failed: adf_rat_hilbert_at(&z,&w,a,b,p)==ADF_OK && z==want
+valuation-parity-ignored: compile=0 run=1; FAIL tests/test_symbol.c:302: hilbert_vectors: check failed: adf_rat_hilbert_at(&z,&w,a,b,p)==ADF_OK && z==want
+real-negative-positive: compile=0 run=1; FAIL tests/test_symbol.c:317: hilbert_vectors: check failed: adf_idele_hilbert_at(&z,&w,i,j,p)==ADF_OK && z==want
+cofactor-omitted: compile=0 run=1; FAIL tests/test_symbol.c:317: hilbert_vectors: check failed: adf_idele_hilbert_at(&z,&w,i,j,p)==ADF_OK && z==want
+coarse-local-accepted: compile=0 run=1; FAIL tests/test_symbol.c:419: hilbert_statuses_and_precision: check failed: adf_lball_hilbert(&z,&w,x,y)==ADF_NOT_DETERMINED
+odd-reciprocity-sign-omitted: compile=0 run=1; FAIL tests/test_symbol.c:302: hilbert_vectors: check failed: adf_rat_hilbert_at(&z,&w,a,b,p)==ADF_OK && z==want

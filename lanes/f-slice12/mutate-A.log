@@ -1,0 +1,87 @@
+mutate: src/symbol.c: 98 mutants
+mutate: 98 mutants, 30 of them run (--limit 30, --seed 1)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (2.3 s)
+
+NOT COMPILED src/symbol.c:66:23 op: '*' -> '/'
+  src/symbol.c:66:23: error: expected expression before ‘/’ token
+
+NOT COMPILED src/symbol.c:8:5 drop_call: 'adf_inv_fail(__func__, #x, "adf_ucoset");' -> '' (the statement is removed)
+  src/symbol.c:8:6: error: expected expression before ‘}’ token
+
+NOT COMPILED src/symbol.c:15:40 op: '*' -> '/'
+  src/symbol.c:15:40: error: expected expression before ‘/’ token
+
+NOT COMPILED src/symbol.c:66:23 op: '*' -> '+'
+  src/symbol.c:66:23: error: wrong type argument to unary plus
+
+SURVIVED src/symbol.c:82:9 drop_call: 'fmpz_gcd(g,H,d);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -80,5 +80,5 @@
+       if (!fmpz_is_one(d))
+       {
+  -        fmpz_gcd(g,H,d);
+  +        
+           st = fmpz_divisible(A,g) ? ADF_NOT_DETERMINED : ADF_DOMAIN;
+       }
+
+
+SURVIVED src/symbol.c:131:5 drop_call: 'ADF_INV_FBALL(a);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -129,5 +129,5 @@
+   int adf_fball_jacobi(int *z, adf_place_t *where, const adf_fball_t a, const fmpz_t b)
+   {
+  -    ADF_INV_FBALL(a);
+  +    
+       (void)where;
+       return ball_symbol(z,1,a,b);
+
+
+SURVIVED src/symbol.c:108:35 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -106,5 +106,5 @@
+       int st = lower_status(1,b);
+       (void)where;
+  -    if (st == ADF_OK) *z = symbol(1,a,b);
+  +    if (st == ADF_OK) *z = symbol(0,a,b);
+       return st;
+   }
+
+
+SURVIVED src/symbol.c:125:24 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -123,5 +123,5 @@
+       if (st != ADF_OK) return report(st,where,p);
+       fmpz_init(b); fmpz_set_ui(b,adf_place_prime_get(p));
+  -    st = ball_symbol(z,0,a,b);
+  +    st = ball_symbol(z,1,a,b);
+       fmpz_clear(b);
+       return report(st,where,p);
+
+
+NOT COMPILED src/symbol.c:15:40 op: '*' -> '+'
+  src/symbol.c:15:40: error: wrong type argument to unary plus
+
+SURVIVED src/symbol.c:44:19 logic: '&&' -> '||'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -42,5 +42,5 @@
+   {
+       fmpz_set(K,b);
+  -    if (kind == 2 && fmpz_is_even(b))
+  +    if (kind == 2 || fmpz_is_even(b))
+       {
+           fmpz_fdiv_q_2exp(K,b,fmpz_val2(b));
+
+
+mutate: 30 mutants in 35.9 s: 20 killed, 5 survived, 5 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 5 mutant(s) survived; each one is a claim the tests do not check

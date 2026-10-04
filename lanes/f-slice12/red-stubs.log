@@ -1,0 +1,11 @@
+FAIL lanes/f-slice12/red.c:13: each_public_residue_function: check failed: adf_fmpz_legendre(&z,NULL,a,p)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:14: each_public_residue_function: check failed: adf_fmpz_jacobi(&z,NULL,a,b)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:15: each_public_residue_function: check failed: adf_fmpz_kronecker(&z,NULL,a,b)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:16: each_public_residue_function: check failed: adf_fball_legendre(&z,NULL,f,p)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:17: each_public_residue_function: check failed: adf_fball_jacobi(&z,NULL,f,b)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:18: each_public_residue_function: check failed: adf_fball_kronecker(&z,NULL,f,b)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:19: each_public_residue_function: check failed: adf_ucoset_legendre(&z,NULL,u,p)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:20: each_public_residue_function: check failed: adf_ucoset_jacobi(&z,NULL,u,b)==ADF_OK && z==1
+FAIL lanes/f-slice12/red.c:21: each_public_residue_function: check failed: adf_ucoset_kronecker(&z,NULL,u,b)==ADF_OK && z==1
+FAIL each_public_residue_function (lanes/f-slice12/red.c:3, 9 failed checks)
+1 tests, 10 checks, 9 failed checks, 1 failed tests
