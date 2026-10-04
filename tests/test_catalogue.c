@@ -243,6 +243,13 @@ ADF_TEST(power_plan_boundary_huge_statuses)
     adf_fball_set_si(x,257); adf_ucoset_set(old,y);
     ADF_CHECK(adf_ucoset_profpow_fine(y,&w,a,x)==ADF_LIMIT);
     ADF_CHECK(adf_ucoset_identical(y,old) && adf_place_equal(w,mark));
+    /* Review f-review14 F1: the domain check precedes the g limit of the finest operation
+       (catalogue.h: "Otherwise LIMIT, after the domain check"). (301 + 602 Zhat)/2 is disjoint
+       from Zhat (gcd(602,2)=2 does not divide 301) and has g=301 above the cap: DOMAIN. */
+    fmpz_set_ui(e,301); fmpz_set_ui(M,602); fmpz_set_ui(d,2);
+    ADF_CHECK(adf_fball_set_fmpz3(x,e,M,d)==0);
+    ADF_CHECK(adf_ucoset_profpow_fine(y,&w,a,x)==ADF_DOMAIN);
+    ADF_CHECK(adf_ucoset_identical(y,old) && adf_place_equal(w,mark));
     for (int policy=0;policy<3;policy++) for (int mixed=0;mixed<2;mixed++)
     {
         fmpz_set_ui(e,mixed ? 0 : 1); fmpz_set_ui(M,mixed ? 1 : 2); fmpz_set_ui(d,2);
