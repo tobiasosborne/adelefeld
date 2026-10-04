@@ -1,0 +1,4 @@
+D-divisibility-reversed: compiled=1 exit=-6; no summary; FAIL tests/test_catalogue.c:356: cyclotomic_vectors: check failed: cyclo_call(inverse,out,&w,x,n)==st | cyclotomic row 100
+D-target-not-canonical: compiled=1 exit=1; 9 tests, 131636 checks, 614 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:356: cyclotomic_vectors: check failed: cyclo_call(inverse,out,&w,x,n)==st | cyclotomic row 98
+D-u-returns-inverse: compiled=1 exit=1; 9 tests, 131636 checks, 81 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:358: cyclotomic_vectors: check failed: fmpz_equal(out,st==0 ? want : (alias ? old : want))
+D-uinv-returns-u: compiled=1 exit=1; 9 tests, 131636 checks, 81 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:358: cyclotomic_vectors: check failed: fmpz_equal(out,st==0 ? want : (alias ? old : want))

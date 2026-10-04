@@ -1,0 +1,4 @@
+B-coarse-criterion: compiled=1 exit=1; 5 tests, 74478 checks, 871 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:173: power_vectors: check failed: power_call(policy,out,&w,a,x)==st | power row 228
+B-centre-no-CRT: compiled=1 exit=1; 5 tests, 74478 checks, 9 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:175: power_vectors: check failed: adf_ucoset_identical(out,st==0 ? want : (alias ? old : y))
+B-inverse-sign: compiled=1 exit=1; 5 tests, 74478 checks, 74 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:175: power_vectors: check failed: adf_ucoset_identical(out,st==0 ? want : (alias ? old : y))
+B-outside-block: compiled=1 exit=1; 5 tests, 74478 checks, 80 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:175: power_vectors: check failed: adf_ucoset_identical(out,st==0 ? want : (alias ? old : y))

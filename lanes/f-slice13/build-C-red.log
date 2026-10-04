@@ -1,0 +1,27 @@
+In file included from include/adelefeld.h:76,
+                 from src/catalogue.c:3:
+include/adelefeld/catalogue.h:80:6: error: conflicting types for ‘adf_fball_haar_volume’; have ‘void(fmpq *, const adf_fball_struct *)’
+   80 | void adf_fball_haar_volume(fmpq_t volume, const adf_fball_t x);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+In file included from include/adelefeld.h:53:
+include/adelefeld/fball.h:188:6: note: previous declaration of ‘adf_fball_haar_volume’ with type ‘void(adf_rat_struct *, const adf_fball_struct *)’
+  188 | void adf_fball_haar_volume(adf_rat_t vol, const adf_fball_t x);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+src/catalogue.c:224:6: error: conflicting types for ‘adf_fball_haar_volume’; have ‘void(fmpq *, const adf_fball_struct *)’
+  224 | void adf_fball_haar_volume(fmpq_t volume, const adf_fball_t x)
+      |      ^~~~~~~~~~~~~~~~~~~~~
+include/adelefeld/fball.h:188:6: note: previous declaration of ‘adf_fball_haar_volume’ with type ‘void(adf_rat_struct *, const adf_fball_struct *)’
+  188 | void adf_fball_haar_volume(adf_rat_t vol, const adf_fball_t x);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+make: *** [Makefile:90: lanes/f-slice13/build/catalogue.o] Error 1
+make: *** Waiting for unfinished jobs....
+In file included from include/adelefeld.h:76,
+                 from src/common.c:24:
+include/adelefeld/catalogue.h:80:6: error: conflicting types for ‘adf_fball_haar_volume’; have ‘void(fmpq *, const adf_fball_struct *)’
+   80 | void adf_fball_haar_volume(fmpq_t volume, const adf_fball_t x);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+In file included from include/adelefeld.h:53:
+include/adelefeld/fball.h:188:6: note: previous declaration of ‘adf_fball_haar_volume’ with type ‘void(adf_rat_struct *, const adf_fball_struct *)’
+  188 | void adf_fball_haar_volume(adf_rat_t vol, const adf_fball_t x);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+make: *** [Makefile:90: lanes/f-slice13/build/common.o] Error 1

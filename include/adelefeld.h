@@ -73,5 +73,6 @@
 #include "adelefeld/idmap.h"
 #include "adelefeld/gfunc.h"
 #include "adelefeld/symbol.h"
+#include "adelefeld/catalogue.h"
 
 #endif /* ADELEFELD_H */

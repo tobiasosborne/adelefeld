@@ -1,0 +1,17 @@
+--- tests/driver/catalogue-volume.out	2026-10-04 02:53:51.500389082 +0200
++++ lanes/f-slice13/red-C-driver.out	2026-10-04 02:53:51.569388782 +0200
+@@ -1,8 +1,8 @@
+-1/8
+-1/3
+-3/8
+-0
+-0
+-error: UNSUPPORTED
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
++error: PARSE
+ error: PARSE
+ error: PARSE

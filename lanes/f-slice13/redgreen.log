@@ -1,0 +1,15 @@
+Slice A red: timeout 180 make -s -j2 BUILD=lanes/f-slice13/build
+lanes/f-slice13/build/test_catalogue -> exit 2, undefined binomial functions (red-A.log).
+Slice A green: same build, then timeout 120 lanes/f-slice13/build/test_catalogue -> exit 0,
+2 tests, 25517 checks. With local/mixed coverage: 3 tests, 25527 checks, 0 failures.
+Slice B red: same build and timeout-120 run with three NOT_DETERMINED stubs -> test exit 1,
+5 tests, 74478 checks, 4654 failed checks, 2 failed tests (red-B.log).
+Slice B green: same command after implementation -> exit 0, 5 tests, 74478 checks, 0 failures.
+Slice C preliminary build: exit 2, conflicting declaration with existing fball.h:188 (build-C-red.log).
+After removing the duplicate, library tests pass unchanged existing Haar function: 6 tests/76487 checks.
+Driver red: timeout 60 lanes/f-slice13/build/adf tests/driver/catalogue-volume.cmd -> exit 1;
+diff against hand expectations -> exit 1, 6 mismatched lines. Driver green: same run -> exit 1
+(intentional error cases); diff -> exit 0. No new Haar library implementation or library red is claimed.
+Slice D red: same build, timeout-120 run with two NOT_DETERMINED stubs -> exit 1,
+9 tests, 131636 checks, 1988 failed checks, 2 failed tests (red-D.log).
+Slice D green: same command after implementation -> exit 0, 9 tests, 131636 checks, 0 failures.

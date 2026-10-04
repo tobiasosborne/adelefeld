@@ -1,0 +1,18 @@
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+FAIL tests/test_catalogue.c:476: catalogue_debug_entries: check failed: WIFSIGNALED(status) && WTERMSIG(status)==SIGABRT
+FAIL tests/test_catalogue.c:477: catalogue_debug_entries: check failed: strstr(message,names[which])!=NULL
+FAIL catalogue_debug_entries (tests/test_catalogue.c:426, 2 failed checks)
+10 tests, 131701 checks, 2 failed checks, 1 failed tests
+make: *** [Makefile:4: check-catalogue] Error 1

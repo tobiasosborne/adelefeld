@@ -199,6 +199,196 @@ These are source/transcription findings; the formula proofs and independent sear
 Check: hilbert_identities; hilbert_product_2000 (2000 pairs, 12058 finite factors, 2000 real factors).
 A single wrong local sign or failure to return OK fails a case. Identities alone are not the value oracle.
 
+## Second group: proposed N-D19 (f-slice13)
+
+Contract: include/adelefeld/catalogue.h; implementation: src/catalogue.c.
+The header records each slice's decisions before its implementation. Existing types only.
+Every status other than OK preserves the value. where is optional and always untouched, since these
+operations inspect the finite part without selecting a prime. Same-type output/input aliases are allowed.
+
+| Question | Choice | Alternative |
+|---|---|---|
+| Files | catalogue.h and catalogue.c | four headers, or additions to input headers |
+| Policies | separately named conservative and tight operations | one policy argument |
+| Binomial degree | ulong, conservative <=4096, tight <=256 | fmpz or unbounded degree |
+| Nonintegral input | DOMAIN if disjoint from Zhat, otherwise NOT_DETERMINED | rational polynomial extension |
+| Limits | k limit before domain; arbitrary input bit lengths | output bit budget or caller budget |
+
+### Y9: binomial enclosures and smallest ball
+
+Both functions compute Proposition 14, docs/proofs/catalogue.md:291-312.
+For a canonical integral input a+N Zhat, the centre is binom(a,k). The conservative radius is
+N/gcd(N,k!). The smallest radius is the gcd of the k differences in :296. For N=0 or k=0 it is 0.
+The output constructor reduces the centre modulo the radius; this represents the same set.
+The signed centre is evaluated by B_0=1 and B_i=B_(i-1)*(a-i+1)/i.
+For nonnegative a this counts i-subsets. For a=-b<0 the falling product is
+(-1)^i b*(b+1)*...*(b+i-1), giving (-1)^i binom(b+i-1,i). Thus every exact division is integral.
+The recurrence admits centres of arbitrary bit length; fmpz_bin_uiui only admits a word-sized top entry
+(refs/src/flint-3.0.1/fmpz.rst:1006-1008). No downcast of a is used.
+
+Check: binomial_vectors uses all rows from the independent polynomial/period oracle.
+The period proof is in proto/catalogue2_checks.py:3-11. It does not import the earlier checks.
+The PLAN case gives radius 2. The case a=2,N=3,k=2 gives radius 9, so the smallest radius can exceed N.
+The conservative radius there is 3. Limits, signed points, local backend and huge integers are separate tests.
+
+### Y10: the integral-input domain
+
+The proof is the congruence argument of Y3 above: (A+Ht)/d is integral for some t exactly when
+gcd(H,d)|A. If d>1 and the triple is canonical, at least one of A,H is not divisible by d,
+so not every t is integral. Disjoint inputs give DOMAIN; mixed inputs give NOT_DETERMINED.
+The input (1/2) Zhat contains 0 and 1/2, witnesses of both cases. This rule also applies at k=0.
+It specifies the stated Zhat domain, rather than extending the polynomial to rational inputs.
+There is no NOT_DETERMINED boundary among wholly integral inputs: both enclosures always exist.
+
+Driver: binom X with K; binomtight X with K. X is an integer or finite ball. K is nonnegative.
+The result uses finite-ball value text, for example (* ; 0 mod 2). Julia calls the same exported functions.
+
+### Y11: profinite target and coarser divisor
+
+Definition 11 and Proposition 12 are docs/proofs/catalogue.md:218-241.
+Normalise the input unit coset before comparing moduli. For M>0 calculate c^M modulo N and
+D=gcd(N,c^M-1) from that residue. Replacing c^M by its residue changes c^M-1 by a multiple of N,
+so it preserves the gcd. Strict succeeds exactly when D=N; coarse always encloses in c^e U(canon(D)).
+For M=0 use the default integer power when e fits slong, otherwise modular powering of |e| with
+the inverse for negative e. Exact zero returns [1]. These are the same sets as idpow.h's default powers.
+The exponent is an adf_fball. Its integral-domain test is Y10, applied before any exact-base shortcut.
+For [1] every power is [1]. For [-1] only parity matters; M even fixes it and M odd admits both signs.
+The latter two-point set has differences 2; its smallest unit coset is U(2)=U(1).
+Strict reports NOT_DETERMINED, while coarse and fine return [1 mod 1].
+
+The default strict name is adf_ucoset_profpow. Alternatives: a coarsening default or a policy argument.
+Coarsening is adf_ucoset_profpow_coarse; finest is adf_ucoset_profpow_fine.
+All exponent data have arbitrary bit length. Only finest has the g<=256 limit; it follows the domain check
+and constant exact cases. This cap avoids unbounded factorisation/divisor enumeration of g.
+Alternative limits: a caller budget, supplied factorisation, or an unbounded operation.
+
+Check: 1362 independent oracle rows enumerate full unit/exponent images at a common finite level.
+The exponent period is computed by multiplication, rather than a totient or unit-group formula.
+Two exponent points 0 and 2 at base residue 2 mod 5 give 1 and 4, proving the rejected target ambiguous.
+The exact integer path is also compared with existing pow and pow_tight for e=-6..6.
+
+### Y12: finest modulus without factoring N
+
+This is Proposition 13, catalogue.md:245-287, written as two coprime blocks:
+
+1. Let g=gcd(e,M)>0. Repeatedly divide the remaining g by its gcd with N, accumulating the factors.
+   At a prime p|N each step removes min(v_p(remaining),v_p(N)), until none remain. Thus the accumulated
+   number g_N has v_p(g_N)=v_p(g) for p|N and 0 elsewhere.
+2. Put A0=N*g_N. For M>0 put A=gcd(A0,c^M-1), computing the power modulo A0.
+   At p|N this has exponent min(v_p(N)+v_p(g),v_p(c^M-1)), the first row of Proposition 13.
+   For M=0 put A=A0, since c^0-1=0.
+3. Compute tight(U(1),g) by the existing adf_ucoset_pow_tight. Its modulus has the other two rows
+   of Proposition 13, with a lone factor 2 already removed. Repeated division by gcd(B,N) removes
+   exactly all its prime powers at primes dividing N. The remaining B is the outside-prime block.
+4. A and B are coprime. The centre is c^e modulo A and 1 modulo B. Use CRT only if A,B>1;
+   when either is 1 the other residue suffices. Then normalise A*B. This gives canon(F) and its centre.
+5. Exact nonzero e with |e|<=256 directly reuses pow_tight; exact 0 is the constant [1].
+
+The CRT routine's domain is refs/src/flint-3.0.1/fmpz.rst:1292-1303. Signed powers use :923-929
+and invmod :1154-1160. The reused tight routine cites the n_factor and n_is_prime contracts in
+refs/src/flint-3.0.1/ulong_extras.rst:1126-1130, 1203-1216 and 833-840.
+No factorisation of N or integer c^M is formed. A proposed 32-bit N cap was removed before implementation
+when this gcd construction made it unnecessary; arbitrary-size N is tested by all three operations.
+
+Driver: profpow A with X; profpowcoarse A with X; profpowfine A with X. A is a unit coset;
+X is an integral finite ball or exact integer. Julia calls the same exports. The PLAN vector gives [49 mod 120].
+
+### Y13: Haar volume and existing content
+
+Reuse adf_fball_haar_volume(adf_rat_t,const adf_fball_t), already declared in fball.h:188 and
+implemented in src/fball.c:618-625. It returns void, since every canonical finite ball has an exact volume.
+Alternative: a new fmpq wrapper or a status with where. Neither adds a mathematical operation.
+No output/input alias exists between these types. All rational centres and radii are admitted.
+The result is d/H for (A+H Zhat)/d with H>0, and 0 for H=0. It handles the local backend too.
+
+Proposition 10 is catalogue.md:202-212. Here is an index proof that needs no local scaling theorem:
+
+1. Zhat/d Zhat has d residues for every integer d>0. Reduction modulo d gives them and its kernel
+   is d Zhat; prime by prime, multiplication by the unit cofactor of d preserves Z_p.
+2. Zhat is the disjoint union of H translates of H Zhat. Translation invariance and vol(Zhat)=1
+   give vol(H Zhat)=1/H. Translation invariance is the Haar definition on disk,
+   refs/src/tate-poonen/notes.txt:370-380.
+3. Multiplication by H/d identifies the quotient (H/d Zhat)/(H Zhat) with Zhat/d Zhat.
+   The first group is therefore the disjoint union of d translates of H Zhat, of total volume d/H.
+4. Translation preserves the volume of a+(H/d) Zhat. A point lies in a+n Zhat for every n>0,
+   whose volume is 1/n. Monotonicity forces its volume to be 0.
+5. For an idele r*u, the valuation at p is v_p(r), since u_p is a unit. Thus the finite ideal is
+   r Z and its positive generator is r. This is Proposition 10:207-208; the decomposition is quoted
+   from refs/src/milne-cft/CFT.txt:9853-9858. The existing adf_idele_content is tested and not duplicated.
+
+Check: haar_and_existing_content, including 1001 centre/radius/denominator triples, huge rational radius,
+local backend and the existing content 15/14. The driver haar_volume X and Julia use the same accessor.
+
+### Y14: the two cyclotomic exponents
+
+Names are adf_idclass_cyclo_exp_u and adf_idclass_cyclo_exp_uinv, fixed by conventions 6.6, CV-53 and M0-D10.
+The output is fmpz modulo the original positive fmpz order n. Alternatives: word order or a convention argument.
+The output may equal the complete input n; no output overlaps the class or one of its fields.
+No resource cap or real working precision applies. n<=0 gives DOMAIN, with output and where untouched.
+Otherwise the precision certificate is exactly Proposition 15, catalogue.md:318-343:
+an exact unit always works; at finite precision canon(n) must divide canon(N), else NOT_DETERMINED.
+
+The on-disk attribution is refs/src/milne-cft/CFT.txt:9883-9886:
+"the global reciprocity map is the reciprocal of" the canonical isomorphism.
+The canonical exponent convention is specified in :3162-3166 and conventions 6.6.
+We do not use the arithmetic/geometric names of catalogue.md:320, whose attribution is still pending at :342-343.
+This follows the newer SPEC row and CV-53; it is a naming disagreement in the proof, not a formula change.
+
+The precision test uses canonical moduli, but the result is modulo the original n. If n=2m with m odd,
+the determined residue modulo m has exactly one odd lift modulo 2m. Add m to its even representative.
+This is the exponent of a unit modulo n. Inverting it gives the inverse-exponent convention.
+For n=1 the sole residue is 0; FLINT's invmod explicitly admits modulus 1
+(refs/src/flint-3.0.1/fmpz.rst:1154-1160). Temporaries preserve n when j aliases n until the final write.
+
+The specification vector is catalogue.md:324-326 and SPEC 9.3.7's cyclotomic row:
+"the idele with p at the place p and 1 elsewhere has u' = 1/p away from p".
+With p=3, its unit is 5 modulo 7 and 1 modulo 9, thus 19 modulo 63. The inverse convention returns
+3 modulo 7 (Frobenius) and 1 modulo 9 (trivial action). Direct convention gives 5 modulo 7 and 1 modulo 9.
+The external vector is refs/src/milne-cft/CFT.txt:9904-9908, with Frobenius in :1307.
+The tests construct this as an idele of content 3 and convert it to a class before evaluating the action.
+
+Check: 2308 oracle rows enumerate every unit lift at lcm(N,n), with direct modular inversion;
+cyclotomic_spec_boundary_huge adds the vector, odd lifts and thousands-bit n and N.
+At N=3,n=9 the input contains unit residues 1 and 4 modulo 9, with inverse residues 1 and 7.
+These are the two points proving ambiguity one digit below the precision boundary.
+Driver names are cyclo_exp_u and cyclo_exp_uinv; Julia calls the same exports.
+
+### Y15: elementary precision proof for the finest table
+
+Catalogue.md:272-278 marks two external theorems pending. This proof supplies the needed valuation
+and exponent claims directly, without citing either theorem from memory.
+
+1. If v_p(z)=n, with p odd and n>=1, or p=2 and n>=2, then v_p((1+z)^p-1)=n+1.
+   In the binomial expansion the first term p*z has valuation n+1. For 1<i<p, the coefficient
+   binom(p,i) is divisible by p, so the valuation is at least 1+i*n>n+1. The last term has
+   valuation p*n>n+1 under precisely these hypotheses. For p=2 there are no middle terms.
+2. If m is prime to p, expansion gives v_p((1+z)^m-1)=n: its first term m*z has valuation n,
+   and every later term has valuation at least 2n. Iterating step 1 and then step 2 gives
+   v_p((1+z)^g-1)=n+v_p(g) for every positive integer g. Negative powers have the same valuation
+   because u^(-g)-1=-(u^g-1)/u^g. Therefore the principal-unit depth at p|N is n+v_p(g),
+   with the sharp witness 1+p^n. Combining with c^M=1 gives Proposition 13's inside-prime row.
+3. At an odd prime, multiplication by b permutes the nonzero residues. Cancelling their product
+   gives b^(p-1)=1 modulo p. The exponent E of this finite abelian group is realised by one element:
+   for each prime divisor of E, take an element whose order has maximal prime valuation and raise
+   it to remove the coprime part; the product of these commuting elements has order E.
+   Every nonzero residue is a root of X^E-1, so p-1<=E by the polynomial root bound.
+   Since each order divides p-1 by the permutation identity, E divides p-1, hence E=p-1.
+4. Thus constancy of all unit g-th powers modulo p requires p-1|g. If this holds, each b^(p-1)
+   lies in 1+p Z_p. Step 2 gives constancy modulo p^(1+v_p(g)). The unit 1+p attains exactly
+   this depth and fails at the next digit. This proves the outside odd-prime row.
+5. At 2 all units are odd. For odd g the unit 3 distinguishes modulo 4, so depth 1 is maximal.
+   For even g, every odd b has v_2(b^2-1)>=3, since b-1 and b+1 are consecutive even numbers,
+   one divisible by 4. Step 2 gives b^g=1 modulo 2^(2+v_2(g)). The unit 5 attains equality
+   in this depth, again by step 2 with n=2. This proves the outside 2-adic row.
+6. The exponent class e+M Zhat makes base variation trivial exactly when both its e-th and M-th
+   powers are trivial. Bezout's identity makes this equivalent to triviality of the g-th power,
+   g=gcd(e,M). Conversely g divides both exponents. Density and continuity extend the integer
+   argument to every profinite exponent. Outside N the base 1 is allowed, so any fixed output residue
+   must be 1. CRT combines these independent local conditions, giving precisely Proposition 13.
+
+This proves the precision table used by Y12; no logarithm evaluation or unproved group-exponent formula
+is needed by this implementation. The unused arithmetic/geometric name attribution remains pending.
+
 ## Hilbert user calls
 
 Driver: hilbert_at X with Y with PLACE. PLACE is real or a prime. X and Y have the same kind:

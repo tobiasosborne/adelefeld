@@ -1,0 +1,4 @@
+C-point-one: compiled=1 exit=1; 6 tests, 76487 checks, 77 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:273: haar_and_existing_content: check failed: fmpq_equal(volume->q,want) && fmpq_is_canonical(volume->q)
+C-reciprocal: compiled=1 exit=1; 6 tests, 76487 checks, 849 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:273: haar_and_existing_content: check failed: fmpq_equal(volume->q,want) && fmpq_is_canonical(volume->q)
+C-denominator: compiled=1 exit=1; 6 tests, 76487 checks, 734 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:273: haar_and_existing_content: check failed: fmpq_equal(volume->q,want) && fmpq_is_canonical(volume->q)
+C-centre: compiled=1 exit=1; 6 tests, 76487 checks, 836 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:273: haar_and_existing_content: check failed: fmpq_equal(volume->q,want) && fmpq_is_canonical(volume->q)

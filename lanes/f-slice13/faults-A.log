@@ -1,0 +1,4 @@
+A-radius-lcm: compiled=1 exit=1; 2 tests, 25517 checks, 525 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:59: binomial_vectors: check failed: adf_fball_identical(out,st==0 ? want : (alias ? old : y))
+A-zero-inexact: compiled=1 exit=1; 2 tests, 25517 checks, 472 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:59: binomial_vectors: check failed: adf_fball_identical(out,st==0 ? want : (alias ? old : y))
+A-last-sample: compiled=1 exit=1; 2 tests, 25517 checks, 374 failed checks, 2 failed tests; FAIL tests/test_catalogue.c:59: binomial_vectors: check failed: adf_fball_identical(out,st==0 ? want : (alias ? old : y))
+A-alias-clobber: compiled=1 exit=1; 2 tests, 25517 checks, 664 failed checks, 1 failed tests; FAIL tests/test_catalogue.c:59: binomial_vectors: check failed: adf_fball_identical(out,st==0 ? want : (alias ? old : y))

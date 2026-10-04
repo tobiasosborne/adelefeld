@@ -640,3 +640,29 @@ The idele form includes the scale cofactor in its local unit square class; it us
 coordinate at `real`. Coarse inputs return a sign whenever it is constant on every allowed
 square class, and `NOT_DETERMINED` otherwise. Zero-containing inputs are `NOT_DETERMINED`;
 either exact zero makes the pair `DOMAIN`. See `docs/api-1f9.md` Y5-Y8.
+# Arithmetic catalogue (WP 1F.9)
+
+`binom X with K` returns the conservative binomial ball; `binomtight X with K` returns the smallest ball.
+X is a finite ball or exact integer. K is a nonnegative integer, at most 4096 or 256 respectively.
+`binomtight 0 mod 8 with 4` prints `(* ; 0 mod 2)`; either command at K=0 prints `(* ; 1)`.
+A nonintegral ball gives DOMAIN when no point is integral, otherwise NOT_DETERMINED.
+Oversized K gives LIMIT. These commands use no real working precision.
+
+`profpow A with X` requires determination modulo the normal modulus of the unit coset A.
+`profpowcoarse A with X` returns the largest determined divisor of that modulus.
+`profpowfine A with X` returns the finest modulus overall, with its CRT centre.
+X is an integral finite ball or exact integer; exact negative exponents use inverses, and 0 gives `[1]`.
+`profpowfine [2 mod 5] with 2 mod 4` prints `[49 mod 120]`.
+The finest variant refuses g=gcd(e,M)>256 with LIMIT (M=0 for an exact exponent), except constant exact bases.
+The existing `pow` and `powtight` take signed-word exact integer exponents; the new commands admit
+arbitrary-size profinite exponent data and preserve the distinctions of catalogue.h.
+
+`haar_volume X` returns the exact rational 1/N for a finite ball of rational radius N>0,
+and 0 for a point. An exact rational operand is treated as a point.
+`haar_volume 1/2 mod 8/3` prints `3/8`. This calls the existing function in fball.h.
+
+`cyclo_exp_u X with N` and `cyclo_exp_uinv X with N` return the exponent modulo the positive
+integer N for the two conventions of cyclotomic action. X is an idele class; its real coordinate acts trivially.
+The unit's normal modulus must be divisible by the normal form of N, else NOT_DETERMINED.
+An exact unit always determines the action. `cyclo_exp_u <17 ; [2 mod 3]> with 6` prints `5`.
+The exponent for N=1 is `0`; nonpositive N gives DOMAIN. The convention names are fixed by CV-53.
