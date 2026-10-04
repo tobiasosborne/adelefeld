@@ -1,0 +1,89 @@
+legendre 5 with 3
+legendre -5 with 3
+legendre 5 with 2
+legendre 5 with 4
+legendre 5 with 1
+legendre 5 with 0
+legendre 5 with -3
+legendre 5 with 18446744073709551557
+legendre 5 with 18446744073709551616
+legendre 5 with 3/1
+legendre 5 with 3/2
+legendre 5/2 with 3
+legendre 5 with real
+legendre 5 mod 7 with 3
+legendre 7 mod 9 with 3
+legendre [1 mod 3] with 7
+legendre [2 mod 3] with 3
+legendre 2 with 3 with 4
+legendre 5
+jacobi 5 with 15
+jacobi 5 with 16
+jacobi 5 with -3
+jacobi 5 with 0
+jacobi 5 with 1
+jacobi 2 with 1000000000000000000000000000000000000001
+jacobi 5/2 with 3
+kronecker 5 with 0
+kronecker 1 with 0
+kronecker -1 with 0
+kronecker 5 with -1
+kronecker -5 with -1
+kronecker 0 with 0
+kronecker 0 with 1
+kronecker -7 with -16
+kronecker 3 with 2
+kronecker 1 mod 4 with 2
+kronecker 1 mod 8 with 2
+kronecker 3 mod 8 with 6
+kronecker 3 mod 24 with 6
+kronecker 1 mod 4 with -1
+kronecker 1 mod 4 with 0
+kronecker [1 mod 8] with 2
+kronecker [3 mod 8] with 2
+kronecker [3 mod 6] with 2
+kronecker [1 mod 2] with 2
+kronecker x with 2
+kronecker 3 with 2.5
+kronecker 1e3 with 3
+kronecker 3 with 0x10
+kronecker 3 with 1/0
+kronecker 3/0 with 5
+kronecker 3 with 2 with 5
+hilbert_at 3 with 3 with 2
+hilbert_at 3 with 3 with real
+hilbert_at -3 with -3 with real
+hilbert_at -3 with 3 with real
+hilbert_at 0 with 3 with 2
+hilbert_at 3 with 0 with real
+hilbert_at 3 with 5 with 4
+hilbert_at 3 with 5 with 0
+hilbert_at 3 with 5 with 1
+hilbert_at 3 with 5 with -2
+hilbert_at 3 with 5 with 18446744073709551616
+hilbert_at 3 with 5 with 18446744073709551557
+hilbert_at 3 with 5 with real real
+hilbert_at 3/4 with 5/7 with 2
+hilbert_at 3 with 1/3 with 3
+hilbert_at 3 with 5
+hilbert_at 3 with 5 with
+hilbert_at 3 with 5 with 2 with 3
+hilbert_at 3 with 5.5 with 2
+hilbert_at 3 with [p=2: 3] with 2
+hilbert_at [p=2: 3] with [p=2: 5] with 2
+hilbert_at [p=2: 3] with [p=2: 5] with 3
+hilbert_at [p=2: 3] with [p=2: 5] with real
+hilbert_at [p=2: 3] with [p=3: 5] with 2
+hilbert_at [p=2: 1 + O(2^2)] with [p=2: 2] with 2
+hilbert_at [p=2: 1 + O(2^3)] with [p=2: 2] with 2
+hilbert_at [p=2: 1 + O(2^1)] with [p=2: 1] with 2
+hilbert_at [p=2: 0] with [p=2: 3] with 2
+hilbert_at [p=2: 0 + O(2^3)] with [p=2: 3] with 2
+hilbert_at [p=2: 0 + O(2^3)] with [p=2: 0] with 2
+hilbert_at {inf: -3} with {inf: -2} with real
+hilbert_at {inf: -3} with {inf: -2} with 2
+hilbert_at {p=2: 1 + O(2^3)} with {p=2: 3} with 2
+hilbert_at {p=2: 1 + O(2^3)} with {p=2: 3} with real
+hilbert_at {inf: -3} with {p=2: 3} with 2
+hilbert_at {inf: 0} with {inf: -1} with real
+hilbert_at {inf: -3} with {inf: 0 +/- 1} with real
