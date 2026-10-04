@@ -57,7 +57,7 @@ Also: `tools/orch/suites.sh`: the `all` suite builds in `build/` (a `BUILD` on t
 `tools/adf/Makefile` and the golden test ran a stale `build/adf`); N-D15 wording (f-review8 F10); SPEC 9.3.1,
 9.3.3 and conventions 3.3 rule 4 follow the findings of f-slice10; PLAN rows 1F.6 to 1F.8.
 
-**Running when this was written (02:50):** lane f-slice13 (codex sol xhigh, `../adelefeld-wt/f-slice13`, since
+**Running when this was written (02:53):** lane f-slice13 (codex sol xhigh, `../adelefeld-wt/f-slice13`, since
 02:36: 1F.9 second group: binomials, profinite power, Haar volume, cyclotomic action; proposed N-D19). When its
 `lanes/f-slice13/lane.log` ends in `DONE`: read `report.md`, commit in the worktree, merge, ALL FIVE suites,
 record N-D19, PLAN row 1F.9, then a review by a model that is not codex (pattern `lanes/f-review11/brief.md`).
