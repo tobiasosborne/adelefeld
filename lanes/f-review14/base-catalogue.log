@@ -1,0 +1,15 @@
+binomial fixture rows: 822
+ok   binomial_vectors
+ok   binomial_plan_limits_huge
+ok   binomial_local_and_mixed
+power fixture rows: 1362
+ok   power_vectors
+ok   power_plan_boundary_huge_statuses
+ok   haar_and_existing_content
+volume fixture rows: 120
+ok   volume_vectors
+cyclotomic fixture rows: 2308
+ok   cyclotomic_vectors
+ok   cyclotomic_spec_boundary_huge
+9 tests, 131636 checks, 0 failed checks, 0 failed tests
+CATEXIT=0

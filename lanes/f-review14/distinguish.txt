@@ -1,0 +1,63 @@
+# f-review14 distinguish.txt: probe lines for the planted faults.
+# sym kind inp a b N d          (N = radius, d = denominator for a ball; coset modulus for inp 2)
+sym 2 0 3 2 0 1
+sym 2 0 5 2 0 1
+sym 2 0 11 2 0 1
+sym 2 0 -1 -1 0 1
+sym 2 0 -3 -5 0 1
+sym 2 0 2 2 0 1
+sym 0 0 1 7 0 1
+sym 0 0 1 2 0 1
+sym 1 0 1 2 0 1
+sym 1 1 1 2 1 1
+sym 2 2 1 2 1 1
+sym 2 1 1 2 2 1
+sym 2 1 1 4 4 1
+sym 2 1 1 2 2 2
+sym 2 1 0 1 1 2
+sym 2 2 1 -3 5 1
+sym 2 1 1 0 2 1
+# hib kind a b p v n
+hib 0 2 3 3 0 0
+hib 0 3 2 5 0 0
+hib 0 -1 -1 0 0 0
+hib 0 -3 -5 0 0 0
+hib 1 2 1 3 0 0
+hib 2 1 2 2 0 2
+hib 2 1 2 2 0 3
+hib 2 1 3 2 0 2
+hibd 2 3 1 1
+hibd 3 2 1 1
+# hid pa pb ra ca Na rb cb Nb
+hid 3 0 3 6 1 3 6 1
+hid 3 0 3 1 3 1 1 5
+hid 3 0 3 1 3 1 2 1
+# bino tight k A H d
+bino 0 2 0 4 1
+bino 1 4 0 8 1
+bino 1 257 0 1 2
+bino 0 4097 1 1 2
+bino 0 2 5 1 1
+bino 0 0 0 8 1
+# pp policy c N e M d
+pp 1 2 5 0 2 1
+pp 2 2 5 2 4 1
+pp 2 3 4 0 1 1
+pp 0 2 21 1 3 1
+pp 0 7 10 2 4 1
+pp 2 1 1 256 0 1
+pp 2 -1 0 1 2 1
+pp 0 1 5 1 1 2
+# cy inv c N n
+cy 1 19 63 7
+cy 0 5 7 7
+cy 0 2 3 6
+cy 0 3 4 4
+cy 0 1 1 0
+cy 0 1 6 6
+# vol A H d
+vol 0 8 3
+vol 3 0 1
+bino 1 257 0 1 2
+pp 2 1 1 1 600 2
+pp 2 1 1 301 602 2
