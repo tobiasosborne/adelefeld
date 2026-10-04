@@ -1,0 +1,66 @@
+binom 0 mod 8 with 4
+binomtight 0 mod 8 with 4
+binomtight 0 mod 8 with 0
+binom 5 with 3
+binom -5 with 3
+binom 1/2 with 3
+binom 1/2 mod 4 with 3
+binom 1/2 mod 1/3 with 3
+binom 3/2 mod 3 with 2
+binom 0 mod 8 with -1
+binom 0 mod 8 with 18446744073709551616
+binom 0 mod 8 with 18446744073709551615
+binom 0 mod 8 with 4096
+binom 0 mod 8 with 4097
+binomtight 0 mod 8 with 256
+binomtight 0 mod 8 with 257
+binom 0 mod 8 with 4.0
+binom 0 mod 8 with 1/2
+binom [2 mod 3] with 2
+binom 0 mod 8
+binom 0 mod 8 with 2 with 3
+binom with 3
+binom 0 mod 8 with
+binom 0 mod 0 with 4
+binom 0 mod -8 with 4
+profpow [2 mod 5] with 2 mod 4
+profpowcoarse [2 mod 5] with 2 mod 4
+profpowfine [2 mod 5] with 2 mod 4
+profpowfine [2 mod 5] with 0 mod 2
+profpow [2 mod 5] with 0
+profpow [2 mod 5] with -3
+profpow [2 mod 5] with 1/2
+profpow [2 mod 5] with 1/2 mod 4
+profpow [1] with 7 mod 2
+profpow [-1] with 7 mod 2
+profpow [-1] with 7 mod 3
+profpowcoarse [-1] with 7 mod 3
+profpowfine [-1] with 3 mod 3
+profpowfine [3 mod 7] with 257
+profpowfine [3 mod 7] with 256
+profpow [3 mod 7] with 18446744073709551616
+profpow 3 with 2
+profpow [0 mod 5] with 2
+profpow [2 mod 6] with 2
+profpow [5 mod 6] with 3
+profpowfine [5 mod 6] with 3
+profpow [2 mod 5] with 2 mod 0
+profpow [2 mod 5] with 2 mod -4
+haar_volume 1/2 mod 8/3
+haar_volume 5
+haar_volume 0 mod 5
+haar_volume 3 mod 1
+haar_volume [2 mod 3]
+cyclo_exp_u <17 ; [2 mod 3]> with 6
+cyclo_exp_uinv <17 ; [2 mod 3]> with 6
+cyclo_exp_u <17 ; [2 mod 3]> with 0
+cyclo_exp_u <17 ; [2 mod 3]> with -3
+cyclo_exp_u <17 ; [2 mod 3]> with 1
+cyclo_exp_u <17 ; [2 mod 3]> with 2
+cyclo_exp_uinv <17 ; [1]> with 100000000000000000000000000000000000007
+cyclo_exp_uinv <17 ; [-1]> with 100000000000000000000000000000000000007
+cyclo_exp_u <17 ; [2 mod 3]> with 3/2
+cyclo_exp_u [2 mod 3] with 3
+cyclo_exp_u <17 ; [2 mod 3]> with 3 mod 2
+cyclo_exp_u <1/2 ; [2 mod 3]> with 3
+cyclo_exp_u <17 ; [3 mod 6]> with 3
