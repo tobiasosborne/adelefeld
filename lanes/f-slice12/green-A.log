@@ -1,0 +1,6 @@
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+4 tests, 488759 checks, 0 failed checks, 0 failed tests

@@ -1,0 +1,138 @@
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+hilbert fixture rows: 608
+ok   hilbert_vectors
+ok   hilbert_identities
+product formula: 2000 rational pairs, 12058 finite factors
+ok   hilbert_product_2000
+ok   hilbert_statuses_and_precision
+finite Hilbert rows: 1920 idele, 800 local
+ok   hilbert_finite_classes
+ok   hilbert_word_primes_huge_and_extreme
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+hilbert fixture rows: 608
+ok   hilbert_vectors
+ok   hilbert_identities
+product formula: 2000 rational pairs, 12058 finite factors
+ok   hilbert_product_2000
+ok   hilbert_statuses_and_precision
+finite Hilbert rows: 1920 idele, 800 local
+ok   hilbert_finite_classes
+ok   hilbert_word_primes_huge_and_extreme
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+hilbert fixture rows: 608
+ok   hilbert_vectors
+ok   hilbert_identities
+product formula: 2000 rational pairs, 12058 finite factors
+ok   hilbert_product_2000
+ok   hilbert_statuses_and_precision
+finite Hilbert rows: 1920 idele, 800 local
+ok   hilbert_finite_classes
+ok   hilbert_word_primes_huge_and_extreme
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+hilbert fixture rows: 608
+ok   hilbert_vectors
+ok   hilbert_identities
+product formula: 2000 rational pairs, 12058 finite factors
+ok   hilbert_product_2000
+ok   hilbert_statuses_and_precision
+finite Hilbert rows: 1920 idele, 800 local
+ok   hilbert_finite_classes
+ok   hilbert_word_primes_huge_and_extreme
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+hilbert fixture rows: 608
+ok   hilbert_vectors
+ok   hilbert_identities
+product formula: 2000 rational pairs, 12058 finite factors
+ok   hilbert_product_2000
+ok   hilbert_statuses_and_precision
+finite Hilbert rows: 1920 idele, 800 local
+ok   hilbert_finite_classes
+ok   hilbert_word_primes_huge_and_extreme
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+hilbert fixture rows: 608
+ok   hilbert_vectors
+ok   hilbert_identities
+product formula: 2000 rational pairs, 12058 finite factors
+ok   hilbert_product_2000
+ok   hilbert_statuses_and_precision
+finite Hilbert rows: 1920 idele, 800 local
+ok   hilbert_finite_classes
+ok   hilbert_word_primes_huge_and_extreme
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+hilbert fixture rows: 608
+ok   hilbert_vectors
+ok   hilbert_identities
+product formula: 2000 rational pairs, 12058 finite factors
+ok   hilbert_product_2000
+ok   hilbert_statuses_and_precision
+finite Hilbert rows: 1920 idele, 800 local
+ok   hilbert_finite_classes
+ok   hilbert_word_primes_huge_and_extreme
+ok   hilbert_debug_entry_checks
+ok   hilbert_input_aliases
+13 tests, 719376 checks, 0 failed checks, 0 failed tests

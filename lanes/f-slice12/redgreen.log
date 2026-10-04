@@ -1,0 +1,23 @@
+Slice A: timeout 180 make -s -j2 BUILD=lanes/f-slice12/build lanes/f-slice12/build/test_symbol
+RED exit 2: unresolved symbols (red-first.log).
+Slice A: timeout 60 lanes/f-slice12/build/red (after compiling the ND stubs)
+RED exit 1: 9 function assertions failed, 10 checks (red-stubs.log).
+First non-stub run: timeout 60 lanes/f-slice12/build/test_symbol
+Exit 1: 15 counterexamples to denominator multiplicativity at b=0 under Definition 1.
+Recorded as Y4, retained an explicit counterexample assertion and tested nonzero-factor multiplicativity.
+GREEN: timeout 60 lanes/f-slice12/build/test_symbol
+Exit 0: 4 tests, 483453 checks, 0 failed checks (green-A.log).
+Driver: timeout 60 lanes/f-slice12/build/adf < tests/driver/symbol-residue.cmd
+Exit 1 expected from #!exit 1; 15 lines match hand output, diff exit 0.
+Julia: LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10 timeout 60 julia --startup-file=no
+ tests/julia/symbol.jl lanes/f-slice12/build/libadelefeld.so
+Exit 0: 23/23 assertions.
+Slice B: timeout 60 lanes/f-slice12/build/red-B (after compiling the ND stubs)
+RED exit 1: 4 function assertions failed, 6 checks (red-B.log).
+GREEN: timeout 90 lanes/f-slice12/build/test_symbol
+Exit 0: 10 tests, 719310 checks, 0 failed checks (green-B.log).
+Driver: timeout 60 lanes/f-slice12/build/adf < tests/driver/symbol-hilbert.cmd
+Exit 1 expected from #!exit 1; 16 lines match hand output, diff exit 0.
+Julia: LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10 timeout 60 julia --startup-file=no
+ tests/julia/symbol.jl lanes/f-slice12/build/libadelefeld.so
+Exit 0: 20 Hilbert and 23 residue assertions.

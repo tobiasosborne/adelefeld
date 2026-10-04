@@ -1,0 +1,34 @@
+/usr/bin/ld: /tmp/cc1yEtk6.o: in function `kron':
+/home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:92:(.text+0x2ea): undefined reference to `adf_fmpz_kronecker'
+/usr/bin/ld: /tmp/cc1yEtk6.o: in function `adf_test_fn_residue_identities':
+/home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:106:(.text+0x53e): undefined reference to `adf_fmpz_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:108:(.text+0x5de): undefined reference to `adf_fmpz_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:111:(.text+0x6a7): undefined reference to `adf_fmpz_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:116:(.text+0x7c1): undefined reference to `adf_fmpz_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:117:(.text+0x7fa): undefined reference to `adf_fmpz_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:144:(.text+0xca4): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:145:(.text+0xd1a): undefined reference to `adf_fmpz_kronecker'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:133:(.text+0xea5): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:134:(.text+0xec9): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:135:(.text+0xeeb): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:137:(.text+0xf81): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:139:(.text+0x1010): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /tmp/cc1yEtk6.o: in function `call':
+/home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:34:(.text+0x1485): undefined reference to `adf_fmpz_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:36:(.text+0x174d): undefined reference to `adf_fmpz_kronecker'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:53:(.text+0x1828): undefined reference to `adf_ucoset_kronecker'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:44:(.text+0x1a0a): undefined reference to `adf_fball_kronecker'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:35:(.text+0x1b31): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:51:(.text+0x1c0f): undefined reference to `adf_ucoset_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:43:(.text+0x1c21): undefined reference to `adf_fball_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:52:(.text+0x1c31): undefined reference to `adf_ucoset_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:42:(.text+0x1c49): undefined reference to `adf_fball_legendre'
+/usr/bin/ld: /tmp/cc1yEtk6.o: in function `adf_test_fn_residue_statuses_and_witnesses':
+/home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:162:(.text+0x1eb0): undefined reference to `adf_fmpz_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:165:(.text+0x1f7d): undefined reference to `adf_fball_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:168:(.text+0x204a): undefined reference to `adf_ucoset_legendre'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:174:(.text+0x21e3): undefined reference to `adf_fmpz_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:175:(.text+0x224f): undefined reference to `adf_fball_jacobi'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f-slice12/tests/test_symbol.c:176:(.text+0x22bb): undefined reference to `adf_ucoset_jacobi'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f-slice12/build/test_symbol] Error 1

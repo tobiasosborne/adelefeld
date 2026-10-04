@@ -1,0 +1,111 @@
+mutate: src/symbol.c: 274 mutants
+mutate: 274 mutants, 30 of them run (--limit 30, --seed 1)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (5.0 s)
+
+SURVIVED src/symbol.c:283:23 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -281,5 +281,5 @@
+       {
+           int eps_u=((u-1)/2)%2, eps_w=((w-1)/2)%2;
+  -        int om_u=((u*u-1)/8)%2, om_w=((w*w-1)/8)%2;
+  +        int om_u=((u*u+1)/8)%2, om_w=((w*w-1)/8)%2;
+           int exponent=eps_u*eps_w + alpha*om_w + beta*om_u;
+           return exponent%2 ? -1 : 1;
+
+
+SURVIVED src/symbol.c:287:47 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -285,5 +285,5 @@
+           return exponent%2 ? -1 : 1;
+       }
+  -    return (alpha && beta && p%4==3 ? -1 : 1) * (beta ? u : 1) * (alpha ? w : 1);
+  +    return (alpha && beta && p%4==3 ? -1 : 1) / (beta ? u : 1) * (alpha ? w : 1);
+   }
+   static int class_result(int *z, ulong p, const square_classes *a, const square_classes *b)
+
+
+SURVIVED src/symbol.c:282:42 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -280,5 +280,5 @@
+       if(p==2)
+       {
+  -        int eps_u=((u-1)/2)%2, eps_w=((w-1)/2)%2;
+  +        int eps_u=((u-1)/2)%2, eps_w=((w-0)/2)%2;
+           int om_u=((u*u-1)/8)%2, om_w=((w*w-1)/8)%2;
+           int exponent=eps_u*eps_w + alpha*om_w + beta*om_u;
+
+
+SURVIVED src/symbol.c:246:21 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -244,5 +244,5 @@
+               /* Avoid both N-v overflow and v+3 overflow, even at the slong endpoints. */
+               if(a->v <= WORD_MAX-2 && a->N >= a->v+2) k=2;
+  -            if(a->v <= WORD_MAX-3 && a->N >= a->v+3) k=3;
+  +            if(a->v < WORD_MAX-3 && a->N >= a->v+3) k=3;
+           }
+           two_classes(c,unit_residue(a->u,8),k);
+
+
+SURVIVED src/symbol.c:227:18 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -225,5 +225,5 @@
+       int mask = (1<<k)-1;
+       c->n=0;
+  -    for(int u=1;u<8;u+=2)
+  +    for(int u=1;u<=8;u+=2)
+           if ((u & mask) == ((int)residue & mask)) c->u[c->n++]=u;
+   }
+
+
+SURVIVED src/symbol.c:284:47 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -282,5 +282,5 @@
+           int eps_u=((u-1)/2)%2, eps_w=((w-1)/2)%2;
+           int om_u=((u*u-1)/8)%2, om_w=((w*w-1)/8)%2;
+  -        int exponent=eps_u*eps_w + alpha*om_w + beta*om_u;
+  +        int exponent=eps_u*eps_w + alpha*om_w - beta*om_u;
+           return exponent%2 ? -1 : 1;
+       }
+
+
+SURVIVED src/symbol.c:332:47 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -330,5 +330,5 @@
+       if(adf_place_is_archimedean(v))
+       {
+  -        *z=adf_rat_sgn(a)<0 && adf_rat_sgn(b)<0 ? -1 : 1;
+  +        *z=adf_rat_sgn(a)<0 && adf_rat_sgn(b)<1 ? -1 : 1;
+           return ADF_OK;
+       }
+
+
+SURVIVED src/symbol.c:261:31 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/symbol.c
+  +++ b/src/symbol.c
+  @@ -259,5 +259,5 @@
+           {
+               c->n=1;
+  -            c->u[0]=scale.u[0]*unit_legendre(fmpz_fdiv_ui(a->u.c,p),p);
+  +            c->u[0]=scale.u[0]/unit_legendre(fmpz_fdiv_ui(a->u.c,p),p);
+           }
+           else { c->n=2; c->u[0]=1; c->u[1]=-1; }
+
+
+mutate: 30 mutants in 91.4 s: 22 killed, 8 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 8 mutant(s) survived; each one is a claim the tests do not check

@@ -72,5 +72,6 @@
 #include "adelefeld/idpow.h"
 #include "adelefeld/idmap.h"
 #include "adelefeld/gfunc.h"
+#include "adelefeld/symbol.h"
 
 #endif /* ADELEFELD_H */

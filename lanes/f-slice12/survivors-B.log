@@ -1,0 +1,1 @@
+endpoint-three-digits: compile=0 run=1; FAIL tests/test_symbol.c:590: hilbert_word_primes_huge_and_extreme: check failed: adf_lball_hilbert(&z,NULL,x,y)==ADF_OK && z==1

@@ -1,0 +1,41 @@
+tests/test_symbol.c: In function ‘adf_test_fn_residue_debug_entry_checks’:
+tests/test_symbol.c:235:19: warning: ignoring return value of ‘freopen’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  235 |             (void)freopen("/dev/null","w",stderr);
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+residue fixture rows: 3724
+ok   residue_vectors
+ok   residue_identities
+ok   residue_statuses_and_witnesses
+ok   residue_local_backend
+ok   residue_debug_entry_checks
+5 tests, 488777 checks, 0 failed checks, 0 failed tests
