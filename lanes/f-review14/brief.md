@@ -4,7 +4,7 @@ Your task is to REFUTE, not to confirm. The symbols (lane f-slice12) and the sec
 f-slice13) of WP 1F.9 were proved, coded and tested by one model family (codex `gpt-6.1-sol`); you are of
 another family on purpose. Two bug hunts compared VALUES and statuses with their own oracles: f-review11 on
 `src/symbol.c` (`docs/reviews/f1/review-symbol.md`: no finding) and f-review12 on `src/catalogue.c`
-(`lanes/f-review12/result.md` if it has landed: read it, do NOT repeat its attacks). Nobody has read the
+(`docs/reviews/f1/review-catalogue.md`: no finding; read it, do NOT repeat its attacks). Nobody has read the
 proofs as a referee, and nobody has planted faults against the tests. That is your task.
 
 Under review: `docs/api-1f9.md` (Y1 to Y15, 400 lines); `include/adelefeld/symbol.h`, `src/symbol.c` (351
@@ -13,7 +13,9 @@ lines); `include/adelefeld/catalogue.h`, `src/catalogue.c` (270 lines); `tests/t
 `tests/driver/symbol-*`, `tests/driver/catalogue-*`. Contract: `docs/SPEC.md` 9.3.7 and 15.4 (N-D18, N-D19);
 `docs/proofs/catalogue.md` Definition 1, Propositions 2 to 8 and 10 to 15; `docs/conventions.md` 3.1 to 3.3,
 4.3, 6.6. `refs/src/` is on disk (`hilbert-bristol/lecture19.txt`, `pari-doc/usersch3.tex`, `milne-cft/CFT.txt`,
-FLINT 3.0.1).
+FLINT 3.0.1). The same kind of review of `Log` on ideles is
+`docs/reviews/f1/review-gfunc-log-referee.md` (lane f-review13): read it for the form of a fault table and of a
+finding; its `lanes/f-review13/mutate.py` shows how to plant faults as patches and run a test program against each.
 
 **You own:** `lanes/f-review14/` only. Everything else is read-only. No git command that changes state, no
 `bd`. At most 2 cores. Build the archive ONCE with `timeout 600 make -j2 BUILD=lanes/f-review14/build
@@ -67,9 +69,9 @@ Read the fixtures' generators too: which stored rows are computed by the same fo
 
 ## Report
 
-`lanes/f-review14/result.md`, written once, at the end (the harness refuses the name `report.md` for a Claude
-subagent); running notes in `lanes/f-review14/progress.md` as you go (a note after every statement refereed).
+`lanes/f-review14/report.md`, written once, at the end; running notes in `lanes/f-review14/progress.md` as you go (a note after every statement refereed).
 For each finding: severity, the proof step or the input, what the text or the code says, what is true and
 why, the command that reproduces it. Then, statement by statement, what you checked and how (counts, what
-would have made a case fail). Then the two fault tables. No praise, no summary. Give the same text as your
-final message. Delete your build tree and executables at the end.
+would have made a case fail). Then the two fault tables. No praise, no summary. Delete your build tree and
+executables at the end; leave no files in `/tmp`. If the time is short, finish the fault tables (part 2) first
+and referee as many statements as remain possible, saying which were not reached.
