@@ -57,7 +57,15 @@ Also: `tools/orch/suites.sh`: the `all` suite builds in `build/` (a `BUILD` on t
 `tools/adf/Makefile` and the golden test ran a stale `build/adf`); N-D15 wording (f-review8 F10); SPEC 9.3.1,
 9.3.3 and conventions 3.3 rule 4 follow the findings of f-slice10; PLAN rows 1F.6 to 1F.8.
 
-**Nothing is running** (unless the addendum at the end of this entry says otherwise). Lane f-review10 (Sonnet medium; bug hunt through `src/gfunc_log.c` with its own oracle)
+**Running when this was written (02:45):** lane f-review11 (Sonnet medium, a Claude subagent in a worktree under
+`.claude/worktrees/`: bug hunt through `src/symbol.c`, brief `lanes/f-review11/brief.md`; if the session ended
+first, its notes are `lanes/f-review11/progress.md` in its worktree: commit, merge, record under
+`docs/reviews/f1/review-symbol.md`, repair) and lane f-slice13 (codex sol xhigh, `../adelefeld-wt/f-slice13`:
+1F.9 second group: binomials, profinite power, Haar volume, cyclotomic action; proposed N-D19; when its
+`lane.log` ends in `DONE`: commit in the worktree, merge, ALL FIVE suites, N-D19, PLAN row 1F.9, a review by a
+model that is not codex).
+
+**Landed last.** Lane f-review10 (Sonnet medium; bug hunt through `src/gfunc_log.c` with its own oracle)
 landed at 01:38: NO finding (`docs/reviews/f1/review-gfunc-log.md`: 1060 local images compared as sets, 700 CRT
 refinements, statuses, two reproducers under ASan/UBSan with leak detection, 52 hostile driver lines). It did
 not referee the proofs IL1 to IL8 and G7 to G12: nobody has.
