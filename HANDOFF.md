@@ -57,7 +57,7 @@ Also: `tools/orch/suites.sh`: the `all` suite builds in `build/` (a `BUILD` on t
 `tools/adf/Makefile` and the golden test ran a stale `build/adf`); N-D15 wording (f-review8 F10); SPEC 9.3.1,
 9.3.3 and conventions 3.3 rule 4 follow the findings of f-slice10; PLAN rows 1F.6 to 1F.8.
 
-**Running when this was written (02:45):** lane f-review11 (Sonnet medium, a Claude subagent in a worktree under
+**Running when this was written (02:36):** lane f-review11 (Sonnet medium, a Claude subagent in a worktree under
 `.claude/worktrees/`: bug hunt through `src/symbol.c`, brief `lanes/f-review11/brief.md`; if the session ended
 first, its notes are `lanes/f-review11/progress.md` in its worktree: commit, merge, record under
 `docs/reviews/f1/review-symbol.md`, repair) and lane f-slice13 (codex sol xhigh, `../adelefeld-wt/f-slice13`:
