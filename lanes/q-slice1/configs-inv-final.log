@@ -1,0 +1,10 @@
+inv build exit 0
+lanes/q-slice1/inv/test_qclass exit 134
+lanes/q-slice1/inv/test_text_adele exit 0
+lanes/q-slice1/inv/test_text_classify exit 0
+lanes/q-slice1/inv/test_text_fball exit 0
+lanes/q-slice1/inv/test_text_idele exit 0
+lanes/q-slice1/inv/test_text_limits exit 0
+lanes/q-slice1/inv/test_text_local exit 0
+lanes/q-slice1/inv/test_text_r3r9 exit 0
+lanes/q-slice1/inv/test_text_rat exit 0

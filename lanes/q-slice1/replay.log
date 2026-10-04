@@ -1,0 +1,7 @@
+line 65, 00012: exit 0, log lanes/q-slice1/replay-65.log
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/q-slice1/lanes/q-slice1/replay_survivors.py", line 37, in <module>
+    assert result.returncode != 0, result.stdout.decode(errors='replace')
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: test_qclass: 35439 checks; group all
+

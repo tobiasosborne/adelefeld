@@ -1,0 +1,1 @@
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_qclass.c lanes/q-slice1/plain/support/golden.o lanes/q-slice1/plain/support/jsonl.o lanes/q-slice1/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/q-slice1/plain/test_qclass

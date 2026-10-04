@@ -1,0 +1,124 @@
+== lanes/q-slice1/san/test_qclass
+test_qclass: 35332 checks; group all
+lanes/q-slice1/san/test_qclass exit 0
+== lanes/q-slice1/san/test_text_adele
+ok   every_row_of_the_golden_file_adele
+ok   every_row_of_the_golden_file_cadele
+ok   every_row_of_the_golden_file_realball_read
+ok   every_row_of_the_golden_file_realball_print
+ok   every_random_print_of_the_reference
+ok   every_random_adele_text_of_the_reference
+ok   every_random_cadele_text_of_the_reference
+ok   a_dyadic_ball_is_read_exactly_at_every_prec
+ok   the_radius_mantissa_bound_of_2_to_the_30
+ok   random_decimals_are_enclosed_at_small_prec
+ok   the_extreme_exponents_of_the_default_limits
+ok   the_printers_write_the_templates
+ok   the_digits_argument
+ok   print_then_parse_encloses_the_value
+ok   parse_print_parse_encloses_the_first_value
+ok   max_exp10_at_the_limit_and_one_above
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_bytes_and_ends_of_memory
+ok   the_earlier_stage_decides_the_status
+ok   the_grammar_of_real_and_complex
+20 tests, 84390 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_adele exit 0
+== lanes/q-slice1/san/test_text_classify
+ok   the_kinds_are_numbered_as_in_9_7
+ok   every_row_of_the_golden_file_dispatch
+ok   the_texts_of_every_type_file_are_of_that_type
+ok   every_text_of_the_reference
+ok   one_text_of_each_kind
+ok   signs_and_denominators_of_the_other_literals
+ok   limits_hostile_bytes_and_the_order_of_checks
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+8 tests, 20776 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_classify exit 0
+== lanes/q-slice1/san/test_text_fball
+ok   every_row_of_the_golden_file_fball
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template
+ok   random_balls_round_trip
+ok   the_parser_canonicalises
+ok   the_output_may_hold_any_value_before
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_and_forbidden_bytes
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+ok   the_earlier_stage_decides_the_status
+10 tests, 21545 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_fball exit 0
+== lanes/q-slice1/san/test_text_idele
+ok   every_row_of_the_golden_file_ucoset
+ok   ucoset_stored_form_and_printing
+ok   every_row_of_the_golden_file_idele
+ok   every_row_of_the_golden_file_idclass
+   2200 records, 841 valid, 308 NOT_DETERMINED answers at the precisions 2, 7 and 30
+ok   the_reference_on_generated_texts
+ok   constrained_printing_against_the_reference
+ok   constrained_printing_examples
+ok   printing_of_hand_made_values
+ok   prec_rules_and_not_determined
+ok   limits_of_conventions_8_4
+ok   hostile_big_numbers_nesting_nul_and_cuts
+ok   order_of_the_stages
+ok   round_trips_enclose
+ok   constrained_printer_ends_in_bounded_time
+14 tests, 73465 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_idele exit 0
+== lanes/q-slice1/san/test_text_limits
+ok   printer_bound_adele_midpoint
+ok   printer_bound_adele_radius
+ok   printer_bound_cadele_imaginary_midpoint
+ok   printer_bound_cadele_imaginary_radius
+ok   printer_bound_cadele_real_part
+ok   fball_printer_never_null
+ok   exp10_limit_of_nineteen_digits
+ok   exp10_limit_of_nineteen_significant_digits
+ok   exp10_limit_of_twenty_digits
+ok   exp10_limit_negative_and_zero
+ok   value_at_exp10_boundary_prints_one_above
+11 tests, 105 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_limits exit 0
+== lanes/q-slice1/san/test_text_local
+ok   every_row_of_the_golden_file_lball
+ok   lball_stored_fields
+ok   every_row_of_the_golden_file_sball
+ok   sball_the_complex_tag
+ok   sball_the_canonical_order
+ok   the_reference_on_generated_texts
+ok   round_trips_of_generated_values
+ok   hostile_input
+ok   the_order_of_the_stages
+ok   printer_bounds_and_digits
+10 tests, 68868 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_local exit 0
+== lanes/q-slice1/san/test_text_r3r9
+ok   the_reviewers_input_is_not_printed_at_the_default_limits
+ok   every_value_at_the_default_limits_prints_text_that_reads_back
+ok   a_cadele_at_the_exponent_boundary_is_refused_like_an_adele
+ok   a_printed_text_is_read_back_with_limits_that_admit_it
+ok   prec_two_and_digits_one_on_the_value_forms_with_a_real_part
+ok   prec_two_reaches_a_wider_ball_than_a_larger_prec
+ok   the_bare_rat_and_fball_value_forms_round_trip
+   the old scheme on the same texts: 94 accepted, 1 prec values, 1 digits values
+   the corpus of the text target: 287 files, 94 accepted adele or cadele texts, 67 of 190 prec values, 30 of 30 digits values, prec = 2 reached: 1
+ok   the_committed_corpus_reaches_prec_two_and_digits_one
+8 tests, 148 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_r3r9 exit 0
+== lanes/q-slice1/san/test_text_rat
+ok   every_row_of_the_golden_file_rat
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template_q
+ok   huge_operands_print_their_digits_and_come_back
+ok   random_values_round_trip
+ok   max_len_at_the_limit_and_one_above
+ok   empty_and_null_input
+ok   a_nul_byte_anywhere_is_a_parse_error
+ok   every_byte_outside_the_alphabet_is_a_parse_error
+ok   input_at_the_end_of_a_heap_block_of_exact_size
+ok   input_at_the_end_of_a_page
+ok   the_earlier_stage_decides_the_status
+ok   canonicalisation_on_input
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+lanes/q-slice1/san/test_text_rat exit 0

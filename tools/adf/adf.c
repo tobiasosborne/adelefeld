@@ -66,11 +66,12 @@
    coordinate where it is inexact, SPEC 4.1), and an adele with a complex adele (the
    embedding of SPEC 4.1, "The type adf_cadele"), and the pairs of the unit coset, the idele and the class listed
    in the section named above.  Every other pair is ADF_DOMAIN.  A kind of the value form with no typed
-   parser in this build (the quotient class, the functions and the character, work packages 1.8 and
+   parser in this build (the functions and the character, work packages 1.8 and
    later) is ADF_UNSUPPORTED.  The local ball and the partial ball have typed parsers and printers
    since lane drv-ball (adf_lball_set_str, adf_sball_set_str and their printers); they are values the
    driver holds, `show` prints them, every pair with another type is ADF_DOMAIN and their negation is
-   ADF_UNSUPPORTED.
+   ADF_UNSUPPORTED. Quotient lifts are held and printed in slice 3.1-a; qadd_rat preserves
+   their representation. The ordinary pair commands on quotient classes are ADF_DOMAIN.
 
    Output: one line per command on standard output, either the value text, "true" or
    "false", one of "equal", "different" and "undecided" for compare, a name of a kind for
@@ -136,6 +137,7 @@ typedef enum
 {
     ADF_DRV_SHOW = 0,
     ADF_DRV_TYPE,
+    ADF_DRV_QADD_RAT,
     ADF_DRV_ADD,
     ADF_DRV_SUB,
     ADF_DRV_MUL,
@@ -212,6 +214,7 @@ static const struct
 } adf_drv_ops[] = {
     { "show", ADF_DRV_SHOW, 1 },
     { "type", ADF_DRV_TYPE, 1 },
+    { "qadd_rat", ADF_DRV_QADD_RAT, 2 },
     { "add", ADF_DRV_ADD, 2 },
     { "sub", ADF_DRV_SUB, 2 },
     { "mul", ADF_DRV_MUL, 2 },
@@ -303,6 +306,7 @@ typedef enum
     ADF_DRV_IDCLASS,
     ADF_DRV_LBALL,       /* lane drv-ball: the local ball and the partial ball (conventions 5.8, 5.9) */
     ADF_DRV_SBALL,
+    ADF_DRV_QCLASS,
     ADF_DRV_OTHER        /* a kind of the value form with no typed parser in this build */
 } adf_drv_type;
 
@@ -318,6 +322,7 @@ typedef struct
     adf_idclass_t k;
     adf_lball_t b;
     adf_sball_t s;
+    adf_qclass_t q;
 } adf_drv_value;
 
 typedef struct
@@ -339,6 +344,7 @@ adf_drv_value_init(adf_drv_value * v)
     adf_idclass_init(v->k);
     adf_lball_init(v->b);
     adf_sball_init(v->s);
+    adf_qclass_init(v->q);
 }
 
 static void
@@ -353,11 +359,12 @@ adf_drv_value_clear(adf_drv_value * v)
     adf_idclass_clear(v->k);
     adf_lball_clear(v->b);
     adf_sball_clear(v->s);
+    adf_qclass_clear(v->q);
     v->type = ADF_DRV_OTHER;
 }
 
 /* adf_drv_kind_type(kind): the type the driver works with for that kind of conventions 9.7,
-   ADF_DRV_OTHER for the kinds with no typed parser in this build (the quotient class, the
+   ADF_DRV_OTHER for the kinds with no typed parser in this build (the
    functions and the character, work packages 1.8 and later).  A caller answers ADF_UNSUPPORTED
    for ADF_DRV_OTHER before any value is read. */
 static adf_drv_type
@@ -383,6 +390,8 @@ adf_drv_kind_type(adf_text_kind kind)
             return ADF_DRV_LBALL;
         case ADF_TEXT_SBALL:
             return ADF_DRV_SBALL;
+        case ADF_TEXT_QCLASS:
+            return ADF_DRV_QCLASS;
         default:
             return ADF_DRV_OTHER;
     }
@@ -417,6 +426,8 @@ adf_drv_value_read(adf_drv_value * v, adf_text_kind kind, const char * s, size_t
             return adf_lball_set_str(v->b, s, len, NULL);
         case ADF_TEXT_SBALL:
             return adf_sball_set_str(v->s, s, len, prec, NULL);
+        case ADF_TEXT_QCLASS:
+            return adf_qclass_set_str(v->q, s, len, prec, NULL);
         default:
             return ADF_OK;      /* ADF_DRV_OTHER, which the caller has already refused */
     }
@@ -463,6 +474,9 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
             break;
         case ADF_DRV_SBALL:
             s = adf_sball_get_str(&len, v->s, digits);
+            break;
+        case ADF_DRV_QCLASS:
+            s = adf_qclass_get_str(&len, v->q, digits);
             break;
         default:
             return ADF_UNSUPPORTED;
@@ -3154,6 +3168,25 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         status = adf_drv_value_read(v, kind[i], l->s[i], l->n[i], st->prec);
         if (status != ADF_OK)
             goto done;
+    }
+
+    /* Slice 3.1-a: the one implemented quotient operation and the common pair domains. */
+    if (op == ADF_DRV_QADD_RAT)
+    {
+        if (x.type != ADF_DRV_QCLASS || y.type != ADF_DRV_RAT) status = ADF_DOMAIN;
+        else {
+            adf_qclass_add_rat(z.q, x.q, y.r);
+            z.type = ADF_DRV_QCLASS;
+            status = adf_drv_value_print(out, &z, st->digits);
+        }
+        goto done;
+    }
+    if (nops == 2 && (x.type == ADF_DRV_QCLASS || y.type == ADF_DRV_QCLASS) &&
+        (op == ADF_DRV_ADD || op == ADF_DRV_SUB || op == ADF_DRV_MUL || op == ADF_DRV_DIV ||
+         op == ADF_DRV_EQUAL || op == ADF_DRV_CONTAINS || op == ADF_DRV_OVERLAPS || op == ADF_DRV_COMPARE))
+    {
+        status = ADF_DOMAIN;
+        goto done;
     }
 
     if (op == ADF_DRV_ROOT)

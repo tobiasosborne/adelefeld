@@ -1,0 +1,8 @@
+line 65, 00012: exit 0, log lanes/q-slice1/replay-65.log
+line 128, 00013: exit 2, log lanes/q-slice1/replay-128.log
+line 171, 00014: exit 2, log lanes/q-slice1/replay-171.log
+line 87, 00021: exit 2, log lanes/q-slice1/replay-87.log
+line 76, 00031: exit 2, log lanes/q-slice1/replay-76.log
+line 107, 00046: exit 2, log lanes/q-slice1/replay-107.log
+line 99, 00050: exit 0, log lanes/q-slice1/replay-99.log
+7 survivors replayed: 5 killed, 1 uninitialized-stack survivor, 1 equivalent survivor

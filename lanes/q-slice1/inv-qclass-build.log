@@ -1,0 +1,1 @@
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_qclass.c lanes/q-slice1/inv/support/golden.o lanes/q-slice1/inv/support/jsonl.o lanes/q-slice1/inv/libadelefeld.a -lflint -lgmp -lm -pthread -o lanes/q-slice1/inv/test_qclass

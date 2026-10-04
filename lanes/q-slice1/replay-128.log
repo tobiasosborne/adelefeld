@@ -1,0 +1,2 @@
+tests/test_qclass.c:309: strstr(message, names[i]) != NULL
+make: *** [Makefile:13: check] Error 1

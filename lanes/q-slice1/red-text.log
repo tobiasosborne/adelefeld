@@ -1,0 +1,1 @@
+tests/test_qclass.c:262: st == ADF_OK && adf_qclass_is_canonical(x)

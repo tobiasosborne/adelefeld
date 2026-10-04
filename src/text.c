@@ -2128,6 +2128,71 @@ refused:            /* the work bound of the constrained printer (TX_COND_WORK_M
    ================================================================================================ */
 
 #include <stdio.h>
+
+/* Slice 3.1-a. Reuse the lexical machinery without allocating an array for union input.
+   conventions 8.5: byte and full grammar checks precede all literal/count checks;
+   unsupported union semantics follow those checks. LIFT semantics are the adele reader's.
+   docs/api-3.md 1 gives the numerical precision limit before reading input. */
+int adf_qclass_set_str(adf_qclass_t x, const char *s, size_t len, slong prec,
+                      const adf_text_limits_t *lim)
+{
+    adf_text_limits_t store;
+    tx_cur c;
+    tx_real r;
+    tx_fin f;
+    int st, is_union, over = 0;
+    size_t count = 0;
+    adf_adele_t a;
+
+    if (prec > ADF_REAL_PREC_MAX) return ADF_LIMIT;
+    lim = tx_limits(lim, &store);
+    st = tx_prep(s, len, lim);
+    if (st != ADF_OK) return st;
+    c.s = s; c.len = len; c.i = 0;
+    if (!tx_start_syntax(&c, ADF_TEXT_QCLASS)) return ADF_PARSE;
+    c.i = 0;
+    is_union = TX_KW(&c, "union");
+    if (is_union) (void) tx_expect(&c, '(');
+    do {
+        (void) tx_expect(&c, '(');
+        (void) tx_real_syntax(&c, &r);
+        (void) tx_expect(&c, ';');
+        (void) tx_fin_syntax(&c, &f);
+        (void) tx_expect(&c, ')');
+        if (tx_real_over(s, &r, lim)) over = 1;
+        count++;
+    } while (is_union && tx_expect(&c, ','));
+    if (over || (is_union && (lim->max_items < 1 || count > (size_t) lim->max_items)))
+        return ADF_LIMIT;
+    if (is_union) return ADF_UNSUPPORTED;
+    if (tx_fin_domain(s, &f)) return ADF_DOMAIN;
+    adf_adele_init(a);
+    tx_arb_from_real(a->inf, s, &r, prec);
+    tx_fin_build(&a->fin, s, &f);
+    adf_qclass_set_adele(x, a);
+    adf_adele_clear(a);
+    return ADF_OK;
+}
+
+/* conventions 9.4: append the quotient marker to the ordinary adele enclosure.
+   No full PIECES printer is exposed in slice 3.1-a (docs/api-3.md 7). */
+char *adf_qclass_get_str(size_t *len, const adf_qclass_t x, slong digits)
+{
+    char *s;
+    size_t n;
+    tx_buf b;
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_qclass_is_canonical(x)) adf_inv_fail(__func__, "x", "adf_qclass");
+#endif
+    if (x->form != ADF_QCLASS_LIFT) { *len = 0; return NULL; }
+    s = adf_adele_get_str(&n, x->piece, digits);
+    if (!s) { *len = 0; return NULL; }
+    tx_buf_init(&b);
+    tx_put(&b, s, n);
+    tx_puts(&b, " + Q");
+    adf_str_free(s);
+    return tx_finish(&b, len);
+}
 #include <stdlib.h>   /* qsort */
 
 /* The invariant check of the debug build (conventions 4.4, CV-09; src/invariants.h has none for the two

@@ -1,0 +1,2 @@
+tests/test_qclass.c:165: live_blocks == 0
+make: *** [Makefile:13: check] Error 1

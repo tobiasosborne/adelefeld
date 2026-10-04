@@ -1,0 +1,2 @@
+tests/test_qclass.c:124: !adf_qclass_is_canonical(x)
+make: *** [Makefile:13: check] Error 1
