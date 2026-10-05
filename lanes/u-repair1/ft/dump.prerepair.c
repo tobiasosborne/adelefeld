@@ -620,10 +620,7 @@ dp_v_ucoset(dp_span c, dp_span N)
    negative, 0 if the ball contains 0 (conventions 5.7 uses the first for the t of a class and the
    third for the inf of an idele; proto _arb_sign, lines 1122-1143). The two powers are compared as
    |m| 2^me and rm 2^re. Their exponents are read as fmpz, so a token of any length is decided and
-   no word bound hides behind the comparison (conventions 8.4, M1-D7). The negative midpoint of the
-   review u-review1 (F1) is read with its own length: the sign is not a hexadecimal digit, so the
-   span loses the byte it steps over. The tie of the leading bits (F2) is a strict inequality, see
-   below. */
+   no word bound hides behind the comparison (conventions 8.4, M1-D7). */
 static int
 dp_arb_sign(const dp_arb * a)
 {
@@ -640,10 +637,7 @@ dp_arb_sign(const dp_arb * a)
         return sgn;                    /* an exact ball away from 0 */
     (void) dp_word(a->rm, &rm);        /* stage 6 has accepted the token: odd and below 2^30 */
     if (dp_neg(am))
-    {
-        am.p++;
-        am.n--;                       /* |m|: the span loses the sign byte it steps over */
-    }
+        am.p++;                        /* |m| */
     fmpz_init(m);
     fmpz_init(e);
     fmpz_init(l1);
@@ -659,24 +653,12 @@ dp_arb_sign(const dp_arb * a)
     if (res == 0)                      /* the same binade: the leading bits decide.  br is the bit
                                        length of a radius mantissa, which is below 2^30
                                        (conventions 10.2, mag.h:117), so t <= 30 and the top t
-                                       bits of |m| are below 2^30: fmpz_get_ui is the whole of them.
-                                       With t = min(bm, br) the bits below the t leading ones of the
-                                       longer mantissa are below 2^(bm - t) resp. 2^(br - t) and are
-                                       not all zero, that mantissa being odd (conventions 10.2).
-                                       With bm > br the shorter mantissa rm is whole, so
-                                       |m| > rm holds exactly when the leading br bits of |m| are
-                                       >= rm; with bm < br the shorter mantissa is |m|, and rm has
-                                       bits below it, so a tie of the leading bits is a strict
-                                       inequality; with bm == br both mantissas are whole and a tie
-                                       is an equality, which is not a strict inequality either */
+                                       bits of |m| are below 2^30: fmpz_get_ui is the whole of them */
     {
         t = bm < br ? bm : br;
         fmpz_fdiv_q_2exp(m, m, (ulong) (bm - t));
         rt = rm >> (br - t);
-        if (bm > br)
-            res = fmpz_get_ui(m) >= rt ? 1 : 0;
-        else
-            res = fmpz_get_ui(m) > rt ? 1 : 0;
+        res = fmpz_get_ui(m) > rt ? 1 : 0;
     }
     fmpz_clear(m);
     fmpz_clear(e);
@@ -860,32 +842,15 @@ dp_w_fb(dp_cur * c, dp_state * st, dp_fb * f)
 }
 
 /* arch = count, then that many real balls (per = 4) or complex balls (per = 8); the first is
-   kept (conventions 10.1, lines 1332-1333; proto _d_arch). With a count of 0 the first ball is the
-   zero ball: a body that reads it then reads a ball whose tokens are the validated ones, and never
-   a span that no text has filled (repair of lane u-repair1, part 3; the fault F06 of the fault
-   table, which drops the count test of 6.1, read those spans). */
+   kept (conventions 10.1, lines 1332-1333; proto _d_arch). */
 static int
 dp_w_arch(dp_cur * c, dp_state * st, size_t per, size_t * n, dp_arb * first)
 {
-    static const char zero_ball[] = "0 0 0 0";
     size_t i;
     dp_arb tmp;
 
     if (!dp_count(c, per, n))
         return dp_parse_fail(st);
-    if (*n == 0)
-    {
-        size_t k, w = per == 8 ? 2 : 1;
-
-        for (k = 0; k < w; k++)
-        {
-            first[k].m.p = zero_ball + 0;
-            first[k].m.n = 1;
-            first[k].e = first[k].m;
-            first[k].rm = first[k].m;
-            first[k].re = first[k].m;
-        }
-    }
     for (i = 0; i < *n; i++)
     {
         if (!dp_w_arb(c, st, i == 0 ? &first[0] : &tmp))
@@ -897,10 +862,8 @@ dp_w_arch(dp_cur * c, dp_state * st, size_t per, size_t * n, dp_arb * first)
 }
 
 /* A validated h token whose value fits in an slong (the fields v and N of a local ball are slongs,
-   lball.h:85-88). Decided on the digits: 15 digits always fit, a sixteenth fits if the first one is
-   at most 7 for a positive token and at most 8 for a negative one (-8fffffffffffffff is -2^63, the
-   least slong; the review u-review1, finding F3, refused it because the test read the first digit
-   of the sign).  */
+   lball.h:85-88). Decided on the digits: 15 digits always fit, a sixteenth fits if the first one
+   is at most 7 (a slong holds 63 bits), and a negative sign takes one digit off.  */
 static int
 dp_fits_si(dp_span t)
 {
@@ -910,24 +873,13 @@ dp_fits_si(dp_span t)
         return 1;
     if (n > 16)
         return 0;
-    return dp_hexval(t.p[dp_neg(t) ? 1 : 0]) <= (dp_neg(t) ? 8 : 7);
+    return dp_hexval(t.p[dp_neg(t) ? 1 : 0]) <= 7;
 }
 
 /* lb = p ("x" num(u) den(u) v | "b" u v N) (conventions 10.1, lines 1337-1338). Stage 4: |v|, |N| at
    most max_prec (8.4) and at most what an slong of the type holds (the value of a local ball has
    no v or N outside a machine word); stage 5: p below 2^64 (8.5 item 5; proto _dump_validate,
-   1291-1298). lb may be NULL when the caller keeps no spans.
-
-   The bound ADF_LBALL_EXP_MAX = 2^60 of include/adelefeld/lball.h:67 is NOT applied here, and the
-   asymmetry with the value form reader (include/adelefeld/text.h:304, 331, which answers ADF_LIMIT
-   above it) is a finding of lane u-repair1 for the orchestrator, not a repair: the predicate of
-   conventions 5.8, which the header states for the struct (lball.h:76-80) and which 10.2 makes the
-   condition of a strict loader, bounds neither v nor N, and adf_lball_is_canonical does not test
-   the bound (lball.h:26-35: "is_canonical, init, clear, set, swap, identical and the layout
-   queries have no such limit"). So a field above 2^60 that fits an slong is a field of a value of
-   the type here, and the text loads. The reference proto/text_grammar.py, which the reader of
-   10.2 follows, applies no such bound either, and the differential corpus of the review agrees
-   (lanes/u-repair1/report.md, the lball and sball runs). */
+   1291-1298). lb may be NULL when the caller keeps no spans. */
 static int
 dp_w_lb(dp_cur * c, dp_state * st, dp_lb * lb)
 {
@@ -2198,32 +2150,20 @@ dp_load_ucoset(adf_ucoset_t x, const char * s, size_t len, const adf_modctx_stru
                size_t nbinds, const adf_text_limits_t * lim)
 {
     dp_parsed P;
-    adf_ucoset_t t;
     fmpz_t c, N;
     int r = dp_prepare(&P, DP_UCOSET, s, len, binds, nbinds, lim);
-    int st;
 
     if (r != ADF_OK)
         return r;
-    adf_ucoset_init(t);
     fmpz_init(c);
     fmpz_init(N);
     dp_fmpz(c, P.node.u.c);
     dp_fmpz(N, P.node.u.N);
-    /* The value is built in a temporary and exchanged on ADF_OK alone (conventions 4.3). Stage 6
-       checked the predicate of 5.6, so adf_ucoset_set_fmpz2 answers ADF_OK; a text cannot make
-       it answer otherwise, and if a defect of stage 6 ever did, the loader returns ADF_DOMAIN
-       with x untouched instead of aborting the process (repair of lane u-repair1, part 3: a
-       loader reads text from outside the program). Under ADF_CHECK_INVARIANTS the same
-       disagreement is an assertion. */
-    st = adf_ucoset_set_fmpz2(t, c, N);
-    DP_INV(t, st == ADF_OK, "adf_ucoset (stage 6 checked the predicate of 5.6)");
-    if (st == ADF_OK)
-        adf_ucoset_swap(x, t);
+    if (adf_ucoset_set_fmpz2(x, c, N) != ADF_OK)
+        flint_abort();                 /* cannot happen: stage 6 checked the predicate of 5.6 */
     fmpz_clear(c);
     fmpz_clear(N);
-    adf_ucoset_clear(t);
-    return st;
+    return ADF_OK;
 }
 
 int
@@ -2272,39 +2212,25 @@ dp_load_idele(adf_idele_t x, const char * s, size_t len, const adf_modctx_struct
     arb_t inf;
     fmpq_t r;
     adf_ucoset_t u;
-    adf_idele_t t;
     int st = dp_prepare(&P, DP_IDELE, s, len, binds, nbinds, lim);
 
     if (st != ADF_OK)
         return st;
-    if (P.node.narch != 1)
-        return ADF_DOMAIN;             /* the archimedean count of Q is 1 (conventions 10.1), which
-                                         stage 6 decides; this asks it again before the ball of
-                                         P.node.arb[0] is read, which no text of a count 0 has
-                                         filled (repair of lane u-repair1, part 3: the fault F06 of
-                                         the fault table read those spans and died) */
     arb_init(inf);
     fmpq_init(r);
     adf_ucoset_init(u);
-    adf_idele_init(t);
     dp_set_arb(inf, &P.node.arb[0]);
     dp_fmpz(fmpq_numref(r), P.node.a);
     dp_fmpz(fmpq_denref(r), P.node.b);
     dp_fmpz(u->c, P.node.u.c);
     dp_fmpz(u->N, P.node.u.N);
-    /* Into a temporary, exchanged on ADF_OK alone (conventions 4.3): stage 6 checked the predicate
-       of 5.7, so adf_idele_set_parts answers ADF_OK, and a text that defeats stage 6 gets
-       ADF_DOMAIN with x untouched, not an abort (repair of lane u-repair1, part 3). The fault
-       F01 of the review (the class check dropped) reached this line through the class loader. */
-    st = adf_idele_set_parts(t, inf, r, u);
-    DP_INV(t, st == ADF_OK, "adf_idele (stage 6 checked the predicate of 5.7)");
-    if (st == ADF_OK)
-        adf_idele_swap(x, t);
+    st = adf_idele_set_parts(x, inf, r, u);
+    if (st != ADF_OK)
+        flint_abort();                 /* cannot happen: stage 6 checked the predicate of 5.7 */
     adf_ucoset_clear(u);
     fmpq_clear(r);
     arb_clear(inf);
-    adf_idele_clear(t);
-    return st;
+    return ADF_OK;
 }
 
 int
@@ -2353,28 +2279,23 @@ dp_load_idclass(adf_idclass_t x, const char * s, size_t len, const adf_modctx_st
                 size_t nbinds, const adf_text_limits_t * lim)
 {
     dp_parsed P;
-    arb_t t_ball;
+    arb_t t;
     adf_ucoset_t u;
-    adf_idclass_t t;
     int st = dp_prepare(&P, DP_IDCLASS, s, len, binds, nbinds, lim);
 
     if (st != ADF_OK)
         return st;
-    arb_init(t_ball);
+    arb_init(t);
     adf_ucoset_init(u);
-    adf_idclass_init(t);
-    dp_set_arb(t_ball, &P.node.arb[0]);
+    dp_set_arb(t, &P.node.arb[0]);
     dp_fmpz(u->c, P.node.u.c);
     dp_fmpz(u->N, P.node.u.N);
-    /* Into a temporary, exchanged on ADF_OK alone (conventions 4.3); see dp_load_ucoset. */
-    st = adf_idclass_set_parts(t, t_ball, u);
-    DP_INV(t, st == ADF_OK, "adf_idclass (stage 6 checked the predicate of 5.7)");
-    if (st == ADF_OK)
-        adf_idclass_swap(x, t);
+    st = adf_idclass_set_parts(x, t, u);
+    if (st != ADF_OK)
+        flint_abort();                 /* cannot happen: stage 6 checked the predicate of 5.7 */
     adf_ucoset_clear(u);
-    arb_clear(t_ball);
-    adf_idclass_clear(t);
-    return st;
+    arb_clear(t);
+    return ADF_OK;
 }
 
 int
@@ -2475,16 +2396,9 @@ dp_load_lball(adf_lball_t x, const char * s, size_t len, const adf_modctx_struct
     adf_lball_init(t);
     pos = P.body;
     dp_read_lb(t, P.s, P.len, &pos);
-    /* adf_lball_swap checks the predicate under ADF_CHECK_INVARIANTS (src/lball.c:284-289), so a
-       value that a defect of stage 6 built must not reach it: the predicate is asked here, and a
-       failure is ADF_DOMAIN with x untouched, as for the three loaders above (repair of lane
-       u-repair1, part 3). With the invariants off the swap takes the value. */
-    st = adf_lball_is_canonical(t) ? ADF_OK : ADF_DOMAIN;
-    DP_INV(t, st == ADF_OK, "adf_lball (stage 6 checked the predicate of 5.8)");
-    if (st == ADF_OK)
-        adf_lball_swap(x, t);
+    adf_lball_swap(x, t);
     adf_lball_clear(t);
-    return st;
+    return ADF_OK;
 }
 
 int
@@ -2570,15 +2484,9 @@ dp_load_sball(adf_sball_t x, const char * s, size_t len, const adf_modctx_struct
             dp_read_lb(&t->loc[i], P.s, P.len, &pos);
         }
     }
-    /* adf_sball_swap checks the predicate of 5.9 under ADF_CHECK_INVARIANTS (src/sball.c:130-135);
-       see dp_load_lball: the predicate is asked here and a failure is ADF_DOMAIN with x
-       untouched, not an abort. */
-    st = adf_sball_is_canonical(t) ? ADF_OK : ADF_DOMAIN;
-    DP_INV(t, st == ADF_OK, "adf_sball (stage 6 checked the predicates of 5.8 and 5.9)");
-    if (st == ADF_OK)
-        adf_sball_swap(x, t);
+    adf_sball_swap(x, t);
     adf_sball_clear(t);
-    return st;
+    return ADF_OK;
 }
 
 int

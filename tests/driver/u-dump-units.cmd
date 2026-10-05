@@ -54,3 +54,13 @@ load adf1 Q idele 1 1 0 0 0 3 2 5
 # another version or another field is UNSUPPORTED (conventions 10.2, "Version and field")
 load adf2 Q ucoset 1 0
 load adf1 K ucoset 1 0
+# The blanks around the operand of load (repair of lane u-repair1, finding F4 of the review
+# u-review1): the line reader skips the blanks between the operation name and the first operand,
+# for every command, and load passes the rest of the bytes on to the loader. A blank at the end of
+# the operand is a fault of the text (conventions 10.1: no leading or trailing space), a tab
+# between the name and the operand is skipped as well (tools/adf/adf.c adf_drv_is_blank: the space
+# and the tab are the blanks of the driver).
+load  adf1 Q ucoset 1 0
+load adf1 Q idele 1 3 0 1 1 1 1 1 0
+load adf1 Q idclass 3 0 1 1 1 0
+load adf1 Q ucoset 1 0 

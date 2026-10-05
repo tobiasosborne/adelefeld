@@ -767,6 +767,160 @@ ADF_TEST(limits_and_order_of_checks)
     }
 }
 
+/* The fields v and N of a dumped local ball against the limits that decide them: max_prec
+   (conventions 8.4) and the word of the type (lball.h:85-88). The texts below are written with
+   max_prec = LONG_MAX, so that the word and not the limit of the caller decides.
+
+   ADF_LBALL_EXP_MAX = 2^60 of lball.h:67 is not a bound of the dump loader, and this test pins
+   that: the predicate of conventions 5.8, which the header states for the struct (lball.h:76-80)
+   and which conventions 10.2 makes the condition of a strict loader, bounds neither v nor N, and
+   adf_lball_is_canonical does not test the bound. So 2^60, 2^60 + 1 and 2^63 - 1 all load, and the
+   value form reader of adf_lball_set_str (text.h:304, 331), which does refuse above 2^60, is the
+   outlier; lanes/u-repair1/report.md reports the asymmetry for the orchestrator.
+
+   -2^63 = -8000000000000000 is the one value the review u-review1 (finding F3) named: it fits an
+   slong, but its absolute value 2^63 is above every max_prec (an slong), so the loader answers
+   ADF_LIMIT for it in every build and under every limits struct, and no change of dp_fits_si can
+   make that text load. The largest field that does load is 7fffffffffffffff = 2^63 - 1 with
+   max_prec = LONG_MAX. dp_fits_si now states the word it means (a negative token of sixteen digits
+   whose first digit is 8 is -2^63 and fits), which the limits of the caller make unreachable. */
+ADF_TEST(lball_exponent_word_and_prec)
+{
+    adf_text_limits_t wide;
+    const char * below = "adf1 Q lball 5 b 1 0 fffffffffffffff";          /* N = 2^60 - 1 */
+    const char * at_2_60 = "adf1 Q lball 5 b 1 0 1000000000000000";       /* N = 2^60 */
+    const char * over_2_60 = "adf1 Q lball 5 b 1 0 1000000000000001";     /* N = 2^60 + 1 */
+    const char * neg_at_2_60 = "adf1 Q lball 5 b 1 -1000000000000000 0";  /* v = -2^60 */
+    const char * neg_over = "adf1 Q lball 5 b 1 -fffffffffffffff 0";       /* v = -(2^60 - 1) */
+    const char * exact_min = "adf1 Q lball 5 x 1 1 -8000000000000000";    /* v = -2^63, exact */
+    const char * ball_min = "adf1 Q lball 5 b 0 0 -8000000000000000";     /* N = -2^63 */
+    const char * word_max = "adf1 Q lball 5 b 0 0 7fffffffffffffff";       /* N = 2^63 - 1 */
+    const char * over_word = "adf1 Q lball 5 b 0 0 8000000000000000";     /* N = 2^63 */
+    const char * neg_over_word = "adf1 Q lball 5 b 1 -8000000000000000 0"; /* v = -2^63 - 1 */
+
+    adf_text_limits_default(&wide);
+    wide.max_prec = LONG_MAX;
+    ADF_CHECK(wide.max_prec == LONG_MAX);
+    /* every field that fits an slong and is under max_prec is a field of a value of the type */
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, below, &wide, ADF_OK);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, at_2_60, &wide, ADF_OK);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, over_2_60, &wide, ADF_OK);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, neg_at_2_60, &wide, ADF_OK);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, neg_over, &wide, ADF_OK);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, word_max, &wide, ADF_OK);
+    /* -2^63 is the least slong, but its absolute value 2^63 is above every limit of the caller
+       (max_prec is an slong), so it is ADF_LIMIT whatever dp_fits_si says of the word */
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, exact_min, &wide, ADF_LIMIT);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, ball_min, &wide, ADF_LIMIT);
+    /* the word: 2^63 does not fit an slong, and -2^63 - 1 is not a value at all */
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, over_word, &wide, ADF_LIMIT);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, neg_over_word, &wide, ADF_LIMIT);
+    /* max_prec is the limit of the caller and comes first: the same texts under the default. */
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, over_2_60, NULL, ADF_LIMIT);
+    LIMIT_CASE(adf_lball_t, adf_lball_identical, adf_lball_init, lball_sentinel, adf_lball_clear,
+               adf_lball_load_str, adf_lball_dump_inspect, below, NULL, ADF_LIMIT);
+    /* The largest field that loads is a field of a value of the type: it is canonical, it dumps
+       back to the text it came from, and loading that dump gives an identical value. */
+    {
+        adf_lball_t x, y;
+        size_t len, len2;
+        char * t, * t2;
+
+        adf_lball_init(x);
+        adf_lball_init(y);
+        lball_sentinel(x);
+        ADF_CHECK(adf_lball_load_str(x, word_max, strlen(word_max), NULL, &wide) == ADF_OK);
+        ADF_CHECK(adf_lball_is_canonical(x) && x->N == LONG_MAX);
+        t = adf_lball_dump_str(&len, x);
+        ADF_CHECK_MSG(t != NULL && len == strlen(word_max) && memcmp(t, word_max, len) == 0,
+                      "the dump of the loaded value is \"%s\"", t);
+        ADF_CHECK(adf_lball_load_str(y, t, len, NULL, &wide) == ADF_OK);
+        ADF_CHECK(adf_lball_identical(x, y));
+        t2 = adf_lball_dump_str(&len2, y);
+        ADF_CHECK(len2 == len && memcmp(t2, t, len) == 0);
+        adf_str_free(t);
+        adf_str_free(t2);
+        adf_lball_clear(x);
+        adf_lball_clear(y);
+    }
+}
+
+/* The exponents of every local ball of a partial ball, and the radius mantissa of its
+   archimedean component. The exponents are decided as for one local ball (lball_exponent_word_and
+   _prec above: max_prec, then the word of the type; ADF_LBALL_EXP_MAX is no bound of the dump
+   loader). The radius mantissa: 10.2 wants an odd mantissa below 2^30 (mag.h:117), with the tag r
+   and with the tag c; the texts of the review u-review1 (finding F5) use the even midpoint 40,
+   which masks the radius, so the midpoint 5 (the ball [3, 7]) is used as well. */
+ADF_TEST(sball_exponent_and_radius_mantissa)
+{
+    adf_text_limits_t wide;
+
+    adf_text_limits_default(&wide);
+    wide.max_prec = LONG_MAX;
+    /* the exponents of a local ball of the partial ball, at the ends of the word */
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball n 1 5 b 1 0 1000000000000001",
+               &wide, ADF_OK);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect,
+               "adf1 Q sball n 2 2 x 0 1 0 5 b 1 0 1000000000000001", &wide, ADF_OK);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball n 1 5 x 1 1 -7fffffffffffffff",
+               &wide, ADF_OK);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball n 1 5 x 1 1 -8000000000000000",
+               &wide, ADF_LIMIT);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball n 1 5 b 1 0 8000000000000000",
+               &wide, ADF_LIMIT);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball n 1 5 b 1 0 1000000000000001",
+               NULL, ADF_LIMIT);
+    /* the radius mantissa: 2^30 + 1 is not below 2^30, and 2 is not odd */
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball r 40 0 40000001 0 0", NULL,
+               ADF_DOMAIN);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball r 40 0 2 0 0", NULL,
+               ADF_DOMAIN);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball r 5 0 40000001 0 0", NULL,
+               ADF_DOMAIN);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball r 5 0 2 0 0", NULL,
+               ADF_DOMAIN);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball c 40 0 40000001 0 0 0 0 0 0",
+               NULL, ADF_DOMAIN);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball c 40 0 2 0 0 0 0 0 0", NULL,
+               ADF_DOMAIN);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball c 5 0 40000001 0 1 0 0 0 0",
+               NULL, ADF_DOMAIN);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball c 5 0 2 0 1 0 0 0 0", NULL,
+               ADF_DOMAIN);
+    /* both sides of the radius bound: 2^30 - 1 is odd and below 2^30 */
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball r 5 0 3fffffff 0 0", NULL,
+               ADF_OK);
+    LIMIT_CASE(adf_sball_t, adf_sball_identical, adf_sball_init, sball_sentinel, adf_sball_clear,
+               adf_sball_load_str, adf_sball_dump_inspect, "adf1 Q sball c 5 0 3fffffff 0 1 0 0 0 0",
+               NULL, ADF_OK);
+}
+
 /* A survivor of the mutation run over src/dump.c: the check that a qclass of the form "pieces"
    with no piece is a semantic failure (conventions 5.10) must not run in a stage of 8.5 other than
    stage 6, or a text with a syntax error after that count would answer DOMAIN instead of PARSE.

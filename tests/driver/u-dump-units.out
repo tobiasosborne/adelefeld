@@ -36,3 +36,7 @@ error: PARSE
 error: PARSE
 error: UNSUPPORTED
 error: UNSUPPORTED
+[1]
+(3 +/- 2 ; 1 * [1])
+<3 +/- 2 ; [1]>
+error: PARSE
