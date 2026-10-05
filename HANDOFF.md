@@ -2,7 +2,7 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-10-04 22:51 to 2026-10-05 (CEST; orchestrator Claude Fable on the laptop; Opus, Sonnet, codex and pi lanes): START HERE
+## Session 2026-10-04 22:51 to 2026-10-05 05:55 (CEST; orchestrator Claude Fable on the laptop; Opus, Sonnet, codex and pi lanes): START HERE
 
 **One line.** Every work package of milestone 1F has code and a review: the local zeta factor landed (design
 d-zeta, code f-slice14, N-D20; review f-review15: no defect; test gaps repaired by f-repair9), the catalogue is
@@ -10,8 +10,10 @@ bug-hunted (f-review12: no finding) and refereed (f-review14: one test gap, repa
 refereed (f-review13) and repaired (f-repair8: eight test gaps, one cost defect). The driver holds local balls
 and partial balls (drv-ball); the five newer types have dump forms (u-dump1; review u-review1 found two
 BLOCKERS in the loader of the idele and the class, repaired by u-repair1). Milestone 3 has begun: design
-`docs/api-3.md` (d-quotient; reviewed q-review1; repaired; N-D21), `adf_qclass` in lift form (q-slice1).
-Everything named here is merged and pushed.
+`docs/api-3.md` (d-quotient; reviewed q-review1; repaired; N-D21), `adf_qclass` in lift form (q-slice1; review
+q-review2: no blocker) and its reduction `adf_qclass_reduce` (q-slice2, not reviewed). Everything named here is
+merged and pushed. Two lanes were STOPPED by the harness at about 05:50 (low memory) and are not merged: see
+"Stopped" below.
 
 **First commands.**
 
@@ -19,16 +21,16 @@ Everything named here is merged and pushed.
     tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
     ~/Projects/quota-app/target/release/quota; date
 
-**Master.** All five suites pass on `98de549` (the merge of u-repair1): 83 test programs, driver 69 cases,
-exports 499 of 499, Julia, both self-tests; `san` with leak detection; run from 03:34 to 03:52 on 2026-10-05,
-one suite after the other.
+**Master.** All five suites pass on `2cb9e57` (the merge of q-slice2; only briefs and records came after it):
+84 test programs, driver 70 cases, exports 500 of 500, Julia, both self-tests; `san` with leak detection; run
+from 05:33 to 05:45 on 2026-10-05, one suite after the other.
 
 **Rules of TJO for this session** (2026-10-04 22:55; memory `orchestration-model-tiers`, top block): work up to
 5 points OVER pace on Claude and Codex; no Fable subagents; Opus for coding, Sonnet for busywork and research;
 codex `gpt-6.1-sol` xhigh; `gpt-6-astra` allowed for hard cognition; 2 to 3 subagents at a time; the pi agent
 with `space-bunny-alpha`. The other Claude session (initech-os) had the same rule; the two agreed shares by
-cross-session messages (worklog). Quota at 03:52: Claude weekly 78.0%, 0.7 over pace; Codex weekly 22.0%, 3.8
-under (it was 9.0% at 22:51: both sessions).
+cross-session messages (worklog). Quota at 05:33: Claude weekly 79.0%, 0.7 over pace; Codex weekly 23.0%, 3.8
+under (they were 71.0% and 9.0% at 22:51: both sessions).
 
 **What landed** (brief `lanes/<lane>/brief.md`; report `result.md` for Claude lanes, `report.md` for codex and
 pi lanes; times and counts in `docs/worklog/2026-10-04-evening.md`).
@@ -45,26 +47,35 @@ pi lanes; times and counts in `docs/worklog/2026-10-04-evening.md`).
 | d-quotient | codex astra | `docs/api-3.md` (40 declarations, Q1 to Q5), `proto/quotient3_checks.py` | q-review1 |
 | f-review14 | pi | referee of Y1 to Y15; 40 planted faults | 1 fault passed: check added by the orchestrator. Weaker evidence than f-review13 |
 | f-review15 | codex sol | review of the zeta code, own oracle (mpmath, 608580 samples); 13 faults | no defect; 5 faults passed: f-repair9 |
-| q-slice1 | codex sol | `adf_qclass`, lift only: `qclass.h`, `src/qclass.c`, text, driver `qadd_rat`, Julia, `docs/api-3a.md` | q-review2 (pi): see below |
+| q-slice1 | codex sol | `adf_qclass`, lift only: `qclass.h`, `src/qclass.c`, text, driver `qadd_rat`, Julia, `docs/api-3a.md` | q-review2 (pi): no blocker, 2 MINOR (`docs/reviews/m3/review-qclass-lift.md`) |
+| q-slice2 | codex sol (3 hours) | `adf_qclass_reduce` (slices 3.1-b, 3.1-c: algorithm R, the kernel Q1, the piece limit), the union text printed, driver `qreduce`, Julia; `test_qclass_reduce` 150122 checks | NOT reviewed (q-review3 was stopped) |
 | f-repair9 | codex sol | three test families; the test no longer crashes under faults; the derivative bound without `log(pi)` (proof in Y16) | the proof read by the orchestrator only; F5 open (adf-c9b) |
 | q-review1 | pi | review of `docs/api-3.md`, own oracle, 15 mutants of the author's oracle | VALID 14, MINOR 9, INVALID 0 |
 | u-review1 | Sonnet | review of the dump forms and the driver ball kinds, about 900000 variant texts | 2 BLOCKERS, 1 MAJOR test gap, 2 MINOR: u-repair1 |
 | d-quotient-repair | pi | repairs R1 to R12 in `docs/api-3.md`; oracle pins the rounding direction and the boundary glue | two of the review's own repair texts corrected |
 | u-repair1 | pi | `dp_arb_sign` repaired; no abort reachable from a text; 3.1 million dumps decided three ways | the review's differential check: 0 mismatches |
 
-**Running when this was written (03:55):** lane q-slice2 (codex sol: `adf_qclass_reduce`, slices 3.1-b and
-3.1-c, since 02:32) and lane q-review2 (pi: review of q-slice1, since 02:50). Look in
-`../adelefeld-wt/q-slice2/lanes/q-slice2/` and `../adelefeld-wt/q-review2/lanes/q-review2/` for `report.md`;
-if this paragraph is still here, they were not merged by this session.
+**Stopped, not merged.** At about 05:50 the harness stopped both running lanes because the machine was
+critically low on memory (the session was idle; at 05:53 `free` showed 23 GB available again, swap of 1 GB
+full; the other session's certificate with emulators was running). They were NOT started again: the harness
+says to restart only when asked.
+- Lane q-review3 (pi; the review of `adf_qclass_reduce`; brief `lanes/q-review3/brief.md`): 20 minutes in; an
+  exact model, a harness and nine probes exist in `../adelefeld-wt/q-review3/lanes/q-review3/`, no report. To
+  continue: `RESUME=1 LANE_TIMEOUT=7200 tools/orch/wt_lane.sh q-review3 pi openrouter/stealth/space-bunny-alpha
+  high` (the runner continues the last pi session), or start it afresh.
+- Lane q-slice3 (codex sol; the additive character on adeles, slice 3.2-a; brief `lanes/q-slice3/brief.md`,
+  bead adf-ewi): 20 minutes in; `include/adelefeld/psi.h`, `src/psi.c`, driver changes and a vector generator
+  exist in `../adelefeld-wt/q-slice3/`, no test file yet, no report. To continue:
+  `tools/orch/wt_lane.sh q-slice3 codex gpt-6.1-sol xhigh` (the runner resumes the codex session when
+  `lanes/q-slice3/session.id` is not empty; else it starts afresh on the files that exist).
 
 **The next steps**, in this order:
-1. Land q-slice2 and q-review2 (commit in the worktree, merge, old fixtures, five suites, push). A repair lane
-   for what q-review2 finds.
-2. Milestone 3, the next slices of `docs/api-3.md` section 7: 3.2-a (exact phase getters, the additive
-   character on adeles, default and strict), 3.1-d (raw pieces, the union text, dump), 3.1-e (the three set
+1. Restart the two stopped lanes (above) when the machine has memory: `free -g` first; land them (commit in
+   the worktree, merge, five suites, push); a repair lane for what q-review3 finds.
+2. Milestone 3, the next slices of `docs/api-3.md` section 7 after 3.2-a: 3.1-d (raw pieces, the union text, dump), 3.1-e (the three set
    queries with the preflight of N-D21), 3.2-b, 3.2-c. One codex or Opus lane per slice; a review by the other
    family after two slices.
-3. Reviews still owed: q-slice2 when it lands; the change of `src/localfactor.c` by f-repair9 (the bound
+3. Reviews still owed: q-slice2 (q-review3, stopped); the change of `src/localfactor.c` by f-repair9 (the bound
    without `log(pi)`: a referee of Y16 steps 1 to 7); adf-c9b (is the factor `M0` of that bound needed).
 4. TJO's answers (below).
 5. Left from before, unchanged: the per-place variant of SPEC 9.3.1; `x^(e/n)` of an exact rational at all
