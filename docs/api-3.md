@@ -1,7 +1,8 @@
 # Milestone 3: quotient sets and the Tate additive character
 
-Design by lane d-quotient, 2026-10-05. No public header or implementation is changed.
-This is a review proposal. D3-1 to D3-3 below require decisions before their dependent slices.
+Design by lane d-quotient, 2026-10-05; repaired after the review q-review1 by lane d-quotient-repair,
+2026-10-06. No public header or implementation is changed. D3-1, D3-2 and D3-3 were taken by the
+orchestrator on 2026-10-05 and are written into section 6 as taken; they become N-D21 in SPEC 15.4.
 SPEC 6 and its decisions remain authoritative. References to Q1 to Q5 mean statements proved below.
 The executable oracle is `proto/quotient3_checks.py`; examples E1 to E4 are printed by that program.
 
@@ -31,7 +32,7 @@ typedef const adf_qclass_struct *adf_qclass_srcptr;
 Let pi be `A -> A/Q`. LIFT means `pi(piece[0])`, with len = 1 and any canonical adele.
 PIECES means `union_i pi(piece[i])`, with len >= 1. The coordinates of each adele are independent.
 There is no implicit clipping of its real ball at 0 or 1. The empty set is not representable.
-The proposed operations all take nonempty sets to nonempty sets, so no empty tag is needed.
+Every operation declared here takes nonempty sets to nonempty sets, so no empty tag is needed.
 
 For PIECES, each adele is canonical, its real midpoint is in `[0,1]`, and its finite canonical global
 triple has `d = 1`, `H >= 0`: `0 <= A < H` for H > 0, arbitrary integer A for H = 0.
@@ -61,13 +62,14 @@ Two outputs never alias. On a non-OK status every ordinary output, including a t
 Implement status-bearing calls with temporary values and swap only after all checks succeed.
 Use `p = max(prec,2)`. For numerical calls, `prec > ADF_REAL_PREC_MAX` gives LIMIT first.
 
-Resource policy proposed in D3-2: before constructing exact rational endpoints, reject an absolute binary
+Resource policy of D3-2, taken 2026-10-05: before constructing exact rational endpoints, reject an
+absolute binary
 exponent above `2^20`, and a projected numerator or denominator above `2^21` bits, with LIMIT.
 Call these `ADF_QCLASS_EXP_MAX` and `ADF_QCLASS_BITS_MAX`. Apply the bit bound to intermediate exact
 rationals, common moduli, and finite phases as well. Check projected sizes before shifts or products.
 These are explicit implementation bounds, not a claim about the largest mathematically decidable input.
 Lifts, copying, identity translation, and dumping retain their existing unrestricted representation contract.
-The dump's existing exponent bound applies only to PIECES (SPEC M1-D9), independently of this proposal.
+The dump's existing exponent bound applies only to PIECES (SPEC M1-D9), independently of this policy.
 The algebraic Python oracle has no such bit bound. Tests of C must cover the limit boundary separately.
 
 Costs below count arithmetic on b-bit integers as `M(b)` for multiplication, with gcd/division costs stated
@@ -166,7 +168,9 @@ Algorithm R, per stored adele `[lo,hi] x (a + N Zhat)`:
 4. Count with arbitrary-precision integers before allocating. B already lower-bounds the count;
    reject B above the remaining limit before looping. Sum the integer-range lengths with saturation
    at limit+1. Only then convert to slong and check the allocation byte product for overflow.
-   The limit counts this construction, before rounding and deduplication. There is no full-image shortcut.
+   This preflight is the one of R5, the second repair of section 2.3; D3-2, taken 2026-10-05,
+   requires it wherever a count can be huge. The limit counts this construction, before rounding and
+   deduplication. There is no full-image shortcut.
 5. Apply Q1 to each exact interval, then sort by the *stored rounded* keys and remove duplicates.
    No merging is required. The invariant is on the midpoint, not on the exact endpoints of the stored ball.
 
@@ -176,7 +180,7 @@ E1 is the SPEC wrapping example; E2 is `[0,1] x (0 + 2 Zhat)` and constructs one
 E3, `(0 ; 0 mod 1/2)`, constructs two real points, at 0 and 1/2, both with finite radius 1.
 E4 is the zero class, with finite radius 0 throughout. No exact finite point becomes Zhat.
 
-There is deliberately no single-piece-only reduction function in this proposal. Every reduction result
+There is deliberately no single-piece-only reduction function in this design. Every reduction result
 has a list, even when len = 1. A limit of 1 is a resource request and gives LIMIT when exceeded,
 not NEEDS_SPLIT (conventions:181). NEEDS_SPLIT remains the specified status for any future function whose
 *result type* permits only one piece. Determining a minimal one-piece representation is not confused with
@@ -184,8 +188,9 @@ counting R's construction: quotient P6:148-151 already warns that pieces can mer
 
 ### 2.3 Comparison of represented sets
 
-These declarations require D3-1, an explicit exception to the status-free predicate row of conventions 3.2.
-They are not declarations of point comparison. All finite canonical input data determine an answer.
+D3-1 was taken on 2026-10-05 (section 6): these three declarations are an explicit exception to the
+status-free predicate row of conventions 3.2, and the same decision amends that row. They are not
+declarations of point comparison. All finite canonical input data determine an answer.
 
 ```c
 /* Write 0 or 1 to truth on OK: respectively equality, first set inside second,
@@ -194,14 +199,20 @@ They are not declarations of point comparison. All finite canonical input data d
    NOT_DETERMINED is not used for represented sets; no unknown endpoints occur in arb.
    Inputs may alias; truth cannot alias any member. Source: quotient P9:212-226,
    extended by Q2 for spill, containment, overlap, and zero finite radii.
-   Cost: K exact pieces; O(K log K) endpoint sorting; O(K^2 L) simple fiber work,
-   memory O(K+L) plus exact integers. L is the lcm of the positive finite moduli. */
+   Cost: K exact pieces; O(K log K) endpoint sorting; `(2E+1) K L` fiber work, which is
+   `O(K^2 L)` because `E <= 2K`; memory `O(K+L)` plus exact integers. L is the lcm of the positive
+   finite moduli. */
 int adf_qclass_equal_set(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
 int adf_qclass_contains(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
 int adf_qclass_overlaps(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
 ```
 
 Use exact R without real rounding as an internal normalization. Q2 decides all three relations.
+The normalization is itself bounded: before the loop of R step 2, reject `B > work_limit`, and
+accumulate the integer-range lengths of R step 4 with saturation at `work_limit + 1`. Only a value
+that passes this preflight is normalized. The cost of the normalization therefore does not depend
+on the numeric value of `denominator(N)`, and a LIFT whose finite radius is `1/10^100` is refused
+before the loop rather than after it.
 Budget: require raw K <= work_limit, L <= work_limit, and `(2E+1) K L <= work_limit`, where E is
 the number of distinct real endpoints. Compare these integer expressions before allocation.
 This deliberately conservative budget has no undocumented wall-clock promise. Return LIMIT even if a
@@ -219,7 +230,11 @@ Choosing a half-open section does not remove the carry. A quotient ring multipli
 ```c
 /* y = x + pi(q) = x exactly, preserving representation and all contexts.
    Never fails; y may equal x. Cost one class copy. Do not call adele_add_rat.
-   Source: quotient P10.1:236. q is validated by its ordinary canonical precondition. */
+   Source: quotient P10.1:236. q is validated by its ordinary canonical precondition.
+   Status row: open. conventions:199 lists the types whose ring arithmetic is void (adf_rat,
+   adf_fball, adf_adele, adf_cadele); adf_qclass is not among them, while adf_qclass_add
+   returns a status. This call stays void until conventions 3.2 is amended; the amendment is
+   requested in section 9, R8. */
 void adf_qclass_add_rat(adf_qclass_t y, const adf_qclass_t x, const adf_rat_t q);
 
 /* y encloses {-u : u in x}. Negate each stored real interval and finite ball,
@@ -316,8 +331,10 @@ This project keeps `conj(psi(xy))`, so its real kernel is positive and finite ke
 The thesis's own section number remains [source pending: lawful readable Tate thesis, section 2.2].
 It is not required to establish the project definition, which has the on-disk exposition above.
 
-Analysis Lemma 2:76-101 proves additivity, triviality on Q, and the ball image. In particular step 2:87-88
-proves that psi descends to A/Q. No isolated local factor descends to the quotient: rational translation
+Analysis Lemma 2:76-101 proves additivity, triviality on Q, and the ball image. Step 4:92-94 proves
+that psi descends to `A/Q`: subtract `sum_p fp_p(x_p)`, then `floor(x_inf - q)`, and use the
+uniqueness of the representative in `[0,1) x Zhat`. Step 2:87-88 proves only `psi(q) = 1` for
+rational `q`. No isolated local factor descends to the quotient: rational translation
 changes it, although the product cancels. Accordingly there is no `adf_qclass_psi_tate_at`.
 
 Numerical outputs use ordinary `acb_t`, not `adf_cadele` and not `adf_char`.
@@ -349,22 +366,25 @@ int adf_adele_psi_tate(acb_t z, const adf_adele_t x, slong prec);
 /* Same enclosure and cost, but NOT_DETERMINED if denominator(N) > 1, before numerical
    evaluation. Integer N includes zero. Real uncertainty is allowed. LIMIT precedence
    for precision and preflight size checks remains first. CV-07 and CV-59 already
-   decide this behavior; it is not a question for TJO. */
+   decide this behavior; it is not an open question. */
 int adf_adele_psi_tate_strict(acb_t z, const adf_adele_t x, slong prec);
 
 /* z encloses psi of the whole represented class set: union the exact numerical
    coordinate extrema of all stored entries, then form one rectangular enclosure.
    OK, LIMIT, NOT_DETERMINED as above; every constituent must succeed. Statuses
    combine by maximum. Cost O(len) rational phase reductions and cosine evaluations.
-   Source: analysis L2:87-88 and Q4. No member aliasing. */
+   Source: analysis L2 step 4:92-94 (descent to A/Q) and Q4. No member aliasing. */
 int adf_qclass_psi_tate(acb_t z, const adf_qclass_t x, slong prec);
 
-/* Proposed D3-3: apply the strict finite-radius certificate to EACH STORED entry.
+/* D3-3, taken 2026-10-05: apply the strict finite-radius certificate to EACH STORED entry.
    NOT_DETERMINED if any entry has fractional finite radius; otherwise the same
    enclosure as the default. This certifies those representatives, not a singleton
    phase set. A legal PIECES value always passes this particular certificate.
-   Status may therefore change after exact reduction; numerical image does not.
-   Other statuses, outputs, cost, aliasing: as qclass_psi_tate. */
+   The status may change under an exact reduction that preserves the image set: the lift of
+   E3, whose finite radius is 1/2, is NOT_DETERMINED, and its exact two-piece reduction has
+   integral radii and passes, and both have the image {+1,-1}. That sentence is part of the
+   contract of this function, not a remark. Other statuses, outputs, cost, aliasing: as
+   qclass_psi_tate. */
 int adf_qclass_psi_tate_strict(acb_t z, const adf_qclass_t x, slong prec);
 
 /* Local character on a local ball a+p^e Z_p (or an exact rational).
@@ -378,14 +398,20 @@ int adf_qclass_psi_tate_strict(acb_t z, const adf_qclass_t x, slong prec);
 int adf_lball_psi_tate(acb_t z, const adf_lball_t x, slong prec);
 int adf_lball_psi_tate_strict(acb_t z, const adf_lball_t x, slong prec);
 
-/* psi_v on the projection of x at v. At infinity use E(-I); both variants permit
-   real uncertainty. At a prime use a+p^v_p(N) Z_p; N=0 means exact.
-   Same output/status contract as the local calls. v is a canonical place handle.
-   No factorization: remove powers of the selected prime from a and N.
+/* psi_v on the projection of x at v. At infinity use E(-I); at a prime use
+   a + p^v_p(N) Z_p with N = 0 exact. Both variants permit real uncertainty.
+   v is a canonical place handle, an opaque 8-byte value (conventions 7:1028-1037).
+   DOMAIN, with where = v, if v is not a place of x. adf_adele has no arch tag and always
+   has the archimedean place and every prime (conventions 5.5:569-582, adele.h:119-128), so for
+   a canonical v that case is empty for this signature; arch = ADF_ARCH_NONE = 0 belongs to
+   adf_sball, whose place set is {infinity} only if arch != 0 (conventions 5.9:697-710), and the
+   same sentence covers that type if a later slice adds it. where may be NULL and is untouched
+   on OK. No factorization: remove powers of the selected prime from a and N.
    LIMIT precedence and costs as above; no member aliasing. The product over all
    places recovers the adelic character, but arbitrary acb products may be wider. */
-int adf_adele_psi_tate_at(acb_t z, const adf_adele_t x, adf_place_t v, slong prec);
-int adf_adele_psi_tate_strict_at(acb_t z, const adf_adele_t x, adf_place_t v, slong prec);
+int adf_adele_psi_tate_at(acb_t z, adf_place_t *where, const adf_adele_t x, adf_place_t v, slong prec);
+int adf_adele_psi_tate_strict_at(acb_t z, adf_place_t *where, const adf_adele_t x, adf_place_t v,
+                                 slong prec);
 
 /* Exact phase getters: OK writes canonical theta iff the ENTIRE image is a
    singleton; NOT_DETERMINED otherwise. LIMIT for D3-2 arithmetic bounds, first.
@@ -406,6 +432,13 @@ int adf_lball_psi_tate_phase(fmpq_t theta, const adf_lball_t x);
    Source: refs/src/flint-3.0.1/arb.rst:1125-1138. */
 int adf_phase_get_acb(acb_t z, const fmpq_t theta, slong prec);
 ```
+
+The four calls `adf_qclass_psi_tate`, `adf_qclass_psi_tate_strict`, `adf_qclass_psi_tate_phase` and
+`adf_phase_get_acb` belong to the row "Characters, Gauss sums, local factors" of conventions 3.2
+(conventions:223), not to the row "Quotient by `Q`" (conventions:222), because they return
+`NOT_DETERMINED`, which the latter row does not contain. conventions:886-887 says the class
+character functions are the same functions as the adele ones, which points to the character row.
+The status row of `adf_qclass_add_rat`, which is `void`, is a separate open question (section 2.4).
 
 The criterion in the exact phase getters is deliberately stronger than `_strict` on an adele.
 For example, E1 passes the strict finite-radius check but has a real arc of possible values.
@@ -434,7 +467,9 @@ The internal cap is not an assertion that the correct phase is undefined.
 Clip certified cosine bounds to [-1,1]. For each coordinate take the minimum lower bound and
 maximum upper bound over constituents.
 Round their midpoint to p bits and the required radius upward to 30 bits, followed by one successor,
-as in Q1. Use sign symmetry for negative midpoints. A zero required radius stays zero.
+as in Q1, using the second form of Q1: a hull coordinate lies in `[-1,1]` and is not a stored piece,
+so the midpoint is unrestricted there and the invariant of section 1 does not apply to it. Only the
+claim about the midpoint of a stored piece needs `h <= 1`. A zero required radius stays zero.
 If the true coordinate width is W, every stored endpoint exceeds its true hull endpoint by at most
 
     4 epsilon + 2^-28 (W/2 + 2 epsilon).
@@ -485,13 +520,18 @@ binary bits of `(l+h)/2`. Put d = max(m-l,h-m). If d = 0 use radius 0.
 Otherwise let u be the least 30-bit binary number >= d and let rho be its least 30-bit successor.
 Store `[m-rho,m+rho]`. It encloses `[l,h]`, has midpoint in `[0,1]`, and, writing
 eta = abs(m-(l+h)/2), each endpoint excess is at most `2 eta + 2^-28 d`.
+The statement and its excess bound use only `l <= m <= h`, so they hold unchanged for
+`-1 <= l <= h <= 1`; only the claim about the midpoint needs `h <= 1`. Section 3.3 uses the second
+form, for which the midpoint is unrestricted. The hypothesis of the first form is unchanged.
 
 1. Binary rounding to nearest is monotone and fixes 0 and 1. Thus its rounded midpoint stays in `[0,1]`.
    Correct rounding is the on-disk contract `refs/src/flint-3.0.1/arf.rst:24-35`.
 2. `d = (h-l)/2 + eta` and rho >= d, so both exact endpoints are enclosed.
-3. In a binade, the spacing of 30-bit positive numbers is at most `2^-29` times the smaller
-   endpoint's value. RU contributes less than one such spacing. Its successor contributes at most
-   another spacing, including when RU lands on a power of two. Their sum is at most `2^-28 d`.
+3. Let `s = 2^(e-30)` be the spacing of the binade `[2^(e-1), 2^e)` holding `d`; then
+   `2s = 2^-28 2^(e-1)`. Since `u` is the least 30-bit number at least `d`, we have `2^(e-1) <= d`
+   and `u - d < s`. If `u < 2^e` then `rho = u + s`, so `rho - d < 2s = 2^-28 2^(e-1) <= 2^-28 d`.
+   If `u = 2^e` then `d > u - s` and `rho = u + 2s`, so `rho - d < 3s`, while
+   `2^-28 d > 2^-28 (2^e - s) = 4s - 2^-28 s > 3s`. So `rho - d <= 2^-28 d` in both cases.
 4. Replacing the midpoint creates at most 2 eta of excess at either end. Adding rho-d proves the bound.
 5. rho has a 30-bit mantissa and is representable in mag (its format is documented at
    `refs/src/flint-3.0.1/mag.rst:6-15`). Construct it exactly from its mantissa/exponent. Do not assume
@@ -563,9 +603,14 @@ Its exact rectangular hull is
 1. Analysis L2:78-91 gives the B evenly spaced centre phases and the real uncertainty r.
    The closest centre to t has circle distance `dist(B(t-b),Z)/B`. Thickening by r makes the
    distance to the image the stated maximum with zero. All these distances are in `[0,1/2]`.
-2. Cosine decreases from 1 to -1 as circle distance from 0 increases from 0 to 1/2.
-   Its maximum therefore occurs at the image point nearest 0; its minimum is minus the cosine
-   of the distance to 1/2. Sine is cosine shifted by 1/4. This proves all four extrema.
+2. Cosine decreases from 1 to -1 as circle distance from 0 increases from 0 to 1/2, and for every
+   real `t` one has `dist(t,Z) = 1/2 - dist(t-1/2,Z)`: write `u = t mod 1`, then
+   `dist(t,Z) = min(u,1-u)`; for `u < 1/2` it is `min(u+1/2,1/2-u) = 1/2-u`, and for `u >= 1/2` it
+   is `min(u-1/2,3/2-u) = u-1/2`, which in both cases equals `1/2 - min(u,1-u)`. The largest circle
+   distance from 0 over the image is therefore `1/2 - d(1/2)`, and `cos(2 pi (1/2 - x)) = -cos(2 pi x)`.
+   The real maximum occurs at the image point nearest 0 and its minimum is minus the cosine of the
+   distance to `1/2`. Sine is cosine shifted by 1/4, and the same identity with `1/4` gives the
+   imaginary coordinate. This proves all four extrema.
 3. In particular the image is the full circle iff `2r >= 1/B`: the B equal arcs close all the
    gaps. Otherwise the displayed formula still holds for separated arcs and for r = 0.
 4. For B = 1, angle interval width w = 2r. The Euclidean diameter of the image is
@@ -645,10 +690,14 @@ crossing; fractional pieces missing; finite points widened.
 **reduce limits**. `check_count_limit`; limit K-1 and K; huge denominator and width. slong overflow,
 allocation before count, LIMIT confused with NEEDS_SPLIT.
 
-**reduce rounding**. `round_piece`, Q1 excess bound; p = 20,53,128 on non-dyadic endpoint. inward bound,
-midpoint outside range, clipping spill, unbounded extra radius.
+**reduce rounding**. `round_piece`, Q1 excess bound; p = 20,53,128 on non-dyadic endpoint. Compare the
+radius with the exact kernel of Q1, not only with the bound: least 30-bit number at least the required
+radius, then its successor, including cases whose nearest 30-bit value lies below the required radius.
+inward bound, midpoint outside range, clipping spill, unbounded extra radius.
 
-**equal_set**. `compare`; arbitrary mixed moduli, exact fibers, glued endpoints. P9 refinement restricted to
+**equal_set**. `compare`; arbitrary mixed moduli, exact fibers, glued endpoints. The pair
+`[1/2,1] x (0 mod 3)` against `[0,1/2] x (2 mod 3)`, which meets only in the glued class, and the
+family of it for every centre and modulus from 2 to 8. P9 refinement restricted to
 one residue; point comparison substituted.
 
 **contains**. `compare` second result, both directions. reversing first-inside-second; a coset covered by
@@ -701,7 +750,9 @@ Six quotient faults, limited to the implementing slice's files:
 
 1. Use k rather than k+1 pieces. Kill with E1 and `check_count_limit`.
 2. Include a spurious upper-end singleton by using floor(hi) instead of ceil(hi)-1. Kill with E2.
-3. Glue m to m+1 instead of m-1. Kill with the modulus-3 boundary witness in `check_fault_witnesses`.
+3. Glue m to m+1 instead of m-1. Kill with the modulus-3 boundary witness in `check_fault_witnesses`,
+   which distinguishes m+1 from m-1. A deleted glue is a different fault: kill it with the glued-pair
+   family of the `sets` group, which fails without the two lines of Q2 step 2.
 4. Keep only one fractional-radius branch. Kill with E3 and the denominator-3 fault witness.
 5. Refine a modulus N to only one residue modulo L. Kill with the mixed-modulus membership witness.
 6. Treat finite radius zero as modulus 1. Kill with exact-fiber versus Zhat containment and equality tests.
@@ -726,34 +777,43 @@ the existing finite-ball reader. The Gauss boundary check reads every gauss.tsv 
 character angles from python-flint, lowers by exact angle matching on units, and sums at 90 digits.
 Its margin is 1e-75. This checks signs and primitive-conductor use, not the future Gauss implementation.
 
-## 6. Decisions for TJO
+## 6. Decisions D3-1 to D3-3, taken 2026-10-05
 
-Only these unresolved interface choices need decisions. The table is a proposal, not an approval request
-from this lane. Follow workflow rule 1: decide each when its first dependent slice is ready.
+Taken by the orchestrator on 2026-10-05 after the review q-review1. They become N-D21 in SPEC 15.4.
+The table states what was decided; the questions and the rejected alternatives are kept for the record
+and are not open.
 
-| ID | Question | Recommendation | Alternatives |
+| ID | Question | Decision | Alternatives not taken |
 |---|---|---|---|
 | D3-1 | Bounded set queries? | Status plus truth | Unbounded bool; bounded undecided |
 | D3-2 | Construction policy? | R, Q1, explicit bounds | Merged counts; tighter kernel; unbounded work |
 | D3-3 | Class strict meaning? | Per stored entry | Singleton image; new provenance fields |
 
-**D3-1**. How do bounded quotient SET queries report an unfinished computation? Recommendation: `int` status
-plus `int *truth`, OK or LIMIT; exact algorithm Q2. Amend the predicate row explicitly. Alternative: Keep
-status-free 0/1 and accept potentially very large exact work; or use a separately named bounded query with
-NOT_DETERMINED and document the status-row exception. CMP codes remain point comparisons.
+**D3-1**. The three quotient set queries `adf_qclass_equal_set`, `adf_qclass_contains`,
+`adf_qclass_overlaps` return a status and write `*truth`: `OK` or `LIMIT`, and `truth` is untouched on
+`LIMIT`. The budget is the one of section 2.3, with the preflight of R5. The point comparisons keep
+their `CMP` codes. Amend conventions 3.2 so that the row "Set predicates" reads `OK`, `LIMIT` for
+these three functions, with `truth` untouched on `LIMIT`; the point comparisons keep their `CMP`
+codes. (The amendment is requested here; conventions.md is not changed by this lane.) The rejected
+alternatives: status-free 0/1 with potentially very large exact work, or a separately named bounded
+query with `NOT_DETERMINED` and a documented status-row exception.
 
-**D3-2**. Which construction, rounding, and resource policy should the API promise? Recommendation: R counts
-before deduplication, no full-image shortcut; Q1 successor rounding; exact work bounded as section 1. Optional
-group arithmetic uses the same policy. Add LIMIT to the raw qclass-constructor status row explicitly.
-Alternative: Count merged output and implement a specified merging
-algorithm; use a tighter radius kernel and revise exact rounding vectors; allow unbounded bit work. Each is
-sound if its costs and tests are stated.
+**D3-2**. The construction count is taken before rounding and deduplication, and there is no
+full-image shortcut. The rounding kernel is Q1: the required radius rounded up to 30 bits, then its
+successor. The explicit work and bit bounds are those of section 1, with the preflight of R5 wherever
+a count can be huge. The optional group arithmetic uses the same policy. `LIMIT` is added to the raw
+qclass-constructor status row explicitly. The rejected alternatives: count the merged output, which
+needs a merging algorithm that does not exist; a tighter radius kernel, which would revise the exact
+rounding vectors; unbounded bit work, which contradicts D3-1.
 
-**D3-3**. What does `_strict` mean on a quotient represented by several pieces? Recommendation: Certify
-integral finite radii of stored representatives. Document representation-dependent success; exact phase getter
-has invariant singleton semantics. Alternative: Define class strict as singleton image, which rejects real
-uncertainty accepted by adele strict; or extend the struct/dump with provenance, which conflicts with the
-fixed current form and needs a separate design.
+**D3-3**. `_strict` on a class certifies each stored representative: `NOT_DETERMINED` if any stored
+entry has a fractional finite radius, and otherwise the same enclosure as the default. It certifies
+those representatives, not a singleton phase set, so a legal PIECES value can pass. The status may
+change under an exact reduction that preserves the image set, and that sentence is part of the
+contract of `adf_qclass_psi_tate_strict` (section 3.2). The exact phase getter keeps its invariant
+singleton semantics. The rejected alternatives: define class strict as singleton image, which rejects
+real uncertainty that adele strict accepts; or extend the struct and the dump with provenance, which
+conflicts with the fixed current form (conventions 5.10) and needs a separate design.
 
 
 Already decided: two qclass forms and their layout (5.10); closed pieces and midpoint invariant (M0-D4,
@@ -772,33 +832,33 @@ No Julia binding may guess a context lifetime or call into an uninitialized outp
 
 **3.1-a, about one lane-hour**. lifecycle, layout, set_adele/set_rat, form/length/get_piece, add_rat;
 LIFT-only text printing. `adf qclass '(0 ; 1/3)'`; `psi` predicts its later phase, lift preserves the supplied
-fields. Decision first: none.
+fields. Decision: none.
 
 **3.2-a**. fball and adele exact phase getters, phase_get_acb, adele psi default/strict.
 Call `adf psi '(0 ; 1/3)'`; use `psi`, `hull`, phase golden rows.
-Decision first: D3-2 numerical limits and hull rounding.
+Decision: D3-2 numerical limits and hull rounding, taken.
 
 **3.1-b**. Integer-radius and exact-radius reduction, all lifecycles and access retained.
 Call `adf qreduce '(1 +/- 0.1 ; 0 mod 2) + Q' with 2`; E1,E2,E4, count and rounding checks.
-Decision first: D3-2.
+Decision: D3-2, taken.
 
 **3.1-c**. fractional-radius reduction and re-reduction of stored spill. same qreduce with E3 and explicit
-limit 2; `reduce`, direct membership. Decision first: D3-2 already taken.
+limit 2; `reduce`, direct membership. Decision: D3-2, taken.
 
 **3.1-d**. raw pieces, full text, dump/inspect/bindings. `adf print 'union((0.5 ; 7)) + Q'`; qclass and dump
-goldens. Decision first: D3-2 constructor bounds.
+goldens. Decision: D3-2 constructor bounds, taken.
 
 **3.1-e**. three bounded set queries. `adf qcontains Q1 with Q2 with LIMIT`; `compare`, exact-cell membership,
-translation pairs. Decision first: D3-1.
+translation pairs. Decision: D3-1, taken.
 
 **3.2-b**. class default/strict and phase getter. `adf psi 'union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q'`; E3
-image. Decision first: D3-3.
+image. Decision: D3-3, taken.
 
 **3.2-c**. local character and adele place variants. `adf psi_at '(0 ; 1/3)' with 3`; `local_phase`,
-`local_image`. Decision first: D3-2 already taken.
+`local_image`. Decision: D3-2, taken.
 
 **3.1-f, optional**. class neg/add. `adf qadd Q1 with Q2 with LIMIT`; `add`, `neg`, constructed-piece
-enclosure. Decision first: D3-2 scope and policy.
+enclosure. Decision: D3-2 scope and policy, taken.
 
 
 Slice 3.1-a is intentionally a lift-only end-to-end feature. It does not ship a parser that pretends to
@@ -824,7 +884,7 @@ ccall((:adf_qclass_add, libadf), Cint,
 ```
 
 The foreign test must free every returned string, clear all initialized values on all paths, and compare
-status before reading output. The first slice does not require the decisions about expensive set queries.
+status before reading output. The first slice needs none of the D3 decisions.
 The 3.3/3.4 lanes should consume phase angles and the sign tests after 3.2-a; they need not wait for
 the optional quotient group arithmetic.
 
@@ -834,8 +894,10 @@ All witnesses are computed by `check_examples_findings`; none changes a source d
 There is no refutation of quotient P2, P3, P5, P6, P8, or P9 under its stated hypotheses.
 The old k versus k+1 wording is already repaired. It is not reported again as a new defect.
 
-**F1. The unqualified full-image sentence needs N > 0.** SPEC:402-403 and conventions:745 say the image
-is all of A/Q exactly when real width >= N. Radius zero is admitted by the types and P10:249.
+**F1. The unqualified full-image sentence needs N > 0.** SPEC:402-403 says the image is all of `A/Q`
+exactly when the real width is at least `N`; conventions:745 states only the sufficient direction
+("when `hi - lo >= N` the image is all of `A/Q`"), not "exactly when". Radius zero is admitted by
+the types and P10:249.
 E4 has width = N = 0 but is just the zero class; `(1/2 ; 0)` is missing. P7:97,158 assumes a
 positive integer radius and is not false. Q5 supplies the positive fractional extension and excludes zero.
 If the sentence is read under the preceding positive-radius hypothesis, this is a scope clarification.
@@ -845,17 +907,18 @@ equality of unions on balls can return CMP_UNDECIDED. Conventions:200 says set p
 SPEC:413-415 also permits an undecided ball comparison. The identical non-singleton set
 `[0,1] x (0+2 Zhat)` certainly equals itself as a quotient set, and Q2 decides every finite stored case.
 There is no uncertainty in its dyadic endpoints. A comparison of two unknown points is a different question.
-The proposed correction is a bounded SET query returning OK with truth or LIMIT (D3-1), not a silent
-use of CMP values as statuses. The existing struct suffices for these set questions.
+The correction (D3-1, taken 2026-10-05) is a bounded SET query returning OK with truth or LIMIT,
+not a silent use of CMP values as statuses. The existing struct suffices for these set questions.
 
 **F3. Class `_strict` success has no specified representation rule.** Conventions:883-887 fixes a strict
 finite-radius criterion for adeles and says the same functions exist for classes. E3's lift has radius 1/2
 and fails that criterion. Its exact two-piece representation has integer radii and each piece passes.
 Both images are `{+1,-1}`. Thus the rule cannot simultaneously be a per-entry certificate and have success
 depend only on the represented subset of A/Q. The struct has no ambiguity provenance. This is a missing
-contract, not a refutation of the well-defined default character or analysis Lemma 2. D3-3 resolves it.
+contract, not a refutation of the well-defined default character or analysis Lemma 2. D3-3, taken
+2026-10-05, resolves it.
 
-**F4. Literal translation equality needs exact translation before rounding.** SPEC:414-415 and
+**F4. Literal translation equality needs exact translation before rounding.** SPEC:413-414 and
 conventions:756-757 say translation does not change the pieces. P10.2 proves this for exact intervals;
 P10.3:240 explicitly gives only containment after outward rounding. Converting a translated zero adele
 at q = 1/3 to the oracle's 8-bit midpoint gives m = 171/512 with positive radius
@@ -874,3 +937,37 @@ CV-45 and M0-D4 remain valid, useful enclosure policies; this witness disputes o
 No projection to `R/Z x (finite quotient)` is named in SPEC 6. No API for it is missing from this scope.
 The absence of zero-radius and spill cases in P9 is an extension obligation, discharged by Q2, not a
 counterexample to P9's explicitly positive-radius, inside-domain hypotheses.
+
+## 9. Repairs after review q-review1
+
+Applied by lane d-quotient-repair, 2026-10-06, to this file and to `proto/quotient3_checks.py`.
+One line per repair: the tag, the place, what changed. R11 needed no text change.
+
+- R1, Q1 step 3: replaced the binade argument with the two cases `u < 2^e` and `u = 2^e`. Changed:
+  the repair text of the review had the false chain `2s = 2^-28 u <= 2^-28 d` (`u >= d` makes the
+  last step false); the applied text is `2s = 2^-28 2^(e-1) <= 2^-28 d`, which is exact, with
+  `2^(e-1) <= d`. The conclusion `rho - d <= 2^-28 d` and the numbering are unchanged.
+- R2, Q1 statement and section 3.3: added that the enclosure and the excess bound use only
+  `l <= m <= h` and therefore hold for `-1 <= l <= h <= 1`, while only the midpoint claim needs
+  `h <= 1`; replaced "Use sign symmetry for negative midpoints" in 3.3 by that second form.
+- R3, Q4 step 2: inserted the proof of `dist(t,Z) = 1/2 - dist(t-1/2,Z)` with both cases of `u`.
+- R4, F1: `SPEC:402-403` is cited for the "exactly when" sentence; `conventions:745` is now cited for
+  the sufficient direction only.
+- R5, section 2.3: inserted the preflight (reject `B > work_limit`, saturate the R step 4 sum at
+  `work_limit + 1`, normalize only what passes) before the budget sentence.
+- R6, section 2.3: the cost line now reads `(2E+1) K L` fiber work, `O(K^2 L)` because `E <= 2K`.
+- R7, section 3.2: `adf_adele_psi_tate_at` and `_strict_at` take `adf_place_t *where` after the value
+  output, return `DOMAIN` with `where = v` if `v` is not a place of `x`, and `where` may be NULL.
+  Changed: the review's premise "`conventions 5.5` allows `arch = 0`" is false for `adf_adele`, whose
+  struct has no arch tag (`conventions:569`, `adele.h:119-128`); `arch = ADF_ARCH_NONE` belongs to
+  `adf_sball` (`conventions:697-710`). The applied text says so and keeps the `DOMAIN` rule.
+- R8, section 3.2: added the sentence that the four calls returning `NOT_DETERMINED` belong to the row
+  "Characters, Gauss sums, local factors" (`conventions:223`), not to the row "Quotient by `Q`"
+  (`conventions:222`). Added the open status-row question of `adf_qclass_add_rat` in section 2.4.
+- R9, F4: the line reference is `SPEC:413-414`.
+- R10, section 6 and D3-1: the amendment of the row "Set predicates" is part of the decision as taken.
+- R12, section 3.1 and `adf_qclass_psi_tate`: the descent to `A/Q` is cited to step 4:92-94, not to
+  step 2:87-88, which proves triviality on `Q`.
+
+The decisions D3-1 to D3-3 were taken on 2026-10-05 and are written into section 6 as taken; no
+declaration of sections 2.2, 2.3 and 3.2 says "proposal" or "if D3-x is taken" any more.

@@ -1,0 +1,26 @@
+PASS reduction: 288 cases; 19470 independent rational membership comparisons; translation invariant
+PASS count_limit: 18 cases; closed endpoints, singleton, zero limit, enormous counts
+PASS sets: 188 cases; 37720 direct membership pairs; 68 glued-endpoint pairs; mixed moduli, exact fibers, spill
+PASS arithmetic: 600 cases; sum distributes over pieces; negation includes exact fibers
+EXAMPLE non_dyadic prec=20 excess_hi=1/17179869184
+EXAMPLE non_dyadic prec=53 excess_hi=471859/4503599627370496
+EXAMPLE non_dyadic prec=128 excess_hi=35652673131418951917094777651/340282366920938463463374607431768211456
+EXAMPLE rounding_direction: 171 of 732 required radii are rounded inward to nearest
+PASS rounding: 735 cases; RN midpoint, RU30 plus successor radius; 171 inward-to-nearest radii pinned against q1_radius; containment and CV-45
+PASS phases: 335 cases; product formula; local additivity at 2,3,5,7,11; finite split phases
+PASS hulls: 98 cases; 90 digits; margin 1e-75; extrema oracle versus enumerated arc endpoints
+PASS local_images: 128 cases; exact and exponents -3 through 3 at 2,3,5,7
+PASS ball_additivity: 180 cases; 1354 endpoint/gap witnesses; independent arc sums
+PASS golden_phases: 15 cases; 2 syntax/domain rows reserved for C parser tests
+PASS golden_qclass: 29 cases; 17 exact text-set enclosure checks; 12 status rows; no printer implemented
+PASS full_and_width: 66 cases; positive fractional threshold; six arc diameter and coordinate-width cases
+PASS gauss_boundary: 17 cases; 12 odd-character sign controls; exact lowering; 90 digits, 1e-75 margin
+EXAMPLE E1: [Piece(lo=Fraction(0, 1), hi=Fraction(1, 10), m=1, N=2), Piece(lo=Fraction(9, 10), hi=Fraction(1, 1), m=0, N=2)]; psi=PhaseImage(base=Fraction(0, 1), rad=Fraction(1, 10), order=1)
+EXAMPLE E2: [Piece(lo=Fraction(0, 1), hi=Fraction(1, 1), m=0, N=2)]; psi=PhaseImage(base=Fraction(1, 2), rad=Fraction(1, 2), order=1)
+EXAMPLE E3: [Piece(lo=Fraction(0, 1), hi=Fraction(0, 1), m=0, N=1), Piece(lo=Fraction(1, 2), hi=Fraction(1, 2), m=0, N=1)]; psi=PhaseImage(base=Fraction(0, 1), rad=Fraction(0, 1), order=2)
+EXAMPLE E4: [Piece(lo=Fraction(0, 1), hi=Fraction(0, 1), m=0, N=0)]; psi=0
+EXAMPLE inside_domain: Piece(lo=Fraction(7, 8), hi=Fraction(1, 1), m=0, N=2); encloses [9/10,1]
+EXAMPLE rounded_translate: midpoint=171/512, radius=715827883/1099511627776; proper inclusion
+PASS examples_findings: 11 cases; 4 reductions; zero-radius, strictness, rounding, set and inside-domain witnesses
+PASS fault_witnesses: 24 cases; 6 quotient and 6 phase wrong alternatives rejected; 12 midpoint and enclosure checks of the section 1 invariant
+15 checks
