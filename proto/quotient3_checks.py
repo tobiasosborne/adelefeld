@@ -267,6 +267,24 @@ def round_binary(q, bits, upward=False):
     return n*unit
 
 
+def q1_radius(d):
+    """Q1 radius stated again independently, in exact rationals and integer arithmetic.
+
+    A 30-bit number is k*2^(e-30) with 2^29 <= k < 2^30. The kernel is the least such number that
+    is >= d, then its successor. Written without round_binary, so that a change of round_binary's
+    rounding direction cannot hide behind this function.
+    """
+    if d <= 0:
+        return F(0)
+    e = d.numerator.bit_length()-d.denominator.bit_length()+1
+    while d < F(2)**(e-1):
+        e -= 1
+    while d >= F(2)**e:
+        e += 1
+    u = F(ceil(d/F(2)**(e-30)))*F(2)**(e-30)
+    return u + F(2)**((e if u < F(2)**e else e+1)-30)
+
+
 def round_piece(p, prec):
     """Q1 kernel: midpoint RN_p, radius strictly above a positive required radius.
 
@@ -333,9 +351,22 @@ def check_count_limit():
     record('count_limit', n, 'closed endpoints, singleton, zero limit, enormous counts')
 
 
+def brute_sets(x, y, wmax=20):
+    """The three set relations by direct membership on a finite witness grid; no fibers, no glue."""
+    eq, inc, ov, points = True, True, False, 0
+    for s in cells(normalize(x+y)):
+        for w in range(-wmax, wmax+1):
+            a, b = direct_member(x, s, w), direct_member(y, s, w)
+            eq &= a == b
+            inc &= not a or b
+            ov |= a and b
+            points += 1
+    return eq, inc, ov, points
+
+
 def check_sets():
     rng = random.Random(3102)
-    n = points = 0
+    n = points = glue = 0
     for _ in range(120):
         fams = []
         for _side in range(2):
@@ -349,18 +380,26 @@ def check_sets():
         L = lcm(*(p.N for p in norm if p.N))
         # For this bounded generator [-20,20] covers all exact centers and every residue
         # with at least one non-exceptional integer. The symbolic proof handles all Zhat.
-        eq, inc, ov = True, True, False
-        for s in cells(norm):
-            for w in range(-20, 21):
-                a, b = direct_member(x, s, w), direct_member(y, s, w)
-                eq &= a == b
-                inc &= not a or b
-                ov |= a and b
-                points += 1
+        eq, inc, ov, got = brute_sets(x, y)
+        points += got
         assert compare(x, y) == (eq, inc, ov)
         assert L <= 6
         n += 1
-    record('sets', n, f'{points} direct membership pairs; mixed moduli, exact fibers, spill')
+    # The boundary glue (1 ; z) = (0 ; z - 1): pairs that meet only in the glued class at real 0.
+    # Direct membership sees the class; compare must see it too.
+    for mod in range(2, 9):
+        for c in range(mod):
+            x = [Piece(F(1, 2), F(1), c, mod)]
+            y = [Piece(F(0), F(1, 2), c-1, mod)]
+            assert compare(x, y) == (False, False, True) == brute_sets(x, y)[:3]
+            glue += 1
+            if mod >= 3:
+                z = [Piece(F(0), F(1, 2), c+1, mod)]
+                assert compare(x, z) == (False, False, False) == brute_sets(x, z)[:3]
+                glue += 1
+    record('sets', n+glue,
+           f'{points} direct membership pairs; {glue} glued-endpoint pairs; mixed moduli, exact '
+           f'fibers, spill')
 
 
 def check_arithmetic():
@@ -394,11 +433,31 @@ def check_rounding():
                 bound = 2*eta + F(1, 2**28)*max(m-p.lo, p.hi-m)
                 assert p.lo-q.lo <= bound and q.hi-p.hi <= bound
                 n += 1
+    # Rounding direction, against the independent kernel q1_radius: the radius is rounded UP to 30
+    # bits and the successor is taken. The successor alone encloses, so only cases whose NEAREST
+    # 30-bit value is strictly below the required radius pin the direction.
+    inward = 0
+    for den in (7, 9, 11, 13, 17, 19, 23, 29, 31, 37):
+        for num in range(1, den):
+            p = Piece(F(num, den), F(num+1, den), 0, 2)
+            for prec in (20, 53):
+                q = round_piece(p, prec)
+                m = round_binary((p.lo+p.hi)/2, max(prec, 2))
+                need = max(m-p.lo, p.hi-m)
+                assert (q.lo, q.hi) == (m-q1_radius(need), m+q1_radius(need))
+                assert q.lo <= p.lo <= p.hi <= q.hi
+                if need and round_binary(need, 30, False) < need:
+                    assert round_binary(need, 30, False) < need <= q1_radius(need)
+                    inward += 1
+                n += 1
+    assert inward
     for prec in (20, 53, 128):
         q = round_piece(Piece(F(9, 10), 1, 0, 2), prec)
         assert q.hi > 1
         print(f'EXAMPLE non_dyadic prec={prec} excess_hi={q.hi-1}')
-    record('rounding', n+3, 'RN midpoint, RU30 plus successor radius; containment and CV-45')
+    print(f'EXAMPLE rounding_direction: {inward} of {n} required radii are rounded inward to nearest')
+    record('rounding', n+3, f'RN midpoint, RU30 plus successor radius; {inward} inward-to-nearest '
+                          f'radii pinned against q1_radius; containment and CV-45')
 
 
 def check_phases():
@@ -670,7 +729,18 @@ def check_examples_findings():
 
 
 def check_fault_witnesses():
-    """Twelve explicit wrong alternatives; these are controls, not a source mutation sweep."""
+    """Twelve explicit wrong alternatives; these are controls, not a source mutation sweep.
+
+    What this group proves: for each of the twelve named alternatives there is a concrete input on
+    which the oracle's answer differs from the required one, so that a C implementation making that
+    alternative is rejected by that witness. It does not prove that no other wrong alternative
+    passes; the mutation run of lanes/q-review1/mutate_oracle.py is separate evidence for that.
+    The invariant block below restates the storage rule of section 1 (the stored midpoint lies in
+    [0,1], the stored ball encloses the exact one) on pieces whose exact end points are not dyadic.
+    It is a second, independent place where a C implementation that violates the rule is caught; it
+    is not evidence against a mutation that only deletes an assertion of a true fact.
+    """
+    invariant = 0
     p = reduce(1, F(1, 10), Ball(0, 2))
     assert len(p) != 1                         # Q1: k instead of k+1
     assert reduce(F(1, 2), F(1, 2), Ball(0, 2)) != p  # Q2: spurious endpoint wrap
@@ -684,7 +754,16 @@ def check_fault_witnesses():
     assert len(phase_arcs(psi(Adele(0, 0, Ball(0, F(2, 3)))))) == 3  # P4: numerator roots
     assert nearest_distance(PhaseImage(F(0), F(1, 10), 1), F(0)) == 0  # P5: miss extrema
     assert hull(PhaseImage(F(0), F(0), 2)) != (-1, 1, -1, 1)  # P6: universal square
-    record('fault_witnesses', 12, '6 quotient and 6 phase wrong alternatives rejected')
+    for p in (Piece(F(9, 10), 1, 0, 2), Piece(F(-1, 16), F(1, 16), 0, 2),
+              Piece(F(0), F(1), 1, 3), Piece(F(-1, 3), F(1, 3), 5, 0)):
+        for prec in (2, 20, 53):
+            q = round_piece(p, prec)
+            assert 0 <= (q.lo+q.hi)/2 <= 1  # CV-45: the midpoint, not the end points
+            assert q.lo <= p.lo <= p.hi <= q.hi
+            invariant += 1
+    record('fault_witnesses', 12+invariant,
+           f'6 quotient and 6 phase wrong alternatives rejected; {invariant} midpoint and enclosure '
+           f'checks of the section 1 invariant')
 
 
 def main():

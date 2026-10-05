@@ -1,0 +1,25 @@
+PASS A_reduction_image: 720 cases; 208200 brute-force membership comparisons over rational grids
+PASS A2_rounded_superset: 360 cases; 414222 membership comparisons after Q1
+PASS B_piece_count: 293 cases; 153 integer-radius intervals: the RAW construction count equals k+1 in 153 of them (mismatches 0); it differs from the stored count in 33 cases, all by deduplication, first three [('-2', '0', 2, 1), ('-2', '1/4', 3, 2), ('-2', '1/2', 3, 2)]; 140 fractional cases, raw = sum of the per-ball counts, deduplication merged in 2
+PASS C_q1: 3246 cases; 2640 pieces x 5 precisions; enclosure, midpoint and excess bound held; radius-successor stress 606 binade neighbourhoods, violations 0, worst (rho-d)/d = 4095/1099511627777 = 3.724e-09, the bound needs it <= 1/2^28 = 3.725e-09
+PASS C2_q1_negative_midpoint: 374 cases; 374 intervals in [-1,1] with negative midpoints: enclosure and the excess bound still hold; Q1 as stated does not cover them
+PASS D_q2_named: 27 cases; 27 hand-made pairs; design-vs-brute-force differences 0: []
+PASS D2_q2_random: 300 cases; 300 random pairs, up to 3 pieces each, moduli 0,1,2,3,4,6, real parts in [-1,2]; differences 0
+PASS E_q3_arithmetic: 2048 cases; 1024 sums and 32 negations, 301500 brute-force membership comparisons
+PASS F_q4_hull: 360 cases; 360 (B,b,r) images; four-distance hull equals enumerated extrema (90 digits, 1e-60)
+PASS F2_q4_width: 7 cases; 7 arcs: coordinate width <= diameter; diameter attained or 2
+PASS F3_q4_additivity: 64 cases; 64 pairs of balls, 576 exact rational witnesses of psi(X+Y) = psi(X) psi(Y) as sets of angles
+PASS G_q5_positive_radius: 138 cases; 138 (N,width) pairs; every member tested for width >= N, 76 explicit missing points for width < N
+PASS G2_q5_zero_radius: 5 cases; 5 widths with N = 0; the image is never all of A/Q (E4 witness)
+EXAMPLE E1 [('0', '1/10', 1, 2), ('9/10', '1', 0, 2)]
+EXAMPLE E2 [('0', '1', 0, 2)]
+EXAMPLE E3 [('0', '0', 0, 1), ('1/2', '1/2', 0, 1)]
+EXAMPLE E4 [('0', '0', 0, 0)]
+EXAMPLE F4 translated [('0', '4294967297/3298534883328', 0, 0), ('3298534883327/3298534883328', '1', 1, 0)]
+PASS H_examples_findings: 6 cases; E1-E4 as stated; F1 to F5 witnesses reproduced
+PASS I_character_sign: 318 cases; 318 sign and product-formula cases; (0 ; 1/3) gives E(1/3); psi_inf is E(-x); fp_p(1/p^n) = 1/p^n as in notes.txt:700
+15 sections
+
+real	0m57,258s
+user	0m57,233s
+sys	0m0,013s

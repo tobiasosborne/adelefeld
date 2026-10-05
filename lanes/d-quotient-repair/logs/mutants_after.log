@@ -1,0 +1,33 @@
+unmutated: exit 0, 15 groups, last line: 
+M1_sign_of_character: exit 1; failing group phases (after 5 passed); AssertionError
+M2_piece_count_off_by_one: exit 1; failing group reduction (after 0 passed); AssertionError
+M3_closed_upper_end_made_open: exit 1; failing group reduction (after 0 passed); AssertionError
+M4_rounding_inward: exit 1; failing group rounding (after 4 passed); AssertionError
+M5_midpoint_invariant_dropped: exit 0; failing group (none) (after 15 passed); 
+M5b_midpoint_left_of_zero: exit 1; failing group rounding (after 4 passed); AssertionError
+M6_finite_radius_ignored_in_phase: exit 1; failing group phases (after 5 passed); AssertionError
+M4b_rounding_inward_without_successor: exit 1; failing group rounding (after 4 passed); AssertionError
+M8_refine_to_one_residue: exit 1; failing group sets (after 2 passed); AssertionError
+M9_contains_direction_reversed: exit 1; failing group sets (after 2 passed); AssertionError
+M10_equality_only_one_way: exit 1; failing group sets (after 2 passed); AssertionError
+M11_overlap_ignores_exact_points: exit 1; failing group examples_findings (after 13 passed); AssertionError
+M12_hull_ignores_radius: exit 1; failing group hulls (after 6 passed); AssertionError
+M13_zero_radius_becomes_modulus_one: exit 1; failing group sets (after 2 passed); AssertionError
+M7_no_glue: exit 1; failing group sets (after 2 passed); AssertionError
+summary
+    unmutated (0, 15, '')
+    M1_sign_of_character (1, 'phases', 'AssertionError')
+    M2_piece_count_off_by_one (1, 'reduction', 'AssertionError')
+    M3_closed_upper_end_made_open (1, 'reduction', 'AssertionError')
+    M4_rounding_inward (1, 'rounding', 'AssertionError')
+    M5_midpoint_invariant_dropped (0, '(none)', '')
+    M5b_midpoint_left_of_zero (1, 'rounding', 'AssertionError')
+    M6_finite_radius_ignored_in_phase (1, 'phases', 'AssertionError')
+    M4b_rounding_inward_without_successor (1, 'rounding', 'AssertionError')
+    M8_refine_to_one_residue (1, 'sets', 'AssertionError')
+    M9_contains_direction_reversed (1, 'sets', 'AssertionError')
+    M10_equality_only_one_way (1, 'sets', 'AssertionError')
+    M11_overlap_ignores_exact_points (1, 'examples_findings', 'AssertionError')
+    M12_hull_ignores_radius (1, 'hulls', 'AssertionError')
+    M13_zero_radius_becomes_modulus_one (1, 'sets', 'AssertionError')
+    M7_no_glue (1, 'sets', 'AssertionError')
