@@ -195,9 +195,9 @@ to prove the opposite.
 
 | Class of function | Possible statuses |
 |---|---|
-| Ring arithmetic of `adf_rat`, `adf_fball`, `adf_adele`, `adf_cadele` (add, sub, neg, mul, scale by exact rational) | none: `void` |
+| Ring arithmetic of `adf_rat`, `adf_fball`, `adf_adele`, `adf_cadele` (add, sub, neg, mul, scale by exact rational), and `adf_qclass_add_rat` (translation by a rational, the identity on every class) | none: `void` |
 | Ring arithmetic of `adf_scaled` (add, sub, neg, mul, `adf_scaled_mul_tight`, scale by exact rational) | `OK`, `DOMAIN` (the context-compatibility rule of 4.6 and 5.4, gate finding G1); the value output is untouched on `DOMAIN` |
-| Set predicates (`equal_set`, `overlaps`, `contains`) | no status: they return `int` 0 or 1 (2.3; the other predicates likewise) |
+| Set predicates (`equal_set`, `overlaps`, `contains`) | no status: they return `int` 0 or 1 (2.3; the other predicates likewise); exception: the three quotient set queries `adf_qclass_equal_set`, `adf_qclass_contains`, `adf_qclass_overlaps` return `OK` with the truth value written, or `LIMIT` with `truth` untouched (N-D21); the point comparisons keep their `CMP` codes |
 | Division of `adf_rat` by an `adf_rat`; scaling by the inverse of an exact rational | `OK`, `NOT_UNIT` (divisor exactly 0) |
 | Constructors from raw data (`_set_fmpz3`, `_set_arb_fball`, `adf_ucoset_set_fmpz2`, ...) | `OK`, `DOMAIN` |
 | Raw context constructors (5.14) | `OK`, `DOMAIN`, `UNSUPPORTED` (a block above one word or more than 65536 blocks) |
@@ -219,7 +219,7 @@ to prove the opposite.
 | Real functions on `arb` (`adf_real_exp`, `_log`, `_log_abs`, `_sin`, `_cos`, `_sqrt`, `_root`, `rfunc.h`) | `OK`, `DOMAIN` (every point outside the domain; a non-finite input ball; the root of degree 0), `NOT_DETERMINED` (a ball that meets the domain and its complement; a result that `arb` returns non-finite, CV-08), `LIMIT` (`prec` above `ADF_REAL_PREC_MAX`, decided first) |
 | Functions of `adf_sball` at one place (`adf_sball_exp_at`, `_log_at`, `_Log_at`, `_log_abs_at`, `_sin_at`, `_cos_at`, `_sqrt_at`, `_root_at`, with `where`) | as the two rows above, at the archimedean place (`prec` above the limit first) and at a prime through `lfunc.h` (where `prec` is an absolute `p`-adic precision, and no limit on it applies except those of `lfunc.h`); further `DOMAIN` (`v` is not a place of `x`; a root of degree 0), `UNSUPPORTED` (a complex tag at the archimedean place; `log_abs`, `sin`, `cos`, `sqrt`, `root` at a prime); `where` = the place |
 | Functions at places (`_at`) and all-places functions (`SPEC.md` 9.3) | `OK`, `DOMAIN` (with place), `NOT_DETERMINED`, `NEEDS_SPLIT`, `UNSUPPORTED`, `LIMIT` |
-| Quotient by `Q` | `OK`, `NEEDS_SPLIT`, `LIMIT` |
+| Quotient by `Q` | `OK`, `NEEDS_SPLIT`, `LIMIT`; the class character calls `adf_qclass_psi_tate`, `adf_qclass_psi_tate_strict` and `adf_qclass_psi_tate_phase` belong to the row below, not to this one, because they return `NOT_DETERMINED` (N-D21) |
 | Characters, Gauss sums, local factors | `OK`, `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `DOMAIN` (for an exact pole), `UNSUPPORTED`, `LIMIT` (`prec` above `ADF_REAL_PREC_MAX`, decided first; a stated bound of the algorithm, such as the 64 factors of the Gamma recurrence of `adf_local_zeta_factor_at`: `docs/design/local-zeta.md` Z4, N-D20) |
 | Reconstruction and solvers | `OK`, `NO_SOLUTION`, `NOT_UNIQUE`, `NOT_DETERMINED` ("uniqueness not certified", `SPEC.md` 9.2; a list of roots that is not proved complete), `LIMIT`, `DOMAIN` (a modulus below 1, the zero polynomial, a place of the wrong kind, a shape that does not fit), `UNSUPPORTED` (an exact right-hand side of a system, a prime above the temporary bound of a slice that finds the roots modulo `p` by evaluation at every residue, decision S-D10) |
 | Integrals, Poisson summation | `OK`, `DOMAIN` (outside the stated half-plane, or at an exact pole), `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `LIMIT` |

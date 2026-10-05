@@ -317,7 +317,7 @@ read):
 
 | WP | Content | Tests |
 |---|---|---|
-| 3.1 | `adf_qclass`: reduction with splitting, piece limit; `k` integers crossed give `k + 1` closed pieces (M0-D4); pieces are closed real balls that may exceed `[0,1]` by the rounding of the enclosure, with the invariant on the midpoint (`conventions.md` CV-45) | wrapping across an integer; several wraps; fractional radii; equality of the sets after translation by a rational; the piece count `k + 1`, one piece for a point; an end point that is not dyadic (`[0.9, 1]`), whose enclosure exceeds 1 |
+| 3.1 | `adf_qclass`: reduction with splitting, piece limit; `k` integers crossed give `k + 1` closed pieces (M0-D4); pieces are closed real balls that may exceed `[0,1]` by the rounding of the enclosure, with the invariant on the midpoint (`conventions.md` CV-45) | wrapping across an integer; several wraps; fractional radii; equality of the sets after an exact translation by a rational (translate exact rational intervals, or call `adf_qclass_add_rat`; never assert equality after an inexact adele translation, which encloses rather than equals: `api-3.md` finding F4); the piece count `k + 1`, one piece for a point; an end point that is not dyadic (`[0.9, 1]`), whose enclosure exceeds 1 |
 | 3.2 | The additive character | a non-trivial phase at `(0 ; 1/3)`; ambiguity on a fractional radius; additivity; width of the result |
 | 3.3 | `adf_char`: `t^s chi` with conductor and parity | conductor not dividing the modulus gives an enclosure or a status |
 | 3.4 | Gauss sums | against `acb_dirichlet_gauss_sum` |
