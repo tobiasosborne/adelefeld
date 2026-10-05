@@ -1,0 +1,107 @@
+mutate: src/qclass.c: 376 mutants
+mutate: 376 mutants, 32 of them run (--limit 32, --seed 310206)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (12.4 s)
+
+SURVIVED src/qclass.c:209:61 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -207,5 +207,5 @@
+          must not be refused solely for an unnecessary squared dyadic denominator. */
+       if (fmpz_equal(fmpq_denref(x), fmpq_denref(y))) {
+  -        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd > ADF_QCLASS_BITS_MAX) return 0;
+  +        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd >= ADF_QCLASS_BITS_MAX) return 0;
+           if (subtract) fmpq_sub(z, x, y); else fmpq_add(z, x, y);
+           return 1;
+
+
+SURVIVED src/qclass.c:244:10 swap_args: 'q_add(mid, lo, hi, 0)' -> 'q_add(mid, hi, lo, 0)'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -242,5 +242,5 @@
+       fmpq_init(mid); fmpq_init(m); fmpq_init(d); fmpq_init(t);
+       arf_init(u); arf_init(den); fmpz_init(mant); fmpz_init(exp);
+  -    if (!q_add(mid, lo, hi, 0)) goto done;
+  +    if (!q_add(mid, hi, lo, 0)) goto done;
+       if (!fmpz_is_even(fmpq_numref(mid)) &&
+           fmpz_bits(fmpq_denref(mid)) >= ADF_QCLASS_BITS_MAX) goto done;
+
+
+NOT COMPILED src/qclass.c:249:46 prec: 'prec' -> '2'
+  src/qclass.c:239:69: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/qclass.c:226:49 logic: '||' -> '&&'
+  src/qclass.c:226:49: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/qclass.c:78:45 op: '+' -> '-'
+  src/qclass.c:78:29: error: array subscript -1 is outside array bounds of ‘arf_struct[4]’ [-Werror=array-bounds=]
+
+SURVIVED src/qclass.c:188:30 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -186,5 +186,5 @@
+       e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
+       return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
+  -           (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+  +           (e >= b ? 1 : b-e+0) <= ADF_QCLASS_BITS_MAX;
+   }
+   static int q_size(const fmpq_t a)
+
+
+SURVIVED src/qclass.c:304:50 drop_call: 'fmpz_sub(remaining, remaining, total);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -302,5 +302,5 @@
+               if (!q_read(lo, hi, a, N, x->piece[i].inf, &x->piece[i].fin)) goto done;
+               fmpz_set(A, fmpq_numref(N->q)); fmpz_set(B, fmpq_denref(N->q));
+  -            fmpz_set_si(remaining, piece_limit); fmpz_sub(remaining, remaining, total);
+  +            fmpz_set_si(remaining, piece_limit); 
+               if (fmpz_cmp(B, remaining) > 0) goto done;
+               fibres = fmpz_get_si(B); fmpq_set(centre, a->q);
+
+
+SURVIVED src/qclass.c:312:47 swap_args: 'fmpz_add(total, total, count)' -> 'fmpz_add(total, count, total)'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -310,5 +310,5 @@
+                   if (fmpq_equal(l, h)) fmpz_add_ui(stop, first, 1);
+                   else fmpz_cdiv_q(stop, fmpq_numref(h), fmpq_denref(h));
+  -                fmpz_sub(count, stop, first); fmpz_add(total, total, count);
+  +                fmpz_sub(count, stop, first); fmpz_add(total, count, total);
+                   if (fmpz_cmp_si(total, piece_limit) > 0) goto done;
+                   if (pass) {
+
+
+SURVIVED src/qclass.c:188:33 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -186,5 +186,5 @@
+       e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
+       return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
+  -           (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+  +           (e >= b ? 1 : b-e+1) < ADF_QCLASS_BITS_MAX;
+   }
+   static int q_size(const fmpq_t a)
+
+
+SURVIVED src/qclass.c:253:24 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -251,5 +251,5 @@
+       arf_get_fmpq(m, arb_midref(z));
+       if (!q_add(d, m, lo, 1) || !q_add(t, hi, m, 1)) goto done;
+  -    if (fmpq_cmp(t, d) > 0) fmpq_set(d, t);
+  +    if (fmpq_cmp(t, d) >= 0) fmpq_set(d, t);
+       if (fmpq_is_zero(d)) mag_zero(arb_radref(z));
+       else {
+
+
+mutate: 32 mutants in 507.8 s: 22 killed, 7 survived, 3 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 7 mutant(s) survived; each one is a claim the tests do not check

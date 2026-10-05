@@ -1,0 +1,2 @@
+reduce line 148: adf_qclass_reduce(y, x, K, prec) == ADF_OK
+timeout: the monitored command dumped core

@@ -1,4 +1,4 @@
-/* adelefeld/qclass.h: slice 3.1-a, quotient lifts and storage access.
+/* adelefeld/qclass.h: quotient lifts, storage access and reduction.
    Contract: docs/api-3.md sections 1, 2.1, 2.4; docs/conventions.md 5.10, 4.1-4.4, 12.4.
    LIFT denotes pi(piece[0]); PIECES denotes union_i pi(piece[i]), where pi: A -> A/Q.
    PIECES canonicality uses exact (lower real end, upper real end, H, A) keys of the
@@ -69,6 +69,26 @@ void adf_qclass_set_rat(adf_qclass_t y, const adf_rat_t q);
    No status, no writes, O(1). These do not count canonical fundamental-domain fibers. */
 int adf_qclass_form(const adf_qclass_t x);
 slong adf_qclass_length(const adf_qclass_t x);
+
+/* Exact-work bounds of algorithm R (docs/api-3.md 1, N-D21). Check projected
+   sizes before exact shifts/products. Lifts and identity copies are unrestricted. */
+#define ADF_QCLASS_EXP_MAX ((slong) 1048576)
+#define ADF_QCLASS_BITS_MAX ((slong) 2097152)
+#ifndef ADF_REAL_PREC_MAX
+#define ADF_REAL_PREC_MAX 2097152
+#endif
+
+/* Reduce every stored adele by algorithm R (docs/api-3.md 2.2); write PIECES.
+   OK: the exact pre-rounding union equals x's represented set; y encloses it by Q1,
+   with one rounded ball per constructed piece, sorted and deduplicated.
+   LIMIT: prec > ADF_REAL_PREC_MAX, exact-work bounds, piece_limit < 1, or the raw
+   construction count > piece_limit, BEFORE rounding/deduplication/allocation.
+   No other status. On LIMIT y is untouched. y may equal x; no member aliasing.
+   Read all stored spill. Integer/exact radii use P6/P10; fractional A/B uses B
+   fibres of radius A (P8). Sources: quotient.md:129, :181, :249; CV-45; Q1/R1.
+   Cost: O(K) rational operations, O(K log K) sorting, O(K b) memory; local inputs
+   may require CRT. Counts are arbitrary-precision until the allocation preflight. */
+int adf_qclass_reduce(adf_qclass_t y, const adf_qclass_t x, slong piece_limit, slong prec);
 
 /* Copy stored entry i to a. OK writes a; DOMAIN for i outside [0,len) leaves it untouched.
    This is a representative set whose image contributes to x, not a section on points.

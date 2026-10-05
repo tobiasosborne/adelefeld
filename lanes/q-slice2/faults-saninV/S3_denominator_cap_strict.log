@@ -1,0 +1,2 @@
+reduce line 286: q_arf_bound(arb_midref(x->piece->inf))
+timeout: the monitored command dumped core

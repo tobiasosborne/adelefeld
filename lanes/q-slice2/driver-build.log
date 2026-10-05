@@ -1,0 +1,8 @@
+make: Entering directory '/home/tobias/Projects/adelefeld-wt/q-slice2/tools/adf'
+make -C ../.. BUILD=build/drv-plain SAN=0 all
+make[1]: Entering directory '/home/tobias/Projects/adelefeld-wt/q-slice2'
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o build/drv-plain/qclass.o
+ar rcs build/drv-plain/libadelefeld.a build/drv-plain/adele.o build/drv-plain/cap.o build/drv-plain/catalogue.o build/drv-plain/common.o build/drv-plain/dump.o build/drv-plain/fball.o build/drv-plain/fball_local.o build/drv-plain/gfunc.o build/drv-plain/gfunc_log.o build/drv-plain/idclass.o build/drv-plain/idele.o build/drv-plain/idmap.o build/drv-plain/idpow.o build/drv-plain/inlines.o build/drv-plain/lball.o build/drv-plain/lball_decomp.o build/drv-plain/lfunc.o build/drv-plain/linsolve.o build/drv-plain/localfactor.o build/drv-plain/lpow.o build/drv-plain/lroot.o build/drv-plain/modctx.o build/drv-plain/place.o build/drv-plain/qclass.o build/drv-plain/rat.o build/drv-plain/recon.o build/drv-plain/resid.o build/drv-plain/rfunc.o build/drv-plain/roots.o build/drv-plain/roots_real.o build/drv-plain/sball.o build/drv-plain/scaled.o build/drv-plain/status.o build/drv-plain/symbol.o build/drv-plain/text.o build/drv-plain/text_idele.o build/drv-plain/ucoset.o
+make[1]: Leaving directory '/home/tobias/Projects/adelefeld-wt/q-slice2'
+cc -I../../include -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror  adf.c ../../build/drv-plain/libadelefeld.a -lflint -lgmp -lm -o ../../build/adf
+make: Leaving directory '/home/tobias/Projects/adelefeld-wt/q-slice2/tools/adf'

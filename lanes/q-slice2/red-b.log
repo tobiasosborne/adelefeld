@@ -1,0 +1,52 @@
+mkdir -p lanes/q-slice2/build
+mkdir -p lanes/q-slice2/build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/q-slice2/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/q-slice2/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/q-slice2/build/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/q-slice2/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/q-slice2/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/q-slice2/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/q-slice2/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/q-slice2/build/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/q-slice2/build/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/q-slice2/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/q-slice2/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/q-slice2/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/q-slice2/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/q-slice2/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/q-slice2/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/q-slice2/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/q-slice2/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/q-slice2/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/q-slice2/build/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/q-slice2/build/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/q-slice2/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/q-slice2/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/q-slice2/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/q-slice2/build/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/q-slice2/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/q-slice2/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/q-slice2/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/q-slice2/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/q-slice2/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/q-slice2/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/q-slice2/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/q-slice2/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/q-slice2/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/q-slice2/build/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/q-slice2/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/q-slice2/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/q-slice2/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/q-slice2/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/q-slice2/build/support/jsonl.o
+ar rcs lanes/q-slice2/build/libadelefeld.a lanes/q-slice2/build/adele.o lanes/q-slice2/build/cap.o lanes/q-slice2/build/catalogue.o lanes/q-slice2/build/common.o lanes/q-slice2/build/dump.o lanes/q-slice2/build/fball.o lanes/q-slice2/build/fball_local.o lanes/q-slice2/build/gfunc.o lanes/q-slice2/build/gfunc_log.o lanes/q-slice2/build/idclass.o lanes/q-slice2/build/idele.o lanes/q-slice2/build/idmap.o lanes/q-slice2/build/idpow.o lanes/q-slice2/build/inlines.o lanes/q-slice2/build/lball.o lanes/q-slice2/build/lball_decomp.o lanes/q-slice2/build/lfunc.o lanes/q-slice2/build/linsolve.o lanes/q-slice2/build/localfactor.o lanes/q-slice2/build/lpow.o lanes/q-slice2/build/lroot.o lanes/q-slice2/build/modctx.o lanes/q-slice2/build/place.o lanes/q-slice2/build/qclass.o lanes/q-slice2/build/rat.o lanes/q-slice2/build/recon.o lanes/q-slice2/build/resid.o lanes/q-slice2/build/rfunc.o lanes/q-slice2/build/roots.o lanes/q-slice2/build/roots_real.o lanes/q-slice2/build/sball.o lanes/q-slice2/build/scaled.o lanes/q-slice2/build/status.o lanes/q-slice2/build/symbol.o lanes/q-slice2/build/text.o lanes/q-slice2/build/text_idele.o lanes/q-slice2/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_qclass_reduce.c lanes/q-slice2/build/support/golden.o lanes/q-slice2/build/support/jsonl.o lanes/q-slice2/build/libadelefeld.a -lflint -lgmp -lm -o lanes/q-slice2/build/test_qclass_reduce
+tests/test_qclass_reduce.c: In function ‘vectors’:
+tests/test_qclass_reduce.c:137:15: error: implicit declaration of function ‘adf_qclass_reduce’; did you mean ‘adf_qclass_length’? [-Werror=implicit-function-declaration]
+  137 |         CHECK(adf_qclass_reduce(y, x, K-1, prec) == ADF_LIMIT);
+      |               ^~~~~~~~~~~~~~~~~
+tests/test_qclass_reduce.c:12:39: note: in definition of macro ‘CHECK’
+   12 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/q-slice2/build/test_qclass_reduce] Error 1

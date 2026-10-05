@@ -461,7 +461,9 @@ static void text(void)
     adf_qclass_set(x, saved); mag_one(arb_radref(x->piece->inf));
     fmpz_set_si(MAG_EXPREF(arb_radref(x->piece->inf)), ADF_PRINT_EXP_MAX + 1);
     CHECK(adf_qclass_get_str(&n, x, 6) == NULL && n == 0);
-    pieces(x, 1); CHECK(adf_qclass_get_str(&n, x, 6) == NULL && n == 0);
+    pieces(x, 1);
+    { char *s = adf_qclass_get_str(&n, x, 6);
+      CHECK(s && !strcmp(s, "union((0 ; 0)) + Q") && n == strlen(s)); adf_str_free(s); }
     adf_qclass_clear(x); adf_qclass_clear(saved); adf_qclass_clear(y);
     fmpq_clear(v); arf_clear(radius);
 }

@@ -1,0 +1,44 @@
+mkdir -p lanes/q-slice2/inv
+mkdir -p lanes/q-slice2/inv/support
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/q-slice2/inv/adele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/q-slice2/inv/cap.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/q-slice2/inv/catalogue.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/q-slice2/inv/common.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/q-slice2/inv/dump.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/q-slice2/inv/fball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/q-slice2/inv/fball_local.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/q-slice2/inv/gfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/q-slice2/inv/gfunc_log.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/q-slice2/inv/idclass.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/q-slice2/inv/idele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/q-slice2/inv/idmap.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/q-slice2/inv/idpow.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/q-slice2/inv/inlines.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/q-slice2/inv/lball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/q-slice2/inv/lball_decomp.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/q-slice2/inv/lfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/q-slice2/inv/linsolve.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/q-slice2/inv/localfactor.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/q-slice2/inv/lpow.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/q-slice2/inv/lroot.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/q-slice2/inv/modctx.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/q-slice2/inv/place.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/q-slice2/inv/qclass.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/q-slice2/inv/rat.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/q-slice2/inv/recon.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/q-slice2/inv/resid.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/q-slice2/inv/rfunc.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/q-slice2/inv/roots.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/q-slice2/inv/roots_real.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/q-slice2/inv/sball.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/q-slice2/inv/scaled.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/q-slice2/inv/status.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/q-slice2/inv/symbol.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/q-slice2/inv/text.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/q-slice2/inv/text_idele.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/q-slice2/inv/ucoset.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/q-slice2/inv/support/golden.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/q-slice2/inv/support/jsonl.o
+ar rcs lanes/q-slice2/inv/libadelefeld.a lanes/q-slice2/inv/adele.o lanes/q-slice2/inv/cap.o lanes/q-slice2/inv/catalogue.o lanes/q-slice2/inv/common.o lanes/q-slice2/inv/dump.o lanes/q-slice2/inv/fball.o lanes/q-slice2/inv/fball_local.o lanes/q-slice2/inv/gfunc.o lanes/q-slice2/inv/gfunc_log.o lanes/q-slice2/inv/idclass.o lanes/q-slice2/inv/idele.o lanes/q-slice2/inv/idmap.o lanes/q-slice2/inv/idpow.o lanes/q-slice2/inv/inlines.o lanes/q-slice2/inv/lball.o lanes/q-slice2/inv/lball_decomp.o lanes/q-slice2/inv/lfunc.o lanes/q-slice2/inv/linsolve.o lanes/q-slice2/inv/localfactor.o lanes/q-slice2/inv/lpow.o lanes/q-slice2/inv/lroot.o lanes/q-slice2/inv/modctx.o lanes/q-slice2/inv/place.o lanes/q-slice2/inv/qclass.o lanes/q-slice2/inv/rat.o lanes/q-slice2/inv/recon.o lanes/q-slice2/inv/resid.o lanes/q-slice2/inv/rfunc.o lanes/q-slice2/inv/roots.o lanes/q-slice2/inv/roots_real.o lanes/q-slice2/inv/sball.o lanes/q-slice2/inv/scaled.o lanes/q-slice2/inv/status.o lanes/q-slice2/inv/symbol.o lanes/q-slice2/inv/text.o lanes/q-slice2/inv/text_idele.o lanes/q-slice2/inv/ucoset.o
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_qclass.c lanes/q-slice2/inv/support/golden.o lanes/q-slice2/inv/support/jsonl.o lanes/q-slice2/inv/libadelefeld.a -lflint -lgmp -lm -pthread -o lanes/q-slice2/inv/test_qclass
+cc -Iinclude -DADF_CHECK_INVARIANTS -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_qclass_reduce.c lanes/q-slice2/inv/support/golden.o lanes/q-slice2/inv/support/jsonl.o lanes/q-slice2/inv/libadelefeld.a -lflint -lgmp -lm -pthread -o lanes/q-slice2/inv/test_qclass_reduce
