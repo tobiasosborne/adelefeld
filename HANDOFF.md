@@ -2,7 +2,112 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-10-03 22:37 to 2026-10-04 03:35 (CEST; orchestrator Claude Fable on the laptop; Opus, codex sol, pi and Sonnet lanes): START HERE
+## Session 2026-10-04 22:51 to 2026-10-05 (CEST; orchestrator Claude Fable on the laptop; Opus, Sonnet, codex and pi lanes): START HERE
+
+**One line.** Every work package of milestone 1F has code and a review: the local zeta factor landed (design
+d-zeta, code f-slice14, N-D20; review f-review15: no defect; test gaps repaired by f-repair9), the catalogue is
+bug-hunted (f-review12: no finding) and refereed (f-review14: one test gap, repaired), `Log` on ideles is
+refereed (f-review13) and repaired (f-repair8: eight test gaps, one cost defect). The driver holds local balls
+and partial balls (drv-ball); the five newer types have dump forms (u-dump1; review u-review1 found two
+BLOCKERS in the loader of the idele and the class, repaired by u-repair1). Milestone 3 has begun: design
+`docs/api-3.md` (d-quotient; reviewed q-review1; repaired; N-D21), `adf_qclass` in lift form (q-slice1).
+Everything named here is merged and pushed.
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
+    ~/Projects/quota-app/target/release/quota; date
+
+**Master.** All five suites pass on `98de549` (the merge of u-repair1): 83 test programs, driver 69 cases,
+exports 499 of 499, Julia, both self-tests; `san` with leak detection; run from 03:34 to 03:52 on 2026-10-05,
+one suite after the other.
+
+**Rules of TJO for this session** (2026-10-04 22:55; memory `orchestration-model-tiers`, top block): work up to
+5 points OVER pace on Claude and Codex; no Fable subagents; Opus for coding, Sonnet for busywork and research;
+codex `gpt-6.1-sol` xhigh; `gpt-6-astra` allowed for hard cognition; 2 to 3 subagents at a time; the pi agent
+with `space-bunny-alpha`. The other Claude session (initech-os) had the same rule; the two agreed shares by
+cross-session messages (worklog). Quota at 03:52: Claude weekly 78.0%, 0.7 over pace; Codex weekly 22.0%, 3.8
+under (it was 9.0% at 22:51: both sessions).
+
+**What landed** (brief `lanes/<lane>/brief.md`; report `result.md` for Claude lanes, `report.md` for codex and
+pi lanes; times and counts in `docs/worklog/2026-10-04-evening.md`).
+
+| Lane | Model | What | Review |
+|---|---|---|---|
+| f-review12 | Sonnet | bug hunt through `src/catalogue.c`, own oracle | no finding (`docs/reviews/f1/review-catalogue.md`) |
+| drv-ball | pi | driver: `lball`, `sball` as value kinds; a stored partial ball as operand of the commands at places | u-review1: no finding in this part |
+| d-zeta | codex sol | `docs/design/local-zeta.md` (Z1 to Z9), `proto/zeta_checks.py` | implemented without rework; three findings of the code lane against it |
+| f-review13 | Opus | referee of IL1 to IL8, G7 to G12; 37 planted faults | 8 faults passed the tests, 1 cost defect: f-repair8 |
+| f-repair8 | codex sol | tests for the eight; a refused refine request decides from the working exponent alone (170 s to 0.4 ms) | 34 mutants, 0 survivors; old against new 26000 requests, 0 differences |
+| u-dump1 | pi | dump forms of `ucoset`, `idele`, `idclass`, `lball`, `sball` (20 functions), driver `dump`, `load` | u-review1: 2 BLOCKERS: u-repair1 |
+| f-slice14 | Opus | `adf_local_zeta_factor_at` (`localfactor.h`, `src/localfactor.c`), driver, Julia, Y16, Y17 | f-review15 |
+| d-quotient | codex astra | `docs/api-3.md` (40 declarations, Q1 to Q5), `proto/quotient3_checks.py` | q-review1 |
+| f-review14 | pi | referee of Y1 to Y15; 40 planted faults | 1 fault passed: check added by the orchestrator. Weaker evidence than f-review13 |
+| f-review15 | codex sol | review of the zeta code, own oracle (mpmath, 608580 samples); 13 faults | no defect; 5 faults passed: f-repair9 |
+| q-slice1 | codex sol | `adf_qclass`, lift only: `qclass.h`, `src/qclass.c`, text, driver `qadd_rat`, Julia, `docs/api-3a.md` | q-review2 (pi): see below |
+| f-repair9 | codex sol | three test families; the test no longer crashes under faults; the derivative bound without `log(pi)` (proof in Y16) | the proof read by the orchestrator only; F5 open (adf-c9b) |
+| q-review1 | pi | review of `docs/api-3.md`, own oracle, 15 mutants of the author's oracle | VALID 14, MINOR 9, INVALID 0 |
+| u-review1 | Sonnet | review of the dump forms and the driver ball kinds, about 900000 variant texts | 2 BLOCKERS, 1 MAJOR test gap, 2 MINOR: u-repair1 |
+| d-quotient-repair | pi | repairs R1 to R12 in `docs/api-3.md`; oracle pins the rounding direction and the boundary glue | two of the review's own repair texts corrected |
+| u-repair1 | pi | `dp_arb_sign` repaired; no abort reachable from a text; 3.1 million dumps decided three ways | the review's differential check: 0 mismatches |
+
+**Running when this was written (03:55):** lane q-slice2 (codex sol: `adf_qclass_reduce`, slices 3.1-b and
+3.1-c, since 02:32) and lane q-review2 (pi: review of q-slice1, since 02:50). Look in
+`../adelefeld-wt/q-slice2/lanes/q-slice2/` and `../adelefeld-wt/q-review2/lanes/q-review2/` for `report.md`;
+if this paragraph is still here, they were not merged by this session.
+
+**The next steps**, in this order:
+1. Land q-slice2 and q-review2 (commit in the worktree, merge, old fixtures, five suites, push). A repair lane
+   for what q-review2 finds.
+2. Milestone 3, the next slices of `docs/api-3.md` section 7: 3.2-a (exact phase getters, the additive
+   character on adeles, default and strict), 3.1-d (raw pieces, the union text, dump), 3.1-e (the three set
+   queries with the preflight of N-D21), 3.2-b, 3.2-c. One codex or Opus lane per slice; a review by the other
+   family after two slices.
+3. Reviews still owed: q-slice2 when it lands; the change of `src/localfactor.c` by f-repair9 (the bound
+   without `log(pi)`: a referee of Y16 steps 1 to 7); adf-c9b (is the factor `M0` of that bound needed).
+4. TJO's answers (below).
+5. Left from before, unchanged: the per-place variant of SPEC 9.3.1; `x^(e/n)` of an exact rational at all
+   places; a public function for the local component of an idele; `adf_real_root` at `prec` 2; the bounds
+   marked source pending in `docs/api-1f8.md`; adf-7yz, adf-4dj, adf-mds, adf-7gc; stale entries of
+   `tools/mutate/equivalent.txt`; the merged worktrees under `../adelefeld-wt/` and `.claude/worktrees/` (now
+   about 135) may be removed (deleting is TJO's call).
+
+**Waits for TJO.** Nothing blocks.
+- A finite ball with a fractional radius (`0 mod 1/2`) is not a subset of the finite adeles `A_f`, yet SPEC 6
+  gives it a meaning in the quotient. Which reading the library implements should be stated (review q-review1,
+  last finding; recorded under N-D21).
+- Open to reversal: N-D20 (the local zeta factor: the header name, the bound of 64 recurrence factors, the
+  complex adele as the driver's carrier of `s`), N-D21 (D3-1 to D3-3 of the quotient design), the earlier ones.
+- The dump loader accepts exponents of a local ball above `ADF_LBALL_EXP_MAX` when the caller raises
+  `max_prec`, because the canonical predicate has no such bound; the text reader returns `LIMIT` there
+  (u-repair1, finding 1). One of the two should change.
+- The driver keeps its own line printer for partial balls (`real: r; 5: c + O(5^N)`); the library prints
+  `{inf: r; p=5: c + O(5^N)}` (122 fixture lines differ). Switching changes every such fixture.
+- Sources pending: Gelfond-Schneider (the statement that no exact input other than 0 is a pole of the finite
+  zeta factor; the code does not rely on it); the UX questions of `docs/ux/README.md` as before.
+
+**Things to know.**
+- The codex provider REFUSED the brief of lane u-review1 four times ("flagged for possible cybersecurity
+  risk": a review of text loaders with malformed input and memory checks). The brief was not reworded; the
+  review went to Sonnet. Briefs of that kind go to a Claude or pi lane.
+- The pi lane did well as coder and repairer (five lanes, one attempt each, no empty response, two at once
+  worked) and its code had real defects that only a review found (u-dump1). As a REFEREE of proofs it is
+  untested: its "no false step" is recorded as weaker evidence. It corrected two repair texts of its own
+  review before applying them.
+- Lane directories can carry large logs: lane f-repair9 committed 12 MB of mutant logs. Look at
+  `git diff --cached --stat` and the size before the commit in the worktree (this session rebuilt the local
+  history before the push).
+- A lane that changes what a kind of the value form answers breaks old driver fixtures by design (drv-ball,
+  u-dump1, q-slice1 each did): the lane lists the lines, the orchestrator edits them. The kind without a typed
+  parser that those fixtures use is now `rfun()`.
+- While the other session runs a full certificate (load-sensitive), run the suites one after the other:
+  `suites.sh -j 2 all`, then `san`, then `clang inv headers` (17 minutes instead of 7).
+- An Opus lane cost about 1 point of Claude weekly (307k and 426k tokens), a Sonnet review 0.3 (156k, 270k);
+  a codex sol xhigh lane about 0.45 points of Codex weekly; the astra design lane (high, 25 minutes) was not
+  measured alone.
+
+## Session 2026-10-03 22:37 to 2026-10-04 03:35 (CEST; orchestrator Claude Fable on the laptop; Opus, codex sol, pi and Sonnet lanes)
 
 **One line.** The cloud session branch is merged; milestone 1F is complete through 1F.8: the root at all places
 and the five series on a finite part exactly 0 (f-slice10, N-D16; reviewed f-review9, repaired f-repair7) and
