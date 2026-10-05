@@ -1,0 +1,105 @@
+{
+  "configurations": {
+    "plain": {
+      "command": [
+        "taskset",
+        "-c",
+        "0,1",
+        "timeout",
+        "30",
+        "/home/tobias/Projects/adelefeld-wt/f-repair9/lanes/f-repair9/build/test_localfactor"
+      ],
+      "exit": 0,
+      "seconds": 2.399763,
+      "summary": [
+        [
+          "13",
+          "306730",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    "san": {
+      "command": [
+        "taskset",
+        "-c",
+        "0,1",
+        "timeout",
+        "30",
+        "/home/tobias/Projects/adelefeld-wt/f-repair9/lanes/f-repair9/build-san/test_localfactor"
+      ],
+      "exit": 0,
+      "seconds": 3.665638,
+      "summary": [
+        [
+          "13",
+          "306730",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    "inv": {
+      "command": [
+        "taskset",
+        "-c",
+        "0,1",
+        "timeout",
+        "30",
+        "/home/tobias/Projects/adelefeld-wt/f-repair9/lanes/f-repair9/build-inv/test_localfactor"
+      ],
+      "exit": 0,
+      "seconds": 3.674996,
+      "summary": [
+        [
+          "14",
+          "306749",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    "clang": {
+      "command": [
+        "taskset",
+        "-c",
+        "0,1",
+        "timeout",
+        "30",
+        "/home/tobias/Projects/adelefeld-wt/f-repair9/lanes/f-repair9/build-clang/test_localfactor"
+      ],
+      "exit": 0,
+      "seconds": 2.667685,
+      "summary": [
+        [
+          "13",
+          "306730",
+          "0",
+          "0"
+        ]
+      ]
+    }
+  },
+  "fault_count": 13,
+  "detected": 11,
+  "surviving": 2,
+  "fixture_bytes": 275467,
+  "fixture_records": 6728,
+  "fixture_boxes": 1346,
+  "fixture_samples": 5382,
+  "longest_fixture_line": 51,
+  "old_source_sha256": "e5efca95e7cb11c9c90139af41d62f79debb63bcb85286cad82ccb9f08f01dba",
+  "line_checked_files": 19,
+  "removed": [
+    "build",
+    "build-san",
+    "build-inv",
+    "build-clang",
+    "__pycache__",
+    "pole0.json",
+    "pole-2.json",
+    "pole-4.json",
+    "pole-16.json"
+  ]
+}

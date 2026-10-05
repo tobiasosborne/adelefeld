@@ -1,0 +1,8 @@
+{
+  "fault": "inward-round",
+  "build_exit": 0,
+  "test_exit": 1,
+  "first_failure": "FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=2 prec=2",
+  "totals": "13 tests, 306730 checks, 82 failed checks, 2 failed tests",
+  "seconds": 3.748
+}

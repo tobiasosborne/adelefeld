@@ -1,0 +1,8 @@
+{
+  "fault": "no-enlargement",
+  "build_exit": 0,
+  "test_exit": 1,
+  "first_failure": "FAIL tests/test_localfactor.c:870: real_poles: check failed: real_contains_corners(y, s) | near 0 j=1: reference outside",
+  "totals": "13 tests, 306730 checks, 24470 failed checks, 4 failed tests",
+  "seconds": 3.789
+}

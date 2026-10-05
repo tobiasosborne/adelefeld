@@ -440,7 +440,7 @@ The steps the code adds to the design's procedure, and why each keeps the enclos
    Q(t) for every t of z = S/2; Gamma(z+n)/Q encloses Gamma(z) by the recurrence (Z2 step 4) or is not finite.
    acb_rising_ui is not used: on FLINT 3.0.1 it returned for z = -2 +/- 0.05 + i (0.8 +/- 0.05), n = 6, a ball
    of radius about 110 containing 0, where the loop excludes 0 (lanes/f-slice14/probes/rec_probe.c).
-6. The derivative bound B of Z6 (step 7) is computed with every quantity rounded so that B grows:
+6. The derivative bound Bsmall proved below uses Z6's rounded quantities, so every bound grows:
    A >= lo + n rounded down; ceil(B0) <= ceil(hi + n rounded up) <= 64; 1/A and the factorials as mag upper
    bounds; delta_j >= sqrt(dx^2 + dy^2), dx and dy lower bounds of the distances of Re(z) from -j and of Im(z)
    from 0 (arb_get_mag_lower; Euclidean distance to the rectangle is at least this), with mag lower arithmetic;
@@ -453,6 +453,43 @@ The steps the code adds to the design's procedure, and why each keeps the enclos
 8. Every result is computed into a temporary, rounded outward (acb_set_round), tested with acb_is_finite, and
    only then swapped into y.
 
+The log(pi) summand in Z6's B can be omitted. Lane f-repair9 proves the smaller bound below.
+The Gamma integral, recurrence and integer values are quoted from refs/src/tate-poonen/notes.txt:53-65.
+Put c = ceil(B0), u = log(pi), and J(a) = integral_0^infinity t^(a-1) exp(-t) |log(t/pi)| dt.
+
+1. Differentiating the Gamma integral under its integrable majorants gives
+   |Gamma'(w) - u Gamma(w)| <= J(Re(w)) for Re(w) >= 1. This combines the prefactor derivative
+   with the Gamma derivative before taking absolute values. It holds for every imaginary part.
+2. Split J(1) at pi. Then J(1) = u - Gamma'(1) + 2 integral_pi^infinity exp(-t) log(t/pi) dt.
+   Dropping the positive part of Gamma'(1) above 1 gives
+   -Gamma'(1) <= integral_0^1 exp(-t) (-log t) dt <= 1 - 1/4 + 1/18 = 29/36.
+   The second inequality uses exp(-t) <= 1 - t + t^2/2, proved by Taylor's integral remainder.
+   Integration by parts bounds the tail by integral_pi^infinity exp(-t)/t dt <= exp(-pi)/pi.
+3. Scalar arb at 256 bits certifies u < 23/20, exp(-pi)/pi < 1/60, and exp(-pi) < 1/2.
+   Thus J(1) < 23/20 + 29/36 + 1/30 = 179/90 < 2.
+   Check: lanes/f-repair9/constants.c, three strict comparisons of disjoint scalar enclosures;
+   enclosure contract refs/src/flint-3.0.1/arb.rst:6-12.
+4. Integration by parts on the two sides of pi gives J(c+1) = c J(c) + K(c), where
+   K(c) = integral_0^infinity t^(c-1) exp(-t) sign(log(t/pi)) dt <= Gamma(c) = (c-1)!.
+   For c=1 this is K(1)=2 exp(-pi)-1, so J(2)<1+2 exp(-pi)<2.
+   If J(c)<=c! for an integer c>=2, then J(c+1)<=c c!+(c-1)!<=(c+1)!.
+   Induction proves J(c)<=c! for every integer c>=2.
+5. J(a) is convex in real a: each integrand is a nonnegative multiple of exp((a-1) log t).
+   For 1<=a<=c and c>=2 it is at most max(J(1),J(c))<=c!.
+   For c=1 the admitted range forces a=A=1, and J(1)<2=1/A^2+c!.
+   Hence |Gamma'(w)-u Gamma(w)|<=M1=1/A^2+c! throughout Z+n.
+6. Write Q(z)=product_(j=0..n-1)(z+j). Differentiate pi^(-z) Gamma(z+n)/Q(z), with z=s/2.
+   Use step 5, |Gamma(z+n)|<=M0 from Z6, |Q|>=P, and |Q'/Q|<=sum 1/delta_j.
+   This proves Bsmall = pi^(-min Re(S)/2) [M1+M0 sum 1/delta_j]/(2 P).
+   The same lower and upper rounding rules of step 6 above enclose Bsmall. It is no larger than Z6's B.
+   The midpoint enlargement and intersection therefore remain sound on every admitted input.
+7. Outward rounding of nested rectangles to arb midpoint/radius representations need not preserve nesting.
+   The implementation also forms the previous Z6 refinement and rounds it as before. If the rounded Bsmall
+   result is not contained in that previous result, it keeps the previous result. Both are sound by steps
+   1-6 and Z6. This guard guarantees that each stored new ball is contained in the previous ball or equal.
+   It adds mag arithmetic and two intersections, without another Gamma evaluation. The log(pi) term remains
+   in this representation guard; the smaller derivative certificate does not need it for soundness.
+
 Check: test_localfactor: prime_exact_values (s = 1, 2, -1 at p = 2, 3, five precisions), prime_pole_lattice
 (42 poles 2 pi i k / log p, k = -3..3, six primes up to 2^64 - 59, radii 10^-1 .. 10^-60: 1260 calls),
 real_exact_values (every integer -41..41 that is not a pole, against closed forms without Gamma),
@@ -461,6 +498,13 @@ real_recurrence (the design's direct-Gamma counterexample), prime_vectors and re
 tests/ref/vectors/f-slice14/zeta.jsonl; with ADF_ZETA_FIXTURES the 1371 rows with an input of the full
 oracle file: 701 OK rows, 5845 certified samples contained, 643 width checks at factor 64, 0 missed, every
 status equal to the simulation). Driver: tests/driver/localfactor-values.cmd. Julia: tests/julia/localfactor.jl.
+Repair checks: real_certified_near_poles, 1346 boxes at five precisions, 26910 certified sample checks;
+prime_closed_zero_boundary, 2520 calls; real_closed_pole_before_limit, 210 calls. The new references are
+tests/ref/vectors/f-repair9/near-poles.jsonl, exported by lanes/f-repair9/fixtures.py from Z8's scalar integral.
+Twenty named samples are cross-checked at 400 digits in lanes/f-repair9/crosscheck.json.
+The rounding guard passes lanes/f-repair9/compare.c: 20000 boxes, equal statuses, every new OK ball contained
+in the old ball or equal. F5 remains unclassified; partial proofs and the search are in
+lanes/f-repair9/f5-analysis.md. The multiplier M0 is unchanged.
 
 ### Y17: statuses, outputs, aliasing, limits, cost
 
@@ -471,8 +515,8 @@ aborts, conventions 4.4); DOMAIN for a non-finite input (acb_is_finite false); t
 at infinity: DOMAIN for an exact non-positive even integer with imaginary part exactly 0, NOT_DETERMINED when
 the geometry finds a possible pole, LIMIT when direct Gamma is not finite and the shift needs more than
 ADF_LOCAL_ZETA_SHIFT_MAX = 64 factors, NOT_DETERMINED for a non-finite candidate or rounded value. Otherwise OK.
-No other status is returned. The row of conventions.md:223 does not list LIMIT yet; the orchestrator adds it
-with N-D20 (brief of lane f-slice14, decision 3). A ball containing a pole is never OK (Z4 proof step 3 at p,
+No other status is returned. The row of conventions.md:223 lists LIMIT with N-D20's precision and recurrence
+bounds. A ball containing a pole is never OK (Z4 proof step 3 at p,
 step 5 at infinity); on OK the ball is finite and contains L_v(t) for every t of S.
 
 Outputs: on OK y is written once and where is untouched; on every other status y is untouched (its
@@ -487,8 +531,8 @@ Cost: at p one arb_log_ui, one acb_exp and one acb_expm1 at the midpoint, a few 
 division (or a division and a negation); no loop over poles or over Im(s). At infinity endpoint arithmetic, one
 acb_exp and one acb_gamma; when Gamma is not finite a second acb_gamma and at most 64 products; for a ball of
 positive radius with n <= 64 and max Re(S/2 + n) <= 64 at most two further acb_gamma calls (the midpoint) and the
-O(n) bound of Z6. Measured: test_localfactor, 37005 checks, about 3 s (one core); the call at the cap
-prec = 2^21 at p = 2, s = 1 is part of it. Avoidable cost noted: the midpoint refinement evaluates Gamma at the
+O(n) bound of Z6 and the rounded representation guard proved in Y16. The call at the cap
+prec = 2^21 at p = 2, s = 1 is part of test_localfactor. Avoidable cost noted: the refinement evaluates Gamma at the
 midpoint even when the candidate is already narrow, and computes the prefactor exp(-z log pi) a second time.
 
 Check: prime_statuses_and_outputs (exact 0, NaN and infinite components and radius, LIMIT before DOMAIN, prec

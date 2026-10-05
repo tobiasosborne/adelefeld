@@ -1,0 +1,20 @@
+{
+  "command": [
+    "taskset",
+    "-c",
+    "0,1",
+    "timeout",
+    "30",
+    "/home/tobias/Projects/adelefeld-wt/f-repair9/lanes/f-repair9/build-clang/test_localfactor"
+  ],
+  "exit": 0,
+  "seconds": 2.667685,
+  "summary": [
+    [
+      "13",
+      "306730",
+      "0",
+      "0"
+    ]
+  ]
+}

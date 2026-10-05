@@ -1,0 +1,103 @@
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=2 prec=2
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=2 prec=16
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=2 prec=64
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=2 prec=256
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=2 prec=1000
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=2 s=-1 prec=1000
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=3 s=2 prec=2
+FAIL tests/test_localfactor.c:433: prime_exact_values: check failed: arb_contains_fmpq(acb_realref(y), q) | p=3 s=2 prec=256
+FAIL prime_exact_values (tests/test_localfactor.c:413, 8 failed checks)
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 182: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 182: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 184: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 184: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 185: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 185: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 186: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 186: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 187: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 187: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 191: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 191: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 195: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 195: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 196: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 196: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 197: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 197: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 198: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 198: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 200: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 200: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 202: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 202: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 204: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 204: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 205: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 205: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 206: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 206: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 207: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 207: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 209: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 209: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 210: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 210: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 211: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 211: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 212: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 212: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 213: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 213: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 214: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 214: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 215: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 215: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 216: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 216: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 220: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 220: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 222: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 222: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 224: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 224: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 225: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 225: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 226: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 226: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 227: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 227: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 229: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 229: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 231: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 231: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 233: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 233: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 234: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 234: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 235: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 235: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 236: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 236: sample 0 outside
+FAIL tests/test_localfactor.c:346: prime_vectors: check failed: sample_inside(y, sub_field(r, "value"), sub_field(r, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 240: midpoint value outside
+FAIL tests/test_localfactor.c:355: prime_vectors: check failed: sample_inside(y, sub_field(smp, "value"), sub_field(smp, "point_error"), pt, v, arb_is_zero(acb_imagref(pt))) | row line 240: sample 0 outside
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+FAIL prime_vectors (tests/test_localfactor.c:714, 74 failed checks)
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+ok   real_recurrence
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 0, raised certificates 0
+ok   real_vectors
+prime closed zero boundary: 2520 NOT_DETERMINED calls
+ok   prime_closed_zero_boundary
+real closed poles before limit: 210 NOT_DETERMINED calls
+ok   real_closed_pole_before_limit
+certified near poles: 6730 calls, 26910 endpoint/corner/midpoint samples
+ok   real_certified_near_poles
+13 tests, 306730 checks, 82 failed checks, 2 failed tests

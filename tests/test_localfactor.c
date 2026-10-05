@@ -90,7 +90,9 @@ static int call_mode(acb_t y, const acb_t s, adf_place_t v, slong prec, int mode
     {
         slong p = prec < 2 ? 2 : prec;
         ADF_CHECK(acb_is_finite(mode == 1 ? t : y));
-        ADF_CHECK_MSG(mid_bits(acb_realref(y)) <= p && mid_bits(acb_imagref(y)) <= p, "midpoint above prec");
+        if (acb_is_finite(y))
+            ADF_CHECK_MSG(mid_bits(acb_realref(y)) <= p && mid_bits(acb_imagref(y)) <= p,
+                          "midpoint above prec");
     }
     acb_clear(before);
     acb_clear(t);
@@ -331,7 +333,9 @@ static void run_row(const jsonl_value *r, size_t i, int place_filter, vec_counts
         printf("status differs from the simulation: line %lu kind %s place %s prec %ld: %d, oracle %s\n",
                jsonl_line_of(r), str_field(r, "kind"), place, (long) prec, got, status);
     }
-    if (got == ADF_OK)
+    /* A wrong OK on a pole/status row has already failed above. Such a row has no value certificate;
+       reading its absent value/samples after that assertion caused the review's two SIGSEGV runs. */
+    if (got == ADF_OK && want == ADF_OK && acb_is_finite(y))
     {
         const jsonl_value *samples = sub_field(r, "samples");
         mag_t diam, target, t, ib;
@@ -978,6 +982,162 @@ ADF_TEST(real_vectors)
     const char *full = getenv("ADF_ZETA_FIXTURES");
     run_vectors(VECTORS, 1);
     if (full != NULL && full[0] != '\0') run_vectors(full, 1);
+}
+
+/* Review F2: zero is on the CLOSED boundary, in a segment or at a corner.
+   These are exact dyadic contacts, without an approximate pole lattice construction.
+   Z4 step 3 needs an upper Eplus even when its ideal value equals the midpoint denominator. */
+ADF_TEST(prime_closed_zero_boundary)
+{
+    static const slong precs[] = {2, 16, 64, 128, 256};
+    acb_t s, y;
+    long calls = 0;
+    acb_init(s);
+    acb_init(y);
+    for (int a = 0; a < 6; a++)
+        for (slong e = -10; e <= 3; e++)
+            for (int sx = -1; sx <= 1; sx += 2)
+                for (int sy = -1; sy <= 1; sy++)
+                    for (size_t k = 0; k < sizeof(precs)/sizeof(precs[0]); k++)
+                    {
+                        acb_zero(s);
+                        arf_set_si_2exp_si(arb_midref(acb_realref(s)), sx, e);
+                        mag_set_ui_2exp_si(arb_radref(acb_realref(s)), 1, e);
+                        if (sy != 0)
+                        {
+                            arf_set_si_2exp_si(arb_midref(acb_imagref(s)), sy, e);
+                            mag_set_ui_2exp_si(arb_radref(acb_imagref(s)), 1, e);
+                        }
+                        int st = call(y, s, prime_place(lattice_primes[a]), precs[k]);
+                        ADF_CHECK_MSG(st == ADF_NOT_DETERMINED,
+                                      "closed zero p=%lu e=%ld sx=%d sy=%d prec=%ld: status %d",
+                                      (unsigned long) lattice_primes[a], (long) e, sx, sy,
+                                      (long) precs[k], st);
+                        calls++;
+                    }
+    printf("prime closed zero boundary: %ld NOT_DETERMINED calls\n", calls);
+    acb_clear(s);
+    acb_clear(y);
+}
+
+/* Review F3: the endpoint pole test precedes Gamma evaluation and the recurrence size limit.
+   Widths are 2^-20, 1/2 and 1, so every endpoint is stored exactly. */
+ADF_TEST(real_closed_pole_before_limit)
+{
+    static const slong ns[] = {1, 2, 33, 64, 65, 100, 1000};
+    static const slong widths[] = {-20, -1, 0};
+    static const slong precs[] = {2, 16, 64, 128, 256};
+    acb_t s, y;
+    arf_t r;
+    long calls = 0;
+    acb_init(s);
+    acb_init(y);
+    arf_init(r);
+    for (size_t a = 0; a < sizeof(ns)/sizeof(ns[0]); a++)
+        for (size_t b = 0; b < sizeof(widths)/sizeof(widths[0]); b++)
+            for (int sign = -1; sign <= 1; sign += 2)
+                for (size_t k = 0; k < sizeof(precs)/sizeof(precs[0]); k++)
+                {
+                    acb_set_si(s, -2*ns[a]);
+                    arf_set_si_2exp_si(r, sign, widths[b]-1);
+                    arf_add(arb_midref(acb_realref(s)), arb_midref(acb_realref(s)), r,
+                            ARF_PREC_EXACT, ARF_RND_DOWN);
+                    mag_set_ui_2exp_si(arb_radref(acb_realref(s)), 1, widths[b]-1);
+                    int st = call(y, s, adf_place_inf(), precs[k]);
+                    ADF_CHECK_MSG(st == ADF_NOT_DETERMINED,
+                                  "closed pole n=%ld width=2^%ld side=%d prec=%ld: status %d",
+                                  (long) ns[a], (long) widths[b], sign, (long) precs[k], st);
+                    calls++;
+                }
+    printf("real closed poles before limit: %ld NOT_DETERMINED calls\n", calls);
+    arf_clear(r);
+    acb_clear(s);
+    acb_clear(y);
+}
+
+/* Compact integer arrays in the independent reference file. */
+static slong repair_integer(const jsonl_value *a, size_t i)
+{
+    jsonl_error_t err;
+    const char *text = NULL;
+    const jsonl_value *v = jsonl_at(a, i, &err);
+    int ok = v && jsonl_int_text_or_string(v, &text, &err);
+    ADF_CHECK(ok);
+    return ok ? strtol(text, NULL, 10) : 0;
+}
+
+/* A certified cell [k*2^e,(k+1)*2^e], stored as [k,e], or exact zero stored as null.
+   The exporter puts its entire Z8 integral reference inside the cell. */
+static void repair_cell(arb_t out, const jsonl_value *v)
+{
+    if (jsonl_is(v, JSONL_NULL)) arb_zero(out);
+    else
+    {
+        slong k = repair_integer(v, 0), e = repair_integer(v, 1);
+        arf_set_si_2exp_si(arb_midref(out), 2*k+1, e-1);
+        mag_set_ui_2exp_si(arb_radref(out), 1, e-1);
+    }
+}
+
+/* Review F1: full product of four poles, 12 distances, 14 radius ratios and two shapes.
+   References use proto/zeta_checks.py Z8, not Gamma or the function under test.
+   Box 0 is [-17/256,-15/256]; box 1 is -2^-4 +/- 2^-14.
+   Each input record is followed by its three or five reference records, with lines at most 116 chars. */
+ADF_TEST(real_certified_near_poles)
+{
+    static const slong precs[] = {16, 32, 64, 128, 256};
+    const char *path = "tests/ref/vectors/f-repair9/near-poles.jsonl";
+    jsonl_file *file = NULL;
+    jsonl_error_t err;
+    acb_t s, y, ref;
+    long calls = 0, samples = 0, boxes = 0;
+    ADF_CHECK_MSG(jsonl_open(path, &file, &err), "%s", jsonl_error_message(&err));
+    if (!file) return;
+    ADF_CHECK(jsonl_count(file) == 6728);
+    acb_init(s);
+    acb_init(y);
+    acb_init(ref);
+    for (size_t i = 0; i < jsonl_count(file); i++)
+    {
+        const jsonl_value *row = jsonl_record(file, i), *input = sub_field(row, "s");
+        size_t n = (size_t) atol(str_field(row, "n"));
+        acb_zero(s);
+        arf_set_si_2exp_si(arb_midref(acb_realref(s)), repair_integer(input, 0), repair_integer(input, 1));
+        arf_set_si_2exp_si(arb_midref(acb_imagref(s)), repair_integer(input, 2), repair_integer(input, 3));
+        mag_set_ui_2exp_si(arb_radref(acb_realref(s)), 1, repair_integer(input, 4));
+        const jsonl_value *ir = jsonl_at(input, 5, &err);
+        int real = jsonl_is(ir, JSONL_NULL);
+        if (!real) mag_set_ui_2exp_si(arb_radref(acb_imagref(s)), 1, repair_integer(input, 5));
+        ADF_CHECK(n == (real ? 3 : 5));
+        ADF_CHECK(i+n < jsonl_count(file));
+        if (i+n >= jsonl_count(file)) break;
+        for (size_t k = 0; k < sizeof(precs)/sizeof(precs[0]); k++)
+        {
+            int st = call(y, s, adf_place_inf(), precs[k]);
+            ADF_CHECK_MSG(st == ADF_OK, "near-pole box %ld prec=%ld: status %d", boxes, (long) precs[k], st);
+            calls++;
+            if (st != ADF_OK || !acb_is_finite(y)) continue;
+            for (size_t j = 0; j < n; j++)
+            {
+                const jsonl_value *point = sub_field(jsonl_record(file, i+j+1), "v");
+                repair_cell(acb_realref(ref), jsonl_at(point, 0, &err));
+                repair_cell(acb_imagref(ref), jsonl_at(point, 1, &err));
+                ADF_CHECK_MSG(acb_contains(y, ref), "near-pole box %ld sample %zu prec=%ld: outside",
+                              boxes, j, (long) precs[k]);
+                samples++;
+            }
+        }
+        boxes++;
+        i += n;
+    }
+    ADF_CHECK(boxes == 1346);
+    ADF_CHECK(calls == 6730);
+    ADF_CHECK(samples == 26910);
+    printf("certified near poles: %ld calls, %ld endpoint/corner/midpoint samples\n", calls, samples);
+    acb_clear(s);
+    acb_clear(y);
+    acb_clear(ref);
+    jsonl_close(file);
 }
 
 #ifdef ADF_CHECK_INVARIANTS

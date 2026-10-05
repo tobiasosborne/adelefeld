@@ -1,0 +1,8 @@
+{
+  "fault": "max-radius",
+  "build_exit": 0,
+  "test_exit": 1,
+  "first_failure": "FAIL tests/test_localfactor.c:574: prime_pole_lattice: check failed: contains_corners(y, s, p) | near p=2 k=-3 j=1 sign=-1: reference outside",
+  "totals": "13 tests, 312810 checks, 1614 failed checks, 3 failed tests",
+  "seconds": 4.152
+}

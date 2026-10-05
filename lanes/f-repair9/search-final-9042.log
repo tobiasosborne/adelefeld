@@ -1,0 +1,2 @@
+boxes=20000 OK=18925 ND=1075 LIMIT=0 active=18925 changed=3897 samples=94625 misses=0 bad_B=0 ratio=(1073741805 * 2^-30)
+unproved region n>0 and cb>2: active=1519 tighter=535
