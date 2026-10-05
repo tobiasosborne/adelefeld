@@ -189,6 +189,19 @@ ucoset_sentinel(adf_ucoset_t x)
     fmpz_clear(N);
 }
 
+/* The exact unit [1 mod 0] (conventions 5.6), the unit of the texts of this section. */
+static void
+ucoset_one(adf_ucoset_t u)
+{
+    fmpz_t c, N;
+
+    fmpz_init_set_ui(c, 1);
+    fmpz_init_set_ui(N, 0);
+    ADF_CHECK(adf_ucoset_set_fmpz2(u, c, N) == ADF_OK);
+    fmpz_clear(c);
+    fmpz_clear(N);
+}
+
 static void
 idele_sentinel(adf_idele_t x)
 {
@@ -591,6 +604,17 @@ static const tcase idele_cases[] = {
     {"adf1 Q idele 1 1 0 0 1 1 1 1 0", ADF_DOMAIN},   /* an even radius mantissa */
     {"adf1 Q idele 1 1 0 7fffffff 0 1 1 1 0", ADF_DOMAIN},   /* a radius mantissa of 31 bits */
     {"adf1 Q idele 1 1 0 40000001 0 1 1 1 0", ADF_DOMAIN},   /* 2^30 + 1 is not below 2^30 */
+    /* The two faults of the radius mantissa that the review u-review1 (finding F5) found no test
+       for: the bound 2^30 and the parity. The two texts of the review have the even midpoint
+       mantissa 40, so a faulty check of the radius is masked by it; the four texts below take an
+       odd midpoint whose ball excludes 0 ([3 +- 2] = [1, 5] and [5 +- 1] = [4, 6]), so nothing
+       but the radius mantissa decides the status. */
+    {"adf1 Q idele 1 1 40 40000001 0 1 1 1 0", ADF_DOMAIN}, /* 2^30 + 1, review F5 */
+    {"adf1 Q idele 1 1 40 2 0 1 1 1 0", ADF_DOMAIN},         /* an even radius mantissa, review F5 */
+    {"adf1 Q idele 1 5 0 40000001 0 1 1 1 0", ADF_DOMAIN},   /* 2^30 + 1 below no bound of 10.2 */
+    {"adf1 Q idele 1 5 0 2 0 1 1 1 0", ADF_DOMAIN},           /* an even radius mantissa */
+    {"adf1 Q idele 1 3 0 40000001 0 1 1 1 0", ADF_DOMAIN},
+    {"adf1 Q idele 1 3 0 2 0 1 1 1 0", ADF_DOMAIN},
     {"adf1 Q idele 1 0 -1 0 0 1 1 1 0", ADF_DOMAIN},  /* +inf: not finite */
     {"adf1 Q idele 1 0 5 0 0 1 1 1 0", ADF_DOMAIN},   /* a zero mantissa with another exponent */
     {"adf1 Q idele 1 1 0 0 0 0 1 1 0", ADF_DOMAIN},   /* a zero radius with an exponent */
@@ -641,6 +665,11 @@ static const tcase idclass_cases[] = {
     {"adf1 Q idclass 1 1 0 -1 1 0", ADF_DOMAIN},    /* [-1 +- 2] contains negative numbers */
     {"adf1 Q idclass 4 0 1 0 1 0", ADF_DOMAIN},      /* an even midpoint mantissa */
     {"adf1 Q idclass 0 -1 0 0 1 0", ADF_DOMAIN},     /* +inf: not finite */
+    /* the radius mantissa: the bound 2^30 and the parity (10.2), as for the idele above */
+    {"adf1 Q idclass 1 0 40000001 0 1 0", ADF_DOMAIN},
+    {"adf1 Q idclass 1 0 2 0 1 0", ADF_DOMAIN},
+    {"adf1 Q idclass 40 0 40000001 0 1 0", ADF_DOMAIN},      /* the texts of the review F5 */
+    {"adf1 Q idclass 40 0 2 0 1 0", ADF_DOMAIN},
     /* the unit coset (5.6) */
     {"adf1 Q idclass 1 0 0 0 2 4", ADF_DOMAIN},
     {"adf1 Q idclass 1 0 0 0 3 2", ADF_DOMAIN},     /* c > N */
@@ -662,6 +691,506 @@ ADF_TEST(idclass_strictness)
     TYPED_RUN(adf_idclass_t, adf_idclass_identical, adf_idclass_init, idclass_sentinel, adf_idclass_clear,
               adf_idclass_load_str, adf_idclass_dump_inspect, adf_idclass_dump_str, idclass_cases,
               sizeof(idclass_cases) / sizeof(idclass_cases[0]));
+}
+
+/* ------------------------------------- the real sign of a dumped ball: exact arithmetic, not the
+   method of the loader (review u-review1, findings F1 and F2).
+
+   The loader decides the sign of a real ball in dp_arb_sign (src/dump.c), which compares the two
+   powers |m| 2^me and rm 2^re without forming them. The texts of this section are texts that
+   function got wrong: a negative midpoint read one byte too far (F1) and a tie of the leading bits
+   read as an equality (F2). The expected status is computed here by exact arithmetic on the four
+   tokens and compared with what the public constructor says for the same ball. Three verdicts
+   (the arithmetic, the loader, the constructor); they must agree on every case. */
+
+/* 1 if the closed ball [m 2^me - rm 2^re, m 2^me + rm 2^re] excludes 0, that is |m| 2^me > rm 2^re:
+   the predicate of conventions 5.7 for the inf of an idele (arb_is_nonzero) and, with m > 0, for
+   the t of a class (arb_is_positive). The comparison is exact and forms neither power: with
+   d = me - re the two differ by the factor 2^d, so |m| 2^d > r holds as soon as d is at least the
+   bit length of r (then |m| 2^d >= 2^d > r), it fails as soon as -d is at least the bit length of
+   |m| (then r 2^(-d) > |m|), and in between both sides are integers of the size of the mantissa
+   and the shift is a small integer. An exponent of 5000 bits, or of 2^5000, is therefore decided
+   as exactly as a small one, and no bound of a machine word enters. */
+static int
+ball_excludes_zero(const fmpz_t m, const fmpz_t e, const fmpz_t r, const fmpz_t f)
+{
+    fmpz_t d, am, t, u;
+    int res;
+
+    fmpz_init(d);
+    fmpz_init(am);
+    fmpz_init(t);
+    fmpz_init(u);
+    fmpz_abs(am, m);
+    if (fmpz_is_zero(r))
+        res = !fmpz_is_zero(am);            /* an exact ball: it excludes 0 iff m != 0 */
+    else
+    {
+        fmpz_sub(d, e, f);
+        if (fmpz_sgn(d) >= 0)
+        {
+            if (fmpz_cmp_ui(d, fmpz_bits(r)) >= 0)
+                res = 1;
+            else
+            {
+                fmpz_mul_2exp(t, am, fmpz_get_ui(d));
+                res = fmpz_cmp(t, r) > 0;
+            }
+        }
+        else if (fmpz_cmp_si(d, -(slong) fmpz_bits(am)) <= 0)
+            res = 0;
+        else
+        {
+            fmpz_neg(u, d);
+            fmpz_mul_2exp(t, r, fmpz_get_ui(u));
+            res = fmpz_cmp(am, t) > 0;
+        }
+    }
+    fmpz_clear(d);
+    fmpz_clear(am);
+    fmpz_clear(t);
+    fmpz_clear(u);
+    return res;
+}
+
+/* The radius rm 2^re exactly. A mag is MAG_MAN 2^(MAG_EXP - MAG_BITS) with a mantissa of exactly
+   MAG_BITS bits (/usr/include/flint/mag.h:113-119, 135-140; mag_one, mag.h:217-221, is
+   MAG_ONE_HALF with exponent 1). mag_set_fmpz_2exp_fmpz is not exact at 30 bits, so the mantissa
+   and the exponent are written here, as dp_mag_set_exact does in src/dump.c. */
+static void
+mag_set_exact(mag_t r, ulong m, const fmpz_t e)
+{
+    unsigned b = FLINT_BIT_COUNT(m);
+
+    MAG_MAN(r) = m << (MAG_BITS - b);
+    fmpz_add_ui(MAG_EXPREF(r), e, b);
+}
+
+/* One case of the family: the four tokens of a real ball, and the body keyword. */
+typedef struct
+{
+    const char * m, * e, * rm, * re;   /* lower-case hexadecimal tokens, as a dump holds them */
+    const char * kw;                   /* "idele" or "idclass" */
+    int tail;                          /* 1 for the idele, whose content and unit follow the ball */
+} sign_case;
+
+/* The exact verdict of one case: the ball is admissible for the type of the case. */
+static int
+sign_case_exact(const sign_case * c)
+{
+    fmpz_t m, e, rm, re;
+    int res;
+
+    fmpz_init(m);
+    fmpz_init(e);
+    fmpz_init(rm);
+    fmpz_init(re);
+    fmpz_set_str(m, c->m, 16);
+    fmpz_set_str(e, c->e, 16);
+    fmpz_set_str(rm, c->rm, 16);
+    fmpz_set_str(re, c->re, 16);
+    res = ball_excludes_zero(m, e, rm, re) && (c->tail != 0 || fmpz_sgn(m) > 0);
+    fmpz_clear(m);
+    fmpz_clear(e);
+    fmpz_clear(rm);
+    fmpz_clear(re);
+    return res;
+}
+
+/* The text of one case: the four tokens of the ball, then the content and the unit of an idele
+   (1, 1 and [1 mod 0], so that nothing but the ball decides) or the unit of a class. */
+static size_t
+sign_case_text(const sign_case * c, char * buf, size_t buflen)
+{
+    int n = c->tail ? snprintf(buf, buflen, "adf1 Q idele 1 %s %s %s %s 1 1 1 0", c->m, c->e, c->rm,
+                              c->re)
+                    : snprintf(buf, buflen, "adf1 Q idclass %s %s %s %s 1 0", c->m, c->e, c->rm,
+                               c->re);
+
+    return (size_t) (n < 0 ? 0 : n);
+}
+
+/* The verdict of the loader: the status, the output untouched on every status other than ADF_OK,
+   and on ADF_OK the dump of the loaded value byte for byte the text of the case. The value starts
+   at a sentinel, so "untouched" is a statement about that value. */
+static void
+sign_case_loader(const sign_case * c, const char * text, size_t len, int want)
+{
+    adf_idele_t e, e0;
+    adf_idclass_t k, k0;
+    size_t dl = 0;
+    char * back;
+    int st;
+
+    if (c->tail)
+    {
+        adf_idele_init(e);
+        adf_idele_init(e0);
+        idele_sentinel(e);
+        idele_sentinel(e0);
+        st = adf_idele_load_str(e, text, len, NULL, NULL);
+        ADF_CHECK_MSG(st == (want ? ADF_OK : ADF_DOMAIN), "load \"%s\": %s, expected %s", text,
+                      adf_status_str(st), adf_status_str(want ? ADF_OK : ADF_DOMAIN));
+        if (st != ADF_OK)
+            ADF_CHECK_MSG(adf_idele_identical(e, e0), "load \"%s\" touched the output", text);
+        else
+        {
+            back = adf_idele_dump_str(&dl, e);
+            ADF_CHECK_MSG(back != NULL && dl == len && memcmp(back, text, len) == 0,
+                          "the dump of \"%s\" is \"%s\"", text, back);
+            adf_str_free(back);
+        }
+        adf_idele_clear(e);
+        adf_idele_clear(e0);
+        return;
+    }
+    adf_idclass_init(k);
+    adf_idclass_init(k0);
+    idclass_sentinel(k);
+    idclass_sentinel(k0);
+    st = adf_idclass_load_str(k, text, len, NULL, NULL);
+    ADF_CHECK_MSG(st == (want ? ADF_OK : ADF_DOMAIN), "load \"%s\": %s, expected %s", text,
+                  adf_status_str(st), adf_status_str(want ? ADF_OK : ADF_DOMAIN));
+    if (st != ADF_OK)
+        ADF_CHECK_MSG(adf_idclass_identical(k, k0), "load \"%s\" touched the output", text);
+    else
+    {
+        back = adf_idclass_dump_str(&dl, k);
+        ADF_CHECK_MSG(back != NULL && dl == len && memcmp(back, text, len) == 0,
+                      "the dump of \"%s\" is \"%s\"", text, back);
+        adf_str_free(back);
+    }
+    adf_idclass_clear(k);
+    adf_idclass_clear(k0);
+}
+
+/* The verdict of the public constructor: the same ball, built exactly from the four tokens (the
+   mantissas are odd, so this is the arb that arb_dump_str writes, conventions 10.2). The
+   constructor returns OK exactly when the ball satisfies the predicate of 5.7, and the value it
+   leaves is then canonical. */
+static void
+sign_case_constructor(const sign_case * c, int want)
+{
+    arb_t a;
+    fmpq_t r;
+    adf_ucoset_t u;
+    adf_idele_t e;
+    adf_idclass_t k;
+    fmpz_t m, ex, re;
+    ulong rad = 0;
+    size_t i;
+    int st;
+
+    fmpz_init(m);
+    fmpz_init(ex);
+    fmpz_init(re);
+    fmpz_set_str(m, c->m, 16);
+    fmpz_set_str(ex, c->e, 16);
+    fmpz_set_str(re, c->re, 16);
+    for (i = 0; c->rm[i] != '\0'; i++)
+        rad = 16 * rad + (ulong) (c->rm[i] <= '9' ? c->rm[i] - '0' : c->rm[i] - 'a' + 10);
+    arb_init(a);
+    fmpq_init(r);
+    adf_ucoset_init(u);
+    adf_idele_init(e);
+    adf_idclass_init(k);
+    fmpq_set_si(r, 1, 1);
+    ucoset_sentinel(u);
+    arf_set_fmpz_2exp(arb_midref(a), m, ex);           /* exact: arb.rst:227-229 */
+    mag_set_exact(arb_radref(a), rad, re);
+    if (c->tail)
+    {
+        st = adf_idele_set_parts(e, a, r, u);
+        ADF_CHECK_MSG(st == (want ? ADF_OK : ADF_DOMAIN),
+                      "adf_idele_set_parts of the ball [%s %s %s %s]: %s, expected %s", c->m, c->e,
+                      c->rm, c->re, adf_status_str(st), adf_status_str(want ? ADF_OK : ADF_DOMAIN));
+        if (want)
+            ADF_CHECK_MSG(adf_idele_is_canonical(e),
+                          "the idele of the ball [%s %s %s %s] is not canonical", c->m, c->e, c->rm,
+                          c->re);
+    }
+    else
+    {
+        st = adf_idclass_set_parts(k, a, u);
+        ADF_CHECK_MSG(st == (want ? ADF_OK : ADF_DOMAIN),
+                      "adf_idclass_set_parts of the ball [%s %s %s %s]: %s, expected %s", c->m, c->e,
+                      c->rm, c->re, adf_status_str(st), adf_status_str(want ? ADF_OK : ADF_DOMAIN));
+        if (want)
+            ADF_CHECK_MSG(adf_idclass_is_canonical(k),
+                          "the class of the ball [%s %s %s %s] is not canonical", c->m, c->e, c->rm,
+                          c->re);
+    }
+    adf_idele_clear(e);
+    adf_idclass_clear(k);
+    adf_ucoset_clear(u);
+    fmpq_clear(r);
+    arb_clear(a);
+    fmpz_clear(m);
+    fmpz_clear(ex);
+    fmpz_clear(re);
+}
+
+/* One case of the family: the exact arithmetic, then the loader and the constructor. */
+static void
+sign_case_run(const sign_case * c)
+{
+    char text[6000];
+    size_t len = sign_case_text(c, text, sizeof(text));
+    int want = sign_case_exact(c);
+
+    ADF_CHECK_MSG((c->tail != 0 && strcmp(c->kw, "idele") == 0)
+                      || (c->tail == 0 && strcmp(c->kw, "idclass") == 0),
+                  "the keyword %s does not go with the body of the case", c->kw);
+    ADF_CHECK_MSG(len > 0 && len < sizeof(text), "the text of a case does not fit");
+    if (len == 0 || len >= sizeof(text))
+        return;
+    sign_case_loader(c, text, len, want);
+    sign_case_constructor(c, want);
+}
+
+/* The hexadecimal token of 2^bits, negated if neg: 2^b is the digit 2^(b mod 4) of the first
+   hexadecimal place followed by b / 4 zeros. */
+static void
+hex_pow2(char * buf, size_t buflen, size_t bits, int neg)
+{
+    size_t q = bits / 4, i, off = neg ? 1 : 0;
+
+    if (buflen < off + q + 2)
+    {
+        buf[0] = '\0';
+        return;
+    }
+    if (neg)
+        buf[0] = '-';
+    buf[off] = "1248"[bits % 4];
+    for (i = 0; i < q; i++)
+        buf[off + 1 + i] = '0';
+    buf[off + 1 + q] = '\0';
+}
+
+/* The texts of the review (lanes/u-review1/result.md, finding F1), with the exact status of
+   each: all three balls contain 0, so each is ADF_DOMAIN, the output is left at the sentinel and
+   nothing aborts. */
+ADF_TEST(idele_negative_midpoint_domain)
+{
+    static const tcase neg_mid[] = {
+        {"adf1 Q idele 1 -1 0 1 0 1 1 1 0", ADF_DOMAIN},        /* the ball [-2, 0] contains 0 */
+        {"adf1 Q idele 1 -5 0 1 3 5 3 -1 0", ADF_DOMAIN},      /* [-13, 3] contains 0 */
+        {"adf1 Q idele 1 -bb 5 3c3 d 7 6 3 4", ADF_DOMAIN}      /* [-7889880, 7882912] contains 0 */
+    };
+    sign_case c;
+
+    TYPED_RUN(adf_idele_t, adf_idele_identical, adf_idele_init, idele_sentinel, adf_idele_clear,
+              adf_idele_load_str, adf_idele_dump_inspect, adf_idele_dump_str, neg_mid,
+              sizeof(neg_mid) / sizeof(neg_mid[0]));
+    /* The exact arithmetic says the same of the three texts: no one of them excludes 0. */
+    c.m = "-1"; c.e = "0"; c.rm = "1"; c.re = "0"; c.kw = "idele"; c.tail = 1;
+    ADF_CHECK(!sign_case_exact(&c));
+    c.m = "-5"; c.e = "0"; c.rm = "1"; c.re = "3";
+    ADF_CHECK(!sign_case_exact(&c));
+    c.m = "-bb"; c.e = "5"; c.rm = "3c3"; c.re = "d";
+    ADF_CHECK(!sign_case_exact(&c));
+    /* A negative midpoint that does exclude 0 is admissible for an idele and forbidden for a
+       class (5.7: every point of the ball of a class is positive). */
+    c.m = "-3"; c.e = "0"; c.rm = "1"; c.re = "1";
+    ADF_CHECK(sign_case_exact(&c));
+    c.tail = 0;
+    ADF_CHECK(!sign_case_exact(&c));
+}
+
+/* The texts of the review (finding F2): in the same binade, with the midpoint the longer mantissa,
+   a tie of the leading bits is a strict inequality, so the ball [1, 5] excludes 0. Each text is
+   ADF_OK, and the round trip through the public constructor holds. */
+ADF_TEST(tie_of_the_leading_bits_is_a_strict_inequality)
+{
+    /* idele: midpoint 3, radius 1 2^1 = 2, the ball [1, 5] */
+    {
+        static const tcase tie[] = {{"adf1 Q idele 1 3 0 1 1 1 1 1 0", ADF_OK}};
+        adf_idele_t x, y;
+        adf_ucoset_t u;
+        arb_t a;
+        fmpq_t r;
+        size_t len, len2;
+        char * t, * t2;
+        sign_case c;
+
+        TYPED_RUN(adf_idele_t, adf_idele_identical, adf_idele_init, idele_sentinel, adf_idele_clear,
+                  adf_idele_load_str, adf_idele_dump_inspect, adf_idele_dump_str, tie,
+                  sizeof(tie) / sizeof(tie[0]));
+        c.m = "3"; c.e = "0"; c.rm = "1"; c.re = "1"; c.kw = "idele"; c.tail = 1;
+        ADF_CHECK(sign_case_exact(&c));
+        /* the round trip of the public constructor: build the value, dump it, load it again */
+        adf_ucoset_init(u);
+        arb_init(a);
+        fmpq_init(r);
+        adf_idele_init(x);
+        adf_idele_init(y);
+        ucoset_one(u);
+        fmpq_set_si(r, 1, 1);
+        arf_set_si(arb_midref(a), 3);
+        mag_one(arb_radref(a));
+        mag_mul_2exp_si(arb_radref(a), arb_radref(a), 1);
+        ADF_CHECK(adf_idele_set_parts(x, a, r, u) == ADF_OK && adf_idele_is_canonical(x));
+        t = adf_idele_dump_str(&len, x);
+        ADF_CHECK_MSG(len == strlen("adf1 Q idele 1 3 0 1 1 1 1 1 0")
+                          && memcmp(t, "adf1 Q idele 1 3 0 1 1 1 1 1 0", len) == 0,
+                      "the dump is \"%s\"", t);
+        ADF_CHECK(adf_idele_load_str(y, t, len, NULL, NULL) == ADF_OK);
+        ADF_CHECK_MSG(adf_idele_identical(x, y), "load(dump(v)) is not v");
+        t2 = adf_idele_dump_str(&len2, y);
+        ADF_CHECK(len2 == len && memcmp(t2, t, len) == 0);
+        adf_str_free(t);
+        adf_str_free(t2);
+        adf_idele_clear(x);
+        adf_idele_clear(y);
+        adf_ucoset_clear(u);
+        arb_clear(a);
+        fmpq_clear(r);
+    }
+    /* idclass: the same ball; the class needs only that every point of it is positive */
+    {
+        static const tcase tie[] = {{"adf1 Q idclass 3 0 1 1 1 0", ADF_OK}};
+        adf_idclass_t x, y;
+        adf_ucoset_t u;
+        arb_t a;
+        size_t len, len2;
+        char * t, * t2;
+        sign_case c;
+
+        TYPED_RUN(adf_idclass_t, adf_idclass_identical, adf_idclass_init, idclass_sentinel,
+                  adf_idclass_clear, adf_idclass_load_str, adf_idclass_dump_inspect,
+                  adf_idclass_dump_str, tie, sizeof(tie) / sizeof(tie[0]));
+        c.m = "3"; c.e = "0"; c.rm = "1"; c.re = "1"; c.kw = "idclass"; c.tail = 0;
+        ADF_CHECK(sign_case_exact(&c));
+        adf_ucoset_init(u);
+        arb_init(a);
+        adf_idclass_init(x);
+        adf_idclass_init(y);
+        ucoset_one(u);
+        arf_set_si(arb_midref(a), 3);
+        mag_one(arb_radref(a));
+        mag_mul_2exp_si(arb_radref(a), arb_radref(a), 1);
+        ADF_CHECK(adf_idclass_set_parts(x, a, u) == ADF_OK && adf_idclass_is_canonical(x));
+        t = adf_idclass_dump_str(&len, x);
+        ADF_CHECK_MSG(len == strlen("adf1 Q idclass 3 0 1 1 1 0")
+                          && memcmp(t, "adf1 Q idclass 3 0 1 1 1 0", len) == 0,
+                      "the dump is \"%s\"", t);
+        ADF_CHECK(adf_idclass_load_str(y, t, len, NULL, NULL) == ADF_OK);
+        ADF_CHECK_MSG(adf_idclass_identical(x, y), "load(dump(v)) is not v");
+        t2 = adf_idclass_dump_str(&len2, y);
+        ADF_CHECK(len2 == len && memcmp(t2, t, len) == 0);
+        adf_str_free(t);
+        adf_str_free(t2);
+        adf_idclass_clear(x);
+        adf_idclass_clear(y);
+        adf_ucoset_clear(u);
+        arb_clear(a);
+    }
+}
+
+/* ------------------------------------------------------------------ the family of the sign
+
+   Every dump whose real ball has the midpoint m 2^e and the radius r 2^f, for an odd m with
+   |m| <= 127 in both signs, an odd r <= 127 with the two radius mantissas of 30 bits that the
+   bound of 10.2 leaves open (2^29 + 1 and 2^30 - 1), and e, f in -9..9. Both bodies: the inf of
+   an idele and the t of a class. The expected status is the exact comparison |m| 2^e > r 2^f (and
+   m > 0 for the class), and it is compared with the loader and with the public constructor. The
+   family does not use the method of dp_arb_sign: it forms the two powers and compares them, so
+   it does not repeat a defect of that method. The strides below cut the product to a size that a
+   sanitized build also runs in seconds; every shape of the comparison of dp_arb_sign (the same
+   binade with bm > br, bm == br and bm < br, and binades that differ by one, two and more) is in
+   the family, and the whole product of m, r, e and f for one exponent is in the corpus of the
+   review (lanes/u-review1, gen.py). */
+
+ADF_TEST(sign_of_the_small_balls)
+{
+    char rbuf[64][10];
+    size_t idx[10], nidx = 0;
+    size_t nr = 0, am, ai, i, j, e, f, k, ncases;
+    long rr;
+
+    for (rr = 1; rr <= 127; rr += 2)
+        snprintf(rbuf[nr], sizeof(rbuf[0]), "%lx", (unsigned long) rr), nr++;
+    ADF_CHECK(nr == 64);
+    snprintf(rbuf[62], sizeof(rbuf[0]), "%lx", (unsigned long) ((1 << 29) + 1));
+    snprintf(rbuf[63], sizeof(rbuf[0]), "%lx", (unsigned long) ((1 << 30) - 1));
+    ADF_CHECK(strlen(rbuf[62]) == 8 && strlen(rbuf[63]) == 8);
+    /* every eighth small radius mantissa, and the two of 30 bits: nine radius mantisses */
+    for (i = 0; i < 56; i += 8)
+        idx[nidx++] = i;
+    idx[nidx++] = 62;
+    idx[nidx++] = 63;
+    ADF_CHECK(nidx == 9);
+    ncases = 0;
+    for (am = 1; am <= 127; am += 2)
+        for (ai = 0; ai < 2; ai++)
+            for (j = 0; j < nr; j++)
+                for (e = 9; e < 28; e++)
+                    for (f = 9; f < 28; f++)
+                    {
+                        sign_case c;
+                        char mbuf[10], eb[10], fb[10];
+
+                        snprintf(mbuf, sizeof(mbuf), "%s%lx", ai ? "-" : "", (unsigned long) am);
+                        snprintf(eb, sizeof(eb), "%ld", (long) e - 9);
+                        snprintf(fb, sizeof(fb), "%ld", (long) f - 9);
+                        c.m = mbuf;
+                        c.e = eb;
+                        c.rm = rbuf[j];
+                        c.re = fb;
+                        c.kw = "idele";
+                        c.tail = 1;
+                        sign_case_run(&c);
+                        ncases++;
+                    }
+    ADF_CHECK_MSG(ncases == 64 * 2 * 64 * 19 * 19, "%zu idele cases", ncases);
+    /* The class of the same family with the stride of the midpoint raised by three, so that a
+       second product of the same shape is not repeated case by case. */
+    ncases = 0;
+    for (am = 1; am <= 127; am += 6)
+        for (ai = 0; ai < 2; ai++)
+            for (j = 0; j < nidx; j++)
+                for (e = 9; e < 28; e++)
+                    for (f = 9; f < 28; f++)
+                    {
+                        sign_case c;
+                        char mbuf[10], eb[10], fb[10];
+
+                        snprintf(mbuf, sizeof(mbuf), "%s%lx", ai ? "-" : "", (unsigned long) am);
+                        snprintf(eb, sizeof(eb), "%ld", (long) e - 9);
+                        snprintf(fb, sizeof(fb), "%ld", (long) f - 9);
+                        c.m = mbuf;
+                        c.e = eb;
+                        c.rm = rbuf[idx[j]];
+                        c.re = fb;
+                        c.kw = "idclass";
+                        c.tail = 0;
+                        sign_case_run(&c);
+                        ncases++;
+                    }
+    ADF_CHECK_MSG(ncases == 22 * 2 * 9 * 19 * 19, "%zu idclass cases", ncases);
+    /* Twenty cases whose exponents have 100 and 5000 bits: the sign of the exponents alternates,
+       so that both a binade that differs by one bit and one that differs by hundreds of bits are
+       compared on the digit strings. */
+    for (k = 0; k < 20; k++)
+    {
+        sign_case c;
+        char mbuf[10], eb[1300], fb[1300], rb[10];
+        size_t b1 = (k % 2) ? 5000 : 100, b2 = (k % 3) ? 5000 : 100;
+
+        snprintf(mbuf, sizeof(mbuf), "%s%lx", (k % 4 < 2) ? "" : "-",
+                 (unsigned long) (2 * (k % 63) + 1));
+        hex_pow2(eb, sizeof(eb), b1, k % 2);
+        hex_pow2(fb, sizeof(fb), b2, (k / 2) % 2);
+        snprintf(rb, sizeof(rb), "%lx", (unsigned long) ((1 << (k % 30)) + 1));
+        c.m = mbuf;
+        c.e = eb;
+        c.rm = rb;
+        c.re = fb;
+        c.kw = (k % 2) ? "idclass" : "idele";
+        c.tail = (k % 2) ? 0 : 1;
+        sign_case_run(&c);
+    }
 }
 
 /* ------------------------------------------------------------------ the limits and the order */

@@ -127,8 +127,13 @@ two since lane `drv-ball`.  A fourth token that is no
 body of section 10 at all is `error: PARSE`, and a text that does not begin `adf1 Q ` is
 read by the loader of `adf_rat`, whose status is then the status of the text: the version,
 the field and the syntax of section 10.1 do not depend on the body.  The dump form has no
-whitespace other than the single spaces of its tokens (conventions 8.2), so `load` does not
-trim its operand.
+whitespace other than the single spaces of its tokens (conventions 8.2), and `load` passes
+the bytes of its operand on to the loader without trimming any of them: a space at the
+beginning of the operand after the blanks of the line reader, or a space at its end, is a
+fault of the text (`error: PARSE`).  The blanks that the line reader skips are the ones
+between the operation name and the first operand and the ones around a ` with ` separator,
+for every command (item 3 above): `load  adf1 Q ucoset 1 0` and `load<TAB>adf1 Q ucoset 1 0`
+read the dump, `load adf1 Q ucoset 1 0 ` does not.
 
 The bodies of the five kinds hold no context occurrence (conventions 10.2), so `load` of a
 valid text of one of them needs no context and answers with the value form of 9.4.  A text

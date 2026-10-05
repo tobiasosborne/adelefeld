@@ -153,7 +153,10 @@ int adf_cadele_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * 
    conventions 5.6 is the only condition on the two fields: N >= 1 and 1 <= c <= N and
    gcd(c, N) = 1, or N = 0 and c = +1 or -1 (the exact units). No other status than the ones
    listed above can come from a field: a value of the library that satisfies the predicate gives a
-   dump that loads back into an identical value. ---- */
+   dump that loads back into an identical value. A text is never able to make the loader abort: the
+   value is built in a temporary and exchanged into x on ADF_OK alone (conventions 4.3), and the
+   predicate is asked of that temporary, so a text that defeats the check of stage 6 gets
+   ADF_DOMAIN with x untouched. ---- */
 int adf_ucoset_load_str(adf_ucoset_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
                         const adf_text_limits_t * lim);
 int adf_ucoset_load_str_binds(adf_ucoset_t x, const char * s, size_t len,
@@ -169,7 +172,12 @@ int adf_ucoset_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * 
    canonical arb that excludes 0 (midpoint of larger absolute value than the radius), the content
    is a canonical fmpq and r > 0, the unit satisfies 5.6. The ball is written and read exactly
    (arb_dump_str, conventions 10.2): the dump holds the ball, not an enclosure of it, and no prec
-   enters. ---- */
+   enters. The ball excludes 0 exactly when |m| 2^me > rm 2^re; the two powers are compared on the
+   digit strings, so an exponent of any length is decided, and a tie of the leading bits of the two
+   mantissas in the same binade is the strict inequality it is (the longer mantissa is odd, so it
+   has bits below the tie). The value is built in a temporary and exchanged into x on ADF_OK
+   alone, so a text that defeats the check of stage 6 gets ADF_DOMAIN with x untouched instead of
+   an abort. ---- */
 int adf_idele_load_str(adf_idele_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
                        const adf_text_limits_t * lim);
 int adf_idele_load_str_binds(adf_idele_t x, const char * s, size_t len,
@@ -182,7 +190,8 @@ int adf_idele_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s
 /* ---- adf_idclass: body "idclass <arb> c N" (no context occurrence). The type is special to Q and
    its dump has no count (conventions 10.1). The predicate of conventions 5.7 is checked on the
    tokens: the real ball is a canonical arb every point of which is positive (midpoint positive and
-   of larger absolute value than the radius), and the unit satisfies 5.6. ---- */
+   of larger absolute value than the radius), and the unit satisfies 5.6. As for the idele, the
+   value is built in a temporary and exchanged into x on ADF_OK alone. ---- */
 int adf_idclass_load_str(adf_idclass_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
                          const adf_text_limits_t * lim);
 int adf_idclass_load_str_binds(adf_idclass_t x, const char * s, size_t len,
@@ -197,8 +206,12 @@ int adf_idclass_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char *
    ulong_extras.h:335): p is a prime, the form is "x" or "b", the rational u of an exact value is
    canonical and p divides neither its numerator nor its denominator, a ball has v < N, an integer
    u prime to p and 0 < u < p^(N - v), and u = 0 goes with v = 0. |v| and |N| are bounded by
-   max_prec (conventions 8.4, a limit of stage 4) and p below 2^64 is a word restriction of stage 5
-   (conventions 8.5 item 5). ---- */
+   max_prec (conventions 8.4, a limit of stage 4) and by ADF_LBALL_EXP_MAX (adelefeld/lball.h:67,
+   the bound that every function of the type and the value form reader (adelefeld/text.h:304, 331)
+   apply to those two fields, so that the loader never builds a field that no function of the
+   library accepts); p below 2^64 is a word restriction of stage 5 (conventions 8.5 item 5). The
+   value is built in a temporary whose predicate is asked before the exchange into x, so a text
+   that defeats the check of stage 6 gets ADF_DOMAIN with x untouched instead of an abort. ---- */
 int adf_lball_load_str(adf_lball_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
                        const adf_text_limits_t * lim);
 int adf_lball_load_str_binds(adf_lball_t x, const char * s, size_t len,
@@ -213,8 +226,9 @@ int adf_lball_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s
    conventions 5.9, and the count is the number of primes; the predicate of 5.9 is checked on the
    tokens: the balls are canonical arbs (so finite, conventions 5.9), each lb satisfies 5.8, and
    the primes strictly increase. The count is bounded by max_items (conventions 8.4, "the number of
-   ... places"), the exponents of every lb by max_prec, and a prime below 2^64 is required of each
-   of them. ---- */
+   ... places"), the exponents of every lb by max_prec and by ADF_LBALL_EXP_MAX (as for a local
+   ball above), and a prime below 2^64 is required of each of them. The value is built in a
+   temporary whose predicate is asked before the exchange into x. ---- */
 int adf_sball_load_str(adf_sball_t x, const char * s, size_t len, const adf_modctx_struct * ctx,
                        const adf_text_limits_t * lim);
 int adf_sball_load_str_binds(adf_sball_t x, const char * s, size_t len,
