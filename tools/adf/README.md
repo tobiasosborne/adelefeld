@@ -735,6 +735,22 @@ the stored lift exactly. Pair arithmetic and set queries give `DOMAIN` in this s
 Union input is `UNSUPPORTED` after syntax and text-limit checks. Dump and the character belong to later slices.
 Julia calls are in `tests/julia/qclass.jl`.
 
+### Tate additive character (slice 3.2-a)
+
+`psi X` and `psi_strict X` take one real adele. They print the ordinary complex ball as
+`(re) + (im)*i`, using the settings `prec` and `digits`, as `local_zeta_factor_at` does.
+The character is `E(a-m)` for an exact input `(m ; a)`, where `E(t)=exp(2 pi i t)`.
+For example, `psi (0 ; 1/3)` at `prec 128`, `digits 5` prints
+`(-0.5) + (0.86603 +/- 4.6e-6)*i`.
+
+Default `psi` encloses all phases of a ball using the rectangular hull of Q4 in `docs/api-3.md`.
+`psi_strict` returns `NOT_DETERMINED` for fractional finite radius. It permits real uncertainty.
+Integer finite radius, including zero, passes this strict test (conventions 6.1, CV-59).
+Other value kinds return `UNSUPPORTED` in this slice. Syntax and adele parsing precede the library call.
+The library can return `LIMIT` for precision or exact arithmetic, or `NOT_DETERMINED` if the numerical
+certificate cannot be obtained. No result is printed on a failure.
+Checks: `tests/driver/psi-values.cmd`, `tests/driver/psi-status.cmd`, and `tests/julia/psi.jl`.
+
 `qreduce X with LIMIT` reduces a quotient lift to a printed union of closed balls.
 LIMIT is an integer and counts algorithm R's construction before rounding and duplicate removal.
 An exceeded limit, including a limit below 1, gives `error: LIMIT`. The setting `prec` supplies real precision.

@@ -54,6 +54,7 @@
 #include "adelefeld/lball.h"
 #include "adelefeld/adele.h"
 #include "adelefeld/qclass.h"
+#include "adelefeld/psi.h"
 #include "adelefeld/sball.h"
 #include "adelefeld/rfunc.h"
 #include "adelefeld/lfunc.h"

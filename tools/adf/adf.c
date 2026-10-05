@@ -202,6 +202,8 @@ typedef enum
     ADF_DRV_CYCLO_EXP_U,
     ADF_DRV_CYCLO_EXP_UINV,
     ADF_DRV_LOCAL_ZETA_AT,
+    ADF_DRV_PSI,
+    ADF_DRV_PSI_STRICT,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -283,6 +285,8 @@ static const struct
     { "cyclo_exp_uinv", ADF_DRV_CYCLO_EXP_UINV, 2 },
     { "hilbert_at", ADF_DRV_HILBERT_AT, 3 },
     { "local_zeta_factor_at", ADF_DRV_LOCAL_ZETA_AT, 2 },
+    { "psi", ADF_DRV_PSI, 1 },
+    { "psi_strict", ADF_DRV_PSI_STRICT, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -2973,6 +2977,33 @@ done:
     return status;
 }
 
+/* Slice 3.2-a: a real adele's Tate character, printed like local_zeta_factor_at.
+   docs/api-3.md 7,3.1-3.3; conventions 6.1. Only adele input belongs to this slice. */
+static int
+adf_drv_psi(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind kind; adf_adele_t x; adf_cadele_t c; adf_fball_t zero; acb_t z;
+    int status; char *text = NULL; size_t len = 0;
+    adf_adele_init(x); adf_cadele_init(c); adf_fball_init(zero); acb_init(z);
+    status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK) goto done;
+    if (kind != ADF_TEXT_ADELE) { status = ADF_UNSUPPORTED; goto done; }
+    status = adf_adele_set_str(x, l->s[0], l->n[0], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    status = op == ADF_DRV_PSI_STRICT ? adf_adele_psi_tate_strict(z, x, st->prec) :
+                                      adf_adele_psi_tate(z, x, st->prec);
+    if (status != ADF_OK) goto done;
+    status = adf_cadele_set_acb_fball(c, z, zero);
+    if (status != ADF_OK) goto done;
+    text = adf_cadele_get_str(&len, c, st->digits);
+    if (text == NULL) { status = ADF_LIMIT; goto done; }
+    if (len < 7 || memcmp(text+len-5, " ; 0)", 5)) status = ADF_LIMIT;
+    else fprintf(out, "%.*s\n", (int) (len-6), text+1);
+done:
+    adf_str_free(text); adf_adele_clear(x); adf_cadele_clear(c);
+    adf_fball_clear(zero); acb_clear(z); return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3101,6 +3132,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
     if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
     if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
+    if (op == ADF_DRV_PSI || op == ADF_DRV_PSI_STRICT) return adf_drv_psi(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

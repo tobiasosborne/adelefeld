@@ -169,6 +169,23 @@ rm -f "$text_local_output"
 
 # ---- 3. run the smoke test ----
 
+# Slice 3.2-a: the adelic Tate additive character.
+psi_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/psi.jl "$so" > "$psi_output" 2>&1; then
+    cat "$psi_output"
+elif grep -q '__gmpn_modexact_1_odd' "$psi_output" 2>/dev/null \
+        && psi_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$psi_gmp" ] \
+        && LD_PRELOAD="$psi_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/psi.jl "$so"; then
+    echo "== tests/julia/psi.jl passed with LD_PRELOAD=$psi_gmp"
+else
+    cat "$psi_output"
+    rm -f "$psi_output"
+    echo "test_julia: tests/julia/psi.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$psi_output"
+
 # Slice 3.1-a: quotient lift, storage access and rational translation.
 qclass_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass.jl "$so" > "$qclass_output" 2>&1; then
