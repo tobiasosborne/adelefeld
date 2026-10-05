@@ -1,0 +1,2 @@
+reduce line 163: s && n == strlen("union((0.5 ; 7)) + Q") && !strcmp(s, "union((0.5 ; 7)) + Q")
+timeout: the monitored command dumped core

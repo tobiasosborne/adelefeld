@@ -191,10 +191,11 @@ char * adf_adele_get_str(size_t * len, const adf_adele_t x, slong digits);
 int adf_qclass_set_str(adf_qclass_t x, const char *s, size_t len, slong prec,
                       const adf_text_limits_t *lim);
 
-/* Allocate the LIFT value form (r ; F) + Q with flint_malloc; *len excludes NUL.
+/* Allocate LIFT (r ; F) + Q or PIECES union(X, X, ...) + Q with flint_malloc;
+   *len excludes NUL. PIECES order/dedup use exact PRINTED endpoint/H/A keys (9.4).
    Free with adf_str_free. NULL and *len=0 when not printable under M1-D6.
-   In this slice PIECES also returns NULL and *len=0; its printer is slice 3.1-d.
-   The printed lift encloses the stored set; value text is not lossless (conventions 9.6). */
+   Printed pieces enclose the stored set; value text is not lossless (conventions 9.6).
+   The union reader remains UNSUPPORTED until slice 3.1-d. */
 char *adf_qclass_get_str(size_t *len, const adf_qclass_t x, slong digits);
 
 /* ---- adf_cadele: start symbol cadele_v = "(" complex ";" fin ")"; template (z(x_inf) ; F) ---- */

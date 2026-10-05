@@ -309,7 +309,7 @@ int adf_qclass_reduce(adf_qclass_t y, const adf_qclass_t x, slong piece_limit, s
                 fmpz_fdiv_q(first, fmpq_numref(l), fmpq_denref(l));
                 if (fmpq_equal(l, h)) fmpz_add_ui(stop, first, 1);
                 else fmpz_cdiv_q(stop, fmpq_numref(h), fmpq_denref(h));
-                fmpz_sub(count, stop, first); fmpz_add(total, total, count);
+                fmpz_sub(count, stop, first); fmpz_sub_ui(count, count, 1); fmpz_add(total, total, count);
                 if (fmpz_cmp_si(total, piece_limit) > 0) goto done;
                 if (pass) {
                     for (fmpz_set(n, first); fmpz_cmp(n, stop) < 0; fmpz_add_ui(n, n, 1)) {

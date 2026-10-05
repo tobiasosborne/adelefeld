@@ -1,0 +1,3 @@
+tests/ref/vectors/q-slice2/integer.jsonl: 65 vectors, 2600 point labels
+tests/ref/vectors/q-slice2/fractional.jsonl: 60 vectors, 2400 point labels
+test_qclass_reduce: 68872 checks

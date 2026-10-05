@@ -2174,17 +2174,69 @@ int adf_qclass_set_str(adf_qclass_t x, const char *s, size_t len, slong prec,
     return ADF_OK;
 }
 
-/* conventions 9.4: append the quotient marker to the ordinary adele enclosure.
-   No full PIECES printer is exposed in slice 3.1-a (docs/api-3.md 7). */
+#include <stdlib.h>
+
+/* conventions 9.4, 5.10: order/deduplicate the printed endpoint keys, after the
+   ordinary adele printer has enclosed each stored ball. No union reader is added. */
+typedef struct {
+    char *s;
+    size_t n;
+    fmpq_t lo, hi;
+    fmpz_t H, A;
+} tq_printed;
+
+static int tq_print_cmp(const void *vp, const void *vq)
+{
+    const tq_printed *p = vp, *q = vq;
+    int c = fmpq_cmp(p->lo, q->lo);
+    if (!c) c = fmpq_cmp(p->hi, q->hi);
+    if (!c) c = fmpz_cmp(p->H, q->H);
+    if (!c) c = fmpz_cmp(p->A, q->A);
+    return c;
+}
+
 char *adf_qclass_get_str(size_t *len, const adf_qclass_t x, slong digits)
 {
     char *s;
     size_t n;
     tx_buf b;
+    tq_printed *p;
+    slong i, initialized = 0;
+    int failed = 0;
 #ifdef ADF_CHECK_INVARIANTS
     if (!adf_qclass_is_canonical(x)) adf_inv_fail(__func__, "x", "adf_qclass");
 #endif
-    if (x->form != ADF_QCLASS_LIFT) { *len = 0; return NULL; }
+    if (x->form == ADF_QCLASS_PIECES) {
+        if ((size_t) x->len > (size_t) -1/sizeof(*p)) { *len = 0; return NULL; }
+        p = flint_malloc((size_t) x->len*sizeof(*p));
+        for (i = 0; i < x->len; i++) {
+            tx_cur c; tx_real r; fmpz_t d;
+            fmpq_init(p[i].lo); fmpq_init(p[i].hi); fmpz_init(p[i].H); fmpz_init(p[i].A);
+            initialized++;
+            p[i].s = adf_adele_get_str(&p[i].n, x->piece+i, digits);
+            if (!p[i].s) { failed = 1; break; }
+            c.s = p[i].s; c.len = p[i].n; c.i = 0;
+            (void) tx_expect(&c, '('); (void) tx_real_syntax(&c, &r);
+            tx_real_interval(p[i].lo, p[i].hi, p[i].s, &r);
+            fmpz_init(d); adf_fball_get_fmpz3(p[i].A, p[i].H, d, &x->piece[i].fin); fmpz_clear(d);
+        }
+        s = NULL;
+        if (!failed) {
+            qsort(p, (size_t) x->len, sizeof(*p), tq_print_cmp);
+            tx_buf_init(&b); tx_puts(&b, "union(");
+            for (i = 0; i < x->len; i++) {
+                if (i && !tq_print_cmp(p+i-1, p+i)) continue;
+                if (i) tx_puts(&b, ", ");
+                tx_put(&b, p[i].s, p[i].n);
+            }
+            tx_puts(&b, ") + Q"); s = tx_finish(&b, len);
+        } else *len = 0;
+        for (i = 0; i < initialized; i++) {
+            adf_str_free(p[i].s); fmpq_clear(p[i].lo); fmpq_clear(p[i].hi);
+            fmpz_clear(p[i].H); fmpz_clear(p[i].A);
+        }
+        flint_free(p); return s;
+    }
     s = adf_adele_get_str(&n, x->piece, digits);
     if (!s) { *len = 0; return NULL; }
     tx_buf_init(&b);

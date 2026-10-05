@@ -301,7 +301,7 @@ int adf_qclass_reduce(adf_qclass_t y, const adf_qclass_t x, slong piece_limit, s
         for (i = 0; i < x->len; i++) {
             if (!q_read(lo, hi, a, N, x->piece[i].inf, &x->piece[i].fin)) goto done;
             fmpz_set(A, fmpq_numref(N->q)); fmpz_set(B, fmpq_denref(N->q));
-            fmpz_set_si(remaining, piece_limit); fmpz_sub(remaining, remaining, total);
+            fmpz_set_si(remaining, piece_limit); 
             if (fmpz_cmp(B, remaining) > 0) goto done;
             fibres = fmpz_get_si(B); fmpq_set(centre, a->q);
             for (j = 0; j < fibres; j++) {

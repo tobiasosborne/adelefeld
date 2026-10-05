@@ -1,0 +1,4 @@
+{'name': 'S1_equal_denominator_cap', 'stage': 2, 'exit': -6, 'seconds': 1.8}
+{'name': 'S2_denominator_leading_bit', 'stage': 2, 'exit': -6, 'seconds': 1.799}
+{'name': 'S3_denominator_cap_strict', 'stage': 2, 'exit': -6, 'seconds': 1.849}
+{'name': 'S4_remaining_not_subtracted', 'stage': 2, 'exit': -6, 'seconds': 2.301}

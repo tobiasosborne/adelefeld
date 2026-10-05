@@ -138,6 +138,7 @@ typedef enum
     ADF_DRV_SHOW = 0,
     ADF_DRV_TYPE,
     ADF_DRV_QADD_RAT,
+    ADF_DRV_QREDUCE,
     ADF_DRV_ADD,
     ADF_DRV_SUB,
     ADF_DRV_MUL,
@@ -215,6 +216,7 @@ static const struct
     { "show", ADF_DRV_SHOW, 1 },
     { "type", ADF_DRV_TYPE, 1 },
     { "qadd_rat", ADF_DRV_QADD_RAT, 2 },
+    { "qreduce", ADF_DRV_QREDUCE, 2 },
     { "add", ADF_DRV_ADD, 2 },
     { "sub", ADF_DRV_SUB, 2 },
     { "mul", ADF_DRV_MUL, 2 },
@@ -3170,7 +3172,23 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             goto done;
     }
 
-    /* Slice 3.1-a: the one implemented quotient operation and the common pair domains. */
+    /* docs/api-3.md 7: raw piece-count limit passed to algorithm R; integer conversion
+       occurs only after the arbitrary-precision range check. */
+    if (op == ADF_DRV_QREDUCE)
+    {
+        if (x.type != ADF_DRV_QCLASS || y.type != ADF_DRV_RAT ||
+            !fmpz_is_one(fmpq_denref(y.r->q))) status = ADF_DOMAIN;
+        else if (!fmpz_fits_si(fmpq_numref(y.r->q))) status = ADF_LIMIT;
+        else {
+            status = adf_qclass_reduce(z.q, x.q, fmpz_get_si(fmpq_numref(y.r->q)), st->prec);
+            if (status == ADF_OK) {
+                z.type = ADF_DRV_QCLASS;
+                status = adf_drv_value_print(out, &z, st->digits);
+            }
+        }
+        goto done;
+    }
+    /* Quotient identity translation and the common pair domains. */
     if (op == ADF_DRV_QADD_RAT)
     {
         if (x.type != ADF_DRV_QCLASS || y.type != ADF_DRV_RAT) status = ADF_DOMAIN;

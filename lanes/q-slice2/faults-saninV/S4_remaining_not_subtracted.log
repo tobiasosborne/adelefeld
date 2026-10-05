@@ -1,0 +1,2 @@
+reduce line 354: premature_fibre_copies == 0
+timeout: the monitored command dumped core

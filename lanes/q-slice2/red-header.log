@@ -1,0 +1,4 @@
+lanes/q-slice2/header_probe.c:4:16: error: ‘ADF_REAL_PREC_MAX’ undeclared here (not in a function)
+    4 | _Static_assert(ADF_REAL_PREC_MAX == 2097152, "qclass precision cap");
+      |                ^~~~~~~~~~~~~~~~~
+lanes/q-slice2/header_probe.c:4:16: error: expression in static assertion is not an integer

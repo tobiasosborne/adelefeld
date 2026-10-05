@@ -206,7 +206,7 @@ static int q_add(fmpq_t z, const fmpq_t x, const fmpq_t y, int subtract)
     /* Equal denominators need no cross-product. In particular the exponent boundary
        must not be refused solely for an unnecessary squared dyadic denominator. */
     if (fmpz_equal(fmpq_denref(x), fmpq_denref(y))) {
-        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd > ADF_QCLASS_BITS_MAX) return 0;
+        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd >= ADF_QCLASS_BITS_MAX) return 0;
         if (subtract) fmpq_sub(z, x, y); else fmpq_add(z, x, y);
         return 1;
     }

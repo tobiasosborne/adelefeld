@@ -1,5 +1,5 @@
 # Slice 3.1-a. Allocate by exported size and alignment, and preserve byte storage and strings.
-# Only the declared lift operations are called. All owned values and returned strings are released.
+# Lift and reduction calls. All owned values and returned strings are released.
 using Test
 using Libdl
 
@@ -67,6 +67,36 @@ end
             ccall(ad(:adf_qclass_swap), Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}), q, q)
             @test ccall(ad(:adf_qclass_get_piece), Cint,
                 (Ptr{Cvoid}, Ptr{Cvoid}, Clong), a, q, 1) == 7
+            @test ccall(ad(:adf_qclass_reduce), Cint,
+                (Ptr{Cvoid}, Ptr{Cvoid}, Clong, Clong), y, q, 1, 128) == 0
+            @test ccall(ad(:adf_qclass_form), Cint, (Ptr{Cvoid},), y) == 1
+            @test ccall(ad(:adf_qclass_length), Clong, (Ptr{Cvoid},), y) == 1
+            @test ccall(ad(:adf_qclass_is_canonical), Cint, (Ptr{Cvoid},), y) == 1
+            ccall(ad(:adf_qclass_set), Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}), q, y)
+            @test ccall(ad(:adf_qclass_reduce), Cint,
+                (Ptr{Cvoid}, Ptr{Cvoid}, Clong, Clong), y, q, 0, 128) == 10
+            @test ccall(ad(:adf_qclass_identical), Cint, (Ptr{Cvoid}, Ptr{Cvoid}), q, y) == 1
+            @test ccall(ad(:adf_qclass_reduce), Cint,
+                (Ptr{Cvoid}, Ptr{Cvoid}, Clong, Clong), y, y, 1, 128) == 0
+            fractional = "(0 ; 0 mod 1/2) + Q"
+            GC.@preserve fractional begin
+                @test ccall(ad(:adf_qclass_set_str), Cint,
+                    (Ptr{Cvoid}, Ptr{UInt8}, Csize_t, Clong, Ptr{Cvoid}),
+                    q, fractional, sizeof(fractional), 128, C_NULL) == 0
+            end
+            @test ccall(ad(:adf_qclass_reduce), Cint,
+                (Ptr{Cvoid}, Ptr{Cvoid}, Clong, Clong), y, q, 2, 128) == 0
+            @test ccall(ad(:adf_qclass_length), Clong, (Ptr{Cvoid},), y) == 2
+            @test ccall(ad(:adf_qclass_is_canonical), Cint, (Ptr{Cvoid},), y) == 1
+            s = ccall(ad(:adf_qclass_get_str), Ptr{UInt8}, (Ref{Csize_t}, Ptr{Cvoid}, Clong), n, y, 20)
+            @test s != C_NULL
+            if s != C_NULL
+                try
+                    @test unsafe_string(s, n[]) == "union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q"
+                finally
+                    ccall(ad(:adf_str_free), Cvoid, (Ptr{Cvoid},), s)
+                end
+            end
         finally
             ccall(ad(:adf_adele_clear), Cvoid, (Ptr{Cvoid},), x)
             ccall(ad(:adf_adele_clear), Cvoid, (Ptr{Cvoid},), a)

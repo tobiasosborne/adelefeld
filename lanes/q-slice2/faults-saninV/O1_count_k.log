@@ -1,0 +1,57 @@
+=================================================================
+==12==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x502000003018 at pc 0x586261856cd2 bp 0x7ffe62842ad0 sp 0x7ffe62842ac8
+READ of size 8 at 0x502000003018 thread T0
+    #0 0x586261856cd1 in arf_is_zero /usr/include/flint/arf.h:237:12
+    #1 0x586261856cd1 in q_arf_bound /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/O1_count_k.c:183:9
+    #2 0x58626184a913 in q_round /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/O1_count_k.c:250:10
+    #3 0x58626184a913 in adf_qclass_reduce /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/O1_count_k.c:320:30
+    #4 0x586261853f9a in vectors /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/test_O1_count_k.c:190:9
+    #5 0x58626184cbc4 in main /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/test_O1_count_k.c:484:5
+    #6 0x7b240fc2a1c9 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #7 0x7b240fc2a28a in __libc_start_main csu/../csu/libc-start.c:360:3
+    #8 0x58626176d3f4 in _start (/home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/O1_count_k+0xae3f4) (BuildId: 64d938cc203ba8741b568147fca6116b3f455862)
+
+0x502000003018 is located 7 bytes after 1-byte region [0x502000003010,0x502000003011)
+allocated by thread T0 here:
+    #0 0x586261808243 in malloc (/home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/O1_count_k+0x149243) (BuildId: 64d938cc203ba8741b568147fca6116b3f455862)
+    #1 0x7b24100e00d5 in flint_malloc (/lib/x86_64-linux-gnu/libflint.so.18+0xe00d5) (BuildId: bf51926aca5446d8712f308496fa75c0eef08977)
+    #2 0x58626184b38b in adf_qclass_reduce /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/O1_count_k.c:331:25
+    #3 0x586261853f9a in vectors /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/test_O1_count_k.c:190:9
+    #4 0x58626184cbc4 in main /home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/test_O1_count_k.c:484:5
+    #5 0x7b240fc2a1c9 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #6 0x7b240fc2a28a in __libc_start_main csu/../csu/libc-start.c:360:3
+    #7 0x58626176d3f4 in _start (/home/tobias/Projects/adelefeld-wt/q-slice2/lanes/q-slice2/faults-saninV/O1_count_k+0xae3f4) (BuildId: 64d938cc203ba8741b568147fca6116b3f455862)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow /usr/include/flint/arf.h:237:12 in arf_is_zero
+Shadow bytes around the buggy address:
+  0x502000002d80: fa fa fd fa fa fa fd fa fa fa fd fd fa fa fd fd
+  0x502000002e00: fa fa fd fa fa fa fd fd fa fa fd fa fa fa fd fa
+  0x502000002e80: fa fa fd fd fa fa fd fd fa fa fd fa fa fa fd fa
+  0x502000002f00: fa fa fd fd fa fa fd fd fa fa fd fa fa fa fd fa
+  0x502000002f80: fa fa fd fd fa fa fd fd fa fa fd fa fa fa fd fd
+=>0x502000003000: fa fa 01[fa]fa fa fa fa fa fa fa fa fa fa fa fa
+  0x502000003080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x502000003100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x502000003180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x502000003200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x502000003280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==12==ABORTING

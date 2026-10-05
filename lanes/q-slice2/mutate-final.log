@@ -1,0 +1,27 @@
+mutate: src/qclass.c: 376 mutants
+mutate: 376 mutants, 20 of them run (--limit 20, --seed 310206)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (27.0 s)
+
+SURVIVED src/qclass.c:244:10 swap_args: 'q_add(mid, lo, hi, 0)' -> 'q_add(mid, hi, lo, 0)'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -242,5 +242,5 @@
+       fmpq_init(mid); fmpq_init(m); fmpq_init(d); fmpq_init(t);
+       arf_init(u); arf_init(den); fmpz_init(mant); fmpz_init(exp);
+  -    if (!q_add(mid, lo, hi, 0)) goto done;
+  +    if (!q_add(mid, hi, lo, 0)) goto done;
+       if (!fmpz_is_even(fmpq_numref(mid)) &&
+           fmpz_bits(fmpq_denref(mid)) >= ADF_QCLASS_BITS_MAX) goto done;
+
+
+NOT COMPILED src/qclass.c:249:46 prec: 'prec' -> '2'
+  src/qclass.c:239:69: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/qclass.c:226:49 logic: '||' -> '&&'
+  src/qclass.c:226:49: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/qclass.c:78:45 op: '+' -> '-'
+  src/qclass.c:78:29: error: array subscript -1 is outside array bounds of ‘arf_struct[4]’ [-Werror=array-bounds=]
+mutate: stopped by signal 15: 1 running command(s) killed, scratch removed

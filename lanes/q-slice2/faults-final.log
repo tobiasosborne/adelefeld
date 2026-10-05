@@ -1,0 +1,15 @@
+{'name': 'D1_drop_last_piece', 'stage': 2, 'exit': -6, 'seconds': 1.196}
+{'name': 'D2_upper_singleton', 'stage': 2, 'exit': -6, 'seconds': 1.196}
+{'name': 'D3_wrong_boundary_carry', 'stage': 2, 'exit': -6, 'seconds': 1.196}
+{'name': 'D4_one_fractional_fibre', 'stage': 2, 'exit': -6, 'seconds': 1.197}
+{'name': 'D5_refinement_analogue', 'stage': 2, 'exit': -6, 'seconds': 1.196}
+{'name': 'D6_finite_point_widened', 'stage': 2, 'exit': -6, 'seconds': 1.196}
+{'name': 'O1_count_k', 'stage': 2, 'exit': -6, 'seconds': 1.447}
+{'name': 'O2_no_finite_shift', 'stage': 2, 'exit': -6, 'seconds': 1.397}
+{'name': 'O3_radius_nearest', 'stage': 2, 'exit': -6, 'seconds': 1.598}
+{'name': 'O4_limit_after_allocation', 'stage': 2, 'exit': -6, 'seconds': 1.746}
+{'name': 'spill_clipped', 'stage': 2, 'exit': -6, 'seconds': 1.797}
+{'name': 'S1_equal_denominator_cap', 'stage': 2, 'exit': -6, 'seconds': 1.447}
+{'name': 'S2_denominator_leading_bit', 'stage': 2, 'exit': -6, 'seconds': 1.846}
+{'name': 'S3_denominator_cap_strict', 'stage': 2, 'exit': -6, 'seconds': 1.397}
+{'name': 'S4_remaining_not_subtracted', 'stage': 2, 'exit': -6, 'seconds': 1.396}

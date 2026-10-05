@@ -1,0 +1,2 @@
+tests/ref/vectors/q-slice2/integer.jsonl: 65 vectors, 2600 point labels
+test_qclass_reduce: 32278 checks

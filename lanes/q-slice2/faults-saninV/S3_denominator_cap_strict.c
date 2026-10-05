@@ -185,7 +185,7 @@ static int q_arf_bound(arf_srcptr a)
         fmpz_cmp_si(ARF_EXPREF(a), ADF_QCLASS_EXP_MAX) > 0) return 0;
     e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
     return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
-           (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+           (e >= b ? 1 : b-e+1) < ADF_QCLASS_BITS_MAX;
 }
 static int q_size(const fmpq_t a)
 {

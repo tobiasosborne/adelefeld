@@ -1,0 +1,81 @@
+mutate: the unmutated tree does not pass, so no mutant can be judged:
+_sign_of_every_value
+ok   the_equality_of_two_values
+ok   a_non_canonical_value_is_told_from_a_canonical_one
+ok   the_arithmetic_of_huge_operands_is_exact
+ok   the_layout_of_the_rational_is_the_documented_one
+26 tests, 41415 checks, 0 failed checks, 0 failed tests
+== build/test_recon
+ok   one_candidate_of_a_ball_of_radius_one_sixth
+ok   the_end_points_of_the_closed_interval_are_candidates
+ok   an_interval_of_the_width_of_the_radius
+ok   an_interval_just_below_the_width_of_the_radius
+ok   no_candidate_gives_no_solution
+ok   an_empty_interval_gives_no_solution
+ok   an_exact_finite_ball_gives_its_centre
+ok   negative_centres
+ok   a_radius_with_a_denominator
+ok   several_candidates_give_not_unique
+ok   the_output_may_be_one_of_the_interval_end_points
+ok   operands_of_4096_bits
+ok   the_enumeration_of_candidates_agrees_with_the_function
+ok   an_adele_with_a_real_ball_of_radius_zero
+ok   the_end_points_of_the_real_interval_are_candidates
+ok   the_adele_agrees_with_the_finite_ball_call_on_the_exact_interval
+ok   an_adele_with_an_exact_finite_ball
+ok   an_adele_with_operands_of_4096_bits
+ok   an_adele_with_an_infinite_real_ball_is_rejected
+19 tests, 52737 checks, 0 failed checks, 0 failed tests
+== build/test_recon_canon
+ok   the_bound_is_the_value_mn_times_two_to_the_exp
+ok   the_bound_is_in_canonical_form
+ok   a_bound_that_is_not_canonical_on_entry_comes_out_canonical
+ok   the_refusal_of_an_exponent_beyond_the_bound_leaves_it_untouched
+ok   the_public_reconstruction_returns_a_canonical_rational
+5 tests, 139 checks, 0 failed checks, 0 failed tests
+== build/test_recon_limit
+ok   the_real_balls_of_the_review_are_answered_limit
+ok   one_above_the_bound_gives_limit
+ok   at_the_bound_the_ball_is_computed
+ok   a_zero_midpoint_a_zero_radius_and_two_zeros
+4 tests, 778 checks, 0 failed checks, 0 failed tests
+== build/test_recon_vectors
+ok   vectors_recon
+ok   vectors_recon_edges_of_the_lane
+ok   vectors_recon_adele
+3 tests, 21194 checks, 0 failed checks, 0 failed tests
+== build/test_resid
+ok   life_cycle_and_init_values
+ok   set_fmpz2_reduces_and_refuses_m_below_one
+ok   get_fmpz2_aliasing_and_is_canonical
+brute force: 804804 cases, 61214 inside 2AB < m (OK 22622, NO_SOLUTION by (b) 29754, by (c) 8838), 743590 in the range 2AB >= m
+ok   brute_force_every_m_up_to_36
+vectors: 2643 lines, OK 1117, NO_SOLUTION (b) 1384, (c) 140, empty box 2
+ok   vectors_s3_slice1_every_line
+ok   boundary_2AB_against_m
+ok   boundary_small_moduli_and_zero_A
+ok   empty_box_is_no_solution_with_no_certificate
+ok   null_cert_gives_the_same_answers
+ok   certificate_check_refuses_changed_quadruples
+ok   aliasing_of_the_inputs
+wrapper test (FLINT fmpq_reconstruct_fmpz_2): 120651 cases, both OK and equal 51645, both none 69006
+ok   wrapper_test_against_fmpq_reconstruct_fmpz_2
+12 tests, 3395820 checks, 0 failed checks, 0 failed tests
+== build/test_resid_full
+enumeration against the literal definition: 79664 problems
+ok   enumeration_agrees_with_the_literal_definition
+brute force whole range: 804804 cases; NO_SOLUTION 52674, OK 92246, NOT_UNIQUE 659884; in the range 2AB >= m: NO_SOLUTION 14082, OK 69624, NOT_UNIQUE 659884
+ok   brute_force_every_m_up_to_36_whole_range
+limits grid: 1236900 calls (NO_SOLUTION 71481, OK 70868, NOT_UNIQUE 785882, NOT_DETERMINED 308669), NOT_UNIQUE found in a cut search 108402, OK from a cut search 0, 'limit 0 is 2AB >= m' fails 127564 times, 247380 cert = NULL calls
+ok   limits_grid_m_up_to_24
+vectors: 11298 lines (NO_SOLUTION 1114, OK 1293, NOT_UNIQUE 6281, NOT_DETERMINED 2610), X >= 2^64 in 314, limit WORD_MAX in 237, largest m 4001 bits, slowest call 0.000 s
+ok   vectors_s3_slice2_every_line
+ok   edge_cases_of_check_s3_edge
+large operands: 368 calls (NO_SOLUTION 83, OK 51, NOT_UNIQUE 19, NOT_DETERMINED 215), 24 with X above 2^64, 71 with a decided problem at limit WORD_MAX, slowest call 0.000 s
+ok   large_operands_return_at_once
+ok   aliasing_in_the_search_range
+7 tests, 29391859 checks, 0 failed checks, 0 failed tests
+== build/test_resid_rest
+
+mutate: src/qclass.c: 376 mutants
+mutate: 376 mutants, 12 of them run (--limit 12, --seed 310206)

@@ -1,0 +1,10 @@
+tests/ref/vectors/q-slice2/integer.jsonl: 66 vectors, 2640 point labels
+tests/ref/vectors/q-slice2/fractional.jsonl: 60 vectors, 2400 point labels
+tests/ref/vectors/q-slice2/spill.jsonl: 26 vectors, 1040 point labels
+union golden rows built by reduce: 12
+count preflight: 0 allocation calls
+10^30 count LIMIT: CPU 0.000007 s, guard 1.0 s
+2^101 width LIMIT: CPU 0.000008 s, guard 1.0 s
+2^58 byte-product LIMIT: CPU 0.000004 s, guard 1.0 s
+remaining-count preflight: 0 premature fibre copies
+test_qclass_reduce: 150122 checks
