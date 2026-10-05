@@ -1,0 +1,8 @@
+{
+  "fault": "no-M0-B",
+  "build_exit": 0,
+  "test_exit": 0,
+  "first_failure": null,
+  "totals": "13 tests, 306730 checks, 0 failed checks, 0 failed tests",
+  "seconds": 3.449
+}

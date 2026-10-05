@@ -1,0 +1,8 @@
+{
+  "fault": "lowprec-log-no-radius",
+  "build_exit": 0,
+  "test_exit": 1,
+  "first_failure": "FAIL tests/test_localfactor.c:557: prime_pole_lattice: check failed: call(y, s, v, prec) == ADF_NOT_DETERMINED | around p=2 k=-3 j=12",
+  "totals": "13 tests, 307490 checks, 235 failed checks, 3 failed tests",
+  "seconds": 3.884
+}

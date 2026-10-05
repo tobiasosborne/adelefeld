@@ -190,27 +190,24 @@ shift_of(const arf_t lo)
     return n;
 }
 
-/* Z6 (local-zeta.md:212-240), sharpened by docs/api-1f9.md Y16's numbered weighted-integral proof:
-   an upper bound B of |L_inf'| on s, z = s/2, lo <= min Re(z), hi >= max Re(z),
-   1 <= lo + n, hi + n <= 64. B = pi^(-min Re(s)/2) [M1 + M0 sum 1/delta_j] / (2 P).
-   A = min Re(z + n) >= lo + n, M0 = 1/A + (ceil(B0) - 1)!, M1 = 1/A^2 + ceil(B0)!,
+/* Z6 (local-zeta.md:212-240): an upper bound B of |L_inf'| on the rectangle s, z = s/2, with lo <= min Re(z),
+   hi >= max Re(z) (outward endpoints), 1 <= lo + n, hi + n <= 64. B = pi^(-min Re(s)/2) [M1 + M0 (log pi +
+   sum 1/delta_j)] / (2 P), A = min Re(z + n) >= lo + n, M0 = 1/A + (ceil(B0) - 1)!, M1 = 1/A^2 + ceil(B0)!,
    B0 = max Re(z + n) <= hi + n, delta_j = dist(z, -j) >= the hypotenuse of the two component distances, P their
    product. Every quantity is rounded in the direction that enlarges B: lower bounds for A, delta_j and P, upper
    bounds for the rest. B is infinite if a delta_j bound is 0. */
 static void
-real_derivative_bound(mag_t B, mag_t previous, const acb_t z, const arf_t lo, const arf_t hi,
-                      const arb_t logpi, slong n,
+real_derivative_bound(mag_t B, const acb_t z, const arf_t lo, const arf_t hi, const arb_t logpi, slong n,
                       slong w)
 {
     arf_t t;
     arb_t c;
-    mag_t inva, m0, m1, f, sum, oldsum, lp, P, dx, dy, d;
+    mag_t inva, m0, m1, f, sum, P, dx, dy, d, lp;
     slong cb, j;
     arf_init(t);
     arb_init(c);
     mag_init(inva); mag_init(m0); mag_init(m1); mag_init(f); mag_init(sum); mag_init(P);
-    mag_init(oldsum); mag_init(lp);
-    mag_init(dx); mag_init(dy); mag_init(d);
+    mag_init(dx); mag_init(dy); mag_init(d); mag_init(lp);
 
     arf_add_si(t, lo, n, w, ARF_RND_FLOOR);         /* A >= t >= 1 */
     arf_get_mag_lower(f, t);
@@ -239,16 +236,8 @@ real_derivative_bound(mag_t B, mag_t previous, const acb_t z, const arf_t lo, co
         mag_inv(f, d);                               /* infinite for d = 0 */
         mag_add(sum, sum, f);
     }
-    /* Retain the previous certificate only to guard the final representation's containment.
-       Outward midpoint/radius rounding of nested intersections need not itself be nested (Y16). */
-    mag_set(oldsum, sum);
     arb_get_mag(lp, logpi);
-    mag_add(oldsum, oldsum, lp);
-    mag_mul(oldsum, oldsum, m0);
-    mag_add(oldsum, oldsum, m1);
-    mag_div(oldsum, oldsum, P);
-    mag_mul_2exp_si(oldsum, oldsum, -1);
-    /* Y16: M1 already bounds |Gamma'(z+n) - log(pi) Gamma(z+n)|. */
+    mag_add(sum, sum, lp);
     mag_mul(sum, sum, m0);
     mag_add(sum, sum, m1);
     mag_div(sum, sum, P);
@@ -260,13 +249,11 @@ real_derivative_bound(mag_t B, mag_t previous, const acb_t z, const arf_t lo, co
     arb_exp(c, c, w);
     arb_get_mag(f, c);
     mag_mul(B, sum, f);
-    mag_mul(previous, oldsum, f);
 
     arf_clear(t);
     arb_clear(c);
     mag_clear(inva); mag_clear(m0); mag_clear(m1); mag_clear(f); mag_clear(sum); mag_clear(P);
-    mag_clear(oldsum); mag_clear(lp);
-    mag_clear(dx); mag_clear(dy); mag_clear(d);
+    mag_clear(dx); mag_clear(dy); mag_clear(d); mag_clear(lp);
 }
 
 /* Z4, real place procedure (local-zeta.md:130-149), w = prec + 32 working bits. Writes res only on OK. */
@@ -277,9 +264,9 @@ real_factor(acb_t res, const acb_t s, slong prec)
     const arf_struct *x = arb_midref(acb_realref(s));
     arf_t lo, hi, h;
     arb_t logpi;
-    acb_t z, cand, zm, ym, previous, oldym;
-    mag_t R, B, oldB;
-    int st, have_previous = 0;
+    acb_t z, cand, zm, ym;
+    mag_t R, B;
+    int st;
 
     /* Step 1: an exact non-positive even integer with imaginary part exactly 0 is an exact pole (Z2). */
     if (acb_is_exact(s) && arb_is_zero(acb_imagref(s)) && arf_sgn(x) <= 0 && arf_is_int_2exp_si(x, 1))
@@ -288,8 +275,7 @@ real_factor(acb_t res, const acb_t s, slong prec)
     arf_init(lo); arf_init(hi); arf_init(h);
     arb_init(logpi);
     acb_init(z); acb_init(cand); acb_init(zm); acb_init(ym);
-    acb_init(previous); acb_init(oldym);
-    mag_init(R); mag_init(B); mag_init(oldB);
+    mag_init(R); mag_init(B);
 
     /* Step 2: the closed rectangle s/2 against the non-positive integers, with outward endpoints of Re(s/2)
        at w bits (lo rounded down, hi rounded up; halving is exact). The poles are real, so an imaginary interval
@@ -333,24 +319,12 @@ real_factor(acb_t res, const acb_t s, slong prec)
         if (real_candidate(ym, zm, logpi, shift_of(ml), w) == ADF_OK)
         {
             mag_hypot(R, arb_radref(acb_realref(s)), arb_radref(acb_imagref(s)));
-            real_derivative_bound(B, oldB, z, lo, hi, logpi, n, w);
+            real_derivative_bound(B, z, lo, hi, logpi, n, w);
             mag_mul(B, B, R);
             if (mag_is_finite(B))
             {
                 arb_t c;
                 arb_init(c);
-                acb_set(previous, cand);
-                acb_set(oldym, ym);
-                mag_mul(oldB, oldB, R);
-                if (mag_is_finite(oldB))
-                {
-                    acb_add_error_mag(oldym, oldB);
-                    if (arb_intersection(c, acb_realref(previous), acb_realref(oldym), w))
-                        arb_swap(acb_realref(previous), c);
-                    if (arb_intersection(c, acb_imagref(previous), acb_imagref(oldym), w))
-                        arb_swap(acb_imagref(previous), c);
-                }
-                have_previous = 1;
                 acb_add_error_mag(ym, B);
                 if (arb_intersection(c, acb_realref(cand), acb_realref(ym), w)) arb_swap(acb_realref(cand), c);
                 if (arb_intersection(c, acb_imagref(cand), acb_imagref(ym), w)) arb_swap(acb_imagref(cand), c);
@@ -362,19 +336,13 @@ real_factor(acb_t res, const acb_t s, slong prec)
 
     /* Outward rounding to prec, finite check (twice, :144). */
     acb_set_round(cand, cand, prec);
-    if (have_previous)
-    {
-        acb_set_round(previous, previous, prec);
-        if (!acb_contains(previous, cand)) acb_set(cand, previous);
-    }
     if (!acb_is_finite(cand)) st = ADF_NOT_DETERMINED;
     else acb_swap(res, cand);
 done:
     arf_clear(lo); arf_clear(hi); arf_clear(h);
     arb_clear(logpi);
     acb_clear(z); acb_clear(cand); acb_clear(zm); acb_clear(ym);
-    acb_clear(previous); acb_clear(oldym);
-    mag_clear(R); mag_clear(B); mag_clear(oldB);
+    mag_clear(R); mag_clear(B);
     return st;
 }
 

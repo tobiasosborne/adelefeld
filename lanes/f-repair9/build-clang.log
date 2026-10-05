@@ -1,0 +1,42 @@
+mkdir -p lanes/f-repair9/build-clang
+mkdir -p lanes/f-repair9/build-clang/support
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f-repair9/build-clang/adele.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f-repair9/build-clang/cap.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/f-repair9/build-clang/catalogue.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f-repair9/build-clang/common.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f-repair9/build-clang/dump.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f-repair9/build-clang/fball.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f-repair9/build-clang/fball_local.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/f-repair9/build-clang/gfunc.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/f-repair9/build-clang/gfunc_log.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f-repair9/build-clang/idclass.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f-repair9/build-clang/idele.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f-repair9/build-clang/idmap.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f-repair9/build-clang/idpow.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f-repair9/build-clang/inlines.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f-repair9/build-clang/lball.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f-repair9/build-clang/lball_decomp.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f-repair9/build-clang/lfunc.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f-repair9/build-clang/linsolve.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/f-repair9/build-clang/localfactor.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/f-repair9/build-clang/lpow.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f-repair9/build-clang/lroot.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f-repair9/build-clang/modctx.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f-repair9/build-clang/place.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f-repair9/build-clang/rat.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f-repair9/build-clang/recon.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f-repair9/build-clang/resid.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f-repair9/build-clang/rfunc.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f-repair9/build-clang/roots.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f-repair9/build-clang/roots_real.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f-repair9/build-clang/sball.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f-repair9/build-clang/scaled.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f-repair9/build-clang/status.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/f-repair9/build-clang/symbol.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f-repair9/build-clang/text.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f-repair9/build-clang/text_idele.o
+clang -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f-repair9/build-clang/ucoset.o
+clang -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f-repair9/build-clang/support/golden.o
+clang -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f-repair9/build-clang/support/jsonl.o
+ar rcs lanes/f-repair9/build-clang/libadelefeld.a lanes/f-repair9/build-clang/adele.o lanes/f-repair9/build-clang/cap.o lanes/f-repair9/build-clang/catalogue.o lanes/f-repair9/build-clang/common.o lanes/f-repair9/build-clang/dump.o lanes/f-repair9/build-clang/fball.o lanes/f-repair9/build-clang/fball_local.o lanes/f-repair9/build-clang/gfunc.o lanes/f-repair9/build-clang/gfunc_log.o lanes/f-repair9/build-clang/idclass.o lanes/f-repair9/build-clang/idele.o lanes/f-repair9/build-clang/idmap.o lanes/f-repair9/build-clang/idpow.o lanes/f-repair9/build-clang/inlines.o lanes/f-repair9/build-clang/lball.o lanes/f-repair9/build-clang/lball_decomp.o lanes/f-repair9/build-clang/lfunc.o lanes/f-repair9/build-clang/linsolve.o lanes/f-repair9/build-clang/localfactor.o lanes/f-repair9/build-clang/lpow.o lanes/f-repair9/build-clang/lroot.o lanes/f-repair9/build-clang/modctx.o lanes/f-repair9/build-clang/place.o lanes/f-repair9/build-clang/rat.o lanes/f-repair9/build-clang/recon.o lanes/f-repair9/build-clang/resid.o lanes/f-repair9/build-clang/rfunc.o lanes/f-repair9/build-clang/roots.o lanes/f-repair9/build-clang/roots_real.o lanes/f-repair9/build-clang/sball.o lanes/f-repair9/build-clang/scaled.o lanes/f-repair9/build-clang/status.o lanes/f-repair9/build-clang/symbol.o lanes/f-repair9/build-clang/text.o lanes/f-repair9/build-clang/text_idele.o lanes/f-repair9/build-clang/ucoset.o
+clang -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_localfactor.c lanes/f-repair9/build-clang/support/golden.o lanes/f-repair9/build-clang/support/jsonl.o lanes/f-repair9/build-clang/libadelefeld.a -lflint -lgmp -lm -o lanes/f-repair9/build-clang/test_localfactor
