@@ -10,8 +10,8 @@ number, conjugation, the character on unit cosets, idele classes and ideles), an
 through all seven slices of its design (`docs/api-4.md`: `adf_ffun`, `adf_rfun`, their transforms, evaluation,
 integrals, Poisson summation with certified tails, dump forms); check-all passes on `b4922ae` and the driver
 after the last merge has 95 cases. Eighteen lanes landed in one night (`docs/worklog/2026-10-07-night.md`).
-Running at the time of writing: m4-review1 (Opus; the one review of milestone 4) and d-tate (codex astra; the
-design of milestone 5). Everything named here is merged and pushed.
+The design of milestone 5 landed too (d-tate: `docs/api-5.md`, decisions taken as N-D24). Running at the time of
+writing: m4-review1 (Opus; the one review of milestone 4). Everything named here is merged and pushed.
 
 **First commands.**
 
@@ -44,10 +44,10 @@ record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
 1. Read `lanes/m4-review1/result.md` if it landed after this entry (else the lane is in
    `../adelefeld-wt/m4-review1`, worktree on branch `lane/m4-review1`): repair its findings (a BLOCKER or MAJOR
    gets a repair lane; minors the orchestrator fixes), record it under `docs/reviews/m4/`, close adf-26l.
-2. Read `lanes/d-tate/report.md` (design of milestone 5, `docs/api-5.md`, `proto/tate_checks.py`): take its
-   decisions as N-D24 in `docs/SPEC.md` 15.4 unless one needs TJO, then start its first slice (the local
-   integrals and constants) on codex or Opus; the remaining slices of its section 9 in order; one review when
-   milestone 5 lands. Codex should be under pace again by the morning.
+2. Milestone 5: `docs/api-5.md` (lane d-tate, `lanes/d-tate/report.md`; decisions D1 to D4 taken as N-D24): start
+   its first slice (section 9: the local integrals, gamma and epsilon factors extending `localfactor.h`) on
+   codex or Opus; the remaining slices in order; one review when milestone 5 lands. Codex should be under pace
+   again by the morning.
 3. Rerun the five suites on the current master before the first new merge.
 4. The two HEADER-FINDINGs of f4-slice7 against `docs/api-4.md` section 2 (the dump/load identity needs the D1
    caps; load's cost includes clearing the old storage): the header comments state the right contract; the
