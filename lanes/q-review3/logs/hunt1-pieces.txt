@@ -1,0 +1,15 @@
+seed 201: 3000 calls (1500 OK, 1500 LIMIT, 0 inputs refused by harness), 8012 stored pieces checked, 0 findings, 12.6 s; OK calls where deduplication removed pieces: 159
+finding kinds: {}
+seed 202: 3000 calls (1500 OK, 1500 LIMIT, 0 inputs refused by harness), 7940 stored pieces checked, 0 findings, 10.9 s; OK calls where deduplication removed pieces: 159
+finding kinds: {}
+seed 203: 3000 calls (1500 OK, 1500 LIMIT, 0 inputs refused by harness), 8150 stored pieces checked, 0 findings, 9.0 s; OK calls where deduplication removed pieces: 160
+finding kinds: {}
+seed 301: 492 calls (246 OK, 246 LIMIT, 0 inputs refused by harness), 20304 stored pieces checked, 0 findings, 50.9 s; OK calls where deduplication removed pieces: 10
+finding kinds: {}
+seed 302: 490 calls (245 OK, 245 LIMIT, 0 inputs refused by harness), 9240 stored pieces checked, 0 findings, 42.2 s; OK calls where deduplication removed pieces: 5
+finding kinds: {}
+seed 303: 498 calls (249 OK, 249 LIMIT, 0 inputs refused by harness), 13321 stored pieces checked, 0 findings, 52.9 s; OK calls where deduplication removed pieces: 9
+finding kinds: {}
+seed 304: 496 calls (248 OK, 248 LIMIT, 0 inputs refused by harness), 13466 stored pieces checked, 0 findings, 42.6 s; OK calls where deduplication removed pieces: 5
+finding kinds: {}
+end

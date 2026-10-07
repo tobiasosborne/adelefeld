@@ -1,0 +1,4 @@
+seed 1: 500 values compared, 500 equal, 0 differ; printed order differs from stored order in 190; printed duplicates removed in 23; printed interval not enclosing stored in 0; 5.3 s
+seed 2: 500 values compared, 500 equal, 0 differ; printed order differs from stored order in 168; printed duplicates removed in 24; printed interval not enclosing stored in 0; 6.5 s
+seed 3: 500 values compared, 500 equal, 0 differ; printed order differs from stored order in 188; printed duplicates removed in 15; printed interval not enclosing stored in 0; 3.2 s
+seed 4: 500 values compared, 500 equal, 0 differ; printed order differs from stored order in 174; printed duplicates removed in 13; printed interval not enclosing stored in 0; 1.9 s
