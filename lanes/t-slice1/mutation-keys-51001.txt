@@ -1,0 +1,20 @@
+src/localfactor.c | drop_call | real_derivative_bound(B, oldB, z, lo, hi, logpi, n, w); | 'real_derivative_bound(B, oldB, z, lo, hi, logpi, n, w);' -> '' | REASON
+src/localfactor.c | call_swap | mag_mul(oldsum, oldsum, m0); | 'mag_mul' -> 'mag_add' | REASON
+src/localfactor.c | negate_if | if (!acb_is_finite(denominator) || acb_contains_zero(denominator)) goto done; | 'if(!acb_is_finite(denominator) || acb_contains_zero(denominator))' -> 'if(!(!acb_is_finite(denominator) || acb_contains_zero(denominator)))' | REASON
+src/localfactor.c | drop_call | acb_neg(direct, t0); | 'acb_neg(direct, t0);' -> '' | REASON
+src/localfactor.c | zero_one | if (arf_cmp(h, lo) >= 0) | '0' -> '1' | REASON
+src/localfactor.c | drop_call | arb_get_lbound_arf(lo, acb_realref(s), w); | 'arb_get_lbound_arf(lo, acb_realref(s), w);' -> '' | REASON
+src/localfactor.c | drop_call | acb_exp(pref, pref, w); | 'acb_exp(pref, pref, w);' -> '' | REASON
+src/localfactor.c | negate_if | if (z == eta0->s || s == eta0->s || alpha == eta0->s) | 'if(z == eta0->s || s == eta0->s || alpha == eta0->s)' -> 'if(!(z == eta0->s || s == eta0->s || alpha == eta0->s))' | REASON
+src/localfactor.c | cmp | return st == ADF_OK ? ADF_OK : fail(st, where, v); | '==' -> '!=' #2 | REASON
+src/localfactor.c | drop_call | acb_swap(z, t); | 'acb_swap(z, t);' -> '' | REASON
+src/localfactor.c | zero_one | arf_cmp_si(arb_midref(acb_realref(s)), bound) > 0) return 0; | '0' -> '1' #2 | REASON
+src/localfactor.c | cmp | slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32; | '>' -> '>=' #2 | REASON
+src/localfactor.c | negate_if | if (arf_cmp_si(lo, 1) >= 0) return 0; | 'if(arf_cmp_si(lo, 1) >= 0)' -> 'if(!(arf_cmp_si(lo, 1) >= 0))' | REASON
+src/localfactor.c | prec | acb_set_round(out, out, prec); | 'prec' -> '2' | REASON
+src/localfactor.c | zero_one | if (acb_is_exact(s) && arb_is_zero(acb_imagref(s)) && arf_sgn(x) <= 0 && arf_is_int_2exp_si(x, 1)) | '1' -> '0' | REASON
+src/localfactor.c | op | slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32; | '-' -> '+' #1 | REASON
+src/localfactor.c | swap_args | mag_mul(B, sum, f); | 'mag_mul(B, sum, f)' -> 'mag_mul(B, f, sum)' | REASON
+src/localfactor.c | swap_args | acb_mul(t, alpha, t, w); | 'acb_mul(t, alpha, t, w)' -> 'acb_mul(t, t, alpha, w)' | REASON
+src/localfactor.c | cmp | arf_sgn(arb_midref(acb_realref(s))) >= 0) return 0; | '>=' -> '>' | REASON
+src/localfactor.c | negate_if | else if (acb_is_one(alpha)) | 'if(acb_is_one(alpha))' -> 'if(!(acb_is_one(alpha)))' | REASON

@@ -968,3 +968,23 @@ D1 allows D M <= 2^20, and at most 2^16 terms and total coefficients; larger com
 An incomplete count gives PARSE first; a trailing exact-zero coefficient or uncertified Re(A)>0 gives DOMAIN.
 The loaded value is printed in the usual value form; this printed form can be an enclosure.
 Checks: `tests/driver/ffun-dump.cmd`, `tests/driver/rfun-dump.cmd`, `tests/julia/ffun_dump.jl`.
+
+# Local Tate integral (slice 5a)
+
+`tate_local S with PLACE with ALPHA with CHI` calls `adf_local_tate_at` for the prescribed local vector.
+S and ALPHA are complex adele texts; their finite coordinates are parsed and ignored. PLACE is `real` or
+an existing prime token. CHI is a primitive `char(...)` value giving eta0; its stored exponent is ignored.
+At a prime its conductor must be 1 or a power of that prime. ALPHA is the independent uniformizer value.
+At `real` only CHI's parity matters, and ALPHA is ignored after parsing.
+
+This command returns the meromorphic continuation. Numerical lines begin `continuation S=<supplied S>:`
+and then the complex value or `error: STATUS`. Syntax and value-parser errors retain the ordinary error line.
+For conductor 1 the finite value is `1/(1-alpha*p^(-s))`; for positive conductor exponent it is exactly 1.
+The real value is `pi^(-(s+e)/2) Gamma((s+e)/2)`. It has poles at `-e-2k`, including -1 for odd parity.
+Exact recognized poles give DOMAIN. A ball meeting a pole or with undecided exclusion gives NOT_DETERMINED.
+The local call belongs to the Characters, Gauss sums, local factors status row, including inherited LIMIT.
+
+At `prec 128`, `digits 5`, the three examples print 4/3 as `(1.3333 +/- 3.4e-5) + (0)*i`, the ramified
+example as `(1) + (0)*i`, and 1/pi as `(0.31831 +/- 1.2e-7) + (0)*i`, after the continuation prefix.
+The same grammar accepts shell-quoted operands in a direct `adf tate_local ...` invocation.
+Tests: `tests/driver/tate-local.cmd`, `tests/julia/tate_local.jl`.

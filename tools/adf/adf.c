@@ -216,6 +216,7 @@ typedef enum
     ADF_DRV_CYCLO_EXP_U,
     ADF_DRV_CYCLO_EXP_UINV,
     ADF_DRV_LOCAL_ZETA_AT,
+    ADF_DRV_TATE_LOCAL,
     ADF_DRV_PSI,
     ADF_DRV_PSI_STRICT,
     ADF_DRV_PSI_AT,
@@ -345,6 +346,7 @@ static const struct
     { "cyclo_exp_uinv", ADF_DRV_CYCLO_EXP_UINV, 2 },
     { "hilbert_at", ADF_DRV_HILBERT_AT, 3 },
     { "local_zeta_factor_at", ADF_DRV_LOCAL_ZETA_AT, 2 },
+    { "tate_local", ADF_DRV_TATE_LOCAL, 4 },
     { "psi", ADF_DRV_PSI, 1 },
     { "psi_strict", ADF_DRV_PSI_STRICT, 1 },
     { "psi_at", ADF_DRV_PSI_AT, 2 },
@@ -3139,6 +3141,58 @@ done:
     return status;
 }
 
+/* Slice 5a, api-5.md section 2: tate_local S with PLACE with ALPHA with CHI.
+   S and ALPHA are complex adele carriers. Parse every syntax and kind before
+   semantic values. Numerical lines display continuation mode and the supplied S. */
+static int
+adf_drv_tate_local(FILE *out, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind kind[3];
+    const int slot[3] = {0, 2, 3};
+    adf_cadele_t c, ca;
+    adf_char_t chi;
+    adf_fball_t zero;
+    acb_t s, alpha, z;
+    adf_place_t v = adf_place_inf();
+    int status = ADF_OK, place_status, numeric = 0;
+    char *text = NULL;
+    size_t len = 0;
+    adf_cadele_init(c); adf_cadele_init(ca); adf_char_init(chi);
+    adf_fball_init(zero); acb_init(s); acb_init(alpha); acb_init(z);
+    for (int i = 0; i < 3; i++)
+    {
+        status = adf_text_classify(kind+i, l->s[slot[i]], l->n[slot[i]], NULL);
+        if (status != ADF_OK) goto done;
+    }
+    place_status = adf_drv_place_token(l->s[1], l->n[1], &v);
+    if (place_status == ADF_PARSE) { status = place_status; goto done; }
+    if (kind[0] != ADF_TEXT_CADELE || kind[1] != ADF_TEXT_CADELE || kind[2] != ADF_TEXT_CHAR)
+    { status = ADF_UNSUPPORTED; goto done; }
+    status = adf_cadele_set_str(c, l->s[0], l->n[0], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    status = adf_cadele_set_str(ca, l->s[2], l->n[2], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    status = adf_char_set_str(chi, l->s[3], l->n[3], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (place_status != ADF_OK) { status = place_status; goto done; }
+    adf_cadele_get_complex(s, c); adf_cadele_get_complex(alpha, ca);
+    numeric = 1;
+    status = adf_local_tate_at(z, NULL, s, v, alpha, chi, st->prec);
+    if (status != ADF_OK) goto done;
+    status = adf_cadele_set_acb_fball(c, z, zero);
+    if (status != ADF_OK) goto done;
+    text = adf_cadele_get_str(&len, c, st->digits);
+    if (!text || len < 7 || memcmp(text+len-5, " ; 0)", 5))
+    { status = ADF_LIMIT; goto done; }
+    fprintf(out, "continuation S=%.*s: %.*s\n", (int) l->n[0], l->s[0], (int) (len-6), text+1);
+done:
+    /* The caller writes error: STATUS and keeps the failed exit status. */
+    if (status != ADF_OK && numeric) fprintf(out, "continuation S=%.*s: ", (int) l->n[0], l->s[0]);
+    adf_str_free(text); adf_cadele_clear(c); adf_cadele_clear(ca); adf_char_clear(chi);
+    adf_fball_clear(zero); acb_clear(s); acb_clear(alpha); acb_clear(z);
+    return status;
+}
+
 /* Slices 3.2-a to 3.2-c: Tate's character, printed like local_zeta_factor_at (docs/api-3.md 7, 3.1-3.3;
    conventions 6.1). psi and psi_strict take an adele, a class (lift text; the union text once slice 3.1-d
    reads it) or a local ball; psi_at and psi_strict_at an adele and a place token ("real" or a prime, as
@@ -3622,6 +3676,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return adf_drv_char(out, op, l, st);
     if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
     if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
+    if (op == ADF_DRV_TATE_LOCAL) return adf_drv_tate_local(out, l, st);
     if (op == ADF_DRV_PSI || op == ADF_DRV_PSI_STRICT || op == ADF_DRV_PSI_AT || op == ADF_DRV_PSI_STRICT_AT ||
         op == ADF_DRV_PSI_PHASE) return adf_drv_psi(out, op, l, st);
     if (op == ADF_DRV_RFUN || op == ADF_DRV_RFUN_TRANSLATE || op == ADF_DRV_RFUN_MUL || op == ADF_DRV_RFUN_EVAL)
@@ -4106,6 +4161,29 @@ main(int argc, char ** argv)
         return rc;
     }
 
+    /* Slice 5a also accepts the four operands as shell-quoted argv values. */
+    if (argc == 9 && !strcmp(argv[1], "tate_local") && !strcmp(argv[3], "with") &&
+        !strcmp(argv[5], "with") && !strcmp(argv[7], "with"))
+    {
+        size_t len = 0, pos = 0;
+        char *line;
+        int rc;
+        for (int j = 1; j < argc; j++) len += strlen(argv[j])+1;
+        if (len > ADF_DRV_MAX_LINE) { adf_emit_status(stdout, ADF_LIMIT); return 1; }
+        line = malloc(len+1);
+        if (!line) return 2;
+        for (int j = 1; j < argc; j++)
+        {
+            size_t n = strlen(argv[j]);
+            memcpy(line+pos, argv[j], n); pos += n;
+            line[pos++] = j == argc-1 ? '\n' : ' ';
+        }
+        line[pos] = '\0';
+        rc = adf_driver_run(line, pos, stdout);
+        free(line);
+        if (fflush(stdout) != 0 || ferror(stdout)) rc = 2;
+        return rc;
+    }
     /* Direct slice-a calls use the script parser and its existing " with " separator. */
     if ((argc == 3 && (!strcmp(argv[1], "char") || !strcmp(argv[1], "gauss") ||
                       !strcmp(argv[1], "char_conj"))) ||

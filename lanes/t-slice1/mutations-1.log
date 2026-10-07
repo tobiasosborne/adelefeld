@@ -1,0 +1,50 @@
+mutate: src/localfactor.c: 365 mutants
+mutate: 365 mutants, 20 of them run (--limit 20, --seed 51001)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (28.8 s)
+
+NOT COMPILED src/localfactor.c:336:13 drop_call: 'real_derivative_bound(B, oldB, z, lo, hi, logpi, n, w);' -> '' (the statement is removed)
+  src/localfactor.c:201:1: error: unused function 'real_derivative_bound' [-Werror,-Wunused-function]
+
+SURVIVED src/localfactor.c:247:5 call_swap: 'mag_mul' -> 'mag_add'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -245,5 +245,5 @@
+       arb_get_mag(lp, logpi);
+       mag_add(oldsum, oldsum, lp);
+  -    mag_mul(oldsum, oldsum, m0);
+  +    mag_add(oldsum, oldsum, m0);
+       mag_add(oldsum, oldsum, m1);
+       mag_div(oldsum, oldsum, P);
+
+
+NOT COMPILED src/localfactor.c:454:5 drop_call: 'acb_swap(z, t);' -> '' (the statement is removed)
+  src/localfactor.c:434:26: error: unused parameter 'z' [-Werror,-Wunused-parameter]
+
+SURVIVED src/localfactor.c:417:67 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -415,5 +415,5 @@
+           !arf_is_int(arb_midref(acb_realref(s)))) return 0;
+       if (arf_cmp_si(arb_midref(acb_realref(s)), -bound) < 0 ||
+  -        arf_cmp_si(arb_midref(acb_realref(s)), bound) > 0) return 0;
+  +        arf_cmp_si(arb_midref(acb_realref(s)), bound) > 0) return 1;
+       k = arf_get_si(arb_midref(acb_realref(s)), ARF_RND_NEAR);
+       if (k < 0)
+
+
+SURVIVED src/localfactor.c:504:24 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -502,5 +502,5 @@
+       if (adf_place_is_archimedean(v))
+       {
+  -        slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+  +        slong w = prec >= ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+           if (eta0->parity && tate_exact_odd_pole(s)) st = ADF_DOMAIN;
+           else if (!eta0->parity)
+
+mutate: stopped by signal 15: 2 running command(s) killed, scratch removed

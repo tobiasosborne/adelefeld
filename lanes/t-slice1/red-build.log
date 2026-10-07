@@ -1,0 +1,19 @@
+tests/test_tate_local.c: In function ‘number’:
+tests/test_tate_local.c:42:20: error: too many arguments to function ‘jsonl_int_text’
+   42 |     return strtoul(jsonl_int_text(v, NULL, &err), NULL, 10);
+      |                    ^~~~~~~~~~~~~~
+In file included from tests/test_tate_local.c:15:
+tests/support/jsonl.h:154:13: note: declared here
+  154 | const char *jsonl_int_text(const jsonl_value *v, jsonl_error_t *err);
+      |             ^~~~~~~~~~~~~~
+tests/test_tate_local.c: In function ‘call’:
+tests/test_tate_local.c:95:14: error: implicit declaration of function ‘adf_local_tate_at’ [-Werror=implicit-function-declaration]
+   95 |         st = adf_local_tate_at(out, mode == 3 ? NULL : &w, ss, v, aa, chi, prec);
+      |              ^~~~~~~~~~~~~~~~~
+tests/test_tate_local.c: In function ‘adf_test_fn_oracle_vectors’:
+tests/test_tate_local.c:165:17: error: implicit declaration of function ‘arb_set_mag’; did you mean ‘arb_get_mag’? [-Werror=implicit-function-declaration]
+  165 |                 arb_set_mag(x, arb_radref(j ? acb_imagref(y) : acb_realref(y)));
+      |                 ^~~~~~~~~~~
+      |                 arb_get_mag
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/t-slice1/build-plain/test_tate_local] Error 1

@@ -1,0 +1,10 @@
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   nonreal_inverse_vector
+5 tests, 22454 checks, 0 failed checks, 0 failed tests
+==4==LeakSanitizer has encountered a fatal error.
+==4==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==4==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)

@@ -1,0 +1,8 @@
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+6 tests, 22539 checks, 0 failed checks, 0 failed tests
