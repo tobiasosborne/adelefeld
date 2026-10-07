@@ -1,0 +1,65 @@
+prec 128|
+digits 5|
+qequal (0 ; 0 mod 1/2) + Q with union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q with 1000|1
+qequal (0 ; 0 mod 1/2) + Q with union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q with 20|1
+qequal (0 ; 0 mod 1/2) + Q with union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q with 19|error: LIMIT
+qcontains (0.5 ; 0) + Q with (0 ; 0 mod 1/2) + Q with 1000|1
+qcontains (0 ; 0 mod 1/2) + Q with (0.5 ; 0) + Q with 1000|0
+qoverlaps (0.25 ; 0) + Q with (0.75 ; 0) + Q with 1000|0
+qoverlaps (0.25 ; 1/2) + Q with (0.75 ; 1) + Q with 1000|1
+qequal (0.25 ; 1/2) + Q with (0.75 ; 1) + Q with 1000|1
+qequal (0.25 ; 1/2) + Q with (0.75 ; 0) + Q with 1000|0
+qequal union((0.5 ; 0 mod 3), (0.5 ; 0 mod 3)) + Q with (0.5 ; 0 mod 3) + Q with 1000|1
+qcontains union((0.5 ; 0 mod 3), (0.5 ; 0 mod 3)) + Q with (0.5 ; 0 mod 3) + Q with 1000|1
+qoverlaps union((1 ; 0 mod 3)) + Q with union((0 ; 2 mod 3)) + Q with 1000|1
+qoverlaps union((1 ; 0 mod 3)) + Q with union((0 ; 0 mod 3)) + Q with 1000|0
+qequal union((1 ; 0)) + Q with union((0 ; -1)) + Q with 1000|1
+qequal (0 ; 0) + Q with (0 ; 0) + Q with 2.5|error: DOMAIN
+qequal (0 ; 0) + Q with (0 ; 0) + Q with abc|error: PARSE
+qequal (0 ; 0) with (0 ; 0) + Q with 100|error: DOMAIN
+qequal [p=2: 1] with (0 ; 0) + Q with 100|error: DOMAIN
+qneg (0.25 ; 1/2) + Q with 10|union((0.25 ; 0)) + Q
+qneg (0.25 ; 0) + Q with 10|union((0.75 ; 1)) + Q
+qneg (0.25 ; 0) + Q with 0|error: LIMIT
+qneg (0.25 ; 0) + Q with 1|union((0.75 ; 1)) + Q
+qneg 0 with 10|error: DOMAIN
+qadd (0.25 ; 0) + Q with (0.25 ; 0) + Q with 10|union((0.5 ; 0)) + Q
+qadd (0.75 ; 0) + Q with (0.5 ; 0) + Q with 10|union((0.25 ; -1)) + Q
+qadd (0 ; 0 mod 1/2) + Q with (0 ; 0 mod 1/3) + Q with 5|error: LIMIT
+qadd (0.5 +/- 0.25 ; 0) + Q with (0.5 +/- 0.25 ; 0) + Q with 10|union((0.25 +/- 0.26 ; -1), (0.75 +/- 0.26 ; 0)) + Q
+qadd (0.5 +/- 0.25 ; 0) + Q with (0.5 +/- 0.25 ; 0) + Q with 1|error: LIMIT
+qadd union((0.5 ; 7), (0.5 ; 7)) + Q with (0 ; 0) + Q with 1|union((0.5 ; 7)) + Q
+qadd (0 ; 0) + Q with (0 ; 0) + Q with 1/2|error: DOMAIN
+psi (0 ; 1/3)|(-0.5) + (0.86603 +/- 4.6e-6)*i
+psi (0.5 ; 0)|(-1) + (0)*i
+psi (0.25 ; 0)|(0) + (-1)*i
+psi (0 ; 1/4)|(0) + (1)*i
+psi (0 ; 0 mod 1/2)|(0 +/- 1.1) + (0)*i
+psi_strict (0 ; 0 mod 1/2)|error: NOT_DETERMINED
+psi (0 ; 0 mod 1/2) + Q|(0 +/- 1.1) + (0)*i
+psi_strict (0 ; 0 mod 1/2) + Q|error: NOT_DETERMINED
+psi_strict union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q|(0 +/- 1.1) + (0)*i
+psi_phase union((0.25 ; 0 mod 1), (0.75 ; 1)) + Q|error: NOT_DETERMINED
+psi_phase union((0 ; 0), (1 ; 0)) + Q|0
+psi_phase union((0 ; 5), (1 ; 0)) + Q|0
+psi_phase (0.5 ; 1/3)|5/6
+psi_phase (0 ; 0 mod 1/2)|error: NOT_DETERMINED
+psi [p=2: 1/6]|(-1) + (0)*i
+psi [p=2: 1/6 + O(2^-1)]|(0 +/- 1.1) + (0)*i
+psi_strict [p=2: 1/6 + O(2^-1)]|error: NOT_DETERMINED
+psi_phase [p=3: 1/6]|2/3
+psi_phase [p=2: 1/6 + O(2^0)]|1/2
+psi_at (0.25 ; 1/3) with real|(0) + (-1)*i
+psi_at (0.25 ; 1/3) with 3|(-0.5) + (0.86603 +/- 4.6e-6)*i
+psi_at (0.25 ; 1/3) with 2|(1) + (0)*i
+psi_strict_at (0 ; 0 mod 1/2) with 2|error: NOT_DETERMINED
+psi_strict_at (0 ; 0 mod 1/2) with 3|(1) + (0)*i
+psi_strict_at (0 ; 0 mod 1/2) with real|(1) + (0)*i
+psi_at (0 ; 0 mod 1/2) with 2|(0 +/- 1.1) + (0)*i
+psi_at (0 ; 1/18446744073709551557) with 18446744073709551557|(1 +/- 1.1e-38) + (3.4e-19 +/- 1.1e-38)*i
+print union((0.5 ; 7), (0.5 ; 7)) + Q|union((0.5 ; 7)) + Q
+dump union((0.5 ; 7)) + Q|adf1 Q qclass pieces 1 1 1 -1 0 0 g 7 0 1
+load adf1 Q qclass pieces 1 1 1 -1 0 0 g 7 0 1|union((0.5 ; 7)) + Q
+load adf1 Q qclass pieces 2 1 1 -1 0 0 g 7 0 1 1 1 -2 0 0 g 7 0 1|error: DOMAIN
+load adf1 Q qclass pieces 2 1 1 -1 0 0 g 7 0 1 1 1 -1 0 0 g 7 0 1|error: DOMAIN
+dump (0 ; 0 mod 1/2) + Q|adf1 Q qclass lift 1 0 0 0 0 g 0 1 2
