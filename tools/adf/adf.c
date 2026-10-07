@@ -369,7 +369,6 @@ typedef enum
     ADF_DRV_SBALL,
     ADF_DRV_QCLASS,
     ADF_DRV_FFUN,
-
     ADF_DRV_CHARACTER,
     ADF_DRV_OTHER        /* a kind of the value form with no typed parser in this build */
 } adf_drv_type;
@@ -645,18 +644,22 @@ static const size_t adf_drv_dump_body_count =
     sizeof(adf_drv_dump_bodies) / sizeof(adf_drv_dump_bodies[0]);
 
 /* adf_drv_body_slot(name): the adf_drv_type of a body the driver has a value for, or
-   ADF_DRV_OTHER for a body of section 10 that it has none.  The nine constants of
-   adf_drv_type are in the order of the nine names, so the index of the name is the type. */
+   ADF_DRV_OTHER for a body of section 10 that it has none. */
 static adf_drv_type
 adf_drv_body_slot(const char * name)
 {
-    static const char * const mine[] = { "rat", "fball", "adele", "cadele", "ucoset", "idele",
-                                         "idclass", "lball", "sball", "qclass", "char" };
+    /* An explicit pair table since milestone 4 added ADF_DRV_FFUN to the enum without a dump loader:
+       the index of a name is no longer its type (orchestrator, merge of lane c-slice2). */
+    static const struct { const char * name; adf_drv_type type; } mine[] = {
+        { "rat", ADF_DRV_RAT }, { "fball", ADF_DRV_FBALL }, { "adele", ADF_DRV_ADELE },
+        { "cadele", ADF_DRV_CADELE }, { "ucoset", ADF_DRV_UCOSET }, { "idele", ADF_DRV_IDELE },
+        { "idclass", ADF_DRV_IDCLASS }, { "lball", ADF_DRV_LBALL }, { "sball", ADF_DRV_SBALL },
+        { "qclass", ADF_DRV_QCLASS }, { "char", ADF_DRV_CHARACTER } };
     size_t i;
 
     for (i = 0; i < sizeof(mine) / sizeof(mine[0]); i++)
-        if (strcmp(name, mine[i]) == 0)
-            return (adf_drv_type) i;
+        if (strcmp(name, mine[i].name) == 0)
+            return mine[i].type;
     return ADF_DRV_OTHER;
 }
 
