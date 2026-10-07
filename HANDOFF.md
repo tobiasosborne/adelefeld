@@ -2,6 +2,87 @@
 
 # HANDOFF: adelefeld
 
+## Session 2026-10-07 23:11 to about 07:00 on 2026-10-08 (UTC+8; orchestrator Claude Fable on the laptop; Opus and codex lanes): START HERE
+
+**One line.** Milestone 3 is complete (WP 3.1 and 3.2 reviewed by m3-review1: no blocker, no major; WP 3.3 and
+3.4 designed (`docs/api-3c.md`) and built in three slices: `adf_char`, text, dumps, `chi(a)`, Gauss sum, root
+number, conjugation, the character on unit cosets, idele classes and ideles), and milestone 4 is complete
+through all seven slices of its design (`docs/api-4.md`: `adf_ffun`, `adf_rfun`, their transforms, evaluation,
+integrals, Poisson summation with certified tails, dump forms); check-all passes on `b4922ae` and the driver
+after the last merge has 95 cases. Eighteen lanes landed in one night (`docs/worklog/2026-10-07-night.md`).
+Running at the time of writing: m4-review1 (Opus; the one review of milestone 4) and d-tate (codex astra; the
+design of milestone 5). Everything named here is merged and pushed.
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
+    ~/Projects/quota-app/target/release/quota; date
+
+**Master.** check-all passed on `b4922ae` at 05:24 (100 test programs, driver 93 cases with 101613 expected
+lines, exports 609 of 609, Julia, both self-tests); san, clang, inv (99 programs each) and headers passed on
+`220c8a3` at 05:10. After them two more merges landed (c-slice3 `9a54305`, f4-slice7 `bb17591`) with their tests
+and the driver (95 cases) green; the five suites were not rerun on `bb17591`.
+
+**Rules of TJO for this session** (23:11 and 23:20; memory `orchestration-model-tiers`, top block): work at pace
+for Claude and Codex; no Fable subagents; Opus for coding, Sonnet for busywork, codex `gpt-6.1-sol` xhigh,
+`gpt-6-astra` for hard cognition; 2 to 3 subagents; "serious progress on the major milestones"; NO per-slice
+reviews, ONE code review when a major feature lands. Done so: one review of milestone 3 WP 3.1 and 3.2
+(m3-review1), one of milestone 4 (m4-review1, running). Decisions taken by the orchestrator as the designs
+recommend: N-D22 (`adf_char`: the modulus cap 65536, status row 223), N-D23 (milestone 4: the caps, paired
+factor calls without a tensor type, the partial-place evaluator; plus the stall rule of P1 step 4 from lane
+f4-slice6). Quota at 05:40: Claude weekly 16.0%, 1.7 under pace; Codex 10.0%, 0.3 AHEAD (no new codex lane
+after that); Fable weekly 20.0%, 2.3 ahead.
+
+**What landed**: the table in `docs/worklog/2026-10-07-night.md` (18 lanes with minutes and counts). In short:
+milestone 3 slices 3.1-d, 3.1-e, 3.1-f, 3.2-b, 3.2-c; the character design and slices a, b, c; the repair of the
+dump validator (adf-3n2); the review of milestone 3 with its three minors repaired; the milestone 4 design and
+slices 4a to 4g. The statements are in `docs/api-3a.md`, `3b.md`, `3d.md`, `4a.md`, `4b.md`, `4c.md`; the review
+record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
+
+**The next steps**, in this order:
+1. Read `lanes/m4-review1/result.md` if it landed after this entry (else the lane is in
+   `../adelefeld-wt/m4-review1`, worktree on branch `lane/m4-review1`): repair its findings (a BLOCKER or MAJOR
+   gets a repair lane; minors the orchestrator fixes), record it under `docs/reviews/m4/`, close adf-26l.
+2. Read `lanes/d-tate/report.md` (design of milestone 5, `docs/api-5.md`, `proto/tate_checks.py`): take its
+   decisions as N-D24 in `docs/SPEC.md` 15.4 unless one needs TJO, then start its first slice (the local
+   integrals and constants) on codex or Opus; the remaining slices of its section 9 in order; one review when
+   milestone 5 lands. Codex should be under pace again by the morning.
+3. Rerun the five suites on the current master before the first new merge.
+4. The two HEADER-FINDINGs of f4-slice7 against `docs/api-4.md` section 2 (the dump/load identity needs the D1
+   caps; load's cost includes clearing the old storage): the header comments state the right contract; the
+   design text is unchanged (a design is not edited by lanes); decide whether to amend `docs/api-4.md` or let
+   `docs/api-4a.md`/`4b.md` stand as the record.
+5. Sources pending accumulated by the character slices: FLINT's `dirichlet.rst` (the Conrey pairing and the
+   group-init failure semantics) is not under `refs/`; fetching it would close the conditional proof of the
+   conjugate label (P3 of `docs/api-3c.md`) and the predicate's setup-failure finding.
+6. The list left from before (previous entry, item 5 and the earlier items).
+
+**Waits for TJO.** Nothing blocks.
+- NEW: `docs/api-4.md` section 2 promises an unconditional dump/load identity for `adf_ffun`; with the D1 caps
+  it holds only when the caps admit the dumped representation (f4-slice7). Whether the design text is amended.
+- NEW: the stall rule of `adf_tensor_poisson` (f4-slice6): a precision doubling from 64 bits that does not halve
+  the largest radius stops with `NOT_DETERMINED`; taken by the orchestrator; open to reversal.
+- NEW: `acb_inv` loses the dependency for a wide canonical `A` in `adf_rfun_fourier`, so such a transform is
+  `NOT_DETERMINED` at every precision (f4-slice3); an exact interval inverse would certify it. A cost item.
+- NEW: the predicate `adf_char_is_canonical` fail-stops if FLINT's group setup returns 0 (no status in its
+  `int` ABI); whether such a failure is reachable for a word-sized modulus is unknown (c-slice1, c-slice2).
+- The earlier items (N-D21's annotation at SPEC:944 and api-3.md:523-524 wording, adf-s1v, adf-nyk; the piece
+  limit's memory; a lawful copy of Tate's thesis; the older UX and printer questions) stand.
+
+**Things to know.**
+- Keep-both merge resolution of appended blocks is right for `README.md`, `test_julia.sh`, `docs/api-*.md`,
+  and wrong twice tonight: `src/text.c` (rebuild as head plus the lane's appended block, after checking with
+  `cmp` that both are pure appends of the common base) and `tools/adf/adf.c` (a `break` lost; an enum-order
+  dependency in `adf_drv_body_slot`, now an explicit table). Run the driver suite after every merge.
+- The memcheck self-test of check-all requires the abort children of `INV` tests to clear their objects after
+  the call ("Reached only if the entry check is missing"); every new lane's test needed this fix. Put it in the
+  next briefs.
+- Opus lanes poll their own mutation runs and produce many interim notifications; the briefs now say "wait
+  with a single blocking command".
+- `tools/orch/suites.sh` writes its logs to `build/suite-logs/`; `pgrep -f suites.sh` matches the caller's own
+  shell, so start `make check-all` directly when in doubt.
+
 ## Session 2026-10-07 09:30 to about 10:50 (UTC+8; orchestrator Claude Fable on the laptop; Opus and codex lanes): START HERE
 
 **One line.** The two lanes stopped on 2026-10-05 are landed: the review of `adf_qclass_reduce` (q-review3,
