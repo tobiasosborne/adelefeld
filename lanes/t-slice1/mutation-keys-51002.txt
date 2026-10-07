@@ -1,0 +1,20 @@
+src/localfactor.c | drop_call | mag_mul(sum, sum, m0); | 'mag_mul(sum, sum, m0);' -> '' | REASON
+src/localfactor.c | drop_assign | if (!acb_is_finite(alpha) || acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; } | 'st = ADF_DOMAIN;' -> '' | REASON
+src/localfactor.c | drop_call | acb_add_ui(g, z, (ulong) n, w); | 'acb_add_ui(g, z, (ulong) n, w);' -> '' | REASON
+src/localfactor.c | negate_if | if (tate_exact_finite_pole(s, alpha, p)) return ADF_DOMAIN; | 'if(tate_exact_finite_pole(s, alpha, p))' -> 'if(!(tate_exact_finite_pole(s, alpha, p)))' | REASON
+src/localfactor.c | drop_assign | pole = fmpz_is_zero(bottom); | 'pole = fmpz_is_zero(bottom);' -> '' | REASON
+src/localfactor.c | cmp | arf_cmp_si(arb_midref(acb_realref(s)), bound) > 0) return 0; | '>' -> '>=' | REASON
+src/localfactor.c | cmp | if (acb_is_exact(s) && arb_is_zero(acb_imagref(s)) && arf_sgn(x) <= 0 && arf_is_int_2exp_si(x, 1)) | '<=' -> '<' | REASON
+src/localfactor.c | cmp | return p == 2 && arf_cmp_2exp_si(arb_midref(acb_realref(alpha)), k) == 0; | '==' -> '!=' #2 | REASON
+src/localfactor.c | drop_assign | pole = arb_contains_fmpz(acb_realref(alpha), power); | 'pole = arb_contains_fmpz(acb_realref(alpha), power);' -> '' | REASON
+src/localfactor.c | negate_if | if (!acb_is_finite(t)) goto done; | 'if(!acb_is_finite(t))' -> 'if(!(!acb_is_finite(t)))' #2 | REASON
+src/localfactor.c | drop_assign | st = ADF_OK; | 'st = ADF_OK;' -> '' #3 | REASON
+src/localfactor.c | swap_args | mag_add(sum, sum, m1); | 'mag_add(sum, sum, m1)' -> 'mag_add(sum, m1, sum)' | REASON
+src/localfactor.c | swap_args | mag_mul(oldB, oldB, R); | 'mag_mul(oldB, oldB, R)' -> 'mag_mul(oldB, R, oldB)' | REASON
+src/localfactor.c | zero_one | arf_mul_2exp_si(hi, hi, -1); | '1' -> '0' | REASON
+src/localfactor.c | negate_if | if (z == eta0->s || s == eta0->s || alpha == eta0->s) | 'if(z == eta0->s || s == eta0->s || alpha == eta0->s)' -> 'if(!(z == eta0->s || s == eta0->s || alpha == eta0->s))' | REASON
+src/localfactor.c | negate_if | if (prec > ADF_REAL_PREC_MAX) return fail(ADF_LIMIT, where, v); | 'if(prec > ADF_REAL_PREC_MAX)' -> 'if(!(prec > ADF_REAL_PREC_MAX))' #1 | REASON
+src/localfactor.c | drop_call | acb_div(out, t0, d0, w); | 'acb_div(out, t0, d0, w);' -> '' | REASON
+src/localfactor.c | zero_one | acb_add_ui(denominator, denominator, 1, w); | '1' -> '0' | REASON
+src/localfactor.c | swap_args | acb_mul(g, g, pref, w); | 'acb_mul(g, g, pref, w)' -> 'acb_mul(g, pref, g, w)' | REASON
+src/localfactor.c | zero_one | acb_add_ui(shifted, s, 1, w); | '1' -> '0' | REASON

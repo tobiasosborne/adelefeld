@@ -1,0 +1,43 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument v is not a canonical adf_place_t
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   nonreal_inverse_vector
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument eta0 is not a canonical adf_char
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   nonreal_inverse_vector
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument raw arguments is not a canonical independent acb input/output
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   nonreal_inverse_vector
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument raw arguments is not a canonical independent acb input/output
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   nonreal_inverse_vector
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument raw arguments is not a canonical independent acb input/output
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   nonreal_inverse_vector
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   nonreal_inverse_vector
+ok   invariant_entry_aborts
+6 tests, 22469 checks, 0 failed checks, 0 failed tests

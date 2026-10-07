@@ -1,0 +1,82 @@
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+ok   prime_vectors
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+ok   real_recurrence
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 0, raised certificates 0
+ok   real_vectors
+prime closed zero boundary: 2520 NOT_DETERMINED calls
+ok   prime_closed_zero_boundary
+real closed poles before limit: 210 NOT_DETERMINED calls
+ok   real_closed_pole_before_limit
+certified near poles: 6730 calls, 26910 endpoint/corner/midpoint samples
+ok   real_certified_near_poles
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+ok   prime_vectors
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+ok   real_recurrence
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 0, raised certificates 0
+ok   real_vectors
+prime closed zero boundary: 2520 NOT_DETERMINED calls
+ok   prime_closed_zero_boundary
+real closed poles before limit: 210 NOT_DETERMINED calls
+ok   real_closed_pole_before_limit
+certified near poles: 6730 calls, 26910 endpoint/corner/midpoint samples
+ok   real_certified_near_poles
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+ok   prime_vectors
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+ok   real_recurrence
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 0, raised certificates 0
+ok   real_vectors
+prime closed zero boundary: 2520 NOT_DETERMINED calls
+ok   prime_closed_zero_boundary
+real closed poles before limit: 210 NOT_DETERMINED calls
+ok   real_closed_pole_before_limit
+certified near poles: 6730 calls, 26910 endpoint/corner/midpoint samples
+ok   real_certified_near_poles
+ok   prime_exact_values
+pole lattice: 840 NOT_DETERMINED calls, 420 OK calls with reference containment
+ok   prime_pole_lattice
+ok   prime_statuses_and_outputs
+ok   prime_handles
+ok   prime_extreme_arguments
+tests/ref/vectors/f-slice14/zeta.jsonl (places 0): rows 216, OK 75, samples contained 171, width checked 24, width missed 0, status differs 0, raised certificates 26
+ok   prime_vectors
+ok   real_exact_values
+real poles: 420 NOT_DETERMINED calls, 210 OK calls with cross-check containment
+ok   real_poles
+ok   real_recurrence
+tests/ref/vectors/f-slice14/zeta.jsonl (places 1): rows 54, OK 17, samples contained 57, width checked 10, width missed 0, status differs 0, raised certificates 0
+ok   real_vectors
+prime closed zero boundary: 2520 NOT_DETERMINED calls
+ok   prime_closed_zero_boundary
+real closed poles before limit: 210 NOT_DETERMINED calls
+ok   real_closed_pole_before_limit
+certified near poles: 6730 calls, 26910 endpoint/corner/midpoint samples
+ok   real_certified_near_poles
+ok   debug_entry_check
+14 tests, 306749 checks, 0 failed checks, 0 failed tests

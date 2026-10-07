@@ -16,6 +16,7 @@
 #include "adelefeld/common.h"
 #include "adelefeld/status.h"
 #include "adelefeld/place.h"
+#include "adelefeld/char.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -80,6 +81,34 @@ extern "C" {
    one exponential; at most one shifted Gamma with at most 64 factors; the midpoint refinement adds at most
    two Gamma calls. The bit cost grows with prec and with the size of s. */
 int adf_local_zeta_factor_at(acb_t y, adf_place_t *where, const acb_t s, adf_place_t v, slong prec);
+
+/* Standard-vector local Tate integral, meromorphically continued (slice 5a).
+   docs/api-5.md:48-108; docs/proofs/analysis.md:331-451 (P9/P10), :452-495 (P11);
+   conventions 6.4/6.5. Finite character only: eta0->s is ignored.
+   At p: eta0 has primitive conductor 1 or p^a; alpha=eta(p), independent of eta0.
+   Conductor 1: z=1/(1-alpha*exp(-s*log(p))). Conductor p^a>1: z=1 exactly,
+   for the prescribed inverse-character vector on the units, not its Fourier transform.
+   At infinity: e=eta0 parity, alpha ignored, z=pi^(-(s+e)/2)*Gamma((s+e)/2).
+   Sources: refs/src/tate-poonen/notes.txt:62-64; refs/src/flint-3.0.1/acb.rst:6-17,893-902.
+
+   OK encloses all values on the whole input rectangles and stores a finite ball.
+   DOMAIN: nonfinite s, nonfinite used alpha, invalid prime-power conductor, exact alpha=0,
+   or a recognized exact pole. NOT_DETERMINED: alpha contains 0, a mixed/undecided pole,
+   or numerical certification failure. A computed zero-containing denominator is never DOMAIN.
+   At p recognize exact integer s=k, alpha=p^k with bounded exact rational powers.
+   Other exact poles may return NOT_DETERMINED. At infinity poles are -e-2k, k>=0.
+   LIMIT: prec>ADF_REAL_PREC_MAX first, then conductor>ADF_CHAR_MOD_MAX, then INV/domain;
+   also inherited real Gamma shift cap. Below 2 use 2; guards bounded by the precision cap
+   on the new finite path. Trivial alpha=1 delegates identically to the existing factor;
+   the real call delegates at s+e and inherits its certificate and precision policy.
+   Status row: Characters, Gauss sums, local factors (api-5 section 1), including LIMIT.
+   Failure preserves z byte for byte; if where!=NULL writes v there. OK leaves where untouched.
+   Initialized canonical eta0 and certified Q place are preconditions, checked under INV.
+   z may alias raw s, raw alpha, or both. No raw argument may alias eta0 members.
+   Work is in temporaries; O(log conductor) validation plus O(1) special functions,
+   inherited real fallback at most 64 factors. No Gauss sum is needed for this integral. */
+int adf_local_tate_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v,
+                      const acb_t alpha, const adf_char_t eta0, slong prec);
 
 #ifdef __cplusplus
 }

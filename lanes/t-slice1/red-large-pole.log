@@ -1,0 +1,8 @@
+vectors: 394; certified samples: 1825
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+FAIL tests/test_tate_local.c:270: odd_exact_large_poles: check failed: call(y, s, place(0), a, chi, 53) == ADF_DOMAIN
+FAIL odd_exact_large_poles (tests/test_tate_local.c:262, 1 failed checks)
+ok   nonreal_inverse_vector
+5 tests, 22454 checks, 1 failed checks, 1 failed tests

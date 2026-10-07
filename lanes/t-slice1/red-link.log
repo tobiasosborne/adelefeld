@@ -1,0 +1,8 @@
+/usr/bin/ld: /tmp/cc2RXjqC.o: in function `call':
+/home/tobias/Projects/adelefeld-wt/t-slice1/tests/test_tate_local.c:95:(.text+0x77e): undefined reference to `adf_local_tate_at'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice1/tests/test_tate_local.c:95:(.text+0xad5): undefined reference to `adf_local_tate_at'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/t-slice1/tests/test_tate_local.c:95:(.text+0xb67): undefined reference to `adf_local_tate_at'
+/usr/bin/ld: /tmp/cc2RXjqC.o: in function `adf_test_fn_raw_domains_extremes_and_double_alias':
+/home/tobias/Projects/adelefeld-wt/t-slice1/tests/test_tate_local.c:257:(.text+0x1fc9): undefined reference to `adf_local_tate_at'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/t-slice1/build-plain/test_tate_local] Error 1

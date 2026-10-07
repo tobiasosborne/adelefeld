@@ -1,0 +1,11 @@
+inverse_omitted 1 6 tests, 22647 checks, 1026 failed checks, 3 failed tests
+alpha_omitted 1 6 tests, 22939 checks, 779 failed checks, 3 failed tests
+parity_omitted 1 6 tests, 22675 checks, 44 failed checks, 4 failed tests
+unit_volume_doubled 1 6 tests, 22647 checks, 1025 failed checks, 3 failed tests
+alpha_inverse 1 6 tests, 22891 checks, 602 failed checks, 3 failed tests
+odd_uses_trivial_poles 1 6 tests, 22663 checks, 40 failed checks, 3 failed tests
+where_omitted 1 6 tests, 22647 checks, 394 failed checks, 4 failed tests
+early_output_write 1 6 tests, 22432 checks, 1506 failed checks, 6 failed tests
+exponent_sign 1 6 tests, 22891 checks, 825 failed checks, 3 failed tests
+mixed_pole_domain 1 6 tests, 22647 checks, 73 failed checks, 3 failed tests
+10 faults killed

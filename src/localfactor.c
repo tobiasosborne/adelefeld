@@ -399,3 +399,142 @@ adf_local_zeta_factor_at(acb_t y, adf_place_t *where, const acb_t s, adf_place_t
     acb_clear(t);
     return st == ADF_OK ? ADF_OK : fail(st, where, v);
 }
+
+/* Slice 5a: api-5.md:57-108; analysis.md P9:354-365 (integral, not gamma).
+   Recognize exact finite poles s=k, alpha=p^k. The optional exact power is
+   bounded by D2's 2^20 integer bits; no conversion of an unbounded s to slong.
+   Negative powers are dyadic only at p=2, since raw exact acb values are dyadic. */
+static int
+tate_exact_finite_pole(const acb_t s, const acb_t alpha, ulong p)
+{
+    slong k, bound = 1048576 / FLINT_BIT_COUNT(p);
+    fmpz_t power;
+    int pole;
+    if (!acb_is_exact(s) || !acb_is_exact(alpha) ||
+        !arb_is_zero(acb_imagref(s)) || !arb_is_zero(acb_imagref(alpha)) ||
+        !arf_is_int(arb_midref(acb_realref(s)))) return 0;
+    if (arf_cmp_si(arb_midref(acb_realref(s)), -bound) < 0 ||
+        arf_cmp_si(arb_midref(acb_realref(s)), bound) > 0) return 0;
+    k = arf_get_si(arb_midref(acb_realref(s)), ARF_RND_NEAR);
+    if (k < 0)
+        return p == 2 && arf_cmp_2exp_si(arb_midref(acb_realref(alpha)), k) == 0;
+    fmpz_init(power);
+    fmpz_set_ui(power, p);
+    fmpz_pow_ui(power, power, (ulong) k);
+    pole = arb_contains_fmpz(acb_realref(alpha), power);
+    fmpz_clear(power);
+    return pole;
+}
+
+/* General geometric factor. Direct ball exp/multiply/subtract encloses the
+   whole rectangle (acb.rst:6-17,658-669). Zero exclusion certifies inversion;
+   failed exclusion is never evidence of an exact pole. No phase or G_minus
+   occurs: that is the transformed vector's gamma factor (P9:343-347). */
+static int
+tate_finite_factor(acb_t z, const acb_t s, ulong p, const acb_t alpha, slong prec)
+{
+    acb_t t, denominator;
+    arb_t logp;
+    slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+    int st = ADF_NOT_DETERMINED;
+    if (tate_exact_finite_pole(s, alpha, p)) return ADF_DOMAIN;
+    acb_init(t); acb_init(denominator); arb_init(logp);
+    arb_log_ui(logp, p, w);
+    acb_mul_arb(t, s, logp, w);
+    acb_neg(t, t);
+    acb_exp(t, t, w);
+    acb_mul(t, alpha, t, w);
+    acb_neg(denominator, t);
+    acb_add_ui(denominator, denominator, 1, w);
+    if (!acb_is_finite(denominator) || acb_contains_zero(denominator)) goto done;
+    acb_inv(t, denominator, w);
+    if (!acb_is_finite(t)) goto done;
+    acb_set_round(t, t, prec);
+    if (!acb_is_finite(t)) goto done;
+    acb_swap(z, t);
+    st = ADF_OK;
+done:
+    acb_clear(t); acb_clear(denominator); arb_clear(logp);
+    return st;
+}
+
+/* Exact odd real poles can be much larger than the working precision. Test
+   the original dyadic integer's lowest bit before rounding the shift s+1. */
+static int
+tate_exact_odd_pole(const acb_t s)
+{
+    fmpz_t bottom;
+    int pole;
+    if (!acb_is_exact(s) || !arb_is_zero(acb_imagref(s)) ||
+        !arf_is_int(arb_midref(acb_realref(s))) ||
+        arf_sgn(arb_midref(acb_realref(s))) >= 0) return 0;
+    fmpz_init(bottom);
+    arf_bot(bottom, arb_midref(acb_realref(s)));
+    pole = fmpz_is_zero(bottom);
+    fmpz_clear(bottom);
+    return pole;
+}
+
+/* Standard local integral, api-5.md section 2; analysis.md P9:331-400,
+   P10:401-451, P11:452-495; conventions 6.4/6.5. In particular P9 step 1
+   cancels the inverse unit character exactly and gives unit volume 1.
+   At infinity reuse local-zeta.md Z4 and its 64-factor recurrence certificate.
+   Gamma poles: refs/src/tate-poonen/notes.txt:62-64; evaluation contract:
+   refs/src/flint-3.0.1/acb.rst:893-902. No character group setup outside INV. */
+int
+adf_local_tate_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v,
+                  const acb_t alpha, const adf_char_t eta0, slong prec)
+{
+    acb_t t, shifted;
+    ulong q, p;
+    int st;
+    /* HEADER-FINDING: api-5:33 caps guard bits, while :80 requires exact
+       delegation to the existing factor, whose contract uses prec+32 even
+       at the cap. Preserve delegation; clip guards only on the new path. */
+    if (prec > ADF_REAL_PREC_MAX) return fail(ADF_LIMIT, where, v);
+    if (eta0->q > ADF_CHAR_MOD_MAX) return fail(ADF_LIMIT, where, v);
+    ADF_INV_PLACE(v);
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_char_is_canonical(eta0)) adf_inv_fail(__func__, "eta0", "adf_char");
+    if (z == eta0->s || s == eta0->s || alpha == eta0->s)
+        adf_inv_fail(__func__, "raw arguments", "independent acb input/output");
+#endif
+    if (prec < 2) prec = 2;
+    if (!acb_is_finite(s)) return fail(ADF_DOMAIN, where, v);
+    acb_init(t); acb_init(shifted);
+    if (adf_place_is_archimedean(v))
+    {
+        slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+        if (eta0->parity && tate_exact_odd_pole(s)) st = ADF_DOMAIN;
+        else if (!eta0->parity)
+            st = adf_local_zeta_factor_at(t, NULL, s, v, prec);
+        else
+        {
+            acb_add_ui(shifted, s, 1, w);
+            st = adf_local_zeta_factor_at(t, NULL, shifted, v, prec);
+        }
+    }
+    else
+    {
+        p = adf_place_prime_get(v);
+        q = eta0->q;
+        if (q == 0 || p < 2) { st = ADF_DOMAIN; goto done; }
+        while (q > 1 && q % p == 0) q /= p;
+        if (q != 1) { st = ADF_DOMAIN; goto done; }
+        if (!acb_is_finite(alpha) || acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; }
+        if (acb_contains_zero(alpha)) { st = ADF_NOT_DETERMINED; goto done; }
+        if (eta0->q > 1)
+        {
+            acb_one(t);
+            st = ADF_OK;
+        }
+        else if (acb_is_one(alpha))
+            st = adf_local_zeta_factor_at(t, NULL, s, v, prec);
+        else
+            st = tate_finite_factor(t, s, p, alpha, prec);
+    }
+done:
+    if (st == ADF_OK) acb_swap(z, t);
+    acb_clear(t); acb_clear(shifted);
+    return st == ADF_OK ? ADF_OK : fail(st, where, v);
+}

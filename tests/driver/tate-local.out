@@ -1,0 +1,7 @@
+continuation S=((2) + (0)*i ; 0): (1.3333 +/- 3.4e-5) + (0)*i
+continuation S=((2) + (0)*i ; 0): (1) + (0)*i
+continuation S=((2) + (0)*i ; 0): (0.31831 +/- 1.2e-7) + (0)*i
+continuation S=((1) + (0)*i ; 0): (0.31831 +/- 1.2e-7) + (0)*i
+continuation S=((0) + (0)*i ; 0): error: DOMAIN
+continuation S=((0 +/- 0.001) + (0)*i ; 0): error: NOT_DETERMINED
+continuation S=((-1) + (0)*i ; 0): error: DOMAIN

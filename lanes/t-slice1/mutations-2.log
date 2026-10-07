@@ -1,0 +1,91 @@
+mutate: src/localfactor.c: 365 mutants
+mutate: 365 mutants, 20 of them run (--limit 20, --seed 51001)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (12.0 s)
+
+NOT COMPILED src/localfactor.c:336:13 drop_call: 'real_derivative_bound(B, oldB, z, lo, hi, logpi, n, w);' -> '' (the statement is removed)
+  src/localfactor.c:201:1: error: unused function 'real_derivative_bound' [-Werror,-Wunused-function]
+
+SURVIVED src/localfactor.c:247:5 call_swap: 'mag_mul' -> 'mag_add'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -245,5 +245,5 @@
+       arb_get_mag(lp, logpi);
+       mag_add(oldsum, oldsum, lp);
+  -    mag_mul(oldsum, oldsum, m0);
+  +    mag_add(oldsum, oldsum, m0);
+       mag_add(oldsum, oldsum, m1);
+       mag_div(oldsum, oldsum, P);
+
+
+NOT COMPILED src/localfactor.c:454:5 drop_call: 'acb_swap(z, t);' -> '' (the statement is removed)
+  src/localfactor.c:434:26: error: unused parameter 'z' [-Werror,-Wunused-parameter]
+
+SURVIVED src/localfactor.c:504:24 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -502,5 +502,5 @@
+       if (adf_place_is_archimedean(v))
+       {
+  -        slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+  +        slong w = prec >= ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+           if (eta0->parity && tate_exact_odd_pole(s)) st = ADF_DOMAIN;
+           else if (!eta0->parity)
+
+
+SURVIVED src/localfactor.c:438:39 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -436,5 +436,5 @@
+       acb_t t, denominator;
+       arb_t logp;
+  -    slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+  +    slong w = prec > ADF_REAL_PREC_MAX+32 ? ADF_REAL_PREC_MAX : prec+32;
+       int st = ADF_NOT_DETERMINED;
+       if (tate_exact_finite_pole(s, alpha, p)) return ADF_DOMAIN;
+
+
+SURVIVED src/localfactor.c:262:5 swap_args: 'mag_mul(B, sum, f)' -> 'mag_mul(B, f, sum)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -260,5 +260,5 @@
+       arb_exp(c, c, w);
+       arb_get_mag(f, c);
+  -    mag_mul(B, sum, f);
+  +    mag_mul(B, f, sum);
+       mag_mul(previous, oldsum, f);
+   
+
+
+SURVIVED src/localfactor.c:446:5 swap_args: 'acb_mul(t, alpha, t, w)' -> 'acb_mul(t, t, alpha, w)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -444,5 +444,5 @@
+       acb_neg(t, t);
+       acb_exp(t, t, w);
+  -    acb_mul(t, alpha, t, w);
+  +    acb_mul(t, t, alpha, w);
+       acb_neg(denominator, t);
+       acb_add_ui(denominator, denominator, 1, w);
+
+
+SURVIVED src/localfactor.c:470:45 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -468,5 +468,5 @@
+       if (!acb_is_exact(s) || !arb_is_zero(acb_imagref(s)) ||
+           !arf_is_int(arb_midref(acb_realref(s))) ||
+  -        arf_sgn(arb_midref(acb_realref(s))) >= 0) return 0;
+  +        arf_sgn(arb_midref(acb_realref(s))) > 0) return 0;
+       fmpz_init(bottom);
+       arf_bot(bottom, arb_midref(acb_realref(s)));
+
+
+mutate: 20 mutants in 90.5 s: 12 killed, 6 survived, 2 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 6 mutant(s) survived; each one is a claim the tests do not check
