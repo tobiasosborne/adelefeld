@@ -1,0 +1,145 @@
+[
+  {
+    "name": "build-final-build",
+    "command": [
+      "timeout",
+      "180",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice1/build",
+      "lanes/c-slice1/build/test_char"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "name": "build-final-run",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice1/build/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000159 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "name": "san-final-build",
+    "command": [
+      "timeout",
+      "180",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice1/san",
+      "SAN=1",
+      "lanes/c-slice1/san/test_char"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "name": "san-final-run",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice1/san/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000331 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "name": "inv-final-build",
+    "command": [
+      "timeout",
+      "180",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice1/inv",
+      "INV=1",
+      "lanes/c-slice1/inv/test_char"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "name": "inv-final-run",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice1/inv/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 5800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000169 seconds\ntest_char: 129797 checks\n"
+  },
+  {
+    "name": "clang-final-build",
+    "command": [
+      "timeout",
+      "180",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice1/clang",
+      "CC=clang",
+      "lanes/c-slice1/clang/test_char"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "name": "clang-final-run",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice1/clang/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000142 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "name": "wrap-inv-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_WRAP_SETUP",
+      "-DADF_CHECK_INVARIANTS",
+      "tests/test_char.c",
+      "lanes/c-slice1/inv/support/jsonl.o",
+      "lanes/c-slice1/inv/support/golden.o",
+      "lanes/c-slice1/inv/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_sqrt_ui",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice1/inv/test_char_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "name": "wrap-inv-run",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice1/inv/test_char_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 5800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000213 seconds\ntest_char: 129825 checks\n"
+  }
+]

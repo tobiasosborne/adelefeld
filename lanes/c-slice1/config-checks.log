@@ -1,0 +1,20 @@
+build-final-build 0 
+build-final-run 0 memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000159 seconds
+test_char: 129725 checks
+san-final-build 0 
+san-final-run 0 memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000331 seconds
+test_char: 129725 checks
+inv-final-build 0 
+inv-final-run 0 memory: 5800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000169 seconds
+test_char: 129797 checks
+clang-final-build 0 
+clang-final-run 0 memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000142 seconds
+test_char: 129725 checks
+wrap-inv-build 0 
+wrap-inv-run 0 memory: 5800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000213 seconds
+test_char: 129825 checks

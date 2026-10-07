@@ -1,0 +1,41 @@
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/c-slice1/build/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/char.c -o lanes/c-slice1/build/char.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/c-slice1/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/c-slice1/build/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/c-slice1/build/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/c-slice1/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/c-slice1/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/c-slice1/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/c-slice1/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/c-slice1/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/c-slice1/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/c-slice1/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/c-slice1/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/c-slice1/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/c-slice1/build/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/c-slice1/build/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/c-slice1/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/c-slice1/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/c-slice1/build/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass_sets.c -o lanes/c-slice1/build/qclass_sets.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/c-slice1/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/c-slice1/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/c-slice1/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/c-slice1/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/c-slice1/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/c-slice1/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/c-slice1/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/c-slice1/build/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/c-slice1/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/c-slice1/build/ucoset.o
+ar rcs lanes/c-slice1/build/libadelefeld.a lanes/c-slice1/build/adele.o lanes/c-slice1/build/cap.o lanes/c-slice1/build/catalogue.o lanes/c-slice1/build/char.o lanes/c-slice1/build/common.o lanes/c-slice1/build/dump.o lanes/c-slice1/build/fball.o lanes/c-slice1/build/fball_local.o lanes/c-slice1/build/gfunc.o lanes/c-slice1/build/gfunc_log.o lanes/c-slice1/build/idclass.o lanes/c-slice1/build/idele.o lanes/c-slice1/build/idmap.o lanes/c-slice1/build/idpow.o lanes/c-slice1/build/inlines.o lanes/c-slice1/build/lball.o lanes/c-slice1/build/lball_decomp.o lanes/c-slice1/build/lfunc.o lanes/c-slice1/build/linsolve.o lanes/c-slice1/build/localfactor.o lanes/c-slice1/build/lpow.o lanes/c-slice1/build/lroot.o lanes/c-slice1/build/modctx.o lanes/c-slice1/build/place.o lanes/c-slice1/build/psi.o lanes/c-slice1/build/qclass.o lanes/c-slice1/build/qclass_sets.o lanes/c-slice1/build/rat.o lanes/c-slice1/build/recon.o lanes/c-slice1/build/resid.o lanes/c-slice1/build/rfunc.o lanes/c-slice1/build/roots.o lanes/c-slice1/build/roots_real.o lanes/c-slice1/build/sball.o lanes/c-slice1/build/scaled.o lanes/c-slice1/build/status.o lanes/c-slice1/build/symbol.o lanes/c-slice1/build/text.o lanes/c-slice1/build/text_idele.o lanes/c-slice1/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_char.c lanes/c-slice1/build/support/golden.o lanes/c-slice1/build/support/jsonl.o lanes/c-slice1/build/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice1/build/test_char
+tests/test_char.c: In function ‘gauss’:
+tests/test_char.c:245:49: error: implicit declaration of function ‘acb_contains_si’; did you mean ‘arb_contains_si’? [-Werror=implicit-function-declaration]
+  245 |             acb_mul(product, W, wc, 256); CHECK(acb_contains_si(product, 1)); reference(ref, x);
+      |                                                 ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/c-slice1/build/test_char] Error 1

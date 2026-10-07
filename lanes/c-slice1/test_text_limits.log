@@ -1,0 +1,12 @@
+ok   printer_bound_adele_midpoint
+ok   printer_bound_adele_radius
+ok   printer_bound_cadele_imaginary_midpoint
+ok   printer_bound_cadele_imaginary_radius
+ok   printer_bound_cadele_real_part
+ok   fball_printer_never_null
+ok   exp10_limit_of_nineteen_digits
+ok   exp10_limit_of_nineteen_significant_digits
+ok   exp10_limit_of_twenty_digits
+ok   exp10_limit_negative_and_zero
+ok   value_at_exp10_boundary_prints_one_above
+11 tests, 105 checks, 0 failed checks, 0 failed tests

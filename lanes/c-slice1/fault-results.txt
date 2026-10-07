@@ -1,0 +1,11 @@
+{'fault': '33_lower_label', 'build': 0, 'test': -6, 'failure': 'test_char:171: x->q == ui(jsonl_at(v, 0, &err)) && x->n == ui(jsonl_at(v, 1, &err))'}
+{'fault': '33_parity', 'build': 0, 'test': -6, 'failure': 'test_char:172: x->parity == (int) ui(jsonl_at(v, 2, &err))'}
+{'fault': '33_zero_flag', 'build': 0, 'test': -6, 'failure': 'test_char:232: zero == 1 && fmpq_is_zero(t)'}
+{'fault': '34_negative_sign', 'build': 0, 'test': -6, 'failure': 'test_char:315: acb_overlaps(tau, ref)'}
+{'fault': '34_conjugate_chi', 'build': 0, 'test': -6, 'failure': 'test_char:315: acb_overlaps(tau, ref)'}
+{'fault': '34_omit_principal', 'build': 0, 'test': -6, 'failure': 'test_char:315: acb_overlaps(tau, ref)'}
+{'fault': '34_omit_rotation', 'build': 0, 'test': -6, 'failure': 'test_char:288: fmpq_cmp(mid, lo) >= 0'}
+{'fault': '34_input_modulus', 'build': 0, 'test': -6, 'failure': 'test_char:333: acb_equal(tau, ref)'}
+{'fault': '34_character_order', 'build': 0, 'test': -6, 'failure': 'test_char:235: zero == 0 && fmpq_equal(t, expected)'}
+{'fault': 'extra_early_write', 'build': 0, 'test': -6, 'failure': 'test_char:74: memcmp(bytes, x, sizeof(adf_char_struct)) == 0'}
+{'fault': 'extra_late_cap', 'build': 0, 'test': -6, 'failure': 'test_char:194: setups == before'}

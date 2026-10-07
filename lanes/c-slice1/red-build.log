@@ -1,0 +1,621 @@
+mkdir -p lanes/c-slice1/build
+mkdir -p lanes/c-slice1/build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/c-slice1/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/c-slice1/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/c-slice1/build/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/c-slice1/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/c-slice1/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/c-slice1/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/c-slice1/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/c-slice1/build/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/c-slice1/build/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/c-slice1/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/c-slice1/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/c-slice1/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/c-slice1/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/c-slice1/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/c-slice1/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/c-slice1/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/c-slice1/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/c-slice1/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/c-slice1/build/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/c-slice1/build/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/c-slice1/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/c-slice1/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/c-slice1/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/psi.c -o lanes/c-slice1/build/psi.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/c-slice1/build/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass_sets.c -o lanes/c-slice1/build/qclass_sets.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/c-slice1/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/c-slice1/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/c-slice1/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/c-slice1/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/c-slice1/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/c-slice1/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/c-slice1/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/c-slice1/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/c-slice1/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/c-slice1/build/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/c-slice1/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/c-slice1/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/c-slice1/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/c-slice1/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/c-slice1/build/support/jsonl.o
+ar rcs lanes/c-slice1/build/libadelefeld.a lanes/c-slice1/build/adele.o lanes/c-slice1/build/cap.o lanes/c-slice1/build/catalogue.o lanes/c-slice1/build/common.o lanes/c-slice1/build/dump.o lanes/c-slice1/build/fball.o lanes/c-slice1/build/fball_local.o lanes/c-slice1/build/gfunc.o lanes/c-slice1/build/gfunc_log.o lanes/c-slice1/build/idclass.o lanes/c-slice1/build/idele.o lanes/c-slice1/build/idmap.o lanes/c-slice1/build/idpow.o lanes/c-slice1/build/inlines.o lanes/c-slice1/build/lball.o lanes/c-slice1/build/lball_decomp.o lanes/c-slice1/build/lfunc.o lanes/c-slice1/build/linsolve.o lanes/c-slice1/build/localfactor.o lanes/c-slice1/build/lpow.o lanes/c-slice1/build/lroot.o lanes/c-slice1/build/modctx.o lanes/c-slice1/build/place.o lanes/c-slice1/build/psi.o lanes/c-slice1/build/qclass.o lanes/c-slice1/build/qclass_sets.o lanes/c-slice1/build/rat.o lanes/c-slice1/build/recon.o lanes/c-slice1/build/resid.o lanes/c-slice1/build/rfunc.o lanes/c-slice1/build/roots.o lanes/c-slice1/build/roots_real.o lanes/c-slice1/build/sball.o lanes/c-slice1/build/scaled.o lanes/c-slice1/build/status.o lanes/c-slice1/build/symbol.o lanes/c-slice1/build/text.o lanes/c-slice1/build/text_idele.o lanes/c-slice1/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_char.c lanes/c-slice1/build/support/golden.o lanes/c-slice1/build/support/jsonl.o lanes/c-slice1/build/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice1/build/test_char
+tests/test_char.c:50:50: error: unknown type name ‘adf_char_t’
+   50 | static void snapshot(unsigned char *bytes, const adf_char_t x)
+      |                                                  ^~~~~~~~~~
+tests/test_char.c: In function ‘snapshot’:
+tests/test_char.c:52:29: error: ‘adf_char_struct’ undeclared (first use in this function); did you mean ‘adf_rat_struct’?
+   52 |     memcpy(bytes, x, sizeof(adf_char_struct));
+      |                             ^~~~~~~~~~~~~~~
+      |                             adf_rat_struct
+tests/test_char.c:52:29: note: each undeclared identifier is reported only once for each function it appears in
+tests/test_char.c:52:19: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+   52 |     memcpy(bytes, x, sizeof(adf_char_struct));
+      |                   ^
+      |                   |
+      |                   int
+In file included from /usr/include/features.h:502,
+                 from /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:33,
+                 from /usr/include/stdio.h:28,
+                 from /usr/include/flint/flint.h:16,
+                 from include/adelefeld/common.h:18,
+                 from include/adelefeld.h:49,
+                 from tests/test_char.c:4:
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_char.c: At top level:
+tests/test_char.c:54:57: error: unknown type name ‘adf_char_t’
+   54 | static void untouched(const unsigned char *bytes, const adf_char_t x)
+      |                                                         ^~~~~~~~~~
+tests/test_char.c: In function ‘untouched’:
+tests/test_char.c:56:35: error: ‘adf_char_struct’ undeclared (first use in this function); did you mean ‘adf_rat_struct’?
+   56 |     CHECK(memcmp(bytes, x, sizeof(adf_char_struct)) == 0);
+      |                                   ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:56:25: error: passing argument 2 of ‘memcmp’ makes pointer from integer without a cast [-Werror=int-conversion]
+   56 |     CHECK(memcmp(bytes, x, sizeof(adf_char_struct)) == 0);
+      |                         ^
+      |                         |
+      |                         int
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+In file included from tests/test_char.c:9:
+/usr/include/string.h:64:50: note: expected ‘const void *’ but argument is of type ‘int’
+   64 | extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+      |                                      ~~~~~~~~~~~~^~~~
+tests/test_char.c: In function ‘life’:
+tests/test_char.c:60:5: error: unknown type name ‘adf_char_t’; did you mean ‘adf_rat_t’?
+   60 |     adf_char_t x, y; acb_t s, t;
+      |     ^~~~~~~~~~
+      |     adf_rat_t
+tests/test_char.c:61:5: error: implicit declaration of function ‘adf_char_init’; did you mean ‘adf_rat_init’? [-Werror=implicit-function-declaration]
+   61 |     adf_char_init(x); adf_char_init(y); acb_init(s); acb_init(t);
+      |     ^~~~~~~~~~~~~
+      |     adf_rat_init
+tests/test_char.c:62:11: error: implicit declaration of function ‘adf_sizeof_char’; did you mean ‘adf_sizeof_rat’? [-Werror=implicit-function-declaration]
+   62 |     CHECK(adf_sizeof_char() == sizeof(adf_char_struct));
+      |           ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:62:39: error: ‘adf_char_struct’ undeclared (first use in this function); did you mean ‘adf_rat_struct’?
+   62 |     CHECK(adf_sizeof_char() == sizeof(adf_char_struct));
+      |                                       ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:63:11: error: implicit declaration of function ‘adf_alignof_char’; did you mean ‘adf_alignof_rat’? [-Werror=implicit-function-declaration]
+   63 |     CHECK(adf_alignof_char() == _Alignof(adf_char_struct));
+      |           ^~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:63:33: error: ISO C does not allow ‘_Alignof (expression)’ [-Werror=pedantic]
+   63 |     CHECK(adf_alignof_char() == _Alignof(adf_char_struct));
+      |                                 ^~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:64:20: error: expected specifier-qualifier-list before ‘adf_char_struct’
+   64 |     CHECK(offsetof(adf_char_struct, q) == 0 && offsetof(adf_char_struct, n) == sizeof(ulong));
+      |                    ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:64:57: error: expected specifier-qualifier-list before ‘adf_char_struct’
+   64 |     CHECK(offsetof(adf_char_struct, q) == 0 && offsetof(adf_char_struct, n) == sizeof(ulong));
+      |                                                         ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:65:20: error: expected specifier-qualifier-list before ‘adf_char_struct’
+   65 |     CHECK(offsetof(adf_char_struct, parity) == 2*sizeof(ulong));
+      |                    ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:66:11: error: implicit declaration of function ‘adf_char_is_canonical’; did you mean ‘adf_rat_is_canonical’? [-Werror=implicit-function-declaration]
+   66 |     CHECK(adf_char_is_canonical(x));
+      |           ^~~~~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:67:12: error: invalid type argument of ‘->’ (have ‘int’)
+   67 |     CHECK(x->q == 1 && x->n == 1 && x->parity == 0 && acb_is_zero(x->s));
+      |            ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:67:25: error: invalid type argument of ‘->’ (have ‘int’)
+   67 |     CHECK(x->q == 1 && x->n == 1 && x->parity == 0 && acb_is_zero(x->s));
+      |                         ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:67:38: error: invalid type argument of ‘->’ (have ‘int’)
+   67 |     CHECK(x->q == 1 && x->n == 1 && x->parity == 0 && acb_is_zero(x->s));
+      |                                      ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:67:68: error: invalid type argument of ‘->’ (have ‘int’)
+   67 |     CHECK(x->q == 1 && x->n == 1 && x->parity == 0 && acb_is_zero(x->s));
+      |                                                                    ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:71:14: error: invalid type argument of ‘->’ (have ‘int’)
+   71 |     acb_set(x->s, s); adf_char_set(y, x); CHECK(adf_char_identical(x, y));
+      |              ^~
+tests/test_char.c:71:23: error: implicit declaration of function ‘adf_char_set’; did you mean ‘adf_rat_set’? [-Werror=implicit-function-declaration]
+   71 |     acb_set(x->s, s); adf_char_set(y, x); CHECK(adf_char_identical(x, y));
+      |                       ^~~~~~~~~~~~
+      |                       adf_rat_set
+tests/test_char.c:71:49: error: implicit declaration of function ‘adf_char_identical’; did you mean ‘adf_rat_identical’? [-Werror=implicit-function-declaration]
+   71 |     acb_set(x->s, s); adf_char_set(y, x); CHECK(adf_char_identical(x, y));
+      |                                                 ^~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:72:15: error: invalid type argument of ‘->’ (have ‘int’)
+   72 |     acb_zero(x->s); CHECK(!adf_char_identical(x, y)); CHECK(acb_equal(y->s, s));
+      |               ^~
+tests/test_char.c:72:72: error: invalid type argument of ‘->’ (have ‘int’)
+   72 |     acb_zero(x->s); CHECK(!adf_char_identical(x, y)); CHECK(acb_equal(y->s, s));
+      |                                                                        ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:73:5: error: implicit declaration of function ‘adf_char_swap’; did you mean ‘adf_rat_swap’? [-Werror=implicit-function-declaration]
+   73 |     adf_char_swap(x, y); CHECK(acb_equal(x->s, s) && acb_is_zero(y->s));
+      |     ^~~~~~~~~~~~~
+      |     adf_rat_swap
+tests/test_char.c:73:43: error: invalid type argument of ‘->’ (have ‘int’)
+   73 |     adf_char_swap(x, y); CHECK(acb_equal(x->s, s) && acb_is_zero(y->s));
+      |                                           ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:73:67: error: invalid type argument of ‘->’ (have ‘int’)
+   73 |     adf_char_swap(x, y); CHECK(acb_equal(x->s, s) && acb_is_zero(y->s));
+      |                                                                   ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:74:42: error: invalid type argument of ‘->’ (have ‘int’)
+   74 |     adf_char_set(x, x); CHECK(acb_equal(x->s, s));
+      |                                          ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:75:43: error: invalid type argument of ‘->’ (have ‘int’)
+   75 |     adf_char_swap(x, x); CHECK(acb_equal(x->s, s));
+      |                                           ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:76:5: error: implicit declaration of function ‘adf_char_get_s’; did you mean ‘adf_rat_get_str’? [-Werror=implicit-function-declaration]
+   76 |     adf_char_get_s(t, x); CHECK(acb_equal(s, t));
+      |     ^~~~~~~~~~~~~~
+      |     adf_rat_get_str
+tests/test_char.c:77:11: error: implicit declaration of function ‘adf_char_get_conductor’ [-Werror=implicit-function-declaration]
+   77 |     CHECK(adf_char_get_conductor(x) == 1 && adf_char_get_label(x) == 1);
+      |           ^~~~~~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:77:45: error: implicit declaration of function ‘adf_char_get_label’; did you mean ‘adf_sball_get_lball’? [-Werror=implicit-function-declaration]
+   77 |     CHECK(adf_char_get_conductor(x) == 1 && adf_char_get_label(x) == 1);
+      |                                             ^~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:78:11: error: implicit declaration of function ‘adf_char_get_parity’ [-Werror=implicit-function-declaration]
+   78 |     CHECK(adf_char_get_parity(x) == 0);
+      |           ^~~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:79:6: error: invalid type argument of ‘->’ (have ‘int’)
+   79 |     x->q = 0; CHECK(!adf_char_is_canonical(x)); x->q = 1;
+      |      ^~
+tests/test_char.c:79:50: error: invalid type argument of ‘->’ (have ‘int’)
+   79 |     x->q = 0; CHECK(!adf_char_is_canonical(x)); x->q = 1;
+      |                                                  ^~
+tests/test_char.c:80:6: error: invalid type argument of ‘->’ (have ‘int’)
+   80 |     x->n = 0; CHECK(!adf_char_is_canonical(x)); x->n = 1;
+      |      ^~
+tests/test_char.c:80:50: error: invalid type argument of ‘->’ (have ‘int’)
+   80 |     x->n = 0; CHECK(!adf_char_is_canonical(x)); x->n = 1;
+      |                                                  ^~
+tests/test_char.c:81:6: error: invalid type argument of ‘->’ (have ‘int’)
+   81 |     x->parity = 1; CHECK(!adf_char_is_canonical(x)); x->parity = 0;
+      |      ^~
+tests/test_char.c:81:55: error: invalid type argument of ‘->’ (have ‘int’)
+   81 |     x->parity = 1; CHECK(!adf_char_is_canonical(x)); x->parity = 0;
+      |                                                       ^~
+tests/test_char.c:82:24: error: invalid type argument of ‘->’ (have ‘int’)
+   82 |     acb_indeterminate(x->s); CHECK(!adf_char_is_canonical(x)); acb_zero(x->s);
+      |                        ^~
+tests/test_char.c:82:74: error: invalid type argument of ‘->’ (have ‘int’)
+   82 |     acb_indeterminate(x->s); CHECK(!adf_char_is_canonical(x)); acb_zero(x->s);
+      |                                                                          ^~
+tests/test_char.c:83:6: error: invalid type argument of ‘->’ (have ‘int’)
+   83 |     x->q = 16; x->n = 9; CHECK(!adf_char_is_canonical(x)); x->q = 1; x->n = 1;
+      |      ^~
+tests/test_char.c:83:17: error: invalid type argument of ‘->’ (have ‘int’)
+   83 |     x->q = 16; x->n = 9; CHECK(!adf_char_is_canonical(x)); x->q = 1; x->n = 1;
+      |                 ^~
+tests/test_char.c:83:61: error: invalid type argument of ‘->’ (have ‘int’)
+   83 |     x->q = 16; x->n = 9; CHECK(!adf_char_is_canonical(x)); x->q = 1; x->n = 1;
+      |                                                             ^~
+tests/test_char.c:83:71: error: invalid type argument of ‘->’ (have ‘int’)
+   83 |     x->q = 16; x->n = 9; CHECK(!adf_char_is_canonical(x)); x->q = 1; x->n = 1;
+      |                                                                       ^~
+tests/test_char.c:85:6: error: invalid type argument of ‘->’ (have ‘int’)
+   85 |     x->q = 65539; x->n = 2;
+      |      ^~
+tests/test_char.c:85:20: error: invalid type argument of ‘->’ (have ‘int’)
+   85 |     x->q = 65539; x->n = 2;
+      |                    ^~
+tests/test_char.c:87:36: error: invalid type argument of ‘->’ (have ‘int’)
+   87 |     CHECK(dirichlet_group_init(G, x->q)); dirichlet_char_init(c, G);
+      |                                    ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:88:31: error: invalid type argument of ‘->’ (have ‘int’)
+   88 |     dirichlet_char_log(c, G, x->n); x->parity = dirichlet_parity_char(G, c);
+      |                               ^~
+tests/test_char.c:88:38: error: invalid type argument of ‘->’ (have ‘int’)
+   88 |     dirichlet_char_log(c, G, x->n); x->parity = dirichlet_parity_char(G, c);
+      |                                      ^~
+tests/test_char.c:90:57: error: invalid type argument of ‘->’ (have ‘int’)
+   90 |     dirichlet_char_clear(c); dirichlet_group_clear(G); x->q = 1; x->n = 1; x->parity = 0;
+      |                                                         ^~
+tests/test_char.c:90:67: error: invalid type argument of ‘->’ (have ‘int’)
+   90 |     dirichlet_char_clear(c); dirichlet_group_clear(G); x->q = 1; x->n = 1; x->parity = 0;
+      |                                                                   ^~
+tests/test_char.c:90:77: error: invalid type argument of ‘->’ (have ‘int’)
+   90 |     dirichlet_char_clear(c); dirichlet_group_clear(G); x->q = 1; x->n = 1; x->parity = 0;
+      |                                                                             ^~
+tests/test_char.c:91:5: error: implicit declaration of function ‘adf_char_clear’; did you mean ‘adf_rat_clear’? [-Werror=implicit-function-declaration]
+   91 |     adf_char_clear(x); adf_char_clear(y); acb_clear(s); acb_clear(t);
+      |     ^~~~~~~~~~~~~~
+      |     adf_rat_clear
+tests/test_char.c: In function ‘constructors’:
+tests/test_char.c:95:45: error: unknown type name ‘adf_char_t’; did you mean ‘adf_rat_t’?
+   95 |     jsonl_file *f = vectors("lower", 1966); adf_char_t x; acb_t s, t;
+      |                                             ^~~~~~~~~~
+      |                                             adf_rat_t
+tests/test_char.c:96:32: error: ‘adf_char_struct’ undeclared (first use in this function); did you mean ‘adf_rat_struct’?
+   96 |     unsigned char bytes[sizeof(adf_char_struct)]; ulong order;
+      |                                ^~~~~~~~~~~~~~~
+      |                                adf_rat_struct
+tests/test_char.c:102:15: error: implicit declaration of function ‘adf_char_set_conrey_acb’ [-Werror=implicit-function-declaration]
+  102 |         CHECK(adf_char_set_conrey_acb(x, q, n, s) == ADF_OK);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:103:16: error: invalid type argument of ‘->’ (have ‘int’)
+  103 |         CHECK(x->q == ui(jsonl_at(v, 0, &err)) && x->n == ui(jsonl_at(v, 1, &err)));
+      |                ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:103:52: error: invalid type argument of ‘->’ (have ‘int’)
+  103 |         CHECK(x->q == ui(jsonl_at(v, 0, &err)) && x->n == ui(jsonl_at(v, 1, &err)));
+      |                                                    ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:104:16: error: invalid type argument of ‘->’ (have ‘int’)
+  104 |         CHECK(x->parity == (int) ui(jsonl_at(v, 2, &err)));
+      |                ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:105:15: error: implicit declaration of function ‘adf_char_get_order’ [-Werror=implicit-function-declaration]
+  105 |         CHECK(adf_char_get_order(&order, x) == ADF_OK && order == ui(jsonl_at(v, 3, &err)));
+      |               ^~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:106:26: error: invalid type argument of ‘->’ (have ‘int’)
+  106 |         CHECK(acb_equal(x->s, s)); CHECK(adf_char_is_canonical(x));
+      |                          ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:107:15: error: implicit declaration of function ‘adf_char_set_conrey’; did you mean ‘adf_scaled_set_context’? [-Werror=implicit-function-declaration]
+  107 |         CHECK(adf_char_set_conrey(x, q, n+2*q) == ADF_OK && acb_is_zero(x->s));
+      |               ^~~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:107:74: error: invalid type argument of ‘->’ (have ‘int’)
+  107 |         CHECK(adf_char_set_conrey(x, q, n+2*q) == ADF_OK && acb_is_zero(x->s));
+      |                                                                          ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:110:58: error: invalid type argument of ‘->’ (have ‘int’)
+  110 |     CHECK(adf_char_set_conrey(x, 65536, 1) == ADF_OK && x->q == 1);
+      |                                                          ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:130:11: error: implicit declaration of function ‘adf_char_set_s’; did you mean ‘adf_rat_set_si’? [-Werror=implicit-function-declaration]
+  130 |     CHECK(adf_char_set_s(x, t) == ADF_DOMAIN); untouched(bytes, x);
+      |           ^~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:131:56: error: invalid type argument of ‘->’ (have ‘int’)
+  131 |     CHECK(adf_char_set_s(x, s) == ADF_OK && acb_equal(x->s, s));
+      |                                                        ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:133:6: error: invalid type argument of ‘->’ (have ‘int’)
+  133 |     x->q = 65539; order = 123;
+      |      ^~
+tests/test_char.c:135:6: error: invalid type argument of ‘->’ (have ‘int’)
+  135 |     x->q = 5;
+      |      ^~
+tests/test_char.c:96:19: error: unused variable ‘bytes’ [-Werror=unused-variable]
+   96 |     unsigned char bytes[sizeof(adf_char_struct)]; ulong order;
+      |                   ^~~~~
+tests/test_char.c: In function ‘phases’:
+tests/test_char.c:151:45: error: unknown type name ‘adf_char_t’; did you mean ‘adf_rat_t’?
+  151 |     jsonl_file *f = vectors("phases", 285); adf_char_t x;
+      |                                             ^~~~~~~~~~
+      |                                             adf_rat_t
+tests/test_char.c:161:19: error: implicit declaration of function ‘adf_char_chi_phase’ [-Werror=implicit-function-declaration]
+  161 |             CHECK(adf_char_chi_phase(&zero, t, x, a) == ADF_OK);
+      |                   ^~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:168:19: error: implicit declaration of function ‘adf_char_chi’ [-Werror=implicit-function-declaration]
+  168 |             CHECK(adf_char_chi(z, x, a, 128) == ADF_OK); CHECK(acb_overlaps(z, want));
+      |                   ^~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:178:25: error: invalid type argument of ‘->’ (have ‘int’)
+  178 |     acb_set_si(z, 17); x->q = 0;
+      |                         ^~
+tests/test_char.c:180:6: error: invalid type argument of ‘->’ (have ‘int’)
+  180 |     x->q = 65539; zero = 17; fmpq_set_si(t, 7, 8);
+      |      ^~
+tests/test_char.c:184:6: error: invalid type argument of ‘->’ (have ‘int’)
+  184 |     x->q = 5; adf_char_clear(x); fmpz_clear(a); fmpq_clear(t); fmpq_clear(expected);
+      |      ^~
+tests/test_char.c: At top level:
+tests/test_char.c:214:38: error: unknown type name ‘adf_char_t’
+  214 | static void reference(acb_t z, const adf_char_t x)
+      |                                      ^~~~~~~~~~
+tests/test_char.c: In function ‘reference’:
+tests/test_char.c:217:36: error: invalid type argument of ‘->’ (have ‘int’)
+  217 |     CHECK(dirichlet_group_init(G, x->q)); dirichlet_char_init(c, G);
+      |                                    ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:218:31: error: invalid type argument of ‘->’ (have ‘int’)
+  218 |     dirichlet_char_log(c, G, x->n); acb_dirichlet_gauss_sum(z, G, c, 256);
+      |                               ^~
+tests/test_char.c: In function ‘gauss’:
+tests/test_char.c:223:43: error: unknown type name ‘adf_char_t’; did you mean ‘adf_rat_t’?
+  223 |     jsonl_file *f = vectors("gauss", 45); adf_char_t x, conjugate;
+      |                                           ^~~~~~~~~~
+      |                                           adf_rat_t
+tests/test_char.c:235:19: error: implicit declaration of function ‘adf_char_gauss_sum’ [-Werror=implicit-function-declaration]
+  235 |             CHECK(adf_char_gauss_sum(tau, x, p) == ADF_OK);
+      |                   ^~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:236:19: error: implicit declaration of function ‘adf_char_root_number’; did you mean ‘acb_dirichlet_root_number’? [-Werror=implicit-function-declaration]
+  236 |             CHECK(adf_char_root_number(W, x, p) == ADF_OK);
+      |                   ^~~~~~~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:243:30: error: invalid type argument of ‘->’ (have ‘int’)
+  243 |             acb_set_si(ref, x->parity ? -(slong) C : (slong) C); CHECK(acb_contains(product, ref));
+      |                              ^~
+tests/test_char.c:245:49: error: implicit declaration of function ‘acb_contains_si’; did you mean ‘arb_contains_si’? [-Werror=implicit-function-declaration]
+  245 |             acb_mul(product, W, wc, 256); CHECK(acb_contains_si(product, 1)); reference(ref, x);
+      |                                                 ^~~~~~~~~~~~~~~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:247:21: error: invalid type argument of ‘->’ (have ‘int’)
+  247 |         acb_set_si(x->s, 9); arb_set_si(acb_imagref(x->s), -4);
+      |                     ^~
+In file included from include/adelefeld/adele.h:37,
+                 from include/adelefeld.h:55:
+tests/test_char.c:247:54: error: invalid type argument of ‘->’ (have ‘int’)
+  247 |         acb_set_si(x->s, 9); arb_set_si(acb_imagref(x->s), -4);
+      |                                                      ^~
+tests/test_char.c:251:54: error: invalid type argument of ‘->’ (have ‘int’)
+  251 |     CHECK(adf_char_set_conrey(x, 8, 7) == ADF_OK && x->q == 4 && x->n == 3);
+      |                                                      ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:251:67: error: invalid type argument of ‘->’ (have ‘int’)
+  251 |     CHECK(adf_char_set_conrey(x, 8, 7) == ADF_OK && x->q == 4 && x->n == 3);
+      |                                                                   ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:257:6: error: invalid type argument of ‘->’ (have ‘int’)
+  257 |     x->q = 0; acb_set_si(tau, 19); acb_set_si(W, 23);
+      |      ^~
+tests/test_char.c:260:6: error: invalid type argument of ‘->’ (have ‘int’)
+  260 |     x->q = 65537;
+      |      ^~
+tests/test_char.c:263:6: error: invalid type argument of ‘->’ (have ‘int’)
+  263 |     x->q = 1; adf_char_clear(x); adf_char_clear(conjugate);
+      |      ^~
+tests/test_char.c: In function ‘texts’:
+tests/test_char.c:274:43: error: unknown type name ‘adf_char_t’; did you mean ‘adf_rat_t’?
+  274 |     jsonl_file *f = vectors("texts", 32); adf_char_t x, y; unsigned char bytes[sizeof(adf_char_struct)];
+      |                                           ^~~~~~~~~~
+      |                                           adf_rat_t
+tests/test_char.c:274:87: error: ‘adf_char_struct’ undeclared (first use in this function); did you mean ‘adf_rat_struct’?
+  274 |     jsonl_file *f = vectors("texts", 32); adf_char_t x, y; unsigned char bytes[sizeof(adf_char_struct)];
+      |                                                                                       ^~~~~~~~~~~~~~~
+      |                                                                                       adf_rat_struct
+tests/test_char.c:280:18: error: implicit declaration of function ‘adf_char_set_str’; did you mean ‘adf_rat_set_str’? [-Werror=implicit-function-declaration]
+  280 |         int st = adf_char_set_str(x, s, n, 128, NULL);
+      |                  ^~~~~~~~~~~~~~~~
+      |                  adf_rat_set_str
+tests/test_char.c:284:20: error: invalid type argument of ‘->’ (have ‘int’)
+  284 |             CHECK(x->q == y->q && x->n == y->n && x->parity == y->parity);
+      |                    ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:284:28: error: invalid type argument of ‘->’ (have ‘int’)
+  284 |             CHECK(x->q == y->q && x->n == y->n && x->parity == y->parity);
+      |                            ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:284:36: error: invalid type argument of ‘->’ (have ‘int’)
+  284 |             CHECK(x->q == y->q && x->n == y->n && x->parity == y->parity);
+      |                                    ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:284:44: error: invalid type argument of ‘->’ (have ‘int’)
+  284 |             CHECK(x->q == y->q && x->n == y->n && x->parity == y->parity);
+      |                                            ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:284:52: error: invalid type argument of ‘->’ (have ‘int’)
+  284 |             CHECK(x->q == y->q && x->n == y->n && x->parity == y->parity);
+      |                                                    ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:284:65: error: invalid type argument of ‘->’ (have ‘int’)
+  284 |             CHECK(x->q == y->q && x->n == y->n && x->parity == y->parity);
+      |                                                                 ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:285:33: error: invalid type argument of ‘->’ (have ‘int’)
+  285 |             CHECK(acb_contains(x->s, y->s) || acb_contains(y->s, x->s));
+      |                                 ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:285:39: error: invalid type argument of ‘->’ (have ‘int’)
+  285 |             CHECK(acb_contains(x->s, y->s) || acb_contains(y->s, x->s));
+      |                                       ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:285:61: error: invalid type argument of ‘->’ (have ‘int’)
+  285 |             CHECK(acb_contains(x->s, y->s) || acb_contains(y->s, x->s));
+      |                                                             ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:285:67: error: invalid type argument of ‘->’ (have ‘int’)
+  285 |             CHECK(acb_contains(x->s, y->s) || acb_contains(y->s, x->s));
+      |                                                                   ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:286:41: error: implicit declaration of function ‘adf_char_get_str’; did you mean ‘adf_rat_get_str’? [-Werror=implicit-function-declaration]
+  286 |             size_t len; char *printed = adf_char_get_str(&len, x, 20);
+      |                                         ^~~~~~~~~~~~~~~~
+      |                                         adf_rat_get_str
+tests/test_char.c:286:41: error: initialization of ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+tests/test_char.c:289:33: error: invalid type argument of ‘->’ (have ‘int’)
+  289 |             CHECK(acb_contains(y->s, x->s));
+      |                                 ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:289:39: error: invalid type argument of ‘->’ (have ‘int’)
+  289 |             CHECK(acb_contains(y->s, x->s));
+      |                                       ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:290:31: error: invalid type argument of ‘->’ (have ‘int’)
+  290 |             if (acb_is_exact(x->s)) CHECK(adf_char_identical(x, y));
+      |                               ^~
+tests/test_char.c:312:26: error: invalid type argument of ‘->’ (have ‘int’)
+  312 |     arb_one(acb_realref(x->s)); arb_mul_2exp_si(acb_realref(x->s), acb_realref(x->s), 100002);
+      |                          ^~
+tests/test_char.c:312:62: error: invalid type argument of ‘->’ (have ‘int’)
+  312 |     arb_one(acb_realref(x->s)); arb_mul_2exp_si(acb_realref(x->s), acb_realref(x->s), 100002);
+      |                                                              ^~
+tests/test_char.c:312:81: error: invalid type argument of ‘->’ (have ‘int’)
+  312 |     arb_one(acb_realref(x->s)); arb_mul_2exp_si(acb_realref(x->s), acb_realref(x->s), 100002);
+      |                                                                                 ^~
+tests/test_char.c:313:57: error: comparison between pointer and integer [-Werror]
+  313 |     size_t len = 9; CHECK(adf_char_get_str(&len, x, 20) == NULL && len == 0);
+      |                                                         ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:274:74: error: unused variable ‘bytes’ [-Werror=unused-variable]
+  274 |     jsonl_file *f = vectors("texts", 32); adf_char_t x, y; unsigned char bytes[sizeof(adf_char_struct)];
+      |                                                                          ^~~~~
+tests/test_char.c: In function ‘goldens’:
+tests/test_char.c:318:39: error: unknown type name ‘adf_char_t’; did you mean ‘adf_rat_t’?
+  318 |     golden_file *f; golden_error_t e; adf_char_t x; acb_t tau, W, reference_tau;
+      |                                       ^~~~~~~~~~
+      |                                       adf_rat_t
+tests/test_char.c:328:16: error: invalid type argument of ‘->’ (have ‘int’)
+  328 |         CHECK(x->parity == r->expected[2]-'0');
+      |                ^~
+tests/test_char.c:18:39: note: in definition of macro ‘CHECK’
+   18 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_char.c:337:58: error: invalid type argument of ‘->’ (have ‘int’)
+  337 |         CHECK(acb_overlaps(W, parsed->inf)); radii(tau, x->q, 128, 8); radii(W, x->q, 128, 32);
+      |                                                          ^~
+tests/test_char.c:337:82: error: invalid type argument of ‘->’ (have ‘int’)
+  337 |         CHECK(acb_overlaps(W, parsed->inf)); radii(tau, x->q, 128, 8); radii(W, x->q, 128, 32);
+      |                                                                                  ^~
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/c-slice1/build/test_char] Error 1

@@ -1,0 +1,16 @@
+ok   every_row_of_the_golden_file_ucoset
+ok   ucoset_stored_form_and_printing
+ok   every_row_of_the_golden_file_idele
+ok   every_row_of_the_golden_file_idclass
+   2200 records, 841 valid, 308 NOT_DETERMINED answers at the precisions 2, 7 and 30
+ok   the_reference_on_generated_texts
+ok   constrained_printing_against_the_reference
+ok   constrained_printing_examples
+ok   printing_of_hand_made_values
+ok   prec_rules_and_not_determined
+ok   limits_of_conventions_8_4
+ok   hostile_big_numbers_nesting_nul_and_cuts
+ok   order_of_the_stages
+ok   round_trips_enclose
+ok   constrained_printer_ends_in_bounded_time
+14 tests, 73465 checks, 0 failed checks, 0 failed tests
