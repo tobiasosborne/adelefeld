@@ -2,7 +2,7 @@
 
 Milestone 4 (functions on the adeles, `docs/PLAN.md` lines 325-333) has a design before code: `docs/api-4.md`
 (lane d-functions4, 2026-10-08) with its oracle `proto/functions4_checks.py` (2670 checks; run it:
-`timeout 120 python3 -B proto/functions4_checks.py`). You build **slice 4d** of its section 9 (lines 419-421),
+`timeout 120 python3 -B proto/functions4_checks.py`). You build **slice 4d** of its section 9 (lines 417-419),
 end to end: header, code, test against the reference, driver commands, Julia call. No `adf_rfun` type exists
 yet in `include/` or `src/`. The functions, declared and specified in the design (implement them as written; a
 declaration that cannot be implemented as written is a `HEADER-FINDING` in your report, not an edit):
@@ -10,7 +10,7 @@ declaration that cannot be implemented as written is a `HEADER-FINDING` in your 
     section 1 (lines 49-72):   adf_rfun_init, _clear, _set, _swap, _is_canonical, _identical,
                                adf_sizeof_rfun, adf_alignof_rfun (the layout queries of section 1),
                                adf_rfun_set_terms (and the term type adf_rterm_struct of conventions 5.12)
-    section 2 (lines 87-92):   adf_rfun_set_str, adf_rfun_get_str (the value form `rfun(term(P=[...], A=, B=, C=), ...)`)
+    section 2 (lines 87-92):   adf_rfun_set_str, adf_rfun_get_str (the value form `rfun(term(...), ...)`)
     section 5 (lines 226-237): adf_rfun_add, adf_rfun_mul, adf_rfun_translate_rat, adf_rfun_dilate_rat,
                                adf_rfun_dilate_idele, adf_rfun_reflect, adf_rfun_conj
     section 6 (line 279):      adf_rfun_eval (the real function on an arb ball)
