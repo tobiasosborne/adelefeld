@@ -202,3 +202,164 @@ More generally the denominators of rational a and N contain only finitely many p
 Outside those primes, a+N Z_p is contained in Z_p, so a+N Zhat is contained in A_f.
 The code follows this meaning and the finite phase families of SPEC 6 and analysis Lemma 2.
 The finding concerns the annotation, not the additive-character formula or its ball-image statement.
+
+# Slices 3.2-b and 3.2-c: the character on classes and at places
+
+Lane q-slice5. Eight calls are added to include/adelefeld/psi.h and src/psi.c: adf_qclass_psi_tate, _strict,
+_phase (3.2-b); adf_lball_psi_tate, _strict, _phase, adf_adele_psi_tate_at, _strict_at (3.2-c). Their
+declarations and comment blocks are those of design 3.2:370-424, with the sentences this section adds.
+The sign convention and the image of one adele are those of the sections above (conventions 6.1:844,
+analysis Lemma 2:76-94, design Q4:591-635). Contracts common to the earlier calls hold: initialized canonical
+inputs, untouched outputs on every failure, no member aliasing (all signatures mix types), INV entry checks,
+p = max(prec,2), prec above ADF_REAL_PREC_MAX is LIMIT before every other test.
+
+The code reuses the helpers of 3.2-a: psi_read (exact dyadic reading and modular reduction), psi_distance
+(Q4's distance), psi_cos_upper (the certified cosine of section 3.3), psi_round (Q1's second form). The adele
+call was split into psi_exact (reading and the four distances), psi_numeric (four certified upper bounds),
+psi_fold (the coordinate extrema of a union) and psi_commit (rounding and the single write); its behaviour is
+unchanged (tests/test_psi.c: 186799 checks before and after).
+
+## Class default and strict (3.2-b)
+
+Statement. For a class x with stored entries x_0, ..., x_(len-1), z encloses psi of the represented subset of
+A/Q, which is the union over i of the image of x_i (LIFT: len = 1). Reason: psi is trivial on diagonal Q
+(Lemma 2 step 2:87-88) and descends to A/Q (step 4:92-94), so every class in pi(x_i) has the value set of x_i,
+and a PIECES value denotes the union of pi(x_i) (qclass.h:3-4).
+
+Steps and why each keeps the enclosure.
+1. Pass 1, exact preflight of EVERY entry: psi_read and the four Q4 distances d_i(t), t = 0, 1/2, 1/4, 3/4.
+   No numerical work. Statuses combine by maximum; LIMIT is the largest status, so the pass stops at it.
+2. Strict (D3-3): NOT_DETERMINED if some entry has B = denominator(N) > 1. This follows pass 1, so a LIMIT
+   of any entry wins over it, and precedes all numerical work, as the adele strict call does.
+3. Pass 2: for each entry the four certified upper bounds u_i(t), with cos(2 pi d_i(t)) <= u_i(t) <=
+   cos(2 pi d_i(t)) + epsilon (section 3.3, epsilon = 2^-p). The real coordinate of every point of the image
+   of x_i lies in [-cos(2 pi d_i(1/2)), cos(2 pi d_i(0))] (Q4 steps 1-2), the imaginary one likewise with 3/4,
+   1/4. The union's coordinate lies between the minimum of the lower and the maximum of the upper extrema.
+   psi_fold takes min_i(-u_i(1/2)) and max_i(u_i(0)) (design 3.3: "the minimum lower bound and maximum upper
+   bound over constituents"): each is outside the true union extremum by at most epsilon, since a maximum of
+   numbers each at most epsilon above its target is at most epsilon above the maximum of the targets.
+4. One Q1 rounding per coordinate and one write, as for the adele. The endpoint excess bound of the adele
+   call holds with W the true width of the coordinate hull of the UNION:
+
+       4*epsilon + 2^-28*(W/2 + 2*epsilon).
+
+The exact hull of the union is the one of Q4 with d(t) = min_i d_i(t), since cosine decreases on [0,1/2].
+The generator checks this minimum against the extrema of the materialized union of arcs for every record.
+
+Statuses combine by maximum, and pass 2 stops at its first failure. This returns the maximum, for this reason.
+Pass 2 can fail with NOT_DETERMINED (certificate) or with LIMIT only from psi_cos_upper's projected doubling,
+which needs a distance with an odd denominator above 1. A PIECES entry has finite centre A integral and d = 1
+with H integral (qclass.h:3-6), so b = (A - m) mod 1 is dyadic, B = 1, r is dyadic, and every distance is
+dyadic: that LIMIT cannot occur. A LIFT has one entry, whose first failure is its status.
+
+Consequence for strict. Only a LIFT can have B > 1 (PIECES entries have integral H and d = 1). For canonical
+inputs, class strict is therefore NOT_DETERMINED exactly for a lift with fractional finite radius, and
+otherwise equals the default. "A legal PIECES value always passes" (design 3.2:382) holds. The D3-3 witness:
+the lift of E3 = (0 ; 0 mod 1/2) is NOT_DETERMINED; adf_qclass_reduce gives union((0 ; 0 mod 1),
+(0.5 ; 0 mod 1)), which passes; both rectangles are [-1,1] x {0} up to the bound and enclose +1 and -1.
+The planted fault "strict decides from the first entry only" is equivalent for this reason (see the report).
+
+Cost: 2 len exact preflights (pass 2 recomputes the distances instead of storing 4 len rationals, so there is
+no allocation of our own; the recomputation is an avoidable cost), at most 4 len certified cosines, one
+rounding per coordinate. Independent of the numeric size of any B (Q4 needs no enumeration).
+
+Check: tests/test_psi_class.c: vectors() runs the 32 records of tests/ref/vectors/q-slice5/class.jsonl (11
+lifts, 8 lifts reduced in C, whose 1 to 6 stored pieces are first compared exactly with the oracle's rounded
+pieces, 13 hand-built canonical PIECES values) at p = 2, 20, 53, 128: status of default and strict, equality of
+both on OK, the hull bound on both coordinates of the union (256 coordinate checks), the materialized arcs
+(end points and mid points), and 40 sampled points of every stored entry with exact membership and exact
+phase (10720 points). e3() states the D3-3 sentence and shows that the hull test rejects a unit square for the
+line hull and that the value of only the first piece misses -1. golden() runs the 15 valid rows of
+psi_phases.tsv as lifts. statuses() covers the precedences. additivity(): 100 pairs of lifts, 10 sampled sums
+each inside psi(x + y) and inside the product of the rectangles (Q4 step 6).
+
+## Class phase getter (3.2-b)
+
+adf_qclass_psi_tate_phase(theta, x) returns OK with theta in [0,1) iff every entry has rad(inf) = 0 and
+integral N and all those angles agree modulo 1 (Q4 step 7). It returns the maximum of the entries' getter
+statuses, LIMIT first: the loop continues after a NOT_DETERMINED entry to find a LIMIT. Two singleton
+entries with different angles give NOT_DETERMINED (E3's reduction: 0 and 1/2). No floating-point work.
+Cost: one rational reduction per entry. Check: statuses(), e3(), vectors() (exact angle or null per record).
+
+## Local character (3.2-c)
+
+Statement. For x = p^v u exact, or the ball p^v u + p^e Z_p (e is the stored N of lball.h), the image of
+psi_p = E(fp_p) is {E(b)} for an exact x or e >= 0, and {E(b + k/p^(-e)) : 0 <= k < p^(-e)} for e < 0,
+with b = fp_p(p^v u). Proof: fp_p is additive modulo 1 with kernel Z_p (Lemma 2 step 1:85), and the canonical
+centre lies in the ball (lball.h:14-15); for e >= 0 the ball is the centre plus a subset of Z_p; for e < 0,
+p^e Z_p / Z_p has the residues k p^e, k < p^(-e) (Q4 step 8:625-628).
+
+fp_p(p^v u): 0 for v >= 0 (u is p-integral; no power is formed, design 3.2:432-436). For v < 0, with k = -v
+and M = p^k, (num(u) den(u)^(-1) mod M)/M; den(u) is prime to p (lball.h predicate). Q4 step 8 proves this
+is fp_p: the difference from p^v u is p-integral and the value has p-power denominator in [0,1).
+The hull is that of Q4 with r = 0 and B = p^(-e), through the same distance, certificate and rounding code;
+the excess bound is the one above.
+
+Limits, in this order: prec; |v| or |e| above ADF_LBALL_EXP_MAX (lball's exponent bound); p^k with more than
+ADF_QCLASS_BITS_MAX bits for k = -v or k = -e, decided before p^k is formed when k (bits(p)-1)+1 exceeds the
+bound (since p >= 2^(bits(p)-1)); in the window between that lower bound and k bits(p) the power is formed
+(at most 2 ADF_QCLASS_BITS_MAX + 64 bits) and its size compared; then the projected distance bounds of 3.2-a.
+Strict e < 0 is NOT_DETERMINED after all of these. The getter returns OK with fp_p iff exact or e >= 0, after
+the same read bounds (not the distance bounds, as the adele getter of 3.2-a).
+
+Decisions where the design is silent.
+- The bit bound of a phase denominator p^k is D3-2's ADF_QCLASS_BITS_MAX = 2^21, not ADF_LBALL_BITS_MAX =
+  2^26 (design 3.2:396 names "D3-2 bit bound"); alternative: the lball bound, which would admit phases that
+  the exact rational work of 3.2-a refuses.
+- The unit u is not size-bounded: for v >= 0 it is not read, for v < 0 it is reduced modulo M first. The
+  alternative, a bound on bits(u), would refuse valid inputs whose answer is small.
+
+Cost: one power of p (or none), one modular inverse modulo p^(-v), four certified cosines.
+Check: tests/test_psi_local.c: local_vectors() runs 432 records (p = 2, 3, 5, 7, 65537 and the largest prime
+below 2^64; 9 centres; exact and e = -3 .. 3 where p^(-e) <= 10^60) at four precisions: getter, strict, hull
+bound, materialized roots, the base phase. witnesses(): the exact local 1/6 at 2 (fp = 1/2, z = -1 exactly; at
+3, 2/3), e = -1, 0, 1 at p = 2, the 8th roots, 300 exact additivity triples. limits(): the exponent bounds,
+the bit boundary at p = 2 (2^(cap-1) admitted, 2^cap LIMIT), the window at p = 3, and v = -10^6, e = -2^40 at
+the largest 64-bit prime: LIMIT without forming the power.
+
+## Adele place variants (3.2-c)
+
+At the archimedean place the factor is psi_inf(t) = E(-t) on the real ball [m-r, m+r] (conventions 6.1:844;
+refs/src/tate-poonen/notes.txt:693-694): base (-m) mod 1, radius r, B = 1. Strict equals the default there:
+the real factor has no finite radius and real uncertainty is allowed (CV-59, conventions:881-887).
+At a prime p the projection of a + N Zhat is a + p^(v_p(N)) Z_p (lball.h adf_lball_set_fball, api-1f.md L1;
+N = 0 the exact a). The code removes the powers of p from den(a) and den(N) (fmpz_remove; no factorization):
+M = p-part of den(a) gives b = fp_p(a) as above, and B = p-part of den(N) = p^(-v_p(N)) when v_p(N) < 0 (N is
+reduced, so p divides at most one of its numerator and denominator), else 1. Both divide integers that
+psi_finite has bounded, so no further LIMIT arises. Strict is NOT_DETERMINED iff B > 1.
+*where is untouched on OK and set to v on every other status (conventions 3.2 rows "functions at one place"
+and 4.3 for report arguments; localfactor.h:68-71). The product over all places: for a singleton the exact
+local angles sum to the global angle modulo 1 (Lemma 2 step 2); in general the product of the local images
+contains the global image (step 3, the B roots being the product of the p-primary roots by the CRT); the
+product of acb enclosures may be wider (design 3.2:413-414).
+
+Decisions where the design is silent.
+- Only the component at v is read: the real part is not read at a prime, the finite part not at infinity, so
+  a LIMIT of the other component does not occur. Alternative: preflight the whole adele as adf_adele_psi_tate.
+- A raw non-finite real ball is DOMAIN at every place in a normal build (the courtesy of 3.2-a), with
+  where = v; under INV it aborts. Alternative: DOMAIN only at infinity.
+- The real place in the driver is named "real", as by every other driver command with places.
+
+Check: place_vectors() runs 30 adeles of place.jsonl, each at infinity, at every prime dividing the
+denominators of a or N, and at 11 and 13 (576 evaluations at four precisions): both where forms, strict,
+the hull bound, the exact local angle through adf_lball_set_fball and the getter, E(0) = 1 exactly at a prime
+not dividing the denominators, the sum of local angles against the global getter, and 20 sampled points of x
+inside the product of the local enclosures and inside adf_adele_psi_tate. golden(): the valid rows of
+psi_phases.tsv at their primes (product encloses every listed angle; one-angle rows: exact sum).
+
+## Statuses and user calls
+
+Class calls: OK, NOT_DETERMINED, LIMIT (DOMAIN only for a raw non-finite real ball, normal build). Local
+calls: OK, NOT_DETERMINED, LIMIT. Place calls: OK, NOT_DETERMINED, LIMIT, DOMAIN (raw non-finite real ball).
+Driver: psi and psi_strict accept an adele, a class (lift text now; union text after slice 3.1-d) or a local
+ball; psi_at and psi_strict_at an adele and a place token; psi_phase prints the exact angle for a finite ball,
+an adele, a class or a local ball. Fixtures tests/driver/psi-class.cmd and psi-local.cmd; Julia
+tests/julia/psi_class.jl.
+
+## Findings
+
+- The brief asks for local balls and a LIMIT test at a 2000-bit prime. Primes of adf_lball and of place
+  handles are one word (lball.h:78 predicate "2 <= p < 2^64", place.h; conventions 7). The tests use the largest
+  prime below 2^64, 18446744073709551557, and exponents -10^6 and -2^40 for the LIMIT-without-forming test.
+- The class strict certificate of D3-3 is decided by a single entry in every canonical class (see above), so
+  "strict deciding from one entry" is not observable. This is a property of the design, not a defect.

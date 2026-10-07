@@ -1,0 +1,176 @@
+mutate: src/psi.c: 532 mutants
+mutate: 532 mutants, 60 of them run (--limit 60, --seed 320511)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (29.6 s)
+
+SURVIVED src/psi.c:186:26 logic: '&&' -> '||'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -184,5 +184,5 @@
+       if (!psi_sub(u, t, b)) goto done;
+       psi_mod1(u);
+  -    if (!fmpq_is_zero(u) && !fmpz_is_one(B)) {
+  +    if (!fmpq_is_zero(u) || !fmpz_is_one(B)) {
+           if (fmpz_bits(fmpq_numref(u))+fmpz_bits(B) > ADF_QCLASS_BITS_MAX) goto done;
+           fmpq_mul_fmpz(u, u, B); psi_mod1(u);
+
+
+SURVIVED src/psi.c:307:42 status: 'ADF_LIMIT' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -305,5 +305,5 @@
+   int adf_adele_psi_tate_strict(acb_t z, const adf_adele_t x, slong prec)
+   {
+  -    if (prec > ADF_REAL_PREC_MAX) return ADF_LIMIT;
+  +    if (prec > ADF_REAL_PREC_MAX) return ADF_OK;
+       ADF_INV_ADELE(x);
+       return psi_adele(z, x, prec, 1);
+
+
+SURVIVED src/psi.c:52:56 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -50,5 +50,5 @@
+           fmpz_cmp_si(ARF_EXPREF(a), ADF_QCLASS_EXP_MAX) > 0) return 0;
+       e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
+  -    return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
+  +    return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) < ADF_QCLASS_BITS_MAX &&
+              (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+   }
+
+
+NOT COMPILED src/psi.c:379:9 drop_assign: 's = psi_phase_entry(t, x->piece + i);' -> '' (the statement is removed)
+  src/psi.c:382:12: error: ‘s’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/psi.c:507:18 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -505,5 +505,5 @@
+           fmpq_neg(b, b); psi_mod1(b);
+           /* CV-59: strict tests the finite radius only; the real factor has none. */
+  -        strict = 0;
+  +        strict = 1;
+       } else {
+           fmpz_t pp; fmpz_init(pp); fmpz_set_ui(pp, adf_place_prime_get(v));
+
+
+SURVIVED src/psi.c:53:33 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -51,5 +51,5 @@
+       e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
+       return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
+  -           (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+  +           (e >= b ? 1 : b-e+1) < ADF_QCLASS_BITS_MAX;
+   }
+   /* Conservative intermediate bounds BEFORE cross-products; equal denominators avoid a
+
+
+SURVIVED src/psi.c:300:42 status: 'ADF_LIMIT' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -298,5 +298,5 @@
+   int adf_adele_psi_tate(acb_t z, const adf_adele_t x, slong prec)
+   {
+  -    if (prec > ADF_REAL_PREC_MAX) return ADF_LIMIT;
+  +    if (prec > ADF_REAL_PREC_MAX) return ADF_OK;
+       ADF_INV_ADELE(x);
+       return psi_adele(z, x, prec, 0);
+
+
+SURVIVED src/psi.c:124:88 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -122,5 +122,5 @@
+           fmpz_set(MAG_EXPREF(arb_radref(z)), ARF_EXPREF(r));
+           if (v == (UWORD(1) << 30)) {
+  -            v >>= 1; fmpz_add_ui(MAG_EXPREF(arb_radref(z)), MAG_EXPREF(arb_radref(z)), 1);
+  +            v >>= 1; fmpz_add_ui(MAG_EXPREF(arb_radref(z)), MAG_EXPREF(arb_radref(z)), 0);
+           }
+           MAG_MAN(arb_radref(z)) = v;
+
+
+SURVIVED src/psi.c:10:61 logic: '&&' -> '||'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -8,5 +8,5 @@
+   static int psi_size(const fmpq_t q)
+   {
+  -    return fmpz_bits(fmpq_numref(q)) <= ADF_QCLASS_BITS_MAX &&
+  +    return fmpz_bits(fmpq_numref(q)) <= ADF_QCLASS_BITS_MAX ||
+              fmpz_bits(fmpq_denref(q)) <= ADF_QCLASS_BITS_MAX;
+   }
+
+
+SURVIVED src/psi.c:154:49 drop_call: 'acb_one(z);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -152,5 +152,5 @@
+       if (!psi_size(theta)) return ADF_LIMIT;
+       /* Exact cardinal phases are complex integers, independent of requested p. */
+  -    if (fmpz_equal_ui(fmpq_denref(theta), 1)) { acb_one(z); return ADF_OK; }
+  +    if (fmpz_equal_ui(fmpq_denref(theta), 1)) {  return ADF_OK; }
+       if (fmpz_equal_ui(fmpq_denref(theta), 2)) { acb_set_si(z, -1); return ADF_OK; }
+       if (fmpz_equal_ui(fmpq_denref(theta), 4)) {
+
+
+SURVIVED src/psi.c:290:5 drop_assign: 'st = ADF_NOT_DETERMINED;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -288,5 +288,5 @@
+       /* Exact work, including all projected distances, precedes strict ambiguity. */
+       if ((st = psi_exact(d, B, x)) != ADF_OK) goto done;
+  -    st = ADF_NOT_DETERMINED;
+  +    
+       if (strict && !fmpz_is_one(B)) goto done;
+       if ((st = psi_numeric(upper, d, p)) != ADF_OK) goto done;
+
+
+NOT COMPILED src/psi.c:524:36 drop_call: 'psi_fail(st, where, v);' -> '' (the statement is removed)
+  src/psi.c:525:1: error: expected expression before ‘}’ token
+
+NOT COMPILED src/psi.c:370:28 prec: 'prec' -> '2'
+  src/psi.c:368:69: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+NOT COMPILED src/psi.c:52:79 logic: '&&' -> '||'
+  src/psi.c:52:37: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/psi.c:161:38 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -159,5 +159,5 @@
+       }
+       if (!fmpz_is_even(fmpq_denref(theta)) &&
+  -        fmpz_bits(fmpq_numref(theta))+1 > ADF_QCLASS_BITS_MAX) return ADF_LIMIT;
+  +        fmpz_bits(fmpq_numref(theta))-1 > ADF_QCLASS_BITS_MAX) return ADF_LIMIT;
+       fmpq_init(twice); acb_init(out); arf_init(lo); arf_init(hi);
+       fmpq_mul_2exp(twice, theta, 1);
+
+
+SURVIVED src/psi.c:257:39 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/psi.c
+  +++ b/src/psi.c
+  @@ -255,5 +255,5 @@
+       arf_t lo; arf_init(lo);
+       arf_neg(lo, upper + 1);
+  -    if (first || arf_cmp(lo, ext + 0) < 0) arf_set(ext + 0, lo);
+  +    if (first || arf_cmp(lo, ext + 0) <= 0) arf_set(ext + 0, lo);
+       if (first || arf_cmp(upper + 0, ext + 1) > 0) arf_set(ext + 1, upper + 0);
+       arf_neg(lo, upper + 3);
+
+
+mutate: 60 mutants in 1026.8 s: 44 killed, 12 survived, 4 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 12 mutant(s) survived; each one is a claim the tests do not check
+exit=1
