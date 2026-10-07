@@ -479,13 +479,181 @@ static void printer_order(void)
     adf_str_free(s); adf_qclass_clear(x); adf_qclass_clear(y);
 }
 
+/* Review q-review3 (docs/reviews/m3/review-qclass-reduce.md, R1 and R2), lane q-repair1.
+   Own algorithm R count, docs/api-3.md:164-165 (step 3): for l_j < h_j the integers
+   floor(l_j) <= n < ceil(h_j); for l_j = h_j the one n = floor(l_j). Fibres a_j = a + j A/B,
+   0 <= j < B, docs/api-3.md:161-163. Exact fmpq; the count is before deduplication (:172-173). */
+static slong own_count(const adf_adele_struct *x)
+{
+    fmpq_t lo, hi, t, l, h; adf_rat_t a, N; fmpz_t f, c, total; slong j, B, K;
+    fmpq_init(lo); fmpq_init(hi); fmpq_init(t); fmpq_init(l); fmpq_init(h);
+    adf_rat_init(a); adf_rat_init(N); fmpz_init(f); fmpz_init(c); fmpz_init(total);
+    ends(lo, hi, x->inf); adf_fball_get_center(a, &x->fin); adf_fball_get_radius(N, &x->fin);
+    CHECK(fmpz_fits_si(fmpq_denref(N->q))); B = fmpz_get_si(fmpq_denref(N->q));
+    for (j = 0; j < B; j++) {
+        fmpq_mul_si(t, N->q, j); fmpq_add(t, t, a->q); fmpq_sub(l, lo, t); fmpq_sub(h, hi, t);
+        if (fmpq_equal(l, h)) { fmpz_add_ui(total, total, 1); continue; }
+        fmpz_fdiv_q(f, fmpq_numref(l), fmpq_denref(l)); fmpz_cdiv_q(c, fmpq_numref(h), fmpq_denref(h));
+        fmpz_add(total, total, c); fmpz_sub(total, total, f);
+    }
+    CHECK(fmpz_fits_si(total)); K = fmpz_get_si(total);
+    fmpq_clear(lo); fmpq_clear(hi); fmpq_clear(t); fmpq_clear(l); fmpq_clear(h);
+    adf_rat_clear(a); adf_rat_clear(N); fmpz_clear(f); fmpz_clear(c); fmpz_clear(total);
+    return K;
+}
+/* Every end point (lo ; a_j), (hi ; a_j) of every fibre of the lift x lies in x and in y. */
+static void input_ends_in(const adf_qclass_t y, const adf_qclass_t x)
+{
+    fmpq_t lo, hi, w; adf_rat_t a, N; slong j, B;
+    fmpq_init(lo); fmpq_init(hi); fmpq_init(w); adf_rat_init(a); adf_rat_init(N);
+    ends(lo, hi, x->piece->inf);
+    adf_fball_get_center(a, &x->piece->fin); adf_fball_get_radius(N, &x->piece->fin);
+    B = fmpz_get_si(fmpq_denref(N->q));
+    for (j = 0; j < B; j++) {
+        fmpq_mul_si(w, N->q, j); fmpq_add(w, w, a->q);
+        CHECK(union_member(x, lo, w) && union_member(x, hi, w));
+        CHECK(union_member(y, lo, w)); CHECK(union_member(y, hi, w));
+    }
+    fmpq_clear(lo); fmpq_clear(hi); fmpq_clear(w); adf_rat_clear(a); adf_rat_clear(N);
+}
+/* R1 family (tests/ref/vectors/q-repair1/tiny_frac.jsonl): upper end h_j = integer + 2^-200,
+   + 2^-101, + 2^-99 at a dyadic fibre centre. vectors() above checks the oracle's stored lists;
+   here the count is our own: OK at the own count K, LIMIT (y untouched) at K-1, ends enclosed. */
+static void tiny_frac(const char *path)
+{
+    jsonl_file *f; jsonl_error_t e; size_t i; adf_qclass_t x, y; slong total = 0;
+    adf_qclass_init(x); adf_qclass_init(y);
+    arb_set_si(y->piece->inf, 7); adf_fball_set_si(&y->piece->fin, -19);
+    CHECK(jsonl_open(path, &f, &e));
+    for (i = 0; i < jsonl_count(f); i++) {
+        const jsonl_value *v = jsonl_record(f, i); slong K, prec = integer(field(v, "prec"));
+        input(x, v); CHECK(x->form == ADF_QCLASS_LIFT);
+        K = own_count(x->piece); CHECK(K == integer(field(v, "raw"))); CHECK(K >= 2);
+        refused(y, x, K-1, prec);
+        CHECK(adf_qclass_reduce(y, x, K, prec) == ADF_OK); CHECK(y->len <= K);
+        input_ends_in(y, x); total += K;
+        adf_qclass_clear(y); adf_qclass_init(y); /* back to a LIFT for the next refusal */
+        arb_set_si(y->piece->inf, 7); adf_fball_set_si(&y->piece->fin, -19);
+    }
+    printf("%s: %zu lifts, own count %ld pieces\n", path, jsonl_count(f), total);
+    jsonl_close(f); adf_qclass_clear(x); adf_qclass_clear(y);
+}
+static void pow2(fmpq_t q, slong e) { fmpq_one(q); if (e >= 0) fmpq_mul_2exp(q, q, (ulong) e);
+                                      else fmpq_div_2exp(q, q, (ulong) -e); }
+/* Stored piece i of y has exactly the dyadic ends [L, U] and the finite triple (A, H, 1). */
+static void piece_is(const adf_qclass_t y, slong i, const fmpq_t L, const fmpq_t U, slong A, slong H)
+{
+    fmpq_t lo, hi; fmpz_t a, h, d;
+    fmpq_init(lo); fmpq_init(hi); fmpz_init(a); fmpz_init(h); fmpz_init(d);
+    ends(lo, hi, y->piece[i].inf); CHECK(fmpq_equal(lo, L)); CHECK(fmpq_equal(hi, U));
+    adf_fball_get_fmpz3(a, h, d, &y->piece[i].fin);
+    CHECK(fmpz_equal_si(a, A) && fmpz_equal_si(h, H) && fmpz_is_one(d));
+    fmpq_clear(lo); fmpq_clear(hi); fmpz_clear(a); fmpz_clear(h); fmpz_clear(d);
+}
+/* R1, the review's smallest input: [-2^-212, 2^-210] x {0} at prec 53. Algorithm R: l = -2^-212,
+   h = 2^-210, n = -1, 0: [1 - 2^-212, 1] x {1} and [0, 2^-210] x {0}; count 2.
+   Q1 (docs/api-3.md section 4): midpoints RN_53 are 2^-211 and 1; d = 2^-211 and 2^-212 are powers of two,
+   so RU30(d) = d and the successor adds 2^-29 d: radii 2^-211 + 2^-240 and 2^-212 + 2^-241. */
+static void r1_smallest(void)
+{
+    adf_qclass_t x, y, alias; fmpq_t L, U, t, s, w;
+    adf_qclass_init(x); adf_qclass_init(y); adf_qclass_init(alias);
+    fmpq_init(L); fmpq_init(U); fmpq_init(t); fmpq_init(s); fmpq_init(w);
+    arf_set_si_2exp_si(arb_midref(x->piece->inf), 3, -213);
+    mag_set_ui_2exp_si(arb_radref(x->piece->inf), 5, -213);
+    ends(L, U, x->piece->inf); pow2(t, -212); fmpq_neg(t, t); CHECK(fmpq_equal(L, t));
+    pow2(t, -210); CHECK(fmpq_equal(U, t)); CHECK(adf_fball_is_exact(&x->piece->fin));
+    CHECK(own_count(x->piece) == 2);
+    arb_set_si(y->piece->inf, 7); adf_fball_set_si(&y->piece->fin, -19);
+    refused(y, x, 1, 53);
+    CHECK(adf_qclass_reduce(y, x, 2, 53) == ADF_OK); CHECK(y->form == ADF_QCLASS_PIECES);
+    CHECK(y->len == 2 && adf_qclass_is_canonical(y));
+    pow2(L, -240); fmpq_neg(L, L); pow2(U, -210); pow2(t, -240); fmpq_add(U, U, t);
+    piece_is(y, 0, L, U, 0, 0);
+    pow2(t, -212); pow2(s, -241); fmpq_add(t, t, s);
+    fmpq_one(L); fmpq_sub(L, L, t); fmpq_one(U); fmpq_add(U, U, t);
+    piece_is(y, 1, L, U, 1, 0);
+    /* The input point (2^-210 ; 0) that F2 loses, and the other end (-2^-212 ; 0). */
+    fmpq_zero(w); pow2(s, -210); CHECK(union_member(x, s, w) && union_member(y, s, w));
+    pow2(s, -212); fmpq_neg(s, s); CHECK(union_member(x, s, w) && union_member(y, s, w));
+    input_ends_in(y, x);
+    adf_qclass_set(alias, x); refused(alias, alias, 1, 53);
+    CHECK(adf_qclass_reduce(alias, alias, 2, 53) == ADF_OK && adf_qclass_identical(alias, y));
+    adf_qclass_clear(x); adf_qclass_clear(y); adf_qclass_clear(alias);
+    fmpq_clear(L); fmpq_clear(U); fmpq_clear(t); fmpq_clear(s); fmpq_clear(w);
+}
+/* R2: a LIMIT of the second pass. [5/8, 7/8] x (1/3 + 2 Zhat) has count 1 (l = 7/24, h = 13/24),
+   so the first pass passes any limit >= 1. At prec ADF_REAL_PREC_MAX the Q1 midpoint of 5/12 has a
+   denominator above ADF_QCLASS_BITS_MAX and q_round refuses: LIMIT, and "On LIMIT y is untouched"
+   (header of adf_qclass_reduce). y is a LIFT, so a premature y->form = PIECES is visible. */
+static void r2_second_pass(void)
+{
+    adf_qclass_t x, y, alias; adf_rat_t a, N; fmpq_t lo, hi, m, d, t, rho, q;
+    arf_t r; fmpz_t A, H, D; clock_t start; double sec;
+    const slong ok_prec = 2097088;
+    adf_qclass_init(x); adf_qclass_init(y); adf_qclass_init(alias); adf_rat_init(a); adf_rat_init(N);
+    fmpq_init(lo); fmpq_init(hi); fmpq_init(m); fmpq_init(d); fmpq_init(t); fmpq_init(rho); fmpq_init(q);
+    arf_init(r); fmpz_init(A); fmpz_init(H); fmpz_init(D);
+    arf_set_si_2exp_si(arb_midref(x->piece->inf), 3, -2);
+    mag_set_ui_2exp_si(arb_radref(x->piece->inf), 1, -3);
+    fmpq_set_si(a->q, 1, 3); fmpq_set_si(N->q, 2, 1);
+    CHECK(adf_fball_set_center_radius(&x->piece->fin, a, N) == ADF_OK);
+    ends(lo, hi, x->piece->inf); fmpq_set_si(q, 5, 8); CHECK(fmpq_equal(lo, q));
+    fmpq_set_si(q, 7, 8); CHECK(fmpq_equal(hi, q)); CHECK(own_count(x->piece) == 1);
+    /* A non-trivial LIFT: (7 +/- 2^-5 ; 1/6 + 5 Zhat). */
+    arb_set_si(y->piece->inf, 7); mag_set_ui_2exp_si(arb_radref(y->piece->inf), 1, -5);
+    fmpq_set_si(a->q, 1, 6); fmpq_set_si(N->q, 5, 1);
+    CHECK(adf_fball_set_center_radius(&y->piece->fin, a, N) == ADF_OK);
+    CHECK(y->form == ADF_QCLASS_LIFT && adf_qclass_is_canonical(y));
+    start = clock(); refused(y, x, 10, ADF_REAL_PREC_MAX);
+    adf_qclass_set(alias, x); refused(alias, alias, 10, ADF_REAL_PREC_MAX);
+    CHECK(adf_qclass_identical(alias, x) && alias->form == ADF_QCLASS_LIFT);
+    sec = (double) (clock()-start)/CLOCKS_PER_SEC; CHECK(sec < 5.0);
+    printf("second-pass LIMIT at prec %ld: CPU %.3f s for two calls, guard 5 s\n",
+           (long) ADF_REAL_PREC_MAX, sec);
+    /* The same input 64 bits below the cap: OK, one piece [7/24, 13/24] x (0 + 2 Zhat), Q1 checked. */
+    start = clock();
+    CHECK(adf_qclass_reduce(y, x, 1, ok_prec) == ADF_OK);
+    sec = (double) (clock()-start)/CLOCKS_PER_SEC; CHECK(sec < 5.0);
+    printf("same input at prec %ld: OK, CPU %.3f s, guard 5 s\n", (long) ok_prec, sec);
+    CHECK(y->form == ADF_QCLASS_PIECES && y->len == 1 && adf_qclass_is_canonical(y));
+    adf_fball_get_fmpz3(A, H, D, &y->piece->fin);
+    CHECK(fmpz_is_zero(A) && fmpz_equal_si(H, 2) && fmpz_is_one(D));
+    /* Midpoint RN_p(5/12): at most p bits and |m - 5/12| <= ulp/2 = 2^(-2-p) (5/12 in [1/4,1/2),
+       not dyadic, so this characterises the nearest p-bit number). */
+    CHECK(arf_bits(arb_midref(y->piece->inf)) <= ok_prec);
+    arf_get_fmpq(m, arb_midref(y->piece->inf)); fmpq_set_si(q, 5, 12); fmpq_sub(t, m, q);
+    fmpq_abs(t, t); fmpq_mul_2exp(t, t, (ulong) ok_prec+2); CHECK(fmpq_cmp_ui(t, 1) <= 0);
+    /* Q1 radius: d = max(m - 7/24, 13/24 - m), 0 <= rho - d <= 2^-28 d. */
+    fmpq_set_si(lo, 7, 24); fmpq_set_si(hi, 13, 24);
+    fmpq_sub(d, m, lo); fmpq_sub(t, hi, m); if (fmpq_cmp(t, d) > 0) fmpq_set(d, t);
+    arf_set_mag(r, arb_radref(y->piece->inf)); arf_get_fmpq(rho, r);
+    fmpq_sub(t, rho, d); CHECK(fmpq_sgn(t) >= 0);
+    fmpq_mul_2exp(t, t, 28); CHECK(fmpq_cmp(t, d) <= 0);
+    ends(m, t, y->piece->inf); CHECK(fmpq_cmp(m, lo) <= 0 && fmpq_cmp(t, hi) >= 0);
+    input_ends_in(y, x);
+    adf_qclass_clear(x); adf_qclass_clear(y); adf_qclass_clear(alias); adf_rat_clear(a); adf_rat_clear(N);
+    fmpq_clear(lo); fmpq_clear(hi); fmpq_clear(m); fmpq_clear(d); fmpq_clear(t); fmpq_clear(rho);
+    fmpq_clear(q); arf_clear(r); fmpz_clear(A); fmpz_clear(H); fmpz_clear(D);
+}
+
 int main(int argc, char **argv)
 {
+    const char *tiny = "tests/ref/vectors/q-repair1/tiny_frac.jsonl";
+    if (argc > 1 && !strncmp(argv[1], "repair-", 7)) { /* one part of lane q-repair1 alone */
+        if (!strcmp(argv[1], "repair-vectors")) vectors(tiny);
+        else if (!strcmp(argv[1], "repair-count")) tiny_frac(tiny);
+        else if (!strcmp(argv[1], "repair-r1")) r1_smallest();
+        else if (!strcmp(argv[1], "repair-r2")) r2_second_pass();
+        else CHECK(0);
+        printf("test_qclass_reduce %s: %lu checks\n", argv[1], checks); flint_cleanup(); return 0;
+    }
     vectors("tests/ref/vectors/q-slice2/integer.jsonl");
     if (argc == 1 || !strcmp(argv[1], "fractional"))
         vectors("tests/ref/vectors/q-slice2/fractional.jsonl");
     if (argc == 1 || !strcmp(argv[1], "fractional"))
         vectors("tests/ref/vectors/q-slice2/spill.jsonl");
+    vectors(tiny); tiny_frac(tiny); r1_smallest(); r2_second_pass();
     printer(); golden_unions(); printer_order(); bounds(); remaining_preflight();
     local_and_glue(); debug_entry();
     printf("test_qclass_reduce: %lu checks\n", checks); flint_cleanup(); return 0;

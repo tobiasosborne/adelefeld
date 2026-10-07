@@ -1,0 +1,32 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_reduce: argument x is not a canonical adf_qclass
+tests/ref/vectors/q-slice2/integer.jsonl: 66 vectors, 2640 point labels
+tests/ref/vectors/q-slice2/fractional.jsonl: 60 vectors, 2400 point labels
+tests/ref/vectors/q-slice2/spill.jsonl: 26 vectors, 1040 point labels
+tests/ref/vectors/q-repair1/tiny_frac.jsonl: 61 vectors, 2440 point labels
+tests/ref/vectors/q-repair1/tiny_frac.jsonl: 61 lifts, own count 1060 pieces
+second-pass LIMIT at prec 2097152: CPU 0.001 s for two calls, guard 5 s
+same input at prec 2097088: OK, CPU 0.002 s, guard 5 s
+union golden rows built by reduce: 12
+count preflight: 0 allocation calls
+10^30 count LIMIT: CPU 0.000004 s, guard 1.0 s
+2^101 width LIMIT: CPU 0.000006 s, guard 1.0 s
+2^58 byte-product LIMIT: CPU 0.000004 s, guard 1.0 s
+remaining-count preflight: 0 premature fibre copies
+tests/ref/vectors/q-slice2/integer.jsonl: 66 vectors, 2640 point labels
+tests/ref/vectors/q-slice2/fractional.jsonl: 60 vectors, 2400 point labels
+tests/ref/vectors/q-slice2/spill.jsonl: 26 vectors, 1040 point labels
+tests/ref/vectors/q-repair1/tiny_frac.jsonl: 61 vectors, 2440 point labels
+tests/ref/vectors/q-repair1/tiny_frac.jsonl: 61 lifts, own count 1060 pieces
+second-pass LIMIT at prec 2097152: CPU 0.001 s for two calls, guard 5 s
+same input at prec 2097088: OK, CPU 0.002 s, guard 5 s
+union golden rows built by reduce: 12
+count preflight: 0 allocation calls
+10^30 count LIMIT: CPU 0.000004 s, guard 1.0 s
+2^101 width LIMIT: CPU 0.000006 s, guard 1.0 s
+2^58 byte-product LIMIT: CPU 0.000004 s, guard 1.0 s
+remaining-count preflight: 0 premature fibre copies
+test_qclass_reduce: 223475 checks
+
+real	0m0,563s
+user	0m0,143s
+sys	0m0,148s
