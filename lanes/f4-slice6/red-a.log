@@ -1,0 +1,13 @@
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_poisson.c lanes/f4-slice6/build/support/golden.o lanes/f4-slice6/build/support/jsonl.o lanes/f4-slice6/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f4-slice6/build/test_poisson
+/usr/bin/ld: /tmp/ccVkq7jk.o: in function `precisions':
+/home/tobias/Projects/adelefeld-wt/f4-slice6/tests/test_poisson.c:439:(.text+0x1791): undefined reference to `adf_tensor_poisson'
+/usr/bin/ld: /tmp/ccVkq7jk.o: in function `pois_sent':
+/home/tobias/Projects/adelefeld-wt/f4-slice6/tests/test_poisson.c:164:(.text+0x1e3c): undefined reference to `adf_tensor_poisson'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice6/tests/test_poisson.c:164:(.text+0x1e9b): undefined reference to `adf_tensor_poisson'
+/usr/bin/ld: /tmp/ccVkq7jk.o: in function `witness':
+/home/tobias/Projects/adelefeld-wt/f4-slice6/tests/test_poisson.c:385:(.text+0x1f61): undefined reference to `adf_tensor_poisson'
+/usr/bin/ld: /tmp/ccVkq7jk.o: in function `pois_sent':
+/home/tobias/Projects/adelefeld-wt/f4-slice6/tests/test_poisson.c:164:(.text+0x20eb): undefined reference to `adf_tensor_poisson'
+/usr/bin/ld: /tmp/ccVkq7jk.o:/home/tobias/Projects/adelefeld-wt/f4-slice6/tests/test_poisson.c:417: more undefined references to `adf_tensor_poisson' follow
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f4-slice6/build/test_poisson] Error 1

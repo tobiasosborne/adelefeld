@@ -1,0 +1,6 @@
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+poisson: 47835 checks

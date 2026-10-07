@@ -1,0 +1,13 @@
+10. F: the width checked before the tail is added: caught: tests/test_poisson.c:432: pois_sent(&s, g, f, 13, 144) == ADF_NOT_DETERMINED
+11. F: NL reported as the number of terms: caught: tests/test_poisson.c:256: NL == (ulong) number(at(cut, 0))
+12. F: the retry not raising the precision (beyond 64): caught: tests/test_poisson.c:370: adf_tensor_poisson(l, r, &NL, &NR, phi, f, 100, 20) == ADF_OK
+13. F: outputs written on NOT_DETERMINED: caught: tests/test_poisson.c:155: memcmp(s->bl, s->l, sizeof(acb_struct)) == 0 && memcmp(s->br, s->r, sizeof
+14. the left lattice j/D + D n instead of j/D + M n: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+15. bits cap one short: caught: tests/test_poisson.c:488: adf_tensor_poisson(l, r, &NL, &NR, zero, f, 2097152, 64) == ADF_OK
+16. the right tail with |g[0]| for max_k |g[k]|: NOT CAUGHT
+17. the left tail with the term j = 0 only: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+18. the Taylor shift dropped (q_j = p_j h^j): caught: tests/test_poisson.c:222: mag_cmp(arb_radref(acb_realref(z)), m) >= 0 && mag_cmp(arb_radref(acb_imag
+19. the search from N = 1: caught: tests/test_poisson.c:256: NL == (ulong) number(at(cut, 0))
+20. the goal epsilon/4 instead of epsilon/8: caught: tests/test_poisson.c:256: NL == (ulong) number(at(cut, 0))
+21. the stall rule without the halving (any non-decrease): NOT CAUGHT
+caught 10 of 12

@@ -1,0 +1,22 @@
+ 1. faults_45 a / F: the tail bound without the factor 2 of Lemma 6: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+ 2. faults_45 b: reverse only the real transform sign (phihat(-n/M)): caught: tests/test_poisson.c:253: acb_contains(r, rr)
+ 3. faults_45 c / F: q = 0 (n = 0) omitted on both sides: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+ 4. faults_45 d: right spacing 1/D: caught: tests/test_poisson.c:253: acb_contains(r, rr)
+ 5. faults_45 e: omitted n > N bounded by S(N + 1): caught: tests/test_poisson.c:252: acb_contains(l, rl)
+ 6. faults_45 f: beta dropped from the shifted tail bound: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+ 7. F: the ratio rho not certified (geometric bound at K = N + 1 always): caught: tests/test_poisson.c:249: adf_tensor_poisson(l, r, &NL, &NR, phi, f, BITS[b], BITS[b] + 64) == ADF_O
+ 8. F: the tail added to the real coordinate only: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+ 9. F: right derived from left: caught: tests/test_poisson.c:253: acb_contains(r, rr)
+10. F: the width checked before the tail is added: caught: tests/test_poisson.c:441: pois_sent(&s, g, f, 13, 144) == ADF_NOT_DETERMINED
+11. F: NL reported as the number of terms: caught: tests/test_poisson.c:256: NL == (ulong) number(at(cut, 0))
+12. F: the retry not raising the precision (beyond 64): caught: tests/test_poisson.c:370: adf_tensor_poisson(l, r, &NL, &NR, phi, f, 100, 20) == ADF_OK
+13. F: outputs written on NOT_DETERMINED: caught: tests/test_poisson.c:155: memcmp(s->bl, s->l, sizeof(acb_struct)) == 0 && memcmp(s->br, s->r, sizeof
+14. the left lattice j/D + D n instead of j/D + M n: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+15. bits cap one short: caught: tests/test_poisson.c:493: adf_tensor_poisson(l, r, &NL, &NR, zero, f, 2097152, 64) == ADF_OK
+16. the right tail with |g[0]| for max_k |g[k]|: caught: tests/test_poisson.c:517: acb_overlaps(l, r) && narrow(l, 30) && narrow(r, 30) && NR >= 1
+17. the left tail with the term j = 0 only: caught: tests/test_poisson.c:252: acb_contains(l, rl)
+18. the Taylor shift dropped (q_j = p_j h^j): caught: tests/test_poisson.c:222: mag_cmp(arb_radref(acb_realref(z)), m) >= 0 && mag_cmp(arb_radref(acb_imag
+19. the search from N = 1: caught: tests/test_poisson.c:256: NL == (ulong) number(at(cut, 0))
+20. the goal epsilon/4 instead of epsilon/8: caught: tests/test_poisson.c:256: NL == (ulong) number(at(cut, 0))
+21. the stall rule without the halving (any non-decrease): caught: tests/test_poisson.c:403: seconds() - t0 < 1.0
+caught 21 of 21

@@ -1,0 +1,2 @@
+21. mutation survivor 95: the terms cap of D1 not checked in the preflight: caught: tests/test_poisson.c:568: pois_sent(&s, many, f, -1, 64) == ADF_LIMIT
+caught 1 of 1

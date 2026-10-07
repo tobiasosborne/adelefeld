@@ -181,3 +181,117 @@ exact operation on all points of its inputs (`refs/src/flint-3.0.1/arb.rst:6-12`
 - Avoidable cost:
   - `tn_hull` recomputes `j d` per index; a running residue modulo `g` would do.
   - `tn_keep` recomputes `v_p(M)` and `v_p(D)` per index.
+
+# Slice 4g: Poisson summation with certified tails (lane f4-slice6)
+
+`adf_tensor_poisson` in `src/poisson.c` (a new file: `src/tensor.c` would pass about 1000 lines), declared in
+`include/adelefeld/tensor.h`. Design: `docs/api-4.md:297-345` (section 7, P1), `:426-428` (section 9 item 7),
+`:430-449` (section 10). Proofs used: `docs/proofs/analysis.md:213-259` (Lemma 6), `:260-294` (Proposition 7).
+
+## Statuses and order of checks (slice 4g)
+
+1. `prec > ADF_REAL_PREC_MAX`: `LIMIT`.
+2. Sizes (D1): `L = D M > 1024` (the finite transform alone charges `L^2` work units, and `2^20 = 1024^2`), or the
+   rfun caps (`2^16` terms, `2^16` coefficients): `LIMIT`.
+3. `bits` outside `[0, 2^21]`: `DOMAIN`.
+4. Under `INV`: canonical `phi` and `f`, `left != right`, `NL` and `NR` not `NULL` and distinct; a violation aborts.
+5. The attempts (below): `LIMIT` when the work counter would pass `2^20`; `NOT_DETERMINED` when the width or a
+   certificate fails as stated in G4. Every status other than `OK` leaves `left`, `right`, `*NL`, `*NR` untouched.
+
+## Statements (slice 4g)
+
+G1. The two sums. For a member `(phi, f)` of the inputs, Proposition 7 (analysis.md:266-276) gives the two
+    absolutely convergent sums `T_L = sum_j f[j] sum_(n in Z) phi(j/D + M n)` and
+    `T_R = sum_(n in Z) g[n mod L] phihat(n/M)`, `g = F f` (slice 4a, `(D, M) -> (M, D)`), `phihat = F phi`
+    (slice 4e), and `T_L = T_R`. The code forms the partial sums `S_L(N) = sum_j f[j] sum_(|n| <= N) phi(j/D + M n)`
+    with `adf_rfun_eval` at the rational point `(j + L n)/D` (`arb_set_fmpq`, a ball containing it), and
+    `S_R(N) = sum_(|n| <= N) g[n mod L] phihat(n/M)`. Every operation encloses its exact result on all input points
+    (arb.rst:6-12), so the computed balls contain `S_L(N)` and `S_R(N)` for every member. An exact zero `f[j]`
+    contributes the exact 0 and is skipped. `n = 0` is included in both sums.
+    Check: `vectors` (both sides contain the oracle's 60-digit balls), `direct` (each side against a partial sum
+    formed in the test with the same factor calls), `theta` (n = 0: the value exceeds 1.0855).
+
+G2. The tail bound with the certified ratio. For one term and lattice `(a, h)` the code forms `P(a + h n) = sum_j
+    q_j n^j` by a Taylor shift by `a` (acb_poly.rst:391-395, `g = f(x + c)`) and `q_j = Q_j h^j`, and `alpha = pi
+    lower(Re(A h^2))`, `beta = upper(|Re(h (B - 2 pi A a))|)`, `gamma = upper(Re(C + B a - pi A a^2))` (P1 step 1),
+    each rounded outward to 64 bits (arb.rst:435-443). If `alpha` is not certified positive the attempt fails
+    (`NOT_DETERMINED`, G4). For each `j` with `|q_j| > 0`, `S_j` follows Lemma 6 (analysis.md:217-229): `K` runs
+    from `N + 1`; while the upper bound of `rho_j = exp(j/K - alpha (2K + 1) + beta)` is not `<= 1/2`, the term `K^j
+    exp(-alpha K^2 + beta K)` is added to the prefix and `K` grows; at the first `K` with the upper bound `<= 1/2`,
+    `term/(1 - rho)` is added, evaluated on the ball of `rho` and bounded above. The bound is `B = 2 exp(gamma)
+    sum_j upper(|q_j|) S_j`. Proof that `B >= sum_(|n| > N) |phi(a + h n)|` for every member: by Lemma 6 step 1
+    every ratio after `K` is at most the exact `rho_j(K) <= upper(rho) <= 1/2`, so the tail from `K` is at most
+    `term/(1 - rho_exact)`, and the ball division contains that value. The quantity `sum_(n > N) n^j exp(-alpha n^2
+    + beta n)` decreases in `alpha` and increases in `beta`, so it is largest at `(lower(alpha), upper(beta))`, the
+    exact points used. `gamma` and `|q_j|` enter monotonically. Lemma 6 steps 2 and 3 then give the two-sided bound
+    with the factor 2.
+    Check: `vectors` (the radius window `[E, E (1 + 2^-40) + 2^-(bits+20)]` on both coordinates for the oracle's `E`
+    at the returned cutoff; 351 windows); planted faults 1, 5, 6, 7, 18 of `lanes/f4-slice6/plant_faults.py`.
+
+G3. The search and the certificate (P1 step 3). `E_L(N) = sum_j upper(|f[j]|) sum_terms B_phi(j/D, M, N)` and
+    `E_R(N) = max_k upper(|g[k]|) sum_terms B_phihat(0, 1/M, N)` (analysis.md:279-280). Each side searches
+    `N = 0, 1, 2, 4, ...` on its own until the upper bound of `E <= 2^-bits/8`; the returned `NL`, `NR` are these
+    `N`: lattice indices (the terms `|n| <= N` were summed), not counts of terms. Soundness: `|T_L - S_L(NL)| <=
+    sum_j |f[j]| |sum_(|n| > NL) phi(j/D + M n)| <= E_L`; for a complex `z` with `|z| <= E` both `|Re z|` and
+    `|Im z|` are at most `E`, so adding `E` to both coordinate radii of the ball of `S_L(NL)` (acb.rst:142-149)
+    gives a ball containing `T_L`. The same for the right side. The promise on the cutoffs: the search is the
+    oracle's (`choose_cutoffs`), with a certified upper bound of the same Lemma 6 value, so the returned `N` is
+    never smaller than the first `N` of the exact values, and equals the oracle's except where an oracle value lies
+    within the rounding of the goal. In all 200 vector calls both cutoffs equal the oracle's.
+    Check: `vectors` (equality with `choose_cutoffs`; 1651 comparisons of the planted bounds: every earlier `N` has
+    `E` not below the goal, the returned one not above it); planted faults 11, 19, 20.
+
+G4. The width rule and the retries (P1 steps 4 and 5). `OK` only when every coordinate diameter of both balls,
+    after the tails, is at most `2^-bits`. Otherwise, or when a certificate fails (a transform not certified by
+    slice 4e, `alpha` not positive, a nonfinite value), the whole attempt is repeated at `2p`, up to
+    `ADF_REAL_PREC_MAX`; the work counter runs over all attempts. Decision (the design is silent on how to tell the
+    input radii from rounding): a doubling from a precision `>= 64` that does not halve the largest coordinate
+    radius stops with `NOT_DETERMINED` (a failed certificate counts as an infinite radius). Rounding errors at `2p`
+    are about `2^-p` times those at `p`, so a radius that does not halve is held by the input radii or the tails
+    (which are `<= 2^-bits/8` each), and more precision would not meet the target. The rule only replaces a later
+    `NOT_DETERMINED` (at the cap) or, in a borderline case, a later `OK`, by an earlier `NOT_DETERMINED`; it never
+    makes an `OK` wrong. Without it the witness below doubles to `2^21` bits.
+    Check: `theta` (prec 20 to bits 53 and 100, prec 2 to bits 30: OK, so the retries ran past 64 and 128 bits),
+    `witness` (the width after the tail: `c = 1 + d/2 +/- d/2` with the diameter before the tail `2^-13 - E/2`
+    and after it `2^-13 + 3E/2` is `NOT_DETERMINED`, with `d/2` it is `OK`; the witness ends within 1 s of
+    processor time); planted faults 10, 12, 22.
+
+G5. Independence. `right` is formed from `g` and `phihat` only and `left` from `f` and `phi` only; neither is
+    intersected with or derived from the other. Check: `vectors` (both contain their own oracle ball and overlap),
+    the case `f = [1, -1]` at `(1, 2)` (`g[0] = 0`); planted fault 9.
+
+G6. The theta witness (api-4.md:437-441). With `phi = c exp(-pi x^2)`, `c` in `[1, 2]` and `f = 1_Zhat`, the left
+    value interval is `c theta`, of width `theta = 1.0864...` at every precision; no `bits >= 0` can be met:
+    `NOT_DETERMINED`, outputs untouched (sentinel bytes compared), after the attempts at `prec` and `2 prec`. With
+    `c` in `[1, 1 + 2^-40]` the call is `OK` at bits 20 and both `theta` and `(1 + 2^-40) theta` lie in both balls:
+    the input radius is carried, not dropped. Check: `witness`, the driver fixture, `tests/julia/poisson.jl`.
+
+## Decisions where the design is silent (slice 4g)
+
+1. Work units (D1, charged before each step): `L^2` for the finite transform; `2 len^2 - len + 1` per term for
+   the real transform (as `src/rfun.c`); `len^2 + len` per Taylor shift and scaling; one per ratio iteration of
+   Lemma 6, the last included; per lattice point evaluated, the sum over terms of `len + 1` (at least 1). All of it
+   again on every retry. Before each search step the evaluation work of that `N` must fit the remaining budget
+   (a later step needs more), else `LIMIT`.
+2. Preflight of the prefix: `rho <= 1/2` needs `alpha (2K + 1) >= beta + log 2`, so at least
+   `((beta + log 2)/alpha - 1)/2 - (N + 1)` iterations come first; a lower bound above the remaining budget is
+   `LIMIT` at once (`Re(A) = 2^-60` and `10^-8` in microseconds). The design's start `2 alpha K >= j + beta + log 2`
+   (P1 step 2) is an upper bound; used as the refusal it would refuse calls that finish within the budget, since it
+   exceeds the first certified `K` by up to `j/(2 alpha)`.
+3. Tail bounds at 64 bits (they are upper bounds at any precision), parameters at `max(p, 64)`.
+4. `left == right`, `NL == NR` and `NULL` cutoffs are preconditions checked under `INV` (abort), as member aliasing
+   in section 1; there is no status for them.
+5. No `adf_tensor_poisson_list`: the design's sentence (call per pair with `epsilon` divided by the number of
+   pairs, add outward, check the final width; a zero-length list is exactly zero) needs a caller-owned list type
+   of pairs (D2) that no header declares; a caller does it in a few lines.
+6. Driver: `poisson R with F with BITS` (the `with` grammar; the design's `--bits 80 --prec 144` is proposed
+   grammar), `BITS` an integer rational, `prec` from the setting; one line `LEFT | RIGHT | NL=n NR=n`.
+
+## Cost (slice 4g)
+
+Per attempt: `L^2` phase terms and the real transform; per search step `N` and per lattice (`L` on the left, one
+per term on the right) a Taylor shift of `len^2` operations and, per nonzero `q_j`, the ratio iterations from
+`N + 1` to the first certified `K`; `log2 NL + log2 NR + 2` steps; then `L (2 NL + 1) + 2 NR + 1` real evaluations.
+Attempts: one when `prec` suffices; with input radii two after 64 bits. Avoidable cost: each search step
+recomputes the Taylor shifts and `alpha`, `beta`, `gamma` of every lattice, which do not depend on `N`; a retry
+recomputes the left tails, which do not depend on `p` when `p <= 64`.
