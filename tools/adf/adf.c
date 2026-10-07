@@ -139,6 +139,12 @@ typedef enum
     ADF_DRV_FFUN_SHOW,
     ADF_DRV_FFUN_ADD,
     ADF_DRV_FFUN_FOURIER,
+    ADF_DRV_FFUN_MUL,
+    ADF_DRV_FFUN_TRANSLATE,
+    ADF_DRV_FFUN_DILATE,
+    ADF_DRV_FFUN_DILATE_IDELE,
+    ADF_DRV_FFUN_REFLECT,
+    ADF_DRV_FFUN_CONJ,
     ADF_DRV_TYPE,
     ADF_DRV_QADD_RAT,
     ADF_DRV_QREDUCE,
@@ -254,6 +260,12 @@ static const struct
     { "ffun", ADF_DRV_FFUN_SHOW, 1 },
     { "ffun_add", ADF_DRV_FFUN_ADD, 2 },
     { "ffun_fourier", ADF_DRV_FFUN_FOURIER, 1 },
+    { "ffun_mul", ADF_DRV_FFUN_MUL, 2 },
+    { "ffun_translate", ADF_DRV_FFUN_TRANSLATE, 2 },
+    { "ffun_dilate", ADF_DRV_FFUN_DILATE, 2 },
+    { "ffun_dilate_idele", ADF_DRV_FFUN_DILATE_IDELE, 2 },
+    { "ffun_reflect", ADF_DRV_FFUN_REFLECT, 1 },
+    { "ffun_conj", ADF_DRV_FFUN_CONJ, 1 },
     { "print", ADF_DRV_SHOW, 1 }, /* Slice 3.1-d spelling, api-3.md:848. */
     { "type", ADF_DRV_TYPE, 1 },
     { "qadd_rat", ADF_DRV_QADD_RAT, 2 },
@@ -3594,14 +3606,24 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             goto done;
     }
 
-    /* Slice 4a: typed finite function commands; F1 and F4, docs/api-4.md section 9. */
-    if (op==ADF_DRV_FFUN_SHOW || op==ADF_DRV_FFUN_ADD || op==ADF_DRV_FFUN_FOURIER) {
-        if (x.type!=ADF_DRV_FFUN || (op==ADF_DRV_FFUN_ADD && y.type!=ADF_DRV_FFUN))
-            status=ADF_DOMAIN;
+    /* Slices 4a/4b: typed finite function commands; docs/api-4.md section 9. */
+    if (op>=ADF_DRV_FFUN_SHOW && op<=ADF_DRV_FFUN_CONJ) {
+        if (x.type!=ADF_DRV_FFUN ||
+            ((op==ADF_DRV_FFUN_ADD || op==ADF_DRV_FFUN_MUL) && y.type!=ADF_DRV_FFUN) ||
+            ((op==ADF_DRV_FFUN_TRANSLATE || op==ADF_DRV_FFUN_DILATE) && y.type!=ADF_DRV_RAT) ||
+            (op==ADF_DRV_FFUN_DILATE_IDELE && y.type!=ADF_DRV_IDELE)) status=ADF_DOMAIN;
         else if (op==ADF_DRV_FFUN_SHOW) status=adf_drv_value_print(out,&x,st->digits);
         else {
-            if (op==ADF_DRV_FFUN_ADD) status=adf_ffun_add(z.ff,x.ff,y.ff,st->prec);
-            else status=adf_ffun_fourier(z.ff,x.ff,st->prec);
+            switch (op) {
+                case ADF_DRV_FFUN_ADD: status=adf_ffun_add(z.ff,x.ff,y.ff,st->prec); break;
+                case ADF_DRV_FFUN_MUL: status=adf_ffun_mul(z.ff,x.ff,y.ff,st->prec); break;
+                case ADF_DRV_FFUN_TRANSLATE: status=adf_ffun_translate_rat(z.ff,x.ff,y.r); break;
+                case ADF_DRV_FFUN_DILATE: status=adf_ffun_dilate_rat(z.ff,x.ff,y.r); break;
+                case ADF_DRV_FFUN_DILATE_IDELE: status=adf_ffun_dilate_idele(z.ff,x.ff,y.i); break;
+                case ADF_DRV_FFUN_REFLECT: status=adf_ffun_reflect(z.ff,x.ff); break;
+                case ADF_DRV_FFUN_CONJ: status=adf_ffun_conj(z.ff,x.ff); break;
+                default: status=adf_ffun_fourier(z.ff,x.ff,st->prec); break;
+            }
             if (status==ADF_OK) { z.type=ADF_DRV_FFUN; status=adf_drv_value_print(out,&z,st->digits); }
         }
         goto done;
@@ -3935,16 +3957,21 @@ main(int argc, char ** argv)
 
     /* Slice 3.1-d direct user call: adf print 'union((0.5 ; 7)) + Q'.
        Feed the same line reader as script input, preserving all status/length checks. */
-    /* Direct slice-4a calls use the same command parser as scripts. */
+    /* Direct slice-4a/4b calls use the same command parser as scripts. */
     if (argc>=3 && (!strcmp(argv[1],"ffun") || !strcmp(argv[1],"ffun_fourier") ||
-                    !strcmp(argv[1],"ffun_add"))) {
-        int add=!strcmp(argv[1],"ffun_add");
+                    !strcmp(argv[1],"ffun_add") || !strcmp(argv[1],"ffun_mul") ||
+                    !strcmp(argv[1],"ffun_translate") || !strcmp(argv[1],"ffun_dilate") ||
+                    !strcmp(argv[1],"ffun_dilate_idele") || !strcmp(argv[1],"ffun_reflect") ||
+                    !strcmp(argv[1],"ffun_conj"))) {
+        int add=!strcmp(argv[1],"ffun_add") || !strcmp(argv[1],"ffun_mul") ||
+                !strcmp(argv[1],"ffun_translate") || !strcmp(argv[1],"ffun_dilate") ||
+                !strcmp(argv[1],"ffun_dilate_idele");
         const char *second=NULL;
         if (!add && argc!=3) return adf_usage("one ffun operand required");
         if (add) {
             if (argc==4) second=argv[3];
             else if (argc==5 && !strcmp(argv[3],"with")) second=argv[4];
-            else return adf_usage("ffun_add requires two operands");
+            else return adf_usage("ffun command requires two operands");
         }
         size_t opn=strlen(argv[1]), n=strlen(argv[2]), m=second ? strlen(second) : 0;
         if (opn+n+m+8>ADF_DRV_MAX_LINE) return adf_usage("command exceeds line limit");

@@ -1,0 +1,20 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_mul: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_mul: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_mul: argument z is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_translate_rat: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_translate_rat: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_rat: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_rat: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_reflect: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_reflect: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_conj: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_conj: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_translate_rat: argument q is not a canonical adf_rat
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_rat: argument q is not a canonical adf_rat
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_idele: argument a is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_idele: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_idele: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_idele: argument a is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_idele: argument a is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_dilate_idele: argument a is not a canonical adf_idele
+test_ffun_algebra: 621816 checks, 289 records, 95120 cells

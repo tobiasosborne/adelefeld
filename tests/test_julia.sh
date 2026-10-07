@@ -289,6 +289,24 @@ else
 fi
 rm -f "$tensor_output"
 
+# Slice 4b: finite algebra and the adf_ffun_dilate_rat call of design section 9.
+ffun_algebra_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/ffun_algebra.jl "$so" > "$ffun_algebra_output" 2>&1; then
+    cat "$ffun_algebra_output"
+elif grep -q '__gmpn_modexact_1_odd' "$ffun_algebra_output" 2>/dev/null \
+        && ffun_algebra_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$ffun_algebra_gmp" ] \
+        && LD_PRELOAD="$ffun_algebra_gmp" timeout 60 "$JULIA" --startup-file=no \
+            tests/julia/ffun_algebra.jl "$so"; then
+    echo "== tests/julia/ffun_algebra.jl passed with LD_PRELOAD=$ffun_algebra_gmp"
+else
+    cat "$ffun_algebra_output"
+    rm -f "$ffun_algebra_output"
+    echo "test_julia: tests/julia/ffun_algebra.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$ffun_algebra_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

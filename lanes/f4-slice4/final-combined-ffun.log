@@ -1,0 +1,18 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_set: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_swap: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_identical: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_refine: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_add: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_fourier: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_get_str: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_clear: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_set_acb_vec: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_set_str: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_swap: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_set: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_identical: argument x is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_refine: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_add: argument y is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_add: argument z is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_fourier: argument y is not a canonical adf_ffun
+test_ffun: 57516 checks (all)

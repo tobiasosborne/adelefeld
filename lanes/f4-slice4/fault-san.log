@@ -1,0 +1,19 @@
+max_D 0 -6
+max_M 0 -6
+wrong_translation 0 -6
+refinement_holes 0 -6
+wrong_reflection 0 -6
+negative_without_reflection 0 -6
+dilation_holes 0 -6
+ambiguous_unit_accepted 0 -6
+unit_ignored 0 -6
+conjugate_omitted 0 -6
+early_output_write 0 -6
+mul_radius_dropped 0 -6
+q_inverted 0 -6
+content_inverted 0 -6
+missing_idele_output_entry 0 -6
+fourier_before_array_read 0 1
+identity_skips_cell_zero 0 -6
+lcm_overflow_preflight 0 -6
+killed 18 compiled 18

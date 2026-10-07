@@ -1,0 +1,31 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 24 of them run (--limit 24, --seed 20261008)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (21.4 s)
+
+SURVIVED src/ffun.c:25:44 op: '/' -> '*'
+  the tests pass with the mutant
+  --- a/src/ffun.c
+  +++ b/src/ffun.c
+  @@ -23,5 +23,5 @@
+       if (D==0 || M==0) return ADF_DOMAIN;
+       if (D>ADF_FFUN_ITEMS_MAX/M) return ADF_LIMIT;
+  -    if (D*M>(ulong)WORD_MAX || D*M>SIZE_MAX/sizeof(acb_struct)) return ADF_LIMIT;
+  +    if (D*M>(ulong)WORD_MAX || D*M>SIZE_MAX*sizeof(acb_struct)) return ADF_LIMIT;
+       return ADF_OK;
+   }
+
+
+SURVIVED src/ffun.c:157:32 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/ffun.c
+  +++ b/src/ffun.c
+  @@ -155,5 +155,5 @@
+           }
+           acb_div_ui(t->f+k,t->f+k,x->M,p);
+  -        if (!acb_is_finite(t->f+k)) { st=ADF_NOT_DETERMINED; goto done; }
+  +        if (!acb_is_finite(t->f-k)) { st=ADF_NOT_DETERMINED; goto done; }
+       }
+       adf_ffun_swap(y,t);
+
+mutate: stopped by signal 15: 1 running command(s) killed, scratch removed

@@ -1,0 +1,6 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261012)
+src/ffun.c:329:35 negate_if: 'if(st==ADF_LIMIT)' -> 'if(!(st==ADF_LIMIT))'
+src/ffun.c:25:12 cmp: '>' -> '>='
+src/ffun.c:259:31 op: '-' -> '+'
+src/ffun.c:121:53 op: '%' -> '/'

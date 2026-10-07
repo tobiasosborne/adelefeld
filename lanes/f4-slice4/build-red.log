@@ -1,0 +1,33 @@
+/usr/bin/ld: /tmp/cclZRjWa.o: in function `covariance':
+/home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:247:(.text+0xc8e): undefined reference to `adf_ffun_dilate_rat'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:248:(.text+0xcfa): undefined reference to `adf_ffun_dilate_rat'
+/usr/bin/ld: /tmp/cclZRjWa.o: in function `product':
+/home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:112:(.text+0x13c8): undefined reference to `adf_ffun_mul'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:128:(.text+0x1a1d): undefined reference to `adf_ffun_mul'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:129:(.text+0x1a56): undefined reference to `adf_ffun_mul'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:130:(.text+0x1a8f): undefined reference to `adf_ffun_mul'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:131:(.text+0x1abd): undefined reference to `adf_ffun_mul'
+/usr/bin/ld: /tmp/cclZRjWa.o:/home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:132: more undefined references to `adf_ffun_mul' follow
+/usr/bin/ld: /tmp/cclZRjWa.o: in function `unary_call':
+/home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:152:(.text+0x198): undefined reference to `adf_ffun_conj'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:149:(.text+0x1b4): undefined reference to `adf_ffun_translate_rat'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:150:(.text+0x1d4): undefined reference to `adf_ffun_dilate_rat'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:151:(.text+0x1f1): undefined reference to `adf_ffun_reflect'
+/usr/bin/ld: /tmp/cclZRjWa.o: in function `unary':
+/home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:173:(.text.startup+0x43b): undefined reference to `adf_ffun_conj'
+/usr/bin/ld: /tmp/cclZRjWa.o: in function `idele':
+/home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:194:(.text.startup+0x729): undefined reference to `adf_ffun_dilate_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:201:(.text.startup+0x934): undefined reference to `adf_ffun_dilate_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:224:(.text.startup+0xf18): undefined reference to `adf_ffun_dilate_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:233:(.text.startup+0x11b0): undefined reference to `adf_ffun_dilate_idele'
+/usr/bin/ld: /tmp/cclZRjWa.o: in function `caps':
+/home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:286:(.text.startup+0x143f): undefined reference to `adf_ffun_translate_rat'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:287:(.text.startup+0x14b3): undefined reference to `adf_ffun_dilate_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:289:(.text.startup+0x1526): undefined reference to `adf_ffun_dilate_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:293:(.text.startup+0x15ed): undefined reference to `adf_ffun_mul'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:295:(.text.startup+0x16c5): undefined reference to `adf_ffun_mul'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:300:(.text.startup+0x1782): undefined reference to `adf_ffun_dilate_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:304:(.text.startup+0x1825): undefined reference to `adf_ffun_reflect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:305:(.text.startup+0x188e): undefined reference to `adf_ffun_conj'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f4-slice4/build/test_ffun_algebra] Error 1

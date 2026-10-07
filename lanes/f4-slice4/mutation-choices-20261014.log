@@ -1,0 +1,6 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261014)
+src/ffun.c:268:11 cmp: '==' -> '!='
+src/ffun.c:103:29 op: '/' -> '*'
+src/ffun.c:52:58 zero_one: '0' -> '1'
+src/ffun.c:197:25 op: '+' -> '-'

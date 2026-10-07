@@ -1,0 +1,128 @@
+[
+  {
+    "name": "max_D",
+    "compile": 0,
+    "group": "mul",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:123: z->D==y->D && z->M==y->M\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "max_M",
+    "compile": 0,
+    "group": "mul",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:123: z->D==y->D && z->M==y->M\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "wrong_translation",
+    "compile": 0,
+    "group": "translate",
+    "run": -6,
+    "diagnostic": "layout (3,1), cell 1: tests/test_ffun_algebra.c:79: acb_equal(x->f+j,y->f+j)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "refinement_holes",
+    "compile": 0,
+    "group": "all",
+    "run": -6,
+    "diagnostic": "layout (2,3), cell 1: tests/test_ffun_algebra.c:79: acb_equal(x->f+j,y->f+j)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "wrong_reflection",
+    "compile": 0,
+    "group": "reflect",
+    "run": -6,
+    "diagnostic": "layout (2,3), cell 1: tests/test_ffun_algebra.c:79: acb_equal(x->f+j,y->f+j)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "negative_without_reflection",
+    "compile": 0,
+    "group": "dilate",
+    "run": -6,
+    "diagnostic": "layout (2,3), cell 1: tests/test_ffun_algebra.c:79: acb_equal(x->f+j,y->f+j)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "dilation_holes",
+    "compile": 0,
+    "group": "dilate",
+    "run": -6,
+    "diagnostic": "layout (2,2), cell 1: tests/test_ffun_algebra.c:79: acb_equal(x->f+j,y->f+j)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "ambiguous_unit_accepted",
+    "compile": 0,
+    "group": "idele",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:240: !strcmp(adf_status_str(st),string(field(v,\"status\")))\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "unit_ignored",
+    "compile": 0,
+    "group": "idele",
+    "run": -6,
+    "diagnostic": "layout (2,3), cell 1: tests/test_ffun_algebra.c:79: acb_equal(x->f+j,y->f+j)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "conjugate_omitted",
+    "compile": 0,
+    "group": "conj",
+    "run": -6,
+    "diagnostic": "layout (1,1), cell 0: tests/test_ffun_algebra.c:79: acb_equal(x->f+j,y->f+j)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "early_output_write",
+    "compile": 0,
+    "group": "idele",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:84: memcmp(x,bytes,sizeof(*x))==0\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "mul_radius_dropped",
+    "compile": 0,
+    "group": "mul",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:105: arb_contains_fmpq(acb_realref(z),re)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "q_inverted",
+    "compile": 0,
+    "group": "dilate",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:72: x->D==y->D\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "content_inverted",
+    "compile": 0,
+    "group": "idele",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:72: x->D==y->D\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "missing_idele_output_entry",
+    "compile": 0,
+    "group": "inv",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:477: strstr(diagnostic,fn)!=NULL\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "fourier_before_array_read",
+    "compile": 0,
+    "group": "guard",
+    "run": 1,
+    "diagnostic": "    #3 0x58a086643fa8 in guarded_fourier /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:361:5\n    #4 0x58a086643fa8 in main /home/tobias/Projects/adelefeld-wt/f4-slice4/tests/test_ffun_algebra.c:490:57\n    #5 0x769a1402a1c9 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16\n    #6 0x769a1402a28a in __libc_start_main csu/../csu/libc-start.c:360:3\n    #7 0x58a086565f24 in _start (/home/tobias/Projects/adelefeld-wt/f4-slice4/lanes/f4-slice4/faults/fourier_before_array_read+0x98f24) (BuildId: 08acf08e5e717a02771aad8f67e9312ffb47b29a)\n\nAddressSanitizer can not provide additional info.\nSUMMARY: AddressSanitizer: SEGV (/lib/x86_64-linux-gnu/libflint.so.18+0x5b0f44) (BuildId: bf51926aca5446d8712f308496fa75c0eef08977) in arb_is_finite\n==142==ABORTING\n"
+  },
+  {
+    "name": "identity_skips_cell_zero",
+    "compile": 0,
+    "group": "mul",
+    "run": -6,
+    "diagnostic": "tests/test_ffun_algebra.c:164: !adf_ffun_identical(x,w)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "name": "lcm_overflow_preflight",
+    "compile": 0,
+    "group": "caps",
+    "run": -6,
+    "diagnostic": "adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_mul: argument x is not a canonical adf_ffun\ntimeout: the monitored command dumped core\n"
+  }
+]

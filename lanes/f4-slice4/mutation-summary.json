@@ -1,0 +1,92 @@
+{
+  "runs": [
+    {
+      "seed": 20261008,
+      "attempts": 6,
+      "seconds": 155.6,
+      "killed": 4,
+      "survived": 2,
+      "not_compiled": 0,
+      "timed_out": 0,
+      "excused": 0
+    },
+    {
+      "seed": 20261009,
+      "attempts": 4,
+      "seconds": 33.1,
+      "killed": 3,
+      "survived": 0,
+      "not_compiled": 1,
+      "timed_out": 0,
+      "excused": 0
+    },
+    {
+      "seed": 20261010,
+      "attempts": 4,
+      "seconds": 67.1,
+      "killed": 2,
+      "survived": 1,
+      "not_compiled": 1,
+      "timed_out": 0,
+      "excused": 0
+    },
+    {
+      "seed": 20261011,
+      "attempts": 4,
+      "seconds": 75.5,
+      "killed": 3,
+      "survived": 1,
+      "not_compiled": 0,
+      "timed_out": 0,
+      "excused": 0
+    },
+    {
+      "seed": 20261012,
+      "attempts": 4,
+      "seconds": 83.8,
+      "killed": 3,
+      "survived": 1,
+      "not_compiled": 0,
+      "timed_out": 0,
+      "excused": 0
+    },
+    {
+      "seed": 20261013,
+      "attempts": 4,
+      "seconds": 52.3,
+      "killed": 3,
+      "survived": 0,
+      "not_compiled": 1,
+      "timed_out": 0,
+      "excused": 0
+    },
+    {
+      "seed": 20261014,
+      "attempts": 4,
+      "seconds": 71.4,
+      "killed": 3,
+      "survived": 1,
+      "not_compiled": 0,
+      "timed_out": 0,
+      "excused": 0
+    }
+  ],
+  "totals": {
+    "attempts": 30,
+    "seconds": 538.8,
+    "killed": 21,
+    "survived": 6,
+    "not_compiled": 3,
+    "timed_out": 0
+  },
+  "distinct_complete": 29,
+  "partial": {
+    "limit": 24,
+    "timeout_seconds": 180,
+    "known_survivors": [
+      "ffun.c:25 division to multiplication",
+      "ffun.c:157 before-array read"
+    ],
+    "final_counts_available": false
+  }
+}

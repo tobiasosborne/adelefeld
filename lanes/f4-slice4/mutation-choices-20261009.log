@@ -1,0 +1,6 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261009)
+src/ffun.c:117:40 op: '*' -> '+'
+src/ffun.c:24:5 negate_if: 'if(D>ADF_FFUN_ITEMS_MAX/M)' -> 'if(!(D>ADF_FFUN_ITEMS_MAX/M))'
+src/ffun.c:143:11 cmp: '!=' -> '=='
+src/ffun.c:33:36 drop_call: 'ffun_allocate(x,1,1);' -> '' (the statement is removed)

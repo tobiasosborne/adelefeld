@@ -152,3 +152,147 @@ The text oracle has an extra significant-digit heuristic at proto/text_grammar.p
 With D=0 and M equal to fifty decimal nines, full syntax and caller limits permit the text and DM=0.
 The dimension domain rule then gives DOMAIN. The oracle instead gives LIMIT because the digit lengths exceed 40.
 The C reader follows the stated product/domain rules. No oracle or fixed golden was changed.
+
+# Slice 4b
+
+This slice implements the remaining finite algebra of docs/api-4.md section 3 and section 9, item 2.
+F1-F3 are the finite-index proofs. The public type, text grammar, Fourier kernel and caps stay as in slice 4a.
+Every operation uses initialized canonical inputs. Whole-object aliases are permitted. Member aliases are not.
+Every failure leaves the destination's fields, storage pointer and stored balls untouched.
+
+## Product and its enclosure
+
+adf_ffun_mul uses D2=lcm(Dx,Dy) and M2=lcm(Mx,My), with the existing lcm and shape preflight helpers.
+It fetches the two F1 cells directly, as adf_ffun_add does. It does not allocate two refined input arrays.
+
+1. Put rx=D2/Dx and ry=D2/Dy. A cell k is a support hole when rx or ry does not divide k.
+   Its product is exact zero. Otherwise the input indices are (k/rx) mod DxMx and (k/ry) mod DyMy.
+2. These are the common-refinement values by F1. Multiply the two complete complex balls at max(prec,2).
+   The enclosure contract is refs/src/flint-3.0.1/arb.rst:6-12 and acb.rst:6-12.
+3. Order the operands by their stored real midpoint, real radius, imaginary midpoint and imaginary radius.
+   This makes the result representation identical when the inputs are exchanged. FLINT radius rounding can
+   otherwise differ in its final bits when the operand order changes.
+4. If the two source pointers coincide, copy one ball to a scalar temporary before acb_mul.
+   The same-pointer shortcut in refs/src/flint-3.0.1/acb.rst:463-468 assumes one mathematical quantity.
+   This product instead encloses independently selected input members, also when the objects alias.
+   Copying one operand makes that choice independent of storage identity.
+5. A private array retains every result until the final finite-entry checks succeed. Commit by one swap.
+   A nonfinite result returns NOT_DETERMINED. The private scalar and array are cleared on that branch.
+
+Repeated uncertain values can be chosen independently in the refined representation. That loses correlations,
+as F1 allows. Every original pair of functions and its product still belongs to the resulting enclosure.
+Exact dyadic products that fit the working precision are exact. No general promise of minimal ball width is made.
+
+Check: tests/test_ffun_algebra.c product() checks all 14 product records, both refined input arrays, every cell,
+16 exact rational corner products per cell, radius bounds, commutativity, and all whole-object aliases.
+numeric_product() checks 2001-bit coefficients, nonzero radii, precision 2, 53, 4096 and the precision cap.
+It also compares aliased inputs with distinct copies of equal complex rectangles.
+
+## Translation, reflection and conjugation
+
+adf_ffun_translate_rat implements F2: D2=lcm(D,den(q)), M2=M, b=D2*q in Z, and output cell k reads k-b.
+The denominator is checked before conversion to a word. The numerator can have thousands of bits.
+Reduce that numerator modulo D2*M before multiplying by D2/den(q). Both remaining factors are bounded words.
+The reduced product is below 2^40; no huge numerator*D2 is formed.
+
+If den(q) divides D, read the original array by this permutation. Otherwise call the existing F1 refinement
+operation on a private array, then permute its cells into another private array. This reuses the slice-4a helper.
+The extra refinement pass is charged against the work cap. All copied ball bits and exact holes are retained.
+The result is f(x-q) also off the grid: F2 proves that no point outside (1/D2) Zhat enters the old support.
+
+adf_ffun_reflect reads cell -k modulo DM, with cell 0 fixed. It does not conjugate values.
+adf_ffun_conj conjugates each cell without moving it. Both are exact rectangle bijections and use private arrays.
+They preserve the represented family, including radii, and applying either operation twice restores the input.
+
+Check: unary() reads all 218 unary records. Translation includes 0, 1/2, 1/3, -7/6, 5 and a 2000-bit numerator.
+It checks each result and each in-place call, then translates by -q and compares with the refined original.
+The reflection and conjugation records include a nonsymmetric complex array and delta_1 at (2,3).
+Conjugation of real balls is identical. Involution checks compare every stored cell, including radii.
+
+## Rational and idele dilation
+
+adf_ffun_dilate_rat implements F3 with q=s/t reduced, t>0. Its layout is (|s|D,tM), deliberately nonminimal.
+
+1. Compare |s| and t with the allowed dimension quotients before forming either dimension product.
+   After those bounds, s fits a signed word and its absolute value is safe to compute.
+2. Cell k is initialized zero. Copy a value only when t divides k.
+3. For a surviving cell, reduce k/t modulo the old length L=DM. Multiply by the certified unit residue
+   modulo L. Rational dilation uses residue 1. For negative s negate this index modulo L.
+4. F3 shows that these surviving cells are exactly the old support's inverse image under multiplication by q.
+   The new period maps to sM Zhat, inside the old period. All other cells are support holes.
+5. Copy complete balls and swap once. This preserves the family exactly for exact inputs and encloses it when
+   repeated uncertain values lose correlations. q=0 gives DOMAIN, including when the input function is zero.
+
+adf_ffun_dilate_idele reads only the positive content r and unit coset c U(N). Its finite function ignores inf.
+Debug entry validation still requires the whole idele, including inf, to be canonical.
+
+1. Project the content's rational dilation layout with the same helper as rational dilation.
+2. If N=0, the exact unit residue is c mod L. No residue enumeration is needed.
+3. Otherwise put g=gcd(N,L), calculated after reducing N modulo L. Enumerate v in 0..L-1 with gcd(v,L)=1
+   and v=c mod g. This is F3's full compatible image R, with a CRT lift proof in design section 3.
+4. Stop and return NOT_DETERMINED upon finding a second residue. A canonical unit coset has a nonempty image.
+   A singleton fixes every index; use it in the shared dilation cell helper and commit once.
+5. Charge L enumeration indices and every new output cell together before enumeration or output allocation.
+   The exact-unit branch charges only output cells. Ambiguity never writes to the destination.
+
+The test is an index certificate. It rejects ambiguous units even if a particular array is constant or zero.
+It accepts singleton images beyond the sufficient condition L|N: L=6,c=1,N=3 has the unique residue 1.
+The content is r, not its inverse. The sign of inf has no effect on a finite function.
+
+Check: idele() reads all 53 idele records with contents 1, 2, 1/3 and 6/5, exact units 1 and -1,
+precise cosets and ambiguous images. It tests both output aliases and changes inf to a negative ball.
+It also compares every unit c at N=1..16 and L=1..16 with independent CRT lifts modulo lcm(N,L).
+All permitted singleton cases, including L=1, L=2 and L=6,N=3, are checked cell by cell.
+
+Check: covariance() reads both oracle-transform arrays for four exact delta cases, including (2,3) and (4,1).
+It compares Fourier after dilation with dilation by 1/q after Fourier, scaled by |q| as a positive rational.
+For the finite rational idele |q|_f=1/|q|, so this scalar is |q|_f^(-1).
+The C arrays overlap the independent 96-bit certificates and have radii below 2^-90.
+Their pairwise differences contain zero. The reference certificates can be wider than the 128-bit C balls;
+containment of the whole reference interval is not asserted as a required output width.
+
+## Status, caps, cost and choices
+
+Product first checks the precision cap ADF_REAL_PREC_MAX, then the projected lcm and output dimensions.
+The exact operations check array/work sizes and integer bit lengths without forming unbounded products.
+Every rational numerator/denominator and each unit integer has at most 2^20 bits.
+Dilation compares dimensions by division, then checks DM<=2^20, slong counts and SIZE_MAX byte products.
+Preflight precedes INV predicates and allocations. Canonicality itself does not impose these algorithm caps.
+
+Translation uses one charged output pass when the denominator divides D. Otherwise it uses two charged passes:
+refinement and permutation. Therefore a refined length above 2^19 gives LIMIT in this implementation.
+This is a work-limit choice; its new array shape could fit the separate 2^20 allocation limit.
+Non-exact idele units charge old length plus new length; exact units charge only the new length.
+All charged loops count zero cells. No unit-image shortcut or equality solver is needed.
+
+Product returns OK, LIMIT or NOT_DETERMINED. Rational dilation additionally has the q=0 DOMAIN case.
+Idele dilation returns OK, LIMIT or NOT_DETERMINED. Translation, reflection and conjugation return OK or LIMIT.
+All failures preserve the output. Invalid canonical-input preconditions abort under INV when preflight allows entry.
+
+Product costs O(lcm(D)*lcm(M)) acb operations and O(new length) output storage, plus one scalar ball.
+Translation costs O(D2*M) copies, with one private output array and an extra refined array when needed.
+Reflection and conjugation cost O(DM) copies and output storage. Rational dilation costs O(new length).
+Idele dilation adds O(old length) unit-residue tests; all bounded index products are below 2^40.
+Large-integer input reductions add their FLINT bit-arithmetic cost. No factorization is performed.
+
+Check: caps() reads all five cap records and checks complete destination snapshots on LIMIT and DOMAIN.
+It tests 2000-bit dilation refusals, integer bits above the cap, projected common-refinement failure,
+the combined idele work cap, the translation two-pass cap, and valid allocated arrays above the arithmetic cap.
+The exact integer-bit boundary is accepted. A projected lcm of 2^64+1 is refused before INV and multiplication.
+The INV child tests cover every input and output position and invalid rational/idele components.
+They check the operation's entry diagnostic, so an abort in a later swap does not satisfy the test.
+guarded_fourier() places a protected page before each four-cell array. It exposes reads before the array
+inside the uninstrumented FLINT shared library. Hooks are restored after all guarded allocations are freed;
+the allocator interface is refs/src/flint-3.0.1/memory.rst:9-24.
+
+## User calls and findings
+
+The driver adds ffun_mul F with G, ffun_translate F with q, ffun_dilate F with q,
+ffun_dilate_idele F with A, ffun_reflect F and ffun_conj F. Direct shell calls use the same parser.
+The hand-derived fixture includes a delta with D!=M dilated by 2/3 and an ambiguous unit-image refusal.
+Julia calls all six symbols with storage allocated through the exported layout queries and frees every object.
+
+No counterexample to SPEC 7 or F1-F3 was found. No declaration needs a HEADER-FINDING.
+The brief's unrestricted identity f*1_Zhat=f is false. For delta_1 at (2,3), f(1/2)=1 but 1_Zhat(1/2)=0.
+The product is zero. The identity is tested only for functions supported in Zhat, and the counterexample is tested.
+No oracle or fixed golden was changed. The analytic source obligations of later slices remain outside this slice.

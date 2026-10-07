@@ -1,0 +1,10 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261009)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (19.2 s)
+
+NOT COMPILED src/ffun.c:33:36 drop_call: 'ffun_allocate(x,1,1);' -> '' (the statement is removed)
+  src/ffun.c:33:31: error: unused parameter 'x' [-Werror,-Wunused-parameter]
+
+mutate: 4 mutants in 33.1 s: 3 killed, 0 survived, 1 not compiled, 0 timed out, 0 excused
+mutate: passed: every mutant that built was killed, or is excused in ../../../tools/mutate/equivalent.txt; 1 of 4 did not build
