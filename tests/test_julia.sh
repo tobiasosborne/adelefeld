@@ -186,6 +186,23 @@ else
 fi
 rm -f "$psi_output"
 
+# Slice 4a: finite function layout, direct Fourier transform, alias and LIMIT calls.
+ffun_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/ffun.jl "$so" > "$ffun_output" 2>&1; then
+    cat "$ffun_output"
+elif grep -q '__gmpn_modexact_1_odd' "$ffun_output" 2>/dev/null \
+        && ffun_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$ffun_gmp" ] \
+        && LD_PRELOAD="$ffun_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/ffun.jl "$so"; then
+    echo "== tests/julia/ffun.jl passed with LD_PRELOAD=$ffun_gmp"
+else
+    cat "$ffun_output"
+    rm -f "$ffun_output"
+    echo "test_julia: tests/julia/ffun.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$ffun_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

@@ -1,0 +1,7 @@
+ffun(D=1, M=1; (0.5) + (0)*i)
+ffun(D=2, M=3; (1) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i)
+ffun(D=1, M=1; (0.5 +/- 0.25) + (-1)*i)
+error: DOMAIN
+error: PARSE
+error: LIMIT
+error: DOMAIN

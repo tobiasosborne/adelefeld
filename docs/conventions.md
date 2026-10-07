@@ -222,7 +222,7 @@ to prove the opposite.
 | Quotient by `Q` | `OK`, `NEEDS_SPLIT`, `LIMIT`; the class character calls `adf_qclass_psi_tate`, `adf_qclass_psi_tate_strict` and `adf_qclass_psi_tate_phase` belong to the row below, not to this one, because they return `NOT_DETERMINED` (N-D21) |
 | Characters, Gauss sums, local factors | `OK`, `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `DOMAIN` (for an exact pole), `UNSUPPORTED`, `LIMIT` (`prec` above `ADF_REAL_PREC_MAX`, decided first; a stated bound of the algorithm, such as the 64 factors of the Gamma recurrence of `adf_local_zeta_factor_at`: `docs/design/local-zeta.md` Z4, N-D20) |
 | Reconstruction and solvers | `OK`, `NO_SOLUTION`, `NOT_UNIQUE`, `NOT_DETERMINED` ("uniqueness not certified", `SPEC.md` 9.2; a list of roots that is not proved complete), `LIMIT`, `DOMAIN` (a modulus below 1, the zero polynomial, a place of the wrong kind, a shape that does not fit), `UNSUPPORTED` (an exact right-hand side of a system, a prime above the temporary bound of a slice that finds the roots modulo `p` by evaluation at every residue, decision S-D10) |
-| Integrals, Poisson summation | `OK`, `DOMAIN` (outside the stated half-plane, or at an exact pole), `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `LIMIT` |
+| Integrals, Poisson summation (including `adf_ffun` algebra; `LIMIT` for D1 caps) | `OK`, `DOMAIN` (outside the stated half-plane, or at an exact pole), `NOT_DETERMINED` (also a mixed or undecided ball meeting a pole), `LIMIT` |
 
 In conversion or inversion, NOT_DETERMINED covers failure to certify the required real sign on the result;
 UNIT_NOT_CERTIFIED and NOT_UNIT concern the input, as before. Failure leaves the value output untouched.

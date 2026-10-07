@@ -1,0 +1,11 @@
+ok   every_row_of_the_golden_file_fball
+ok   every_random_text_of_the_reference
+ok   the_printer_writes_the_template
+ok   random_balls_round_trip
+ok   the_parser_canonicalises
+ok   the_output_may_hold_any_value_before
+ok   max_len_at_the_limit_and_one_above
+ok   empty_null_nul_and_forbidden_bytes
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+ok   the_earlier_stage_decides_the_status
+10 tests, 21545 checks, 0 failed checks, 0 failed tests

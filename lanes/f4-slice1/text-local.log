@@ -1,0 +1,11 @@
+ok   every_row_of_the_golden_file_lball
+ok   lball_stored_fields
+ok   every_row_of_the_golden_file_sball
+ok   sball_the_complex_tag
+ok   sball_the_canonical_order
+ok   the_reference_on_generated_texts
+ok   round_trips_of_generated_values
+ok   hostile_input
+ok   the_order_of_the_stages
+ok   printer_bounds_and_digits
+10 tests, 68868 checks, 0 failed checks, 0 failed tests

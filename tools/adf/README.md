@@ -820,3 +820,15 @@ LIMIT must be an integer fitting a slong. Fractional limits give DOMAIN; out-of-
 The query uses exact stored endpoints, with no precision argument. The driver setting `prec` affects reading.
 The raw exact construction, common modulus, and Q2 fibre budget must all fit the limit, even on identical inputs.
 Failures print the ordinary status line. Checks: `tests/driver/qclass-sets.cmd`, `tests/julia/qclass_sets.jl`.
+
+### Finite functions, slice 4a
+
+`ffun F` reads and prints the finite function value text. Each entry is a complex value,
+for example `ffun(D=2, M=3; (1) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i)`.
+`ffun_add F with G` adds on the lcm refinement in both dimensions, with zero extension and repetition.
+`ffun_fourier F` computes the direct negative finite transform, with weight `1/M` and dimensions exchanged.
+The commands use the current `prec` and `digits`. Array/work/precision caps return `LIMIT`.
+
+Direct shell calls accept `adf ffun 'F'`, `adf ffun_add 'F' with 'G'`, and `adf ffun_fourier 'F'`.
+For `ffun_add`, two separately quoted operands without `with` are also accepted as shell arguments.
+Within a driver script, ` with ` remains the required separator. Bare scalar entries are outside the grammar.

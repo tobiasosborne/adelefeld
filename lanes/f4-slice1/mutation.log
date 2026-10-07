@@ -1,0 +1,59 @@
+mutate: src/ffun.c: 263 mutants
+mutate: 263 mutants, 32 of them run (--limit 32, --seed 20261008)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (19.4 s)
+
+SURVIVED src/ffun.c:66:20 logic: '||' -> '&&'
+  the tests pass with the mutant
+  --- a/src/ffun.c
+  +++ b/src/ffun.c
+  @@ -64,5 +64,5 @@
+   {
+       ADF_INV_FFUN(x); ADF_INV_FFUN(y);
+  -    if (x->D!=y->D || x->M!=y->M) return 0;
+  +    if (x->D!=y->D && x->M!=y->M) return 0;
+       for (ulong j=0;j<x->D*x->M;j++) if (!acb_equal(x->f+j,y->f+j)) return 0;
+       return 1;
+
+
+SURVIVED src/ffun.c:123:39 drop_call: 'ffun_dispose(t);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/ffun.c
+  +++ b/src/ffun.c
+  @@ -121,5 +121,5 @@
+           else if (k%rx==0) acb_set(t->f+k,x->f+(k/rx)%lx);
+           else if (k%ry==0) acb_set(t->f+k,y->f+(k/ry)%ly);
+  -        if (!acb_is_finite(t->f+k)) { ffun_dispose(t); return ADF_NOT_DETERMINED; }
+  +        if (!acb_is_finite(t->f+k)) {  return ADF_NOT_DETERMINED; }
+       }
+       adf_ffun_swap(z,t); adf_ffun_clear(t); return ADF_OK;
+
+
+SURVIVED src/ffun.c:118:23 prec: 'prec' -> '2'
+  the tests pass with the mutant
+  --- a/src/ffun.c
+  +++ b/src/ffun.c
+  @@ -116,5 +116,5 @@
+       ffun_allocate(t,D,M);
+       ulong rx=D/x->D, ry=D/y->D, lx=x->D*x->M, ly=y->D*y->M;
+  -    slong p=FLINT_MAX(prec,2);
+  +    slong p=FLINT_MAX(2,2);
+       for (ulong k=0;k<D*M;k++) {
+           if (k%rx==0 && k%ry==0) acb_add(t->f+k,x->f+(k/rx)%lx,y->f+(k/ry)%ly,p);
+
+
+SURVIVED src/ffun.c:45:5 drop_call: 'ADF_INV_FFUN(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/ffun.c
+  +++ b/src/ffun.c
+  @@ -43,5 +43,5 @@
+   {
+       adf_ffun_struct t;
+  -    ADF_INV_FFUN(x); ADF_INV_FFUN(y); t=*x; *x=*y; *y=t;
+  +     ADF_INV_FFUN(y); t=*x; *x=*y; *y=t;
+   }
+   int adf_ffun_is_canonical(const adf_ffun_t x)
+
+
+mutate: 32 mutants in 719.9 s: 28 killed, 4 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 4 mutant(s) survived; each one is a claim the tests do not check

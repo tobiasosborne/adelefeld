@@ -3149,3 +3149,93 @@ adf_sball_get_str(size_t * len, const adf_sball_t x, slong digits)
     tx_put(&b, "}", 1);
     return tx_finish(&b, len);
 }
+
+#include <stdint.h>
+/* Slice 4a value text. docs/api-4.md section 2; conventions 8.5, 9.2-9.5, 11.3.
+   Reuses the full grammar pass, exact decimal conversion and outward printer in this file.
+   refs/src/flint-3.0.1/arb.rst:6-12 supplies the enclosure contract. */
+#include "adelefeld/ffun.h"
+
+/* Bounded unsigned decimal conversion. Return LIMIT without constructing a huge integer. */
+static int tx_ffun_uint(ulong *v, const char *s, const tx_num *n, ulong cap)
+{
+    ulong a=0;
+    for (size_t i=n->ib;i<n->ie;i++) {
+        ulong digit=(ulong)(s[i]-'0');
+        if (digit>cap || a>(cap-digit)/10) return ADF_LIMIT;
+        a=10*a+digit;
+    }
+    *v=a; return ADF_OK;
+}
+static void tx_ffun_head(tx_cur *c, tx_num *D, tx_num *M)
+{
+    (void)TX_KW(c,"ffun"); (void)tx_expect(c,'('); (void)TX_KW(c,"D");
+    (void)tx_expect(c,'='); (void)tx_scan_rat(c,0,0,D); (void)tx_expect(c,',');
+    (void)TX_KW(c,"M"); (void)tx_expect(c,'='); (void)tx_scan_rat(c,0,0,M);
+    (void)tx_expect(c,';');
+}
+int adf_ffun_set_str(adf_ffun_t x, const char *s, size_t len, slong prec,
+                     const adf_text_limits_t *lim)
+{
+    adf_text_limits_t store;
+    tx_cur c={s,len,0};
+    tx_num dn,mn;
+    tx_real re,im;
+    ulong D=0,M=0;
+    size_t count=0;
+    int st,over=0;
+    adf_ffun_t t;
+    if (prec>ADF_REAL_PREC_MAX) return ADF_LIMIT;
+    lim=tx_limits(lim,&store);
+    st=tx_prep(s,len,lim); if (st!=ADF_OK) return st;
+    if (!tx_start_syntax(&c,ADF_TEXT_FFUN)) return ADF_PARSE;
+    c.i=0; tx_ffun_head(&c,&dn,&mn);
+    do {
+        (void)tx_complex_syntax(&c,&re,&im); count++;
+        if (tx_real_over(s,&re,lim) || tx_real_over(s,&im,lim)) over=1;
+    } while (tx_expect(&c,','));
+    if (over || lim->max_items<1 || count>(size_t)lim->max_items) return ADF_LIMIT;
+    /* The dimension product is a stage-4 limit, the positive dimensions a stage-6 domain rule.
+       A zero factor is recognized lexically, before a huge other factor can be converted. */
+    int dz=tx_all_zero(s,dn.ib,dn.ie), mz=tx_all_zero(s,mn.ib,mn.ie);
+    if (dz || mz) return ADF_DOMAIN;
+    if (tx_ffun_uint(&D,s,&dn,(ulong)lim->max_items)!=ADF_OK ||
+        tx_ffun_uint(&M,s,&mn,(ulong)lim->max_items)!=ADF_OK || D>(ulong)lim->max_items/M)
+        return ADF_LIMIT;
+    if (D*M>=(UWORD(1)<<62) || D*M>(ulong)WORD_MAX || D*M>SIZE_MAX/sizeof(acb_struct))
+        return ADF_LIMIT;
+    if (count!=D*M) return ADF_DOMAIN;
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_ffun_is_canonical(x)) adf_inv_fail(__func__,"x","adf_ffun");
+#endif
+    t->D=D; t->M=M; t->f=_acb_vec_init((slong)count);
+    c.i=0; tx_ffun_head(&c,&dn,&mn);
+    for (size_t j=0;j<count;j++) {
+        if (j) (void)tx_expect(&c,',');
+        (void)tx_complex_syntax(&c,&re,&im);
+        tx_arb_from_real(acb_realref(t->f+j),s,&re,FLINT_MAX(prec,2));
+        tx_arb_from_real(acb_imagref(t->f+j),s,&im,FLINT_MAX(prec,2));
+    }
+    adf_ffun_swap(x,t); adf_ffun_clear(t); return ADF_OK;
+}
+char *adf_ffun_get_str(size_t *len, const adf_ffun_t x, slong digits)
+{
+    tx_buf b;
+    fmpz_t n;
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_ffun_is_canonical(x)) adf_inv_fail(__func__,"x","adf_ffun");
+#endif
+    for (ulong j=0;j<x->D*x->M;j++)
+        if (!tx_arb_printable(acb_realref(x->f+j)) || !tx_arb_printable(acb_imagref(x->f+j))) {
+            *len=0; return NULL;
+        }
+    tx_buf_init(&b); fmpz_init(n);
+    tx_puts(&b,"ffun(D="); fmpz_set_ui(n,x->D); tx_put_fmpz(&b,n);
+    tx_puts(&b,", M="); fmpz_set_ui(n,x->M); tx_put_fmpz(&b,n); tx_puts(&b,"; ");
+    for (ulong j=0;j<x->D*x->M;j++) {
+        if (j) tx_puts(&b,", ");
+        tx_puts(&b,"("); tx_put_real(&b,acb_realref(x->f+j),digits);
+        tx_puts(&b,") + ("); tx_put_real(&b,acb_imagref(x->f+j),digits); tx_puts(&b,")*i");
+    }
+    tx_puts(&b,")"); fmpz_clear(n); return tx_finish(&b,len);
+}

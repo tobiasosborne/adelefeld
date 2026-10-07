@@ -1,0 +1,18 @@
+{"raw":"ffun(D=1, M=1; (0) + (0)*i)","expected":"ffun(D=1, M=1; (0) + (0)*i)"}
+{"raw":"ffun(D=1, M=2; (1) + (0)*i, (0) + (0)*i)","expected":"ffun(D=1, M=2; (1) + (0)*i, (0) + (0)*i)"}
+{"raw":"ffun(D=2, M=3; (1) + (0)*i, (2) + (0)*i, (3) + (0)*i, (4) + (0)*i, (5) + (0)*i, (6) + (0)*i)","expected":"ffun(D=2, M=3; (1) + (0)*i, (2) + (0)*i, (3) + (0)*i, (4) + (0)*i, (5) + (0)*i, (6) + (0)*i)"}
+{"raw":"ffun(D=1, M=1; (0.5 +/- 0.25) + (-1)*i)","expected":"ffun(D=1, M=1; (0.5 +/- 0.25) + (-1)*i)"}
+{"raw":"ffun(D=01, M=1; (0.50) + (0)*i)","expected":"ffun(D=1, M=1; (0.5) + (0)*i)"}
+{"raw":"ffun( D = 1 , M = 1 ; ( 1 ) + ( 0 ) * i )","expected":"ffun(D=1, M=1; (1) + (0)*i)"}
+{"raw":"ffun(D=0, M=1; (0) + (0)*i)","expected":"!DOMAIN"}
+{"raw":"ffun(D=1, M=0; (0) + (0)*i)","expected":"!DOMAIN"}
+{"raw":"ffun(D=1, M=2; (0) + (0)*i)","expected":"!DOMAIN"}
+{"raw":"ffun(D=1, M=1; (0) + (0)*i, (0) + (0)*i)","expected":"!DOMAIN"}
+{"raw":"ffun(D=1, M=1; 0)","expected":"!PARSE"}
+{"raw":"ffun(D=1, M=1)","expected":"!PARSE"}
+{"raw":"ffun(D=1, M=1;)","expected":"!PARSE"}
+{"raw":"ffun(D=1048577, M=1; (0) + (0)*i)","expected":"!LIMIT"}
+{"raw":"ffun(D=1024, M=1025; (0) + (0)*i)","expected":"!LIMIT"}
+{"raw":"ffun(D=99999999999999999999999, M=1; (0) + (0)*i)","expected":"!LIMIT"}
+{"raw":"ffun(M=1, D=1; (0) + (0)*i)","expected":"!PARSE"}
+{"raw":"FFUN(D=1, M=1; (0) + (0)*i)","expected":"!PARSE"}

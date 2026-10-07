@@ -136,6 +136,9 @@
 typedef enum
 {
     ADF_DRV_SHOW = 0,
+    ADF_DRV_FFUN_SHOW,
+    ADF_DRV_FFUN_ADD,
+    ADF_DRV_FFUN_FOURIER,
     ADF_DRV_TYPE,
     ADF_DRV_QADD_RAT,
     ADF_DRV_QREDUCE,
@@ -224,6 +227,9 @@ static const struct
                                   ADF_DRV_ARITY_2_OR_3: two or three operands (root) */
 } adf_drv_ops[] = {
     { "show", ADF_DRV_SHOW, 1 },
+    { "ffun", ADF_DRV_FFUN_SHOW, 1 },
+    { "ffun_add", ADF_DRV_FFUN_ADD, 2 },
+    { "ffun_fourier", ADF_DRV_FFUN_FOURIER, 1 },
     { "print", ADF_DRV_SHOW, 1 }, /* Slice 3.1-d spelling, api-3.md:848. */
     { "type", ADF_DRV_TYPE, 1 },
     { "qadd_rat", ADF_DRV_QADD_RAT, 2 },
@@ -330,6 +336,7 @@ typedef enum
     ADF_DRV_LBALL,       /* lane drv-ball: the local ball and the partial ball (conventions 5.8, 5.9) */
     ADF_DRV_SBALL,
     ADF_DRV_QCLASS,
+    ADF_DRV_FFUN,
     ADF_DRV_OTHER        /* a kind of the value form with no typed parser in this build */
 } adf_drv_type;
 
@@ -346,6 +353,7 @@ typedef struct
     adf_lball_t b;
     adf_sball_t s;
     adf_qclass_t q;
+    adf_ffun_t ff;
 } adf_drv_value;
 
 typedef struct
@@ -368,6 +376,7 @@ adf_drv_value_init(adf_drv_value * v)
     adf_lball_init(v->b);
     adf_sball_init(v->s);
     adf_qclass_init(v->q);
+    adf_ffun_init(v->ff);
 }
 
 static void
@@ -383,6 +392,7 @@ adf_drv_value_clear(adf_drv_value * v)
     adf_lball_clear(v->b);
     adf_sball_clear(v->s);
     adf_qclass_clear(v->q);
+    adf_ffun_clear(v->ff);
     v->type = ADF_DRV_OTHER;
 }
 
@@ -415,6 +425,8 @@ adf_drv_kind_type(adf_text_kind kind)
             return ADF_DRV_SBALL;
         case ADF_TEXT_QCLASS:
             return ADF_DRV_QCLASS;
+        case ADF_TEXT_FFUN:
+            return ADF_DRV_FFUN;
         default:
             return ADF_DRV_OTHER;
     }
@@ -451,6 +463,8 @@ adf_drv_value_read(adf_drv_value * v, adf_text_kind kind, const char * s, size_t
             return adf_sball_set_str(v->s, s, len, prec, NULL);
         case ADF_TEXT_QCLASS:
             return adf_qclass_set_str(v->q, s, len, prec, NULL);
+        case ADF_TEXT_FFUN:
+            return adf_ffun_set_str(v->ff, s, len, prec, NULL);
         default:
             return ADF_OK;      /* ADF_DRV_OTHER, which the caller has already refused */
     }
@@ -500,6 +514,9 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
             break;
         case ADF_DRV_QCLASS:
             s = adf_qclass_get_str(&len, v->q, digits);
+            break;
+        case ADF_DRV_FFUN:
+            s = adf_ffun_get_str(&len, v->ff, digits);
             break;
         default:
             return ADF_UNSUPPORTED;
@@ -3264,6 +3281,18 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             goto done;
     }
 
+    /* Slice 4a: typed finite function commands; F1 and F4, docs/api-4.md section 9. */
+    if (op==ADF_DRV_FFUN_SHOW || op==ADF_DRV_FFUN_ADD || op==ADF_DRV_FFUN_FOURIER) {
+        if (x.type!=ADF_DRV_FFUN || (op==ADF_DRV_FFUN_ADD && y.type!=ADF_DRV_FFUN))
+            status=ADF_DOMAIN;
+        else if (op==ADF_DRV_FFUN_SHOW) status=adf_drv_value_print(out,&x,st->digits);
+        else {
+            if (op==ADF_DRV_FFUN_ADD) status=adf_ffun_add(z.ff,x.ff,y.ff,st->prec);
+            else status=adf_ffun_fourier(z.ff,x.ff,st->prec);
+            if (status==ADF_OK) { z.type=ADF_DRV_FFUN; status=adf_drv_value_print(out,&z,st->digits); }
+        }
+        goto done;
+    }
     /* Slice 3.1-e, docs/api-3.md 2.3,7: status plus truth, first class inside second.
        The exact query has no precision argument; st->prec affects only input reading. */
     if (op == ADF_DRV_QEQUAL || op == ADF_DRV_QCONTAINS || op == ADF_DRV_QOVERLAPS)
@@ -3593,6 +3622,29 @@ main(int argc, char ** argv)
 
     /* Slice 3.1-d direct user call: adf print 'union((0.5 ; 7)) + Q'.
        Feed the same line reader as script input, preserving all status/length checks. */
+    /* Direct slice-4a calls use the same command parser as scripts. */
+    if (argc>=3 && (!strcmp(argv[1],"ffun") || !strcmp(argv[1],"ffun_fourier") ||
+                    !strcmp(argv[1],"ffun_add"))) {
+        int add=!strcmp(argv[1],"ffun_add");
+        const char *second=NULL;
+        if (!add && argc!=3) return adf_usage("one ffun operand required");
+        if (add) {
+            if (argc==4) second=argv[3];
+            else if (argc==5 && !strcmp(argv[3],"with")) second=argv[4];
+            else return adf_usage("ffun_add requires two operands");
+        }
+        size_t opn=strlen(argv[1]), n=strlen(argv[2]), m=second ? strlen(second) : 0;
+        if (opn+n+m+8>ADF_DRV_MAX_LINE) return adf_usage("command exceeds line limit");
+        size_t size=opn+1+n+(second ? 6+m : 0)+1;
+        char *line=malloc(size);
+        if (line==NULL) return 2;
+        memcpy(line,argv[1],opn); line[opn]=' '; memcpy(line+opn+1,argv[2],n);
+        size_t pos=opn+1+n;
+        if (second) { memcpy(line+pos," with ",6); pos+=6; memcpy(line+pos,second,m); pos+=m; }
+        line[pos]='\n'; rc=adf_driver_run_v(line,size,stdout,0); free(line);
+        if (fflush(stdout)!=0 || ferror(stdout)) rc=2;
+        return rc;
+    }
     if (argc == 3 && strcmp(argv[1], "print") == 0) {
         size_t n = strlen(argv[2]);
         char *line = malloc(n+7);

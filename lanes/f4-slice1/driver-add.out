@@ -1,0 +1,4 @@
+ffun(D=2, M=2; (4) + (0)*i, (2) + (0)*i, (5) + (0)*i, (2) + (0)*i)
+ffun(D=1, M=1; (0.5 +/- 0.25) + (-1)*i)
+error: DOMAIN
+error: PARSE
