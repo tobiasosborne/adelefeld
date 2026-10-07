@@ -344,3 +344,145 @@ It checks all cardinal roots, a preserved strict failure, conjugation and lossle
 
 Check: tests/driver/char-eval.cmd, tests/driver/char-dump.cmd and tests/julia/char_eval.jl.
 Class and idele evaluation, character products and the universal P3 source remain outside this slice.
+
+# Slice c
+
+The four functions implement docs/api-3c.md section 3 and slice c of section 7.
+The value remains t^s chi(u'), as SPEC 5:377-384 and conventions 5.13, CV-58 require.
+There is no hidden conjugation. The stored s ball describes a family of quasi-characters.
+
+## Class evaluation and the real power
+
+adf_char_eval_idclass and adf_char_eval_idclass_strict call the slice b unit-hull helper.
+P1 identifies the complete finite phase set; P2 certifies its four coordinate extrema.
+The functions then multiply that hull by a ball enclosing t^s, using independent temporaries.
+Strict has the same finite-coset certificate, N=0 or C|N. Radii in t and s are allowed.
+It does not decide uniqueness from t, from s, or from the width of a numerical enclosure.
+
+The positive real branch is fixed by the class invariant, conventions 5.7:625-640.
+Every point of t is positive, so log(t) is real. For every s=a+bi in the stored rectangle,
+exp(s log(t)) has modulus exp(a log(t)) and phase b log(t). Thus the complex power introduces
+neither a sign correction nor a conjugation. Those belong to other parts of the formula.
+
+FLINT's contract is on disk. refs/src/flint-3.0.1/arb.rst:6-12 says that an approximate operation
+returns a ball containing the exact result for any choice of points in the input balls.
+arb.rst:1034-1040 defines arb_pow with integer and half-integer shortcuts and, generally,
+"as z = exp(y log x)". acb.rst:637-643 gives the same formula for acb_pow.
+acb.rst:6-18 describes independent real and imaginary balls, hence rectangular enclosures.
+acb.rst:675-679 fixes the logarithm's principal branch; acb.rst:382-389 gives arg(a+bi)=atan2(b,a).
+On the strictly positive real axis that argument is zero. acb.rst:463-468 specifies multiplication
+and its reduction to real operations when a component is zero.
+acb_pow_arb takes a complex base and a real exponent; it does not mean a real base to a complex exponent.
+
+The implementation follows the design's fixed choice: when Im(s) is exactly zero, use arb_pow
+and embed its result with exactly zero imaginary part. Otherwise embed t as a real acb and call acb_pow.
+This also preserves the integer-power shortcut: at exact t=2 and s=1 the real path gives exact 2.
+The design example therefore gives exact -2 here. The public contract promises enclosure, not general exactness.
+s=0 and exact t=1 give exact power 1. No exponent or midpoint is narrowed to a machine floating-point number.
+
+Containment follows stepwise. For each represented input, chi(v) belongs to the P1/P2 unit rectangle.
+The FLINT power contains exp(s log(t)) for every represented t and s on this positive axis.
+Rectangular multiplication therefore contains each product. Finiteness of the power and final product
+is checked before swapping the result into z. The imaginary component stays exactly zero in real line cases.
+
+The rectangle product need not be the rectangular hull of the finite value set.
+For the fourth roots, multiplication of their square by R exp(i theta) gives coordinate widths
+2R(|cos(theta)|+|sin(theta)|); the rotated four-point set has widths
+2R max(|cos(theta)|,|sin(theta)|). The excess is 2R min(|cos(theta)|,|sin(theta)|).
+For t=2,s=2+3i, R=4 and theta=3 log(2), this is positive and does not disappear with precision.
+This is the design's prescribed interval multiplication, not a failure of enclosure or of P2.
+
+The test endpoint allowance over the high-precision rectangle product is
+256*M*2^-p + 2^-24*(W+M*2^-p), M=max(1, endpoint magnitudes), W its coordinate width.
+Against the exact point-value hull, add the explicitly computed rectangle overhang.
+The 60-decimal intervals are outward-rounded certified endpoints. Radius-bearing rows include
+corner/midpoint witnesses and whole-family rectangles per phase. Their four exact hull extrema
+are certified by the following finite-candidate argument, implemented in family_hull.py.
+
+1. Put l=log(t), L=log(t_low), H=log(t_high), and phi=2*pi*phase(chi(v)).
+   A coordinate is exp(a*l) cos(phi+b*l) or exp(a*l) sin(phi+b*l), with a and b in closed intervals.
+   For fixed l,b it is monotone in a, or constant. Thus every extremum occurs at an endpoint of a.
+2. For fixed a,l, extrema as b varies occur at an endpoint of b or a cardinal phase of the coordinate.
+   This follows by differentiating sine/cosine on the finite phase interval.
+3. On an endpoint b!=0, differentiate in l. The real derivative is
+   exp(a*l)*(a*cos(phi+b*l)-b*sin(phi+b*l)); its zeros have phase atan2(a,b)+k*pi.
+   The imaginary derivative gives phase atan2(-b,a)+k*pi. Evaluate each root in [L,H] and both endpoints.
+   For b=0 the coordinate is a constant times exp(a*l), so endpoints suffice.
+4. For an interior cardinal phase theta, feasibility is b0*l<=theta-phi<=b1*l when l>=0,
+   with b0,b1 exchanged when l<=0. Split [L,H] at zero. The two inequalities cut out a closed interval.
+   The coordinate there is +/-exp(a*l), which is monotone or constant. Its extrema occur at interval ends.
+5. These cases exhaust the boundary and interior extrema on a compact parameter box.
+   An exact rational bound on |phi+b*l|, using certified pi/log endpoints, bounds the finite k enumeration.
+   Evaluation uses FLINT at 512 bits. Uncertain feasibility contributes only an outer bound.
+   The inner endpoint uses a certified attained witness. Min/max of these dyadic intervals brackets each
+   exact hull extremum; outward rounding gives an interval at most two units wide on the 10^-60 grid.
+   The generator asserts that width for every continuous-family extremum.
+
+These derivative steps are our own proof. The atan2 contract used to evaluate the stationary phases is
+refs/src/flint-3.0.1/arb.rst:1187-1192; exp/log and ball enclosure use the contracts already cited above.
+
+Check: all 2172 class rows, all their finite phases, five exact exponents, three radius-bearing exponents,
+positive t balls, exact units +/-1, C|N, ambiguous cosets and F2's nonunit printed representative.
+Every value interval is contained; every rectangle endpoint satisfies the stated allowance at p=2,53,128.
+Line cases reject a square. Conjugation is checked on the entire witness value set through slice b's conj.
+
+## Idele evaluation and the sign
+
+adf_char_eval_idele and adf_char_eval_idele_strict first call adf_idclass_set_idele.
+Ideles P15:368-394 proves that this supplies t=|x_inf|/r and u'=sign(x_inf)u.
+The map is multiplicative, has kernel Q^x, and supplies the unique positive representative of each class.
+For a diagonal -1 both real and finite signs are negative, so u'=1 and the character value is 1.
+For (-2;1*[1]) only the real sign is negative. The odd character (3,2) gives chi(-1)=-1,
+so t^1 chi(u')=2*(-1)=-2. The code applies no further sign after conversion.
+
+The conversion is performed at the requested precision before evaluating the temporary class.
+At identical precision and input, idele evaluation returns a rectangle identical to an explicit call
+to adf_idclass_set_idele followed by the corresponding class evaluator. It may be wider than
+evaluation of an exact mathematical norm because conversion rounds the real ball (idclass.h:100-115).
+Negating only x_inf multiplies the value set by chi(-1)=(-1)^parity; it is not diagonal negation.
+
+Check: all 128 idele rows, both real signs, content 1,2,1/3,6/5, exact and radius-bearing x_inf,
+the explicit-conversion identity, odd/even sign identities, diagonal -1 and the exact design example.
+
+## Statuses, aliasing and cost
+
+All four calls preflight prec>ADF_REAL_PREC_MAX and C>ADF_CHAR_MOD_MAX before INV or allocations.
+Either bound gives LIMIT, even when the finite coset is ambiguous or raw storage would fail INV.
+Class strict ambiguity gives NOT_DETERMINED before power evaluation.
+Setup failures propagate UNSUPPORTED. Phase LIMIT propagates before any dependent power work.
+Nonfinite powers or products give NOT_DETERMINED. Idele conversion failure stops class evaluation.
+Every failure preserves all output bytes. Each successful path has one final acb swap.
+
+A raw t meeting zero or negative values is rejected by adf_idclass_set_parts with DOMAIN.
+Such a class is not an evaluation input. INV aborts on its invalid storage; ordinary evaluation
+has no promised status for invalid storage. This is the design's positive-ball distinction in section 3.
+Valid idele conversion can fail to preserve positivity at low precision and gives NOT_DETERMINED.
+No raw-real evaluator or additional complex branch was introduced.
+
+Output member aliasing with either input is forbidden. INV tests both arb components of z against
+both components of chi->s and the class t or idele inf member. No same-type whole-object alias exists
+between these heterogeneous inputs and the acb output. Call-local objects are initialized and cleared.
+
+Class cost is the unit call, one power and one multiplication. Idele adds class conversion.
+The unit cost remains D(C)+O(C) exact work for an ambiguous default coset and four phase evaluations,
+with streaming storage. There is no factorization of N and no enumeration modulo lcm(C,N).
+The implementation retains separate base/power/result temporaries and repeats INV predicate setup.
+These are avoidable costs, not an optimized algorithm. No new design decision was needed.
+
+Check: strict output snapshots, precision 2,53,cap and cap+1, conductor cap and cap+1,
+constructor DOMAIN snapshots, valid conversion failure, injected setup/phase/power/product/conversion failures,
+zero dependent calls after conversion failure, all 32 INV children and FLINT allocation balance over 100 cycles.
+LeakSanitizer availability and mutation results are reported separately in lanes/c-slice3/report.md.
+
+## User calls and limits of evidence
+
+char_eval C with X and char_eval_strict C with X accept an idele or class text X.
+Both print the usual complex ball, including the design example -2. The 21 expected fixture lines
+were derived by hand before running the driver. Julia allocates using exported layout queries,
+retains every storage owner with GC.@preserve and calls the design's adf_char_eval_idele ABI.
+
+Check: tests/driver/char-class.cmd and tests/julia/char_class.jl.
+The six required scratch faults concern sign, exponent conjugation, content, strictness,
+one-corner multiplication and early output writes. Their actual exits are in the lane report.
+The inherited universal FLINT Conrey pairing/source gaps remain pending. This slice adds no such dependency.
+There is no claim of long fuzzing or unbounded mutation coverage.

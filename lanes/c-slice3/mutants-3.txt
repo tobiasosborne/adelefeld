@@ -1,0 +1,12 @@
+mutate: src/char.c: 498 mutants
+mutate: 498 mutants, 10 of them run (--limit 10, --seed 310411)
+src/char.c:229:18 zero_one: '0' -> '1'
+src/char.c:260:37 zero_one: '1' -> '0'
+src/char.c:168:5 call_swap: 'arf_sub' -> 'arf_add'
+src/char.c:243:5 negate_if: 'if(st == ADF_OK)' -> 'if(!(st == ADF_OK))'
+src/char.c:269:5 drop_assign: 'g = n_gcd(fmpz_fdiv_ui(u->N, C), C);' -> '' (the statement is removed)
+src/char.c:59:41 logic: '&&' -> '||'
+src/char.c:277:65 cmp: '==' -> '!='
+src/char.c:191:64 drop_call: 'arf_mul_2exp_si(bound, bound, -w);' -> '' (the statement is removed)
+src/char.c:210:19 cmp: '<' -> '<='
+src/char.c:220:41 op: '+' -> '-'

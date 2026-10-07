@@ -1,0 +1,31 @@
+$ timeout 180 python3 -u tools/mutate/mutate.py --root /tmp/adf-c-slice3-mutation-root --scratch /tmp/adf-c-slice3-mutate-2 --files src/char.c --limit 10 --seed 310410 --jobs 1 --timeout 120 --san --make timeout 110 sh lanes/c-slice3/mutate_check.sh --copy Makefile include src tests lanes
+mutate: src/char.c: 498 mutants
+mutate: 498 mutants, 10 of them run (--limit 10, --seed 310410)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (39.4 s)
+
+NOT COMPILED src/char.c:76:34 drop_assign: 'e = 0;' -> '' (the statement is removed)
+  src/char.c:88:57: error: ‘e’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/char.c:45:19 logic: '||' -> '&&'
+  src/char.c:45:19: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/char.c:71:14 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -69,5 +69,5 @@
+       if (q > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+       ADF_INV_CHAR(x); CHAR_INDEPENDENT(s, x);
+  -    if (q == 1) { C = 1; label = 1; e = 0; }
+  +    if (q == 0) { C = 1; label = 1; e = 0; }
+       else {
+           if (!dirichlet_group_init(G, q)) return ADF_UNSUPPORTED;
+
+
+NOT COMPILED src/char.c:40:5 drop_assign: 'e = x->parity;' -> '' (the statement is removed)
+  src/char.c:40:39: error: ‘e’ is used uninitialized [-Werror=uninitialized]
+
+mutate: 10 mutants in 137.5 s: 6 killed, 1 survived, 3 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check
+EXIT 1

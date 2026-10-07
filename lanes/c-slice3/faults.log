@@ -1,0 +1,50 @@
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice3/faults/drop_real_sign.c -o lanes/c-slice3/faults/drop_real_sign.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/faults/drop_real_sign.o lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -o lanes/c-slice3/faults/drop_real_sign.exe
+EXIT 0
+$ timeout 30 lanes/c-slice3/faults/drop_real_sign.exe
+test_char_class:170: acb_equal(z, negated)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice3/faults/conjugate_s.c -o lanes/c-slice3/faults/conjugate_s.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/faults/conjugate_s.o lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -o lanes/c-slice3/faults/conjugate_s.exe
+EXIT 0
+$ timeout 30 lanes/c-slice3/faults/conjugate_s.exe
+value id=3, coordinate=2
+test_char_class:105: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice3/faults/omit_content.c -o lanes/c-slice3/faults/omit_content.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/faults/omit_content.o lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -o lanes/c-slice3/faults/omit_content.exe
+EXIT 0
+$ timeout 30 lanes/c-slice3/faults/omit_content.exe
+test_char_class:165: adf_char_eval_idele(z, chi, x, prec) == ADF_OK && acb_equal(z, other)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice3/faults/strict_t_only.c -o lanes/c-slice3/faults/strict_t_only.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/faults/strict_t_only.o lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -o lanes/c-slice3/faults/strict_t_only.exe
+EXIT 0
+$ timeout 30 lanes/c-slice3/faults/strict_t_only.exe
+test_char_class:127: adf_char_eval_idclass_strict(z, chi, x, prec) == (ui(at(v, 6)) ? ADF_OK : ADF_NOT_DETERMINED)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice3/faults/one_corner.c -o lanes/c-slice3/faults/one_corner.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/faults/one_corner.o lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -o lanes/c-slice3/faults/one_corner.exe
+EXIT 0
+$ timeout 30 lanes/c-slice3/faults/one_corner.exe
+value id=0, coordinate=0
+test_char_class:105: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice3/faults/early_write.c -o lanes/c-slice3/faults/early_write.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/faults/early_write.o lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -o lanes/c-slice3/faults/early_write.exe
+EXIT 0
+$ timeout 30 lanes/c-slice3/faults/early_write.exe
+test_char_class:58: memcmp(bytes, z, sizeof(*bytes)) == 0
+timeout: the monitored command dumped core
+EXIT -6

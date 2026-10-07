@@ -902,6 +902,13 @@ the conductor divides the coset modulus or U is exact. For example:
 
 The first command encloses the four cardinal roots, the second gives NOT_DETERMINED, and the third
 prints label 3 with s=(1)+(2)*i. Direct calls also accept the two operands without `with`.
+
+`char_eval C with X` and `char_eval_strict C with X` accept a character C and an idele or idele class X.
+They print the complex enclosure of t^s chi(u'). For an idele, t=|x_inf|/r and u'=sign(x_inf)u.
+For example, `adf char_eval 'char(q=3, n=2, s=(1) + (0)*i)' with '(-2 ; 1 * [1])'` gives -2.
+Strict requires an exact unit or a coset modulus divisible by the conductor. It allows radii in t and s.
+Failures use the usual status line. Direct calls accept the operands with or without `with`.
+Checks: tests/driver/char-class.cmd and tests/julia/char_class.jl (api-3c section 7, slice c).
 In scripts, `dump C` writes the strict lossless body `adf1 Q char q n acb` (hexadecimal fields).
 `load` reads that body with the typed character loader. An imprimitive dump pair gives DOMAIN.
 Value text construction continues to lower imprimitive pairs.

@@ -1,0 +1,278 @@
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/0.c -o lanes/c-slice3/rechecks-c/0.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/0.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/0.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/0.exe
+test_char_class:231: adf_char_eval_idclass(z, chi, c, prec) == ADF_OK && acb_is_one(z)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/1.c -o lanes/c-slice3/rechecks-c/1.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/1.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/1.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/1.exe
+test_char_class:231: adf_char_eval_idclass(z, chi, c, prec) == ADF_OK && acb_is_one(z)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/2.c -o lanes/c-slice3/rechecks-c/2.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/2.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/2.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/2.exe
+test_char_class:219: st == ADF_LIMIT
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/3.c -o lanes/c-slice3/rechecks-c/3.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/3.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/3.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/3.exe
+test_char_class:132: adf_char_eval_idclass(z, chi, x, prec) == ADF_OK
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/4.c -o lanes/c-slice3/rechecks-c/4.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/4.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/4.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/4.exe
+test_char_class:127: adf_char_eval_idclass_strict(z, chi, x, prec) == (ui(at(v, 6)) ? ADF_OK : ADF_NOT_DETERMINED)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/5.c -o lanes/c-slice3/rechecks-c/5.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/5.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/5.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/5.exe
+test_char_class:233: adf_char_eval_idele(z, chi, x, prec) == ADF_OK && acb_is_one(z)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/6.c -o lanes/c-slice3/rechecks-c/6.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/6.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/6.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/6.exe
+test_char_class:233: adf_char_eval_idele(z, chi, x, prec) == ADF_OK && acb_is_one(z)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/7.c -o lanes/c-slice3/rechecks-c/7.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/7.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/7.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/7.exe
+test_char_class:219: st == ADF_LIMIT
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/8.c -o lanes/c-slice3/rechecks-c/8.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/8.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/8.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/8.exe
+test_char_class:165: adf_char_eval_idele(z, chi, x, prec) == ADF_OK && acb_equal(z, other)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/9.c -o lanes/c-slice3/rechecks-c/9.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/9.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/9.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/9.exe
+test_char_class:173: adf_char_eval_idele_strict(z, chi, x, prec) == st
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/10.c -o lanes/c-slice3/rechecks-c/10.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/10.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/10.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/10.exe
+memory: 20600 FLINT blocks, 0 live after 100 cycles
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+=================================================================
+==152==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x71d080d5d1f8 at pc 0x5a053a332cb0 bp 0x7ffe01e6e2c0 sp 0x7ffe01e6e2b0
+READ of size 48 at 0x71d080d5d1f8 thread T0
+    #0 0x5a053a332caf in arb_swap /usr/include/flint/arb.h:141
+    #1 0x5a053a332caf in acb_swap /usr/include/flint/acb.h:141
+    #2 0x5a053a332caf in char_class lanes/c-slice3/rechecks-c/10.c:380
+    #3 0x5a053a31dbfe in invariants tests/test_char_class.c:398
+    #4 0x5a053a31c036 in main tests/test_char_class.c:419
+    #5 0x71d082e2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #6 0x71d082e2a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #7 0x5a053a31c594 in _start (/home/tobias/Projects/adelefeld-wt/c-slice3/lanes/c-slice3/rechecks-c/10.exe+0x13a594) (BuildId: cd4cffb3d0864ca032acfa17c33a7a0628ba4227)
+
+Address 0x71d080d5d1f8 is located in stack of thread T0 at offset 504 in frame
+    #0 0x5a053a31d6bf in invariants tests/test_char_class.c:378
+
+  This frame has 5 object(s):
+    [32, 36) 'status' (line 404)
+    [48, 112) 'c' (line 382)
+    [144, 224) 'x' (line 382)
+    [256, 352) 'z' (line 382)
+    [384, 504) 'chi' (line 382) <== Memory access at offset 504 overflows this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-buffer-overflow /usr/include/flint/arb.h:141 in arb_swap
+Shadow bytes around the buggy address:
+  0x71d080d5cf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x71d080d5cf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x71d080d5d000: f1 f1 f1 f1 f8 f2 00 00 00 00 00 00 00 00 f2 f2
+  0x71d080d5d080: f2 f2 00 00 00 00 00 00 00 00 00 00 f2 f2 f2 f2
+  0x71d080d5d100: 00 00 00 00 00 00 00 00 00 00 00 00 f2 f2 f2 f2
+=>0x71d080d5d180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00[f3]
+  0x71d080d5d200: f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
+  0x71d080d5d280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x71d080d5d300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x71d080d5d380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x71d080d5d400: f1 f1 f1 f1 00 00 00 00 00 00 f2 f2 f2 f2 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==152==ABORTING
+test_char_class:405: WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/11.c -o lanes/c-slice3/rechecks-c/11.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/11.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/11.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/11.exe
+value id=3, coordinate=0
+test_char_class:105: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/12.c -o lanes/c-slice3/rechecks-c/12.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/12.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/12.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/12.exe
+test_char_class:132: adf_char_eval_idclass(z, chi, x, prec) == ADF_OK
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/13.c -o lanes/c-slice3/rechecks-c/13.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/13.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/13.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/13.exe
+test_char_class:132: adf_char_eval_idclass(z, chi, x, prec) == ADF_OK
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-c/14.c -o lanes/c-slice3/rechecks-c/14.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-c/14.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-c/14.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-c/14.exe
+memory: 20600 FLINT blocks, 0 live after 100 cycles
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+=================================================================
+==227==ERROR: AddressSanitizer: unknown-crash on address 0x7e89eeb5d0c0 at pc 0x5c159f92ee84 bp 0x7ffc61e17070 sp 0x7ffc61e17060
+READ of size 48 at 0x7e89eeb5d0c0 thread T0
+    #0 0x5c159f92ee83 in arb_swap /usr/include/flint/arb.h:141
+    #1 0x5c159f92ee83 in acb_swap /usr/include/flint/acb.h:141
+    #2 0x5c159f92ee83 in char_class lanes/c-slice3/rechecks-c/14.c:380
+    #3 0x5c159f92f1ef in char_idele lanes/c-slice3/rechecks-c/14.c:403
+    #4 0x5c159f919cdf in invariants tests/test_char_class.c:400
+    #5 0x5c159f918036 in main tests/test_char_class.c:419
+    #6 0x7e89f0c2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #7 0x7e89f0c2a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #8 0x5c159f918594 in _start (/home/tobias/Projects/adelefeld-wt/c-slice3/lanes/c-slice3/rechecks-c/14.exe+0x13a594) (BuildId: bb44e13a2ac3fb262aea8f3d234faba5477e8952)
+
+Address 0x7e89eeb5d0c0 is located in stack of thread T0 at offset 192 in frame
+    #0 0x5c159f9196bf in invariants tests/test_char_class.c:378
+
+  This frame has 5 object(s):
+    [32, 36) 'status' (line 404)
+    [48, 112) 'c' (line 382)
+    [144, 224) 'x' (line 382) <== Memory access at offset 192 partially overflows this variable
+    [256, 352) 'z' (line 382)
+    [384, 504) 'chi' (line 382)
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: unknown-crash /usr/include/flint/arb.h:141 in arb_swap
+Shadow bytes around the buggy address:
+  0x7e89eeb5ce00: f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5
+  0x7e89eeb5ce80: f5 f5 f5 f5 f5 f5 f5 f5 00 00 00 00 00 00 00 00
+  0x7e89eeb5cf00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7e89eeb5cf80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7e89eeb5d000: f1 f1 f1 f1 f8 f2 00 00 00 00 00 00 00 00 f2 f2
+=>0x7e89eeb5d080: f2 f2 00 00 00 00 00 00[00]00 00 00 f2 f2 f2 f2
+  0x7e89eeb5d100: 00 00 00 00 00 00 00 00 00 00 00 00 f2 f2 f2 f2
+  0x7e89eeb5d180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f3
+  0x7e89eeb5d200: f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7e89eeb5d280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7e89eeb5d300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==227==ABORTING
+test_char_class:405: WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT
+timeout: the monitored command dumped core
+EXIT -6

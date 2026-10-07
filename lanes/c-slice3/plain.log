@@ -1,0 +1,100 @@
+$ timeout 120 make -s -j2 BUILD=lanes/c-slice3/plain lanes/c-slice3/plain/test_char lanes/c-slice3/plain/test_char_eval lanes/c-slice3/plain/test_char_class
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000121 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_eval
+conjugation: 1966 characters, 74434 unit products
+memory: 3300 FLINT blocks, 0 live after 100 cycles
+test_char_eval: 1738298 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class
+memory: 4400 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1001857 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/plain/test_char_class_wrap
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class_wrap
+memory: 4400 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1001951 checks
+EXIT 0
+$ timeout 120 make -s -j2 BUILD=lanes/c-slice3/plain lanes/c-slice3/plain/test_char lanes/c-slice3/plain/test_char_eval lanes/c-slice3/plain/test_char_class
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000171 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_eval
+conjugation: 1966 characters, 74434 unit products
+memory: 3300 FLINT blocks, 0 live after 100 cycles
+test_char_eval: 1738298 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class
+test_char_class:102: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 120 make -s -j2 BUILD=lanes/c-slice3/plain lanes/c-slice3/plain/test_char lanes/c-slice3/plain/test_char_eval lanes/c-slice3/plain/test_char_class
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000139 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_eval
+conjugation: 1966 characters, 74434 unit products
+memory: 3300 FLINT blocks, 0 live after 100 cycles
+test_char_eval: 1738298 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class
+test_char_class:102: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 120 make -s -j2 BUILD=lanes/c-slice3/plain lanes/c-slice3/plain/test_char lanes/c-slice3/plain/test_char_eval lanes/c-slice3/plain/test_char_class
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000209 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_eval
+conjugation: 1966 characters, 74434 unit products
+memory: 3300 FLINT blocks, 0 live after 100 cycles
+test_char_eval: 1738298 checks
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class
+memory: 8600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1195824 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/plain/test_char_class_wrap
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class_wrap
+memory: 8600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1195922 checks
+EXIT 0
+$ timeout 120 make -s -j2 BUILD=lanes/c-slice3/plain lanes/c-slice3/plain/test_char_class
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class
+memory: 8600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1208880 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/plain/test_char_class_wrap
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class_wrap
+memory: 8600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1208978 checks
+EXIT 0
+$ timeout 120 make -s -j2 BUILD=lanes/c-slice3/plain lanes/c-slice3/plain/test_char_class
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class
+memory: 8600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1208883 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/plain/support/jsonl.o lanes/c-slice3/plain/support/golden.o lanes/c-slice3/plain/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/plain/test_char_class_wrap
+EXIT 0
+$ timeout 60 lanes/c-slice3/plain/test_char_class_wrap
+memory: 8600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1208981 checks
+EXIT 0

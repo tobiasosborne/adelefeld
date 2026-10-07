@@ -10,6 +10,7 @@
 #include "adelefeld/text.h"
 #include "adelefeld/psi.h"
 #include "adelefeld/ucoset.h"
+#include "adelefeld/idclass.h"
 
 #define ADF_CHAR_MOD_MAX 65536
 
@@ -111,6 +112,27 @@ void adf_char_conj(adf_char_t y, const adf_char_t x);
    streaming storage. Reduce N modulo C; never factor N or enumerate lcm(C,N). */
 int adf_char_eval_ucoset(acb_t z, const adf_char_t chi, const adf_ucoset_t u, slong prec);
 int adf_char_eval_ucoset_strict(acb_t z, const adf_char_t chi, const adf_ucoset_t u, slong prec);
+
+/* Slice c, api-3c 3: enclose {exp(s log(t)) chi(v): s in chi->s, t in x->t, v in x->u}.
+   Multiply the P1/P2 unit hull by a certified power on the positive real axis (CV-58).
+   Use arb_pow for exactly real s, acb_pow otherwise; embed real powers with exact Im=0.
+   Sources: refs/src/flint-3.0.1/arb.rst:1034-1040, acb.rst:637-643; conventions 5.13.
+   Strict has exactly the finite-coset certificate: N=0 or C|N; uncertainty in t/s is allowed.
+   OK/LIMIT/UNSUPPORTED/NOT_DETERMINED; precision and C bounds precede INV/ambiguity/work.
+   Nonfinite intermediate balls give NOT_DETERMINED. Every failure leaves z untouched.
+   x must be canonical: t is finite and certified positive. Raw invalid t is rejected by
+   adf_idclass_set_parts with DOMAIN; INV aborts on invalid class storage. No member aliasing
+   with chi or x (including either arb of z). Cost unit call plus one power and multiplication. */
+int adf_char_eval_idclass(acb_t z, const adf_char_t chi, const adf_idclass_t x, slong prec);
+int adf_char_eval_idclass_strict(acb_t z, const adf_char_t chi, const adf_idclass_t x, slong prec);
+/* Through adf_idclass_set_idele then the preceding call, into temporaries. That map supplies
+   t=|x_inf|/r and u'=sign(x_inf)u; apply the sign once (ideles P15:368-394, CV-58).
+   Same statuses, preflight and untouched-output rule, plus NOT_DETERMINED from conversion.
+   Precision/C LIMIT precedes conversion; conversion failure stops dependent work.
+   No output alias with any input member, including x->inf. Cost conversion plus class call;
+   the conversion may widen the real ball. Sources: api-3c 3; idclass.h:100-115. */
+int adf_char_eval_idele(acb_t z, const adf_char_t chi, const adf_idele_t x, slong prec);
+int adf_char_eval_idele_strict(acb_t z, const adf_char_t chi, const adf_idele_t x, slong prec);
 
 #ifdef __cplusplus
 }

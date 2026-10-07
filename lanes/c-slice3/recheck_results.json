@@ -1,0 +1,119 @@
+[
+  {
+    "mutant": "src/char.c:229:18 zero_one: '0' -> '1'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:260:37 zero_one: '1' -> '0'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:168:5 call_swap: 'arf_sub' -> 'arf_add'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:243:5 negate_if: 'if(st == ADF_OK)' -> 'if(!(st == ADF_OK))'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": 0
+      },
+      {
+        "test": "test_char",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:269:5 drop_assign: 'g = n_gcd(fmpz_fdiv_ui(u->N, C), C);' -> '' (the statement is removed)",
+    "compile": 1,
+    "tests": [],
+    "status": "not compiled"
+  },
+  {
+    "mutant": "src/char.c:59:41 logic: '&&' -> '||'",
+    "compile": 1,
+    "tests": [],
+    "status": "not compiled"
+  },
+  {
+    "mutant": "src/char.c:277:65 cmp: '==' -> '!='",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:191:64 drop_call: 'arf_mul_2exp_si(bound, bound, -w);' -> '' (the statement is removed)",
+    "compile": 1,
+    "tests": [],
+    "status": "not compiled"
+  },
+  {
+    "mutant": "src/char.c:210:19 cmp: '<' -> '<='",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": 0
+      },
+      {
+        "test": "test_char",
+        "link": 0,
+        "exit": 0
+      },
+      {
+        "test": "test_char_eval",
+        "link": 0,
+        "exit": 0
+      }
+    ],
+    "status": "survived"
+  },
+  {
+    "mutant": "src/char.c:220:41 op: '+' -> '-'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  }
+]

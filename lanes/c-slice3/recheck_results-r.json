@@ -1,0 +1,14 @@
+[
+  {
+    "mutant": "src/char.c:174:74 zero_one: '1' -> '0'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  }
+]

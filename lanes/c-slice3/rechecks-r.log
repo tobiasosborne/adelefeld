@@ -1,0 +1,8 @@
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks-r/0.c -o lanes/c-slice3/rechecks-r/0.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks-r/0.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks-r/0.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks-r/0.exe
+test_char_class:217: text != NULL && !strcmp(text, "((0 +/- 1.1) + (0)*i ; 0)")
+timeout: the monitored command dumped core
+EXIT -6

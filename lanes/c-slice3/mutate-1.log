@@ -1,0 +1,25 @@
+$ timeout 180 python3 -u tools/mutate/mutate.py --root /tmp/adf-c-slice3-mutation-root --scratch /tmp/adf-c-slice3-mutate-1 --files src/char.c --limit 10 --seed 310409 --jobs 1 --timeout 120 --san --make timeout 110 sh lanes/c-slice3/mutate_check.sh --copy Makefile include src tests lanes
+mutate: src/char.c: 498 mutants
+mutate: 498 mutants, 10 of them run (--limit 10, --seed 310409)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (36.8 s)
+
+SURVIVED src/char.c:174:74 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -172,5 +172,5 @@
+       else {
+           arf_set_round(r, r, 30, ARF_RND_CEIL); arf_get_fmpz_2exp(man, exp, r);
+  -        fmpz_mul_2exp(man, man, 30-fmpz_bits(man)); v = fmpz_get_ui(man)+1;
+  +        fmpz_mul_2exp(man, man, 30-fmpz_bits(man)); v = fmpz_get_ui(man)+0;
+           fmpz_set(MAG_EXPREF(arb_radref(z)), ARF_EXPREF(r));
+           if (v == (UWORD(1) << 30)) {
+
+
+NOT COMPILED src/char.c:211:9 drop_call: 'char_phase(&zero, theta, G, c, a);' -> '' (the statement is removed)
+  src/char.c:211:13: error: ‘zero’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+mutate: 10 mutants in 137.7 s: 8 killed, 1 survived, 1 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check
+EXIT 1

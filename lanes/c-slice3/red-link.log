@@ -1,0 +1,27 @@
+/usr/bin/ld: /tmp/ccouCeqM.o: in function `edges':
+/home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:180:(.text+0x89e): undefined reference to `adf_char_eval_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:184:(.text+0x980): undefined reference to `adf_char_eval_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:199:(.text+0xcc4): undefined reference to `adf_char_eval_idele_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:206:(.text+0xe02): undefined reference to `adf_char_eval_idele_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:212:(.text+0xeab): undefined reference to `adf_char_eval_idclass'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:213:(.text+0xf3c): undefined reference to `adf_char_eval_idclass_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:214:(.text+0xfc4): undefined reference to `adf_char_eval_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:215:(.text+0x105e): undefined reference to `adf_char_eval_idele_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:196:(.text+0x117d): undefined reference to `adf_char_eval_idclass'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:204:(.text+0x119d): undefined reference to `adf_char_eval_idclass'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:198:(.text+0x11a7): undefined reference to `adf_char_eval_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:206:(.text+0x11b1): undefined reference to `adf_char_eval_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:197:(.text+0x11c7): undefined reference to `adf_char_eval_idclass_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:205:(.text+0x11dd): undefined reference to `adf_char_eval_idclass_strict'
+/usr/bin/ld: /tmp/ccouCeqM.o: in function `class_vectors':
+/home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:118:(.text+0x1de2): undefined reference to `adf_char_eval_idclass_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:123:(.text+0x1f68): undefined reference to `adf_char_eval_idclass'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:128:(.text+0x1fea): undefined reference to `adf_char_eval_idclass'
+/usr/bin/ld: /tmp/ccouCeqM.o: in function `idele_vectors':
+/home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:155:(.text+0x264e): undefined reference to `adf_char_eval_idclass'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:156:(.text+0x2677): undefined reference to `adf_char_eval_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:159:(.text+0x279c): undefined reference to `adf_char_eval_idele'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:163:(.text+0x2963): undefined reference to `adf_char_eval_idclass_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice3/tests/test_char_class.c:164:(.text+0x297e): undefined reference to `adf_char_eval_idele_strict'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/c-slice3/plain/test_char_class] Error 1

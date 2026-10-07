@@ -1,0 +1,29 @@
+$ timeout 180 python3 -u tools/mutate/mutate.py --root /tmp/adf-c-slice3-mutation-root --scratch /tmp/adf-c-slice3-mutate-3 --files src/char.c --limit 10 --seed 310411 --jobs 1 --timeout 120 --san --make timeout 110 sh lanes/c-slice3/mutate_check.sh --copy Makefile include src tests lanes
+mutate: src/char.c: 498 mutants
+mutate: 498 mutants, 10 of them run (--limit 10, --seed 310411)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (38.3 s)
+
+SURVIVED src/char.c:229:18 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -227,5 +227,5 @@
+           else acb_swap(tau, out);
+       }
+  -    for (int j = 0; j < 4; j++) arf_clear(sums+j);
+  +    for (int j = 1; j < 4; j++) arf_clear(sums+j);
+       arf_clear(lo); arf_clear(hi); fmpq_clear(theta); fmpq_clear(additive); acb_clear(term); acb_clear(out);
+       dirichlet_char_clear(c); dirichlet_group_clear(G); return st;
+
+
+NOT COMPILED src/char.c:269:5 drop_assign: 'g = n_gcd(fmpz_fdiv_ui(u->N, C), C);' -> '' (the statement is removed)
+  src/char.c:269:16: error: ‘g’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/char.c:59:41 logic: '&&' -> '||'
+  src/char.c:59:25: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/char.c:191:64 drop_call: 'arf_mul_2exp_si(bound, bound, -w);' -> '' (the statement is removed)
+  src/char.c:187:53: error: unused parameter ‘w’ [-Werror=unused-parameter]
+mutate: stopped by signal 15: 1 running command(s) killed, scratch removed
+EXIT 124

@@ -1,0 +1,166 @@
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/0.c -o lanes/c-slice3/rechecks/0.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks/0.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/0.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/0.exe
+test_char_class:371: live_blocks == 0
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/1.c -o lanes/c-slice3/rechecks/1.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks/1.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/1.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/1.exe
+test_char_class:84: arb_le(excess, bound)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/2.c -o lanes/c-slice3/rechecks/2.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks/2.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/2.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/2.exe
+value id=165, coordinate=0
+test_char_class:105: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/3.c -o lanes/c-slice3/rechecks/3.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks/3.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/3.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/3.exe
+memory: 20600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1209066 checks
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_WRAP_SETUP tests/test_char.c lanes/c-slice3/rechecks/3.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/3.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/3.exe
+test_char:287: fmpq_cmp(mid, hi) <= 0
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/4.c -o lanes/c-slice3/rechecks/4.o
+lanes/c-slice3/rechecks/4.c: In function ‘char_unit’:
+lanes/c-slice3/rechecks/4.c:269:16: error: ‘g’ may be used uninitialized [-Werror=maybe-uninitialized]
+  269 |      residue = fmpz_fdiv_ui(u->c, g);
+      |                ^~~~~~~~~~~~~~~~~~~~~
+lanes/c-slice3/rechecks/4.c:256:64: note: ‘g’ was declared here
+  256 |     dirichlet_group_t G; dirichlet_char_t c; ulong C = chi->q, g, residue, a;
+      |                                                                ^
+cc1: all warnings being treated as errors
+EXIT 1
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/5.c -o lanes/c-slice3/rechecks/5.o
+lanes/c-slice3/rechecks/5.c: In function ‘adf_char_identical’:
+lanes/c-slice3/rechecks/5.c:59:25: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+   59 |     return x->q == y->q && x->n == y->n || x->parity == y->parity && acb_equal(x->s, y->s);
+      |            ~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+EXIT 1
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/6.c -o lanes/c-slice3/rechecks/6.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks/6.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/6.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/6.exe
+test_char_class:132: adf_char_eval_idclass(z, chi, x, prec) == ADF_OK
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/7.c -o lanes/c-slice3/rechecks/7.o
+lanes/c-slice3/rechecks/7.c: In function ‘char_radii’:
+lanes/c-slice3/rechecks/7.c:187:53: error: unused parameter ‘w’ [-Werror=unused-parameter]
+  187 | static int char_radii(const acb_t z, ulong C, slong w, ulong factor)
+      |                                                     ^
+cc1: all warnings being treated as errors
+EXIT 1
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice3/rechecks/8.c -o lanes/c-slice3/rechecks/8.o
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_CLASS_WRAP tests/test_char_class.c lanes/c-slice3/rechecks/8.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_pow -Wl,--wrap=acb_pow -Wl,--wrap=acb_mul -Wl,--wrap=adf_idclass_set_idele -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/8.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/8.exe
+memory: 20600 FLINT blocks, 0 live after 100 cycles
+test_char_class: 1209066 checks
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_WRAP_SETUP tests/test_char.c lanes/c-slice3/rechecks/8.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/8.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/8.exe
+memory: 5800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000440 seconds
+test_char: 129825 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_EVAL_WRAP tests/test_char_eval.c lanes/c-slice3/rechecks/8.o lanes/c-slice3/mut-base/support/jsonl.o lanes/c-slice3/mut-base/support/golden.o lanes/c-slice3/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice3/rechecks/8.exe
+EXIT 0
+$ timeout 60 lanes/c-slice3/rechecks/8.exe
+conjugation: 1966 characters, 74434 unit products
+memory: 8100 FLINT blocks, 0 live after 100 cycles
+test_char_eval: 1738351 checks
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument u is not a canonical adf_ucoset
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_dump_str: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument y is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_load_str_binds: argument x is not a canonical adf_char
+EXIT 0

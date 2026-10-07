@@ -1,0 +1,182 @@
+[
+  {
+    "mutant": "src/char.c:361:14 cmp: '>' -> '>='",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:361:44 cmp: '>' -> '>='",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:361:71 status: 'ADF_LIMIT' -> 'ADF_OK'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:386:38 zero_one: '0' -> '1'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:388:38 zero_one: '1' -> '0'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:396:14 cmp: '>' -> '>='",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:396:44 cmp: '>' -> '>='",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:396:71 status: 'ADF_LIMIT' -> 'ADF_OK'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:407:38 zero_one: '0' -> '1'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:409:38 zero_one: '1' -> '0'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:365:5 drop_call: 'char_value_independent(z, chi, x->t);' -> '' (the statement is removed)",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:370:9 negate_if: 'if(arb_is_zero(acb_imagref(chi->s)))' -> 'if(!(arb_is_zero(acb_imagref(chi->s))))'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:376:9 negate_if: 'if(!acb_is_finite(power))' -> 'if(!(!acb_is_finite(power)))'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:379:13 negate_if: 'if(!acb_is_finite(out))' -> 'if(!(!acb_is_finite(out)))'",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  },
+  {
+    "mutant": "src/char.c:400:5 drop_call: 'char_value_independent(z, chi, x->inf);' -> '' (the statement is removed)",
+    "compile": 0,
+    "tests": [
+      {
+        "test": "test_char_class",
+        "link": 0,
+        "exit": -6
+      }
+    ],
+    "status": "killed"
+  }
+]

@@ -246,6 +246,9 @@ typedef enum
     ADF_DRV_TENSOR_INTEGRAL,
     ADF_DRV_TENSOR_NORM2,
     ADF_DRV_POISSON,           /* slice 4g (lane f4-slice6): Poisson summation, adf_drv_poisson */
+
+    ADF_DRV_CHAR_EVAL,
+    ADF_DRV_CHAR_EVAL_STRICT,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -372,6 +375,9 @@ static const struct
     { "tensor_integral", ADF_DRV_TENSOR_INTEGRAL, 2 },
     { "tensor_norm2", ADF_DRV_TENSOR_NORM2, 2 },
     { "poisson", ADF_DRV_POISSON, 3 },
+
+    { "char_eval", ADF_DRV_CHAR_EVAL, 2 },
+    { "char_eval_strict", ADF_DRV_CHAR_EVAL_STRICT, 2 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -3507,16 +3513,20 @@ static int adf_drv_char(FILE *out, adf_drv_op op, const adf_drv_line *l, const a
 {
     adf_char_t x; adf_rat_t a; adf_ucoset_t u; acb_t tau, W; adf_text_kind kind[2];
     int unit = op == ADF_DRV_CHAR_UNIT || op == ADF_DRV_CHAR_UNIT_STRICT;
+    int eval = op == ADF_DRV_CHAR_EVAL || op == ADF_DRV_CHAR_EVAL_STRICT;
+    adf_idclass_t cl; adf_idele_t id;
     char *text = NULL, *root = NULL; size_t len = 0, rootlen = 0; int status;
     adf_char_init(x); adf_rat_init(a); adf_ucoset_init(u); acb_init(tau); acb_init(W);
+    adf_idclass_init(cl); adf_idele_init(id);
     status = adf_text_classify(kind, l->s[0], l->n[0], NULL);
     if (status != ADF_OK) goto done;
-    if (op == ADF_DRV_CHI || unit) {
+    if (op == ADF_DRV_CHI || unit || eval) {
         status = adf_text_classify(kind+1, l->s[1], l->n[1], NULL);
         if (status != ADF_OK) goto done;
     }
     if (kind[0] != ADF_TEXT_CHAR || (op == ADF_DRV_CHI && kind[1] != ADF_TEXT_RAT) ||
-        (unit && kind[1] != ADF_TEXT_UCOSET)) {
+        (unit && kind[1] != ADF_TEXT_UCOSET) ||
+        (eval && kind[1] != ADF_TEXT_IDCLASS && kind[1] != ADF_TEXT_IDELE)) {
         status = ADF_UNSUPPORTED; goto done;
     }
     status = adf_char_set_str(x, l->s[0], l->n[0], state->prec, NULL);
@@ -3538,6 +3548,19 @@ static int adf_drv_char(FILE *out, adf_drv_op op, const adf_drv_line *l, const a
         status = op == ADF_DRV_CHAR_UNIT ? adf_char_eval_ucoset(tau, x, u, state->prec) :
                  adf_char_eval_ucoset_strict(tau, x, u, state->prec);
         if (status == ADF_OK) status = adf_drv_psi_print(out, tau, state);
+    } else if (eval) {
+        if (kind[1] == ADF_TEXT_IDCLASS) {
+            status = adf_idclass_set_str(cl, l->s[1], l->n[1], state->prec, NULL);
+            if (status == ADF_OK) status = op == ADF_DRV_CHAR_EVAL ?
+                adf_char_eval_idclass(tau, x, cl, state->prec) :
+                adf_char_eval_idclass_strict(tau, x, cl, state->prec);
+        } else {
+            status = adf_idele_set_str(id, l->s[1], l->n[1], state->prec, NULL);
+            if (status == ADF_OK) status = op == ADF_DRV_CHAR_EVAL ?
+                adf_char_eval_idele(tau, x, id, state->prec) :
+                adf_char_eval_idele_strict(tau, x, id, state->prec);
+        }
+        if (status == ADF_OK) status = adf_drv_psi_print(out, tau, state);
     } else {
         status = adf_char_gauss_sum(tau, x, state->prec);
         if (status != ADF_OK) goto done;
@@ -3550,6 +3573,7 @@ static int adf_drv_char(FILE *out, adf_drv_op op, const adf_drv_line *l, const a
     }
 done:
     adf_str_free(text); adf_str_free(root); adf_char_clear(x); adf_rat_clear(a); adf_ucoset_clear(u);
+    adf_idclass_clear(cl); adf_idele_clear(id);
     acb_clear(tau); acb_clear(W); return status;
 }
 
@@ -3569,7 +3593,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
                    ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, ADF_LIMIT, &st->prec)
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
     if (op == ADF_DRV_CHAR || op == ADF_DRV_CHI || op == ADF_DRV_GAUSS || op == ADF_DRV_CHAR_CONJ ||
-        op == ADF_DRV_CHAR_UNIT || op == ADF_DRV_CHAR_UNIT_STRICT)
+        op == ADF_DRV_CHAR_UNIT || op == ADF_DRV_CHAR_UNIT_STRICT ||
+        op == ADF_DRV_CHAR_EVAL || op == ADF_DRV_CHAR_EVAL_STRICT)
         return adf_drv_char(out, op, l, st);
     if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
     if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
@@ -4052,7 +4077,8 @@ main(int argc, char ** argv)
     if ((argc == 3 && (!strcmp(argv[1], "char") || !strcmp(argv[1], "gauss") ||
                       !strcmp(argv[1], "char_conj"))) ||
         ((argc == 4 || (argc == 5 && !strcmp(argv[3], "with"))) &&
-         (!strcmp(argv[1], "chi") || !strcmp(argv[1], "char_unit") || !strcmp(argv[1], "char_unit_strict")))) {
+         (!strcmp(argv[1], "chi") || !strcmp(argv[1], "char_unit") || !strcmp(argv[1], "char_unit_strict") ||
+          !strcmp(argv[1], "char_eval") || !strcmp(argv[1], "char_eval_strict")))) {
         const char *integer = argc == 3 ? NULL : argv[argc-1];
         size_t a = strlen(argv[1]), b = strlen(argv[2]), c = integer ? strlen(integer) : 0;
         char *line = malloc(a+b+c+9);

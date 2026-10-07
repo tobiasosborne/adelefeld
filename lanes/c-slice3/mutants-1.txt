@@ -1,0 +1,12 @@
+mutate: src/char.c: 498 mutants
+mutate: 498 mutants, 10 of them run (--limit 10, --seed 310409)
+src/char.c:174:74 zero_one: '1' -> '0'
+src/char.c:219:13 call_swap: 'arf_add' -> 'arf_sub'
+src/char.c:211:9 drop_call: 'char_phase(&zero, theta, G, c, a);' -> '' (the statement is removed)
+src/char.c:131:5 negate_if: 'if(*zero)' -> 'if(!(*zero))'
+src/char.c:138:63 status: 'ADF_OK' -> 'ADF_DOMAIN'
+src/char.c:238:14 cmp: '>' -> '>='
+src/char.c:94:11 cmp: '==' -> '!='
+src/char.c:190:35 zero_one: '0' -> '1'
+src/char.c:69:11 cmp: '>' -> '>='
+src/char.c:339:9 drop_assign: 'label = _dirichlet_char_exp(c, G);' -> '' (the statement is removed)
