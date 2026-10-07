@@ -1,0 +1,4 @@
+docs/api-5.md: lines=409 max_columns=109 overlong=0
+proto/tate_checks.py: lines=884 max_columns=110 overlong=0
+lanes/d-tate/progress.md: lines=40 max_columns=110 overlong=0
+design line budget <=500; oracle AST parsed; required entry points=7/7
