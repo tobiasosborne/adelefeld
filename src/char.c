@@ -341,3 +341,69 @@ void adf_char_conj(adf_char_t y, const adf_char_t x)
     }
     y->q = x->q; y->n = label; y->parity = x->parity; acb_conj(y->s, x->s);
 }
+
+/* Slice c: api-3c 3, P1/P2, conventions 5.13. A canonical class has t>0.
+   refs/src/flint-3.0.1/arb.rst:1034-1040 and acb.rst:637-643 define the power
+   as exp(s log(t)), with integer/half-integer shortcuts. On this positive-real
+   input log(t) is real; no conjugation or complex branch choice is introduced. */
+#ifdef ADF_CHECK_INVARIANTS
+static void char_value_independent(acb_t z, const adf_char_t chi, const arb_t t)
+{
+    const arb_struct *a = acb_realref(z), *b = acb_imagref(z);
+    if (a == t || b == t || a == acb_realref(chi->s) || b == acb_realref(chi->s) ||
+        a == acb_imagref(chi->s) || b == acb_imagref(chi->s))
+        adf_inv_fail(__func__, "z", "independent acb output/input");
+}
+#endif
+static int char_class(acb_t z, const adf_char_t chi, const adf_idclass_t x, slong prec, int strict)
+{
+    acb_t unit, power, base, out; int st; slong p = FLINT_MAX(prec, 2);
+    if (prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+    ADF_INV_CHAR(chi); CHAR_INDEPENDENT(z, chi);
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_idclass_is_canonical(x)) adf_inv_fail(__func__, "x", "adf_idclass");
+    char_value_independent(z, chi, x->t);
+#endif
+    acb_init(unit); acb_init(power); acb_init(base); acb_init(out);
+    st = char_unit(unit, chi, &x->u, prec, strict);
+    if (st == ADF_OK) {
+        if (arb_is_zero(acb_imagref(chi->s))) {
+            arb_pow(acb_realref(power), x->t, acb_realref(chi->s), p);
+            /* Initialized power has exact zero imaginary part. */
+        } else {
+            acb_set_arb(base, x->t); acb_pow(power, base, chi->s, p);
+        }
+        if (!acb_is_finite(power)) st = ADF_NOT_DETERMINED;
+        else {
+            acb_mul(out, power, unit, p);
+            if (!acb_is_finite(out)) st = ADF_NOT_DETERMINED;
+            else acb_swap(z, out);
+        }
+    }
+    acb_clear(unit); acb_clear(power); acb_clear(base); acb_clear(out); return st;
+}
+int adf_char_eval_idclass(acb_t z, const adf_char_t chi, const adf_idclass_t x, slong prec)
+{ return char_class(z, chi, x, prec, 0); }
+int adf_char_eval_idclass_strict(acb_t z, const adf_char_t chi, const adf_idclass_t x, slong prec)
+{ return char_class(z, chi, x, prec, 1); }
+
+/* ideles P15:368-394, conventions 5.7/5.13: conversion supplies BOTH the norm
+   |x_inf|/r and sign(x_inf)u. Use it once, then evaluate the canonical class.
+   api-3c 3 requires preflight bounds before conversion and transactional outputs. */
+static int char_idele(acb_t z, const adf_char_t chi, const adf_idele_t x, slong prec, int strict)
+{
+    adf_idclass_t c; int st;
+    if (prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+    ADF_INV_CHAR(chi); CHAR_INDEPENDENT(z, chi);
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_idele_is_canonical(x)) adf_inv_fail(__func__, "x", "adf_idele");
+    char_value_independent(z, chi, x->inf);
+#endif
+    adf_idclass_init(c); st = adf_idclass_set_idele(c, x, prec);
+    if (st == ADF_OK) st = char_class(z, chi, c, prec, strict);
+    adf_idclass_clear(c); return st;
+}
+int adf_char_eval_idele(acb_t z, const adf_char_t chi, const adf_idele_t x, slong prec)
+{ return char_idele(z, chi, x, prec, 0); }
+int adf_char_eval_idele_strict(acb_t z, const adf_char_t chi, const adf_idele_t x, slong prec)
+{ return char_idele(z, chi, x, prec, 1); }

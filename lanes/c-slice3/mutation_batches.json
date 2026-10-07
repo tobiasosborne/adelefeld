@@ -1,0 +1,20 @@
+[
+  {
+    "batch": 1,
+    "seed": 310409,
+    "exit": 1,
+    "seconds": 137.9
+  },
+  {
+    "batch": 2,
+    "seed": 310410,
+    "exit": 1,
+    "seconds": 137.7
+  },
+  {
+    "batch": 3,
+    "seed": 310411,
+    "exit": 124,
+    "seconds": 180.1
+  }
+]

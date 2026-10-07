@@ -1,0 +1,12 @@
+mutate: src/char.c: 498 mutants
+mutate: 498 mutants, 10 of them run (--limit 10, --seed 310410)
+src/char.c:76:34 drop_assign: 'e = 0;' -> '' (the statement is removed)
+src/char.c:291:34 logic: '&&' -> '||'
+src/char.c:220:39 op: '*' -> '+'
+src/char.c:45:19 logic: '||' -> '&&'
+src/char.c:71:14 zero_one: '1' -> '0'
+src/char.c:335:38 zero_one: '0' -> '1'
+src/char.c:114:41 status: 'ADF_LIMIT' -> 'ADF_OK'
+src/char.c:139:5 negate_if: 'if(!dirichlet_group_init(G, chi->q))' -> 'if(!(!dirichlet_group_init(G, chi->q)))'
+src/char.c:40:5 drop_assign: 'e = x->parity;' -> '' (the statement is removed)
+src/char.c:108:46 drop_call: 'acb_set(s, x->s);' -> '' (the statement is removed)

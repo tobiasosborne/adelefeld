@@ -93,6 +93,24 @@ else
 fi
 rm -f "$char_eval_output"
 
+# Slice 3.3-c: class/idele evaluation and strict snapshots.
+char_class_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/char_class.jl "$so" > "$char_class_output" 2>&1; then
+    cat "$char_class_output"
+elif grep -q '__gmpn_modexact_1_odd' "$char_class_output" 2>/dev/null \
+        && char_class_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$char_class_gmp" ] \
+        && LD_PRELOAD="$char_class_gmp" timeout 60 "$JULIA" --startup-file=no \
+            tests/julia/char_class.jl "$so"; then
+    echo "== tests/julia/char_class.jl passed with LD_PRELOAD=$char_class_gmp"
+else
+    cat "$char_class_output"
+    rm -f "$char_class_output"
+    echo "test_julia: tests/julia/char_class.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$char_class_output"
+
 echo "== $($JULIA --version)"
 
 # Slice a, api-3c 7: character layout and Gauss ccall in its own bounded process.

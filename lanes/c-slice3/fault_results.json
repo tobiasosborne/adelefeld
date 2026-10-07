@@ -1,0 +1,38 @@
+[
+  {
+    "fault": "drop_real_sign",
+    "compile": 0,
+    "link": 0,
+    "test": -6
+  },
+  {
+    "fault": "conjugate_s",
+    "compile": 0,
+    "link": 0,
+    "test": -6
+  },
+  {
+    "fault": "omit_content",
+    "compile": 0,
+    "link": 0,
+    "test": -6
+  },
+  {
+    "fault": "strict_t_only",
+    "compile": 0,
+    "link": 0,
+    "test": -6
+  },
+  {
+    "fault": "one_corner",
+    "compile": 0,
+    "link": 0,
+    "test": -6
+  },
+  {
+    "fault": "early_write",
+    "compile": 0,
+    "link": 0,
+    "test": -6
+  }
+]

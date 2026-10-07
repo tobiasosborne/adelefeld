@@ -1,0 +1,1445 @@
+[
+  {
+    "config": "plain",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/plain",
+      "lanes/c-slice3/plain/test_char",
+      "lanes/c-slice3/plain/test_char_eval",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000121 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 4400 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1001857 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/plain/support/jsonl.o",
+      "lanes/c-slice3/plain/support/golden.o",
+      "lanes/c-slice3/plain/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 4400 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1001951 checks\n"
+  },
+  {
+    "config": "inv",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/inv",
+      "INV=1",
+      "lanes/c-slice3/inv/test_char",
+      "lanes/c-slice3/inv/test_char_eval",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 2,
+    "output": "tests/test_char_class.c: In function \u2018invariants\u2019:\ntests/test_char_class.c:366:68: error: pointer type mismatch in conditional expression [-Werror]\n  366 |                 uintptr_t member = (uintptr_t) (mode < 24 ? chi->s : which < 2 ? c->t : x->inf);\n      |                                                                    ^\ncc1: all warnings being treated as errors\nmake: *** [Makefile:99: lanes/c-slice3/inv/test_char_class] Error 1\n"
+  },
+  {
+    "config": "inv",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/inv",
+      "INV=1",
+      "lanes/c-slice3/inv/test_char",
+      "lanes/c-slice3/inv/test_char_eval",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 5800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000107 seconds\ntest_char: 129797 checks\n"
+  },
+  {
+    "config": "inv",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 8100 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738325 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument x is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument u is not a canonical adf_ucoset\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_dump_str: argument x is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument y is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_load_str_binds: argument x is not a canonical adf_char\n"
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 16000 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1001953 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "inv",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-DADF_CHECK_INVARIANTS",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/inv/support/jsonl.o",
+      "lanes/c-slice3/inv/support/golden.o",
+      "lanes/c-slice3/inv/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 16000 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1002039 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "san",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/san",
+      "SAN=1",
+      "lanes/c-slice3/san/test_char",
+      "lanes/c-slice3/san/test_char_eval",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000176 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 4400 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1001857 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/san/support/jsonl.o",
+      "lanes/c-slice3/san/support/golden.o",
+      "lanes/c-slice3/san/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 4400 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1001951 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/clang",
+      "CC=clang",
+      "lanes/c-slice3/clang/test_char",
+      "lanes/c-slice3/clang/test_char_eval",
+      "lanes/c-slice3/clang/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "clang",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000158 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 4400 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1001857 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "clang",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/clang/support/jsonl.o",
+      "lanes/c-slice3/clang/support/golden.o",
+      "lanes/c-slice3/clang/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/clang/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "clang",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 4400 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1001951 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/plain",
+      "lanes/c-slice3/plain/test_char",
+      "lanes/c-slice3/plain/test_char_eval",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000171 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": -6,
+    "output": "test_char_class:102: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "config": "plain",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/plain",
+      "lanes/c-slice3/plain/test_char",
+      "lanes/c-slice3/plain/test_char_eval",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000139 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": -6,
+    "output": "test_char_class:102: arb_contains_fmpq(j < 2 ? acb_realref(z) : acb_imagref(z), q)\ntimeout: the monitored command dumped core\n"
+  },
+  {
+    "config": "plain",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/plain",
+      "lanes/c-slice3/plain/test_char",
+      "lanes/c-slice3/plain/test_char_eval",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000209 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1195824 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/plain/support/jsonl.o",
+      "lanes/c-slice3/plain/support/golden.o",
+      "lanes/c-slice3/plain/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1195922 checks\n"
+  },
+  {
+    "config": "inv",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/inv",
+      "INV=1",
+      "lanes/c-slice3/inv/test_char",
+      "lanes/c-slice3/inv/test_char_eval",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 5800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000213 seconds\ntest_char: 129797 checks\n"
+  },
+  {
+    "config": "inv",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 8100 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738325 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument x is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument u is not a canonical adf_ucoset\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_dump_str: argument x is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument y is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: adf_char_load_str_binds: argument x is not a canonical adf_char\n"
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 20600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1195920 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "inv",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-DADF_CHECK_INVARIANTS",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/inv/support/jsonl.o",
+      "lanes/c-slice3/inv/support/golden.o",
+      "lanes/c-slice3/inv/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 20600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1196010 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "san",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/san",
+      "SAN=1",
+      "lanes/c-slice3/san/test_char",
+      "lanes/c-slice3/san/test_char_eval",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000185 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1195824 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/san/support/jsonl.o",
+      "lanes/c-slice3/san/support/golden.o",
+      "lanes/c-slice3/san/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1195922 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/clang",
+      "CC=clang",
+      "lanes/c-slice3/clang/test_char",
+      "lanes/c-slice3/clang/test_char_eval",
+      "lanes/c-slice3/clang/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "clang",
+    "step": "test_char",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char"
+    ],
+    "exit": 0,
+    "output": "memory: 1800 FLINT blocks, 0 live after 100 cycles\ncap refusal 0.000000097 seconds\ntest_char: 129725 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "test_char_eval",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_eval"
+    ],
+    "exit": 0,
+    "output": "conjugation: 1966 characters, 74434 unit products\nmemory: 3300 FLINT blocks, 0 live after 100 cycles\ntest_char_eval: 1738298 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208880 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "clang",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/clang/support/jsonl.o",
+      "lanes/c-slice3/clang/support/golden.o",
+      "lanes/c-slice3/clang/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/clang/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "clang",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208978 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/plain",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208880 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/plain/support/jsonl.o",
+      "lanes/c-slice3/plain/support/golden.o",
+      "lanes/c-slice3/plain/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208978 checks\n"
+  },
+  {
+    "config": "inv",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/inv",
+      "INV=1",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 20600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208976 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "inv",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-DADF_CHECK_INVARIANTS",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/inv/support/jsonl.o",
+      "lanes/c-slice3/inv/support/golden.o",
+      "lanes/c-slice3/inv/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 20600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1209066 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "san",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/san",
+      "SAN=1",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208880 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/san/support/jsonl.o",
+      "lanes/c-slice3/san/support/golden.o",
+      "lanes/c-slice3/san/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208978 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/plain",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208883 checks\n"
+  },
+  {
+    "config": "plain",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/plain/support/jsonl.o",
+      "lanes/c-slice3/plain/support/golden.o",
+      "lanes/c-slice3/plain/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "plain",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/plain/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208981 checks\n"
+  },
+  {
+    "config": "inv",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/inv",
+      "INV=1",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 20600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208979 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "inv",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-DADF_CHECK_INVARIANTS",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/inv/support/jsonl.o",
+      "lanes/c-slice3/inv/support/golden.o",
+      "lanes/c-slice3/inv/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "inv",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/inv/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 20600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1209069 checks\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument chi is not a canonical adf_char\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument x is not a canonical adf_idclass\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument x is not a canonical adf_idele\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_class: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_idele: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\nadelefeld: ADF_CHECK_INVARIANTS: char_value_independent: argument z is not a canonical independent acb output/input\n"
+  },
+  {
+    "config": "san",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/san",
+      "SAN=1",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208883 checks\n"
+  },
+  {
+    "config": "san",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "cc",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/san/support/jsonl.o",
+      "lanes/c-slice3/san/support/golden.o",
+      "lanes/c-slice3/san/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "san",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/san/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208981 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "build",
+    "command": [
+      "timeout",
+      "120",
+      "make",
+      "-s",
+      "-j2",
+      "BUILD=lanes/c-slice3/clang",
+      "CC=clang",
+      "lanes/c-slice3/clang/test_char_class"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "clang",
+    "step": "test_char_class",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_class"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208883 checks\n"
+  },
+  {
+    "config": "clang",
+    "step": "wrap-build",
+    "command": [
+      "timeout",
+      "30",
+      "clang",
+      "-Iinclude",
+      "-Itests",
+      "-std=c11",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DADF_CHAR_CLASS_WRAP",
+      "tests/test_char_class.c",
+      "lanes/c-slice3/clang/support/jsonl.o",
+      "lanes/c-slice3/clang/support/golden.o",
+      "lanes/c-slice3/clang/libadelefeld.a",
+      "-Wl,--wrap=dirichlet_group_init",
+      "-Wl,--wrap=adf_phase_get_acb",
+      "-Wl,--wrap=arb_pow",
+      "-Wl,--wrap=acb_pow",
+      "-Wl,--wrap=acb_mul",
+      "-Wl,--wrap=adf_idclass_set_idele",
+      "-lflint",
+      "-lgmp",
+      "-lm",
+      "-pthread",
+      "-o",
+      "lanes/c-slice3/clang/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "config": "clang",
+    "step": "test_char_class_wrap",
+    "command": [
+      "timeout",
+      "60",
+      "lanes/c-slice3/clang/test_char_class_wrap"
+    ],
+    "exit": 0,
+    "output": "memory: 8600 FLINT blocks, 0 live after 100 cycles\ntest_char_class: 1208981 checks\n"
+  }
+]
