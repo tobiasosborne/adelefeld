@@ -1,0 +1,15 @@
+python-flint 0.8.0, bundled FLINT 3.3.1, mpmath 1.3.0; C adapter requires FLINT 3.0.1
+constructors: 12 checks
+lowering: 7864 checks
+characters: 192826 checks
+cosets: 11125 checks
+hulls: 20736 checks
+evaluation: 190 checks
+flint_c: 87111 checks
+gauss: 2565 checks
+sum_bound: 812 checks
+goldens: 94 checks
+faults_33: 6 checks
+faults_34: 6 checks
+findings: 3 checks
+TOTAL: 323350 checks

@@ -1,0 +1,13 @@
+33_lower_n_mod_C: killed by check_lowering: constructors: failed after 1 checks
+33_parity_from_n: killed by check_lowering: constructors: failed after 1 checks
+33_zero_as_phase: killed by check_characters: characters: failed after 10 checks
+33_strict_write: killed by check_faults_findings: faults_33: failed after 3 checks
+33_hull_endpoints: killed by check_cosets: hulls: failed after 584 checks
+33_missing_real_sign: killed by check_evaluation: evaluation: failed after 175 checks
+34_negative_sign: killed by check_gauss: gauss: failed after 13 checks
+34_conjugate_chi: killed by check_gauss: gauss: failed after 31 checks
+34_drop_C1: killed by check_gauss: gauss: failed after 1 checks
+34_omit_i_parity: killed by check_goldens: goldens: failed after 8 checks
+34_use_input_modulus: killed by check_goldens: goldens: failed after 59 checks
+34_wrong_exponent_order: killed by check_lowering: constructors: failed after 1 checks
+TOTAL: 12 killed, 0 survived, 0 harness errors
