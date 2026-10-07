@@ -166,7 +166,7 @@ ADF_TEST(oracle_vectors)
     size_t samples = 0, rows;
     initialized_acb(s); initialized_acb(a); initialized_acb(y); initialized_acb(ref);
     arb_init(target); arb_init(x); adf_char_init(chi);
-    ADF_CHECK(jsonl_open("tests/ref/vectors/t-slice1/local.jsonl", &file, &err));
+    ADF_CHECK(jsonl_open("tests/ref/vectors/t5-slice1/local.jsonl", &file, &err));
     if (!file) goto done;
     rows = jsonl_count(file);
     for (size_t i = 0; i < rows; i++)

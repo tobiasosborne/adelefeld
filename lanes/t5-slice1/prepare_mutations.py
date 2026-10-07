@@ -6,7 +6,7 @@ The replacement object precedes the archive, so the archive localfactor.o is not
 from pathlib import Path
 import shutil
 root = Path(__file__).resolve().parents[2]
-stage = root/'lanes/t-slice1/mutation-root'
+stage = root/'lanes/t5-slice1/mutation-root'
 if stage.exists():
     shutil.rmtree(stage)
 stage.mkdir()
@@ -14,7 +14,7 @@ for entry in ('include','src','tests'):
     shutil.copytree(root/entry, stage/entry, ignore=shutil.ignore_patterns('__pycache__'))
 shutil.copy2(root/'Makefile',stage/'Makefile')
 (stage/'prebuilt').mkdir()
-build = root/'lanes/t-slice1/build-mutation'
+build = root/'lanes/t5-slice1/build-mutation'
 shutil.copy2(build/'libadelefeld.a',stage/'prebuilt/libadelefeld.a')
 for name in ('golden.o','jsonl.o'):
     shutil.copy2(build/'support'/name,stage/'prebuilt'/name)

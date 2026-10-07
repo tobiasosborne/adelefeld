@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Slice 5a fixtures; independent point enclosures and oracle closed forms.
 
-Run: timeout 120 python3 -B lanes/t-slice1/generate_vectors.py
+Run: timeout 120 python3 -B lanes/t5-slice1/generate_vectors.py
 P9/P10 and api-5 section 2 define the values. zeta_checks.point_enclosure
 integrates Gamma by a Taylor polynomial with tails, not FLINT Gamma.
 Finite references use its scalar real interval assembly. Numerical strings
@@ -176,7 +176,7 @@ for q,n in ((1,1),(4,3)):
     emit(2,q,n,(F(2),F(0)),zero,status=7)
     emit(2,q,n,(F(2),F(0)),zero,ar=(F(1,1024),F(1,1024)),status=1)
 emit(2,4,3,(F(2),F(0)),(F(0),F(1)),exact='1')
-path = ROOT/'tests/ref/vectors/t-slice1/local.jsonl'
+path = ROOT/'tests/ref/vectors/t5-slice1/local.jsonl'
 path.write_text(''.join(json.dumps(row,separators=(',',':'))+'\n' for row in rows))
 assert path.stat().st_size <= 400*1024
 print(f'{len(rows)} vectors; {sum(len(r.get("samples",[])) for r in rows)} sample enclosures; '

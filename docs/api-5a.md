@@ -47,7 +47,7 @@ The inherited Gamma candidate, midpoint refinement and at most 64-factor recurre
 factor by local-zeta.md Z4/Z6. Every interval multiplication, division, intersection and final rounding
 keeps an enclosure. The new function writes z only after an OK status.
 
-Check: test_tate_local reads all 394 rows of tests/ref/vectors/t-slice1/local.jsonl and all 1861 samples.
+Check: test_tate_local reads all 394 rows of tests/ref/vectors/t5-slice1/local.jsonl and all 1861 samples.
 Check: exact ramified 1; 4/3 and 1/pi containment; identical trivial-factor delegation; both real parities.
 Check: every vector repeats z=s, z=alpha and where=NULL; a separate case permits z=s=alpha.
 

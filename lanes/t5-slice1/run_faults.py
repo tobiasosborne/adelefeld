@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess as sp
 import shutil
 ROOT = Path(__file__).resolve().parents[2]
-LANE = ROOT/'lanes/t-slice1'
+LANE = ROOT/'lanes/t5-slice1'
 SCRATCH = LANE/'fault-scratch'
 SCRATCH.mkdir(exist_ok=True)
 source = (ROOT/'src/localfactor.c').read_text()
@@ -54,8 +54,8 @@ for name, old, new in faults:
         ['timeout','120','cc','-Iinclude','-Isrc','-std=c11','-O2','-g','-Wall','-Wextra',
          '-c',str(c),'-o',str(obj)],
         ['timeout','120','cc','-Iinclude','-Itests','-std=c11','-O2','-g','tests/test_tate_local.c',
-         str(obj),'lanes/t-slice1/build-plain/libadelefeld.a',
-         'lanes/t-slice1/build-plain/support/jsonl.o','lanes/t-slice1/build-plain/support/golden.o',
+         str(obj),'lanes/t5-slice1/build-plain/libadelefeld.a',
+         'lanes/t5-slice1/build-plain/support/jsonl.o','lanes/t5-slice1/build-plain/support/golden.o',
          '-lflint','-lgmp','-lm','-o',str(exe)],
         ['timeout','120',str(exe)],
     ]

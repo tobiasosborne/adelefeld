@@ -350,7 +350,7 @@ and the idele class `<1.25 +/- 0.25 ; [5 mod 36]>` (conventions 9.2, 9.3, 9.4; `
 `ucoset`, `idele`, `idclass`).  The real part is read at the setting `prec` and printed by the constrained printing
 of conventions 9.5 with the setting `digits` (an idele's real part excludes 0, a class's is positive, and so is the
 printed text's).  The tests are `tests/driver/i-01-show-type.cmd` to `i-06-status.cmd`; their expected lines were
-written by hand and are re-derived with exact rationals by `lanes/t-slice1/check_driver_cases.py`.
+written by hand and are re-derived with exact rationals by `lanes/t5-slice1/check_driver_cases.py`.
 
 | Command | Operands | Result |
 |---|---|---|

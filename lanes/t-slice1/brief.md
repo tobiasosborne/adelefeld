@@ -1,99 +1,66 @@
-# Lane t-slice1: the local Tate integral at a place (slice 5a of `docs/api-5.md`)
+# Lane t-slice1: the value form of unit cosets, ideles and idele classes, and the driver (milestone 2)
 
-Milestone 5 (the Tate integrals, `docs/PLAN.md` lines 335-343, `docs/SPEC.md` 8) has a design before code:
-`docs/api-5.md` (lane d-tate, 2026-10-08; decisions D1 to D4 taken as `docs/SPEC.md` 15.4 N-D24) with its
-oracle `proto/tate_checks.py` (466 checks; run it: `timeout 120 python3 -B proto/tate_checks.py`). You build
-**slice 5a** of its section 8 (lines 366-371), end to end: header, code, test against the reference, driver,
-Julia. The function, declared and specified in design section 2 (lines 48-120; implement it as written; a
-`HEADER-FINDING` in your report if not possible):
+Milestone 2 is implemented except for its text forms. `docs/conventions.md` section 9 fixes the grammar
+of the value form of every type, and `tests/golden/ucoset.tsv`, `idele.tsv`, `idclass.tsv` hold golden
+vectors (read `tests/golden/README.md`; `lanes/m0-conventions/write_golden.py` is retired: do not run it).
+The reference parser and printer is `proto/text_grammar.py`. The library reads and prints the value
+form of the types of milestone 1 in `src/text.c` (`include/adelefeld/text.h`). This lane adds the three
+types of milestone 2, and gives the driver `adf` arithmetic on them, so that a user can type ideles at
+the prompt.
 
-    int adf_local_tate_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v, const acb_t alpha,
-                          const adf_char_t eta0, slong prec);
+Functions of the slice (names after `text.h`; the final list is yours):
+- For `adf_ucoset`, `adf_idele`, `adf_idclass`: `set_str` (parse, with the limits argument of the other
+  readers) and `get_str` (print), with the round-trip rules of conventions 9.6; the classification
+  `adf_text_classify` recognises the three kinds (conventions 9.7); the printing of the real part by
+  the constrained printing of conventions 9.5 (finding 3 of `lanes/i-slice1/result.md`: `arb_get_str`
+  hides the sign of a certified positive ball; do not use it).
+- The dump form (conventions 10) of the three types ONLY if it is small after the value form is done;
+  else say that it is left, in the result file.
+- The driver `tools/adf/adf.c`: the operations `show`, `type`, `mul`, `div`, `neg` where it has a
+  meaning, `equal` where the library has the predicate, accept the three new kinds; new operations
+  `inv X`, `pow X with K`, `powtight X with K`, `norm X`, `class X` (idele to class), `idele Q` (rational
+  to idele), `hull X` and `hullsimple X` (idele to adele), `unitof A` (adele to idele), `div A with X` for
+  an adele by an idele, `valuation X with P`, `abs X with PLACE`. One line of output for each command,
+  a value text or `error: <STATUS>`.
 
-the local Tate integral `Z_v(f_v, eta, s)` of the PRESCRIBED local vector of conventions 6.5 (`1_(Z_p)` at an
-unramified prime, `eta_0^-1 1_(Z_p^x)` at a ramified prime, `phi_e` at infinity) for the quasi-character with
-`alpha = eta(p)` and unit restriction `eta_0` (an `adf_char` of primitive conductor 1 or `p^a`; at infinity
-`eta_0` selects the parity and `alpha` is ignored), by the closed forms of `docs/proofs/analysis.md`
-Proposition 9 (331-400: `a = 0`: `(1 - alpha p^-s)^-1`; `a > 0`: the local constant with `G_minus`; read which
-closed form THE INTEGRAL has, as opposed to `gamma_p`, which is slice 5b) and Proposition 10 (401-451: the real
-integral `pi^(-(s+e)/2) Gamma((s+e)/2)`); the poles with the status rule of SPEC 9.3.7 (an exact pole `DOMAIN`,
-a ball meeting a pole `NOT_DETERMINED`, outputs untouched, `where = v` written on a local failure if
-supplied); the trivial character delegating to `adf_local_zeta_factor_at` (`localfactor.h`, design 2);
-the examples of the design: `p = 2, alpha = 1, eta_0 = 1, s = 2` gives `4/3`; `p = 2, alpha = i, eta_0 =
-chi_4` gives `1`; infinity, `e = 0, s = 2` gives `1/pi`. Not in this slice: `gamma`, `epsilon` (5b), the
-global calls (5c to 5e).
+Decisions where the conventions are silent are yours (TJO: decide and go on): the one a careful
+designer would take, listed in the result file with the alternatives. Where the conventions and the
+code disagree (known: conventions 5.7 names the accessors `adf_idclass_t_get`, the code
+`adf_idclass_get_t`; conventions 3.2 lacks `LIMIT` for ideles), the code stands and you list the
+finding.
 
-Read first (CLAUDE.md rules 3, 4): `lanes/COMMON.md`, `lanes/COMMON-C.md`; `docs/api-5.md` sections 1, 2, 6
-(the statements T1 to T5 as far as 5a needs them), 7 (acceptance and the six faults of 5.1), 8, 9 (the
-finding on the pole lists: the odd real INTEGRAL has a pole at `s = -1`, the odd real gamma at `s = 2`:
-distinct functions); `docs/SPEC.md` 8 (470-502), 9.3.7; `docs/conventions.md` 6.4 (912-956: the local constants
-and the NEGATIVE kernel of `G_minus`; the real place), 6.5 (957-969: the test vector), status row 225 (and the
-"Characters, Gauss sums, local factors" row 223: say which row the local integral belongs to, as the design
-decides); `docs/proofs/analysis.md` Propositions 9, 10, 11 (452-495: the inverse local unit characters);
-`docs/design/local-zeta.md` and `include/adelefeld/localfactor.h`, `src/localfactor.c` (the trivial factor you
-delegate to: its pole handling, its Gamma recurrence bound Z4, its statuses: match them); `include/adelefeld/
-char.h`, `docs/api-3c.md`, `docs/api-3d.md` (`adf_char`: conductor, parity, `chi_phase`, `chi`, `conj`: the
-inverse unit character is `conj(eta_0)`); `include/adelefeld/psi.h` (`adf_phase_get_acb` for `E(-u/p^a)`: the
-negated angle, never a helper called "the Fourier kernel", `docs/api-3.md` 3.4); `include/adelefeld/place.h`
-(`adf_place_t`, `adf_place_inf`, `adf_place_prime`); `proto/tate_checks.py` groups `local_exact`,
-`local_numeric`, `local_poles`, `real` (the oracle's `local_integral(p, alpha, chi_p, s)`, `real_integral(e,
-s)`); `refs/src/flint-3.0.1/acb.rst` (`acb_gamma`, `acb_rgamma`, `acb_pow`: quote the lines you rely on).
+Read first: `CLAUDE.md`, `docs/workflow.md`, `lanes/COMMON.md`, `lanes/COMMON-C.md` (rule 6 does not hold
+for `text.h`: you add declarations; rule 5 is replaced by item 4 below), `docs/conventions.md` 8, 9, 10,
+11, 5.6, 5.7, `tests/golden/README.md`, `include/adelefeld/text.h` and `src/text.c` (the structure of the
+reader: grammar before limits, M1-D9; the limits), `docs/reviews/m1/text/review.md` (what a review of the
+text reader found: hostile input), `include/adelefeld/ucoset.h`, `idele.h`, `idclass.h`, `idpow.h`,
+`idmap.h`, `docs/api-2.md`, `tools/adf/adf.c`, `tools/adf/README.md`, `docs/SPEC.md` 15 (M1-D1, M1-D6,
+M1-D7, N-D1, N-D10).
 
-## The work, red then green for each step (keep `lanes/t-slice1/redgreen.md`)
+**You own:** `include/adelefeld/text.h` (additions), `src/text.c` (additions; an existing function is
+changed only where the classification needs it), `src/text_idele.c` (new), `tests/test_text_idele.c`
+(new), `tests/julia/text_idele.jl` (new), `tools/adf/adf.c`, `tools/adf/README.md`,
+`tests/driver/i-*.cmd` and `i-*.out` (new), `proto/text_grammar.py` (only if it is wrong or lacks a
+type; say what you changed), `tests/fuzz/fuzz_text_idele.c` (new, a target in the way of the existing
+`tests/fuzz/fuzz_*.c`), `docs/api-2.md` (a new section 4), `lanes/t-slice1/`. In `tests/test_julia.sh` you
+may add the lines your file needs. Everything else is read-only.
 
-A. Vectors from the oracle (`tests/ref/vectors/t-slice1/`, generated by a script in your lane directory, at
-   most 400 KB): at `p` in 2, 3, 5, 7, 13, 65537: `alpha` in `1`, `-1`, `i`, `E(1/3)`, `2`, `1/2 + i`, with radii;
-   `eta_0` trivial and primitive of conductor `p^a` for `a` in 1, 2 (`p = 2`: `a >= 2`, conventions 6.4), the
-   exact value as a cyclotomic expression where exact (`local_exact`) and as a 60-digit interval otherwise;
-   `s` exact rational, complex, with radii, at and near a pole (`alpha p^-s = 1`: `s = 2 pi i k / log p` for
-   `alpha = 1`; the exact pole set for other `alpha`); at infinity `e = 0, 1` and `s` at and near `0, -2, -4`
-   (`e = 0`) and `-1, -3` (`e = 1`): the status; the three examples of the design.
-B. Tests first (`tests/test_tate_local.c`): every vector (containment, and a tightness bound you state against
-   the radius); the three examples exactly or by containment with a tight bound (`4/3` exact? say what the code
-   promises); the delegation: for the trivial character the result is identical to `adf_local_zeta_factor_at`;
-   the inverse unit character at a ramified prime (a fault that uses `eta_0` instead of `conj(eta_0)` must
-   fail: a non-real `eta_0`); the poles: `DOMAIN` on an exact pole, `NOT_DETERMINED` on a ball meeting it,
-   `OK` just beside it, outputs untouched and `where = v` on failure (sentinel bytes; `where` NULL allowed);
-   `alpha` containing 0 or `p^s` with `s` such that the factor is huge: the statuses the design names; `prec` 2,
-   53, the cap, one above (`LIMIT` first); aliasing `z = s`, `z = alpha` permitted (design 1 line 19 of the
-   report: "same-type raw aliases allowed; character-member aliases forbidden"); a place not of `Q` or an
-   `eta_0` whose conductor is not a power of `p`: `DOMAIN`; `INV` aborts; leak-free under `SAN=1` with leak
-   detection; the abort children clear their objects after the call (as `tests/test_invariants.c` does, for
-   `tools/memcheck`).
-C. The code: the declaration appended to `include/adelefeld/localfactor.h` (design: "the local declarations
-   extend localfactor.h") with the design's comment block and sources, the function in `src/localfactor.c`
-   (appended; reuse its pole handling and Gamma evaluation); debug entry checks under `INV`.
-D. User calls (design section 8): `adf tate_local S with PLACE with ALPHA with CHI` in the driver's `with`
-   grammar (the design's `tate-local ... alpha A char CHI` is proposed grammar; places are named as the other
-   `_at` commands name them, e.g. `psi_at`); fixture `tests/driver/tate-local.cmd` with `.out`, expected lines
-   derived by hand before the run (the three examples among them, a pole, a `NOT_DETERMINED`); `tests/julia/
-   tate_local.jl` with the `adf_local_tate_at` call of design section 8 (the place by value from the place
-   constructors), registered in `tests/test_julia.sh`.
-E. Statements: a new file `docs/api-5a.md`, "Slice 5a": what the call returns by reference to design 2,
-   Propositions 9, 10, 11, conventions 6.4, 6.5; the steps the code adds and why each keeps the enclosure (the
-   geometric factor, `G_minus` as a certified sum, the Gamma evaluation); the pole sets with proof; statuses,
-   cost, caps; "Check:" lines; decisions where the design is silent.
-F. Faults in scratch copies: the six faults of design section 7 for 5.1 (`faults_51`) and: `eta_0` for
-   `conj(eta_0)`; the positive kernel in `G_minus`; `alpha^-1` for `alpha`; the pole test on the trivial
-   factor's list for an odd real integral; `where` not written on failure; `z` written before the pole check.
-   Each test must fail. Then mutation testing of `src/localfactor.c` restricted to `test_tate_local` and the
-   existing local-factor test (at most 60 mutants, 20 minutes).
+1. Header first. 2. Tests first, red then green (`lanes/t-slice1/redgreen.log`): every line of the three
+   golden files (parse, print, round trip, the refusals with their statuses); the reference
+   `proto/text_grammar.py` on 2000 generated texts (valid and invalid) against the C reader, status
+   and value; hostile input: a modulus of 100000 digits, nesting, missing brackets, NUL bytes, a
+   length of 0, texts cut at every position of a valid text (each prefix is refused or is a valid
+   text of its own, never a crash); the driver cases with expected lines written BY HAND from
+   mathematics checked in Python with exact rationals, the script in your lane directory.
+3. The code. `tests/julia/text_idele.jl`: a user parses two ideles from text, multiplies them, prints
+   the product.
+4. Show that the tests bite: four faults of your choice in a scratch copy under `build/`. The fuzz
+   target is built and run for 120 s under `timeout` with `ulimit -v 4000000`: a smoke test, say so.
+   No mutation run.
+5. `make clean && make -j2 check-all`, `make clean && make -j2 check SAN=1`,
+   `make clean && make -j2 check CC=clang`, `make clean && make -j2 check INV=1`,
+   `sh lanes/m1-headers/check_headers.sh`, `SAN=1 sh tests/test_driver.sh` pass, each under
+   `timeout 900`, in the foreground; give the last line of each.
 
-**You own:** the appended declaration in `include/adelefeld/localfactor.h`, the appended function(s) in
-`src/localfactor.c`, `tests/test_tate_local.c`, `tests/ref/vectors/t-slice1/`, the command in `tools/adf/adf.c`
-and its lines in `tools/adf/README.md`, new `tests/driver/tate-local.*`, `tests/julia/tate_local.jl` and its
-lines in `tests/test_julia.sh`, `docs/api-5a.md`, `lanes/t-slice1/`. Everything else is read-only (a defect of
-the design, the oracle or the proofs is a finding). No git command that changes state, no `bd`. Another lane
-repairs the shared validator in `src/dump.c` in another worktree.
-
-**Checks at the end** (commands and numbers in the report; at most 2 jobs; every program under `timeout`):
-`test_tate_local` and the existing `tests/test_localfactor*` under plain, `SAN=1` (say if LeakSanitizer cannot
-run), `INV=1`, `CC=clang`, in build directories under your lane directory; `sh tests/test_driver.sh`; NOT
-`check-all`. Remove your build trees and scratch fault copies at the end; no generated logs above 100 KB in
-the lane directory. Lines at most 116 characters; files end with a newline. Aim to finish within about
-ninety minutes: if the time is short, the order of importance is the unramified and real cases with B, C, D,
-then the ramified case, then E, F.
-
-Report: `lanes/t-slice1/report.md` (rule 8 of `lanes/COMMON.md`): what is done per step with the commands and
-counts; the fault table; mutation survivors with one line each; findings against the design, the oracle and
-the proofs; sources pending; what is not done.
+Result: `lanes/t-slice1/result.md` and the same text as your final message. Times in your notes are
+read from `date`. Leave no compiled binary in your lane directory.

@@ -1,4 +1,4 @@
-# Lane t-slice1: slice 5a
+# Lane t5-slice1 (run as t-slice1): slice 5a
 
 Implemented adf_local_tate_at end to end. Plain, SAN, INV and clang checks pass, as do the driver and
 Julia fixture. Valgrind reports zero errors and zero bytes at exit. LeakSanitizer cannot run under ptrace.
