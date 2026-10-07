@@ -563,7 +563,7 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
             break;
         case ADF_DRV_FFUN:
             s = adf_ffun_get_str(&len, v->ff, digits);
-
+            break;
         case ADF_DRV_CHARACTER:
             s = adf_char_get_str(&len, v->character, digits);
             break;
