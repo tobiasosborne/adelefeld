@@ -2129,9 +2129,9 @@ refused:            /* the work bound of the constrained printer (TX_COND_WORK_M
 
 #include <stdio.h>
 
-/* Slice 3.1-a. Reuse the lexical machinery without allocating an array for union input.
-   conventions 8.5: byte and full grammar checks precede all literal/count checks;
-   unsupported union semantics follow those checks. LIFT semantics are the adele reader's.
+/* Slice 3.1-d. Reuse the lexical machinery for lifts and union input.
+   conventions 8.5: byte and full grammar checks precede all literal/count checks.
+   Union semantics follow those checks; LIFT semantics are the adele reader's.
    docs/api-3.md 1 gives the numerical precision limit before reading input. */
 int adf_qclass_set_str(adf_qclass_t x, const char *s, size_t len, slong prec,
                       const adf_text_limits_t *lim)
@@ -2160,11 +2160,71 @@ int adf_qclass_set_str(adf_qclass_t x, const char *s, size_t len, slong prec,
         (void) tx_fin_syntax(&c, &f);
         (void) tx_expect(&c, ')');
         if (tx_real_over(s, &r, lim)) over = 1;
+        if (is_union && !over) {
+            int j;
+            for (j = 0; j <= r.has_r; j++) {
+                const tx_num *number = j ? &r.r : &r.m;
+                size_t ni = number->ie-number->ib, nf = number->fe-number->fb;
+                size_t nd = ni+nf, first = nd, k, significant;
+                slong e;
+                for (k = 0; k < nd; k++) {
+                    char digit = k < ni ? s[number->ib+k] : s[number->fb+k-ni];
+                    if (digit != '0' && first == nd) first = k;
+                }
+                if (first == nd) continue; /* tx_dec_value also avoids powers for exact zero. */
+                e = tx_dec_exp(s, number);
+                if (e > ADF_QCLASS_BITS_MAX || e < -ADF_QCLASS_BITS_MAX) { over = 1; continue; }
+                significant = nd-first;
+                if (nf > (size_t) ADF_QCLASS_BITS_MAX) { over = 1; continue; }
+                e -= (slong) nf;
+                /* D3-2 projected decimal sizes, BEFORE powers: 10^k < 2^(4k).
+                   Bound the intermediates that tx_dec_value actually forms before cancellation. */
+                if (significant > (size_t) ADF_QCLASS_BITS_MAX/4 ||
+                    (e > 0 && (size_t) e > (size_t) ADF_QCLASS_BITS_MAX/4-significant) ||
+                    e < -ADF_QCLASS_BITS_MAX/4) over = 1;
+            }
+        }
         count++;
     } while (is_union && tx_expect(&c, ','));
     if (over || (is_union && (lim->max_items < 1 || count > (size_t) lim->max_items)))
         return ADF_LIMIT;
-    if (is_union) return ADF_UNSUPPORTED;
+    if (is_union) {
+        adf_adele_struct *pieces;
+        fmpq_t mid, rad, stored, delta;
+        arf_t num, den;
+        size_t i;
+        if (count > (size_t) WORD_MAX || count > (size_t) -1/sizeof(*pieces)) return ADF_LIMIT;
+        pieces = flint_malloc(count * sizeof(*pieces));
+        for (i = 0; i < count; i++) adf_adele_init(pieces+i);
+        fmpq_init(mid); fmpq_init(rad); fmpq_init(stored); fmpq_init(delta);
+        arf_init(num); arf_init(den);
+        c.i = 0; (void) TX_KW(&c, "union"); (void) tx_expect(&c, '(');
+        st = ADF_OK;
+        for (i = 0; i < count; i++) {
+            (void) tx_expect(&c, '('); (void) tx_real_syntax(&c, &r);
+            (void) tx_expect(&c, ';'); (void) tx_fin_syntax(&c, &f); (void) tx_expect(&c, ')');
+            if (i+1 < count) (void) tx_expect(&c, ',');
+            if (tx_fin_domain(s, &f)) { st = ADF_DOMAIN; break; }
+            tx_dec_fmpq(mid, s, &r.m);
+            /* CV-45 and conventions 9.3: test the exact input midpoint, then RN_p.
+               refs/src/flint-3.0.1/arf.rst:24-35, :662-681 (correctly rounded division).
+               Monotonic rounding fixes 0 and 1 and therefore preserves this range. */
+            if (fmpq_sgn(mid) < 0 || fmpq_cmp_ui(mid, 1) > 0) { st = ADF_DOMAIN; break; }
+            fmpq_zero(rad);
+            if (r.has_r) tx_dec_fmpq(rad, s, &r.r);
+            arf_set_fmpz(num, fmpq_numref(mid)); arf_set_fmpz(den, fmpq_denref(mid));
+            arf_div(arb_midref(pieces[i].inf), num, den, FLINT_MAX(prec, 2), ARF_RND_NEAR);
+            arf_get_fmpq(stored, arb_midref(pieces[i].inf));
+            fmpq_sub(delta, mid, stored); fmpq_abs(delta, delta); fmpq_add(rad, rad, delta);
+            tx_mag_upper(arb_radref(pieces[i].inf), rad);
+            tx_fin_build(&pieces[i].fin, s, &f);
+        }
+        if (st == ADF_OK) st = adf_qclass_set_pieces(x, pieces, (slong) count, lim->max_items);
+        for (i = 0; i < count; i++) adf_adele_clear(pieces+i);
+        flint_free(pieces); fmpq_clear(mid); fmpq_clear(rad); fmpq_clear(stored); fmpq_clear(delta);
+        arf_clear(num); arf_clear(den);
+        return st;
+    }
     if (tx_fin_domain(s, &f)) return ADF_DOMAIN;
     adf_adele_init(a);
     tx_arb_from_real(a->inf, s, &r, prec);

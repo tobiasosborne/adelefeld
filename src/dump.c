@@ -2631,3 +2631,86 @@ adf_sball_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s, si
 {
     return dp_inspect(DP_SBALL, nctx, descs, s, len, lim);
 }
+
+/* ---- Slice 3.1-d: conventions 10.1:1411, 10.2:1427-1480; api-3.md:283-309.
+   Reuse the whole-text validator. The following walks see only validated spans;
+   no FLINT string loader is used, and no raw local field is normalized. ---- */
+static void dp_qclass_start(dp_cur *c, const dp_parsed *P, int *form, size_t *n)
+{
+    dp_span tag;
+    dp_cur_at(c, P); (void) dp_next(c, &tag);
+    *form = dp_kw_is(tag, "pieces") ? ADF_QCLASS_PIECES : ADF_QCLASS_LIFT;
+    *n = 1;
+    if (*form == ADF_QCLASS_PIECES) (void) dp_count(c, 8, n);
+}
+static void dp_qclass_member(dp_cur *c, dp_arb *a, dp_fb *f)
+{
+    dp_state st; size_t narch;
+    memset(&st, 0, sizeof(st)); st.mode = DP_SYNTAX;
+    (void) dp_w_arch(c, &st, 4, &narch, a); (void) dp_w_fb(c, &st, f);
+}
+static int dp_load_qclass(adf_qclass_t x, const char *s, size_t len,
+                           const adf_modctx_struct *const *binds, size_t nbinds,
+                           const adf_text_limits_t *lim)
+{
+    dp_parsed P; dp_cur c; int form, st; size_t n, i, occurrence = 0;
+    adf_qclass_struct out;
+    st = dp_validate(&P, s, len, lim, DP_QCLASS);
+    if (st != ADF_OK) return st;
+    if (nbinds != DP_ONE_CONTEXT && nbinds != P.nocc) return ADF_DOMAIN;
+    dp_qclass_start(&c, &P, &form, &n);
+    if (n > (size_t) WORD_MAX || n > (size_t) -1/sizeof(*out.piece)) return ADF_LIMIT;
+    /* Bind every occurrence before allocation or output writes, including the last one. */
+    for (i = 0; i < n; i++) {
+        dp_arb a; dp_fb f; dp_qclass_member(&c, &a, &f);
+        if (f.local) {
+            size_t b = nbinds == DP_ONE_CONTEXT ? 0 : occurrence;
+            if (binds == NULL || binds[b] == NULL || !dp_bind_matches(binds[b], &P, &f.ctx))
+                return ADF_DOMAIN;
+            occurrence++;
+        }
+    }
+    out.form = form; out.len = (slong) n;
+    out.piece = flint_malloc(n * sizeof(*out.piece));
+    dp_qclass_start(&c, &P, &form, &n); occurrence = 0;
+    for (i = 0; i < n; i++) {
+        dp_arb a; dp_fb f; const adf_modctx_struct *ctx = NULL;
+        dp_qclass_member(&c, &a, &f);
+        if (f.local) ctx = binds[nbinds == DP_ONE_CONTEXT ? 0 : occurrence++];
+        adf_adele_init(out.piece+i); dp_set_arb(out.piece[i].inf, &a);
+        dp_set_fb(&out.piece[i].fin, &P, &f, ctx);
+    }
+    /* Also guard the built value, as the repaired typed loaders do after stage 6. */
+    st = adf_qclass_is_canonical(&out) ? ADF_OK : ADF_DOMAIN;
+    if (st == ADF_OK) adf_qclass_swap(x, &out);
+    adf_qclass_clear(&out);
+    return st;
+}
+int adf_qclass_load_str(adf_qclass_t x, const char *s, size_t len,
+                         const adf_modctx_struct *ctx, const adf_text_limits_t *lim)
+{
+    return dp_load_qclass(x, s, len, &ctx, DP_ONE_CONTEXT, lim);
+}
+int adf_qclass_load_str_binds(adf_qclass_t x, const char *s, size_t len,
+                               const adf_modctx_struct *const *binds, size_t nbinds,
+                               const adf_text_limits_t *lim)
+{
+    return dp_load_qclass(x, s, len, binds, dp_count_of(nbinds), lim);
+}
+char *adf_qclass_dump_str(size_t *len, const adf_qclass_t x)
+{
+    dp_sb b; slong i;
+    DP_INV(x, adf_qclass_is_canonical(x), "adf_qclass");
+    dp_sb_init(&b);
+    dp_sb_lit(&b, x->form == ADF_QCLASS_LIFT ? "adf1 Q qclass lift" : "adf1 Q qclass pieces");
+    if (x->form == ADF_QCLASS_PIECES) dp_sb_ui(&b, (ulong) x->len);
+    for (i = 0; i < x->len; i++) {
+        dp_sb_lit(&b, " 1"); dp_sb_arb(&b, x->piece[i].inf); dp_sb_fb(&b, &x->piece[i].fin);
+    }
+    return dp_sb_finish(&b, len);
+}
+int adf_qclass_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t len,
+                             const adf_text_limits_t *lim)
+{
+    return dp_inspect(DP_QCLASS, nctx, descs, s, len, lim);
+}

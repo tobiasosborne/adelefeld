@@ -1,0 +1,29 @@
+{"input":"(0.5 ; 1/3 mod 2) + Q","canonical":"(0.5 ; 1/3 mod 2) + Q","members":[{"lo":"1/2","hi":"1/2","a":"1/3","h":"2"}],"c_print":"(0.5 ; 1/3 mod 2) + Q"}
+{"input":"(3.14159 +/- 1e-5 ; 5/3 mod 6) + Q","canonical":"(3.14159 +/- 1e-5 ; 5/3 mod 6) + Q","members":[{"lo":"157079/50000","hi":"3927/1250","a":"5/3","h":"6"}],"c_print":"(3.14159 +/- 1.1e-5 ; 5/3 mod 6) + Q"}
+{"input":"(1 +/- 0.1 ; 0 mod 2) + Q","canonical":"(1 +/- 0.1 ; 0 mod 2) + Q","members":[{"lo":"9/10","hi":"11/10","a":"0","h":"2"}],"c_print":"(1 +/- 0.11 ; 0 mod 2) + Q"}
+{"input":"union((0.5 ; 0 mod 1)) + Q","canonical":"union((0.5 ; 0 mod 1)) + Q","members":[{"lo":"1/2","hi":"1/2","a":"0","h":"1"}],"c_print":"union((0.5 ; 0 mod 1)) + Q"}
+{"input":"union((0.5 ; 7)) + Q","canonical":"union((0.5 ; 7)) + Q","members":[{"lo":"1/2","hi":"1/2","a":"7","h":"0"}],"c_print":"union((0.5 ; 7)) + Q"}
+{"input":"union((0.5 +/- 0.5 ; 0 mod 1)) + Q","canonical":"union((0.5 +/- 0.5 ; 0 mod 1)) + Q","members":[{"lo":"0","hi":"1","a":"0","h":"1"}],"c_print":"union((0.5 +/- 0.5 ; 0 mod 1)) + Q"}
+{"input":"union((1 +/- 0.5 ; 0 mod 1)) + Q","canonical":"union((1 +/- 0.5 ; 0 mod 1)) + Q","members":[{"lo":"1/2","hi":"3/2","a":"0","h":"1"}],"c_print":"union((1 +/- 0.5 ; 0 mod 1)) + Q"}
+{"input":"union((0.05 +/- 0.05 ; 1 mod 2), (0.95 +/- 0.05 ; 0 mod 2)) + Q","canonical":"union((0.05 +/- 0.05 ; 1 mod 2), (0.95 +/- 0.05 ; 0 mod 2)) + Q","members":[{"lo":"0","hi":"1/10","a":"1","h":"2"},{"lo":"9/10","hi":"1","a":"0","h":"2"}],"c_print":"union((0.05 +/- 0.051 ; 1 mod 2), (0.95 +/- 0.051 ; 0 mod 2)) + Q"}
+{"input":"union((0.95 +/- 0.05 ; 0 mod 2), (0.05 +/- 0.05 ; -1 mod 2)) + Q","canonical":"union((0.05 +/- 0.05 ; 1 mod 2), (0.95 +/- 0.05 ; 0 mod 2)) + Q","members":[{"lo":"9/10","hi":"1","a":"0","h":"2"},{"lo":"0","hi":"1/10","a":"1","h":"2"}],"c_print":"union((0.05 +/- 0.051 ; 1 mod 2), (0.95 +/- 0.051 ; 0 mod 2)) + Q"}
+{"input":"union((0.5 ; 3 mod 1)) + Q","canonical":"union((0.5 ; 0 mod 1)) + Q","members":[{"lo":"1/2","hi":"1/2","a":"0","h":"1"}],"c_print":"union((0.5 ; 0 mod 1)) + Q"}
+{"input":"union((0.5 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q","canonical":"union((0.5 ; 0 mod 1)) + Q","members":[{"lo":"1/2","hi":"1/2","a":"0","h":"1"},{"lo":"1/2","hi":"1/2","a":"0","h":"1"}],"c_print":"union((0.5 ; 0 mod 1)) + Q"}
+{"input":"union((0.25 ; 1 mod 3), (0.25 ; 0 mod 3)) + Q","canonical":"union((0.25 ; 0 mod 3), (0.25 ; 1 mod 3)) + Q","members":[{"lo":"1/4","hi":"1/4","a":"1","h":"3"},{"lo":"1/4","hi":"1/4","a":"0","h":"3"}],"c_print":"union((0.25 ; 0 mod 3), (0.25 ; 1 mod 3)) + Q"}
+{"input":"union((0.25 ; 1 mod 6), (0.25 ; 0 mod 3)) + Q","canonical":"union((0.25 ; 0 mod 3), (0.25 ; 1 mod 6)) + Q","members":[{"lo":"1/4","hi":"1/4","a":"1","h":"6"},{"lo":"1/4","hi":"1/4","a":"0","h":"3"}],"c_print":"union((0.25 ; 0 mod 3), (0.25 ; 1 mod 6)) + Q"}
+{"input":"union((0.6 +/- 0.2 ; 0 mod 1), (0.5 +/- 0.1 ; 0 mod 1)) + Q","canonical":"union((0.5 +/- 0.1 ; 0 mod 1), (0.6 +/- 0.2 ; 0 mod 1)) + Q","members":[{"lo":"2/5","hi":"4/5","a":"0","h":"1"},{"lo":"2/5","hi":"3/5","a":"0","h":"1"}],"c_print":"union((0.5 +/- 0.11 ; 0 mod 1), (0.6 +/- 0.21 ; 0 mod 1)) + Q"}
+{"input":"union((0.5 +/- 0.125 ; 0 mod 1), (0.625 +/- 0.25 ; 0 mod 1)) + Q","canonical":"union((0.62 +/- 0.26 ; 0 mod 1), (0.5 +/- 0.13 ; 0 mod 1)) + Q","members":[{"lo":"3/8","hi":"5/8","a":"0","h":"1"},{"lo":"3/8","hi":"7/8","a":"0","h":"1"}],"c_print":"union((0.62 +/- 0.26 ; 0 mod 1), (0.5 +/- 0.13 ; 0 mod 1)) + Q"}
+{"input":"union((0.5 +/- 0.0999 ; 0 mod 1), (0.5 +/- 0.1 ; 0 mod 1)) + Q","canonical":"union((0.5 +/- 0.1 ; 0 mod 1)) + Q","members":[{"lo":"4001/10000","hi":"5999/10000","a":"0","h":"1"},{"lo":"2/5","hi":"3/5","a":"0","h":"1"}],"c_print":"union((0.5 +/- 0.11 ; 0 mod 1), (0.5 +/- 0.1 ; 0 mod 1)) + Q"}
+{"input":"(0.5;1/3mod2)+Q","canonical":"(0.5 ; 1/3 mod 2) + Q","members":[{"lo":"1/2","hi":"1/2","a":"1/3","h":"2"}],"c_print":"(0.5 ; 1/3 mod 2) + Q"}
+{"input":"union((1.5 ; 0 mod 1)) + Q","canonical":"!DOMAIN"}
+{"input":"union((-0.25 ; 0 mod 1)) + Q","canonical":"!DOMAIN"}
+{"input":"union((0.5 ; 1/2 mod 1)) + Q","canonical":"!DOMAIN"}
+{"input":"union((0.5 ; 0 mod 1/2)) + Q","canonical":"!DOMAIN"}
+{"input":"union((0.5 ; 1/2)) + Q","canonical":"!DOMAIN"}
+{"input":"(0.5 ; 1/0) + Q","canonical":"!DOMAIN"}
+{"input":"union() + Q","canonical":"!PARSE"}
+{"input":"union((0.5 ; 0 mod 1))","canonical":"!PARSE"}
+{"input":"(0.5 ; 0) + q","canonical":"!PARSE"}
+{"input":"(0.5 ; 0) - Q","canonical":"!PARSE"}
+{"input":"(* ; 1 mod 2) + Q","canonical":"!PARSE"}
+{"input":"(0.5 ; 0)","canonical":"!PARSE"}

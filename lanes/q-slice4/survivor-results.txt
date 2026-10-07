@@ -1,0 +1,5 @@
+S1_decimal_limit: exit 1; tests/test_qclass_text.c:186: read_q(x, s, strlen(s), &lim) == ADF_LIMIT
+S2_free_keys: exit 1; tests/test_qclass_text.c:227: live_blocks == 0
+S3_last_binding: exit 1; tests/test_qclass_dump.c:200: read_q(x, s, strlen(s), binds, 1, NULL) == ADF_DOMAIN
+S4_cmp_le: exit 1; self comparison: -1, expected 0
+S5_cmp_ge: exit 1; self comparison: 1, expected 0

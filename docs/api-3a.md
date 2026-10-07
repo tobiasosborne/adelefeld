@@ -264,3 +264,105 @@ Check: exact-gap vector and `exact_and_local` before and after the deliberately 
   The three new verbs make the represented-set question explicit.
 - Opposite input-piece orders are sorted in the vector generator before entering the public calls.
   Alternative: pass unsorted storage, which violates section 1's canonical precondition.
+
+## Slice 3.1-d
+
+19. `adf_qclass_set_pieces(y,pieces,n,piece_limit)` writes PIECES for union_i pi(pieces[i]).
+    It preserves each stored real ball, finite backend, raw local fields, and borrowed context.
+    It validates initialized raw entries against design 1 and conventions 5.10, then applies D3-2 bounds.
+    Sorting uses exact lower end, upper end, canonical H, canonical A. Equal keys keep the first input entry.
+    There is no clipping at 0 or 1, merging, quotient-set normalization, or rounding.
+    LIMIT covers piece_limit < 1, n > piece_limit, allocation overflow, and exact-key bounds.
+    The input count is checked before deduplication; a limit below 1 is checked before array access.
+    DOMAIN covers n < 1, NULL with positive n, or a noncanonical or invalid piece.
+    The initialized output remains untouched on failure. The input array cannot overlap the output or its members.
+    Cost: O(n) validation and at most n copies, O(n log n) exact comparisons, and canonical-triple work.
+    Local triples can require CRT. The implementation also forms bounded exact endpoints during preflight.
+    Check: `test_qclass_text construction`, `vectors`, `local_and_bounds`; 100 exact-key vector records.
+
+20. `adf_qclass_set_str` now reads union text as PIECES, as design 2.5 and conventions 9.2 to 9.5 require.
+    Each member encloses its exact decimal real interval. Its exact input midpoint must be in [0,1].
+    The stored midpoint is rounded to nearest at max(prec,2) bits; its exact displacement is added to the radius.
+    The constructor then validates stored midpoints and canonical finite triples, sorts, and deduplicates.
+    LIFT retains the existing ordinary adele reader's rounding and prints as LIFT.
+    Stage order: numerical precision cap, input length, all bytes, whole grammar, all decimal and count limits,
+    then domain checks and construction. max_items counts raw union entries. Lift has no union count.
+    Before decimal powers, a conservative D3-2 preflight uses 10^k < 2^(4k) on the significant coefficient
+    and its adjusted power of ten. It bounds raw parsing intermediates before cancellation; zero needs no power.
+    PARSE, LIMIT, DOMAIN leave x untouched. The grammar has no unsupported union branch in this slice.
+    Cost: scanning and exact decimal parsing, O(n log n) comparisons and bounded exact-key preflight.
+    Check: `test_qclass_text golden`, `limits`, `vectors`; all 29 data rows of qclass.tsv.
+
+21. `adf_qclass_get_str` retains slice 3.1-b's enclosure contract and printed-key sorting/deduplication.
+    A reread encloses every stored piece with its same finite set.
+    Identity after value-text reading is not promised.
+    Its NULL/length-zero print guard, string ownership, and costs are unchanged (design 2.5; conventions 9.4-9.6).
+    Check: 100 array-vector rereads and 2000 random constructor/reducer rereads in `test_qclass_dump`.
+
+22. `adf_qclass_load_str` and `adf_qclass_load_str_binds` restore the strict canonical dump exactly.
+    They follow conventions 10.1/10.2 and design 2.5. They never sort, deduplicate, or normalize input.
+    The one-context form repeats ctx at every local occurrence. The bindings form requires exactly one matching
+    context per local occurrence, in traversal order. No occurrence means no binding in the bindings form.
+    A wrong count, NULL binding, wrong modulus, or wrong ordered block list gives DOMAIN.
+    Stages: length; bytes and version/field; whole grammar; limits; word support; domain; bindings.
+    M1-D9 bounds both raw binary exponents of every PIECES real ball by 2^20, at the limits stage.
+    LIFT exponents and finite raw data retain their unrestricted dump representation contract.
+    No FLINT string loader sees unvalidated bytes. The typed implementation rebuilds validated fields directly.
+    Every non-OK status leaves x untouched, including a mismatch at the last local occurrence.
+    Statuses are PARSE, LIMIT, UNSUPPORTED, DOMAIN. No member aliasing; caller owns contexts.
+    Cost: linear in input plus canonical triples, exact adjacent comparisons, and binding matching.
+    A second predicate on the temporary guards the final swap and repeats some canonical-triple work.
+    Check: `test_qclass_dump golden`, `vectors`, `malformed`, `binding_order`, `random_roundtrips`;
+    all 13 qclass dump golden rows and 2000 random identity round trips.
+
+23. `adf_qclass_dump_str` records the stored form, order, real bits, backend, raw finite fields, and contexts.
+    Its body is qclass lift arch fb, or qclass pieces h followed by h arch/fb pairs (10.1).
+    It allocates a caller-owned string freed with adf_str_free; len excludes NUL. It has no status.
+    Cost is output size. Under INV its canonical input is checked before printing.
+    Check: byte-for-byte golden and reference dump expectations; local d=2,H=6 remains raw in the dump.
+
+24. `adf_qclass_dump_inspect` validates the same dump and reports occurrences without constructing a class.
+    With descs=NULL it writes the count only on OK. Otherwise incoming nctx is initialized descriptor capacity.
+    It validates the whole input before capacity checking. Insufficient capacity gives LIMIT without any writes.
+    On OK it replaces the required initialized descriptors and leaves trailing descriptors untouched.
+    Stage order/statuses match load through domain; no binding is needed for inspection.
+    Cost is loader validation plus recorded context size. See design 2.5 and conventions 10.2.
+    Check: `test_qclass_dump check_dump`, malformed status agreement, capacities, traversal descriptors.
+
+The decimal preflight has a simple integer proof. Let c>0 have s decimal digits and effective power e.
+
+1. c < 10^s < 2^(4s), because 10 < 16. Therefore bits(c) <= 4s.
+2. If e >= 0, c 10^e < 2^(4(s+e)). If e < 0, the raw denominator 10^(-e) < 2^(4(-e)).
+   The denominator at e=0 is 1. These upper bounds also cover unreduced parsing intermediates.
+3. Reject a projected size above ADF_QCLASS_BITS_MAX before forming powers or products.
+   An exact zero coefficient needs no power and is handled separately by the existing decimal builder.
+
+### Decisions where this slice's design is silent
+
+- Positive n with a NULL piece array gives DOMAIN after the piece-limit check.
+  Alternative: make the pointer solely a precondition and abort under INV. The constructor validates raw input.
+- The constructor checks output canonicality under INV; raw input entries remain status-validated.
+  Alternative: abort on bad raw entries. That would contradict the constructor's DOMAIN contract.
+- The strict loaders reuse the existing whole-dump validator and add a final temporary predicate.
+  Alternative: copy the grammar and semantic checks. Reuse keeps byte and limit precedence consistent.
+- NULL nctx gives DOMAIN before inspection, following the existing inspectors.
+  Alternative: make this only an unchecked pointer precondition.
+- `print` aliases the existing driver `show`, and `adf print TEXT` feeds its command into the same line reader.
+  Alternative: use only `show` on standard input. The slice brief explicitly requests the direct print call.
+- The driver validates local dumps and returns UNSUPPORTED because it owns no context bindings.
+  Alternative: construct contexts implicitly. That would violate conventions 4.6 and the current driver contract.
+
+### Findings retained as failing assertions
+
+The request for exact C set_str/get_str equality with every qclass golden conflicts with conventions 11.3.
+At 128 bits and six digits, `(3.14159 +/- 1e-5 ; 5/3 mod 6) + Q` prints radius 1.1e-5.
+The exact Python golden has radius 1e-5. A decimal radius enclosure cannot print that smaller radius.
+`test_qclass_text --strict-golden` keeps this assertion and fails; the ordinary test checks independent C
+rounding expectations and exact input endpoint containment for every valid row.
+
+The existing shared dump validator and the Python dump oracle both return PARSE for
+`adf1 Q qclass pieces 1 0 g 0 1 1`. The grammar permits arch count zero, whose domain status is DOMAIN
+by conventions 10.1. Their piece-count preflight assumes at least eight subsequent tokens per piece.
+The typed loader cannot reach the domain stage for this short text. The shared validator is read-only in this lane.
+`test_qclass_dump --strict-zero-arch` retains the DOMAIN assertion and fails. A longer zero-arch local dump
+reaches domain validation and returns DOMAIN. No convention, golden, reference, or shared loader was changed.

@@ -1,0 +1,3 @@
+18 programs; 16 exit 0; 2 nonzero
+lanes/q-slice4/build/test_qclass
+lanes/q-slice4/build/test_qclass_reduce

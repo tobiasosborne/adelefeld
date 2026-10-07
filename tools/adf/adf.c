@@ -222,6 +222,7 @@ static const struct
                                   ADF_DRV_ARITY_2_OR_3: two or three operands (root) */
 } adf_drv_ops[] = {
     { "show", ADF_DRV_SHOW, 1 },
+    { "print", ADF_DRV_SHOW, 1 }, /* Slice 3.1-d spelling, api-3.md:848. */
     { "type", ADF_DRV_TYPE, 1 },
     { "qadd_rat", ADF_DRV_QADD_RAT, 2 },
     { "qreduce", ADF_DRV_QREDUCE, 2 },
@@ -547,6 +548,9 @@ adf_drv_value_dump(FILE * out, const adf_drv_value * v)
         case ADF_DRV_SBALL:
             s = adf_sball_dump_str(&len, v->s);
             break;
+        case ADF_DRV_QCLASS:
+            s = adf_qclass_dump_str(&len, v->q);
+            break;
         default:
             return ADF_UNSUPPORTED;
     }
@@ -574,7 +578,7 @@ static adf_drv_type
 adf_drv_body_slot(const char * name)
 {
     static const char * const mine[] = { "rat", "fball", "adele", "cadele", "ucoset", "idele",
-                                         "idclass", "lball", "sball" };
+                                         "idclass", "lball", "sball", "qclass" };
     size_t i;
 
     for (i = 0; i < sizeof(mine) / sizeof(mine[0]); i++)
@@ -664,6 +668,9 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
         case ADF_DRV_LBALL:
             status = adf_lball_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
+        case ADF_DRV_QCLASS:
+            status = adf_qclass_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
         default:
             status = adf_sball_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
@@ -691,6 +698,8 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
             return adf_idclass_load_str(v->k, s, len, NULL, NULL);
         case ADF_DRV_LBALL:
             return adf_lball_load_str(v->b, s, len, NULL, NULL);
+        case ADF_DRV_QCLASS:
+            return adf_qclass_load_str(v->q, s, len, NULL, NULL);
         default:
             return adf_sball_load_str(v->s, s, len, NULL, NULL);
     }
@@ -3558,6 +3567,18 @@ main(int argc, char ** argv)
     char * buf = NULL;
     size_t cap = 0, len = 0;
     int verbose = 0, rc, i;
+
+    /* Slice 3.1-d direct user call: adf print 'union((0.5 ; 7)) + Q'.
+       Feed the same line reader as script input, preserving all status/length checks. */
+    if (argc == 3 && strcmp(argv[1], "print") == 0) {
+        size_t n = strlen(argv[2]);
+        char *line = malloc(n+7);
+        if (line == NULL) return 2;
+        memcpy(line, "print ", 6); memcpy(line+6, argv[2], n); line[n+6] = '\n';
+        rc = adf_driver_run_v(line, n+7, stdout, 0); free(line);
+        if (fflush(stdout) != 0 || ferror(stdout)) rc = 2;
+        return rc;
+    }
 
     for (i = 1; i < argc; i++)
     {

@@ -1,0 +1,177 @@
+mutate: src/qclass.c: 85 mutants
+mutate: src/dump.c: 65 mutants
+mutate: src/text.c: 89 mutants
+mutate: 239 mutants, 60 of them run (--limit 60, --seed 310407)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (4.0 s)
+
+SURVIVED src/text.c:52:19 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -50,5 +50,5 @@
+               (void) tx_expect(&c, '('); (void) tx_real_syntax(&c, &r);
+               (void) tx_expect(&c, ';'); (void) tx_fin_syntax(&c, &f); (void) tx_expect(&c, ')');
+  -            if (i+1 < count) (void) tx_expect(&c, ',');
+  +            if (i+0 < count) (void) tx_expect(&c, ',');
+               if (tx_fin_domain(s, &f)) { st = ADF_DOMAIN; break; }
+               tx_dec_fmpq(mid, s, &r.m);
+
+
+SURVIVED src/qclass.c:21:60 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -19,5 +19,5 @@
+       const qp_key *p = vp, *q = vq;
+       int c = qp_key_cmp(p, q);
+  -    return c ? c : (p->ordinal > q->ordinal) - (p->ordinal < q->ordinal);
+  +    return c ? c : (p->ordinal > q->ordinal) - (p->ordinal <= q->ordinal);
+   }
+   
+
+
+SURVIVED src/text.c:42:61 op: '/' -> '*'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -40,5 +40,5 @@
+           arf_t num, den;
+           size_t i;
+  -        if (count > (size_t) WORD_MAX || count > (size_t) -1/sizeof(*pieces)) return ADF_LIMIT;
+  +        if (count > (size_t) WORD_MAX || count > (size_t) -1*sizeof(*pieces)) return ADF_LIMIT;
+           pieces = flint_malloc(count * sizeof(*pieces));
+           for (i = 0; i < count; i++) adf_adele_init(pieces+i);
+
+
+NOT COMPILED src/dump.c:35:51 logic: '||' -> '&&'
+  src/dump.c:35:51: error: '&&' within '||' [-Werror,-Wlogical-op-parentheses]
+
+SURVIVED src/qclass.c:64:5 drop_call: 'flint_free(keys);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -62,5 +62,5 @@
+       }
+       for (i = 0; i < initialized; i++) { fmpz_clear(keys[i].A); fmpz_clear(keys[i].H); }
+  -    flint_free(keys); adf_rat_clear(a); adf_rat_clear(N); fmpq_clear(lo); fmpq_clear(hi);
+  +     adf_rat_clear(a); adf_rat_clear(N); fmpq_clear(lo); fmpq_clear(hi);
+       return status;
+   }
+
+
+NOT COMPILED src/dump.c:67:6 op: '*' -> '+'
+  src/dump.c:67:6: error: expected identifier or '('
+
+SURVIVED src/dump.c:29:36 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -27,5 +27,5 @@
+       if (nbinds != DP_ONE_CONTEXT && nbinds != P.nocc) return ADF_DOMAIN;
+       dp_qclass_start(&c, &P, &form, &n);
+  -    if (n > (size_t) WORD_MAX || n > (size_t) -1/sizeof(*out.piece)) return ADF_LIMIT;
+  +    if (n > (size_t) WORD_MAX || n >= (size_t) -1/sizeof(*out.piece)) return ADF_LIMIT;
+       /* Bind every occurrence before allocation or output writes, including the last one. */
+       for (i = 0; i < n; i++) {
+
+
+SURVIVED src/qclass.c:32:38 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -30,5 +30,5 @@
+       adf_qclass_struct out = {ADF_QCLASS_PIECES, 0, NULL};
+       adf_rat_t a, N; fmpq_t lo, hi;
+  -    slong i, initialized = 0, keep = 0;
+  +    slong i, initialized = 0, keep = 1;
+       int status = ADF_OK;
+       ADF_INV_QCLASS(y);
+
+
+SURVIVED src/qclass.c:21:32 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/qclass.c
+  +++ b/src/qclass.c
+  @@ -19,5 +19,5 @@
+       const qp_key *p = vp, *q = vq;
+       int c = qp_key_cmp(p, q);
+  -    return c ? c : (p->ordinal > q->ordinal) - (p->ordinal < q->ordinal);
+  +    return c ? c : (p->ordinal >= q->ordinal) - (p->ordinal < q->ordinal);
+   }
+   
+
+
+SURVIVED src/dump.c:29:11 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -27,5 +27,5 @@
+       if (nbinds != DP_ONE_CONTEXT && nbinds != P.nocc) return ADF_DOMAIN;
+       dp_qclass_start(&c, &P, &form, &n);
+  -    if (n > (size_t) WORD_MAX || n > (size_t) -1/sizeof(*out.piece)) return ADF_LIMIT;
+  +    if (n >= (size_t) WORD_MAX || n > (size_t) -1/sizeof(*out.piece)) return ADF_LIMIT;
+       /* Bind every occurrence before allocation or output writes, including the last one. */
+       for (i = 0; i < n; i++) {
+
+
+SURVIVED src/text.c:64:67 swap_args: 'fmpq_add(rad, rad, delta)' -> 'fmpq_add(rad, delta, rad)'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -62,5 +62,5 @@
+               arf_div(arb_midref(pieces[i].inf), num, den, FLINT_MAX(prec, 2), ARF_RND_NEAR);
+               arf_get_fmpq(stored, arb_midref(pieces[i].inf));
+  -            fmpq_sub(delta, mid, stored); fmpq_abs(delta, delta); fmpq_add(rad, rad, delta);
+  +            fmpq_sub(delta, mid, stored); fmpq_abs(delta, delta); fmpq_add(rad, delta, rad);
+               tx_mag_upper(arb_radref(pieces[i].inf), rad);
+               tx_fin_build(&pieces[i].fin, s, &f);
+
+
+NOT COMPILED src/qclass.c:40:89 logic: '||' -> '&&'
+  src/qclass.c:40:89: error: '&&' within '||' [-Werror,-Wlogical-op-parentheses]
+
+SURVIVED src/text.c:42:19 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -40,5 +40,5 @@
+           arf_t num, den;
+           size_t i;
+  -        if (count > (size_t) WORD_MAX || count > (size_t) -1/sizeof(*pieces)) return ADF_LIMIT;
+  +        if (count >= (size_t) WORD_MAX || count > (size_t) -1/sizeof(*pieces)) return ADF_LIMIT;
+           pieces = flint_malloc(count * sizeof(*pieces));
+           for (i = 0; i < count; i++) adf_adele_init(pieces+i);
+
+
+SURVIVED src/text.c:32:46 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/text.c
+  +++ b/src/text.c
+  @@ -30,5 +30,5 @@
+           (void) tx_fin_syntax(&c, &f);
+           (void) tx_expect(&c, ')');
+  -        if (tx_real_over(s, &r, lim)) over = 1;
+  +        if (tx_real_over(s, &r, lim)) over = 0;
+           count++;
+       } while (is_union && tx_expect(&c, ','));
+
+
+NOT COMPILED src/dump.c:48:9 drop_call: 'dp_set_fb(&out.piece[i].fin, &P, &f, ctx);' -> '' (the statement is removed)
+  src/dump.c:44:53: error: variable 'ctx' set but not used [-Werror,-Wunused-but-set-variable]
+
+SURVIVED src/dump.c:31:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -29,5 +29,5 @@
+       if (n > (size_t) WORD_MAX || n > (size_t) -1/sizeof(*out.piece)) return ADF_LIMIT;
+       /* Bind every occurrence before allocation or output writes, including the last one. */
+  -    for (i = 0; i < n; i++) {
+  +    for (i = 1; i < n; i++) {
+           dp_arb a; dp_fb f; dp_qclass_member(&c, &a, &f);
+           if (f.local) {
+
+
+mutate: 60 mutants in 283.4 s: 44 killed, 12 survived, 4 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 12 mutant(s) survived; each one is a claim the tests do not check

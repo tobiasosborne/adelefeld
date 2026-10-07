@@ -238,6 +238,30 @@ char * adf_sball_dump_str(size_t * len, const adf_sball_t x);
 int adf_sball_dump_inspect(size_t * nctx, adf_ctx_desc_t * descs, const char * s, size_t len,
                            const adf_text_limits_t * lim);
 
+/* ---- adf_qclass: "qclass lift arch fb" or "qclass pieces h {arch fb}".
+   Sources: docs/api-3.md:283-309; conventions 10.1:1411, 10.2:1427-1480, 5.10:722-752.
+   Strict load: no normalization, sorting, or duplicate removal. OK writes x; PARSE, LIMIT,
+   UNSUPPORTED, DOMAIN leave it untouched. Stage order: length, bytes/header, entire grammar,
+   limits (max_items, M1-D9), word support, domain predicates, then context bindings.
+   Validate all bytes before any FLINT load call. PIECES exponents have the fixed M1-D9 bound;
+   LIFT exponents are unrestricted. Raw local data and context pointers are preserved.
+   binds supplies exactly one matching live context per local occurrence in traversal order;
+   load_str repeats ctx at every occurrence. Caller owns contexts. No member aliasing.
+   Cost: linear in input plus canonical triples and exact adjacent key comparisons.
+   dump_str is lossless: preserve form/order/real bits/backend/raw fields; caller frees its string
+   with adf_str_free; *len excludes NUL. No status; cost output size. INV checks its canonical input.
+   inspect constructs no class. descs=NULL writes count only on OK. Otherwise *nctx is capacity
+   in initialized descriptors; insufficient capacity gives LIMIT with all outputs untouched.
+   All other statuses and stage order match load; descriptor cost is linear in recorded contexts. */
+int adf_qclass_load_str(adf_qclass_t x, const char *s, size_t len,
+                         const adf_modctx_struct *ctx, const adf_text_limits_t *lim);
+int adf_qclass_load_str_binds(adf_qclass_t x, const char *s, size_t len,
+                               const adf_modctx_struct *const *binds, size_t nbinds,
+                               const adf_text_limits_t *lim);
+char *adf_qclass_dump_str(size_t *len, const adf_qclass_t x);
+int adf_qclass_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t len,
+                             const adf_text_limits_t *lim);
+
 /* Layout queries of the descriptor (conventions 10.2, 12.4). Header-inline and exported. */
 ADF_INLINE size_t adf_sizeof_ctx_desc(void) { return sizeof(adf_ctx_desc_t); }
 ADF_INLINE size_t adf_alignof_ctx_desc(void) { return ADF_ALIGNOF(adf_ctx_desc_t); }

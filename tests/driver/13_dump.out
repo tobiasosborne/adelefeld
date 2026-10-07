@@ -9,7 +9,7 @@ adf1 Q rat 7 3
 adf1 Q fball g 2 6 1
 adf1 Q adele 1 1 0 0 0 g 0 0 1
 adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1
-error: UNSUPPORTED
+adf1 Q qclass lift 1 1 -1 0 0 g 0 0 1
 error: DOMAIN
 7/3
 (* ; 2 mod 6)

@@ -1,0 +1,12 @@
+test_driver: 13_dump: the output differs from tests/driver/13_dump.out
+--- tests/driver/13_dump.out	2026-10-07 23:19:03.288485411 +0800
++++ build/driver/got.out	2026-10-07 23:41:36.701303552 +0800
+@@ -9,7 +9,7 @@
+ adf1 Q fball g 2 6 1
+ adf1 Q adele 1 1 0 0 0 g 0 0 1
+ adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1
+-error: UNSUPPORTED
++adf1 Q qclass lift 1 1 -1 0 0 g 0 0 1
+ error: DOMAIN
+ 7/3
+ (* ; 2 mod 6)

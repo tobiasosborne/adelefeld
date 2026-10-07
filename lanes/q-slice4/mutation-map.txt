@@ -1,0 +1,3 @@
+src/qclass.c: scratch line 2 = repository line 237
+src/text.c: scratch line 2 = repository line 2132
+src/dump.c: scratch line 2 = repository line 2635

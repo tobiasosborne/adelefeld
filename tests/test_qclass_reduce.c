@@ -453,7 +453,9 @@ static void golden_unions(void)
         family->len = keep; CHECK(adf_qclass_is_canonical(family));
         printed = adf_qclass_get_str(&n, family, 2);
         CHECK(printed && n == r->expected_len && !memcmp(printed, r->expected, n));
-        CHECK(adf_qclass_set_str(lift, printed, n, 128, NULL) == ADF_UNSUPPORTED);
+        { adf_qclass_t back; adf_qclass_init(back);  /* slice 3.1-d: the printed union is read back */
+          CHECK(adf_qclass_set_str(back, printed, n, 128, NULL) == ADF_OK && adf_qclass_is_canonical(back));
+          adf_qclass_clear(back); }
         adf_str_free(printed); rows++;
     }
     CHECK(rows == 12); printf("union golden rows built by reduce: %lu\n", rows);

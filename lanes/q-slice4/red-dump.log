@@ -1,0 +1,35 @@
+tests/test_qclass_dump.c: In function ‘read_q’:
+tests/test_qclass_dump.c:32:10: error: implicit declaration of function ‘adf_qclass_load_str_binds’; did you mean ‘adf_idclass_load_str_binds’? [-Werror=implicit-function-declaration]
+   32 |     st = adf_qclass_load_str_binds(x, s, n, binds, nb, lim);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |          adf_idclass_load_str_binds
+tests/test_qclass_dump.c: In function ‘check_dump’:
+tests/test_qclass_dump.c:43:11: error: implicit declaration of function ‘adf_qclass_dump_inspect’; did you mean ‘adf_idclass_dump_inspect’? [-Werror=implicit-function-declaration]
+   43 |     CHECK(adf_qclass_dump_inspect(&count, NULL, s, n, NULL) == ADF_OK && count == want_ctx);
+      |           ^~~~~~~~~~~~~~~~~~~~~~~
+tests/test_qclass_dump.c:16:39: note: in definition of macro ‘CHECK’
+   16 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_qclass_dump.c:57:11: error: implicit declaration of function ‘adf_qclass_dump_str’; did you mean ‘adf_idclass_dump_str’? [-Werror=implicit-function-declaration]
+   57 |     out = adf_qclass_dump_str(&len, x);
+      |           ^~~~~~~~~~~~~~~~~~~
+      |           adf_idclass_dump_str
+tests/test_qclass_dump.c:57:9: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+   57 |     out = adf_qclass_dump_str(&len, x);
+      |         ^
+tests/test_qclass_dump.c:70:27: error: implicit declaration of function ‘adf_qclass_load_str’; did you mean ‘adf_idclass_load_str’? [-Werror=implicit-function-declaration]
+   70 |     if (count == 0) CHECK(adf_qclass_load_str(x, s, n, NULL, NULL) == ADF_OK);
+      |                           ^~~~~~~~~~~~~~~~~~~
+tests/test_qclass_dump.c:16:39: note: in definition of macro ‘CHECK’
+   16 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_qclass_dump.c: In function ‘binding_order’:
+tests/test_qclass_dump.c:174:10: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  174 |     dump = adf_qclass_dump_str(&n, x);
+      |          ^
+tests/test_qclass_dump.c: In function ‘random_roundtrips’:
+tests/test_qclass_dump.c:203:14: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  203 |         dump = adf_qclass_dump_str(&len, x);
+      |              ^
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/q-slice4/build/test_qclass_dump] Error 1

@@ -13,7 +13,7 @@ error: DOMAIN
 error: DOMAIN
 error: DOMAIN
 error: DOMAIN
-error: UNSUPPORTED
+union((0.5 ; 0 mod 1)) + Q
 error: DOMAIN
 rfun
 error: UNSUPPORTED

@@ -396,9 +396,12 @@ static void text(void)
     for (i = 0; i < golden_count(f); i++) {
         const golden_record *r = golden_record_at(f, i);
         int st = qread(x, r->input, r->input_len, 128, NULL);
-        if (!strncmp(r->input, "union", 5)) {
-            int want = r->is_status && !strcmp(r->status, "PARSE") ? ADF_PARSE : ADF_UNSUPPORTED;
-            CHECK(st == want && adf_qclass_identical(x, saved));
+        if (!strncmp(r->input, "union", 5) && r->is_status) {
+            CHECK(!strcmp(adf_status_str(st), r->status) && adf_qclass_identical(x, saved));
+        } else if (!strncmp(r->input, "union", 5)) {
+            size_t n; char *t;  /* slice 3.1-d: the union form is read; exact keys: test_qclass_text */
+            CHECK(st == ADF_OK && adf_qclass_is_canonical(x) && adf_qclass_form(x) == ADF_QCLASS_PIECES);
+            t = adf_qclass_get_str(&n, x, 2); CHECK(t != NULL); adf_str_free(t);
         } else if (r->is_status) {
             CHECK(!strcmp(adf_status_str(st), r->status) && adf_qclass_identical(x, saved));
         } else {
@@ -451,7 +454,7 @@ static void text(void)
       CHECK(qread(x, s, strlen(s), 128, &lim) == ADF_PARSE); }
     { const char *s = "union((1e2 ; 1/0)) + Q";
       lim.max_items = 1;
-      CHECK(qread(x, s, strlen(s), 128, &lim) == ADF_UNSUPPORTED);
+      CHECK(qread(x, s, strlen(s), 128, &lim) == ADF_DOMAIN);  /* slice 3.1-d: 1/0 is read, DOMAIN */
       lim.max_items = -1; CHECK(qread(x, s, strlen(s), 128, &lim) == ADF_LIMIT); }
     CHECK(qread(x, "(0.125 ; 0) + Q", 15, 0, NULL) == ADF_OK);
     CHECK(arb_contains_si(x->piece->inf, 0) == 0);

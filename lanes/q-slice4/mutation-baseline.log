@@ -1,0 +1,4 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_set_pieces: argument y is not a canonical adf_qclass
+qclass_text: 8281 checks
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_dump_str: argument x is not a canonical adf_qclass
+qclass_dump: 33851 checks, 2000 random round trips
