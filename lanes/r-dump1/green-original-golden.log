@@ -1,0 +1,16 @@
+== test_dump_golden
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+== test_dump
+17 tests, 12259 checks, 0 failed checks, 0 failed tests
+== test_dump_ctx
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+== test_dump_local
+10 tests, 36204 checks, 0 failed checks, 0 failed tests
+== test_dump_units
+12 tests, 32505050 checks, 0 failed checks, 0 failed tests
+== test_dump_limits
+9 tests, 297 checks, 0 failed checks, 0 failed tests
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+build-SAN exit 0
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+build-INV exit 0

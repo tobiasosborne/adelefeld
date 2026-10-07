@@ -1,0 +1,33 @@
+== test_qclass_dump
+qclass_dump: 33913 checks, 2000 random round trips
+exit 0
+== test_dump
+ok   input_at_the_end_of_a_page
+ok   load_over_a_value
+17 tests, 12259 checks, 0 failed checks, 0 failed tests
+exit 0
+== test_dump_ctx
+ok   stage_edges_and_piece_order
+ok   binding_counts_of_every_type
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+exit 0
+== test_dump_golden
+FAIL tests/test_dump_golden.c:272: golden_dump_every_row: check failed: ntyped == 77 && nvalid == 23 && nstatus == 115 | 77 typed rows, 23 valid, 116 status
+FAIL golden_dump_every_row (tests/test_dump_golden.c:209, 2 failed checks)
+1 tests, 763 checks, 2 failed checks, 1 failed tests
+exit 1
+== test_dump_limits
+ok   no_exponent_bound_in_the_other_bodies
+ok   block_cap_accepts_65536_blocks_in_full
+9 tests, 297 checks, 0 failed checks, 0 failed tests
+exit 0
+== test_dump_local
+ok   qclass_stage_of_the_pieces_check
+ok   dump_texts_of_hand_values
+10 tests, 36205 checks, 0 failed checks, 0 failed tests
+exit 0
+== test_dump_units
+ok   limits_and_order_of_checks
+ok   dump_texts_of_hand_values
+12 tests, 32505051 checks, 0 failed checks, 0 failed tests
+exit 0

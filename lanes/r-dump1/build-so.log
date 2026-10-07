@@ -1,0 +1,9 @@
+In function ‘via_pow_si’,
+    inlined from ‘adf_lball_powunit’ at src/lpow.c:307:14:
+src/lpow.c:259:10: warning: ‘k’ may be used uninitialized [-Wmaybe-uninitialized]
+  259 |     st = adf_lball_pow_si(P, u, k);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/lpow.c: In function ‘adf_lball_powunit’:
+src/lpow.c:280:46: note: ‘k’ was declared here
+  280 |     slong A, B, beta, Nc = clamp(N), w0 = 1, k;
+      |                                              ^
