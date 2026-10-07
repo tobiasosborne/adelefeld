@@ -1,0 +1,62 @@
+mutate: src/char.c: 315 mutants
+mutate: 315 mutants, 60 of them run (--limit 60, --seed 310308)
+src/char.c:120:79 status: 'ADF_OK' -> 'ADF_DOMAIN'
+src/char.c:45:14 cmp: '==' -> '!='
+src/char.c:224:9 drop_call: 'char_round(acb_realref(out), sums, sums+1, w);' -> '' (the statement is removed)
+src/char.c:175:9 drop_call: 'fmpz_set(MAG_EXPREF(arb_radref(z)), ARF_EXPREF(r));' -> '' (the statement is removed)
+src/char.c:94:31 cmp: '!=' -> '=='
+src/char.c:244:9 drop_call: 'arb_sqrt_ui(root, chi->q, w);' -> '' (the statement is removed)
+src/char.c:46:20 cmp: '!=' -> '=='
+src/char.c:220:37 op: '+' -> '-'
+src/char.c:240:19 zero_one: '1' -> '0'
+src/char.c:100:35 status: 'ADF_DOMAIN' -> 'ADF_OK'
+src/char.c:220:42 zero_one: '1' -> '0'
+src/char.c:225:9 drop_call: 'char_round(acb_imagref(out), sums+2, sums+3, w);' -> '' (the statement is removed)
+src/char.c:193:57 logic: '&&' -> '||'
+src/char.c:47:5 negate_if: 'if(x->q == 1)' -> 'if(!(x->q == 1))'
+src/char.c:115:5 drop_call: 'ADF_INV_CHAR(x);' -> '' (the statement is removed)
+src/char.c:149:24 drop_call: 'CHAR_INDEPENDENT(z, chi);' -> '' (the statement is removed)
+src/char.c:37:5 drop_call: 'ADF_INV_CHAR(x);' -> '' (the statement is removed)
+src/char.c:216:22 zero_one: '0' -> '1'
+src/char.c:17:91 negate_if: 'while(0)' -> 'while(!(0))'
+src/char.c:108:22 drop_call: 'CHAR_INDEPENDENT(s, x);' -> '' (the statement is removed)
+src/char.c:68:11 cmp: '==' -> '!='
+src/char.c:103:52 drop_call: 'ADF_INV_CHAR(x);' -> '' (the statement is removed)
+src/char.c:70:22 drop_call: 'CHAR_INDEPENDENT(s, x);' -> '' (the statement is removed)
+src/char.c:71:5 negate_if: 'if(q == 1)' -> 'if(!(q == 1))'
+src/char.c:211:9 drop_call: 'char_phase(&zero, theta, G, c, a);' -> '' (the statement is removed)
+src/char.c:68:37 logic: '||' -> '&&'
+src/char.c:46:41 zero_one: '1' -> '0'
+src/char.c:71:37 drop_assign: 'e = 0;' -> '' (the statement is removed)
+src/char.c:26:22 zero_one: '1' -> '0'
+src/char.c:220:41 op: '+' -> '-'
+src/char.c:119:5 drop_assign: 'value = dirichlet_order_char(G, c);' -> '' (the statement is removed)
+src/char.c:205:45 status: 'ADF_OK' -> 'ADF_DOMAIN'
+src/char.c:45:50 swap_args: 'n_gcd(x->n, x->q)' -> 'n_gcd(x->q, x->n)'
+src/char.c:108:5 drop_call: 'ADF_INV_CHAR(x);' -> '' (the statement is removed)
+src/char.c:148:5 negate_if: 'if(prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX)' -> 'if(!(prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX))'
+src/char.c:138:63 status: 'ADF_OK' -> 'ADF_DOMAIN'
+src/char.c:71:23 zero_one: '1' -> '0'
+src/char.c:71:34 zero_one: '1' -> '0'
+src/char.c:241:36 drop_assign: 'w = char_work(chi->q, prec);' -> '' (the statement is removed)
+src/char.c:212:9 drop_call: 'fmpq_set_ui(additive, a, chi->q);' -> '' (the statement is removed)
+src/char.c:100:5 negate_if: 'if(!acb_is_finite(s))' -> 'if(!(!acb_is_finite(s)))'
+src/char.c:174:35 op: '-' -> '+'
+src/char.c:76:34 drop_assign: 'e = 0;' -> '' (the statement is removed)
+src/char.c:17:98 zero_one: '0' -> '1'
+src/char.c:136:16 cmp: '>' -> '>='
+src/char.c:170:5 negate_if: 'if(arf_cmp(t, r) > 0)' -> 'if(!(arf_cmp(t, r) > 0))'
+src/char.c:45:17 zero_one: '0' -> '1'
+src/char.c:219:37 op: '*' -> '/'
+src/char.c:173:48 drop_call: 'arf_get_fmpz_2exp(man, exp, r);' -> '' (the statement is removed)
+src/char.c:73:49 status: 'ADF_UNSUPPORTED' -> 'ADF_OK'
+src/char.c:76:15 cmp: '==' -> '!='
+src/char.c:76:23 drop_assign: 'label = 1;' -> '' (the statement is removed)
+src/char.c:148:34 logic: '||' -> '&&'
+src/char.c:59:25 logic: '&&' -> '||'
+src/char.c:94:11 cmp: '==' -> '!='
+src/char.c:68:52 cmp: '!=' -> '=='
+src/char.c:166:57 drop_call: 'arf_mul_2exp_si(mid, mid, -1);' -> '' (the statement is removed)
+src/char.c:219:37 op: '*' -> '+'
+src/char.c:220:29 op: '+' -> '-'
+src/char.c:45:73 logic: '||' -> '&&'

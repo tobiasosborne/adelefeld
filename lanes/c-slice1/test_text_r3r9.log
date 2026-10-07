@@ -1,0 +1,11 @@
+ok   the_reviewers_input_is_not_printed_at_the_default_limits
+ok   every_value_at_the_default_limits_prints_text_that_reads_back
+ok   a_cadele_at_the_exponent_boundary_is_refused_like_an_adele
+ok   a_printed_text_is_read_back_with_limits_that_admit_it
+ok   prec_two_and_digits_one_on_the_value_forms_with_a_real_part
+ok   prec_two_reaches_a_wider_ball_than_a_larger_prec
+ok   the_bare_rat_and_fball_value_forms_round_trip
+   the old scheme on the same texts: 94 accepted, 1 prec values, 1 digits values
+   the corpus of the text target: 287 files, 94 accepted adele or cadele texts, 67 of 190 prec values, 30 of 30 digits values, prec = 2 reached: 1
+ok   the_committed_corpus_reaches_prec_two_and_digits_one
+8 tests, 148 checks, 0 failed checks, 0 failed tests

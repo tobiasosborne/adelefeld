@@ -3149,3 +3149,53 @@ adf_sball_get_str(size_t * len, const adf_sball_t x, slong digits)
     tx_put(&b, "}", 1);
     return tx_finish(&b, len);
 }
+
+/* Slice a: char value text (api-3c 2; conventions 8.5,9.4,9.5,11.3).
+   Appended here to share full lexical stages and the decimal enclosure kernel.
+   proto/text_grammar.py:786-809,888-900 supplies the reference lowering/text. */
+#include "adelefeld/char.h"
+#include <flint/ulong_extras.h>
+
+int adf_char_set_str(adf_char_t x, const char *s, size_t len, slong prec,
+                     const adf_text_limits_t *lim)
+{
+    adf_text_limits_t store; tx_cur c; tx_num qlit, nlit; tx_real re, im;
+    fmpz_t integer; ulong q, n; acb_t ball; int st;
+    /* Numerical preflight precedes even reading s or lim. */
+    if (prec > ADF_REAL_PREC_MAX) return ADF_LIMIT;
+    lim = tx_limits(lim, &store); st = tx_prep(s, len, lim); if (st != ADF_OK) return st;
+    c.s = s; c.len = len; c.i = 0;
+    if (!(TX_KW(&c, "char") && tx_expect(&c, '(') && TX_KW(&c, "q") && tx_expect(&c, '=') &&
+          tx_scan_rat(&c, 0, 0, &qlit) && tx_expect(&c, ',') && TX_KW(&c, "n") && tx_expect(&c, '=') &&
+          tx_scan_rat(&c, 0, 0, &nlit) && tx_expect(&c, ',') && TX_KW(&c, "s") && tx_expect(&c, '=') &&
+          tx_complex_syntax(&c, &re, &im) && tx_expect(&c, ')') && tx_at_end(&c))) return ADF_PARSE;
+    if (tx_real_over(s, &re, lim) || tx_real_over(s, &im, lim)) return ADF_LIMIT;
+    if (tl_prime_over_word(s, &qlit)) return ADF_UNSUPPORTED;
+    fmpz_init(integer); tx_fmpz_digits(integer, s, qlit.ib, qlit.ie); q = fmpz_get_ui(integer);
+    if (q == 0) { fmpz_clear(integer); return ADF_DOMAIN; }
+    tx_fmpz_digits(integer, s, nlit.ib, nlit.ie); n = fmpz_fdiv_ui(integer, q); fmpz_clear(integer);
+    /* Raw semantics precede the setup budget; no ball conversion or FLINT group before this. */
+    if (n_gcd(n, q) != 1) return ADF_DOMAIN;
+    if (q > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+    acb_init(ball);
+    tx_arb_from_real(acb_realref(ball), s, &re, FLINT_MAX(prec, 2));
+    tx_arb_from_real(acb_imagref(ball), s, &im, FLINT_MAX(prec, 2));
+    st = adf_char_set_conrey_acb(x, q, n, ball); acb_clear(ball); return st;
+}
+
+char *adf_char_get_str(size_t *len, const adf_char_t x, slong digits)
+{
+    tx_buf b; char integer[32];
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_char_is_canonical(x)) adf_inv_fail(__func__, "x", "adf_char");
+#endif
+    if (!tx_arb_printable(acb_realref(x->s)) || !tx_arb_printable(acb_imagref(x->s))) {
+        *len = 0; return NULL;
+    }
+    tx_buf_init(&b); tx_puts(&b, "char(q=");
+    snprintf(integer, sizeof(integer), "%lu", x->q); tx_puts(&b, integer);
+    tx_puts(&b, ", n="); snprintf(integer, sizeof(integer), "%lu", x->n); tx_puts(&b, integer);
+    tx_puts(&b, ", s=("); tx_put_real(&b, acb_realref(x->s), digits);
+    tx_puts(&b, ") + ("); tx_put_real(&b, acb_imagref(x->s), digits); tx_puts(&b, ")*i)");
+    return tx_finish(&b, len);
+}

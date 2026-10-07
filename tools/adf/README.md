@@ -820,3 +820,23 @@ LIMIT must be an integer fitting a slong. Fractional limits give DOMAIN; out-of-
 The query uses exact stored endpoints, with no precision argument. The driver setting `prec` affects reading.
 The raw exact construction, common modulus, and Q2 fibre budget must all fit the limit, even on identical inputs.
 Failures print the ordinary status line. Checks: `tests/driver/qclass-sets.cmd`, `tests/julia/qclass_sets.jl`.
+
+### Characters, integer values and Gauss sums (slice a)
+
+`char X` reads `char(q=q, n=n, s=(re) + (im)*i)` and prints the primitive character inducing it.
+`chi X with A` requires an exact integer A and prints the complex ball chi(A), ignoring s.
+`gauss X` prints `e=<parity> tau=<complex ball> W=<complex ball>` on one line, using the stored conductor.
+The finite sign is positive: tau=sum chi(a) E(a/C), W=tau/(i^e sqrt(C)).
+The settings `prec` and `digits` apply. The raw modulus cap is 65536, checked before group setup.
+Errors use the existing `error: STATUS` form.
+
+Direct calls use the same parser:
+
+    adf char 'char(q=16, n=9, s=(0) + (0)*i)'
+    adf chi 'char(q=5, n=2, s=(0) + (0)*i)' with 2
+    adf gauss 'char(q=8, n=7, s=(0) + (0)*i)'
+
+The chi call also accepts A directly, without the word `with`.
+The first call prints conductor 8 and label 5. The second prints `(0) + (1)*i`.
+The last prints `e=1 tau=(0) + (2)*i W=(1) + (0)*i`.
+Sources: docs/api-3c.md 2-4,7; docs/proofs/analysis.md Lemma 8 and Proposition 13.

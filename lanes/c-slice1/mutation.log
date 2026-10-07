@@ -1,0 +1,105 @@
+mutate: src/char.c: 315 mutants
+mutate: 315 mutants, 60 of them run (--limit 60, --seed 310308)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (18.1 s)
+
+SURVIVED src/char.c:240:19 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -238,5 +238,5 @@
+       if (prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+       ADF_INV_CHAR(chi); CHAR_INDEPENDENT(W, chi);
+  -    if (chi->q == 1) { acb_one(W); return ADF_OK; }
+  +    if (chi->q == 0) { acb_one(W); return ADF_OK; }
+       acb_init(out); arb_init(root); w = char_work(chi->q, prec);
+       st = adf_char_gauss_sum(out, chi, prec);
+
+
+SURVIVED src/char.c:193:57 logic: '&&' -> '||'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -191,5 +191,5 @@
+       arf_init(r); arf_init(bound); arf_set_ui(bound, factor*C); arf_mul_2exp_si(bound, bound, -w);
+       arf_set_mag(r, arb_radref(acb_realref(z))); ok = arf_cmp(r, bound) <= 0;
+  -    arf_set_mag(r, arb_radref(acb_imagref(z))); ok = ok && arf_cmp(r, bound) <= 0;
+  +    arf_set_mag(r, arb_radref(acb_imagref(z))); ok = ok || arf_cmp(r, bound) <= 0;
+       arf_clear(r); arf_clear(bound); return ok;
+   }
+
+
+SURVIVED src/char.c:37:5 drop_call: 'ADF_INV_CHAR(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -35,5 +35,5 @@
+   {
+       ulong t; int e;
+  -    ADF_INV_CHAR(x); ADF_INV_CHAR(y);
+  +     ADF_INV_CHAR(y);
+       t = x->q; x->q = y->q; y->q = t;
+       t = x->n; x->n = y->n; y->n = t;
+
+
+TIMED OUT src/char.c:17:91 negate_if: 'while(0)' -> 'while(!(0))'
+  the tests did not finish in 45 s
+
+NOT COMPILED src/char.c:211:9 drop_call: 'char_phase(&zero, theta, G, c, a);' -> '' (the statement is removed)
+  src/char.c:211:13: error: ‘zero’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/char.c:68:37 logic: '||' -> '&&'
+  src/char.c:68:37: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/char.c:71:37 drop_assign: 'e = 0;' -> '' (the statement is removed)
+  src/char.c:88:57: error: ‘e’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/char.c:119:5 drop_assign: 'value = dirichlet_order_char(G, c);' -> '' (the statement is removed)
+  src/char.c:120:63: error: ‘value’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/char.c:45:50 swap_args: 'n_gcd(x->n, x->q)' -> 'n_gcd(x->q, x->n)'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -43,5 +43,5 @@
+   {
+       dirichlet_group_t G; dirichlet_char_t c; int ok;
+  -    if (x->q == 0 || x->n == 0 || x->n > x->q || n_gcd(x->n, x->q) != 1 ||
+  +    if (x->q == 0 || x->n == 0 || x->n > x->q || n_gcd( x->q,x->n) != 1 ||
+           (x->parity != 0 && x->parity != 1) || !acb_is_finite(x->s)) return 0;
+       if (x->q == 1) return x->n == 1 && x->parity == 0;
+
+
+NOT COMPILED src/char.c:241:36 drop_assign: 'w = char_work(chi->q, prec);' -> '' (the statement is removed)
+  src/char.c:244:9: error: ‘w’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/char.c:76:34 drop_assign: 'e = 0;' -> '' (the statement is removed)
+  src/char.c:88:57: error: ‘e’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+TIMED OUT src/char.c:17:98 zero_one: '0' -> '1'
+  the tests did not finish in 45 s
+
+SURVIVED src/char.c:136:16 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -134,5 +134,5 @@
+   {
+       dirichlet_group_t G; dirichlet_char_t c; fmpq_t t; int zero;
+  -    if (chi->q > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+  +    if (chi->q >= ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+       ADF_INV_CHAR(chi);
+       if (chi->q == 1) { fmpq_zero(theta); *is_zero = 0; return ADF_OK; }
+
+
+NOT COMPILED src/char.c:76:23 drop_assign: 'label = 1;' -> '' (the statement is removed)
+  src/char.c:88:38: error: ‘label’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/char.c:59:25 logic: '&&' -> '||'
+  src/char.c:59:67: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/char.c:45:73 logic: '||' -> '&&'
+  src/char.c:45:73: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+mutate: 60 mutants in 1018.2 s: 44 killed, 5 survived, 9 not compiled, 2 timed out, 0 excused
+mutate: FAILED: 5 mutant(s) survived; each one is a claim the tests do not check

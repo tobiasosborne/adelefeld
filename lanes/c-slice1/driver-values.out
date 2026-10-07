@@ -1,0 +1,17 @@
+char(q=5, n=2, s=(0) + (0)*i)
+char(q=8, n=5, s=(0) + (0)*i)
+char(q=4, n=3, s=(-1) + (0.5)*i)
+char(q=1, n=1, s=(0) + (0)*i)
+(0) + (1)*i
+(-1) + (0)*i
+(0) + (0)*i
+(0) + (-1)*i
+(1) + (0)*i
+e=0 tau=(1) + (0)*i W=(1) + (0)*i
+e=1 tau=(0) + (2)*i W=(1) + (0)*i
+e=1 tau=(0) + (2)*i W=(1) + (0)*i
+error: LIMIT
+error: DOMAIN
+error: DOMAIN
+error: PARSE
+error: UNSUPPORTED

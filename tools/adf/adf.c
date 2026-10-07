@@ -212,6 +212,9 @@ typedef enum
     ADF_DRV_PSI_AT,
     ADF_DRV_PSI_STRICT_AT,
     ADF_DRV_PSI_PHASE,
+    ADF_DRV_CHAR,
+    ADF_DRV_CHI,
+    ADF_DRV_GAUSS,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -304,6 +307,9 @@ static const struct
     { "psi_at", ADF_DRV_PSI_AT, 2 },
     { "psi_strict_at", ADF_DRV_PSI_STRICT_AT, 2 },
     { "psi_phase", ADF_DRV_PSI_PHASE, 1 },
+    { "char", ADF_DRV_CHAR, 1 },
+    { "chi", ADF_DRV_CHI, 2 },
+    { "gauss", ADF_DRV_GAUSS, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -3174,6 +3180,61 @@ adf_drv_cyclo(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_va
     return status;
 }
 
+/* Slice a, api-3c 7: explicit character commands. Classification precedes value semantics.
+   The generic dump dispatch remains a later character slice. */
+static char *adf_drv_char_complex(size_t *len, const acb_t z, slong digits)
+{
+    adf_cadele_t c; adf_fball_t zero; char *text;
+    adf_cadele_init(c); adf_fball_init(zero);
+    if (adf_cadele_set_acb_fball(c, z, zero) != ADF_OK) text = NULL;
+    else text = adf_cadele_get_str(len, c, digits);
+    if (text != NULL) {
+        if (*len < 7 || memcmp(text+*len-5, " ; 0)", 5)) { adf_str_free(text); text = NULL; }
+        else { *len -= 6; memmove(text, text+1, *len); text[*len] = '\0'; }
+    }
+    adf_cadele_clear(c); adf_fball_clear(zero); return text;
+}
+static int adf_drv_char(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *state)
+{
+    adf_char_t x; adf_rat_t a; acb_t tau, W; adf_text_kind kind[2];
+    char *text = NULL, *root = NULL; size_t len = 0, rootlen = 0; int status;
+    adf_char_init(x); adf_rat_init(a); acb_init(tau); acb_init(W);
+    status = adf_text_classify(kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK) goto done;
+    if (op == ADF_DRV_CHI) {
+        status = adf_text_classify(kind+1, l->s[1], l->n[1], NULL);
+        if (status != ADF_OK) goto done;
+    }
+    if (kind[0] != ADF_TEXT_CHAR || (op == ADF_DRV_CHI && kind[1] != ADF_TEXT_RAT)) {
+        status = ADF_UNSUPPORTED; goto done;
+    }
+    status = adf_char_set_str(x, l->s[0], l->n[0], state->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (op == ADF_DRV_CHAR) {
+        text = adf_char_get_str(&len, x, state->digits);
+        if (text == NULL) { status = ADF_LIMIT; goto done; }
+        fprintf(out, "%s\n", text);
+    } else if (op == ADF_DRV_CHI) {
+        status = adf_rat_set_str(a, l->s[1], l->n[1], NULL);
+        if (status != ADF_OK) goto done;
+        if (!fmpz_is_one(fmpq_denref(a->q))) { status = ADF_DOMAIN; goto done; }
+        status = adf_char_chi(tau, x, fmpq_numref(a->q), state->prec);
+        if (status == ADF_OK) status = adf_drv_psi_print(out, tau, state);
+    } else {
+        status = adf_char_gauss_sum(tau, x, state->prec);
+        if (status != ADF_OK) goto done;
+        status = adf_char_root_number(W, x, state->prec);
+        if (status != ADF_OK) goto done;
+        text = adf_drv_char_complex(&len, tau, state->digits);
+        root = adf_drv_char_complex(&rootlen, W, state->digits);
+        if (text == NULL || root == NULL) { status = ADF_LIMIT; goto done; }
+        fprintf(out, "e=%d tau=%s W=%s\n", adf_char_get_parity(x), text, root);
+    }
+done:
+    adf_str_free(text); adf_str_free(root); adf_char_clear(x); adf_rat_clear(a);
+    acb_clear(tau); acb_clear(W); return status;
+}
+
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
    when a line was written (or a setting was made), else the status to report.  The steps
    are those of the comment at the top of the file and of the README of tools/adf. */
@@ -3189,6 +3250,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return (op == ADF_DRV_PREC)
                    ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, ADF_LIMIT, &st->prec)
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
+    if (op == ADF_DRV_CHAR || op == ADF_DRV_CHI || op == ADF_DRV_GAUSS)
+        return adf_drv_char(out, op, l, st);
     if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
     if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
     if (op == ADF_DRV_PSI || op == ADF_DRV_PSI_STRICT || op == ADF_DRV_PSI_AT || op == ADF_DRV_PSI_STRICT_AT ||
@@ -3599,6 +3662,21 @@ main(int argc, char ** argv)
         if (line == NULL) return 2;
         memcpy(line, "print ", 6); memcpy(line+6, argv[2], n); line[n+6] = '\n';
         rc = adf_driver_run_v(line, n+7, stdout, 0); free(line);
+        if (fflush(stdout) != 0 || ferror(stdout)) rc = 2;
+        return rc;
+    }
+
+    /* Direct slice-a calls use the script parser and its existing " with " separator. */
+    if ((argc == 3 && (!strcmp(argv[1], "char") || !strcmp(argv[1], "gauss"))) ||
+        ((argc == 4 || (argc == 5 && !strcmp(argv[3], "with"))) && !strcmp(argv[1], "chi"))) {
+        const char *integer = argc == 3 ? NULL : argv[argc-1];
+        size_t a = strlen(argv[1]), b = strlen(argv[2]), c = integer ? strlen(integer) : 0;
+        char *line = malloc(a+b+c+9);
+        if (line == NULL) return 2;
+        memcpy(line, argv[1], a); line[a] = ' '; memcpy(line+a+1, argv[2], b);
+        len = a+b+1;
+        if (integer) { memcpy(line+len, " with ", 6); len += 6; memcpy(line+len, integer, c); len += c; }
+        line[len++] = '\n'; rc = adf_driver_run_v(line, len, stdout, 0); free(line);
         if (fflush(stdout) != 0 || ferror(stdout)) rc = 2;
         return rc;
     }
