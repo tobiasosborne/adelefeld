@@ -1,0 +1,138 @@
+mutate: src/dump.c: 198 mutants
+mutate: 198 mutants, 60 of them run (--limit 60, --seed 410807)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (17.6 s)
+
+NOT COMPILED src/dump.c:92:5 drop_assign: 'count = (size_t) (out.D * out.M);' -> '' (the statement is removed)
+  src/dump.c:92:36: error: variable 'count' is uninitialized when used here [-Werror,-Wuninitialized]
+
+SURVIVED src/dump.c:28:56 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -26,5 +26,5 @@
+   {
+       dp_cur c; dp_span d, m; dp_arb a[2];
+  -    size_t count, i, j, L, total = 0; ulong D = 0, M = 0;
+  +    size_t count, i, j, L, total = 0; ulong D = 0, M = 1;
+       int st = dp_validate(P, s, n, lim, kind);
+       if (st != DP_NOSEM) return st;
+
+
+SURVIVED src/dump.c:57:91 status: 'ADF_LIMIT' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -55,5 +55,5 @@
+           (void) dp_h(&c, &d); (void) dp_h(&c, &m);
+           if (!dp_pos(d) || !dp_pos(m)) return ADF_DOMAIN;
+  -        if (count > (size_t) WORD_MAX || count > (size_t) -1 / sizeof(acb_struct)) return ADF_LIMIT;
+  +        if (count > (size_t) WORD_MAX || count > (size_t) -1 / sizeof(acb_struct)) return ADF_OK;
+           for (i = 0; i < count; i++) {
+               dp_fn_acb(&c, a);
+
+
+SURVIVED src/dump.c:13:17 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -11,5 +11,5 @@
+   {
+       dp_state st;
+  -    memset(&st, 0, sizeof(st)); st.mode = DP_SYNTAX;
+  +    memset(&st, 1, sizeof(st)); st.mode = DP_SYNTAX;
+       (void) dp_w_arb(c, &st, a); (void) dp_w_arb(c, &st, a + 1);
+   }
+
+
+SURVIVED src/dump.c:70:31 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -68,5 +68,5 @@
+                   if (!dp_v_arb(a) || !dp_v_arb(a + 1)) return ADF_DOMAIN;
+                   if (L && j == L - 1 && dp_zero(a[0].m) && dp_zero(a[0].rm) &&
+  -                    dp_zero(a[1].m) && dp_zero(a[1].rm)) return ADF_DOMAIN;
+  +                    dp_zero(a[0].m) && dp_zero(a[1].rm)) return ADF_DOMAIN;
+                   if (j == L && dp_arb_sign(a) != 1) return ADF_DOMAIN;
+               }
+
+
+NOT COMPILED src/dump.c:126:23 op: '*' -> '+'
+  src/dump.c:126:23: error: invalid argument type 'size_t *' (aka 'unsigned long *') to unary expression
+
+SURVIVED src/dump.c:28:49 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -26,5 +26,5 @@
+   {
+       dp_cur c; dp_span d, m; dp_arb a[2];
+  -    size_t count, i, j, L, total = 0; ulong D = 0, M = 0;
+  +    size_t count, i, j, L, total = 0; ulong D = 1, M = 0;
+       int st = dp_validate(P, s, n, lim, kind);
+       if (st != DP_NOSEM) return st;
+
+
+NOT COMPILED src/dump.c:145:26 op: '*' -> '/'
+  src/dump.c:145:26: error: expected identifier or '('
+
+NOT COMPILED src/dump.c:81:56 op: '*' -> '/'
+  src/dump.c:81:56: error: expected ')'
+
+SURVIVED src/dump.c:50:27 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -48,5 +48,5 @@
+               total += L;
+               /* Skip only already validated spans; preflight all counts before semantics. */
+  -            for (j = 0; j < 8 * (L + 3); j++) (void) dp_next(&c, &d);
+  +            for (j = 0; j <= 8 * (L + 3); j++) (void) dp_next(&c, &d);
+           }
+       }
+
+
+NOT COMPILED src/dump.c:145:26 op: '*' -> '+'
+  src/dump.c:145:26: error: expected identifier or '('
+
+NOT COMPILED src/dump.c:132:56 op: '*' -> '/'
+  src/dump.c:132:56: error: expected ')'
+
+SURVIVED src/dump.c:13:5 drop_call: 'memset(&st, 0, sizeof(st));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -11,5 +11,5 @@
+   {
+       dp_state st;
+  -    memset(&st, 0, sizeof(st)); st.mode = DP_SYNTAX;
+  +     st.mode = DP_SYNTAX;
+       (void) dp_w_arb(c, &st, a); (void) dp_w_arb(c, &st, a + 1);
+   }
+
+
+NOT COMPILED src/dump.c:69:76 logic: '&&' -> '||'
+  src/dump.c:69:56: error: '&&' within '||' [-Werror,-Wlogical-op-parentheses]
+
+NOT COMPILED src/dump.c:191:23 op: '*' -> '+'
+  src/dump.c:191:23: error: invalid argument type 'size_t *' (aka 'unsigned long *') to unary expression
+
+NOT COMPILED src/dump.c:37:52 logic: '||' -> '&&'
+  src/dump.c:37:52: error: '&&' within '||' [-Werror,-Wlogical-op-parentheses]
+
+SURVIVED src/dump.c:50:31 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/dump.c
+  +++ b/src/dump.c
+  @@ -48,5 +48,5 @@
+               total += L;
+               /* Skip only already validated spans; preflight all counts before semantics. */
+  -            for (j = 0; j < 8 * (L + 3); j++) (void) dp_next(&c, &d);
+  +            for (j = 0; j < 8 / (L + 3); j++) (void) dp_next(&c, &d);
+           }
+       }
+
+
+mutate: 60 mutants in 853.1 s: 43 killed, 8 survived, 9 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 8 mutant(s) survived; each one is a claim the tests do not check

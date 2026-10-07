@@ -247,3 +247,40 @@ term. Integral O(total coefficients) plus one exp and one root per term. Norm: t
 `(total coefficients)^2` multiply-adds, then their integrals. Avoidable costs: `pi` and `2 pi A` are recomputed per
 term in the derivative and the integral; the norm forms the conjugate as a full copy and integrates both `(k, l)`
 and `(l, k)`, which are conjugates (half of the work, but the design asks for every ordered pair).
+
+## Slice 4c, the dump forms
+
+The four `adf_rfun` dump functions implement api-4.md section 2 and conventions 10.1/10.2:
+`adf1 Q rfun len {length(P) {acb} A B C}`. Every integer is canonical hexadecimal. A zero-length P is
+retained, every term stays in its stored order, and no coefficient or parameter is rounded.
+
+The loader validates length, alphabet/header, full grammar, caller limits, D1 caps, predicates and binding
+count, in that order, before constructing a temporary value. It reuses the unchanged shared validator,
+then finishes that validator's DP_NOSEM result with this type's caps and predicates. D1 (N-D23) allows at
+most 2^16 terms and 2^16 coefficients in total, including all terms. Count overflow is LIMIT on a complete
+body; an incomplete body is PARSE first. Exact trailing-zero coefficients, noncanonical/nonfinite balls,
+and Re(A)>0 not certified are DOMAIN. Another version/field gives UNSUPPORTED. ctx is ignored; binds
+requires nbinds=0 after full validation. Every failure leaves x untouched. No FLINT string load occurs.
+All tokens pass the predicates before any polynomial allocation or ball construction. Polynomial lengths
+are assigned directly without normalization (refs/src/flint-3.0.1/acb_poly.rst:47-54). The dyadic conversion
+is exact (refs/src/flint-3.0.1/arf.rst:227-242). M1-D9 does not bound these bodies' binary exponents.
+
+`dump_str` allocates the exact bytes and excludes NUL from *len; caller adf_str_free. It has no status.
+`dump_inspect` validates like load, writes nctx=0 only on OK, leaves descs untouched and builds no value
+or context. Cost is text traversal and exact integer conversions; load owns O(terms + coefficients)
+new storage, dump owns O(output bytes), inspect uses temporary integer storage.
+Successful load also clears the old destination. Its cost includes that representation's size
+(HEADER-FINDING against the design's unqualified cost of text size).
+
+Identity follows field by field. (1) Counts fix the term and coefficient positions.
+(2) Validation rejects an exact-zero last coefficient, so direct length assignment preserves normalization.
+(3) Exact midpoint/radius reconstruction preserves every ball. (4) Copying terms in traversal order
+preserves both order and zero-polynomial terms. Every accepted dump prints the identical bytes.
+A dumped value loads identically when caller limits and D1 admit it; canonical values beyond those caps
+can instead give LIMIT (HEADER-FINDING against api-4.md section 2's unconditional identity wording).
+Check: test_rfun_dump, 53 reference rows, six golden rows, 2000 random identical round trips, predicate,
+transaction and stage-order checks, and both term and total-coefficient D1 boundaries.
+Check: tests/driver/rfun-dump.cmd; tests/julia/ffun_dump.jl (also covers rfun).
+
+Decision where the design is silent: NULL nctx gives DOMAIN, following the existing dp_inspect convention.
+No normalization or sorting decision is needed; both are forbidden by the fixed strict dump contract.

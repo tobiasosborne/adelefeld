@@ -1,0 +1,7 @@
+adf1 Q rfun 0
+adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+rfun()
+rfun(term(P=[], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+error: DOMAIN
+error: DOMAIN
+error: PARSE

@@ -1,0 +1,5 @@
+ffun vectors: 53 (40 generated values)
+ffun goldens: 4
+ffun random identical round trips: 2000
+ffun D1 boundaries checked
+ffun dump: 17062 checks, 0 failures

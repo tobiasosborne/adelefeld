@@ -1,0 +1,99 @@
+reorder terms BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x2067f): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x206b8): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_rfun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:25: test_rfun_dump] Error 1
+
+trim exact trailing zero BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x2048f): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x204c8): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_rfun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:25: test_rfun_dump] Error 1
+
+FLINT before byte validation BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x203ff): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x20438): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_ffun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:23: test_ffun_dump] Error 1
+
+count cap after reading values BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x204af): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x204e8): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_ffun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:23: test_ffun_dump] Error 1
+
+D M count mismatch ignored BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d16): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d50): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x2032f): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x20368): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_ffun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:23: test_ffun_dump] Error 1
+
+Re(A) predicate omitted BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x2047f): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x204b8): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_rfun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:25: test_rfun_dump] Error 1
+
+cap off by one BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x204af): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x204e8): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_ffun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:23: test_ffun_dump] Error 1
+
+x written before final validation BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x2051f): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x20558): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_ffun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:23: test_ffun_dump] Error 1
+
+nctx not written on OK BUILD FAILED /usr/bin/ld: dump.o: in function `dp_load_scaled':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d06): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:2058:(.text+0x3d40): undefined reference to `adf_inv_release'
+/usr/bin/ld: dump.o: in function `dp_set_fb':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x2044f): undefined reference to `adf_inv_borrow'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/lanes/f4-slice7/mutroot/src/dump_unchanged.h:1707:(.text+0x20488): undefined reference to `adf_inv_release'
+/usr/bin/ld: test_ffun_dump: hidden symbol `adf_inv_release' isn't defined
+/usr/bin/ld: final link failed: bad value
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [Makefile:23: test_ffun_dump] Error 1
+

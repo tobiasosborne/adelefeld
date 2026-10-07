@@ -1,0 +1,16 @@
+COMMAND: timeout 180 lanes/f4-slice7/san/test_ffun_dump
+ffun vectors: 53 (40 generated values)
+ffun goldens: 4
+ffun random identical round trips: 2000
+ffun D1 boundaries checked
+ffun memory: 31892 FLINT blocks, 0 live
+ffun dump: 49116 checks, 0 failures
+EXIT: 0
+COMMAND: timeout 180 lanes/f4-slice7/san/test_rfun_dump
+rfun vectors: 53 (40 generated values)
+rfun goldens: 6
+rfun random identical round trips: 2000
+rfun D1 boundaries checked
+rfun memory: 41764 FLINT blocks, 0 live
+rfun dump: 59418 checks, 0 failures
+EXIT: 0

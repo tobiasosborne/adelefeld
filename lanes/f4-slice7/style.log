@@ -1,0 +1,3 @@
+Prose/code files: 21 ; line/newline failures: 0
+Vector bytes: 336965 ; JSONL records over 116 columns: 76
+Retained logs above 100000 bytes: 0

@@ -1,0 +1,16 @@
+src/rfun.c: In function ‘adf_rfun_translate_rat’:
+src/rfun.c:339:29: warning: ‘rf_rat_ok’ reading 16 bytes from a region of size 8 [-Wstringop-overread]
+  339 |     if (!rf_input_ok(x) || !rf_rat_ok(q->q))
+      |                             ^~~~~~~~~~~~~~~
+src/rfun.c:339:29: note: referencing argument 1 of type ‘const fmpq[1]’
+src/rfun.c:144:1: note: in a call to function ‘rf_rat_ok’
+  144 | rf_rat_ok(const fmpq_t q)
+      | ^~~~~~~~~
+src/rfun.c: In function ‘adf_rfun_dilate_rat’:
+src/rfun.c:424:29: warning: ‘rf_rat_ok’ reading 16 bytes from a region of size 8 [-Wstringop-overread]
+  424 |     if (!rf_input_ok(x) || !rf_rat_ok(h->q))
+      |                             ^~~~~~~~~~~~~~~
+src/rfun.c:424:29: note: referencing argument 1 of type ‘const fmpq[1]’
+src/rfun.c:144:1: note: in a call to function ‘rf_rat_ok’
+  144 | rf_rat_ok(const fmpq_t q)
+      | ^~~~~~~~~

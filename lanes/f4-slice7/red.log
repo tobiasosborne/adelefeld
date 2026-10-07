@@ -1,0 +1,89 @@
+In file included from tests/test_ffun_dump.c:3:
+tests/../lanes/f4-slice7/dump_test.h: In function ‘one’:
+tests/../lanes/f4-slice7/dump_test.h:26:15: error: implicit declaration of function ‘adf_ffun_load_str_binds’; did you mean ‘adf_char_load_str_binds’? [-Werror=implicit-function-declaration]
+   26 | #define BINDS adf_ffun_load_str_binds
+      |               ^~~~~~~~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:83:12: note: in expansion of macro ‘BINDS’
+   83 |       st = BINDS(x, raw, n, NULL, nb, lim); free(raw); }
+      |            ^~~~~
+In file included from tests/test_rfun_dump.c:3:
+tests/../lanes/f4-slice7/dump_test.h: In function ‘one’:
+tests/../lanes/f4-slice7/dump_test.h:39:15: error: implicit declaration of function ‘adf_rfun_load_str_binds’; did you mean ‘adf_rat_load_str_binds’? [-Werror=implicit-function-declaration]
+   39 | #define BINDS adf_rfun_load_str_binds
+      |               ^~~~~~~~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:83:12: note: in expansion of macro ‘BINDS’
+   83 |       st = BINDS(x, raw, n, NULL, nb, lim); free(raw); }
+      |            ^~~~~
+tests/../lanes/f4-slice7/dump_test.h:28:17: error: implicit declaration of function ‘adf_ffun_dump_inspect’; did you mean ‘adf_char_dump_inspect’? [-Werror=implicit-function-declaration]
+   28 | #define INSPECT adf_ffun_dump_inspect
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:16:39: note: in definition of macro ‘CHECK’
+   16 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/../lanes/f4-slice7/dump_test.h:97:11: note: in expansion of macro ‘INSPECT’
+   97 |     CHECK(INSPECT(&count, &d, s, n, lim) == textwant);
+      |           ^~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:41:17: error: implicit declaration of function ‘adf_rfun_dump_inspect’; did you mean ‘adf_rat_dump_inspect’? [-Werror=implicit-function-declaration]
+   41 | #define INSPECT adf_rfun_dump_inspect
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:16:39: note: in definition of macro ‘CHECK’
+   16 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/../lanes/f4-slice7/dump_test.h:97:11: note: in expansion of macro ‘INSPECT’
+   97 |     CHECK(INSPECT(&count, &d, s, n, lim) == textwant);
+      |           ^~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:27:14: error: implicit declaration of function ‘adf_ffun_dump_str’; did you mean ‘adf_char_dump_str’? [-Werror=implicit-function-declaration]
+   27 | #define DUMP adf_ffun_dump_str
+      |              ^~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:105:16: note: in expansion of macro ‘DUMP’
+  105 |         dump = DUMP(&len, x);
+      |                ^~~~
+tests/../lanes/f4-slice7/dump_test.h:105:14: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  105 |         dump = DUMP(&len, x);
+      |              ^
+tests/../lanes/f4-slice7/dump_test.h:40:14: error: implicit declaration of function ‘adf_rfun_dump_str’; did you mean ‘adf_rat_dump_str’? [-Werror=implicit-function-declaration]
+   40 | #define DUMP adf_rfun_dump_str
+      |              ^~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:105:16: note: in expansion of macro ‘DUMP’
+  105 |         dump = DUMP(&len, x);
+      |                ^~~~
+tests/../lanes/f4-slice7/dump_test.h:105:14: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  105 |         dump = DUMP(&len, x);
+      |              ^
+tests/../lanes/f4-slice7/dump_test.h:25:14: error: implicit declaration of function ‘adf_ffun_load_str’; did you mean ‘adf_char_load_str’? [-Werror=implicit-function-declaration]
+   25 | #define LOAD adf_ffun_load_str
+      |              ^~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:16:39: note: in definition of macro ‘CHECK’
+   16 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/../lanes/f4-slice7/dump_test.h:107:15: note: in expansion of macro ‘LOAD’
+  107 |         CHECK(LOAD(x, dump, len, (const adf_modctx_struct *) (uintptr_t) 1, lim) == ADF_OK);
+      |               ^~~~
+tests/../lanes/f4-slice7/dump_test.h:38:14: error: implicit declaration of function ‘adf_rfun_load_str’; did you mean ‘adf_rat_load_str’? [-Werror=implicit-function-declaration]
+   38 | #define LOAD adf_rfun_load_str
+      |              ^~~~~~~~~~~~~~~~~
+tests/../lanes/f4-slice7/dump_test.h:16:39: note: in definition of macro ‘CHECK’
+   16 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/../lanes/f4-slice7/dump_test.h:107:15: note: in expansion of macro ‘LOAD’
+  107 |         CHECK(LOAD(x, dump, len, (const adf_modctx_struct *) (uintptr_t) 1, lim) == ADF_OK);
+      |               ^~~~
+tests/../lanes/f4-slice7/dump_test.h: In function ‘randoms’:
+tests/../lanes/f4-slice7/dump_test.h:191:11: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  191 |         s = DUMP(&n, x); CHECK(s != NULL);
+      |           ^
+tests/../lanes/f4-slice7/dump_test.h:193:15: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  193 |         again = DUMP(&count, y); CHECK(count == n && !memcmp(s, again, n));
+      |               ^
+tests/../lanes/f4-slice7/dump_test.h: In function ‘randoms’:
+tests/../lanes/f4-slice7/dump_test.h:191:11: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  191 |         s = DUMP(&n, x); CHECK(s != NULL);
+      |           ^
+tests/../lanes/f4-slice7/dump_test.h:193:15: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  193 |         again = DUMP(&count, y); CHECK(count == n && !memcmp(s, again, n));
+      |               ^
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/f4-slice7/plain/test_ffun_dump] Error 1
+make: *** Waiting for unfinished jobs....
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/f4-slice7/plain/test_rfun_dump] Error 1

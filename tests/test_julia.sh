@@ -255,6 +255,24 @@ else
 fi
 rm -f "$ffun_output"
 
+# Slice 4c: exact dump/load calls; each allocated string is freed by the Julia test.
+ffun_dump_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/ffun_dump.jl "$so" > "$ffun_dump_output" 2>&1; then
+    cat "$ffun_dump_output"
+elif grep -q '__gmpn_modexact_1_odd' "$ffun_dump_output" 2>/dev/null \
+        && ffun_dump_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$ffun_dump_gmp" ] \
+        && LD_PRELOAD="$ffun_dump_gmp" timeout 60 "$JULIA" --startup-file=no \
+            tests/julia/ffun_dump.jl "$so"; then
+    echo "== tests/julia/ffun_dump.jl passed with LD_PRELOAD=$ffun_dump_gmp"
+else
+    cat "$ffun_dump_output"
+    rm -f "$ffun_dump_output"
+    echo "test_julia: tests/julia/ffun_dump.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$ffun_dump_output"
+
 # Slice 4e (lane f4-slice3): the real transform, adf_rfun_fourier.
 rfft_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/rfun_fourier.jl "$so" > "$rfft_output" 2>&1; then

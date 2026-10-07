@@ -1,0 +1,9 @@
+reorder terms test exit 1 | tests/../lanes/f4-slice7/dump_test.h:140: dump != NULL && len == n && !memcmp(s, dump, n) && dump[n] == 0
+trim exact trailing zero test exit 1 | rfun length 95: want DOMAIN, got OK | tests/../lanes/f4-slice7/dump_test.h:120: st == want
+FLINT before byte validation test exit 1 | tests/../lanes/f4-slice7/dump_test.h:74: 0 && "unexpected FLINT string loader"
+count cap after reading values test exit 1 | adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_load_str_binds: argument x is not a canonical adf_ffun | adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_load_str_binds: argument x is not a canonical adf_ffun | tests/../lanes/f4-slice7/dump_test.h:41: n < 1048576
+D M count mismatch ignored test exit 1 | ffun length 546: want PARSE, got OK | tests/../lanes/f4-slice7/dump_test.h:120: st == want
+Re(A) predicate omitted test exit 1 | rfun length 79: want DOMAIN, got OK | tests/../lanes/f4-slice7/dump_test.h:120: st == want
+cap off by one test exit 1 | adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_load_str_binds: argument x is not a canonical adf_ffun | ffun length 16777236: want OK, got LIMIT | tests/../lanes/f4-slice7/dump_test.h:120: st == want
+x written before final validation test exit 1 | tests/../lanes/f4-slice7/dump_test.h:122: !memcmp(&before, x, sizeof(before)) && SAME(x, saved)
+nctx not written on OK test exit 1 | tests/../lanes/f4-slice7/dump_test.h:132: count == (textwant == ADF_OK ? 0 : 773)
