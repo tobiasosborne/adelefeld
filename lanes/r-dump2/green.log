@@ -1,0 +1,23 @@
+PARSE 0  adf1 Q ffun 1 fffffffffffffffff -43 0 0 0 -1b 0 0 0
+PARSE 0  adf1 Q ffun fffffffffffffffff -1
+PARSE 0  adf1 Q ffun -1 fffffffffffffffff
+PARSE 0  adf1 Q ffun fffffffffffffffff 1 1 0 0 0 0 0 0 0
+PARSE 0  adf1 Q ffun 1 1000000000000000 1 0 0 0 0 0 0 0
+PARSE 0  adf1 Q ffun ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0
+PARSE 0  adf1 Q ffun fffffffffffffffff 0 z
+DOMAIN 0  adf1 Q ffun fffffffffffffffff 0
+OK    0  adf1 Q ffun 1 1 1 0 0 0 0 0 0 0
+ffun vectors: 53 (40 generated values)
+ffun goldens: 4
+ffun random identical round trips: 2000
+ffun D1 boundaries checked
+ffun memory: 33098 FLINT blocks, 0 live
+ffun dump: 50466 checks, 0 failures
+exit 0
+rfun vectors: 53 (40 generated values)
+rfun goldens: 6
+rfun random identical round trips: 2000
+rfun D1 boundaries checked
+rfun memory: 41682 FLINT blocks, 0 live
+rfun dump: 59471 checks, 0 failures
+exit 0

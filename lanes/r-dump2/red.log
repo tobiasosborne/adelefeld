@@ -1,0 +1,11 @@
+ffun length 51: PARSE after 3 fmpz_set_str calls
+tests/support/fun_dump_test.h:155: set_str_calls == calls0
+PARSE 1  adf1 Q ffun 1 fffffffffffffffff -43 0 0 0 -1b 0 0 0
+PARSE 1  adf1 Q ffun fffffffffffffffff -1
+PARSE 1  adf1 Q ffun -1 fffffffffffffffff
+PARSE 1  adf1 Q ffun fffffffffffffffff 1 1 0 0 0 0 0 0 0
+PARSE 1  adf1 Q ffun 1 1000000000000000 1 0 0 0 0 0 0 0
+PARSE 2  adf1 Q ffun ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0
+PARSE 1  adf1 Q ffun fffffffffffffffff 0 z
+DOMAIN 4  adf1 Q ffun fffffffffffffffff 0
+OK    0  adf1 Q ffun 1 1 1 0 0 0 0 0 0 0

@@ -73,6 +73,19 @@ static void *guard_realloc(void *p, size_t n) { CHECK(n < 1048576); return old_r
 int arb_load_str(arb_t x, const char *s)
 { (void) x; (void) s; CHECK(0 && "unexpected FLINT string loader"); return 1; }
 
+/* Counts the calls of fmpz_set_str; the loaders validate every token before any FLINT call
+   (docs/conventions.md 10.2, include/adelefeld/dump.h:292-293), so a PARSE or LIMIT text makes
+   none (review m4, finding 2). The conversion is the documented one (fmpz.rst:427-431) done with
+   GMP's mpz_set_str, so that legitimate calls on valid texts still work. */
+static unsigned long set_str_calls;
+int fmpz_set_str(fmpz_t f, const char *str, int b)
+{
+    mpz_t m; int r;
+    set_str_calls++; mpz_init(m); r = mpz_set_str(m, str, b);
+    if (r == 0) fmpz_set_mpz(f, m);
+    mpz_clear(m); return r == 0 ? 0 : -1;
+}
+
 static int status(const char *s)
 {
     int i;
@@ -97,6 +110,7 @@ static void one(TYPE x, const char *s, size_t n, int want, size_t nb,
     adf_ctx_desc_t d;
     adf_ctx_desc_t oldd;
     char *dump;
+    unsigned long calls0 = set_str_calls;
     INIT(saved); SET(saved, x);
 #if FINITE
     bytes = (size_t) (x->D * x->M) * sizeof(*x->f);
@@ -135,6 +149,11 @@ static void one(TYPE x, const char *s, size_t n, int want, size_t nb,
     count = 884;
     CHECK(INSPECT(&count, NULL, s, n, lim) == textwant);
     CHECK(count == (textwant == ADF_OK ? 0 : 884));
+    if (want == ADF_PARSE || want == ADF_LIMIT) {
+        if (set_str_calls != calls0) fprintf(stderr, KIND " length %zu: %s after %lu fmpz_set_str calls\n",
+                                             n, adf_status_str(want), set_str_calls - calls0);
+        CHECK(set_str_calls == calls0);
+    }
     if (st == ADF_OK) {
         dump = DUMP(&len, x);
         CHECK(dump != NULL && len == n && !memcmp(s, dump, n) && dump[n] == 0);
@@ -252,9 +271,26 @@ static void malformed(void)
     one(x, "adf1 Q ffun -1 1", strlen("adf1 Q ffun -1 1"), ADF_PARSE, 0, NULL);
     one(x, "adf1 Q ffun fffffffffffffffff 0",
         strlen("adf1 Q ffun fffffffffffffffff 0"), ADF_DOMAIN, 0, NULL);
+    { /* Review m4, finding 2: D or M longer than 15 digits on a text refused at the grammar
+         stage (or at a limit) is not converted before the whole body has passed. */
+      const char *early[] = {"adf1 Q ffun 1 fffffffffffffffff -43 0 0 0 -1b 0 0 0",
+          "adf1 Q ffun fffffffffffffffff -1", "adf1 Q ffun -1 fffffffffffffffff",
+          "adf1 Q ffun fffffffffffffffff 1 1 0 0 0 0 0 0 0",
+          "adf1 Q ffun 1 1000000000000000 1 0 0 0 0 0 0 0",
+          "adf1 Q ffun ffffffffffffffffffffffffffffffff ffffffffffffffffffffffffffffffff 0",
+          "adf1 Q ffun fffffffffffffffff 0 z"};
+      size_t e;
+      for (e = 0; e < sizeof(early) / sizeof(*early); e++)
+          one(x, early[e], strlen(early[e]), ADF_PARSE, 0, NULL);
+      adf_text_limits_default(&lim); lim.max_items = 0;
+      one(x, "adf1 Q ffun 1 1 1 0 0 0 0 0 0 0", 31, ADF_LIMIT, 0, &lim);
+      { const char *big = "adf1 Q ffun 1 1 1 -ffffffffffffffffffffffff 0 0 0 0 0 0";
+        one(x, big, strlen(big), ADF_LIMIT, 0, &lim); } }
 #else
     { const char *negative = "adf1 Q rfun 1 0 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-      one(x, negative, strlen(negative), ADF_DOMAIN, 0, NULL); }
+      one(x, negative, strlen(negative), ADF_DOMAIN, 0, NULL);
+      one(x, "adf1 Q rfun fffffffffffffffff", 29, ADF_PARSE, 0, NULL);
+      one(x, "adf1 Q rfun 1 fffffffffffffffff 0", 33, ADF_PARSE, 0, NULL); }
 #endif
     { const char *badballs[] = {"2 0 0 0", "0 5 0 0", "1 0 40000001 0",
                                "1 0 -1 0", "1 0 0 -1"};
@@ -281,8 +317,10 @@ static void malformed(void)
     for (i = 0; i < strlen(s); i++) {
         int st; size_t count = 19; STRUCT before = *x;
         char *raw = malloc(i ? i : 1); CHECK(raw != NULL); memcpy(raw, s, i);
+        unsigned long calls0 = set_str_calls;
         st = LOAD(x, raw, i, NULL, NULL); CHECK(st != ADF_OK && !memcmp(&before, x, sizeof(before)));
         CHECK(INSPECT(&count, NULL, raw, i, NULL) == st && count == 19); free(raw);
+        CHECK((st != ADF_PARSE && st != ADF_LIMIT) || set_str_calls == calls0);
     }
     n = 99; CHECK(INSPECT(&n, NULL, NULL, 0, NULL) == ADF_PARSE && n == 99);
     lim.max_len = 0; CHECK(LOAD(x, NULL, 1, NULL, &lim) == ADF_LIMIT);
@@ -360,11 +398,13 @@ static void invariant_aborts(void)
             if (mode == 0) (void) DUMP(&n, x);
             else if (mode == 1) (void) LOAD(x, "adf1 Q ffun 1 1 0 0 0 0 0 0 0 0", 31, NULL, NULL);
             else (void) BINDS(x, "adf1 Q ffun 1 1 0 0 0 0 0 0 0 0", 31, NULL, 0, NULL);
+            x->D = 1; CLEAR(x);         /* reached only if the call did not abort (memcheck) */
 #else
             x->len = -1;
             if (mode == 0) (void) DUMP(&n, x);
             else if (mode == 1) (void) LOAD(x, "adf1 Q rfun 0", 13, NULL, NULL);
             else (void) BINDS(x, "adf1 Q rfun 0", 13, NULL, 0, NULL);
+            x->len = 0; CLEAR(x);       /* reached only if the call did not abort (memcheck) */
 #endif
             _exit(0);
         }
