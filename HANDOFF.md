@@ -11,7 +11,7 @@ through all seven slices of its design (`docs/api-4.md`: `adf_ffun`, `adf_rfun`,
 integrals, Poisson summation with certified tails, dump forms); check-all passes on `b4922ae` and the driver
 after the last merge has 95 cases. Eighteen lanes landed in one night (`docs/worklog/2026-10-07-night.md`).
 The design of milestone 5 landed too (d-tate: `docs/api-5.md`, decisions taken as N-D24). The review of milestone 4 landed too (m4-review1: no blocker; one major against the wording of statement F4;
-three minors, one repaired at once, two as beads adf-2w1, adf-l4v; `docs/reviews/m4/review-m4.md`). Everything named here is merged and pushed.
+three minors, two repaired (the lane-header include; the validator's stage order, lane r-dump2), one as bead adf-l4v; `docs/reviews/m4/review-m4.md`). Everything named here is merged and pushed.
 
 **First commands.**
 
@@ -41,8 +41,7 @@ slices 4a to 4g. The statements are in `docs/api-3a.md`, `3b.md`, `3d.md`, `4a.m
 record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
 
 **The next steps**, in this order:
-1. The two open minors of the milestone 4 review: adf-2w1 (the dump validator converts long hex tokens before the
-   grammar stage ends; a small repair lane) and adf-l4v (the running time of `adf_tensor_poisson` near the bits cap;
+1. The open minor of the milestone 4 review: adf-l4v (the running time of `adf_tensor_poisson` near the bits cap;
    a decision); the wording of F4 and the dump/load identity in `docs/api-4.md` (adf-cx8).
 2. Milestone 5: `docs/api-5.md` (lane d-tate, `lanes/d-tate/report.md`; decisions D1 to D4 taken as N-D24): start
    its first slice (section 9: the local integrals, gamma and epsilon factors extending `localfactor.h`) on
