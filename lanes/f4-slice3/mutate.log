@@ -1,0 +1,106 @@
+mutate: src/rfun.c: 750 mutants
+mutate: 750 mutants, 60 of them run (--limit 60, --seed 4005)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (43.5 s)
+
+NOT COMPILED src/rfun.c:280:22 op: '*' -> '/'
+  src/rfun.c:280:22: error: expected identifier or ‘(’ before ‘/’ token
+
+NOT COMPILED src/rfun.c:932:5 drop_assign: 'st = adf_rfun_conj(c, phi);' -> '' (the statement is removed)
+  src/rfun.c:933:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/rfun.c:730:13 swap_args: 'acb_poly_add(Gn, Gn, T, p)' -> 'acb_poly_add(Gn, T, Gn, p)'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -728,5 +728,5 @@
+               acb_poly_scalar_mul(T, T, c1, p);             /* G_j'/(2 pi i) */
+               acb_poly_scalar_mul(Gn, G, wB, p);
+  -            acb_poly_add(Gn, Gn, T, p);
+  +            acb_poly_add(Gn, T, Gn, p);
+               acb_poly_shift_left(T, G, 1);
+               acb_poly_scalar_mul(T, T, iinv, p);           /* (i/A) y G_j */
+
+
+SURVIVED src/rfun.c:720:9 swap_args: 'acb_mul(wB, w, a->B, p)' -> 'acb_mul(wB, a->B, w, p)'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -718,5 +718,5 @@
+           acb_inv(c1, c1, p);
+           acb_div_onei(c1, c1);                             /* 1/(2 pi i) */
+  -        acb_mul(wB, w, a->B, p);                          /* w B */
+  +        acb_mul(wB, a->B, w, p);                          /* w B */
+           acb_mul_onei(iinv, inv);                          /* 2 pi i w = i/A */
+           ok = rf_amplitude(root, a->A, p);
+
+
+SURVIVED src/rfun.c:388:9 drop_call: '_acb_poly_normalise(r->P);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -386,5 +386,5 @@
+                   acb_add(r->P->coeffs + j, r->P->coeffs + j, u, p);
+               }
+  -        _acb_poly_normalise(r->P);
+  +        
+           if (!rf_result_ok(r))
+           {
+
+
+SURVIVED src/rfun.c:386:17 swap_args: 'acb_add(r->P->coeffs + j, r->P->coeffs + j, u, p)' -> 'acb_add(r->P->coeffs + j, u, r->P->coeffs + j, p)'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -384,5 +384,5 @@
+                   acb_mul_fmpz(u, r->P->coeffs + j + 1, mnum, p);
+                   acb_div_fmpz(u, u, den, p);
+  -                acb_add(r->P->coeffs + j, r->P->coeffs + j, u, p);
+  +                acb_add(r->P->coeffs + j, u, r->P->coeffs + j, p);
+               }
+           _acb_poly_normalise(r->P);
+
+
+SURVIVED src/rfun.c:262:40 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -260,5 +260,5 @@
+       ADF_INV_RFUN(y);
+       if (!rf_input_ok(x) || !rf_input_ok(y) || x->len + y->len > ADF_RFUN_TERMS_MAX
+  -        || rf_coeffs(x) + rf_coeffs(y) > ADF_RFUN_COEFFS_MAX)
+  +        || rf_coeffs(x) + rf_coeffs(y) >= ADF_RFUN_COEFFS_MAX)
+           return ADF_LIMIT;
+       n = x->len + y->len;
+
+
+SURVIVED src/rfun.c:522:13 swap_args: 'arb_mul(w, w, a->inf, p)' -> 'arb_mul(w, a->inf, w, p)'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -520,5 +520,5 @@
+           {
+               acb_mul_arb(r->P->coeffs + j, b->P->coeffs + j, w, p);
+  -            arb_mul(w, w, a->inf, p);
+  +            arb_mul(w, a->inf, w, p);
+           }
+           _acb_poly_set_length(r->P, L);
+
+
+NOT COMPILED src/rfun.c:241:5 drop_assign: 't = rf_alloc(n);' -> '' (the statement is removed)
+  src/rfun.c:243:9: error: ‘t’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/rfun.c:669:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -667,5 +667,5 @@
+       acb_sqrt_analytic(r, A, 1, p);
+       if (!acb_is_finite(r) || !arb_is_positive(acb_realref(r)))
+  -        return 0;
+  +        return 1;
+       acb_inv(r, r, p);
+       return acb_is_finite(r);
+
+mutate: stopped by signal 15: 1 running command(s) killed, scratch removed
+exit 124

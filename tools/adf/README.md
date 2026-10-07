@@ -861,3 +861,19 @@ rational in place of `R`, is `DOMAIN`), then the values (the statuses of `adf_rf
 and the adele reader), then the operation (`LIMIT` for the caps of decision D1, `NOT_DETERMINED` when
 `Re(A) > 0` is not certified after rounding), then the printer. The shorthand `rfun(term(P=[1], A=1, B=0, C=0))`
 is not a sentence of `rfun_v` and is `PARSE`. Fixtures: `tests/driver/rfun-text`, `rfun-algebra`, `rfun-eval`.
+
+### Transform, derivative, integral and norm (slice 4e of `docs/api-4.md`, lane f4-slice3)
+
+Four commands take one `rfun` text (statements in `docs/api-4b.md`, "Slice 4e"):
+
+- `rfun_fourier R` prints `F R`, with `F f(y) = integral f(x) exp(+2 pi i x y) dx` (conventions 6.1), term by term
+  by R1 and R2 of `docs/api-4.md` section 5: `A' = 1/A`, `B' = i B/A`, `C' = C + B^2/(4 pi A)` and the polynomial
+  `A^(-1/2) sum_j p_j H_j(B + 2 pi i y)`. `rfun_fourier` of `exp(-pi x^2)` prints the same text.
+- `rfun_derivative R` prints `R'`: `P' + (B - 2 pi A x) P` with `A, B, C` unchanged.
+- `rfun_integral R` prints the complex ball of the integral over the real line in the form of `psi`.
+- `rfun_norm2 R` prints the real ball of the integral of `|R|^2` (the form of the real part of an adele).
+
+The steps are the syntax, the kind (another kind is `DOMAIN`), the value (the statuses of `adf_rfun_set_str`), the
+operation (`LIMIT` for the caps of decision D1, `NOT_DETERMINED` when `Re(1/A) > 0` or the root is not certified
+or a result is not finite), then the printer. Fixture: `tests/driver/rfun-fourier` (the shifted Gaussian of
+PLAN 4.3 and the value of its transform at `y = 1/4`, with a positive imaginary part).

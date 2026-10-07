@@ -1,0 +1,5 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_fourier: argument x is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_derivative: argument x is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_integral: argument phi is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_norm2: argument phi is not a canonical adf_rfun
+rfun_fourier: 54271 checks

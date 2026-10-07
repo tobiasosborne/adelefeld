@@ -220,6 +220,10 @@ typedef enum
     ADF_DRV_RFUN_TRANSLATE,
     ADF_DRV_RFUN_MUL,
     ADF_DRV_RFUN_EVAL,
+    ADF_DRV_RFUN_FOURIER,      /* slice 4e (lane f4-slice3): transform, derivative, integral, norm2 */
+    ADF_DRV_RFUN_DERIVATIVE,
+    ADF_DRV_RFUN_INTEGRAL,
+    ADF_DRV_RFUN_NORM2,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -320,6 +324,10 @@ static const struct
     { "rfun_translate", ADF_DRV_RFUN_TRANSLATE, 2 },
     { "rfun_mul", ADF_DRV_RFUN_MUL, 2 },
     { "rfun_eval", ADF_DRV_RFUN_EVAL, 2 },
+    { "rfun_fourier", ADF_DRV_RFUN_FOURIER, 1 },
+    { "rfun_derivative", ADF_DRV_RFUN_DERIVATIVE, 1 },
+    { "rfun_integral", ADF_DRV_RFUN_INTEGRAL, 1 },
+    { "rfun_norm2", ADF_DRV_RFUN_NORM2, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -3130,6 +3138,48 @@ done:
     return status;
 }
 
+/* Slice 4e (lane f4-slice3; docs/api-4.md 5, 6 and 9 item 5; docs/api-4b.md "Slice 4e"). One rfun operand.
+   "rfun_fourier R" and "rfun_derivative R" print the rfun text of F R and R'; "rfun_integral R" prints the
+   complex ball of the integral as psi does; "rfun_norm2 R" prints the real ball of the squared L2 norm as the
+   real part of an adele (the text "(X ; 0)" without its parentheses and " ; 0"). Steps: the syntax, the kind
+   (another kind is DOMAIN), the value (the statuses of adf_rfun_set_str), the operation, the printer
+   (NULL: LIMIT). */
+static int
+adf_drv_rfun4e(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_rfun_t r, z; acb_t v; arb_t n; adf_adele_t a; adf_fball_t zero; adf_text_kind kind;
+    char *text = NULL; size_t len = 0; int status;
+    adf_rfun_init(r); adf_rfun_init(z); acb_init(v); arb_init(n); adf_adele_init(a); adf_fball_init(zero);
+    status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK) goto done;
+    if (kind != ADF_TEXT_RFUN) { status = ADF_DOMAIN; goto done; }
+    status = adf_rfun_set_str(r, l->s[0], l->n[0], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (op == ADF_DRV_RFUN_INTEGRAL) {
+        status = adf_rfun_integral(v, r, st->prec);
+        if (status == ADF_OK) status = adf_drv_psi_print(out, v, st);
+        goto done;
+    }
+    if (op == ADF_DRV_RFUN_NORM2) {
+        status = adf_rfun_norm2(n, r, st->prec);
+        if (status == ADF_OK) status = adf_adele_set_arb_fball(a, n, zero);
+        if (status != ADF_OK) goto done;
+        text = adf_adele_get_str(&len, a, st->digits);
+        if (text == NULL || len < 7 || memcmp(text + len - 5, " ; 0)", 5)) { status = ADF_LIMIT; goto done; }
+        fprintf(out, "%.*s\n", (int) (len - 6), text + 1);
+        goto done;
+    }
+    status = op == ADF_DRV_RFUN_FOURIER ? adf_rfun_fourier(z, r, st->prec) : adf_rfun_derivative(z, r, st->prec);
+    if (status != ADF_OK) goto done;
+    text = adf_rfun_get_str(&len, z, st->digits);
+    if (text == NULL) { status = ADF_LIMIT; goto done; }
+    fprintf(out, "%.*s\n", (int) len, text);
+done:
+    adf_str_free(text);
+    adf_rfun_clear(r); adf_rfun_clear(z); acb_clear(v); arb_clear(n); adf_adele_clear(a); adf_fball_clear(zero);
+    return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3319,6 +3369,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         op == ADF_DRV_PSI_PHASE) return adf_drv_psi(out, op, l, st);
     if (op == ADF_DRV_RFUN || op == ADF_DRV_RFUN_TRANSLATE || op == ADF_DRV_RFUN_MUL || op == ADF_DRV_RFUN_EVAL)
         return adf_drv_rfun(out, op, l, st);
+    if (op == ADF_DRV_RFUN_FOURIER || op == ADF_DRV_RFUN_DERIVATIVE || op == ADF_DRV_RFUN_INTEGRAL ||
+        op == ADF_DRV_RFUN_NORM2) return adf_drv_rfun4e(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

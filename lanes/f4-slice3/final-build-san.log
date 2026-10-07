@@ -1,0 +1,49 @@
+mkdir -p lanes/f4-slice3/b-san
+mkdir -p lanes/f4-slice3/b-san/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/adele.c -o lanes/f4-slice3/b-san/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/cap.c -o lanes/f4-slice3/b-san/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/catalogue.c -o lanes/f4-slice3/b-san/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/char.c -o lanes/f4-slice3/b-san/char.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/common.c -o lanes/f4-slice3/b-san/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/dump.c -o lanes/f4-slice3/b-san/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball.c -o lanes/f4-slice3/b-san/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/fball_local.c -o lanes/f4-slice3/b-san/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/gfunc.c -o lanes/f4-slice3/b-san/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/gfunc_log.c -o lanes/f4-slice3/b-san/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idclass.c -o lanes/f4-slice3/b-san/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idele.c -o lanes/f4-slice3/b-san/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idmap.c -o lanes/f4-slice3/b-san/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/idpow.c -o lanes/f4-slice3/b-san/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/inlines.c -o lanes/f4-slice3/b-san/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lball.c -o lanes/f4-slice3/b-san/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lball_decomp.c -o lanes/f4-slice3/b-san/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lfunc.c -o lanes/f4-slice3/b-san/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/linsolve.c -o lanes/f4-slice3/b-san/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/localfactor.c -o lanes/f4-slice3/b-san/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lpow.c -o lanes/f4-slice3/b-san/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/lroot.c -o lanes/f4-slice3/b-san/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/modctx.c -o lanes/f4-slice3/b-san/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/place.c -o lanes/f4-slice3/b-san/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/psi.c -o lanes/f4-slice3/b-san/psi.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/qclass.c -o lanes/f4-slice3/b-san/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/qclass_arith.c -o lanes/f4-slice3/b-san/qclass_arith.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/qclass_sets.c -o lanes/f4-slice3/b-san/qclass_sets.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rat.c -o lanes/f4-slice3/b-san/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/recon.c -o lanes/f4-slice3/b-san/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/resid.c -o lanes/f4-slice3/b-san/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rfun.c -o lanes/f4-slice3/b-san/rfun.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/rfunc.c -o lanes/f4-slice3/b-san/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots.c -o lanes/f4-slice3/b-san/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/roots_real.c -o lanes/f4-slice3/b-san/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/sball.c -o lanes/f4-slice3/b-san/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/scaled.c -o lanes/f4-slice3/b-san/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/status.c -o lanes/f4-slice3/b-san/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/symbol.c -o lanes/f4-slice3/b-san/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text.c -o lanes/f4-slice3/b-san/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/text_idele.c -o lanes/f4-slice3/b-san/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c src/ucoset.c -o lanes/f4-slice3/b-san/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/golden.c -o lanes/f4-slice3/b-san/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -c tests/support/jsonl.c -o lanes/f4-slice3/b-san/support/jsonl.o
+ar rcs lanes/f4-slice3/b-san/libadelefeld.a lanes/f4-slice3/b-san/adele.o lanes/f4-slice3/b-san/cap.o lanes/f4-slice3/b-san/catalogue.o lanes/f4-slice3/b-san/char.o lanes/f4-slice3/b-san/common.o lanes/f4-slice3/b-san/dump.o lanes/f4-slice3/b-san/fball.o lanes/f4-slice3/b-san/fball_local.o lanes/f4-slice3/b-san/gfunc.o lanes/f4-slice3/b-san/gfunc_log.o lanes/f4-slice3/b-san/idclass.o lanes/f4-slice3/b-san/idele.o lanes/f4-slice3/b-san/idmap.o lanes/f4-slice3/b-san/idpow.o lanes/f4-slice3/b-san/inlines.o lanes/f4-slice3/b-san/lball.o lanes/f4-slice3/b-san/lball_decomp.o lanes/f4-slice3/b-san/lfunc.o lanes/f4-slice3/b-san/linsolve.o lanes/f4-slice3/b-san/localfactor.o lanes/f4-slice3/b-san/lpow.o lanes/f4-slice3/b-san/lroot.o lanes/f4-slice3/b-san/modctx.o lanes/f4-slice3/b-san/place.o lanes/f4-slice3/b-san/psi.o lanes/f4-slice3/b-san/qclass.o lanes/f4-slice3/b-san/qclass_arith.o lanes/f4-slice3/b-san/qclass_sets.o lanes/f4-slice3/b-san/rat.o lanes/f4-slice3/b-san/recon.o lanes/f4-slice3/b-san/resid.o lanes/f4-slice3/b-san/rfun.o lanes/f4-slice3/b-san/rfunc.o lanes/f4-slice3/b-san/roots.o lanes/f4-slice3/b-san/roots_real.o lanes/f4-slice3/b-san/sball.o lanes/f4-slice3/b-san/scaled.o lanes/f4-slice3/b-san/status.o lanes/f4-slice3/b-san/symbol.o lanes/f4-slice3/b-san/text.o lanes/f4-slice3/b-san/text_idele.o lanes/f4-slice3/b-san/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_rfun.c lanes/f4-slice3/b-san/support/golden.o lanes/f4-slice3/b-san/support/jsonl.o lanes/f4-slice3/b-san/libadelefeld.a -lflint -lgmp -lm -o lanes/f4-slice3/b-san/test_rfun
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -MMD -MP -fsanitize=address,undefined tests/test_rfun_fourier.c lanes/f4-slice3/b-san/support/golden.o lanes/f4-slice3/b-san/support/jsonl.o lanes/f4-slice3/b-san/libadelefeld.a -lflint -lgmp -lm -o lanes/f4-slice3/b-san/test_rfun_fourier

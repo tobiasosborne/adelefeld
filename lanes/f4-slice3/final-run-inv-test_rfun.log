@@ -1,0 +1,9 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_add: argument x is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_translate_rat: argument x is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_eval: argument phi is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_dilate_rat: argument h is not a canonical adf_rat
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_add: argument x is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_add: argument y is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_mul: argument x is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_rfun_mul: argument y is not a canonical adf_rfun
+rfun: 64939 checks

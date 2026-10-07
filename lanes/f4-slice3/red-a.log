@@ -1,0 +1,130 @@
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f4-slice3/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f4-slice3/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/f4-slice3/build/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/char.c -o lanes/f4-slice3/build/char.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f4-slice3/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f4-slice3/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f4-slice3/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f4-slice3/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/f4-slice3/build/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/f4-slice3/build/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f4-slice3/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f4-slice3/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f4-slice3/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f4-slice3/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f4-slice3/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f4-slice3/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f4-slice3/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f4-slice3/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f4-slice3/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/f4-slice3/build/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/f4-slice3/build/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f4-slice3/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f4-slice3/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f4-slice3/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/psi.c -o lanes/f4-slice3/build/psi.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/f4-slice3/build/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass_arith.c -o lanes/f4-slice3/build/qclass_arith.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass_sets.c -o lanes/f4-slice3/build/qclass_sets.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f4-slice3/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f4-slice3/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f4-slice3/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfun.c -o lanes/f4-slice3/build/rfun.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f4-slice3/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f4-slice3/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f4-slice3/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f4-slice3/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f4-slice3/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f4-slice3/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/f4-slice3/build/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f4-slice3/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f4-slice3/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f4-slice3/build/ucoset.o
+mkdir -p lanes/f4-slice3/build/support
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f4-slice3/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f4-slice3/build/support/jsonl.o
+ar rcs lanes/f4-slice3/build/libadelefeld.a lanes/f4-slice3/build/adele.o lanes/f4-slice3/build/cap.o lanes/f4-slice3/build/catalogue.o lanes/f4-slice3/build/char.o lanes/f4-slice3/build/common.o lanes/f4-slice3/build/dump.o lanes/f4-slice3/build/fball.o lanes/f4-slice3/build/fball_local.o lanes/f4-slice3/build/gfunc.o lanes/f4-slice3/build/gfunc_log.o lanes/f4-slice3/build/idclass.o lanes/f4-slice3/build/idele.o lanes/f4-slice3/build/idmap.o lanes/f4-slice3/build/idpow.o lanes/f4-slice3/build/inlines.o lanes/f4-slice3/build/lball.o lanes/f4-slice3/build/lball_decomp.o lanes/f4-slice3/build/lfunc.o lanes/f4-slice3/build/linsolve.o lanes/f4-slice3/build/localfactor.o lanes/f4-slice3/build/lpow.o lanes/f4-slice3/build/lroot.o lanes/f4-slice3/build/modctx.o lanes/f4-slice3/build/place.o lanes/f4-slice3/build/psi.o lanes/f4-slice3/build/qclass.o lanes/f4-slice3/build/qclass_arith.o lanes/f4-slice3/build/qclass_sets.o lanes/f4-slice3/build/rat.o lanes/f4-slice3/build/recon.o lanes/f4-slice3/build/resid.o lanes/f4-slice3/build/rfun.o lanes/f4-slice3/build/rfunc.o lanes/f4-slice3/build/roots.o lanes/f4-slice3/build/roots_real.o lanes/f4-slice3/build/sball.o lanes/f4-slice3/build/scaled.o lanes/f4-slice3/build/status.o lanes/f4-slice3/build/symbol.o lanes/f4-slice3/build/text.o lanes/f4-slice3/build/text_idele.o lanes/f4-slice3/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_rfun_fourier.c lanes/f4-slice3/build/support/golden.o lanes/f4-slice3/build/support/jsonl.o lanes/f4-slice3/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f4-slice3/build/test_rfun_fourier
+/usr/bin/ld: /tmp/ccOCDYOt.o: in function `statuses':
+/home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:536:(.text+0xa7b): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:537:(.text+0xaef): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:538:(.text+0xb34): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:539:(.text+0xb68): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:541:(.text+0xb9e): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:542:(.text+0xbcb): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:543:(.text+0xbfd): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:544:(.text+0xc2d): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:545:(.text+0xc5d): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:546:(.text+0xca5): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:547:(.text+0xcd5): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:548:(.text+0xd05): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:551:(.text+0xd6f): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:557:(.text+0xdf7): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:559:(.text+0xe5c): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:564:(.text+0xecb): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:567:(.text+0xf1e): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:571:(.text+0xf92): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:572:(.text+0xfc6): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:573:(.text+0xffc): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:575:(.text+0x101c): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:577:(.text+0x105c): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:578:(.text+0x1088): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:579:(.text+0x10ec): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:584:(.text+0x1154): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:586:(.text+0x122b): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:587:(.text+0x126a): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:588:(.text+0x129a): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /tmp/ccOCDYOt.o: in function `caps':
+/home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:631:(.text+0x19fe): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:634:(.text+0x1aa4): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:640:(.text+0x1b89): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:644:(.text+0x1bee): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:651:(.text+0x1ca7): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:654:(.text+0x1d27): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:660:(.text+0x1de8): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:663:(.text+0x1e7b): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:670:(.text+0x1f6d): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:673:(.text+0x1fdc): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:678:(.text+0x2088): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:679:(.text+0x20d0): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:680:(.text+0x2118): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:681:(.text+0x214c): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:683:(.text+0x218e): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:684:(.text+0x21bd): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:685:(.text+0x21ec): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /tmp/ccOCDYOt.o: in function `exact_cases':
+/home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:322:(.text+0x2c4d): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:325:(.text+0x2ca8): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:329:(.text+0x2d12): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:333:(.text+0x2d8a): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:337:(.text+0x2e2b): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:345:(.text+0x2fad): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:352:(.text+0x30c5): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:361:(.text+0x32cf): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:371:(.text+0x34d6): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /tmp/ccOCDYOt.o: in function `sign_test':
+/home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:404:(.text+0x40be): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:416:(.text+0x4253): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /tmp/ccOCDYOt.o: in function `vectors':
+/home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:235:(.text+0x47bb): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:241:(.text+0x48e9): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:246:(.text+0x4a1c): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:252:(.text+0x4b61): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:261:(.text+0x4c79): undefined reference to `adf_rfun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:270:(.text+0x4e20): undefined reference to `adf_rfun_integral'
+/usr/bin/ld: /tmp/ccOCDYOt.o: in function `covariance':
+/home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:452:(.text+0x5c78): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:457:(.text+0x5d13): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:471:(.text+0x5e97): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:483:(.text+0x60c5): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:500:(.text+0x6352): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:503:(.text+0x63bd): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:510:(.text+0x653d): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /tmp/ccOCDYOt.o: in function `aliasing':
+/home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:601:(.text.startup+0x9a): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:602:(.text.startup+0xc5): undefined reference to `adf_rfun_fourier'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:603:(.text.startup+0xf8): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:604:(.text.startup+0x123): undefined reference to `adf_rfun_derivative'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/test_rfun_fourier.c:609:(.text.startup+0x18d): undefined reference to `adf_rfun_fourier'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f4-slice3/build/test_rfun_fourier] Error 1
