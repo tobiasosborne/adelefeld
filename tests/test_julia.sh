@@ -203,6 +203,23 @@ else
 fi
 rm -f "$qsets_output"
 
+# Slice 3.1-f: negation and addition of quotient classes.
+qarith_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_arith.jl "$so" > "$qarith_output" 2>&1; then
+    cat "$qarith_output"
+elif grep -q '__gmpn_modexact_1_odd' "$qarith_output" 2>/dev/null \
+        && qarith_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$qarith_gmp" ] \
+        && LD_PRELOAD="$qarith_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_arith.jl "$so"; then
+    echo "== tests/julia/qclass_arith.jl passed with LD_PRELOAD=$qarith_gmp"
+else
+    cat "$qarith_output"
+    rm -f "$qarith_output"
+    echo "test_julia: tests/julia/qclass_arith.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$qarith_output"
+
 # Slice 3.1-a: quotient lift, storage access and rational translation.
 qclass_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass.jl "$so" > "$qclass_output" 2>&1; then

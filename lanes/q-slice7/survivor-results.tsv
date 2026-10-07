@@ -1,0 +1,10 @@
+236 / -> *	killed	exit -11: timeout: the monitored command dumped core
+184 swap hi	SURVIVED	exit 0: 
+59 <= -> <	killed	exit -6: arith line 456: qa_arf_bound(a)
+231 < -> <=	SURVIVED	exit 0: 
+81 > -> >=	killed	exit -6: arith line 460: qa_add(z, x, y, 0) && fmpz_equal_si(fmpq_numref(z), 2)
+136 1 -> 0	killed	exit -6: arith line 472: MAG_MAN(arb_radref(r)) == (UWORD(1) << 29)
+87 swap add	SURVIVED	exit 0: 
+114 ok 0 -> 1	killed	exit -6: arith line 478: !qa_round(r, lo, hi, 53)
+81 || -> &&	killed	exit -6: arith line 463: !qa_add(z, x, y, 0)
+60 + -> -	killed	exit -6: arith line 453: !qa_arf_bound(a)
