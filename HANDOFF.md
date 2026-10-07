@@ -43,10 +43,12 @@ record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
 **The next steps**, in this order:
 1. The open minor of the milestone 4 review: adf-l4v (the running time of `adf_tensor_poisson` near the bits cap;
    a decision); the wording of F4 and the dump/load identity in `docs/api-4.md` (adf-cx8).
-2. Milestone 5: `docs/api-5.md` (lane d-tate, `lanes/d-tate/report.md`; decisions D1 to D4 taken as N-D24): start
-   its first slice (section 9: the local integrals, gamma and epsilon factors extending `localfactor.h`) on
-   codex or Opus; the remaining slices in order; one review when milestone 5 lands. Codex should be under pace
-   again by the morning.
+2. Milestone 5: `docs/api-5.md` (lane d-tate; decisions D1 to D4 taken as N-D24). Slice 5a landed (t5-slice1:
+   `adf_local_tate_at`, `docs/api-5a.md`); slice 5c (t5-slice2, Opus: `adf_tate_vector`, `adf_tate_integral`) was
+   running when this entry was written (see the end of the worklog). Next: 5b (gamma, epsilon, `G_minus`), 5d
+   (continuation, completed function, poles), 5e (the functional equation command); one review when milestone 5
+   lands. The HEADER-FINDING of t5-slice1 (api-5:33 against :80 at the precision cap) is recorded in
+   `docs/api-5a.md`; decide whether to amend the design.
 3. Rerun the five suites on the current master before the first new merge.
 4. The two HEADER-FINDINGs of f4-slice7 against `docs/api-4.md` section 2 (the dump/load identity needs the D1
    caps; load's cost includes clearing the old storage): the header comments state the right contract; the
@@ -71,9 +73,9 @@ record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
 
 **Things to know.**
 - Lane names collide with old lanes: `t-slice1` and `t-slice2` were milestone 1F lanes (the value forms). The
-  codex lane for slice 5a was started as `t-slice1` before this was noticed, so its brief overwrote the old brief
-  in `lanes/t-slice1/` and its outputs land there; at merge time move its files to `lanes/t5-slice1/` and
-  restore the old `lanes/t-slice1/` from `12ff1e2` (`git checkout 12ff1e2 -- lanes/t-slice1`). The Opus lane for
+  codex lane for slice 5a was started as `t-slice1` before this was noticed; at merge its files were moved to
+  `lanes/t5-slice1/` and `tests/ref/vectors/t5-slice1/` and the old `lanes/t-slice1/` restored from `12ff1e2`
+  (its branch and worktree are still named `t-slice1`). The Opus lane for
   5c is `t5-slice2` (the old `t-slice2` brief was restored at once). Use the prefix `t5-` for milestone 5 lanes
   and check `ls lanes/` and `git branch --list 'lane/*'` before naming a lane.
 - Keep-both merge resolution of appended blocks is right for `README.md`, `test_julia.sh`, `docs/api-*.md`,
