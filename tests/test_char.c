@@ -546,6 +546,9 @@ static void invariant_child(int which)
         case 22: (void) adf_char_identical(y, x); break;
         case 23: adf_char_set(x, y); break;
     }
+    /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+    if (which != 14) adf_char_clear(x);
+    adf_char_clear(y); fmpz_clear(a); fmpq_clear(phase); acb_clear(z);
     _exit(0);
 }
 static void invariants(void)

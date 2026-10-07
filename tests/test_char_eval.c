@@ -227,11 +227,11 @@ static int load(adf_char_t x, const char *s, size_t n, const adf_text_limits_t *
 }
 static void dump_one(adf_char_t x, const char *s, size_t n, const char *status)
 {
-    size_t count = 77, len; adf_ctx_desc_t d, bytes; char *out;
+    size_t count = 77, len; adf_ctx_desc_t d; unsigned char bytes[sizeof(adf_ctx_desc_t)]; char *out;
     int st = load(x, s, n, NULL); CHECK(!strcmp(adf_status_str(st), status));
-    adf_ctx_desc_init(&d); bytes = d;
+    adf_ctx_desc_init(&d); memcpy(bytes, &d, sizeof(d));
     CHECK(adf_char_dump_inspect(&count, &d, s, n, NULL) == st);
-    CHECK(!memcmp(&bytes, &d, sizeof(d))); CHECK(count == (st == ADF_OK ? 0 : 77));
+    CHECK(!memcmp(bytes, &d, sizeof(d))); CHECK(count == (st == ADF_OK ? 0 : 77));
     if (st == ADF_OK) {
         adf_char_t y; adf_char_init(y); count = 99;
         CHECK(adf_char_dump_inspect(&count, NULL, s, n, NULL) == ADF_OK && count == 0);
@@ -379,6 +379,8 @@ static void invariants(void)
                 const char *s = "adf1 Q char 1 1 0 0 0 0 0 0 0 0"; x->q = 0;
                 (void) adf_char_load_str(x, s, strlen(s), NULL, NULL);
             }
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            adf_char_clear(x); adf_char_clear(y); adf_ucoset_clear(u); acb_clear(z);
             _exit(0);
         }
         int status; CHECK(waitpid(child, &status, 0) == child);

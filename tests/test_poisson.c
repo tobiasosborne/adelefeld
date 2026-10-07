@@ -599,6 +599,8 @@ static void debug(void)
                 (void) adf_tensor_poisson(l, r, &a, &b, phi, f, 20, 64);
             }
             if (k == 5) { acb_indeterminate(f->f); (void) adf_tensor_poisson(l, r, &a, &b, phi, f, 20, 64); }
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            adf_rfun_clear(phi); adf_ffun_clear(f); acb_clear(l); acb_clear(r);
             _exit(0);
         }
         CHECK(waitpid(p, &status, 0) == p && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT);

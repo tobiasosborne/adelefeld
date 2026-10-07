@@ -465,6 +465,8 @@ static void invariants(void)
                 if (mode==18) fmpq_zero(a->r);
                 (void)adf_ffun_dilate_idele(z,x,a);
             }
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            adf_ffun_clear(x); adf_ffun_clear(y); adf_ffun_clear(z); adf_rat_clear(q); adf_idele_clear(a);
             _exit(0);
         }
         close(diagnostic_pipe[1]);

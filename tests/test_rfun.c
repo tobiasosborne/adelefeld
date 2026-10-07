@@ -863,6 +863,8 @@ static void debug(void)
             if (k == 5) (void) adf_rfun_add(y, y, x, PREC);
             if (k == 6) (void) adf_rfun_mul(y, x, y, PREC);
             if (k == 7) (void) adf_rfun_mul(y, y, x, PREC);
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            adf_rfun_clear(x); adf_rfun_clear(y); adf_rat_clear(q); arb_clear(t); acb_clear(z);
             _exit(0);
         }
         CHECK(waitpid(p, &status, 0) == p && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT);

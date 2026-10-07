@@ -406,6 +406,8 @@ static void invariants(void)
             if (which == 1) (void) adf_char_eval_idclass_strict(output, chi, c, 53);
             if (which == 2) (void) adf_char_eval_idele(output, chi, x, 53);
             if (which == 3) (void) adf_char_eval_idele_strict(output, chi, x, 53);
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            adf_char_clear(chi); adf_idclass_clear(c); adf_idele_clear(x); acb_clear(z);
             _exit(0);
         }
         int status; CHECK(waitpid(child, &status, 0) == child);
