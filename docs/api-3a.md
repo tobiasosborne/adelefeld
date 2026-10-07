@@ -267,7 +267,7 @@ Check: exact-gap vector and `exact_and_local` before and after the deliberately 
 
 ## Slice 3.1-d
 
-19. `adf_qclass_set_pieces(y,pieces,n,piece_limit)` writes PIECES for union_i pi(pieces[i]).
+22. `adf_qclass_set_pieces(y,pieces,n,piece_limit)` writes PIECES for union_i pi(pieces[i]).
     It preserves each stored real ball, finite backend, raw local fields, and borrowed context.
     It validates initialized raw entries against design 1 and conventions 5.10, then applies D3-2 bounds.
     Sorting uses exact lower end, upper end, canonical H, canonical A. Equal keys keep the first input entry.
@@ -280,7 +280,7 @@ Check: exact-gap vector and `exact_and_local` before and after the deliberately 
     Local triples can require CRT. The implementation also forms bounded exact endpoints during preflight.
     Check: `test_qclass_text construction`, `vectors`, `local_and_bounds`; 100 exact-key vector records.
 
-20. `adf_qclass_set_str` now reads union text as PIECES, as design 2.5 and conventions 9.2 to 9.5 require.
+23. `adf_qclass_set_str` now reads union text as PIECES, as design 2.5 and conventions 9.2 to 9.5 require.
     Each member encloses its exact decimal real interval. Its exact input midpoint must be in [0,1].
     The stored midpoint is rounded to nearest at max(prec,2) bits; its exact displacement is added to the radius.
     The constructor then validates stored midpoints and canonical finite triples, sorts, and deduplicates.
@@ -293,13 +293,13 @@ Check: exact-gap vector and `exact_and_local` before and after the deliberately 
     Cost: scanning and exact decimal parsing, O(n log n) comparisons and bounded exact-key preflight.
     Check: `test_qclass_text golden`, `limits`, `vectors`; all 29 data rows of qclass.tsv.
 
-21. `adf_qclass_get_str` retains slice 3.1-b's enclosure contract and printed-key sorting/deduplication.
+24. `adf_qclass_get_str` retains slice 3.1-b's enclosure contract and printed-key sorting/deduplication.
     A reread encloses every stored piece with its same finite set.
     Identity after value-text reading is not promised.
     Its NULL/length-zero print guard, string ownership, and costs are unchanged (design 2.5; conventions 9.4-9.6).
     Check: 100 array-vector rereads and 2000 random constructor/reducer rereads in `test_qclass_dump`.
 
-22. `adf_qclass_load_str` and `adf_qclass_load_str_binds` restore the strict canonical dump exactly.
+25. `adf_qclass_load_str` and `adf_qclass_load_str_binds` restore the strict canonical dump exactly.
     They follow conventions 10.1/10.2 and design 2.5. They never sort, deduplicate, or normalize input.
     The one-context form repeats ctx at every local occurrence. The bindings form requires exactly one matching
     context per local occurrence, in traversal order. No occurrence means no binding in the bindings form.
@@ -315,13 +315,13 @@ Check: exact-gap vector and `exact_and_local` before and after the deliberately 
     Check: `test_qclass_dump golden`, `vectors`, `malformed`, `binding_order`, `random_roundtrips`;
     all 13 qclass dump golden rows and 2000 random identity round trips.
 
-23. `adf_qclass_dump_str` records the stored form, order, real bits, backend, raw finite fields, and contexts.
+26. `adf_qclass_dump_str` records the stored form, order, real bits, backend, raw finite fields, and contexts.
     Its body is qclass lift arch fb, or qclass pieces h followed by h arch/fb pairs (10.1).
     It allocates a caller-owned string freed with adf_str_free; len excludes NUL. It has no status.
     Cost is output size. Under INV its canonical input is checked before printing.
     Check: byte-for-byte golden and reference dump expectations; local d=2,H=6 remains raw in the dump.
 
-24. `adf_qclass_dump_inspect` validates the same dump and reports occurrences without constructing a class.
+27. `adf_qclass_dump_inspect` validates the same dump and reports occurrences without constructing a class.
     With descs=NULL it writes the count only on OK. Otherwise incoming nctx is initialized descriptor capacity.
     It validates the whole input before capacity checking. Insufficient capacity gives LIMIT without any writes.
     On OK it replaces the required initialized descriptors and leaves trailing descriptors untouched.
@@ -369,12 +369,12 @@ reaches domain validation and returns DOMAIN. No convention, golden, reference, 
 
 ## Slice 3.1-f: negation and addition of classes
 
-22. `adf_qclass_neg(y,x,piece_limit,prec)` writes PIECES y enclosing -pi(X) = pi(-X), where X is the union of
+28. `adf_qclass_neg(y,x,piece_limit,prec)` writes PIECES y enclosing -pi(X) = pi(-X), where X is the union of
     the stored entries of x (Q3, `docs/api-3.md:575-589`). Each entry `[lo,hi] x (a + N Zhat)` is negated
     exactly to `[-hi,-lo] x (-a + N Zhat)`: the end points are reversed, the finite centre changes sign,
     the radius is unchanged (Q3 step 3). Algorithm R then reduces each negated entry exactly, and Q1
     rounds each constructed piece. Sorting and deduplication are those of `adf_qclass_reduce`.
-23. `adf_qclass_add(z,x,y,piece_limit,prec)` writes PIECES z enclosing pi(X)+pi(Y) = pi(X+Y), the sums of
+29. `adf_qclass_add(z,x,y,piece_limit,prec)` writes PIECES z enclosing pi(X)+pi(Y) = pi(X+Y), the sums of
     independent points of x and y, even when x and y are the same object (Q3 steps 1-2). For each pair of
     stored entries the exact sum is `[lo1+lo2, hi1+hi2] x ((a1+a2) + gcd(N1,N2) Zhat)`; the finite part is
     the exact set of sums by `docs/proofs/precision.md:27-31` (Proposition 1, through Lemma 2 at :20).

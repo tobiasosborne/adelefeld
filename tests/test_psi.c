@@ -423,6 +423,16 @@ static void edges(void)
     CHECK(eval(z, x, ADF_REAL_PREC_MAX+1, 1) == ADF_LIMIT);
     arb_zero(x->inf);
 #ifndef ADF_CHECK_INVARIANTS
+    /* A noncanonical or out-of-range theta violates the precondition of adf_phase_get_acb; the normal build
+       takes the general, periodic path and must not take a cardinal shortcut (review m3-review1, m1). */
+    { acb_t w; acb_init(w); acb_onei(w);
+      fmpz_set_si(fmpq_numref(q), 5); fmpz_set_si(fmpq_denref(q), 4);
+      CHECK(adf_phase_get_acb(z, q, 53) == ADF_OK && acb_contains(z, w) && arb_is_positive(acb_imagref(z)));
+      fmpz_set_si(fmpq_numref(q), -3); fmpz_set_si(fmpq_denref(q), 4);
+      CHECK(adf_phase_get_acb(z, q, 53) == ADF_OK && acb_contains(z, w) && arb_is_positive(acb_imagref(z)));
+      acb_set_si(w, -1); fmpz_set_si(fmpq_numref(q), 2); fmpz_set_si(fmpq_denref(q), 4);
+      CHECK(adf_phase_get_acb(z, q, 53) == ADF_OK && acb_contains(z, w) && arb_is_negative(acb_realref(z)));
+      acb_clear(w); }
     arb_indeterminate(x->inf);
     CHECK(eval(z, x, ADF_REAL_PREC_MAX+1, 0) == ADF_LIMIT);
     CHECK(eval(z, x, 128, 0) == ADF_DOMAIN); CHECK(eval(z, x, 128, 1) == ADF_DOMAIN);

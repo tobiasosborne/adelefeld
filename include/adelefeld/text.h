@@ -181,9 +181,9 @@ int adf_adele_set_str(adf_adele_t x, const char * s, size_t len, slong prec,
    gate finding G4). Golden: tests/golden/adele.tsv, realball_print.tsv. */
 char * adf_adele_get_str(size_t * len, const adf_adele_t x, slong digits);
 
-/* Slice 3.1-a: read (r ; F) + Q as LIFT, enclosing the real interval at prec.
-   Union syntax gives ADF_UNSUPPORTED after byte, grammar, exponent and count checks
-   (conventions 8.5 stages 1-4), before value semantics. Full union input is slice 3.1-d.
+/* Slice 3.1-a: read (r ; F) + Q as LIFT, enclosing the real interval at prec. Slice 3.1-d:
+   union(X, X, ...) + Q is read as PIECES after the byte, grammar, exponent and count checks
+   (conventions 8.5 stages 1-4): sorted by exact keys, equal keys removed (design 2.5).
    OK writes x; PARSE, LIMIT, UNSUPPORTED, DOMAIN leave x untouched.
    prec > ADF_REAL_PREC_MAX gives LIMIT first (api-3.md 1). Other real parsing and
    printing limits are those of adf_adele_set_str/get_str. max_items bounds union entries.
@@ -195,7 +195,7 @@ int adf_qclass_set_str(adf_qclass_t x, const char *s, size_t len, slong prec,
    *len excludes NUL. PIECES order/dedup use exact PRINTED endpoint/H/A keys (9.4).
    Free with adf_str_free. NULL and *len=0 when not printable under M1-D6.
    Printed pieces enclose the stored set; value text is not lossless (conventions 9.6).
-   The union reader remains UNSUPPORTED until slice 3.1-d. */
+   The union reader is adf_qclass_set_str (slice 3.1-d). */
 char *adf_qclass_get_str(size_t *len, const adf_qclass_t x, slong digits);
 
 /* ---- adf_cadele: start symbol cadele_v = "(" complex ";" fin ")"; template (z(x_inf) ; F) ---- */

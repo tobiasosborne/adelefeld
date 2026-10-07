@@ -142,7 +142,7 @@ static void psi_bounds(arf_t lo, arf_t hi, const arb_t x)
    refs/src/flint-3.0.1/arb.rst:1125-1138. A raw theta is a canonical-input precondition. */
 int adf_phase_get_acb(acb_t z, const fmpq_t theta, slong prec)
 {
-    slong p = FLINT_MAX(prec, 2), work; int st = ADF_NOT_DETERMINED;
+    slong p = FLINT_MAX(prec, 2), work; int st = ADF_NOT_DETERMINED, canon;
     fmpq_t twice; acb_t out; arf_t lo, hi;
     if (prec > ADF_REAL_PREC_MAX) return ADF_LIMIT;
 #ifdef ADF_CHECK_INVARIANTS
@@ -150,10 +150,14 @@ int adf_phase_get_acb(acb_t z, const fmpq_t theta, slong prec)
         adf_inv_fail(__func__, "theta", "phase in [0,1)");
 #endif
     if (!psi_size(theta)) return ADF_LIMIT;
-    /* Exact cardinal phases are complex integers, independent of requested p. */
-    if (fmpz_equal_ui(fmpq_denref(theta), 1)) { acb_one(z); return ADF_OK; }
-    if (fmpz_equal_ui(fmpq_denref(theta), 2)) { acb_set_si(z, -1); return ADF_OK; }
-    if (fmpz_equal_ui(fmpq_denref(theta), 4)) {
+    /* Exact cardinal phases are complex integers, independent of requested p. The shortcuts hold for a
+       canonical theta in [0, 1) only (the precondition); a noncanonical or out-of-range theta, a
+       precondition violation that the normal build tolerates, takes the general path, which is
+       periodic (review m3-review1, finding m1: 5/4 and 2/4 took the shortcut of 3/4). */
+    canon = fmpq_is_canonical(theta) && fmpq_sgn(theta) >= 0 && fmpq_cmp_si(theta, 1) < 0;
+    if (canon && fmpz_equal_ui(fmpq_denref(theta), 1)) { acb_one(z); return ADF_OK; }
+    if (canon && fmpz_equal_ui(fmpq_denref(theta), 2)) { acb_set_si(z, -1); return ADF_OK; }
+    if (canon && fmpz_equal_ui(fmpq_denref(theta), 4)) {
         acb_zero(z); arb_set_si(acb_imagref(z), fmpz_equal_ui(fmpq_numref(theta), 1) ? 1 : -1);
         return ADF_OK;
     }

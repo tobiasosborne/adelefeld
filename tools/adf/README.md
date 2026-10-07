@@ -732,7 +732,7 @@ qadd_rat (0 ; 1/3) + Q with -7/3
 ```
 
 These print `(0.5 ; 0) + Q`, `qclass`, and `(0 ; 1/3) + Q`. Rational translation preserves
-the stored lift exactly. Pair arithmetic and set queries give `DOMAIN` in this slice.
+the stored lift exactly. Pair arithmetic is `qneg`, `qadd`; the set queries are `qequal`, `qcontains`, `qoverlaps`.
 Union input is read, sorted by exact stored endpoint/H/A keys, and deduplicated.
 `dump` writes the lossless qclass form. `load` validates it strictly and prints an enclosure as value text.
 Local dumps require caller-owned contexts; the driver has none and returns `UNSUPPORTED` after validation.
@@ -783,8 +783,8 @@ Integer finite radius, including zero, passes this strict test (conventions 6.1,
 On a class, the result encloses the union of the images of all stored entries, and `psi_strict` applies the
 finite-radius test to each stored entry (D3-3): `psi_strict (0 ; 0 mod 1/2) + Q` is `NOT_DETERMINED`, while
 the exact two-piece reduction of that lift passes. The class text is the lift `(m ; F) + Q`; the union text
-`union(...) + Q` of design section 7 is read once slice 3.1-d lands (until then the reader answers
-`UNSUPPORTED`). On a local ball `[p=P: a + O(P^e)]` the character is `E(fp_p(a))`, one phase for `e >= 0` or
+`union(...) + Q` of design section 7 is read as well (slice 3.1-d; fixture `psi-class-union`).
+On a local ball `[p=P: a + O(P^e)]` the character is `E(fp_p(a))`, one phase for `e >= 0` or
 an exact value, all `p^(-e)` roots times it for `e < 0` (strict: `NOT_DETERMINED`): `psi [p=2: 1/6]` prints
 `(-1) + (0)*i`, since `fp_2(1/6) = 1/2`.
 
