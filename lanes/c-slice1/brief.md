@@ -1,4 +1,4 @@
-# Lane c-slice1: the type `adf_char`, its text, `chi(a)`, the Gauss sum and the root number (slice a of `docs/api-3c.md`)
+# Lane c-slice1: the type `adf_char`, its text, `chi(a)`, Gauss sum and root number (slice a of `docs/api-3c.md`)
 
 Work packages 3.3 and 3.4 of milestone 3 (`docs/PLAN.md` lines 322-323) have a design before code:
 `docs/api-3c.md` (lane d-char, 2026-10-08), with its oracle `proto/char_checks.py` (323350 checks; run it:
