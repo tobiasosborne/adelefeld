@@ -1,104 +1,75 @@
-# Lane t-slice2: the Tate vector and the global value for Re(s) > 1 (slice 5c of `docs/api-5.md`)
+# Lane t-slice2: the value form of local balls and partial balls (`adf_lball`, `adf_sball`) in the library
 
-Milestone 5 (the Tate integrals, `docs/PLAN.md` lines 335-343, `docs/SPEC.md` 8) has a design before code:
-`docs/api-5.md` (lane d-tate, 2026-10-08; decisions D1 to D4 taken as `docs/SPEC.md` 15.4 N-D24) with its
-oracle `proto/tate_checks.py` (466 checks; run it: `timeout 120 python3 -B proto/tate_checks.py`). Slice 5a
-(the local integral, `adf_local_tate_at` in `localfactor.h`) runs in another worktree. You build **slice 5c**
-of design section 8 (lines 374-377), end to end: header, code, test against the reference, driver, Julia. The
-functions, declared and specified in design section 3 (lines 121-166; implement them as written; a
-`HEADER-FINDING` in your report if not possible):
+`docs/conventions.md` section 9 fixes the grammar of the value form of every type (9.2: `lball_v`, `sentry`,
+`sball_v`, `lcoord`; 9.3 the semantic constraints; 9.4 the printing templates; 9.5 real balls; 9.6 round trips;
+9.7 the type of a text). Golden vectors exist: `tests/golden/lball.tsv` (55 lines) and `tests/golden/sball.tsv`
+(29 lines); read `tests/golden/README.md`. The reference parser and printer is `proto/text_grammar.py` (it has
+the types `lball` and `sball`). The library reads and prints the value form of the types of milestones 1 and 2
+in `src/text.c` and `src/text_idele.c` (`include/adelefeld/text.h`); the classification `adf_text_classify`
+already names `ADF_TEXT_LBALL` and `ADF_TEXT_SBALL`. What is missing is the reader and the printer of the two
+types. You add them, as lane t-slice1 added the three types of milestone 2 (`lanes/t-slice1/brief.md` and
+`result.md` are the pattern; `src/text_idele.c` and `tests/test_text_idele.c` are the code to imitate).
 
-    int adf_tate_vector(adf_rfun_t phi, adf_ffun_t f, const adf_char_t chi, slong prec);
-    int adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec);
+Functions (names after `text.h`):
+- `int adf_lball_set_str(adf_lball_t x, const char * s, size_t len, const adf_text_limits_t * lim);`
+  `char * adf_lball_get_str(size_t * len, const adf_lball_t x);`
+- `int adf_sball_set_str(adf_sball_t x, const char * s, size_t len, slong prec, const adf_text_limits_t * lim);`
+  `char * adf_sball_get_str(size_t * len, const adf_sball_t x, slong digits);`
+  (`prec` and `digits` as the adele reader and printer take them, for the entry `inf: ...`; a complex `inf`
+  entry: look at what `sball.h` can store and at what the golden file expects; if the library cannot store it,
+  the reader returns the status the conventions name and you say so in the report.)
+The statuses are those of conventions 9.3 and of the existing readers (grammar before limits, decision M1-D9;
+`UNSUPPORTED` for `p >= 2^64`; `DOMAIN` for a prime twice or two `inf` entries; the limits of
+`adf_text_limits_t`); on a status other than `OK` the output is untouched. The printing of the real part is the
+constrained printing of conventions 9.5 that `src/text.c` already has (do NOT use `arb_get_str`).
 
-`adf_tate_vector` builds the prescribed test vector of conventions 6.5 with the existing setters: `D = 1`,
-`M = C`, `f[j] = chi(j)` (zero on non-units; for `C = 1`, `f[0] = 1`), `P = x^e`, `A = 1`, `B = C_real = 0`
-(`chi->s` ignored). `adf_tate_integral` returns `I_chi(s) = pi^-z Gamma(z) L(s, chi)`, `z = (s + e)/2`, the
-value of the adelic integral for the WHOLE spectral ball `s` with certified `Re(s) > 1` (`DOMAIN` if
-`upper(Re s) <= 1`; `NOT_DETERMINED` if the ball straddles 1; `bits` in `[0, 2^21]` else `DOMAIN` after the
-precision and size checks; `OK` certifies each coordinate diameter at most `2^-bits`; failure preserves `z`;
-`z = s` aliasing allowed), by D3: the theta Mellin integration after the splitting at `t = 1` and Poisson
-(Proposition 12 of `docs/proofs/analysis.md`, the balanced change `A = 1/C` of design section 3, the dual
-coefficients `W_chi conj(chi(n)) n^e`), with the quadrature of D4 (composite Taylor with an explicit geometric
-remainder, statements T3, T5 of design section 6) and the tails of `adf_tensor_poisson` (Lemma 6). Conductor 1
-(zeta) FIRST, then primitive characters in the same call; the design says this slice may be two lanes: if the
-time is short, land zeta completely and report what the character path lacks. Not in this slice: the
-continuation and the completed function (5d), the functional equation (5e), the local calls (5a, 5b).
+Read first: `CLAUDE.md`, `lanes/COMMON.md`, `lanes/COMMON-C.md` (rule 6 does not hold for `text.h`: you ADD
+declarations; rule 5, mutation testing, is replaced by item 4 below), `docs/conventions.md` 5.8, 5.9, 7, 9
+(all of it), `tests/golden/README.md`, `lball.tsv`, `sball.tsv`, `include/adelefeld/text.h`, `src/text.c`,
+`src/text_idele.c`, `tests/test_text_idele.c`, `include/adelefeld/lball.h`, `sball.h`, `place.h`,
+`proto/text_grammar.py` (lines 465-483, 835-840 and what they call), `docs/api-2.md` section 4 (how t-slice1
+documented its functions), `tools/adf/adf.c` lines 1660-1700 (`adf_drv_put_sball`: the driver prints a partial
+ball with its own code today; READ ONLY, another lane is editing this file).
 
-Read first (CLAUDE.md rules 3, 4): `lanes/COMMON.md`, `lanes/COMMON-C.md`; `docs/api-5.md` sections 1, 3, 4 (as
-far as the quadrature and the splitting are shared with 5d: T2, T3, T5), 6 (T1 to T5 with their proofs), 7
-(acceptance and the six faults of 5.2), 8, 9; `docs/SPEC.md` 8 (470-502: the acceptance against FLINT's values
-completed by hand; the width shrinks with precision); `docs/proofs/analysis.md` Proposition 11 (452-495),
-Proposition 12 (496-563: the splitting at norm 1), Proposition 13 (564-626: the theta identity, `W_chi`), Lemma
-14 (627-651), Proposition 15 (652-732: the truncation and quadrature certificates; N-D23's qualification: input
-radii bound the final width); `docs/conventions.md` 6.1, 6.2, 6.4, 6.5; `docs/api-4.md` section 7 (297-345: the
-tensor Poisson, the dilation by an idele, the consumer paragraph), `docs/api-4a.md`, `4b.md`, `4c.md` (what
-`adf_ffun_fourier`, `adf_rfun_fourier`, `adf_tensor_poisson`, `adf_rfun_dilate_rat`, `adf_ffun_dilate_rat`,
-`adf_rfun_eval`, `adf_rfun_derivative` promise: consume them, do not reimplement); `include/adelefeld/char.h`,
-`docs/api-3c.md`, `3d.md` (`adf_char_chi`, `chi_phase`, `conj`, `root_number`); `proto/tate_checks.py` groups
-`global_numeric`, `global_flint`, `euler`, `bounds`, `midpoint`, `taylor`, `halfplane_width`, `input_radii`
-(the oracle's `global_value(chi, s)` with the completion and its certified quadrature); FLINT reference for
-TESTS only: `refs/src/flint-3.0.1/acb_dirichlet.rst` (`acb_dirichlet_l`, `acb_dirichlet_zeta`, the `xi`
-normalisation: `Lambda_zeta = 2 xi / (s (s - 1))` away from 0 and 1; quote the lines).
+**You own:** `include/adelefeld/text.h` (additions only), `src/text_local.c` (new), `tests/test_text_local.c`
+(new), `tests/julia/text_local.jl` (new), `docs/api-1f.md` (one new section at the end, the two readers and the
+two printers: what they accept, every status, the round-trip statement), `lanes/t-slice2/`. In
+`tests/test_julia.sh` you may add the line your file needs. `src/text.c` is read-only unless a static function
+you need must become shared: then move NOTHING, and say in the report what you would share (copy the few lines
+you need into your file with a comment naming the origin). `tools/adf/adf.c` and everything else are read-only.
+No git command that changes state, no `bd`. At most 2 cores; every command under `timeout`; build into
+`BUILD=lanes/t-slice2/build` (for example `timeout 600 make -j2 BUILD=lanes/t-slice2/build
+lanes/t-slice2/build/test_text_local`); `make check-all` only once, at the end.
 
-## The work, red then green for each step (keep `lanes/t-slice2/redgreen.md`)
+1. Header first: the comment block of each of the four declarations (the grammar rule with the section of the
+   conventions, every status and the input that gives it, the output untouched on failure, who frees the
+   string, the round trip).
+2. Tests first, red then green (`lanes/t-slice2/redgreen.log`; a link error counts only for the first test):
+   - every line of `tests/golden/lball.tsv` and `sball.tsv`: parse, print, compare with the canonical text of
+     the second column, and the refusals with their statuses (read the README for the format of the files);
+   - round trips (conventions 9.6): for 2000 generated values (primes 2, 3, 5, 7, 65537, `2^64 - 59`; exact
+     rationals and balls; exponents negative, zero and positive; several places; the empty set of places),
+     `set_str(get_str(x))` equals `x` (use the library's equality or compare the fields);
+   - the reference `proto/text_grammar.py` on 1000 generated texts, valid and invalid (a script in your lane
+     directory writes them with the reference's verdict to a file; the C test reads the file and compares
+     status and canonical text);
+   - hostile input: a prime of 100 digits, an exponent of 100 digits, `O(5^` cut at every position, missing
+     brackets, NUL bytes, a length of 0, every prefix of three valid texts (each prefix is refused or is a
+     valid text of its own; never a crash), 10000 entries in one partial ball against the item limit.
+3. The code. `tests/julia/text_local.jl`: a user parses `[p=5: 3 + O(5^4)]` and a partial ball from text and
+   prints them again.
+4. Show that the tests bite: four faults of your choice in a scratch copy under your build directory (for
+   example: the sign of the exponent in `O(p^N)` dropped; the canonical order of places not enforced; the
+   output written before the last check; `p=4` accepted), each with the test that fails. No mutation run.
+5. Final checks: `timeout 900 make -j2 check-all` once in `build/` (give its last line); one build of
+   `test_text_local` with `SAN=1` in `BUILD=lanes/t-slice2/build-san` and its run with
+   `ASAN_OPTIONS=detect_leaks=1` (give its last line).
 
-A. Vectors from the oracle (`tests/ref/vectors/t-slice2/`, generated by a script in your lane directory, at
-   most 400 KB): the vectors `(phi, f)` for `C = 1` and for the 17 characters of `tests/golden/gauss.tsv` (the
-   arrays `f[j]` as exact phases or zero; the term `x^e exp(-pi x^2)`); `I_chi(s)` at 60 digits for `s` in
-   `2, 3, 1.125, 1.5 + 14 i, 2 + 3 i, 1.0001` (exact rational `s` and balls with radii), for `C = 1` and for
-   the 17 characters, with FLINT's values completed by hand as a second source (`python-flint`'s
-   `acb_dirichlet` if importable, else `mpmath` `zeta`/`dirichlet` at 60 digits); the oracle's quadrature
-   cutoffs for `bits` 20, 53, 80 where it reports them; the width witness of N-D23 (a ball `s` whose hull
-   width no precision can meet).
-B. Tests first (`tests/test_tate.c`): `adf_tate_vector`: the arrays and the term exactly against the vectors
-   (`f[j] = chi(j)` as exact phases through `acb` with zero radius where the phase is cardinal, else a tight
-   ball: say what the code promises), `chi->s` ignored, statuses and both outputs untouched on failure
-   (sentinel bytes); `adf_tate_integral`: every vector value inside the result and each coordinate diameter at
-   most `2^-bits` on `OK` (a test that checks containment alone passes a huge ball); `zeta(2) = pi^2/6`
-   completed: `I(2) = pi^-1 Gamma(1) zeta(2) = pi/6` inside; `L(1, chi_4) = pi/4` is NOT in the domain
-   (`Re(s) = 1`: `DOMAIN`), so use `s = 2` for `chi_4`: `I = pi^(-3/2) Gamma(3/2) L(2, chi_4)` with FLINT's value
-   as the oracle; the domain gate: `upper(Re s) <= 1` `DOMAIN`, a straddling ball `NOT_DETERMINED`, `z`
-   untouched; `bits` `-1` and `2^21 + 1` `DOMAIN` after the precision cap (`prec` above the cap `LIMIT` first);
-   the width witness `NOT_DETERMINED`; the width shrinks with precision (`bits` 20, 53, 80 at `prec` as needed:
-   the SPEC acceptance); `z = s` aliasing; the D2 work cap (`C = 65536` or the transform's `C^2 <= 2^20`:
-   `LIMIT` within 10 s); `INV` aborts; leak-free under `SAN=1` with leak detection; the abort children clear
-   their objects after the call (for `tools/memcheck`).
-C. The code: a new header `include/adelefeld/tate.h` and `src/tate.c` (the design: "the vector and global
-   declarations go in a future tate.h"), one line in `include/adelefeld.h`, with the design's comment blocks
-   and sources; debug entry checks under `INV`; the theta expansion integrated analytically by T3 panel by
-   panel (do not call the whole Poisson sum per Taylor coefficient); the independent Poisson enclosures
-   compared at sample `t` (T5) in the tests.
-D. User calls (design section 8): `adf tate_vector CHI` printing the two factors; `adf tate_integral CHI with
-   S with BITS` in the driver's `with` grammar (the design's `--bits --prec` form is proposed grammar; the
-   driver's `prec` setting gives `prec`); fixture `tests/driver/tate.cmd` with `.out`, expected lines derived
-   by hand before the run (`I(2)` for zeta among them, `DOMAIN` at `s = 1`, a `NOT_DETERMINED`); `tests/julia/
-   tate.jl` with the `adf_tate_integral` call of design section 8, registered in `tests/test_julia.sh`.
-E. Statements: append "Slice 5c" to `docs/api-5a.md` if lane t-slice1 has created it by the time you merge, else
-   create `docs/api-5b.md` "Slice 5c" (say which): what each call returns by reference to design 3, P11 to P13,
-   P15 and T1 to T5; the splitting, the quadrature and its remainder, the tails, why the certificate is sound;
-   statuses, cost, caps; "Check:" lines; decisions where the design is silent.
-F. Faults in scratch copies: the six faults of design section 7 for 5.2 (`faults_52`) and: the completion
-   factor `pi^-z Gamma(z)` dropped or with `z = s/2` for odd `e`; the dual coefficients without `conj`; `W_chi`
-   dropped; the lower half of the Mellin integral not replaced through Poisson; the quadrature remainder
-   dropped; the width checked before the remainder is added; `z` written on `NOT_DETERMINED`. Each test must
-   fail. Then mutation testing of `src/tate.c` restricted to `test_tate` (at most 60 mutants, 20 minutes).
+Decisions where the conventions are silent are yours (the one a careful designer would take), listed in the
+report with the alternatives. Where the conventions, the golden files, the reference and the existing code
+disagree, do not paper over it: write the case down under "Findings".
 
-**You own:** `include/adelefeld/tate.h`, `src/tate.c`, one line in `include/adelefeld.h`, `tests/test_tate.c`,
-`tests/ref/vectors/t-slice2/`, the two commands in `tools/adf/adf.c` and their section in `tools/adf/README.md`,
-new `tests/driver/tate.*`, `tests/julia/tate.jl` and its lines in `tests/test_julia.sh`, `docs/api-5b.md` (or
-the appended section), `lanes/t-slice2/`. Everything else is read-only (a defect of the design, the oracle or
-the proofs is a finding). No git command that changes state, no `bd`. Lane t-slice1 appends to
-`include/adelefeld/localfactor.h` and `src/localfactor.c` in another worktree: do not touch those.
-
-**Checks at the end** (commands and numbers in the report; at most 2 jobs; every program under `timeout`):
-`test_tate` under plain, `SAN=1` with `ASAN_OPTIONS=detect_leaks=1`, `INV=1`, `CC=clang`, in build directories
-under your lane directory; `sh tests/test_driver.sh`; NOT `check-all`. Remove your build trees and scratch
-fault copies at the end; no generated logs above 100 KB in the lane directory. Lines at most 116 characters;
-files end with a newline. Aim to finish within about two hours: zeta end to end first (A to D for `C = 1`),
-then the characters, then E, F. If a long run of yours is still going, wait for it with a single blocking
-command, not many short polls.
-
-Report: `lanes/t-slice2/result.md` (a Claude subagent cannot write `report.md`; give the same text as your
-final message): what is done per step with the commands and counts; the fault table; mutation survivors with
-one line each; findings against the design, the oracle and the proofs; sources pending; what is not done.
+Report: `lanes/t-slice2/report.md`, written once, at the end: what was built (functions, files, lines); the
+decisions; every check with its command and its numbers, and what would have made a case fail; the fault table;
+what is not done; findings. Write running notes in `lanes/t-slice2/progress.md` as you go. Your work counts as
+finished only when `report.md` exists. Leave no compiled binary in your lane directory outside `build*/`.
