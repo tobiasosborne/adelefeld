@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "support/jsonl.h"
-#include "support/golden.h"
+#include "jsonl.h"
+#include "golden.h"
 #ifdef ADF_CHECK_INVARIANTS
 #include <signal.h>
 #include <sys/wait.h>
