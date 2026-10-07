@@ -237,6 +237,23 @@ else
 fi
 rm -f "$ffun_output"
 
+# Slice 4e (lane f4-slice3): the real transform, adf_rfun_fourier.
+rfft_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/rfun_fourier.jl "$so" > "$rfft_output" 2>&1; then
+    cat "$rfft_output"
+elif grep -q '__gmpn_modexact_1_odd' "$rfft_output" 2>/dev/null \
+        && rfft_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$rfft_gmp" ] \
+        && LD_PRELOAD="$rfft_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/rfun_fourier.jl "$so"; then
+    echo "== tests/julia/rfun_fourier.jl passed with LD_PRELOAD=$rfft_gmp"
+else
+    cat "$rfft_output"
+    rm -f "$rfft_output"
+    echo "test_julia: tests/julia/rfun_fourier.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$rfft_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

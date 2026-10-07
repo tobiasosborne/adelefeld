@@ -1,0 +1,12 @@
+test_driver: rfun-fourier: the output differs from tests/driver/rfun-fourier.out
+--- tests/driver/rfun-fourier.out	2026-10-08 03:06:33.332533044 +0800
++++ build/driver/got.out	2026-10-08 03:06:48.506509291 +0800
+@@ -4,7 +4,7 @@
+ rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(-1) + (0)*i, C=(-0.079577 +/- 4.8e-7) + (0)*i))
+ rfun()
+ rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(0) + (2.0944 +/- 4.9e-6)*i, C=(0 +/- 1.1e-6) + (0)*i))
+-(0.712 +/- 3.7e-4) + (0.411 +/- 1.4e-4)*i
++(0.712 +/- 0.00037) + (0.411 +/- 0.00014)*i
+ rfun(term(P=[(0) + (0)*i, (-6.2832 +/- 1.5e-5) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))
+ rfun()
+ (1) + (0)*i

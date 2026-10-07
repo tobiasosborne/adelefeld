@@ -643,3 +643,305 @@ adf_rfun_eval(acb_t z, const adf_rfun_t phi, const arb_t x, slong prec)
     arb_clear(pi);
     return st;
 }
+
+/* ------------------------------------------------------------------ slice 4e: derivative, transform, integrals */
+/* Sources, read before the code (lane f4-slice3; statements in docs/api-4b.md "Slice 4e"):
+   - docs/api-4.md section 5 (derivative P' + (B - 2 pi A x) P, A, B, C unchanged; R1 and R2), section 6 (the
+     integral A^(-1/2) exp(C + B^2/(4 pi A)) sum_j p_j H_j(B), the norm as the integral of phi conj(phi) with
+     every cross term, clipped to [0, infinity) after the enclosure), section 1 (statuses, caps D1);
+   - docs/proofs/analysis.md:174-212 (Proposition 5): H_0 = 1, H_(j+1) = H_j' + z H_j/(2 pi A),
+     F phi(y) = A^(-1/2) exp(C + z^2/(4 pi A)) sum_j p_j H_j(z), z = B + 2 pi i y, the root positive for A > 0;
+   - docs/conventions.md 6.1: F f(y) = integral f(x) conj(psi(x y)) dx, psi_inf(x) = E(-x): the kernel is
+     exp(+2 pi i x y);
+   - refs/src/flint-3.0.1/acb.rst:590-615 (acb_sqrt: sqrt(a + bi) = u/2 + ib/u, u = sqrt(2(|a + bi| + a)), the
+     root with positive real part on Re > 0; acb_sqrt_analytic with analytic = 1 gives a NaN-containing result
+     if z touches the branch cut), :445-449 (acb_mul_onei), :509 (acb_inv), :658-661 (acb_exp);
+     acb_poly.rst:140-146 (shift_left), :250-253 (add), :283-289 (scalar_mul), :563-569 (derivative);
+     arb.rst:417-423 (arb_nonnegative_part). */
+
+/* A^(-1/2) with the root of R2: acb_sqrt_analytic (analytic = 1) then acb_inv. 1 if the root is finite with a
+   certified positive real part (R2 steps 1-2: the chosen root of a canonical A lies in the right half-plane). */
+static int
+rf_amplitude(acb_t r, const acb_t A, slong p)
+{
+    acb_sqrt_analytic(r, A, 1, p);
+    if (!acb_is_finite(r) || !arb_is_positive(acb_realref(r)))
+        return 0;
+    acb_inv(r, r, p);
+    return acb_is_finite(r);
+}
+
+/* The work units of the transform of a term of length L (one per multiply-add, docs/api-4b.md 4e statement 2):
+   the recurrence step j -> j + 1 costs 3 j + 2 (j for G_j', j + 1 for each of the two other products), the
+   sum p_j G_j costs j + 1 for each j, the amplitude L; in all 2 L^2 - L + 1, and 0 for L = 0. */
+static ulong
+rf_fourier_work(ulong L)
+{
+    return L == 0 ? 0 : 2 * L * L - L + 1;
+}
+
+/* One term of R1: A' = 1/A, B' = i B/A, C' = C + B^2/(4 pi A) and Q(y) = A^(-1/2) sum_j p_j G_j(y), where
+   G_j(y) = H_j(B + 2 pi i y). With w = 1/(2 pi A), H_j'(z) = G_j'(y)/(2 pi i) and z w = w B + (i/A) y, the
+   recurrence of P5 reads G_0 = 1, G_(j+1) = G_j'/(2 pi i) + w B G_j + (i/A) y G_j. Returns 0 when the root is
+   not certified (R2) or a result fails the predicate (Re(1/A) > 0, finite), checked by the caller. */
+static int
+rf_fourier_term(adf_rterm_struct * r, const adf_rterm_struct * a, slong p)
+{
+    acb_poly_t G, Gn, T, S;
+    acb_t inv, w, wB, c1, iinv, root;
+    slong j, L = acb_poly_length(a->P);
+    int ok = 1;
+
+    acb_poly_init(G);
+    acb_poly_init(Gn);
+    acb_poly_init(T);
+    acb_poly_init(S);
+    acb_init(inv);
+    acb_init(w);
+    acb_init(wB);
+    acb_init(c1);
+    acb_init(iinv);
+    acb_init(root);
+    acb_inv(inv, a->A, p);
+    acb_set(r->A, inv);                                   /* A' = 1/A */
+    acb_mul(r->B, a->B, inv, p);
+    acb_mul_onei(r->B, r->B);                             /* B' = i B/A */
+    acb_const_pi(c1, p);
+    acb_mul_2exp_si(c1, c1, 1);                           /* 2 pi */
+    acb_div(w, inv, c1, p);                               /* w = 1/(2 pi A) */
+    acb_sqr(wB, a->B, p);
+    acb_mul(wB, wB, w, p);
+    acb_mul_2exp_si(wB, wB, -1);
+    acb_add(r->C, a->C, wB, p);                           /* C' = C + B^2 w/2 = C + B^2/(4 pi A) */
+    if (L > 0)
+    {
+        acb_inv(c1, c1, p);
+        acb_div_onei(c1, c1);                             /* 1/(2 pi i) */
+        acb_mul(wB, w, a->B, p);                          /* w B */
+        acb_mul_onei(iinv, inv);                          /* 2 pi i w = i/A */
+        ok = rf_amplitude(root, a->A, p);
+        acb_poly_one(G);
+        acb_poly_scalar_mul(S, G, a->P->coeffs, p);       /* p_0 G_0 */
+        for (j = 0; j + 1 < L && ok; j++)
+        {
+            acb_poly_derivative(T, G, p);
+            acb_poly_scalar_mul(T, T, c1, p);             /* G_j'/(2 pi i) */
+            acb_poly_scalar_mul(Gn, G, wB, p);
+            acb_poly_add(Gn, Gn, T, p);
+            acb_poly_shift_left(T, G, 1);
+            acb_poly_scalar_mul(T, T, iinv, p);           /* (i/A) y G_j */
+            acb_poly_add(G, Gn, T, p);
+            acb_poly_scalar_mul(T, G, a->P->coeffs + j + 1, p);
+            acb_poly_add(S, S, T, p);
+        }
+        acb_poly_scalar_mul(r->P, S, root, p);            /* the amplitude belongs in Q (R1 step 2) */
+    }
+    else
+        acb_poly_zero(r->P);
+    acb_poly_clear(G);
+    acb_poly_clear(Gn);
+    acb_poly_clear(T);
+    acb_poly_clear(S);
+    acb_clear(inv);
+    acb_clear(w);
+    acb_clear(wB);
+    acb_clear(c1);
+    acb_clear(iinv);
+    acb_clear(root);
+    return ok;
+}
+
+int
+adf_rfun_fourier(adf_rfun_t y, const adf_rfun_t x, slong prec)
+{
+    adf_rterm_struct * t;
+    slong i, p = FLINT_MAX(prec, 2);
+    ulong work = 0;
+
+    if (prec > ADF_REAL_PREC_MAX)
+        return ADF_LIMIT;
+    ADF_INV_RFUN(x);
+    if (!rf_input_ok(x))
+        return ADF_LIMIT;
+    for (i = 0; i < x->len; i++)
+    {
+        work += rf_fourier_work((ulong) acb_poly_length(x->term[i].P));
+        if (work > (ulong) ADF_RFUN_WORK_MAX)
+            return ADF_LIMIT;
+    }
+    t = rf_alloc(x->len);
+    for (i = 0; i < x->len; i++)
+        if (!rf_fourier_term(t + i, x->term + i, p) || !rf_result_ok(t + i))
+        {
+            rf_free(t, x->len);
+            return ADF_NOT_DETERMINED;
+        }
+    rf_commit(y, t, x->len);
+    return ADF_OK;
+}
+
+/* Derivative (api-4.md section 5): the coefficient k of P' + (B - 2 pi A x) P is
+   (k + 1) p_(k+1) + B p_k - 2 pi A p_(k-1). A zero P stays zero; a nonzero P grows by one coefficient. */
+int
+adf_rfun_derivative(adf_rfun_t y, const adf_rfun_t x, slong prec)
+{
+    adf_rterm_struct * t;
+    slong i, p = FLINT_MAX(prec, 2), coeffs = 0;
+    acb_poly_t T;
+    acb_t pA;
+
+    if (prec > ADF_REAL_PREC_MAX)
+        return ADF_LIMIT;
+    ADF_INV_RFUN(x);
+    if (!rf_input_ok(x))
+        return ADF_LIMIT;
+    for (i = 0; i < x->len; i++)
+    {
+        slong L = acb_poly_length(x->term[i].P);
+        coeffs += L > 0 ? L + 1 : 0;
+        if (coeffs > ADF_RFUN_COEFFS_MAX)
+            return ADF_LIMIT;
+    }
+    acb_poly_init(T);
+    acb_init(pA);
+    t = rf_alloc(x->len);
+    for (i = 0; i < x->len; i++)
+    {
+        const adf_rterm_struct * a = x->term + i;
+        adf_rterm_struct * r = t + i;
+
+        acb_set(r->A, a->A);
+        acb_set(r->B, a->B);
+        acb_set(r->C, a->C);
+        acb_const_pi(pA, p);
+        acb_mul(pA, pA, a->A, p);
+        acb_mul_2exp_si(pA, pA, 1);                       /* 2 pi A */
+        acb_poly_derivative(r->P, a->P, p);
+        acb_poly_scalar_mul(T, a->P, a->B, p);
+        acb_poly_add(r->P, r->P, T, p);
+        acb_poly_shift_left(T, a->P, 1);
+        acb_poly_scalar_mul(T, T, pA, p);
+        acb_poly_sub(r->P, r->P, T, p);
+        if (!rf_result_ok(r))
+        {
+            rf_free(t, x->len);
+            t = NULL;
+            break;
+        }
+    }
+    acb_poly_clear(T);
+    acb_clear(pA);
+    if (t == NULL && x->len > 0)
+        return ADF_NOT_DETERMINED;
+    rf_commit(y, t, x->len);
+    return ADF_OK;
+}
+
+/* The integral of one term with P != 0 (docs/api-4b.md 4e statement 3): with w = 1/(2 pi A),
+   M_j = integral x^j exp(-pi A x^2 + B x + C) dx = A^(-1/2) exp(C + B^2 w/2) h_j, h_0 = 1, h_1 = w B,
+   h_(j+1) = w (j h_(j-1) + B h_j). Adds the value to z. Returns 0 if the root is not certified. */
+static int
+rf_integral_term(acb_t z, const adf_rterm_struct * a, slong p)
+{
+    acb_t w, h0, h1, h2, s, e;
+    slong j, L = acb_poly_length(a->P);
+    int ok;
+
+    acb_init(w);
+    acb_init(h0);
+    acb_init(h1);
+    acb_init(h2);
+    acb_init(s);
+    acb_init(e);
+    acb_const_pi(w, p);
+    acb_mul_2exp_si(w, w, 1);
+    acb_mul(w, w, a->A, p);
+    acb_inv(w, w, p);                                     /* w = 1/(2 pi A) */
+    acb_one(h0);
+    acb_mul(h1, w, a->B, p);
+    acb_set(s, a->P->coeffs);
+    for (j = 1; j < L; j++)
+    {
+        acb_addmul(s, a->P->coeffs + j, h1, p);           /* s = sum_(k <= j) p_k h_k */
+        acb_mul_si(h2, h0, j, p);
+        acb_addmul(h2, a->B, h1, p);
+        acb_mul(h2, h2, w, p);                            /* h_(j+1) = w (j h_(j-1) + B h_j) */
+        acb_swap(h0, h1);
+        acb_swap(h1, h2);
+    }
+    acb_sqr(e, a->B, p);
+    acb_mul(e, e, w, p);
+    acb_mul_2exp_si(e, e, -1);
+    acb_add(e, e, a->C, p);
+    acb_exp(e, e, p);                                     /* exp(C + B^2/(4 pi A)) */
+    ok = rf_amplitude(h0, a->A, p);
+    acb_mul(e, e, h0, p);
+    acb_mul(e, e, s, p);
+    acb_add(z, z, e, p);
+    acb_clear(w);
+    acb_clear(h0);
+    acb_clear(h1);
+    acb_clear(h2);
+    acb_clear(s);
+    acb_clear(e);
+    return ok;
+}
+
+int
+adf_rfun_integral(acb_t z, const adf_rfun_t phi, slong prec)
+{
+    slong i, p = FLINT_MAX(prec, 2);
+    acb_t sum;
+    int ok = 1;
+
+    if (prec > ADF_REAL_PREC_MAX)
+        return ADF_LIMIT;
+    ADF_INV_RFUN(phi);
+    if (!rf_input_ok(phi))
+        return ADF_LIMIT;
+    acb_init(sum);
+    for (i = 0; i < phi->len && ok; i++)
+        if (acb_poly_length(phi->term[i].P) > 0)          /* a zero P contributes the exact 0 */
+            ok = rf_integral_term(sum, phi->term + i, p);
+    ok = ok && acb_is_finite(sum);
+    if (ok)
+        acb_swap(z, sum);
+    acb_clear(sum);
+    return ok ? ADF_OK : ADF_NOT_DETERMINED;
+}
+
+/* The squared L2 norm: the integral of phi conj(phi), the product of slice 4d with every ordered pair (k, l),
+   so every cross term enters (api-4.md section 6). The value is real for members; its enclosure is the real
+   part, intersected with [0, infinity) (arb.rst:417-423). A provably negative enclosure would be an internal
+   defect (api-4.md section 6); it cannot happen, since the enclosure contains the nonnegative true value. */
+int
+adf_rfun_norm2(arb_t z, const adf_rfun_t phi, slong prec)
+{
+    adf_rfun_t c, prod;
+    acb_t v;
+    int st;
+
+    if (prec > ADF_REAL_PREC_MAX)
+        return ADF_LIMIT;
+    ADF_INV_RFUN(phi);
+    if (!rf_input_ok(phi))
+        return ADF_LIMIT;
+    adf_rfun_init(c);
+    adf_rfun_init(prod);
+    acb_init(v);
+    st = adf_rfun_conj(c, phi);
+    if (st == ADF_OK)
+        st = adf_rfun_mul(prod, phi, c, prec);
+    if (st == ADF_OK)
+        st = adf_rfun_integral(v, prod, prec);
+    if (st == ADF_OK)
+    {
+        if (arb_is_negative(acb_realref(v)))
+            flint_abort();                                /* internal defect, see above */
+        arb_nonnegative_part(z, acb_realref(v));
+    }
+    adf_rfun_clear(c);
+    adf_rfun_clear(prod);
+    acb_clear(v);
+    return st;
+}

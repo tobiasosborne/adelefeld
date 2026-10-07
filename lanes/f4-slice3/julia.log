@@ -1,0 +1,20 @@
+ERROR: LoadError: could not load library "build/libadelefeld.so"
+/lib/x86_64-linux-gnu/libflint.so.18: undefined symbol: __gmpn_modexact_1_odd
+Stacktrace:
+ [1] #dlopen#3
+   @ ./libdl.jl:120 [inlined]
+ [2] dlopen
+   @ ./libdl.jl:119 [inlined]
+ [3] dlopen(s::String)
+   @ Base.Libc.Libdl ./libdl.jl:119
+ [4] top-level scope
+   @ ~/Projects/adelefeld-wt/f4-slice3/tests/julia/rfun_fourier.jl:6
+ [5] include(mod::Module, _path::String)
+   @ Base ./Base.jl:306
+ [6] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:317
+ [7] _start()
+   @ Base ./client.jl:550
+in expression starting at /home/tobias/Projects/adelefeld-wt/f4-slice3/tests/julia/rfun_fourier.jl:6
+Test Summary: | Pass  Total  Time
+rfun fourier  |   11     11  0.0s

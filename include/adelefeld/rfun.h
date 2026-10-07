@@ -2,8 +2,8 @@
    Contract: docs/api-4.md sections 1, 2, 5, 6 (slice 4d of section 9); docs/conventions.md 5.12
    (struct, predicate, init; CV-20 no normal form), 9.2 (rfun_v, rterm), 9.4 (template); docs/SPEC.md 7
    (real part, parameters kept as balls); docs/proofs/analysis.md Proposition 5 (closure formulas).
-   Statements and decisions of this slice: docs/api-4b.md. Not in this header: the derivative, the
-   transform, integrals and norms (slice 4e), the dump forms, adf_ffun and tensors.
+   Statements and decisions: docs/api-4b.md (slices 4d and 4e). The derivative, the transform, the integral
+   and the norm (slice 4e) follow the slice 4d calls. Not in this header: the dump forms, adf_ffun, tensors.
    Not to be confused with adelefeld/rfunc.h (the real functions exp, log, ... on arb).
 
    Common contract (api-4.md section 1). Inputs and outputs are initialized; canonical inputs are
@@ -135,6 +135,37 @@ int adf_rfun_conj(adf_rfun_t y, const adf_rfun_t x);
    Horner, exponential and term addition in acb. DOMAIN for a nonfinite x; OK, LIMIT, NOT_DETERMINED.
    Cost: total coefficients acb operations plus one exp per term. */
 int adf_rfun_eval(acb_t z, const adf_rfun_t phi, const arb_t x, slong prec);
+
+/* Slice 4e (docs/api-4.md sections 5, 6 and 9 item 5; statements in docs/api-4b.md "Slice 4e"). */
+
+/* y = phi': term by term P' + (B - 2 pi A x) P with A, B, C unchanged (api-4.md section 5); order and zero
+   polynomials kept (a zero P stays zero). y may equal x. OK, LIMIT (D1 caps, including a result with more
+   than ADF_RFUN_COEFFS_MAX coefficients: a nonzero P grows by one), NOT_DETERMINED (a nonfinite result).
+   Cost: O(total coefficients). */
+int adf_rfun_derivative(adf_rfun_t y, const adf_rfun_t x, slong prec);
+
+/* y = F x, F f(y) = integral f(x) exp(+2 pi i x y) dx (conventions 6.1, CV-54: psi_inf(x) = E(-x), the
+   kernel conj(psi_inf(x y)) = E(x y)). Term by term, order and zero terms kept, statements R1 and R2 of
+   api-4.md section 5 (analysis Proposition 5, docs/proofs/analysis.md:174-212): A' = 1/A, B' = i B/A,
+   C' = C + B^2/(4 pi A), Q(y) = A^(-1/2) sum_j p_j H_j(B + 2 pi i y), H_0 = 1,
+   H_(j+1) = H_j' + z H_j/(2 pi A), with the root positive for A > 0 (acb_rsqrt_analytic, analytic = 1;
+   refs/src/flint-3.0.1/acb.rst:590-615). y may equal x. OK; LIMIT (D1; a term of length L charges
+   2 L^2 - L + 1 work units); NOT_DETERMINED when Re(1/A) > 0 of a result term or the root is not certified
+   at the working precision, or a result is not finite; y untouched on failure. Cost O(sum (deg + 1)^2). */
+int adf_rfun_fourier(adf_rfun_t y, const adf_rfun_t x, slong prec);
+
+/* z = integral of phi over R (Lebesgue measure, conventions 6.2): for each term with P != 0,
+   A^(-1/2) exp(C + B^2/(4 pi A)) sum_j p_j h_j, h_0 = 1, h_1 = B/(2 pi A),
+   h_(j+1) = (j h_(j-1) + B h_j)/(2 pi A), h_j = H_j(B) of R1 (api-4.md section 6; proof in api-4b.md).
+   The zero function gives the exact 0. OK, LIMIT, NOT_DETERMINED (a nonfinite result); z untouched on
+   failure. Cost O(total coefficients) plus one exp and one root per term. */
+int adf_rfun_integral(acb_t z, const adf_rfun_t phi, slong prec);
+
+/* z = integral of |phi|^2 = integral of phi conj(phi), every ordered pair (k, l) of terms of the product of
+   phi with adf_rfun_conj(phi) (adf_rfun_mul: the D1 caps of that product apply), integrated as above; the
+   real part, intersected with [0, infinity) (arb_nonnegative_part, refs/src/flint-3.0.1/arb.rst:417-423).
+   OK, LIMIT, NOT_DETERMINED; z untouched on failure. Cost: the product plus its integral, O(len^2) terms. */
+int adf_rfun_norm2(arb_t z, const adf_rfun_t phi, slong prec);
 
 /* Layout queries (api-4.md section 1; conventions 12.4). Header-inline and exported; O(1). */
 ADF_INLINE size_t adf_sizeof_rterm(void) { return sizeof(adf_rterm_struct); }

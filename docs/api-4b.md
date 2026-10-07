@@ -124,3 +124,126 @@ Set, add, reflect, conj: O(total size). Product: one `acb_poly_mul` per pair. Tr
 ball operations with integers of the size of q. Dilation: O(total coefficients). Evaluation: O(total
 coefficients) plus one exponential per term. Avoidable cost: `pi` and `pi A` are recomputed per term in the
 translation (`acb_const_pi` is cached by FLINT, the product is not).
+
+# Slice 4e: transform, derivative, integral and norm of `adf_rfun`
+
+The functions are those of `docs/api-4.md` section 5 (derivative, R1, R2) and section 6 (integral, norm), with
+analysis Proposition 5 (P5, `docs/proofs/analysis.md:174-212`). Header `include/adelefeld/rfun.h` (appended
+declarations), code at the end of `src/rfun.c`, test `tests/test_rfun_fourier.c`, vectors
+`tests/ref/vectors/f4-slice3/` (`lanes/f4-slice3/gen_vectors.py`). The convention is that of conventions 6.1
+(CV-54): `F f(y) = integral f(x) conj(psi_inf(x y)) dx` with `psi_inf(x) = E(-x)`, so the real kernel is
+`exp(+2 pi i x y)`; P5 step 4 states "Substituting z=B+2 pi i y gives the positive Fourier sign". With it,
+`F(T_q phi)(y) = integral phi(x - q) E(x y) dx = E(q y) F phi(y)` (substitute `x -> x + q`), the sign the test
+asserts, and `F(D_h phi)(y) = |h|^-1 F phi(y/h)` (P5 step 6; SPEC 7). The words "encloses" and "member" are those
+of slice 4d above; every ball operation used contains the exact operation on all points of its inputs
+(`refs/src/flint-3.0.1/arb.rst:6-12`, `acb.rst:6-12`).
+
+## Statuses, caps and order of checks
+
+As in slice 4d: `prec > ADF_REAL_PREC_MAX` gives `LIMIT` first; then under INV the entry predicate; then the caps
+of D1 (`LIMIT`); then the computation at `p = max(prec, 2)` in fresh storage, committed only after the last
+check. `NOT_DETERMINED`: a nonfinite result, a result term without certified `Re(A') > 0`, or a root of R2 that
+is not certified (statement 2). No `DOMAIN` on canonical input. Every status other than `OK` leaves `y` or `z`
+untouched (sentinel bytes in the test).
+
+## Statements
+
+1. `adf_rfun_derivative`: for each term the coefficient k of `P' + (B - 2 pi A x) P` is
+   `(k + 1) p_(k+1) + B p_k - 2 pi A p_(k-1)` (`acb_poly_derivative`, `acb_poly_scalar_mul`, `acb_poly_shift_left`,
+   `acb_poly_add`, `acb_poly_sub`; `acb_poly.rst:140-146, 250-289, 563-569`); A, B, C are copied. Proof of the
+   formula: `(P f)' = P' f + P f'` and `f' = (B - 2 pi A x) f` for `f = exp(-pi A x^2 + B x + C)`. A zero P stays
+   zero; a nonzero P has length `L + 1` (its top coefficient `-2 pi A p_(L-1)` is not the exact zero, since
+   `Re(A) > 0` and `p_(L-1)` is not the exact zero). Cap: the result has at most `2^16` coefficients, so a term of
+   length `2^16 - 1` passes and `2^16` does not. Check: `test_rfun_fourier vectors` (`rterm_derivative`, every
+   member), `covariance` (central differences at 300 bits with `h = 2^-50`; the formula at `A = 1 + i`), `caps`.
+2. `adf_rfun_fourier` (R1, R2). For a term, with `w = 1/(2 pi A)`:
+   `A' = 1/A` (`acb_inv`), `B' = i (B A')` (`acb_mul_onei`, exact), `C' = C + B^2 w/2` (= `C + B^2/(4 pi A)`), and
+   `Q(y) = A^(-1/2) sum_j p_j G_j(y)` with `G_j(y) = H_j(B + 2 pi i y)` of P5. Derivation of the recurrence the
+   code uses: from `z = B + 2 pi i y`, `dG_j/dy = 2 pi i H_j'(z)`, so `H_j'(z) = G_j'(y)/(2 pi i)`; and
+   `z w = w B + (2 pi i w) y = w B + (i/A) y`. Then `H_(j+1) = H_j' + z w H_j` (P5) becomes
+   `G_0 = 1`, `G_(j+1) = G_j'/(2 pi i) + (w B) G_j + (i/A) y G_j`, which builds Q by polynomial arithmetic
+   without a composition (R1 step 2: "Expand by polynomial arithmetic"). The degree of `G_j` is j with top
+   coefficient `(i/A)^j`, so `deg Q = deg P`. The amplitude `A^(-1/2)` is formed as `1/sqrt(A)` with
+   `acb_sqrt_analytic(r, A, 1, p)` and `acb_inv`. Branch (R2): `acb.rst:590-596` documents
+   `sqrt(a+bi) = u/2 + ib/u, u = sqrt(2(|a+bi|+a))`; for `a > 0` this is `u' + i v'` with
+   `u' = sqrt((|A| + a)/2) > 0` and `v' = b/(2 u')`, the root of R2 step 1. A canonical A box lies in
+   `Re > 0` and does not meet the branch cut; `acb.rst:598-601` says that with `analytic` set the result contains
+   NaN if z touches the cut, so the root encloses the R2 root of every member. Certificate: the root must be
+   finite with `Re > 0` certified (`arb_is_positive`), else `NOT_DETERMINED`. The predicate check of the result
+   term (slice 4d `rf_result_ok`) certifies `Re(A') > 0` (R2 step 4: "Re(1/A)>0 still needs the output-ball
+   predicate check"), finite parameters and coefficients, else `NOT_DETERMINED`. Enclosure: each step is one
+   ball operation on enclosures of the exact quantities of P5, so Q, A', B', C' enclose those of every member;
+   the dependency between the four balls is lost (the family can grow, api-4.md section 1). Zero terms are kept
+   (their A', B', C' are computed and checked). F^2: the roots of A and 1/A are reciprocal (R2 step 3), so the
+   second transform has amplitude 1 and equals the reflection (P5 step 5).
+   Work: one unit per multiply-add, `2 L^2 - L + 1` for a term of length `L > 0` (the step `j -> j + 1` costs
+   `3 j + 2`, the sum `p_j G_j` costs `j + 1`, the amplitude `L`), 0 for `L = 0`; the sum over terms must not
+   exceed `2^20`: `L = 724` passes, `L = 725` does not. Exactness: for `A = 1, B = 0` and `A = 4, B = 0` with
+   `deg P <= 1` every operation is exact (`sqrt(1) = 1`, `sqrt(4) = 2`), so `F(exp(-pi x^2))` is identical to its
+   input and `F(x exp(-pi x^2)) = i y exp(-pi y^2)` exactly. Check: `test_rfun_fourier exact_cases`, `sign_test`
+   (the shifted Gaussian: `B` contains `2 pi/3`, `C` contains `-pi/9`; the transform at `y = 1/4` contains
+   `exp(-pi/16) E(1/12)`, has a positive imaginary part and does not meet its conjugate; end to end from
+   `adf_rfun_translate_rat`), `vectors` (60 functions: every member's oracle transform, `F^2` against the
+   reflection, values at four points, the quadrature transform at two points), `covariance` (dilation by 2/3,
+   -5, 3, -1/2 and translation by 1/3, -7/2, 5/8, 16 functions at 3 points; `E(-q y)` is disjoint), `statuses`,
+   `aliasing`, `caps`; driver `rfun-fourier`; Julia `rfun_fourier.jl`.
+3. `adf_rfun_integral`. Claim: for `Re(A) > 0`, complex B, C and `j >= 0`,
+   `M_j = integral_R x^j exp(-pi A x^2 + B x + C) dx = A^(-1/2) exp(C + B^2/(4 pi A)) h_j` with `h_0 = 1`,
+   `h_1 = B/(2 pi A)`, `h_(j+1) = (j h_(j-1) + B h_j)/(2 pi A)`; explicitly
+   `h_j = j! sum_(r=0)^floor(j/2) B^(j-2r)/[r! (j-2r)! (4 pi A)^r (2 pi A)^(j-2r)] = H_j(B)`.
+   Proof. (a) `M_0`: P5 step 3 with `z = B`, the root positive for `A > 0` and continued to `Re(A) > 0` (R2).
+   (b) Put `f(x) = exp(-pi A x^2 + B x + C)`, so `f' = (B - 2 pi A x) f`. Then
+   `(x^j f)' = j x^(j-1) f + B x^j f - 2 pi A x^(j+1) f`. Integrate over `[-T, T]` and let `T -> infinity`: the
+   boundary terms `T^j |f(+-T)| <= T^j exp(-pi Re(A) T^2 + |Re B| T + Re C)` tend to 0 and every integrand is
+   integrable, so `0 = j M_(j-1) + B M_j - 2 pi A M_(j+1)` (with `j M_(j-1) = 0` for `j = 0`). Divide by
+   `2 pi A != 0` and by `M_0`. (c) The closed form: the generating function of R1 step 1,
+   `sum_j H_j(z) t^j/j! = exp(w z t + w t^2/2)` with `w = 1/(2 pi A)`, gives `H_j' = j w H_(j-1)` (differentiate in
+   z) and so `H_(j+1)(B) = w (j H_(j-1)(B) + B H_j(B))`: the same recurrence and start, hence `h_j = H_j(B)`, and
+   the integral of a term, `M_0 sum_j p_j h_j`, is the formula of api-4.md section 6 and equals `F phi(0)`.
+   The code runs the recurrence in acb (`acb_addmul`, `acb_mul_si`), forms `exp(C + B^2 w/2)` (`acb_exp`) and the
+   amplitude of statement 2 (root certificate as there); a term with `P = 0` contributes the exact 0 and is
+   skipped; the zero function gives the exact 0. A nonfinite sum is `NOT_DETERMINED` (`C = 10^300`). Cost:
+   `O(total coefficients)` plus one exp and one root per term; not charged against the work cap (at most
+   `3 * 2^16` units). Check: `test_rfun_fourier vectors` (every member's `F phi(0)` from the oracle; our own
+   transform evaluated at 0 by the other recurrence; the quadrature value of the oracle within 1e-40),
+   `exact_cases` (A = 4: 1/2), `statuses`; driver `rfun-fourier`.
+4. `adf_rfun_norm2`: `adf_rfun_conj` then `adf_rfun_mul(phi, conj phi)`, which forms the term `P_k conj(P_l)`,
+   `A_k + conj(A_l)`, `B_k + conj(B_l)`, `C_k + conj(C_l)` for every ordered pair `(k, l)` (all cross terms; for
+   real x `|phi(x)|^2 = phi(x) conj(phi(x))`, and `conj(phi)` on real x is the function with conjugated
+   coefficients and parameters), then the integral of statement 3. `Re(A_k + conj A_l) = Re A_k + Re A_l > 0` for
+   members; the product returns `NOT_DETERMINED` if the ball loses it. For members the value is real and
+   nonnegative; the result is the real part of the enclosure intersected with `[0, infinity)` by
+   `arb_nonnegative_part` (`arb.rst:417-423`: an exact copy if nonnegative, otherwise a ball `[r/2 +/- r/2]`). A
+   provably negative enclosure cannot occur (it contains the nonnegative true value); the code calls
+   `flint_abort` there, the internal defect of api-4.md section 6. Caps: those of the product (`len^2 <= 2^16`
+   pairs, `(total coefficients)^2 <= 2^20` work, `2^16` result coefficients): 256 terms pass and 257 do not, a
+   term of length 1024 passes and 1025 does not. Check: `test_rfun_fourier vectors` (the oracle's sum over every
+   ordered pair of `rterm_product(t_k, conj t_l)` transformed at 0, for every member; mul and conj of slice 4d;
+   the quadrature of `|phi|^2`), `exact_cases` (the closed form `(2 Re A)^(-1/2) exp(2 Re C + (Re B)^2/(2 pi Re A))`
+   of one Gaussian, real and complex), `caps`, `statuses`; driver `rfun-fourier`.
+
+## Decisions where the design is silent
+
+- The root: `acb_sqrt_analytic` and `acb_inv` (api-4.md R2 step 4 allows `acb_sqrt` or `acb_rsqrt_analytic`),
+  because perfect squares then give exact roots. Alternative: `acb_rsqrt_analytic`, one call.
+- The transform is computed in the variable y by the recurrence for `G_j` (statement 2), not by expanding
+  `sum p_j H_j(z)` and composing with `z = B + 2 pi i y`. Same cost order, no composition step.
+- The integral uses the value recurrence `h_j` (O(L) per term), not the transform polynomial (O(L^2)); the
+  test compares the two.
+- Work of the transform: the multiply-adds performed, `2 L^2 - L + 1` per term. Work of the integral and the
+  derivative: not checked, since it is at most `3 * 2^16 < 2^20`. Norm: the caps of `adf_rfun_mul`; the integral
+  of the product is not charged in addition.
+- A zero polynomial term of the transform keeps its new parameters and is checked like any other term, so it can
+  give `NOT_DETERMINED` (api-4.md section 1: the predicate holds for every term).
+- Tightness stated in the test: radius at most `2^-96 (1 + |v|)` for exact inputs at 128 bits, `2^-2 (1 + |v|)`
+  for ball inputs; for `Re(A) = 10^-30` integrals, norms and values `2^-16 (1 + |v|)` and `F^2` by containment
+  only, because the exponents and coefficients there have size `2^100` and lose their low bits at 128 bits
+  whatever the method.
+
+## Cost
+
+Derivative O(total coefficients). Transform O(sum (deg + 1)^2) ball operations plus one root and one inverse per
+term. Integral O(total coefficients) plus one exp and one root per term. Norm: the product, `len^2` terms and
+`(total coefficients)^2` multiply-adds, then their integrals. Avoidable costs: `pi` and `2 pi A` are recomputed per
+term in the derivative and the integral; the norm forms the conjugate as a full copy and integrates both `(k, l)`
+and `(l, k)`, which are conjugates (half of the work, but the design asks for every ordered pair).
