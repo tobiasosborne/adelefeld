@@ -1,0 +1,25 @@
+one-residue exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.24 s
+one-real-sample exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.20 s
+point-comparison COMPILE FAILURE In file included from /home/tobias/Projects/adelefeld-wt/q-slice6/lanes/q-slice6/fault-scratch/point-comparison/tests/test_qclass_sets.c:35:
+/home/tobias/Projects/adelefeld-wt/q-slice6/lanes/q-slice6/fault-scratch/point-comparison/tests/../src/qclass_sets.c:261:68: error: variable 'yx' set but not used [-Werror,-Wunused-but-set-variable]
+  261 |     fmpz_t raw, modulus; fmpq_t s; int status = ADF_LIMIT, xy = 1, yx = 1, overlap = 0;
+      |                                                                    ^
+1 error generated.
+
+glue-plus exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.18 s
+no-endpoint-glue exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.20 s
+contains-reversed exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.22 s
+coset-as-sample exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.20 s
+allocation-before-budget exit -6 sets line 162: bulk_allocations == 0 1.18 s
+no-saturation exit -6 sets line 250: fmpz_equal(total, cap) 1.20 s
+word-overflow exit 1 /home/tobias/Projects/adelefeld-wt/q-slice6/lanes/q-slice6/fault-scratch/word-overflow/tests/../src/qclass_sets.c:73:42: runtime error: signed integer overflow: 9223372036854775807 + 1 cannot be represented in type 'mp_limb_signed_t' (aka 'long') 0.98 s
+truth-on-limit exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.17 s
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/q-slice6/lanes/q-slice6/plant_faults.py", line 90, in <module>
+    main()
+  File "/home/tobias/Projects/adelefeld-wt/q-slice6/lanes/q-slice6/plant_faults.py", line 86, in main
+    run_cases(FAULTS)
+  File "/home/tobias/Projects/adelefeld-wt/q-slice6/lanes/q-slice6/plant_faults.py", line 79, in run_cases
+    assert all(detail != 'not compiled' and (code == 0) == (name in expected_survivors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

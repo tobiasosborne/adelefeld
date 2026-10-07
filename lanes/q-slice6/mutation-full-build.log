@@ -1,0 +1,18 @@
+mutate: src/qclass_sets.c: 507 mutants
+mutate: 507 mutants, 40 of them run (--limit 40, --seed 310606)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (27.4 s)
+
+SURVIVED src/qclass_sets.c:141:52 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -139,5 +139,5 @@
+           const fmpq *t = i ? hi : lo;
+           if ((!e->have_previous || fmpq_cmp(t, e->previous) > 0) &&
+  -            (!e->have_next || fmpq_cmp(t, e->next) < 0)) {
+  +            (!e->have_next || fmpq_cmp(t, e->next) <= 0)) {
+               fmpq_set(e->next, t); e->have_next = 1;
+           }
+
+mutate: stopped by signal 15: 1 running command(s) killed, scratch removed

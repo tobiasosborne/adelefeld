@@ -1,0 +1,117 @@
+mutate: src/qclass_sets.c: 507 mutants
+mutate: 507 mutants, 40 of them run (--limit 40, --seed 310606)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (5.8 s)
+
+SURVIVED src/qclass_sets.c:141:52 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -139,5 +139,5 @@
+           const fmpq *t = i ? hi : lo;
+           if ((!e->have_previous || fmpq_cmp(t, e->previous) > 0) &&
+  -            (!e->have_next || fmpq_cmp(t, e->next) < 0)) {
+  +            (!e->have_next || fmpq_cmp(t, e->next) <= 0)) {
+               fmpq_set(e->next, t); e->have_next = 1;
+           }
+
+
+SURVIVED src/qclass_sets.c:260:22 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -258,5 +258,5 @@
+       ends = flint_malloc((size_t) (2*K+2)*sizeof(*ends));
+       points = flint_malloc((size_t) (2*K)*sizeof(*points));
+  -    for (i = 0; i < 2*K; i++) fmpz_init(points[i].centre);
+  +    for (i = 0; i < 2+K; i++) fmpz_init(points[i].centre);
+       for (i = 0; i < K; i++) {
+           fmpq_init(out.pieces[i].lo); fmpq_init(out.pieces[i].hi);
+
+
+SURVIVED src/qclass_sets.c:64:24 logic: '&&' -> '||'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -62,5 +62,5 @@
+       if (!qs_add(lo, m, rad, 1) || !qs_add(hi, m, rad, 0)) goto done;
+       adf_fball_get_center(a, fin); adf_fball_get_radius(N, fin);
+  -    ok = qs_size(a->q) && qs_size(N->q);
+  +    ok = qs_size(a->q) || qs_size(N->q);
+   done:
+       arf_clear(r); fmpq_clear(m); fmpq_clear(rad); return ok;
+
+
+SURVIVED src/qclass_sets.c:29:30 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -27,5 +27,5 @@
+       e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
+       return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
+  -           (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+  +           (e >= b ? 1 : b-e+0) <= ADF_QCLASS_BITS_MAX;
+   }
+   static int qs_size(const fmpq_t a)
+
+
+SURVIVED src/qclass_sets.c:256:16 status: 'ADF_LIMIT' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -254,5 +254,5 @@
+       if (K > (LONG_MAX-2)/2 || (size_t) K > SIZE_MAX/sizeof(qs_piece) ||
+           (size_t) (2*K+2) > SIZE_MAX/sizeof(fmpq) || (size_t) (2*K) > SIZE_MAX/sizeof(qs_point))
+  -        return ADF_LIMIT;
+  +        return ADF_OK;
+       out.pieces = flint_malloc((size_t) K*sizeof(*out.pieces)); out.pos = 0;
+       ends = flint_malloc((size_t) (2*K+2)*sizeof(*ends));
+
+
+SURVIVED src/qclass_sets.c:315:17 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -313,5 +313,5 @@
+       for (i = 0; i < 2*K+2; i++) fmpq_clear(ends+i);
+       for (i = 0; i < 2*K; i++) fmpz_clear(points[i].centre);
+  -    for (side = 0; side < 2; side++) {
+  +    for (side = 1; side < 2; side++) {
+           for (i = 0; i < 2*K; i++) fmpz_clear(f[side].points+i);
+           flint_free(f[side].residues); flint_free(f[side].points);
+
+
+SURVIVED src/qclass_sets.c:255:20 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -253,5 +253,5 @@
+       if (!qs_preflight(&K, &L, x, y, limit)) return ADF_LIMIT;
+       if (K > (LONG_MAX-2)/2 || (size_t) K > SIZE_MAX/sizeof(qs_piece) ||
+  -        (size_t) (2*K+2) > SIZE_MAX/sizeof(fmpq) || (size_t) (2*K) > SIZE_MAX/sizeof(qs_point))
+  +        (size_t) (2/K+2) > SIZE_MAX/sizeof(fmpq) || (size_t) (2*K) > SIZE_MAX/sizeof(qs_point))
+           return ADF_LIMIT;
+       out.pieces = flint_malloc((size_t) K*sizeof(*out.pieces)); out.pos = 0;
+
+
+NOT COMPILED src/qclass_sets.c:303:42 op: '+' -> '-'
+  tests/../src/qclass_sets.c:303:24: error: array subscript -1 is outside array bounds of ‘qs_fiber[2]’ [-Werror=array-bounds=]
+
+NOT COMPILED src/qclass_sets.c:273:40 drop_assign: 'nends = 2;' -> '' (the statement is removed)
+  tests/../src/qclass_sets.c:275:28: error: ‘nends’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/qclass_sets.c:316:26 op: '*' -> '/'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -314,5 +314,5 @@
+       for (i = 0; i < 2*K; i++) fmpz_clear(points[i].centre);
+       for (side = 0; side < 2; side++) {
+  -        for (i = 0; i < 2*K; i++) fmpz_clear(f[side].points+i);
+  +        for (i = 0; i < 2/K; i++) fmpz_clear(f[side].points+i);
+           flint_free(f[side].residues); flint_free(f[side].points);
+       }
+
+
+mutate: 40 mutants in 139.8 s: 30 killed, 8 survived, 2 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 8 mutant(s) survived; each one is a claim the tests do not check

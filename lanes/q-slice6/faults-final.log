@@ -1,0 +1,12 @@
+one-residue exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.21 s
+one-real-sample exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.14 s
+point-comparison exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.19 s
+glue-plus exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.18 s
+no-endpoint-glue exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.19 s
+contains-reversed exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.22 s
+coset-as-sample exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.20 s
+allocation-before-budget exit -6 sets line 162: bulk_allocations == 0 1.19 s
+no-saturation exit -6 sets line 250: fmpz_equal(total, cap) 1.19 s
+word-overflow exit 1 /home/tobias/Projects/adelefeld-wt/q-slice6/lanes/q-slice6/fault-scratch/word-overflow/tests/../src/qclass_sets.c:73:42: runtime error: signed integer overflow: 9223372036854775807 + 1 cannot be represented in type 'mp_limb_signed_t' (aka 'long') 0.97 s
+truth-on-limit exit -6 sets line 135: truth == (status == ADF_OK ? expected : 719) 1.18 s
+11 killed, 0 survived, 0 compile failures

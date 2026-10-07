@@ -1,0 +1,23 @@
+mutate: src/qclass_sets.c: 528 mutants
+mutate: 528 mutants, 12 of them run (--limit 12, --seed 310608)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (3.8 s)
+
+SURVIVED src/qclass_sets.c:33:61 logic: '&&' -> '||'
+  the tests pass with the mutant
+  --- a/src/qclass_sets.c
+  +++ b/src/qclass_sets.c
+  @@ -31,5 +31,5 @@
+   static int qs_size(const fmpq_t a)
+   {
+  -    return fmpz_bits(fmpq_numref(a)) <= ADF_QCLASS_BITS_MAX &&
+  +    return fmpz_bits(fmpq_numref(a)) <= ADF_QCLASS_BITS_MAX ||
+              fmpz_bits(fmpq_denref(a)) <= ADF_QCLASS_BITS_MAX;
+   }
+
+
+NOT COMPILED src/qclass_sets.c:161:19 logic: '||' -> '&&'
+  tests/../src/qclass_sets.c:161:19: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+mutate: 12 mutants in 27.9 s: 10 killed, 1 survived, 1 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check

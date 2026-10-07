@@ -186,6 +186,23 @@ else
 fi
 rm -f "$psi_output"
 
+# Slice 3.1-e: bounded quotient set queries.
+qsets_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then
+    cat "$qsets_output"
+elif grep -q '__gmpn_modexact_1_odd' "$qsets_output" 2>/dev/null \
+        && qsets_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$qsets_gmp" ] \
+        && LD_PRELOAD="$qsets_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so"; then
+    echo "== tests/julia/qclass_sets.jl passed with LD_PRELOAD=$qsets_gmp"
+else
+    cat "$qsets_output"
+    rm -f "$qsets_output"
+    echo "test_julia: tests/julia/qclass_sets.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$qsets_output"
+
 # Slice 3.1-a: quotient lift, storage access and rational translation.
 qclass_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass.jl "$so" > "$qclass_output" 2>&1; then

@@ -1,0 +1,42 @@
+mutate: src/qclass_sets.c: 507 mutants
+mutate: 507 mutants, 40 of them run (--limit 40, --seed 310606)
+src/qclass_sets.c:225:29 negate_if: 'if(a->residues[i] && !b->residues[i])' -> 'if(!(a->residues[i] && !b->residues[i]))'
+src/qclass_sets.c:140:32 logic: '||' -> '&&'
+src/qclass_sets.c:204:37 zero_one: '0' -> '1'
+src/qclass_sets.c:237:34 negate_if: 'if(b->residues[fmpz_fdiv_ui(a->points+i, (ulong) L)])' -> 'if(!(b->residues[fmpz_fdiv_ui(a->points+i, (ulong) L)]))'
+src/qclass_sets.c:122:17 negate_if: 'if(j+1 < fibres && !qs_add(centre, centre, N->q, 0))' -> 'if(!(j+1 < fibres && !qs_add(centre, centre, N->q, 0)))'
+src/qclass_sets.c:50:43 call_swap: 'fmpq_add' -> 'fmpq_sub'
+src/qclass_sets.c:141:52 cmp: '<' -> '<='
+src/qclass_sets.c:94:18 zero_one: '0' -> '1'
+src/qclass_sets.c:260:22 op: '*' -> '+'
+src/qclass_sets.c:266:17 zero_one: '0' -> '1'
+src/qclass_sets.c:260:19 cmp: '<' -> '<='
+src/qclass_sets.c:64:24 logic: '&&' -> '||'
+src/qclass_sets.c:217:27 op: '+' -> '-'
+src/qclass_sets.c:62:32 logic: '||' -> '&&'
+src/qclass_sets.c:29:30 zero_one: '1' -> '0'
+src/qclass_sets.c:211:19 cmp: '<' -> '<='
+src/qclass_sets.c:256:16 status: 'ADF_LIMIT' -> 'ADF_OK'
+src/qclass_sets.c:114:74 zero_one: '1' -> '0'
+src/qclass_sets.c:299:37 zero_one: '1' -> '0'
+src/qclass_sets.c:206:9 negate_if: 'if(fmpq_is_zero(s) && fmpq_is_one(p[i].hi))' -> 'if(!(fmpq_is_zero(s) && fmpq_is_one(p[i].hi)))'
+src/qclass_sets.c:200:40 drop_call: 'memset(f[side].residues, 0, (size_t) L);' -> '' (the statement is removed)
+src/qclass_sets.c:63:35 drop_call: 'adf_fball_get_radius(N, fin);' -> '' (the statement is removed)
+src/qclass_sets.c:287:68 op: '+' -> '-'
+src/qclass_sets.c:315:17 zero_one: '0' -> '1'
+src/qclass_sets.c:255:20 op: '*' -> '/'
+src/qclass_sets.c:237:96 zero_one: '1' -> '0'
+src/qclass_sets.c:303:42 op: '+' -> '-'
+src/qclass_sets.c:281:69 zero_one: '1' -> '0'
+src/qclass_sets.c:200:25 cmp: '<' -> '<='
+src/qclass_sets.c:91:23 drop_call: 'fmpz_one(L);' -> '' (the statement is removed)
+src/qclass_sets.c:273:40 drop_assign: 'nends = 2;' -> '' (the statement is removed)
+src/qclass_sets.c:106:22 swap_args: 'qs_add(l, lo, centre, 1)' -> 'qs_add(l, centre, lo, 1)'
+src/qclass_sets.c:51:12 zero_one: '1' -> '0'
+src/qclass_sets.c:240:23 logic: '&&' -> '||'
+src/qclass_sets.c:217:9 drop_call: 'fmpz_set(g->points+g->len++, points[i].centre);' -> '' (the statement is removed)
+src/qclass_sets.c:92:17 zero_one: '0' -> '1'
+src/qclass_sets.c:316:26 op: '*' -> '/'
+src/qclass_sets.c:126:10 zero_one: '1' -> '0'
+src/qclass_sets.c:169:55 drop_assign: 'ok = 1;' -> '' (the statement is removed)
+src/qclass_sets.c:168:7 negate_if: 'while(ep.have_next)' -> 'while(!(ep.have_next))'

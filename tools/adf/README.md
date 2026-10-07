@@ -783,3 +783,20 @@ The library can return `LIMIT` for precision or exact arithmetic, or `NOT_DETERM
 certificate cannot be obtained. No result is printed on a failure.
 Checks: `tests/driver/psi-values.cmd`, `tests/driver/psi-status.cmd`, `tests/driver/psi-class.cmd`,
 `tests/driver/psi-local.cmd`, `tests/julia/psi.jl` and `tests/julia/psi_class.jl`.
+
+### Quotient set queries (slice 3.1-e)
+
+`qequal Q1 with Q2 with LIMIT`, `qcontains Q1 with Q2 with LIMIT`, and
+`qoverlaps Q1 with Q2 with LIMIT` print 1 or 0 for represented sets in A/Q.
+`qcontains` asks whether the first set is inside the second.
+For example, these classes meet only at the glued endpoint:
+
+```text
+qoverlaps (0.75 +/- 0.25 ; 0 mod 3) + Q with (0.25 +/- 0.25 ; 2 mod 3) + Q with 42
+```
+
+This prints 1. With limit 41 it prints `error: LIMIT`.
+LIMIT must be an integer fitting a slong. Fractional limits give DOMAIN; out-of-range limits give LIMIT.
+The query uses exact stored endpoints, with no precision argument. The driver setting `prec` affects reading.
+The raw exact construction, common modulus, and Q2 fibre budget must all fit the limit, even on identical inputs.
+Failures print the ordinary status line. Checks: `tests/driver/qclass-sets.cmd`, `tests/julia/qclass_sets.jl`.

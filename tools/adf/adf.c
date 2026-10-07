@@ -139,6 +139,9 @@ typedef enum
     ADF_DRV_TYPE,
     ADF_DRV_QADD_RAT,
     ADF_DRV_QREDUCE,
+    ADF_DRV_QEQUAL,
+    ADF_DRV_QCONTAINS,
+    ADF_DRV_QOVERLAPS,
     ADF_DRV_ADD,
     ADF_DRV_SUB,
     ADF_DRV_MUL,
@@ -222,6 +225,9 @@ static const struct
     { "type", ADF_DRV_TYPE, 1 },
     { "qadd_rat", ADF_DRV_QADD_RAT, 2 },
     { "qreduce", ADF_DRV_QREDUCE, 2 },
+    { "qequal", ADF_DRV_QEQUAL, 3 },
+    { "qcontains", ADF_DRV_QCONTAINS, 3 },
+    { "qoverlaps", ADF_DRV_QOVERLAPS, 3 },
     { "add", ADF_DRV_ADD, 2 },
     { "sub", ADF_DRV_SUB, 2 },
     { "mul", ADF_DRV_MUL, 2 },
@@ -3245,6 +3251,23 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
             goto done;
     }
 
+    /* Slice 3.1-e, docs/api-3.md 2.3,7: status plus truth, first class inside second.
+       The exact query has no precision argument; st->prec affects only input reading. */
+    if (op == ADF_DRV_QEQUAL || op == ADF_DRV_QCONTAINS || op == ADF_DRV_QOVERLAPS)
+    {
+        int truth;
+        if (x.type != ADF_DRV_QCLASS || y.type != ADF_DRV_QCLASS || w.type != ADF_DRV_RAT ||
+            !fmpz_is_one(fmpq_denref(w.r->q))) status = ADF_DOMAIN;
+        else if (!fmpz_fits_si(fmpq_numref(w.r->q))) status = ADF_LIMIT;
+        else {
+            slong limit = fmpz_get_si(fmpq_numref(w.r->q));
+            if (op == ADF_DRV_QEQUAL) status = adf_qclass_equal_set(&truth, x.q, y.q, limit);
+            else if (op == ADF_DRV_QCONTAINS) status = adf_qclass_contains(&truth, x.q, y.q, limit);
+            else status = adf_qclass_overlaps(&truth, x.q, y.q, limit);
+            if (status == ADF_OK) fprintf(out, "%d\n", truth);
+        }
+        goto done;
+    }
     /* docs/api-3.md 7: raw piece-count limit passed to algorithm R; integer conversion
        occurs only after the arbitrary-precision range check. */
     if (op == ADF_DRV_QREDUCE)
