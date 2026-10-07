@@ -1,0 +1,165 @@
+mutate: src/qclass_arith.c: 314 mutants
+mutate: 314 mutants, 60 of them run (--limit 60, --seed 310207)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (17.6 s)
+
+SURVIVED src/qclass_arith.c:236:44 op: '/' -> '*'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -234,5 +234,5 @@
+           if (!pass) {
+               out.len = fmpz_get_si(total);
+  -            if ((size_t) out.len > SIZE_MAX/sizeof(*out.piece)) { out.len = 0; goto done; }
+  +            if ((size_t) out.len > SIZE_MAX*sizeof(*out.piece)) { out.len = 0; goto done; }
+               out.piece = flint_malloc((size_t) out.len*sizeof(*out.piece));
+               for (i = 0; i < out.len; i++) adf_adele_init(out.piece+i);
+
+
+NOT COMPILED src/qclass_arith.c:40:23 op: '+' -> '-'
+  src/qclass_arith.c:40:5: error: ‘arf_set_mag’ accessing 32 bytes in a region of size 0 [-Werror=stringop-overflow=]
+
+SURVIVED src/qclass_arith.c:184:47 swap_args: 'qa_add(s->hi, s->hi, s->hi2, 0)' -> 'qa_add(s->hi, s->hi2, s->hi, 0)'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -182,5 +182,5 @@
+       u = y->piece+k%y->len;
+       if (!qa_read(s->lo2, s->hi2, s->a2, s->N2, u->inf, &u->fin)) return 0;
+  -    return qa_add(s->lo, s->lo, s->lo2, 0) && qa_add(s->hi, s->hi, s->hi2, 0) &&
+  +    return qa_add(s->lo, s->lo, s->lo2, 0) && qa_add(s->hi, s->hi2, s->hi, 0) &&
+              qa_add(s->a->q, s->a->q, s->a2->q, 0) && qa_gcd(s->N->q, s->N->q, s->N2->q);
+   }
+
+
+SURVIVED src/qclass_arith.c:59:56 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -57,5 +57,5 @@
+           fmpz_cmp_si(ARF_EXPREF(a), ADF_QCLASS_EXP_MAX) > 0) return 0;
+       e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
+  -    return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
+  +    return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) < ADF_QCLASS_BITS_MAX &&
+              (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+   }
+
+
+NOT COMPILED src/qclass_arith.c:276:77 logic: '||' -> '&&'
+  src/qclass_arith.c:276:77: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/qclass_arith.c:99:49 logic: '||' -> '&&'
+  src/qclass_arith.c:99:49: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/qclass_arith.c:231:25 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -229,5 +229,5 @@
+                       }
+                   }
+  -                if (j+1 < fibres && !qa_add(centre, centre, s.N->q, 0)) goto done;
+  +                if (j+1 <= fibres && !qa_add(centre, centre, s.N->q, 0)) goto done;
+               }
+           }
+
+
+TIMED OUT src/qclass_arith.c:25:94 zero_one: '0' -> '1'
+  the tests did not finish in 60 s
+
+SURVIVED src/qclass_arith.c:81:61 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -79,5 +79,5 @@
+          must not be refused solely for an unnecessary squared dyadic denominator. */
+       if (fmpz_equal(fmpq_denref(x), fmpq_denref(y))) {
+  -        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd > ADF_QCLASS_BITS_MAX) return 0;
+  +        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd >= ADF_QCLASS_BITS_MAX) return 0;
+           if (subtract) fmpq_sub(z, x, y); else fmpq_add(z, x, y);
+           return 1;
+
+
+TIMED OUT src/qclass_arith.c:25:87 negate_if: 'while(0)' -> 'while(!(0))'
+  the tests did not finish in 60 s
+
+SURVIVED src/qclass_arith.c:136:25 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -134,5 +134,5 @@
+           v = fmpz_get_ui(mant)+1;
+           fmpz_set(MAG_EXPREF(arb_radref(z)), ARF_EXPREF(u));
+  -        if (v == (UWORD(1) << 30)) {
+  +        if (v == (UWORD(0) << 30)) {
+               v >>= 1; fmpz_add_ui(MAG_EXPREF(arb_radref(z)), MAG_EXPREF(arb_radref(z)), 1);
+           }
+
+
+SURVIVED src/qclass_arith.c:87:43 swap_args: 'fmpq_add(z, x, y)' -> 'fmpq_add(z, y, x)'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -85,5 +85,5 @@
+       if (FLINT_MAX(xn+yd, yn+xd)+1 > ADF_QCLASS_BITS_MAX || xd+yd > ADF_QCLASS_BITS_MAX)
+           return 0;
+  -    if (subtract) fmpq_sub(z, x, y); else fmpq_add(z, x, y);
+  +    if (subtract) fmpq_sub(z, x, y); else fmpq_add(z, y, x);
+       return 1;
+   }
+
+
+NOT COMPILED src/qclass_arith.c:134:9 drop_assign: 'v = fmpz_get_ui(mant)+1;' -> '' (the statement is removed)
+  src/qclass_arith.c:136:12: error: ‘v’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/qclass_arith.c:42:42 op: '+' -> '-'
+  src/qclass_arith.c:42:17: error: ‘arf_neg’ reading 32 bytes from a region of size 0 [-Werror=stringop-overread]
+
+SURVIVED src/qclass_arith.c:114:76 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -112,5 +112,5 @@
+   static int qa_round(arb_t z, const fmpq_t lo, const fmpq_t hi, slong prec)
+   {
+  -    fmpq_t mid, m, d, t; arf_t u, den; fmpz_t mant, exp; ulong v; int ok = 0;
+  +    fmpq_t mid, m, d, t; arf_t u, den; fmpz_t mant, exp; ulong v; int ok = 1;
+       fmpq_init(mid); fmpq_init(m); fmpq_init(d); fmpq_init(t);
+       arf_init(u); arf_init(den); fmpz_init(mant); fmpz_init(exp);
+
+
+SURVIVED src/qclass_arith.c:81:55 logic: '||' -> '&&'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -79,5 +79,5 @@
+          must not be refused solely for an unnecessary squared dyadic denominator. */
+       if (fmpz_equal(fmpq_denref(x), fmpq_denref(y))) {
+  -        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd > ADF_QCLASS_BITS_MAX) return 0;
+  +        if (FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX && xd > ADF_QCLASS_BITS_MAX) return 0;
+           if (subtract) fmpq_sub(z, x, y); else fmpq_add(z, x, y);
+           return 1;
+
+
+NOT COMPILED src/qclass_arith.c:276:34 logic: '||' -> '&&'
+  src/qclass_arith.c:276:34: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/qclass_arith.c:60:29 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/qclass_arith.c
+  +++ b/src/qclass_arith.c
+  @@ -58,5 +58,5 @@
+       e = fmpz_get_si(ARF_EXPREF(a)); b = arf_bits(a);
+       return b <= ADF_QCLASS_BITS_MAX && FLINT_MAX(e, b) <= ADF_QCLASS_BITS_MAX &&
+  -           (e >= b ? 1 : b-e+1) <= ADF_QCLASS_BITS_MAX;
+  +           (e >= b ? 1 : b-e-1) <= ADF_QCLASS_BITS_MAX;
+   }
+   static int qa_size(const fmpq_t a)
+
+
+NOT COMPILED src/qclass_arith.c:39:19 op: '+' -> '-'
+  src/qclass_arith.c:39:5: error: ‘arf_neg’ accessing 32 bytes in a region of size 0 [-Werror=stringop-overflow=]
+
+mutate: 60 mutants in 899.0 s: 41 killed, 10 survived, 7 not compiled, 2 timed out, 0 excused
+mutate: FAILED: 10 mutant(s) survived; each one is a claim the tests do not check
+exit 1

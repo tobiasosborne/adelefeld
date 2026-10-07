@@ -1,0 +1,91 @@
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/q-slice7/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/q-slice7/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/q-slice7/build/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/q-slice7/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/q-slice7/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/q-slice7/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/q-slice7/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/q-slice7/build/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/q-slice7/build/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/q-slice7/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/q-slice7/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/q-slice7/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/q-slice7/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/q-slice7/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/q-slice7/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/q-slice7/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/q-slice7/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/q-slice7/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/q-slice7/build/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/q-slice7/build/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/q-slice7/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/q-slice7/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/q-slice7/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/psi.c -o lanes/q-slice7/build/psi.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/q-slice7/build/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass_sets.c -o lanes/q-slice7/build/qclass_sets.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/q-slice7/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/q-slice7/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/q-slice7/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/q-slice7/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/q-slice7/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/q-slice7/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/q-slice7/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/q-slice7/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/q-slice7/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/q-slice7/build/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/q-slice7/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/q-slice7/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/q-slice7/build/ucoset.o
+mkdir -p lanes/q-slice7/build/support
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/q-slice7/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/q-slice7/build/support/jsonl.o
+ar rcs lanes/q-slice7/build/libadelefeld.a lanes/q-slice7/build/adele.o lanes/q-slice7/build/cap.o lanes/q-slice7/build/catalogue.o lanes/q-slice7/build/common.o lanes/q-slice7/build/dump.o lanes/q-slice7/build/fball.o lanes/q-slice7/build/fball_local.o lanes/q-slice7/build/gfunc.o lanes/q-slice7/build/gfunc_log.o lanes/q-slice7/build/idclass.o lanes/q-slice7/build/idele.o lanes/q-slice7/build/idmap.o lanes/q-slice7/build/idpow.o lanes/q-slice7/build/inlines.o lanes/q-slice7/build/lball.o lanes/q-slice7/build/lball_decomp.o lanes/q-slice7/build/lfunc.o lanes/q-slice7/build/linsolve.o lanes/q-slice7/build/localfactor.o lanes/q-slice7/build/lpow.o lanes/q-slice7/build/lroot.o lanes/q-slice7/build/modctx.o lanes/q-slice7/build/place.o lanes/q-slice7/build/psi.o lanes/q-slice7/build/qclass.o lanes/q-slice7/build/qclass_sets.o lanes/q-slice7/build/rat.o lanes/q-slice7/build/recon.o lanes/q-slice7/build/resid.o lanes/q-slice7/build/rfunc.o lanes/q-slice7/build/roots.o lanes/q-slice7/build/roots_real.o lanes/q-slice7/build/sball.o lanes/q-slice7/build/scaled.o lanes/q-slice7/build/status.o lanes/q-slice7/build/symbol.o lanes/q-slice7/build/text.o lanes/q-slice7/build/text_idele.o lanes/q-slice7/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_qclass_arith.c lanes/q-slice7/build/support/golden.o lanes/q-slice7/build/support/jsonl.o lanes/q-slice7/build/libadelefeld.a -lflint -lgmp -lm -o lanes/q-slice7/build/test_qclass_arith
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `call':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:176:(.text+0x4f0): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:176:(.text+0x5e9): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:176:(.text+0x191b): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:176:(.text+0x26e9): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `vectors':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:232:(.text+0x274a): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:233:(.text+0x2799): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:236:(.text+0x27ed): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:237:(.text+0x2825): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:241:(.text+0x28a2): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /tmp/ccmszLOu.o:/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:176: more undefined references to `adf_qclass_add' follow
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `vectors':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:246:(.text+0x2b69): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:247:(.text+0x2ba4): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `zero_and_neg_identities':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:271:(.text.startup+0x1c1): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:272:(.text.startup+0x1fd): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:273:(.text.startup+0x239): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:279:(.text.startup+0x2e8): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `hand_example':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:389:(.text.startup+0x4d8): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:390:(.text.startup+0x502): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `limits':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:291:(.text.startup+0x7bb): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:292:(.text.startup+0x826): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:293:(.text.startup+0x852): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:294:(.text.startup+0x877): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:307:(.text.startup+0xa7b): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:309:(.text.startup+0xaf3): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:325:(.text.startup+0xd40): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:325:(.text.startup+0xd67): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:328:(.text.startup+0xdca): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:340:(.text.startup+0xf10): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:340:(.text.startup+0xf2f): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `local_inputs':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:364:(.text.startup+0x120f): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:365:(.text.startup+0x123a): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:366:(.text.startup+0x1276): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:367:(.text.startup+0x12b4): undefined reference to `adf_qclass_add'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:369:(.text.startup+0x1339): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:370:(.text.startup+0x135e): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:371:(.text.startup+0x13a1): undefined reference to `adf_qclass_neg'
+/usr/bin/ld: /tmp/ccmszLOu.o: in function `limits':
+/home/tobias/Projects/adelefeld-wt/q-slice7/tests/test_qclass_arith.c:341:(.text.startup+0x14cd): undefined reference to `adf_qclass_add'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/q-slice7/build/test_qclass_arith] Error 1

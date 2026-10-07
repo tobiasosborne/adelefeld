@@ -1,0 +1,10 @@
+fault	what	result	first failure
+gcd-lcm	wrong finite gcd: lcm of the radii	rejected	exit -6: arith line 132: fmpz_equal(H, fmpq_numref(l)) && fmpz_is_one(D)
+gcd-N-alone	wrong finite gcd: the radius of x alone	rejected	exit -6: arith line 131: fmpz_equal(A, fmpq_numref(l))
+neg-shift-sign	sign of the finite shift under negation	rejected	exit -6: arith line 131: fmpz_equal(A, fmpq_numref(l))
+early-real-round	arb_add of the real balls at 53 bits before R	rejected	exit -6: arith line 129: fmpq_equal(lo, l) && fmpq_equal(hi, h)
+count-after-dedup	limit compared with the count after deduplication	rejected	exit -6: arith line 185: call(z, x, y, limit, prec) == ADF_LIMIT
+z-written-early	z written before the last allocation	rejected	exit -6: arith line 186: !memcmp(z, &bytes, sizeof(bytes))
+neg-ends-not-reversed	end points not reversed under negation	rejected	exit -6: arith line 225: call(z, x, yy, K, prec) == ADF_OK
+pairs-len-x	pair loop over len(x) only	rejected	exit -6: arith line 232: adf_qclass_add(t, yy, x, K, prec) == ADF_OK && adf_qclass_identical(t, z)
+pairs-index	pair index uses len(x) for the row (k/len(x))	rejected	exit -6: arith line 225: call(z, x, yy, K, prec) == ADF_OK

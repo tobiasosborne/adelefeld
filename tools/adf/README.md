@@ -749,6 +749,21 @@ Union input remains `UNSUPPORTED`. Checks: `tests/driver/qclass-reduce.cmd`, `te
 A fractional finite radius A/B uses B fibres of integer radius A. For example,
 `qreduce (0 ; 0 mod 1/2) + Q with 2` prints `union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q`.
 
+`qneg Q with LIMIT` and `qadd Q1 with Q2 with LIMIT` (slice 3.1-f) negate a class and add two classes.
+The real end points are negated or added exactly, the finite balls give `(a+b) + gcd(N,M) Zhat`, and the
+result is reduced and rounded as by `qreduce`. LIMIT counts that construction over all pairs, before
+rounding and duplicate removal; it is read as for `qreduce`. For example
+
+```text
+qadd (0.75 +/- 0.25 ; 0 mod 3) + Q with (0.5 +/- 0.5 ; 1 mod 3) + Q with 2
+qneg (1 +/- 1 ; 0 mod 1) + Q with 2
+```
+
+print `union((0.5 +/- 0.51 ; 0 mod 3), (0.75 +/- 0.26 ; 1 mod 3)) + Q` (the sum crosses 1) and
+`union((0.5 +/- 0.51 ; 0 mod 1)) + Q` (two constructed pieces, one stored; with 1 it is `error: LIMIT`).
+The two operands vary independently: `qadd X with X` is the set of all sums, wider than twice X.
+Checks: `tests/driver/qclass-arith.cmd`, `tests/julia/qclass_arith.jl`.
+
 ### Tate additive character (slices 3.2-a to 3.2-c)
 
 `psi X` and `psi_strict X` take a real adele, a quotient class or a local ball. They print the ordinary complex

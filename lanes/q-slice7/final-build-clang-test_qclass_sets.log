@@ -1,0 +1,5 @@
+2^59 byte-product preflight: 0.000024 CPU s (guard 1 s)
+sets: 279 vectors, both orders, 3 query types
+10^100 B preflight: 0.000003 CPU s (guard 1 s)
+2000 pieces, L=LONG_MAX-1: 0 bulk allocations before LIMIT
+qclass sets: 86357 checks, 8394 calls

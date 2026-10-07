@@ -120,6 +120,27 @@ int adf_qclass_equal_set(int *truth, const adf_qclass_t x, const adf_qclass_t y,
 int adf_qclass_contains(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
 int adf_qclass_overlaps(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
 
+/* y encloses {-u : u in x}. Negate each stored real interval and finite ball,
+   then apply R and Q1. All radii stay exact in the finite coordinate.
+   OK writes y; LIMIT for precision, arithmetic bounds, or construction count.
+   y may equal x. Source: Q3; quotient P6/P8 applied to the negated representatives.
+   Cost: negation of len entries plus reduction, with its count and sorting.
+   The count and the order of the checks are those of adf_qclass_reduce: prec, then
+   piece_limit < 1, then len > piece_limit, then the raw construction count (N-D21).
+   On LIMIT y is untouched. Canonical initialized input; INV checks it on entry. */
+int adf_qclass_neg(adf_qclass_t y, const adf_qclass_t x, slong piece_limit, slong prec);
+
+/* z encloses {u+v : u in x, v in y}, independently varying even if x == y.
+   Pair each stored entry of x with each of y. Before rounding, add real endpoints
+   exactly and finite balls tightly: (a+b) + gcd(N,M) Zhat. Then R and Q1.
+   OK writes z; LIMIT as for reduce, including the raw pair count > piece_limit.
+   z may equal either input, including both. Source: Q3 and precision.md P1:27.
+   Cost: len(x)*len(y) rational additions/gcds plus reduction and sorting.
+   The raw count is taken over all pairs before rounding and deduplication (N-D21).
+   On LIMIT z is untouched. Canonical initialized inputs; INV checks both on entry. */
+int adf_qclass_add(adf_qclass_t z, const adf_qclass_t x, const adf_qclass_t y,
+                  slong piece_limit, slong prec);
+
 #ifdef __cplusplus
 }
 #endif

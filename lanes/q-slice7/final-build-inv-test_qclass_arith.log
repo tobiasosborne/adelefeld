@@ -1,0 +1,11 @@
+components: exponent, bit, carry and refusal boundaries of the copied helpers
+tests/ref/vectors/q-slice7/arith.jsonl: 64 add, 15 neg vectors, 3160 sample points
+zero class and negated lift identities: 30 lifts
+hand example: two pieces, crossing at 1
+10^30 fibres LIMIT: CPU 0.000013 s, guard 1.0 s
+2^101 width LIMIT: CPU 0.000011 s, guard 1.0 s
+2^62 pieces, byte product LIMIT: CPU 0.000009 s, guard 1.0 s
+limits: precision, piece limits, pair count, R5, exact-work bounds
+local inputs: blocks 8, 9, 5
+INV: 3 invalid input aborts
+qclass arith: 1206766 checks; Q2 containment 28 decided, 2 over budget

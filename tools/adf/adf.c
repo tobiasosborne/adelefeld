@@ -142,6 +142,8 @@ typedef enum
     ADF_DRV_QEQUAL,
     ADF_DRV_QCONTAINS,
     ADF_DRV_QOVERLAPS,
+    ADF_DRV_QNEG,
+    ADF_DRV_QADD,
     ADF_DRV_ADD,
     ADF_DRV_SUB,
     ADF_DRV_MUL,
@@ -228,6 +230,8 @@ static const struct
     { "qequal", ADF_DRV_QEQUAL, 3 },
     { "qcontains", ADF_DRV_QCONTAINS, 3 },
     { "qoverlaps", ADF_DRV_QOVERLAPS, 3 },
+    { "qneg", ADF_DRV_QNEG, 2 },
+    { "qadd", ADF_DRV_QADD, 3 },
     { "add", ADF_DRV_ADD, 2 },
     { "sub", ADF_DRV_SUB, 2 },
     { "mul", ADF_DRV_MUL, 2 },
@@ -3277,6 +3281,25 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         else if (!fmpz_fits_si(fmpq_numref(y.r->q))) status = ADF_LIMIT;
         else {
             status = adf_qclass_reduce(z.q, x.q, fmpz_get_si(fmpq_numref(y.r->q)), st->prec);
+            if (status == ADF_OK) {
+                z.type = ADF_DRV_QCLASS;
+                status = adf_drv_value_print(out, &z, st->digits);
+            }
+        }
+        goto done;
+    }
+    /* Slice 3.1-f, docs/api-3.md 2.4 and 7: qneg Q with LIMIT, qadd Q1 with Q2 with LIMIT.
+       The limit is read as for qreduce; the union is printed as qreduce prints it. */
+    if (op == ADF_DRV_QNEG || op == ADF_DRV_QADD)
+    {
+        const adf_drv_value * lim = (op == ADF_DRV_QNEG) ? &y : &w;
+        if (x.type != ADF_DRV_QCLASS || (op == ADF_DRV_QADD && y.type != ADF_DRV_QCLASS) ||
+            lim->type != ADF_DRV_RAT || !fmpz_is_one(fmpq_denref(lim->r->q))) status = ADF_DOMAIN;
+        else if (!fmpz_fits_si(fmpq_numref(lim->r->q))) status = ADF_LIMIT;
+        else {
+            slong limit = fmpz_get_si(fmpq_numref(lim->r->q));
+            if (op == ADF_DRV_QNEG) status = adf_qclass_neg(z.q, x.q, limit, st->prec);
+            else status = adf_qclass_add(z.q, x.q, y.q, limit, st->prec);
             if (status == ADF_OK) {
                 z.type = ADF_DRV_QCLASS;
                 status = adf_drv_value_print(out, &z, st->digits);
