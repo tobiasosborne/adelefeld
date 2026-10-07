@@ -1,0 +1,9 @@
+endpoint-tie exit 0 2^59 byte-product preflight: 0.000076 CPU s (guard 1 s) 3.29 s
+partial-point-init exit -6 sets line 130: live_integers == saved_z 1.19 s
+read-size-or exit 0 2^59 byte-product preflight: 0.000040 CPU s (guard 1 s) 3.17 s
+denominator-off-one exit -6 sets line 252: !qs_arf_bound(a) 1.24 s
+capacity-ok exit -6 sets line 255: qs_storage_status(LONG_MAX) == ADF_LIMIT 1.14 s
+skip-side-cleanup exit -6 sets line 130: live_bulk == saved_bulk 1.27 s
+endpoint-byte-product exit 0 2^59 byte-product preflight: 0.000073 CPU s (guard 1 s) 3.58 s
+partial-integer-clear exit -6 sets line 130: live_integers == saved_z 1.73 s
+5 killed, 3 survived, 0 compile failures

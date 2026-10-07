@@ -1,0 +1,8 @@
+endpoint-tie	0	2^59 byte-product preflight: 0.000076 CPU s (guard 1 s)
+partial-point-init	-6	sets line 130: live_integers == saved_z
+read-size-or	0	2^59 byte-product preflight: 0.000040 CPU s (guard 1 s)
+denominator-off-one	-6	sets line 252: !qs_arf_bound(a)
+capacity-ok	-6	sets line 255: qs_storage_status(LONG_MAX) == ADF_LIMIT
+skip-side-cleanup	-6	sets line 130: live_bulk == saved_bulk
+endpoint-byte-product	0	2^59 byte-product preflight: 0.000073 CPU s (guard 1 s)
+partial-integer-clear	-6	sets line 130: live_integers == saved_z

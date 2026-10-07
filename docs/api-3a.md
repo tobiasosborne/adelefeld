@@ -190,3 +190,77 @@ The stored midpoint is RN_p((l+h)/2) with p>=2. Monotonicity and exact 0,1 give 
 Writing eta=abs(m-(l+h)/2), d=(h-l)/2+eta, so each endpoint excess is at most 2 eta+2^-28 d.
 This proof avoids the incorrect inequality u<=d printed in the review's proposed R1 replacement.
 Check: every exact oracle piece is contained; its required radius and stored rho satisfy the bound exactly.
+
+## Slice 3.1-e
+
+19. `adf_qclass_equal_set(truth,x,y,work_limit)` decides equality of represented subsets of A/Q.
+20. `adf_qclass_contains(truth,x,y,work_limit)` decides whether the first represented set is inside the second.
+21. `adf_qclass_overlaps(truth,x,y,work_limit)` decides whether their represented intersection is nonempty.
+
+These are Q2 of `docs/api-3.md:546-574`, extending quotient.md P9:212-226 to zero finite radius and spill.
+They implement the status-bearing exception of D3-1 and SPEC 15.4 N-D21.
+OK writes exactly 0 or 1. LIMIT leaves truth untouched. There is no NOT_DETERMINED result.
+Both inputs are canonical initialized classes. They may alias each other; truth aliases no input member.
+INV checks both inputs before checking even a nonpositive work limit.
+Check: every vector in q-slice6/sets.jsonl, both argument orders, identity aliasing, truth sentinels,
+noncanonical input aborts, driver fixtures, and the Julia ccall signature of design section 7.
+
+Normalization follows exact R steps 1-4, with no Q1 or other real rounding.
+Read exact midpoint and mag radius, and the canonical finite centre/radius, including local CRT data.
+For positive N=A/B, use all B fibres of radius A by P8:181-198.
+Translate each fibre diagonally by its exact centre and split using floor(l) <= n < ceil(h).
+A real point uses one n=floor(l). Its finite radius remains zero when the input radius is zero.
+P6:129-151 proves equality of the closed-piece image with the input image, including the integral upper end.
+P10:249-250 gives the same construction for a finite point.
+Read every stored real endpoint, including spill, so the construction also preserves arbitrary legal PIECES.
+Check: lift versus exact reduction, fractional radii 1/2, 2/3 and 7/360, isolated spill, local raw d cancelling
+to 1, finite points, negative centres, and 2000-bit centres with small moduli.
+
+In the half-open section, real 1 contributes at real 0 with finite centre m-1, by P3:71-73.
+At each endpoint below 1 and each open-gap midpoint, positive cosets refine to all residues modulo L.
+Exact finite points remain integer points; points covered by positive residues are deleted.
+Inclusion requires residue inclusion and membership of every residual point in the other fibre.
+A finite collection of points cannot cover a positive coset: infinitely many integers in that residue remain.
+Intersection checks common residues, common exact points, and points in the other side's positive residues.
+This is precisely Q2 steps 4-6. Endpoint and gap membership is constant as required by P9 step 4.
+Check: all centres for moduli 2-8 in the glued family, wrong-sign partners, boundary-only overlaps,
+N versus its two-piece 2N refinement, and a positive coset against five finite point samples.
+
+The construction preflight rejects B above the remaining work limit before any fibre loop.
+It accumulates raw integer-range counts in fmpz, saturating at work_limit+1, including at LONG_MAX.
+K counts both arguments before deduplication. L is the lcm of positive integer moduli, or 1.
+E counts distinct endpoints of the exact constructed pieces, so E <= 2K.
+Require K <= work_limit, L <= work_limit and (2E+1) K L <= work_limit as arbitrary-precision integers.
+No identity, full-image or disjointness shortcut bypasses this budget.
+Discover E by streaming minimum selection before allocating any piece, endpoint, residue or point array.
+The O(K E) discovery cost is within the total O(K^2 L) bound. Afterwards endpoints and point candidates
+are sorted once in O(K log K); each cell then uses O(K L) work. Memory is O(K+L) plus exact integers.
+Artificial cells outside the exact interval extent are empty on both sides and are skipped.
+A glued real zero is retained even outside that extent. At most 2E+1 fibre tests remain.
+Allocation byte products, exact exponents and projected bit lengths have the existing R bounds.
+An impossible byte product is refused after counting and before the endpoint-discovery stream.
+Check: budget and budget-1 for every vector and all calls, zero bulk allocations on budget refusal,
+1/10^100 refused within a one-second CPU guard, huge widths, exponent refusals and 2000 pieces with
+L=LONG_MAX-1. Direct saturation checks distinguish early count handling from a later LIMIT.
+The tests also check an impossible 2^59 construction in under one CPU second, the exact denominator bit cap,
+and balanced bulk allocations and initialized integer objects on every query call.
+
+There is no prec argument. The exact balls already determine sets.
+Two real point fibres separated by 2^-100 are disjoint here. Q1 reduction at two bits widens one to overlap
+the other, demonstrating why rounded reduction cannot substitute for exact internal normalization.
+Check: exact-gap vector and `exact_and_local` before and after the deliberately rounded reduction.
+
+### Choices where the query design is silent
+
+- E counts actual piece endpoints. Artificial 0 and 1 used for real-cell enumeration do not add to E.
+  Alternative: count all cell boundaries, which would revise the budget and contradict E <= 2K.
+- Exact R keeps raw duplicate pieces internally. Alternative: deduplicate after construction.
+  The represented union is the same; K must still count before deduplication.
+- Endpoint discovery uses repeated streaming minima before allocation.
+  Alternative: allocate an endpoint array to discover E, then check the final budget.
+  Streaming obeys the explicit pre-allocation contract and retains its total cost bound.
+- The driver requires two qclass operands and an integer rational limit, following qreduce's range policy.
+  Alternative: coerce adeles and rational operands implicitly to classes.
+  The three new verbs make the represented-set question explicit.
+- Opposite input-piece orders are sorted in the vector generator before entering the public calls.
+  Alternative: pass unsorted storage, which violates section 1's canonical precondition.

@@ -1,0 +1,14 @@
+mutate: src/qclass_sets.c: 528 mutants
+mutate: 528 mutants, 12 of them run (--limit 12, --seed 310608)
+src/qclass_sets.c:104:38 drop_call: 'fmpq_set(centre, a->q);' -> '' (the statement is removed)
+src/qclass_sets.c:234:29 negate_if: 'if(a->residues[i] && !b->residues[i])' -> 'if(!(a->residues[i] && !b->residues[i]))'
+src/qclass_sets.c:57:48 drop_call: 'arf_set_mag(r, arb_radref(inf));' -> '' (the statement is removed)
+src/qclass_sets.c:307:17 negate_if: 'if(!qs_add(s, ends+i, ends+i+1, 0))' -> 'if(!(!qs_add(s, ends+i, ends+i+1, 0)))'
+src/qclass_sets.c:47:9 negate_if: 'if(FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd > ADF_QCLASS_BITS_MAX)' -> 'if(!(FLINT_MAX(xn, yn)+1 > ADF_QCLASS_BITS_MAX || xd > ADF_QCLASS_BITS_MAX))'
+src/qclass_sets.c:216:46 drop_call: 'qs_center(g, shifted, p[i].A, L);' -> '' (the statement is removed)
+src/qclass_sets.c:101:17 negate_if: 'if(fmpz_bits(t)+fmpz_bits(A) > ADF_QCLASS_BITS_MAX)' -> 'if(!(fmpz_bits(t)+fmpz_bits(A) > ADF_QCLASS_BITS_MAX))'
+src/qclass_sets.c:117:37 negate_if: 'if(!fmpz_is_zero(A))' -> 'if(!(!fmpz_is_zero(A)))'
+src/qclass_sets.c:314:67 cmp: '>' -> '>='
+src/qclass_sets.c:33:61 logic: '&&' -> '||'
+src/qclass_sets.c:234:48 logic: '&&' -> '||'
+src/qclass_sets.c:161:19 logic: '||' -> '&&'

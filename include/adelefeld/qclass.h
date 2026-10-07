@@ -105,6 +105,21 @@ void adf_qclass_add_rat(adf_qclass_t y, const adf_qclass_t x, const adf_rat_t q)
 ADF_INLINE size_t adf_sizeof_qclass(void) { return sizeof(adf_qclass_struct); }
 ADF_INLINE size_t adf_alignof_qclass(void) { return ADF_ALIGNOF(adf_qclass_struct); }
 
+/* Write 0 or 1 to truth on OK: respectively equality, first set inside second,
+   or nonempty intersection of the represented subsets of A/Q.
+   LIMIT leaves truth untouched when Q2's work_limit or exact-arithmetic bounds fail.
+   NOT_DETERMINED is not used for represented sets; no unknown endpoints occur in arb.
+   Inputs may alias; truth cannot alias any member. Source: quotient P9:212-226,
+   extended by Q2 for spill, containment, overlap, and zero finite radii.
+   Cost: K exact pieces; O(K log K) endpoint sorting; (2E+1) K L fiber work,
+   O(K^2 L); memory O(K+L) plus exact integers. L is the lcm of positive moduli.
+   Exact R is unrounded. Raw K, L, (2E+1) K L must all be <= work_limit before
+   bulk allocation, even for identical inputs. E counts exact piece endpoints.
+   Canonical initialized inputs are required; INV checks both on entry. */
+int adf_qclass_equal_set(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
+int adf_qclass_contains(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
+int adf_qclass_overlaps(int *truth, const adf_qclass_t x, const adf_qclass_t y, slong work_limit);
+
 #ifdef __cplusplus
 }
 #endif
