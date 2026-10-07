@@ -233,6 +233,73 @@ static int q_read(fmpq_t lo, fmpq_t hi, adf_rat_t a, adf_rat_t N,
 done:
     arf_clear(r); fmpq_clear(m); fmpq_clear(rad); return ok;
 }
+
+/* CV-45 uses canonical global keys even when the retained entry is local.
+   The ordinal makes sorting stable on equal set keys without global comparator state. */
+typedef struct {
+    const adf_adele_struct *piece;
+    fmpz_t A, H;
+    slong ordinal;
+} qp_key;
+static int qp_key_cmp(const qp_key *p, const qp_key *q)
+{
+    int c = end_cmp(p->piece->inf, q->piece->inf, 0);
+    if (!c) c = end_cmp(p->piece->inf, q->piece->inf, 1);
+    if (!c) c = fmpz_cmp(p->H, q->H);
+    if (!c) c = fmpz_cmp(p->A, q->A);
+    return c;
+}
+static int qp_sort_cmp(const void *vp, const void *vq)
+{
+    const qp_key *p = vp, *q = vq;
+    int c = qp_key_cmp(p, q);
+    return c ? c : (p->ordinal > q->ordinal) - (p->ordinal < q->ordinal);
+}
+
+/* docs/api-3.md:136-144, D3-2; conventions 5.10:722-752; quotient P3:71.
+   Bounds precede exact endpoint formation; all writes to y occur at the final swap. */
+int adf_qclass_set_pieces(adf_qclass_t y, const adf_adele_struct *pieces,
+                          slong n, slong piece_limit)
+{
+    qp_key *keys;
+    adf_qclass_struct out = {ADF_QCLASS_PIECES, 0, NULL};
+    adf_rat_t a, N; fmpq_t lo, hi;
+    slong i, initialized = 0, keep = 0;
+    int status = ADF_OK;
+    ADF_INV_QCLASS(y);
+    if (piece_limit < 1 || n > piece_limit) return ADF_LIMIT;
+    if (n < 1 || pieces == NULL) return ADF_DOMAIN;
+    if ((size_t) n > SIZE_MAX/sizeof(*keys) || (size_t) n > SIZE_MAX/sizeof(*out.piece))
+        return ADF_LIMIT;
+    for (i = 0; i < n; i++)
+        if (!adf_adele_is_canonical(pieces+i) || arf_sgn(arb_midref(pieces[i].inf)) < 0 ||
+            arf_cmp_ui(arb_midref(pieces[i].inf), 1) > 0) return ADF_DOMAIN;
+    keys = flint_malloc((size_t) n * sizeof(*keys));
+    adf_rat_init(a); adf_rat_init(N); fmpq_init(lo); fmpq_init(hi);
+    for (i = 0; i < n; i++) {
+        if (!q_read(lo, hi, a, N, pieces[i].inf, &pieces[i].fin)) { status = ADF_LIMIT; break; }
+        if (!fmpz_is_one(fmpq_denref(a->q)) || !fmpz_is_one(fmpq_denref(N->q))) {
+            status = ADF_DOMAIN; break;
+        }
+        keys[i].piece = pieces+i; keys[i].ordinal = i;
+        fmpz_init(keys[i].A); fmpz_init(keys[i].H); initialized++;
+        fmpz_set(keys[i].A, fmpq_numref(a->q)); fmpz_set(keys[i].H, fmpq_numref(N->q));
+    }
+    if (status == ADF_OK) {
+        qsort(keys, (size_t) n, sizeof(*keys), qp_sort_cmp);
+        for (i = 0; i < n; i++) if (!i || qp_key_cmp(keys+i-1, keys+i)) keep++;
+        out.piece = flint_malloc((size_t) keep * sizeof(*out.piece));
+        for (i = 0; i < n; i++) if (!i || qp_key_cmp(keys+i-1, keys+i)) {
+            adf_adele_init(out.piece+out.len);
+            adf_adele_set(out.piece+out.len, keys[i].piece); out.len++;
+        }
+        adf_qclass_swap(y, &out); adf_qclass_clear(&out);
+    }
+    for (i = 0; i < initialized; i++) { fmpz_clear(keys[i].A); fmpz_clear(keys[i].H); }
+    flint_free(keys); adf_rat_clear(a); adf_rat_clear(N); fmpq_clear(lo); fmpq_clear(hi);
+    return status;
+}
+
 /* Q1, with review R1: divide exact rationals using correctly rounded arf (arf.rst:24-35,
    :662-681). Build the least RU30 and its successor directly in mag; mag.rst:6-15
    allows extra ulps in general conversions, so no general mag rounding call is used. */

@@ -1,0 +1,24 @@
+/usr/bin/ld: /tmp/ccMgdoqY.o: in function `read_q':
+/home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:32:(.text+0x98): undefined reference to `adf_qclass_load_str_binds'
+/usr/bin/ld: /tmp/ccMgdoqY.o: in function `reject':
+/home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:122:(.text+0x25f): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /tmp/ccMgdoqY.o: in function `random_roundtrips':
+/home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:203:(.text+0x779): undefined reference to `adf_qclass_dump_str'
+/usr/bin/ld: /tmp/ccMgdoqY.o: in function `check_dump':
+/home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:43:(.text+0x9e5): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:45:(.text+0xa5f): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:57:(.text+0xbff): undefined reference to `adf_qclass_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:70:(.text+0xce4): undefined reference to `adf_qclass_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:67:(.text+0xe4a): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:76:(.text+0xf6c): undefined reference to `adf_qclass_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:76:(.text+0x1007): undefined reference to `adf_qclass_load_str'
+/usr/bin/ld: /tmp/ccMgdoqY.o: in function `golden':
+/home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:97:(.text+0x12d5): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:99:(.text+0x13e1): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /tmp/ccMgdoqY.o: in function `malformed':
+/home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:149:(.text.startup+0x257): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:154:(.text.startup+0x30b): undefined reference to `adf_qclass_dump_inspect'
+/usr/bin/ld: /tmp/ccMgdoqY.o: in function `binding_order':
+/home/tobias/Projects/adelefeld-wt/q-slice4/tests/test_qclass_dump.c:174:(.text.startup+0x4c7): undefined reference to `adf_qclass_dump_str'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/q-slice4/build/test_qclass_dump] Error 1

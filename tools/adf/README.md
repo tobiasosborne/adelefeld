@@ -118,7 +118,7 @@ never fails.  `load` reads a dump form and writes the value in the value form of
 conventions 9.4.  The driver has no context, so the two commands cover the values of the
 global backend only, which is where every value of the value form is (conventions 9.8,
 A11): a dump with a context occurrence is `error: UNSUPPORTED`, and so is a body of
-section 10 that the driver has no dump for (`scaled`, `qclass`, `ffun`, `rfun`, `char`,
+section 10 that the driver has no dump for (`scaled`, `ffun`, `rfun`, `char`,
 `modctx`).  The nine bodies the driver reads and writes are `rat`, `fball`, `adele`, `cadele`,
 `ucoset`, `idele`, `idclass`, `lball` and `sball`; the five of lane `u-dump1` since this text was
 written: `dump` of a unit coset, an idele, a class, a local ball or a partial ball answers
@@ -272,10 +272,11 @@ the label: `5: 349831 + O(5^8)` for `exp_at 5 with 5` at `prec 8`; `real: 1` for
 
 ### Types of the operands, and the pairs that are refused
 
-The driver reads nine of the thirteen kinds of the value form: `adf_rat`, `adf_fball`,
+The driver reads ten of the thirteen kinds of the value form: `adf_rat`, `adf_fball`,
 `adf_adele`, `adf_cadele`, and, since lane t-slice1 (milestone 2), `adf_ucoset`, `adf_idele` and
-`adf_idclass`, and, since lane drv-ball, `adf_lball` and `adf_sball`.  A kind with no typed parser in this build
-(`adf_qclass`, `adf_ffun`, `adf_rfun`, `adf_char`; work packages 1.8 and later) gives `error: UNSUPPORTED`.
+`adf_idclass`, and, since lane drv-ball, `adf_lball` and `adf_sball`, plus `adf_qclass` (slice 3.1-d).
+A kind with no typed parser in this build
+(`adf_ffun`, `adf_rfun`, `adf_char`; work packages 1.8 and later) gives `error: UNSUPPORTED`.
 `type` still names those kinds, since the classifier knows all thirteen.
 
 The two kinds that lane drv-ball added are values, and not operands of the operations: `show` prints them
@@ -721,7 +722,7 @@ Tests: `tests/driver/localfactor-values.cmd`, `tests/driver/localfactor-status.c
 
 ## The quotient class (lane q-slice1, slice 3.1-a of `docs/api-3.md`)
 
-`qclass` is a value kind the driver holds, lift form only, and `qadd_rat X with R` translates a class by a
+`qclass` is a value kind the driver holds, in lift or union form, and `qadd_rat X with R` translates a class by a
 rational:
 
 ```text
@@ -732,7 +733,11 @@ qadd_rat (0 ; 1/3) + Q with -7/3
 
 These print `(0.5 ; 0) + Q`, `qclass`, and `(0 ; 1/3) + Q`. Rational translation preserves
 the stored lift exactly. Pair arithmetic and set queries give `DOMAIN` in this slice.
-Union input is `UNSUPPORTED` after syntax and text-limit checks. Dump and the character belong to later slices.
+Union input is read, sorted by exact stored endpoint/H/A keys, and deduplicated.
+`dump` writes the lossless qclass form. `load` validates it strictly and prints an enclosure as value text.
+Local dumps require caller-owned contexts; the driver has none and returns `UNSUPPORTED` after validation.
+Checks: `tests/driver/qclass-text.cmd`, `tests/driver/qclass-dump.cmd`, `tests/julia/qclass_text.jl`.
+`print` is an alias of `show`. The direct call `adf print 'union((0.5 ; 7)) + Q'` uses the same line reader.
 Julia calls are in `tests/julia/qclass.jl`.
 
 `qreduce X with LIMIT` reduces a quotient lift to a printed union of closed balls.
@@ -745,7 +750,7 @@ qreduce (0.5 +/- 0.5 ; 0 mod 2) + Q with 1
 ```
 
 The output encloses the represented quotient set. Its balls may spill beyond 0 and 1 (CV-45).
-Union input remains `UNSUPPORTED`. Checks: `tests/driver/qclass-reduce.cmd`, `tests/julia/qclass.jl`.
+Union input is supported. Checks: `tests/driver/qclass-reduce.cmd`, `tests/julia/qclass.jl`.
 A fractional finite radius A/B uses B fibres of integer radius A. For example,
 `qreduce (0 ; 0 mod 1/2) + Q with 2` prints `union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q`.
 

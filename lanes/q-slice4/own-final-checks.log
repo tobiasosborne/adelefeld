@@ -1,0 +1,58 @@
+$ make -s -j2 BUILD=lanes/q-slice4/build lanes/q-slice4/build/test_qclass_text lanes/q-slice4/build/test_qclass_dump
+exit 0
+
+$ lanes/q-slice4/build/test_qclass_text
+exit 0
+qclass_text: 8309 checks
+
+$ lanes/q-slice4/build/test_qclass_dump
+exit 0
+qclass_dump: 33854 checks, 2000 random round trips
+
+$ make -s -j2 BUILD=lanes/q-slice4/san SAN=1 lanes/q-slice4/san/test_qclass_text lanes/q-slice4/san/test_qclass_dump
+exit 0
+
+$ lanes/q-slice4/san/test_qclass_text
+exit 0
+qclass_text: 8309 checks
+
+$ lanes/q-slice4/san/test_qclass_dump
+exit 0
+qclass_dump: 33854 checks, 2000 random round trips
+
+$ make -s -j2 BUILD=lanes/q-slice4/inv INV=1 lanes/q-slice4/inv/test_qclass_text lanes/q-slice4/inv/test_qclass_dump
+exit 0
+
+$ lanes/q-slice4/inv/test_qclass_text
+exit 0
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_set_pieces: argument y is not a canonical adf_qclass
+qclass_text: 8311 checks
+
+$ lanes/q-slice4/inv/test_qclass_dump
+exit 0
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_dump_str: argument x is not a canonical adf_qclass
+qclass_dump: 33856 checks, 2000 random round trips
+
+$ make -s -j2 BUILD=lanes/q-slice4/clang CC=clang lanes/q-slice4/clang/test_qclass_text lanes/q-slice4/clang/test_qclass_dump
+exit 0
+
+$ lanes/q-slice4/clang/test_qclass_text
+exit 0
+qclass_text: 8309 checks
+
+$ lanes/q-slice4/clang/test_qclass_dump
+exit 0
+qclass_dump: 33854 checks, 2000 random round trips
+
+$ make -s -j2 BUILD=lanes/q-slice4/san-inv CC=clang SAN=1 INV=1 lanes/q-slice4/san-inv/test_qclass_text lanes/q-slice4/san-inv/test_qclass_dump
+exit 0
+
+$ lanes/q-slice4/san-inv/test_qclass_text
+exit 0
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_set_pieces: argument y is not a canonical adf_qclass
+qclass_text: 8311 checks
+
+$ lanes/q-slice4/san-inv/test_qclass_dump
+exit 0
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_dump_str: argument x is not a canonical adf_qclass
+qclass_dump: 33856 checks, 2000 random round trips

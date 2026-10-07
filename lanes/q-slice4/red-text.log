@@ -1,0 +1,29 @@
+tests/test_qclass_text.c: In function ‘vectors’:
+tests/test_qclass_text.c:71:15: error: implicit declaration of function ‘adf_qclass_set_pieces’; did you mean ‘adf_qclass_get_piece’? [-Werror=implicit-function-declaration]
+   71 |         CHECK(adf_qclass_set_pieces(x, a, n, n-1) == ADF_LIMIT);
+      |               ^~~~~~~~~~~~~~~~~~~~~
+tests/test_qclass_text.c:10:39: note: in definition of macro ‘CHECK’
+   10 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+In function ‘construction’,
+    inlined from ‘main’ at tests/test_qclass_text.c:191:34:
+tests/test_qclass_text.c:161:5: error: ‘read_a’ accessing 96 bytes in a region of size 48 [-Werror=stringop-overflow=]
+  161 |     read_a(a+999, "(1.5 ; 0 mod 3)");
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tests/test_qclass_text.c:161:5: note: referencing argument 1 of type ‘adf_adele_struct[1]’
+tests/test_qclass_text.c: In function ‘main’:
+tests/test_qclass_text.c:28:13: note: in a call to function ‘read_a’
+   28 | static void read_a(adf_adele_t a, const char *s)
+      |             ^~~~~~
+In function ‘construction’,
+    inlined from ‘main’ at tests/test_qclass_text.c:191:34:
+tests/test_qclass_text.c:163:5: error: ‘read_a’ accessing 96 bytes in a region of size 48 [-Werror=stringop-overflow=]
+  163 |     read_a(a+999, "(0.5 ; 1/2 mod 3)");
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tests/test_qclass_text.c:163:5: note: referencing argument 1 of type ‘adf_adele_struct[1]’
+tests/test_qclass_text.c: In function ‘main’:
+tests/test_qclass_text.c:28:13: note: in a call to function ‘read_a’
+   28 | static void read_a(adf_adele_t a, const char *s)
+      |             ^~~~~~
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/q-slice4/build/test_qclass_text] Error 1

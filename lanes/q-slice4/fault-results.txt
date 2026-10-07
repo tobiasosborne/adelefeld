@@ -1,0 +1,8 @@
+F1_limit_after_dedup: exit 1; tests/test_qclass_text.c:76: adf_qclass_set_pieces(x, a, n, n-1) == ADF_LIMIT
+F2_raw_keys: exit 1; tests/test_qclass_text.c:244: adf_qclass_set_pieces(x, a, 4, 4) == ADF_OK && x->len == 3
+F3_second_duplicate: exit 1; tests/test_qclass_text.c:245: x->piece[0].fin.mctx == ctx2 && x->piece[1].fin.mctx == ctx6
+F4_normalizing_load: exit 1; tests/test_qclass_dump.c:103: !strcmp(adf_status_str(st), r->status)
+F5_early_flint: exit 1; tests/test_qclass_dump.c:23: 0 && "unexpected FLINT arb string load"
+F6_wrong_context: exit 1; tests/test_qclass_dump.c:62: read_q(x, s, n, binds, count, NULL) == ADF_OK
+F7_bound_plus_one: exit 1; tests/test_qclass_dump.c:103: !strcmp(adf_status_str(st), r->status)
+F8_early_write: exit 1; tests/test_qclass_dump.c:41: !memcmp(&before, x, sizeof(before))

@@ -78,6 +78,18 @@ slong adf_qclass_length(const adf_qclass_t x);
 #define ADF_REAL_PREC_MAX 2097152
 #endif
 
+/* Set y to PIECES, union_i pi(pieces[i]), preserving stored balls, backends and contexts.
+   Validate raw initialized entries and CV-45; sort exact lower/upper/H/A keys, remove duplicates,
+   retaining the first input occurrence. OK writes y; DOMAIN for n < 1 or a bad entry;
+   LIMIT for n > piece_limit, allocation overflow, or D3-2 exact-key bounds above.
+   piece_limit < 1 gives LIMIT before reading pieces. Count before deduplication.
+   No input array overlaps y or its members. Failure leaves y untouched. Raw entries are
+   validated even under INV; initialized y is a canonical output precondition.
+   Sources: docs/api-3.md:136-144; conventions 5.10:722-752; quotient.md P3:71.
+   Cost: at most n copies, O(n log n) exact comparisons, canonical triples (CRT for local data). */
+int adf_qclass_set_pieces(adf_qclass_t y, const adf_adele_struct *pieces,
+                          slong n, slong piece_limit);
+
 /* Reduce every stored adele by algorithm R (docs/api-3.md 2.2); write PIECES.
    OK: the exact pre-rounding union equals x's represented set; y encloses it by Q1,
    with one rounded ball per constructed piece, sorted and deduplicated.
