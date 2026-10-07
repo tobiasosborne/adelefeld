@@ -1,0 +1,16 @@
+{
+  "removed": [
+    "lanes/c-slice2/plain",
+    "lanes/c-slice2/san",
+    "lanes/c-slice2/inv",
+    "lanes/c-slice2/clang",
+    "lanes/c-slice2/mut-base",
+    "/tmp/adf-c-slice2-mutate-1",
+    "/tmp/adf-c-slice2-mutate-2",
+    "/tmp/adf-c-slice2-mutate-3",
+    "/tmp/adf-c-slice2-mutate-4",
+    "/tmp/adf-c-slice2-mutate-5",
+    "/tmp/adf-c-slice2-mutate-6",
+    "lanes/c-slice2/stdout.log"
+  ]
+}

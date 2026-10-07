@@ -1,0 +1,15 @@
+memory: 5800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000275 seconds
+test_char: 129825 checks
+conjugation: 1966 characters, 74434 unit products
+memory: 8100 FLINT blocks, 0 live after 100 cycles
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument u is not a canonical adf_ucoset
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_dump_str: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument y is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_load_str_binds: argument x is not a canonical adf_char
+test_char_eval: 1738351 checks

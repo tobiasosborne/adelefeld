@@ -1,0 +1,22 @@
+$ timeout 180 python3 -u tools/mutate/mutate.py --root . --scratch /tmp/adf-c-slice2-mutate-6 --files src/char.c --limit 10 --seed 310314 --jobs 1 --timeout 45 --san --make timeout 150 sh lanes/c-slice2/mutate_check.sh --copy Makefile include src tests lanes
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310314)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (23.2 s)
+
+SURVIVED src/char.c:219:13 swap_args: 'arf_add(sums+2*j, sums+2*j, lo, ARF_PREC_EXACT, ARF_RND_NEAR)' -> 'arf_add(sums+2*j, lo, sums+2*j, ARF_PREC_EXACT, ARF_RND_NEAR)'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -217,5 +217,5 @@
+               const arb_struct *part = j ? acb_imagref(term) : acb_realref(term);
+               arb_get_interval_arf(lo, hi, part, ARF_PREC_EXACT);
+  -            arf_add(sums+2*j, sums+2*j, lo, ARF_PREC_EXACT, ARF_RND_NEAR);
+  +            arf_add(sums+2*j, lo, sums+2*j, ARF_PREC_EXACT, ARF_RND_NEAR);
+               arf_add(sums+2*j+1, sums+2*j+1, hi, ARF_PREC_EXACT, ARF_RND_NEAR);
+           }
+
+
+mutate: 10 mutants in 147.8 s: 9 killed, 1 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check
+EXIT 1

@@ -1,0 +1,32 @@
+[
+  {
+    "survivor": "nonfinite",
+    "compile": 0,
+    "link": 0,
+    "exit": -6
+  },
+  {
+    "survivor": "principal_setup",
+    "compile": 0,
+    "link": 0,
+    "exit": -6
+  },
+  {
+    "survivor": "cosine_width",
+    "compile": 0,
+    "link": 0,
+    "exit": -6
+  },
+  {
+    "survivor": "distance_sign",
+    "compile": 0,
+    "link": 0,
+    "exit": -6
+  },
+  {
+    "survivor": "infinite_macro",
+    "compile": 0,
+    "link": 0,
+    "exit": 124
+  }
+]

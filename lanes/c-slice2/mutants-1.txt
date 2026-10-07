@@ -1,0 +1,12 @@
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310309)
+src/char.c:151:12 cmp: '==' -> '!='
+src/char.c:138:53 zero_one: '0' -> '1'
+src/char.c:307:26 op: '+' -> '-'
+src/char.c:284:71 op: '+' -> '-'
+src/char.c:220:13 call_swap: 'arf_add' -> 'arf_sub'
+src/char.c:331:9 negate_if: 'if(!dirichlet_group_init(G, x->q))' -> 'if(!(!dirichlet_group_init(G, x->q)))'
+src/char.c:152:9 negate_if: 'if(zero)' -> 'if(!(zero))'
+src/char.c:207:32 drop_call: 'dirichlet_char_log(c, G, chi->n);' -> '' (the statement is removed)
+src/char.c:47:50 cmp: '==' -> '!='
+src/char.c:295:13 negate_if: 'if(st != ADF_OK)' -> 'if(!(st != ADF_OK))'

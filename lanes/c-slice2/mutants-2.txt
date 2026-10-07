@@ -1,0 +1,12 @@
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310310)
+src/char.c:32:54 drop_call: 'acb_set(y->s, x->s);' -> '' (the statement is removed)
+src/char.c:205:5 negate_if: 'if(chi->q == 1)' -> 'if(!(chi->q == 1))'
+src/char.c:211:44 negate_if: 'if(zero)' -> 'if(!(zero))'
+src/char.c:174:35 op: '-' -> '+'
+src/char.c:225:42 op: '+' -> '-'
+src/char.c:154:9 negate_if: 'if(st == ADF_OK)' -> 'if(!(st == ADF_OK))'
+src/char.c:204:5 drop_call: 'ADF_INV_CHAR(chi);' -> '' (the statement is removed)
+src/char.c:203:44 cmp: '>' -> '>='
+src/char.c:190:35 zero_one: '0' -> '1'
+src/char.c:71:23 zero_one: '1' -> '0'

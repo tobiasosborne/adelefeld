@@ -1,0 +1,25 @@
+$ timeout 180 python3 -u tools/mutate/mutate.py --root . --scratch /tmp/adf-c-slice2-mutate-2 --files src/char.c --limit 10 --seed 310310 --jobs 1 --timeout 45 --san --make timeout 150 sh lanes/c-slice2/mutate_check.sh --copy Makefile include src tests lanes
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310310)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (18.1 s)
+
+NOT COMPILED src/char.c:225:42 op: '+' -> '-'
+  src/char.c:225:9: error: ‘char_round’ reading 32 bytes from a region of size 0 [-Werror=stringop-overread]
+
+SURVIVED src/char.c:190:35 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -188,5 +188,5 @@
+   {
+       arf_t r, bound; int ok;
+  -    if (!acb_is_finite(z)) return 0;
+  +    if (!acb_is_finite(z)) return 1;
+       arf_init(r); arf_init(bound); arf_set_ui(bound, factor*C); arf_mul_2exp_si(bound, bound, -w);
+       arf_set_mag(r, arb_radref(acb_realref(z))); ok = arf_cmp(r, bound) <= 0;
+
+
+mutate: 10 mutants in 71.5 s: 8 killed, 1 survived, 1 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check
+EXIT 1

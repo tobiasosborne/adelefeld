@@ -75,6 +75,24 @@ if ! command -v "$JULIA" > /dev/null 2>&1; then
     exit 0
 fi
 
+# Slice 3.3-b: unit coset evaluation, conjugation and lossless character dumps.
+char_eval_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/char_eval.jl "$so" > "$char_eval_output" 2>&1; then
+    cat "$char_eval_output"
+elif grep -q '__gmpn_modexact_1_odd' "$char_eval_output" 2>/dev/null \
+        && char_eval_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$char_eval_gmp" ] \
+        && LD_PRELOAD="$char_eval_gmp" timeout 60 "$JULIA" --startup-file=no \
+            tests/julia/char_eval.jl "$so"; then
+    echo "== tests/julia/char_eval.jl passed with LD_PRELOAD=$char_eval_gmp"
+else
+    cat "$char_eval_output"
+    rm -f "$char_eval_output"
+    echo "test_julia: tests/julia/char_eval.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$char_eval_output"
+
 echo "== $($JULIA --version)"
 
 # Slice a, api-3c 7: character layout and Gauss ccall in its own bounded process.

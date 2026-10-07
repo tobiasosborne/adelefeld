@@ -1,0 +1,12 @@
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310313)
+src/char.c:68:5 negate_if: 'if(q == 0 || !acb_is_finite(s) || n_gcd(n, q) != 1)' -> 'if(!(q == 0 || !acb_is_finite(s) || n_gcd(n, q) != 1))'
+src/char.c:68:55 zero_one: '1' -> '0'
+src/char.c:88:69 status: 'ADF_OK' -> 'ADF_DOMAIN'
+src/char.c:203:5 negate_if: 'if(prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX)' -> 'if(!(prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX))'
+src/char.c:59:33 cmp: '==' -> '!='
+src/char.c:47:17 zero_one: '1' -> '0'
+src/char.c:261:5 negate_if: 'if(prec > ADF_REAL_PREC_MAX || C > ADF_CHAR_MOD_MAX)' -> 'if(!(prec > ADF_REAL_PREC_MAX || C > ADF_CHAR_MOD_MAX))'
+src/char.c:279:22 zero_one: '0' -> '1'
+src/char.c:47:5 negate_if: 'if(x->q == 1)' -> 'if(!(x->q == 1))'
+src/char.c:223:12 cmp: '==' -> '!='

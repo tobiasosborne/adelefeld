@@ -75,6 +75,7 @@
 #include "adelefeld/idclass.h"
 #include "adelefeld/lball.h"
 #include "adelefeld/sball.h"
+#include "adelefeld/char.h"
 
 /* The largest absolute binary exponent of the midpoint and of the radius of the real ball of a
    piece of a dumped qclass, form "pieces" (decision M1-D9): 2^20, the bound of ADF_RECON_EXP_MAX
@@ -261,6 +262,27 @@ int adf_qclass_load_str_binds(adf_qclass_t x, const char *s, size_t len,
 char *adf_qclass_dump_str(size_t *len, const adf_qclass_t x);
 int adf_qclass_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t len,
                              const adf_text_limits_t *lim);
+
+/* Slice b, api-3c 2/P3; conventions 10.1:1414, 10.2:1427-1480.
+   Strict lossless body "char q n acb"; prefix "adf1 Q". Recompute parity; reject an
+   imprimitive pair rather than lower it. Validate all bytes/balls before any FLINT load call.
+   Stages: length, alphabet/header, full grammar, limits, q word bound, cheap semantics,
+   Cheap principal n=1,q>1 rejection; D1 q<=65536 before group setup, primitive predicate,
+   then binding count. The principal shortcut is dirichlet.h:144-147.
+   No contexts: ctx ignored; binds requires nbinds=0. No working precision or member aliasing.
+   OK/PARSE/LIMIT/UNSUPPORTED/DOMAIN; all failures preserve x. Cost input size+D(q).
+   dump_str preserves stored bits, allocates with FLINT; free with adf_str_free, *len excludes NUL.
+   No dumper status; cost output size; INV checks canonical input.
+   inspect validates the same strict body, writes nctx=0 only on OK, leaves descs untouched.
+   With descs=NULL incoming nctx is ignored; otherwise it is capacity. No value is built. */
+int adf_char_load_str(adf_char_t x, const char *s, size_t len,
+                      const adf_modctx_struct *ctx, const adf_text_limits_t *lim);
+int adf_char_load_str_binds(adf_char_t x, const char *s, size_t len,
+                            const adf_modctx_struct *const *binds, size_t nbinds,
+                            const adf_text_limits_t *lim);
+char *adf_char_dump_str(size_t *len, const adf_char_t x);
+int adf_char_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t len,
+                          const adf_text_limits_t *lim);
 
 /* Layout queries of the descriptor (conventions 10.2, 12.4). Header-inline and exported. */
 ADF_INLINE size_t adf_sizeof_ctx_desc(void) { return sizeof(adf_ctx_desc_t); }

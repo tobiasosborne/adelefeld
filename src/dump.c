@@ -63,6 +63,7 @@
 #include <flint/arb.h>
 #include <flint/acb.h>
 #include <flint/ulong_extras.h>
+#include <flint/dirichlet.h>
 
 #include "adelefeld/dump.h"
 #include "invariants.h"
@@ -74,7 +75,7 @@
 #endif
 
 /* Stage 6 of a body that has no context occurrence and whose predicates this file does not
-   check (ffun, rfun, char). Only adf_dump_ctx_occurrence sees it, and there the answer is DOMAIN
+   check (ffun, rfun). Only adf_dump_ctx_occurrence sees it, and there the answer is DOMAIN
    whatever the predicates say: occurrence index out of range, or a failed predicate
    (conventions 10.2). Never returned by a public function. */
 #define DP_NOSEM (-1)
@@ -1107,7 +1108,7 @@ dp_w_qclass(dp_cur * c, dp_state * st)
 }
 
 /* The bodies without a context occurrence and without a typed loader in this file (conventions
-   10.1): ffun, rfun and char: grammar, stage 4 and stage 5 as in proto _dump_syntax and
+   10.1): ffun and rfun: grammar, stage 4 and stage 5 as in proto _dump_syntax and
    _dump_validate; stage 6 is DP_NOSEM. */
 static int
 dp_w_other(dp_cur * c, dp_state * st, int kind)
@@ -1168,12 +1169,8 @@ dp_w_other(dp_cur * c, dp_state * st, int kind)
                         return 0;
             }
             break;
-        default: /* DP_CHAR: q n s */
-            if (!dp_h(c, &t) || !dp_h(c, &u) || !dp_w_arb(c, st, &tmp) || !dp_w_arb(c, st, &tmp))
-                return dp_parse_fail(st);
-            if (st->mode == DP_WORDS && dp_over_word(t))
-                return dp_fail(st, ADF_UNSUPPORTED);
-            break;
+        default:
+            return dp_parse_fail(st);
     }
     if (st->mode == DP_SEM)
         return dp_fail(st, DP_NOSEM);
@@ -1327,6 +1324,38 @@ dp_w_body(dp_cur * c, dp_state * st, int kind)
                     if (q <= prev)               /* strictly increasing primes (5.9) */
                         return dp_fail(st, ADF_DOMAIN);
                     prev = q;
+                }
+            }
+            return 1;
+        }
+        case DP_CHAR:
+        {
+            ulong q, n;
+            if (!dp_h(c, &nd->a) || !dp_h(c, &nd->b) ||
+                !dp_w_arb(c, st, &nd->arb[0]) || !dp_w_arb(c, st, &nd->arb[1]))
+                return dp_parse_fail(st);
+            if (st->mode == DP_WORDS && dp_over_word(nd->a))
+                return dp_fail(st, ADF_UNSUPPORTED);
+            if (st->mode == DP_SEM) {
+                dirichlet_group_t G; dirichlet_char_t ch; int primitive;
+                /* CV-52: every byte and token has passed syntax first. Cheap predicates
+                   precede D1; only validated fields reach group setup, never a string loader. */
+                if (!dp_word(nd->a, &q) || !dp_word(nd->b, &n) || q == 0 || n == 0 || n > q ||
+                    n_gcd(n, q) != 1 || !dp_v_arb(&nd->arb[0]) || !dp_v_arb(&nd->arb[1]))
+                    return dp_fail(st, ADF_DOMAIN);
+                /* Header dirichlet.h:144-147 identifies label 1 as principal. Its conductor
+                   is 1, so q>1 is cheaply imprimitive. This semantic rejection precedes D1,
+                   as required by api-3c 2; it needs no factorization or group setup. */
+                if (q > 1 && n == 1) return dp_fail(st, ADF_DOMAIN);
+                if (q > ADF_CHAR_MOD_MAX) return dp_fail(st, ADF_LIMIT);
+                nd->narch = 0; /* derived parity, not an archimedean count in this body */
+                if (q != 1) {
+                    if (!dirichlet_group_init(G, q)) return dp_fail(st, ADF_UNSUPPORTED);
+                    dirichlet_char_init(ch, G); dirichlet_char_log(ch, G, n);
+                    primitive = dirichlet_conductor_char(G, ch) == q;
+                    nd->narch = (size_t) dirichlet_parity_char(G, ch);
+                    dirichlet_char_clear(ch); dirichlet_group_clear(G);
+                    if (!primitive) return dp_fail(st, ADF_DOMAIN);
                 }
             }
             return 1;
@@ -2722,3 +2751,34 @@ int adf_qclass_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, 
 {
     return dp_inspect(DP_QCLASS, nctx, descs, s, len, lim);
 }
+
+/* Slice b: strict char body, api-3c 2; conventions 10.1:1414, 10.2/CV-52.
+   dp_prepare shares all lexical/stage/binding validation. Rebuild exact balls from validated
+   spans with the existing dyadic kernel; no unsafe FLINT load call is needed. */
+int adf_char_load_str_binds(adf_char_t x, const char *s, size_t len,
+                            const adf_modctx_struct *const *binds, size_t nbinds,
+                            const adf_text_limits_t *lim)
+{
+    dp_parsed P; adf_char_t out; ulong q, n;
+    int st = dp_prepare(&P, DP_CHAR, s, len, binds, dp_count_of(nbinds), lim);
+    if (st != ADF_OK) return st;
+    DP_INV(x, adf_char_is_canonical(x), "adf_char");
+    (void) dp_word(P.node.a, &q); (void) dp_word(P.node.b, &n);
+    adf_char_init(out); out->q = q; out->n = n; out->parity = (int) P.node.narch;
+    dp_set_arb(acb_realref(out->s), &P.node.arb[0]); dp_set_arb(acb_imagref(out->s), &P.node.arb[1]);
+    adf_char_swap(x, out); adf_char_clear(out); return ADF_OK;
+}
+int adf_char_load_str(adf_char_t x, const char *s, size_t len,
+                      const adf_modctx_struct *ctx, const adf_text_limits_t *lim)
+{
+    (void) ctx; return adf_char_load_str_binds(x, s, len, NULL, 0, lim);
+}
+char *adf_char_dump_str(size_t *len, const adf_char_t x)
+{
+    dp_sb b; DP_INV(x, adf_char_is_canonical(x), "adf_char"); dp_sb_init(&b);
+    dp_sb_lit(&b, "adf1 Q char"); dp_sb_ui(&b, x->q); dp_sb_ui(&b, x->n);
+    dp_sb_arb(&b, acb_realref(x->s)); dp_sb_arb(&b, acb_imagref(x->s)); return dp_sb_finish(&b, len);
+}
+int adf_char_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t len,
+                          const adf_text_limits_t *lim)
+{ return dp_inspect(DP_CHAR, nctx, descs, s, len, lim); }

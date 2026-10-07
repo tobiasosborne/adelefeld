@@ -1,0 +1,21 @@
+{
+  "runs": [
+    "mutate: 10 mutants in 80.9 s: 9 killed, 0 survived, 1 not compiled, 0 timed out, 0 excused",
+    "mutate: 10 mutants in 71.5 s: 8 killed, 1 survived, 1 not compiled, 0 timed out, 0 excused",
+    "mutate: 10 mutants in 140.3 s: 6 killed, 3 survived, 1 not compiled, 0 timed out, 0 excused",
+    "mutate: 10 mutants in 103.8 s: 8 killed, 1 survived, 1 not compiled, 0 timed out, 0 excused",
+    "mutate: 10 mutants in 90.3 s: 10 killed, 0 survived, 0 not compiled, 0 timed out, 0 excused",
+    "mutate: 10 mutants in 147.8 s: 9 killed, 1 survived, 0 not compiled, 0 timed out, 0 excused"
+  ],
+  "selected": 60,
+  "distinct": 59,
+  "duplicate_runs": 1,
+  "survivors": [
+    "src/char.c:190:35 zero_one: '0' -> '1'",
+    "src/char.c:330:17 zero_one: '1' -> '0'",
+    "src/char.c:94:19 swap_args: 'n_gcd(n, q)' -> 'n_gcd(q, n)'",
+    "src/char.c:296:92 zero_one: '1' -> '0'",
+    "src/char.c:280:52 call_swap: 'fmpq_sub' -> 'fmpq_add'",
+    "src/char.c:219:13 swap_args: 'arf_add(sums+2*j, sums+2*j, lo, ARF_PREC_EXACT, ARF_RND_NEAR)' -> 'arf_add(sums+2*j, lo, sums+2*j, ARF_PREC_EXACT, ARF_RND_NEAR)'"
+  ]
+}

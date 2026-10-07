@@ -1,0 +1,325 @@
+[
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_char",
+    "exit": 0,
+    "summaries": [
+      "memory: 1800 FLINT blocks, 0 live after 100 cycles",
+      "test_char: 129725 checks"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_char_eval",
+    "exit": 0,
+    "summaries": [
+      "memory: 3300 FLINT blocks, 0 live after 100 cycles",
+      "test_char_eval: 1738298 checks"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_dump",
+    "exit": 0,
+    "summaries": [
+      "ok   order_of_checks_two_faults",
+      "17 tests, 12259 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_dump_ctx",
+    "exit": 0,
+    "summaries": [
+      "14 tests, 28587 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_dump_golden",
+    "exit": 0,
+    "summaries": [
+      "1 tests, 763 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_dump_limits",
+    "exit": 0,
+    "summaries": [
+      "9 tests, 297 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_dump_local",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "10 tests, 36205 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_dump_units",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "12 tests, 32505051 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "plain",
+    "command": "timeout 60 lanes/c-slice2/plain/test_qclass_dump",
+    "exit": 0,
+    "summaries": [
+      "qclass_dump: 33913 checks, 2000 random round trips"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_char_eval",
+    "exit": 1,
+    "summaries": []
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_char",
+    "exit": 0,
+    "summaries": [
+      "memory: 1800 FLINT blocks, 0 live after 100 cycles",
+      "test_char: 129725 checks"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_char_eval",
+    "exit": 0,
+    "summaries": [
+      "memory: 3300 FLINT blocks, 0 live after 100 cycles",
+      "test_char_eval: 1738298 checks"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_dump",
+    "exit": 0,
+    "summaries": [
+      "ok   order_of_checks_two_faults",
+      "17 tests, 12259 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_dump_ctx",
+    "exit": 0,
+    "summaries": [
+      "14 tests, 28587 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_dump_golden",
+    "exit": 0,
+    "summaries": [
+      "1 tests, 763 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_dump_limits",
+    "exit": 0,
+    "summaries": [
+      "9 tests, 297 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_dump_local",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "10 tests, 36205 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_dump_units",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "12 tests, 32505051 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "san",
+    "command": "timeout 60 lanes/c-slice2/san/test_qclass_dump",
+    "exit": 0,
+    "summaries": [
+      "qclass_dump: 33913 checks, 2000 random round trips"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_char",
+    "exit": 0,
+    "summaries": [
+      "memory: 5800 FLINT blocks, 0 live after 100 cycles",
+      "test_char: 129797 checks"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_char_eval",
+    "exit": 0,
+    "summaries": [
+      "memory: 8100 FLINT blocks, 0 live after 100 cycles",
+      "test_char_eval: 1738325 checks"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_dump",
+    "exit": 0,
+    "summaries": [
+      "ok   order_of_checks_two_faults",
+      "17 tests, 12259 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_dump_ctx",
+    "exit": 0,
+    "summaries": [
+      "14 tests, 28587 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_dump_golden",
+    "exit": 0,
+    "summaries": [
+      "1 tests, 763 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_dump_limits",
+    "exit": 0,
+    "summaries": [
+      "9 tests, 297 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_dump_local",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "10 tests, 36205 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_dump_units",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "12 tests, 32505051 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_qclass_dump",
+    "exit": 0,
+    "summaries": [
+      "qclass_dump: 33915 checks, 2000 random round trips"
+    ]
+  },
+  {
+    "config": "inv",
+    "command": "timeout 60 lanes/c-slice2/inv/test_char_eval_wrap",
+    "exit": 0,
+    "summaries": [
+      "memory: 8100 FLINT blocks, 0 live after 100 cycles",
+      "test_char_eval: 1738351 checks"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_char",
+    "exit": 0,
+    "summaries": [
+      "memory: 1800 FLINT blocks, 0 live after 100 cycles",
+      "test_char: 129725 checks"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_char_eval",
+    "exit": 0,
+    "summaries": [
+      "memory: 3300 FLINT blocks, 0 live after 100 cycles",
+      "test_char_eval: 1738298 checks"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_dump",
+    "exit": 0,
+    "summaries": [
+      "ok   order_of_checks_two_faults",
+      "17 tests, 12259 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_dump_ctx",
+    "exit": 0,
+    "summaries": [
+      "14 tests, 28587 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_dump_golden",
+    "exit": 0,
+    "summaries": [
+      "1 tests, 763 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_dump_limits",
+    "exit": 0,
+    "summaries": [
+      "9 tests, 297 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_dump_local",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "10 tests, 36205 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_dump_units",
+    "exit": 0,
+    "summaries": [
+      "ok   limits_and_order_of_checks",
+      "12 tests, 32505051 checks, 0 failed checks, 0 failed tests"
+    ]
+  },
+  {
+    "config": "clang",
+    "command": "timeout 60 lanes/c-slice2/clang/test_qclass_dump",
+    "exit": 0,
+    "summaries": [
+      "qclass_dump: 33913 checks, 2000 random round trips"
+    ]
+  }
+]

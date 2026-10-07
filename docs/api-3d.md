@@ -175,3 +175,172 @@ Check: 17 hand-derived driver lines, direct CLI forms, Julia Gauss/root calls an
 Not in this slice: conjugation API, unit coset/class/idele evaluation, dump forms, products or CRT summation.
 Sources pending: universal FLINT 3.0.1 pairing/exponent implementation and group-init failure semantics.
 The signed primitive quadratic Gauss evaluation remains pending in analysis, but is not used by this code.
+
+# Slice b
+
+Implementation of docs/api-3c.md sections 2, 3, 5 (P1-P3) and section 7, slice b.
+This slice adds conjugation, unit-coset evaluation and strict lossless character dumps.
+It does not change the specification. A unit-coset input has no t coordinate. Its evaluation is chi(u),
+independent of the stored s; no t^s factor is applied.
+
+## Unit-coset image and strict certificate
+
+adf_char_eval_ucoset and adf_char_eval_ucoset_strict implement design P1, P2 and CV-07.
+Write C for the stored primitive conductor. At N=0, the input is [1] or [-1].
+The singleton value is respectively 1 or (-1)^parity. At N>0 put g=gcd(C,N).
+The code computes g from N mod C. It never factors N or enumerates lcm(C,N).
+
+Here is the residue argument of P1, stated step by step.
+
+1. A global unit congruent to c modulo N is a unit modulo C and agrees with c modulo g.
+2. For a unit a modulo C agreeing with c modulo g, the two congruences x=a mod C and x=c mod N
+   are compatible. Solve them by CRT at lcm(C,N). At each prime dividing that lcm, at least one
+   supplied residue is a unit. The solution is a unit at that prime. Choose unit coordinates elsewhere.
+   It belongs to c U(N) and has residue a modulo C.
+3. Thus the exact set is the phases chi(a) for units a modulo C with a=c modulo g.
+   It never contains zero. The printed representative c itself can be a nonunit modulo C.
+   In particular (C,n,c,N)=(3,2,3,4) gives {1,-1}, although the zero extension has chi(3)=0.
+4. Choose a0 from that residue set. Multiplication by a0 identifies the set with
+   H={h in (Z/C)^x: h=1 modulo g}. Its character image is chi(a0)chi(H).
+   A compatible a0 modulo C extends to a unit lift modulo lcm(C,N) by step 2.
+5. If chi(H) is trivial, chi descends through the surjective reduction to (Z/g)^x.
+   Primitivity forces g=C. Conversely g=C makes H trivial. Therefore the image is a singleton
+   exactly when C divides N, or when N=0. This proves the strict certificate.
+
+The strict call checks precision and C bounds first, then INV, then the singleton criterion.
+An ambiguous input gives NOT_DETERMINED before group setup or phase evaluation in a normal build.
+INV may construct a group while checking the character predicate. It never performs trig work here.
+A singleton delegates to the existing integer evaluator; cardinal phases stay exact.
+The default ambiguous call shares one initialized FLINT group and character throughout its residue scan.
+It reuses slice a's exact char_phase helper, including the group-exponent convention of F1.
+
+Check: 4972 oracle cosets for all 108 primitive pairs C<=24, plus the asymmetric (27,2,2,9) image;
+each exact phase, raw zero-extension flag,
+singleton criterion and strict failure bytes; negative and 2001-bit representatives; N=0 and N=360;
+F2; huge singleton and ambiguous moduli; C=65536 and C=65537; independence from s.
+
+## The four hull extrema and rounding
+
+For each phase theta in the scanned finite set, its circle distance to t is
+min(frac(t-theta),1-frac(t-theta)). Minimize that exact rational separately at
+t=0,1/2,1/4,3/4. These four distances are attained. This implements P2 by scanning the finite set
+directly, rather than computing its subgroup order. The two methods give the same four distances.
+
+Cosine decreases with circle distance from 0 on [0,1/2]. The real maximum is cos(2 pi d(0)).
+Distance from 0 and distance from 1/2 add to 1/2, so the real minimum is -cos(2 pi d(1/2)).
+Sine is cosine shifted by 1/4. Hence the imaginary interval is
+[-cos(2 pi d(3/4)),cos(2 pi d(1/4))]. Each endpoint is attained by an input phase.
+This proves that the resulting rectangle is the exact rectangular hull before numerical rounding.
+It is Q4 with r=0. A square would fail the F2 hull, whose imaginary coordinate is exactly zero.
+
+Each cosine uses the real part of adf_phase_get_acb at min(p+32,ADF_REAL_PREC_MAX), p=max(prec,2).
+Refine by doubling to the cap until that real ball has width at most 2^-p.
+The phase contract is psi.h; its trig source is refs/src/flint-3.0.1/arb.rst:1125-1138.
+The upper endpoint is a certified upper bound for that cosine. Clip it to 1, since cosine is at most 1.
+Negate the upper bound for each coordinate's lower extremum. The four resulting bounds enclose every value.
+
+Reuse slice a's char_round, the Q1 midpoint/RU30-successor kernel, once per coordinate.
+The exact endpoint arithmetic and directed rounding source is refs/src/flint-3.0.1/arf.rst:24-35.
+The nonzero radius construction avoids the extra ulps permitted by general mag conversion
+(refs/src/flint-3.0.1/mag.rst:6-17). Let epsilon=2^-p and W be the true coordinate width.
+The outward cosine error is at most epsilon on each endpoint. Midpoint rounding and the radius
+successor satisfy Q1's bound, yielding the design allowance
+4 epsilon + 2^-28*(W/2+2 epsilon) for each endpoint. Exact-zero coordinates retain zero radius.
+The finite temporary is swapped into z only after all four certificates succeed.
+
+Statuses: OK/LIMIT/UNSUPPORTED/NOT_DETERMINED. LIMIT for precision or C>65536 precedes INV,
+allocation and strict ambiguity. Setup failure is UNSUPPORTED. Phase statuses propagate.
+Failure to certify numerical width or finiteness gives NOT_DETERMINED. Every failure preserves z.
+Output cannot be chi->s. INV checks both the character and unit-coset predicates.
+Cost is D(C)+O(C) pairings and four exact distance comparisons per compatible residue,
+followed by four phase evaluations and two roundings. Storage is constant in the number of residues,
+apart from precision-dependent ball/rational storage. There is no retained context or cache.
+
+Check: all 23 shared oracle hulls, all their phases and all four 60-digit certified extrema,
+on every coset at p=2,53,128; both line orientations and the four cardinal roots;
+the quantitative endpoint allowance; exact cardinal values at the cap; failure snapshots.
+Wrapped checks inject setup failure, phase NOT_DETERMINED/LIMIT and two overwide cosine certificates.
+The finer overwide case has width 1.5*2^-53; the required width test rejects it even though the
+phase precision was increased. A separate injection checks the shared nonfinite root-result guard.
+
+## Conjugation and the remaining source obligation
+
+adf_char_conj implements the brief's exponent-negation fallback. It keeps conductor and parity,
+negates each cyclic log modulo its component order and exactly conjugates s. y=x is allowed.
+The local header /usr/include/flint/dirichlet.h:84 states
+"s.t. prod generators[k]^log[k] = number". Line 36 stores phi(p^e) in the component's nmod_t.
+Lines 114 and 123 declare dirichlet_char_log and _dirichlet_char_exp.
+Lines 116-120 show that public dirichlet_char_exp only returns the cached x->n.
+After editing logs, the implementation therefore uses _dirichlet_char_exp to rebuild that cached number.
+Calling the public inline alone would return the old label.
+
+The group representation proves the inverse-number part without assuming a symmetric pairing:
+
+1. Let n=product_j generators[j]^a_j, where each generator has order d_j.
+2. Negating a_j modulo d_j gives a product n' with n n'=1 in (Z/C)^x.
+3. Thus n'=n^-1 modulo C. At C=1 the canonical label remains 1.
+4. If the label-to-character map is a homomorphism, it takes n^-1 to chi(n)^-1.
+   A finite character has roots of unity as values, so inverse and complex conjugate coincide.
+5. For a real positive t, conjugating exp(s log(t)) conjugates s because log(t) is real.
+   The kernels of chi and its inverse coincide, so conductor and parity are preserved.
+
+Step 4's identification with FLINT remains [source pending: universal FLINT Conrey pairing definition].
+refs/src/flint-3.0.1/acb_dirichlet.rst:337-342 names the pairing but does not state symmetry or its
+cyclic exponent formula. Its :466 names a "Conrey isomorphism" but supplies no definition of that map.
+The header comments do not supply that formula either. This is not marked as a universal proof of P3.
+The fallback is tested with exact phases for all 1966 characters through modulus 80 and every unit there.
+All 1206 primitive pairs through conductor 80 also match the oracle's inverse labels.
+
+HEADER-FINDING: the design's void conjugation declaration promises extended gcd plus exact acb copy.
+The explicitly required source-pending fallback instead needs D(C) setup and discrete logarithms.
+It has no D1 cap, since the design forbids one on this void operation. Setup failure has no status slot,
+so it fail-stops before any write, as the slice a predicate already does under its conditional finding.
+This is a cost/failure-contract discrepancy, not evidence that a valid word-sized setup can fail.
+No change to the fixed struct or ABI resolves that missing source obligation here.
+
+Check: inverse labels, preserved parity/conductor, s midpoint and radius conjugation, involution,
+self-aliasing, and 74434 exact phase products equalling 1. INV checks both arguments.
+
+## Strict dumps, loading and inspection
+
+The four typed functions implement api-3c section 2 and conventions 10.1:1414, 10.2:1427-1480.
+The body is char q n acb, with no contexts and no stored parity token.
+The shared dump validator handles the entire body in its existing stage order.
+After grammar, limits and q word support, it checks q>=1, 1<=n<=q, gcd=1 and both canonical finite balls.
+These cheap semantics precede D1. Label 1 is principal, as dirichlet.h:144-147 states, so q>1,n=1
+is also cheaply imprimitive and gives DOMAIN without setup, even above D1. The principal character
+has conductor 1: it descends to the one-element group modulo 1, and no smaller positive conductor exists.
+A valid pair above 65536 gives LIMIT before group setup; the boundary test uses primitive (65537,3).
+It then verifies conductor=q and derives parity. An imprimitive input gives DOMAIN; it is never lowered.
+The label n outside the word range gives DOMAIN at the semantic stage, since n<=q already fails.
+This is the design's q-only word-support rule; no lexical length cap is substituted for D1.
+
+The loader then validates the binding count. nbinds must be 0. The one-context argument is ignored.
+The balls are reconstructed exactly from validated dyadic fields using the existing dp_set_arb kernel.
+No arb_load_str is called. Long validated hexadecimal integers are copied before fmpz_set_str parses them.
+Every raw byte has passed validation first.
+Only the complete temporary is swapped into x. Dumping writes the stored fields and exact ball bits.
+The inspector runs the same validator, writes nctx=0 only on OK and never touches descriptors.
+It builds no adf_char value. The existing inspector's NULL nctx result remains DOMAIN.
+
+Statuses: OK/PARSE/LIMIT/UNSUPPORTED/DOMAIN, with all outputs preserved on failure.
+Cost: input/output size plus D(q) for validation; no working precision. Dump strings are FLINT allocated,
+NUL terminated and freed by adf_str_free. Their reported length excludes the NUL.
+Round trips are byte-identical when caller limits admit them. Parity is recomputed, rather than trusted.
+
+Check: 30 exact/radius character texts; both imprimitive witnesses (8,1) and (16,9);
+all eight existing char golden rows; complete dump/load/dump identity, nctx=0 and untouched descriptors;
+truncations, NUL/high bytes, bad literals/balls, q=0, word overflow, D1 boundaries and binding failures.
+The test interposes arb_load_str and aborts if it is called.
+
+## User calls
+
+char_unit and char_unit_strict expose the design's slice b driver calls.
+char_conj prints the conjugate. Generic dump/load dispatch uses the typed character functions.
+The two driver fixtures have 24 hand-derived output lines, including F2 and imprimitive rejection.
+Generic character arithmetic remains UNSUPPORTED; products are deferred by the design.
+Julia allocates through layout queries and calls the design's adf_char_eval_ucoset ABI.
+It checks all cardinal roots, a preserved strict failure, conjugation and lossless dump loading.
+
+Check: tests/driver/char-eval.cmd, tests/driver/char-dump.cmd and tests/julia/char_eval.jl.
+Class and idele evaluation, character products and the universal P3 source remain outside this slice.

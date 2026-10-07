@@ -1,0 +1,12 @@
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310311)
+src/char.c:330:17 zero_one: '1' -> '0'
+src/char.c:229:47 op: '+' -> '-'
+src/char.c:68:52 cmp: '!=' -> '=='
+src/char.c:94:19 swap_args: 'n_gcd(n, q)' -> 'n_gcd(q, n)'
+src/char.c:282:35 drop_call: 'fmpq_sub(complement, complement, distance);' -> '' (the statement is removed)
+src/char.c:17:91 negate_if: 'while(0)' -> 'while(!(0))'
+src/char.c:219:37 op: '*' -> '+'
+src/char.c:37:22 drop_call: 'ADF_INV_CHAR(y);' -> '' (the statement is removed)
+src/char.c:209:74 op: '+' -> '-'
+src/char.c:296:92 zero_one: '1' -> '0'

@@ -1,0 +1,10 @@
+adf1 Q char 5 2 0 0 0 0 0 0 0 0
+adf1 Q char 4 3 -3 -2 0 0 1 -1 0 0
+char(q=5, n=2, s=(0) + (0)*i)
+char(q=4, n=3, s=(-0.75) + (0.5)*i)
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: LIMIT
+error: PARSE
+error: PARSE

@@ -227,6 +227,10 @@ typedef enum
     ADF_DRV_RFUN_DERIVATIVE,
     ADF_DRV_RFUN_INTEGRAL,
     ADF_DRV_RFUN_NORM2,
+
+    ADF_DRV_CHAR_CONJ,
+    ADF_DRV_CHAR_UNIT,
+    ADF_DRV_CHAR_UNIT_STRICT,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -334,6 +338,10 @@ static const struct
     { "rfun_derivative", ADF_DRV_RFUN_DERIVATIVE, 1 },
     { "rfun_integral", ADF_DRV_RFUN_INTEGRAL, 1 },
     { "rfun_norm2", ADF_DRV_RFUN_NORM2, 1 },
+
+    { "char_conj", ADF_DRV_CHAR_CONJ, 1 },
+    { "char_unit", ADF_DRV_CHAR_UNIT, 2 },
+    { "char_unit_strict", ADF_DRV_CHAR_UNIT_STRICT, 2 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -361,6 +369,8 @@ typedef enum
     ADF_DRV_SBALL,
     ADF_DRV_QCLASS,
     ADF_DRV_FFUN,
+
+    ADF_DRV_CHARACTER,
     ADF_DRV_OTHER        /* a kind of the value form with no typed parser in this build */
 } adf_drv_type;
 
@@ -378,6 +388,8 @@ typedef struct
     adf_sball_t s;
     adf_qclass_t q;
     adf_ffun_t ff;
+
+    adf_char_t character;
 } adf_drv_value;
 
 typedef struct
@@ -401,6 +413,8 @@ adf_drv_value_init(adf_drv_value * v)
     adf_sball_init(v->s);
     adf_qclass_init(v->q);
     adf_ffun_init(v->ff);
+
+    adf_char_init(v->character);
 }
 
 static void
@@ -417,6 +431,8 @@ adf_drv_value_clear(adf_drv_value * v)
     adf_sball_clear(v->s);
     adf_qclass_clear(v->q);
     adf_ffun_clear(v->ff);
+
+    adf_char_clear(v->character);
     v->type = ADF_DRV_OTHER;
 }
 
@@ -451,6 +467,9 @@ adf_drv_kind_type(adf_text_kind kind)
             return ADF_DRV_QCLASS;
         case ADF_TEXT_FFUN:
             return ADF_DRV_FFUN;
+
+        case ADF_TEXT_CHAR:
+            return ADF_DRV_CHARACTER;
         default:
             return ADF_DRV_OTHER;
     }
@@ -489,6 +508,9 @@ adf_drv_value_read(adf_drv_value * v, adf_text_kind kind, const char * s, size_t
             return adf_qclass_set_str(v->q, s, len, prec, NULL);
         case ADF_TEXT_FFUN:
             return adf_ffun_set_str(v->ff, s, len, prec, NULL);
+
+        case ADF_TEXT_CHAR:
+            return adf_char_set_str(v->character, s, len, prec, NULL);
         default:
             return ADF_OK;      /* ADF_DRV_OTHER, which the caller has already refused */
     }
@@ -541,6 +563,9 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
             break;
         case ADF_DRV_FFUN:
             s = adf_ffun_get_str(&len, v->ff, digits);
+
+        case ADF_DRV_CHARACTER:
+            s = adf_char_get_str(&len, v->character, digits);
             break;
         default:
             return ADF_UNSUPPORTED;
@@ -596,6 +621,9 @@ adf_drv_value_dump(FILE * out, const adf_drv_value * v)
         case ADF_DRV_QCLASS:
             s = adf_qclass_dump_str(&len, v->q);
             break;
+        case ADF_DRV_CHARACTER:
+            s = adf_char_dump_str(&len, v->character);
+            break;
         default:
             return ADF_UNSUPPORTED;
     }
@@ -623,7 +651,7 @@ static adf_drv_type
 adf_drv_body_slot(const char * name)
 {
     static const char * const mine[] = { "rat", "fball", "adele", "cadele", "ucoset", "idele",
-                                         "idclass", "lball", "sball", "qclass" };
+                                         "idclass", "lball", "sball", "qclass", "char" };
     size_t i;
 
     for (i = 0; i < sizeof(mine) / sizeof(mine[0]); i++)
@@ -716,6 +744,9 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
         case ADF_DRV_QCLASS:
             status = adf_qclass_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
+        case ADF_DRV_CHARACTER:
+            status = adf_char_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
         default:
             status = adf_sball_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
@@ -745,6 +776,8 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
             return adf_lball_load_str(v->b, s, len, NULL, NULL);
         case ADF_DRV_QCLASS:
             return adf_qclass_load_str(v->q, s, len, NULL, NULL);
+        case ADF_DRV_CHARACTER:
+            return adf_char_load_str(v->character, s, len, NULL, NULL);
         default:
             return adf_sball_load_str(v->s, s, len, NULL, NULL);
     }
@@ -3308,8 +3341,7 @@ adf_drv_cyclo(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_va
     return status;
 }
 
-/* Slice a, api-3c 7: explicit character commands. Classification precedes value semantics.
-   The generic dump dispatch remains a later character slice. */
+/* Slices a and b, api-3c 7: explicit character commands. Classification precedes value semantics. */
 static char *adf_drv_char_complex(size_t *len, const acb_t z, slong digits)
 {
     adf_cadele_t c; adf_fball_t zero; char *text;
@@ -3324,21 +3356,24 @@ static char *adf_drv_char_complex(size_t *len, const acb_t z, slong digits)
 }
 static int adf_drv_char(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *state)
 {
-    adf_char_t x; adf_rat_t a; acb_t tau, W; adf_text_kind kind[2];
+    adf_char_t x; adf_rat_t a; adf_ucoset_t u; acb_t tau, W; adf_text_kind kind[2];
+    int unit = op == ADF_DRV_CHAR_UNIT || op == ADF_DRV_CHAR_UNIT_STRICT;
     char *text = NULL, *root = NULL; size_t len = 0, rootlen = 0; int status;
-    adf_char_init(x); adf_rat_init(a); acb_init(tau); acb_init(W);
+    adf_char_init(x); adf_rat_init(a); adf_ucoset_init(u); acb_init(tau); acb_init(W);
     status = adf_text_classify(kind, l->s[0], l->n[0], NULL);
     if (status != ADF_OK) goto done;
-    if (op == ADF_DRV_CHI) {
+    if (op == ADF_DRV_CHI || unit) {
         status = adf_text_classify(kind+1, l->s[1], l->n[1], NULL);
         if (status != ADF_OK) goto done;
     }
-    if (kind[0] != ADF_TEXT_CHAR || (op == ADF_DRV_CHI && kind[1] != ADF_TEXT_RAT)) {
+    if (kind[0] != ADF_TEXT_CHAR || (op == ADF_DRV_CHI && kind[1] != ADF_TEXT_RAT) ||
+        (unit && kind[1] != ADF_TEXT_UCOSET)) {
         status = ADF_UNSUPPORTED; goto done;
     }
     status = adf_char_set_str(x, l->s[0], l->n[0], state->prec, NULL);
     if (status != ADF_OK) goto done;
-    if (op == ADF_DRV_CHAR) {
+    if (op == ADF_DRV_CHAR || op == ADF_DRV_CHAR_CONJ) {
+        if (op == ADF_DRV_CHAR_CONJ) adf_char_conj(x, x);
         text = adf_char_get_str(&len, x, state->digits);
         if (text == NULL) { status = ADF_LIMIT; goto done; }
         fprintf(out, "%s\n", text);
@@ -3347,6 +3382,12 @@ static int adf_drv_char(FILE *out, adf_drv_op op, const adf_drv_line *l, const a
         if (status != ADF_OK) goto done;
         if (!fmpz_is_one(fmpq_denref(a->q))) { status = ADF_DOMAIN; goto done; }
         status = adf_char_chi(tau, x, fmpq_numref(a->q), state->prec);
+        if (status == ADF_OK) status = adf_drv_psi_print(out, tau, state);
+    } else if (unit) {
+        status = adf_ucoset_set_str(u, l->s[1], l->n[1], NULL);
+        if (status != ADF_OK) goto done;
+        status = op == ADF_DRV_CHAR_UNIT ? adf_char_eval_ucoset(tau, x, u, state->prec) :
+                 adf_char_eval_ucoset_strict(tau, x, u, state->prec);
         if (status == ADF_OK) status = adf_drv_psi_print(out, tau, state);
     } else {
         status = adf_char_gauss_sum(tau, x, state->prec);
@@ -3359,7 +3400,7 @@ static int adf_drv_char(FILE *out, adf_drv_op op, const adf_drv_line *l, const a
         fprintf(out, "e=%d tau=%s W=%s\n", adf_char_get_parity(x), text, root);
     }
 done:
-    adf_str_free(text); adf_str_free(root); adf_char_clear(x); adf_rat_clear(a);
+    adf_str_free(text); adf_str_free(root); adf_char_clear(x); adf_rat_clear(a); adf_ucoset_clear(u);
     acb_clear(tau); acb_clear(W); return status;
 }
 
@@ -3378,7 +3419,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return (op == ADF_DRV_PREC)
                    ? adf_drv_setting(l->s[0], l->n[0], ADF_DRV_PREC_MAX, ADF_LIMIT, &st->prec)
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
-    if (op == ADF_DRV_CHAR || op == ADF_DRV_CHI || op == ADF_DRV_GAUSS)
+    if (op == ADF_DRV_CHAR || op == ADF_DRV_CHI || op == ADF_DRV_GAUSS || op == ADF_DRV_CHAR_CONJ ||
+        op == ADF_DRV_CHAR_UNIT || op == ADF_DRV_CHAR_UNIT_STRICT)
         return adf_drv_char(out, op, l, st);
     if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
     if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
@@ -3443,6 +3485,13 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
        is ADF_UNSUPPORTED, and no value of the line is read before that is decided */
     for (i = 0; i < nops; i++)
     {
+        /* Character arithmetic is deferred (api-3c 2). The generic character branches
+           implement show/print and dump; the explicit calls above implement this slice. */
+        if (kind[i] == ADF_TEXT_CHAR && op != ADF_DRV_SHOW && op != ADF_DRV_DUMP)
+        {
+            status = ADF_UNSUPPORTED;
+            goto done;
+        }
         if (adf_drv_kind_type(kind[i]) == ADF_DRV_OTHER)
         {
             status = ADF_UNSUPPORTED;
@@ -3834,8 +3883,10 @@ main(int argc, char ** argv)
     }
 
     /* Direct slice-a calls use the script parser and its existing " with " separator. */
-    if ((argc == 3 && (!strcmp(argv[1], "char") || !strcmp(argv[1], "gauss"))) ||
-        ((argc == 4 || (argc == 5 && !strcmp(argv[3], "with"))) && !strcmp(argv[1], "chi"))) {
+    if ((argc == 3 && (!strcmp(argv[1], "char") || !strcmp(argv[1], "gauss") ||
+                      !strcmp(argv[1], "char_conj"))) ||
+        ((argc == 4 || (argc == 5 && !strcmp(argv[3], "with"))) &&
+         (!strcmp(argv[1], "chi") || !strcmp(argv[1], "char_unit") || !strcmp(argv[1], "char_unit_strict")))) {
         const char *integer = argc == 3 ? NULL : argv[argc-1];
         size_t a = strlen(argv[1]), b = strlen(argv[2]), c = integer ? strlen(integer) : 0;
         char *line = malloc(a+b+c+9);
