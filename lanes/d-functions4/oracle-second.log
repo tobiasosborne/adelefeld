@@ -1,0 +1,9 @@
+Exact phases/indices; acb at 212 bits; mpmath at 60 digits, numerical margin 1e-45
+finite_algebra: 1044 checks
+finite_transform: 80 checks
+idele_indices: 195 checks
+evaluation: 605 checks
+real_closure: 11 checks
+real_transform: 23 checks
+integral_norm: 5 checks
+goldens: 39 checks

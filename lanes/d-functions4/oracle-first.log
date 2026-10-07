@@ -1,0 +1,14 @@
+Exact phases/indices; acb at 212 bits; mpmath at 60 digits, numerical margin 1e-45
+finite_algebra: 1044 checks
+finite_transform: 80 checks
+idele_indices: 195 checks
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/d-functions4/proto/functions4_checks.py", line 527, in <module>
+    main()
+  File "/home/tobias/Projects/adelefeld-wt/d-functions4/proto/functions4_checks.py", line 519, in main
+    fn()
+  File "/home/tobias/Projects/adelefeld-wt/d-functions4/proto/functions4_checks.py", line 373, in check_evaluation
+    check('evaluation', evaluate_partial(f, [(3, Q(1), 1)]) == (frozenset({2}), True))
+  File "/home/tobias/Projects/adelefeld-wt/d-functions4/proto/functions4_checks.py", line 37, in check
+    raise AssertionError(f'{group}: check {COUNTS[group]}')
+AssertionError: evaluation: check 604
