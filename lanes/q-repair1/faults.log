@@ -1,0 +1,18 @@
+NONE: unmodified source
+  whole file      exit 0; test_qclass_reduce: 223472 checks
+  repair-vectors  exit 0; test_qclass_reduce repair-vectors: 70598 checks
+  repair-count    exit 0; test_qclass_reduce repair-count: 2689 checks
+  repair-r1       exit 0; test_qclass_reduce repair-r1: 31 checks
+  repair-r2       exit 0; test_qclass_reduce repair-r2: 32 checks
+F2: last integer dropped when h = integer + tiny (frac(h) < 2^-100)
+  whole file      exit 134; reduce line 187: adf_qclass_reduce(y, x, K-1, prec) == ADF_LIMIT
+  repair-vectors  exit 134; reduce line 187: adf_qclass_reduce(y, x, K-1, prec) == ADF_LIMIT
+  repair-count    exit 134; reduce line 225: adf_qclass_reduce(y, x, limit, prec) == ADF_LIMIT
+  repair-r1       exit 134; reduce line 225: adf_qclass_reduce(y, x, limit, prec) == ADF_LIMIT
+  repair-r2       exit 0; test_qclass_reduce repair-r2: 32 checks
+F8: y->form written at the start of the second pass, before its last LIMIT exit
+  whole file      exit 134; reduce line 226: !memcmp(y, &bytes, sizeof(bytes))
+  repair-vectors  exit 0; test_qclass_reduce repair-vectors: 70598 checks
+  repair-count    exit 0; test_qclass_reduce repair-count: 2689 checks
+  repair-r1       exit 0; test_qclass_reduce repair-r1: 31 checks
+  repair-r2       exit 134; reduce line 226: !memcmp(y, &bytes, sizeof(bytes))
