@@ -1,0 +1,62 @@
+mutate: src/psi.c: 284 mutants
+mutate: 284 mutants, 60 of them run (--limit 60, --seed 320307)
+src/psi.c:168:27 op: '*' -> '+'
+src/psi.c:63:63 zero_one: '0' -> '1'
+src/psi.c:47:32 zero_one: '1' -> '0'
+src/psi.c:236:9 drop_assign: 'st = psi_cos_upper(upper[j], d[j], p);' -> '' (the statement is removed)
+src/psi.c:208:33 drop_assign: 'work = FLINT_MIN(p+32, ADF_REAL_PREC_MAX);' -> '' (the statement is removed)
+src/psi.c:182:38 op: '+' -> '-'
+src/psi.c:119:19 zero_one: '1' -> '0'
+src/psi.c:226:5 negate_if: 'if(!arb_is_finite(x->inf))' -> 'if(!(!arb_is_finite(x->inf)))'
+src/psi.c:208:51 op: '+' -> '-'
+src/psi.c:80:23 zero_one: '1' -> '0'
+src/psi.c:52:22 zero_one: '1' -> '0'
+src/psi.c:108:5 call_swap: 'arf_sub' -> 'arf_add'
+src/psi.c:38:39 drop_assign: 'st = ADF_OK;' -> '' (the statement is removed)
+src/psi.c:110:5 negate_if: 'if(arf_cmp(t, r) > 0)' -> 'if(!(arf_cmp(t, r) > 0))'
+src/psi.c:239:66 zero_one: '0' -> '1'
+src/psi.c:106:5 call_swap: 'arf_add' -> 'arf_sub'
+src/psi.c:240:28 drop_call: 'psi_round(acb_imagref(out), lo, upper[2], p);' -> '' (the statement is removed)
+src/psi.c:249:5 negate_if: 'if(prec > ADF_REAL_PREC_MAX)' -> 'if(!(prec > ADF_REAL_PREC_MAX))'
+src/psi.c:151:5 negate_if: 'if(fmpz_equal_ui(fmpq_denref(theta), 4))' -> 'if(!(fmpz_equal_ui(fmpq_denref(theta), 4)))'
+src/psi.c:193:5 drop_assign: 'ok = 1;' -> '' (the statement is removed)
+src/psi.c:150:64 zero_one: '1' -> '0'
+src/psi.c:249:14 cmp: '>' -> '>='
+src/psi.c:182:9 negate_if: 'if(fmpz_bits(fmpq_numref(u))+fmpz_bits(B) > ADF_QCLASS_BITS_MAX)' -> 'if(!(fmpz_bits(fmpq_numref(u))+fmpz_bits(B) > ADF_QCLASS_BITS_MAX))'
+src/psi.c:187:26 logic: '&&' -> '||'
+src/psi.c:158:33 zero_one: '1' -> '0'
+src/psi.c:80:18 drop_assign: 'ok = 1;' -> '' (the statement is removed)
+src/psi.c:150:75 status: 'ADF_OK' -> 'ADF_DOMAIN'
+src/psi.c:237:16 cmp: '!=' -> '=='
+src/psi.c:25:33 drop_call: 'adf_fball_get_radius(n, x);' -> '' (the statement is removed)
+src/psi.c:188:38 op: '+' -> '-'
+src/psi.c:191:5 negate_if: 'if(!psi_sub(d, u, r))' -> 'if(!(!psi_sub(d, u, r)))'
+src/psi.c:51:56 cmp: '<=' -> '<'
+src/psi.c:128:29 logic: '&&' -> '||'
+src/psi.c:27:34 drop_call: 'fmpq_set(N, n->q);' -> '' (the statement is removed)
+src/psi.c:144:35 logic: '||' -> '&&'
+src/psi.c:241:23 drop_assign: 'st = ADF_OK;' -> '' (the statement is removed)
+src/psi.c:153:16 status: 'ADF_OK' -> 'ADF_DOMAIN'
+src/psi.c:168:27 op: '*' -> '/'
+src/psi.c:144:58 logic: '||' -> '&&'
+src/psi.c:240:5 drop_call: 'arf_neg(lo, upper[3]);' -> '' (the statement is removed)
+src/psi.c:21:25 cmp: '>' -> '>='
+src/psi.c:149:5 negate_if: 'if(fmpz_equal_ui(fmpq_denref(theta), 1))' -> 'if(!(fmpz_equal_ui(fmpq_denref(theta), 1)))'
+src/psi.c:77:5 drop_call: 'arf_get_fmpq(m, arb_midref(x->inf));' -> '' (the statement is removed)
+src/psi.c:204:5 negate_if: 'if(fmpz_equal_ui(fmpq_denref(d), 2))' -> 'if(!(fmpz_equal_ui(fmpq_denref(d), 2)))'
+src/psi.c:63:30 op: '+' -> '-'
+src/psi.c:106:5 swap_args: 'arf_add(m, lo, hi, ARF_PREC_EXACT, ARF_RND_NEAR)' -> 'arf_add(m, hi, lo, ARF_PREC_EXACT, ARF_RND_NEAR)'
+src/psi.c:35:5 negate_if: 'if(!psi_finite(a, N, x))' -> 'if(!(!psi_finite(a, N, x)))'
+src/psi.c:128:69 cmp: '<=' -> '<'
+src/psi.c:244:14 zero_one: '0' -> '1'
+src/psi.c:50:5 drop_assign: 'e = fmpz_get_si(ARF_EXPREF(a));' -> '' (the statement is removed)
+src/psi.c:224:5 negate_if: 'if(prec > ADF_REAL_PREC_MAX)' -> 'if(!(prec > ADF_REAL_PREC_MAX))'
+src/psi.c:116:9 drop_assign: 'v = fmpz_get_ui(man)+1;' -> '' (the statement is removed)
+src/psi.c:75:5 negate_if: 'if(!psi_arf_bound(arb_midref(x->inf)) || !psi_arf_bound(rad))' -> 'if(!(!psi_arf_bound(arb_midref(x->inf)) || !psi_arf_bound(rad)))'
+src/psi.c:14:5 drop_call: 'fmpz_mod(fmpq_numref(q), fmpq_numref(q), fmpq_denref(q));' -> '' (the statement is removed)
+src/psi.c:133:5 negate_if: 'if(arf_cmp_si(lo, -1) < 0)' -> 'if(!(arf_cmp_si(lo, -1) < 0))'
+src/psi.c:106:78 zero_one: '1' -> '0'
+src/psi.c:167:18 cmp: '==' -> '!='
+src/psi.c:63:31 zero_one: '1' -> '0'
+src/psi.c:64:42 cmp: '>' -> '>='
+src/psi.c:202:28 drop_call: 'arf_one(hi);' -> '' (the statement is removed)

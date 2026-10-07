@@ -1,0 +1,14 @@
+src/psi.c:168:27 op: '*' -> '+'	killed
+src/psi.c:63:63 zero_one: '0' -> '1'	survived
+src/psi.c:119:19 zero_one: '1' -> '0'	killed
+src/psi.c:52:22 zero_one: '1' -> '0'	survived
+src/psi.c:187:26 logic: '&&' -> '||'	survived
+src/psi.c:51:56 cmp: '<=' -> '<'	killed
+src/psi.c:241:23 drop_assign: 'st = ADF_OK;' -> '' (the statement is removed)	survived
+src/psi.c:168:27 op: '*' -> '/'	killed
+src/psi.c:63:30 op: '+' -> '-'	survived
+src/psi.c:106:5 swap_args: 'arf_add(m, lo, hi, ARF_PREC_EXACT, ARF_RND_NEAR)' -> 'arf_add(m, hi, lo, ARF_PREC_EXACT, ARF_RND_NEAR)'	survived
+src/psi.c:128:69 cmp: '<=' -> '<'	killed
+src/psi.c:244:14 zero_one: '0' -> '1'	killed
+src/psi.c:63:31 zero_one: '1' -> '0'	survived
+src/psi.c:64:42 cmp: '>' -> '>='	killed

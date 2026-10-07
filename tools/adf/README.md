@@ -748,3 +748,19 @@ The output encloses the represented quotient set. Its balls may spill beyond 0 a
 Union input remains `UNSUPPORTED`. Checks: `tests/driver/qclass-reduce.cmd`, `tests/julia/qclass.jl`.
 A fractional finite radius A/B uses B fibres of integer radius A. For example,
 `qreduce (0 ; 0 mod 1/2) + Q with 2` prints `union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q`.
+
+### Tate additive character (slice 3.2-a)
+
+`psi X` and `psi_strict X` take one real adele. They print the ordinary complex ball as
+`(re) + (im)*i`, using the settings `prec` and `digits`, as `local_zeta_factor_at` does.
+The character is `E(a-m)` for an exact input `(m ; a)`, where `E(t)=exp(2 pi i t)`.
+For example, `psi (0 ; 1/3)` at `prec 128`, `digits 5` prints
+`(-0.5) + (0.86603 +/- 4.6e-6)*i`.
+
+Default `psi` encloses all phases of a ball using the rectangular hull of Q4 in `docs/api-3.md`.
+`psi_strict` returns `NOT_DETERMINED` for fractional finite radius. It permits real uncertainty.
+Integer finite radius, including zero, passes this strict test (conventions 6.1, CV-59).
+Other value kinds return `UNSUPPORTED` in this slice. Syntax and adele parsing precede the library call.
+The library can return `LIMIT` for precision or exact arithmetic, or `NOT_DETERMINED` if the numerical
+certificate cannot be obtained. No result is printed on a failure.
+Checks: `tests/driver/psi-values.cmd`, `tests/driver/psi-status.cmd`, and `tests/julia/psi.jl`.

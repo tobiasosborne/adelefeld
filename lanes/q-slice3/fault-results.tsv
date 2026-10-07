@@ -1,0 +1,11 @@
+D1 finite sign	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:167: acb_contains(z, w)
+D2 numerator roots	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:167: acb_contains(z, w)
+D3 strict writes	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:90: !memcmp(&bytes, z, sizeof(bytes))
+D4 getter ignores real radius	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:192: aphase(q, x) == (singleton ? ADF_OK : ADF_NOT_DETERMINED)
+D5 getter chooses one finite phase	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:161: fphase(q, x) == (n == 1 ? ADF_OK : ADF_NOT_DETERMINED)
+D6 pi instead of 2pi	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:298: acb_contains(z, w)
+D7 universal square	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:133: arb_ge(l, tmp)
+O1 real sign matches finite sign	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:193: fmpq_equal(q, expected)
+O2 phase not reduced	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:80: fmpq_is_canonical(q) && fmpq_sgn(q) >= 0 && fmpq_cmp_si(q, 1) < 0
+O3 endpoint hull misses interior extrema	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:127: arb_ge(h, high)
+O4 finite radius ignored	1	/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:165: eval(w, a, 128, 1) == (n == 1 ? ADF_OK : ADF_NOT_DETERMINED)

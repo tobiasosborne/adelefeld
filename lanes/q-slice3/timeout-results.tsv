@@ -1,0 +1,1 @@
+src/psi.c:167:18 cmp: '==' -> '!='	killed

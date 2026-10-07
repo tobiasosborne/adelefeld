@@ -1,0 +1,295 @@
+Exit 0; summaries extracted from 3256 lines, 132767 bytes.
+== make check CC=cc SAN=0 INV=0
+== build/test_abi
+3 tests, 24 checks, 0 failed checks, 0 failed tests
+== build/test_adele
+13 tests, 6712 checks, 0 failed checks, 0 failed tests
+== build/test_adele_lowprec
+14 tests, 1426 checks, 0 failed checks, 0 failed tests
+== build/test_adele_prec
+17 tests, 148 checks, 0 failed checks, 0 failed tests
+== build/test_cadele
+15 tests, 6141 checks, 0 failed checks, 0 failed tests
+== build/test_cap
+23 tests, 852 checks, 0 failed checks, 0 failed tests
+== build/test_cap_chain
+3 tests, 320975 checks, 0 failed checks, 0 failed tests
+== build/test_cap_local
+6 tests, 253 checks, 0 failed checks, 0 failed tests
+== build/test_cap_vectors
+5 tests, 49930 checks, 0 failed checks, 0 failed tests
+== build/test_catalogue
+9 tests, 131639 checks, 0 failed checks, 0 failed tests
+== build/test_common
+7 tests, 78 checks, 0 failed checks, 0 failed tests
+== build/test_common_unsupported
+6 tests, 48 checks, 0 failed checks, 0 failed tests
+== build/test_dlopen
+== building the shared object
+== 505 function names declared in include/adelefeld/*.h
+== variadic declarations (conventions 12.2)
+== 505 defined dynamic symbols that are public names, 0 reserved name(s)
+== declared and exported: 505
+== declared and not exported: 0 (the library is not complete; not a failure)
+== exported and not declared: 0 (must be empty)
+test_exports: passed: 505 of 505 declared functions are exported, 0 are not implemented yet, no exported name is undeclared, no variadic function
+2 tests, 29 checks, 0 failed checks, 0 failed tests
+== build/test_dump
+17 tests, 12259 checks, 0 failed checks, 0 failed tests
+== build/test_dump_ctx
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+== build/test_dump_golden
+1 tests, 761 checks, 0 failed checks, 0 failed tests
+== build/test_dump_limits
+9 tests, 297 checks, 0 failed checks, 0 failed tests
+== build/test_dump_local
+10 tests, 36204 checks, 0 failed checks, 0 failed tests
+== build/test_dump_units
+12 tests, 32505050 checks, 0 failed checks, 0 failed tests
+== build/test_fball
+20 tests, 412 checks, 0 failed checks, 0 failed tests
+== build/test_fball_local
+25 tests, 20554 checks, 0 failed checks, 0 failed tests
+== build/test_fball_local_vectors
+1 tests, 42682 checks, 0 failed checks, 0 failed tests
+== build/test_fball_overwrite
+11 tests, 44 checks, 0 failed checks, 0 failed tests
+== build/test_fball_vectors
+9 tests, 34229 checks, 0 failed checks, 0 failed tests
+== build/test_gfunc
+12 tests, 1091373 checks, 0 failed checks, 0 failed tests
+== build/test_gfunc_log
+16 tests, 2652899 checks, 0 failed checks, 0 failed tests
+== build/test_headers
+8 tests, 58 checks, 0 failed checks, 0 failed tests
+== build/test_idclass
+16 tests, 9752 checks, 0 failed checks, 0 failed tests
+== build/test_idele
+12 tests, 8613 checks, 0 failed checks, 0 failed tests
+== build/test_idele_maps
+12 tests, 10476 checks, 0 failed checks, 0 failed tests
+== build/test_idmap
+7 tests, 54200 checks, 0 failed checks, 0 failed tests
+== build/test_idpow
+8 tests, 10136 checks, 0 failed checks, 0 failed tests
+== build/test_invariants
+1 tests, 1 checks, 0 failed checks, 0 failed tests
+== build/test_invariants_lifetime
+1 tests, 1 checks, 0 failed checks, 0 failed tests
+== build/test_layouts
+1 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_lball
+30 tests, 3982758 checks, 0 failed checks, 0 failed tests
+== build/test_lball_decomp
+24 tests, 572484 checks, 0 failed checks, 0 failed tests
+== build/test_lfunc
+13 tests, 473031 checks, 0 failed checks, 0 failed tests
+== build/test_lfunc_trig
+7 tests, 2174090 checks, 0 failed checks, 0 failed tests
+== build/test_linsolve
+12 tests, 14415 checks, 0 failed checks, 0 failed tests
+== build/test_linsolve_rest
+13 tests, 30328 checks, 0 failed checks, 0 failed tests
+== build/test_localfactor
+13 tests, 306730 checks, 0 failed checks, 0 failed tests
+== build/test_lpow
+12 tests, 3074149 checks, 0 failed checks, 0 failed tests
+== build/test_lroot
+14 tests, 2361423 checks, 0 failed checks, 0 failed tests
+== build/test_modctx
+11 tests, 10197 checks, 0 failed checks, 0 failed tests
+== build/test_modctx_limits
+7 tests, 239 checks, 0 failed checks, 0 failed tests
+== build/test_modctx_pin
+7 tests, 5716 checks, 0 failed checks, 0 failed tests
+== build/test_place
+11 tests, 797 checks, 0 failed checks, 0 failed tests
+== build/test_psi
+== build/test_qclass
+== build/test_qclass_reduce
+== build/test_rat
+26 tests, 41415 checks, 0 failed checks, 0 failed tests
+== build/test_recon
+19 tests, 52740 checks, 0 failed checks, 0 failed tests
+== build/test_recon_canon
+5 tests, 139 checks, 0 failed checks, 0 failed tests
+== build/test_recon_limit
+4 tests, 778 checks, 0 failed checks, 0 failed tests
+== build/test_recon_vectors
+3 tests, 21194 checks, 0 failed checks, 0 failed tests
+== build/test_resid
+12 tests, 3395820 checks, 0 failed checks, 0 failed tests
+== build/test_resid_full
+7 tests, 29391859 checks, 0 failed checks, 0 failed tests
+== build/test_resid_rest
+17 tests, 7607041 checks, 0 failed checks, 0 failed tests
+== build/test_rfunc
+10 tests, 59700 checks, 0 failed checks, 0 failed tests
+== build/test_rfunc_prime
+16 tests, 526806 checks, 0 failed checks, 0 failed tests
+== build/test_roots_bigp
+5 tests, 825 checks, 0 failed checks, 0 failed tests
+== build/test_roots_forged
+2 tests, 26 checks, 0 failed checks, 0 failed tests
+== build/test_roots_padic
+8 tests, 55135 checks, 0 failed checks, 0 failed tests
+== build/test_roots_real
+8 tests, 10744 checks, 0 failed checks, 0 failed tests
+== build/test_roots_real_isolate
+14 tests, 19225 checks, 0 failed checks, 0 failed tests
+== build/test_roots_seed
+16 tests, 5347209 checks, 0 failed checks, 0 failed tests
+== build/test_s13_repair
+4 tests, 649359 checks, 0 failed checks, 0 failed tests
+== build/test_sball
+19 tests, 873977 checks, 0 failed checks, 0 failed tests
+== build/test_scaffold
+3 tests, 10 checks, 0 failed checks, 0 failed tests
+== build/test_scaled
+23 tests, 88410 checks, 0 failed checks, 0 failed tests
+== build/test_scaled_alias
+9 tests, 142938 checks, 0 failed checks, 0 failed tests
+== build/test_scaled_vectors
+11 tests, 62707 checks, 0 failed checks, 0 failed tests
+== build/test_status
+7 tests, 122 checks, 0 failed checks, 0 failed tests
+== build/test_support
+16 tests, 295239 checks, 0 failed checks, 0 failed tests
+== build/test_symbol
+11 tests, 719322 checks, 0 failed checks, 0 failed tests
+== build/test_text_adele
+20 tests, 84390 checks, 0 failed checks, 0 failed tests
+== build/test_text_classify
+8 tests, 20776 checks, 0 failed checks, 0 failed tests
+== build/test_text_fball
+10 tests, 21545 checks, 0 failed checks, 0 failed tests
+== build/test_text_idele
+14 tests, 73465 checks, 0 failed checks, 0 failed tests
+== build/test_text_limits
+11 tests, 105 checks, 0 failed checks, 0 failed tests
+== build/test_text_local
+10 tests, 68868 checks, 0 failed checks, 0 failed tests
+== build/test_text_r3r9
+8 tests, 148 checks, 0 failed checks, 0 failed tests
+== build/test_text_rat
+13 tests, 18122 checks, 0 failed checks, 0 failed tests
+== build/test_ucoset
+11 tests, 43178 checks, 0 failed checks, 0 failed tests
+check passed: all 85 test programs
+== sh tests/test_driver.sh
+test_driver: h7_many_lines: 100000 lines in 0.057 s
+test_driver: 72 cases, 101348 expected lines, all equal (SAN=0)
+== sh tests/test_exports.sh
+== building the shared object
+== 505 function names declared in include/adelefeld/*.h
+== variadic declarations (conventions 12.2)
+== 505 defined dynamic symbols that are public names, 0 reserved name(s)
+== declared and exported: 505
+== declared and not exported: 0 (the library is not complete; not a failure)
+== exported and not declared: 0 (must be empty)
+test_exports: passed: 505 of 505 declared functions are exported, 0 are not implemented yet, no exported name is undeclared, no variadic function
+== sh tests/test_julia.sh
+== build/libadelefeld.so is up to date with src/*.c and include/adelefeld/*.h; reusing it
+== julia version 1.12.5
+Test Summary:                               | Pass  Total  Time
+ideles through ccall (milestone 2, slice 1) |   23     23  0.5s
+== tests/julia/ideles.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10
+Test Summary:                                                               | Pass  Total  Time
+idele classes, valuations and the norm through ccall (milestone 2, slice 2) |   43     43  0.7s
+== tests/julia/idclass.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10
+Test Summary:                                                   | Pass  Total  Time
+powers, hulls and division through ccall (milestone 2, slice 3) |   35     35  0.3s
+== tests/julia/idmap.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10
+Test Summary:                                                       | Pass  Total  Time
+the value form of ideles through ccall (milestone 2, lane t-slice1) |   32     32  0.2s
+== tests/julia/text_idele.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10
+Test Summary:                                                                 | Pass  Total  Time
+the value form of local balls and partial balls through ccall (lane t-slice2) |   47     47  0.2s
+== tests/julia/text_local.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10
+Test Summary: | Pass  Total  Time
+Tate psi      |   11     11  0.0s
+== tests/julia/psi.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10
+Test Summary:                        | Pass  Total  Time
+qclass lift and rational translation |   30     30  0.0s
+== tests/julia/qclass.jl passed with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10
+== retrying with LD_PRELOAD=/lib/x86_64-linux-gnu/libgmp.so.10 (Julia's bundled libgmp lacks a symbol libflint needs; see the header comment of this script)
+Test Summary:                                      | Pass  Total  Time
+adelefeld Julia smoke test (build/libadelefeld.so) |   48     48  0.2s
+Test Summary:                       | Pass  Total  Time
+adf_resid_reconstruct through ccall |   28     28  0.1s
+Test Summary:                             | Pass  Total  Time
+adf_resid_reconstruct_first through ccall |   16     16  0.1s
+Test Summary:                            | Pass  Total  Time
+adf_resid_set_fball_forget through ccall |   14     14  0.0s
+Test Summary:                  | Pass  Total  Time
+adf_linsolve_mod through ccall |   15     15  1.2s
+Test Summary:                                             | Pass  Total  Time
+adf_linsolve_fball and adf_linsol_get_fball through ccall |   14     14  0.7s
+Test Summary:                          | Pass  Total  Time
+adf_root_padic_from_seed through ccall |   10     10  0.2s
+Test Summary:                                          | Pass  Total  Time
+adf_roots_padic through ccall: (X^2 - 2)(X - 3) in Z_7 |   22     22  0.5s
+Test Summary:                                       | Pass  Total  Time
+adf_roots_real through ccall: X^3 - 2 X to 100 bits |   13     13  0.2s
+Test Summary:           | Pass  Total  Time
+adf_lball through ccall |   30     30  0.3s
+Test Summary:                        | Pass  Total  Time
+adf_lball slice 1F.3-b through ccall |   34     34  0.4s
+Test Summary:                                  | Pass  Total  Time
+adf_sball and the real functions through ccall |   36     36  0.5s
+Test Summary:               | Pass  Total  Time
+exp, log, Log through ccall |   12     12  0.3s
+Test Summary:                                                         | Pass  Total  Time
+exp_at, log_at, Log_at at a prime and at the real place through ccall |   23     23  0.6s
+Test Summary:                            | Pass  Total  Time
+local sin, cos, sinh, cosh through ccall |   25     25  0.0s
+Test Summary:                      | Pass  Total  Time
+local roots with explicit branches |    9      9  0.1s
+Test Summary:                             | Pass  Total  Time
+rational powers and principal-unit powers |    7      7  0.1s
+Test Summary:                 | Pass  Total  Time
+the five series at all places |    4      4  0.2s
+Test Summary:          | Pass  Total  Time
+the root at all places |    7      7  0.1s
+Test Summary:     | Pass  Total  Time
+idele Log slice A |   59     59  0.3s
+Test Summary:     | Pass  Total  Time
+idele Log slice B |   22     22  0.1s
+Test Summary:   | Pass  Total  Time
+Hilbert symbols |   20     20  0.1s
+Test Summary:   | Pass  Total  Time
+residue symbols |   23     23  0.0s
+Test Summary: | Pass  Total  Time
+binomial      |    8      8  0.0s
+Test Summary:   | Pass  Total  Time
+profinite power |   10     10  0.0s
+Test Summary: | Pass  Total  Time
+Haar volume   |    5      5  0.0s
+Test Summary:        | Pass  Total  Time
+cyclotomic exponents |    7      7  0.0s
+Test Summary:     | Pass  Total  Time
+local zeta factor |   14     14  0.1s
+== python3 tools/mutate/selftest.py
+== the generation rules (mutants_of() directly, no build)
+== the key of an equivalent entry (item 5)
+== every entry of an equivalent file matches one mutant (item 11)
+== the report of a compile error (item 6)
+== --keep judges as the ordinary run (item 7)
+== SIGTERM leaves nothing behind (item 8)
+== --san builds with SAN=1 (item 9)
+== the decision whether a --make command sets SAN (item 12)
+== a run in which no mutant builds fails (item 13)
+== a survivor is logged when it is found (adf-4lj)
+== --make and a file outside src/ (adf-4lj)
+== two concurrent runs sharing one --scratch path
+== the weak test
+== the strong test
+selftest: passed: the weak test leaves a survivor, the strong test leaves none, and no process of a mutant is left
+== python3 tools/memcheck/selftest.py
+== a use before the first init in text order is reported (surface R1)
+== no false positive on correct code
+== the limits named in tools/memcheck/README.md are the limits of the code (surface R4)
+== the tree has no finding
+== valgrind
+selftest: passed
+check-all passed: make check, driver, exports, julia, mutate-selftest, memcheck-selftest

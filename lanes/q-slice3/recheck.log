@@ -1,0 +1,65 @@
+baseline 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:168:27 op: '*' -> '+' 0 1 0
+psi: 186799 checks (all)
+test_retry.c:24: p == FLINT_MIN(2*previous, ADF_REAL_PREC_MAX)
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:63:63 zero_one: '0' -> '1' 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:119:19 zero_one: '1' -> '0' 1 0 0
+/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:127: arb_le(l, low)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:52:22 zero_one: '1' -> '0' 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:187:26 logic: '&&' -> '||' 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:51:56 cmp: '<=' -> '<' 1 0 0
+/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:385: aphase(q, x) == ADF_OK && fmpq_equal(q, N->q)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:241:23 drop_assign: 'st = ADF_OK;' -> '' (the statement is removed) 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:168:27 op: '*' -> '/' 0 1 0
+psi: 186799 checks (all)
+test_retry.c:24: p == FLINT_MIN(2*previous, ADF_REAL_PREC_MAX)
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:63:30 op: '+' -> '-' 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:106:5 swap_args: 'arf_add(m, lo, hi, ARF_PREC_EXACT, ARF_RND_NEAR)' -> 'arf_add(m, hi, lo, ARF_PREC_EXACT, ARF_RND_NEAR)' 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:128:69 cmp: '<=' -> '<' 0 1 0
+psi: 186799 checks (all)
+test_retry.c:68: calls == 1
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:244:14 zero_one: '0' -> '1' 0 0 1
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+test_lifecycle.c: qlive=1 arflive=1
+src/psi.c:63:31 zero_one: '1' -> '0' 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:64:42 cmp: '>' -> '>=' 1 0 0
+/home/tobias/Projects/adelefeld-wt/q-slice3/tests/test_psi.c:403: aphase(q, x) == ADF_OK && fmpq_equal(q, N->q)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+final pristine 0 0 0
+psi: 186799 checks (all)
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+rechecks 14 killed 7 survived 7

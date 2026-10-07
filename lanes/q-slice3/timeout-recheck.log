@@ -1,0 +1,10 @@
+baseline 0 0
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+src/psi.c:167:18 cmp: '==' -> '!=' 1 0
+test_retry.c:64: adf_phase_get_acb(z, theta, user_p) == ADF_OK
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+final pristine 0 0
+psi retry/preflight: 37 checks
+psi lifecycle: 1 call, 0 unmatched q/arf temporaries
+rechecks 1 killed 1 survived 0
