@@ -428,6 +428,8 @@ static void inv(void)
             if (k == 3) adf_adele_psi_tate_at(z, NULL, a, v, 64);
             if (k == 4) adf_adele_psi_tate_strict_at(z, NULL, a, v, 64);
             if (k == 5) { arb_indeterminate(a->inf); adf_adele_psi_tate_at(z, NULL, a, adf_place_inf(), 64); }
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            x->p = 2; adf_lball_clear(x); adf_adele_clear(a); acb_clear(z); fmpq_clear(th);
             _exit(0);
         }
         int status; CHECK(waitpid(pid, &status, 0) == pid);

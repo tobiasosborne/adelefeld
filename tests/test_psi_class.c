@@ -444,6 +444,8 @@ static void inv(void)
             if (k == 0) adf_qclass_psi_tate(z, q, 64);
             if (k == 1) adf_qclass_psi_tate_strict(z, q, 64);
             if (k == 2) adf_qclass_psi_tate_phase(th, q);
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            q->form = ADF_QCLASS_LIFT; adf_qclass_clear(q); acb_clear(z); fmpq_clear(th);
             _exit(0);
         }
         int status; CHECK(waitpid(pid, &status, 0) == pid);
