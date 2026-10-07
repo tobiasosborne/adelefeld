@@ -1,0 +1,29 @@
+[
+  {
+    "mutant": "imaginary midpoint omitted",
+    "scratch": "/tmp/adf-f4-slice7-mutate/run-4/keep/00022",
+    "exit": 2,
+    "witness": [
+      "tests/../lanes/f4-slice7/dump_test.h:120: st == want",
+      "make: *** [Makefile:15: check] Error 1"
+    ]
+  },
+  {
+    "mutant": "extra token skipped",
+    "scratch": "/tmp/adf-f4-slice7-mutate/run-4/keep/00043",
+    "exit": 2,
+    "witness": [
+      "tests/../lanes/f4-slice7/dump_test.h:120: st == want",
+      "make: *** [Makefile:15: check] Error 1"
+    ]
+  },
+  {
+    "mutant": "division instead of skip product",
+    "scratch": "/tmp/adf-f4-slice7-mutate/run-4/keep/00058",
+    "exit": 2,
+    "witness": [
+      "tests/../lanes/f4-slice7/dump_test.h:41: n < 1048576",
+      "make: *** [Makefile:15: check] Error 1"
+    ]
+  }
+]

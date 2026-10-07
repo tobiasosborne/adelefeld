@@ -76,6 +76,8 @@
 #include "adelefeld/lball.h"
 #include "adelefeld/sball.h"
 #include "adelefeld/char.h"
+#include "adelefeld/ffun.h"
+#include "adelefeld/rfun.h"
 
 /* The largest absolute binary exponent of the midpoint and of the radius of the real ball of a
    piece of a dumped qclass, form "pieces" (decision M1-D9): 2^20, the bound of ADF_RECON_EXP_MAX
@@ -282,6 +284,38 @@ int adf_char_load_str_binds(adf_char_t x, const char *s, size_t len,
                             const adf_text_limits_t *lim);
 char *adf_char_dump_str(size_t *len, const adf_char_t x);
 int adf_char_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t len,
+                          const adf_text_limits_t *lim);
+
+/* Slice 4c, api-4.md section 2; conventions 10.1/10.2 and predicates 5.11/5.12.
+   Strict lossless bodies: "ffun D M {acb}" (D M values), and
+   "rfun len {length(P) {acb} A B C}"; every integer is lower-case hexadecimal.
+   Validate length, alphabet/header, full grammar, caller limits, D1 caps, then predicates
+   before constructing any value. No normalization, term sorting, precision or FLINT string load.
+   D1 (SPEC 15.4 N-D23): D M <= 2^20; terms and total coefficients <= 2^16. Above caps: LIMIT.
+   An exact trailing zero coefficient or uncertified Re(A)>0 is DOMAIN.
+   M1-D9's qclass-pieces exponent bound does not apply to these bodies.
+   Load: OK/PARSE/LIMIT/UNSUPPORTED/DOMAIN, failures leave x untouched;
+   cost input size plus clearing old x. The design's cost/identity wording needs these qualifications.
+   No context occurrences: ctx is ignored, binds requires nbinds=0 after full validation.
+   Dump: allocate exact bytes preserving ball bits, zero terms and term order; *len excludes NUL;
+   caller adf_str_free; no status, cost output size. INV checks canonical input/output on entry.
+   Inspect: same validation/statuses, write nctx=0 only on OK, descs untouched; cost input size.
+   The common initialized-storage and whole-object alias rules of api-4.md section 1 apply. */
+int adf_ffun_load_str(adf_ffun_t x, const char *s, size_t n, const adf_modctx_struct *ctx,
+                      const adf_text_limits_t *lim);
+int adf_rfun_load_str(adf_rfun_t x, const char *s, size_t n, const adf_modctx_struct *ctx,
+                      const adf_text_limits_t *lim);
+int adf_ffun_load_str_binds(adf_ffun_t x, const char *s, size_t n,
+                            const adf_modctx_struct *const *binds, size_t nbinds,
+                            const adf_text_limits_t *lim);
+int adf_rfun_load_str_binds(adf_rfun_t x, const char *s, size_t n,
+                            const adf_modctx_struct *const *binds, size_t nbinds,
+                            const adf_text_limits_t *lim);
+char *adf_ffun_dump_str(size_t *len, const adf_ffun_t x);
+char *adf_rfun_dump_str(size_t *len, const adf_rfun_t x);
+int adf_ffun_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t n,
+                          const adf_text_limits_t *lim);
+int adf_rfun_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t n,
                           const adf_text_limits_t *lim);
 
 /* Layout queries of the descriptor (conventions 10.2, 12.4). Header-inline and exported. */

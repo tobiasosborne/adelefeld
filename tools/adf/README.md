@@ -118,7 +118,7 @@ never fails.  `load` reads a dump form and writes the value in the value form of
 conventions 9.4.  The driver has no context, so the two commands cover the values of the
 global backend only, which is where every value of the value form is (conventions 9.8,
 A11): a dump with a context occurrence is `error: UNSUPPORTED`, and so is a body of
-section 10 that the driver has no dump for (`scaled`, `ffun`, `rfun`, `char`,
+section 10 that the driver has no dump for (`scaled`, `char`,
 `modctx`).  The nine bodies the driver reads and writes are `rat`, `fball`, `adele`, `cadele`,
 `ucoset`, `idele`, `idclass`, `lball` and `sball`; the five of lane `u-dump1` since this text was
 written: `dump` of a unit coset, an idele, a class, a local ball or a partial ball answers
@@ -959,3 +959,12 @@ tail added to both coordinate radii, and the two lattice cutoffs. On `OK` every 
 radius holds the width above `2^-BITS` at every precision (the witness `c exp(-pi x^2)`, `c` in `[1, 2]`) is
 `NOT_DETERMINED`; the work cap of decision D1 (for example `Re(A) = 10^-8`) is `LIMIT`. Fixture:
 `tests/driver/poisson`.
+
+Slice 4c adds `dump ffun(...)`, `dump rfun(...)`, and `load` of both dump bodies through the typed
+`adf_ffun` and `adf_rfun` dump/load/inspect calls. Dumps preserve all ball bits, polynomial lengths,
+zero polynomial terms and term order (conventions 10.1/10.2; api-4.md section 2).
+Load validates the full text, then caller limits, D1 caps and predicates, before constructing a value.
+D1 allows D M <= 2^20, and at most 2^16 terms and total coefficients; larger complete dumps give LIMIT.
+An incomplete count gives PARSE first; a trailing exact-zero coefficient or uncertified Re(A)>0 gives DOMAIN.
+The loaded value is printed in the usual value form; this printed form can be an enclosure.
+Checks: `tests/driver/ffun-dump.cmd`, `tests/driver/rfun-dump.cmd`, `tests/julia/ffun_dump.jl`.

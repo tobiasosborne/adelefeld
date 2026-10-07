@@ -2782,3 +2782,196 @@ char *adf_char_dump_str(size_t *len, const adf_char_t x)
 int adf_char_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t len,
                           const adf_text_limits_t *lim)
 { return dp_inspect(DP_CHAR, nctx, descs, s, len, lim); }
+
+/* Slice 4c dump forms: docs/api-4.md section 2; conventions 10.1:1412-1420,
+   10.2:1427-1480, 5.11/5.12; SPEC 15.4 N-D23. The existing validator returns DP_NOSEM
+   for these two context-free bodies after grammar and caller limits. Keep it unchanged;
+   finish D1 preflight and predicates here, before any value allocation or dyadic construction.
+   Exact dyadics use the shared kernel (refs/src/flint-3.0.1/arf.rst:227-242).
+   Polynomial length is set without normalization (refs/src/flint-3.0.1/acb_poly.rst:47-54).
+   HEADER-FINDING: identity needs limits/D1; load cost includes clearing the old destination. */
+static void
+dp_fn_acb(dp_cur *c, dp_arb a[2])
+{
+    dp_state st;
+    memset(&st, 0, sizeof(st)); st.mode = DP_SYNTAX;
+    (void) dp_w_arb(c, &st, a); (void) dp_w_arb(c, &st, a + 1);
+}
+
+static void
+dp_fn_set_acb(acb_t z, dp_cur *c)
+{
+    dp_arb a[2]; dp_fn_acb(c, a);
+    dp_set_arb(acb_realref(z), a); dp_set_arb(acb_imagref(z), a + 1);
+}
+
+static int
+dp_fn_validate(dp_parsed *P, int kind, const char *s, size_t n, const adf_text_limits_t *lim)
+{
+    dp_cur c; dp_span d, m; dp_arb a[2];
+    size_t count, i, j, L, total = 0; ulong D = 0, M = 0;
+    int st = dp_validate(P, s, n, lim, kind);
+    if (st != DP_NOSEM) return st;
+    dp_cur_at(&c, P);
+    if (kind == DP_FFUN) {
+        (void) dp_h(&c, &d); (void) dp_h(&c, &m);
+        /* Zero dimensions have a zero product and reach the predicate stage, even if
+           the other dimension is larger than a word. Positive products must fit D1. */
+        if (!dp_zero(d) && !dp_zero(m)) {
+            if (!dp_word(d, &D) || !dp_word(m, &M) || D > ADF_FFUN_ITEMS_MAX / M)
+                return ADF_LIMIT;
+        }
+        count = (size_t) (D * M);
+    } else {
+        (void) dp_count(&c, 25, &count);
+        if (count > (size_t) ADF_RFUN_TERMS_MAX || count > (size_t) WORD_MAX ||
+            count > (size_t) -1 / sizeof(adf_rterm_struct)) return ADF_LIMIT;
+        for (i = 0; i < count; i++) {
+            (void) dp_count(&c, 8, &L);
+            if (L > (size_t) ADF_RFUN_COEFFS_MAX - total) return ADF_LIMIT;
+            total += L;
+            /* Skip only already validated spans; preflight all counts before semantics. */
+            for (j = 0; j < 8 * (L + 3); j++) (void) dp_next(&c, &d);
+        }
+    }
+    dp_cur_at(&c, P);
+    if (kind == DP_FFUN) {
+        (void) dp_h(&c, &d); (void) dp_h(&c, &m);
+        if (!dp_pos(d) || !dp_pos(m)) return ADF_DOMAIN;
+        if (count > (size_t) WORD_MAX || count > (size_t) -1 / sizeof(acb_struct)) return ADF_LIMIT;
+        for (i = 0; i < count; i++) {
+            dp_fn_acb(&c, a);
+            if (!dp_v_arb(a) || !dp_v_arb(a + 1)) return ADF_DOMAIN;
+        }
+    } else {
+        (void) dp_count(&c, 25, &count);
+        for (i = 0; i < count; i++) {
+            (void) dp_count(&c, 8, &L);
+            for (j = 0; j < L + 3; j++) {
+                dp_fn_acb(&c, a);
+                if (!dp_v_arb(a) || !dp_v_arb(a + 1)) return ADF_DOMAIN;
+                if (L && j == L - 1 && dp_zero(a[0].m) && dp_zero(a[0].rm) &&
+                    dp_zero(a[1].m) && dp_zero(a[1].rm)) return ADF_DOMAIN;
+                if (j == L && dp_arb_sign(a) != 1) return ADF_DOMAIN;
+            }
+        }
+    }
+    P->nocc = 0;
+    return ADF_OK;
+}
+
+int
+adf_ffun_load_str_binds(adf_ffun_t x, const char *s, size_t n,
+                        const adf_modctx_struct *const *binds, size_t nbinds,
+                        const adf_text_limits_t *lim)
+{
+    dp_parsed P; dp_cur c; dp_span d, m; adf_ffun_struct out; size_t i, count;
+    int st = dp_fn_validate(&P, DP_FFUN, s, n, lim);
+    if (st != ADF_OK) return st;
+    (void) binds;
+    if (nbinds != 0) return ADF_DOMAIN;
+    DP_INV(x, adf_ffun_is_canonical(x), "adf_ffun");
+    dp_cur_at(&c, &P); (void) dp_h(&c, &d); (void) dp_h(&c, &m);
+    (void) dp_word(d, &out.D); (void) dp_word(m, &out.M);
+    count = (size_t) (out.D * out.M); out.f = _acb_vec_init((slong) count);
+    for (i = 0; i < count; i++) dp_fn_set_acb(out.f + i, &c);
+    st = adf_ffun_is_canonical(&out) ? ADF_OK : ADF_DOMAIN;
+    if (st == ADF_OK) adf_ffun_swap(x, &out);
+    adf_ffun_clear(&out); return st;
+}
+
+int
+adf_ffun_load_str(adf_ffun_t x, const char *s, size_t n, const adf_modctx_struct *ctx,
+                  const adf_text_limits_t *lim)
+{
+    (void) ctx; return adf_ffun_load_str_binds(x, s, n, NULL, 0, lim);
+}
+
+char *
+adf_ffun_dump_str(size_t *len, const adf_ffun_t x)
+{
+    dp_sb b; ulong i;
+    DP_INV(x, adf_ffun_is_canonical(x), "adf_ffun");
+    dp_sb_init(&b); dp_sb_lit(&b, "adf1 Q ffun"); dp_sb_ui(&b, x->D); dp_sb_ui(&b, x->M);
+    for (i = 0; i < x->D * x->M; i++) {
+        dp_sb_arb(&b, acb_realref(x->f + i)); dp_sb_arb(&b, acb_imagref(x->f + i));
+    }
+    return dp_sb_finish(&b, len);
+}
+
+int
+adf_ffun_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t n,
+                      const adf_text_limits_t *lim)
+{
+    dp_parsed P; int st;
+    (void) descs;
+    if (nctx == NULL) return ADF_DOMAIN; /* Same defensive convention as dp_inspect. */
+    st = dp_fn_validate(&P, DP_FFUN, s, n, lim);
+    if (st == ADF_OK) *nctx = 0;
+    return st;
+}
+
+int
+adf_rfun_load_str_binds(adf_rfun_t x, const char *s, size_t n,
+                        const adf_modctx_struct *const *binds, size_t nbinds,
+                        const adf_text_limits_t *lim)
+{
+    dp_parsed P; dp_cur c; adf_rfun_struct out; size_t count, i, j, L;
+    int st = dp_fn_validate(&P, DP_RFUN, s, n, lim);
+    if (st != ADF_OK) return st;
+    (void) binds;
+    if (nbinds != 0) return ADF_DOMAIN;
+    DP_INV(x, adf_rfun_is_canonical(x), "adf_rfun");
+    dp_cur_at(&c, &P); (void) dp_count(&c, 25, &count);
+    out.len = (slong) count;
+    out.term = count ? flint_malloc(count * sizeof(*out.term)) : NULL;
+    for (i = 0; i < count; i++) {
+        adf_rterm_struct *t = out.term + i;
+        acb_poly_init(t->P); acb_init(t->A); acb_init(t->B); acb_init(t->C);
+        (void) dp_count(&c, 8, &L); acb_poly_fit_length(t->P, (slong) L);
+        for (j = 0; j < L; j++) dp_fn_set_acb(t->P->coeffs + j, &c);
+        _acb_poly_set_length(t->P, (slong) L);
+        dp_fn_set_acb(t->A, &c); dp_fn_set_acb(t->B, &c); dp_fn_set_acb(t->C, &c);
+    }
+    st = adf_rfun_is_canonical(&out) ? ADF_OK : ADF_DOMAIN;
+    if (st == ADF_OK) adf_rfun_swap(x, &out);
+    adf_rfun_clear(&out); return st;
+}
+
+int
+adf_rfun_load_str(adf_rfun_t x, const char *s, size_t n, const adf_modctx_struct *ctx,
+                  const adf_text_limits_t *lim)
+{
+    (void) ctx; return adf_rfun_load_str_binds(x, s, n, NULL, 0, lim);
+}
+
+char *
+adf_rfun_dump_str(size_t *len, const adf_rfun_t x)
+{
+    dp_sb b; slong i, j;
+    DP_INV(x, adf_rfun_is_canonical(x), "adf_rfun");
+    dp_sb_init(&b); dp_sb_lit(&b, "adf1 Q rfun"); dp_sb_ui(&b, (ulong) x->len);
+    for (i = 0; i < x->len; i++) {
+        const adf_rterm_struct *t = x->term + i;
+        dp_sb_ui(&b, (ulong) t->P->length);
+        for (j = 0; j < t->P->length; j++) {
+            dp_sb_arb(&b, acb_realref(t->P->coeffs + j)); dp_sb_arb(&b, acb_imagref(t->P->coeffs + j));
+        }
+        dp_sb_arb(&b, acb_realref(t->A)); dp_sb_arb(&b, acb_imagref(t->A));
+        dp_sb_arb(&b, acb_realref(t->B)); dp_sb_arb(&b, acb_imagref(t->B));
+        dp_sb_arb(&b, acb_realref(t->C)); dp_sb_arb(&b, acb_imagref(t->C));
+    }
+    return dp_sb_finish(&b, len);
+}
+
+int
+adf_rfun_dump_inspect(size_t *nctx, adf_ctx_desc_t *descs, const char *s, size_t n,
+                      const adf_text_limits_t *lim)
+{
+    dp_parsed P; int st;
+    (void) descs;
+    if (nctx == NULL) return ADF_DOMAIN; /* Same defensive convention as dp_inspect. */
+    st = dp_fn_validate(&P, DP_RFUN, s, n, lim);
+    if (st == ADF_OK) *nctx = 0;
+    return st;
+}

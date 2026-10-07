@@ -1,0 +1,5 @@
+rfun vectors: 53 (40 generated values)
+rfun goldens: 6
+rfun random identical round trips: 2000
+rfun D1 boundaries checked
+rfun dump: 17222 checks, 0 failures

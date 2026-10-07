@@ -405,6 +405,7 @@ typedef enum
     ADF_DRV_SBALL,
     ADF_DRV_QCLASS,
     ADF_DRV_FFUN,
+    ADF_DRV_RFUN_VALUE, /* dump/load storage; ADF_DRV_RFUN names a distinct operation enum */
     ADF_DRV_CHARACTER,
     ADF_DRV_OTHER        /* a kind of the value form with no typed parser in this build */
 } adf_drv_type;
@@ -423,6 +424,7 @@ typedef struct
     adf_sball_t s;
     adf_qclass_t q;
     adf_ffun_t ff;
+    adf_rfun_t rf;
 
     adf_char_t character;
 } adf_drv_value;
@@ -448,6 +450,7 @@ adf_drv_value_init(adf_drv_value * v)
     adf_sball_init(v->s);
     adf_qclass_init(v->q);
     adf_ffun_init(v->ff);
+    adf_rfun_init(v->rf);
 
     adf_char_init(v->character);
 }
@@ -466,6 +469,7 @@ adf_drv_value_clear(adf_drv_value * v)
     adf_sball_clear(v->s);
     adf_qclass_clear(v->q);
     adf_ffun_clear(v->ff);
+    adf_rfun_clear(v->rf);
 
     adf_char_clear(v->character);
     v->type = ADF_DRV_OTHER;
@@ -599,6 +603,9 @@ adf_drv_value_print(FILE * out, const adf_drv_value * v, slong digits)
         case ADF_DRV_FFUN:
             s = adf_ffun_get_str(&len, v->ff, digits);
             break;
+        case ADF_DRV_RFUN_VALUE:
+            s = adf_rfun_get_str(&len, v->rf, digits);
+            break;
         case ADF_DRV_CHARACTER:
             s = adf_char_get_str(&len, v->character, digits);
             break;
@@ -659,6 +666,12 @@ adf_drv_value_dump(FILE * out, const adf_drv_value * v)
         case ADF_DRV_CHARACTER:
             s = adf_char_dump_str(&len, v->character);
             break;
+        case ADF_DRV_FFUN:
+            s = adf_ffun_dump_str(&len, v->ff);
+            break;
+        case ADF_DRV_RFUN_VALUE:
+            s = adf_rfun_dump_str(&len, v->rf);
+            break;
         default:
             return ADF_UNSUPPORTED;
     }
@@ -690,7 +703,8 @@ adf_drv_body_slot(const char * name)
         { "rat", ADF_DRV_RAT }, { "fball", ADF_DRV_FBALL }, { "adele", ADF_DRV_ADELE },
         { "cadele", ADF_DRV_CADELE }, { "ucoset", ADF_DRV_UCOSET }, { "idele", ADF_DRV_IDELE },
         { "idclass", ADF_DRV_IDCLASS }, { "lball", ADF_DRV_LBALL }, { "sball", ADF_DRV_SBALL },
-        { "qclass", ADF_DRV_QCLASS }, { "char", ADF_DRV_CHARACTER } };
+        { "qclass", ADF_DRV_QCLASS }, { "char", ADF_DRV_CHARACTER },
+        { "ffun", ADF_DRV_FFUN }, { "rfun", ADF_DRV_RFUN_VALUE } };
     size_t i;
 
     for (i = 0; i < sizeof(mine) / sizeof(mine[0]); i++)
@@ -786,6 +800,12 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
         case ADF_DRV_CHARACTER:
             status = adf_char_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
+        case ADF_DRV_FFUN:
+            status = adf_ffun_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
+        case ADF_DRV_RFUN_VALUE:
+            status = adf_rfun_dump_inspect(&nctx, NULL, s, len, NULL);
+            break;
         default:
             status = adf_sball_dump_inspect(&nctx, NULL, s, len, NULL);
             break;
@@ -817,6 +837,10 @@ adf_drv_load(const char * s, size_t len, adf_drv_value * v)
             return adf_qclass_load_str(v->q, s, len, NULL, NULL);
         case ADF_DRV_CHARACTER:
             return adf_char_load_str(v->character, s, len, NULL, NULL);
+        case ADF_DRV_FFUN:
+            return adf_ffun_load_str(v->ff, s, len, NULL, NULL);
+        case ADF_DRV_RFUN_VALUE:
+            return adf_rfun_load_str(v->rf, s, len, NULL, NULL);
         default:
             return adf_sball_load_str(v->s, s, len, NULL, NULL);
     }
@@ -3656,6 +3680,15 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         status = adf_text_classify(&kind[i], l->s[i], l->n[i], NULL);
         if (status != ADF_OK)
             goto done;
+    }
+    /* Slice 4c: rfun dump uses the typed reader and the dump/load value slot.
+       The other real-function commands retain their own operation dispatch above. */
+    if (op == ADF_DRV_DUMP && kind[0] == ADF_TEXT_RFUN)
+    {
+        x.type = ADF_DRV_RFUN_VALUE;
+        status = adf_rfun_set_str(x.rf, l->s[0], l->n[0], st->prec, NULL);
+        if (status == ADF_OK) status = adf_drv_value_dump(out, &x);
+        goto done;
     }
     /* step 3: the kind of every operand, in order; a kind with no typed parser in this build
        is ADF_UNSUPPORTED, and no value of the line is read before that is decided */

@@ -1,0 +1,56 @@
+[
+  {
+    "fault": "reorder terms",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:140: dump != NULL && len == n && !memcmp(s, dump, n) && dump[n] == 0"
+  },
+  {
+    "fault": "trim exact trailing zero",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:120: st == want"
+  },
+  {
+    "fault": "FLINT before byte validation",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:74: 0 && \"unexpected FLINT string loader\""
+  },
+  {
+    "fault": "count cap after reading values",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:41: n < 1048576"
+  },
+  {
+    "fault": "D M count mismatch ignored",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:120: st == want"
+  },
+  {
+    "fault": "Re(A) predicate omitted",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:120: st == want"
+  },
+  {
+    "fault": "cap off by one",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:120: st == want"
+  },
+  {
+    "fault": "x written before final validation",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:122: !memcmp(&before, x, sizeof(before)) && SAME(x, saved)"
+  },
+  {
+    "fault": "nctx not written on OK",
+    "build": 0,
+    "test": 1,
+    "witness": "tests/../lanes/f4-slice7/dump_test.h:132: count == (textwant == ADF_OK ? 0 : 773)"
+  }
+]

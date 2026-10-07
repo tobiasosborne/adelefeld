@@ -1,0 +1,8 @@
+000000000001f244 T adf_ffun_dump_inspect
+000000000001f16a T adf_ffun_dump_str
+000000000001f14a T adf_ffun_load_str
+000000000001efe6 T adf_ffun_load_str_binds
+000000000001f6e6 T adf_rfun_dump_inspect
+000000000001f593 T adf_rfun_dump_str
+000000000001f573 T adf_rfun_load_str
+000000000001f2ab T adf_rfun_load_str_binds

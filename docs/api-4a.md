@@ -296,3 +296,40 @@ No counterexample to SPEC 7 or F1-F3 was found. No declaration needs a HEADER-FI
 The brief's unrestricted identity f*1_Zhat=f is false. For delta_1 at (2,3), f(1/2)=1 but 1_Zhat(1/2)=0.
 The product is zero. The identity is tested only for functions supported in Zhat, and the counterexample is tested.
 No oracle or fixed golden was changed. The analytic source obligations of later slices remain outside this slice.
+
+## Slice 4c, the dump forms
+
+The four `adf_ffun` dump functions are those of api-4.md section 2, reading or writing the body
+`adf1 Q ffun D M {acb}` of conventions 10.1, with exactly D M values. Integers and every ball field are
+canonical hexadecimal tokens. The stored D, M and all ball bits persist; no grid reduction occurs.
+
+`load_str` ignores ctx. `load_str_binds` requires nbinds=0 after full validation and ignores binds.
+Both accept a bounded byte span without a NUL terminator. The stages are length, alphabet and header,
+full grammar, caller limits, D1 caps, predicates, binding count, construction in a temporary, then swap.
+PARSE means bad bytes, grammar or repetition count. UNSUPPORTED means another version or field.
+LIMIT means caller limits or D M > 2^20 (N-D23); DOMAIN means D or M is zero, a noncanonical/nonfinite
+ball, or a nonempty binding array. Every failure leaves x untouched. No FLINT string loader is called.
+The shared validator is reused without changes; its DP_NOSEM result requests this type's predicate pass.
+All fields pass that pass before the exact dyadic kernel constructs any ball
+(refs/src/flint-3.0.1/arf.rst:227-242). M1-D9 applies only to qclass pieces and does not bound these exponents.
+
+`dump_str` allocates the exact dump, sets *len to its byte length excluding NUL, and uses adf_str_free
+ownership. It has no status. `dump_inspect` validates like load, constructs no value/context, writes nctx=0
+only on OK, and leaves every descriptor untouched. Cost is text traversal plus exact integer conversions;
+load owns O(D M) new ball storage, dump owns O(output bytes), inspect uses temporary integer storage.
+Successful replacement also clears the old destination, so load cost includes its old representation size.
+This is a HEADER-FINDING against the design's unqualified cost of text size: a one-entry dump can replace
+an arbitrarily large canonical old array, whose live entries must each be cleared.
+
+The identity argument is direct. (1) Grammar fixes each field position and array length.
+(2) Each canonical odd midpoint mantissa/exponent pair reconstructs the identical dyadic number.
+(3) The shared radius kernel reconstructs the identical mag field. (4) D and M are copied exactly.
+Thus every accepted dump prints identically, and a dumped value loads identically when the limits admit it.
+Check: test_ffun_dump, all 53 reference rows, all four golden rows, 2000 random identity round trips,
+untouched sentinels, interposed arb_load_str, caller-limit precedence and D1 boundary cases.
+Check: tests/driver/ffun-dump.cmd; tests/julia/ffun_dump.jl.
+
+Decision where the design is silent: a NULL nctx gives DOMAIN, following the existing dp_inspect convention.
+The identity assertion is conditional on caller limits and D1. A canonical value can exceed D1 because
+is_canonical and dump do not impose operation caps; its dump then gives LIMIT on load (HEADER-FINDING
+against the unconditional wording of api-4.md section 2). No specification change is made.

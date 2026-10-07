@@ -1,0 +1,46 @@
+/usr/bin/ld: /tmp/ccoBrxt7.o: in function `one':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:83:(.text+0x28d): undefined reference to `adf_ffun_load_str_binds'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:97:(.text+0x42c): undefined reference to `adf_ffun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:102:(.text+0x4ff): undefined reference to `adf_ffun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:105:(.text+0x579): undefined reference to `adf_ffun_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:107:(.text+0x5e8): undefined reference to `adf_ffun_load_str'
+/usr/bin/ld: /tmp/ccoBrxt7.o: in function `randoms':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:191:(.text.startup+0x517): undefined reference to `adf_ffun_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:192:(.text.startup+0x555): undefined reference to `adf_ffun_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:193:(.text.startup+0x584): undefined reference to `adf_ffun_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:195:(.text.startup+0x5e6): undefined reference to `adf_ffun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:196:(.text.startup+0x61f): undefined reference to `adf_ffun_load_str_binds'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:197:(.text.startup+0x65e): undefined reference to `adf_ffun_load_str_binds'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:198:(.text.startup+0x69f): undefined reference to `adf_ffun_load_str_binds'
+/usr/bin/ld: /tmp/ccoBrxt7.o: in function `malformed':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:214:(.text.startup+0x72d): undefined reference to `adf_ffun_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:223:(.text.startup+0x895): undefined reference to `adf_ffun_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:224:(.text.startup+0x930): undefined reference to `adf_ffun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:226:(.text.startup+0x97d): undefined reference to `adf_ffun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:227:(.text.startup+0x9ba): undefined reference to `adf_ffun_load_str'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f4-slice7/plain/test_ffun_dump] Error 1
+make: *** Waiting for unfinished jobs....
+/usr/bin/ld: /tmp/ccbcoDOl.o: in function `randoms':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:191:(.text+0x82a): undefined reference to `adf_rfun_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:192:(.text+0x86a): undefined reference to `adf_rfun_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:193:(.text+0x89a): undefined reference to `adf_rfun_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:195:(.text+0x8fd): undefined reference to `adf_rfun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:196:(.text+0x933): undefined reference to `adf_rfun_load_str_binds'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:197:(.text+0x976): undefined reference to `adf_rfun_load_str_binds'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:198:(.text+0x9bb): undefined reference to `adf_rfun_load_str_binds'
+/usr/bin/ld: /tmp/ccbcoDOl.o: in function `one':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:83:(.text+0xd9d): undefined reference to `adf_rfun_load_str_binds'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:97:(.text+0xee9): undefined reference to `adf_rfun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:102:(.text+0xfcf): undefined reference to `adf_rfun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:105:(.text+0x1059): undefined reference to `adf_rfun_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:107:(.text+0x10c8): undefined reference to `adf_rfun_load_str'
+/usr/bin/ld: /tmp/ccbcoDOl.o: in function `malformed':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/tests/test_rfun_dump.c:214:(.text.startup+0x6c): undefined reference to `adf_rfun_load_str'
+/usr/bin/ld: /tmp/ccbcoDOl.o: in function `malformed':
+/home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:223:(.text.startup+0x1cd): undefined reference to `adf_rfun_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:224:(.text.startup+0x25b): undefined reference to `adf_rfun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:226:(.text.startup+0x2ad): undefined reference to `adf_rfun_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice7/tests/../lanes/f4-slice7/dump_test.h:227:(.text.startup+0x2e9): undefined reference to `adf_rfun_load_str'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f4-slice7/plain/test_rfun_dump] Error 1
