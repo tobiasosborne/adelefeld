@@ -3197,6 +3197,8 @@ char *adf_char_get_str(size_t *len, const adf_char_t x, slong digits)
     tx_puts(&b, ", n="); snprintf(integer, sizeof(integer), "%lu", x->n); tx_puts(&b, integer);
     tx_puts(&b, ", s=("); tx_put_real(&b, acb_realref(x->s), digits);
     tx_puts(&b, ") + ("); tx_put_real(&b, acb_imagref(x->s), digits); tx_puts(&b, ")*i)");
+    return tx_finish(&b, len);
+}
 
 /* ------------------------------------------------------------------------------------------------
    adf_rfun (slice 4d, lane f4-slice2): rfun_v = "rfun" "(" [rterm {"," rterm}] ")" (conventions 9.2,
