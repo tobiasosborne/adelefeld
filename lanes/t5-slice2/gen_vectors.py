@@ -34,7 +34,7 @@ from flint import acb, arb, ctx  # noqa: E402
 import flint  # noqa: E402
 
 mp.mp.dps = 60
-OUT = os.path.join(ROOT, 'tests', 'ref', 'vectors', 't-slice2', 'tate.jsonl')
+OUT = os.path.join(ROOT, 'tests', 'ref', 'vectors', 't5-slice2', 'tate.jsonl')
 
 
 def golden_pairs():
