@@ -90,3 +90,11 @@ order of importance is B and C for the exact phases and the default character, t
 Report: `lanes/q-slice3/report.md` (rule 8 of `lanes/COMMON.md`): what is done per step; the hand derivation
 of the sign; the fault table; mutation survivors with one line each; findings against the design; what is not
 done.
+
+## Resume note (orchestrator, 2026-10-07)
+
+A previous run of this lane was stopped by the machine after 20 minutes. Its files exist in this tree and are
+yours: `include/adelefeld/psi.h`, `src/psi.c`, the driver changes in `tools/adf/adf.c`, `tests/test_psi.c`,
+`tests/driver/psi-*.cmd|out`, `tests/julia/psi.jl`, `tests/ref/vectors/q-slice3/` and its generator. Nothing of
+it was verified. Read them, keep what is right, fix what is not, and continue from the first unfinished item of
+this brief. The repository was not changed otherwise.

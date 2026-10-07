@@ -735,6 +735,20 @@ the stored lift exactly. Pair arithmetic and set queries give `DOMAIN` in this s
 Union input is `UNSUPPORTED` after syntax and text-limit checks. Dump and the character belong to later slices.
 Julia calls are in `tests/julia/qclass.jl`.
 
+`qreduce X with LIMIT` reduces a quotient lift to a printed union of closed balls.
+LIMIT is an integer and counts algorithm R's construction before rounding and duplicate removal.
+An exceeded limit, including a limit below 1, gives `error: LIMIT`. The setting `prec` supplies real precision.
+
+```text
+qreduce (1 +/- 0.1 ; 0 mod 2) + Q with 2
+qreduce (0.5 +/- 0.5 ; 0 mod 2) + Q with 1
+```
+
+The output encloses the represented quotient set. Its balls may spill beyond 0 and 1 (CV-45).
+Union input remains `UNSUPPORTED`. Checks: `tests/driver/qclass-reduce.cmd`, `tests/julia/qclass.jl`.
+A fractional finite radius A/B uses B fibres of integer radius A. For example,
+`qreduce (0 ; 0 mod 1/2) + Q with 2` prints `union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q`.
+
 ### Tate additive character (slice 3.2-a)
 
 `psi X` and `psi_strict X` take one real adele. They print the ordinary complex ball as
@@ -750,17 +764,3 @@ Other value kinds return `UNSUPPORTED` in this slice. Syntax and adele parsing p
 The library can return `LIMIT` for precision or exact arithmetic, or `NOT_DETERMINED` if the numerical
 certificate cannot be obtained. No result is printed on a failure.
 Checks: `tests/driver/psi-values.cmd`, `tests/driver/psi-status.cmd`, and `tests/julia/psi.jl`.
-
-`qreduce X with LIMIT` reduces a quotient lift to a printed union of closed balls.
-LIMIT is an integer and counts algorithm R's construction before rounding and duplicate removal.
-An exceeded limit, including a limit below 1, gives `error: LIMIT`. The setting `prec` supplies real precision.
-
-```text
-qreduce (1 +/- 0.1 ; 0 mod 2) + Q with 2
-qreduce (0.5 +/- 0.5 ; 0 mod 2) + Q with 1
-```
-
-The output encloses the represented quotient set. Its balls may spill beyond 0 and 1 (CV-45).
-Union input remains `UNSUPPORTED`. Checks: `tests/driver/qclass-reduce.cmd`, `tests/julia/qclass.jl`.
-A fractional finite radius A/B uses B fibres of integer radius A. For example,
-`qreduce (0 ; 0 mod 1/2) + Q with 2` prints `union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q`.
