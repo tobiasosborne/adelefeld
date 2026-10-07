@@ -928,3 +928,16 @@ Complex results are printed as `psi` prints them. The steps are those of every c
 then its kind (another kind is `DOMAIN`), then the values (the statuses of the readers), then the operation (`LIMIT`
 for the caps of decision D1, `NOT_DETERMINED` for a nonfinite result), then the printer. Fixture:
 `tests/driver/tensor-eval` (the examples of E1 step 3 among them).
+
+### Poisson summation with certified tails (slice 4g of `docs/api-4.md`, lane f4-slice6)
+
+`poisson R with F with BITS` (statements in `docs/api-4c.md`, "Slice 4g"; `R` an `rfun` text, `F` an `ffun` text,
+`BITS` an integer) calls `adf_tensor_poisson` at the `prec` setting and prints one line
+`LEFT | RIGHT | NL=n NR=n`: the two sums of analysis Proposition 7, computed independently, each with its Lemma 6
+tail added to both coordinate radii, and the two lattice cutoffs. On `OK` every coordinate diameter is at most
+`2^-BITS`. With `G` the Gaussian `exp(-pi x^2)` and `F = ffun(D=1, M=1; (1) + (0)*i)`, `poisson G with F with 20` at
+`prec 144`, `digits 10` prints `(1.086434811 +/- 2.2e-10) + (0 +/- 1.1e-12)*i` twice and `NL=2 NR=2`
+(theta = 1.0864348112133...). `BITS` outside `[0, 2^21]` or not an integer is `DOMAIN`; a parameter ball whose
+radius holds the width above `2^-BITS` at every precision (the witness `c exp(-pi x^2)`, `c` in `[1, 2]`) is
+`NOT_DETERMINED`; the work cap of decision D1 (for example `Re(A) = 10^-8`) is `LIMIT`. Fixture:
+`tests/driver/poisson`.

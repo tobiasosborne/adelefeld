@@ -289,6 +289,23 @@ else
 fi
 rm -f "$tensor_output"
 
+# Slice 4g (lane f4-slice6): Poisson summation with certified tails, adf_tensor_poisson.
+poisson_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/poisson.jl "$so" > "$poisson_output" 2>&1; then
+    cat "$poisson_output"
+elif grep -q '__gmpn_modexact_1_odd' "$poisson_output" 2>/dev/null \
+        && poisson_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$poisson_gmp" ] \
+        && LD_PRELOAD="$poisson_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/poisson.jl "$so"; then
+    echo "== tests/julia/poisson.jl passed with LD_PRELOAD=$poisson_gmp"
+else
+    cat "$poisson_output"
+    rm -f "$poisson_output"
+    echo "test_julia: tests/julia/poisson.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$poisson_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

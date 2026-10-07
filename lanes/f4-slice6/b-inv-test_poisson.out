@@ -1,0 +1,43 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_poisson: argument right is not a canonical output distinct from left
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_poisson: argument NR is not a canonical cutoff pointer distinct from NL
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_poisson: argument NR is not a canonical cutoff pointer distinct from NL
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_poisson: argument NR is not a canonical cutoff pointer distinct from NL
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_poisson: argument phi is not a canonical adf_rfun
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_poisson: argument f is not a canonical adf_ffun
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+vectors: 200 calls checked, 1651 planted tail comparisons, 351 radius windows
+direct: 50 records, right and left against direct partial sums
+theta: contains sum exp(-pi n^2) at bits 0, 20, 30, 53, 80, 128; retries from prec 2 and 20
+witness: NOT_DETERMINED with sentinels untouched; input radii carried; width after the tail
+work cap: two LIMIT calls in 0.000 s
+INV: 6 precondition aborts
+poisson: 47850 checks

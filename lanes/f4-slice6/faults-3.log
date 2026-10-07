@@ -1,0 +1,3 @@
+16. the right tail with |g[0]| for max_k |g[k]|: caught: tests/test_poisson.c:517: acb_overlaps(l, r) && narrow(l, 30) && narrow(r, 30) && NR >= 1
+21. the stall rule without the halving (any non-decrease): caught: tests/test_poisson.c:403: seconds() - t0 < 1.0
+caught 2 of 2

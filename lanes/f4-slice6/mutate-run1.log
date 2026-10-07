@@ -1,0 +1,237 @@
+mutate: src/poisson.c: 399 mutants
+mutate: 399 mutants, 60 of them run (--limit 60, --seed 20261008)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (36.9 s)
+
+SURVIVED src/poisson.c:95:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -93,5 +93,5 @@
+           return 0;
+       if (phi->len > ADF_RFUN_TERMS_MAX)
+  -        return 0;
+  +        return 1;
+       for (i = 0; i < phi->len; i++)
+       {
+
+
+SURVIVED src/poisson.c:356:13 swap_args: 'arb_add(E, E, B, PN_TP)' -> 'arb_add(E, B, E, PN_TP)'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -354,5 +354,5 @@
+           {
+               st = pn_lattice(B, hat->term + i, a, h, N, w, pp);
+  -            arb_add(E, E, B, PN_TP);
+  +            arb_add(E, B, E, PN_TP);
+           }
+           arf_set_mag(arb_midref(a), gmax);
+
+
+SURVIVED src/poisson.c:131:5 drop_call: 'arb_div(t, t, alpha, PN_TP);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -129,5 +129,5 @@
+       arb_const_log2(t, PN_TP);
+       arb_add(t, t, beta, PN_TP);
+  -    arb_div(t, t, alpha, PN_TP);
+  +    
+       arb_sub_ui(t, t, 1, PN_TP);
+       arb_mul_2exp_si(t, t, -1);
+
+
+SURVIVED src/poisson.c:201:16 status: 'ADF_OK' -> 'ADF_DOMAIN'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -199,5 +199,5 @@
+       {
+           arb_zero(B);
+  -        return ADF_OK;
+  +        return ADF_DOMAIN;
+       }
+       if (!pn_charge(w, (ulong) len * (ulong) len + (ulong) len))
+
+
+NOT COMPILED src/poisson.c:389:56 drop_call: 'pn_tail_right(E, fn, gmax, f->M, N, w, pp);' -> '' (the statement is removed)
+  src/poisson.c:390:9: error: expected expression before ‘if’
+
+SURVIVED src/poisson.c:200:9 drop_call: 'arb_zero(B);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -198,5 +198,5 @@
+       if (len == 0)
+       {
+  -        arb_zero(B);
+  +        
+           return ADF_OK;
+       }
+
+
+SURVIVED src/poisson.c:386:13 drop_assign: 'st = ADF_LIMIT;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -384,5 +384,5 @@
+           if (npts > 0 && (2 * N + 1) > ((ulong) ADF_TENSOR_WORK_MAX - *w) / npts)
+           {
+  -            st = ADF_LIMIT;
+  +            
+               break;
+           }
+
+
+SURVIVED src/poisson.c:76:23 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -74,5 +74,5 @@
+       {
+           L = (ulong) acb_poly_length(phi->term[i].P);
+  -        u += L == 0 ? 0 : 2 * L * L - L + 1;
+  +        u += L == 0 ? 1 : 2 * L * L - L + 1;
+       }
+       return u;
+
+
+SURVIVED src/poisson.c:359:9 drop_call: 'mag_zero(arb_radref(a));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -357,5 +357,5 @@
+           }
+           arf_set_mag(arb_midref(a), gmax);
+  -        mag_zero(arb_radref(a));
+  +        
+           arb_mul(E, E, a, PN_TP);
+       }
+
+
+SURVIVED src/poisson.c:132:5 drop_call: 'arb_sub_ui(t, t, 1, PN_TP);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -130,5 +130,5 @@
+       arb_add(t, t, beta, PN_TP);
+       arb_div(t, t, alpha, PN_TP);
+  -    arb_sub_ui(t, t, 1, PN_TP);
+  +    
+       arb_mul_2exp_si(t, t, -1);
+       arb_sub_ui(t, t, K, PN_TP);
+
+
+SURVIVED src/poisson.c:134:5 drop_call: 'arb_sub_ui(t, t, K, PN_TP);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -132,5 +132,5 @@
+       arb_sub_ui(t, t, 1, PN_TP);
+       arb_mul_2exp_si(t, t, -1);
+  -    arb_sub_ui(t, t, K, PN_TP);
+  +    
+       arb_get_lbound_arf(b, t, PN_TP);
+       if (!arf_is_finite(b) || arf_cmp_ui(b, (ulong) ADF_TENSOR_WORK_MAX - *w) > 0)
+
+
+SURVIVED src/poisson.c:99:15 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -97,5 +97,5 @@
+       {
+           s += acb_poly_length(phi->term[i].P);
+  -        if (s > ADF_RFUN_COEFFS_MAX)
+  +        if (s >= ADF_RFUN_COEFFS_MAX)
+               return 0;
+       }
+
+
+SURVIVED src/poisson.c:135:5 drop_call: 'arb_get_lbound_arf(b, t, PN_TP);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -133,5 +133,5 @@
+       arb_mul_2exp_si(t, t, -1);
+       arb_sub_ui(t, t, K, PN_TP);
+  -    arb_get_lbound_arf(b, t, PN_TP);
+  +    
+       if (!arf_is_finite(b) || arf_cmp_ui(b, (ulong) ADF_TENSOR_WORK_MAX - *w) > 0)
+           st = ADF_LIMIT;
+
+
+SURVIVED src/poisson.c:384:68 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -382,5 +382,5 @@
+       for (;;)
+       {
+  -        if (npts > 0 && (2 * N + 1) > ((ulong) ADF_TENSOR_WORK_MAX - *w) / npts)
+  +        if (npts > 0 && (2 * N + 1) > ((ulong) ADF_TENSOR_WORK_MAX + *w) / npts)
+           {
+               st = ADF_LIMIT;
+
+
+SURVIVED src/poisson.c:249:9 swap_args: 'arb_mul(hp, hp, h, pp)' -> 'arb_mul(hp, h, hp, pp)'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -247,5 +247,5 @@
+       {
+           acb_mul_arb(y, Q->coeffs + j, hp, pp);           /* q_j = Q_j h^j */
+  -        arb_mul(hp, hp, h, pp);
+  +        arb_mul(hp, h, hp, pp);
+           acb_get_mag(m, y);
+           if (mag_is_zero(m))
+
+
+NOT COMPILED src/poisson.c:503:5 drop_call: 'mag_max(d, arb_radref(acb_realref(l)), arb_radref(acb_imagref(l)));' -> '' (the statement is removed)
+  src/poisson.c:501:32: error: unused parameter ‘l’ [-Werror=unused-parameter]
+
+SURVIVED src/poisson.c:561:35 op: '/' -> '*'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -559,5 +559,5 @@
+           mag_set(prev, d);
+           pprev = p;
+  -        p = p > ADF_REAL_PREC_MAX / 2 ? ADF_REAL_PREC_MAX : 2 * p;
+  +        p = p > ADF_REAL_PREC_MAX * 2 ? ADF_REAL_PREC_MAX : 2 * p;
+       }
+       if (st == ADF_OK)
+
+
+SURVIVED src/poisson.c:417:37 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -415,5 +415,5 @@
+       fmpq_t q;
+       mag_t gmax, m;
+  -    ulong L = f->D * f->M, j, nnz = 0, ul = pn_eval_units(phi), ur;
+  +    ulong L = f->D * f->M, j, nnz = 1, ul = pn_eval_units(phi), ur;
+       slong n, pp = FLINT_MAX(p, PN_TP);
+       int st = ADF_OK;
+
+
+NOT COMPILED src/poisson.c:532:23 logic: '&&' -> '||'
+  src/poisson.c:532:37: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/poisson.c:384:34 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/poisson.c
+  +++ b/src/poisson.c
+  @@ -382,5 +382,5 @@
+       for (;;)
+       {
+  -        if (npts > 0 && (2 * N + 1) > ((ulong) ADF_TENSOR_WORK_MAX - *w) / npts)
+  +        if (npts > 0 && (2 * N + 0) > ((ulong) ADF_TENSOR_WORK_MAX - *w) / npts)
+           {
+               st = ADF_LIMIT;
+
+
+mutate: 60 mutants in 517.4 s: 40 killed, 17 survived, 3 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 17 mutant(s) survived; each one is a claim the tests do not check

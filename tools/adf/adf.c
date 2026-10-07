@@ -239,6 +239,7 @@ typedef enum
     ADF_DRV_FFUN_NORM2,
     ADF_DRV_TENSOR_INTEGRAL,
     ADF_DRV_TENSOR_NORM2,
+    ADF_DRV_POISSON,           /* slice 4g (lane f4-slice6): Poisson summation, adf_drv_poisson */
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -358,6 +359,7 @@ static const struct
     { "ffun_norm2", ADF_DRV_FFUN_NORM2, 1 },
     { "tensor_integral", ADF_DRV_TENSOR_INTEGRAL, 2 },
     { "tensor_norm2", ADF_DRV_TENSOR_NORM2, 2 },
+    { "poisson", ADF_DRV_POISSON, 3 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -3315,6 +3317,56 @@ done:
     return status;
 }
 
+/* Slice 4g (lane f4-slice6; docs/api-4.md 7 and 9 item 7; docs/api-4c.md "Slice 4g"; include/adelefeld/tensor.h).
+     poisson R with F with BITS   adf_tensor_poisson at the setting prec: one line
+                                  "LEFT | RIGHT | NL=n NR=n", the two balls printed as psi prints them.
+   R is an rfun text, F an ffun text, BITS an integer (a rational with denominator 1; another rational is DOMAIN,
+   an integer outside slong is DOMAIN, as the call gives for bits outside [0, 2^21]). Steps as for every command:
+   the syntax of each operand, then its kind, then the values, then the operation, then the printer. */
+static char *
+adf_drv_acb_text(const acb_t z, const adf_drv_state *st, size_t *n)
+{
+    adf_cadele_t c; adf_fball_t zero; char *text = NULL; size_t len = 0;
+    adf_cadele_init(c); adf_fball_init(zero);
+    if (adf_cadele_set_acb_fball(c, z, zero) == ADF_OK) {
+        text = adf_cadele_get_str(&len, c, st->digits);
+        if (text != NULL && (len < 7 || memcmp(text + len - 5, " ; 0)", 5))) { adf_str_free(text); text = NULL; }
+    }
+    adf_cadele_clear(c); adf_fball_clear(zero);
+    *n = text == NULL ? 0 : len - 6;
+    return text;
+}
+static int
+adf_drv_poisson(FILE *out, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind want[3] = { ADF_TEXT_RFUN, ADF_TEXT_FFUN, ADF_TEXT_RAT }, kind; adf_rfun_t r; adf_ffun_t f;
+    adf_rat_t q; acb_t a, b; ulong nl = 0, nr = 0; char *ta = NULL, *tb = NULL; size_t la, lb; slong bits = 0;
+    int i, status = ADF_OK, wrong = 0;
+    adf_rfun_init(r); adf_ffun_init(f); adf_rat_init(q); acb_init(a); acb_init(b);
+    for (i = 0; i < 3; i++) {
+        status = adf_text_classify(&kind, l->s[i], l->n[i], NULL);
+        if (status != ADF_OK) goto done;
+        wrong |= kind != want[i];
+    }
+    if (wrong) { status = ADF_DOMAIN; goto done; }
+    status = adf_rfun_set_str(r, l->s[0], l->n[0], st->prec, NULL);
+    if (status == ADF_OK) status = adf_ffun_set_str(f, l->s[1], l->n[1], st->prec, NULL);
+    if (status == ADF_OK) status = adf_rat_set_str(q, l->s[2], l->n[2], NULL);
+    if (status != ADF_OK) goto done;
+    if (!fmpz_is_one(fmpq_denref(q->q)) || !fmpz_fits_si(fmpq_numref(q->q))) { status = ADF_DOMAIN; goto done; }
+    bits = fmpz_get_si(fmpq_numref(q->q));
+    status = adf_tensor_poisson(a, b, &nl, &nr, r, f, bits, st->prec);
+    if (status != ADF_OK) goto done;
+    ta = adf_drv_acb_text(a, st, &la);
+    tb = adf_drv_acb_text(b, st, &lb);
+    if (ta == NULL || tb == NULL) { status = ADF_LIMIT; goto done; }
+    fprintf(out, "%.*s | %.*s | NL=%lu NR=%lu\n", (int) la, ta + 1, (int) lb, tb + 1, nl, nr);
+done:
+    adf_str_free(ta); adf_str_free(tb);
+    adf_rfun_clear(r); adf_ffun_clear(f); adf_rat_clear(q); acb_clear(a); acb_clear(b);
+    return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3516,6 +3568,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
     if (op == ADF_DRV_RFUN_FOURIER || op == ADF_DRV_RFUN_DERIVATIVE || op == ADF_DRV_RFUN_INTEGRAL ||
         op == ADF_DRV_RFUN_NORM2) return adf_drv_rfun4e(out, op, l, st);
     if (op >= ADF_DRV_TENSOR_EVAL && op <= ADF_DRV_TENSOR_NORM2) return adf_drv_tensor(out, op, l, st);
+    if (op == ADF_DRV_POISSON) return adf_drv_poisson(out, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

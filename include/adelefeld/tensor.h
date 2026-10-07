@@ -86,6 +86,31 @@ int adf_tensor_integral(acb_t z, const adf_rfun_t phi, const adf_ffun_t f, slong
    Cost: the two norms (the real norm includes O(len^2) ordered products). */
 int adf_tensor_norm2(arb_t z, const adf_rfun_t phi, const adf_ffun_t f, slong prec);
 
+/* Slice 4g: Poisson summation with certified tails (docs/api-4.md section 7, statement P1, slice 4g of section
+   9; analysis Proposition 7, docs/proofs/analysis.md:260-294, and Lemma 6, :213-259; statements, proofs and
+   decisions in docs/api-4c.md "Slice 4g"). Code in src/poisson.c.
+   left encloses sum_j f[j] sum_(n in Z) phi(j/D + M n) and right encloses sum_(n in Z) g[n mod L] phihat(n/M),
+   L = D M, g = adf_ffun_fourier(f), phihat = adf_rfun_fourier(phi); the two sums are computed independently
+   (right is never derived from left), n = 0 included. *NL and *NR are the lattice cutoffs: the terms with
+   |n| <= NL (left, for every j) and |n| <= NR (right) are summed, each the first of 0, 1, 2, 4, ... whose Lemma 6
+   tail E_L = sum_j upper(|f[j]|) sum_terms B_phi(j/D, M, NL), resp. E_R = max_k upper(|g[k]|) sum_terms
+   B_phihat(0, 1/M, NR), is certified <= 2^-bits/8 (the ratio rho <= 1/2 of Lemma 6 certified by an upper
+   bound). Each tail is added to both coordinate radii of its sum. OK certifies every coordinate diameter of
+   left and right <= 2^-bits; the working precision starts at max(prec, 2) and is doubled up to
+   ADF_REAL_PREC_MAX while a width or certificate fails, and it stops (NOT_DETERMINED) once a doubling from a
+   precision >= 64 does not halve the largest diameter: then the width is held by the input radii (the theta
+   witness c exp(-pi x^2), c in [1, 2], f = 1_Zhat: width 1.0864... at every precision).
+   Statuses, in this order: LIMIT for prec > ADF_REAL_PREC_MAX; LIMIT for the D1 sizes (L > ADF_FFUN_ITEMS_MAX,
+   the rfun caps, L^2 > 2^20 for the finite transform); DOMAIN for bits outside [0, 2^21]; LIMIT when more than
+   ADF_TENSOR_WORK_MAX work units are charged over all attempts (the two transforms, each Taylor shift, each
+   ratio iteration of Lemma 6 including the prefix, each lattice point evaluated, again on each retry; checked
+   before each step); NOT_DETERMINED for a width or certificate failure as above. Every status other than OK
+   leaves left, right, *NL and *NR untouched. Preconditions (INV aborts): canonical phi and f, left != right,
+   NL != NR, NL and NR not NULL. Cost per attempt: L^2 + the real transform, the tail searches (L lattices per
+   term on the left, one per term on the right, log NL + log NR steps), L (2 NL + 1) + 2 NR + 1 evaluations. */
+int adf_tensor_poisson(acb_t left, acb_t right, ulong * NL, ulong * NR, const adf_rfun_t phi, const adf_ffun_t f,
+                       slong bits, slong prec);
+
 #ifdef __cplusplus
 }
 #endif
