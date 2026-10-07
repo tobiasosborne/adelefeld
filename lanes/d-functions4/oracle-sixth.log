@@ -1,0 +1,27 @@
+python-flint 0.8.0 FLINT 3.3.1
+Exact phases/indices; acb at 212 bits; mpmath at 60 digits, numerical margin 1e-45
+finite_algebra: 1044 checks
+finite_transform: 80 checks
+idele_indices: 325 checks
+evaluation: 605 checks
+real_closure: 11 checks
+real_transform: 23 checks
+integral_norm: 5 checks
+goldens: 39 checks
+golden_transforms: 24 checks
+  width target 2^-30: N_left=1, N_right=8
+  width target 2^-80: N_left=2, N_right=16
+  width target 2^-120: N_left=2, N_right=16
+  fixed coefficient interval [1,2]: theta value width >= 1.08643481121330801
+poisson: 12 checks
+tails: 14 checks
+findings: 1 checks
+precision: 8 checks
+certified_poisson: 8 checks
+faults_41: 6 checks
+faults_42: 6 checks
+faults_43: 6 checks
+faults_44: 6 checks
+faults_45: 6 checks
+resource_examples: 1 checks
+TOTAL: 2230 checks
