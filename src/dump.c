@@ -1122,27 +1122,23 @@ dp_w_other(dp_cur * c, dp_state * st, int kind)
         case DP_FFUN:
         {
             /* D M, then D M complex balls; D < 0, M < 0 or 8 D M above the tokens left is a
-               grammar failure (proto _dump_syntax, lines 1077-1081) */
-            fmpz_t D, M;
+               grammar failure (proto _dump_syntax, lines 1077-1081). Decided on the tokens,
+               without fmpz_set_str: the grammar stage makes no FLINT call (conventions 10.2,
+               CV-52; dump.h:292-293; review m4 finding 2, lane r-dump2). If D, M > 0, then
+               8 D M <= left iff M <= floor(floor(left / 8) / D); a token of more than 16
+               digits is at least 2^64 and exceeds any count of tokens. */
+            ulong d, m;
             size_t dm = 0;
             int bad;
             if (!dp_h(c, &t) || !dp_h(c, &u))
                 return dp_parse_fail(st);
-            fmpz_init(D);
-            fmpz_init(M);
-            dp_fmpz(D, t);
-            dp_fmpz(M, u);
-            bad = fmpz_sgn(D) < 0 || fmpz_sgn(M) < 0;
-            if (!bad)
+            bad = dp_neg(t) || dp_neg(u);
+            if (!bad && !dp_zero(t) && !dp_zero(u))
             {
-                fmpz_mul(D, D, M);
-                fmpz_mul_ui(M, D, 8);
-                bad = fmpz_cmp_ui(M, (ulong) c->left) > 0;
+                bad = !dp_word(t, &d) || !dp_word(u, &m) || m > ((ulong) c->left / 8) / d;
                 if (!bad)
-                    dm = (size_t) fmpz_get_ui(D);
+                    dm = (size_t) (d * m);
             }
-            fmpz_clear(D);
-            fmpz_clear(M);
             if (bad)
                 return dp_parse_fail(st);
             if (st->mode == DP_LIMITS && dp_over_items(dm, st->lim))
