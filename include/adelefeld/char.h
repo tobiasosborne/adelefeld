@@ -9,6 +9,7 @@
 
 #include "adelefeld/text.h"
 #include "adelefeld/psi.h"
+#include "adelefeld/ucoset.h"
 
 #define ADF_CHAR_MOD_MAX 65536
 
@@ -90,6 +91,26 @@ int adf_char_gauss_sum(acb_t tau, const adf_char_t chi, slong prec);
    Certify coordinate radii <=32*C*2^-w, else NOT_DETERMINED. No real-character shortcut.
    Sources: api-3c 4/P4; analysis P13:564. Cost Gauss plus sqrt/division/exact rotation. */
 int adf_char_root_number(acb_t W, const adf_char_t chi, slong prec);
+
+/* Slice b, api-3c 2/P3: pointwise conjugation (q,n^-1 mod q,parity,conj(s)); q=1 keeps n=1.
+   Whole-object y=x is allowed; initialized canonical inputs/output. No status or D1 cap.
+   [source pending: universal FLINT Conrey pairing identification]. Until supplied, use the
+   exponent-negation construction specified by the brief. HEADER-FINDING: this requires D(q)
+   setup, rather than only extended gcd as the design promises; setup failure is fail-stop.
+   Sources: dirichlet.h:36,84,114-123; api-3d Slice b. Exact conjugation of owned s. */
+void adf_char_conj(adf_char_t y, const adf_char_t x);
+/* chi on the entire unit coset, ignoring s: there is no t on this input.
+   P1: scan units a mod C with a=c mod gcd(C,N), using a compatible unit lift (F2).
+   P2/Q4: return the rectangular hull with endpoint excess at most
+   4*2^-p + 2^-28*(W/2+2*2^-p), p=max(prec,2), W the true coordinate width.
+   Strict: N=0 or C|N; otherwise NOT_DETERMINED before setup/trig/output writes.
+   LIMIT for precision or C>65536 first, before INV; UNSUPPORTED for setup;
+   NOT_DETERMINED for failed numerical certification. Every failure preserves z.
+   No output/member aliasing. Sources: api-3c 3/P1/P2, conventions 6.5/CV-07, api-3 Q4.
+   Cost D(C)+O(C) pairings and exact distance comparisons, four phase evaluations;
+   streaming storage. Reduce N modulo C; never factor N or enumerate lcm(C,N). */
+int adf_char_eval_ucoset(acb_t z, const adf_char_t chi, const adf_ucoset_t u, slong prec);
+int adf_char_eval_ucoset_strict(acb_t z, const adf_char_t chi, const adf_ucoset_t u, slong prec);
 
 #ifdef __cplusplus
 }

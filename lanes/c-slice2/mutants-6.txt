@@ -1,0 +1,12 @@
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310314)
+src/char.c:266:5 negate_if: 'if(fmpz_is_zero(u->N) || fmpz_fdiv_ui(u->N, C) == 0)' -> 'if(!(fmpz_is_zero(u->N) || fmpz_fdiv_ui(u->N, C) == 0))'
+src/char.c:219:13 swap_args: 'arf_add(sums+2*j, sums+2*j, lo, ARF_PREC_EXACT, ARF_RND_NEAR)' -> 'arf_add(sums+2*j, lo, sums+2*j, ARF_PREC_EXACT, ARF_RND_NEAR)'
+src/char.c:73:9 negate_if: 'if(!dirichlet_group_init(G, q))' -> 'if(!(!dirichlet_group_init(G, q)))'
+src/char.c:284:23 logic: '||' -> '&&'
+src/char.c:215:9 drop_assign: 'st = adf_phase_get_acb(term, theta, w);' -> '' (the statement is removed)
+src/char.c:238:34 logic: '||' -> '&&'
+src/char.c:219:37 op: '*' -> '/'
+src/char.c:17:91 negate_if: 'while(0)' -> 'while(!(0))'
+src/char.c:215:49 negate_if: 'if(st != ADF_OK)' -> 'if(!(st != ADF_OK))'
+src/char.c:45:17 zero_one: '0' -> '1'

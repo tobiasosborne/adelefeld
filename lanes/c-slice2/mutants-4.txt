@@ -1,0 +1,12 @@
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310312)
+src/char.c:280:52 call_swap: 'fmpq_sub' -> 'fmpq_add'
+src/char.c:239:24 drop_call: 'CHAR_INDEPENDENT(W, chi);' -> '' (the statement is removed)
+src/char.c:296:13 negate_if: 'if(acb_is_finite(point) && mag_cmp_2exp_si(arb_radref(acb_realref(point)), -p-1) <= 0)' -> 'if(!(acb_is_finite(point) && mag_cmp_2exp_si(arb_radref(acb_realref(point)), -p-1) <= 0))'
+src/char.c:330:14 cmp: '!=' -> '=='
+src/char.c:88:5 drop_call: 'acb_set(x->s, s);' -> '' (the statement is removed)
+src/char.c:95:11 cmp: '>' -> '>='
+src/char.c:292:9 drop_assign: 'work = FLINT_MIN(p+32, ADF_REAL_PREC_MAX);' -> '' (the statement is removed)
+src/char.c:258:55 zero_one: '1' -> '0'
+src/char.c:94:14 zero_one: '0' -> '1'
+src/char.c:206:50 status: 'ADF_UNSUPPORTED' -> 'ADF_OK'

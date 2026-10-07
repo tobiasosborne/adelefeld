@@ -1,0 +1,31 @@
+/usr/bin/ld: /tmp/ccXjAFMh.o: in function `conjugation':
+/home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:163:(.text+0x48f): undefined reference to `adf_char_conj'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:165:(.text+0x5d4): undefined reference to `adf_char_conj'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:166:(.text+0x5fa): undefined reference to `adf_char_conj'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:171:(.text+0x739): undefined reference to `adf_char_conj'
+/usr/bin/ld: /tmp/ccXjAFMh.o: in function `load':
+/home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:186:(.text+0xb55): undefined reference to `adf_char_load_str_binds'
+/usr/bin/ld: /tmp/ccXjAFMh.o: in function `dump_one':
+/home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:195:(.text+0xd3f): undefined reference to `adf_char_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:199:(.text+0xeaf): undefined reference to `adf_char_dump_inspect'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:200:(.text+0xed0): undefined reference to `adf_char_dump_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:201:(.text+0xf3a): undefined reference to `adf_char_load_str'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:204:(.text+0xff4): undefined reference to `adf_char_load_str_binds'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:206:(.text+0x1051): undefined reference to `adf_char_load_str_binds'
+/usr/bin/ld: /tmp/ccXjAFMh.o: in function `unit_vectors':
+/home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:103:(.text+0x1ac7): undefined reference to `adf_char_eval_ucoset_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:106:(.text+0x1b62): undefined reference to `adf_char_eval_ucoset'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:116:(.text+0x2352): undefined reference to `adf_char_eval_ucoset'
+/usr/bin/ld: /tmp/ccXjAFMh.o: in function `unit_edges':
+/home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:129:(.text+0x282c): undefined reference to `adf_char_eval_ucoset'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:130:(.text+0x2916): undefined reference to `adf_char_eval_ucoset_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:133:(.text+0x2a35): undefined reference to `adf_char_eval_ucoset'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:137:(.text+0x2b1d): undefined reference to `adf_char_eval_ucoset_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:140:(.text+0x2bb1): undefined reference to `adf_char_eval_ucoset'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:141:(.text+0x2be1): undefined reference to `adf_char_eval_ucoset_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:145:(.text+0x2cde): undefined reference to `adf_char_eval_ucoset_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:148:(.text+0x2d49): undefined reference to `adf_char_eval_ucoset_strict'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:145:(.text+0x2e01): undefined reference to `adf_char_eval_ucoset'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/c-slice2/tests/test_char_eval.c:148:(.text+0x2e11): undefined reference to `adf_char_eval_ucoset'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/c-slice2/build/test_char_eval] Error 1

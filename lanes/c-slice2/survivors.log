@@ -1,0 +1,28 @@
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice2/survivors/nonfinite.c -o lanes/c-slice2/survivors/nonfinite.o
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_EVAL_WRAP tests/test_char_eval.c lanes/c-slice2/survivors/nonfinite.o lanes/c-slice2/mut-base/support/jsonl.o lanes/c-slice2/mut-base/support/golden.o lanes/c-slice2/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice2/survivors/nonfinite
+$ timeout 30 lanes/c-slice2/survivors/nonfinite
+test_char_eval:347: adf_char_root_number(z, x, 53) == ADF_NOT_DETERMINED
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice2/survivors/principal_setup.c -o lanes/c-slice2/survivors/principal_setup.o
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_EVAL_WRAP tests/test_char_eval.c lanes/c-slice2/survivors/principal_setup.o lanes/c-slice2/mut-base/support/jsonl.o lanes/c-slice2/mut-base/support/golden.o lanes/c-slice2/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice2/survivors/principal_setup
+$ timeout 30 lanes/c-slice2/survivors/principal_setup
+test_char_eval:328: setups == before
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice2/survivors/cosine_width.c -o lanes/c-slice2/survivors/cosine_width.o
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_EVAL_WRAP tests/test_char_eval.c lanes/c-slice2/survivors/cosine_width.o lanes/c-slice2/mut-base/support/jsonl.o lanes/c-slice2/mut-base/support/golden.o lanes/c-slice2/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice2/survivors/cosine_width
+$ timeout 30 lanes/c-slice2/survivors/cosine_width
+test_char_eval:344: adf_char_eval_ucoset(z, x, u, 53) == ADF_NOT_DETERMINED
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice2/survivors/distance_sign.c -o lanes/c-slice2/survivors/distance_sign.o
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_EVAL_WRAP tests/test_char_eval.c lanes/c-slice2/survivors/distance_sign.o lanes/c-slice2/mut-base/support/jsonl.o lanes/c-slice2/mut-base/support/golden.o lanes/c-slice2/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice2/survivors/distance_sign
+$ timeout 30 lanes/c-slice2/survivors/distance_sign
+test_char_eval:87: !arb_lt(excess, (arb_set_arf(width, lo), width))
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -c lanes/c-slice2/survivors/infinite_macro.c -o lanes/c-slice2/survivors/infinite_macro.o
+$ timeout 30 cc -Iinclude -Isrc -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -DADF_CHECK_INVARIANTS -fsanitize=address,undefined -fno-omit-frame-pointer -DADF_CHAR_EVAL_WRAP tests/test_char_eval.c lanes/c-slice2/survivors/infinite_macro.o lanes/c-slice2/mut-base/support/jsonl.o lanes/c-slice2/mut-base/support/golden.o lanes/c-slice2/mut-base/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice2/survivors/infinite_macro
+$ timeout 2 lanes/c-slice2/survivors/infinite_macro
+EXIT 124

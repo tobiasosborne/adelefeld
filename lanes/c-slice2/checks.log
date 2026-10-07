@@ -1,0 +1,41 @@
+timeout 180 make -s -j2 BUILD=lanes/c-slice2/plain lanes/c-slice2/plain/test_char lanes/c-slice2/plain/test_char_eval lanes/c-slice2/plain/test_dump lanes/c-slice2/plain/test_dump_ctx lanes/c-slice2/plain/test_dump_golden lanes/c-slice2/plain/test_dump_limits lanes/c-slice2/plain/test_dump_local lanes/c-slice2/plain/test_dump_units lanes/c-slice2/plain/test_qclass_dump EXIT 0
+timeout 60 lanes/c-slice2/plain/test_char EXIT 0
+timeout 60 lanes/c-slice2/plain/test_char_eval EXIT 0
+timeout 60 lanes/c-slice2/plain/test_dump EXIT 0
+timeout 60 lanes/c-slice2/plain/test_dump_ctx EXIT 0
+timeout 60 lanes/c-slice2/plain/test_dump_golden EXIT 0
+timeout 60 lanes/c-slice2/plain/test_dump_limits EXIT 0
+timeout 60 lanes/c-slice2/plain/test_dump_local EXIT 0
+timeout 60 lanes/c-slice2/plain/test_dump_units EXIT 0
+timeout 60 lanes/c-slice2/plain/test_qclass_dump EXIT 0
+timeout 180 make -s -j2 BUILD=lanes/c-slice2/san SAN=1 lanes/c-slice2/san/test_char lanes/c-slice2/san/test_char_eval lanes/c-slice2/san/test_dump lanes/c-slice2/san/test_dump_ctx lanes/c-slice2/san/test_dump_golden lanes/c-slice2/san/test_dump_limits lanes/c-slice2/san/test_dump_local lanes/c-slice2/san/test_dump_units lanes/c-slice2/san/test_qclass_dump EXIT 0
+timeout 60 lanes/c-slice2/san/test_char_eval EXIT 1
+timeout 60 lanes/c-slice2/san/test_char EXIT 0
+timeout 60 lanes/c-slice2/san/test_char_eval EXIT 0
+timeout 60 lanes/c-slice2/san/test_dump EXIT 0
+timeout 60 lanes/c-slice2/san/test_dump_ctx EXIT 0
+timeout 60 lanes/c-slice2/san/test_dump_golden EXIT 0
+timeout 60 lanes/c-slice2/san/test_dump_limits EXIT 0
+timeout 60 lanes/c-slice2/san/test_dump_local EXIT 0
+timeout 60 lanes/c-slice2/san/test_dump_units EXIT 0
+timeout 60 lanes/c-slice2/san/test_qclass_dump EXIT 0
+timeout 180 make -s -j2 BUILD=lanes/c-slice2/inv INV=1 lanes/c-slice2/inv/test_char lanes/c-slice2/inv/test_char_eval lanes/c-slice2/inv/test_dump lanes/c-slice2/inv/test_dump_ctx lanes/c-slice2/inv/test_dump_golden lanes/c-slice2/inv/test_dump_limits lanes/c-slice2/inv/test_dump_local lanes/c-slice2/inv/test_dump_units lanes/c-slice2/inv/test_qclass_dump EXIT 0
+timeout 60 lanes/c-slice2/inv/test_char EXIT 0
+timeout 60 lanes/c-slice2/inv/test_char_eval EXIT 0
+timeout 60 lanes/c-slice2/inv/test_dump EXIT 0
+timeout 60 lanes/c-slice2/inv/test_dump_ctx EXIT 0
+timeout 60 lanes/c-slice2/inv/test_dump_golden EXIT 0
+timeout 60 lanes/c-slice2/inv/test_dump_limits EXIT 0
+timeout 60 lanes/c-slice2/inv/test_dump_local EXIT 0
+timeout 60 lanes/c-slice2/inv/test_dump_units EXIT 0
+timeout 60 lanes/c-slice2/inv/test_qclass_dump EXIT 0
+timeout 30 cc -Iinclude -Itests -DADF_CHECK_INVARIANTS -DADF_CHAR_EVAL_WRAP -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror tests/test_char_eval.c lanes/c-slice2/inv/support/jsonl.o lanes/c-slice2/inv/support/golden.o lanes/c-slice2/inv/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice2/inv/test_char_eval_wrap EXIT 0
+timeout 60 lanes/c-slice2/inv/test_char_eval_wrap EXIT 0
+timeout 180 make -s -j2 BUILD=lanes/c-slice2/clang CC=clang lanes/c-slice2/clang/test_char lanes/c-slice2/clang/test_char_eval lanes/c-slice2/clang/test_dump lanes/c-slice2/clang/test_dump_ctx lanes/c-slice2/clang/test_dump_golden lanes/c-slice2/clang/test_dump_limits lanes/c-slice2/clang/test_dump_local lanes/c-slice2/clang/test_dump_units lanes/c-slice2/clang/test_qclass_dump EXIT 0
+timeout 60 lanes/c-slice2/clang/test_char EXIT 0
+timeout 60 lanes/c-slice2/clang/test_char_eval EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_ctx EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_golden EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_limits EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_local EXIT 0

@@ -1,0 +1,51 @@
+$ timeout 180 python3 -u tools/mutate/mutate.py --root . --scratch /tmp/adf-c-slice2-mutate-3 --files src/char.c --limit 10 --seed 310311 --jobs 1 --timeout 45 --san --make timeout 150 sh lanes/c-slice2/mutate_check.sh --copy Makefile include src tests lanes
+mutate: src/char.c: 442 mutants
+mutate: 442 mutants, 10 of them run (--limit 10, --seed 310311)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (17.8 s)
+
+SURVIVED src/char.c:330:17 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -328,5 +328,5 @@
+       dirichlet_group_t G; dirichlet_char_t c; ulong label = 1;
+       ADF_INV_CHAR(x); ADF_INV_CHAR(y);
+  -    if (x->q != 1) {
+  +    if (x->q != 0) {
+           if (!dirichlet_group_init(G, x->q)) flint_abort();
+           dirichlet_char_init(c, G); dirichlet_char_log(c, G, x->n);
+
+
+NOT COMPILED src/char.c:229:47 op: '+' -> '-'
+  src/char.c:229:33: error: array subscript -1 is outside array bounds of ‘arf_struct[4]’ [-Werror=array-bounds=]
+
+SURVIVED src/char.c:94:19 swap_args: 'n_gcd(n, q)' -> 'n_gcd(q, n)'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -92,5 +92,5 @@
+       acb_t s; int st;
+       /* D1 before even acb initialization, as well as before group setup. */
+  -    if (q == 0 || n_gcd(n, q) != 1) return ADF_DOMAIN;
+  +    if (q == 0 || n_gcd( q,n) != 1) return ADF_DOMAIN;
+       if (q > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+       acb_init(s); st = adf_char_set_conrey_acb(x, q, n, s); acb_clear(s); return st;
+
+
+SURVIVED src/char.c:296:92 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/char.c
+  +++ b/src/char.c
+  @@ -294,5 +294,5 @@
+               st = adf_phase_get_acb(point, best+j, work);
+               if (st != ADF_OK) break;
+  -            if (acb_is_finite(point) && mag_cmp_2exp_si(arb_radref(acb_realref(point)), -p-1) <= 0) {
+  +            if (acb_is_finite(point) && mag_cmp_2exp_si(arb_radref(acb_realref(point)), -p-0) <= 0) {
+                   arb_get_interval_arf(lo, upper+j, acb_realref(point), ARF_PREC_EXACT);
+                   if (arf_cmp_si(upper+j, 1) > 0) arf_one(upper+j);
+
+
+mutate: 10 mutants in 140.3 s: 6 killed, 3 survived, 1 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 3 mutant(s) survived; each one is a claim the tests do not check
+EXIT 1

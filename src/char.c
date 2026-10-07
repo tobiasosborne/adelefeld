@@ -248,3 +248,96 @@ int adf_char_root_number(acb_t W, const adf_char_t chi, slong prec)
     }
     acb_clear(out); arb_clear(root); return st;
 }
+
+/* Slice b, api-3c P1/F2: residues of global units in c U(N) are exactly the units a mod C
+   with a=c mod gcd(C,N). Scanning those residues avoids any incompatible choice of lift. */
+static int char_unit(acb_t z, const adf_char_t chi, const adf_ucoset_t u, slong prec, int strict)
+{
+    dirichlet_group_t G; dirichlet_char_t c; ulong C = chi->q, g, residue, a;
+    fmpq_t theta, distance, complement; fmpq best[4]; arf_struct upper[4];
+    arf_t lo, hi; acb_t point, out; int zero, first = 1, st = ADF_OK;
+    slong p = FLINT_MAX(prec, 2), work;
+    const ulong quarters[] = {0, 2, 1, 3};
+    if (prec > ADF_REAL_PREC_MAX || C > ADF_CHAR_MOD_MAX) return ADF_LIMIT;
+    ADF_INV_CHAR(chi); CHAR_INDEPENDENT(z, chi);
+#ifdef ADF_CHECK_INVARIANTS
+    if (!adf_ucoset_is_canonical(u)) adf_inv_fail(__func__, "u", "adf_ucoset");
+#endif
+    if (fmpz_is_zero(u->N) || fmpz_fdiv_ui(u->N, C) == 0)
+        return adf_char_chi(z, chi, u->c, prec);
+    if (strict) return ADF_NOT_DETERMINED;
+    g = n_gcd(fmpz_fdiv_ui(u->N, C), C); residue = fmpz_fdiv_ui(u->c, g);
+    if (!dirichlet_group_init(G, C)) return ADF_UNSUPPORTED;
+    dirichlet_char_init(c, G); dirichlet_char_log(c, G, chi->n);
+    fmpq_init(theta); fmpq_init(distance); fmpq_init(complement);
+    for (int j = 0; j < 4; j++) { fmpq_init(best+j); arf_init(upper+j); }
+    arf_init(lo); arf_init(hi); acb_init(point); acb_init(out);
+    /* P2: minimize circle distance separately to all four cardinal phases. Each extremum
+       is attained in this finite set. No chi(c) zero branch applies to a unit coset. */
+    for (a = 1; a < C; a++) if (a % g == residue && n_gcd(a, C) == 1) {
+        char_phase(&zero, theta, G, c, a);
+        for (int j = 0; j < 4; j++) {
+            fmpq_set_ui(distance, quarters[j], 4); fmpq_sub(distance, distance, theta);
+            fmpz_mod(fmpq_numref(distance), fmpq_numref(distance), fmpq_denref(distance));
+            fmpq_one(complement); fmpq_sub(complement, complement, distance);
+            if (fmpq_cmp(complement, distance) < 0) fmpq_set(distance, complement);
+            if (first || fmpq_cmp(distance, best+j) < 0) fmpq_set(best+j, distance);
+        }
+        first = 0;
+    }
+    if (first) st = ADF_NOT_DETERMINED;
+    /* Q4 certificate, api-3c 3: refine phase's cosine until width <=2^-p, then clip to
+       [-1,1]. Reuse slice a's Q1 radius kernel rather than introduce another rounder. */
+    for (int j = 0; st == ADF_OK && j < 4; j++) {
+        work = FLINT_MIN(p+32, ADF_REAL_PREC_MAX);
+        for (;;) {
+            st = adf_phase_get_acb(point, best+j, work);
+            if (st != ADF_OK) break;
+            if (acb_is_finite(point) && mag_cmp_2exp_si(arb_radref(acb_realref(point)), -p-1) <= 0) {
+                arb_get_interval_arf(lo, upper+j, acb_realref(point), ARF_PREC_EXACT);
+                if (arf_cmp_si(upper+j, 1) > 0) arf_one(upper+j);
+                break;
+            }
+            if (work == ADF_REAL_PREC_MAX) { st = ADF_NOT_DETERMINED; break; }
+            work = FLINT_MIN(2*work, ADF_REAL_PREC_MAX);
+        }
+    }
+    if (st == ADF_OK) {
+        arf_neg(lo, upper+1); arf_set(hi, upper); char_round(acb_realref(out), lo, hi, p);
+        arf_neg(lo, upper+3); arf_set(hi, upper+2); char_round(acb_imagref(out), lo, hi, p);
+        if (!acb_is_finite(out)) st = ADF_NOT_DETERMINED;
+        else acb_swap(z, out);
+    }
+    fmpq_clear(theta); fmpq_clear(distance); fmpq_clear(complement);
+    for (int j = 0; j < 4; j++) { fmpq_clear(best+j); arf_clear(upper+j); }
+    arf_clear(lo); arf_clear(hi); acb_clear(point); acb_clear(out);
+    dirichlet_char_clear(c); dirichlet_group_clear(G); return st;
+}
+int adf_char_eval_ucoset(acb_t z, const adf_char_t chi, const adf_ucoset_t u, slong prec)
+{ return char_unit(z, chi, u, prec, 0); }
+int adf_char_eval_ucoset_strict(acb_t z, const adf_char_t chi, const adf_ucoset_t u, slong prec)
+{ return char_unit(z, chi, u, prec, 1); }
+
+/* api-3c P3.4: inversion negates cyclic exponents. Header:84 states
+   "s.t. prod generators[k]^log[k] = number"; :36 stores component phi, :123 rebuilds n.
+   [source pending: FLINT pairing identification]. The brief requires this fallback.
+   HEADER-FINDING: the fallback costs D(q), not only extended gcd; the void ABI has no
+   recoverable setup-failure result. No D1 cutoff is imposed on this exact operation. */
+void adf_char_conj(adf_char_t y, const adf_char_t x)
+{
+    dirichlet_group_t G; dirichlet_char_t c; ulong label = 1;
+    ADF_INV_CHAR(x); ADF_INV_CHAR(y);
+    if (x->q != 1) {
+        if (!dirichlet_group_init(G, x->q)) flint_abort();
+        dirichlet_char_init(c, G); dirichlet_char_log(c, G, x->n);
+        for (slong j = 0; j < G->num; j++) {
+            ulong order = G->P[j].phi.n;
+            c->log[j] = c->log[j] == 0 ? 0 : order-c->log[j];
+        }
+        /* Public char_exp (:116-120) only returns cached n; the underscore function
+           (:123) updates it after log edits. Calling the inline would retain the old label. */
+        label = _dirichlet_char_exp(c, G);
+        dirichlet_char_clear(c); dirichlet_group_clear(G);
+    }
+    y->q = x->q; y->n = label; y->parity = x->parity; acb_conj(y->s, x->s);
+}

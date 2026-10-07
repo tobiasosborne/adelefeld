@@ -840,3 +840,19 @@ The chi call also accepts A directly, without the word `with`.
 The first call prints conductor 8 and label 5. The second prints `(0) + (1)*i`.
 The last prints `e=1 tau=(0) + (2)*i W=(1) + (0)*i`.
 Sources: docs/api-3c.md 2-4,7; docs/proofs/analysis.md Lemma 8 and Proposition 13.
+# Character slice b
+
+`char_conj C` prints the conjugate character. `char_unit C with U` encloses all values of the finite
+character on the unit coset U. It ignores s. `char_unit_strict C with U` gives NOT_DETERMINED unless
+the conductor divides the coset modulus or U is exact. For example:
+
+    adf char_unit 'char(q=5, n=2, s=(0) + (0)*i)' with '[1 mod 1]'
+    adf char_unit_strict 'char(q=5, n=2, s=(0) + (0)*i)' with '[1 mod 1]'
+    adf char_conj 'char(q=5, n=2, s=(1) + (-2)*i)'
+
+The first command encloses the four cardinal roots, the second gives NOT_DETERMINED, and the third
+prints label 3 with s=(1)+(2)*i. Direct calls also accept the two operands without `with`.
+In scripts, `dump C` writes the strict lossless body `adf1 Q char q n acb` (hexadecimal fields).
+`load` reads that body with the typed character loader. An imprimitive dump pair gives DOMAIN.
+Value text construction continues to lower imprimitive pairs.
+Generic arithmetic on characters returns UNSUPPORTED; character products remain deferred.

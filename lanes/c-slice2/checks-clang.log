@@ -1,0 +1,11 @@
+timeout 180 make -s -j2 BUILD=lanes/c-slice2/clang CC=clang lanes/c-slice2/clang/test_char lanes/c-slice2/clang/test_char_eval lanes/c-slice2/clang/test_dump lanes/c-slice2/clang/test_dump_ctx lanes/c-slice2/clang/test_dump_golden lanes/c-slice2/clang/test_dump_limits lanes/c-slice2/clang/test_dump_local lanes/c-slice2/clang/test_dump_units lanes/c-slice2/clang/test_qclass_dump EXIT 0
+timeout 60 lanes/c-slice2/clang/test_char EXIT 0
+timeout 60 lanes/c-slice2/clang/test_char_eval EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_ctx EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_golden EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_limits EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_local EXIT 0
+timeout 60 lanes/c-slice2/clang/test_dump_units EXIT 0
+timeout 60 lanes/c-slice2/clang/test_qclass_dump EXIT 0
+FAILED 

@@ -1,0 +1,122 @@
+$ timeout 180 make -s -j2 BUILD=lanes/c-slice2/inv INV=1 lanes/c-slice2/inv/test_char lanes/c-slice2/inv/test_char_eval lanes/c-slice2/inv/test_dump lanes/c-slice2/inv/test_dump_ctx lanes/c-slice2/inv/test_dump_golden lanes/c-slice2/inv/test_dump_limits lanes/c-slice2/inv/test_dump_local lanes/c-slice2/inv/test_dump_units lanes/c-slice2/inv/test_qclass_dump
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_char
+memory: 5800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000134 seconds
+test_char: 129797 checks
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_char_eval
+conjugation: 1966 characters, 74434 unit products
+memory: 8100 FLINT blocks, 0 live after 100 cycles
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument u is not a canonical adf_ucoset
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_dump_str: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument y is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_load_str_binds: argument x is not a canonical adf_char
+test_char_eval: 1738325 checks
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_dump
+ok   rat_dump_text
+ok   rat_round_trip_random
+ok   rat_statuses_and_strictness
+ok   order_of_checks_two_faults
+ok   header_before_the_whitespace_of_the_body
+ok   grammar_before_limits_in_sball_and_rfun
+ok   fball_global_dump_text
+ok   fball_global_round_trip_random
+ok   fball_global_statuses
+ok   adele_round_trip_random
+ok   cadele_round_trip_random
+ok   adele_radius_edges
+ok   adele_statuses
+ok   inspect_without_contexts
+ok   hostile_bytes
+ok   input_at_the_end_of_a_page
+ok   load_over_a_value
+17 tests, 12259 checks, 0 failed checks, 0 failed tests
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_dump_ctx
+ok   local_fball_round_trip_1_2_64_128_blocks
+ok   local_fball_raw_example
+ok   adele_cadele_local_round_trip
+ok   scaled_round_trip_contexts
+ok   scaled_statuses
+ok   scaled_get_str
+ok   binding_rules
+ok   inspection_capacity
+ok   new_from_dump_every_body
+ok   reference_vectors
+ok   modctx_vectors_from_dump
+ok   local_dump_at_the_end_of_a_page
+ok   stage_edges_and_piece_order
+ok   binding_counts_of_every_type
+14 tests, 28587 checks, 0 failed checks, 0 failed tests
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_dump_golden
+ok   golden_dump_every_row
+1 tests, 763 checks, 0 failed checks, 0 failed tests
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_dump_limits
+ok   block_cap_refuses_65537_blocks_everywhere
+ok   block_cap_accepts_65536_blocks
+ok   block_count_of_a_short_text_is_a_grammar_failure
+ok   block_cap_and_max_items_in_that_order
+ok   block_cap_before_the_predicate_of_the_context
+ok   qclass_exponent_bound_at_and_above_the_bound
+ok   qclass_exponent_bound_is_a_limit_of_stage_four
+ok   no_exponent_bound_in_the_other_bodies
+ok   block_cap_accepts_65536_blocks_in_full
+9 tests, 297 checks, 0 failed checks, 0 failed tests
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_dump_local
+ok   golden_rows_of_dump_tsv
+ok   lball_round_trip_random
+ok   sball_round_trip_random
+ok   lball_strictness
+ok   sball_strictness
+ok   limits_and_order_of_checks
+ok   lball_exponent_word_and_prec
+ok   sball_exponent_and_radius_mantissa
+ok   qclass_stage_of_the_pieces_check
+ok   dump_texts_of_hand_values
+10 tests, 36205 checks, 0 failed checks, 0 failed tests
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_dump_units
+ok   golden_rows_of_dump_tsv
+ok   ucoset_round_trip_random
+ok   idele_round_trip_random
+ok   idclass_round_trip_random
+ok   ucoset_strictness
+ok   idele_strictness
+ok   idclass_strictness
+ok   idele_negative_midpoint_domain
+ok   tie_of_the_leading_bits_is_a_strict_inequality
+ok   sign_of_the_small_balls
+ok   limits_and_order_of_checks
+ok   dump_texts_of_hand_values
+12 tests, 32505051 checks, 0 failed checks, 0 failed tests
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_qclass_dump
+adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_dump_str: argument x is not a canonical adf_qclass
+qclass_dump: 33915 checks, 2000 random round trips
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -DADF_CHECK_INVARIANTS -DADF_CHAR_EVAL_WRAP -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror tests/test_char_eval.c lanes/c-slice2/inv/support/jsonl.o lanes/c-slice2/inv/support/golden.o lanes/c-slice2/inv/libadelefeld.a -Wl,--wrap=dirichlet_group_init -Wl,--wrap=adf_phase_get_acb -Wl,--wrap=arb_sqrt_ui -lflint -lgmp -lm -pthread -o lanes/c-slice2/inv/test_char_eval_wrap
+EXIT 0
+$ timeout 60 lanes/c-slice2/inv/test_char_eval_wrap
+conjugation: 1966 characters, 74434 unit products
+memory: 8100 FLINT blocks, 0 live after 100 cycles
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument u is not a canonical adf_ucoset
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_dump_str: argument x is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_conj: argument y is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument z is not a canonical independent acb output/input
+adelefeld: ADF_CHECK_INVARIANTS: char_unit: argument chi is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_char_load_str_binds: argument x is not a canonical adf_char
+test_char_eval: 1738351 checks
+EXIT 0

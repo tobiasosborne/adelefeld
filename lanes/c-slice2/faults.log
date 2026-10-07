@@ -1,0 +1,131 @@
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/lowering.c -o lanes/c-slice2/faults/lowering.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/lowering.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/lowering-test_char
+$ timeout 30 lanes/c-slice2/faults/lowering-test_char
+test_char:171: x->q == ui(jsonl_at(v, 0, &err)) && x->n == ui(jsonl_at(v, 1, &err))
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/lowering.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/lowering-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/lowering-test_char_eval
+conjugation: 1966 characters, 74434 unit products
+memory: 3300 FLINT blocks, 0 live after 100 cycles
+test_char_eval: 1738298 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/parity.c -o lanes/c-slice2/faults/parity.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/parity.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/parity-test_char
+$ timeout 30 lanes/c-slice2/faults/parity-test_char
+test_char:172: x->parity == (int) ui(jsonl_at(v, 2, &err))
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/parity.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/parity-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/parity-test_char_eval
+conjugation: 1966 characters, 74434 unit products
+memory: 3300 FLINT blocks, 0 live after 100 cycles
+test_char_eval: 1738298 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/zero.c -o lanes/c-slice2/faults/zero.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/zero.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/zero-test_char
+$ timeout 30 lanes/c-slice2/faults/zero-test_char
+test_char:232: zero == 1 && fmpq_is_zero(t)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/zero.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/zero-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/zero-test_char_eval
+test_char_eval:115: adf_char_chi_phase(&zero, phase, x, c) == ADF_OK && zero == (int) ui(at(v, 6))
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/strict_write.c -o lanes/c-slice2/faults/strict_write.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/strict_write.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/strict_write-test_char
+$ timeout 30 lanes/c-slice2/faults/strict_write-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000161 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/strict_write.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/strict_write-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/strict_write-test_char_eval
+test_char_eval:72: memcmp(bytes, z, sizeof(*bytes)) == 0
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/first_last_hull.c -o lanes/c-slice2/faults/first_last_hull.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/first_last_hull.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/first_last_hull-test_char
+$ timeout 30 lanes/c-slice2/faults/first_last_hull-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000164 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/first_last_hull.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/first_last_hull-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/first_last_hull-test_char_eval
+test_char_eval:87: !arb_lt(excess, (arb_set_arf(width, lo), width))
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/two_extrema.c -o lanes/c-slice2/faults/two_extrema.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/two_extrema.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/two_extrema-test_char
+$ timeout 30 lanes/c-slice2/faults/two_extrema-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000277 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/two_extrema.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/two_extrema-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/two_extrema-test_char_eval
+test_char_eval:94: arb_le(excess, bound)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/q_minus_n.c -o lanes/c-slice2/faults/q_minus_n.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/q_minus_n.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/q_minus_n-test_char
+$ timeout 30 lanes/c-slice2/faults/q_minus_n-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000166 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/q_minus_n.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/q_minus_n-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/q_minus_n-test_char_eval
+test_char_eval:194: y->q == x->q && y->n == ui(field(v, "inverse")) && y->parity == x->parity
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/strict_exact_only.c -o lanes/c-slice2/faults/strict_exact_only.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/strict_exact_only.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/strict_exact_only-test_char
+$ timeout 30 lanes/c-slice2/faults/strict_exact_only-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000157 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/strict_exact_only.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/strict_exact_only-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/strict_exact_only-test_char_eval
+test_char_eval:120: adf_char_eval_ucoset_strict(z, x, u, p) == (ui(at(v, 5)) ? ADF_OK : ADF_NOT_DETERMINED)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/incompatible_lift.c -o lanes/c-slice2/faults/incompatible_lift.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/incompatible_lift.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/incompatible_lift-test_char
+$ timeout 30 lanes/c-slice2/faults/incompatible_lift-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000129 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/incompatible_lift.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/incompatible_lift-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/incompatible_lift-test_char_eval
+test_char_eval:87: !arb_lt(excess, (arb_set_arf(width, lo), width))
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/imprimitive_dump.c -o lanes/c-slice2/faults/imprimitive_dump.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/imprimitive_dump.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/imprimitive_dump-test_char
+$ timeout 30 lanes/c-slice2/faults/imprimitive_dump-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000173 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/imprimitive_dump.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/imprimitive_dump-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/imprimitive_dump-test_char_eval
+test_char_eval:231: !strcmp(adf_status_str(st), status)
+timeout: the monitored command dumped core
+EXIT -6
+$ timeout 30 cc -Iinclude -Isrc -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror -c lanes/c-slice2/faults/early_dump_write.c -o lanes/c-slice2/faults/early_dump_write.o
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char.c lanes/c-slice2/faults/early_dump_write.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/early_dump_write-test_char
+$ timeout 30 lanes/c-slice2/faults/early_dump_write-test_char
+memory: 1800 FLINT blocks, 0 live after 100 cycles
+cap refusal 0.000000108 seconds
+test_char: 129725 checks
+EXIT 0
+$ timeout 30 cc -Iinclude -Itests -std=c11 -O2 tests/test_char_eval.c lanes/c-slice2/faults/early_dump_write.o lanes/c-slice2/plain/support/jsonl.o lanes/c-slice2/plain/support/golden.o lanes/c-slice2/plain/libadelefeld.a -lflint -lgmp -lm -o lanes/c-slice2/faults/early_dump_write-test_char_eval
+$ timeout 30 lanes/c-slice2/faults/early_dump_write-test_char_eval
+test_char_eval:243: !memcmp(&before, x, sizeof(before))
+timeout: the monitored command dumped core
+EXIT -6

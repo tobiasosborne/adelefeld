@@ -1,0 +1,90 @@
+[
+  {
+    "fault": "lowering",
+    "compile": 0,
+    "tests": [
+      -6,
+      0
+    ]
+  },
+  {
+    "fault": "parity",
+    "compile": 0,
+    "tests": [
+      -6,
+      0
+    ]
+  },
+  {
+    "fault": "zero",
+    "compile": 0,
+    "tests": [
+      -6,
+      -6
+    ]
+  },
+  {
+    "fault": "strict_write",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  },
+  {
+    "fault": "first_last_hull",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  },
+  {
+    "fault": "two_extrema",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  },
+  {
+    "fault": "q_minus_n",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  },
+  {
+    "fault": "strict_exact_only",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  },
+  {
+    "fault": "incompatible_lift",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  },
+  {
+    "fault": "imprimitive_dump",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  },
+  {
+    "fault": "early_dump_write",
+    "compile": 0,
+    "tests": [
+      0,
+      -6
+    ]
+  }
+]
