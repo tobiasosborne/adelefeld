@@ -10,8 +10,8 @@ number, conjugation, the character on unit cosets, idele classes and ideles), an
 through all seven slices of its design (`docs/api-4.md`: `adf_ffun`, `adf_rfun`, their transforms, evaluation,
 integrals, Poisson summation with certified tails, dump forms); check-all passes on `b4922ae` and the driver
 after the last merge has 95 cases. Eighteen lanes landed in one night (`docs/worklog/2026-10-07-night.md`).
-The design of milestone 5 landed too (d-tate: `docs/api-5.md`, decisions taken as N-D24). Running at the time of
-writing: m4-review1 (Opus; the one review of milestone 4). Everything named here is merged and pushed.
+The design of milestone 5 landed too (d-tate: `docs/api-5.md`, decisions taken as N-D24). The review of milestone 4 landed too (m4-review1: no blocker; one major against the wording of statement F4;
+three minors, one repaired at once, two as beads adf-2w1, adf-l4v; `docs/reviews/m4/review-m4.md`). Everything named here is merged and pushed.
 
 **First commands.**
 
@@ -41,9 +41,9 @@ slices 4a to 4g. The statements are in `docs/api-3a.md`, `3b.md`, `3d.md`, `4a.m
 record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
 
 **The next steps**, in this order:
-1. Read `lanes/m4-review1/result.md` if it landed after this entry (else the lane is in
-   `../adelefeld-wt/m4-review1`, worktree on branch `lane/m4-review1`): repair its findings (a BLOCKER or MAJOR
-   gets a repair lane; minors the orchestrator fixes), record it under `docs/reviews/m4/`, close adf-26l.
+1. The two open minors of the milestone 4 review: adf-2w1 (the dump validator converts long hex tokens before the
+   grammar stage ends; a small repair lane) and adf-l4v (the running time of `adf_tensor_poisson` near the bits cap;
+   a decision); the wording of F4 and the dump/load identity in `docs/api-4.md` (adf-cx8).
 2. Milestone 5: `docs/api-5.md` (lane d-tate, `lanes/d-tate/report.md`; decisions D1 to D4 taken as N-D24): start
    its first slice (section 9: the local integrals, gamma and epsilon factors extending `localfactor.h`) on
    codex or Opus; the remaining slices in order; one review when milestone 5 lands. Codex should be under pace
