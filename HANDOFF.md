@@ -2,7 +2,76 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-10-04 22:51 to 2026-10-05 05:55 (CEST; orchestrator Claude Fable on the laptop; Opus, Sonnet, codex and pi lanes): START HERE
+## Session 2026-10-07 09:30 to about 10:50 (UTC+8; orchestrator Claude Fable on the laptop; Opus and codex lanes): START HERE
+
+**One line.** The two lanes stopped on 2026-10-05 are landed: the review of `adf_qclass_reduce` (q-review3,
+now by Opus: no code defect, two test gaps, both closed by q-repair1) and the additive character on adeles
+(q-slice3, codex sol: `psi.h`, `src/psi.c`, driver `psi`/`psi_strict`, Julia, `docs/api-3b.md`, `test_psi`
+186799 checks; NOT reviewed). The pi agent (`space-bunny-alpha`) is no longer available: lanes run on codex
+`gpt-6.1-sol` xhigh and Claude Opus only. Everything named here is merged and pushed.
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
+    ~/Projects/quota-app/target/release/quota; date
+
+**Master.** All five suites pass on `9593815` (the merge of q-slice3): `tools/orch/suites.sh -j 2` from 10:24 to 10:31 on 2026-10-07, in parallel: check-all (85 test programs, driver 72 cases with 101348 expected lines, exports 505 of 505, Julia, both self-tests), `san` (leak detection on, 85 programs), `clang`, `inv`, `headers`. check-all alone had also passed on `44b5476` (after the repair merge, before q-slice3).
+
+**Rules of TJO for this session** (2026-10-07 09:30): "orchestrate a small step (space bunny no longer
+available), use codex exec gpt sol 6.1 xhigh and opus". Codex lanes through `tools/orch/wt_lane.sh <lane> codex
+gpt-6.1-sol xhigh`; Opus lanes through the Agent tool (model opus) with the brief pasted into the prompt and a
+worktree made by `git worktree add` from master (memory `claude-worktree-base`). Reviews of codex code go to
+Opus. The rest of the 2026-10-04 rules stand (memory `orchestration-model-tiers`). Quota at 10:08: Claude
+weekly 2.0%, 4.0 under pace; Codex weekly 29.0%, 25.5 under.
+
+**What landed** (brief `lanes/<lane>/brief.md`; report `result.md` for Opus lanes, `report.md` for codex;
+times in `docs/worklog/2026-10-07-morning.md`).
+
+| Lane | Model | What | Review |
+|---|---|---|---|
+| q-review3 | Opus | review of `adf_qclass_reduce` with an own exact-containment oracle (coset refinement, not algorithm R): 20000 lifts, 4500 PIECES inputs, 988 re-reductions, 4 million points, 0 findings; printer byte-equal on 2000 values; 37 resource cases; sanitizers 5028 cases; driver 60 lines by hand; 13 faults | `docs/reviews/m3/review-qclass-reduce.md`: no code defect; R1 MAJOR, R2 MINOR test gaps |
+| q-repair1 | Opus | tests for R1 (upper end an integer plus `2^-200`; 61 new vectors `tests/ref/vectors/q-repair1/`) and R2 (`LIMIT` in the second pass at `ADF_REAL_PREC_MAX`, `y` untouched); `test_qclass_reduce` 223472 checks; faults F2 and F8 now fail | the review's faults are the red runs |
+| q-slice3 | codex sol xhigh (48 min) | slice 3.2-a: `adf_fball_psi_tate_phase`, `adf_adele_psi_tate_phase`, `adf_phase_get_acb`, `adf_adele_psi_tate`, `_strict`; sign from conventions 6.1 and `refs/src/tate-poonen/notes.txt:693-700`; `docs/api-3b.md`; 11 faults rejected; mutation 60 of 284: 46 killed, 7 equivalent, 7 not compiled | NOT reviewed: bead adf-e57 |
+
+**The next steps**, in this order:
+1. Review q-slice3 by Opus (adf-e57), own oracle for the phase and the hull bound of design 3.3; leak
+   detection (the codex lane could not run LeakSanitizer); a repair lane for what it finds.
+2. Milestone 3, the next slices of `docs/api-3.md` section 7: 3.1-d (raw pieces, the union text, dump), 3.1-e
+   (the three set queries with the preflight of N-D21), 3.2-b (the class calls), 3.2-c (the local calls). One
+   codex or Opus lane per slice; a review by the other family after two slices.
+3. Reviews still owed from before: the change of `src/localfactor.c` by f-repair9 (a referee of Y16 steps 1
+   to 7); adf-c9b.
+4. TJO's answers (below), then the list left from before (unchanged from the previous entry, item 5).
+
+**Waits for TJO.** Nothing blocks.
+- NEW: SPEC:944 (the annotation under N-D21) says `0 mod 1/2` is not inside `A_f`; lane q-slice3 shows by the
+  restricted product that `(1/2) Zhat` IS in `A_f` (integral at every prime but 2). Which reading the
+  library implements is unchanged (the character follows SPEC 6); the annotation and the earlier question
+  below should be reworded (bead adf-s1v).
+- NEW: `docs/api-3.md:523-524` assumes `l <= m <= h` for the rounded midpoint; false at `l = h = 1/3`, prec
+  2; the conclusions hold, argument in `docs/api-3b.md` (bead adf-nyk; wording only).
+- NEW: the memory of `adf_qclass_reduce` follows the raw count before deduplication, so a `piece_limit` of
+  `10^9` admits 96 GB and the process dies in `flint_malloc` without a status (review q-review3, note N2;
+  documented in the header as `O(K b)`). Whether a byte bound on top of the piece limit is wanted.
+- NEW: a lawful readable copy of Tate's thesis is wanted under `refs/` (q-slice3 source pending; the signs
+  used come from the Poonen notes).
+- The earlier items (fractional radius reading, N-D20, N-D21, the dump loader against the text reader, the
+  driver's line printer for partial balls, Gelfond-Schneider, the UX questions) stand as in the previous entry.
+
+**Things to know.**
+- The pi agent is gone. `tools/orch/pi_lane.sh` and its worktree runner branch are dead code until a
+  replacement appears.
+- Opus lanes write `lanes/<lane>/result.md` (a Claude subagent cannot write `report.md`); the orchestrator
+  commits in the worktree, merges, records reviews under `docs/reviews/`. Costs this session: an Opus review
+  292k tokens (32 min), an Opus test repair 136k tokens (6 min).
+- A resumed codex lane with no saved session starts afresh on the WIP files; a "Resume note" appended to the
+  brief in the worktree naming the files worked (q-slice3 kept the inherited code unchanged after checking
+  it, and only strengthened tests and wrote the statements).
+- The codex lane ran `make check-all` in its worktree although the brief did not ask for it (262 s); it also
+  passed. Opus lanes obeyed "do not run the suites as a whole".
+
+## Session 2026-10-04 22:51 to 2026-10-05 05:55 (CEST; orchestrator Claude Fable on the laptop; Opus, Sonnet, codex and pi lanes)
 
 **One line.** Every work package of milestone 1F has code and a review: the local zeta factor landed (design
 d-zeta, code f-slice14, N-D20; review f-review15: no defect; test gaps repaired by f-repair9), the catalogue is
