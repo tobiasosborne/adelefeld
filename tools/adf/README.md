@@ -749,10 +749,10 @@ Union input remains `UNSUPPORTED`. Checks: `tests/driver/qclass-reduce.cmd`, `te
 A fractional finite radius A/B uses B fibres of integer radius A. For example,
 `qreduce (0 ; 0 mod 1/2) + Q with 2` prints `union((0 ; 0 mod 1), (0.5 ; 0 mod 1)) + Q`.
 
-### Tate additive character (slice 3.2-a)
+### Tate additive character (slices 3.2-a to 3.2-c)
 
-`psi X` and `psi_strict X` take one real adele. They print the ordinary complex ball as
-`(re) + (im)*i`, using the settings `prec` and `digits`, as `local_zeta_factor_at` does.
+`psi X` and `psi_strict X` take a real adele, a quotient class or a local ball. They print the ordinary complex
+ball as `(re) + (im)*i`, using the settings `prec` and `digits`, as `local_zeta_factor_at` does.
 The character is `E(a-m)` for an exact input `(m ; a)`, where `E(t)=exp(2 pi i t)`.
 For example, `psi (0 ; 1/3)` at `prec 128`, `digits 5` prints
 `(-0.5) + (0.86603 +/- 4.6e-6)*i`.
@@ -760,7 +760,26 @@ For example, `psi (0 ; 1/3)` at `prec 128`, `digits 5` prints
 Default `psi` encloses all phases of a ball using the rectangular hull of Q4 in `docs/api-3.md`.
 `psi_strict` returns `NOT_DETERMINED` for fractional finite radius. It permits real uncertainty.
 Integer finite radius, including zero, passes this strict test (conventions 6.1, CV-59).
-Other value kinds return `UNSUPPORTED` in this slice. Syntax and adele parsing precede the library call.
+On a class, the result encloses the union of the images of all stored entries, and `psi_strict` applies the
+finite-radius test to each stored entry (D3-3): `psi_strict (0 ; 0 mod 1/2) + Q` is `NOT_DETERMINED`, while
+the exact two-piece reduction of that lift passes. The class text is the lift `(m ; F) + Q`; the union text
+`union(...) + Q` of design section 7 is read once slice 3.1-d lands (until then the reader answers
+`UNSUPPORTED`). On a local ball `[p=P: a + O(P^e)]` the character is `E(fp_p(a))`, one phase for `e >= 0` or
+an exact value, all `p^(-e)` roots times it for `e < 0` (strict: `NOT_DETERMINED`): `psi [p=2: 1/6]` prints
+`(-1) + (0)*i`, since `fp_2(1/6) = 1/2`.
+
+`psi_at X with P` and `psi_strict_at X with P` take an adele and a place, named as by the other commands with
+places: `real` or a prime. At `real` the factor is `E(-I)` of the real ball; at a prime `p` it is the local
+character of `a + p^(v_p(N)) Z_p`. Strict is `NOT_DETERMINED` only at a prime with `v_p(N) < 0`.
+`psi_at (0 ; 1/3) with 3` prints `(-0.5) + (0.86603 +/- 4.6e-6)*i`, and `with 5` prints `(1) + (0)*i`.
+A token that is not a place is `PARSE` or `DOMAIN`, as for `local_zeta_factor_at`.
+
+`psi_phase X` prints the exact angle `t` of a singleton image `E(t)` as a rational in `[0,1)`, for a finite ball,
+an adele, a class or a local ball; otherwise the status (`NOT_DETERMINED` for more than one phase).
+`psi_phase (0.5 ; 1/3)` prints `5/6`.
+
+Other value kinds return `UNSUPPORTED`. Syntax and value parsing precede the library call.
 The library can return `LIMIT` for precision or exact arithmetic, or `NOT_DETERMINED` if the numerical
 certificate cannot be obtained. No result is printed on a failure.
-Checks: `tests/driver/psi-values.cmd`, `tests/driver/psi-status.cmd`, and `tests/julia/psi.jl`.
+Checks: `tests/driver/psi-values.cmd`, `tests/driver/psi-status.cmd`, `tests/driver/psi-class.cmd`,
+`tests/driver/psi-local.cmd`, `tests/julia/psi.jl` and `tests/julia/psi_class.jl`.

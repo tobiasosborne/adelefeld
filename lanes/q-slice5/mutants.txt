@@ -1,0 +1,62 @@
+mutate: src/psi.c: 532 mutants
+mutate: 532 mutants, 60 of them run (--limit 60, --seed 320511)
+src/psi.c:186:26 logic: '&&' -> '||'
+src/psi.c:504:46 drop_call: 'arf_get_fmpq(r, t);' -> '' (the statement is removed)
+src/psi.c:73:38 zero_one: '0' -> '1'
+src/psi.c:342:14 cmp: '>' -> '>='
+src/psi.c:353:14 zero_one: '0' -> '1'
+src/psi.c:93:26 logic: '||' -> '&&'
+src/psi.c:257:5 negate_if: 'if(first || arf_cmp(lo, ext + 0) < 0)' -> 'if(!(first || arf_cmp(lo, ext + 0) < 0))'
+src/psi.c:307:42 status: 'ADF_LIMIT' -> 'ADF_OK'
+src/psi.c:213:29 zero_one: '1' -> '0'
+src/psi.c:91:5 negate_if: 'if(!psi_read(b, r, N, x))' -> 'if(!(!psi_read(b, r, N, x)))'
+src/psi.c:215:9 drop_call: 'arb_cos_pi_fmpq(c, twice, work);' -> '' (the statement is removed)
+src/psi.c:52:56 cmp: '<=' -> '<'
+src/psi.c:348:9 negate_if: 'if(st == ADF_LIMIT)' -> 'if(!(st == ADF_LIMIT))'
+src/psi.c:383:43 drop_assign: 'have = 1;' -> '' (the statement is removed)
+src/psi.c:185:5 drop_call: 'psi_mod1(u);' -> '' (the statement is removed)
+src/psi.c:445:26 zero_one: '1' -> '0'
+src/psi.c:443:5 negate_if: 'if(strict && !fmpz_is_one(B))' -> 'if(!(strict && !fmpz_is_one(B)))'
+src/psi.c:412:24 drop_call: 'fmpz_mod(t, t, M);' -> '' (the statement is removed)
+src/psi.c:379:9 drop_assign: 's = psi_phase_entry(t, x->piece + i);' -> '' (the statement is removed)
+src/psi.c:257:36 zero_one: '0' -> '1'
+src/psi.c:81:23 zero_one: '1' -> '0'
+src/psi.c:81:5 drop_call: 'psi_mod1(b);' -> '' (the statement is removed)
+src/psi.c:375:49 zero_one: '0' -> '1'
+src/psi.c:507:18 zero_one: '0' -> '1'
+src/psi.c:284:5 negate_if: 'if(prec > ADF_REAL_PREC_MAX)' -> 'if(!(prec > ADF_REAL_PREC_MAX))'
+src/psi.c:352:16 logic: '&&' -> '||'
+src/psi.c:24:55 zero_one: '0' -> '1'
+src/psi.c:261:74 op: '+' -> '-'
+src/psi.c:289:5 negate_if: 'if((st = psi_exact(d, B, x)) != ADF_OK)' -> 'if(!((st = psi_exact(d, B, x)) != ADF_OK))'
+src/psi.c:81:18 drop_assign: 'ok = 1;' -> '' (the statement is removed)
+src/psi.c:53:33 cmp: '<=' -> '<'
+src/psi.c:300:42 status: 'ADF_LIMIT' -> 'ADF_OK'
+src/psi.c:225:30 zero_one: '0' -> '1'
+src/psi.c:124:88 zero_one: '1' -> '0'
+src/psi.c:524:15 cmp: '==' -> '!='
+src/psi.c:258:76 zero_one: '0' -> '1'
+src/psi.c:261:5 negate_if: 'if(first || arf_cmp(upper + 2, ext + 3) > 0)' -> 'if(!(first || arf_cmp(upper + 2, ext + 3) > 0))'
+src/psi.c:10:61 logic: '&&' -> '||'
+src/psi.c:381:16 cmp: '==' -> '!='
+src/psi.c:111:5 drop_call: 'arf_add(m, lo, hi, ARF_PREC_EXACT, ARF_RND_NEAR);' -> '' (the statement is removed)
+src/psi.c:154:49 drop_call: 'acb_one(z);' -> '' (the statement is removed)
+src/psi.c:216:36 drop_call: 'psi_bounds(lo, hi, c);' -> '' (the statement is removed)
+src/psi.c:290:5 drop_assign: 'st = ADF_NOT_DETERMINED;' -> '' (the statement is removed)
+src/psi.c:524:36 drop_call: 'psi_fail(st, where, v);' -> '' (the statement is removed)
+src/psi.c:370:28 prec: 'prec' -> '2'
+src/psi.c:52:79 logic: '&&' -> '||'
+src/psi.c:198:10 zero_one: '1' -> '0'
+src/psi.c:111:78 zero_one: '1' -> '0'
+src/psi.c:118:9 drop_call: 'arf_set_round(r, r, 30, ARF_RND_CEIL);' -> '' (the statement is removed)
+src/psi.c:348:16 cmp: '==' -> '!='
+src/psi.c:345:14 zero_one: '0' -> '1'
+src/psi.c:161:38 op: '+' -> '-'
+src/psi.c:422:14 cmp: '>' -> '>='
+src/psi.c:276:60 op: '+' -> '-'
+src/psi.c:456:71 prec: 'prec' -> '2'
+src/psi.c:207:28 drop_call: 'arf_one(hi);' -> '' (the statement is removed)
+src/psi.c:421:24 zero_one: '0' -> '1'
+src/psi.c:257:39 cmp: '<' -> '<='
+src/psi.c:273:59 op: '+' -> '-'
+src/psi.c:445:5 drop_call: 'psi_fold(ext, upper, 1);' -> '' (the statement is removed)

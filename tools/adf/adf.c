@@ -204,6 +204,9 @@ typedef enum
     ADF_DRV_LOCAL_ZETA_AT,
     ADF_DRV_PSI,
     ADF_DRV_PSI_STRICT,
+    ADF_DRV_PSI_AT,
+    ADF_DRV_PSI_STRICT_AT,
+    ADF_DRV_PSI_PHASE,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -287,6 +290,9 @@ static const struct
     { "local_zeta_factor_at", ADF_DRV_LOCAL_ZETA_AT, 2 },
     { "psi", ADF_DRV_PSI, 1 },
     { "psi_strict", ADF_DRV_PSI_STRICT, 1 },
+    { "psi_at", ADF_DRV_PSI_AT, 2 },
+    { "psi_strict_at", ADF_DRV_PSI_STRICT_AT, 2 },
+    { "psi_phase", ADF_DRV_PSI_PHASE, 1 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -2977,31 +2983,65 @@ done:
     return status;
 }
 
-/* Slice 3.2-a: a real adele's Tate character, printed like local_zeta_factor_at.
-   docs/api-3.md 7,3.1-3.3; conventions 6.1. Only adele input belongs to this slice. */
+/* Slices 3.2-a to 3.2-c: Tate's character, printed like local_zeta_factor_at (docs/api-3.md 7, 3.1-3.3;
+   conventions 6.1). psi and psi_strict take an adele, a class (lift text; the union text once slice 3.1-d
+   reads it) or a local ball; psi_at and psi_strict_at an adele and a place token ("real" or a prime, as
+   adf_drv_place_token); psi_phase prints the exact angle t of E(t) as a rational, or the status. */
+static int
+adf_drv_psi_print(FILE *out, const acb_t z, const adf_drv_state *st)
+{
+    adf_cadele_t c; adf_fball_t zero; char *text = NULL; size_t len = 0; int status;
+    adf_cadele_init(c); adf_fball_init(zero);
+    status = adf_cadele_set_acb_fball(c, z, zero);
+    if (status == ADF_OK) {
+        text = adf_cadele_get_str(&len, c, st->digits);
+        if (text == NULL || len < 7 || memcmp(text+len-5, " ; 0)", 5)) status = ADF_LIMIT;
+        else fprintf(out, "%.*s\n", (int) (len-6), text+1);
+    }
+    adf_str_free(text); adf_cadele_clear(c); adf_fball_clear(zero);
+    return status;
+}
 static int
 adf_drv_psi(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
 {
-    adf_text_kind kind; adf_adele_t x; adf_cadele_t c; adf_fball_t zero; acb_t z;
-    int status; char *text = NULL; size_t len = 0;
-    adf_adele_init(x); adf_cadele_init(c); adf_fball_init(zero); acb_init(z);
+    adf_text_kind kind; adf_drv_value x; adf_rat_t r; acb_t z; adf_place_t v = adf_place_inf();
+    int status, place_status = ADF_OK, strict = op == ADF_DRV_PSI_STRICT || op == ADF_DRV_PSI_STRICT_AT;
+    int at = op == ADF_DRV_PSI_AT || op == ADF_DRV_PSI_STRICT_AT;
+    char *text; size_t len;
+    adf_drv_value_init(&x); adf_rat_init(r); acb_init(z);
     status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
     if (status != ADF_OK) goto done;
-    if (kind != ADF_TEXT_ADELE) { status = ADF_UNSUPPORTED; goto done; }
-    status = adf_adele_set_str(x, l->s[0], l->n[0], st->prec, NULL);
+    if (at) {
+        place_status = adf_drv_place_token(l->s[1], l->n[1], &v);
+        if (place_status == ADF_PARSE) { status = place_status; goto done; }
+        if (kind != ADF_TEXT_ADELE) { status = ADF_UNSUPPORTED; goto done; }
+    } else if (kind != ADF_TEXT_ADELE && kind != ADF_TEXT_QCLASS && kind != ADF_TEXT_LBALL &&
+               (op != ADF_DRV_PSI_PHASE || kind != ADF_TEXT_FBALL)) { status = ADF_UNSUPPORTED; goto done; }
+    status = adf_drv_value_read(&x, kind, l->s[0], l->n[0], st->prec);
     if (status != ADF_OK) goto done;
-    status = op == ADF_DRV_PSI_STRICT ? adf_adele_psi_tate_strict(z, x, st->prec) :
-                                      adf_adele_psi_tate(z, x, st->prec);
-    if (status != ADF_OK) goto done;
-    status = adf_cadele_set_acb_fball(c, z, zero);
-    if (status != ADF_OK) goto done;
-    text = adf_cadele_get_str(&len, c, st->digits);
-    if (text == NULL) { status = ADF_LIMIT; goto done; }
-    if (len < 7 || memcmp(text+len-5, " ; 0)", 5)) status = ADF_LIMIT;
-    else fprintf(out, "%.*s\n", (int) (len-6), text+1);
+    if (place_status != ADF_OK) { status = place_status; goto done; }
+    if (op == ADF_DRV_PSI_PHASE) {
+        status = x.type == ADF_DRV_ADELE ? adf_adele_psi_tate_phase(r->q, x.a) :
+                 x.type == ADF_DRV_QCLASS ? adf_qclass_psi_tate_phase(r->q, x.q) :
+                 x.type == ADF_DRV_LBALL ? adf_lball_psi_tate_phase(r->q, x.b) :
+                 adf_fball_psi_tate_phase(r->q, x.f);
+        if (status != ADF_OK) goto done;
+        text = adf_rat_get_str(&len, r);
+        fprintf(out, "%.*s\n", (int) len, text); adf_str_free(text);
+        goto done;
+    }
+    if (at) status = strict ? adf_adele_psi_tate_strict_at(z, NULL, x.a, v, st->prec) :
+                              adf_adele_psi_tate_at(z, NULL, x.a, v, st->prec);
+    else if (x.type == ADF_DRV_QCLASS)
+        status = strict ? adf_qclass_psi_tate_strict(z, x.q, st->prec) : adf_qclass_psi_tate(z, x.q, st->prec);
+    else if (x.type == ADF_DRV_LBALL)
+        status = strict ? adf_lball_psi_tate_strict(z, x.b, st->prec) : adf_lball_psi_tate(z, x.b, st->prec);
+    else
+        status = strict ? adf_adele_psi_tate_strict(z, x.a, st->prec) : adf_adele_psi_tate(z, x.a, st->prec);
+    if (status == ADF_OK) status = adf_drv_psi_print(out, z, st);
 done:
-    adf_str_free(text); adf_adele_clear(x); adf_cadele_clear(c);
-    adf_fball_clear(zero); acb_clear(z); return status;
+    adf_drv_value_clear(&x); adf_rat_clear(r); acb_clear(z);
+    return status;
 }
 
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
@@ -3132,7 +3172,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
                    : adf_drv_setting(l->s[0], l->n[0], ADF_DIGITS_MAX, ADF_DOMAIN, &st->digits);
     if (op == ADF_DRV_HILBERT_AT) return adf_drv_hilbert(out,l,st);
     if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
-    if (op == ADF_DRV_PSI || op == ADF_DRV_PSI_STRICT) return adf_drv_psi(out, op, l, st);
+    if (op == ADF_DRV_PSI || op == ADF_DRV_PSI_STRICT || op == ADF_DRV_PSI_AT || op == ADF_DRV_PSI_STRICT_AT ||
+        op == ADF_DRV_PSI_PHASE) return adf_drv_psi(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

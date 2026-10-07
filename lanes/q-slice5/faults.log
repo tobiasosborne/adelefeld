@@ -1,0 +1,47 @@
+F1l	REJECTED	local finite sign reversed (b = -fp_p)
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:312: fmpq_equal(th, h)
+F3	REJECTED	ordinary fractional part at p
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:307: fmpq_equal(th, h)
+F4	REJECTED	A roots instead of B (numerator of N in the class preflight)
+	test_psi_class: exit 1: tests/test_psi_class.c:263: qeval(z, lift, 128, 1) == ADF_NOT_DETERMINED
+	test_psi_local: exit 1: tests/test_psi_local.c:245: contains_phase(g, w)
+F4l	REJECTED	A roots instead of B at a prime (numerator of N)
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:398: aeval(z, a, v, 53, 1) == ADF_NOT_DETERMINED
+F5	REJECTED	end points only (distance to the nearest arc end even inside an arc)
+	test_psi_class: exit 1: tests/test_psi_class.c:219: rect_ok(z, field(v, "dist"), p)
+	test_psi_local: exit 1: tests/test_psi_local.c:219: rect_ok(z, field(P, "dist"), p)
+F6c	REJECTED	whole square for an ambiguous class
+	test_psi_class: exit 1: tests/test_psi_class.c:269: arb_is_zero(acb_imagref(z))
+	test_psi_local: exit 0: psi_local: 165418 checks, 432 local records, 576 place evaluations, 4608 hull coordinates (all)
+F6l	REJECTED	whole square for an ambiguous local ball
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:321: leval(z, x, 53, 0) == ADF_OK && arb_is_zero(acb_imagref(z))
+X1	REJECTED	only the first stored entry evaluated
+	test_psi_class: exit 1: tests/test_psi_class.c:268: contains_phase(z, q)
+	test_psi_local: exit 0: psi_local: 165418 checks, 432 local records, 576 place evaluations, 4608 hull coordinates (all)
+X2a	SURVIVED	strict on a class decided from the first entry only
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 0: psi_local: 165418 checks, 432 local records, 576 place evaluations, 4608 hull coordinates (all)
+X2b	REJECTED	strict on a class as a singleton image (rejected alternative of D3-3)
+	test_psi_class: exit 1: tests/test_psi_class.c:391: qeval(z, q, 53, 1) == ADF_OK && qphase(th, q) == ADF_NOT_DETERMINED
+	test_psi_local: exit 0: psi_local: 165418 checks, 432 local records, 576 place evaluations, 4608 hull coordinates (all)
+X3	REJECTED	branch at e = 0 wrong (ball with e <= 0 taken as a root family of order p^(1-e))
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:315: lphase(th, x) == ADF_OK
+X4	REJECTED	real place with the finite sign
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:404: aeval(z, a, inf, 53, 1) == ADF_OK && arb_is_negative(acb_imagref(z))
+X5	REJECTED	where written on OK
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:94: !memcmp(&where, &sentinel, sizeof(where))
+X6	REJECTED	power formed before the bit check
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 136: Floating point exception
+X8	REJECTED	finite denominator cofactor not inverted
+	test_psi_class: exit 0: psi_class: 148748 checks, 32 records, 10720 points, 256 hull coordinates (all)
+	test_psi_local: exit 1: tests/test_psi_local.c:312: fmpq_equal(th, h)
+BASE	PASS	pristine src/psi.c
+	exits [0, 0]

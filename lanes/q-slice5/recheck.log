@@ -1,0 +1,9 @@
+psi.c:186	SURVIVED	psi: 186799 checks (all)
+psi.c:52	KILLED	tests/test_psi.c:385: aphase(q, x) == ADF_OK && fmpq_equal(q, N->q)
+psi.c:53	KILLED	tests/test_psi.c:385: aphase(q, x) == ADF_OK && fmpq_equal(q, N->q)
+psi.c:124	KILLED	tests/test_psi.c:127: arb_le(l, low)
+psi.c:10	KILLED	tests/test_psi.c:354: peval(z, c->q, 53) == ADF_LIMIT
+psi.c:154	KILLED	tests/test_psi.c:298: acb_contains(z, w)
+psi.c:290	KILLED	tests/test_psi.c:165: eval(w, a, 128, 1) == (n == 1 ? ADF_OK : ADF_NOT_DETERMINED)
+psi.c:161	KILLED	tests/test_psi.c:371: peval(z, c->q, 53) == ADF_LIMIT
+BASE test_psi exit 0

@@ -203,6 +203,23 @@ else
 fi
 rm -f "$qclass_output"
 
+# Slices 3.2-b and 3.2-c (lane q-slice5): the class and local Tate character.
+psi_class_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/psi_class.jl "$so" > "$psi_class_output" 2>&1; then
+    cat "$psi_class_output"
+elif grep -q '__gmpn_modexact_1_odd' "$psi_class_output" 2>/dev/null \
+        && psi_class_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$psi_class_gmp" ] \
+        && LD_PRELOAD="$psi_class_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/psi_class.jl "$so"; then
+    echo "== tests/julia/psi_class.jl passed with LD_PRELOAD=$psi_class_gmp"
+else
+    cat "$psi_class_output"
+    rm -f "$psi_class_output"
+    echo "test_julia: tests/julia/psi_class.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$psi_class_output"
+
 run_output=$(mktemp)
 if "$JULIA" --startup-file=no tests/julia/smoke.jl "$so" > "$run_output" 2>&1; then
     cat "$run_output"
