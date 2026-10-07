@@ -1,0 +1,11 @@
+| 122 tt_charge never refuses | killed: test_tate.c:440: tate_sent(big, s, 20, 64) == ADF_LIMIT |
+| 387 (J+1)*nz -> (J+1)+nz | killed: test_tate.c:446: adf_tate_cutoffs(&N, &R, &K, deg, &work, z1, s, 1400, 64) == ADF_LIMIT |
+| 383 work guard - -> + | SURVIVED |
+| 231 L14 branch 2 mul -> add | killed: test_tate.c:314: N == (ulong) number(field(rec, "N")) && R == (ulong) number(field(rec, "R |
+| 232 L14 R0 - R dropped | killed: test_tate.c:314: N == (ulong) number(field(rec, "N")) && R == (ulong) number(field(rec, "R |
+| 218 L14 factor 2 dropped | killed: test_tate.c:314: N == (ulong) number(field(rec, "N")) && R == (ulong) number(field(rec, "R |
+| 560 N search from 1 | SURVIVED |
+| 374 J = 0 error mul -> add | killed: test_tate.c:318: deg[k * K + j] == (ulong) number(at(at(dg, k), j)) |
+| 551 r2 upper bound dropped | SURVIVED |
+| 356 m + d scaling dropped | killed: test_tate.c:318: deg[k * K + j] == (ulong) number(at(at(dg, k), j)) |
+| 336 r = Re(z) - 1 dropped | killed: test_tate.c:318: deg[k * K + j] == (ulong) number(at(at(dg, k), j)) |

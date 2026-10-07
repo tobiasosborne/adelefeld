@@ -1,0 +1,17 @@
+| fault | result |
+|---|---|
+| 52.1 C^z omitted (Lambda returned as I) | detected: tests/test_tate.c:373: acb_contains(z, ref) |
+| 52.2 wrong real parity (e = 0 in the integral) | detected: tests/test_tate.c:373: acb_contains(z, ref) |
+| 52.3 chi conjugated twice (conj on the forward coefficients) | detected: tests/test_tate.c:228: acb_contains(z, ref) |
+| 52.5 sign-half factor 2 (Lambda doubled) | detected: tests/test_tate.c:367: acb_contains(z, ref) |
+| 52.6 xi treated as Lambda (times s(s-1)/2) | detected: tests/test_tate.c:493: arf_cmp_2exp_si(arb_midref(acb_realref(z)), 19) > 0 && arf_cmp_2exp_si(arb_midref( |
+| completion with z = s/2 for odd e | detected: tests/test_tate.c:373: acb_contains(z, ref) |
+| completion factor pi^-z Gamma(z) dropped (L returned) | detected: tests/test_tate.c:367: acb_contains(z, ref) |
+| dual coefficients without conj (W chi(n) n^e) | detected: tests/test_tate.c:228: acb_contains(z, ref) |
+| W_chi dropped (conj(chi(n)) n^e) | detected: tests/test_tate.c:228: acb_contains(z, ref) |
+| lower half not replaced through Poisson (second integral dropped) | detected: tests/test_tate.c:367: acb_contains(z, ref) |
+| quadrature remainder dropped | detected: tests/test_tate.c:367: acb_contains(z, ref) |
+| width checked before the remainder is added | detected: tests/test_tate.c:283: narrow(z, 20) |
+| z written on NOT_DETERMINED | detected: tests/test_tate.c:112: memcmp(s->bytes, s->z, sizeof(acb_struct)) == 0 |
+| 52.4 C^-s omitted from the Hurwitz reference (generator) | detected by the generator cross-check (mpmath vs FLINT): AssertionError |
+| 52.4 C^-s omitted from the Hurwitz reference (C test on the wrong vectors) | detected: exit 1 |
