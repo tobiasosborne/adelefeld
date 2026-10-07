@@ -1,0 +1,10 @@
+32 base texts
+moved: b'adf1 Q qclass pieces 1 0 g 1 0 1' !PARSE -> !DOMAIN
+moved: b'adf1 Q qclass pieces 1 0 g 0 1 1' !PARSE -> !DOMAIN
+moved: b'adf1 Q qclass pieces 1 0 g 0 1 1' !PARSE -> !DOMAIN
+moved: b'adf1 Q qclass pieces 1 0 g 0 1 1' !PARSE -> !DOMAIN
+moved: b'adf1 Q qclass pieces 1 0 g 0 1 1' !PARSE -> !DOMAIN
+dump differential: 30000 texts, 26210 edits, 3633 valid inspections, 1433 global loads
+0 status, context-count, output-preservation, or dump-byte mismatches
+173 texts on which the reference at HEAD answered otherwise: {('!PARSE', '!DOMAIN'): 173}
+exit 0

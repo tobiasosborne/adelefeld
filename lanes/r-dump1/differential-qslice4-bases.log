@@ -1,0 +1,5 @@
+31 base texts
+dump differential: 30000 texts, 26206 edits, 3761 valid inspections, 1495 global loads
+0 status, context-count, output-preservation, or dump-byte mismatches
+0 texts on which the reference at HEAD answered otherwise
+exit 0

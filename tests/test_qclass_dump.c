@@ -107,7 +107,7 @@ static void golden(void)
             check_dump(x, r->input, r->input_len, count);
         }
     }
-    CHECK(rows == 13); golden_close(g); adf_qclass_clear(x);
+    CHECK(rows == 14); golden_close(g); adf_qclass_clear(x);
 }
 static void vectors(void)
 {
@@ -253,14 +253,34 @@ static void debug(void)
     CHECK(waitpid(p, &status, 0) == p && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT);
 #endif
 }
+/* A piece with archimedean count 0 is grammatical (docs/conventions.md 10.1: arch = h { arb }, line
+   1394; fb, lines 1397-1398; qclass pieces = h { arch fb }, line 1411), and for Q another count than
+   1 is DOMAIN (lines 1420-1421). Its shortest form is 5 tokens ("0" and a global fb, or a local fb
+   with k = 0, of 4), so the piece count of the grammar stage allows 5 tokens a piece, and the order
+   of checks of 8.5 (line 1137: grammar, limits, then domain) gives LIMIT before DOMAIN.
+   Lane r-dump1, bead adf-3n2. */
+static void zero_arch(void)
+{
+    adf_qclass_t x; adf_text_limits_t lim;
+    adf_qclass_init(x); adf_text_limits_default(&lim);
+    reject(x, "adf1 Q qclass pieces 1 0 g 0 1 1", ADF_DOMAIN, NULL);
+    reject(x, "adf1 Q qclass pieces 1 0 l 0 1 0", ADF_DOMAIN, NULL);
+    reject(x, "adf1 Q qclass pieces 2 0 g 0 1 1 0 g 0 1 1", ADF_DOMAIN, NULL);
+    reject(x, "adf1 Q qclass pieces 2 0 g 0 1 1 1 1 -1 0 0 g 0 1 1", ADF_DOMAIN, NULL);
+    reject(x, "adf1 Q qclass pieces 2 1 1 -1 0 0 g 0 1 1 0 g 0 1 1", ADF_DOMAIN, NULL);
+    /* fewer tokens than the shortest pieces: still the grammar stage */
+    reject(x, "adf1 Q qclass pieces 1 0 g 0 1", ADF_PARSE, NULL);
+    reject(x, "adf1 Q qclass pieces 2 0 g 0 1 1", ADF_PARSE, NULL);
+    reject(x, "adf1 Q qclass pieces 2 0 g 0 1 1 0 g 0 1", ADF_PARSE, NULL);
+    /* limits come before the domain */
+    lim.max_items = 1; reject(x, "adf1 Q qclass pieces 2 0 g 0 1 1 0 g 0 1 1", ADF_LIMIT, &lim);
+    adf_qclass_clear(x);
+}
 int main(int argc, char **argv)
 {
-    if (argc > 1 && !strcmp(argv[1], "--strict-zero-arch")) {
-        adf_qclass_t x; adf_qclass_init(x);
-        /* Keep the failing 10.1 domain-stage assertion visible. Shared validator is read-only here. */
-        reject(x, "adf1 Q qclass pieces 1 0 g 0 1 1", ADF_DOMAIN, NULL); adf_qclass_clear(x);
-        return 0;
-    }
+    /* --strict-zero-arch (lane q-slice4) is now the default and is accepted as a no-op */
+    (void) argc; (void) argv;
+    zero_arch();
     golden(); vectors(); malformed(); binding_order(); random_roundtrips(); debug();
     printf("qclass_dump: %lu checks, 2000 random round trips\n", checks); flint_cleanup(); return 0;
 }

@@ -1084,7 +1084,10 @@ def _dump_syntax(s, limits):
         if form == "lift":
             node = (kind, form, [(_d_arch(T, 4), _d_fb(T))])
         else:
-            n = T.count(8)
+            # 5 tokens is the shortest piece of the grammar (conventions 10.1, lines 1394, 1397-1398,
+            # 1411): an arch count 0 and a 4-token fb; the count 0 is DOMAIN later (lines 1420-1421),
+            # not PARSE here (lane r-dump1, bead adf-3n2; the bound was 8)
+            n = T.count(5)
             node = (kind, form, [(_d_arch(T, 4), _d_fb(T)) for _ in range(n)])
     elif kind == "ffun":
         D, M = T.h(), T.h()

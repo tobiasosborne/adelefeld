@@ -1,0 +1,3 @@
+MIN=4: qclass_dump: qclass_dump: 33913 checks, 2000 random round trips  | dump_local: 10 tests, 36205 checks, 0 failed checks, 0 failed tests
+MIN=6: qclass_dump: adf1 Q qclass pieces 1 0 g 0 1 1: want DOMAIN, got PARSE tests/test_qclass_dump.c:130: st == want  | dump_local: 10 tests, 36205 checks, 0 failed checks, 0 failed tests
+MIN=8: qclass_dump: adf1 Q qclass pieces 1 0 g 0 1 1: want DOMAIN, got PARSE tests/test_qclass_dump.c:130: st == want  | dump_local: 10 tests, 36205 checks, 0 failed checks, 0 failed tests

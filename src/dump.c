@@ -1040,6 +1040,10 @@ dp_q_piece(const dp_cur * c, dp_state * st, size_t narch, const dp_arb * a, cons
     return ok;
 }
 
+/* The fewest tokens of one piece of a qclass (conventions 10.1): arch = h {arb} with a count of 0
+   (line 1394) is 1 token, fb = "g" A H d or "l" d K k with k = 0 (lines 1396-1398) is 4. */
+#define DP_QPIECE_MIN 5
+
 static int
 dp_w_qclass(dp_cur * c, dp_state * st)
 {
@@ -1052,7 +1056,11 @@ dp_w_qclass(dp_cur * c, dp_state * st)
     if (!dp_next(c, &t) || !(dp_kw_is(t, "lift") || dp_kw_is(t, "pieces")))
         return dp_parse_fail(st);
     pieces = dp_kw_is(t, "pieces");
-    if (pieces && !dp_count(c, 8, &n))
+    /* DP_QPIECE_MIN tokens a piece: the shortest piece of the grammar, so that a piece with
+       archimedean count 0 reaches DOMAIN at stage 6 and not PARSE here (conventions 10.1, line
+       1411, lines 1420-1421; 8.5, line 1137). The tokens are still read one by one with dp_next,
+       so the bound only orders the stages. Lane r-dump1, bead adf-3n2; the bound was 8. */
+    if (pieces && !dp_count(c, DP_QPIECE_MIN, &n))
         return dp_parse_fail(st);
     if (st->mode == DP_LIMITS && dp_over_items(n, st->lim))
         return dp_fail(st, ADF_LIMIT);
@@ -2641,7 +2649,7 @@ static void dp_qclass_start(dp_cur *c, const dp_parsed *P, int *form, size_t *n)
     dp_cur_at(c, P); (void) dp_next(c, &tag);
     *form = dp_kw_is(tag, "pieces") ? ADF_QCLASS_PIECES : ADF_QCLASS_LIFT;
     *n = 1;
-    if (*form == ADF_QCLASS_PIECES) (void) dp_count(c, 8, n);
+    if (*form == ADF_QCLASS_PIECES) (void) dp_count(c, DP_QPIECE_MIN, n);
 }
 static void dp_qclass_member(dp_cur *c, dp_arb *a, dp_fb *f)
 {

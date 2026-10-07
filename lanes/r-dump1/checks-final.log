@@ -1,0 +1,24 @@
+build test_qclass_dump exit=0: qclass_dump: 33913 checks, 2000 random round trips 
+build test_dump exit=0: 17 tests, 12259 checks, 0 failed checks, 0 failed tests 
+build test_dump_ctx exit=0: 14 tests, 28587 checks, 0 failed checks, 0 failed tests 
+build test_dump_golden exit=0: FAIL tests/test_dump_golden.c:272: golden_dump_every_row: check failed: ntyped == 77 && nvalid == 23 && nstatus == 115 | 77 typed rows, 23 valid, 116 status FAIL golden_dump_every_row (tests/test_dump_golden.c:209, 2 failed checks) 1 tests, 763 checks, 2 failed checks, 1 failed tests 
+build test_dump_limits exit=0: 9 tests, 297 checks, 0 failed checks, 0 failed tests 
+build test_dump_local exit=0: 10 tests, 36205 checks, 0 failed checks, 0 failed tests 
+build test_dump_units exit=0: 12 tests, 32505051 checks, 0 failed checks, 0 failed tests 
+build test_modctx exit=0: 11 tests, 10197 checks, 0 failed checks, 0 failed tests 
+build-SAN test_qclass_dump exit=0: qclass_dump: 33913 checks, 2000 random round trips 
+build-SAN test_dump exit=0: 17 tests, 12259 checks, 0 failed checks, 0 failed tests 
+build-SAN test_dump_ctx exit=0: 14 tests, 28587 checks, 0 failed checks, 0 failed tests 
+build-SAN test_dump_golden exit=0: FAIL tests/test_dump_golden.c:272: golden_dump_every_row: check failed: ntyped == 77 && nvalid == 23 && nstatus == 115 | 77 typed rows, 23 valid, 116 status FAIL golden_dump_every_row (tests/test_dump_golden.c:209, 2 failed checks) 1 tests, 763 checks, 2 failed checks, 1 failed tests 
+build-SAN test_dump_limits exit=0: 9 tests, 297 checks, 0 failed checks, 0 failed tests 
+build-SAN test_dump_local exit=0: 10 tests, 36205 checks, 0 failed checks, 0 failed tests 
+build-SAN test_dump_units exit=0: 12 tests, 32505051 checks, 0 failed checks, 0 failed tests 
+build-SAN test_modctx exit=0: 11 tests, 10197 checks, 0 failed checks, 0 failed tests 
+build-INV test_qclass_dump exit=0: adelefeld: ADF_CHECK_INVARIANTS: adf_qclass_dump_str: argument x is not a canonical adf_qclass qclass_dump: 33915 checks, 2000 random round trips 
+build-INV test_dump exit=0: 17 tests, 12259 checks, 0 failed checks, 0 failed tests 
+build-INV test_dump_ctx exit=0: 14 tests, 28587 checks, 0 failed checks, 0 failed tests 
+build-INV test_dump_golden exit=0: FAIL tests/test_dump_golden.c:272: golden_dump_every_row: check failed: ntyped == 77 && nvalid == 23 && nstatus == 115 | 77 typed rows, 23 valid, 116 status FAIL golden_dump_every_row (tests/test_dump_golden.c:209, 2 failed checks) 1 tests, 763 checks, 2 failed checks, 1 failed tests 
+build-INV test_dump_limits exit=0: 9 tests, 297 checks, 0 failed checks, 0 failed tests 
+build-INV test_dump_local exit=0: 10 tests, 36205 checks, 0 failed checks, 0 failed tests 
+build-INV test_dump_units exit=0: 12 tests, 32505051 checks, 0 failed checks, 0 failed tests 
+build-INV test_modctx exit=0: 11 tests, 10197 checks, 0 failed checks, 0 failed tests 
