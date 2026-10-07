@@ -1,0 +1,49 @@
+F1: upper end min(h, n+1) replaced by n+1
+  lane test: fails (rc 134): reduce line 135: fmpq_equal(lo, l) && fmpq_equal(hi, h) | Aborted
+  own check: seed 900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 7201 stored pieces checked, 35352 findings, 7.8 s; OK calls where deduplication removed pieces: 86 finding kinds: {'stored-differs-from-model': 280, 'Q1-too-wide': 437, 'Q1-no-enclosure': 34635}
+F2: last integer dropped when h = integer + tiny (frac(h) < 2^-100)
+  lane test: PASSES (not detected)
+  own check: seed 900: 600 calls (311 OK, 289 LIMIT, 0 inputs refused by harness), 11562 stored pieces checked, 49 findings, 8.9 s; OK calls where deduplication removed pieces: 99 finding kinds: {'stored-differs-from-model': 11, 'Q1-no-enclosure': 20, 'status': 11, 'ENCLOSURE-LOST': 4, 'POINT-LOST': 3}
+F3: fibres 0 <= j <= B
+  lane test: fails (rc 134): reduce line 190: adf_qclass_reduce(y, x, K, prec) == ADF_OK | Aborted
+  own check: seed 900: 600 calls (0 OK, 600 LIMIT, 0 inputs refused by harness), 0 stored pieces checked, 300 findings, 0.1 s; OK calls where deduplication removed pieces: 0 finding kinds: {'status': 300}
+F4: shift -n reduced modulo A with the wrong sign for negative n
+  lane test: fails (rc 134): reduce line 131: (size_t) y->len == jsonl_size(ps) | Aborted
+  own check: seed 900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 11543 stored pieces checked, 391 findings, 5.5 s; OK calls where deduplication removed pieces: 78 finding kinds: {'ENCLOSURE-LOST': 120, 'POINT-LOST': 119, 'stored-differs-from-model': 150, 'Q1-no-enclosure': 2}
+F5: Q1 successor omitted when the radius u is a power of two
+  lane test: fails (rc 134): reduce line 135: fmpq_equal(lo, l) && fmpq_equal(hi, h) | Aborted
+  own check: seed 900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 11553 stored pieces checked, 41861 findings, 9.7 s; OK calls where deduplication removed pieces: 77 finding kinds: {'stored-differs-from-model': 120, 'Q1-no-enclosure': 41741}
+F6: deduplication on the real key only
+  lane test: fails (rc 134): reduce line 131: (size_t) y->len == jsonl_size(ps) | Aborted
+  own check:  900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 10453 stored pieces checked, 40028 findings, 5.3 s; OK calls where deduplication removed pieces: 105 finding kinds: {'stored-differs-from-model': 84, 'Q1-no-enclosure': 39796, 'ENCLOSURE-LOST': 68, 'POINT-LOST': 66, 'Q1-too-wide': 14}
+F7: limit compared with the count after deduplication
+  lane test: fails (rc 134): reduce line 187: adf_qclass_reduce(y, x, K-1, prec) == ADF_LIMIT | Aborted
+  own check: seed 900: 600 calls (441 OK, 159 LIMIT, 0 inputs refused by harness), 19640 stored pieces checked, 141 findings, 6.1 s; OK calls where deduplication removed pieces: 150 finding kinds: {'status': 141}
+F8: y written before the last allocation succeeds (y->form set at the start of pass 1)
+  lane test: PASSES (not detected)
+  own check: seed 900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 11553 stored pieces checked, 0 findings, 9.7 s; OK calls where deduplication removed pieces: 77 finding kinds: {}
+F9: midpoint clamped into [0,1] instead of the piece being built there
+  lane test: fails (rc 134): reduce line 135: fmpq_equal(lo, l) && fmpq_equal(hi, h) | Aborted
+  own check: seed 900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 12926 stored pieces checked, 48082 findings, 8.9 s; OK calls where deduplication removed pieces: 70 finding kinds: {'stored-differs-from-model': 141, 'Q1-too-wide': 47606, 'Q1-no-enclosure': 335}
+F10: exponent bound off by one
+  lane test: fails (rc 134): reduce line 225: adf_qclass_reduce(y, x, limit, prec) == ADF_LIMIT | Aborted
+  own check: seed 900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 11553 stored pieces checked, 0 findings, 8.5 s; OK calls where deduplication removed pieces: 77 finding kinds: {}
+F11: count check after a fibre omitted for the second and later fibres (total only at end)
+  lane test: fails (rc 134): reduce line 187: adf_qclass_reduce(y, x, K-1, prec) == ADF_LIMIT | Aborted
+  own check: seed 900: 600 calls (373 OK, 227 LIMIT, 0 inputs refused by harness), 19185 stored pieces checked, 73 findings, 5.6 s; OK calls where deduplication removed pieces: 127 finding kinds: {'status': 73}
+F12: equal-endpoint case uses ceil(h) (zero pieces at an integer point)
+  lane test: fails (rc 134): reduce line 130: y->form == ADF_QCLASS_PIECES && adf_qclass_is_canonical(y) | Aborted
+  own check: rc 1 82, in main
+    recs = parse(out)
+           ^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/q-review3/lanes/q-review3/check.py", line 141, in parse
+    cur['S'].append([int(v) for v in t[1].split()])
+                     ^^^^^^
+ValueError: invalid literal for int() with base 10: 'exception:'
+
+F13: Q1 midpoint rounded toward zero instead of to nearest
+  lane test: fails (rc 134): reduce line 135: fmpq_equal(lo, l) && fmpq_equal(hi, h) | Aborted
+  own check: seed 900: 600 calls (300 OK, 300 LIMIT, 0 inputs refused by harness), 11528 stored pieces checked, 34419 findings, 8.2 s; OK calls where deduplication removed pieces: 73 finding kinds: {'stored-differs-from-model': 161, 'Q1-too-wide': 1746, 'Q1-no-enclosure': 32512}
+F7: limit compared with the count after deduplication
+  lane test: fails (rc 134): reduce line 187: adf_qclass_reduce(y, x, K-1, prec) == ADF_LIMIT | Aborted
+  own check: seed 900: 600 calls (373 OK, 227 LIMIT, 0 inputs refused by harness), 18983 stored pieces checked, 73 findings, 3.4 s; OK calls where deduplication removed pieces: 150 finding kinds: {'status': 73}

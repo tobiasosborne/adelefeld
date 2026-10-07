@@ -1,0 +1,37 @@
+B=10^6 point, limit 10^6                      want 0       got R 0 1 1000000 1 1 1 10501024             30.01 s
+B=10^6 point, limit 10^6-1                    want 10      got R 10 0 1 1 1 1 8                         0.03 s
+B=10^6 point, limit LONG_MAX                  want 0       got R 0 1 1000000 1 1 1 9817592              29.31 s
+B=10^30, limit LONG_MAX                       want 10      got R 10 0 1 1 1 1 17                        0.03 s
+B=2^5000, limit LONG_MAX                      want 10      got R 10 0 1 1 1 1 38                        0.02 s
+B=2^5000 numerator 2^5000+1                   want 10      got R 10 0 1 1 1 1 32                        0.02 s
+A=2^5000+1, B=2, point                        want 0       got R 0 1 2 1 1 1 228                        0.02 s
+width 10^6, N=1, limit 10^6+1                 want 0       got R 0 1 3 1 1 1 13362391                   30.25 s
+width 10^6, N=1, limit 10^6                   want 10      got R 10 0 1 1 1 1 10                        0.02 s
+width 10^6, N=0, limit 10^6+1                 want 0       got R 0 1 1000001 1 1 1 14836842             37.99 s
+width 2^100 (>10^30), limit LONG_MAX          want 10      got R 10 0 1 1 1 1 14                        0.02 s
+width 2^100, B=3, limit LONG_MAX              want 10      got R 10 0 1 1 1 1 28                        0.02 s
+width 2^62 (count 2^62+1), limit LONG_MAX     want abort?  got R 10 0 1 1 1 1 18                        0.02 s
+limit 1, point                                want 0       got R 0 1 1 1 1 1 32                         0.02 s
+limit 0, point                                want 10      got R 10 0 1 1 1 1 7                         0.02 s
+limit -1, point                               want 10      got R 10 0 1 1 1 1 6                         0.02 s
+limit LONG_MIN, point                         want 10      got R 10 0 1 1 1 1 7                         0.02 s
+prec 2                                        want 0       got R 0 1 1 1 1 1 31                         0.02 s
+prec 1                                        want 0       got R 0 1 1 1 1 1 24                         0.02 s
+prec 0                                        want 0       got R 0 1 1 1 1 1 27                         0.02 s
+prec -5                                       want 0       got R 0 1 1 1 1 1 19                         0.02 s
+prec LONG_MIN                                 want 0       got R 0 1 1 1 1 1 18                         0.02 s
+prec cap, dyadic piece                        want 0       got R 0 1 1 1 1 1 131                        0.02 s
+prec cap, centre 1/3                          want see     got R 10 0 1 1 1 1 505                       0.02 s
+prec cap-64, centre 1/3                       want 0       got R 0 1 1 1 1 1 2987                       0.11 s
+prec cap+1                                    want 10      got R 10 0 1 1 1 1 6                         0.02 s
+prec LONG_MAX                                 want 10      got R 10 0 1 1 1 1 6                         0.02 s
+mid exponent 2^20 (arf exp 2^20+1)            want 10      got R 10 0 1 1 1 1 5                         0.04 s
+mid exponent 2^20-1 (arf exp 2^20)            want 0       got R 0 1 1 1 1 1 1810                       0.05 s
+mid exponent -2^20-1 (arf exp -2^20)          want 0       got R 0 1 1 1 1 1 3294                       0.04 s
+mid exponent -2^20-2                          want 10      got R 10 0 1 1 1 1 26                        0.05 s
+rad exponent 2^20-1, limit LONG_MAX           want 10      got R 10 0 1 1 1 1 595                       0.07 s
+rad exponent -2^20-1                          want 0       got R 0 1 1 1 1 1 6364                       0.05 s
+centre 2^21-bit numerator                     want see     got R 10 0 1 1 1 1 611                       0.09 s
+centre 2^21+1-bit numerator                   want 10      got R 10 0 1 1 1 1 32                        0.07 s
+centre 2000-bit, N 7/360, width 3             want 0       got R 0 1 725 1 1 1 14836                    0.05 s
+local 360, d=7, width 5                       want 0       got R 0 1 42 1 1 1 484                       0.02 s
