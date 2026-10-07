@@ -828,6 +828,9 @@ static void debug(void)
             if (k == 11) (void) adf_tensor_eval_sball(z, phi, f, s, PREC);
             if (k == 12) (void) adf_tensor_integral(z, phi, f, PREC);
             if (k == 13) (void) adf_tensor_norm2(n, phi, f, PREC);
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            adf_rfun_clear(phi); adf_ffun_clear(f); adf_fball_clear(x); adf_adele_clear(a); adf_sball_clear(s);
+            acb_clear(z); arb_clear(n);
             _exit(0);
         }
         CHECK(waitpid(p, &status, 0) == p && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT);

@@ -747,6 +747,8 @@ static void debug(void)
             if (k == 1) (void) adf_rfun_derivative(y, x, PREC);
             if (k == 2) (void) adf_rfun_integral(z, x, PREC);
             if (k == 3) (void) adf_rfun_norm2(n, x, PREC);
+            /* Reached only if the entry check is missing. The clears are for tools/memcheck. */
+            adf_rfun_clear(x); adf_rfun_clear(y); acb_clear(z); arb_clear(n);
             _exit(0);
         }
         CHECK(waitpid(p, &status, 0) == p && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT);
