@@ -62,6 +62,25 @@ int adf_ffun_add(adf_ffun_t z, const adf_ffun_t x, const adf_ffun_t y, slong pre
    OK encloses all members; LIMIT for D1 (also (DM)^2<=2^20); NOT_DETERMINED for phase
    or nonfinite result failure. O((DM)^2) operations, O(DM) storage. */
 int adf_ffun_fourier(adf_ffun_t y, const adf_ffun_t x, slong prec);
+/* Slice 4b, docs/api-4.md section 3, F1-F3. Common lifecycle/alias rules above apply. */
+#include "adelefeld/idele.h"
+/* Common F1 refinement, then acb multiplication at max(prec,2).
+   OK, LIMIT, NOT_DETERMINED. O(lcm(D)*lcm(M)); repeated balls lose correlations. */
+int adf_ffun_mul(adf_ffun_t z, const adf_ffun_t x, const adf_ffun_t y, slong prec);
+/* F2: f(x-q). Refine D by den(q), then read k-D2*q modulo D2*M.
+   Exact copies; OK or LIMIT; O(D2*M). */
+int adf_ffun_translate_rat(adf_ffun_t y, const adf_ffun_t x, const adf_rat_t q);
+/* F2: f(-x), reading -k modulo DM. Exact copies; OK or LIMIT; O(DM). */
+int adf_ffun_reflect(adf_ffun_t y, const adf_ffun_t x);
+/* F3: f(q*x), q=s/t reduced. Layout (|s|D,tM); zero unless t divides k, then
+   f[sign(s)*k/t mod DM]. Exact copies, O(new length). DOMAIN for q=0; LIMIT for D1; otherwise OK. */
+int adf_ffun_dilate_rat(adf_ffun_t y, const adf_ffun_t x, const adf_rat_t q);
+/* Finite part only, ignores a.inf. F3 singleton unit-image certificate modulo DM;
+   non-singleton gives NOT_DETERMINED even for invariant arrays. Content is rational dilation.
+   OK/NOT_DETERMINED/LIMIT, O(DM+new length). D1 charges enumeration and copied cells together. */
+int adf_ffun_dilate_idele(adf_ffun_t y, const adf_ffun_t x, const adf_idele_t a);
+/* Exact pointwise complex conjugate. OK or LIMIT; O(DM). */
+int adf_ffun_conj(adf_ffun_t y, const adf_ffun_t x);
 #ifdef __cplusplus
 }
 #endif

@@ -1,0 +1,26 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 24 of them run (--limit 24, --seed 20261008)
+src/ffun.c:77:27 op: '*' -> '+'
+src/ffun.c:303:51 logic: '&&' -> '||'
+src/ffun.c:77:24 cmp: '!=' -> '=='
+src/ffun.c:153:13 drop_call: 'acb_mul(term,x->f+j,phase,p);' -> '' (the statement is removed)
+src/ffun.c:298:22 drop_call: 'ADF_INV_FFUN(y);' -> '' (the statement is removed)
+src/ffun.c:25:44 op: '/' -> '*'
+src/ffun.c:151:13 drop_assign: 'st=adf_phase_get_acb(phase,theta,p);' -> '' (the statement is removed)
+src/ffun.c:157:32 op: '+' -> '-'
+src/ffun.c:149:26 op: '%' -> '/'
+src/ffun.c:142:5 drop_call: 'ADF_INV_FFUN(x);' -> '' (the statement is removed)
+src/ffun.c:294:47 cmp: '==' -> '!='
+src/ffun.c:197:25 op: '+' -> '-'
+src/ffun.c:122:39 op: '+' -> '-'
+src/ffun.c:185:39 drop_call: 'ADF_INV_FFUN(z);' -> '' (the statement is removed)
+src/ffun.c:221:5 drop_call: 'ADF_INV_FFUN(x);' -> '' (the statement is removed)
+src/ffun.c:68:12 zero_one: '1' -> '0'
+src/ffun.c:303:25 cmp: '<' -> '<='
+src/ffun.c:333:18 zero_one: '0' -> '1'
+src/ffun.c:233:14 op: '*' -> '/'
+src/ffun.c:120:30 zero_one: '0' -> '1'
+src/ffun.c:234:43 op: '+' -> '-'
+src/ffun.c:293:16 status: 'ADF_LIMIT' -> 'ADF_OK'
+src/ffun.c:183:43 swap_args: 'ffun_lcm(&M, x->M, y->M)' -> 'ffun_lcm(&M, y->M, x->M)'
+src/ffun.c:171:5 negate_if: 'if(!c)' -> 'if(!(!c))'

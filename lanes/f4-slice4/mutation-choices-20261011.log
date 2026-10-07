@@ -1,0 +1,6 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261011)
+src/ffun.c:201:22 drop_call: 'adf_ffun_swap(z,t);' -> '' (the statement is removed)
+src/ffun.c:67:18 zero_one: '0' -> '1'
+src/ffun.c:322:60 zero_one: '0' -> '1'
+src/ffun.c:121:49 op: '/' -> '*'

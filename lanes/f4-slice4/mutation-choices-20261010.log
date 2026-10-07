@@ -1,0 +1,6 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261010)
+src/ffun.c:193:35 cmp: '>' -> '>='
+src/ffun.c:77:30 logic: '||' -> '&&'
+src/ffun.c:257:48 cmp: '==' -> '!='
+src/ffun.c:199:32 op: '+' -> '-'

@@ -873,3 +873,14 @@ The commands use the current `prec` and `digits`. Array/work/precision caps retu
 Direct shell calls accept `adf ffun 'F'`, `adf ffun_add 'F' with 'G'`, and `adf ffun_fourier 'F'`.
 For `ffun_add`, two separately quoted operands without `with` are also accepted as shell arguments.
 Within a driver script, ` with ` remains the required separator. Bare scalar entries are outside the grammar.
+
+`ffun_mul F with G` multiplies on the common lcm refinement (F1).
+`ffun_translate F with Q` computes `f(x-Q)` for an exact rational Q (F2).
+`ffun_dilate F with Q` computes `f(Q*x)` in layout `(|num(Q)|*D,den(Q)*M)` (F3).
+The zero rational gives `DOMAIN`; the support holes are exact zeros. Negative Q reverses the indices.
+`ffun_dilate_idele F with A` uses the content and unit of the idele text A, ignoring its real component.
+The unit image modulo DM must be a singleton. Otherwise it returns `NOT_DETERMINED`, even for a zero array.
+`ffun_reflect F` computes `f(-x)` and `ffun_conj F` conjugates every complex value, without moving cells.
+All six commands also accept separately quoted direct shell operands, with the same optional `with` as `ffun_add`.
+Product uses the current precision. The other five array operations copy exactly. All use the current digits.
+Array, integer-bit and charged-work caps give `LIMIT`; a translation that refines charges two array passes.

@@ -1,0 +1,6 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261013)
+src/ffun.c:138:40 status: 'ADF_LIMIT' -> 'ADF_OK'
+src/ffun.c:120:70 op: '/' -> '*'
+src/ffun.c:115:11 cmp: '!=' -> '=='
+src/ffun.c:77:30 logic: '||' -> '&&'

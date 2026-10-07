@@ -1,0 +1,20 @@
+mutate: src/ffun.c: 537 mutants
+mutate: 537 mutants, 4 of them run (--limit 4, --seed 20261014)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (21.0 s)
+
+SURVIVED src/ffun.c:103:29 op: '/' -> '*'
+  the tests pass with the mutant
+  --- a/src/ffun.c
+  +++ b/src/ffun.c
+  @@ -101,5 +101,5 @@
+       while (v) { ulong r=u%v; u=v; v=r; }
+       a/=u;
+  -    if (a>ADF_FFUN_ITEMS_MAX/b) return ADF_LIMIT;
+  +    if (a>ADF_FFUN_ITEMS_MAX*b) return ADF_LIMIT;
+       *out=a*b; return ADF_OK;
+   }
+
+
+mutate: 4 mutants in 71.4 s: 3 killed, 1 survived, 0 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check

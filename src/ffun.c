@@ -160,3 +160,176 @@ int adf_ffun_fourier(adf_ffun_t y, const adf_ffun_t x, slong prec)
 done:
     fmpq_clear(theta); acb_clear(phase); acb_clear(term); ffun_dispose(t); return st;
 }
+
+/* Slice 4b. Own finite-index proofs: docs/api-4.md:119-146 (F1-F3).
+   Ball enclosure: refs/src/flint-3.0.1/arb.rst:6-12, acb.rst:6-12. */
+/* Fix operand order by stored balls, so commutativity is representation identity even when
+   directed radius rounding in acb_mul differs by operand order. No numerical data are rounded. */
+static int ffun_ball_cmp(const acb_t a, const acb_t b)
+{
+    int c=arf_cmp(arb_midref(acb_realref(a)),arb_midref(acb_realref(b)));
+    if (!c) c=mag_cmp(arb_radref(acb_realref(a)),arb_radref(acb_realref(b)));
+    if (!c) c=arf_cmp(arb_midref(acb_imagref(a)),arb_midref(acb_imagref(b)));
+    if (!c) c=mag_cmp(arb_radref(acb_imagref(a)),arb_radref(acb_imagref(b)));
+    return c;
+}
+int adf_ffun_mul(adf_ffun_t z, const adf_ffun_t x, const adf_ffun_t y, slong prec)
+{
+    adf_ffun_t t;
+    acb_t copy;
+    ulong D,M;
+    int st;
+    if (prec>ADF_REAL_PREC_MAX) return ADF_LIMIT;
+    if (ffun_lcm(&D,x->D,y->D)!=ADF_OK || ffun_lcm(&M,x->M,y->M)!=ADF_OK) return ADF_LIMIT;
+    st=ffun_shape(D,M); if (st==ADF_LIMIT) return st;
+    ADF_INV_FFUN(x); ADF_INV_FFUN(y); ADF_INV_FFUN(z);
+    if (st!=ADF_OK) return st;
+    ffun_allocate(t,D,M); acb_init(copy);
+    ulong rx=D/x->D, ry=D/y->D, lx=x->D*x->M, ly=y->D*y->M;
+    slong p=FLINT_MAX(prec,2);
+    for (ulong k=0;k<D*M;k++) {
+        if (k%rx==0 && k%ry==0) {
+            acb_srcptr a=x->f+(k/rx)%lx, b=y->f+(k/ry)%ly;
+            if (ffun_ball_cmp(a,b)>0) { acb_srcptr c=a; a=b; b=c; }
+            /* acb.rst:463-468 permits a same-pointer squaring shortcut. Use independent balls
+               here, so the product family and its representation do not depend on input aliasing. */
+            if (a==b) { acb_set(copy,b); b=copy; }
+            acb_mul(t->f+k,a,b,p);
+        }
+        if (!acb_is_finite(t->f+k)) { acb_clear(copy); ffun_dispose(t); return ADF_NOT_DETERMINED; }
+    }
+    acb_clear(copy); adf_ffun_swap(z,t); adf_ffun_clear(t); return ADF_OK;
+}
+/* D1 integer input preflight uses bit counts without forming a product. */
+static int ffun_rat_bits(const fmpq_t q)
+{
+    return fmpz_bits(fmpq_numref(q))<=ADF_FFUN_BITS_MAX &&
+           fmpz_bits(fmpq_denref(q))<=ADF_FFUN_BITS_MAX;
+}
+/* F2, docs/api-4.md:130-135. Reduce the numerator before its bounded word product. */
+int adf_ffun_translate_rat(adf_ffun_t y, const adf_ffun_t x, const adf_rat_t q)
+{
+    adf_ffun_t t;
+    ulong D,M=x->M,den;
+    int st;
+    if (!ffun_rat_bits(q->q) || fmpz_cmp_ui(fmpq_denref(q->q),ADF_FFUN_ITEMS_MAX)>0)
+        return ADF_LIMIT;
+    den=fmpz_sgn(fmpq_denref(q->q))>0 ? fmpz_get_ui(fmpq_denref(q->q)) : 0;
+    if (ffun_lcm(&D,x->D,den)!=ADF_OK) return ADF_LIMIT;
+    st=ffun_shape(D,M); if (st==ADF_LIMIT) return st;
+    if (st==ADF_OK && D!=x->D && D*M>ADF_FFUN_ITEMS_MAX/2) return ADF_LIMIT;
+    ADF_INV_FFUN(x); ADF_INV_FFUN(y); ADF_INV_RAT(q);
+    if (st!=ADF_OK) return st;
+    /* Reuse F1 only when the denominator requires refinement. The work cap charges both passes. */
+    adf_ffun_srcptr source=x;
+    if (D!=x->D) {
+        adf_ffun_init(t);
+        st=adf_ffun_refine(t,x,D,M);
+        if (st!=ADF_OK) { adf_ffun_clear(t); return st; }
+        source=t;
+    }
+    adf_ffun_t out;
+    ffun_allocate(out,D,M);
+    ulong L=D*M, shift=(fmpz_fdiv_ui(fmpq_numref(q->q),L)*(D/den))%L;
+    for (ulong k=0;k<L;k++) acb_set(out->f+k,source->f+(k+L-shift)%L);
+    if (D!=x->D) adf_ffun_clear(t);
+    adf_ffun_swap(y,out); adf_ffun_clear(out); return ADF_OK;
+}
+/* F3 size projection: no large numerator*D or denominator*M is ever formed. */
+static int ffun_dilate_shape(ulong *D, ulong *M, const adf_ffun_t x, const fmpq_t q)
+{
+    if (!ffun_rat_bits(q)) return ADF_LIMIT;
+    if (!x->D || !x->M) return ADF_DOMAIN;
+    ulong bound=ADF_FFUN_ITEMS_MAX/x->D;
+    if (fmpz_cmp_si(fmpq_numref(q),-(slong)bound)<0 || fmpz_cmp_ui(fmpq_numref(q),bound)>0 ||
+        fmpz_cmp_ui(fmpq_denref(q),ADF_FFUN_ITEMS_MAX/x->M)>0) return ADF_LIMIT;
+    if (fmpz_sgn(fmpq_denref(q))<=0) return ADF_DOMAIN;
+    slong s=fmpz_get_si(fmpq_numref(q));
+    *D=(ulong)(s<0 ? -s : s)*x->D;
+    *M=fmpz_get_ui(fmpq_denref(q))*x->M;
+    return ffun_shape(*D,*M);
+}
+/* F3, docs/api-4.md:137-142. Holes remain initialized zero. Unit is a residue modulo old DM. */
+static void ffun_dilate_cells(adf_ffun_t out, const adf_ffun_t x, const fmpq_t q, ulong unit)
+{
+    ulong t=fmpz_get_ui(fmpq_denref(q)), L=x->D*x->M;
+    int negative=fmpq_sgn(q)<0;
+    for (ulong k=0;k<out->D*out->M;k++) if (k%t==0) {
+        ulong j=(unit*((k/t)%L))%L;
+        if (negative && j) j=L-j;
+        acb_set(out->f+k,x->f+j);
+    }
+}
+int adf_ffun_dilate_rat(adf_ffun_t y, const adf_ffun_t x, const adf_rat_t q)
+{
+    adf_ffun_t t;
+    ulong D=0,M=0;
+    int st=ffun_dilate_shape(&D,&M,x,q->q);
+    if (st==ADF_LIMIT) return st;
+    ADF_INV_FFUN(x); ADF_INV_FFUN(y); ADF_INV_RAT(q);
+    if (fmpq_is_zero(q->q)) return ADF_DOMAIN;
+    if (st!=ADF_OK) return st;
+    ffun_allocate(t,D,M); ffun_dilate_cells(t,x,q->q,1);
+    adf_ffun_swap(y,t); adf_ffun_clear(t); return ADF_OK;
+}
+#include <flint/ulong_extras.h>
+#ifdef ADF_CHECK_INVARIANTS
+static ADF_INV_NOINLINE void ffun_idele_entry(const adf_idele_t a, const char *fn)
+{
+    if (!adf_idele_is_canonical(a)) adf_inv_fail(fn,"a","adf_idele");
+}
+#define ADF_FFUN_INV_IDELE(a) ffun_idele_entry(a,__func__)
+#else
+#define ADF_FFUN_INV_IDELE(a) ((void)0)
+#endif
+/* F3.3-4, docs/api-4.md:143-146: enumerate the full compatible unit image, including
+   singleton images with L not dividing N. The real component is ignored by the array operation. */
+int adf_ffun_dilate_idele(adf_ffun_t y, const adf_ffun_t x, const adf_idele_t a)
+{
+    adf_ffun_t t;
+    ulong D=0,M=0,unit=0;
+    int st=ffun_shape(x->D,x->M);
+    if (st==ADF_LIMIT || fmpz_bits(a->u.c)>ADF_FFUN_BITS_MAX || fmpz_bits(a->u.N)>ADF_FFUN_BITS_MAX)
+        return ADF_LIMIT;
+    st=ffun_dilate_shape(&D,&M,x,a->r); if (st==ADF_LIMIT) return st;
+    ulong L=x->D*x->M;
+    int enumerate=!fmpz_is_zero(a->u.N);
+    if (st==ADF_OK && enumerate && L>ADF_FFUN_ITEMS_MAX-D*M) return ADF_LIMIT;
+    ADF_INV_FFUN(x); ADF_INV_FFUN(y); ADF_FFUN_INV_IDELE(a);
+    if (st!=ADF_OK) return st;
+    if (!enumerate) unit=fmpz_fdiv_ui(a->u.c,L);
+    else {
+        ulong g=n_gcd(L,fmpz_fdiv_ui(a->u.N,L)), c=fmpz_fdiv_ui(a->u.c,g), count=0;
+        for (ulong v=0;v<L;v++) if (n_gcd(v,L)==1 && v%g==c) {
+            unit=v;
+            if (++count>1) return ADF_NOT_DETERMINED;
+        }
+        /* A canonical unit coset always has a nonempty image (F3.3). */
+        if (count!=1) return ADF_NOT_DETERMINED;
+    }
+    ffun_allocate(t,D,M); ffun_dilate_cells(t,x,a->r,unit);
+    adf_ffun_swap(y,t); adf_ffun_clear(t); return ADF_OK;
+}
+/* F2, docs/api-4.md:134-135. Negate the index, without conjugating the values. */
+int adf_ffun_reflect(adf_ffun_t y, const adf_ffun_t x)
+{
+    adf_ffun_t t;
+    int st=ffun_shape(x->D,x->M); if (st==ADF_LIMIT) return st;
+    ADF_INV_FFUN(x); ADF_INV_FFUN(y);
+    if (st!=ADF_OK) return st;
+    ffun_allocate(t,x->D,x->M);
+    ulong L=x->D*x->M;
+    for (ulong k=0;k<L;k++) acb_set(t->f+k,x->f+(k ? L-k : 0));
+    adf_ffun_swap(y,t); adf_ffun_clear(t); return ADF_OK;
+}
+/* docs/api-4.md:161-162: pointwise conjugation, an exact rectangle bijection. */
+int adf_ffun_conj(adf_ffun_t y, const adf_ffun_t x)
+{
+    adf_ffun_t t;
+    int st=ffun_shape(x->D,x->M); if (st==ADF_LIMIT) return st;
+    ADF_INV_FFUN(x); ADF_INV_FFUN(y);
+    if (st!=ADF_OK) return st;
+    ffun_allocate(t,x->D,x->M);
+    for (ulong k=0;k<x->D*x->M;k++) acb_conj(t->f+k,x->f+k);
+    adf_ffun_swap(y,t); adf_ffun_clear(t); return ADF_OK;
+}
