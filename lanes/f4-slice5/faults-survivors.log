@@ -1,0 +1,7 @@
+19. survivor: integral loop reads entry L: caught: timeout: the monitored command dumped core
+caught 1 of 1
+20. survivor: the box clear of hi[k] as hi[-k] (SAN): caught: ==448928==ABORTING
+caught 1 of 1
+21. survivor: tensor_eval without the rfun entry check (INV): NOT CAUGHT
+22. survivor: tensor_eval without the ffun entry check (INV): caught: tests/test_tensor.c:815: waitpid(p, &status, 0) == p && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT
+caught 1 of 2

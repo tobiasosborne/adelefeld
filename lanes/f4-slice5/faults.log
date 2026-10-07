@@ -1,0 +1,19 @@
+ 1. faults_44 a: a jump sampled at one point (the first coset met only): caught: tests/test_tensor.c:287: exact_ball(z, 3, 2)
+ 2. faults_44 b: the outside test without d | D H ((1/4) Zhat): caught: tests/test_tensor.c:292: acb_contains_zero(z)
+ 3. faults_44 c: the empty set (exact point 1/5) is not exactly 0: caught: tests/test_tensor.c:297: adf_ffun_eval(z, f, x, PREC) == ADF_OK && acb_is_zero(z)
+ 4. faults_44 d: the partial evaluator without the zero of an absent prime: caught: tests/test_tensor.c:201: acb_contains_zero(z)
+ 5. faults_44 e: the integral weight 1/D for 1/M: caught: tests/test_tensor.c:523: acb_overlaps(z, u)
+ 6. faults_44 f: the norm with |f| for |f|^2: caught: tests/test_tensor.c:529: arb_overlaps(n, rn)
+ 7. gcd criterion with lcm: caught: tests/test_tensor.c:287: exact_ball(z, 3, 2)
+ 8. support test dropped (zero never included): BUILD FAILED
+ 9. a jump sampled at the midpoint only (the coset of the centre A/d): caught: tests/test_tensor.c:287: exact_ball(z, 3, 2)
+10. step 4 with max instead of min: caught: tests/test_tensor.c:200: acb_contains(z, f->f + j)
+11. step 4 exact point with min(0, v_p(M)): caught: tests/test_tensor.c:202: acb_contains(w, z)
+12. step 5 without the factor exp(beta^2/(2 alpha)): caught: tests/test_tensor.c:449: acb_contains(z, y)
+13. the norm not clipped: caught: tests/test_tensor.c:575: adf_ffun_norm2(n, f, PREC) == ADF_OK && arb_is_nonnegative(n)
+14. z written before the last check (tensor_eval): caught: tests/test_tensor.c:611: adf_tensor_eval(z, phi, f, a, prec) == st && (st == ADF_OK || untouched(z, n))
+15. bits cap one bit short: caught: tests/test_tensor.c:711: adf_ffun_eval(z, f, x, PREC) == ADF_OK && acb_equal(z, f->f + 2 * ((fmpz_fdiv_ui(A, 3
+16. work cap off by one: caught: tests/test_tensor.c:703: adf_tensor_eval_sball(z, phi, f, s, PREC) == ADF_OK && acb_is_zero(z)
+17. COMPLEX arch accepted as NONE: caught: tests/test_tensor.c:643: adf_tensor_eval_sball(z, phi, f, sc, PREC) == ADF_DOMAIN && untouched(z, n)
+18. the hull radius always rounded up (arb_set_interval_arf): caught: tests/test_tensor.c:287: exact_ball(z, 3, 2)
+caught 17 of 18
