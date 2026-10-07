@@ -215,6 +215,11 @@ typedef enum
     ADF_DRV_CHAR,
     ADF_DRV_CHI,
     ADF_DRV_GAUSS,
+
+    ADF_DRV_RFUN,              /* slice 4d (lane f4-slice2): real test functions, adf_drv_rfun below */
+    ADF_DRV_RFUN_TRANSLATE,
+    ADF_DRV_RFUN_MUL,
+    ADF_DRV_RFUN_EVAL,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -310,6 +315,11 @@ static const struct
     { "char", ADF_DRV_CHAR, 1 },
     { "chi", ADF_DRV_CHI, 2 },
     { "gauss", ADF_DRV_GAUSS, 1 },
+
+    { "rfun", ADF_DRV_RFUN, 1 },
+    { "rfun_translate", ADF_DRV_RFUN_TRANSLATE, 2 },
+    { "rfun_mul", ADF_DRV_RFUN_MUL, 2 },
+    { "rfun_eval", ADF_DRV_RFUN_EVAL, 2 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -3069,6 +3079,57 @@ done:
     return status;
 }
 
+/* Slice 4d (lane f4-slice2; docs/api-4.md 5, 6 and 9 item 4; include/adelefeld/rfun.h). The first operand is an
+   rfun text. "rfun R" prints its canonical text; "rfun_translate R with Q" prints R(x - Q), Q an exact rational;
+   "rfun_mul R with S" prints the product (pairs in lexicographic order); "rfun_eval R with X" prints the complex
+   ball phi(X) as psi does, X a real ball of the production real of conventions 9.2, read by the adele reader
+   as the text "(X ; 0)". Steps as for every command: the syntax of each operand, then its kind (another kind is
+   DOMAIN, the pair of types), then the values, then the operation, then the printer (NULL: LIMIT). */
+static int
+adf_drv_rfun(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_rfun_t r, s, z; adf_rat_t q; adf_adele_t a; acb_t v; adf_text_kind kind;
+    char *text = NULL, *real = NULL; size_t len = 0; int status, wrong = 0;
+    adf_rfun_init(r); adf_rfun_init(s); adf_rfun_init(z); adf_rat_init(q); adf_adele_init(a); acb_init(v);
+    status = adf_text_classify(&kind, l->s[0], l->n[0], NULL);
+    if (status != ADF_OK) goto done;
+    wrong = kind != ADF_TEXT_RFUN;
+    if (op == ADF_DRV_RFUN_EVAL) {
+        real = (char *) malloc(l->n[1] + 6);
+        if (real == NULL) { status = ADF_LIMIT; goto done; }
+        real[0] = '('; memcpy(real + 1, l->s[1], l->n[1]); memcpy(real + 1 + l->n[1], " ; 0)", 5);
+        status = adf_text_classify(&kind, real, l->n[1] + 6, NULL);
+        if (status != ADF_OK || kind != ADF_TEXT_ADELE) { status = ADF_PARSE; goto done; }
+    } else if (op != ADF_DRV_RFUN) {
+        status = adf_text_classify(&kind, l->s[1], l->n[1], NULL);
+        if (status != ADF_OK) goto done;
+        wrong |= kind != (op == ADF_DRV_RFUN_MUL ? ADF_TEXT_RFUN : ADF_TEXT_RAT);
+    }
+    if (wrong) { status = ADF_DOMAIN; goto done; }
+    status = adf_rfun_set_str(r, l->s[0], l->n[0], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (op == ADF_DRV_RFUN_TRANSLATE) status = adf_rat_set_str(q, l->s[1], l->n[1], NULL);
+    else if (op == ADF_DRV_RFUN_MUL) status = adf_rfun_set_str(s, l->s[1], l->n[1], st->prec, NULL);
+    else if (op == ADF_DRV_RFUN_EVAL) status = adf_adele_set_str(a, real, l->n[1] + 6, st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (op == ADF_DRV_RFUN_EVAL) {
+        status = adf_rfun_eval(v, r, a->inf, st->prec);
+        if (status == ADF_OK) status = adf_drv_psi_print(out, v, st);
+        goto done;
+    }
+    if (op == ADF_DRV_RFUN) adf_rfun_swap(z, r);
+    else if (op == ADF_DRV_RFUN_TRANSLATE) status = adf_rfun_translate_rat(z, r, q, st->prec);
+    else status = adf_rfun_mul(z, r, s, st->prec);
+    if (status != ADF_OK) goto done;
+    text = adf_rfun_get_str(&len, z, st->digits);
+    if (text == NULL) { status = ADF_LIMIT; goto done; }
+    fprintf(out, "%.*s\n", (int) len, text);
+done:
+    adf_str_free(text); free(real);
+    adf_rfun_clear(r); adf_rfun_clear(s); adf_rfun_clear(z); adf_rat_clear(q); adf_adele_clear(a); acb_clear(v);
+    return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3256,6 +3317,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
     if (op == ADF_DRV_LOCAL_ZETA_AT) return adf_drv_local_zeta(out, l, st);
     if (op == ADF_DRV_PSI || op == ADF_DRV_PSI_STRICT || op == ADF_DRV_PSI_AT || op == ADF_DRV_PSI_STRICT_AT ||
         op == ADF_DRV_PSI_PHASE) return adf_drv_psi(out, op, l, st);
+    if (op == ADF_DRV_RFUN || op == ADF_DRV_RFUN_TRANSLATE || op == ADF_DRV_RFUN_MUL || op == ADF_DRV_RFUN_EVAL)
+        return adf_drv_rfun(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

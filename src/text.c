@@ -3197,5 +3197,295 @@ char *adf_char_get_str(size_t *len, const adf_char_t x, slong digits)
     tx_puts(&b, ", n="); snprintf(integer, sizeof(integer), "%lu", x->n); tx_puts(&b, integer);
     tx_puts(&b, ", s=("); tx_put_real(&b, acb_realref(x->s), digits);
     tx_puts(&b, ") + ("); tx_put_real(&b, acb_imagref(x->s), digits); tx_puts(&b, ")*i)");
+
+/* ------------------------------------------------------------------------------------------------
+   adf_rfun (slice 4d, lane f4-slice2): rfun_v = "rfun" "(" [rterm {"," rterm}] ")" (conventions 9.2,
+   lines 1195-1197), template rfun(term(P=[z(c_0), ...], A=z(A), B=z(B), C=z(C)), ...) (9.4, the row of
+   adf_rfun), predicate conventions 5.12 (no exact-zero last coefficient, Re(A) > 0 certified). Sources:
+   docs/api-4.md section 2 (readers trim only exact trailing zeros, neither combine nor sort terms; NOT_DETERMINED
+   only when rounding an exactly positive decimal Re(A) loses its sign); conventions 8.5 (stages), 9.3, 9.5
+   (reading; constrained printing "positive" of Re(A)); proto/text_grammar.py Parser.rterm (398-418), the
+   rfun branch of _syntax (515-525), _check_limits "items" (597-600), _trim_zero_coeffs (759-769),
+   _check_real (772-775), the rfun branch of _build_and_print (878-887), _fmt_complex (747-748).
+   Stage 7 uses tx_real_ball_signed with the condition "positive" (the reader of the idele class): the
+   enclosure at prec first, then kernel B on the exact end points. */
+
+#include "adelefeld/rfun.h"
+
+#ifdef ADF_CHECK_INVARIANTS
+#define ADF_INV_RFUN_TX(x) \
+    do { if (!adf_rfun_is_canonical(x)) adf_inv_fail(__func__, #x, "adf_rfun"); } while (0)
+#else
+#define ADF_INV_RFUN_TX(x) ((void) 0)
+#endif
+
+/* The literals of an rfun text: for term k, plen[k] coefficients and then A, B, C, each a complex number
+   (two tx_real) in the array z, in the order of the text. The arrays grow with the text. */
+typedef struct
+{
+    tx_real * z;          /* 2 per complex number: real part, imaginary part */
+    slong nz, capz;       /* complex numbers stored, allocated */
+    slong * plen;
+    slong nt, capt;       /* terms stored, allocated */
+} tx_rf;
+
+static void
+tx_rf_init(tx_rf * r)
+{
+    memset(r, 0, sizeof(*r));
+}
+
+static void
+tx_rf_clear(tx_rf * r)
+{
+    flint_free(r->z);
+    flint_free(r->plen);
+}
+
+static int
+tx_rf_complex(tx_cur * c, tx_rf * r)
+{
+    if (r->nz == r->capz)
+    {
+        r->capz = r->capz ? 2 * r->capz : 16;
+        r->z = (tx_real *) flint_realloc(r->z, (size_t) r->capz * 2 * sizeof(tx_real));
+    }
+    if (!tx_complex_syntax(c, r->z + 2 * r->nz, r->z + 2 * r->nz + 1))
+        return 0;
+    r->nz++;
+    return 1;
+}
+
+/* rterm (proto Parser.rterm, 398-418), recording the literals. */
+static int
+tx_rf_term(tx_cur * c, tx_rf * r)
+{
+    slong n = 0;
+
+    if (r->nt == r->capt)
+    {
+        r->capt = r->capt ? 2 * r->capt : 4;
+        r->plen = (slong *) flint_realloc(r->plen, (size_t) r->capt * sizeof(slong));
+    }
+    if (!TX_KW(c, "term") || !tx_expect(c, '(') || !TX_KW(c, "P") || !tx_expect(c, '=') || !tx_expect(c, '['))
+        return 0;
+    if (!tx_peek(c, ']'))
+    {
+        if (!tx_rf_complex(c, r))
+            return 0;
+        n++;
+        while (tx_expect(c, ','))
+        {
+            if (!tx_rf_complex(c, r))
+                return 0;
+            n++;
+        }
+    }
+    if (!(tx_expect(c, ']') && tx_expect(c, ',') && TX_KW(c, "A") && tx_expect(c, '=') && tx_rf_complex(c, r)
+          && tx_expect(c, ',') && TX_KW(c, "B") && tx_expect(c, '=') && tx_rf_complex(c, r)
+          && tx_expect(c, ',') && TX_KW(c, "C") && tx_expect(c, '=') && tx_rf_complex(c, r)
+          && tx_expect(c, ')')))
+        return 0;
+    r->plen[r->nt++] = n;
+    return 1;
+}
+
+static int
+tx_rf_syntax(tx_cur * c, tx_rf * r)
+{
+    if (!TX_KW(c, "rfun") || !tx_expect(c, '('))
+        return 0;
+    if (!tx_peek(c, ')'))
+    {
+        if (!tx_rf_term(c, r))
+            return 0;
+        while (tx_expect(c, ','))
+            if (!tx_rf_term(c, r))
+                return 0;
+    }
+    return tx_expect(c, ')') && tx_at_end(c);
+}
+
+int
+adf_rfun_set_str(adf_rfun_t x, const char * s, size_t len, slong prec, const adf_text_limits_t * lim)
+{
+    adf_text_limits_t store;
+    tx_cur c;
+    tx_rf r;
+    adf_rterm_struct * t = NULL;
+    slong k, j, i, base;
+    fmpq_t lo, hi;
+    int st;
+
+    lim = tx_limits(lim, &store);
+    st = tx_prep(s, len, lim);                              /* stages 1 and 2 */
+    if (st != ADF_OK)
+        return st;
+    c.s = s;
+    c.len = len;
+    c.i = 0;
+    tx_rf_init(&r);
+    fmpq_init(lo);
+    fmpq_init(hi);
+    if (!tx_rf_syntax(&c, &r))                              /* stage 3 */
+    {
+        st = ADF_PARSE;
+        goto done;
+    }
+    /* stage 4: the term list and every coefficient list against max_items (proto _check_limits, the
+       "items" nodes), every decimal exponent against max_exp10 */
+    if (r.nt > lim->max_items)
+        st = ADF_LIMIT;
+    for (k = 0; k < r.nt && st == ADF_OK; k++)
+        if (r.plen[k] > lim->max_items)
+            st = ADF_LIMIT;
+    for (i = 0; i < 2 * r.nz && st == ADF_OK; i++)
+        if (tx_real_over(s, r.z + i, lim))
+            st = ADF_LIMIT;
+    if (st != ADF_OK)
+        goto done;
+    /* stage 6: the exact interval of Re(A) lies in (0, infinity) (proto _check_real "positive") */
+    for (k = 0, base = 0; k < r.nt; base += r.plen[k] + 3, k++)
+    {
+        tx_real_interval(lo, hi, s, r.z + 2 * (base + r.plen[k]));
+        if (fmpq_sgn(lo) <= 0)
+        {
+            st = ADF_DOMAIN;
+            goto done;
+        }
+    }
+    /* build, with stage 7 at Re(A) */
+    t = r.nt > 0 ? (adf_rterm_struct *) flint_malloc((size_t) r.nt * sizeof(adf_rterm_struct)) : NULL;
+    for (k = 0; k < r.nt; k++)
+    {
+        acb_poly_init(t[k].P);
+        acb_init(t[k].A);
+        acb_init(t[k].B);
+        acb_init(t[k].C);
+    }
+    for (k = 0, base = 0; k < r.nt && st == ADF_OK; base += r.plen[k] + 3, k++)
+    {
+        const tx_real * z = r.z + 2 * base;
+        acb_ptr abc[3];
+
+        abc[0] = t[k].A;
+        abc[1] = t[k].B;
+        abc[2] = t[k].C;
+        acb_poly_fit_length(t[k].P, r.plen[k]);
+        for (j = 0; j < r.plen[k]; j++)
+        {
+            tx_arb_from_real(acb_realref(t[k].P->coeffs + j), s, z + 2 * j, prec);
+            tx_arb_from_real(acb_imagref(t[k].P->coeffs + j), s, z + 2 * j + 1, prec);
+        }
+        _acb_poly_set_length(t[k].P, r.plen[k]);
+        _acb_poly_normalise(t[k].P);        /* exact trailing zeros only (acb_poly.rst:52-54; 5.12) */
+        z += 2 * r.plen[k];
+        tx_real_interval(lo, hi, s, z);
+        st = tx_real_ball_signed(acb_realref(t[k].A), s, z, lo, hi, 1, prec);
+        tx_arb_from_real(acb_imagref(t[k].A), s, z + 1, prec);
+        for (j = 1; j < 3; j++)
+        {
+            tx_arb_from_real(acb_realref(abc[j]), s, z + 2 * j, prec);
+            tx_arb_from_real(acb_imagref(abc[j]), s, z + 2 * j + 1, prec);
+        }
+    }
+    if (st == ADF_OK)
+    {
+        adf_rfun_clear(x);
+        x->term = t;
+        x->len = r.nt;
+        t = NULL;
+    }
+done:
+    if (t != NULL)
+    {
+        for (k = 0; k < r.nt; k++)
+        {
+            acb_poly_clear(t[k].P);
+            acb_clear(t[k].A);
+            acb_clear(t[k].B);
+            acb_clear(t[k].C);
+        }
+        flint_free(t);
+    }
+    tx_rf_clear(&r);
+    fmpq_clear(lo);
+    fmpq_clear(hi);
+    return st;
+}
+
+/* z(x) of conventions 9.4: (r(re)) + (r(im))*i; with positive set, re is printed constrained (9.5).
+   Returns 1 when the constrained printer refuses (N-D11). */
+static int
+tx_put_rf_complex(tx_buf * b, const acb_t x, slong digits, int positive)
+{
+    tx_puts(b, "(");
+    if (positive)
+    {
+        if (tx_put_real_cond(b, acb_realref(x), digits, 1))
+            return 1;
+    }
+    else
+        tx_put_real(b, acb_realref(x), digits);
+    tx_puts(b, ") + (");
+    tx_put_real(b, acb_imagref(x), digits);
+    tx_puts(b, ")*i");
+    return 0;
+}
+
+static int
+tx_acb_printable(const acb_t x)
+{
+    return tx_arb_printable(acb_realref(x)) && tx_arb_printable(acb_imagref(x));
+}
+
+char *
+adf_rfun_get_str(size_t * len, const adf_rfun_t x, slong digits)
+{
+    tx_buf b;
+    slong k, j;
+
+    ADF_INV_RFUN_TX(x);
+    for (k = 0; k < x->len; k++)
+    {
+        const adf_rterm_struct * t = x->term + k;
+        int ok = tx_acb_printable(t->A) && tx_acb_printable(t->B) && tx_acb_printable(t->C);
+        for (j = 0; j < acb_poly_length(t->P) && ok; j++)
+            ok = tx_acb_printable(t->P->coeffs + j);
+        if (!ok)
+        {
+            *len = 0;
+            return NULL;
+        }
+    }
+    tx_buf_init(&b);
+    tx_puts(&b, "rfun(");
+    for (k = 0; k < x->len; k++)
+    {
+        const adf_rterm_struct * t = x->term + k;
+
+        if (k > 0)
+            tx_puts(&b, ", ");
+        tx_puts(&b, "term(P=[");
+        for (j = 0; j < acb_poly_length(t->P); j++)
+        {
+            if (j > 0)
+                tx_puts(&b, ", ");
+            (void) tx_put_rf_complex(&b, t->P->coeffs + j, digits, 0);
+        }
+        tx_puts(&b, "], A=");
+        if (tx_put_rf_complex(&b, t->A, digits, 1))
+        {
+            flint_free(b.p);
+            *len = 0;
+            return NULL;
+        }
+        tx_puts(&b, ", B=");
+        (void) tx_put_rf_complex(&b, t->B, digits, 0);
+        tx_puts(&b, ", C=");
+        (void) tx_put_rf_complex(&b, t->C, digits, 0);
+        tx_puts(&b, ")");
+    }
+    tx_puts(&b, ")");
     return tx_finish(&b, len);
 }

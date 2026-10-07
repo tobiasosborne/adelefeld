@@ -1,0 +1,202 @@
+mutate: src/rfun.c: 505 mutants
+mutate: 505 mutants, 60 of them run (--limit 60, --seed 404)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (23.0 s)
+
+SURVIVED src/rfun.c:238:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -236,5 +236,5 @@
+               return ADF_LIMIT;
+       }
+  -    for (i = 0; i < n; i++)
+  +    for (i = 1; i < n; i++)
+           if (!rf_term_ok(terms + i))
+               return ADF_DOMAIN;
+
+
+NOT COMPILED src/rfun.c:433:5 drop_assign: 't = rf_alloc(x->len);' -> '' (the statement is removed)
+  src/rfun.c:413:24: error: ‘t’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/rfun.c:328:22 op: '*' -> '/'
+  src/rfun.c:328:22: error: expected identifier or ‘(’ before ‘/’ token
+
+SURVIVED src/rfun.c:289:16 status: 'ADF_LIMIT' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -287,5 +287,5 @@
+       ADF_INV_RFUN(y);
+       if (!rf_input_ok(x) || !rf_input_ok(y))
+  -        return ADF_LIMIT;
+  +        return ADF_OK;
+       if (x->len > 0 && y->len > ADF_RFUN_TERMS_MAX / x->len)
+           return ADF_LIMIT;
+
+
+NOT COMPILED src/rfun.c:214:13 logic: '||' -> '&&'
+  src/rfun.c:214:13: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/rfun.c:381:23 op: '+' -> '-'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -379,5 +379,5 @@
+           acb_poly_set(r->P, a->P);
+           L = acb_poly_length(r->P);
+  -        for (k = 0; k + 1 < L; k++)
+  +        for (k = 0; k - 1 < L; k++)
+               for (j = L - 2; j >= k; j--)
+               {
+
+
+NOT COMPILED src/rfun.c:170:22 op: '*' -> '+'
+  src/rfun.c:170:22: error: expected identifier or ‘(’ before ‘+’ token
+
+SURVIVED src/rfun.c:330:18 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -328,5 +328,5 @@
+       adf_rterm_struct * t;
+       slong i, j, k, L, p = FLINT_MAX(prec, 2);
+  -    ulong work = 0;
+  +    ulong work = 1;
+       const fmpz * num = fmpq_numref(q->q), * den = fmpq_denref(q->q);
+       fmpz_t mnum, twonum, num2, den2;
+
+
+NOT COMPILED src/rfun.c:566:22 op: '*' -> '/'
+  src/rfun.c:566:22: error: expected identifier or ‘(’ before ‘/’ token
+
+SURVIVED src/rfun.c:299:73 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -297,5 +297,5 @@
+           ny += acb_poly_length(y->term[j].P) > 0;
+       coeffs = (ulong) nx * (ulong) sy + (ulong) ny * (ulong) sx - (ulong) nx * (ulong) ny;
+  -    if (coeffs > (ulong) ADF_RFUN_COEFFS_MAX || (ulong) sx * (ulong) sy > (ulong) ADF_RFUN_WORK_MAX)
+  +    if (coeffs > (ulong) ADF_RFUN_COEFFS_MAX || (ulong) sx * (ulong) sy >= (ulong) ADF_RFUN_WORK_MAX)
+           return ADF_LIMIT;
+       n = x->len * y->len;
+
+
+SURVIVED src/rfun.c:294:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -292,5 +292,5 @@
+       sx = rf_coeffs(x);
+       sy = rf_coeffs(y);
+  -    for (i = 0; i < x->len; i++)
+  +    for (i = 1; i < x->len; i++)
+           nx += acb_poly_length(x->term[i].P) > 0;
+       for (j = 0; j < y->len; j++)
+
+
+SURVIVED src/rfun.c:290:30 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -288,5 +288,5 @@
+       if (!rf_input_ok(x) || !rf_input_ok(y))
+           return ADF_LIMIT;
+  -    if (x->len > 0 && y->len > ADF_RFUN_TERMS_MAX / x->len)
+  +    if (x->len > 0 && y->len >= ADF_RFUN_TERMS_MAX / x->len)
+           return ADF_LIMIT;
+       sx = rf_coeffs(x);
+
+
+SURVIVED src/rfun.c:381:27 cmp: '<' -> '<='
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -379,5 +379,5 @@
+           acb_poly_set(r->P, a->P);
+           L = acb_poly_length(r->P);
+  -        for (k = 0; k + 1 < L; k++)
+  +        for (k = 0; k + 1 <= L; k++)
+               for (j = L - 2; j >= k; j--)
+               {
+
+
+SURVIVED src/rfun.c:298:25 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -296,5 +296,5 @@
+       for (j = 0; j < y->len; j++)
+           ny += acb_poly_length(y->term[j].P) > 0;
+  -    coeffs = (ulong) nx * (ulong) sy + (ulong) ny * (ulong) sx - (ulong) nx * (ulong) ny;
+  +    coeffs = (ulong) nx + (ulong) sy + (ulong) ny * (ulong) sx - (ulong) nx * (ulong) ny;
+       if (coeffs > (ulong) ADF_RFUN_COEFFS_MAX || (ulong) sx * (ulong) sy > (ulong) ADF_RFUN_WORK_MAX)
+           return ADF_LIMIT;
+
+
+TIMED OUT src/rfun.c:23:83 negate_if: 'while(0)' -> 'while(!(0))'
+  the tests did not finish in 120 s
+
+NOT COMPILED src/rfun.c:107:32 logic: '&&' -> '||'
+  src/rfun.c:108:12: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/rfun.c:105:13 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -103,5 +103,5 @@
+           if (!acb_is_finite(t->P->coeffs + j))
+               return 0;
+  -    if (n > 0 && acb_is_zero(t->P->coeffs + n - 1))
+  +    if (n > 1 && acb_is_zero(t->P->coeffs + n - 1))
+           return 0;
+       return acb_is_finite(t->A) && acb_is_finite(t->B) && acb_is_finite(t->C)
+
+
+SURVIVED src/rfun.c:259:5 drop_call: 'ADF_INV_RFUN(x);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -257,5 +257,5 @@
+       if (prec > ADF_REAL_PREC_MAX)
+           return ADF_LIMIT;
+  -    ADF_INV_RFUN(x);
+  +    
+       ADF_INV_RFUN(y);
+       if (!rf_input_ok(x) || !rf_input_ok(y) || x->len + y->len > ADF_RFUN_TERMS_MAX
+
+
+NOT COMPILED src/rfun.c:60:27 op: '*' -> '/'
+  src/rfun.c:60:26: error: expected ‘)’ before ‘/’ token
+
+NOT COMPILED src/rfun.c:270:5 drop_call: 'rf_commit(z, t, n);' -> '' (the statement is removed)
+  src/rfun.c:252:25: error: unused parameter ‘z’ [-Werror=unused-parameter]
+
+SURVIVED src/rfun.c:299:16 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -297,5 +297,5 @@
+           ny += acb_poly_length(y->term[j].P) > 0;
+       coeffs = (ulong) nx * (ulong) sy + (ulong) ny * (ulong) sx - (ulong) nx * (ulong) ny;
+  -    if (coeffs > (ulong) ADF_RFUN_COEFFS_MAX || (ulong) sx * (ulong) sy > (ulong) ADF_RFUN_WORK_MAX)
+  +    if (coeffs >= (ulong) ADF_RFUN_COEFFS_MAX || (ulong) sx * (ulong) sy > (ulong) ADF_RFUN_WORK_MAX)
+           return ADF_LIMIT;
+       n = x->len * y->len;
+
+
+SURVIVED src/rfun.c:344:43 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/rfun.c
+  +++ b/src/rfun.c
+  @@ -342,5 +342,5 @@
+       {
+           ulong l = (ulong) acb_poly_length(x->term[i].P);
+  -        work += l > 0 ? l * (l - 1) / 2 : 0;
+  +        work += l > 0 ? l * (l - 1) / 2 : 1;
+           if (work > (ulong) ADF_RFUN_WORK_MAX)
+               return ADF_LIMIT;
+
+mutate: stopped by signal 15: 1 running command(s) killed, scratch removed
+exit 124

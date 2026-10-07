@@ -1,0 +1,9 @@
+ok   the_kinds_are_numbered_as_in_9_7
+ok   every_row_of_the_golden_file_dispatch
+ok   the_texts_of_every_type_file_are_of_that_type
+ok   every_text_of_the_reference
+ok   one_text_of_each_kind
+ok   signs_and_denominators_of_the_other_literals
+ok   limits_hostile_bytes_and_the_order_of_checks
+ok   input_without_terminator_at_a_block_end_and_a_page_end
+8 tests, 20776 checks, 0 failed checks, 0 failed tests

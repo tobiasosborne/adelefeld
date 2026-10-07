@@ -78,5 +78,6 @@
 #include "adelefeld/symbol.h"
 #include "adelefeld/catalogue.h"
 #include "adelefeld/localfactor.h"
+#include "adelefeld/rfun.h"
 
 #endif /* ADELEFELD_H */

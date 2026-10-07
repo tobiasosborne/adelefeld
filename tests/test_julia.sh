@@ -203,6 +203,23 @@ else
 fi
 rm -f "$psi_output"
 
+# Slice 4d (lane f4-slice2): real test functions, adf_rfun_translate_rat.
+rfun_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/rfun.jl "$so" > "$rfun_output" 2>&1; then
+    cat "$rfun_output"
+elif grep -q '__gmpn_modexact_1_odd' "$rfun_output" 2>/dev/null \
+        && rfun_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$rfun_gmp" ] \
+        && LD_PRELOAD="$rfun_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/rfun.jl "$so"; then
+    echo "== tests/julia/rfun.jl passed with LD_PRELOAD=$rfun_gmp"
+else
+    cat "$rfun_output"
+    rm -f "$rfun_output"
+    echo "test_julia: tests/julia/rfun.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$rfun_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

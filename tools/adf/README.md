@@ -840,3 +840,24 @@ The chi call also accepts A directly, without the word `with`.
 The first call prints conductor 8 and label 5. The second prints `(0) + (1)*i`.
 The last prints `e=1 tau=(0) + (2)*i W=(1) + (0)*i`.
 Sources: docs/api-3c.md 2-4,7; docs/proofs/analysis.md Lemma 8 and Proposition 13.
+
+### Real test functions (slice 4d of `docs/api-4.md`, lane f4-slice2)
+
+Four commands take an `rfun` text (conventions 9.2 `rfun_v`, 9.4) as their first operand
+(`include/adelefeld/rfun.h`; statements in `docs/api-4b.md`):
+
+- `rfun R` prints the canonical text of `R`: exact trailing zero coefficients removed, inner and inexact
+  zeros kept, terms neither combined nor sorted.
+- `rfun_translate R with Q` prints `R(x - Q)` for an exact rational `Q`: `P(x - Q)`, `A`, `B + 2 pi A Q`,
+  `C - B Q - pi A Q^2` (analysis Proposition 5). `rfun_translate R with 1/3` on `exp(-pi x^2)` prints
+  `B=(2.0943951023931954923 +/- 8.5e-21) + (0)*i, C=(-0.34906585039886591538 +/- 4.8e-21) + (0)*i` at `prec 128`.
+- `rfun_mul R with S` prints the product, the term pairs in lexicographic order.
+- `rfun_eval R with X` prints the complex ball `R(X)` in the form of `psi`; `X` is a real ball of the production
+  `real` of conventions 9.2 (`0.5`, `-1 +/- 0.25`), read by the adele reader as the text `(X ; 0)`, so it takes the
+  statuses of that reader (`1/3` is `PARSE`).
+
+The steps are those of every command: the syntax of each operand, then its kind (another kind, such as a
+rational in place of `R`, is `DOMAIN`), then the values (the statuses of `adf_rfun_set_str`, `adf_rat_set_str`
+and the adele reader), then the operation (`LIMIT` for the caps of decision D1, `NOT_DETERMINED` when
+`Re(A) > 0` is not certified after rounding), then the printer. The shorthand `rfun(term(P=[1], A=1, B=0, C=0))`
+is not a sentence of `rfun_v` and is `PARSE`. Fixtures: `tests/driver/rfun-text`, `rfun-algebra`, `rfun-eval`.
