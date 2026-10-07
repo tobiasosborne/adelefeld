@@ -82,5 +82,6 @@
 #include "adelefeld/localfactor.h"
 #include "adelefeld/rfun.h"
 #include "adelefeld/tensor.h"
+#include "adelefeld/tate.h"
 
 #endif /* ADELEFELD_H */

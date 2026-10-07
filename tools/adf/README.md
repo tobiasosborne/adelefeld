@@ -960,6 +960,21 @@ radius holds the width above `2^-BITS` at every precision (the witness `c exp(-p
 `NOT_DETERMINED`; the work cap of decision D1 (for example `Re(A) = 10^-8`) is `LIMIT`. Fixture:
 `tests/driver/poisson`.
 
+### The Tate vector and the global Tate integral (slice 5c of `docs/api-5.md`, lane t5-slice2)
+
+`tate_vector CHI` (statements in `docs/api-5b.md`, "Slice 5c"; `CHI` a `char` text, its `s` ignored) calls
+`adf_tate_vector` at the `prec` setting and prints one line `PHI | F`: the real factor `x^e exp(-pi x^2)` as `rfun`
+prints it and the finite factor `f[j] = chi(j)` on `Zhat` (`D = 1`, `M = C`) as `ffun` prints it (conventions 6.5).
+`tate_integral CHI with S with BITS` (`S` a complex adele text whose finite coordinate is ignored, as for
+`local_zeta_factor_at`; `BITS` an integer) calls `adf_tate_integral` and prints
+`VALUE | halfplane Re(s) > 1 | s=S`: an enclosure of `I_chi(s) = pi^-z Gamma(z) L(s, chi)`, `z = (s + e)/2`, for
+every `s` of the ball, each coordinate diameter at most `2^-BITS`. At `prec 128`, `digits 10`,
+`tate_integral char(q=1, n=1, s=(0) + (0)*i) with ((2) + (0)*i ; 0) with 53` prints
+`(0.5235987756 +/- 1.8e-12) + (0 +/- 2.6e-18)*i` (`pi/6`). `Re(s) <= 1` on the whole ball is `DOMAIN` (also
+`s = 1`); a ball straddling `Re(s) = 1`, or one whose radius holds the width above `2^-BITS`, is
+`NOT_DETERMINED`; `BITS` outside `[0, 2^21]` or not an integer is `DOMAIN`; a conductor above 1024 (the direct
+transform, decision D2) or the total work cap is `LIMIT`. Fixture: `tests/driver/tate`.
+
 Slice 4c adds `dump ffun(...)`, `dump rfun(...)`, and `load` of both dump bodies through the typed
 `adf_ffun` and `adf_rfun` dump/load/inspect calls. Dumps preserve all ball bits, polynomial lengths,
 zero polynomial terms and term order (conventions 10.1/10.2; api-4.md section 2).

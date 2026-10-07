@@ -360,6 +360,23 @@ else
 fi
 rm -f "$poisson_output"
 
+# Slice 5c (lane t5-slice2): the global Tate integral in Re(s) > 1, adf_tate_integral.
+tate_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/tate.jl "$so" > "$tate_output" 2>&1; then
+    cat "$tate_output"
+elif grep -q '__gmpn_modexact_1_odd' "$tate_output" 2>/dev/null \
+        && tate_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$tate_gmp" ] \
+        && LD_PRELOAD="$tate_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/tate.jl "$so"; then
+    echo "== tests/julia/tate.jl passed with LD_PRELOAD=$tate_gmp"
+else
+    cat "$tate_output"
+    rm -f "$tate_output"
+    echo "test_julia: tests/julia/tate.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$tate_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

@@ -247,6 +247,8 @@ typedef enum
     ADF_DRV_TENSOR_INTEGRAL,
     ADF_DRV_TENSOR_NORM2,
     ADF_DRV_POISSON,           /* slice 4g (lane f4-slice6): Poisson summation, adf_drv_poisson */
+    ADF_DRV_TATE_VECTOR,       /* slice 5c (lane t5-slice2): the Tate vector and integral, adf_drv_tate */
+    ADF_DRV_TATE_INTEGRAL,
 
     ADF_DRV_CHAR_EVAL,
     ADF_DRV_CHAR_EVAL_STRICT,
@@ -377,6 +379,8 @@ static const struct
     { "tensor_integral", ADF_DRV_TENSOR_INTEGRAL, 2 },
     { "tensor_norm2", ADF_DRV_TENSOR_NORM2, 2 },
     { "poisson", ADF_DRV_POISSON, 3 },
+    { "tate_vector", ADF_DRV_TATE_VECTOR, 1 },
+    { "tate_integral", ADF_DRV_TATE_INTEGRAL, 3 },
 
     { "char_eval", ADF_DRV_CHAR_EVAL, 2 },
     { "char_eval_strict", ADF_DRV_CHAR_EVAL_STRICT, 2 },
@@ -3463,6 +3467,59 @@ done:
     return status;
 }
 
+/* Slice 5c (lane t5-slice2; docs/api-5.md 3 and 8 item 3; docs/api-5b.md "Slice 5c"; include/adelefeld/tate.h).
+     tate_vector CHI                 adf_tate_vector at the setting prec: one line "PHI | F", the real factor as
+                                     rfun prints it and the finite factor as ffun prints it;
+     tate_integral CHI with S with BITS   adf_tate_integral at the setting prec: one line
+                                     "VALUE | halfplane Re(s) > 1 | s=S", the value and S printed as psi prints.
+   CHI is a char text (its s is ignored), S a complex adele text whose finite coordinate is ignored (as for
+   local_zeta_factor_at), BITS an integer (a rational with denominator 1, else DOMAIN; outside slong DOMAIN, as the
+   call gives for bits outside [0, 2^21]). Another kind of operand is DOMAIN. Steps as for every command: the
+   syntax of each operand, then its kind, then the values, then the operation, then the printer (NULL: LIMIT). */
+static int
+adf_drv_tate(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind want[3] = { ADF_TEXT_CHAR, ADF_TEXT_CADELE, ADF_TEXT_RAT }, kind; adf_char_t x; adf_cadele_t c;
+    adf_rat_t q; adf_rfun_t phi; adf_ffun_t f; acb_t s, v; char *ta = NULL, *tb = NULL; size_t la = 0, lb = 0;
+    slong bits = 0; int i, k = op == ADF_DRV_TATE_VECTOR ? 1 : 3, status = ADF_OK, wrong = 0;
+    adf_char_init(x); adf_cadele_init(c); adf_rat_init(q); adf_rfun_init(phi); adf_ffun_init(f); acb_init(s);
+    acb_init(v);
+    for (i = 0; i < k; i++) {
+        status = adf_text_classify(&kind, l->s[i], l->n[i], NULL);
+        if (status != ADF_OK) goto done;
+        wrong |= kind != want[i];
+    }
+    if (wrong) { status = ADF_DOMAIN; goto done; }
+    status = adf_char_set_str(x, l->s[0], l->n[0], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (op == ADF_DRV_TATE_VECTOR) {
+        status = adf_tate_vector(phi, f, x, st->prec);
+        if (status != ADF_OK) goto done;
+        ta = adf_rfun_get_str(&la, phi, st->digits);
+        tb = adf_ffun_get_str(&lb, f, st->digits);
+        if (ta == NULL || tb == NULL) { status = ADF_LIMIT; goto done; }
+        fprintf(out, "%.*s | %.*s\n", (int) la, ta, (int) lb, tb);
+        goto done;
+    }
+    status = adf_cadele_set_str(c, l->s[1], l->n[1], st->prec, NULL);
+    if (status == ADF_OK) status = adf_rat_set_str(q, l->s[2], l->n[2], NULL);
+    if (status != ADF_OK) goto done;
+    if (!fmpz_is_one(fmpq_denref(q->q)) || !fmpz_fits_si(fmpq_numref(q->q))) { status = ADF_DOMAIN; goto done; }
+    bits = fmpz_get_si(fmpq_numref(q->q));
+    adf_cadele_get_complex(s, c);
+    status = adf_tate_integral(v, x, s, bits, st->prec);
+    if (status != ADF_OK) goto done;
+    ta = adf_drv_acb_text(v, st, &la);
+    tb = adf_drv_acb_text(s, st, &lb);
+    if (ta == NULL || tb == NULL) { status = ADF_LIMIT; goto done; }
+    fprintf(out, "%.*s | halfplane Re(s) > 1 | s=%.*s\n", (int) la, ta + 1, (int) lb, tb + 1);
+done:
+    adf_str_free(ta); adf_str_free(tb);
+    adf_char_clear(x); adf_cadele_clear(c); adf_rat_clear(q); adf_rfun_clear(phi); adf_ffun_clear(f);
+    acb_clear(s); acb_clear(v);
+    return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3685,6 +3742,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         op == ADF_DRV_RFUN_NORM2) return adf_drv_rfun4e(out, op, l, st);
     if (op >= ADF_DRV_TENSOR_EVAL && op <= ADF_DRV_TENSOR_NORM2) return adf_drv_tensor(out, op, l, st);
     if (op == ADF_DRV_POISSON) return adf_drv_poisson(out, l, st);
+    if (op == ADF_DRV_TATE_VECTOR || op == ADF_DRV_TATE_INTEGRAL) return adf_drv_tate(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

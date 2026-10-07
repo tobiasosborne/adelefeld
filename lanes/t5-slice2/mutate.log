@@ -1,0 +1,292 @@
+mutate: src/tate.c: 551 mutants
+mutate: 551 mutants, 60 of them run (--limit 60, --seed 5)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (30.1 s)
+
+SURVIVED src/tate.c:553:65 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -551,5 +551,5 @@
+       arb_get_ubound_arf(r2, acb_realref(zd), TT_TP);
+       arf_sub_ui(r2, r2, 1, TT_TP, ARF_RND_CEIL);
+  -    if (!arf_is_finite(r1) || !arf_is_finite(r2) || arf_sgn(lo) <= 0)
+  +    if (!arf_is_finite(r1) || !arf_is_finite(r2) || arf_sgn(lo) < 0)
+       {
+           st = ADF_NOT_DETERMINED;
+
+
+SURVIVED src/tate.c:358:9 swap_args: 'arb_max(P, P, y, TT_TP)' -> 'arb_max(P, y, P, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -356,5 +356,5 @@
+           arb_mul_2exp_si(y, y, (slong) k - 2);
+           arb_pow(y, y, r, TT_TP);
+  -        arb_max(P, P, y, TT_TP);                          /* max((m-d)^r, (m+d)^r) */
+  +        arb_max(P, y, P, TT_TP);                          /* max((m-d)^r, (m+d)^r) */
+           arb_zero(B);
+           for (n = 1; n <= N; n++)
+
+
+SURVIVED src/tate.c:387:54 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -385,5 +385,5 @@
+               arb_mul(err, err, two3, TT_TP);
+           }
+  -        if (st == ADF_OK && !tt_charge(work, (J + 1) * nz))
+  +        if (st == ADF_OK && !tt_charge(work, (J + 1) + nz))
+               st = ADF_LIMIT;
+           if (st != ADF_OK)
+
+
+SURVIVED src/tate.c:578:13 drop_assign: 'st = ADF_LIMIT;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -576,5 +576,5 @@
+           if (!tt_charge(work, 1) || R > (UWORD(1) << 40))
+           {
+  -            st = ADF_LIMIT;
+  +            
+               goto done;
+           }
+
+
+SURVIVED src/tate.c:370:9 swap_args: 'arb_mul(B, B, P, TT_TP)' -> 'arb_mul(B, P, B, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -368,5 +368,5 @@
+               arb_add(B, B, y, TT_TP);
+           }
+  -        arb_mul(B, B, P, TT_TP);
+  +        arb_mul(B, P, B, TT_TP);
+           arb_mul(B, B, expim, TT_TP);
+           arb_mul_ui(err, B, 6, TT_TP);
+
+
+SURVIVED src/tate.c:231:9 call_swap: 'arb_mul' -> 'arb_add'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -229,5 +229,5 @@
+           arb_neg(u, u);
+           arb_exp(u, u, TT_TP);
+  -        arb_mul(t, t, u, TT_TP);
+  +        arb_add(t, t, u, TT_TP);
+           arb_sub(u, R0, RR, TT_TP);
+           arb_mul(J, t, u, TT_TP);                          /* (R0 - R) t*^r exp(-b t*) */
+
+
+TIMED OUT src/tate.c:745:61 zero_one: '0' -> '1'
+  the tests did not finish in 400 s
+
+NOT COMPILED src/tate.c:677:25 prec: 'prec' -> '2'
+  src/tate.c:673:49: error: unused parameter ‘prec’ [-Werror=unused-parameter]
+
+SURVIVED src/tate.c:235:9 swap_args: 'arb_mul(u, bb, R0, TT_TP)' -> 'arb_mul(u, R0, bb, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -233,5 +233,5 @@
+           arb_mul(J, t, u, TT_TP);                          /* (R0 - R) t*^r exp(-b t*) */
+           arb_pow(t, R0, rr, TT_TP);
+  -        arb_mul(u, bb, R0, TT_TP);
+  +        arb_mul(u, R0, bb, TT_TP);
+           arb_neg(u, u);
+           arb_exp(u, u, TT_TP);
+
+
+SURVIVED src/tate.c:122:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -120,5 +120,5 @@
+   {
+       if (n > (ulong) ADF_TATE_WORK_MAX - *w)
+  -        return 0;
+  +        return 1;
+       *w += n;
+       return 1;
+
+
+NOT COMPILED src/tate.c:629:12 cmp: '!=' -> '=='
+  src/tate.c:630:28: error: ‘N’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/tate.c:533:13 drop_assign: 'st = ADF_NOT_DETERMINED;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -531,5 +531,5 @@
+           if (!mag_is_finite(m))
+           {
+  -            st = ADF_NOT_DETERMINED;
+  +            
+               goto done;
+           }
+
+
+NOT COMPILED src/tate.c:553:50 logic: '||' -> '&&'
+  src/tate.c:553:50: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/tate.c:560:14 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -558,5 +558,5 @@
+       /* N from 0, 1, 2, 4, ... with E_n(z, N) + E_n(z', N) <= epsilon/32 (api-5.md:202-203) */
+       arf_mul_2exp_si(tg, eps, -5);
+  -    for (N = 0;; N = N ? 2 * N : 1)
+  +    for (N = 1;; N = N ? 2 * N : 1)
+       {
+           if (!tt_charge(work, 1) || (st = tt_series(S, (ulong) e, a0lo, N, work)) != ADF_OK)
+
+
+TIMED OUT src/tate.c:745:13 negate_if: 'if(!mag_is_finite(cur) || mag_cmp(two, prev) > 0)' -> 'if(!(!mag_is_finite(cur) || mag_cmp(two, prev) > 0))'
+  the tests did not finish in 400 s
+
+SURVIVED src/tate.c:218:9 drop_call: 'arb_mul_2exp_si(J, J, 1);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -216,5 +216,5 @@
+           arb_exp(u, u, TT_TP);
+           arb_mul(J, t, u, TT_TP);
+  -        arb_mul_2exp_si(J, J, 1);
+  +        
+           arb_div(J, J, bb, TT_TP);
+       }
+
+
+SURVIVED src/tate.c:526:9 drop_call: 'arb_zero(acb_imagref(t));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -524,5 +524,5 @@
+       {
+           arb_log_ui(acb_realref(t), C, w);
+  -        arb_zero(acb_imagref(t));
+  +        
+           acb_mul(cz, zz, t, w);
+           acb_neg(cz, cz);
+
+
+SURVIVED src/tate.c:336:5 drop_call: 'arb_set(r, acb_realref(zm1));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -334,5 +334,5 @@
+       arf_div_ui(tp, target, K, TT_TP, ARF_RND_DOWN);       /* target/(number of panels) */
+       acb_sub_ui(zm1, zz, 1, w);
+  -    arb_set(r, acb_realref(zm1));
+  +    
+       arb_set_round(a0t, a0, TT_TP);
+       arb_abs(x, acb_imagref(zz));
+
+
+SURVIVED src/tate.c:374:9 call_swap: 'arb_mul' -> 'arb_add'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -372,5 +372,5 @@
+           arb_mul_ui(err, B, 6, TT_TP);
+           arb_mul_2exp_si(err, err, ke);                    /* 6 h B */
+  -        arb_mul(err, err, two3, TT_TP);                   /* J = 0 */
+  +        arb_add(err, err, two3, TT_TP);                   /* J = 0 */
+           J = 0;
+           if (nz == 0)                                      /* every coefficient is the exact 0: no term */
+
+
+NOT COMPILED src/tate.c:262:5 drop_call: 'tt_jbound(E, r1, b, R);' -> '' (the statement is removed)
+  src/tate.c:257:62: error: unused parameter ‘r1’ [-Werror=unused-parameter]
+
+SURVIVED src/tate.c:209:20 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -207,5 +207,5 @@
+       arb_set_ui(RR, R);
+       arf_mul_ui(bR, b, R, ARF_PREC_EXACT, ARF_RND_DOWN);
+  -    if (arf_sgn(r) > 0)
+  +    if (arf_sgn(r) >= 0)
+           arf_mul_2exp_si(rp, r, 1);                        /* 2 max(r, 0) */
+       if (arf_cmp(bR, rp) >= 0)
+
+
+NOT COMPILED src/tate.c:629:5 negate_if: 'if(an != NULL)' -> 'if(!(an != NULL))'
+  src/tate.c:630:28: error: ‘N’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/tate.c:551:5 drop_call: 'arb_get_ubound_arf(r2, acb_realref(zd), TT_TP);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -549,5 +549,5 @@
+       arb_get_ubound_arf(r1, acb_realref(zz), TT_TP);
+       arf_sub_ui(r1, r1, 1, TT_TP, ARF_RND_CEIL);
+  -    arb_get_ubound_arf(r2, acb_realref(zd), TT_TP);
+  +    
+       arf_sub_ui(r2, r2, 1, TT_TP, ARF_RND_CEIL);
+       if (!arf_is_finite(r1) || !arf_is_finite(r2) || arf_sgn(lo) <= 0)
+
+
+SURVIVED src/tate.c:356:9 drop_call: 'arb_mul_2exp_si(y, y, (slong) k - 2);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -354,5 +354,5 @@
+           mag_zero(arb_radref(P));
+           arb_set_ui(y, 9);
+  -        arb_mul_2exp_si(y, y, (slong) k - 2);
+  +        
+           arb_pow(y, y, r, TT_TP);
+           arb_max(P, P, y, TT_TP);                          /* max((m-d)^r, (m+d)^r) */
+
+
+SURVIVED src/tate.c:174:9 swap_args: 'arb_add(prefix, prefix, term, TT_TP)' -> 'arb_add(prefix, term, prefix, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -172,5 +172,5 @@
+               break;
+           }
+  -        arb_add(prefix, prefix, term, TT_TP);
+  +        arb_add(prefix, term, prefix, TT_TP);
+           K++;
+       }
+
+
+SURVIVED src/tate.c:232:9 drop_call: 'arb_sub(u, R0, RR, TT_TP);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -230,5 +230,5 @@
+           arb_exp(u, u, TT_TP);
+           arb_mul(t, t, u, TT_TP);
+  -        arb_sub(u, R0, RR, TT_TP);
+  +        
+           arb_mul(J, t, u, TT_TP);                          /* (R0 - R) t*^r exp(-b t*) */
+           arb_pow(t, R0, rr, TT_TP);
+
+
+SURVIVED src/tate.c:383:52 op: '-' -> '+'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -381,5 +381,5 @@
+           {
+               J++;
+  -            if (J + 1 > ((ulong) ADF_TATE_WORK_MAX - *work) / nz)
+  +            if (J + 1 > ((ulong) ADF_TATE_WORK_MAX + *work) / nz)
+                   st = ADF_LIMIT;
+               arb_mul(err, err, two3, TT_TP);
+
+
+mutate: 60 mutants in 1427.0 s: 33 killed, 20 survived, 5 not compiled, 2 timed out, 0 excused
+mutate: FAILED: 20 mutant(s) survived; each one is a claim the tests do not check
+
+real	23m47,159s
+user	31m59,151s
+sys	1m48,188s
