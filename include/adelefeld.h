@@ -56,6 +56,8 @@
 #include "adelefeld/qclass.h"
 #include "adelefeld/psi.h"
 #include "adelefeld/char.h"
+
+#include "adelefeld/ffun.h"
 #include "adelefeld/sball.h"
 #include "adelefeld/rfunc.h"
 #include "adelefeld/lfunc.h"

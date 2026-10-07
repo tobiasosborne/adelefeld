@@ -1,0 +1,584 @@
+mkdir -p lanes/f4-slice1/build
+mkdir -p lanes/f4-slice1/build/support
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/adele.c -o lanes/f4-slice1/build/adele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/cap.c -o lanes/f4-slice1/build/cap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/catalogue.c -o lanes/f4-slice1/build/catalogue.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/common.c -o lanes/f4-slice1/build/common.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/dump.c -o lanes/f4-slice1/build/dump.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball.c -o lanes/f4-slice1/build/fball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/fball_local.c -o lanes/f4-slice1/build/fball_local.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc.c -o lanes/f4-slice1/build/gfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/gfunc_log.c -o lanes/f4-slice1/build/gfunc_log.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idclass.c -o lanes/f4-slice1/build/idclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idele.c -o lanes/f4-slice1/build/idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idmap.c -o lanes/f4-slice1/build/idmap.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/idpow.c -o lanes/f4-slice1/build/idpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/inlines.c -o lanes/f4-slice1/build/inlines.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball.c -o lanes/f4-slice1/build/lball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lball_decomp.c -o lanes/f4-slice1/build/lball_decomp.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lfunc.c -o lanes/f4-slice1/build/lfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/linsolve.c -o lanes/f4-slice1/build/linsolve.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/f4-slice1/build/localfactor.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lpow.c -o lanes/f4-slice1/build/lpow.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/lroot.c -o lanes/f4-slice1/build/lroot.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/modctx.c -o lanes/f4-slice1/build/modctx.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/place.c -o lanes/f4-slice1/build/place.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/psi.c -o lanes/f4-slice1/build/psi.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass.c -o lanes/f4-slice1/build/qclass.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass_arith.c -o lanes/f4-slice1/build/qclass_arith.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/qclass_sets.c -o lanes/f4-slice1/build/qclass_sets.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rat.c -o lanes/f4-slice1/build/rat.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/recon.c -o lanes/f4-slice1/build/recon.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/resid.c -o lanes/f4-slice1/build/resid.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/rfunc.c -o lanes/f4-slice1/build/rfunc.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots.c -o lanes/f4-slice1/build/roots.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/roots_real.c -o lanes/f4-slice1/build/roots_real.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/sball.c -o lanes/f4-slice1/build/sball.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/scaled.c -o lanes/f4-slice1/build/scaled.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/status.c -o lanes/f4-slice1/build/status.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/symbol.c -o lanes/f4-slice1/build/symbol.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text.c -o lanes/f4-slice1/build/text.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/text_idele.c -o lanes/f4-slice1/build/text_idele.o
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/ucoset.c -o lanes/f4-slice1/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/golden.c -o lanes/f4-slice1/build/support/golden.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c tests/support/jsonl.c -o lanes/f4-slice1/build/support/jsonl.o
+ar rcs lanes/f4-slice1/build/libadelefeld.a lanes/f4-slice1/build/adele.o lanes/f4-slice1/build/cap.o lanes/f4-slice1/build/catalogue.o lanes/f4-slice1/build/common.o lanes/f4-slice1/build/dump.o lanes/f4-slice1/build/fball.o lanes/f4-slice1/build/fball_local.o lanes/f4-slice1/build/gfunc.o lanes/f4-slice1/build/gfunc_log.o lanes/f4-slice1/build/idclass.o lanes/f4-slice1/build/idele.o lanes/f4-slice1/build/idmap.o lanes/f4-slice1/build/idpow.o lanes/f4-slice1/build/inlines.o lanes/f4-slice1/build/lball.o lanes/f4-slice1/build/lball_decomp.o lanes/f4-slice1/build/lfunc.o lanes/f4-slice1/build/linsolve.o lanes/f4-slice1/build/localfactor.o lanes/f4-slice1/build/lpow.o lanes/f4-slice1/build/lroot.o lanes/f4-slice1/build/modctx.o lanes/f4-slice1/build/place.o lanes/f4-slice1/build/psi.o lanes/f4-slice1/build/qclass.o lanes/f4-slice1/build/qclass_arith.o lanes/f4-slice1/build/qclass_sets.o lanes/f4-slice1/build/rat.o lanes/f4-slice1/build/recon.o lanes/f4-slice1/build/resid.o lanes/f4-slice1/build/rfunc.o lanes/f4-slice1/build/roots.o lanes/f4-slice1/build/roots_real.o lanes/f4-slice1/build/sball.o lanes/f4-slice1/build/scaled.o lanes/f4-slice1/build/status.o lanes/f4-slice1/build/symbol.o lanes/f4-slice1/build/text.o lanes/f4-slice1/build/text_idele.o lanes/f4-slice1/build/ucoset.o
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_ffun.c lanes/f4-slice1/build/support/golden.o lanes/f4-slice1/build/support/jsonl.o lanes/f4-slice1/build/libadelefeld.a -lflint -lgmp -lm -o lanes/f4-slice1/build/test_ffun
+tests/test_ffun.c:53:18: error: unknown type name ‘adf_ffun_t’
+   53 | static void load(adf_ffun_t x, ulong D, ulong M, const jsonl_value *a, int complex)
+      |                  ^~~~~~~~~~
+tests/test_ffun.c:66:29: error: unknown type name ‘adf_ffun_t’
+   66 | static void preserved(const adf_ffun_t x, const adf_ffun_t old, const unsigned char *bytes)
+      |                             ^~~~~~~~~~
+tests/test_ffun.c:66:49: error: unknown type name ‘adf_ffun_t’
+   66 | static void preserved(const adf_ffun_t x, const adf_ffun_t old, const unsigned char *bytes)
+      |                                                 ^~~~~~~~~~
+tests/test_ffun.c: In function ‘preserved’:
+tests/test_ffun.c:68:33: error: invalid type argument of unary ‘*’ (have ‘int’)
+   68 |     CHECK(memcmp(x,bytes,sizeof(*x)) == 0); CHECK(adf_ffun_identical(x,old));
+      |                                 ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:68:18: error: passing argument 1 of ‘memcmp’ makes pointer from integer without a cast [-Werror=int-conversion]
+   68 |     CHECK(memcmp(x,bytes,sizeof(*x)) == 0); CHECK(adf_ffun_identical(x,old));
+      |                  ^
+      |                  |
+      |                  int
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+In file included from tests/test_ffun.c:4:
+/usr/include/string.h:64:32: note: expected ‘const void *’ but argument is of type ‘int’
+   64 | extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+      |                    ~~~~~~~~~~~~^~~~
+tests/test_ffun.c:68:51: error: implicit declaration of function ‘adf_ffun_identical’; did you mean ‘adf_fball_identical’? [-Werror=implicit-function-declaration]
+   68 |     CHECK(memcmp(x,bytes,sizeof(*x)) == 0); CHECK(adf_ffun_identical(x,old));
+      |                                                   ^~~~~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c: In function ‘lifecycle’:
+tests/test_ffun.c:72:5: error: unknown type name ‘adf_ffun_t’
+   72 |     adf_ffun_t x,y,z;
+      |     ^~~~~~~~~~
+tests/test_ffun.c:74:32: error: invalid type argument of unary ‘*’ (have ‘int’)
+   74 |     unsigned char bytes[sizeof(*x)];
+      |                                ^~
+tests/test_ffun.c:75:5: error: implicit declaration of function ‘adf_ffun_init’; did you mean ‘adf_fball_init’? [-Werror=implicit-function-declaration]
+   75 |     adf_ffun_init(x); adf_ffun_init(y); adf_ffun_init(z);
+      |     ^~~~~~~~~~~~~
+      |     adf_fball_init
+tests/test_ffun.c:76:12: error: invalid type argument of ‘->’ (have ‘int’)
+   76 |     CHECK(x->D==1 && x->M==1 && x->f!=NULL && acb_is_zero(x->f));
+      |            ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:76:23: error: invalid type argument of ‘->’ (have ‘int’)
+   76 |     CHECK(x->D==1 && x->M==1 && x->f!=NULL && acb_is_zero(x->f));
+      |                       ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:76:34: error: invalid type argument of ‘->’ (have ‘int’)
+   76 |     CHECK(x->D==1 && x->M==1 && x->f!=NULL && acb_is_zero(x->f));
+      |                                  ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:76:60: error: invalid type argument of ‘->’ (have ‘int’)
+   76 |     CHECK(x->D==1 && x->M==1 && x->f!=NULL && acb_is_zero(x->f));
+      |                                                            ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:77:11: error: implicit declaration of function ‘adf_ffun_is_canonical’; did you mean ‘adf_fball_is_canonical’? [-Werror=implicit-function-declaration]
+   77 |     CHECK(adf_ffun_is_canonical(x));
+      |           ^~~~~~~~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:78:11: error: implicit declaration of function ‘adf_sizeof_ffun’; did you mean ‘adf_sizeof_fball’? [-Werror=implicit-function-declaration]
+   78 |     CHECK(adf_sizeof_ffun()==sizeof(*x)); CHECK(adf_alignof_ffun()==_Alignof(adf_ffun_struct));
+      |           ^~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:78:37: error: invalid type argument of unary ‘*’ (have ‘int’)
+   78 |     CHECK(adf_sizeof_ffun()==sizeof(*x)); CHECK(adf_alignof_ffun()==_Alignof(adf_ffun_struct));
+      |                                     ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:78:49: error: implicit declaration of function ‘adf_alignof_ffun’; did you mean ‘adf_alignof_fball’? [-Werror=implicit-function-declaration]
+   78 |     CHECK(adf_sizeof_ffun()==sizeof(*x)); CHECK(adf_alignof_ffun()==_Alignof(adf_ffun_struct));
+      |                                                 ^~~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:78:78: error: ‘adf_ffun_struct’ undeclared (first use in this function); did you mean ‘adf_fball_struct’?
+   78 |     CHECK(adf_sizeof_ffun()==sizeof(*x)); CHECK(adf_alignof_ffun()==_Alignof(adf_ffun_struct));
+      |                                                                              ^~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:78:78: note: each undeclared identifier is reported only once for each function it appears in
+   78 |     CHECK(adf_sizeof_ffun()==sizeof(*x)); CHECK(adf_alignof_ffun()==_Alignof(adf_ffun_struct));
+      |                                                                              ^~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:78:69: error: ISO C does not allow ‘_Alignof (expression)’ [-Werror=pedantic]
+   78 |     CHECK(adf_sizeof_ffun()==sizeof(*x)); CHECK(adf_alignof_ffun()==_Alignof(adf_ffun_struct));
+      |                                                                     ^~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:80:11: error: implicit declaration of function ‘adf_ffun_set_acb_vec’ [-Werror=implicit-function-declaration]
+   80 |     CHECK(adf_ffun_set_acb_vec(x,2,3,a,6)==ADF_OK);
+      |           ^~~~~~~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:81:5: error: implicit declaration of function ‘adf_ffun_set’; did you mean ‘adf_fball_set’? [-Werror=implicit-function-declaration]
+   81 |     adf_ffun_set(y,x); CHECK(adf_ffun_identical(x,y)); CHECK(x->f!=y->f);
+      |     ^~~~~~~~~~~~
+      |     adf_fball_set
+tests/test_ffun.c:81:63: error: invalid type argument of ‘->’ (have ‘int’)
+   81 |     adf_ffun_set(y,x); CHECK(adf_ffun_identical(x,y)); CHECK(x->f!=y->f);
+      |                                                               ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:81:69: error: invalid type argument of ‘->’ (have ‘int’)
+   81 |     adf_ffun_set(y,x); CHECK(adf_ffun_identical(x,y)); CHECK(x->f!=y->f);
+      |                                                                     ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:82:34: error: invalid type argument of ‘->’ (have ‘int’)
+   82 |     acb_one(a); CHECK(acb_equal(x->f,y->f));
+      |                                  ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:82:39: error: invalid type argument of ‘->’ (have ‘int’)
+   82 |     acb_one(a); CHECK(acb_equal(x->f,y->f));
+      |                                       ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:84:5: error: implicit declaration of function ‘adf_ffun_swap’; did you mean ‘adf_fball_swap’? [-Werror=implicit-function-declaration]
+   84 |     adf_ffun_swap(x,z); CHECK(z->D==2 && z->M==3 && x->D==1);
+      |     ^~~~~~~~~~~~~
+      |     adf_fball_swap
+tests/test_ffun.c:84:32: error: invalid type argument of ‘->’ (have ‘int’)
+   84 |     adf_ffun_swap(x,z); CHECK(z->D==2 && z->M==3 && x->D==1);
+      |                                ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:84:43: error: invalid type argument of ‘->’ (have ‘int’)
+   84 |     adf_ffun_swap(x,z); CHECK(z->D==2 && z->M==3 && x->D==1);
+      |                                           ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:84:54: error: invalid type argument of ‘->’ (have ‘int’)
+   84 |     adf_ffun_swap(x,z); CHECK(z->D==2 && z->M==3 && x->D==1);
+      |                                                      ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:86:27: error: invalid type argument of unary ‘*’ (have ‘int’)
+   86 |     memcpy(bytes,x,sizeof(*x));
+      |                           ^~
+tests/test_ffun.c:86:18: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+   86 |     memcpy(bytes,x,sizeof(*x));
+      |                  ^
+      |                  |
+      |                  int
+In file included from /usr/include/features.h:502,
+                 from /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:33,
+                 from /usr/include/stdio.h:28,
+                 from tests/test_ffun.c:2:
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_ffun.c:94:6: error: invalid type argument of ‘->’ (have ‘int’)
+   94 |     x->D=0; CHECK(!adf_ffun_is_canonical(x)); x->D=2;
+      |      ^~
+tests/test_ffun.c:94:48: error: invalid type argument of ‘->’ (have ‘int’)
+   94 |     x->D=0; CHECK(!adf_ffun_is_canonical(x)); x->D=2;
+      |                                                ^~
+tests/test_ffun.c:95:6: error: invalid type argument of ‘->’ (have ‘int’)
+   95 |     x->M=UWORD_MAX; CHECK(!adf_ffun_is_canonical(x)); x->M=3;
+      |      ^~
+tests/test_ffun.c:95:56: error: invalid type argument of ‘->’ (have ‘int’)
+   95 |     x->M=UWORD_MAX; CHECK(!adf_ffun_is_canonical(x)); x->M=3;
+      |                                                        ^~
+tests/test_ffun.c:96:24: error: invalid type argument of ‘->’ (have ‘int’)
+   96 |     acb_indeterminate(x->f); CHECK(!adf_ffun_is_canonical(x)); acb_set(x->f,y->f);
+      |                        ^~
+tests/test_ffun.c:96:73: error: invalid type argument of ‘->’ (have ‘int’)
+   96 |     acb_indeterminate(x->f); CHECK(!adf_ffun_is_canonical(x)); acb_set(x->f,y->f);
+      |                                                                         ^~
+tests/test_ffun.c:96:78: error: invalid type argument of ‘->’ (have ‘int’)
+   96 |     acb_indeterminate(x->f); CHECK(!adf_ffun_is_canonical(x)); acb_set(x->f,y->f);
+      |                                                                              ^~
+tests/test_ffun.c:97:26: error: implicit declaration of function ‘adf_ffun_clear’; did you mean ‘adf_fball_clear’? [-Werror=implicit-function-declaration]
+   97 |     _acb_vec_clear(a,6); adf_ffun_clear(x); adf_ffun_clear(y); adf_ffun_clear(z);
+      |                          ^~~~~~~~~~~~~~
+      |                          adf_fball_clear
+tests/test_ffun.c:74:19: error: unused variable ‘bytes’ [-Werror=unused-variable]
+   74 |     unsigned char bytes[sizeof(*x)];
+      |                   ^~~~~
+tests/test_ffun.c: In function ‘text’:
+tests/test_ffun.c:103:5: error: unknown type name ‘adf_ffun_t’
+  103 |     adf_ffun_t x,old;
+      |     ^~~~~~~~~~
+tests/test_ffun.c:104:32: error: invalid type argument of unary ‘*’ (have ‘int’)
+  104 |     unsigned char bytes[sizeof(*x)];
+      |                                ^~
+tests/test_ffun.c:106:55: error: invalid type argument of ‘->’ (have ‘int’)
+  106 |     adf_ffun_init(x); adf_ffun_init(old); acb_set_si(x->f,17);
+      |                                                       ^~
+tests/test_ffun.c:111:52: error: invalid type argument of unary ‘*’ (have ‘int’)
+  111 |         adf_ffun_set(old,x); memcpy(bytes,x,sizeof(*x));
+      |                                                    ^~
+tests/test_ffun.c:111:43: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+  111 |         adf_ffun_set(old,x); memcpy(bytes,x,sizeof(*x));
+      |                                           ^
+      |                                           |
+      |                                           int
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_ffun.c:112:16: error: implicit declaration of function ‘adf_ffun_set_str’; did you mean ‘adf_fball_set_str’? [-Werror=implicit-function-declaration]
+  112 |         int st=adf_ffun_set_str(x,r->input,r->input_len,128,NULL);
+      |                ^~~~~~~~~~~~~~~~
+      |                adf_fball_set_str
+tests/test_ffun.c:115:40: error: implicit declaration of function ‘adf_ffun_get_str’; did you mean ‘adf_fball_get_str’? [-Werror=implicit-function-declaration]
+  115 |             CHECK(st==ADF_OK); char *s=adf_ffun_get_str(&n,x,0);
+      |                                        ^~~~~~~~~~~~~~~~
+      |                                        adf_fball_get_str
+tests/test_ffun.c:115:40: error: initialization of ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+tests/test_ffun.c:121:48: error: invalid type argument of unary ‘*’ (have ‘int’)
+  121 |     adf_ffun_set(old,x); memcpy(bytes,x,sizeof(*x));
+      |                                                ^~
+tests/test_ffun.c:121:39: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+  121 |     adf_ffun_set(old,x); memcpy(bytes,x,sizeof(*x));
+      |                                       ^
+      |                                       |
+      |                                       int
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_ffun.c:132:15: error: invalid type argument of ‘->’ (have ‘int’)
+  132 |     acb_zero(x->f); arf_one(arb_midref(acb_realref(x->f)));
+      |               ^~
+In file included from include/adelefeld/adele.h:36,
+                 from include/adelefeld.h:55,
+                 from tests/test_ffun.c:9:
+tests/test_ffun.c:132:53: error: invalid type argument of ‘->’ (have ‘int’)
+  132 |     acb_zero(x->f); arf_one(arb_midref(acb_realref(x->f)));
+      |                                                     ^~
+In file included from /usr/include/flint/arb.h:21:
+tests/test_ffun.c:133:52: error: invalid type argument of ‘->’ (have ‘int’)
+  133 |     fmpz_set_si(ARF_EXPREF(arb_midref(acb_realref(x->f))),10000000);
+      |                                                    ^~
+tests/test_ffun.c:134:15: error: initialization of ‘char *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  134 |     char *out=adf_ffun_get_str(&n,x,0); CHECK(out==NULL && n==0);
+      |               ^~~~~~~~~~~~~~~~
+tests/test_ffun.c:104:19: error: unused variable ‘bytes’ [-Werror=unused-variable]
+  104 |     unsigned char bytes[sizeof(*x)];
+      |                   ^~~~~
+tests/test_ffun.c: In function ‘sum’:
+tests/test_ffun.c:140:5: error: unknown type name ‘adf_ffun_t’
+  140 |     adf_ffun_t a,b,u,v,s,t,old;
+      |     ^~~~~~~~~~
+tests/test_ffun.c:142:32: error: invalid type argument of unary ‘*’ (have ‘int’)
+  142 |     unsigned char bytes[sizeof(*s)];
+      |                                ^~
+tests/test_ffun.c:149:9: error: implicit declaration of function ‘load’ [-Werror=implicit-function-declaration]
+  149 |         load(a,(ulong)integer(at(x,0)),(ulong)integer(at(x,1)),at(x,2),0);
+      |         ^~~~
+tests/test_ffun.c:151:15: error: implicit declaration of function ‘adf_ffun_refine’ [-Werror=implicit-function-declaration]
+  151 |         CHECK(adf_ffun_refine(u,a,D,M)==ADF_OK); CHECK(adf_ffun_refine(v,b,D,M)==ADF_OK);
+      |               ^~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:152:15: error: implicit declaration of function ‘adf_ffun_add’; did you mean ‘adf_fball_add’? [-Werror=implicit-function-declaration]
+  152 |         CHECK(adf_ffun_add(s,a,b,53)==ADF_OK); CHECK(s->D==D && s->M==M);
+      |               ^~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:152:55: error: invalid type argument of ‘->’ (have ‘int’)
+  152 |         CHECK(adf_ffun_add(s,a,b,53)==ADF_OK); CHECK(s->D==D && s->M==M);
+      |                                                       ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:152:66: error: invalid type argument of ‘->’ (have ‘int’)
+  152 |         CHECK(adf_ffun_add(s,a,b,53)==ADF_OK); CHECK(s->D==D && s->M==M);
+      |                                                                  ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:154:71: error: invalid type argument of ‘->’ (have ‘int’)
+  154 |             rational(q,at(field(r,"ra"),j)); CHECK(acb_contains_fmpq(u->f+j,q));
+      |                                                                       ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:155:71: error: invalid type argument of ‘->’ (have ‘int’)
+  155 |             rational(q,at(field(r,"rb"),j)); CHECK(acb_contains_fmpq(v->f+j,q));
+      |                                                                       ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:156:72: error: invalid type argument of ‘->’ (have ‘int’)
+  156 |             rational(q,at(field(r,"sum"),j)); CHECK(acb_contains_fmpq(s->f+j,q));
+      |                                                                        ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:162:52: error: invalid type argument of unary ‘*’ (have ‘int’)
+  162 |         adf_ffun_set(old,s); memcpy(bytes,s,sizeof(*s));
+      |                                                    ^~
+tests/test_ffun.c:162:43: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+  162 |         adf_ffun_set(old,s); memcpy(bytes,s,sizeof(*s));
+      |                                           ^
+      |                                           |
+      |                                           int
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_ffun.c:169:19: error: invalid type argument of ‘->’ (have ‘int’)
+  169 |         acb_zero(t->f); /* t is not zero as a whole; use initialized singleton below. */
+      |                   ^~
+tests/test_ffun.c:142:19: error: unused variable ‘bytes’ [-Werror=unused-variable]
+  142 |     unsigned char bytes[sizeof(*s)];
+      |                   ^~~~~
+tests/test_ffun.c: At top level:
+tests/test_ffun.c:182:25: error: unknown type name ‘adf_ffun_t’
+  182 | static void width(const adf_ffun_t x, const adf_ffun_t g, slong p)
+      |                         ^~~~~~~~~~
+tests/test_ffun.c:182:45: error: unknown type name ‘adf_ffun_t’
+  182 | static void width(const adf_ffun_t x, const adf_ffun_t g, slong p)
+      |                                             ^~~~~~~~~~
+tests/test_ffun.c: In function ‘width’:
+tests/test_ffun.c:187:14: error: invalid type argument of ‘->’ (have ‘int’)
+  187 |     ulong L=x->D*x->M;
+      |              ^~
+tests/test_ffun.c:187:19: error: invalid type argument of ‘->’ (have ‘int’)
+  187 |     ulong L=x->D*x->M;
+      |                   ^~
+tests/test_ffun.c:189:43: error: invalid type argument of ‘->’ (have ‘int’)
+  189 |         mag_add(t,arb_radref(acb_realref(x->f+j)),arb_radref(acb_imagref(x->f+j)));
+      |                                           ^~
+tests/test_ffun.c:189:75: error: invalid type argument of ‘->’ (have ‘int’)
+  189 |         mag_add(t,arb_radref(acb_realref(x->f+j)),arb_radref(acb_imagref(x->f+j)));
+      |                                                                           ^~
+tests/test_ffun.c:191:24: error: invalid type argument of ‘->’ (have ‘int’)
+  191 |         acb_get_mag(t,x->f+j); mag_max(largest,largest,t);
+      |                        ^~
+tests/test_ffun.c:195:23: error: invalid type argument of ‘->’ (have ‘int’)
+  195 |     mag_set_ui(scale,x->M); mag_div(bound,bound,scale);
+      |                       ^~
+tests/test_ffun.c:197:47: error: invalid type argument of ‘->’ (have ‘int’)
+  197 |         CHECK(mag_cmp(arb_radref(acb_realref(g->f+k)),bound)<=0);
+      |                                               ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:198:47: error: invalid type argument of ‘->’ (have ‘int’)
+  198 |         CHECK(mag_cmp(arb_radref(acb_imagref(g->f+k)),bound)<=0);
+      |                                               ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c: In function ‘fourier’:
+tests/test_ffun.c:205:5: error: unknown type name ‘adf_ffun_t’
+  205 |     adf_ffun_t x,g,h,copy;
+      |     ^~~~~~~~~~
+tests/test_ffun.c:217:15: error: implicit declaration of function ‘adf_ffun_fourier’ [-Werror=implicit-function-declaration]
+  217 |         CHECK(adf_ffun_fourier(g,x,53)==ADF_OK); CHECK(g->D==M && g->M==D); width(x,g,53);
+      |               ^~~~~~~~~~~~~~~~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:217:57: error: invalid type argument of ‘->’ (have ‘int’)
+  217 |         CHECK(adf_ffun_fourier(g,x,53)==ADF_OK); CHECK(g->D==M && g->M==D); width(x,g,53);
+      |                                                         ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:217:68: error: invalid type argument of ‘->’ (have ‘int’)
+  217 |         CHECK(adf_ffun_fourier(g,x,53)==ADF_OK); CHECK(g->D==M && g->M==D); width(x,g,53);
+      |                                                                    ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:219:86: error: invalid type argument of ‘->’ (have ‘int’)
+  219 |             if (jsonl_size(refs)) { vector_ball(ref,at(refs,k)); CHECK(acb_contains(g->f+k,ref)); }
+      |                                                                                      ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+In file included from include/adelefeld/adele.h:37:
+tests/test_ffun.c:227:59: error: invalid type argument of ‘->’ (have ‘int’)
+  227 |                                              acb_realref(x->f+j),512);
+      |                                                           ^~
+tests/test_ffun.c:231:65: error: invalid type argument of ‘->’ (have ‘int’)
+  231 |                         arb_get_interval_arf(lo,hi,acb_imagref(x->f+j),512);
+      |                                                                 ^~
+tests/test_ffun.c:241:68: error: invalid type argument of ‘->’ (have ‘int’)
+  241 |                     acb_div_ui(ref,ref,M,512); CHECK(acb_contains(g->f+k,ref));
+      |                                                                    ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:249:57: error: invalid type argument of ‘->’ (have ‘int’)
+  249 |             for (ulong j=0;j<L;j++) CHECK(acb_overlaps(h->f+j,x->f+(L-j)%L));
+      |                                                         ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:249:64: error: invalid type argument of ‘->’ (have ‘int’)
+  249 |             for (ulong j=0;j<L;j++) CHECK(acb_overlaps(h->f+j,x->f+(L-j)%L));
+      |                                                                ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:253:32: error: invalid type argument of ‘->’ (have ‘int’)
+  253 |                     acb_abs(t,x->f+j,128); arb_sqr(t,t,128); arb_add(lhs,lhs,t,128);
+      |                                ^~
+tests/test_ffun.c:254:32: error: invalid type argument of ‘->’ (have ‘int’)
+  254 |                     acb_abs(t,g->f+j,128); arb_sqr(t,t,128); arb_add(rhs,rhs,t,128);
+      |                                ^~
+tests/test_ffun.c:259:70: error: invalid type argument of ‘->’ (have ‘int’)
+  259 |                     vector_ball(ref,at(refs,k)); CHECK(acb_contains(h->f+k,ref));
+      |                                                                      ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:260:59: error: invalid type argument of ‘->’ (have ‘int’)
+  260 |                     CHECK(mag_cmp(arb_radref(acb_realref(h->f+k)),
+      |                                                           ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:261:59: error: invalid type argument of ‘->’ (have ‘int’)
+  261 |                                   arb_radref(acb_realref(g->f+k)))<=0);
+      |                                                           ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:270:44: error: invalid type argument of ‘->’ (have ‘int’)
+  270 |     for (int j=0;j<4;j++) CHECK(acb_equal(h->f+j,x->f+(4-j)%4));
+      |                                            ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:270:51: error: invalid type argument of ‘->’ (have ‘int’)
+  270 |     for (int j=0;j<4;j++) CHECK(acb_equal(h->f+j,x->f+(4-j)%4));
+      |                                                   ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:278:29: error: invalid type argument of ‘->’ (have ‘int’)
+  278 |         CHECK(acb_contains(g->f+k,ref));
+      |                             ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c: In function ‘caps’:
+tests/test_ffun.c:288:5: error: unknown type name ‘adf_ffun_t’
+  288 |     adf_ffun_t x,y,old;
+      |     ^~~~~~~~~~
+tests/test_ffun.c:289:32: error: invalid type argument of unary ‘*’ (have ‘int’)
+  289 |     unsigned char bytes[sizeof(*y)];
+      |                                ^~
+tests/test_ffun.c:297:52: error: invalid type argument of unary ‘*’ (have ‘int’)
+  297 |         adf_ffun_set(old,y); memcpy(bytes,y,sizeof(*y));
+      |                                                    ^~
+tests/test_ffun.c:297:43: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+  297 |         adf_ffun_set(old,y); memcpy(bytes,y,sizeof(*y));
+      |                                           ^
+      |                                           |
+      |                                           int
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_ffun.c:302:75: error: invalid type argument of unary ‘*’ (have ‘int’)
+  302 |             adf_ffun_set(x,y); adf_ffun_set(old,y); memcpy(bytes,y,sizeof(*y));
+      |                                                                           ^~
+tests/test_ffun.c:302:66: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+  302 |             adf_ffun_set(x,y); adf_ffun_set(old,y); memcpy(bytes,y,sizeof(*y));
+      |                                                                  ^
+      |                                                                  |
+      |                                                                  int
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_ffun.c:308:51: error: invalid type argument of ‘->’ (have ‘int’)
+  308 |     adf_ffun_clear(x); adf_ffun_init(x); acb_one(x->f);
+      |                                                   ^~
+tests/test_ffun.c:311:67: error: invalid type argument of ‘->’ (have ‘int’)
+  311 |         CHECK(adf_ffun_fourier(y,x,p)==ADF_OK); CHECK(acb_is_one(y->f));
+      |                                                                   ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:312:67: error: invalid type argument of ‘->’ (have ‘int’)
+  312 |         CHECK(adf_ffun_add(y,x,x,p)==ADF_OK); CHECK(acb_equal_si(y->f,2));
+      |                                                                   ^~
+tests/test_ffun.c:14:39: note: in definition of macro ‘CHECK’
+   14 | #define CHECK(c) do { checks++; if (!(c)) { \
+      |                                       ^
+tests/test_ffun.c:314:48: error: invalid type argument of unary ‘*’ (have ‘int’)
+  314 |     adf_ffun_set(old,y); memcpy(bytes,y,sizeof(*y));
+      |                                                ^~
+tests/test_ffun.c:314:39: error: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Werror=int-conversion]
+  314 |     adf_ffun_set(old,y); memcpy(bytes,y,sizeof(*y));
+      |                                       ^
+      |                                       |
+      |                                       int
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:26:1: note: expected ‘const void * restrict’ but argument is of type ‘int’
+   26 | __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,
+      | ^~~~~
+tests/test_ffun.c:315:6: error: invalid type argument of ‘->’ (have ‘int’)
+  315 |     x->D=0;
+      |      ^~
+tests/test_ffun.c:318:6: error: invalid type argument of ‘->’ (have ‘int’)
+  318 |     x->D=1;
+      |      ^~
+tests/test_ffun.c:289:19: error: unused variable ‘bytes’ [-Werror=unused-variable]
+  289 |     unsigned char bytes[sizeof(*y)];
+      |                   ^~~~~
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/f4-slice1/build/test_ffun] Error 1

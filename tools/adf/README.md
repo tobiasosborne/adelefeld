@@ -861,3 +861,15 @@ rational in place of `R`, is `DOMAIN`), then the values (the statuses of `adf_rf
 and the adele reader), then the operation (`LIMIT` for the caps of decision D1, `NOT_DETERMINED` when
 `Re(A) > 0` is not certified after rounding), then the printer. The shorthand `rfun(term(P=[1], A=1, B=0, C=0))`
 is not a sentence of `rfun_v` and is `PARSE`. Fixtures: `tests/driver/rfun-text`, `rfun-algebra`, `rfun-eval`.
+
+### Finite functions, slice 4a
+
+`ffun F` reads and prints the finite function value text. Each entry is a complex value,
+for example `ffun(D=2, M=3; (1) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i)`.
+`ffun_add F with G` adds on the lcm refinement in both dimensions, with zero extension and repetition.
+`ffun_fourier F` computes the direct negative finite transform, with weight `1/M` and dimensions exchanged.
+The commands use the current `prec` and `digits`. Array/work/precision caps return `LIMIT`.
+
+Direct shell calls accept `adf ffun 'F'`, `adf ffun_add 'F' with 'G'`, and `adf ffun_fourier 'F'`.
+For `ffun_add`, two separately quoted operands without `with` are also accepted as shell arguments.
+Within a driver script, ` with ` remains the required separator. Bare scalar entries are outside the grammar.
