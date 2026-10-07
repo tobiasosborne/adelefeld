@@ -889,3 +889,25 @@ The steps are the syntax, the kind (another kind is `DOMAIN`), the value (the st
 operation (`LIMIT` for the caps of decision D1, `NOT_DETERMINED` when `Re(1/A) > 0` or the root is not certified
 or a result is not finite), then the printer. Fixture: `tests/driver/rfun-fourier` (the shifted Gaussian of
 PLAN 4.3 and the value of its transform at `y = 1/4`, with a positive imaginary part).
+
+### Evaluation, integrals and norms of test functions (slice 4f of `docs/api-4.md`, lane f4-slice5)
+
+Seven commands (statements in `docs/api-4c.md`, "Slice 4f"; `R` an `rfun` text, `F` an `ffun` text):
+
+- `ffun_eval F with B` prints the hull of the values of `F` on the finite ball `B` (an fball text such as
+  `(* ; 0 mod 1/4)`, or a rational such as `1/5`), by statement E1 steps 1 to 3: every coset `j/D + M Zhat` that
+  meets `B`, and the value 0 when `B` leaves `(1/D) Zhat`. `ffun_eval` of `ffun(D=2, M=3; 1..6)` with
+  `(* ; 0 mod 1)` prints `(3 +/- 2) + (0)*i`, the hull of `{1, 3, 5}`.
+- `tensor_eval R with F with X` prints `R(x_inf) F(x_f)` enclosed on the adele `X` (the product of the two
+  enclosures).
+- `tensor_eval_sball R with F with S` evaluates on every adelic completion of the partial ball `S` (E1 steps 4 and
+  5, decision D3): missing primes impose nothing and the value 0 is always included; `S` without `inf` bounds `R`
+  on the whole real axis; a complex `inf` is `DOMAIN`.
+- `ffun_integral F` and `tensor_integral R with F` print `(1/M) sum f[j]` and its product with the real integral;
+  `ffun_norm2 F` and `tensor_norm2 R with F` print `(1/M) sum |f[j]|^2` and its product with the real norm, as a
+  real ball (the form of `rfun_norm2`).
+
+Complex results are printed as `psi` prints them. The steps are those of every command: the syntax of each operand,
+then its kind (another kind is `DOMAIN`), then the values (the statuses of the readers), then the operation (`LIMIT`
+for the caps of decision D1, `NOT_DETERMINED` for a nonfinite result), then the printer. Fixture:
+`tests/driver/tensor-eval` (the examples of E1 step 3 among them).

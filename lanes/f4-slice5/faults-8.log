@@ -1,0 +1,2 @@
+ 8. support test dropped (zero never included): caught: tests/test_tensor.c:292: acb_contains_zero(z)
+caught 1 of 1

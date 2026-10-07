@@ -227,6 +227,13 @@ typedef enum
     ADF_DRV_RFUN_DERIVATIVE,
     ADF_DRV_RFUN_INTEGRAL,
     ADF_DRV_RFUN_NORM2,
+    ADF_DRV_TENSOR_EVAL,       /* slice 4f (lane f4-slice5): evaluation and additive integrals, adf_drv_tensor */
+    ADF_DRV_TENSOR_EVAL_SBALL,
+    ADF_DRV_FFUN_EVAL,
+    ADF_DRV_FFUN_INTEGRAL,
+    ADF_DRV_FFUN_NORM2,
+    ADF_DRV_TENSOR_INTEGRAL,
+    ADF_DRV_TENSOR_NORM2,
     ADF_DRV_PREC,
     ADF_DRV_DIGITS
 } adf_drv_op;
@@ -334,6 +341,13 @@ static const struct
     { "rfun_derivative", ADF_DRV_RFUN_DERIVATIVE, 1 },
     { "rfun_integral", ADF_DRV_RFUN_INTEGRAL, 1 },
     { "rfun_norm2", ADF_DRV_RFUN_NORM2, 1 },
+    { "tensor_eval", ADF_DRV_TENSOR_EVAL, 3 },
+    { "tensor_eval_sball", ADF_DRV_TENSOR_EVAL_SBALL, 3 },
+    { "ffun_eval", ADF_DRV_FFUN_EVAL, 2 },
+    { "ffun_integral", ADF_DRV_FFUN_INTEGRAL, 1 },
+    { "ffun_norm2", ADF_DRV_FFUN_NORM2, 1 },
+    { "tensor_integral", ADF_DRV_TENSOR_INTEGRAL, 2 },
+    { "tensor_norm2", ADF_DRV_TENSOR_NORM2, 2 },
     { "digits", ADF_DRV_DIGITS, 1 }
 };
 
@@ -3197,6 +3211,72 @@ done:
     return status;
 }
 
+/* Slice 4f (lane f4-slice5; docs/api-4.md 6 and 9 item 6; docs/api-4c.md "Slice 4f"; include/adelefeld/tensor.h).
+     tensor_eval R with F with X          phi(x_inf) f(x_f) on the adele X, adf_tensor_eval
+     tensor_eval_sball R with F with S    the partial-place evaluator on the sball S (E1 steps 4-5, D3)
+     ffun_eval F with B                   the hull of F on the finite ball B (an fball text or a rational), E1 1-3
+     ffun_integral F, ffun_norm2 F        (1/M) sum f[j], (1/M) sum |f[j]|^2
+     tensor_integral R with F, tensor_norm2 R with F   the products of the real and finite integrals and norms
+   R is an rfun text and F an ffun text. Complex results are printed as psi prints them; real results (the norms)
+   as the real part of an adele, as rfun_norm2. Steps as for every command: the syntax of each operand (in
+   order), then its kind (another kind is DOMAIN), then the values (the statuses of the readers), then the
+   operation, then the printer (NULL: LIMIT). */
+static int
+adf_drv_tensor(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind want[3], kind; adf_rfun_t r; adf_ffun_t f; adf_fball_t b, zero; adf_adele_t a; adf_sball_t s;
+    adf_rat_t q; acb_t v; arb_t n; char *text = NULL; size_t len = 0; int i, k = 0, status = ADF_OK, wrong = 0;
+    int real = op == ADF_DRV_FFUN_NORM2 || op == ADF_DRV_TENSOR_NORM2;
+    int rf = op == ADF_DRV_TENSOR_EVAL || op == ADF_DRV_TENSOR_EVAL_SBALL || op == ADF_DRV_TENSOR_INTEGRAL ||
+             op == ADF_DRV_TENSOR_NORM2;
+    adf_rfun_init(r); adf_ffun_init(f); adf_fball_init(b); adf_fball_init(zero); adf_adele_init(a);
+    adf_sball_init(s); adf_rat_init(q); acb_init(v); arb_init(n);
+    if (rf) want[k++] = ADF_TEXT_RFUN;
+    want[k++] = ADF_TEXT_FFUN;
+    if (op == ADF_DRV_TENSOR_EVAL) want[k++] = ADF_TEXT_ADELE;
+    if (op == ADF_DRV_TENSOR_EVAL_SBALL) want[k++] = ADF_TEXT_SBALL;
+    if (op == ADF_DRV_FFUN_EVAL) want[k++] = ADF_TEXT_FBALL;
+    for (i = 0; i < k; i++) {
+        status = adf_text_classify(&kind, l->s[i], l->n[i], NULL);
+        if (status != ADF_OK) goto done;
+        wrong |= kind != want[i] && !(want[i] == ADF_TEXT_FBALL && kind == ADF_TEXT_RAT);
+        if (want[i] == ADF_TEXT_FBALL) want[i] = kind;
+    }
+    if (wrong) { status = ADF_DOMAIN; goto done; }
+    for (i = 0; i < k && status == ADF_OK; i++) {
+        if (want[i] == ADF_TEXT_RFUN) status = adf_rfun_set_str(r, l->s[i], l->n[i], st->prec, NULL);
+        else if (want[i] == ADF_TEXT_FFUN) status = adf_ffun_set_str(f, l->s[i], l->n[i], st->prec, NULL);
+        else if (want[i] == ADF_TEXT_ADELE) status = adf_adele_set_str(a, l->s[i], l->n[i], st->prec, NULL);
+        else if (want[i] == ADF_TEXT_SBALL) status = adf_sball_set_str(s, l->s[i], l->n[i], st->prec, NULL);
+        else if (want[i] == ADF_TEXT_FBALL) status = adf_fball_set_str(b, l->s[i], l->n[i], NULL);
+        else {
+            status = adf_rat_set_str(q, l->s[i], l->n[i], NULL);
+            if (status == ADF_OK) adf_fball_set_rat(b, q);
+        }
+    }
+    if (status != ADF_OK) goto done;
+    if (op == ADF_DRV_TENSOR_EVAL) status = adf_tensor_eval(v, r, f, a, st->prec);
+    else if (op == ADF_DRV_TENSOR_EVAL_SBALL) status = adf_tensor_eval_sball(v, r, f, s, st->prec);
+    else if (op == ADF_DRV_FFUN_EVAL) status = adf_ffun_eval(v, f, b, st->prec);
+    else if (op == ADF_DRV_FFUN_INTEGRAL) status = adf_ffun_integral(v, f, st->prec);
+    else if (op == ADF_DRV_TENSOR_INTEGRAL) status = adf_tensor_integral(v, r, f, st->prec);
+    else if (op == ADF_DRV_FFUN_NORM2) status = adf_ffun_norm2(n, f, st->prec);
+    else status = adf_tensor_norm2(n, r, f, st->prec);
+    if (status != ADF_OK) goto done;
+    if (!real) { status = adf_drv_psi_print(out, v, st); goto done; }
+    adf_adele_clear(a); adf_adele_init(a);
+    status = adf_adele_set_arb_fball(a, n, zero);
+    if (status != ADF_OK) goto done;
+    text = adf_adele_get_str(&len, a, st->digits);
+    if (text == NULL || len < 7 || memcmp(text + len - 5, " ; 0)", 5)) { status = ADF_LIMIT; goto done; }
+    fprintf(out, "%.*s\n", (int) (len - 6), text + 1);
+done:
+    adf_str_free(text);
+    adf_rfun_clear(r); adf_ffun_clear(f); adf_fball_clear(b); adf_fball_clear(zero); adf_adele_clear(a);
+    adf_sball_clear(s); adf_rat_clear(q); acb_clear(v); arb_clear(n);
+    return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3388,6 +3468,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         return adf_drv_rfun(out, op, l, st);
     if (op == ADF_DRV_RFUN_FOURIER || op == ADF_DRV_RFUN_DERIVATIVE || op == ADF_DRV_RFUN_INTEGRAL ||
         op == ADF_DRV_RFUN_NORM2) return adf_drv_rfun4e(out, op, l, st);
+    if (op >= ADF_DRV_TENSOR_EVAL && op <= ADF_DRV_TENSOR_NORM2) return adf_drv_tensor(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

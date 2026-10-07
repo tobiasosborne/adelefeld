@@ -81,5 +81,6 @@
 #include "adelefeld/catalogue.h"
 #include "adelefeld/localfactor.h"
 #include "adelefeld/rfun.h"
+#include "adelefeld/tensor.h"
 
 #endif /* ADELEFELD_H */

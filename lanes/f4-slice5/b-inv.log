@@ -1,0 +1,15 @@
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_eval: argument f is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_eval: argument x is not a canonical adf_fball
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_eval: argument x is not a canonical adf_adele
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_eval_sball: argument x is not a canonical adf_sball
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_integral: argument f is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_ffun_norm2: argument f is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_integral: argument phi is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_norm2: argument phi is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_eval_sball: argument phi is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_eval: argument phi is not a canonical adf_rfun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_eval: argument f is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_eval_sball: argument f is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_integral: argument f is not a canonical adf_ffun
+adelefeld: ADF_CHECK_INVARIANTS: adf_tensor_norm2: argument f is not a canonical adf_ffun
+tensor: 149891 checks, 49644 exclusions

@@ -254,6 +254,23 @@ else
 fi
 rm -f "$rfft_output"
 
+# Slice 4f (lane f4-slice5): evaluation of test functions, adf_tensor_eval.
+tensor_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/tensor.jl "$so" > "$tensor_output" 2>&1; then
+    cat "$tensor_output"
+elif grep -q '__gmpn_modexact_1_odd' "$tensor_output" 2>/dev/null \
+        && tensor_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$tensor_gmp" ] \
+        && LD_PRELOAD="$tensor_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/tensor.jl "$so"; then
+    echo "== tests/julia/tensor.jl passed with LD_PRELOAD=$tensor_gmp"
+else
+    cat "$tensor_output"
+    rm -f "$tensor_output"
+    echo "test_julia: tests/julia/tensor.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$tensor_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

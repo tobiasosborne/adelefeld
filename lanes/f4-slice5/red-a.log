@@ -1,0 +1,25 @@
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:232:(.text+0x5a7c): undefined reference to `adf_ffun_eval'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:237:(.text+0x5ba5): undefined reference to `adf_tensor_eval'
+/usr/bin/ld: /tmp/ccL8JHre.o: in function `sball_vectors':
+/home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:356:(.text+0x624b): undefined reference to `adf_tensor_eval_sball'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:359:(.text+0x62c7): undefined reference to `adf_tensor_eval'
+/usr/bin/ld: /tmp/ccL8JHre.o: in function `tensor_vectors':
+/home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:497:(.text+0x6d1e): undefined reference to `adf_tensor_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:470:(.text+0x6ec4): undefined reference to `adf_tensor_eval'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:478:(.text+0x719b): undefined reference to `adf_ffun_eval'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:482:(.text+0x728a): undefined reference to `adf_tensor_eval'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:499:(.text+0x74c3): undefined reference to `adf_ffun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:502:(.text+0x758c): undefined reference to `adf_tensor_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:506:(.text+0x767b): undefined reference to `adf_ffun_norm2'
+/usr/bin/ld: /tmp/ccL8JHre.o: in function `integral_vectors':
+/home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:530:(.text+0x7b6f): undefined reference to `adf_ffun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:536:(.text+0x7cf1): undefined reference to `adf_ffun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:542:(.text+0x7e5b): undefined reference to `adf_ffun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:550:(.text+0x7f6a): undefined reference to `adf_ffun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:553:(.text+0x7fea): undefined reference to `adf_tensor_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:558:(.text+0x8046): undefined reference to `adf_ffun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:559:(.text+0x80dd): undefined reference to `adf_ffun_norm2'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:562:(.text+0x814c): undefined reference to `adf_ffun_integral'
+/usr/bin/ld: /home/tobias/Projects/adelefeld-wt/f4-slice5/tests/test_tensor.c:563:(.text+0x817c): undefined reference to `adf_ffun_norm2'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:99: lanes/f4-slice5/build/test_tensor] Error 1
