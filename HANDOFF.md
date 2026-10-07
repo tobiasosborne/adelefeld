@@ -70,6 +70,12 @@ record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
   limit's memory; a lawful copy of Tate's thesis; the older UX and printer questions) stand.
 
 **Things to know.**
+- Lane names collide with old lanes: `t-slice1` and `t-slice2` were milestone 1F lanes (the value forms). The
+  codex lane for slice 5a was started as `t-slice1` before this was noticed, so its brief overwrote the old brief
+  in `lanes/t-slice1/` and its outputs land there; at merge time move its files to `lanes/t5-slice1/` and
+  restore the old `lanes/t-slice1/` from `12ff1e2` (`git checkout 12ff1e2 -- lanes/t-slice1`). The Opus lane for
+  5c is `t5-slice2` (the old `t-slice2` brief was restored at once). Use the prefix `t5-` for milestone 5 lanes
+  and check `ls lanes/` and `git branch --list 'lane/*'` before naming a lane.
 - Keep-both merge resolution of appended blocks is right for `README.md`, `test_julia.sh`, `docs/api-*.md`,
   and wrong twice tonight: `src/text.c` (rebuild as head plus the lane's appended block, after checking with
   `cmp` that both are pure appends of the common base) and `tools/adf/adf.c` (a `break` lost; an enum-order
