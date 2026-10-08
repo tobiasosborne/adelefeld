@@ -2,15 +2,17 @@
 
 # HANDOFF: adelefeld
 
-## Session 2026-10-07 23:11 to about 07:00 on 2026-10-08 (UTC+8; orchestrator Claude Fable on the laptop; Opus and codex lanes): START HERE
+## Session 2026-10-07 23:11 to 08:05 on 2026-10-08 (UTC+8; orchestrator Claude Fable on the laptop; Opus and codex lanes): START HERE
 
 **One line.** Milestone 3 is complete (WP 3.1 and 3.2 reviewed by m3-review1: no blocker, no major; WP 3.3 and
 3.4 designed (`docs/api-3c.md`) and built in three slices: `adf_char`, text, dumps, `chi(a)`, Gauss sum, root
 number, conjugation, the character on unit cosets, idele classes and ideles), and milestone 4 is complete
 through all seven slices of its design (`docs/api-4.md`: `adf_ffun`, `adf_rfun`, their transforms, evaluation,
 integrals, Poisson summation with certified tails, dump forms); check-all passes on `b4922ae` and the driver
-after the last merge has 95 cases. Eighteen lanes landed in one night (`docs/worklog/2026-10-07-night.md`).
-The design of milestone 5 landed too (d-tate: `docs/api-5.md`, decisions taken as N-D24). The review of milestone 4 landed too (m4-review1: no blocker; one major against the wording of statement F4;
+after the last merge has 95 cases. Milestone 5 is designed (`docs/api-5.md`, N-D24) and its slices 5a (the local
+integral) and 5c (the global value for `Re(s) > 1`) are built. Twenty-two lanes landed in one night
+(`docs/worklog/2026-10-07-night.md`).
+The review of milestone 4 landed too (m4-review1: no blocker; one major against the wording of statement F4;
 three minors, two repaired (the lane-header include; the validator's stage order, lane r-dump2), one as bead adf-l4v; `docs/reviews/m4/review-m4.md`). Everything named here is merged and pushed.
 
 **First commands.**
@@ -19,10 +21,9 @@ three minors, two repaired (the lane-header include; the validator's stage order
     tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
     ~/Projects/quota-app/target/release/quota; date
 
-**Master.** check-all passed on `b4922ae` at 05:24 (100 test programs, driver 93 cases with 101613 expected
-lines, exports 609 of 609, Julia, both self-tests); san, clang, inv (99 programs each) and headers passed on
-`220c8a3` at 05:10. After them two more merges landed (c-slice3 `9a54305`, f4-slice7 `bb17591`) with their tests
-and the driver (95 cases) green; the five suites were not rerun on `bb17591`.
+**Master.** All five suites pass on the final master `c0a99d8` (`tools/orch/suites.sh -j 2`, 07:52 to 08:00 on 2026-10-08):
+check-all (104 test programs, driver 97 cases with 101650 expected lines, exports 620 of 620, Julia, both
+self-tests), san, clang, inv (104 programs each), headers.
 
 **Rules of TJO for this session** (23:11 and 23:20; memory `orchestration-model-tiers`, top block): work at pace
 for Claude and Codex; no Fable subagents; Opus for coding, Sonnet for busywork, codex `gpt-6.1-sol` xhigh,
@@ -44,8 +45,8 @@ record in `docs/reviews/m3/review-m3-wp31-wp32.md`.
 1. The open minor of the milestone 4 review: adf-l4v (the running time of `adf_tensor_poisson` near the bits cap;
    a decision); the wording of F4 and the dump/load identity in `docs/api-4.md` (adf-cx8).
 2. Milestone 5: `docs/api-5.md` (lane d-tate; decisions D1 to D4 taken as N-D24). Slice 5a landed (t5-slice1:
-   `adf_local_tate_at`, `docs/api-5a.md`); slice 5c (t5-slice2, Opus: `adf_tate_vector`, `adf_tate_integral`) was
-   running when this entry was written (see the end of the worklog). Next: 5b (gamma, epsilon, `G_minus`), 5d
+   `adf_local_tate_at`, `docs/api-5a.md`); slice 5c landed (t5-slice2: `adf_tate_vector`, `adf_tate_integral`, `docs/api-5b.md`;
+   merge `docs/api-5a.md` and `5b.md` into one statements file when 5b lands). Next: 5b (gamma, epsilon, `G_minus`), 5d
    (continuation, completed function, poles), 5e (the functional equation command); one review when milestone 5
    lands. The HEADER-FINDING of t5-slice1 (api-5:33 against :80 at the precision cap) is recorded in
    `docs/api-5a.md`; decide whether to amend the design.
