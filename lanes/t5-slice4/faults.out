@@ -1,0 +1,13 @@
+ 1 53.1 wrong -a/s sign: detected (exit 1) tests/test_tate_continue.c:525: acb_contains(b, y)
+ 2 53.2 zero mode retained (b/(s-1) counted twice): detected (exit 1) tests/test_tate_continue.c:576: arf_cmp_si(arb_midref(acb_imagref(z)), -1050) > 0
+ 3 53.3 dual s instead of 1 - s: detected (exit 1) tests/test_tate_continue.c:514: acb_contains(b, y)
+ 4 53.4 L14 factor omitted (2 R^r): detected (exit 1) tests/test_tate_continue.c:248: acb_contains(z, ref)
+ 5 53.5 discarded n tail (E_n not added): detected (exit 1) tests/test_tate_continue.c:407: arf_cmp(r, u) >= 0
+ 6 53.6 input radius dropped: detected (exit 1) tests/test_tate_continue.c:589: sent_call(fn, chi, s, 0, 64) == ADF_NOT_DETERMINED
+ 7 Gamma(z) L(s) formed (I = pi^-z Gamma(z) L): detected (exit 1) tests/test_tate_continue.c:534: adf_tate_continue(b, chi, s, 40, 64) == ADF_OK && narrow(b, 40)
+ 8 pole test on the open rectangle: detected (exit 1) tests/test_tate_continue.c:565: sent_call(fn, chi, s, 2097152, 64) == ADF_NOT_DETERMINED
+ 9 C^z applied to a width-limited I without recheck: detected (exit 1) tests/test_tate_continue.c:643: fn(w, chi, s, bt[k], 2) == ADF_OK && narrow(w, bt[k]) && acb_overlaps(z, w)
+10 the dual exponent z instead of z': detected (exit 1) tests/test_tate_continue.c:514: acb_contains(b, y)
+11 z written on NOT_DETERMINED: detected (exit 1) tests/test_tate_continue.c:191: memcmp(s->bytes, s->z, sizeof(acb_struct)) == 0
+12 the forbidden acb_dirichlet_zeta called: detected (exit -6) test_tate_continue: forbidden path reached: acb_dirichlet_zeta
+12 of 12 faults detected

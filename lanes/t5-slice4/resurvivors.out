@@ -1,0 +1,2 @@
+388 nz == 0 -> nz == 1: killed (exit 1) tests/test_tate_continue.c:247: acb_contains(z, ref)
+579 C * C -> C + C: killed (exit 1) tests/test_tate_continue.c:607: sent_call(fn, big, s, 20, 64) == ADF_LIMIT

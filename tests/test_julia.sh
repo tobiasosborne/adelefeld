@@ -377,6 +377,23 @@ else
 fi
 rm -f "$tate_output"
 
+# Slice 5d (lane t5-slice4): the continuation and the completed function, adf_tate_continue, adf_tate_completed.
+tatec_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/tate_continue.jl "$so" > "$tatec_output" 2>&1; then
+    cat "$tatec_output"
+elif grep -q '__gmpn_modexact_1_odd' "$tatec_output" 2>/dev/null \
+        && tatec_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$tatec_gmp" ] \
+        && LD_PRELOAD="$tatec_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/tate_continue.jl "$so"; then
+    echo "== tests/julia/tate_continue.jl passed with LD_PRELOAD=$tatec_gmp"
+else
+    cat "$tatec_output"
+    rm -f "$tatec_output"
+    echo "test_julia: tests/julia/tate_continue.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$tatec_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then

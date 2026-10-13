@@ -67,6 +67,32 @@ int adf_tate_vector(adf_rfun_t phi, adf_ffun_t f, const adf_char_t chi, slong pr
    or at the cap. Statements and the soundness argument: docs/api-5b.md "Slice 5c". */
 int adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec);
 
+/* Meromorphic I_chi on S, all-plane version of adf_tate_integral, same finite-character semantics,
+   aliasing, bits/precision/work bounds and atomicity. C=1: DOMAIN at exact 0,1;
+   NOT_DETERMINED on mixed/undecided pole intersection. C>1: no spectral poles.
+   OK means finite, every coordinate diameter <=2^-bits. Cost as the half-plane call.
+   Integral path uses only characters, factor/Poisson primitives and elementary ball quadrature;
+   acb_dirichlet L/zeta/xi/Hurwitz/theta/AFE functions are forbidden on this path.
+   (api-5.md:237-243, slice 5d.) The same balanced split as adf_tate_integral without its half-plane gate: analysis
+   P13 step 3 (docs/proofs/analysis.md:602-612) is an identity of meromorphic functions on the whole plane (both
+   integrals entire, :609-612; P12 :505-512, :551-557), so C^-z times it is the continuation of I_chi. Order of
+   the checks: prec > ADF_REAL_PREC_MAX (LIMIT); C > ADF_TATE_TRANSFORM_C_MAX (LIMIT); bits outside [0, 2^21]
+   (DOMAIN); INV; s nonfinite (DOMAIN); for C = 1 the pole geometry, exact on the closed rectangle: s exactly 0
+   or 1 DOMAIN, a rectangle containing 0 or 1 (closed end-point contact counts) NOT_DETERMINED; then the work.
+   For C > 1 there is no pole test: the local Gamma poles s = -e - 2k cancel against the trivial zeros of L
+   (P13: the completed function is entire) and Gamma(z) L(s, chi) is never formed. A pole-free rectangle near
+   0 or 1 uses the reciprocal terms 1/(s-1), 1/s at the exact midpoint with the T4 bound (api-5.md:302-312); a
+   wide image is NOT_DETERMINED (T4.3, SPEC 15.4 N-D23). Statements: docs/api-5b.md "Slice 5d". */
+int adf_tate_continue(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec);
+
+/* Lambda_chi=C^((s+e)/2) I_chi, same continuation/status/width/alias/cost contract.
+   Computes the balanced split directly; it does not multiply an already width-limited I without
+   rechecking width. C=1 has the same poles; C>1 entire. No new result object.
+   (api-5.md:244-247, slice 5d.) Lambda by analysis P13 step 3 with the budget epsilon = 2^-bits for the cutoffs
+   and the panels (api-5.md:205) and no factor C^-z; the width 2^-bits is checked on Lambda itself. Statuses,
+   order of the checks and the pole geometry as adf_tate_continue. Statements: docs/api-5b.md "Slice 5d". */
+int adf_tate_completed(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec);
+
 #ifdef __cplusplus
 }
 #endif
