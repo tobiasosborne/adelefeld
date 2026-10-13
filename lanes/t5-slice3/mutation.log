@@ -1,0 +1,397 @@
+mutate: src/localfactor.c: 601 mutants
+mutate: 601 mutants, 60 of them run (--limit 60, --seed 53001)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (6.5 s)
+
+NOT COMPILED src/localfactor.c:285:25 logic: '&&' -> '||'
+  src/localfactor.c:285:75: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/localfactor.c:446:5 swap_args: 'acb_mul(t, alpha, t, w)' -> 'acb_mul(t, t, alpha, w)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -444,5 +444,5 @@
+       acb_neg(t, t);
+       acb_exp(t, t, w);
+  -    acb_mul(t, alpha, t, w);
+  +    acb_mul(t, t, alpha, w);
+       acb_neg(denominator, t);
+       acb_add_ui(denominator, denominator, 1, w);
+
+
+SURVIVED src/localfactor.c:62:49 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -60,5 +60,5 @@
+          intersected with 1 - T0 (both enclose the same number; the direct one is kept if expm1 is not finite).
+          The uncertainty of log p is in the arb a and enters both calls. */
+  -    neg = arf_sgn(arb_midref(acb_realref(s))) < 0;
+  +    neg = arf_sgn(arb_midref(acb_realref(s))) < 1;
+       arb_log_ui(a, p, w);
+       if (neg) arb_set(b, a);
+
+
+SURVIVED src/localfactor.c:221:33 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -219,5 +219,5 @@
+       arf_ceil(t, t);
+       cb = arf_get_si(t, ARF_RND_CEIL);                /* ceil(B0) <= cb, 1 <= cb <= 64 */
+  -    mag_fac_ui(f, (ulong) (cb - 1));
+  +    mag_fac_ui(f, (ulong) (cb - 0));
+       mag_add(m0, inva, f);
+       mag_mul(m1, inva, inva);
+
+
+SURVIVED src/localfactor.c:344:17 call_swap: 'mag_mul' -> 'mag_add'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -342,5 +342,5 @@
+                   acb_set(previous, cand);
+                   acb_set(oldym, ym);
+  -                mag_mul(oldB, oldB, R);
+  +                mag_add(oldB, oldB, R);
+                   if (mag_is_finite(oldB))
+                   {
+
+
+SURVIVED src/localfactor.c:252:5 swap_args: 'mag_mul(sum, sum, m0)' -> 'mag_mul(sum, m0, sum)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -250,5 +250,5 @@
+       mag_mul_2exp_si(oldsum, oldsum, -1);
+       /* Y16: M1 already bounds |Gamma'(z+n) - log(pi) Gamma(z+n)|. */
+  -    mag_mul(sum, sum, m0);
+  +    mag_mul(sum, m0, sum);
+       mag_add(sum, sum, m1);
+       mag_div(sum, sum, P);
+
+
+SURVIVED src/localfactor.c:237:9 drop_call: 'mag_sqrt_lower(d, d);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -235,5 +235,5 @@
+           mag_mul_lower(f, dy, dy);
+           mag_add_lower(d, d, f);
+  -        mag_sqrt_lower(d, d);
+  +        
+           mag_mul_lower(P, P, d);
+           mag_inv(f, d);                               /* infinite for d = 0 */
+
+
+SURVIVED src/localfactor.c:524:35 logic: '||' -> '&&'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -522,5 +522,5 @@
+           while (q > 1 && q % p == 0) q /= p;
+           if (q != 1) { st = ADF_DOMAIN; goto done; }
+  -        if (!acb_is_finite(alpha) || acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; }
+  +        if (!acb_is_finite(alpha) && acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; }
+           if (acb_contains_zero(alpha)) { st = ADF_NOT_DETERMINED; goto done; }
+           if (eta0->q > 1)
+
+
+SURVIVED src/localfactor.c:96:5 call_swap: 'mag_mul' -> 'mag_add'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -94,5 +94,5 @@
+       mag_mul(t, t, R);
+       mag_expm1(e2, t);
+  -    mag_mul(E, e1, e2);
+  +    mag_add(E, e1, e2);
+   
+       /* Step 4: a non-finite bound, or a denominator that contains 0, is NOT_DETERMINED. If the rectangle
+
+
+SURVIVED src/localfactor.c:534:53 prec: 'prec' -> '2'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -532,5 +532,5 @@
+               st = adf_local_zeta_factor_at(t, NULL, s, v, prec);
+           else
+  -            st = tate_finite_factor(t, s, p, alpha, prec);
+  +            st = tate_finite_factor(t, s, p, alpha, 2);
+       }
+   done:
+
+
+SURVIVED src/localfactor.c:748:39 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -746,5 +746,5 @@
+       if (exact_integer_parity(&odd, s))
+       {
+  -        if (odd != e && arf_cmp_si(x, 1 + e) >= 0) return ADF_DOMAIN;   /* s = 1+e+2k */
+  +        if (odd != e && arf_cmp_si(x, 0 + e) >= 0) return ADF_DOMAIN;   /* s = 1+e+2k */
+           if (odd == e && arf_cmp_si(x, -e) <= 0) { acb_zero(res); return ADF_OK; }   /* s = -e-2k */
+       }
+
+
+SURVIVED src/localfactor.c:367:9 drop_call: 'acb_set_round(previous, previous, prec);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -365,5 +365,5 @@
+       if (have_previous)
+       {
+  -        acb_set_round(previous, previous, prec);
+  +        
+           if (!acb_contains(previous, cand)) acb_set(cand, previous);
+       }
+
+
+SURVIVED src/localfactor.c:522:9 negate_if: 'while(q > 1 && q % p == 0)' -> 'while(!(q > 1 && q % p == 0))'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -520,5 +520,5 @@
+           q = eta0->q;
+           if (q == 0 || p < 2) { st = ADF_DOMAIN; goto done; }
+  -        while (q > 1 && q % p == 0) q /= p;
+  +        while (!(q > 1 && q % p == 0)) q /= p;
+           if (q != 1) { st = ADF_DOMAIN; goto done; }
+           if (!acb_is_finite(alpha) || acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; }
+
+
+SURVIVED src/localfactor.c:223:5 call_swap: 'mag_mul' -> 'mag_add'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -221,5 +221,5 @@
+       mag_fac_ui(f, (ulong) (cb - 1));
+       mag_add(m0, inva, f);
+  -    mag_mul(m1, inva, inva);
+  +    mag_add(m1, inva, inva);
+       mag_fac_ui(f, (ulong) cb);
+       mag_add(m1, m1, f);
+
+
+SURVIVED src/localfactor.c:250:38 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -248,5 +248,5 @@
+       mag_add(oldsum, oldsum, m1);
+       mag_div(oldsum, oldsum, P);
+  -    mag_mul_2exp_si(oldsum, oldsum, -1);
+  +    mag_mul_2exp_si(oldsum, oldsum, -0);
+       /* Y16: M1 already bounds |Gamma'(z+n) - log(pi) Gamma(z+n)|. */
+       mag_mul(sum, sum, m0);
+
+
+SURVIVED src/localfactor.c:96:5 swap_args: 'mag_mul(E, e1, e2)' -> 'mag_mul(E, e2, e1)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -94,5 +94,5 @@
+       mag_mul(t, t, R);
+       mag_expm1(e2, t);
+  -    mag_mul(E, e1, e2);
+  +    mag_mul(E, e2, e1);
+   
+       /* Step 4: a non-finite bound, or a denominator that contains 0, is NOT_DETERMINED. If the rectangle
+
+
+SURVIVED src/localfactor.c:244:5 drop_call: 'mag_set(oldsum, sum);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -242,5 +242,5 @@
+       /* Retain the previous certificate only to guard the final representation's containment.
+          Outward midpoint/radius rounding of nested intersections need not itself be nested (Y16). */
+  -    mag_set(oldsum, sum);
+  +    
+       arb_get_mag(lp, logpi);
+       mag_add(oldsum, oldsum, lp);
+
+
+NOT COMPILED src/localfactor.c:796:68 drop_call: 'gamma_ramified(t, s, p, a, alpha, eta0, prec);' -> '' (the statement is removed)
+  src/localfactor.c:797:5: error: expected expression before ‘}’ token
+
+SURVIVED src/localfactor.c:240:9 swap_args: 'mag_add(sum, sum, f)' -> 'mag_add(sum, f, sum)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -238,5 +238,5 @@
+           mag_mul_lower(P, P, d);
+           mag_inv(f, d);                               /* infinite for d = 0 */
+  -        mag_add(sum, sum, f);
+  +        mag_add(sum, f, sum);
+       }
+       /* Retain the previous certificate only to guard the final representation's containment.
+
+
+SURVIVED src/localfactor.c:416:60 logic: '||' -> '&&'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -414,5 +414,5 @@
+           !arb_is_zero(acb_imagref(s)) || !arb_is_zero(acb_imagref(alpha)) ||
+           !arf_is_int(arb_midref(acb_realref(s)))) return 0;
+  -    if (arf_cmp_si(arb_midref(acb_realref(s)), -bound) < 0 ||
+  +    if (arf_cmp_si(arb_midref(acb_realref(s)), -bound) < 0 &&
+           arf_cmp_si(arb_midref(acb_realref(s)), bound) > 0) return 0;
+       k = arf_get_si(arb_midref(acb_realref(s)), ARF_RND_NEAR);
+
+
+SURVIVED src/localfactor.c:522:31 cmp: '==' -> '!='
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -520,5 +520,5 @@
+           q = eta0->q;
+           if (q == 0 || p < 2) { st = ADF_DOMAIN; goto done; }
+  -        while (q > 1 && q % p == 0) q /= p;
+  +        while (q > 1 && q % p != 0) q /= p;
+           if (q != 1) { st = ADF_DOMAIN; goto done; }
+           if (!acb_is_finite(alpha) || acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; }
+
+
+SURVIVED src/localfactor.c:217:5 drop_call: 'mag_inv(inva, f);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -215,5 +215,5 @@
+       arf_add_si(t, lo, n, w, ARF_RND_FLOOR);         /* A >= t >= 1 */
+       arf_get_mag_lower(f, t);
+  -    mag_inv(inva, f);                                /* >= 1/A */
+  +                                    /* >= 1/A */
+       arf_add_si(t, hi, n, w, ARF_RND_CEIL);           /* B0 <= t <= 64 */
+       arf_ceil(t, t);
+
+
+SURVIVED src/localfactor.c:715:43 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -713,5 +713,5 @@
+       arb_get_lbound_arf(lo, acb_realref(z), w);
+       n = shift_of(lo);
+  -    if (n > ADF_LOCAL_ZETA_SHIFT_MAX) n = 0;
+  +    if (n > ADF_LOCAL_ZETA_SHIFT_MAX) n = 1;
+       acb_one(q);
+       for (slong j = 0; j < n; j++)
+
+
+NOT COMPILED src/localfactor.c:549:26 logic: '||' -> '&&'
+  src/localfactor.c:549:26: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/localfactor.c:526:23 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -524,5 +524,5 @@
+           if (!acb_is_finite(alpha) || acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; }
+           if (acb_contains_zero(alpha)) { st = ADF_NOT_DETERMINED; goto done; }
+  -        if (eta0->q > 1)
+  +        if (eta0->q > 0)
+           {
+               acb_one(t);
+
+
+SURVIVED src/localfactor.c:508:9 negate_if: 'if(eta0->parity && tate_exact_odd_pole(s))' -> 'if(!(eta0->parity && tate_exact_odd_pole(s)))'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -506,5 +506,5 @@
+       {
+           slong w = prec > ADF_REAL_PREC_MAX-32 ? ADF_REAL_PREC_MAX : prec+32;
+  -        if (eta0->parity && tate_exact_odd_pole(s)) st = ADF_DOMAIN;
+  +        if (!(eta0->parity && tate_exact_odd_pole(s))) st = ADF_DOMAIN;
+           else if (!eta0->parity)
+               st = adf_local_zeta_factor_at(t, NULL, s, v, prec);
+
+
+SURVIVED src/localfactor.c:248:5 call_swap: 'mag_add' -> 'mag_sub'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -246,5 +246,5 @@
+       mag_add(oldsum, oldsum, lp);
+       mag_mul(oldsum, oldsum, m0);
+  -    mag_add(oldsum, oldsum, m1);
+  +    mag_sub(oldsum, oldsum, m1);
+       mag_div(oldsum, oldsum, P);
+       mag_mul_2exp_si(oldsum, oldsum, -1);
+
+
+SURVIVED src/localfactor.c:255:32 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -253,5 +253,5 @@
+       mag_add(sum, sum, m1);
+       mag_div(sum, sum, P);
+  -    mag_mul_2exp_si(sum, sum, -1);
+  +    mag_mul_2exp_si(sum, sum, -0);
+       /* pi^(-min Re(s)/2) = exp(-min Re(z) log pi) <= exp(-lo log pi) */
+       arb_set_arf(c, lo);
+
+
+SURVIVED src/localfactor.c:499:5 negate_if: 'if(z == eta0->s || s == eta0->s || alpha == eta0->s)' -> 'if(!(z == eta0->s || s == eta0->s || alpha == eta0->s))'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -497,5 +497,5 @@
+   #ifdef ADF_CHECK_INVARIANTS
+       if (!adf_char_is_canonical(eta0)) adf_inv_fail(__func__, "eta0", "adf_char");
+  -    if (z == eta0->s || s == eta0->s || alpha == eta0->s)
+  +    if (!(z == eta0->s || s == eta0->s || alpha == eta0->s))
+           adf_inv_fail(__func__, "raw arguments", "independent acb input/output");
+   #endif
+
+
+SURVIVED src/localfactor.c:748:46 cmp: '>=' -> '>'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -746,5 +746,5 @@
+       if (exact_integer_parity(&odd, s))
+       {
+  -        if (odd != e && arf_cmp_si(x, 1 + e) >= 0) return ADF_DOMAIN;   /* s = 1+e+2k */
+  +        if (odd != e && arf_cmp_si(x, 1 + e) > 0) return ADF_DOMAIN;   /* s = 1+e+2k */
+           if (odd == e && arf_cmp_si(x, -e) <= 0) { acb_zero(res); return ADF_OK; }   /* s = -e-2k */
+       }
+
+
+SURVIVED src/localfactor.c:222:5 swap_args: 'mag_add(m0, inva, f)' -> 'mag_add(m0, f, inva)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -220,5 +220,5 @@
+       cb = arf_get_si(t, ARF_RND_CEIL);                /* ceil(B0) <= cb, 1 <= cb <= 64 */
+       mag_fac_ui(f, (ulong) (cb - 1));
+  -    mag_add(m0, inva, f);
+  +    mag_add(m0, f, inva);
+       mag_mul(m1, inva, inva);
+       mag_fac_ui(f, (ulong) cb);
+
+
+NOT COMPILED src/localfactor.c:514:13 drop_assign: 'st = adf_local_zeta_factor_at(t, NULL, shifted, v, prec);' -> '' (the statement is removed)
+  src/localfactor.c:537:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/localfactor.c:115:5 drop_call: 'acb_set_round(out, out, prec);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -113,5 +113,5 @@
+           acb_inv(out, d0, w);
+       if (!acb_is_finite(out)) goto done;
+  -    acb_set_round(out, out, prec);
+  +    
+       if (!acb_is_finite(out)) goto done;
+       acb_swap(res, out);
+
+
+mutate: 60 mutants in 242.4 s: 27 killed, 29 survived, 4 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 29 mutant(s) survived; each one is a claim the tests do not check
+exit 1

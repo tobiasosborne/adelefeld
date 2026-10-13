@@ -1,0 +1,15 @@
+      |                        adf_local_tate_at
+tests/test_tate_gamma.c:524:44: error: 'adf_local_epsilon_at' undeclared (first use in this function); did you mean 'adf_local_tate_at'?
+  524 |     local_fn fns[2] = {adf_local_gamma_at, adf_local_epsilon_at};
+      |                                            ^~~~~~~~~~~~~~~~~~~~
+      |                                            adf_local_tate_at
+tests/test_tate_gamma.c: In function 'gamma_call':
+tests/test_tate_gamma.c:138:1: error: control reaches end of non-void function [-Werror=return-type]
+  138 | }
+      | ^
+tests/test_tate_gamma.c: In function 'epsilon_call':
+tests/test_tate_gamma.c:143:1: error: control reaches end of non-void function [-Werror=return-type]
+  143 | }
+      | ^
+cc1: all warnings being treated as errors
+make: *** [Makefile:99: lanes/t5-slice3/build-plain/test_tate_gamma] Error 1

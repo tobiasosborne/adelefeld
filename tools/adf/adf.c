@@ -253,7 +253,9 @@ typedef enum
     ADF_DRV_CHAR_EVAL,
     ADF_DRV_CHAR_EVAL_STRICT,
     ADF_DRV_PREC,
-    ADF_DRV_DIGITS
+    ADF_DRV_DIGITS,
+    ADF_DRV_TATE_GAMMA,        /* slice 5b (lane t5-slice3): local gamma and epsilon, adf_drv_tate_constant */
+    ADF_DRV_TATE_EPSILON
 } adf_drv_op;
 
 static const struct
@@ -384,7 +386,9 @@ static const struct
 
     { "char_eval", ADF_DRV_CHAR_EVAL, 2 },
     { "char_eval_strict", ADF_DRV_CHAR_EVAL_STRICT, 2 },
-    { "digits", ADF_DRV_DIGITS, 1 }
+    { "digits", ADF_DRV_DIGITS, 1 },
+    { "tate_gamma", ADF_DRV_TATE_GAMMA, 4 },
+    { "tate_epsilon", ADF_DRV_TATE_EPSILON, 4 }
 };
 
 static const size_t adf_drv_op_count = sizeof(adf_drv_ops) / sizeof(adf_drv_ops[0]);
@@ -3712,6 +3716,62 @@ done:
     acb_clear(tau); acb_clear(W); return status;
 }
 
+/* Slice 5b (lane t5-slice3; docs/api-5.md section 2 and 8 item 2; docs/api-5a.md "Slice 5b"):
+     tate_gamma S with PLACE with ALPHA with CHI     adf_local_gamma_at
+     tate_epsilon S with PLACE with ALPHA with CHI   adf_local_epsilon_at
+   The grammar, the order of the checks and the printing of tate_local (adf_drv_tate_local above): S and ALPHA
+   complex adele texts whose finite coordinates are ignored, PLACE "real" or a prime token, CHI a char text
+   giving eta0 (its s ignored). A numerical line is "continuation S=<S>: <value>" or the prefix followed by the
+   caller's "error: STATUS". */
+static int
+adf_drv_tate_constant(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind kind[3];
+    const int slot[3] = {0, 2, 3};
+    adf_cadele_t c, ca;
+    adf_char_t chi;
+    adf_fball_t zero;
+    acb_t s, alpha, z;
+    adf_place_t v = adf_place_inf();
+    int status = ADF_OK, place_status, numeric = 0;
+    char *text = NULL;
+    size_t len = 0;
+    adf_cadele_init(c); adf_cadele_init(ca); adf_char_init(chi);
+    adf_fball_init(zero); acb_init(s); acb_init(alpha); acb_init(z);
+    for (int i = 0; i < 3; i++)
+    {
+        status = adf_text_classify(kind+i, l->s[slot[i]], l->n[slot[i]], NULL);
+        if (status != ADF_OK) goto done;
+    }
+    place_status = adf_drv_place_token(l->s[1], l->n[1], &v);
+    if (place_status == ADF_PARSE) { status = place_status; goto done; }
+    if (kind[0] != ADF_TEXT_CADELE || kind[1] != ADF_TEXT_CADELE || kind[2] != ADF_TEXT_CHAR)
+    { status = ADF_UNSUPPORTED; goto done; }
+    status = adf_cadele_set_str(c, l->s[0], l->n[0], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    status = adf_cadele_set_str(ca, l->s[2], l->n[2], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    status = adf_char_set_str(chi, l->s[3], l->n[3], st->prec, NULL);
+    if (status != ADF_OK) goto done;
+    if (place_status != ADF_OK) { status = place_status; goto done; }
+    adf_cadele_get_complex(s, c); adf_cadele_get_complex(alpha, ca);
+    numeric = 1;
+    status = op == ADF_DRV_TATE_GAMMA ? adf_local_gamma_at(z, NULL, s, v, alpha, chi, st->prec)
+                                      : adf_local_epsilon_at(z, NULL, s, v, alpha, chi, st->prec);
+    if (status != ADF_OK) goto done;
+    status = adf_cadele_set_acb_fball(c, z, zero);
+    if (status != ADF_OK) goto done;
+    text = adf_cadele_get_str(&len, c, st->digits);
+    if (!text || len < 7 || memcmp(text+len-5, " ; 0)", 5))
+    { status = ADF_LIMIT; goto done; }
+    fprintf(out, "continuation S=%.*s: %.*s\n", (int) l->n[0], l->s[0], (int) (len-6), text+1);
+done:
+    if (status != ADF_OK && numeric) fprintf(out, "continuation S=%.*s: ", (int) l->n[0], l->s[0]);
+    adf_str_free(text); adf_cadele_clear(c); adf_cadele_clear(ca); adf_char_clear(chi);
+    adf_fball_clear(zero); acb_clear(s); acb_clear(alpha); acb_clear(z);
+    return status;
+}
+
 /* adf_drv_command(out, op, l, st): run one command and write its line.  Returns ADF_OK
    when a line was written (or a setting was made), else the status to report.  The steps
    are those of the comment at the top of the file and of the README of tools/adf. */
@@ -3743,6 +3803,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
     if (op >= ADF_DRV_TENSOR_EVAL && op <= ADF_DRV_TENSOR_NORM2) return adf_drv_tensor(out, op, l, st);
     if (op == ADF_DRV_POISSON) return adf_drv_poisson(out, l, st);
     if (op == ADF_DRV_TATE_VECTOR || op == ADF_DRV_TATE_INTEGRAL) return adf_drv_tate(out, op, l, st);
+    if (op == ADF_DRV_TATE_GAMMA || op == ADF_DRV_TATE_EPSILON) return adf_drv_tate_constant(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||
@@ -4222,6 +4283,30 @@ main(int argc, char ** argv)
     /* Slice 5a also accepts the four operands as shell-quoted argv values. */
     if (argc == 9 && !strcmp(argv[1], "tate_local") && !strcmp(argv[3], "with") &&
         !strcmp(argv[5], "with") && !strcmp(argv[7], "with"))
+    {
+        size_t len = 0, pos = 0;
+        char *line;
+        int rc;
+        for (int j = 1; j < argc; j++) len += strlen(argv[j])+1;
+        if (len > ADF_DRV_MAX_LINE) { adf_emit_status(stdout, ADF_LIMIT); return 1; }
+        line = malloc(len+1);
+        if (!line) return 2;
+        for (int j = 1; j < argc; j++)
+        {
+            size_t n = strlen(argv[j]);
+            memcpy(line+pos, argv[j], n); pos += n;
+            line[pos++] = j == argc-1 ? '\n' : ' ';
+        }
+        line[pos] = '\0';
+        rc = adf_driver_run(line, pos, stdout);
+        free(line);
+        if (fflush(stdout) != 0 || ferror(stdout)) rc = 2;
+        return rc;
+    }
+    /* Slice 5b (lane t5-slice3): tate_gamma and tate_epsilon take the four operands as shell-quoted argv values,
+       as tate_local above. */
+    if (argc == 9 && (!strcmp(argv[1], "tate_gamma") || !strcmp(argv[1], "tate_epsilon")) &&
+        !strcmp(argv[3], "with") && !strcmp(argv[5], "with") && !strcmp(argv[7], "with"))
     {
         size_t len = 0, pos = 0;
         char *line;

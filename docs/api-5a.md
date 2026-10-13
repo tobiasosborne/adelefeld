@@ -126,3 +126,123 @@ A place outside Q cannot be constructed with place.h; forged handles violate a p
 under INV. They are not valid DOMAIN requests for this signature. No header change is needed for either point.
 [source pending: universal FLINT Conrey pairing identification, inherited from api-3d:283-290]
 No new dependence on it is introduced into numerical evaluation, which reads only conductor and parity.
+
+# Slice 5b
+
+This slice implements `adf_local_gamma_at` and `adf_local_epsilon_at` in localfactor.h and localfactor.c
+(design api-5.md section 2, lines 48-119; decisions D1, D2). gamma is the factor of the fixed local functional
+equation `Z_v(F f, eta^-1, 1-s) = gamma_v(s, eta) Z_v(f, eta, s)`; epsilon is its simplified entire normalisation.
+The finite part of eta0 is used; its stored exponent is ignored. The pair (alpha, eta0), the conductor
+validation, the alpha checks, the status order, where, aliasing and atomicity are those of slice 5a above.
+
+## Values
+
+At p with conductor exponent a (conventions 6.4; P9:344-351), T = exp(-s log p) with the real logarithm:
+
+    a = 0: gamma_p = (1 - alpha T)/(1 - alpha^-1 p^(s-1)),    epsilon_p = 1;
+    a > 0: gamma_p = alpha^a T^a G_minus(eta0^-1),           epsilon_p = gamma_p,
+           G_minus(eta0^-1) = sum_(u mod p^a, p not | u) eta0(u)^-1 E(-u/p^a)   (the NEGATIVE kernel).
+
+At infinity, e = eta0 parity, alpha ignored even if nonfinite (P10:406-410; api-5.md:74-78):
+
+    gamma_inf = i^e pi^(s-1/2) Gamma((1-s+e)/2) rgamma((s+e)/2),    epsilon_inf = i^e.
+
+## Steps and why each keeps the enclosure
+
+1. G_minus is a certified finite sum (api-5.md:66-69). For each unit u of 1..p^a-1, adf_char_chi_phase gives the
+   exact phase theta of eta0(u) in [0, 1). The code negates it, adds -u/p^a, and reduces the rational into [0, 1)
+   exactly. adf_phase_get_acb encloses E of that phase. acb_add sums the enclosures with outward rounding
+   (arb.rst:6-12). The positive Gauss sum is not called. The working precision is prec + 32 + bits(p^a), clipped
+   to the cap. A setup failure of the character (UNSUPPORTED) gives NOT_DETERMINED (api-5.md:37-38).
+2. Ramified gamma: acb_pow_ui encloses alpha^a on the alpha rectangle. arb_log_ui and acb_exp enclose
+   exp(-a s log p) on the s rectangle (acb.rst:658-660). The product of enclosures encloses the product.
+   The function is entire, so there is no pole test.
+3. Unramified gamma: multiplying numerator and denominator by alpha gives alpha (1 - alpha T)/(alpha - p^(s-1)).
+   This is valid because alpha != 0 is certified for every point of the rectangle first. Numerator and
+   denominator are enclosed directly from the input rectangles; no midpoint substitution drops a radius.
+   The quotient is formed only when the denominator enclosure excludes 0; then acb_div encloses every value.
+   A denominator enclosure that contains 0 is NOT_DETERMINED and never DOMAIN. The optional midpoint
+   refinement of api-5.md:91-92 is not used.
+4. Real gamma. With w = (1-s+e)/2 and z = (s+e)/2 one has -w + z = s - 1/2, so
+   gamma_inf = i^e [pi^-w Gamma(w)] [pi^z rgamma(z)]. The first factor is adf_local_zeta_factor_at at 1-s+e.
+   Its integer geometry, Gamma certificate, 64-factor recurrence and midpoint refinement are inherited
+   (local-zeta.md Z4). The second factor is entire. Its rgamma(z) is computed as
+   z (z+1) ... (z+n-1) rgamma(z+n), with n chosen as in Z4 so that min Re(z+n) >= 1. This is the identity of
+   entire functions that comes from Gamma(z+n) = z ... (z+n-1) Gamma(z), notes.txt:61 iterated. A product of
+   ball factors encloses the product. acb_rgamma encloses rgamma at z+n (acb.rst:898-902). No division
+   occurs, and in particular no division by a nonfinite Gamma. If n > 64, acb_rgamma(z) is used directly,
+   which is also an enclosure; rgamma is entire, so there is no LIMIT. The shift is needed for tightness, not
+   for soundness: for z = -2 +/- 2^-12, FLINT 3.0.1's direct acb_rgamma has radius 3.8e-2 against a variation
+   of about 7e-4 (lanes/t5-slice3/redgreen.md item 3).
+5. Exact integers at infinity are tested first on the original dyadic number (arf_bot gives the parity), so a
+   large s is never rounded. A pole is DOMAIN. A zero returns the exact 0: the value there is 0 by the pole sets
+   below, since Gamma((1-s+e)/2) is finite.
+6. Every result is rounded outward to max(2, prec) bits and checked finite before it is swapped into z.
+   epsilon is assigned exactly (1, i) in the unramified and real branches; in the ramified branch it is
+   gamma's step 2.
+
+## Pole and zero sets
+
+- Unramified gamma. The denominator alpha - p^(s-1) vanishes iff alpha^-1 p^(s-1) = 1. Fix a logarithm of
+  alpha; then the roots are s = 1 + (log alpha + 2 pi i k)/log p. The s-derivative of the denominator is
+  -p^(s-1) log p = -alpha log p != 0 at a root. At a root p^-s = 1/(p alpha), so the numerator is 1 - 1/p != 0.
+  Hence every root is a simple pole and nothing cancels. The integral's poles alpha T = 1 are the zeros of
+  the numerator, where gamma = 0 is a value. Both conditions together would give alpha T alpha^-1 p^(s-1) = 1,
+  which is impossible since that product equals 1/p (api-5.md:86).
+- Ramified gamma and every epsilon have no s poles.
+- Real gamma. pi^(s-1/2) and i^e have no zeros or poles. Gamma has simple poles at 0, -1, -2, ... and no zeros
+  (notes.txt:62-64), and rgamma is entire with zeros exactly there. Hence the poles are w = -k, that is
+  s = 1+e+2k, and the zeros are z = -k, that is s = -e-2k, for k >= 0. At such a pole z = (1+2e+2k)/2 is not a
+  nonpositive integer, so rgamma(z) != 0. At such a zero w = (1+2e+2k)/2 > 0, so Gamma(w) is finite and nonzero.
+  The two sets are disjoint because 1+2e+2(k+j) is odd. All poles and zeros are simple. The integral's
+  poles -e-2k are gamma's zeros. The trivial list 0, -2, ... is not gamma's pole list (api-5.md:391-393).
+- Recognition. Finite exact poles: s = k is an exact integer and alpha = p^(k-1) is exactly represented.
+  This is slice 5a's recognizer applied to the exact s - 1, with the same 2^20-bit power bound; negative
+  powers are dyadic only for p = 2. Examples are (alpha, s) = (1, 1) and (1/2, 0) at p = 2; (1, 0) is a zero.
+  Real exact poles and zeros are recognized for every exact integer. A ball meeting a pole, with closed
+  contact, is NOT_DETERMINED: at p because the enclosed denominator then contains 0; at infinity through the
+  inherited geometry on 1-s+e.
+
+## Statuses, cost and caps
+
+Row: Characters, Gauss sums, local factors (conventions.md:223), as for slice 5a.
+
+- LIMIT: precision above 2097152 first; then conductor above 65536; for real gamma the inherited shift cap 64
+  of the numerator.
+- DOMAIN: nonfinite s; at p, nonfinite alpha, exact alpha = 0, or a conductor that is not 1 or a power of p;
+  for gamma, a recognized exact pole.
+- NOT_DETERMINED: alpha rectangle contains 0; for gamma, a mixed or undecided pole; a character setup failure;
+  a nonfinite computed value.
+- OK: a finite enclosure on the whole input rectangles. No accuracy promise beyond the fixture's width test.
+
+Failure leaves z untouched byte for byte and writes v to where if where is not NULL. z may alias raw s and
+alpha. Unramified gamma costs one log, two exponentials and one division. Ramified gamma and epsilon cost
+p^a - p^(a-1) phase calls and phase evaluations, plus one power and one exponential. Each phase call repeats
+the character's group setup D(p^a) (char.h:79); that cost is avoidable. Real gamma costs the inherited
+local-zeta call, at most 64 products, one rgamma and one exponential. Real and unramified epsilon are O(1).
+The new paths add 32 guard bits, plus bits(p^a) for G_minus, clipped to the cap. The real numerator inherits
+the existing max(2, prec) + 32 policy, the same reconciliation finding as in slice 5a above.
+
+## Decisions where the design is silent
+
+- The unramified denominator is enclosed as alpha - p^(s-1), not as 1 - alpha^-1 p^(s-1). The two have the
+  same zero set for alpha != 0, and this form avoids an inversion of the alpha rectangle.
+- The real numerator delegates to the local zeta factor at 1-s+e, as slice 5a delegates at s+e.
+- rgamma is computed with the shifted product (step 4). The design names rgamma only.
+- Exact real zeros return the exact 0, which is a tight ball, for every size of s.
+- The driver names are tate_gamma and tate_epsilon (from the brief; the design writes local-gamma/local-epsilon).
+  The line prefix `continuation S=` is that of tate_local.
+
+Check: test_tate_gamma reads all 721 rows of tests/ref/vectors/t5-slice3/gamma.jsonl and all 1950 samples.
+These cover p = 2, 3, 5, 7, 13, six alphas, conductors p and p^2 (4, 8, 16 at p = 2), both real parities,
+gamma's poles, the integral's poles and the real zeros. Every call repeats z = s, z = alpha and where = NULL.
+Check: the exact quotients -3/4, 18/5 and (10 - 15i)/13 and the zero at (1, 0). G_minus against conj(eta0) with
+E(-u/q), against (-1)^e tau(conj eta0), and not overlapping the positive kernel or eta0 in place of eta0^-1
+(non-real (5,2), (13,2), (16,5), (9,2), (25,2)).
+Check: epsilon exactly 1 unramified and exactly i^e at infinity, including at gamma's poles. Real s = 1/2 gives
+1 and i. Exact zeros give exact 0, including -2^1000 and -2^1000 - 3. Exact poles give DOMAIN, including
+2^1000 + 1 and 2^1000.
+Check: the duality gamma(alpha, eta0, s) gamma(alpha^-1, eta0^-1, 1-s) = eta0(-1) on at least 120 finite
+cases, with its hand derivation in the test; precision 2, 53, the cap and one above; the conductor cap;
+INV aborts.
+Check: tests/driver/tate-gamma.cmd; tests/julia/tate_gamma.jl.

@@ -538,3 +538,305 @@ done:
     acb_clear(t); acb_clear(shifted);
     return st == ADF_OK ? ADF_OK : fail(st, where, v);
 }
+
+/* Slice 5b: the local gamma and epsilon factors, docs/api-5.md:48-119 (design section 2), :84-98 (poles and
+   certificates); docs/proofs/analysis.md P9:331-400, P10:401-451; conventions 6.4; statements docs/api-5a.md
+   "Slice 5b". The entry checks, the conductor validation and the alpha checks are those of adf_local_tate_at
+   above, in the same order (api-5.md:26-37; api-5a.md "Status, atomicity and resources"). */
+#ifdef ADF_CHECK_INVARIANTS
+#define ADF_INV_CONSTANT(z, s, alpha, eta0) do { \
+    if (!adf_char_is_canonical(eta0)) adf_inv_fail(__func__, "eta0", "adf_char"); \
+    if ((z) == (eta0)->s || (s) == (eta0)->s || (alpha) == (eta0)->s) \
+        adf_inv_fail(__func__, "raw arguments", "independent acb input/output"); } while (0)
+#else
+#define ADF_INV_CONSTANT(z, s, alpha, eta0) ((void) 0)
+#endif
+
+/* The guard policy of the new finite path of slice 5a: prec + extra bits, clipped to the precision cap. */
+static slong
+constant_work(slong prec, slong extra)
+{
+    return prec > ADF_REAL_PREC_MAX - extra ? ADF_REAL_PREC_MAX : prec + extra;
+}
+
+/* At p: the conductor exponent a of eta0 by exact word divisions (conductor 1 or p^a, else DOMAIN; a canonical
+   character is primitive, so p = 2 never has a = 1), then alpha: nonfinite or exact 0 DOMAIN, a rectangle
+   containing 0 NOT_DETERMINED. The same checks and order as adf_local_tate_at. */
+static int
+constant_prime(ulong *a, ulong p, const acb_t alpha, const adf_char_t eta0)
+{
+    ulong q = eta0->q, k = 0;
+    if (q == 0 || p < 2) return ADF_DOMAIN;
+    while (q > 1 && q % p == 0) { q /= p; k++; }
+    if (q != 1) return ADF_DOMAIN;
+    if (!acb_is_finite(alpha) || acb_is_zero(alpha)) return ADF_DOMAIN;
+    if (acb_contains_zero(alpha)) return ADF_NOT_DETERMINED;
+    *a = k;
+    return ADF_OK;
+}
+
+/* P9 (analysis.md:344), a = 0: gamma_p = (1 - alpha T)/(1 - alpha^-1 p^(s-1)), T = exp(-s log p), the real log.
+   Multiplying numerator and denominator by alpha != 0 (certified by the caller for every alpha of the rectangle)
+   gives alpha (1 - alpha T)/(alpha - p^(s-1)): the same function, whose denominator vanishes exactly at gamma's
+   own poles alpha^-1 p^(s-1) = 1 (api-5.md:84-86). Each ball operation encloses all values on the rectangles
+   (acb.rst:6-17; exp :658-660), so the quotient encloses gamma once the denominator excludes 0 (api-5.md:90-93:
+   "enclose it directly"; the optional midpoint refinement is not used). Exact poles: s = k exact, alpha = p^(k-1)
+   exactly, the dual of 5a's test (api-5.md:94-95), by 5a's recognizer applied to the exact s - 1. A computed
+   zero-containing denominator is NOT_DETERMINED, never DOMAIN. The integral's poles alpha T = 1 are zeros of the
+   numerator; numerator and denominator never vanish together (their exponential products equal 1/p). */
+static int
+gamma_unramified(acb_t res, const acb_t s, ulong p, const acb_t alpha, slong prec)
+{
+    slong w = constant_work(prec, 32);
+    acb_t s1, t, num, den;
+    arb_t logp;
+    int st = ADF_NOT_DETERMINED;
+    acb_init(s1);
+    /* s - 1 is exact whenever s is an exact integer inside the recognizer's bound (at most 22 bits < w) */
+    acb_sub_ui(s1, s, 1, w);
+    if (tate_exact_finite_pole(s1, alpha, p)) { acb_clear(s1); return ADF_DOMAIN; }
+    acb_init(t); acb_init(num); acb_init(den); arb_init(logp);
+    arb_log_ui(logp, p, w);
+    acb_mul_arb(t, s, logp, w);
+    acb_neg(t, t);
+    acb_exp(t, t, w);                       /* T = exp(-s log p) */
+    acb_mul(num, alpha, t, w);
+    acb_neg(num, num);
+    acb_add_ui(num, num, 1, w);             /* 1 - alpha T */
+    acb_mul_arb(t, s1, logp, w);
+    acb_exp(t, t, w);                       /* p^(s-1) = exp((s-1) log p) */
+    acb_sub(den, alpha, t, w);              /* alpha - p^(s-1) */
+    if (!acb_is_finite(den) || acb_contains_zero(den)) goto done;
+    acb_mul(num, num, alpha, w);
+    acb_div(num, num, den, w);
+    if (!acb_is_finite(num)) goto done;
+    acb_set_round(num, num, prec);
+    if (!acb_is_finite(num)) goto done;
+    acb_swap(res, num);
+    st = ADF_OK;
+done:
+    acb_clear(s1); acb_clear(t); acb_clear(num); acb_clear(den); arb_clear(logp);
+    return st;
+}
+
+/* G_minus(eta0^-1) = sum_(u mod q, p not | u) eta0(u)^-1 E(-u/q), q = p^a (P9:345-346; conventions 6.4: the
+   NEGATIVE kernel, not tau). As api-5.md:66-69 prescribes: the exact phase theta of eta0(u) from
+   adf_char_chi_phase, negated, plus -u/q, reduced into [0, 1) exactly; adf_phase_get_acb encloses E of it;
+   acb_add sums with outward rounding (arb.rst:6-12). The positive Gauss sum is not called. A character setup
+   failure (UNSUPPORTED) leaves the value uncertified: NOT_DETERMINED (api-5.md:37-38). */
+static int
+gminus(acb_t g, const adf_char_t eta0, ulong p, slong w)
+{
+    fmpz_t u;
+    fmpq_t theta, add;
+    acb_t term, sum;
+    int zero, st = ADF_OK;
+    fmpz_init(u); fmpq_init(theta); fmpq_init(add); acb_init(term); acb_init(sum);
+    for (ulong m = 1; m < eta0->q && st == ADF_OK; m++)
+    {
+        if (m % p == 0) continue;
+        fmpz_set_ui(u, m);
+        st = adf_char_chi_phase(&zero, theta, eta0, u);
+        if (st != ADF_OK || zero) { st = st == ADF_LIMIT ? ADF_LIMIT : ADF_NOT_DETERMINED; break; }
+        fmpq_set_ui(add, m, eta0->q);
+        fmpq_add(theta, theta, add);
+        fmpq_neg(theta, theta);              /* in (-2, 0] */
+        while (fmpq_sgn(theta) < 0) fmpq_add_ui(theta, theta, 1);
+        st = adf_phase_get_acb(term, theta, w);
+        if (st != ADF_OK) { st = st == ADF_LIMIT ? ADF_LIMIT : ADF_NOT_DETERMINED; break; }
+        acb_add(sum, sum, term, w);
+    }
+    if (st == ADF_OK) acb_swap(g, sum);
+    fmpz_clear(u); fmpq_clear(theta); fmpq_clear(add); acb_clear(term); acb_clear(sum);
+    return st;
+}
+
+/* P9 (analysis.md:347), a > 0: gamma_p = alpha^a T^a G_minus(eta0^-1), T^a = exp(-a s log p). Entire in s: no
+   pole test. acb_pow_ui and acb_exp enclose on the rectangles; the product of enclosures encloses. */
+static int
+gamma_ramified(acb_t res, const acb_t s, ulong p, ulong a, const acb_t alpha, const adf_char_t eta0, slong prec)
+{
+    slong w = constant_work(prec, 32 + FLINT_BIT_COUNT(eta0->q));
+    acb_t g, t, out;
+    arb_t logp;
+    int st;
+    acb_init(g); acb_init(t); acb_init(out); arb_init(logp);
+    st = gminus(g, eta0, p, w);
+    if (st == ADF_OK)
+    {
+        arb_log_ui(logp, p, w);
+        acb_mul_arb(t, s, logp, w);
+        acb_mul_ui(t, t, a, w);
+        acb_neg(t, t);
+        acb_exp(t, t, w);                   /* T^a = exp(-a s log p) */
+        acb_pow_ui(out, alpha, a, w);       /* alpha^a */
+        acb_mul(out, out, t, w);
+        acb_mul(out, out, g, w);
+        acb_set_round(out, out, prec);
+        if (!acb_is_finite(out)) st = ADF_NOT_DETERMINED;
+        else acb_swap(res, out);
+    }
+    acb_clear(g); acb_clear(t); acb_clear(out); arb_clear(logp);
+    return st;
+}
+
+/* Whether s is an exact real integer; then *odd is its parity, read from the bottom bit of the dyadic integer
+   (arf_bot), so that no large integer is rounded or converted (as tate_exact_odd_pole above). */
+static int
+exact_integer_parity(int *odd, const acb_t s)
+{
+    const arf_struct *x = arb_midref(acb_realref(s));
+    fmpz_t bottom;
+    if (!acb_is_exact(s) || !arb_is_zero(acb_imagref(s)) || !arf_is_int(x)) return 0;
+    if (arf_is_zero(x)) { *odd = 0; return 1; }
+    fmpz_init(bottom);
+    arf_bot(bottom, x);
+    *odd = fmpz_is_zero(bottom);
+    fmpz_clear(bottom);
+    return 1;
+}
+
+/* rgamma(z) on the rectangle z. acb_rgamma alone is a valid but loose enclosure near the poles of Gamma: for
+   z = -2 +/- 2^-12 (both coordinates) FLINT 3.0.1 returns radius 0.038 where the variation is about 7e-4 (probe in
+   lanes/t5-slice3/redgreen.md). Gamma(z + n) = z (z+1) ... (z+n-1) Gamma(z) (notes.txt:61, iterated) gives the
+   identity of entire functions rgamma(z) = z (z+1) ... (z+n-1) rgamma(z + n). With n from the outward lower end
+   of Re(z) as in Z4 (shift_of: min Re(z + n) >= 1), the product of balls, a loop as real_candidate's, times
+   acb_rgamma at z + n encloses rgamma(z); no division occurs. For n > ADF_LOCAL_ZETA_SHIFT_MAX the direct
+   acb_rgamma is used (still an enclosure: acb.rst:898-902); there is no LIMIT, rgamma being entire. */
+static void
+rgamma_shifted(acb_t y, const acb_t z, slong w)
+{
+    arf_t lo;
+    slong n;
+    acb_t q, f;
+    arf_init(lo); acb_init(q); acb_init(f);
+    arb_get_lbound_arf(lo, acb_realref(z), w);
+    n = shift_of(lo);
+    if (n > ADF_LOCAL_ZETA_SHIFT_MAX) n = 0;
+    acb_one(q);
+    for (slong j = 0; j < n; j++)
+    {
+        acb_add_ui(f, z, (ulong) j, w);
+        acb_mul(q, q, f, w);
+    }
+    acb_add_ui(f, z, (ulong) n, w);
+    acb_rgamma(f, f, w);
+    acb_mul(y, q, f, w);
+    arf_clear(lo); acb_clear(q); acb_clear(f);
+}
+
+/* P10 (analysis.md:406; api-5.md:78): gamma_inf = i^e pi^(s-1/2) Gamma((1-s+e)/2) rgamma((s+e)/2). With
+   w = (1-s+e)/2 and z = (s+e)/2, -w + z = s - 1/2, so gamma_inf = i^e [pi^-w Gamma(w)] [pi^z rgamma(z)].
+   The first factor is the local zeta factor at 1-s+e (localfactor.h, design local-zeta.md Z4): its exact pole
+   test, integer geometry against 1-s+e = 0, -2, ... (that is s = 1+e+2k, gamma's own poles), Gamma certificate
+   and 64-factor recurrence bound are inherited. The second factor is entire: rgamma_shifted (acb_rgamma "avoiding
+   division by zero at the poles of the gamma function", acb.rst:898-902) and acb_exp enclose on the rectangle; no
+   division by a nonfinite Gamma. Gamma has no zeros (notes.txt:62-64), so the zeros are exactly z = -k, that is
+   s = -e-2k, and the poles exactly w = -k, s = 1+e+2k; the two sets are disjoint (1+2e+2k+2j is odd). An exact
+   integer s is tested first, on the original dyadic (no rounding of a large s): a pole is DOMAIN, a zero is the
+   exact 0. */
+static int
+gamma_real(acb_t res, const acb_t s, int e, slong prec)
+{
+    slong w = constant_work(prec, 32);
+    acb_t num, den, t;
+    arb_t logpi;
+    int odd, st;
+    const arf_struct *x = arb_midref(acb_realref(s));
+    if (exact_integer_parity(&odd, s))
+    {
+        if (odd != e && arf_cmp_si(x, 1 + e) >= 0) return ADF_DOMAIN;   /* s = 1+e+2k */
+        if (odd == e && arf_cmp_si(x, -e) <= 0) { acb_zero(res); return ADF_OK; }   /* s = -e-2k */
+    }
+    acb_init(num); acb_init(den); acb_init(t); arb_init(logpi);
+    acb_neg(num, s);
+    acb_add_ui(num, num, (ulong) (1 + e), w);       /* 1 - s + e */
+    /* HEADER-FINDING (as slice 5a's): api-5.md:33 counts guards against the precision cap, while the delegated
+       local zeta factor works at prec + 32 even at the cap (localfactor.h). The delegation is kept. */
+    st = adf_local_zeta_factor_at(num, NULL, num, adf_place_inf(), prec);
+    if (st != ADF_OK) goto done;
+    acb_add_ui(den, s, (ulong) e, w);
+    acb_mul_2exp_si(den, den, -1);                  /* z = (s + e)/2 */
+    arb_const_pi(logpi, w);
+    arb_log(logpi, logpi, w);
+    acb_mul_arb(t, den, logpi, w);
+    acb_exp(t, t, w);                               /* pi^z */
+    rgamma_shifted(den, den, w);
+    acb_mul(den, den, t, w);
+    acb_mul(num, num, den, w);
+    if (e) acb_mul_onei(num, num);
+    acb_set_round(num, num, prec);
+    if (!acb_is_finite(num)) st = ADF_NOT_DETERMINED;
+    else acb_swap(res, num);
+done:
+    acb_clear(num); acb_clear(den); acb_clear(t); arb_clear(logpi);
+    return st;
+}
+
+/* api-5.md:109-113; analysis.md P9:340-348, P10:406. */
+int
+adf_local_gamma_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v,
+                   const acb_t alpha, const adf_char_t eta0, slong prec)
+{
+    acb_t t;
+    ulong a = 0;
+    int st;
+    if (prec > ADF_REAL_PREC_MAX) return fail(ADF_LIMIT, where, v);
+    if (eta0->q > ADF_CHAR_MOD_MAX) return fail(ADF_LIMIT, where, v);
+    ADF_INV_PLACE(v);
+    ADF_INV_CONSTANT(z, s, alpha, eta0);
+    if (prec < 2) prec = 2;
+    if (!acb_is_finite(s)) return fail(ADF_DOMAIN, where, v);
+    acb_init(t);
+    if (adf_place_is_archimedean(v))
+        st = gamma_real(t, s, eta0->parity, prec);
+    else
+    {
+        ulong p = adf_place_prime_get(v);
+        st = constant_prime(&a, p, alpha, eta0);
+        if (st == ADF_OK)
+            st = a == 0 ? gamma_unramified(t, s, p, alpha, prec) : gamma_ramified(t, s, p, a, alpha, eta0, prec);
+    }
+    if (st == ADF_OK) acb_swap(z, t);
+    acb_clear(t);
+    return st == ADF_OK ? ADF_OK : fail(st, where, v);
+}
+
+/* api-5.md:114-118; analysis.md P9:349-351, P10:410. */
+int
+adf_local_epsilon_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v,
+                     const acb_t alpha, const adf_char_t eta0, slong prec)
+{
+    acb_t t;
+    ulong a = 0;
+    int st;
+    if (prec > ADF_REAL_PREC_MAX) return fail(ADF_LIMIT, where, v);
+    if (eta0->q > ADF_CHAR_MOD_MAX) return fail(ADF_LIMIT, where, v);
+    ADF_INV_PLACE(v);
+    ADF_INV_CONSTANT(z, s, alpha, eta0);
+    if (prec < 2) prec = 2;
+    if (!acb_is_finite(s)) return fail(ADF_DOMAIN, where, v);
+    acb_init(t);
+    if (adf_place_is_archimedean(v))
+    {
+        /* epsilon_inf = i^e exactly, entire in s; alpha ignored (P10:410) */
+        if (eta0->parity) acb_onei(t);
+        else acb_one(t);
+        st = ADF_OK;
+    }
+    else
+    {
+        ulong p = adf_place_prime_get(v);
+        st = constant_prime(&a, p, alpha, eta0);
+        /* a = 0: epsilon = gamma L_p(s)/L_p(1-s) = 1 exactly in its simplified entire form (P9:349-351), also at
+           gamma's poles; no factor is divided. a > 0: epsilon = gamma, which is entire. */
+        if (st == ADF_OK)
+        {
+            if (a == 0) acb_one(t);
+            else st = gamma_ramified(t, s, p, a, alpha, eta0, prec);
+        }
+    }
+    if (st == ADF_OK) acb_swap(z, t);
+    acb_clear(t);
+    return st == ADF_OK ? ADF_OK : fail(st, where, v);
+}

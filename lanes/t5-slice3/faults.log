@@ -1,0 +1,18 @@
+5.1 inverse omitted: eta0 for eta0^-1 in G_minus | killed | 434 failed; oracle_vectors, ramified_negative_sum
+5.1 G_minus positive kernel E(+u/q) | killed | 542 failed; oracle_vectors, ramified_negative_sum, statuses_precision_and_aliases
+5.1 alpha omitted (ramified alpha^a) | killed | 375 failed; oracle_vectors, ramified_negative_sum, statuses_precision_and_aliases
+5.1 alpha omitted (unramified quotient) | killed | 479 failed; gamma_poles, oracle_vectors, unramified_exact_quotients
+5.1 exponent a = 1 at conductor 4 (a forced to 1) | killed | 407 failed; duality_identity, oracle_vectors, ramified_negative_sum, statuses_precision_and_aliases
+5.1 parity omitted at infinity | killed | 166 failed; duality_identity, gamma_poles, oracle_vectors, real_values_and_zeros
+5.1 unit volume doubled (ramified constant times 2) | killed | 651 failed; duality_identity, oracle_vectors, ramified_negative_sum, statuses_precision_and_aliases
+integral pole list for gamma (real: -e-2k) | killed | 34 failed; gamma_poles, oracle_vectors, real_values_and_zeros
+integral pole list for gamma (finite: alpha = p^s) | killed | 39 failed; gamma_poles, oracle_vectors, unramified_exact_quotients
+Gamma/Gamma division instead of rgamma | killed | 37 failed; oracle_vectors, real_values_and_zeros
+i^e dropped at infinity | killed | 89 failed; duality_identity, oracle_vectors, real_values_and_zeros
+T^a for T^-a (ramified) | killed | 761 failed; duality_identity, oracle_vectors, ramified_negative_sum
+where not written (gamma) | killed | 444 failed; duality_identity, gamma_poles, oracle_vectors, statuses_precision_and_aliases
+z written before the pole check (gamma) | killed | 592 failed; duality_identity, gamma_poles, oracle_vectors, statuses_precision_and_aliases
+epsilon rejects gamma poles (unramified) | killed | 85 failed; epsilon_exact, gamma_poles, oracle_vectors
+epsilon rejects gamma poles (real) | killed | no summary (exit 124) failed; oracle_vectors
+computed zero-containing denominator returned as DOMAIN | killed | 70 failed; gamma_poles, oracle_vectors
+17 of 17 faults killed

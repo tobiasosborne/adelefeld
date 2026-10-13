@@ -110,6 +110,42 @@ int adf_local_zeta_factor_at(acb_t y, adf_place_t *where, const acb_t s, adf_pla
 int adf_local_tate_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v,
                       const acb_t alpha, const adf_char_t eta0, slong prec);
 
+/* gamma in the fixed local functional equation, including its zeros (slice 5b).
+   docs/api-5.md:48-119 (design section 2), :84-98 (poles, certificates); docs/proofs/analysis.md P9
+   (:331-400), P10 (:401-451); conventions 6.4 (local constants, the negative kernel G_minus).
+   Z_v(F f, eta^-1, 1-s) = gamma_v(s, eta) Z_v(f, eta, s); finite character only, eta0->s is ignored.
+   At p, a the conductor exponent of eta0 (conductor 1 or p^a), alpha = eta(p), T = exp(-s log p):
+     a = 0: z = (1 - alpha T)/(1 - alpha^-1 p^(s-1));
+     a > 0: z = alpha^a T^a G_minus(eta0^-1), G_minus(eta0^-1) = sum_(u mod p^a, p not | u) eta0(u)^-1 E(-u/p^a),
+            the NEGATIVE kernel, built from adf_char_chi_phase and adf_phase_get_acb, never the positive tau.
+   At infinity, e = eta0 parity, alpha ignored:
+     z = i^e pi^(s-1/2) Gamma((1-s+e)/2) rgamma((s+e)/2), with rgamma at its zeros s = -e-2k, k >= 0.
+   Same input/status contract as adf_local_tate_at, using gamma's OWN poles: at p (a = 0) the solutions of
+   alpha^-1 p^(s-1) = 1; at infinity 1+e+2k, k >= 0. The ramified gamma has no s poles. Recognized exact poles:
+   s = k exact integer with alpha = p^(k-1) exactly (bounded exact power); at infinity exact integers 1+e+2k.
+   A computed zero-containing denominator is never DOMAIN. Exact zeros -e-2k at infinity give exact 0.
+   Sources: refs/src/tate-poonen/notes.txt:62-64 (Gamma's poles, no zeros);
+   refs/src/flint-3.0.1/acb.rst:6-17, 637-643, 658-669, 893-902 (rectangles, pow, exp, gamma, rgamma).
+   LIMIT: prec > ADF_REAL_PREC_MAX first, then conductor > ADF_CHAR_MOD_MAX, then INV/domain; also the
+   inherited real Gamma shift cap. DOMAIN: nonfinite s, nonfinite alpha at p, invalid prime-power conductor,
+   exact alpha = 0 at p, a recognized exact pole. NOT_DETERMINED: alpha contains 0, a mixed/undecided pole,
+   a character setup failure, numerical certification failure. Status row: Characters, Gauss sums, local factors.
+   Failure preserves z byte for byte; if where != NULL writes v there. OK leaves where untouched.
+   z may alias raw s, raw alpha, or both; no raw argument may alias eta0 members. Below 2 use 2.
+   Cost O(p^a) phase calls if ramified, otherwise O(1) exponentials; at infinity one Gamma (through the
+   local zeta factor at 1-s+e), one rgamma and one exponential, with bounded fallback (64 factors). */
+int adf_local_gamma_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v,
+                       const acb_t alpha, const adf_char_t eta0, slong prec);
+
+/* epsilon = 1 unramified, gamma ramified, i^e real (slice 5b; docs/api-5.md:114-118; analysis.md P9:349-351,
+   P10:410; conventions 6.4). The simplified ENTIRE form: no s poles in any branch; three factors are never
+   divided. Same validation/atomicity/aliasing/caps as adf_local_gamma_at; gamma's pole rejection is not
+   inherited in the unramified or real branches. Statuses: LIMIT (prec, conductor, first), DOMAIN (nonfinite s,
+   nonfinite or exact zero alpha at p, invalid conductor), NOT_DETERMINED (alpha contains 0; in the ramified
+   branch as for gamma), OK. Cost O(1) in those branches, O(p^a) phases in the ramified branch. */
+int adf_local_epsilon_at(acb_t z, adf_place_t *where, const acb_t s, adf_place_t v,
+                         const acb_t alpha, const adf_char_t eta0, slong prec);
+
 #ifdef __cplusplus
 }
 #endif
