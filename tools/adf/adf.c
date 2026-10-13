@@ -257,7 +257,8 @@ typedef enum
     ADF_DRV_PREC,
     ADF_DRV_DIGITS,
     ADF_DRV_TATE_GAMMA,        /* slice 5b (lane t5-slice3): local gamma and epsilon, adf_drv_tate_constant */
-    ADF_DRV_TATE_EPSILON
+    ADF_DRV_TATE_EPSILON,
+    ADF_DRV_TATE_FE            /* slice 5e (lane t5-slice5): the functional equation, adf_drv_tate_fe */
 } adf_drv_op;
 
 static const struct
@@ -392,7 +393,8 @@ static const struct
     { "char_eval_strict", ADF_DRV_CHAR_EVAL_STRICT, 2 },
     { "digits", ADF_DRV_DIGITS, 1 },
     { "tate_gamma", ADF_DRV_TATE_GAMMA, 4 },
-    { "tate_epsilon", ADF_DRV_TATE_EPSILON, 4 }
+    { "tate_epsilon", ADF_DRV_TATE_EPSILON, 4 },
+    { "tate_fe", ADF_DRV_TATE_FE, 3 }
 };
 
 static const size_t adf_drv_op_count = sizeof(adf_drv_ops) / sizeof(adf_drv_ops[0]);
@@ -3537,6 +3539,74 @@ done:
     return status;
 }
 
+/* Slice 5e (lane t5-slice5; docs/api-5.md 5 (:250-260) and 8 item 5; docs/api-5b.md "Slice 5e"):
+     tate_fe CHI with S with BITS   the caller-computed functional equation of analysis P13
+                                    (docs/proofs/analysis.md:574, step 4 :613-614), Lambda(s, chi) = W_chi
+                                    Lambda(1 - s, conj(chi)), W_chi = tau/(i^e sqrt(C)) (:569):
+       A = adf_tate_completed(chi, s, BITS, prec);
+       B = adf_tate_completed(conj(chi), 1 - s, BITS + 4, prec)          (guard target, api-5.md:254-255);
+       W = adf_char_root_number(chi, wp), wp = max(prec, BITS + m + 16) with |B| < 2^m, m >= 0;
+       R = W B at wp, each coordinate diameter checked <= 2^-BITS (else NOT_DETERMINED, named R).
+   One line "A | R | overlap=yes|no | s=S", A and R printed as tate_completed prints a value (acb_overlaps on the
+   two balls, acb.rst:267-269); no side is copied from or intersected with the other (api-5.md:254). When a call
+   fails the line is "<A|B|W|R>: " followed by the caller's "error: STATUS", for the first failing step in the order
+   A, B, W, R (BITS + 4 is formed only after A is OK, so it cannot overflow). The operands, their order of checks
+   and the integer BITS are those of tate_completed (a failure there is the plain "error: STATUS"); prec is the
+   driver setting; 1 - s is formed at prec. */
+static int
+adf_drv_tate_fe(FILE *out, const adf_drv_line *l, const adf_drv_state *st)
+{
+    adf_text_kind want[3] = { ADF_TEXT_CHAR, ADF_TEXT_CADELE, ADF_TEXT_RAT }, kind; adf_char_t x, cx;
+    adf_cadele_t c; adf_rat_t q; acb_t s, t, A, B, W, R; mag_t mb; arf_t u; char *ta = NULL, *tr = NULL, *ts = NULL;
+    size_t la = 0, lr = 0, ls = 0; slong bits = 0, m, wp; int i, status = ADF_OK, wrong = 0; char step = 0;
+    adf_char_init(x); adf_char_init(cx); adf_cadele_init(c); adf_rat_init(q); acb_init(s); acb_init(t); acb_init(A);
+    acb_init(B); acb_init(W); acb_init(R); mag_init(mb); arf_init(u);
+    for (i = 0; i < 3; i++) {
+        status = adf_text_classify(&kind, l->s[i], l->n[i], NULL);
+        if (status != ADF_OK) goto done;
+        wrong |= kind != want[i];
+    }
+    if (wrong) { status = ADF_DOMAIN; goto done; }
+    status = adf_char_set_str(x, l->s[0], l->n[0], st->prec, NULL);
+    if (status == ADF_OK) status = adf_cadele_set_str(c, l->s[1], l->n[1], st->prec, NULL);
+    if (status == ADF_OK) status = adf_rat_set_str(q, l->s[2], l->n[2], NULL);
+    if (status != ADF_OK) goto done;
+    if (!fmpz_is_one(fmpq_denref(q->q)) || !fmpz_fits_si(fmpq_numref(q->q))) { status = ADF_DOMAIN; goto done; }
+    bits = fmpz_get_si(fmpq_numref(q->q));
+    adf_cadele_get_complex(s, c);
+    step = 'A';
+    status = adf_tate_completed(A, x, s, bits, st->prec);
+    if (status != ADF_OK) goto done;
+    step = 'B';
+    adf_char_conj(cx, x);
+    acb_neg(t, s); acb_add_ui(t, t, 1, st->prec);
+    status = adf_tate_completed(B, cx, t, bits + 4, st->prec);
+    if (status != ADF_OK) goto done;
+    step = 'W';
+    acb_get_mag(mb, B); arf_set_mag(u, mb);                /* |B| <= mb < 2^m: acb.rst:290-292, arf.rst:393-398 */
+    m = FLINT_MAX(0, arf_abs_bound_lt_2exp_si(u));
+    wp = FLINT_MAX(st->prec, bits + m + 16);
+    status = adf_char_root_number(W, x, wp);
+    if (status != ADF_OK) goto done;
+    step = 'R';
+    acb_mul(R, W, B, wp);
+    if (!acb_is_finite(R) || mag_cmp_2exp_si(arb_radref(acb_realref(R)), -bits - 1) > 0
+        || mag_cmp_2exp_si(arb_radref(acb_imagref(R)), -bits - 1) > 0) { status = ADF_NOT_DETERMINED; goto done; }
+    step = 0;
+    ta = adf_drv_acb_text(A, st, &la);
+    tr = adf_drv_acb_text(R, st, &lr);
+    ts = adf_drv_acb_text(s, st, &ls);
+    if (ta == NULL || tr == NULL || ts == NULL) { status = ADF_LIMIT; goto done; }
+    fprintf(out, "%.*s | %.*s | overlap=%s | s=%.*s\n", (int) la, ta + 1, (int) lr, tr + 1,
+            acb_overlaps(A, R) ? "yes" : "no", (int) ls, ts + 1);
+done:
+    if (status != ADF_OK && step) fprintf(out, "%c: ", step);
+    adf_str_free(ta); adf_str_free(tr); adf_str_free(ts);
+    adf_char_clear(x); adf_char_clear(cx); adf_cadele_clear(c); adf_rat_clear(q); acb_clear(s); acb_clear(t);
+    acb_clear(A); acb_clear(B); acb_clear(W); acb_clear(R); mag_clear(mb); arf_clear(u);
+    return status;
+}
+
 /* WP 1F.9: exact scalar result, no value printer; symbol.h and docs/api-1f9.md Y1-Y3. */
 static int
 adf_drv_symbol(FILE *out, adf_drv_op op, const adf_drv_value *x, const adf_drv_value *y)
@@ -3818,6 +3888,7 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
     if (op == ADF_DRV_TATE_VECTOR || op == ADF_DRV_TATE_INTEGRAL || op == ADF_DRV_TATE_CONTINUE
         || op == ADF_DRV_TATE_COMPLETED) return adf_drv_tate(out, op, l, st);
     if (op == ADF_DRV_TATE_GAMMA || op == ADF_DRV_TATE_EPSILON) return adf_drv_tate_constant(out, op, l, st);
+    if (op == ADF_DRV_TATE_FE) return adf_drv_tate_fe(out, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||
