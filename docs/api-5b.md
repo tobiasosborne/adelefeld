@@ -304,3 +304,136 @@ L14 takes over, but at the points tested the cutoffs stay those of the right hal
 (zeta, about 4800 coefficients), `N = 8, R = 128` (`chi_4`, 7500), `N = 16, R = 128` (C = 5, 25300) at `s = 1/2`,
 `3/8 + 3i/4` and `-3/2`. On high vertical lines the majorant factor `exp(pi |Im z|/2)` raises the panel degrees;
 only absolute accuracy is promised (design `:228`). `test_tate_continue` runs in about 12 s.
+
+# Slice 5e: the functional equation, computed by the caller
+
+The computation is that of `docs/api-5.md` section 5 (`:250-260`), with the acceptance and faults of section 7 for
+5.4 (`:346-352`) and the user call of section 8 item 5 (`:383-385`). There is no new library function and no new
+C type: the equation is computed by the caller from `adf_tate_completed` (tate.h, "Slice 5d"), `adf_char_conj` and
+`adf_char_root_number` (char.h:91-102). The caller is the driver command `tate_fe` (`tools/adf/adf.c`,
+`adf_drv_tate_fe`) and, for the test, the function `fe_sides` of `tests/test_tate_fe.c`, which performs the same
+steps. Vectors `tests/ref/vectors/t5-slice5/fe.jsonl` (`lanes/t5-slice5/gen_vectors.py`), driver fixture
+`tests/driver/tate-fe`, Julia `tests/julia/tate_fe.jl`. P13 is `docs/proofs/analysis.md:564-626`.
+
+## Statements
+
+S15. What is computed. For a character `chi` (conductor `C <= 1024`, parity `e`), a ball `S` and `bits`:
+    `A = adf_tate_completed(chi, S, bits)`; `B = adf_tate_completed(conj(chi), T, bits + 4)` with `T` the ball
+    `1 - S` formed at `prec`; `W = adf_char_root_number(chi)` at `wp = max(prec, bits + m + 16)`, where `m >= 0` and
+    `|B| < 2^m` (`acb_get_mag`, `acb.rst:290-292`; `arf_abs_bound_lt_2exp_si`, `arf.rst:393-398`); `R = W B` at
+    `wp`. P13 (`analysis.md:574`) states `Lambda(s, chi) = W_chi Lambda(1 - s, conj(chi))` with `W_chi =
+    tau(chi)/(i^e sqrt(C))` and the positive finite Gauss sum (`:569`, `:578`). The proof is step 4
+    (`:613-614`): `W_chi W_conj(chi) = 1` (Lemma 8), and exchanging `z` and `z'` in the split of step 3
+    (`:602-612`) gives the equation on the whole plane by continuation. `adf_char_root_number` computes exactly this
+    `W_chi` (char.h:91-94; conventions 6.4). `adf_char_conj` gives `conj(chi)`, with the same conductor and parity
+    (char.h:96-102). For every `x` in `S`: `A` contains `Lambda(x, chi)` (tate.h: the call encloses `Lambda` on its
+    whole input ball). `T` contains `1 - x` (ball subtraction encloses, `arb.rst:6-12`), so `B` contains
+    `Lambda(1 - x, conj(chi))`. `W` contains `W_chi`, and `acb_mul` encloses every product of points
+    (`acb.rst:6-17`). Hence `R` contains `W_chi Lambda(1 - x, conj(chi)) = Lambda(x, chi)`. So when both sides are
+    OK, `A` and `R` contain the same number and must overlap. A nonoverlap proves that an enclosure, a sign, the
+    completion, the conjugation or a transform contract is wrong (design `:257-258`).
+    Check: `values` (below), `tests/driver/tate-fe.cmd`, `tests/julia/tate_fe.jl`.
+
+S16. The widths. `A` has each coordinate diameter at most `2^-bits`; this is the contract of `adf_tate_completed`,
+    and nothing is applied to `A` after the call. `B` has diameters at most `2^-(bits+4)`. `W` has coordinate radii
+    at most `32 C 2^-w` with `w = min(2^21, wp + ceil(log2 C) + 8)` (char.h:91-93, `docs/api-3d.md` "Gauss sum and
+    root number"), so at most `2^-(wp+3)` below the cap. `R`'s diameters are checked against `2^-bits` after the
+    product; this is the final width check of the design (`:254-255`). If the check fails, the status is
+    `NOT_DETERMINED`, named `R`. The guard targets are chosen so that the check is expected to pass with a wide
+    margin, by this reckoning. A coordinate of `W B` is a sum of two products. Its radius is about
+    `(|Re W| + |Im W|) rad(B) + (|Re B| + |Im B|) rad(W)`, plus the rounding at `wp`. With `|W| = 1` (P13), the
+    first term is at most `sqrt(2) 2^-(bits+5)` per coordinate. The second is at most `2^(m+1) 2^-(bits+m+19) =
+    2^-(bits+18)`, and the rounding is about `2^-(bits+14)`. So the diameter of `R` is about `0.09 2^-bits`. [source
+    pending: the radius propagated by `arb_mul` is not stated in `refs/src/flint-3.0.1/arb.rst`.] The guarantee is
+    the run-time check, not this reckoning. The test asserts the stronger `2^-(bits+2)` on `R` as evidence that the
+    guards suffice. Observed over the 280 cases of `values`: the largest diameter is `0.094 2^-bits` for `A` and
+    `0.0061 2^-bits` for `R` (`B` is far narrower than its target). The oracle also uses `bits + 4`, on both sides
+    (`proto/tate_checks.py:418-424`). Here `A` takes `bits` itself, because no operation follows it.
+    Check: `values` (`A` at `2^-bits`, `B` at `2^-(bits+4)`, `R` at `2^-(bits+2)`), `widths` (bits 20, 53, 80 at
+    `1/4 + i` from prec 2, for C = 1, 5, 16: both sides narrow, overlapping, and the largest radius of each
+    decreasing), `guard` (below).
+
+S17. Why this is the acceptance of SPEC 8. SPEC 8 (`docs/SPEC.md:494-501`) states the equation with this `W_chi`.
+    It asks for a comparison with FLINT's values completed by hand, a width that shrinks with precision, both
+    parities, a non-real character, and points at and near the poles. `A` and `R` come from two separate
+    quadratures, at different points and characters and at different targets; `R` is not formed from `A`. Two
+    enclosures that overlap can still be two equal wrong values (design `:256-257`). So each side must also contain
+    two references that share no code with the library and none with each other: FLINT's L completed by hand
+    (`acb_dirichlet.rst:98-100`, `:524-534`, `:567-569`, through python-flint) and mpmath's Hurwitz sum. If `A` and
+    `R` both contain the same 60-digit value, each is right within its width. An honest `LIMIT` or
+    `NOT_DETERMINED` is a failed acceptance case, not a refutation of the equation (design `:258-259`).
+    Check: `values` (136 records: the 17 characters of `tests/golden/gauss.tsv`, which include C = 1, at `3/8 +
+    3i/4`, `1/2`, `1/2 + 14 i`, `-1`, `2 + 3 i`, `1/4 + i`, `-e - 2` and `3 + e`; bits 53 for all, and 20 and 80 for
+    C = 1, 4, 5, 15, 16; 280 OK cases; each side contains both references of `Lambda(s, chi)`, `B` contains both
+    references of `Lambda(1 - s, conj(chi))`, and `W` overlaps the golden `W`: 1680 containments). `balls` (the
+    radius `2^-60` at `3/8 + 3i/4` for the 17 characters, at bits 40: both sides contain all four corner
+    references; at bits 80, `NOT_DETERMINED` named `A`, N-D23). `goldens` (the 17 root numbers overlap the golden
+    `W`). `hand` (zeta at -1 and at 2: both sides contain `pi/6`, design `:338`).
+
+S18. Statuses. The steps run in the order `A`, `B`, `W`, `R`, and the first failure stops. The driver prints the
+    step's letter and the status, as `A: error: DOMAIN`. In the test, `fe_sides` returns the status and the letter.
+    `bits + 4` is formed only after `A` is OK, so `bits <= 2^21` there and it cannot overflow. For `bits` in
+    `(2^21 - 4, 2^21]`, `B` would be `DOMAIN`; `A` ends in `LIMIT` at the work cap before that. For conductor 1,
+    at `s = 0` and `s = 1`, `A` is `DOMAIN`; `B`, at `1 - s = 1` and `0`, is `DOMAIN` too. Both are statuses, not
+    values (design `:259`). A ball that meets a pole gives `NOT_DETERMINED` on both sides, because the poles of
+    conductor 1 are symmetric under `s -> 1 - s`. A conductor above 1 has no pole: `chi_4` at `s = 0` and `1` is OK
+    on both sides, and both sides contain `Lambda(1, chi_4) = Lambda(0, chi_4) = 1` (design `:338`). `bits` outside
+    `[0, 2^21]` gives `DOMAIN` from `A`. A precision above the cap, or `C > 1024`, gives `LIMIT` from `A`. `W` fails
+    only with `LIMIT` (`wp` above the cap) or with `NOT_DETERMINED` from its own certificate. The guard target makes
+    one case possible in which the equation fails although `A` alone succeeds: a ball whose image width lies between
+    `2^-(bits+4)` and `2^-bits`.
+    Check: `poles`, `statuses`, `guard` (zeta on `3/8 +/- 2^-k`, bits 20: 4 radii give `A` OK and `B`
+    `NOT_DETERMINED`), each failure leaving the four outputs byte for byte untouched, and the driver lines.
+
+S19. The trivial zeros. At `s0 = -e - 2k` (`s0 != 0` for C = 1), `A` is finite and excludes 0 (S12). `R` comes
+    from `B` at `1 - s0 = 1 + e + 2k`, a regular point. The converse also holds: when `1 - s` is a trivial zero of
+    `L(., conj(chi))` (the point `3 + e`), `B` is the finite value of S12. The references at a trivial zero do not
+    use the functional equation: `Lambda = (C/pi)^z L(s)/rgamma(z)`, and both `L(s)` and `rgamma(z(s))` have a
+    simple zero at `s0`, so the value is `L'(s0)/(rgamma'(z0)/2)`. FLINT gives it through `acb_series.dirichlet_l`
+    and `acb_series.rgamma`; mpmath through the differentiated Hurwitz formula and `mp.diff`.
+    Check: `values` (46 records with a trivial zero on one side; where it is on `A`'s side, `A` and `R` exclude 0).
+
+S20. Independence. The sides share no evaluator: `A` is one call, and `R` is formed from a second call and from the
+    root number. If `A`'s evaluator is replaced by the disjoint sentinel `10^6`, then `R`, `B` and `W` stay bit for
+    bit those of the real run. If `B`'s evaluator is replaced by `-10^6 i`, then `A` stays bit for bit the real one,
+    and `R` moves to `W` times the sentinel (design `:350-352`). A side copied from the other passes every value
+    check (it is the right number). Only this test and the check `R != A` at zeta `1/2` detect it.
+    Check: `independence` (C = 1, 4, 5, 13 at `3/8 + 3i/4`), `hand`.
+
+## Decisions where the design is silent (slice 5e)
+
+17. `A` takes `bits`, `B` takes `bits + 4`, and `W` and the product take `wp = max(prec, bits + m + 16)` (S16).
+    The width of `R` is checked against `2^-bits`. The oracle takes `bits + 4` for `A` as well; nothing in this
+    computation follows `A`, so the target of the call is the final width.
+18. The output line is `A | R | overlap=yes|no | s=S`, with `A` and `R` printed as `tate_completed` prints a
+    value. Overlap is `acb_overlaps` (`acb.rst:267-269`), which is decided exactly on the two balls, so there is no
+    "undecided". The widths show as the printed radii. Where a coordinate is not the exact 0, the printer's
+    rounding at the `digits` setting hides radii below about `10^-digits`.
+19. A failed step prints its letter before the caller's `error: STATUS`, the form of `tate_gamma`. The first
+    failure stops the command; `B` and `W` are not computed after `A` fails. An error in the operands (syntax, kind,
+    a non-integer `BITS`) is the plain `error: STATUS`, because no call was made.
+20. `1 - s` is formed with `acb_add_ui` at `prec`. This is an enclosure, and it is exact for the dyadic inputs of
+    the tests.
+21. The raw golden pairs `(8,7)` and `(10,3)` are run as given. The constructor lowers them to `(4,3)` and `(5,3)`
+    (the test checks the conductor, the label and the parity of every record), so no character of conductor 8 or
+    10 is integrated. Their rows repeat the values of the lowered characters, and the driver line of `(8,7)` is
+    that of `(4,3)`.
+22. The FLINT and mpmath references at a trivial zero are quotients of derivatives, not the functional equation
+    (S19), so the test does not assume what it checks.
+23. `fe_sides` repeats the driver's steps; it is not code shared with the driver, which is a separate program.
+    The six faults are planted in both (`lanes/t5-slice5/faults.py`).
+24. The grammar is that of `tate_completed`, `tate_fe CHI with S with BITS`, with `prec` the driver setting (as
+    decision 16), not the `--bits 80 --prec 160` flags written in design `:384`.
+
+## Faults (design section 7, 5.4)
+
+Each fault was planted in a scratch copy of `fe_sides` and in a scratch copy of `adf_drv_tate_fe`. 6 of 6 are
+detected by the test (exit 1) and by the driver fixture (output differs); see `lanes/t5-slice5/faults.out`. The
+section `values` alone (the acceptance) detects the first five, at the overlap of `A` and `R`. The sixth (one side
+copied from the other) passes `values` and is detected by `hand` (`R != A` at zeta `1/2`) and by `independence`.
+
+## Cost (slice 5e)
+
+Two calls of `adf_tate_completed` (S13), one root number (`O(C)` phases), and one product. The `B` call at
+`bits + 4` costs about as much as the `A` call: the cutoffs and the panel degrees grow by a few terms for the
+extra 4 bits. `test_tate_fe` runs in about 6 s.

@@ -1033,3 +1033,22 @@ with 80` prints `(-3.976966226 +/- 5e-10) + (0 +/- 2.1e-26)*i` (`Lambda_zeta(1/2
 above 1 has no pole (also not at the trivial zeros of `L`, where `Lambda` is finite). A ball whose radius holds the
 width above `2^-BITS` is `NOT_DETERMINED`; `BITS` outside `[0, 2^21]` or not an integer is `DOMAIN`; a conductor
 above 1024 or the total work cap is `LIMIT`. Fixture: `tests/driver/tate-continue`.
+
+### The functional equation (slice 5e of `docs/api-5.md`, lane t5-slice5)
+
+`tate_fe CHI with S with BITS` (statements in `docs/api-5b.md`, "Slice 5e"; the operands, their order of checks and
+the integer `BITS` as for `tate_completed`) is the caller's computation of design section 5 for analysis P13,
+`Lambda(s, chi) = W_chi Lambda(1 - s, conj(chi))`: `A = adf_tate_completed(chi, s, BITS)`, `B =
+adf_tate_completed(conj(chi), 1 - s, BITS + 4)`, `W = adf_char_root_number(chi)` at `wp = max(prec, BITS + m + 16)`
+with `|B| < 2^m`, and `R = W B` at `wp`, all at the `prec` setting. It prints both sides, not an equality:
+`A | R | overlap=yes|no | s=S`, `A` and `R` as `tate_completed` prints a value, so the printed radii show the
+widths. `A` has each coordinate diameter at most `2^-BITS` (the call's contract); `R` is checked against the same
+bound after the product (in practice it is near `sqrt(2) 2^-(BITS+4)`). When a step fails the line is the step's
+letter and the status, `A: error: DOMAIN`, for the first failing step in the order `A`, `B`, `W`, `R` (`R`: the
+width check, `NOT_DETERMINED`); an error of the operands is the plain `error: STATUS`. At `prec 160`, `digits 10`,
+`tate_fe char(q=1, n=1, s=(0) + (0)*i) with ((0.5) + (0)*i ; 0) with 80` prints `(-3.976966226 +/- 5e-10) + (0 +/-
+2.1e-26)*i | (-3.976966226 +/- 5e-10) + (0 +/- 1.5e-27)*i | overlap=yes | s=(0.5) + (0)*i`: `W = 1` and `conj(chi)
+= chi`, the real parts print alike, and the imaginary radii are the bounds of the two calls, at bits 80 and 84. For
+conductor 1, `s = 0` and `s = 1` give `A: error: DOMAIN` (`B` would be `DOMAIN` too) and a ball meeting a pole
+`A: error: NOT_DETERMINED`. `overlap=no` would mean that an enclosure, a sign, the completion, the conjugation or a
+transform is wrong (design `:257-258`). Fixture: `tests/driver/tate-fe`; Julia: `tests/julia/tate_fe.jl`.

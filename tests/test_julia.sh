@@ -394,6 +394,23 @@ else
 fi
 rm -f "$tatec_output"
 
+# Slice 5e (lane t5-slice5): the functional equation by the caller, adf_tate_completed twice, the root number.
+tatefe_output=$(mktemp)
+if timeout 60 "$JULIA" --startup-file=no tests/julia/tate_fe.jl "$so" > "$tatefe_output" 2>&1; then
+    cat "$tatefe_output"
+elif grep -q '__gmpn_modexact_1_odd' "$tatefe_output" 2>/dev/null \
+        && tatefe_gmp=$(ldconfig -p 2>/dev/null | awk '/libgmp\.so\.10 /{print $NF; exit}') \
+        && [ -n "$tatefe_gmp" ] \
+        && LD_PRELOAD="$tatefe_gmp" timeout 60 "$JULIA" --startup-file=no tests/julia/tate_fe.jl "$so"; then
+    echo "== tests/julia/tate_fe.jl passed with LD_PRELOAD=$tatefe_gmp"
+else
+    cat "$tatefe_output"
+    rm -f "$tatefe_output"
+    echo "test_julia: tests/julia/tate_fe.jl FAILED" >&2
+    exit 1
+fi
+rm -f "$tatefe_output"
+
 # Slice 3.1-e: bounded quotient set queries.
 qsets_output=$(mktemp)
 if timeout 60 "$JULIA" --startup-file=no tests/julia/qclass_sets.jl "$so" > "$qsets_output" 2>&1; then
