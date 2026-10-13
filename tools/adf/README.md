@@ -1003,3 +1003,20 @@ At `prec 128`, `digits 5`, the three examples print 4/3 as `(1.3333 +/- 3.4e-5) 
 example as `(1) + (0)*i`, and 1/pi as `(0.31831 +/- 1.2e-7) + (0)*i`, after the continuation prefix.
 The same grammar accepts shell-quoted operands in a direct `adf tate_local ...` invocation.
 Tests: `tests/driver/tate-local.cmd`, `tests/julia/tate_local.jl`.
+
+# Local gamma and epsilon factors (slice 5b)
+
+`tate_gamma S with PLACE with ALPHA with CHI` calls `adf_local_gamma_at`, and `tate_epsilon S with PLACE with ALPHA
+with CHI` calls `adf_local_epsilon_at` (statements in `docs/api-5a.md`, "Slice 5b"). The operands, the order of the
+checks and the printed line are those of `tate_local`: numerical lines begin `continuation S=<supplied S>:`.
+gamma is the factor of the local functional equation `Z(F f, eta^-1, 1-s) = gamma(s, eta) Z(f, eta, s)`: at a
+prime with conductor 1, `(1-alpha*p^(-s))/(1-alpha^(-1)*p^(s-1))`; with conductor `p^a > 1`,
+`alpha^a p^(-as) G_minus`, `G_minus = sum eta0(u)^(-1) E(-u/p^a)` (the negative kernel); at `real`,
+`i^e pi^(s-1/2) Gamma((1-s+e)/2)/Gamma((s+e)/2)`, with zeros at `-e-2k` (printed as exact `0`) and poles at
+`1+e+2k`. epsilon is `1` at an unramified prime, gamma at a ramified one, `i^e` at `real`; it has no poles.
+gamma's poles follow the pole rule of `tate_local` (DOMAIN exact, NOT_DETERMINED for a ball meeting one).
+
+At `prec 128`, `digits 5`: `tate_gamma ((2) + (0)*i ; 0) with 2 with ((1) + (0)*i ; 0) with char(q=1, n=1,
+s=(0) + (0)*i)` prints `(-0.75 +/- 3e-39) + (0)*i` after the prefix (`-3/4`); at `real` with the trivial character
+`s = 0.5` gives `(1 +/- 1.1e-38) + (0)*i` and `s = 1` gives `error: DOMAIN`; `tate_epsilon` at `real`, `s = 2`,
+`char(q=4, n=3, ...)` prints `(0) + (1)*i`. Tests: `tests/driver/tate-gamma.cmd`, `tests/julia/tate_gamma.jl`.

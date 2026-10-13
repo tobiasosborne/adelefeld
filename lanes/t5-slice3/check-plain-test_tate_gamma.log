@@ -1,0 +1,10 @@
+vectors: 721; certified samples: 1950
+ok   oracle_vectors
+ok   unramified_exact_quotients
+ok   ramified_negative_sum
+ok   epsilon_exact
+ok   real_values_and_zeros
+ok   gamma_poles
+ok   duality_identity
+ok   statuses_precision_and_aliases
+8 tests, 47955 checks, 0 failed checks, 0 failed tests
