@@ -1,0 +1,223 @@
+mutate: src/tate.c: 662 mutants
+mutate: 662 mutants, 60 of them run (--limit 60, --seed 54)
+mutate: the baseline passes (14.8 s)
+
+NOT COMPILED src/tate.c:183:13 drop_call: 'arb_add(S, prefix, term, TT_TP);' -> '' (the statement is removed)
+  src/tate.c:147:17: error: unused parameter ‘S’ [-Werror=unused-parameter]
+
+SURVIVED src/tate.c:803:26 logic: '&&' -> '||'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -801,5 +801,5 @@
+       *R = tr.R;
+       *K = tr.K;
+  -    for (k = 0; k < tr.K && k < 64; k++)
+  +    for (k = 0; k < tr.K || k < 64; k++)
+       {
+           deg[k] = tr.deg[0][k];
+
+
+NOT COMPILED src/tate.c:107:5 drop_assign: 'st = tt_vector(ph, ff, chi, one, FLINT_MAX(prec, 2));' -> '' (the statement is removed)
+  src/tate.c:108:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/tate.c:710:31 cmp: '!=' -> '=='
+  /usr/include/flint/acb.h:312:5: error: ‘arb_add_error_arf’ accessing 48 bytes in a region of size 0 [-Werror=stringop-overflow=]
+
+SURVIVED src/tate.c:375:13 swap_args: 'arb_mul(y, y, x, TT_TP)' -> 'arb_mul(y, x, y, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -373,5 +373,5 @@
+           {
+               arb_mul_ui(y, a0t, n * n, TT_TP);
+  -            arb_mul(y, y, x, TT_TP);
+  +            arb_mul(y, x, y, TT_TP);
+               arb_neg(y, y);
+               arb_exp(y, y, TT_TP);
+
+
+SURVIVED src/tate.c:386:9 swap_args: 'arb_mul(err, err, two3, TT_TP)' -> 'arb_mul(err, two3, err, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -384,5 +384,5 @@
+           arb_mul_ui(err, B, 6, TT_TP);
+           arb_mul_2exp_si(err, err, ke);                    /* 6 h B */
+  -        arb_mul(err, err, two3, TT_TP);                   /* J = 0 */
+  +        arb_mul(err, two3, err, TT_TP);                   /* J = 0 */
+           J = 0;
+           if (nz == 0)                                      /* every coefficient is the exact 0: no term */
+
+
+SURVIVED src/tate.c:245:9 swap_args: 'arb_mul(J, t, u, TT_TP)' -> 'arb_mul(J, u, t, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -243,5 +243,5 @@
+           arb_mul(t, t, u, TT_TP);
+           arb_sub(u, R0, RR, TT_TP);
+  -        arb_mul(J, t, u, TT_TP);                          /* (R0 - R) t*^r exp(-b t*) */
+  +        arb_mul(J, u, t, TT_TP);                          /* (R0 - R) t*^r exp(-b t*) */
+           arb_pow(t, R0, rr, TT_TP);
+           arb_mul(u, bb, R0, TT_TP);
+
+
+NOT COMPILED src/tate.c:724:12 cmp: '!=' -> '=='
+  src/tate.c:725:28: error: ‘N’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/tate.c:636:13 drop_assign: 'st = ADF_LIMIT;' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -634,5 +634,5 @@
+           if (!tt_charge(work, 1) || (st = tt_series(S, (ulong) e, a0lo, N, work)) != ADF_OK)
+           {
+  -            st = ADF_LIMIT;
+  +            
+               goto done;
+           }
+
+
+SURVIVED src/tate.c:380:13 swap_args: 'arb_add(B, B, y, TT_TP)' -> 'arb_add(B, y, B, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -378,5 +378,5 @@
+               if (e)
+                   arb_mul_ui(y, y, n, TT_TP);
+  -            arb_add(B, B, y, TT_TP);
+  +            arb_add(B, y, B, TT_TP);
+           }
+           arb_mul(B, B, P, TT_TP);
+
+
+SURVIVED src/tate.c:250:9 swap_args: 'arb_mul(t, t, u, TT_TP)' -> 'arb_mul(t, u, t, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -248,5 +248,5 @@
+           arb_neg(u, u);
+           arb_exp(u, u, TT_TP);
+  -        arb_mul(t, t, u, TT_TP);
+  +        arb_mul(t, u, t, TT_TP);
+           arb_mul_2exp_si(t, t, 1);
+           arb_div(t, t, bb, TT_TP);
+
+
+SURVIVED src/tate.c:161:27 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -159,5 +159,5 @@
+       for (;;)
+       {
+  -        if (!tt_charge(w, 1))
+  +        if (!tt_charge(w, 0))
+           {
+               st = ADF_LIMIT;
+
+
+NOT COMPILED src/tate.c:594:5 drop_call: 'arf_mul_2exp_si(eps, eps, -bits);' -> '' (the statement is removed)
+  src/tate.c:530:66: error: unused parameter ‘bits’ [-Werror=unused-parameter]
+
+SURVIVED src/tate.c:493:5 drop_call: 'acb_get_mag_lower(D, m);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -491,5 +491,5 @@
+       acb_get_mid(m, c);
+       mag_hypot(R, arb_radref(acb_realref(c)), arb_radref(acb_imagref(c)));
+  -    acb_get_mag_lower(D, m);
+  +    
+       mag_sub_lower(d, D, R);
+       if (!mag_is_zero(d))
+
+
+NOT COMPILED src/tate.c:845:29 cmp: '!=' -> '=='
+  /usr/include/flint/arb.h:141:16: error: array subscript 0 is outside array bounds of ‘arb_struct[0]’ [-Werror=array-bounds=]
+
+SURVIVED src/tate.c:247:9 drop_call: 'arb_mul(u, bb, R0, TT_TP);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -245,5 +245,5 @@
+           arb_mul(J, t, u, TT_TP);                          /* (R0 - R) t*^r exp(-b t*) */
+           arb_pow(t, R0, rr, TT_TP);
+  -        arb_mul(u, bb, R0, TT_TP);
+  +        
+           arb_neg(u, u);
+           arb_exp(u, u, TT_TP);
+
+
+SURVIVED src/tate.c:579:58 op: '*' -> '+'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -577,5 +577,5 @@
+       /* its transforms: the dual coefficients (api-5.md:133-137); C^2 multiply-adds, 2 L^2 - L + 1 for the term */
+       if (st == ADF_OK)
+  -        st = tt_charge(work, C * C + 2 * (ulong) (e + 1) * (ulong) (e + 1) - (ulong) e) ? ADF_OK : ADF_LIMIT;
+  +        st = tt_charge(work, C * C + 2 * (ulong) (e + 1) + (ulong) (e + 1) - (ulong) e) ? ADF_OK : ADF_LIMIT;
+       if (st == ADF_OK)
+           st = adf_ffun_fourier(g, f, w);
+
+
+SURVIVED src/tate.c:388:19 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -386,5 +386,5 @@
+           arb_mul(err, err, two3, TT_TP);                   /* J = 0 */
+           J = 0;
+  -        if (nz == 0)                                      /* every coefficient is the exact 0: no term */
+  +        if (nz == 1)                                      /* every coefficient is the exact 0: no term */
+               arb_zero(err);
+           else if (!arb_is_finite(err))
+
+
+SURVIVED src/tate.c:705:5 swap_args: 'arb_add(En, En, Et, TT_TP)' -> 'arb_add(En, Et, En, TT_TP)'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -703,5 +703,5 @@
+       }
+       /* the omitted regions and the quadrature remainders, to both coordinate radii (api-5.md:218) */
+  -    arb_add(En, En, Et, TT_TP);
+  +    arb_add(En, Et, En, TT_TP);
+       arb_add(En, En, el, TT_TP);
+       arb_add(En, En, er, TT_TP);
+
+
+SURVIVED src/tate.c:913:5 drop_call: 'TT_INV(adf_char_is_canonical(chi), "chi", "adf_char");' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -911,5 +911,5 @@
+       if (bits < 0 || bits > TT_BITS_MAX)
+           return ADF_DOMAIN;
+  -    TT_INV(adf_char_is_canonical(chi), "chi", "adf_char");
+  +    
+       TT_INV(z != chi->s, "z", "output distinct from chi->s");
+       if (!acb_is_finite(s))
+
+
+NOT COMPILED src/tate.c:274:5 drop_call: 'tt_jbound(E, r1, b, R);' -> '' (the statement is removed)
+  src/tate.c:269:62: error: unused parameter ‘r1’ [-Werror=unused-parameter]
+
+SURVIVED src/tate.c:100:16 status: 'ADF_LIMIT' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/tate.c
+  +++ b/src/tate.c
+  @@ -98,5 +98,5 @@
+   
+       if (prec > ADF_REAL_PREC_MAX || chi->q > ADF_CHAR_MOD_MAX)
+  -        return ADF_LIMIT;
+  +        return ADF_OK;
+       TT_INV(adf_char_is_canonical(chi), "chi", "adf_char");
+       TT_INV((const void *) phi != (const void *) f, "phi", "output distinct from f");
+
+
+mutate: 60 mutants in 384.1 s: 38 killed, 15 survived, 7 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 15 mutant(s) survived; each one is a claim the tests do not check
+exit 1

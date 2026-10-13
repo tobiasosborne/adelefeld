@@ -1003,3 +1003,16 @@ At `prec 128`, `digits 5`, the three examples print 4/3 as `(1.3333 +/- 3.4e-5) 
 example as `(1) + (0)*i`, and 1/pi as `(0.31831 +/- 1.2e-7) + (0)*i`, after the continuation prefix.
 The same grammar accepts shell-quoted operands in a direct `adf tate_local ...` invocation.
 Tests: `tests/driver/tate-local.cmd`, `tests/julia/tate_local.jl`.
+
+### The continuation and the completed function (slice 5d of `docs/api-5.md`, lane t5-slice4)
+
+`tate_continue CHI with S with BITS` and `tate_completed CHI with S with BITS` (statements in `docs/api-5b.md`,
+"Slice 5d"; the operands as for `tate_integral`) call `adf_tate_continue` and `adf_tate_completed` at the `prec`
+setting and print `VALUE | continuation | s=S` and `VALUE | completed | s=S`: an enclosure of `I_chi(s)` and of
+`Lambda_chi(s) = C^((s+e)/2) I_chi(s)` for every `s` of the ball, on the whole plane, each coordinate diameter at
+most `2^-BITS`. At `prec 160`, `digits 10`, `tate_completed char(q=1, n=1, s=(0) + (0)*i) with ((0.5) + (0)*i ; 0)
+with 80` prints `(-3.976966226 +/- 5e-10) + (0 +/- 2.1e-26)*i` (`Lambda_zeta(1/2)`). For conductor 1, `s = 0` and
+`s = 1` are `DOMAIN` and a ball meeting either (closed end-point contact counts) is `NOT_DETERMINED`; a conductor
+above 1 has no pole (also not at the trivial zeros of `L`, where `Lambda` is finite). A ball whose radius holds the
+width above `2^-BITS` is `NOT_DETERMINED`; `BITS` outside `[0, 2^21]` or not an integer is `DOMAIN`; a conductor
+above 1024 or the total work cap is `LIMIT`. Fixture: `tests/driver/tate-continue`.

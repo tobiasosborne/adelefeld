@@ -249,6 +249,8 @@ typedef enum
     ADF_DRV_POISSON,           /* slice 4g (lane f4-slice6): Poisson summation, adf_drv_poisson */
     ADF_DRV_TATE_VECTOR,       /* slice 5c (lane t5-slice2): the Tate vector and integral, adf_drv_tate */
     ADF_DRV_TATE_INTEGRAL,
+    ADF_DRV_TATE_CONTINUE,     /* slice 5d (lane t5-slice4): continuation and completed function, adf_drv_tate */
+    ADF_DRV_TATE_COMPLETED,
 
     ADF_DRV_CHAR_EVAL,
     ADF_DRV_CHAR_EVAL_STRICT,
@@ -381,6 +383,8 @@ static const struct
     { "poisson", ADF_DRV_POISSON, 3 },
     { "tate_vector", ADF_DRV_TATE_VECTOR, 1 },
     { "tate_integral", ADF_DRV_TATE_INTEGRAL, 3 },
+    { "tate_continue", ADF_DRV_TATE_CONTINUE, 3 },
+    { "tate_completed", ADF_DRV_TATE_COMPLETED, 3 },
 
     { "char_eval", ADF_DRV_CHAR_EVAL, 2 },
     { "char_eval_strict", ADF_DRV_CHAR_EVAL_STRICT, 2 },
@@ -3475,7 +3479,11 @@ done:
    CHI is a char text (its s is ignored), S a complex adele text whose finite coordinate is ignored (as for
    local_zeta_factor_at), BITS an integer (a rational with denominator 1, else DOMAIN; outside slong DOMAIN, as the
    call gives for bits outside [0, 2^21]). Another kind of operand is DOMAIN. Steps as for every command: the
-   syntax of each operand, then its kind, then the values, then the operation, then the printer (NULL: LIMIT). */
+   syntax of each operand, then its kind, then the values, then the operation, then the printer (NULL: LIMIT).
+   Slice 5d (lane t5-slice4; docs/api-5.md 4 and 8 item 4; docs/api-5b.md "Slice 5d"):
+     tate_continue CHI with S with BITS    adf_tate_continue: "VALUE | continuation | s=S" (I_chi on the plane);
+     tate_completed CHI with S with BITS   adf_tate_completed: "VALUE | completed | s=S" (Lambda_chi);
+   the operands as for tate_integral. */
 static int
 adf_drv_tate(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_state *st)
 {
@@ -3507,12 +3515,17 @@ adf_drv_tate(FILE *out, adf_drv_op op, const adf_drv_line *l, const adf_drv_stat
     if (!fmpz_is_one(fmpq_denref(q->q)) || !fmpz_fits_si(fmpq_numref(q->q))) { status = ADF_DOMAIN; goto done; }
     bits = fmpz_get_si(fmpq_numref(q->q));
     adf_cadele_get_complex(s, c);
-    status = adf_tate_integral(v, x, s, bits, st->prec);
+    /* slice 5d (lane t5-slice4): tate_continue and tate_completed, the same grammar, the mode text continuation
+       or completed (api-5.md:15-16, D1: the mode and S beside the value) */
+    status = op == ADF_DRV_TATE_CONTINUE ? adf_tate_continue(v, x, s, bits, st->prec)
+           : op == ADF_DRV_TATE_COMPLETED ? adf_tate_completed(v, x, s, bits, st->prec)
+           : adf_tate_integral(v, x, s, bits, st->prec);
     if (status != ADF_OK) goto done;
     ta = adf_drv_acb_text(v, st, &la);
     tb = adf_drv_acb_text(s, st, &lb);
     if (ta == NULL || tb == NULL) { status = ADF_LIMIT; goto done; }
-    fprintf(out, "%.*s | halfplane Re(s) > 1 | s=%.*s\n", (int) la, ta + 1, (int) lb, tb + 1);
+    fprintf(out, "%.*s | %s | s=%.*s\n", (int) la, ta + 1, op == ADF_DRV_TATE_CONTINUE ? "continuation"
+            : op == ADF_DRV_TATE_COMPLETED ? "completed" : "halfplane Re(s) > 1", (int) lb, tb + 1);
 done:
     adf_str_free(ta); adf_str_free(tb);
     adf_char_clear(x); adf_cadele_clear(c); adf_rat_clear(q); adf_rfun_clear(phi); adf_ffun_clear(f);
@@ -3742,7 +3755,8 @@ adf_drv_command(FILE * out, adf_drv_op op, const adf_drv_line * l, adf_drv_state
         op == ADF_DRV_RFUN_NORM2) return adf_drv_rfun4e(out, op, l, st);
     if (op >= ADF_DRV_TENSOR_EVAL && op <= ADF_DRV_TENSOR_NORM2) return adf_drv_tensor(out, op, l, st);
     if (op == ADF_DRV_POISSON) return adf_drv_poisson(out, l, st);
-    if (op == ADF_DRV_TATE_VECTOR || op == ADF_DRV_TATE_INTEGRAL) return adf_drv_tate(out, op, l, st);
+    if (op == ADF_DRV_TATE_VECTOR || op == ADF_DRV_TATE_INTEGRAL || op == ADF_DRV_TATE_CONTINUE
+        || op == ADF_DRV_TATE_COMPLETED) return adf_drv_tate(out, op, l, st);
     if (op == ADF_DRV_ROOTS || op == ADF_DRV_REALROOTS || op == ADF_DRV_RECOVER)
         return adf_drv_solver(out, op, l, st);
     if (op == ADF_DRV_PROJECT || op == ADF_DRV_EXP_AT || op == ADF_DRV_LOG_AT ||

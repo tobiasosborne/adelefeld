@@ -1,6 +1,17 @@
 /* src/tate.c: the global Tate test vector and the global Tate integral in Re(s) > 1, slice 5c of docs/api-5.md
-   (include/adelefeld/tate.h; statements, proofs and decisions in docs/api-5b.md "Slice 5c").
-   Sources, read before the code:
+   (include/adelefeld/tate.h; statements, proofs and decisions in docs/api-5b.md "Slice 5c"); the continuation
+   adf_tate_continue and the completed function adf_tate_completed, slice 5d (docs/api-5b.md "Slice 5d"), which
+   share the attempt tt_attempt and the body tt_run with adf_tate_integral (a mode: half-plane gate, continuation
+   of I, Lambda).
+   Sources of slice 5d, read before the code: docs/api-5.md:167-249 (section 4: the split for every s, "Section 4
+   removes just the domain gate", the pole geometry :230-235, the two comment blocks :237-247), :302-312 (T4),
+   :350-354 (the independence test and the link-wrap); docs/proofs/analysis.md:505-512 and :551-557 (P12: the
+   continuation and the signs of the pole terms), :602-612 and :609-614 (P13 steps 3 and 4: the split for every s,
+   both integrals entire, the residues -1 at 0 and +1 at 1 for C = 1, entire for C > 1); refs/src/flint-3.0.1
+   arb.rst:664-688 (arb_contains_si, arb_contains_zero: closed balls), acb.rst:151-153 (acb_get_mid), :228-230
+   (acb_is_exact), :294-296 (acb_get_mag_lower), :144-148 (acb_add_error_mag), mag.rst:281-283 (mag_sub_lower),
+   :311 with :12-13 (mag_div: an upper bound), :399-401 (mag_hypot).
+   Sources of slice 5c, read before the code:
    - docs/api-5.md:9-46 (section 1: values, scope, the order of the checks, D2), :121-165 (section 3: P11's value,
      D3, the vector, the balanced change A = 1/C, the dual coefficients W_chi conj(chi(n)) n^e from the actual
      transforms, the two comment blocks), :183-228 (section 4: P13's split, a0 = pi/C, E_n and E_t of P15 with
@@ -454,6 +465,50 @@ tt_side(acb_t val, arb_t qerr, const acb_t zz, acb_srcptr coef, ulong N, int e, 
     return st;
 }
 
+/* ------------------------------------------------------------------ T4: the pole terms near a pole */
+
+/* t encloses 1/(x - x0) for every x of the ball s, x0 = 0 or 1, if the ball excludes x0 (api-5.md T4,
+   :302-312): c = s - x0 at the precision w contains every x - x0 (arb.rst:6-12); its covering disk has the exact
+   centre m = mid(c) and radius R = hypot of the two coordinate radii (an upper bound, mag.rst:399-401). If
+   D = lower|m| (acb.rst:294-296) exceeds R, put d = lower(D - R) > 0 (mag.rst:281-283); for every x of the disk,
+   |1/x - 1/m| = |m - x|/(|x| |m|) <= R/(D d), since |x| >= |m| - R >= d and |m| >= D. Then t = 1/m (an exact
+   input, enclosed by acb_inv) plus R/(D d) on both coordinate radii (a complex error of modulus <= E has
+   coordinates <= E; mag_div rounds up). Otherwise (the disk meets x0 while the rectangle does not, T4.2) direct
+   acb division of c; its result is an enclosure, possibly nonfinite, and a nonfinite value fails the width. */
+static void
+tt_recip(acb_t t, const acb_t s, ulong x0, slong w)
+{
+    acb_t c, m;
+    mag_t R, D, d, e;
+
+    acb_init(c);
+    acb_init(m);
+    mag_init(R);
+    mag_init(D);
+    mag_init(d);
+    mag_init(e);
+    acb_sub_ui(c, s, x0, w);
+    acb_get_mid(m, c);
+    mag_hypot(R, arb_radref(acb_realref(c)), arb_radref(acb_imagref(c)));
+    acb_get_mag_lower(D, m);
+    mag_sub_lower(d, D, R);
+    if (!mag_is_zero(d))
+    {
+        acb_inv(t, m, w);
+        mag_div(e, R, D);
+        mag_div(e, e, d);
+        acb_add_error_mag(t, e);
+    }
+    else
+        acb_inv(t, c, w);
+    acb_clear(c);
+    acb_clear(m);
+    mag_clear(R);
+    mag_clear(D);
+    mag_clear(d);
+    mag_clear(e);
+}
+
 /* ------------------------------------------------------------------ one attempt at the working precision w */
 
 /* The certificate of one attempt, for the hidden test hook adf_tate_cutoffs: N, R and each panel degree J of the
@@ -461,13 +516,19 @@ tt_side(acb_t val, arb_t qerr, const acb_t zz, acb_srcptr coef, ulong N, int e, 
 typedef struct
 {
     ulong N, R, K, deg[2][64];
+    acb_ptr fwd, dual;                                    /* if not NULL: the two sides as assembled, with E */
+    int sentinel;                                         /* bit 1 (2): the forward (dual) side replaced */
 } tt_trace;
 
-/* out encloses I_chi(s) for every s of the ball (or the attempt fails): analysis P13 step 3 (:589-598) on the
-   balanced vector, then the factor C^-z (P11 :463-466). Statuses: OK (out written, width not yet checked),
-   LIMIT (D2), NOT_DETERMINED (a dependency did not certify at this precision: the caller retries). */
+/* out encloses I_chi(s) (lmode = 0) or Lambda_chi(s) (lmode = 1) for every s of the ball (or the attempt fails):
+   analysis P13 step 3 (:602-612) on the balanced vector, then for I the factor C^-z (P11 :463-466). P13 step 3
+   holds for every s off the poles 0, 1 of C = 1 (both integrals entire, :609-612), so the same attempt serves
+   the half-plane value, the continuation and the completed function; the caller has excluded the poles from the
+   rectangle (C = 1). Statuses: OK (out written, width not yet checked), LIMIT (D2), NOT_DETERMINED (a
+   dependency did not certify at this precision: the caller retries). */
 static int
-tt_attempt(acb_t out, const adf_char_t chi, const acb_t s, slong bits, slong w, ulong * work, tt_trace * tr)
+tt_attempt(acb_t out, const adf_char_t chi, const acb_t s, slong bits, slong w, ulong * work, tt_trace * tr,
+           int lmode)
 {
     ulong C = chi->q, N, R, n;
     int e = chi->parity, st;
@@ -528,10 +589,10 @@ tt_attempt(acb_t out, const adf_char_t chi, const acb_t s, slong bits, slong w, 
     acb_neg(zd, s);
     acb_add_si(zd, zd, 1 + e, w);
     acb_mul_2exp_si(zd, zd, -1);
-    /* the budget epsilon = 2^-bits/max(1, upper|C^-z|) (api-5.md:205) */
+    /* the budget: epsilon = 2^-bits for Lambda, 2^-bits/max(1, upper|C^-z|) for I (api-5.md:205) */
     arf_one(eps);
     arf_mul_2exp_si(eps, eps, -bits);
-    if (C > 1)
+    if (C > 1 && !lmode)
     {
         arb_log_ui(acb_realref(t), C, w);
         arb_zero(acb_imagref(t));
@@ -624,13 +685,20 @@ tt_attempt(acb_t out, const adf_char_t chi, const acb_t s, slong bits, slong w, 
         st = tt_side(t, er, zd, bn, N, e, a0, R, tg, w, work, tr == NULL ? NULL : tr->deg[1]);
     if (st != ADF_OK)
         goto done;
+    if (tr != NULL && (tr->sentinel & 1))                 /* test seam: a disjoint sentinel for one side */
+        acb_set_ui(lam, 1000000);
+    if (tr != NULL && (tr->sentinel & 2))
+        acb_set_si_si(t, 0, -1000000);
+    if (tr != NULL && tr->fwd != NULL)
+        acb_set(tr->fwd, lam);
+    if (tr != NULL && tr->dual != NULL)
+        acb_set(tr->dual, t);
     acb_add(lam, lam, t, w);
     if (C == 1)
-    {   /* delta [1/(s-1) - 1/s] (P13 step 3) */
-        acb_sub_ui(t, s, 1, w);
-        acb_inv(t, t, w);
+    {   /* delta [1/(s-1) - 1/s] (P13 step 3), each reciprocal by T4 */
+        tt_recip(t, s, 1, w);
         acb_add(lam, lam, t, w);
-        acb_inv(t, s, w);
+        tt_recip(t, s, 0, w);
         acb_sub(lam, lam, t, w);
     }
     /* the omitted regions and the quadrature remainders, to both coordinate radii (api-5.md:218) */
@@ -639,8 +707,12 @@ tt_attempt(acb_t out, const adf_char_t chi, const acb_t s, slong bits, slong w, 
     arb_add(En, En, er, TT_TP);
     arb_get_ubound_arf(lo, En, TT_TP);
     acb_add_error_arf(lam, lo);
+    if (tr != NULL && tr->fwd != NULL)
+        acb_add_error_arf(tr->fwd, lo);
+    if (tr != NULL && tr->dual != NULL)
+        acb_add_error_arf(tr->dual, lo);
     /* I = C^-z Lambda (P11) */
-    if (C > 1)
+    if (C > 1 && !lmode)
         acb_mul(lam, lam, cz, w);
     acb_swap(out, lam);
     written = 1;
@@ -724,7 +796,7 @@ adf_tate_cutoffs(ulong * N, ulong * R, ulong * K, ulong * deg, ulong * work, con
     acb_init(out);
     memset(&tr, 0, sizeof tr);
     *work = 0;
-    st = tt_attempt(out, chi, s, bits, FLINT_MAX(prec, 2), work, &tr);
+    st = tt_attempt(out, chi, s, bits, FLINT_MAX(prec, 2), work, &tr, 0);
     *N = tr.N;
     *R = tr.R;
     *K = tr.K;
@@ -737,6 +809,45 @@ adf_tate_cutoffs(ulong * N, ulong * R, ulong * K, ulong * deg, ulong * work, con
     return st;
 }
 
+/* Not part of the interface (hidden, as above): one attempt at max(prec, 2) on a canonical chi and a finite s off
+   the poles, mode 0 (I) or 1 (Lambda), without the gate: the cutoffs and degrees as adf_tate_cutoffs; lam (if not
+   NULL) the assembled value; fwd and dual (if not NULL) the two Mellin sides of P13 step 3 as assembled (the dual
+   with W_chi), each with the total omitted and quadrature error on both radii; sentinel bit 1 (2) replaces the
+   computed forward (dual) side by the disjoint sentinel 10^6 (-10^6 i) before the assembly (the independence
+   test of api-5.md:350-352). For tests/test_tate_continue.c. deg holds 128 entries. */
+TT_HIDDEN int adf_tate_trace(ulong * N, ulong * R, ulong * K, ulong * deg, ulong * work, acb_t lam, acb_t fwd,
+                             acb_t dual, const adf_char_t chi, const acb_t s, slong bits, slong prec, int mode,
+                             int sentinel);
+TT_HIDDEN int
+adf_tate_trace(ulong * N, ulong * R, ulong * K, ulong * deg, ulong * work, acb_t lam, acb_t fwd, acb_t dual,
+               const adf_char_t chi, const acb_t s, slong bits, slong prec, int mode, int sentinel)
+{
+    tt_trace tr;
+    acb_t out;
+    ulong k;
+    int st;
+
+    acb_init(out);
+    memset(&tr, 0, sizeof tr);
+    tr.fwd = fwd;
+    tr.dual = dual;
+    tr.sentinel = sentinel;
+    *work = 0;
+    st = tt_attempt(out, chi, s, bits, FLINT_MAX(prec, 2), work, &tr, mode != 0);
+    *N = tr.N;
+    *R = tr.R;
+    *K = tr.K;
+    for (k = 0; k < tr.K && k < 64; k++)
+    {
+        deg[k] = tr.deg[0][k];
+        deg[tr.K + k] = tr.deg[1][k];
+    }
+    if (st == ADF_OK && lam != NULL)
+        acb_swap(lam, out);
+    acb_clear(out);
+    return st;
+}
+
 /* 1 iff z is finite and each coordinate diameter is <= 2^-bits. */
 static int
 tt_narrow(const acb_t z, slong bits)
@@ -745,11 +856,51 @@ tt_narrow(const acb_t z, slong bits)
         && mag_cmp_2exp_si(arb_radref(acb_imagref(z)), -bits - 1) <= 0;
 }
 
-int
-adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec)
+/* The modes of one call: the half-plane value (adf_tate_integral), the continuation of I (adf_tate_continue),
+   the completed function Lambda (adf_tate_completed). */
+#define TT_HALF 0
+#define TT_CONT 1
+#define TT_COMP 2
+
+/* The domain of a mode (after the caps, the bits and INV): ADF_OK to go on, else the status. TT_HALF: Re(s) > 1
+   certified (api-5.md:158-159; arb_le, arb_gt hold for all points, arb.rst:705-718). TT_CONT, TT_COMP
+   (api-5.md:230-235): for C = 1 an exact s = 0 or 1 is DOMAIN (acb_is_exact, acb.rst:228-230) and a rectangle
+   that contains 0 or 1 is NOT_DETERMINED, decided on the closed rectangle without arithmetic: x0 lies in it iff
+   arb_contains_si(Re s, x0) and arb_contains_zero(Im s) (arb.rst:664-671, :682-688: containment in the closed
+   ball, end points included); C > 1 has no spectral pole (P13: Lambda is entire; the trivial zeros of L cancel
+   the poles of Gamma, never evaluated as a product). */
+static int
+tt_domain(const adf_char_t chi, const acb_t s, int mode)
+{
+    arb_t one;
+    int st;
+
+    if (mode == TT_HALF)
+    {
+        arb_init(one);
+        arb_one(one);
+        st = arb_le(acb_realref(s), one) ? ADF_DOMAIN : arb_gt(acb_realref(s), one) ? ADF_OK : ADF_NOT_DETERMINED;
+        arb_clear(one);
+        return st;
+    }
+    if (chi->q != 1)
+        return ADF_OK;
+    if (acb_is_exact(s) && (acb_is_zero(s) || acb_is_one(s)))
+        return ADF_DOMAIN;
+    if (arb_contains_zero(acb_imagref(s))
+        && (arb_contains_si(acb_realref(s), 0) || arb_contains_si(acb_realref(s), 1)))
+        return ADF_NOT_DETERMINED;
+    return ADF_OK;
+}
+
+/* The shared body of the three calls: the checks in the order of tate.h, then the attempts at the working precision
+   max(prec, 2), doubled up to ADF_REAL_PREC_MAX while the width is not met; the retry rule of api-5.md:223-226
+   (docs/api-5b.md S6). The width is checked on the returned quantity itself: on I for TT_HALF and TT_CONT, on
+   Lambda for TT_COMP (computed directly, not as C^z times a width-limited I, api-5.md:245-246). */
+static int
+tt_run(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec, int mode)
 {
     acb_t s0, res;
-    arb_t one;
     mag_t cur, prev, two;
     ulong work = 0;
     slong w, pw = 0;
@@ -763,10 +914,7 @@ adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slon
     TT_INV(z != chi->s, "z", "output distinct from chi->s");
     if (!acb_is_finite(s))
         return ADF_DOMAIN;
-    arb_init(one);
-    arb_one(one);
-    st = arb_le(acb_realref(s), one) ? ADF_DOMAIN : arb_gt(acb_realref(s), one) ? ADF_OK : ADF_NOT_DETERMINED;
-    arb_clear(one);
+    st = tt_domain(chi, s, mode);
     if (st != ADF_OK)
         return st;
     acb_init(s0);
@@ -777,7 +925,7 @@ adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slon
     acb_set(s0, s);                                       /* z may be s */
     for (w = FLINT_MAX(prec, 2);; w = FLINT_MIN(2 * w, ADF_REAL_PREC_MAX))
     {
-        st = tt_attempt(res, chi, s0, bits, w, &work, NULL);
+        st = tt_attempt(res, chi, s0, bits, w, &work, NULL, mode == TT_COMP);
         if (st == ADF_LIMIT)
             break;
         if (st == ADF_OK && tt_narrow(res, bits))
@@ -809,4 +957,25 @@ adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slon
     mag_clear(prev);
     mag_clear(two);
     return st;
+}
+
+int
+adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec)
+{
+    return tt_run(z, chi, s, bits, prec, TT_HALF);
+}
+
+/* api-5.md:237-243; tate.h. The continuation of I_chi by the split, which P13 step 3 (:602-612, entire integrals
+   :609-612) and P12 (:505-512, step 3 :551-557) prove to be an identity of meromorphic functions on the plane. */
+int
+adf_tate_continue(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec)
+{
+    return tt_run(z, chi, s, bits, prec, TT_CONT);
+}
+
+/* api-5.md:244-247; tate.h. Lambda_chi = C^z I_chi by the same split, with its own budget and width. */
+int
+adf_tate_completed(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec)
+{
+    return tt_run(z, chi, s, bits, prec, TT_COMP);
 }
