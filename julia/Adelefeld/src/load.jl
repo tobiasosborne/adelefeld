@@ -53,6 +53,18 @@ const REQUIRED = (
     :adf_fball_add, :adf_fball_sub, :adf_fball_neg, :adf_fball_mul, :adf_fball_mul_rat, :adf_fball_div_rat,
     :adf_fball_equal_set, :adf_fball_overlaps, :adf_fball_contains, :adf_fball_compare,
     :adf_fball_set_str, :adf_fball_get_str,
+    # Step J-a.3: adele.h and text.h:169-183,209-217; numerical copy: acb.rst:124-126.
+    :adf_sizeof_adele, :adf_alignof_adele, :adf_sizeof_cadele, :adf_alignof_cadele,
+    :adf_adele_init, :adf_adele_clear, :adf_adele_set, :adf_adele_is_canonical, :adf_adele_identical,
+    :adf_adele_set_rat, :adf_adele_set_arb_fball, :adf_adele_get_real, :adf_adele_get_fin,
+    :adf_adele_add, :adf_adele_sub, :adf_adele_mul, :adf_adele_neg,
+    :adf_adele_add_rat, :adf_adele_mul_rat, :adf_adele_div_rat, :adf_adele_set_str, :adf_adele_get_str,
+    :adf_cadele_init, :adf_cadele_clear, :adf_cadele_set, :adf_cadele_is_canonical, :adf_cadele_identical,
+    :adf_cadele_set_rat, :adf_cadele_set_adele, :adf_cadele_set_acb_fball,
+    :adf_cadele_get_complex, :adf_cadele_get_fin,
+    :adf_cadele_add, :adf_cadele_sub, :adf_cadele_mul, :adf_cadele_neg,
+    :adf_cadele_add_rat, :adf_cadele_mul_rat, :adf_cadele_div_rat, :adf_cadele_set_str, :adf_cadele_get_str,
+    :acb_set_arb_arb,
 )
 
 # One Ref per symbol, named p_<symbol>, filled by __init__ (never at precompile time).
@@ -70,6 +82,8 @@ const LAYOUT_ROWS = (
     (suffix = :rat, size = 16, align = 8, source = "docs/api-m1.md:35,45"),
     (suffix = :text_limits, size = 32, align = 8, source = "docs/api-m1.md:41,45"),
     (suffix = :fball, size = 48, align = 8, source = "docs/api-m1.md:36,45"),
+    (suffix = :adele, size = 96, align = 8, source = "docs/api-m1.md:38,45"),
+    (suffix = :cadele, size = 144, align = 8, source = "docs/api-m1.md:39,45"),
 )
 
 const RAT_SIZE = 16

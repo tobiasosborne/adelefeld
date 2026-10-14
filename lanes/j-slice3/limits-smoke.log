@@ -1,0 +1,9 @@
+loaded
+(1.5 ; 0)
+ArgumentError
+((1.5) + (0)*i ; 0)
+ArgumentError
+1.5
+ArgumentError
+(1.5) + (0)*i
+ArgumentError

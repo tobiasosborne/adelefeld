@@ -1,0 +1,5 @@
+Precompiling packages...
+   2576.3 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 3 seconds
+Test Summary:                          | Pass  Total  Time
+all integer literal powers are refused |   15     15  1.0s

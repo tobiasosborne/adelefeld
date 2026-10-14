@@ -1,0 +1,203 @@
+    Updating `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_iHti9L/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_iHti9L/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=no --check-bounds=yes --warn-overwrite=yes --depwarn=yes
+ --inline=yes --startup-file=no --track-allocation=none
+   2734.5 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 3 seconds. 8 already precompiled.
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  29.2s
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.2 | 1015   1015  11.0s
+constructors, copies and numerical frame inverse: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:967
+  Expression: equal_set(finitepart(cc), finitepart(aa))
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:967 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:934 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:873
+constructors, copies and numerical frame inverse: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:968
+  Expression: identical(component_copy(complexpart(cc), :acb_get_real), realpart(aa))
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:968 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:934 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:873
+scalar matrix, embedding, inputs unchanged and failure status: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1117
+  Expression: string(complexpart(a + c)) == "(8) + (2)*i"
+   Evaluated: "(5) + (2)*i" == "(8) + (2)*i"
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1117 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1083 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:873
+scalar matrix, embedding, inputs unchanged and failure status: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1118
+  Expression: string(complexpart(c - a)) == "(2) + (2)*i"
+   Evaluated: "(5) + (2)*i" == "(2) + (2)*i"
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1118 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1083 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:873
+scalar matrix, embedding, inputs unchanged and failure status: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1119
+  Expression: string(complexpart(a * c)) == "(15) + (6)*i"
+   Evaluated: "(0) + (0)*i" == "(15) + (6)*i"
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1119 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1083 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:873
+refusals and argument bounds before C: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1161
+  Expression: (Adelefeld.diagnostics()).live == live
+   Evaluated: 317 == 613
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1161 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1123 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:873
+refusals and argument bounds before C: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1168
+  Expression: Adelefeld._assert_zero_fin(CAdele(bad))
+    Expected: AssertionError
+  No exception thrown
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1168 [inlined]
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1123 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:873
+Test Summary:                                                   | Pass  Fail  Total   Time
+Adelefeld step J-a.3                                            | 1550     7   1557  24.6s
+  types and layout rows                                         |    7            7   0.1s
+  constructors, copies and numerical frame inverse              |   35     2     37   5.8s
+  SPEC 4.3 rows through Adele at prec 64                        |   19           19   0.4s
+  header precision rules and exactness                          |   71           71   0.7s
+  numerical arithmetic: 50 random pairs at BigFloat 256 bits    |  750          750   1.0s
+  scalar matrix, embedding, inputs unchanged and failure status |  176     3    179   2.0s
+  refusals and argument bounds before C                         |  181     2    183   2.0s
+  text statuses and 30 adele/complex round trips                |  194          194   0.2s
+  closed owners, projections survive and GC                     |   89           89   4.4s
+  adele layout rejection in separate processes                  |   28           28   8.0s
+RNG of the outermost testset: Random.Xoshiro(0x9439c8d761263545, 0xed4ab201449cc188, 0xde5dafe34a83377e, 
+0xa2071f6b10677cc6, 0x22202a391660f8bd)
+ERROR: LoadError: Some tests did not pass: 1550 passed, 7 failed, 0 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:871
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, 
+test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool)
+    @ Pkg.Operations 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, 
+test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, 
+mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550

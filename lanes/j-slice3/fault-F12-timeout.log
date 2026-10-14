@@ -1,0 +1,207 @@
+    Updating `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_1lfxB5/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_1lfxB5/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=no --check-bounds=yes --warn-overwrite=yes --depwarn=yes
+ --inline=yes --startup-file=no --track-allocation=none
+   5707.8 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 6 seconds. 8 already precompiled.
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  51.4s
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.2 | 1015   1015  17.5s
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+ERRORS=24 LIMIT_CALLS=12 LIVE=0
+invalid prec precedes even the default-limit C call: Test Failed at 
+[7] signal 15: Terminated
+in expression starting at none:1
+epoll_pwait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+
+[47] signal 15: Terminated
+in expression starting at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:874
+uv__io_poll at /workspace/srcdir/libuv/src/unix/linux.c:1404
+uv_run at /workspace/srcdir/libuv/src/unix/core.c:430
+ijl_task_get_next at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/scheduler.c:457
+last at ./../usr/share/julia/Compiler/src/cicache.jl:32 [inlined]
+max_world at ./../usr/share/julia/Compiler/src/cicache.jl:35 [inlined]
+scan_specified_partitions at ./../usr/share/julia/Compiler/src/abstractinterpretation.jl:3674
+poptask at ./task.jl:1216
+wait at ./task.jl:1228
+scan_leaf_partitions at ./../usr/share/julia/Compiler/src/abstractinterpretation.jl:3704 [inlined]
+abstract_load_all_consistent_leaf_partitions at ./../usr/share/julia/Compiler/src/abstractinterpretation.jl:3719 
+[inlined]
+abstract_eval_globalref_type at ./../usr/share/julia/Compiler/src/abstractinterpretation.jl:3589 [inlined]
+argextype at ./../usr/share/julia/Compiler/src/optimize.jl:453
+#wait#398 at ./condition.jl:141
+wait at ./process.jl:685
+wait at ./process.jl:686
+jfptr_wait_41907.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so (unknown line)
+subprocess_handler at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2553
+unknown function (ip: 0x7fed52d1e5a3) at (unknown file)
+#205 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2493
+withenv at ./env.jl:265
+#190 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2308
+argextype at ./../usr/share/julia/Compiler/src/optimize.jl:418 [inlined]
+argextype at ./../usr/share/julia/Compiler/src/optimize.jl:417 [inlined]
+is_known_call at ./../usr/share/julia/Compiler/src/ssair/passes.jl:5
+with_temp_env at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2161
+#186 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2275
+#mktempdir#21 at ./file.jl:936
+unknown function (ip: 0x7fed52d0faac) at (unknown file)
+mktempdir at ./file.jl:932
+mktempdir at ./file.jl:932
+#sandbox#182 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2222 [inlined]
+sandbox at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2212
+unknown function (ip: 0x7fed52d0c3a9) at (unknown file)
+#test#193 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2478
+test at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+#test#170 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+test at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/API.jl:515
+unknown function (ip: 0x7fed52d09f5d) at (unknown file)
+#test#84 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+unknown function (ip: 0x7fed52d09276) at (unknown file)
+test at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+#test#86 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+test at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+unknown function (ip: 0x7fed52d0058f) at (unknown file)
+jl_apply at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+do_call at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:123
+eval_value at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:243
+eval_stmt_value at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:194 [inlined]
+eval_body at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:707
+jl_interpret_toplevel_thunk at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:898
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1035
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:975
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:975
+ijl_toplevel_eval at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1047
+ijl_toplevel_eval_in at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1092
+eval at ./boot.jl:489
+exec_options at ./client.jl:283
+_start at ./client.jl:550
+jfptr__start_74358.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so (unknown line)
+jl_apply at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+true_main at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/jlapi.c:971
+jl_repl_entrypoint at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/jlapi.c:1139
+main at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/cli/loader_exe.c:58
+unknown function (ip: 0x7fed7d02a1c9) at /lib/x86_64-linux-gnu/libc.so.6
+__libc_start_main at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+unknown function (ip: 0x4010b8) at /workspace/srcdir/glibc-2.17/csu/../sysdeps/x86_64/start.S
+unknown function (ip: (nil)) at (unknown file)
+Allocations: 4711664 (Pool: 4709441; Big: 2223); GC: 5
+sroa_pass! at ./../usr/share/julia/Compiler/src/ssair/passes.jl:1398
+run_passes_ipo_safe at ./../usr/share/julia/Compiler/src/optimize.jl:1013
+run_passes_ipo_safe at ./../usr/share/julia/Compiler/src/optimize.jl:1027 [inlined]
+optimize at ./../usr/share/julia/Compiler/src/optimize.jl:1002
+jfptr_optimize_82990.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so (unknown line)
+finish_nocycle at ./../usr/share/julia/Compiler/src/typeinfer.jl:202
+jfptr_finish_nocycle_80811.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so (unknown 
+line)
+typeinf at ./../usr/share/julia/Compiler/src/abstractinterpretation.jl:4508
+typeinf_ext at ./../usr/share/julia/Compiler/src/typeinfer.jl:1254
+typeinf_ext_toplevel at ./../usr/share/julia/Compiler/src/typeinfer.jl:1437 [inlined]
+typeinf_ext_toplevel at ./../usr/share/julia/Compiler/src/typeinfer.jl:1446
+jfptr_typeinf_ext_toplevel_82377.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so 
+(unknown line)
+jl_apply at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+jl_type_infer at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/gf.c:466
+jl_compile_method_internal at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/gf.c:3516
+_jl_invoke at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/gf.c:4006 [inlined]
+ijl_apply_generic at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/gf.c:4214
+show at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Test/src/Test.jl:178
+print at ./strings/io.jl:35
+unknown function (ip: 0x7e5f79a11517) at (unknown file)
+print at ./coreio.jl:3
+#record#31 at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Test/src/Test.jl:1114
+record at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Test/src/Test.jl:1109 [inlined]
+do_test at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Test/src/Test.jl:713
+jfptr_do_test_2983.1 at 
+/home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/compiled/v1.12/Test/JfdTE_ldDGB.so (unknown 
+line)
+macro expansion at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+macro expansion at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1378 [inlined]
+macro expansion at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+macro expansion at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1346 [inlined]
+macro expansion at /cache/build/builder-amdci5-3/julialang/julia-
+release-1-dot-12/usr/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+top-level scope at /home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1024
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:975
+ijl_toplevel_eval at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1047
+ijl_toplevel_eval_in at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1092
+eval at ./boot.jl:489
+include_string at ./loading.jl:2870
+_include at ./loading.jl:2930
+include at ./Base.jl:307
+IncludeInto at ./Base.jl:308
+jfptr_IncludeInto_66687.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so (unknown 
+line)
+jl_apply at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+do_call at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:123
+eval_value at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:243
+eval_stmt_value at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:194 [inlined]
+eval_body at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:707
+jl_interpret_toplevel_thunk at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/interpreter.c:898
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1035
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:975
+ijl_toplevel_eval at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1047
+ijl_toplevel_eval_in at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/toplevel.c:1092
+eval at ./boot.jl:489
+exec_options at ./client.jl:283
+_start at ./client.jl:550
+jfptr__start_74358.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so (unknown line)
+jl_apply at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+true_main at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/jlapi.c:971
+jl_repl_entrypoint at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/jlapi.c:1139
+main at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/cli/loader_exe.c:58
+unknown function (ip: 0x7e5f94e2a1c9) at /lib/x86_64-linux-gnu/libc.so.6
+__libc_start_main at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+unknown function (ip: 0x4010b8) at /workspace/srcdir/glibc-2.17/csu/../sysdeps/x86_64/start.S
+unknown function (ip: (nil)) at (unknown file)
+Allocations: 6547489 (Pool: 6546519; Big: 970); GC: 27

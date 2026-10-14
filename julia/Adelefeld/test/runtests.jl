@@ -865,3 +865,523 @@ end
 end
 
 end
+
+# ---- Step J-a.3: Adele/CAdele and numerical carriers (docs/api-j.md sections 3, 4 and 9) ----
+using Libdl
+# Freeze unrelated finalizers during exact live-count comparisons. The GC acceptance runs in a
+# separate process with automatic GC enabled. Restore this process even if a test throws.
+previous_gc = GC.enable(false)
+try
+@testset "Adelefeld step J-a.3" begin
+
+@testset "types and layout rows" begin
+    rows = [(r.suffix, r.size, r.align) for r in Adelefeld.LAYOUT_ROWS]
+    @test (:adele, 96, 8) in rows
+    @test (:cadele, 144, 8) in rows
+    @test Adele <: Number
+    @test CAdele <: Number
+    @test RealBall !== Adele
+    @test ComplexBall !== CAdele
+    @test isempty(Test.detect_ambiguities(Adelefeld))
+end
+
+# Test-only queries from the same handle's FLINT dependency, never raw init/clear.
+# refs/src/flint-3.0.1/arb.rst:382-388,660-680; acb.rst:302-304,374-380.
+function num_contains(x, q)
+    r = Rat(q)
+    try
+        GC.@preserve x r begin
+            f = Libdl.dlsym(Adelefeld.LIBHANDLE[], :arb_contains_fmpq)
+            return ccall(f, Cint, (Ptr{Cvoid}, Ptr{Cvoid}),
+                         Adelefeld._ptr(x._carrier), Adelefeld._ptr(r)) == 1
+        end
+    finally
+        close(r)
+    end
+end
+function ball_contains(x, y)
+    GC.@preserve x y begin
+        f = Libdl.dlsym(Adelefeld.LIBHANDLE[], x isa RealBall ? :arb_contains : :acb_contains)
+        return ccall(f, Cint, (Ptr{Cvoid}, Ptr{Cvoid}),
+                     Adelefeld._ptr(x._carrier), Adelefeld._ptr(y._carrier)) == 1
+    end
+end
+function num_radius(x)
+    z = RealBall(0)
+    GC.@preserve x z begin
+        f = Libdl.dlsym(Adelefeld.LIBHANDLE[], :arb_get_rad_arb)
+        ccall(f, Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}),
+              Adelefeld._ptr(z._carrier), Adelefeld._ptr(x._carrier))
+    end
+    return z
+end
+function component_copy(x, name)
+    z = RealBall(0)
+    GC.@preserve x z begin
+        f = Libdl.dlsym(Adelefeld.LIBHANDLE[], name)
+        ccall(f, Cvoid, (Ptr{Cvoid}, Ptr{Cvoid}),
+              Adelefeld._ptr(z._carrier), Adelefeld._ptr(x._carrier))
+    end
+    return z
+end
+function exact_zero_fin(x)
+    f = finitepart(x)
+    c = center(f); n = radius(f)
+    try
+        return string(c) == "0" && string(n) == "0"
+    finally
+        close(c); close(n); close(f)
+    end
+end
+
+@testset "constructors, copies and numerical frame inverse" begin
+    for T in (Adele, CAdele)
+        x = T(Rat(3, 2); prec=64)
+        @test is_canonical(x)
+        @test identical(x, copy(x))
+        @test equal_set(finitepart(x), FBall(Rat(3, 2)))
+    end
+    r = parse(RealBall, "1.5 +/- 0.0009765625")
+    z = parse(ComplexBall, "(1.5 +/- 0.0009765625) + (-2)*i")
+    @test string(r) == "1.5 +/- 0.00098"
+    @test string(z) == "(1.5 +/- 0.00098) + (-2)*i"
+    @test identical(num_radius(r), RealBall(Rat(1, 1024)))
+    for x in (r, z)
+        @test value_text(x._carrier) == "(" * string(x) * " ; 0)"
+        @test ball_contains(parse(typeof(x), string(x)), x)
+        @test identical(x, copy(x))
+        @test is_canonical(x)
+        @test exact_zero_fin(x._carrier)
+        @test_throws MethodError finitepart(x)
+    end
+    @test try_parse(RealBall, "1.5 +/- 2^-10").status === PARSE
+    rr = RealBall(Rat(1, 3); prec=192); ii = RealBall(Rat(-5, 7); prec=192)
+    zz = ComplexBall(rr, ii)
+    @test identical(component_copy(zz, :acb_get_real), rr)
+    @test identical(component_copy(zz, :acb_get_imag), ii)
+    @test exact_zero_fin(zz._carrier)
+    f = fb("5 mod 18")
+    a = Adele(r, f); c = CAdele(z, f)
+    @test identical(realpart(a), r)
+    @test identical(complexpart(c), z)
+    @test equal_set(finitepart(a), f)
+    @test equal_set(finitepart(c), f)
+    @test string(Adele(f; prec=128)) == "(0 ; 5 mod 18)"
+    aa = Adele(Rat(1, 3); prec=192); cc = CAdele(aa)
+    @test equal_set(finitepart(cc), finitepart(aa))
+    @test identical(component_copy(complexpart(cc), :acb_get_real), realpart(aa))
+    @test string(component_copy(complexpart(cc), :acb_get_imag)) == "0"
+    # Private invalid prefixes exercise C setters' DOMAIN and immediate failure cleanup.
+    for (B, T, name) in ((RealBall, Adele, :arb_indeterminate), (ComplexBall, CAdele, :acb_indeterminate))
+        b = B(0)
+        GC.@preserve b begin
+            p = Libdl.dlsym(Adelefeld.LIBHANDLE[], name)
+            ccall(p, Cvoid, (Ptr{Cvoid},), Adelefeld._ptr(b._carrier))
+        end
+        live = Adelefeld.diagnostics().live
+        e = try; T(b, f); catch err; err; end
+        @test e isa AdfError && e.status === DOMAIN
+        @test Adelefeld.diagnostics().live == live
+        close(b)
+    end
+end
+
+@testset "SPEC 4.3 rows through Adele at prec 64" begin
+    a(c, s) = Adele(RealBall(Rat(c); prec=64), fb(s))
+    rows = [
+        (a(3, "3 mod 12") + a(5, "5 mod 18"), "2 mod 6", 8//1),
+        (a(3, "3 mod 12") * a(5, "5 mod 18"), "3 mod 6", 15//1),
+        (Rat(12) * a(5, "5 mod 18"), "60 mod 216", 60//1),
+        (Rat(1, 3) * a(5, "5 mod 18"), "5/3 mod 6", 5//3),
+        (a(1//2, "1/2 mod 8") * a(2//3, "2/3 mod 9"), "0 mod 1/6", 1//3),
+    ]
+    for (x, fin, q) in rows
+        @test equal_set(finitepart(x), fb(fin))
+        @test num_contains(realpart(x), q)
+        @test is_canonical(x)
+    end
+    x = a(3, "3 mod 12")
+    @test equal_set(finitepart(x - x), fb("0 mod 12"))
+    @test !equal_set(finitepart(x - x), FBall(0))
+    @test num_contains(realpart(x - x), 0)
+    @test num_contains(realpart(Rat(2) - x), -1)
+end
+
+@testset "header precision rules and exactness" begin
+    for T in (Adele, CAdele)
+        part = T === Adele ? realpart : complexpart
+        dy = Rat(big(2)^90 + 1)
+        lo = T(dy; prec=64); hi = T(dy; prec=128)
+        @test !identical(lo, hi)
+        @test equal_set(finitepart(lo), finitepart(hi))
+        # At sufficient digits the exactly representable dyadic prints without a radius.
+        @test !occursin("+/-", value_text(part(hi); digits=50))
+        @test occursin("+/-", value_text(part(lo); digits=50))
+        @test identical(T(Rat(1, 3); prec=-100), T(Rat(1, 3); prec=2))
+        txt = T === Adele ? "(1208925819614629174706177 ; 2 mod 7)" :
+                            "((1208925819614629174706177) + (0)*i ; 2 mod 7)"
+        @test !identical(parse(T, txt; prec=64), parse(T, txt; prec=128))
+        @test identical(parse(T, txt; prec=0), parse(T, txt; prec=2))
+        x = T(Rat(1, 3); prec=192); y = T(Rat(5, 7); prec=192)
+        for op in (add, sub, mul)
+            low = op(x, y; prec=16); high = op(x, y; prec=128)
+            @test !identical(low, high)
+            @test equal_set(finitepart(low), finitepart(high))
+            @test identical(op(x, y; prec=-1), op(x, y; prec=2))
+        end
+        for op in (add, sub, mul, divexact)
+            @test !identical(op(x, Rat(5, 7); prec=16), op(x, Rat(5, 7); prec=128))
+            @test identical(op(x, Rat(5, 7); prec=1), op(x, Rat(5, 7); prec=2))
+        end
+        @test identical(-(-x), x)
+        @test_throws MethodError try_neg(x; prec=128)
+        @test equal_set(finitepart(T(Rat(1, 3); prec=64)), FBall(Rat(1, 3)))
+    end
+    @test string(num_radius(realpart(Adele(Rat(3, 2); prec=64)))) == "0"
+    @test num_contains(realpart(Adele(Rat(1, 3); prec=64)), 1//3)
+    @test string(num_radius(realpart(Adele(Rat(1, 3); prec=64)))) != "0"
+    for B in (RealBall, ComplexBall)
+        @test !occursin("+/-", string(B(Rat(3, 2); prec=64)))
+        @test occursin("+/-", string(B(Rat(1, 3); prec=64)))
+        x = B(Rat(1, 3); prec=192); y = B(Rat(5, 7); prec=192)
+        for op in (add, sub, mul)
+            @test !identical(op(x, y; prec=16), op(x, y; prec=128))
+        end
+        @test identical(-(-x), x)
+    end
+    # Only SPEC 4.4 policy 1, tight, is offered by adele.h:19-23. No scaled/cap surface here.
+    x = Adele(RealBall(1), fb("1 mod 2")) * Rat(1, 2)
+    @test equal_set(finitepart(x), fb("1/2 mod 1"))
+    @test !equal_set(finitepart(x), fb("1/2 mod 2"))
+end
+
+@testset "numerical arithmetic: 50 random pairs at BigFloat 256 bits" begin
+    g = Lcg(0x897cb013abfe4411)
+    setprecision(BigFloat, 256) do
+        for _ in 1:50
+            qs = [Int(next!(g) % 2_000_001) - 1_000_000 for _ in 1:4]
+            p, q, u, v = Rational{BigInt}.(qs) ./ big(2)^20
+            x = RealBall(Rat(p)); y = RealBall(Rat(q))
+            z = ComplexBall(x, RealBall(Rat(u))); w = ComplexBall(y, RealBall(Rat(v)))
+            bx, by = BigFloat(p), BigFloat(q)
+            bz, bw = Complex{BigFloat}(bx, BigFloat(u)), Complex{BigFloat}(by, BigFloat(v))
+            old = string.((x, y, z, w))
+            for (op, bval, cval) in ((add, bx + by, bz + bw), (sub, bx - by, bz - bw),
+                                     (mul, bx * by, bz * bw))
+                r = op(x, y; prec=64); c = op(z, w; prec=64)
+                @test num_contains(r, Rational{BigInt}(bval))
+                want = ComplexBall(RealBall(Rat(Rational{BigInt}(real(cval))); prec=256),
+                                   RealBall(Rat(Rational{BigInt}(imag(cval))); prec=256))
+                @test ball_contains(c, want)
+                @test exact_zero_fin(r._carrier)
+                @test exact_zero_fin(c._carrier)
+            end
+            @test num_contains(-x, -p)
+            @test exact_zero_fin((-z)._carrier)
+            @test string.((x, y, z, w)) == old
+        end
+    end
+end
+
+@testset "scalar matrix, embedding, inputs unchanged and failure status" begin
+    for T in (Adele, CAdele), scalar in (Rat(5, 7), 3, -2//3, big(2)^70, true)
+        x = T(Rat(1, 3); prec=192); before = copy(x)
+        q = scalar isa Rat ? jrat(scalar) : Rational{BigInt}(scalar)
+        part = T === Adele ? realpart : complexpart
+        for (op, got) in ((+, 1//3 + q), (-, 1//3 - q), (*, q/3))
+            out = op(x, scalar)
+            @test equal_set(finitepart(out), FBall(Rat(got)))
+            if T === Adele
+                @test num_contains(part(out), got)
+            else
+                @test ball_contains(part(out), ComplexBall(Rat(got); prec=256))
+            end
+        end
+        @test equal_set(finitepart(scalar - x), FBall(Rat(q - 1//3)))
+        @test equal_set(finitepart(scalar + x), FBall(Rat(q + 1//3)))
+        @test equal_set(finitepart(scalar * x), FBall(Rat(q/3)))
+        @test equal_set(finitepart(x / scalar), FBall(Rat((1//3)/q)))
+        @test identical(x, before)
+        zero = Rat(0); live = Adelefeld.diagnostics().live
+        result = try_div(x, zero; prec=64)
+        @test result.status === NOT_UNIT
+        @test result.value === nothing
+        @test Adelefeld.diagnostics().live == live
+        err = try; x / zero; catch e; e; end
+        @test err isa AdfError && err.status === NOT_UNIT
+        @test try_add(x, 1//0).status === DOMAIN
+        @test identical(x, before)
+    end
+    a = Adele(RealBall(3), fb("3 mod 12"))
+    c = parse(CAdele, "((5) + (2)*i ; 5 mod 18)")
+    for op in (add, sub, mul), (x, y) in ((a, c), (c, a))
+        @test identical(op(x, y; prec=128),
+                        op(x isa Adele ? CAdele(x) : x, y isa Adele ? CAdele(y) : y; prec=128))
+    end
+    @test string(complexpart(a + c)) == "(8) + (2)*i"
+    @test string(complexpart(c - a)) == "(2) + (2)*i"
+    @test string(complexpart(a * c)) == "(15) + (6)*i"
+end
+
+@testset "refusals and argument bounds before C" begin
+    a = Adele(Rat(1)); c = CAdele(a)
+    for x in (a, c), y in (FBall(1), 1.5, BigFloat(2), 1 + 2im)
+        for op in (+, -, *)
+            @test_throws ArgumentError op(x, y)
+            @test_throws ArgumentError op(y, x)
+        end
+    end
+    for x in (a, c), y in (a, c, Rat(1), 1, 1//2)
+        @test_throws ArgumentError x == y
+        @test_throws ArgumentError y == x
+    end
+    @test !isequal(a, copy(a))
+    @test isequal(a, a)
+    @test length(Set([a, copy(a), a])) == 2
+    for x in (FBall(1), a, c)
+        e = try; x^2; catch err; err; end
+        @test e isa ArgumentError && occursin("pow", sprint(showerror, e))
+        for call in (() -> x^0, () -> x^1, () -> x^-1, () -> x^-2)
+            e = try; call(); catch err; err; end
+            @test e isa ArgumentError && occursin("pow", sprint(showerror, e))
+        end
+    end
+    for x in (a, c), y in (a, c, FBall(1))
+        @test_throws ArgumentError x / y
+    end
+    for x in (RealBall(1), ComplexBall(1)), y in (FBall(1), a, c, Rat(1), 1, 1.0)
+        @test_throws MethodError x + y
+        @test_throws MethodError y * x
+    end
+    @test_throws MethodError RealBall(1) + ComplexBall(1)
+    q = Rat(1)
+    for prec in (1.5, 64//1, "64", nothing, big(2)^63, -big(2)^63 - 1)
+        live = Adelefeld.diagnostics().live
+        for T in (Adele, CAdele, RealBall, ComplexBall)
+            @test_throws ArgumentError T(q; prec=prec)
+            s = T === Adele ? "(1 ; 0)" : T === CAdele ? "((1) + (0)*i ; 0)" :
+                T === RealBall ? "1" : "(1) + (0)*i"
+            @test_throws ArgumentError parse(T, s; prec=prec)
+        end
+        @test_throws ArgumentError add(a, a; prec=prec)
+        @test_throws ArgumentError mul(a, q; prec=prec)
+        @test_throws ArgumentError divexact(a, q; prec=prec)
+        @test Adelefeld.diagnostics().live == live
+    end
+    for digits in (0, 1_000_001, big(2)^63, 2.5)
+        @test_throws ArgumentError value_text(a; digits=digits)
+    end
+    bad = Adele(Rat(1))
+    @test_throws AssertionError RealBall(Adelefeld._Raw(), bad)
+    @test_throws AssertionError Adelefeld._assert_zero_fin(CAdele(bad))
+    close(bad)
+end
+
+@testset "text statuses and 30 adele/complex round trips" begin
+    g = Lcg(0x489134312210ab01)
+    for T in (Adele, CAdele)
+        for s in ("", "(nan ; 0)", "(1 ; 1/0)", "(1 ; 2 mod 0/0)")
+            text = T === CAdele ? replace(s, "(1 ;" => "((1) + (0)*i ;") : s
+            @test try_parse(T, text).status === (occursin("/0", text) ? DOMAIN : PARSE)
+        end
+        text = T === Adele ? "(1 ; 0)" : "((1) + (0)*i ; 0)"
+        @test try_parse(T, text; limits=TextLimits(max_len=ncodeunits(text)-1)).status === LIMIT
+        @test try_parse(T, text * "\0").status === PARSE
+        @test try_parse(T, text * "é"; limits=TextLimits(max_len=ncodeunits(text)+1)).status === LIMIT
+    end
+    # text.h:37-42, M1-D6: NULL printer with length 0 above the binary exponent limit.
+    q = Rat(big(2)^100001)
+    for T in (Adele, CAdele, RealBall, ComplexBall)
+        x = T(q)
+        live = Adelefeld.diagnostics().live
+        r = try_value_text(x)
+        @test r.status === LIMIT
+        @test r.value === nothing
+        e = try; value_text(x); catch err; err; end
+        @test e isa AdfError && e.status === LIMIT
+        @test Adelefeld.diagnostics().live == live
+        @test is_canonical(x)
+        close(x)
+    end
+    close(q)
+    for _ in 1:30
+        m = Int(next!(g) % 1_000_001) - 500_000
+        n = Int(next!(g) % 1_000_001) - 500_000
+        fin = "$(Int(next!(g) % 10_000)) mod $(1 + Int(next!(g) % 100_000))"
+        for (T, s, part) in ((Adele, "($m.125 +/- 0.0009765625 ; $fin)", realpart),
+                            (CAdele, "(($m.125 +/- 0.0009765625) + ($n.25 +/- 0.125)*i ; $fin)",
+                             complexpart))
+            x = parse(T, s; prec=128); y = parse(T, string(x); prec=128)
+            @test is_canonical(y)
+            @test equal_set(finitepart(x), finitepart(y))
+            @test ball_contains(part(y), part(x))
+        end
+    end
+end
+
+@testset "closed owners, projections survive and GC" begin
+    for T in (Adele, CAdele, RealBall, ComplexBall)
+        x = T(Rat(1, 3)); y = copy(x)
+        @test identical(x, y)
+        close(x); close(x); finalize(x)
+        live = Adelefeld.diagnostics().live
+        for f in (() -> copy(x), () -> string(x), () -> is_canonical(x), () -> identical(x, y),
+                  () -> x + y, () -> -x, () -> x * y)
+            @test_throws InvalidStateException f()
+            @test Adelefeld.diagnostics().live == live
+        end
+        @test is_canonical(y)
+        if T === Adele || T === CAdele
+            @test_throws InvalidStateException finitepart(x)
+            @test_throws InvalidStateException T === Adele ? realpart(x) : complexpart(x)
+            part = T === Adele ? realpart : complexpart
+            p = part(y); fin = finitepart(y); close(y)
+            @test is_canonical(p)
+            @test equal_set(fin, FBall(Rat(1, 3)))
+            close(p); close(fin)
+        else
+            close(y)
+        end
+    end
+    q = Rat(1); close(q)
+    for T in (Adele, CAdele, RealBall, ComplexBall)
+        live = Adelefeld.diagnostics().live
+        @test_throws InvalidStateException T(q)
+        @test Adelefeld.diagnostics().live == live
+    end
+    for T in (Adele, CAdele)
+        x = T(1); r = Rat(2); close(x)
+        for f in (() -> try_add(x, r), () -> try_add(r, x), () -> try_sub(x, r),
+                  () -> try_sub(r, x), () -> try_mul(x, r), () -> try_mul(r, x), () -> try_div(x, r))
+            live = Adelefeld.diagnostics().live
+            @test_throws InvalidStateException f()
+            @test Adelefeld.diagnostics().live == live
+        end
+        x = T(1); close(r)
+        for f in (() -> x + r, () -> r - x, () -> x * r, () -> x / r)
+            live = Adelefeld.diagnostics().live
+            @test_throws InvalidStateException f()
+            @test Adelefeld.diagnostics().live == live
+        end
+        close(x)
+    end
+    a = Adele(1); close(a)
+    live = Adelefeld.diagnostics().live
+    @test_throws InvalidStateException CAdele(a)
+    @test Adelefeld.diagnostics().live == live
+    r = RealBall(1); z = ComplexBall(1); f = FBall(1)
+    close(f)
+    for call in (() -> Adele(r, f), () -> CAdele(z, f))
+        live = Adelefeld.diagnostics().live
+        @test_throws InvalidStateException call()
+        @test Adelefeld.diagnostics().live == live
+    end
+    close(r); close(z)
+    f = FBall(1)
+    for call in (() -> Adele(r, f), () -> CAdele(z, f), () -> ComplexBall(r, r))
+        live = Adelefeld.diagnostics().live
+        @test_throws InvalidStateException call()
+        @test Adelefeld.diagnostics().live == live
+    end
+    close(f)
+    # The outer testset still roots some earlier inputs. Test zero live owners in a fresh process.
+    code = """
+        using Adelefeld
+        function churn(T)
+            for i in 1:10_000
+                x = T(i); y = copy(x); x + y; -x
+            end
+        end
+        println("BASELINE=", Adelefeld.diagnostics().live)
+        for T in (Adele, CAdele, RealBall, ComplexBall)
+            churn(T)
+            GC.gc(); GC.gc(); GC.gc(); GC.gc()
+            d = Adelefeld.diagnostics()
+            println(T, " LIVE=", d.live, " ERRORS=", d.finalizer_errors)
+        end
+        """
+    julia = Base.julia_cmd()
+    out = read(`timeout 90 $julia --startup-file=no --project=$PKG -e $code`, String)
+    print(out)
+    @test occursin("BASELINE=0", out)
+    for T in (Adele, CAdele, RealBall, ComplexBall)
+        @test occursin("$T LIVE=0", out)
+        @test occursin("$T LIVE=0 ERRORS=0", out)
+    end
+
+end
+
+@testset "adele layout rejection in separate processes" begin
+    lib = Adelefeld.diagnostics().library
+    script = joinpath(@__DIR__, "load_fault.jl")
+    src = joinpath(@__DIR__, "fixtures", "fault.c")
+    cc = Sys.which("cc")
+    dir = mktempdir()
+    julia = Base.julia_cmd()
+    for (macro_name, suffix, observed) in
+        (("FAULT_ADELE_SIZE", "adele", 104), ("FAULT_ADELE_ALIGN", "adele", 16),
+         ("FAULT_CADELE_SIZE", "cadele", 152), ("FAULT_CADELE_ALIGN", "cadele", 16))
+        so = joinpath(dir, lowercase(macro_name) * ".so")
+        run(`timeout 30 $cc -shared -fPIC -O1 -DFAULT_NAME -D$macro_name $src -o $so
+             -Wl,--no-as-needed $lib -Wl,-rpath,$(dirname(lib))`)
+        env = copy(ENV); env["ADELEFELD_LIB"] = so
+        out = IOBuffer()
+        p = run(pipeline(setenv(`timeout 30 $julia --startup-file=no --project=$PKG $script $so`, env);
+                         stdout=out, stderr=out); wait=false)
+        wait(p)
+        text = String(take!(out))
+        @test p.exitcode == 0
+        @test occursin("layout", text)
+        query = occursin("SIZE", macro_name) ? "adf_sizeof_" : "adf_alignof_"
+        @test occursin(query * suffix, text)
+        @test occursin(string(observed), text)
+        @test occursin("INIT_CALLS=0", text)
+        @test occursin("LOADED=false", text)
+        @test !occursin("AFTER=allocated", text)
+    end
+    rm(dir; recursive=true)
+end
+
+@testset "invalid prec precedes even the default-limit C call" begin
+    lib = Adelefeld.diagnostics().library
+    src = joinpath(@__DIR__, "fixtures", "fault.c")
+    cc = Sys.which("cc")
+    dir = mktempdir()
+    so = joinpath(dir, "count-limits.so")
+    run(`timeout 30 $cc -shared -fPIC -O1 -DFAULT_MISSING -DCOUNT_LIMITS $src -o $so
+         -Wl,--no-as-needed $lib -Wl,-rpath,$(dirname(lib))`)
+    code = """
+        using Adelefeld, Libdl
+        errors = 0
+        for T in (Adele, CAdele, RealBall, ComplexBall),
+            prec in (1.5, 64//1, "64", nothing, big(2)^63, -big(2)^63-1)
+            try
+                parse(T, "invalid"; prec)
+            catch e
+                global errors += e isa ArgumentError
+            end
+        end
+        f = Libdl.dlsym(Adelefeld.LIBHANDLE[], :fixture_limits_calls)
+        println("ERRORS=", errors, " LIMIT_CALLS=", ccall(f, Cint, ()),
+                " LIVE=", Adelefeld.diagnostics().live)
+        """
+    env = copy(ENV); env["ADELEFELD_LIB"] = so
+    julia = Base.julia_cmd()
+    out = IOBuffer()
+    p = run(pipeline(setenv(`timeout 30 $julia --startup-file=no --project=$PKG -e $code`, env);
+                     stdout=out, stderr=out); wait=false)
+    wait(p)
+    text = String(take!(out))
+    print(text)
+    @test p.exitcode == 0
+    @test occursin("ERRORS=24", text)
+    @test occursin("LIMIT_CALLS=0", text)
+    @test occursin("LIVE=0", text)
+    rm(dir; recursive=true)
+end
+
+end
+finally
+    GC.enable(previous_gc)
+    GC.gc()
+end
