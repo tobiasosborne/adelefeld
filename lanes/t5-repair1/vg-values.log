@@ -1,0 +1,15 @@
+==181956== Memcheck, a memory error detector
+==181956== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==181956== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==181956== Command: lanes/t5-repair1/build-vg/test_tate_continue values
+==181956== Parent PID: 181955
+==181956== 
+==181956== 
+==181956== HEAP SUMMARY:
+==181956==     in use at exit: 0 bytes in 0 blocks
+==181956==   total heap usage: 144,890 allocs, 144,890 frees, 12,136,304 bytes allocated
+==181956== 
+==181956== All heap blocks were freed -- no leaks are possible
+==181956== 
+==181956== For lists of detected and suppressed errors, rerun with: -s
+==181956== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
