@@ -33,3 +33,4 @@ bench/bench_*
 !bench/bench_*.c
 .claude/worktrees/
 a.out
+julia/Adelefeld/Manifest.toml
