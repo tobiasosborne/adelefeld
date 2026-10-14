@@ -158,7 +158,13 @@ DIRICHLET_CHI_NULL; :162 declares dirichlet_chi. Header :51 calls G->expo the gr
 Observed and tested on every adapter row: its non-null k means E(k/G->expo), NOT E(k/ord(chi)).
 Normalize that rational into [0,1). If an order-based integer is wanted, k*ord(chi)/G->expo is integral.
 The oracle's chi_exponent returns this rescaled integer; no machine-word product is needed in C.
-The full exponent convention remains [source pending: FLINT 3.0.1 dirichlet_chi source under refs/].
+The source settles the convention. flint-3.0.1:dirichlet.rst:257 says "The returned value is the numerator of the
+actual value exponent mod the group exponent *G->expo*." and :261 says "Compute the value `\chi(n)` as the
+exponent modulo *G->expo*." The code agrees: flint-src-3.0.1:dirichlet/chi.c:28 is
+`v = dirichlet_pairing_char(G, chi, x);` and flint-src-3.0.1:dirichlet/pairing_char.c:20, 23 reduce the sum modulo
+`G->expo` (`nmod_init(&order, G->expo)`, `nmod_add(v, G->PHI[k] * ..., order)`). Hence a non-null k means
+chi(n) = exp(2 pi i k / G->expo). The null value DIRICHLET_CHI_NULL is returned exactly when gcd(q, n) > 1
+(flint-src-3.0.1:dirichlet/chi.c:17, 19: `if (n_gcd(G->q, n) > 1)`, `return DIRICHLET_CHI_NULL;`).
 
 ```c
 /* chi(a), ignoring s: OK writes is_zero=1 and theta=0 for a non-unit; otherwise
@@ -281,10 +287,45 @@ P3. Lowering a label, and conjugation.
    Inversion negates log_j(n) modulo d_j, hence B(n^-1,a)=-B(n,a). This proves the inverse-label
    rule for this pairing, for any choice of cyclic generators; conductor and parity stay unchanged.
    Taking conjugates of exp(s log(t)) also conjugates s, since log(t) is real.
-5. Step 4's identification with FLINT is [source pending: dirichlet pairing implementation under refs/].
-   Header:84 specifies the logs of a label but does not state this bilinear formula. The oracle checks
-   the inverse-label rule for all primitive C<=40; this is finite evidence, not a replacement source.
-   Do not mark the universal FLINT identification proved until that source has been supplied.
+5. Identification of step 4 with FLINT's pairing (sources on disk since lane c-sources1).
+   (a) flint-src-3.0.1:dirichlet/pairing_char.c:23 computes
+   `v = nmod_add(v, G->PHI[k] * nmod_mul(chi->log[k], x->log[k], G->P[k].phi), order)` with order = G->expo,
+   so the result is sum_k PHI[k] * (a_k b_k mod phi_k) modulo expo,
+   with a = chi->log, b = x->log, phi_k = P[k].phi.n.
+   (b) flint-src-3.0.1:dirichlet/group_init.c:88 is `G->PHI[k] = G->expo / G->P[k].phi.n;`, so
+   PHI[k] / expo = 1 / phi_k. As phi_k divides expo (step 6), PHI[k] (a_k b_k mod phi_k) is an integer and
+   a_k b_k mod phi_k may be replaced by a_k b_k without changing the class modulo expo. Hence the returned k,
+   divided by expo, is sum_k a_k b_k / phi_k modulo 1. This is B(n, a) of step 4 with d_j = phi_j.
+   (c) flint-3.0.1:dirichlet.rst:29 gives the same: "chi_q(m,n) = exp(2i\pi\sum \frac{a_ib_i}{\phi_i} )".
+   (d) The logs are those of the Conrey generators of FLINT's group: the generators and their orders are set in
+   flint-src-3.0.1:dirichlet/group_init.c:46-61 (p = 2, e >= 3: phi = 2 with g = 2^e - 1, and phi = 2^(e-2) with
+   g = 5; odd p: phi = (p-1) p^(e-1), g a primitive root), and flint-src-3.0.1:dirichlet/char_log.c:25-47 computes
+   `x->log[k]` for them and :50 keeps `x->n = m`. flint-3.0.1:dirichlet.rst:32-33 says "We call *number* a
+   residue class `m` modulo *q*, and *log* the corresponding vector `(a_i)` of exponents of Conrey generators."
+   (e) The value: flint-src-3.0.1:dirichlet/chi.c:26, 28 compute `dirichlet_char_log(x, G, n)` and
+   `dirichlet_pairing_char(G, chi, x)`; so chi(n) = pairing(log chi, log n), and
+   flint-src-3.0.1:dirichlet/pairing.c:25-28 gives pairing(m, n) = pairing(log m, log n) the same way.
+   A character of label m is `dirichlet_char_log(chi, G, m)` (char_log.c:50), so its logs are those of m.
+   What the source does NOT say: no sentence calls the character of label m "chi_m", and none says that the
+   pairing is symmetric (it is, by the formula in (a), a derivation and not a quotation). The gap does not matter
+   for the inverse-label rule: the rule is a statement about the logs, which the source defines in (d), and the
+   label-to-character map used is chi(n) = pairing(log label, log n) of (e), which is the code, not an assumption.
+6. Divisibility phi_k | expo. flint-src-3.0.1:dirichlet/group_init.c:76 sets `G->expo = P[G->neven - 1].phi.n`
+   when neven > 0 and :72 sets expo = 1 otherwise; :81 updates `G->expo *= P[k].phi.n / n_gcd(G->expo, P[k].p - 1)`
+   for each odd prime. The even components have phi = 2 (neven = 1, or the first of two) and 2^(e-2) (the second,
+   e >= 3), both dividing the last one, so they divide the initial expo. At an odd step g = gcd(expo, p-1) divides
+   p - 1, which divides phi_k, so phi_k / g is an integer, and the new expo = (expo / g) phi_k is a multiple of
+   phi_k and of the old expo. Since expo only grows by integer factors, every phi_k divides the final expo.
+7. Conjugate label, unconditionally. flint-src-3.0.1:dirichlet/char_pow.c:19, 20 set
+   `c->log[k] = nmod_mul(a->log[k], n, G->P[k].phi);` and `c->n = nmod_pow_ui(a->n, n, G->mod);`. With
+   n = expo - 1 and phi_k | expo (step 6), (expo - 1) a_k = -a_k modulo phi_k, so the logs are negated and
+   the number is a->n^(expo-1) = a->n^-1 modulo q (the group exponent kills every unit power expo). Step 4 and (e)
+   then give pairing(-log m, log a) = -pairing(log m, log a), so chi_(m^-1) = conj(chi_m) on units. The source has
+   no conjugation function (c-sources1 report, question e); the code of adf_char_conj negates the logs directly,
+   which is the same operation as char_pow with expo - 1, rebuilt by `_dirichlet_char_exp`
+   (flint-src-3.0.1:dirichlet/char_exp.c:18-21), and needs no further source.
+   The inverse-label rule is therefore proved for FLINT's pairing, not only checked for C <= 40.
+   The oracle check for all primitive C<=40 stays as evidence for the implementation, not as the proof.
 
 P4. Certified direct-sum bound; the C additions introduce no unaccounted rounding.
 1. At phase precision w, psi.h's singleton bound gives endpoint excess A*2^-w, A=4+2^-27.
@@ -387,7 +428,10 @@ F2, brief's chi(c) coset formula: (C,n,c,N)=(3,2,3,4) has phases {0,1/2}, althou
 A compatible unit lift a0 is necessary (P1). SPEC's coset meaning and its singleton test are unaffected.
 
 No counterexample was found to the named SPEC, PLAN, conventions, proofs, or numerical goldens.
-P3's universal FLINT pairing identification and full-word group-init failure semantics remain source pending.
+P3's FLINT pairing identification is closed by P3.5 to P3.7 (lane c-pending1, from flint-src-3.0.1:dirichlet/
+pairing_char.c:23, group_init.c:88, chi.c:26-28, char_pow.c:19-20). The group-init failure is settled: it returns 0
+only for an odd prime factor above 10^16 (flint-3.0.1:dirichlet.rst:71-74; group_init.c:115-127), unreachable
+for a modulus accepted under ADF_CHAR_MOD_MAX = 65536 (include/adelefeld/char.h:15), see api-3d.md.
 The signed real quadratic Gauss evaluation remains pending as already recorded at analysis:580-584;
 it is not used for the implementation. The on-disk acb_dirichlet documentation supplies the Gauss sign,
 reference-function assumptions and the later factor-method description; no claim is sourced from memory.

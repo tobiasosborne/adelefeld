@@ -21,10 +21,18 @@ The declarations used are /usr/include/flint/dirichlet.h:68,90,110,111,114.
 
 HEADER-FINDING: api-3c section 1 says that this predicate never aborts, while section 7 and N-D22
 forbid returning false for a resource failure. Its int result has no resource-status alternative.
-The group-init failure semantics are source pending. The implementation calls flint_abort if setup
-returns 0, so it never reports a mathematical false because of setup failure. This is a fail-stop
-choice, not a proof that failure is unreachable. A status-returning predicate is the alternative;
-that would change the fixed declaration and is not implemented here.
+The group-init failure semantics are settled by the source. flint-3.0.1:dirichlet.rst:71-74: "the largest prime
+factor of *q* must not exceed `10^{16}`. ... The function returns 1 on success and 0 if a factor is too large."
+flint-src-3.0.1:dirichlet/group_init.c:115-127 removes the power of 2, factors only the odd part, and on a
+64-bit build returns 0 for an odd factor above 10^16, before any allocation; :153 returns 1. A power of 2 never
+gives 0. Under the modulus cap ADF_CHAR_MOD_MAX = 65536 (include/adelefeld/char.h:15, N-D22) every prime factor of
+an accepted modulus is below 2^16 < 10^16, so a return of 0 is UNREACHABLE for an accepted modulus. The
+constructors and evaluators test the cap before setup. This predicate applies no cap and takes its fields as
+given, so 0 could arrive only from a field q that no capped constructor makes; the implementation then calls
+flint_abort and never reports a mathematical false because of setup failure. A status-returning predicate
+would change the fixed declaration and is not implemented here. A group whose init returned 0 must not be
+cleared: flint-src-3.0.1:dirichlet/group_clear.c:17-19 frees G->P, G->generators and G->PHI without a test,
+and those pointers are not set before the early return. No call site of src/char.c clears a failed group.
 
 adf_char_identical tests all three integer fields and acb_equal(s). It is representation identity.
 adf_sizeof_char and adf_alignof_char are header-inline and exported through src/inlines.c.
@@ -99,7 +107,8 @@ A nonunit has DIRICHLET_CHI_NULL and commits (1,0); a unit commits (0,k/G->expo)
 fmpq_set_ui reduces the rational, whose range is [0,1). Both outputs commit after setup succeeds.
 The exponent is the GROUP exponent, not the order returned by get_order.
 The declarations/evidence are /usr/include/flint/dirichlet.h:51,139,162 and the design's F1 adapter checks.
-The universal FLINT pairing/exponent implementation remains source pending, as api-3c section 3/P3.5 states.
+The FLINT pairing and exponent implementation is sourced: api-3c section 3 and P3.5 to P3.7 cite
+flint-src-3.0.1:dirichlet/chi.c:28 and pairing_char.c:23 (lane c-pending1).
 
 adf_char_chi first checks the precision and conductor caps, then calls the exact phase getter.
 It assigns exact zero on the zero branch and otherwise calls adf_phase_get_acb into independent temporary storage.
@@ -284,7 +293,9 @@ The group representation proves the inverse-number part without assuming a symme
 5. For a real positive t, conjugating exp(s log(t)) conjugates s because log(t) is real.
    The kernels of chi and its inverse coincide, so conductor and parity are preserved.
 
-Step 4's identification with FLINT remains [source pending: universal FLINT Conrey pairing definition].
+Step 4's identification with FLINT is closed in api-3c P3.5 to P3.7 (lane c-pending1): the pairing of the logs is
+flint-src-3.0.1:dirichlet/pairing_char.c:23 with PHI[k] = expo / phi_k (group_init.c:88), and the conjugate label
+by exponent negation (char_pow.c:19-20, expo - 1) is proved from phi_k | expo (group_init.c:76, 81).
 refs/src/flint-3.0.1/acb_dirichlet.rst:337-342 names the pairing but does not state symmetry or its
 cyclic exponent formula. Its :466 names a "Conrey isomorphism" but supplies no definition of that map.
 The header comments do not supply that formula either. This is not marked as a universal proof of P3.
