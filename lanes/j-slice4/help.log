@@ -1,0 +1,307 @@
+Julia 1.12.5
+
+--- #= /home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/help.jl:3 =# @enum
+  @enum EnumName[::BaseType] value1[=x] value2[=y]
+
+  Create an Enum{BaseType} subtype with name EnumName and enum member values
+  of value1 and value2 with optional assigned values of x and y, respectively.
+  EnumName can be used just like other types and enum member values as regular
+  values, such as
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> @enum Fruit apple=1 orange=2 kiwi=3
+  
+  julia> f(x::Fruit) = "I'm a Fruit with value: $(Int(x))"
+  f (generic function with 1 method)
+  
+  julia> f(apple)
+  "I'm a Fruit with value: 1"
+  
+  julia> Fruit(1)
+  apple::Fruit = 1
+
+  Values can also be specified inside a begin block, e.g.
+
+  @enum EnumName begin
+      value1
+      value2
+  end
+
+  BaseType, which defaults to Int32, must be a primitive subtype of Integer.
+  Member values can be converted between the enum type and BaseType. read and
+  write perform these conversions automatically. In case the enum is created
+  with a non-default BaseType, Integer(value1) will return the integer value1
+  with the type BaseType.
+
+  To list all the instances of an enum use instances, e.g.
+
+  julia> instances(Fruit)
+  (apple, orange, kiwi)
+
+  It is possible to construct a symbol from an enum instance:
+
+  julia> Symbol(apple)
+  :apple
+
+--- IOContext
+  IOContext(io::IO, KV::Pair...)
+
+  Create an IOContext that wraps a given stream, adding the specified
+  key=>value pairs to the properties of that stream (note that io can itself
+  be an IOContext).
+
+    •  use (key => value) in io to see if this particular combination is
+       in the properties set
+    •  use get(io, key, default) to retrieve the most recent value for a
+       particular key
+
+  The following properties are in common use:
+
+    •  :compact: Boolean specifying that values should be printed more
+       compactly, e.g. that numbers should be printed with fewer digits.
+       This is set when printing array elements. :compact output should
+       not contain line breaks.
+    •  :limit: Boolean specifying that containers should be truncated,
+       e.g. showing … in place of most elements.
+    •  :displaysize: A Tuple{Int,Int} giving the size in rows and columns
+       to use for text output. This can be used to override the display
+       size for called functions, but to get the size of the screen use
+       the displaysize function.
+    •  :typeinfo: a Type characterizing the information already printed
+       concerning the type of the object about to be displayed. This is
+       mainly useful when displaying a collection of objects of the same
+       type, so that redundant type information can be avoided (e.g.
+       [Float16(0)] can be shown as "Float16[0.0]" instead of
+       "Float16[Float16(0.0)]" : while displaying the elements of the
+       array, the :typeinfo property will be set to Float16).
+    •  :color: Boolean specifying whether ANSI color/escape codes are
+       supported/expected. By default, this is determined by whether io
+       is a compatible terminal and by any --color command-line flag when
+       julia was launched.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> io = IOBuffer();
+  
+  julia> printstyled(IOContext(io, :color => true), "string", color=:red)
+  
+  julia> String(take!(io))
+  "\e[31mstring\e[39m"
+  
+  julia> printstyled(io, "string", color=:red)
+  
+  julia> String(take!(io))
+  "string"
+
+  julia> print(IOContext(stdout, :compact => false), 1.12341234)
+  1.12341234
+  julia> print(IOContext(stdout, :compact => true), 1.12341234)
+  1.12341
+
+  julia> function f(io::IO)
+             if get(io, :short, false)
+                 print(io, "short")
+             else
+                 print(io, "loooooong")
+             end
+         end
+  f (generic function with 1 method)
+  
+  julia> f(stdout)
+  loooooong
+  julia> f(IOContext(stdout, :short => true))
+  short
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  IOContext(io::IO, context::IOContext)
+
+  Create an IOContext that wraps an alternate IO but inherits the properties
+  of context.
+
+  │ Note
+  │
+  │  Unless explicitly set in the wrapped io the displaysize of io will
+  │  not be inherited. This is because by default displaysize is not a
+  │  property of IO objects themselves, but lazily inferred, as the
+  │  size of the terminal window can change during the lifetime of the
+  │  IO object.
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  IOContext
+
+  IOContext provides a mechanism for passing output configuration settings
+  among show methods.
+
+  In short, it is an immutable dictionary that is a subclass of IO. It
+  supports standard dictionary operations such as getindex, and can also be
+  used as an I/O stream.
+
+--- get
+  get(f::Union{Function, Type}, collection, key)
+
+  Return the value stored for the given key, or if no mapping for the key is
+  present, return f(). Use get! to also store the default value in the
+  dictionary.
+
+  This is intended to be called using do block syntax
+
+  get(dict, key) do
+      # default value calculated here
+      time()
+  end
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  get(collection, key, default)
+
+  Return the value stored for the given key, or the given default value if no
+  mapping for the key is present.
+
+  │ Julia 1.7
+  │
+  │  For tuples and numbers, this function requires at least Julia 1.7.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> d = Dict("a"=>1, "b"=>2);
+  
+  julia> get(d, "a", 3)
+  1
+  
+  julia> get(d, "c", 3)
+  3
+
+--- show
+  show([io::IO = stdout], x)
+
+  Write a text representation of a value x to the output stream io. New types
+  T should overload show(io::IO, x::T). The representation used by show
+  generally includes Julia-specific formatting and type information, and
+  should be parseable Julia code when possible.
+
+  repr returns the output of show as a string.
+
+  For a more verbose human-readable text output for objects of type T, define
+  show(io::IO, ::MIME"text/plain", ::T) in addition. Checking the :compact
+  IOContext key (often checked as get(io, :compact, false)::Bool) of io in
+  such methods is recommended, since some containers show their elements by
+  calling this method with :compact => true.
+
+  See also print, which writes un-decorated representations.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> show("Hello World!")
+  "Hello World!"
+  julia> print("Hello World!")
+  Hello World!
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  show(io::IO, mime, x)
+
+  The display functions ultimately call show in order to write an object x as
+  a given mime type to a given I/O stream io (usually a memory buffer), if
+  possible. In order to provide a rich multimedia representation of a
+  user-defined type T, it is only necessary to define a new show method for T,
+  via: show(io, ::MIME"mime", x::T) = ..., where mime is a MIME-type string
+  and the function body calls write (or similar) to write that representation
+  of x to io. (Note that the MIME"" notation only supports literal strings; to
+  construct MIME types in a more flexible manner use MIME{Symbol("")}.)
+
+  For example, if you define a MyImage type and know how to write it to a PNG
+  file, you could define a function show(io, ::MIME"image/png", x::MyImage) =
+  ... to allow your images to be displayed on any PNG-capable AbstractDisplay
+  (such as IJulia). As usual, be sure to import Base.show in order to add new
+  methods to the built-in Julia function show.
+
+  Technically, the MIME"mime" macro defines a singleton type for the given
+  mime string, which allows us to exploit Julia's dispatch mechanisms in
+  determining how to display objects of any given type.
+
+  The default MIME type is MIME"text/plain". There is a fallback definition
+  for text/plain output that calls show with 2 arguments, so it is not always
+  necessary to add a method for that case. If a type benefits from custom
+  human-readable output though, show(::IO, ::MIME"text/plain", ::T) should be
+  defined. For example, the Day type uses 1 day as the output for the
+  text/plain MIME type, and Day(1) as the output of 2-argument show.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> struct Day
+             n::Int
+         end
+  
+  julia> Base.show(io::IO, ::MIME"text/plain", d::Day) = print(io, d.n, " day")
+  
+  julia> Day(1)
+  1 day
+
+  Container types generally implement 3-argument show by calling show(io,
+  MIME"text/plain"(), x) for elements x, with :compact => true set in an
+  IOContext passed as the first argument.
+
+--- unsafe_string
+  unsafe_string(p::Ptr{UInt8}, [length::Integer])
+
+  Copy a string from the address of a C-style (NUL-terminated) string encoded
+  as UTF-8. (The pointer can be safely freed afterwards.) If length is
+  specified (the length of the data in bytes), the string does not have to be
+  NUL-terminated.
+
+  This function is labeled "unsafe" because it will crash if p is not a valid
+  memory address to data of the requested length.
+
+--- #= /home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/help.jl:3 =# GC.@preserve
+  GC.@preserve x1 x2 ... xn expr
+
+  Mark the objects x1, x2, ... as being in use during the evaluation of the
+  expression expr. This is only required in unsafe code where expr implicitly
+  uses memory or other resources owned by one of the xs.
+
+  Implicit use of x covers any indirect use of resources logically owned by x
+  which the compiler cannot see. Some examples:
+
+    •  Accessing memory of an object directly via a Ptr
+    •  Passing a pointer to x to ccall
+    •  Using resources of x which would be cleaned up in the finalizer.
+
+  @preserve should generally not have any performance impact in typical use
+  cases where it briefly extends object lifetime. In implementation, @preserve
+  has effects such as protecting dynamically allocated objects from garbage
+  collection.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  When loading from a pointer with unsafe_load, the underlying object is
+  implicitly used, for example x is implicitly used by unsafe_load(p) in the
+  following:
+
+  julia> let
+             x = Ref{Int}(101)
+             p = Base.unsafe_convert(Ptr{Int}, x)
+             GC.@preserve x unsafe_load(p)
+         end
+  101
+
+  When passing pointers to ccall, the pointed-to object is implicitly used and
+  should be preserved. (Note however that you should normally just pass x
+  directly to ccall which counts as an explicit use.)
+
+  julia> let
+             x = "Hello"
+             p = pointer(x)
+             Int(GC.@preserve x @ccall strlen(p::Cstring)::Csize_t)
+             # Preferred alternative
+             Int(@ccall strlen(x::Cstring)::Csize_t)
+         end
+  5

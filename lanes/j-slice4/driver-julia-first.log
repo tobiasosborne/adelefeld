@@ -1,0 +1,14 @@
+Precompiling packages...
+   3686.5 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 4 seconds
+adf1 Q rat 7 3
+adf1 Q fball g 2 6 1
+adf1 Q adele 1 1 0 0 0 g 0 0 1
+adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1
+adf1 Q adele 1 1 -1 0 0 g 0 0 1
+error: NO_SOLUTION
+146
+2
+1
+error: NO_SOLUTION
+error: NOT_UNIQUE

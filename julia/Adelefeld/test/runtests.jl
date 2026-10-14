@@ -1385,3 +1385,472 @@ finally
     GC.enable(previous_gc)
     GC.gc()
 end
+
+# ---- Step J-a.4: text classification, dumps and full-ball reconstruction ----
+previous_gc4 = GC.enable(false)
+try
+@testset "Adelefeld step J-a.4" begin
+
+@testset "TextKind literal ABI and closed language dispatch" begin
+    @test isdefined(Adelefeld, :TextKind)
+    if isdefined(Adelefeld, :TextKind)
+        # No adf_text_kind_str exists. Literal names/numbers: text.h:122-135.
+        kinds = instances(TextKind)
+        @test sizeof(TextKind) == 4
+        @test [Int(k) for k in kinds] == collect(0:12)
+        @test string.(kinds) == (:TEXT_RAT, :TEXT_FBALL, :TEXT_ADELE, :TEXT_CADELE, :TEXT_UCOSET,
+            :TEXT_IDELE, :TEXT_IDCLASS, :TEXT_LBALL, :TEXT_SBALL, :TEXT_QCLASS, :TEXT_FFUN,
+            :TEXT_RFUN, :TEXT_CHAR) .|> string
+        @test (:text_kind, 4, 4) in [(r.suffix, r.size, r.align) for r in Adelefeld.LAYOUT_ROWS]
+        for raw in (-1, 13)
+            @test_throws AdfAbiError Adelefeld.to_text_kind(Cint(raw))
+        end
+    end
+    # conventions 9.2 start symbols; unsupported kinds are classified without semantic parsing.
+    texts = ["7/3", "2 mod 6", "(1 ; 0)", "((1) + (0.5)*i ; 2 mod 6)", "[5 mod 6]",
+             "(1 ; 1 * [1])", "<1 ; [1]>", "[p=5: 3 + O(5^4)]", "{}", "(0.5 ; 0) + Q",
+             "ffun(D=1, M=1; (0) + (0)*i)", "rfun()", "char(q=4, n=3, s=(0) + (0)*i)"]
+    for (i, s) in enumerate(texts)
+        @testset "kind $(i-1)" begin
+            r = try_readvalue(s)
+            @test r.details.kind === TextKind(i-1)
+            @test r.where === nothing
+            if i <= 4
+                T = (Rat, FBall, Adele, CAdele)[i]
+                @test r.status === OK
+                @test r isa AdfResult{T}
+                @test r.value isa T
+                typed = parse(T, s)
+                @test identical(r.value, typed)
+                @test identical(readvalue(s), typed)
+                close(r.value); close(typed)
+            else
+                @test r.status === Adelefeld.UNSUPPORTED
+                @test r.value === nothing
+                e = try; readvalue(s); catch err; err; end
+                @test e isa AdfError && e.status === Adelefeld.UNSUPPORTED
+                @test e.result.details.kind === TextKind(i-1)
+            end
+        end
+    end
+    # Classification checks only stages 1-3, then supported typed readers apply later stages.
+    for (s, st, lim) in (("", PARSE, TextLimits()), ("1\0", PARSE, TextLimits()),
+                         ("é1", LIMIT, TextLimits(max_len=2)), ("1/", PARSE, TextLimits()),
+                         ("1/0", DOMAIN, TextLimits()), ("(1e100001 ; 0)", LIMIT, TextLimits()),
+                         ("(1e100001 ; 0) junk", PARSE, TextLimits()))
+        r = try_readvalue(s; limits=lim)
+        @test r.status === st
+        @test r.value === nothing
+        if st === PARSE || s == "é1"
+            @test !haskey(r.details, :kind)  # C did not write kind on a classifier failure.
+        else
+            @test haskey(r.details, :kind)
+        end
+    end
+    # Syntax-only classification of an unsupported type stops before stage 4 or 6.
+    for s in ("[p=4: 1]", "[p=5: 1 + O(5^999999999)]", "char(q=0, n=0, s=(0) + (0)*i)")
+        @test try_readvalue(s).status === Adelefeld.UNSUPPORTED
+    end
+    @test readvalue(SubString("x7/3", 2)) isa Rat
+    for prec in (1.5, "64", nothing, big(2)^63, -big(2)^63-1)
+        @test_throws ArgumentError try_readvalue("1"; prec)
+    end
+    for s in ("(1208925819614629174706177 ; 0)", "((1208925819614629174706177) + (0)*i ; 0)")
+        x = readvalue(s; prec=16); y = readvalue(s; prec=128)
+        @test !identical(x, y)
+        @test identical(readvalue(s; prec=0), readvalue(s; prec=2))
+        close(x); close(y)
+    end
+    # The five result texts of SPEC 4.3: docs/SPEC.md:244-248.
+    for s in ("2 mod 6", "3 mod 6", "60 mod 216", "5/3 mod 6", "0 mod 1/6")
+        x = readvalue(s)
+        @test x isa FBall
+        @test identical(x, parse(FBall, s))
+        close(x)
+    end
+end
+
+@testset "digits precondition and IOContext" begin
+    # Preserve api-ja.md finding 5: digits belongs only to C printers with numerical coordinates.
+    for T in (Rat, FBall)
+        x = T(1//3)
+        @test_throws MethodError try_value_text(x; digits=5)
+        @test_throws MethodError value_text(x; digits=5)
+        @test sprint(show, x; context=:adf_digits => 5) == value_text(x)
+        close(x)
+    end
+    for T in (Adele, CAdele, RealBall, ComplexBall)
+        x = T(1//3)
+        for d in (1, 5, 20, 1_000_000)
+            s = value_text(x; digits=d)
+            @test try_value_text(x; digits=d).status === OK
+            io = IOBuffer()
+            show(IOContext(io, :adf_digits => d), x)
+            @test String(take!(io)) == s
+            @test sprint(show, MIME"text/plain"(), x; context=:adf_digits => d) == s
+        end
+        for d in (0, -1, 1_000_001, big(2)^63, 1.5, 20//1, "20", nothing)
+            @test_throws ArgumentError try_value_text(x; digits=d)
+            @test_throws ArgumentError show(IOContext(IOBuffer(), :adf_digits => d), x)
+        end
+        @test value_text(x; digits=1) != value_text(x; digits=20)
+        close(x)
+    end
+end
+
+@testset "dump fixture oracles and exact identity" begin
+    # Self-check this round-trip oracle on a same-text, different-bits pair below.
+    dump_identity_oracle(x, y) = identical(x, y)
+    # First four lines: tests/driver/13_dump.cmd:28-34 and .out:8-11.
+    # 7/3 -> num=7,den=3; 2+6 Zhat -> A=2,H=6,d=1; 1=1*2^0; 0.5=1*2^-1.
+    # Fifth line is the same fixture's load at :41, derived from its exact dyadic fields.
+    cases = [(Rat, "7/3", "adf1 Q rat 7 3"),
+             (FBall, "(* ; 2 mod 6)", "adf1 Q fball g 2 6 1"),
+             (Adele, "(1 ; 0)", "adf1 Q adele 1 1 0 0 0 g 0 0 1"),
+             (CAdele, "((1) + (0.5)*i ; 2 mod 6)", "adf1 Q cadele 1 1 0 0 0 1 -1 0 0 g 2 6 1"),
+             (Adele, "(0.5 ; 0)", "adf1 Q adele 1 1 -1 0 0 g 0 0 1")]
+    for (T, s, want) in cases
+        x = parse(T, s)
+        @test dump_text(x) == want
+        @test try_dump_text(x).status === OK
+        @test identical(load_dump(T, want), x)
+        @test dump_text(load_dump(T, want)) == want
+        close(x)
+    end
+    # Fixed-generator random values: 30 for each type, including exact and nonzero-radius arbs.
+    g = Lcg(0x548f30e56b98a2c1)
+    for i in 1:30
+        n = Int(next!(g) % 200001) - 100000
+        d = 1 + Int(next!(g) % 1000)
+        rn = i % 5 == 0 ? 0 : 1 + Int(next!(g) % 100000)
+        rd = 1 + Int(next!(g) % 1000)
+        q = Rat(n, d); r = Rat(rn, rd)
+        f = FBall(q, r)
+        re = RealBall(q; prec=64 + i)
+        im = RealBall(r; prec=80 + i)
+        z = ComplexBall(re, im)
+        a = Adele(re, f); c = CAdele(z, f)
+        for x in (q, f, a, c)
+            before = copy(x)
+            text = dump_text(x)
+            loaded = try_load_dump(typeof(x), text)
+            @test loaded.status === OK
+            @test loaded.value isa typeof(x)
+            @test dump_identity_oracle(loaded.value, x)  # Calls identical, not value-text comparison.
+            @test dump_text(loaded.value) == text
+            @test identical(x, before)
+            @test try_load_dump(typeof(x), text; limits=TextLimits(max_len=ncodeunits(text)-1)).status === LIMIT
+            close(before); close(loaded.value)
+        end
+        close.((q, r, f, re, im, z, a, c))
+    end
+    # A decimal enclosure can hide changes to the stored numerical ball. It cannot test dump identity.
+    x = Adele(1//3; prec=192); y = Adele(1//3; prec=256)
+    @test value_text(x; digits=5) == value_text(y; digits=5)
+    @test value_text(x) == value_text(y)
+    @test !dump_identity_oracle(x, y)
+    @test dump_text(x) != dump_text(y)
+    close(x); close(y)
+end
+
+@testset "strict load stages, limits and context refusal" begin
+    for T in (Rat, FBall, Adele, CAdele)
+        x = T(1)
+        s = dump_text(x)
+        lim = TextLimits(max_len=ncodeunits(s))
+        @test identical(load_dump(T, s; limits=lim), x)
+        for (text, st) in ((s * " ", PARSE), (s * "\0", PARSE), (s * "é", PARSE),
+                           (replace(s, "adf1" => "adf2"), Adelefeld.UNSUPPORTED),
+                           (replace(s, " Q " => " K "), Adelefeld.UNSUPPORTED),
+                           (s, LIMIT))
+            r = try_load_dump(T, text; limits=text == s ? TextLimits(max_len=1) : TextLimits())
+            @test r.status === st
+            @test r.value === nothing
+            @test isempty(r.details)
+            e = try; unwrap(r); catch err; err; end
+            @test e isa AdfError && e.status === st
+        end
+        @test try_load_dump(T, "é"; limits=TextLimits(max_len=0)).status === LIMIT
+        @test try_load_dump(T, "adf1 Q rat 07 3").status === PARSE
+        # A different body is a typed grammar failure (src/dump.c:1488-1489), before semantics.
+        bad = T === Rat ? "adf1 Q rat 2 4" : T === FBall ? "adf1 Q fball g 2 4 2" :
+              T === Adele ? "adf1 Q adele 1 1 0 0 0 g 2 4 2" :
+              "adf1 Q cadele 1 1 0 0 0 0 0 0 0 g 2 4 2"
+        @test try_load_dump(T, bad).status === DOMAIN
+        close(x)
+    end
+    # dump.h:43-51: local occurrences need a live matching context; NULL gives DOMAIN.
+    for (T, text) in ((FBall, "adf1 Q fball l 1 6 2 2 3 0 2"),
+                      (Adele, "adf1 Q adele 1 1 0 0 0 l 1 6 2 2 3 0 2"),
+                      (CAdele, "adf1 Q cadele 1 1 0 0 0 0 0 0 0 l 1 6 2 2 3 0 2"))
+        @test try_load_dump(T, text).status === DOMAIN
+        @test try_load_dump(T, text; limits=TextLimits(max_items=1)).status === LIMIT
+    end
+end
+
+@testset "reconstruction: exact closed progression, statuses, inputs unchanged" begin
+    # Own oracle: for q=a+N*k, integers k run from ceil((lo-a)/N) to floor((hi-a)/N).
+    cases = [("1 mod 2", 1//1, 1//1, OK, "1"), ("1 mod 2", 0//1, 10//1, Adelefeld.NOT_UNIQUE, ""),
+             ("1 mod 2", 0//1, 0//1, Adelefeld.NO_SOLUTION, ""),
+             ("1 mod 2", 2//1, 0//1, Adelefeld.NO_SOLUTION, ""),
+             ("146 mod 1000", 0//1, 50//1, Adelefeld.NO_SOLUTION, ""),
+             ("146 mod 1000", 100//1, 200//1, OK, "146"),
+             ("5/3 mod 6", 5//3, 5//3, OK, "5/3"),
+             ("5/3 mod 6", -13//3, -13//3, OK, "-13/3"),
+             ("(* ; 22/7)", 0//1, 50//1, OK, "22/7"),
+             ("(* ; 22/7)", 0//1, 3//1, Adelefeld.NO_SOLUTION, "")]
+    for (text, l, h, st, want) in cases
+        x = fb(text); lo = Rat(l); hi = Rat(h)
+        originals = copy.((x, lo, hi))
+        live = Adelefeld.diagnostics().live
+        r = try_reconstruct(x, lo, hi)
+        @test r isa AdfResult{Rat}
+        @test r.status === st
+        @test r.where === nothing
+        @test isempty(r.details)  # recon.h:24-27: no output written on any failing status.
+        if st === OK
+            @test string(r.value) == want
+            close(r.value)
+            q = reconstruct(x, lo, hi)
+            @test string(q) == want
+            close(q)
+        else
+            @test r.value === nothing
+            e = try; reconstruct(x, lo, hi); catch err; err; end
+            @test e isa AdfError && e.status === st
+            @test e.result.details == r.details
+        end
+        @test all(identical(a, b) for (a, b) in zip((x, lo, hi), originals))
+        @test Adelefeld.diagnostics().live == live
+        close.((x, lo, hi, originals...))
+    end
+    # First three are the reconstruction rows of tests/driver/06_pairs.cmd:131-133.
+    for (text, st, want) in (("(2 ; 2 mod 1)", OK, "2"), ("(1 ; 1)", OK, "1"),
+                            ("(0 ; 3 mod 12)", Adelefeld.NO_SOLUTION, ""),
+                            ("(5 +/- 5 ; 1 mod 2)", Adelefeld.NOT_UNIQUE, ""),
+                            ("(1.5 +/- 0.5 ; 0 mod 2)", OK, "2"))
+        x = parse(Adele, text); before = copy(x)
+        r = try_reconstruct(x)
+        @test r.status === st
+        @test isempty(r.details)
+        @test identical(x, before)
+        if st === OK
+            @test string(r.value) == want
+            @test string(reconstruct(x)) == want
+            close(r.value)
+        else
+            @test r.value === nothing
+        end
+        close(x); close(before)
+    end
+    # recon.h:16-24,41-43: bound is on binary exponents; dumps preserve them without huge shifts.
+    for arb in ("1 100001 0 0", "1 -100003 0 0", "0 0 1 100001", "0 0 1 -100003")
+        x = load_dump(Adele, "adf1 Q adele 1 $arb g 0 1 1")
+        before = copy(x); live = Adelefeld.diagnostics().live
+        r = try_reconstruct(x)
+        @test r.status === LIMIT
+        @test r.value === nothing
+        @test isempty(r.details)
+        @test identical(x, before)
+        @test Adelefeld.diagnostics().live == live
+        close(x); close(before)
+    end
+    # Release-build courtesy only: recon.h:27-29, SPEC M1-D11. Not a canonical public input.
+    # arb_indeterminate sets NaN midpoint and infinite radius: refs/src/flint-3.0.1/arb.rst:241-243.
+    x = Adele(0)
+    GC.@preserve x ccall(Libdl.dlsym(Adelefeld.LIBHANDLE[], :arb_indeterminate), Cvoid,
+                         (Ptr{Cvoid},), Adelefeld._ptr(x))
+    live = Adelefeld.diagnostics().live
+    r = try_reconstruct(x)
+    @test r.status === DOMAIN
+    @test r.value === nothing
+    @test isempty(r.details)
+    @test Adelefeld.diagnostics().live == live
+    close(x)
+    # NOT_DETERMINED is not a status of recon.h:25-27. No limited search argument exists here.
+    @test_throws MethodError try_reconstruct(CAdele(0))
+    @test_throws MethodError try_reconstruct(fb("1 mod 2"), Rat(0), Rat(10); limit=0)
+end
+
+@testset "closed handles refuse without allocation" begin
+    for T in (Rat, FBall, Adele, CAdele)
+        x = T(1); close(x)
+        live = Adelefeld.diagnostics().live
+        for call in (() -> dump_text(x), () -> try_dump_text(x), () -> value_text(x),
+                     () -> show(IOContext(IOBuffer(), :adf_digits => 5), x))
+            @test_throws InvalidStateException call()
+            @test Adelefeld.diagnostics().live == live
+        end
+    end
+    f = fb("1 mod 2"); lo = Rat(0); hi = Rat(1); a = Adele(1)
+    for x in (f, lo, hi)
+        args = copy.((f, lo, hi))
+        index = x === f ? 1 : x === lo ? 2 : 3
+        close(args[index])
+        live = Adelefeld.diagnostics().live
+        @test_throws InvalidStateException try_reconstruct(args...)
+        @test Adelefeld.diagnostics().live == live
+        close.(args)
+    end
+    close(a)
+    live = Adelefeld.diagnostics().live
+    @test_throws InvalidStateException try_reconstruct(a)
+    @test Adelefeld.diagnostics().live == live
+    close.((f, lo, hi))
+end
+
+@testset "enum layout rejection before init" begin
+    lib = Adelefeld.diagnostics().library
+    script = joinpath(@__DIR__, "load_fault.jl")
+    src = joinpath(@__DIR__, "fixtures", "fault.c")
+    cc = Sys.which("cc"); julia = Base.julia_cmd()
+    dir = mktempdir()
+    for (macro_name, query) in (("FAULT_TEXT_KIND_SIZE", "adf_sizeof_text_kind"),
+                                ("FAULT_TEXT_KIND_ALIGN", "adf_alignof_text_kind"))
+        so = joinpath(dir, lowercase(macro_name) * ".so")
+        run(`timeout 30 $cc -shared -fPIC -O1 -DFAULT_NAME -D$macro_name $src -o $so
+             -Wl,--no-as-needed $lib -Wl,-rpath,$(dirname(lib))`)
+        env = copy(ENV); env["ADELEFELD_LIB"] = so
+        out = IOBuffer()
+        p = run(pipeline(setenv(`timeout 30 $julia --startup-file=no --project=$PKG $script $so`, env);
+                         stdout=out, stderr=out); wait=false)
+        wait(p)
+        text = String(take!(out))
+        @test p.exitcode == 0
+        @test occursin(query, text)
+        @test occursin("layout", text)
+        @test occursin("4", text) && occursin("8", text)
+        @test occursin("LOADED=false", text)
+        @test occursin("INIT_CALLS=0", text)
+        @test !occursin("AFTER=allocated", text)
+    end
+    rm(dir; recursive=true)
+end
+
+@testset "counted frees, NULL contexts and guards before C" begin
+    lib = Adelefeld.diagnostics().library
+    src = joinpath(@__DIR__, "fixtures", "fault.c")
+    cc = Sys.which("cc"); julia = Base.julia_cmd()
+    dir = mktempdir(); so = joinpath(dir, "count-ja4.so")
+    run(`timeout 30 $cc -shared -fPIC -O1 -DFAULT_MISSING -DCOUNT_LIMITS -DCOUNT_JA4 $src -o $so
+         -Wl,--no-as-needed $lib -Wl,-rpath,$(dirname(lib)) -ldl`)
+    code = """
+        using Adelefeld, Libdl, Test
+        using Adelefeld: OK, LIMIT, PARSE
+        count(s) = ccall(Libdl.dlsym(Adelefeld.LIBHANDLE[], s), Cint, ())
+        mode(m) = ccall(Libdl.dlsym(Adelefeld.LIBHANDLE[], :fixture_set_dump_mode), Cvoid, (Cint,), m)
+        @testset "C call counters" begin
+            q = Rat(1); f = FBall(q); a = Adele(q); c = CAdele(q)
+            xs = (q, f, a, c)
+            texts = String[]
+            for m in 0:3
+                mode(m)
+                for x in xs
+                    if m == 3
+                        @test_throws ErrorException try_dump_text(x)
+                    else
+                        r = try_dump_text(x)
+                        @test r.status === (m == 0 ? OK : LIMIT)
+                        m == 0 && push!(texts, r.value)
+                    end
+                end
+            end
+            @test count(:fixture_dump_calls) == 16
+            @test count(:fixture_free_calls) == 16
+            println("DUMPS=", count(:fixture_dump_calls), " FREES=", count(:fixture_free_calls))
+            mode(0)
+            for (x, s) in zip(xs, texts)
+                y = load_dump(typeof(x), s)
+                @test identical(y, x)
+                close(y)
+                r = try_load_dump(typeof(x), s; limits=TextLimits(max_len=0))
+                @test r.status === LIMIT
+                @test r.value === nothing
+            end
+            @test count(:fixture_context_calls) == 0
+            println("CONTEXTS=", count(:fixture_context_calls))
+            re = RealBall(q); im = ComplexBall(q)
+            before = count(:fixture_print_calls)
+            errors = 0
+            for x in (a, c, re, im), d in (0, -1, 1000001, big(2)^63, 1.5, 20//1, "20", nothing)
+                for call in (() -> try_value_text(x; digits=d),
+                             () -> show(IOContext(IOBuffer(), :adf_digits => d), x))
+                    try
+                        call()
+                    catch e
+                        errors += e isa ArgumentError
+                    end
+                end
+            end
+            @test errors == 64
+            @test count(:fixture_print_calls) == before
+            println("DIGIT_ERRORS=", errors, " PRINT_CALLS=", count(:fixture_print_calls)-before)
+            before_lim = count(:fixture_limits_calls)
+            before_cls = count(:fixture_classify_calls)
+            errors = 0
+            for prec in (1.5, "64", nothing, big(2)^63, -big(2)^63-1)
+                try
+                    try_readvalue("1"; prec)
+                catch e
+                    errors += e isa ArgumentError
+                end
+            end
+            @test errors == 5
+            @test count(:fixture_limits_calls) == before_lim
+            @test count(:fixture_classify_calls) == before_cls
+            println("PREC_ERRORS=", errors, " LIMIT_CALLS=", count(:fixture_limits_calls)-before_lim,
+                    " CLASSIFY_CALLS=", count(:fixture_classify_calls)-before_cls)
+            for s in ("", "x", "1\\0")
+                r = try_readvalue(s)
+                @test r.status === PARSE
+                @test !haskey(r.details, :kind)
+            end
+            close.((xs..., re, im))
+            @test Adelefeld.diagnostics().live == 0
+            println("LIVE=", Adelefeld.diagnostics().live)
+        end
+        """
+    env = copy(ENV); env["ADELEFELD_LIB"] = so; env["FIXTURE_CORE"] = lib
+    out = IOBuffer()
+    p = run(pipeline(setenv(`timeout 45 $julia --startup-file=no --project=$PKG -e $code`, env);
+                     stdout=out, stderr=out); wait=false)
+    wait(p)
+    text = String(take!(out)); print(text)
+    @test p.exitcode == 0
+    @test occursin("DUMPS=16 FREES=16", text)
+    @test occursin("CONTEXTS=0", text)
+    @test occursin("DIGIT_ERRORS=64 PRINT_CALLS=0", text)
+    @test occursin("PREC_ERRORS=5 LIMIT_CALLS=0 CLASSIFY_CALLS=0", text)
+    @test occursin("LIVE=0", text)
+    rm(dir; recursive=true)
+end
+
+@testset "10^4 dump round trips with automatic GC, zero owners" begin
+    code = """
+        using Adelefeld
+        function churn()
+            for i in 1:10_000
+                T = (Rat, FBall, Adele, CAdele)[1 + i % 4]
+                x = T(i//3)
+                y = load_dump(T, dump_text(x))
+                identical(x, y) || error("dump identity failed")
+            end
+        end
+        println("BASELINE=", Adelefeld.diagnostics().live)
+        churn()
+        GC.gc(); GC.gc(); GC.gc(); GC.gc()
+        d = Adelefeld.diagnostics()
+        println("ROUNDTRIPS=10000 LIVE=", d.live, " ERRORS=", d.finalizer_errors)
+        """
+    julia = Base.julia_cmd()
+    out = read(`timeout 90 $julia --startup-file=no --project=$PKG -e $code`, String)
+    print(out)
+    @test occursin("BASELINE=0", out)
+    @test occursin("ROUNDTRIPS=10000 LIVE=0 ERRORS=0", out)
+end
+
+end
+finally
+    GC.enable(previous_gc4)
+    GC.gc()
+end

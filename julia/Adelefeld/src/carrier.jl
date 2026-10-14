@@ -173,7 +173,7 @@ function try_value_text(x::NumericalBall; digits=20)
     return AdfResult{String}(OK, s[2:end-5])
 end
 value_text(x::NumericalBall; kwargs...) = _unwrap(try_value_text(x; kwargs...), :value_text)
-Base.show(io::IO, x::NumericalBall) = print(io, value_text(x))
+Base.show(io::IO, x::NumericalBall) = print(io, value_text(x; digits=get(io, :adf_digits, 20)))
 
 for B in (:RealBall, :ComplexBall)
     for (name, tr) in ((:add, :try_add), (:sub, :try_sub), (:mul, :try_mul))

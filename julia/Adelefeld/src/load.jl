@@ -65,6 +65,11 @@ const REQUIRED = (
     :adf_cadele_add, :adf_cadele_sub, :adf_cadele_mul, :adf_cadele_neg,
     :adf_cadele_add_rat, :adf_cadele_mul_rat, :adf_cadele_div_rat, :adf_cadele_set_str, :adf_cadele_get_str,
     :acb_set_arb_arb,
+    # J-a.4: text.h:137-143,366-369; dump.h:105-162; recon.h:49-57.
+    :adf_sizeof_text_kind, :adf_alignof_text_kind, :adf_text_classify,
+    :adf_rat_dump_str, :adf_rat_load_str, :adf_fball_dump_str, :adf_fball_load_str,
+    :adf_adele_dump_str, :adf_adele_load_str, :adf_cadele_dump_str, :adf_cadele_load_str,
+    :adf_fball_reconstruct, :adf_adele_reconstruct,
 )
 
 # One Ref per symbol, named p_<symbol>, filled by __init__ (never at precompile time).
@@ -84,6 +89,7 @@ const LAYOUT_ROWS = (
     (suffix = :fball, size = 48, align = 8, source = "docs/api-m1.md:36,45"),
     (suffix = :adele, size = 96, align = 8, source = "docs/api-m1.md:38,45"),
     (suffix = :cadele, size = 144, align = 8, source = "docs/api-m1.md:39,45"),
+    (suffix = :text_kind, size = 4, align = 4, source = "include/adelefeld/text.h:366-369"),
 )
 
 const RAT_SIZE = 16
@@ -173,6 +179,8 @@ function gate_layouts()
     offs = Int.(fieldoffset.(TextLimits, 1:4))
     (sizeof(TextLimits), offs) == (32, [0, 8, 16, 24]) ||
         loadfail("layout", "Julia TextLimits of 32 bytes at offsets 0, 8, 16, 24", (sizeof(TextLimits), offs))
+    (sizeof(TextKind), Base.datatype_alignment(TextKind)) == (4, 4) ||
+        loadfail("layout", "Julia TextKind size/alignment 4/4", sizeof(TextKind))
 end
 
 # A copy of the static name of a status code; never freed (include/adelefeld/status.h:43-49).

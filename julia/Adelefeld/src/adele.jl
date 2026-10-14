@@ -155,7 +155,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
             end
         end
         value_text(x::$T; kwargs...) = _unwrap(try_value_text(x; kwargs...), :value_text)
-        Base.show(io::IO, x::$T) = print(io, value_text(x))
+        Base.show(io::IO, x::$T) = print(io, value_text(x; digits=get(io, :adf_digits, 20)))
 
         Base.isequal(x::$T, y::$T) = x === y
         Base.hash(x::$T, h::UInt) = hash(objectid(x), h)

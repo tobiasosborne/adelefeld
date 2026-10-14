@@ -1,0 +1,157 @@
+    Updating `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/tmp/jl_YLlzuj/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/tmp/jl_YLlzuj/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=no --check-bounds=yes --warn-overwrite=yes --depwarn=yes
+ --inline=yes --startup-file=no --track-allocation=none
+   2200.0 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 2 seconds. 8 already precompiled.
+     Testing Running tests...
+ERROR: LoadError: Some tests did not pass: 1311 passed, 2 failed, 0 errored, 0 broken.
+in expression starting at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1391
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  24.3s
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.2 | 1015   1015  12.1s
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+ERRORS=24 LIMIT_CALLS=0 LIVE=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.3 | 1649   1649  17.7s
+DUMPS=16 FREES=16
+CONTEXTS=0
+C call counters: Test Failed at none:49
+  Expression: count(:fixture_print_calls) == before
+   Evaluated: 68 == 4
+
+Stacktrace:
+ [1] top-level scope
+   @ none:6
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ none:49 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+DIGIT_ERRORS=64 PRINT_CALLS=64
+PREC_ERRORS=5 LIMIT_CALLS=0 CLASSIFY_CALLS=0
+LIVE=0
+Test Summary:   | Pass  Fail  Total  Time
+C call counters |   42     1     43  5.9s
+RNG of the outermost testset: Random.Xoshiro(0xd58da2f2425705ee, 0x037752e99b860b94, 0x9e8cb6aa619e95c6, 
+0xa0d7592c44935a0c, 0x5e969d38dd098bdc)
+ERROR: Some tests did not pass: 42 passed, 1 failed, 0 errored, 0 broken.
+counted frees, NULL contexts and guards before C: Test Failed at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1818
+  Expression: p.exitcode == 0
+   Evaluated: 1 == 0
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1818 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1730 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1394
+counted frees, NULL contexts and guards before C: Test Failed at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1821
+  Expression: occursin("DIGIT_ERRORS=64 PRINT_CALLS=0", text)
+   Evaluated: occursin("DIGIT_ERRORS=64 PRINT_CALLS=0", "DUMPS=16 FREES=16\nCONTEXTS=0\nC call counters: Test Failed
+ at none:49\n  Expression: count(:fixture_print_calls) == before\n   Evaluated: 68 == 4\n\nStacktrace:\n [1] 
+top-level scope\n   @ none:6\n [2] macro expansion\n   @ 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]\n [3] macro 
+expansion\n   @ none:49 [inlined]\n [4] macro expansion\n   @ 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 
+[inlined]\nDIGIT_ERRORS=64 PRINT_CALLS=64\nPREC_ERRORS=5 LIMIT_CALLS=0 CLASSIFY_CALLS=0\nLIVE=0\nTest Summary:   | 
+Pass  Fail  Total  Time\nC call counters |   42     1     43  5.9s\nRNG of the outermost testset: 
+Random.Xoshiro(0xd58da2f2425705ee, 0x037752e99b860b94, 0x9e8cb6aa619e95c6, 0xa0d7592c44935a0c, 
+0x5e969d38dd098bdc)\nERROR: Some tests did not pass: 42 passed, 1 failed, 0 errored, 0 broken.\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1821 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1730 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F7/test/runtests.jl:1394
+BASELINE=0
+ROUNDTRIPS=10000 LIVE=0 ERRORS=0
+Test Summary:                                                          | Pass  Fail  Total   Time
+Adelefeld step J-a.4                                                   | 1311     2   1313  17.5s
+  TextKind literal ABI and closed language dispatch                    |  133          133   0.4s
+  digits precondition and IOContext                                    |  122          122   0.9s
+  dump fixture oracles and exact identity                              |  744          744   0.6s
+  strict load stages, limits and context refusal                       |  118          118   0.1s
+  reconstruction: exact closed progression, statuses, inputs unchanged |  134          134   0.2s
+  closed handles refuse without allocation                             |   40           40   0.2s
+  enum layout rejection before init                                    |   14           14   3.7s
+  counted frees, NULL contexts and guards before C                     |    4     2      6   9.6s
+  10^4 dump round trips with automatic GC, zero owners                 |    2            2   1.7s
+RNG of the outermost testset: Random.Xoshiro(0xa8dd4fb3fad73775, 0xa6371bab8c197411, 0x0272f37d623e10d1, 
+0x286a5979fd34c960, 0xc2a9d67f76cb695d)
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, 
+test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool)
+    @ Pkg.Operations 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, 
+test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, 
+mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550
