@@ -51,8 +51,14 @@ struct AdfAbiError <: Exception
     raw::Cint
 end
 
-Base.showerror(io::IO, e::AdfAbiError) =
-    print(io, "AdfAbiError: ", e.op, " returned ", e.raw, ", which is not a status code (0 to 10)")
+function Base.showerror(io::IO, e::AdfAbiError)
+    print(io, "AdfAbiError: ", e.op, " returned ", e.raw)
+    if e.op === :text_classify
+        print(io, ", which is not a text kind (0 to 12)")
+    else
+        print(io, ", which is not a status code (0 to 10)")
+    end
+end
 
 # The status of a raw C return value; an unknown value is an ABI error.
 function to_status(raw::Cint, op::Symbol)
@@ -92,4 +98,18 @@ function to_bool(raw::Cint, op::Symbol)
     raw == 1 && return true
     raw == 0 && return false
     throw(AdfAbiError(op, raw))
+end
+
+# Text kind: include/adelefeld/text.h:118-135. There is no adf_text_kind_str in that header or
+# the export inventory, so the names/numbers are transcribed literally, stripping only ADF_.
+# The size/alignment gate is text.h:366-369. Julia 1.12.5 @enum help: lanes/j-slice4/help.log:4-38.
+@enum TextKind::Int32 begin
+    TEXT_RAT=0; TEXT_FBALL=1; TEXT_ADELE=2; TEXT_CADELE=3; TEXT_UCOSET=4
+    TEXT_IDELE=5; TEXT_IDCLASS=6; TEXT_LBALL=7; TEXT_SBALL=8; TEXT_QCLASS=9
+    TEXT_FFUN=10; TEXT_RFUN=11; TEXT_CHAR=12
+end
+
+function to_text_kind(raw::Cint)
+    0 <= raw <= 12 || throw(AdfAbiError(:text_classify, raw))
+    return TextKind(raw)
 end

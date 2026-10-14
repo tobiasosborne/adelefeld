@@ -1,0 +1,308 @@
+    Updating `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/tmp/jl_pEEyuA/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/tmp/jl_pEEyuA/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=no --check-bounds=yes --warn-overwrite=yes --depwarn=yes
+ --inline=yes --startup-file=no --track-allocation=none
+    Adelefeld Being precompiled by an async task in this process (pidfile: 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/depot/compiled/v1.12/Adelefeld/WD3W9_eFO4u.ji.pidfile)
+   3015.2 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 3 seconds. 8 already precompiled.
+     Testing Running tests...
+ERROR: LoadError: Some tests did not pass: 1350 passed, 3 failed, 4 errored, 0 broken.
+in expression starting at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1391
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  22.4s
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.2 | 1015   1015  12.9s
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+ERRORS=24 LIMIT_CALLS=0 LIVE=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.3 | 1649   1649  30.3s
+kind 1: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1420
+  Expression: r.status === OK
+   Evaluated: PARSE === OK
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1420 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1415 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1395 [inlined]
+ [7] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [8] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+kind 1: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1421
+  Expression: r isa AdfResult{T}
+   Evaluated: AdfResult{Rat}(PARSE, nothing, nothing, (kind = Adelefeld.TEXT_FBALL,)) isa AdfResult{FBall}
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1421 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1415 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1395 [inlined]
+ [7] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [8] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+kind 1: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1422
+  Expression: r.value isa T
+   Evaluated: nothing isa FBall
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1422 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1415 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1395 [inlined]
+ [7] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [8] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+kind 1: Error During Test at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1424
+  Test threw exception
+  Expression: identical(r.value, typed)
+  MethodError: no method matching identical(::Nothing, ::FBall)
+  The function `identical` exists, but no method is defined for this combination of argument types.
+  
+  Closest candidates are:
+    identical(!Matched::FBall, ::FBall)
+     @ Adelefeld ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/src/fball.jl:202
+    identical(!Matched::Rat, !Matched::Rat)
+     @ Adelefeld ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/src/rat.jl:222
+    identical(!Matched::Adele, !Matched::Adele)
+     @ Adelefeld ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/src/adele.jl:114
+    ...
+  
+  Stacktrace:
+   [1] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1424 [inlined]
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1424 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1415 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [7] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1395 [inlined]
+   [8] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [9] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+kind 1: Error During Test at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1425
+  Test threw exception
+  Expression: identical(readvalue(s), typed)
+  AdfError: readvalue returned status PARSE
+  Stacktrace:
+    [1] _unwrap
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/src/status.jl:72 [inlined]
+    [2] readvalue(s::String)
+      @ Adelefeld ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/src/text.jl:45
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1425 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1425 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [7] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1415 [inlined]
+    [8] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [9] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1395 [inlined]
+   [10] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [11] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+kind 1: Error During Test at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1414
+  Got exception outside of a @test
+  MethodError: no method matching close(::Nothing)
+  The function `close` exists, but no method is defined for this combination of argument types.
+  
+  Closest candidates are:
+    close(!Matched::FileWatching._FDWatcher, !Matched::Bool, !Matched::Bool)
+     @ FileWatching 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/FileWatching/src/FileWatching.jl:497
+    close(!Matched::FileWatching._FDWatcher, !Matched::FileWatching.FDEvent)
+     @ FileWatching 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/FileWatching/src/FileWatching.jl:496
+    close(!Matched::Base.BufferStream)
+     @ Base stream.jl:1524
+    ...
+  
+  Stacktrace:
+    [1] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1426 [inlined]
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1415 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1395 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [7] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+    [8] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [9] top-level scope
+      @ none:6
+   [10] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [11] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [12] _start()
+      @ Base ./client.jl:550
+TextKind literal ABI and closed language dispatch: Error During Test at 
+/home/tobias/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+  Got exception outside of a @test
+  AdfError: readvalue returned status PARSE
+  Stacktrace:
+    [1] _unwrap
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/src/status.jl:72 [inlined]
+    [2] readvalue(s::String)
+      @ Adelefeld ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/src/text.jl:45
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1466 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1395 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [7] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice4/lanes/j-slice4/scratch-F2/test/runtests.jl:1394
+    [8] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [9] top-level scope
+      @ none:6
+   [10] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [11] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [12] _start()
+      @ Base ./client.jl:550
+DUMPS=16 FREES=16
+CONTEXTS=0
+DIGIT_ERRORS=96 PRINT_CALLS=0
+PREC_ERRORS=5 LIMIT_CALLS=0 CLASSIFY_CALLS=0
+LIVE=0
+Test Summary:   | Pass  Total  Time
+C call counters |   43     43  4.3s
+BASELINE=0
+ROUNDTRIPS=10000 LIVE=0 ERRORS=0
+Test Summary:                                                          | Pass  Fail  Error  Total   Time
+Adelefeld step J-a.4                                                   | 1350     3      4   1357  21.0s
+  TextKind literal ABI and closed language dispatch                    |  118     3      4    125   6.5s
+    kind 0                                                             |    7                   7   0.1s
+    kind 1                                                             |    2     3      3      8   5.8s
+    kind 2                                                             |    7                   7   0.0s
+    kind 3                                                             |    7                   7   0.0s
+    kind 4                                                             |    6                   6   0.0s
+    kind 5                                                             |    6                   6   0.0s
+    kind 6                                                             |    6                   6   0.0s
+    kind 7                                                             |    6                   6   0.0s
+    kind 8                                                             |    6                   6   0.0s
+    kind 9                                                             |    6                   6   0.0s
+    kind 10                                                            |    6                   6   0.0s
+    kind 11                                                            |    6                   6   0.0s
+    kind 12                                                            |    6                   6   0.0s
+  digits precondition and IOContext                                    |  174                 174   1.5s
+  dump fixture oracles and exact identity                              |  744                 744   0.8s
+  strict load stages, limits and context refusal                       |  118                 118   0.2s
+  reconstruction: exact closed progression, statuses, inputs unchanged |  134                 134   0.4s
+  closed handles refuse without allocation                             |   40                  40   0.3s
+  enum layout rejection before init                                    |   14                  14   3.2s
+  counted frees, NULL contexts and guards before C                     |    6                   6   5.8s
+  10^4 dump round trips with automatic GC, zero owners                 |    2                   2   2.4s
+RNG of the outermost testset: Random.Xoshiro(0x8e234df22b9a9d6d, 0x625edcbbb33480c8, 0x22f60e793faab961, 
+0xbb83d1cb37576610, 0x84a8e91206f1891a)
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, 
+test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool)
+    @ Pkg.Operations 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, 
+test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, 
+mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550

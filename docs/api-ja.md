@@ -425,3 +425,133 @@ refs/src/flint-3.0.1/{arb,acb}.rst at the lines cited in the source and tests.
 
 Findings against the specification: none. Sources pending: none new; earlier pending glibc dlsym
 search-order documentation still applies to fixture libraries and dependency symbol lookup.
+
+# Step J-a.4: text classification, dump forms and reconstruction
+
+This step finishes the fourth item of J-a in docs/api-j.md section 9. Earlier decisions are kept,
+including 5 (no digits keyword for exact printers), 23, 27, 28 and 32. No context, scaled/cap or local
+value surface is added. The specification and design are unchanged.
+
+## What was built
+
+- TextKind::Int32 transcribes the thirteen constants of text.h:122-135, stripping only ADF_. The
+  literal 4/4 row is gated against adf_sizeof_text_kind and adf_alignof_text_kind. Julia's enum layout
+  is checked too. No name function exists; names are compared against header literals in the tests.
+- try_readvalue/readvalue call adf_text_classify first. The kind is read only on OK. Supported kinds
+  dispatch to Rat, FBall, Adele or CAdele typed C readers, retaining their statuses and typed result.
+  Other kinds return UNSUPPORTED with details.kind. Classifier failures have no kind in details.
+- The existing numerical printers accept digits in 1..1000000 before C. show reads :adf_digits from
+  IOContext, default 20, for Adele, CAdele, RealBall and ComplexBall. The numerical frame inverse of
+  finding 28 is unchanged. Rat and FBall still print exactly, with no digits keyword.
+- try_dump_text/dump_text and try_load_dump/load_dump wrap the four typed C pairs. Strings are copied
+  at their byte length and freed in a finally. Loaders use ctx=NULL with caller TextLimits; they
+  construct no context. Failure temporaries are closed. No bindings or precision keyword is exposed.
+- try_reconstruct/reconstruct wrap adf_fball_reconstruct(x,lo,hi) and adf_adele_reconstruct(x), returning
+  a fresh Rat only on OK. Closed accepted inputs are checked before allocation. All non-OK results
+  have value=nothing, where=nothing and empty details, because recon.h writes no auxiliary output.
+- load.jl adds thirteen required symbols to the earlier 89, for 102 total, and one row to the earlier
+  five, for six total. Three source files are included: text.jl, dump.jl and recon.jl.
+- One testset, "Adelefeld step J-a.4", is appended. The C test fixture adds two enum layout faults,
+  counted calls and defensive dump failures. Production C and tests/test_julia.sh are unchanged.
+
+## Statements checked
+
+S28. Classification. One text of each of the thirteen kinds follows its header start symbol. All four
+supported kinds return the corresponding type and the same value as the typed parser. Nine unsupported
+kinds return UNSUPPORTED and their TextKind, even when later semantic/literal checks would fail.
+Length precedes bytes, bytes/grammar precede typed literal limits, and semantic zero denominators remain
+DOMAIN. The five SPEC 4.3 result texts dispatch to FBall. Precision is forwarded for archimedean readers;
+invalid precision precedes C defaults and classification, and below 2 follows the C clamp.
+
+S29. Printing. The four numerical types use digits through value_text, show and text/plain show in an
+IOContext. Invalid digits produce ArgumentError before C, measured by a counted printer. End points 1
+and 1000000 are accepted. Rat/FBall retain their exact, keyword-free printers and ignore :adf_digits.
+
+S30. Dumps. Thirty fixed-generator values of each of Rat, FBall, Adele and CAdele load identically to
+their originals and dump to the same bytes. Inputs stay identical to their copies. Five handwritten
+oracles are checked against tools/adf: rational 7/3; global 2 mod 6; (1 ; 0); the complex fixture with
+imaginary 0.5; and (0.5 ; 0). The first four are tests/driver/13_dump.cmd:28-33; the fifth reverses its
+exact load at :41. Each rational field is the canonical numerator/denominator or A/H/d. The dyadic
+midpoints 1 and 0.5 have mantissa/exponent (1,0) and (1,-1), with zero radii (0,0).
+The serialization convention is on disk: refs/src/flint-3.0.1/arb.rst:288-293.
+
+S31. Load refusal. Every type refuses its dump above max_len with LIMIT and malformed dump syntax with
+PARSE. Unsupported version/field is UNSUPPORTED. A non-canonical body of each requested type is DOMAIN.
+The same accepted dump loads at its exact byte limit. Local finite dumps, including nested finite
+coordinates, get DOMAIN from the NULL context; an earlier count limit remains LIMIT. Two counted
+layout fault libraries are rejected before Rat init. Dump finally paths free every returned string,
+including non-NULL zero-length and non-NUL-terminated fixture strings, as well as NULL.
+
+S32. Reconstruction. For finite balls, singleton closed end points, fractional centres, negative
+progression points, zero radius, empty intervals, none and several follow the exact progression rule
+of SPEC 9.2. The driver's full-adele fixtures return 2, 1 and NO_SOLUTION. Adele LIMIT is asserted on
+positive and negative extreme midpoint and radius exponents, loaded exactly from tiny dumps. Output
+is absent on every failure, and no failed temporary remains live. The release-only non-finite courtesy
+returns DOMAIN; it is not a claim for canonical inputs or a build with ADF_CHECK_INVARIANTS.
+NOT_DETERMINED is not possible in either header function. No limited search API is added.
+
+S33. Lifetime. Closed dump, printer and reconstruction inputs refuse without result allocation. All
+accepted and failing reconstruction inputs stay identical to copies. A fresh automatic-GC subprocess
+makes 10000 dump/load round trips across the four types. Every pair is identical; four forced GCs leave
+0 live owners and 0 finalizer errors. This is an ownership smoke test, not a FLINT leak proof.
+
+S34. Oracle separation. Adele(1/3;prec=192) and Adele(1/3;prec=256) have equal value text at 5 and 20
+digits, different stored balls, and different dump bytes. The test's round-trip identity oracle calls
+identical and is checked to reject this pair. Replacing it with text comparison is a caught test mutant.
+
+## DESIGN-FINDINGs
+
+33. Enum names. There is no adf_text_kind_str in text.h or the export inventory. TextKind keeps the
+    header's TEXT_ prefix and numbers 0..12, with ADF_ removed like AdfStatus. No invented C name gate.
+
+34. Classified results. Supported dispatch returns AdfResult of the typed value, with details.kind on
+    success and on a typed-parser refusal. Unsupported/classifier failures use AdfResult{AdfValue},
+    where AdfValue is the union of the four global value types. A classifier failure has empty details.
+    The untyped prec keyword is validated even for exact or unsupported syntax before any C call,
+    following finding 32. Typed Rat/FBall parsers remain precision-free.
+
+35. Exact printing. Finding 5 and the FBall step's no-digits decision remain in force. The common
+    digits/IOContext surface applies where the C printer has the argument (conventions 8.1;
+    text.h:54-57,152-154,163-165,178-183,216-217). Exact printers have no numerical coordinate to round.
+    An initial wider Julia keyword was removed before the final gate to keep these earlier decisions.
+
+36. Failure reconstruction output. recon.h:24-29 certifies no output on non-OK. There is therefore no
+    candidate, certificate, count or failing place to put in details. NOT_DETERMINED belongs only to
+    partial data, expressly excluded by recon.h:25-27; FBall reconstruction has no LIMIT search case.
+    LIMIT belongs to Adele's exponent guard. DOMAIN is only the release-build courtesy described there.
+
+37. The requested example. In the full ball 146 + 1000 Zhat, the rational candidates are 146+1000k.
+    For [0,50], ceil(-146/1000)=0 and floor((50-146)/1000)=-1, so there is none. For [100,200], both
+    bounds are 0, so the unique result is 146. 22/7 differs from 146 by -1000/7, whose quotient by 1000
+    is -1/7, not an integer. The UX sentence docs/ux/README.md:7 is a partial-residue example:
+    7*146=1022=22 mod 1000. It is not a full-ball reconstruction example. SPEC 9.2 distinguishes them.
+    The lane session uses [100,200] and prints 146; no concrete positive full-ball example is in SPEC 9.2.
+
+38. Dumper refusal. The brief attributes NULL or zero-length dump refusal to the driver. In fact,
+    tools/adf/adf.c:694-697 writes the dumper's result unconditionally, relying on dump.h:49-52
+    ("never fails"). The driver's NULL->LIMIT check at :632-633 belongs to value printing; it has no
+    zero-length test there. Julia implements both defensive refusals from the design's string rule
+    (api-j.md:186-188), without claiming that C dumpers normally refuse or that the driver checks length.
+
+39. Identity and contexts. A global FBall and the finite coordinate of a global Adele/CAdele have no
+    context occurrence (dump.h:38-47,116,144-162). Their dumps need no context, at any size admitted by
+    the load limits. A local occurrence with NULL is DOMAIN (dump.h:41-42), unlike the driver's earlier
+    UNSUPPORTED prefilter. The N-D25 identity qualification is retained. The D1 function-array caps of
+    api-4.md:104-108/dump.h:288-303 do not apply to these four types; caller limits still do.
+
+## Julia sources and scope
+
+Installed Julia 1.12.5 help is captured in lanes/j-slice4/help.log with @doc and text/plain display.
+IOContext says "use get(io, key, default) to retrieve the most recent value" (:57-59).
+The @enum help documents an Enum subtype and converted member values (:4-8,33-38).
+Earlier lifetime/pointer/string help remains applicable. No Julia package was installed.
+
+Gate history, commands, counts, planted faults and cleanup are in lanes/j-slice4/report.md and redgreen.md.
+The final solo gate passes 4881/4881: J-a.1 904, J-a.2 1015, J-a.3 1649, J-a.4 1313. Baseline: 3568.
+Its counted-call subprocess passes another 43 checks, not added to the outer count. Ten planted faults
+are caught. One prior final attempt timed out without a completed summary; the unchanged solo rerun passes.
+No contexts, bindings, scaled/cap, local constructors, partial reconstruction, ideles/classes/characters,
+functions, two-thread support, Nemo or long differential fuzzing is built here.
+Findings against the specification: none. The UX example and the brief's status/driver claims differ from
+the headers, not from SPEC. No new mathematical source is pending. The earlier glibc dlsym dependency
+search-order source, linked FLINT threadsafe check, and FLINT malloc-failure documentation remain pending.

@@ -1,0 +1,50 @@
+F2 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  22.4s
+Adelefeld step J-a.2 | 1015   1015  12.9s
+Adelefeld step J-a.3 | 1649   1649  30.3s
+Adelefeld step J-a.4                                                   | 1350     3      4   1357  21.0s
+F1 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  27.0s
+Adelefeld step J-a.2 | 1015   1015  9.8s
+Adelefeld step J-a.3 | 1649   1649  33.4s
+Adelefeld step J-a.4                                                   | 1319     2      1   1322  28.6s
+F3 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  29.8s
+Adelefeld step J-a.2 | 1015   1015  14.2s
+Adelefeld step J-a.3 | 1649   1649  28.7s
+Adelefeld step J-a.4                                                   | 1311     2   1313  16.6s
+F4 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  30.0s
+Adelefeld step J-a.2 | 1015   1015  16.4s
+Adelefeld step J-a.3 | 1649   1649  20.6s
+Adelefeld step J-a.4                                                   | 1172   141   1313  22.2s
+F6 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  23.8s
+Adelefeld step J-a.2 | 1015   1015  10.8s
+Adelefeld step J-a.3 | 1649   1649  28.4s
+Adelefeld step J-a.4                                                   | 1306     6      1   1313  15.3s
+F5 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  25.5s
+Adelefeld step J-a.2 | 1015   1015  11.0s
+Adelefeld step J-a.3 | 1649   1649  28.6s
+Adelefeld step J-a.4                                                   | 1308     5   1313  16.5s
+F7 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  24.3s
+Adelefeld step J-a.2 | 1015   1015  12.1s
+Adelefeld step J-a.3 | 1649   1649  17.7s
+Adelefeld step J-a.4                                                   | 1311     2   1313  17.5s
+F8 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  25.7s
+Adelefeld step J-a.2 | 1015   1015  13.4s
+Adelefeld step J-a.3 | 1649   1649  17.3s
+Adelefeld step J-a.4                                                   | 1312     1   1313  13.0s
+F10 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  24.7s
+Adelefeld step J-a.2 | 1015   1015  9.3s
+Adelefeld step J-a.3 | 1649   1649  19.6s
+Adelefeld step J-a.4                                                   | 1312     1   1313  19.0s
+F9 EXIT=1 VERIFIED=1
+Adelefeld step J-a.1 |  904    904  25.6s
+Adelefeld step J-a.2 | 1015   1015  10.8s
+Adelefeld step J-a.3 | 1649   1649  20.2s
+Adelefeld step J-a.4                                                   | 1307     6   1313  18.5s

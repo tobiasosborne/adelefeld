@@ -111,3 +111,115 @@ void adf_text_limits_default(void * lim)
     w[3] = 1048576;
 }
 #endif
+
+/* J-a.4 enum ABI faults. Build with FAULT_NAME; the layout gate fails first. */
+#ifdef FAULT_TEXT_KIND_SIZE
+size_t adf_sizeof_text_kind(void) { return 8; }
+#endif
+#ifdef FAULT_TEXT_KIND_ALIGN
+size_t adf_alignof_text_kind(void) { return 8; }
+#endif
+
+/* J-a.4 counted calls and defensive printer cases, linked with FAULT_MISSING.
+   Only this test fixture uses a second handle. FIXTURE_CORE names the real library.
+   The production binding still calls its single gated handle, without glue.
+   Core dump strings are owned as dump.h:49-52 prescribes. Modes 1-3 falsify that contract
+   to test Julia refusal and finally paths without calling FLINT on malformed input. */
+#ifdef COUNT_JA4
+#include <stdlib.h>
+#include <dlfcn.h>
+
+static int fixture_dump_mode = 0;
+static int fixture_dumps = 0;
+static int fixture_frees = 0;
+static int fixture_prints = 0;
+static int fixture_contexts = 0;
+static int fixture_classifies = 0;
+
+int fixture_dump_calls(void) { return fixture_dumps; }
+int fixture_free_calls(void) { return fixture_frees; }
+int fixture_print_calls(void) { return fixture_prints; }
+int fixture_context_calls(void) { return fixture_contexts; }
+int fixture_classify_calls(void) { return fixture_classifies; }
+void fixture_set_dump_mode(int mode) { fixture_dump_mode = mode; }
+
+static void * fixture_core_symbol(const char * name)
+{
+    static void * core = NULL;
+    void * sym;
+
+    if (core == NULL)
+        core = dlopen(getenv("FIXTURE_CORE"), RTLD_NOW | RTLD_LOCAL);
+    if (core == NULL || (sym = dlsym(core, name)) == NULL)
+        abort();
+    return sym;
+}
+
+void adf_str_free(char * s)
+{
+    void (* real_free)(char *) = fixture_core_symbol("adf_str_free");
+
+    fixture_frees++;
+    real_free(s);
+}
+
+#define JA4_DUMPER(name) \
+char * adf_##name##_dump_str(size_t * len, const void * x) \
+{ \
+    char * (* real_dump)(size_t *, const void *) = fixture_core_symbol("adf_" #name "_dump_str"); \
+    char * s; \
+    fixture_dumps++; \
+    if (fixture_dump_mode == 1) { *len = 0; return NULL; } \
+    s = real_dump(len, x); \
+    if (fixture_dump_mode == 2) *len = 0; \
+    if (fixture_dump_mode == 3) s[*len] = 'x'; \
+    return s; \
+}
+JA4_DUMPER(rat)
+JA4_DUMPER(fball)
+JA4_DUMPER(adele)
+JA4_DUMPER(cadele)
+
+#define JA4_LOADER(name) \
+int adf_##name##_load_str(void * x, const char * s, size_t n, const void * ctx, const void * lim) \
+{ \
+    int (* real_load)(void *, const char *, size_t, const void *, const void *) = \
+        fixture_core_symbol("adf_" #name "_load_str"); \
+    if (ctx != NULL) { fixture_contexts++; return 8; } \
+    return real_load(x, s, n, ctx, lim); \
+}
+JA4_LOADER(rat)
+JA4_LOADER(fball)
+JA4_LOADER(adele)
+JA4_LOADER(cadele)
+
+#define JA4_PRINTER(name) \
+char * adf_##name##_get_str(size_t * len, const void * x, long digits) \
+{ \
+    char * (* real_print)(size_t *, const void *, long) = fixture_core_symbol("adf_" #name "_get_str"); \
+    fixture_prints++; \
+    if (digits < 1 || digits > 1000000) { *len = 0; return NULL; } \
+    return real_print(len, x, digits); \
+}
+JA4_PRINTER(adele)
+JA4_PRINTER(cadele)
+
+#define JA4_EXACT_PRINTER(name) \
+char * adf_##name##_get_str(size_t * len, const void * x) \
+{ \
+    char * (* real_print)(size_t *, const void *) = fixture_core_symbol("adf_" #name "_get_str"); \
+    fixture_prints++; \
+    return real_print(len, x); \
+}
+JA4_EXACT_PRINTER(rat)
+JA4_EXACT_PRINTER(fball)
+
+int adf_text_classify(int * kind, const char * s, size_t n, const void * lim)
+{
+    int (* real_classify)(int *, const char *, size_t, const void *) =
+        fixture_core_symbol("adf_text_classify");
+
+    fixture_classifies++;
+    return real_classify(kind, s, n, lim);
+}
+#endif
