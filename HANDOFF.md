@@ -28,7 +28,8 @@ a host load of 10 to 17 from two peer sessions; both tests pass alone under the 
 All five suites passed on `22702a6` (after j-slice3 and r-cost2) at 04:35 to 04:48: 107 programs; driver 100
 cases; exports 625 of 625; Julia with `Pkg.test` 904, 1015 and 1649; both self-tests; san included. The final
 master `3ab7e76` adds j-slice4 (Julia only; its gate rerun by the orchestrator: 4881 of 4881); the suite run on
-it started at 05:00 (result below if it ended before the session closed). Rerun the suites first thing.
+it passed at 05:10: ALL FIVE SUITES GREEN on the final master `3ab7e76` (107 programs; driver 100 cases; exports
+625 of 625; Julia `Pkg.test` 4881; both self-tests). Rerun the suites first thing anyway.
 
 **Rules of TJO for this session** (23:52): orchestrate; monitor the quota app for Claude and Codex, work at
 pace for both; no Fable subagents (an occasional one to equalise Fable use, told about the quota app); Opus for
