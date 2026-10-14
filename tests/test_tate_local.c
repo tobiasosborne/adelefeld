@@ -442,3 +442,73 @@ ADF_TEST(invariant_entry_aborts)
     }
 }
 #endif
+
+/* m5-review1 F1: these even characters share the real integral at s = -3/4.
+   The fixed lower width comes from the review's independent Gamma quadrature.
+   Point balls below certify that separation too, using acb_gamma only at exact
+   dyadics (refs/src/flint-3.0.1/acb.rst:893-896), not on the input rectangle.
+   For z = s/2, Re(z+2) is between 1 and 2. The Gamma integral gives
+   |Gamma(z+2)| <= integral_0^1 1 dt + integral_1^inf t exp(-t) dt < 2.
+   |z| > 0.37, |z+1| > 0.62 and |pi^-z| < 2, hence image_bound = 20.
+   Gamma recurrence: refs/src/tate-poonen/notes.txt:61. */
+ADF_TEST(review_real_width)
+{
+    acb_t s, a, y, point, z, ref, pref;
+    arb_t pi, low[2], high[2], span, width, target, slack;
+    adf_char_t chi;
+    initialized_acb(s); initialized_acb(a); initialized_acb(y); initialized_acb(point);
+    initialized_acb(z); initialized_acb(ref); initialized_acb(pref);
+    arb_init(pi); arb_init(span); arb_init(width); arb_init(target); arb_init(slack);
+    for (int j = 0; j < 2; j++) { arb_init(low[j]); arb_init(high[j]); }
+    adf_char_init(chi); acb_one(a); arb_const_pi(pi, 512); arb_log(pi, pi, 512);
+    for (int character = 0; character < 2; character++)
+    {
+        ADF_CHECK(adf_char_set_conrey(chi, character ? 5 : 1, character ? 4 : 1) == ADF_OK);
+        ADF_CHECK(chi->parity == 0);
+        acb_set_si(s, -3); acb_mul_2exp_si(s, s, -2);
+        arb_add_error_2exp_si(acb_realref(s), -12);
+        arb_add_error_2exp_si(acb_imagref(s), -12);
+        ADF_CHECK(call(y, s, place(0), a, chi, 160) == ADF_OK);
+        for (int sample = 0; sample < 5; sample++)
+        {
+            acb_set_si(point, -3); acb_mul_2exp_si(point, point, -2);
+            if (sample)
+            {
+                arb_set_si(span, sample <= 2 ? -1 : 1); arb_mul_2exp_si(span, span, -12);
+                arb_add(acb_realref(point), acb_realref(point), span, 512);
+                arb_set_si(span, sample % 2 ? -1 : 1); arb_mul_2exp_si(span, span, -12);
+                arb_set(acb_imagref(point), span);
+            }
+            acb_mul_2exp_si(z, point, -1); acb_gamma(ref, z, 512);
+            acb_neg(z, z); acb_mul_arb(pref, z, pi, 512); acb_exp(pref, pref, 512);
+            acb_mul(ref, ref, pref, 512);
+            ADF_CHECK(acb_contains(y, ref));
+            for (int j = 0; j < 2; j++)
+            {
+                arb_srcptr c = j ? acb_imagref(ref) : acb_realref(ref);
+                if (!sample) { arb_set(low[j], c); arb_set(high[j], c); }
+                else { arb_min(low[j], low[j], c, 512); arb_max(high[j], high[j], c, 512); }
+            }
+        }
+        arb_zero(width);
+        for (int j = 0; j < 2; j++)
+        {
+            arb_sub(span, high[j], low[j], 512); arb_max(width, width, span, 512);
+        }
+        ADF_CHECK(arb_set_str(target, "0.00010116010017604849", 512) == 0);
+        ADF_CHECK(arb_ge(width, target));
+        arb_mul_ui(target, target, 64, 512);
+        arb_set_ui(slack, 20); arb_mul_2exp_si(slack, slack, -152);
+        arb_add(target, target, slack, 512);
+        for (int j = 0; j < 2; j++)
+        {
+            arf_set_mag(arb_midref(width), arb_radref(j ? acb_imagref(y) : acb_realref(y)));
+            mag_zero(arb_radref(width)); arb_mul_2exp_si(width, width, 1);
+            ADF_CHECK_MSG(arb_le(width, target), "review F1 character %d coordinate %d", character, j);
+        }
+    }
+    adf_char_clear(chi);
+    for (int j = 0; j < 2; j++) { arb_clear(low[j]); arb_clear(high[j]); }
+    arb_clear(pi); arb_clear(span); arb_clear(width); arb_clear(target); arb_clear(slack);
+    acb_clear(s); acb_clear(a); acb_clear(y); acb_clear(point); acb_clear(z); acb_clear(ref); acb_clear(pref);
+}

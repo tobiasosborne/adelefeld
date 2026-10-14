@@ -1,0 +1,7 @@
+test_tate_continue: forbidden path reached: acb_dirichlet_zeta
+test_tate_continue: forbidden path reached: acb_dirichlet_l
+test_tate_continue: forbidden path reached: acb_dirichlet_xi
+test_tate_continue: forbidden path reached: acb_dirichlet_hurwitz
+==18==LeakSanitizer has encountered a fatal error.
+==18==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==18==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)

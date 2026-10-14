@@ -1,0 +1,7 @@
+work cap: C = 1021 LIMIT in 1.47 s
+work cap: bits = 2^21 LIMIT in 0.00 s
+theta: dual coefficients from the transforms and T5 Poisson comparisons for 4 characters
+boundary: 65 OK, 127 NOT_DETERMINED across the width 2^-20
+vectors: 18 vectors, 144 value records (256 calls OK, 1024 reference points inside), 1 witness, 18 T3 pieces (12 need the remainder), 57 cutoff records in 2.77 s
+work: zeta at s = 2, bits 4: 43 units (N = 1, R = 2, J = 13, 15)
+tate: 22909 checks

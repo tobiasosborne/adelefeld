@@ -1,0 +1,209 @@
+mutate: src/localfactor.c: 621 mutants
+mutate: 621 mutants, 60 of them run (--limit 60, --seed 20261015)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (29.5 s)
+
+NOT COMPILED src/localfactor.c:498:26 logic: '||' -> '&&'
+  src/localfactor.c:498:26: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/localfactor.c:669:9 drop_assign: 'st = adf_char_chi_phase(&zero, theta, eta0, u);' -> '' (the statement is removed)
+  src/localfactor.c:670:12: error: ‘zero’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/localfactor.c:599:33 status: 'ADF_DOMAIN' -> 'ADF_OK'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -597,5 +597,5 @@
+   {
+       ulong q = eta0->q, k = 0;
+  -    if (q == 0 || p < 2) return ADF_DOMAIN;
+  +    if (q == 0 || p < 2) return ADF_OK;
+       while (q > 1 && q % p == 0) { q /= p; k++; }
+       if (q != 1) return ADF_DOMAIN;
+
+
+NOT COMPILED src/localfactor.c:448:5 drop_assign: 'k = arf_get_si(arb_midref(acb_realref(s)), ARF_RND_NEAR);' -> '' (the statement is removed)
+  src/localfactor.c:449:8: error: ‘k’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/localfactor.c:267:5 swap_args: 'mag_add(sum, sum, m1)' -> 'mag_add(sum, m1, sum)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -265,5 +265,5 @@
+       /* Y16: M1 already bounds |Gamma'(z+n) - log(pi) Gamma(z+n)|. */
+       mag_mul(sum, sum, m0);
+  -    mag_add(sum, sum, m1);
+  +    mag_add(sum, m1, sum);
+       mag_div(sum, sum, P);
+       mag_mul_2exp_si(sum, sum, -1);
+
+
+SURVIVED src/localfactor.c:333:61 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -331,5 +331,5 @@
+       arf_mul_2exp_si(lo, lo, -1);
+       arf_mul_2exp_si(hi, hi, -1);
+  -    if (arb_contains_zero(acb_imagref(s)) && arf_sgn(lo) <= 0)
+  +    if (arb_contains_zero(acb_imagref(s)) && arf_sgn(lo) <= 1)
+       {
+           if (arf_sgn(hi) > 0) arf_zero(h);
+
+
+NOT COMPILED src/localfactor.c:549:9 drop_assign: 'p = adf_place_prime_get(v);' -> '' (the statement is removed)
+  src/localfactor.c:551:25: error: ‘p’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/localfactor.c:239:5 swap_args: 'mag_add(m1, m1, f)' -> 'mag_add(m1, f, m1)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -237,5 +237,5 @@
+       mag_mul(m1, inva, inva);
+       mag_fac_ui(f, (ulong) cb);
+  -    mag_add(m1, m1, f);
+  +    mag_add(m1, f, m1);
+   
+       mag_one(P);
+
+
+NOT COMPILED src/localfactor.c:232:5 drop_call: 'arf_add_si(t, hi, n, w, ARF_RND_CEIL);' -> '' (the statement is removed)
+  src/localfactor.c:215:91: error: unused parameter ‘hi’ [-Werror=unused-parameter]
+
+SURVIVED src/localfactor.c:778:49 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -776,5 +776,5 @@
+       if (exact_integer_parity(&odd, s))
+       {
+  -        if (odd != e && arf_cmp_si(x, 1 + e) >= 0) return ADF_DOMAIN;   /* s = 1+e+2k */
+  +        if (odd != e && arf_cmp_si(x, 1 + e) >= 1) return ADF_DOMAIN;   /* s = 1+e+2k */
+           if (odd == e && arf_cmp_si(x, -e) <= 0) { acb_zero(res); return ADF_OK; }   /* s = -e-2k */
+       }
+
+
+SURVIVED src/localfactor.c:552:20 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -550,5 +550,5 @@
+           q = eta0->q;
+           if (q == 0 || p < 2) { st = ADF_DOMAIN; goto done; }
+  -        while (q > 1 && q % p == 0) q /= p;
+  +        while (q > 0 && q % p == 0) q /= p;
+           if (q != 1) { st = ADF_DOMAIN; goto done; }
+           if (!acb_is_finite(alpha) || acb_is_zero(alpha)) { st = ADF_DOMAIN; goto done; }
+
+
+SURVIVED src/localfactor.c:815:17 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -813,5 +813,5 @@
+       int st;
+       if (prec > ADF_REAL_PREC_MAX) return fail(ADF_LIMIT, where, v);
+  -    if (eta0->q > ADF_CHAR_MOD_MAX) return fail(ADF_LIMIT, where, v);
+  +    if (eta0->q >= ADF_CHAR_MOD_MAX) return fail(ADF_LIMIT, where, v);
+       ADF_INV_PLACE(v);
+       ADF_INV_CONSTANT(z, s, alpha, eta0);
+
+
+NOT COMPILED src/localfactor.c:698:9 drop_call: 'acb_mul_arb(t, s, logp, w);' -> '' (the statement is removed)
+  src/localfactor.c:687:39: error: unused parameter ‘s’ [-Werror=unused-parameter]
+
+NOT COMPILED src/localfactor.c:551:32 drop_assign: 'st = ADF_DOMAIN;' -> '' (the statement is removed)
+  src/localfactor.c:567:8: error: ‘st’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+SURVIVED src/localfactor.c:633:5 swap_args: 'acb_mul(num, alpha, t, w)' -> 'acb_mul(num, t, alpha, w)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -631,5 +631,5 @@
+       acb_neg(t, t);
+       acb_exp(t, t, w);                       /* T = exp(-s log p) */
+  -    acb_mul(num, alpha, t, w);
+  +    acb_mul(num, t, alpha, w);
+       acb_neg(num, num);
+       acb_add_ui(num, num, 1, w);             /* 1 - alpha T */
+
+
+NOT COMPILED src/localfactor.c:794:5 drop_call: 'rgamma_shifted(den, den, w);' -> '' (the statement is removed)
+  src/localfactor.c:737:1: error: ‘rgamma_shifted’ defined but not used [-Werror=unused-function]
+
+NOT COMPILED src/localfactor.c:702:9 drop_call: 'acb_pow_ui(out, alpha, a, w);' -> '' (the statement is removed)
+  src/localfactor.c:687:72: error: unused parameter ‘alpha’ [-Werror=unused-parameter]
+
+SURVIVED src/localfactor.c:291:9 swap_args: 'mag_min(B, B, sharp)' -> 'mag_min(B, sharp, B)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -289,5 +289,5 @@
+           acb_get_mag(sharp, d); acb_get_mag(image, candidate);
+           mag_mul(sharp, sharp, image); mag_mul_2exp_si(sharp, sharp, -1);
+  -        mag_min(B, B, sharp);
+  +        mag_min(B, sharp, B);
+           acb_clear(d); mag_clear(image); mag_clear(sharp);
+       }
+
+
+SURVIVED src/localfactor.c:233:5 drop_call: 'arf_ceil(t, t);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -231,5 +231,5 @@
+       mag_inv(inva, f);                                /* >= 1/A */
+       arf_add_si(t, hi, n, w, ARF_RND_CEIL);           /* B0 <= t <= 64 */
+  -    arf_ceil(t, t);
+  +    
+       cb = arf_get_si(t, ARF_RND_CEIL);                /* ceil(B0) <= cb, 1 <= cb <= 64 */
+       mag_fac_ui(f, (ulong) (cb - 1));
+
+
+SURVIVED src/localfactor.c:779:43 cmp: '<=' -> '<'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -777,5 +777,5 @@
+       {
+           if (odd != e && arf_cmp_si(x, 1 + e) >= 0) return ADF_DOMAIN;   /* s = 1+e+2k */
+  -        if (odd == e && arf_cmp_si(x, -e) <= 0) { acb_zero(res); return ADF_OK; }   /* s = -e-2k */
+  +        if (odd == e && arf_cmp_si(x, -e) < 0) { acb_zero(res); return ADF_OK; }   /* s = -e-2k */
+       }
+       acb_init(num); acb_init(den); acb_init(t); arb_init(logpi);
+
+
+SURVIVED src/localfactor.c:754:5 swap_args: 'acb_mul(y, q, f, w)' -> 'acb_mul(y, f, q, w)'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -752,5 +752,5 @@
+       acb_add_ui(f, z, (ulong) n, w);
+       acb_rgamma(f, f, w);
+  -    acb_mul(y, q, f, w);
+  +    acb_mul(y, f, q, w);
+       arf_clear(lo); acb_clear(q); acb_clear(f);
+   }
+
+
+NOT COMPILED src/localfactor.c:315:56 logic: '&&' -> '||'
+  src/localfactor.c:315:25: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+SURVIVED src/localfactor.c:173:17 negate_if: 'if(arb_intersection(c, acb_imagref(g), acb_imagref(f), w))' -> 'if(!(arb_intersection(c, acb_imagref(g), acb_imagref(f), w)))'
+  the tests pass with the mutant
+  --- a/src/localfactor.c
+  +++ b/src/localfactor.c
+  @@ -171,5 +171,5 @@
+                   arb_init(c);
+                   if (arb_intersection(c, acb_realref(g), acb_realref(f), w)) arb_swap(acb_realref(g), c);
+  -                if (arb_intersection(c, acb_imagref(g), acb_imagref(f), w)) arb_swap(acb_imagref(g), c);
+  +                if (!(arb_intersection(c, acb_imagref(g), acb_imagref(f), w))) arb_swap(acb_imagref(g), c);
+                   arb_clear(c);
+               }
+
+
+NOT COMPILED src/localfactor.c:348:5 drop_assign: 'n = shift_of(lo);' -> '' (the statement is removed)
+  src/localfactor.c:349:10: error: ‘n’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+mutate: 60 mutants in 1092.9 s: 36 killed, 13 survived, 11 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 13 mutant(s) survived; each one is a claim the tests do not check

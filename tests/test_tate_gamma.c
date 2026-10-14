@@ -633,3 +633,23 @@ ADF_TEST(invariant_entry_aborts)
         }
 }
 #endif
+
+/* The conductor cap is inclusive (localfactor.h:99-103). Conrey (2^16,5)
+   is primitive and even. At infinity, P10 gives gamma(1/2) = epsilon = 1.
+   The real branch avoids a 65536-term finite Gauss sum at this boundary. */
+ADF_TEST(inclusive_character_cap)
+{
+    acb_t s, a, y, expected;
+    adf_char_t chi;
+    initialized_acb(s); initialized_acb(a); initialized_acb(y); initialized_acb(expected);
+    adf_char_init(chi);
+    ADF_CHECK(adf_char_set_conrey(chi, ADF_CHAR_MOD_MAX, 5) == ADF_OK);
+    ADF_CHECK(chi->q == ADF_CHAR_MOD_MAX && adf_char_get_conductor(chi) == ADF_CHAR_MOD_MAX);
+    ADF_CHECK(chi->parity == 0);
+    acb_one(s); acb_mul_2exp_si(s, s, -1); acb_one(a); acb_one(expected);
+    ADF_CHECK(gamma_call(y, s, place(0), a, chi, 160) == ADF_OK);
+    ADF_CHECK(acb_contains(y, expected));
+    ADF_CHECK(epsilon_call(y, s, place(0), a, chi, 160) == ADF_OK);
+    ADF_CHECK(acb_contains(y, expected));
+    acb_clear(s); acb_clear(a); acb_clear(y); acb_clear(expected); adf_char_clear(chi);
+}

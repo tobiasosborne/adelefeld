@@ -1,0 +1,13 @@
+vectors: 394; certified samples: 1861
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+FAIL tests/test_tate_local.c:507: review_real_width: check failed: arb_le(width, target) | review F1 character 0 coordinate 0
+FAIL tests/test_tate_local.c:507: review_real_width: check failed: arb_le(width, target) | review F1 character 0 coordinate 1
+FAIL tests/test_tate_local.c:507: review_real_width: check failed: arb_le(width, target) | review F1 character 1 coordinate 0
+FAIL tests/test_tate_local.c:507: review_real_width: check failed: arb_le(width, target) | review F1 character 1 coordinate 1
+FAIL review_real_width (tests/test_tate_local.c:454, 4 failed checks)
+7 tests, 22807 checks, 4 failed checks, 1 failed tests

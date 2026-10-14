@@ -1,0 +1,3 @@
+test_driver: h7_many_lines: 100000 lines in 0.105 s
+test_driver: 100 cases, 101691 expected lines, all equal (SAN=0)
+driver test exit = 0

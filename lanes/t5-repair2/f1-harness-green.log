@@ -1,0 +1,1 @@
+{"mode": "real", "counts": {"runner_calls": 1, "runner_seconds": 0.03214066000509774, "checks": 2594, "real_grid_calls": 480, "real_grid_inputs": 160}, "failures": "[]"}

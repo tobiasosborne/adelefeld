@@ -1,0 +1,18 @@
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_local"], "exit": 1, "seconds": 7.516300201001286, "log": "lanes/t5-repair2/san-test_tate_local.log"}
+ok   nonreal_inverse_vector
+ok   review_real_width
+7 tests, 22807 checks, 0 failed checks, 0 failed tests
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_gamma"], "exit": 1, "seconds": 4.552242220997869, "log": "lanes/t5-repair2/san-test_tate_gamma.log"}
+ok   duality_identity
+ok   statuses_precision_and_aliases
+8 tests, 47955 checks, 0 failed checks, 0 failed tests
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_localfactor"], "exit": 1, "seconds": 11.342181123000046, "log": "lanes/t5-repair2/san-test_localfactor.log"}
+ok   real_certified_near_poles
+ok   real_derivative_bound_boxes
+14 tests, 309581 checks, 0 failed checks, 0 failed tests
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate"], "exit": 1, "seconds": 7.988335543996072, "log": "lanes/t5-repair2/san-test_tate.log"}
+
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_continue"], "exit": 1, "seconds": 20.71992372200475, "log": "lanes/t5-repair2/san-test_tate_continue.log"}
+
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_fe"], "exit": 1, "seconds": 6.729676547998679, "log": "lanes/t5-repair2/san-test_tate_fe.log"}
+

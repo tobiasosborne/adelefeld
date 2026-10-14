@@ -124,8 +124,10 @@ done:
 }
 
 /* The candidate of Z4 real steps 3-4 (:137-143) on z = s/2 at w bits, with the prefactor exp(-z log pi):
-   Gamma(z) directly; if that is not finite and n <= ADF_LOCAL_ZETA_SHIFT_MAX, Gamma(z + n) / (z (z+1) ...
-   (z+n-1)), which is Gamma(z) by the recurrence (Z2 step 4, :75-77; notes.txt:58); n > the bound is LIMIT.
+   Gamma(z) directly (refs/src/flint-3.0.1/acb.rst:893-896). For 0 < n <= ADF_LOCAL_ZETA_SHIFT_MAX also
+   intersect with Gamma(z + n) / (z (z+1) ... (z+n-1)); this sharpens finite but loose rectangles near poles.
+   The identity follows by iterating Gamma(z+1) = z Gamma(z) (refs/src/tate-poonen/notes.txt:61).
+   A failed direct value uses the recurrence fallback; only then does n > the bound give LIMIT.
    n is the caller's shift with min Re(z + n) >= 1. Returns OK with a finite y, NOT_DETERMINED or LIMIT. */
 static int
 real_candidate(acb_t y, const acb_t z, const arb_t logpi, slong n, slong w)
@@ -139,7 +141,7 @@ real_candidate(acb_t y, const acb_t z, const arb_t logpi, slong n, slong w)
     acb_neg(pref, pref);
     acb_exp(pref, pref, w);
     acb_gamma(g, z, w);
-    if (!acb_is_finite(g))
+    if (!acb_is_finite(g) || (n > 0 && n <= ADF_LOCAL_ZETA_SHIFT_MAX))
     {
         if (n > ADF_LOCAL_ZETA_SHIFT_MAX) st = ADF_LIMIT;
         else
@@ -156,10 +158,22 @@ real_candidate(acb_t y, const acb_t z, const arb_t logpi, slong n, slong w)
                 acb_add_ui(f, z, (ulong) j, w);
                 acb_mul(q, q, f, w);
             }
+            acb_add_ui(f, z, (ulong) n, w);
+            acb_gamma(f, f, w);
+            /* Pole geometry was checked before this call. A zero-containing product can still be an
+               interval overestimate: retain a finite direct candidate, otherwise refuse certification. */
+            if (acb_contains_zero(q)) acb_indeterminate(f);
+            else acb_div(f, f, q, w);
+            if (!acb_is_finite(g)) acb_set(g, f);
+            else if (acb_is_finite(f))
+            {
+                arb_t c;
+                arb_init(c);
+                if (arb_intersection(c, acb_realref(g), acb_realref(f), w)) arb_swap(acb_realref(g), c);
+                if (arb_intersection(c, acb_imagref(g), acb_imagref(f), w)) arb_swap(acb_imagref(g), c);
+                arb_clear(c);
+            }
             acb_clear(f);
-            acb_add_ui(g, z, (ulong) n, w);
-            acb_gamma(g, g, w);
-            acb_div(g, g, q, w);
         }
     }
     if (st == ADF_OK)
@@ -199,7 +213,7 @@ shift_of(const arf_t lo)
    bounds for the rest. B is infinite if a delta_j bound is 0. */
 static void
 real_derivative_bound(mag_t B, mag_t previous, const acb_t z, const arf_t lo, const arf_t hi,
-                      const arb_t logpi, slong n,
+                      const arb_t logpi, const acb_t candidate, slong n,
                       slong w)
 {
     arf_t t;
@@ -261,6 +275,22 @@ real_derivative_bound(mag_t B, mag_t previous, const acb_t z, const arf_t lo, co
     arb_get_mag(f, c);
     mag_mul(B, sum, f);
     mag_mul(previous, oldsum, f);
+
+    /* On this pole-free rectangle L'(s) = L(s) (digamma(s/2) - log(pi)) / 2.
+       candidate encloses L on the whole rectangle, so its magnitude times that of the second factor
+       bounds the derivative. Take the smaller of two certified bounds; a nonfinite digamma
+       leaves Z6's bound unchanged. refs/src/flint-3.0.1/acb.rst:918-920 defines digamma. */
+    {
+        acb_t d;
+        mag_t image, sharp;
+        acb_init(d); mag_init(image); mag_init(sharp);
+        acb_digamma(d, z, w);
+        acb_sub_arb(d, d, logpi, w);
+        acb_get_mag(sharp, d); acb_get_mag(image, candidate);
+        mag_mul(sharp, sharp, image); mag_mul_2exp_si(sharp, sharp, -1);
+        mag_min(B, B, sharp);
+        acb_clear(d); mag_clear(image); mag_clear(sharp);
+    }
 
     arf_clear(t);
     arb_clear(c);
@@ -333,7 +363,7 @@ real_factor(acb_t res, const acb_t s, slong prec)
         if (real_candidate(ym, zm, logpi, shift_of(ml), w) == ADF_OK)
         {
             mag_hypot(R, arb_radref(acb_realref(s)), arb_radref(acb_imagref(s)));
-            real_derivative_bound(B, oldB, z, lo, hi, logpi, n, w);
+            real_derivative_bound(B, oldB, z, lo, hi, logpi, cand, n, w);
             mag_mul(B, B, R);
             if (mag_is_finite(B))
             {
