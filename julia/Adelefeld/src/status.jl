@@ -71,3 +71,25 @@ function _unwrap(r::AdfResult, op::Symbol)
     r.status === OK && return r.value
     throw(AdfError(op, r.status, status_name(Int(r.status)), r))
 end
+
+# Point comparison (include/adelefeld/status.h:33-37; fball.h:258-265; docs/api-j.md:223, 315): the
+# three-valued comparison of two unknown points, one in each ball. Not a status: a separate enum, so a value
+# can never be passed where an AdfStatus is expected. The C library has no name function for these values
+# (status.h exports only adf_status_str and adf_status_count), so there is no load-time name check; the
+# numbers are transcribed literally from status.h:35-37 and every raw C value outside 0..2 is an AdfAbiError.
+@enum PointComparison::Int32 begin
+    EQUAL=0; DIFFERENT=1; UNDECIDED=2
+end
+
+function to_point_comparison(raw::Cint, op::Symbol)
+    0 <= raw <= 2 || throw(AdfAbiError(op, raw))
+    return PointComparison(raw)
+end
+
+# A C predicate's int 0 or 1 as a Bool (docs/api-j.md:224: no AdfStatus cast); any other value is an
+# ABI error (fball.h:234-237: the predicates return int 0 or 1).
+function to_bool(raw::Cint, op::Symbol)
+    raw == 1 && return true
+    raw == 0 && return false
+    throw(AdfAbiError(op, raw))
+end

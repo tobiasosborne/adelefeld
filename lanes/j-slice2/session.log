@@ -1,0 +1,20 @@
+Precompiling packages...
+   2334.3 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 3 seconds
+(* ; 2 mod 6)
+(* ; 0 mod 12)
+(* ; 5/3 mod 6)
+ArgumentError: == is not defined for finite balls (docs/api-j.md:225, 234): use equal_set(x, y) for equality of the sets, or compare_points(x, y) for the comparison of two unknown points (EQUAL, DIFFERENT, UNDECIDED)
+50015
+delta 0
+delta 0
+delta 0
+ErrorException: / not defined for FBall
+ErrorException: promotion of types Int64 and FBall failed to change any arguments
+ErrorException: promotion of types Rat and FBall failed to change any arguments
+ErrorException: promotion of types FBall and Float64 failed to change any arguments
+MethodError: MethodError: no method matching isless(::FBall, ::FBall)
+The function `isless` exists, but no method is define
+ArgumentError: ArgumentError: == is not defined for finite balls (docs/api-j.md:225, 234): use equal_set(x, y) for equality o
+x^2 = (* ; 1 mod 2)  which: ^(x::Number, p::Integer) @ Base intfuncs.jl:416
+true

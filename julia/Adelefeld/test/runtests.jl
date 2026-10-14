@@ -389,3 +389,479 @@ end
 end
 
 end
+
+# ---- Step J-a.2 (docs/api-j.md section 9, second item of J-a): FBall and the scalar mixed arithmetic ----
+# Acceptance line of docs/api-j.md:373-374: SPEC's five arithmetic rows, fractional and zero radii, q - x sign,
+# x - x as independent balls, den = 0 DOMAIN against division by zero NOT_UNIT, inputs unchanged, copies clear
+# separately. C contract: include/adelefeld/fball.h; text: include/adelefeld/text.h:156-165.
+
+fb(s) = parse(FBall, s)
+
+# The exact value of a Rat as a Julia Rational{BigInt} (read from the C text by the package's own reader).
+jrat(x::Rat) = Adelefeld._rational(x)
+
+# A deterministic generator for the random balls (no Random dependency): a 64-bit LCG (Knuth MMIX constants).
+mutable struct Lcg
+    s::UInt64
+end
+next!(g::Lcg) = (g.s = g.s * 0x5851f42d4c957f2d + 0x14057b7ef767814f; g.s >> 11)
+
+@testset "Adelefeld step J-a.2" begin
+
+@testset "fball layout row, types, ambiguities" begin
+    # docs/api-m1.md:36 (48 bytes), :45 (alignment 8); fball.h:53-54.
+    @test (:fball, 48, 8) in [(r.suffix, r.size, r.align) for r in Adelefeld.LAYOUT_ROWS]
+    @test Adelefeld.FBALL_SIZE == 48
+    @test Adelefeld.FBALL_ALIGN == 8
+    @test FBall <: Number
+    @test isempty(Test.detect_ambiguities(Adelefeld))
+    # PointComparison: status.h:35-37, literal; separate from AdfStatus (docs/api-j.md:223, 315).
+    @test [Int(c) for c in instances(PointComparison)] == [0, 1, 2]
+    @test collect(string.(instances(PointComparison))) == ["EQUAL", "DIFFERENT", "UNDECIDED"]
+    @test PointComparison !== AdfStatus
+end
+
+@testset "SPEC 4.3 rows exactly (docs/SPEC.md:244-248)" begin
+    rows = [  # (the operation through parse and the operators, the expected text of the table)
+        ("(3 mod 12) + (5 mod 18)",     fb("3 mod 12") + fb("5 mod 18"),     "2 mod 6"),
+        ("(3 mod 12) * (5 mod 18)",     fb("3 mod 12") * fb("5 mod 18"),     "3 mod 6"),
+        ("12 * (5 mod 18)",             12 * fb("5 mod 18"),                 "60 mod 216"),
+        ("(1/3) * (5 mod 18)",          Rat(1, 3) * fb("5 mod 18"),          "5/3 mod 6"),
+        ("(1/2 mod 8) * (2/3 mod 9)",   fb("1/2 mod 8") * fb("2/3 mod 9"),   "0 mod 1/6"),
+    ]
+    for (name, got, want) in rows
+        @testset "$name" begin
+            @test got isa FBall
+            @test equal_set(got, fb(want))
+            @test string(got) == "(* ; " * want * ")"
+        end
+    end
+    # The same rows by the other routes: the scalar as an exact ball (fball_mul, not mul_rat), the other
+    # order, a Rational scalar, and division by the scalar's inverse (div_rat).
+    @test string(fb("(* ; 12)") * fb("5 mod 18")) == "(* ; 60 mod 216)"
+    @test string(fb("5 mod 18") * Rat(12)) == "(* ; 60 mod 216)"
+    @test string(fb("5 mod 18") * (1//3)) == "(* ; 5/3 mod 6)"
+    @test string(fb("5 mod 18") / 3) == "(* ; 5/3 mod 6)"
+    @test string(fb("5 mod 18") / Rat(1, 12)) == "(* ; 60 mod 216)"
+    @test string(fb("5 mod 18") + fb("3 mod 12")) == "(* ; 2 mod 6)"
+end
+
+@testset "the session line (docs/api-j.md:313-314, 418)" begin
+    x = parse(FBall, "3 mod 12") + parse(FBall, "5 mod 18")
+    @test sprint(show, x) == "(* ; 2 mod 6)"
+    @test sprint(show, MIME"text/plain"(), x) == "(* ; 2 mod 6)"
+    @test repr(x) == "(* ; 2 mod 6)"
+    @test value_text(x) == "(* ; 2 mod 6)"
+    @test try_value_text(x).status === OK
+end
+
+@testset "fractional and zero radii" begin
+    x = fb("0 mod 1/6")
+    @test string(x) == "(* ; 0 mod 1/6)"
+    @test radius(x) == Rat(1, 6)
+    @test center(x) == 0
+    @test string(fb("1/4 mod 1/2") + fb("1/6 mod 1/4")) == "(* ; 1/6 mod 1/4)"
+    @test string(FBall(Rat(1, 2), Rat(1, 4))) == "(* ; 0 mod 1/4)"
+    @test string(FBall(Rat(5, 6), Rat(2, 3))) == "(* ; 1/6 mod 2/3)"
+    z = fb("(* ; 7/3)")
+    @test radius(z) == 0
+    @test center(z) == Rat(7, 3)
+    @test identical(z, FBall(Rat(7, 3)))
+    @test string(FBall(Rat(5), Rat(0))) == "(* ; 5)"
+    @test string(fb("(* ; 14/6 mod 0)")) == "(* ; 7/3)"
+    # Rat 1/3 stays exact inside a ball of radius 0.
+    t = FBall(Rat(1) / 3)
+    @test string(t) == "(* ; 1/3)"
+    @test string(t + t + t) == "(* ; 1)"
+    @test string(t * 3) == "(* ; 1)"
+    @test string(FBall(Rat(1, 3)) + FBall(Rat(1, 6))) == "(* ; 1/2)"
+    @test string(fb("(* ; 1/2)") * fb("(* ; 2/3)")) == "(* ; 1/3)"
+end
+
+@testset "constructors" begin
+    @test string(FBall(Rat(5, 3))) == "(* ; 5/3)"
+    @test string(FBall(7)) == "(* ; 7)"
+    @test string(FBall(-3//4)) == "(* ; -3/4)"
+    @test string(FBall(big(2)^100)) == "(* ; " * string(big(2)^100) * ")"
+    @test string(FBall(Rat(0))) == "(* ; 0)"
+    @test identical(FBall(Rat(3), Rat(12)), fb("3 mod 12"))
+    @test string(FBall(Rat(-1), Rat(2))) == "(* ; 1 mod 2)"
+    @test string(FBall(Rat(1, 2), Rat(0))) == "(* ; 1/2)"
+    @test try_fball(Rat(3), Rat(12)) isa AdfResult{FBall}
+    @test try_fball(Rat(3), Rat(12)).status === OK
+    # A negative radius is DOMAIN (fball.h:133-134), the output untouched and cleared.
+    c1 = Rat(1); m6 = Rat(-6)
+    before = Adelefeld.diagnostics().live
+    r = try_fball(c1, m6)
+    @test r.status === DOMAIN
+    @test r.value === nothing
+    @test Adelefeld.diagnostics().live == before
+    @test try_fball(Rat(1), Rat(-1, 2)).status === DOMAIN
+    err = try; FBall(Rat(1), Rat(-6)); catch e; e; end
+    @test err isa AdfError && err.status === DOMAIN
+    # Both orders of the scalar types (Integer and Rational by explicit Rat conversion).
+    @test_throws AdfError FBall(1//0)
+    err = try; FBall(1//0); catch e; e; end
+    @test err.status === DOMAIN
+end
+
+@testset "parser: both forms, statuses, limits" begin
+    # text.h:158-161: "(* ; F)" and the bare "a mod N" (conventions 9.2, fball_v); golden tests/golden/fball.tsv.
+    @test string(fb("3 mod 12")) == "(* ; 3 mod 12)"
+    @test string(fb("(* ; 3 mod 12)")) == "(* ; 3 mod 12)"
+    @test identical(fb("3 mod 12"), fb("(* ; 3 mod 12)"))
+    @test string(fb("(*;2mod6)")) == "(* ; 2 mod 6)"
+    @test string(fb("-1 mod 2")) == "(* ; 1 mod 2)"
+    @test string(fb("(* ; 20 mod 6)")) == "(* ; 2 mod 6)"
+    @test string(fb("(* ; 10/4 mod 6/4)")) == "(* ; 1 mod 3/2)"
+    @test string(parse(FBall, SubString("xx3 mod 12", 3))) == "(* ; 3 mod 12)"
+    # den = 0 in a text: DOMAIN (text.h:159-160 "ADF_DOMAIN (zero denominator)"; conventions 9.3).
+    for s in ("(* ; 1/0)", "(* ; 1 mod 1/0)", "(* ; 1/0 mod 0)", "1/0 mod 6", "1 mod 6/0")
+        @test try_parse(FBall, s).status === DOMAIN
+    end
+    err = try; parse(FBall, "(* ; 1/0)"); catch e; e; end
+    @test err isa AdfError && err.status === DOMAIN
+    # Not a sentence: PARSE.
+    for s in ("", "7/3", "mod 6", "2 mod", "1 mod -6", "(* ; 1 mod 6", "(* ; 1 mod 6))", "(*)",
+              "(* ; 1.5 mod 6)", "(1 ; 2 mod 6)", "((((* ; 2 mod 6))))", "(* ; 2 mod 6)\0", "3 mod 12 é")
+        r = try_parse(FBall, s)
+        @test r.status === PARSE
+        @test r.value === nothing
+    end
+    @test_throws AdfError parse(FBall, "7/3")
+    # The limits are honoured (text.h:22-23, stage 1): bytes counted by ncodeunits.
+    @test try_parse(FBall, "3 mod 12"; limits=TextLimits(max_len=7)).status === LIMIT
+    @test try_parse(FBall, "3 mod 12"; limits=TextLimits(max_len=8)).status === OK
+    @test try_parse(FBall, "é mod 1"; limits=TextLimits(max_len=7)).status === LIMIT
+    long = "(* ; " * "1"^Int(TextLimits().max_len) * " mod 6)"
+    @test try_parse(FBall, long).status === LIMIT
+    # A failing parse leaves no live handle.
+    GC.gc()
+    before = Adelefeld.diagnostics().live
+    for s in ("7/3", "(* ; 1/0)", long)
+        try_parse(FBall, s)
+    end
+    @test Adelefeld.diagnostics().live == before
+end
+
+@testset "q - x against x - q" begin
+    x = fb("1 mod 6")
+    @test string(x - Rat(2)) == "(* ; 5 mod 6)"
+    @test string(Rat(2) - x) == "(* ; 1 mod 6)"
+    @test string(x - 2) == "(* ; 5 mod 6)"
+    @test string(2 - x) == "(* ; 1 mod 6)"
+    y = fb("1/3 mod 1")
+    @test string(y - Rat(1, 2)) == "(* ; 5/6 mod 1)"
+    @test string(Rat(1, 2) - y) == "(* ; 1/6 mod 1)"
+    @test string(y - 1//2) == "(* ; 5/6 mod 1)"
+    @test string(1//2 - y) == "(* ; 1/6 mod 1)"
+    @test equal_set(-(y - Rat(1, 2)), Rat(1, 2) - y)
+    @test !equal_set(y - Rat(1, 2), Rat(1, 2) - y)
+    @test string(FBall(Rat(1, 3)) - Rat(1, 2)) == "(* ; -1/6)"
+    @test string(Rat(1, 2) - FBall(Rat(1, 3))) == "(* ; 1/6)"
+    @test string(-fb("1 mod 6")) == "(* ; 5 mod 6)"
+end
+
+@testset "x - x is a ball around 0 (independent inputs, SPEC 4.3)" begin
+    x = fb("3 mod 12")
+    d = x - x
+    @test string(d) == "(* ; 0 mod 12)"
+    @test radius(d) == 12
+    @test !equal_set(d, FBall(Rat(0)))
+    @test overlaps(d, FBall(Rat(0)))
+    @test inside(FBall(Rat(0)), d)
+    @test compare_points(d, FBall(Rat(0))) === Adelefeld.UNDECIDED
+    @test string(x + (-x)) == "(* ; 0 mod 12)"
+    q = FBall(Rat(5, 7))
+    @test string(q - q) == "(* ; 0)"
+end
+
+@testset "division by zero is NOT_UNIT, den = 0 is DOMAIN" begin
+    x = fb("5 mod 18")
+    r = try_div(x, Rat(0))
+    @test r isa AdfResult{FBall}
+    @test r.status === NOT_UNIT
+    @test r.value === nothing
+    @test try_div(x, 0).status === NOT_UNIT
+    @test try_div(x, 0//1).status === NOT_UNIT
+    err = try; x / 0; catch e; e; end
+    @test err isa AdfError && err.status === NOT_UNIT
+    err = try; x / Rat(0); catch e; e; end
+    @test err isa AdfError && err.status === NOT_UNIT
+    # A scalar whose Rat conversion fails keeps the conversion's status.
+    @test try_add(x, 1//0).status === DOMAIN
+    @test try_add(x, 1//0) isa AdfResult{FBall}
+    @test try_mul(1//0, x).status === DOMAIN
+    @test try_div(x, 1//0).status === DOMAIN
+    err = try; x + 1//0; catch e; e; end
+    @test err isa AdfError && err.status === DOMAIN
+    @test string(x * 0) == "(* ; 0)"
+    @test string(0 * x) == "(* ; 0)"
+    @test string(x) == "(* ; 5 mod 18)"
+end
+
+@testset "set predicates and point comparison" begin
+    a = fb("2 mod 6"); b = fb("0 mod 2")
+    # FIRST INSIDE SECOND (fball.h:248-251; docs/api-j.md:222, 314): 2 + 6 Zhat is inside 0 + 2 Zhat.
+    @test inside(a, b) === true
+    @test inside(b, a) === false
+    @test inside(FBall(Rat(4)), b) === true
+    @test inside(b, FBall(Rat(4))) === false
+    @test inside(a, a) === true
+    @test equal_set(a, fb("(* ; 20 mod 6)")) === true
+    @test equal_set(a, fb("2 mod 3")) === false
+    @test equal_set(FBall(Rat(1, 3)), FBall(Rat(2, 6))) === true
+    @test overlaps(fb("1 mod 2"), fb("0 mod 3")) === true
+    @test overlaps(fb("1 mod 2"), fb("0 mod 4")) === false
+    @test overlaps(fb("0 mod 4"), fb("1 mod 2")) === false
+    @test overlaps(a, b) === true
+    @test compare_points(FBall(Rat(1, 3)), FBall(Rat(2, 6))) === Adelefeld.EQUAL
+    @test compare_points(fb("1 mod 2"), fb("0 mod 2")) === Adelefeld.DIFFERENT
+    @test compare_points(FBall(Rat(1)), FBall(Rat(2))) === Adelefeld.DIFFERENT
+    @test compare_points(fb("1 mod 2"), fb("1 mod 4")) === Adelefeld.UNDECIDED
+    @test compare_points(a, a) === Adelefeld.UNDECIDED
+    @test compare_points(a, b) isa PointComparison
+    @test !(compare_points(a, b) isa AdfStatus)
+    @test is_canonical(a) === true
+    @test is_canonical(fb("(* ; 0)")) === true
+    @test identical(a, fb("(* ; 20 mod 6)")) === true
+    @test identical(a, b) === false
+    # Accessors: fresh Rats (fball.h:163-170).
+    c = center(fb("(* ; -7 mod 3)"))
+    @test c isa Rat && c == 2
+    @test radius(fb("2/3 mod 9")) == 9
+    @test center(fb("2/3 mod 9")) == Rat(2, 3)
+    x = fb("5/3 mod 6")
+    r = radius(x)
+    close(r)
+    @test string(x) == "(* ; 5/3 mod 6)"
+    @test radius(x) == 6
+end
+
+@testset "no == on balls, identity isequal and hash, no ordering, no ball division" begin
+    x = fb("3 mod 12"); y = fb("3 mod 12")
+    err = try; x == y; catch e; e; end
+    @test err isa ArgumentError
+    @test occursin("equal_set", err.msg) && occursin("compare_points", err.msg)
+    @test_throws ArgumentError x == x
+    @test_throws ArgumentError x != y
+    @test_throws ArgumentError x == 1
+    @test_throws ArgumentError 1 == x
+    @test_throws ArgumentError x == Rat(1)
+    @test_throws ArgumentError Rat(1) == x
+    @test_throws ArgumentError x == 1//2
+    # Identity-based isequal and hash (docs/api-j.md:235).
+    @test isequal(x, x)
+    @test !isequal(x, y)
+    @test hash(x) == hash(x)
+    @test length(Set([x, y, x])) == 2
+    @test !isequal(x, Rat(3))
+    @test_throws MethodError x < y
+    # No division by a ball (docs/api-j.md:217): no method of the package; the call fails.
+    @test_throws Exception x / y
+    @test_throws Exception Rat(1) / x
+    @test_throws Exception 1 / x
+    @test which(/, Tuple{FBall,FBall}).module !== Adelefeld
+    @test which(/, Tuple{Rat,FBall}).module !== Adelefeld
+    # No implicit Float64 or Complex conversion (docs/api-j.md:232-233).
+    @test_throws Exception x + 1.5
+    @test_throws Exception 1.5 * x
+    @test_throws Exception x * (1 + 2im)
+end
+
+@testset "mixed-scalar matrix" begin
+    # Oracle: Julia Rational{BigInt} arithmetic on the centre a and radius N, read through FBall(c, N)
+    # (set_center_radius). x + q = (a + q) + N Zhat; q - x = (q - a) + N Zhat; q x = q a + |q| N Zhat (fball.h:219);
+    # x / q = a/q + N/|q| Zhat.
+    balls = [fb("3 mod 12"), fb("1/2 mod 8"), fb("0 mod 1/6"), FBall(Rat(-5, 7))]
+    scalars = Any[2, -3, 0, true, big(2)^70, -2//3, big(5)//big(2)^65, Rat(7, 4), Rat(0)]
+    expect(c, N) = FBall(Rat(c), Rat(abs(N)))
+    for x in balls, q in scalars
+        a = jrat(center(x)); N = jrat(radius(x))
+        Q = q isa Rat ? jrat(q) : Rational{BigInt}(q)
+        @testset "$(string(x)) with $(typeof(q)) $q" begin
+            @test equal_set(x + q, expect(a + Q, N)) && string(x + q) == string(expect(a + Q, N))
+            @test equal_set(q + x, expect(a + Q, N)) && string(q + x) == string(expect(a + Q, N))
+            @test equal_set(x - q, expect(a - Q, N)) && string(x - q) == string(expect(a - Q, N))
+            @test equal_set(q - x, expect(Q - a, N)) && string(q - x) == string(expect(Q - a, N))
+            @test equal_set(x * q, expect(Q * a, Q * N)) && string(x * q) == string(expect(Q * a, Q * N))
+            @test equal_set(q * x, expect(Q * a, Q * N)) && string(q * x) == string(expect(Q * a, Q * N))
+            if Q == 0
+                @test try_div(x, q).status === NOT_UNIT
+            else
+                @test equal_set(x / q, expect(a / Q, N / Q)) && string(x / q) == string(expect(a / Q, N / Q))
+            end
+            @test try_add(x, q) isa AdfResult{FBall}
+            @test try_sub(q, x) isa AdfResult{FBall}
+            @test try_mul(q, x) isa AdfResult{FBall}
+        end
+    end
+end
+
+@testset "inputs unchanged by every operation" begin
+    x = fb("1/2 mod 8"); y = fb("2/3 mod 9"); q = Rat(-5, 3); z = Rat(0)
+    sx, sy, sq = string(x), string(y), string(q)
+    ops = [() -> x + y, () -> x - y, () -> x * y, () -> -x, () -> x + q, () -> q - x, () -> x * q,
+           () -> q * x, () -> x / q, () -> try_div(x, z), () -> copy(x), () -> identical(x, y),
+           () -> equal_set(x, y), () -> overlaps(x, y), () -> inside(x, y), () -> compare_points(x, y),
+           () -> center(x), () -> radius(x), () -> is_canonical(x), () -> x + 1, () -> 2//3 * x,
+           () -> try_fball(q, z), () -> FBall(q), () -> try_fball(q, Rat(-1)), () -> hash(x),
+           () -> try_add(x, 1//0)]
+    for f in ops
+        f()
+        @test string(x) == sx
+        @test string(y) == sy
+        @test string(q) == sq
+        @test string(z) == "0"
+    end
+    # The same handle on both sides (fball.h:24-26 permits aliasing): independent balls.
+    @test string(x + x) == "(* ; 1 mod 8)"
+    @test string(x * x) == "(* ; 1/4 mod 4)"
+    @test string(x - x) == "(* ; 0 mod 8)"
+    @test string(x) == sx
+end
+
+@testset "copies, identity, close" begin
+    x = fb("5/3 mod 6")
+    q = Rat(2); one_ = Rat(1); close(q)    # operands made before the live count is read
+    c = copy(x)
+    @test c !== x
+    @test identical(c, x)
+    @test equal_set(c, x)
+    before = Adelefeld.diagnostics().live
+    close(c)
+    @test Adelefeld.diagnostics().live == before - 1
+    close(c)
+    finalize(c)
+    @test Adelefeld.diagnostics().live == before - 1
+    @test string(x) == "(* ; 5/3 mod 6)"
+    for f in (() -> string(c), () -> c + x, () -> x + c, () -> c * 2, () -> 2 - c, () -> -c, () -> c / 2,
+              () -> try_div(c, one_), () -> copy(c), () -> center(c), () -> radius(c), () -> is_canonical(c),
+              () -> equal_set(c, x), () -> overlaps(x, c), () -> inside(c, x), () -> compare_points(x, c),
+              () -> identical(c, x), () -> x * c)
+        @test_throws InvalidStateException f()
+    end
+    @test Adelefeld.diagnostics().live == before - 1   # no allocation before the refusal
+    # A closed Rat operand is refused before C as well.
+    @test_throws InvalidStateException x + q
+    @test_throws InvalidStateException q * x
+    @test_throws InvalidStateException x / q
+    @test_throws InvalidStateException FBall(q)
+    @test_throws InvalidStateException try_fball(q, one_)
+    @test_throws InvalidStateException try_fball(one_, q)
+    @test Adelefeld.diagnostics().live == before - 1
+end
+
+@testset "text round trip of 50 random balls" begin
+    g = Lcg(0x2545f4914f6cdd1d)
+    rnd(k) = big(next!(g)) * big(next!(g)) % big(10)^k
+    for i in 1:50
+        num = rnd(1 + i % 30) - big(10)^(i % 30) ÷ 2
+        den = rnd(1 + i % 12) + 1
+        rn = i % 5 == 0 ? big(0) : rnd(1 + i % 25) + 1
+        rd = rnd(1 + i % 7) + 1
+        x = FBall(Rat(num, den), Rat(rn, rd))
+        s = string(x)
+        y = parse(FBall, s)
+        @test string(y) == s
+        @test equal_set(x, y)
+        @test identical(x, y)
+        # The stored centre is in [0, N) for N > 0 (fball.h:163-165).
+        a = jrat(center(x)); N = jrat(radius(x))
+        @test N == abs(rn // rd)
+        @test N == 0 ? a == num // den : (0 <= a < N && isinteger((a - num // den) / N))
+        if N != 0
+            bare = s[6:end-1]                  # "(* ; F)" -> "F", the bare form of fball_v
+            @test string(parse(FBall, bare)) == s
+        end
+    end
+end
+
+@testset "10^4 FBall handles, forced GC, live count returns" begin
+    GC.gc(); GC.gc()
+    before = Adelefeld.diagnostics().live
+    function churn(n)
+        acc = FBall(Rat(0))
+        for i in 1:n
+            acc = acc + FBall(Rat(i), Rat(6))
+        end
+        return string(acc)
+    end
+    @test churn(10_000) == "(* ; $(mod(sum(1:10_000), 6)) mod 6)"
+    for _ in 1:4
+        GC.gc()
+    end
+    @test Adelefeld.diagnostics().live == before
+    @test Adelefeld.diagnostics().finalizer_errors == 0
+end
+
+@testset "printer text is freed (glibc mallinfo2)" begin
+    # Every adf_fball_get_str result is released with adf_str_free (text.h:32-35): 400 texts of about 50 kB
+    # leave the bytes in use by malloc (uordblks + hblkhd of mallinfo2, glibc >= 2.33) within 4 MB, where a
+    # skipped free would leave about 20 MB.
+    x = FBall(Rat(1, big(10)^25000 + 1), Rat(big(10)^25000))
+    n = ncodeunits(string(x))
+    @test n > 50_000
+    inuse() = (m = ccall(:mallinfo2, NTuple{10,Csize_t}, ()); Int(m[8]) + Int(m[5]))
+    GC.gc(); GC.gc()
+    m0 = inuse()
+    for _ in 1:400
+        string(x)
+    end
+    GC.gc(); GC.gc()
+    @test inuse() - m0 < 4_000_000
+end
+
+@testset "fball layout rejection and the session through the launcher" begin
+    lib = Adelefeld.diagnostics().library
+    script = joinpath(@__DIR__, "load_fault.jl")
+    src = joinpath(@__DIR__, "fixtures", "fault.c")
+    cc = Sys.which("cc")
+    dir = mktempdir()
+    julia = Base.julia_cmd()
+    base_env = copy(ENV)
+    base_env["JULIA_NUM_THREADS"] = "1"
+    for (macro_name, words) in (("FAULT_FBALL_SIZE", ["layout", "adf_sizeof_fball", "48", "56"]),
+                                ("FAULT_FBALL_ALIGN", ["layout", "adf_alignof_fball", "8", "16"]))
+        so = joinpath(dir, "lib" * lowercase(macro_name) * ".so")
+        run(`$cc -shared -fPIC -O1 -D$macro_name $src -o $so -Wl,--no-as-needed $lib -Wl,-rpath,$(dirname(lib))`)
+        env = copy(base_env)
+        env["ADELEFELD_LIB"] = so
+        out = IOBuffer()
+        p = run(pipeline(setenv(`$julia --startup-file=no --project=$PKG $script $so`, env); stdout=out,
+                         stderr=out); wait=false)
+        wait(p)
+        text = String(take!(out))
+        @testset "$macro_name" begin
+            @test p.exitcode == 0
+            @test occursin("LOADED=false", text)
+            for w in words
+                @test occursin(w, text)
+            end
+            @test occursin("docs/api-m1.md:36,45", text)
+            @test occursin("INIT_CALLS=0", text)
+            @test !occursin("AFTER=allocated", text)
+        end
+    end
+    # The session line of this step (docs/api-j.md:418) in a fresh process started by the launcher.
+    env = copy(base_env)
+    delete!(env, "LD_PRELOAD")
+    env["JULIA"] = joinpath(Sys.BINDIR, "julia")
+    launcher = joinpath(PKG, "bin", "adelefeld-julia")
+    out = IOBuffer()
+    err = IOBuffer()
+    line = "using Adelefeld; show(stdout, MIME\"text/plain\"(), " *
+           "parse(FBall, \"3 mod 12\") + parse(FBall, \"5 mod 18\"))"
+    p = run(pipeline(setenv(`sh $launcher --startup-file=no --project=$PKG -e $line`, env); stdout=out,
+                     stderr=err); wait=false)
+    wait(p)
+    text = String(take!(out))
+    p.exitcode == 0 || print(String(take!(err)))
+    @testset "launcher session" begin
+        @test p.exitcode == 0
+        @test text == "(* ; 2 mod 6)"
+    end
+    rm(dir; recursive=true)
+end
+
+end

@@ -39,6 +39,10 @@ size_t adf_alignof_rat(void) { return 16; }
 int adf_status_count(void) { return 12; }
 #elif defined(FAULT_VERSION)
 int adf_version_check(void) { return 8; }
+#elif defined(FAULT_FBALL_SIZE)
+size_t adf_sizeof_fball(void) { return 56; }
+#elif defined(FAULT_FBALL_ALIGN)
+size_t adf_alignof_fball(void) { return 16; }
 #elif defined(FAULT_NAME) || defined(FAULT_MISSING)
 const char * adf_status_str(int s)
 {

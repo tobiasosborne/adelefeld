@@ -1,0 +1,14 @@
+F1 inside: argument order reversed -> caught: exit 1; J-a.2 row (pass fail error total): 1010 5 1015 8
+F2 mul_rat: radius not scaled (q a + N Zhat) -> caught: exit 1; J-a.2 row (pass fail error total): 957 58 1015 8
+F3 sub implemented as add -> caught: exit 1; J-a.2 row (pass fail error total): 951 64 1015 9
+F4 FBall(c, N): radius sign dropped -> caught: exit 1; J-a.2 row (pass fail error total): 1009 6 1015 13
+F5 compare_points cast to a status -> caught: exit 1; J-a.2 row (pass fail error total): 1007 8 1015 10
+F6 equal_set by identical -> NOT CAUGHT: all tests passed (J-a.2 row: 1015 1015 12)
+F7 GC.@preserve omitted (ball add/sub/mul) -> NOT CAUGHT: all tests passed (J-a.2 row: 1015 1015 12)
+F8 adf_str_free skipped in the printer -> caught: exit 1; J-a.2 row (pass fail error total): 1014 1 1015 9
+F9 failing parse/try: fresh output not cleared -> caught: exit 1; J-a.2 row (pass fail error total): 1013 2 1015 17
+F10 fball layout row not gated -> caught: exit 1; J-a.2 row (pass fail error total): 998 17 1015 17
+F11 q - x computed as x - q -> caught: exit 1; J-a.2 row (pass fail error total): 981 34 1015 11
+F12 div_rat status ignored -> caught: exit 1; J-a.2 row (pass fail error total): 1001 14 1015 11
+F13 == on balls as equal_set -> caught: exit 1; J-a.2 row (pass fail error total): 1011 3 1 1015 16
+F14 isequal by equal_set (not identity) -> caught: exit 1; J-a.2 row (pass fail error total): 1014 1 1015 20

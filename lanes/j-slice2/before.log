@@ -1,0 +1,29 @@
+    Updating `~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/tmp/jl_nGGIHa/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/tmp/jl_nGGIHa/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=auto --check-bounds=yes --warn-overwrite=yes --depwarn=yes --inline=yes --startup-file=no --track-allocation=none
+   1151.4 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 1 seconds. 8 already precompiled.
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  25.0s
+     Testing Adelefeld tests passed 

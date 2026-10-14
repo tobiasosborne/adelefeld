@@ -1,0 +1,1454 @@
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/tmp/jl_tufzZy/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/tmp/jl_tufzZy/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  23.2s
+fball layout row, types, ambiguities: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413
+  Expression: (:fball, 48, 8) in [(r.suffix, r.size, r.align) for r = Adelefeld.LAYOUT_ROWS]
+   Evaluated: (:fball, 48, 8) in [(:rat, 16, 8), (:text_limits, 32, 8)]
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+fball layout row, types, ambiguities: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:414
+  Test threw exception
+  Expression: Adelefeld.FBALL_SIZE == 48
+  UndefVarError: `FBALL_SIZE` not defined in `Adelefeld`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] getproperty(x::Module, f::Symbol)
+     @ Base ./Base_compiler.jl:47
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:414 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+fball layout row, types, ambiguities: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:415
+  Test threw exception
+  Expression: Adelefeld.FBALL_ALIGN == 8
+  UndefVarError: `FBALL_ALIGN` not defined in `Adelefeld`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] getproperty(x::Module, f::Symbol)
+     @ Base ./Base_compiler.jl:47
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:415 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+fball layout row, types, ambiguities: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:416
+  Test threw exception
+  Expression: FBall <: Number
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:416 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+fball layout row, types, ambiguities: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:419
+  Test threw exception
+  Expression: [Int(c) for c = instances(PointComparison)] == [0, 1, 2]
+  UndefVarError: `PointComparison` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:419 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+fball layout row, types, ambiguities: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:420
+  Test threw exception
+  Expression: collect(string.(instances(PointComparison))) == ["EQUAL", "DIFFERENT", "UNDECIDED"]
+  UndefVarError: `PointComparison` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:420 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+fball layout row, types, ambiguities: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:421
+  Test threw exception
+  Expression: PointComparison !== AdfStatus
+  UndefVarError: `PointComparison` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:413 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:421 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+SPEC 4.3 rows exactly (docs/SPEC.md:244-248): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:424
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:425 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:425 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+the session line (docs/api-j.md:313-314, 418): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:449
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:450 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:450 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+fractional and zero radii: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:458
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:459 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:459 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482
+  Test threw exception
+  Expression: string(FBall(Rat(5, 3))) == "(* ; 5/3)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:483
+  Test threw exception
+  Expression: string(FBall(7)) == "(* ; 7)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:483 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:484
+  Test threw exception
+  Expression: string(FBall(-3 // 4)) == "(* ; -3/4)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:484 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:485
+  Test threw exception
+  Expression: string(FBall(big(2) ^ 100)) == "(* ; " * string(big(2) ^ 100) * ")"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:485 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:486
+  Test threw exception
+  Expression: string(FBall(Rat(0))) == "(* ; 0)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:486 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:487
+  Test threw exception
+  Expression: identical(FBall(Rat(3), Rat(12)), fb("3 mod 12"))
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:487 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+   [7] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:487 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:488
+  Test threw exception
+  Expression: string(FBall(Rat(-1), Rat(2))) == "(* ; 1 mod 2)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:488 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:489
+  Test threw exception
+  Expression: string(FBall(Rat(1, 2), Rat(0))) == "(* ; 1/2)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:489 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:490
+  Test threw exception
+  Expression: try_fball(Rat(3), Rat(12)) isa AdfResult{FBall}
+  UndefVarError: `try_fball` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:490 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:491
+  Test threw exception
+  Expression: (try_fball(Rat(3), Rat(12))).status === OK
+  UndefVarError: `try_fball` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:491 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:481
+  Got exception outside of a @test
+  UndefVarError: `try_fball` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:482 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:495 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510
+  Test threw exception
+  Expression: string(fb("3 mod 12")) == "(* ; 3 mod 12)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] fb(s::String)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:511
+  Test threw exception
+  Expression: string(fb("(* ; 3 mod 12)")) == "(* ; 3 mod 12)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] fb(s::String)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:511 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:512
+  Test threw exception
+  Expression: identical(fb("3 mod 12"), fb("(* ; 3 mod 12)"))
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] fb(s::String)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:512 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+   [8] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:512 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:513
+  Test threw exception
+  Expression: string(fb("(*;2mod6)")) == "(* ; 2 mod 6)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] fb(s::String)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:513 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:514
+  Test threw exception
+  Expression: string(fb("-1 mod 2")) == "(* ; 1 mod 2)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] fb(s::String)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:514 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:515
+  Test threw exception
+  Expression: string(fb("(* ; 20 mod 6)")) == "(* ; 2 mod 6)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] fb(s::String)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:515 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:516
+  Test threw exception
+  Expression: string(fb("(* ; 10/4 mod 6/4)")) == "(* ; 1 mod 3/2)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] fb(s::String)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:516 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:517
+  Test threw exception
+  Expression: string(parse(FBall, SubString("xx3 mod 12", 3))) == "(* ; 3 mod 12)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:517 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520
+  Test threw exception
+  Expression: (try_parse(FBall, s)).status === DOMAIN
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520
+  Test threw exception
+  Expression: (try_parse(FBall, s)).status === DOMAIN
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520
+  Test threw exception
+  Expression: (try_parse(FBall, s)).status === DOMAIN
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520
+  Test threw exception
+  Expression: (try_parse(FBall, s)).status === DOMAIN
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520
+  Test threw exception
+  Expression: (try_parse(FBall, s)).status === DOMAIN
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:520 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser: both forms, statuses, limits: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:523
+  Expression: err isa AdfError && err.status === DOMAIN
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:523 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+parser: both forms, statuses, limits: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:508
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:510 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:527 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+q - x against x - q: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:547
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:548 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:548 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+x - x is a ball around 0 (independent inputs, SPEC 4.3): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:565
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:566 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:566 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+division by zero is NOT_UNIT, den = 0 is DOMAIN: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:579
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:580 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:580 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+set predicates and point comparison: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:603
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:604 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:604 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+no == on balls, identity isequal and hash, no ordering, no ball division: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:641
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:642 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:642 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+mixed-scalar matrix: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:672
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:676 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:676 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+inputs unchanged by every operation: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:701
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:702 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:702 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+copies, identity, close: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:724
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] fb(s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:398
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:725 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:725 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+text round trip of 50 random balls: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:755
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:756 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:763 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+10^4 FBall handles, forced GC, live count returns: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:790
+  Test threw exception
+  Expression: churn(10000) == "(* ; $(mod(sum(1:10000), 6)) mod 6)"
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] (::var"#churn#churn##1")(n::Int64)
+     @ Main ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:784
+   [2] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:781 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:790 [inlined]
+   [7] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+printer text is freed (glibc mallinfo2): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:798
+  Got exception outside of a @test
+  UndefVarError: `FBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:802 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:802 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:837
+  Expression: occursin("LOADED=false", text)
+   Evaluated: occursin("LOADED=false", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:837 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("layout", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("adf_sizeof_fball", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("48", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("56", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:841
+  Expression: occursin("docs/api-m1.md:36,45", text)
+   Evaluated: occursin("docs/api-m1.md:36,45", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:841 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:842
+  Expression: occursin("INIT_CALLS=0", text)
+   Evaluated: occursin("INIT_CALLS=0", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:842 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:843
+  Expression: !(occursin("AFTER=allocated", text))
+   Evaluated: !(occursin("AFTER=allocated", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n"))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:843 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:837
+  Expression: occursin("LOADED=false", text)
+   Evaluated: occursin("LOADED=false", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:837 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("layout", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ERROR: LoadError: Some tests did not pass: 5 passed, 20 failed, 45 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:409
+~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("adf_alignof_fball", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("8", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("16", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:841
+  Expression: occursin("docs/api-m1.md:36,45", text)
+   Evaluated: occursin("docs/api-m1.md:36,45", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:841 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:842
+  Expression: occursin("INIT_CALLS=0", text)
+   Evaluated: occursin("INIT_CALLS=0", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:842 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:843
+  Expression: !(occursin("AFTER=allocated", text))
+   Evaluated: !(occursin("AFTER=allocated", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n"))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:843 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ERROR: UndefVarError: `FBall` not defined in `Main`
+Suggestion: check for spelling errors or missing imports.
+Stacktrace:
+ [1] top-level scope
+   @ none:1
+ [2] eval(m::Module, e::Any)
+   @ Core ./boot.jl:489
+ [3] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:283
+ [4] _start()
+   @ Base ./client.jl:550
+launcher session: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:861
+  Expression: p.exitcode == 0
+   Evaluated: 1 == 0
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:861 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:861 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+launcher session: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:862
+  Expression: text == "(* ; 2 mod 6)"
+   Evaluated: "" == "(* ; 2 mod 6)"
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:861 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/julia/Adelefeld/test/runtests.jl:862 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+Test Summary:                                                              | Pass  Fail  Error  Total   Time
+Adelefeld step J-a.2                                                       |    5    20     45     70  12.1s
+  fball layout row, types, ambiguities                                     |    1     1      6      8   5.0s
+  SPEC 4.3 rows exactly (docs/SPEC.md:244-248)                             |                 1      1   0.2s
+  the session line (docs/api-j.md:313-314, 418)                            |                 1      1   0.0s
+  fractional and zero radii                                                |                 1      1   0.0s
+  constructors                                                             |                11     11   0.0s
+  parser: both forms, statuses, limits                                     |          1     14     15   0.0s
+  q - x against x - q                                                      |                 1      1   0.0s
+  x - x is a ball around 0 (independent inputs, SPEC 4.3)                  |                 1      1   0.0s
+  division by zero is NOT_UNIT, den = 0 is DOMAIN                          |                 1      1   0.0s
+  set predicates and point comparison                                      |                 1      1   0.0s
+  no == on balls, identity isequal and hash, no ordering, no ball division |                 1      1   0.0s
+  mixed-scalar matrix                                                      |                 1      1   0.0s
+  inputs unchanged by every operation                                      |                 1      1   0.0s
+  copies, identity, close                                                  |                 1      1   0.0s
+  text round trip of 50 random balls                                       |                 1      1   0.0s
+  10^4 FBall handles, forced GC, live count returns                        |    2            1      3   1.0s
+  printer text is freed (glibc mallinfo2)                                  |                 1      1   0.0s
+  fball layout rejection and the session through the launcher              |    2    18            20   5.7s
+    FAULT_FBALL_SIZE                                                       |    1     8             9   0.0s
+    FAULT_FBALL_ALIGN                                                      |    1     8             9   0.0s
+    launcher session                                                       |          2             2   0.0s
+RNG of the outermost testset: Random.Xoshiro(0xb9f981169a7b6f74, 0x626f2158ba330fc0, 0x0565d49cd76bf32a, 0xa130256797bb1e3c, 0x64951206244e322a)
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool)
+    @ Pkg.Operations ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550

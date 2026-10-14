@@ -137,3 +137,137 @@ cause a task switch" (59-94); `GC.@preserve` covers "Passing a pointer to x to c
 which would be cleaned up in the finalizer" (95-135); `InvalidStateException` (136-157); `@atomicreplace`
 returns "(old, success::Bool)" (158-230); `Libc.free` "Only use this on memory obtained from malloc" (238-244);
 `ncodeunits` (245-276); `unsafe_string(p, length)` "the string does not have to be NUL-terminated" (277-285).
+
+# Step J-a.2: FBall and the scalar mixed arithmetic
+
+This step builds the second item of J-a in `docs/api-j.md` section 9: the `FBall` handle, its constructors, text,
+arithmetic with balls and with exact scalars, set predicates, point comparison and accessors. Nothing wider: no
+`Adele`, `CAdele`, contexts, local values or dump form. Lane j-slice2. The decisions of step J-a.1 are kept (the
+quotient operator `/`, no `prec` keyword where the C call has none, `AdfResult.where` typed `Any`).
+
+## What was built
+
+- `julia/Adelefeld/src/fball.jl` (new): `FBall <: Number` on aligned C heap storage of the checked row 48/8; init,
+  finalizer, cached clear, `close`; `copy` (`adf_fball_set`), `identical`, `is_canonical`; `FBall(q::Rat)`,
+  `FBall(::Integer)`, `FBall(::Rational)`, `try_fball(c, N)`, `FBall(c, N)`; `try_parse(FBall, s; limits)`,
+  `parse`; `try_value_text`, `value_text`, `show`; `try_add`, `try_sub`, `try_mul`, `try_neg`, `try_div` and the
+  operators `+ - *`, unary `-`, `/` (by a scalar only); `equal_set`, `overlaps`, `inside`, `compare_points`,
+  `center`, `radius`; `==` on balls throws `ArgumentError`; identity-based `isequal` and `hash`.
+- `src/status.jl`: `@enum PointComparison::Int32` (EQUAL=0, DIFFERENT=1, UNDECIDED=2, `status.h:35-37`),
+  `to_point_comparison` and `to_bool` (a raw value outside the stated range is `AdfAbiError`).
+- `src/load.jl`: the layout row `fball` 48/8 (`docs/api-m1.md:36,45`), size and alignment, and 23 new symbols in
+  `REQUIRED` (the two layout queries placed after `adf_status_count`, so that the library before J-status still
+  reports that symbol first). `src/Adelefeld.jl`: the include and 10 new exports.
+- `test/runtests.jl`: the testset "Adelefeld step J-a.2" (18 testsets, 1015 checks); `test/fixtures/fault.c`:
+  two more fixture faults, FAULT_FBALL_SIZE (`adf_sizeof_fball` returns 56) and FAULT_FBALL_ALIGN (16).
+
+## Statements the tests check
+
+S11. Layout and load: the row `fball` 48/8 is in `LAYOUT_ROWS`, and storage is allocated with that row's size and
+alignment. A fixture library with `adf_sizeof_fball` = 56, or `adf_alignof_fball` = 16, is rejected by the layout
+gate in a separate process; the message names the query, 48 or 8, the observed value and `docs/api-m1.md:36,45`;
+no adf init runs. `Test.detect_ambiguities(Adelefeld)` is empty.
+
+S12. The five rows of SPEC 4.3 (`docs/SPEC.md:244-248`), through `parse` and the operators, each `equal_set` to
+the parsed expected text and printing it: `(3 mod 12) + (5 mod 18)` is `(* ; 2 mod 6)`, `(3 mod 12) * (5 mod 18)`
+is `(* ; 3 mod 6)`, `12 * (5 mod 18)` is `(* ; 60 mod 216)`, `(1/3) * (5 mod 18)` is `(* ; 5/3 mod 6)`,
+`(1/2 mod 8) * (2/3 mod 9)` is `(* ; 0 mod 1/6)`. Rows 3 and 4 also by the other routes: the scalar as an exact
+ball (`adf_fball_mul`), the other order, a Julia Rational, and `div_rat` by 3 and by 1/12.
+
+S13. The session line: `parse(FBall, "3 mod 12") + parse(FBall, "5 mod 18")` shows `(* ; 2 mod 6)` through
+`show`, `show` with `text/plain`, `repr` and `value_text`, in the package and in a fresh process started by
+`bin/adelefeld-julia` without a preload set.
+
+S14. Radii: a fractional radius (`0 mod 1/6`, radius 1/6; `(1/4 mod 1/2) + (1/6 mod 1/4)` is `1/6 mod 1/4`), a
+zero radius (`FBall(Rat(5), Rat(0))` is `(* ; 5)`; `(* ; 14/6 mod 0)` is `(* ; 7/3)`); `FBall(Rat(1)/3)` added
+three times is `(* ; 1)`. `q - x` against `x - q`: `2 - (1 mod 6)` is `1 mod 6`, `(1 mod 6) - 2` is `5 mod 6`,
+and the same with Rat, Integer and Rational scalars and fractional centres. `x - x` is `0 mod 12` for
+`x = 3 mod 12`: not `equal_set` to 0, overlapping it, containing it, compared UNDECIDED with it.
+
+S15. Statuses: a negative radius in `try_fball` is DOMAIN (`fball.h:133-134`) with no value and no live handle
+left; a zero denominator in a text is DOMAIN in both forms (`(* ; 1/0)`, `(* ; 1 mod 1/0)`, `1/0 mod 6`,
+`1 mod 6/0`; `text.h:159-160` lists DOMAIN for a zero denominator); 13 non-sentences are PARSE (among them `7/3`,
+`1 mod -6`, a NUL byte and a non-ASCII byte); LIMIT for `3 mod 12` at `max_len = 7` (OK at 8), for `é mod 1` at
+`max_len = 7` (8 bytes, 7 characters) and for a text one megabyte long under the default limits. Division by a
+zero Rat, Integer or Rational is NOT_UNIT (`fball.h:228-232`); a scalar whose Rat conversion fails (`1//0`)
+returns or throws that conversion's DOMAIN. The `try_` forms return `AdfResult{FBall}`; the operators throw
+`AdfError` with the same status.
+
+S16. Mixed-scalar matrix: four balls (`3 mod 12`, `1/2 mod 8`, `0 mod 1/6`, the point -5/7) against nine scalars
+(Int 2, -3, 0, Bool true, BigInt 2^70, Rational{Int} -2/3, Rational{BigInt} 5/2^65, Rat 7/4, Rat 0), each on
+both sides of `+ - *` and on the right of `/`. Oracle: Julia `Rational{BigInt}` arithmetic on the centre and
+radius, `x + q = (a + q) + N Zhat`, `q - x = (q - a) + N Zhat`, `q x = q a + |q| N Zhat` (`fball.h:219`),
+`x / q = a/q + N/|q| Zhat`, read back through `FBall(c, N)`; both `equal_set` and the same text.
+
+S17. Predicates (`fball.h:234-265`): `inside` is FIRST INSIDE SECOND, `inside(2 mod 6, 0 mod 2)` true and the
+reverse false; `inside(x, y)` passes `x, y` to `adf_fball_contains` in that order, whose comment reads "1 if the
+set x is inside the set y" (`fball.h:248`). `equal_set`, `overlaps`, `inside`, `identical`, `is_canonical`
+return `Bool`; `compare_points` returns a `PointComparison` (EQUAL, DIFFERENT, UNDECIDED in the stated cases),
+never an `AdfStatus`. `center` and `radius` return fresh `Rat`s; closing one leaves the ball unchanged.
+
+S18. Equality: `==` between balls, and between a ball and a Rat, Integer or Rational in either order, throws
+`ArgumentError` naming `equal_set` and `compare_points`. `isequal` is identity (`isequal(x, copy(x))` is false),
+`hash` is `objectid`-based, a `Set` of balls is a set of handles. `x < y` is a `MethodError`. No package method
+exists for `FBall / FBall` or `Rat / FBall`; Julia's promotion fallback throws for them.
+
+S19. Life cycle: inputs are unchanged by 26 operations (failing ones included); the same handle may be both
+operands (`x + x`, `x * x`, `x - x` computed as independent balls). A copy is `identical` and clears separately;
+repeated `close` and a later `finalize` are no-ops; a closed ball or a closed Rat operand throws
+`InvalidStateException` in 24 operations before any C call, with the live count unchanged. 10^4 loop iterations
+(about 4 * 10^4 handles), four forced `GC.gc()`: the live count returns, finalizer errors 0.
+
+S20. Text: 50 balls from a fixed 64-bit generator (centres up to 30 digits, radii up to 25 digits, every fifth
+radius 0) round trip: `string(parse(FBall, string(x))) == string(x)`, `equal_set`, `identical`; the bare form of
+the text parses to the same text; the stored centre lies in [0, N) and differs from the given centre by an
+integer multiple of N (`fball.h:163-165`). The printer's text is freed: 400 prints of a 50015-byte text change
+glibc's bytes in use (`mallinfo2`, `uordblks + hblkhd`) by less than 4 MB (observed 0; with the free removed,
+26.3 MB).
+
+## DESIGN-FINDINGs and decisions where the design is silent
+
+12. Printed frame. The C printer writes `(* ; F)` (`text.h:163-165`), and the design says the session line prints
+    `(* ; 2 mod 6)` (`docs/api-j.md:313-314, 418`). `show`, `string` and `value_text` give the C text unchanged.
+    The frame removal of `docs/api-j.md:237` is for the RealBall/ComplexBall carriers only, not for FBall.
+13. `equal_set` and `identical` agree on every value this step can make: all are global and canonical, and the
+    canonical triple of a set is unique (conventions Lemma 5.2, cited at `fball.h:3-4`). The planted fault
+    "equal_set by identical" is therefore an equivalent mutant here; a test that separates them needs a local value
+    (J-b), whose fields differ from the global triple of the same set.
+14. The fault "GC.@preserve omitted" is not caught: no test can force a collection between the pointer read and
+    the ccall, and in the observed runs the operands stay rooted by the calling frame. The preserve blocks remain a
+    review obligation (`docs/api-j.md:116-118`), as the design's fault list implies.
+15. The brief's fault "the `adf_str_free` skipped on a failing parse" has no object: a parser allocates no text for
+    the caller. Two faults were planted in its place: the printer's `adf_str_free` removed (caught by the
+    `mallinfo2` test) and the fresh output of a failing parse or constructor not cleared (caught by the live count).
+    The `mallinfo2` test depends on glibc (2.33 or later; this machine has 2.39) and on FLINT allocating with
+    malloc.
+16. Constructors. The design lists `FBall(q::Rat)` and `FBall(c::Rat, N::Rat)` (`docs/api-j.md:203-204`). As the
+    brief asks, `FBall(::Integer)` and `FBall(::Rational)` convert explicitly to a Rat first; `FBall(c, N)` and
+    `try_fball` take Rats only. `try_fball` reports its failures under the operation name `:fball`.
+17. Scalar products. `q * x` and `x * q` both call `adf_fball_mul_rat(z, x, q)` (scaling a set by a rational
+    commutes). `+` and `-` with a Rat make the radius-zero ball first (`adf_fball_set_rat`), then call the ball
+    operation (`docs/api-j.md:209`). A closed ball operand is refused before the scalar conversion allocates.
+18. `==` refusal covers the scalar pairs too: `docs/api-j.md:234` says "ball `==`" without naming operand types; a
+    ball compared with a Rat, Integer or Rational throws the same `ArgumentError`. One consequence: `x in [x]`
+    throws, because `in` on a vector compares with `==` (installed help, Julia 1.12.5, `lanes/j-slice2/help.log:
+    151-166`); `x in Set([x])` is true, since a Set uses `isequal`. `isequal` of a ball with a scalar is false, not
+    an error: Julia's default `isequal` would call `==` (`help.log:26-27`).
+19. Since `FBall <: Number`, Base's generic `^(x::Number, p::Integer)` (intfuncs.jl:416, observed with `which`)
+    gives `x^2 == x * x`, the product of two independent balls: an enclosure, not the tight power of one unknown
+    point (`(1 mod 2)^2` prints `(* ; 1 mod 2)`, while every odd square is 1 mod 8). The design names `pow(x, k;
+    tight=false)` for a later step (`docs/api-j.md:296`). This step neither defines nor refuses `^`; a refusing
+    method until `pow` lands is for the orchestrator to decide.
+20. `PointComparison` has no load-time name check: the C library has no name function for the `ADF_CMP_*` values.
+    The numbers are transcribed from `status.h:35-37`; a raw value outside 0..2 is `AdfAbiError`. Likewise the int
+    of every FBall predicate must be 0 or 1 (`fball.h:234-237`), else `AdfAbiError` (the Rat predicates of step
+    J-a.1 still read `!= 0`).
+21. The `/` of a scalar by a ball and of a ball by a ball fall to Julia's promotion fallback, which throws an
+    `ErrorException` ("promotion of types ... failed", or "/ not defined for FBall"), not a `MethodError`. The tests
+    assert only that the call throws and that the method found is not the package's.
+
+## Julia sources (step J-a.2)
+
+The installed help of Julia 1.12.5 for `isequal`, `hash`, `==`, `in`, `objectid` and `@enum` is in
+`lanes/j-slice2/help.log` (captured with `@doc` and the text/plain display): `isequal` "The default implementation
+of isequal calls ==" (26-27) and "isequal(x,y) must imply that hash(x) == hash(y)" (29-30); `in` "in the sense
+that it is == to one of the values", Sets use `isequal` (151-166); `objectid` "Get a hash value for x based on
+object identity" (231-237). The other Julia facts used are those of step J-a.1 (`lanes/j-slice1/help.log`).
