@@ -1,0 +1,5 @@
+Final check records: 8 programs, 0 nonzero exits
+Mutation: 30 sampled, 24 killed, 1 survived, 5 compile failures; replay: 1 killed
+Driver: 2 cases, 29 lines, 0 differences
+Artifacts: 0 files above 100 KB, 0 long written lines, 0 missing newlines, 0 build trees
+Prose audit excludes the pre-existing brief.md and lane.log

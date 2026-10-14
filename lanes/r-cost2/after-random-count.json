@@ -1,0 +1,117 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 9.162408,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "count: 9.162408 s, n = 12"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 13.508356,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "count: 13.508356 s, n = 12"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 13.930332,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "count: 13.930332 s, n = 12"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 10.241381,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "count: 10.241381 s, n = 12"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 8.8833,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "count: 8.883300 s, n = 12"
+    ],
+    "stderr": []
+  }
+]

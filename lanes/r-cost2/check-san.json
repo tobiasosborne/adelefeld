@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-san/test_roots_real"
+    ],
+    "exit": 1,
+    "log": "lanes/r-cost2/check-san-test_roots_real.log"
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-san/test_roots_real_isolate"
+    ],
+    "exit": 1,
+    "log": "lanes/r-cost2/check-san-test_roots_real_isolate.log"
+  }
+]

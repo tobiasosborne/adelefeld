@@ -1,0 +1,232 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 0.081181,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "adf: 0.081181 s, status 0, balls 50, largest mantissa 6 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 0.081416,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "adf: 0.081416 s, status 0, balls 50, largest mantissa 6 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 0.081564,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "adf: 0.081564 s, status 0, balls 50, largest mantissa 6 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 0.080029,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "adf: 0.080029 s, status 0, balls 50, largest mantissa 6 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 0.080057,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "adf: 0.080057 s, status 0, balls 50, largest mantissa 6 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 7.690256,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "count: 7.690256 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 7.375888,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "count: 7.375888 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 7.166186,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "count: 7.166186 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 7.282192,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "count: 7.282192 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "tiny",
+      "150",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 5.348707,
+    "stdout": [
+      "family tiny e 150 degree 50 prec 2 coefficient bits 7501",
+      "count: 5.348707 s, n = 50"
+    ],
+    "stderr": []
+  }
+]

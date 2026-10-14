@@ -1,0 +1,35 @@
+mutate: src/roots.c: 1208 mutants
+mutate: 1208 mutants, 30 of them run (--limit 30, --seed 20261015)
+src/roots.c:503:5 drop_call: 'fmpz_poly_evaluate_fmpz(ga, g, a);' -> '' (the statement is removed)
+src/roots.c:1567:15 cmp: '!=' -> '=='
+src/roots.c:1774:5 negate_if: 'if(prec > ADF_ROOTS_REAL_PREC_MAX)' -> 'if(!(prec > ADF_ROOTS_REAL_PREC_MAX))'
+src/roots.c:1629:38 op: '+' -> '-'
+src/roots.c:695:53 logic: '||' -> '&&'
+src/roots.c:839:5 negate_if: 'if(st == ADF_OK)' -> 'if(!(st == ADF_OK))'
+src/roots.c:1486:13 call_swap: 'fmpz_mul' -> 'fmpz_add'
+src/roots.c:695:49 cmp: '<' -> '<='
+src/roots.c:1342:57 zero_one: '0' -> '1'
+src/roots.c:454:5 drop_call: 'eval_mod(D, d, a, pk);' -> '' (the statement is removed)
+src/roots.c:860:11 op: '*' -> '+'
+src/roots.c:1371:5 negate_if: 'if(L->scope != ADF_ROOTLIST_PARTITION || L->complete != 1 || L->nu != 0)' ->
+'if(!(L->scope != ADF_ROOTLIST_PARTITION || L->complete != 1 || L->nu != 0))'
+src/roots.c:1481:9 negate_if: 'if((ulong) d > UWORD_MAX / k)' -> 'if(!((ulong) d > UWORD_MAX / k))'
+src/roots.c:309:19 cmp: '<' -> '<='
+src/roots.c:1589:102 cmp: '!=' -> '=='
+src/roots.c:1198:18 zero_one: '0' -> '1'
+src/roots.c:1041:31 zero_one: '1' -> '0'
+src/roots.c:1563:9 drop_assign: 'ok = real_ball_admissible(ball + i);' -> '' (the statement is removed)
+src/roots.c:1389:53 op: '+' -> '-'
+src/roots.c:1386:19 cmp: '<' -> '<='
+src/roots.c:1681:30 logic: '||' -> '&&'
+src/roots.c:506:5 negate_if: 'if(fmpz_is_zero(da))' -> 'if(!(fmpz_is_zero(da)))'
+src/roots.c:797:16 status: 'ADF_LIMIT' -> 'ADF_OK'
+src/roots.c:1069:17 op: '-' -> '+'
+src/roots.c:922:24 op: '-' -> '+'
+src/roots.c:1123:9 drop_call: 'nmod_poly_roots(fac, d, 0);' -> '' (the statement is removed)
+src/roots.c:1801:13 cmp: '!=' -> '=='
+src/roots.c:715:5 negate_if: 'if(pw < 2 || L->K[i] < 0 || (ulong) L->K[i] > (ulong) ADF_ROOTS_BITS_MAX /
+FLINT_BIT_COUNT(pw))' -> 'if(!(pw < 2 || L->K[i] < 0 || (ulong) L->K[i] > (ulong) ADF_ROOTS_BITS_MAX /
+FLINT_BIT_COUNT(pw)))'
+src/roots.c:1781:5 drop_assign: 'd = fmpz_poly_degree(g);' -> '' (the statement is removed)
+src/roots.c:859:11 op: '*' -> '+'

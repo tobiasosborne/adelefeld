@@ -1,0 +1,12 @@
+after cluster adf 0 0 0.149155
+after cluster adf 1 0 0.151929
+after cluster adf 2 0 0.153597
+after cluster adf 3 0 0.150548
+after cluster adf 4 0 0.151585
+median after cluster adf 0.151585
+after cluster count 0 0 6.525213
+after cluster count 1 0 7.268777
+after cluster count 2 0 10.004223
+after cluster count 3 0 8.833954
+after cluster count 4 0 10.468029
+median after cluster count 8.833954

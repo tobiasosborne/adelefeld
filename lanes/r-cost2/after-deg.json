@@ -1,0 +1,232 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 0.058952,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.058952 s, status 0, balls 50, largest mantissa 191 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 0.059016,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.059016 s, status 0, balls 50, largest mantissa 191 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 0.059014,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.059014 s, status 0, balls 50, largest mantissa 191 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 0.058985,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.058985 s, status 0, balls 50, largest mantissa 191 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 0.059139,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.059139 s, status 0, balls 50, largest mantissa 191 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 0.018371,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "count: 0.018371 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 0.01838,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "count: 0.018380 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 0.018345,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "count: 0.018345 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 0.018379,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "count: 0.018379 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "count",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 0.01838,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "count: 0.018380 s, n = 50"
+    ],
+    "stderr": []
+  }
+]

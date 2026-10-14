@@ -482,3 +482,68 @@ Final five-run medians, pinned to CPU 2:
 | xn2, 0, 50 | 262144 | 20.433207 | 7.151269 | 4.546090339 |
 | xn2, 0, 50 | 2097152 | >170 (0/5) | 91.769871 | 35.982333616 |
 | wilkinson, 0, 50 | 20000 | 37.977476 | 16.611681 | 7.107090958 |
+### r-cost2
+
+The trusted count now uses the r-cost1 proposal. The exact root mean is translated when its reduced
+numerator-plus-denominator size is at most 512 bits. This admits the cluster's 385-bit mean; five
+Taylor shifts at degree 50 had median cost 0.001754 s. Without a translation, the plain-count window
+is -32 <= t <= 32. Either scaling direction outside that window is considered. After transformation,
+FLINT counts H only when its coefficient height is strictly smaller than g's. Otherwise it counts g.
+There is one trusted count in either branch. A rejected transform costs its construction and the
+height comparison, without an additional count. Smaller height is a heuristic, not a proof of a
+smaller count time. These are the new preprocessing choices; R9 step 3 records the earlier choices.
+
+R9 proves the translation and both scalings preserve the number of distinct real roots and
+squarefreeness. For t > 0, FLINT multiplies coefficient i by 2^(t i). For t < 0, it multiplies
+coefficient i by 2^((-t)(d-i)). Thus it forms a positive multiple of H(2^t X) in both cases, then
+removes positive 2-content. Sources: refs/src/flint-3.0.1/fmpz_poly.rst:578-581 and
+refs/src/flint-src-3.0.1/fmpz_poly/scale_2exp.c:23-61. The negative multiplier at fmpz_poly.rst:582
+has a sign error: denominator clearing needs 2^(-t d), as the source's coefficients show.
+The Taylor shift composes with X+a in place (fmpz_poly.rst:2492-2494).
+Every output certificate still refers to g. The complete verifier retains its independent plain
+recount from the original input (S-D17). No certificate or header was changed.
+
+The added public tests use prec 2 and assert OK, the stored count, list length and complete = 1.
+The cluster and scaled families have degree 50 and respectively e = 190 and 150. The random test
+uses the benchmark construction with seed (1,2), 10000-bit coefficient bound and leading coefficient
+3, at degree 20. Its plain oracle counted 6 roots in 0.797953 s in the red run. The benchmark below
+retains degree 50. The cluster timing check failed at 11.291522 s before the change and passed at
+0.125029 s after it; its bound remains 2 s. Both calls returned OK with 50 roots and complete = 1.
+
+Five-run medians on CPU 2, CLOCK_MONOTONIC_RAW, prec 2, FLINT 3.0.1:
+
+| Family / e / d | adf before s | adf after s | count before s | count after s |
+| --- | ---: | ---: | ---: | ---: |
+| cluster / 190 / 50 | 10.420865 | 0.151585 | 14.385575 | 8.833954 |
+| scaled / 150 / 50 | 2.271892 | 0.045519 | 2.263085 | 2.106068 |
+| tiny / 150 / 50 | 0.081181 | 0.038682 | 7.282192 | 7.070694 |
+| random / 10000 / 50 | 15.303456 | 16.036433 | 7.900291 | 10.241381 |
+| deg / 190 / 50 | 0.030322 | 0.059014 | 0.011854 | 0.018379 |
+| small / 0 / 50 | 0.009823 | 0.016365 | 0.006767 | 0.011125 |
+
+The count columns use the unchanged benchmark mode count, which counts the family's input directly.
+They include neither production normalization nor the optional equivalent-input transform. Its
+before/after variation is a control for shared-machine timing variation. Benchmarks were serial on
+CPU 2; builds and part of an interrupted tool self-test overlapped early samples on CPU 3.
+All 120 calls returned their expected counts: 50 for the product families and 12 for dense random.
+The dense-random public calls ranged over 8.534189-20.606929 s before and 9.143530-17.272934 s after.
+No dense-random speedup is established. deg also shows that lower height alone does not guarantee a
+faster public call. The 512-bit mean cutoff is justified by degree-50 measurements, not a time bound
+for arbitrary degree. Commands and individual samples are retained in lanes/r-cost2/.
+
+A count-call trace saw normalized heights 9524, 7715, 7454 and 9501 for cluster, scaled, tiny and deg;
+all four were counted at height 241. Small was counted unchanged at height 218. Random was counted
+unchanged at height 9965: its trial scale 48 increased height to 11471. Each public call made one
+trusted count and returned OK with complete = 1. At e = 600 the means exceed the translation cutoff;
+scaled and tiny still returned 50 roots, with count-input heights respectively 30215 -> 215 and
+29954 -> 240. These cases exercise both scaling directions without translation.
+An additional interleaved five-run deg comparison gave 0.050580 s before and 0.061648 s after.
+This reinforces the limitation of height as a count-cost heuristic.
+
+The complete plain, sanitizer, invariant and clang suites passed after the final test addition.
+Sanitizer runs disabled leak detection because LeakSanitizer cannot run under ptrace here.
+The 30-mutant file sample took 685.5 s: 24 killed, 1 survived, 5 did not compile, 0 timed out.
+It exposed a missing argument-guard test in the existing test-only finish entry point. Appended
+zero-polynomial and negative-length checks killed that survivor in a focused sanitizer/invariant
+replay. The file sample contained no mutant inside real_count; this coverage limit is retained in
+the report. The complete sample was not repeated after the guard test was added.

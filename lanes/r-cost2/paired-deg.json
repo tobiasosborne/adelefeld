@@ -1,0 +1,232 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "before",
+    "repeat": 0,
+    "seconds": 0.050629,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.050629 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "after",
+    "repeat": 0,
+    "seconds": 0.061623,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.061623 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "before",
+    "repeat": 1,
+    "seconds": 0.050558,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.050558 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "after",
+    "repeat": 1,
+    "seconds": 0.061648,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.061648 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "before",
+    "repeat": 2,
+    "seconds": 0.050498,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.050498 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "after",
+    "repeat": 2,
+    "seconds": 0.061805,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.061805 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "before",
+    "repeat": 3,
+    "seconds": 0.05058,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.050580 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "after",
+    "repeat": 3,
+    "seconds": 0.061643,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.061643 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "before",
+    "repeat": 4,
+    "seconds": 0.050614,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.050614 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "deg",
+      "190",
+      "50",
+      "2"
+    ],
+    "phase": "after",
+    "repeat": 4,
+    "seconds": 0.064298,
+    "exit": 0,
+    "stdout": [
+      "family deg e 190 degree 50 prec 2 coefficient bits 9501",
+      "adf: 0.064298 s, status 0, balls 50, largest mantissa 191 bits"
+    ]
+  }
+]
