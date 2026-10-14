@@ -97,13 +97,15 @@ int adf_ffun_load_str(adf_ffun_t x, const char *s, size_t n, const adf_modctx_st
                       const adf_text_limits_t *lim);
 int adf_rfun_load_str(adf_rfun_t x, const char *s, size_t n, const adf_modctx_struct *ctx,
                       const adf_text_limits_t *lim);
-/* Same load; require nbinds=0 after full validation. binds is then ignored. */
+/* Same load; require nbinds=0 after full validation. binds is then ignored. Load cost is the input size plus
+   clearing the old x, which is the size of the old representation (dump.h:288-303, f4-slice7 HEADER-FINDING 2). */
 int adf_ffun_load_str_binds(adf_ffun_t x, const char *s, size_t n,
     const adf_modctx_struct *const *binds, size_t nbinds, const adf_text_limits_t *lim);
 int adf_rfun_load_str_binds(adf_rfun_t x, const char *s, size_t n,
     const adf_modctx_struct *const *binds, size_t nbinds, const adf_text_limits_t *lim);
 /* Allocate exact dump, preserving term order and all ball bits. *len excludes NUL; adf_str_free.
-   No status, cost output size. Dumping then loading is identical, including retained zero terms. */
+   No status, cost output size. Loading the dump is identical, including retained zero terms, when the
+   load limits and D1 admit the dumped representation (else LIMIT; include/adelefeld/dump.h:288-303). */
 char *adf_ffun_dump_str(size_t *len, const adf_ffun_t x);
 char *adf_rfun_dump_str(size_t *len, const adf_rfun_t x);
 /* Validate as load, then write nctx=0; descs untouched. Same statuses and cost; no contexts built. */
@@ -176,8 +178,10 @@ Let the evaluated phase have midpoint e_j and disk error eta_j; |E|=1 implies |e
 psi.h bounds eta_j by sqrt(2)(4+2^-27)2^-w at phase precision w for a singleton input angle.
 2. The exact product differs from m_j e_j by at most r_j+(|m_j|+r_j)eta_j.
 3. If delta_j bounds rounding of the midpoint multiplication/addition, a sum accumulator satisfies
-R_k <= (sum_j [r_j+(|m_j|+r_j)eta_j+delta_j])/M + delta_div.
-Each delta is bounded by directed arf rounding, or already included by the acb operation.
+R_k <= (sum_j [r_j+(|m_j|+r_j)eta_j+delta_j])/M + delta_div + rho_k. The term rho_k, of the order
+L 2^-30 (sum_j r_j)/M, is the upward 30-bit rounding of the radii in acb_mul, acb_add, acb_div_ui (m4-review1,
+finding 1); tests/test_ffun.c:216-220 allow it inside 4 sum_j(rad_re+rad_im)/M. Each delta is bounded by
+directed arf rounding, or already included by the acb operation.
 4. Apply the triangle inequality inductively to all L terms. Final rectangular rounding adds its
 own outward error; acb handles it. Never report O(2^-prec) without the coefficients and L factors.
 Input radii impose a floor. At exact inputs increasing precision must reduce numerical error.
@@ -325,7 +329,9 @@ more precision cannot remove them. Do not return OK with an unmet width target.
 /* Independent P1 sums, both enclosures and cutoffs committed atomically. bits in [0,2^21]; otherwise
    DOMAIN (after the prec cap). OK certifies coordinate widths <=2^-bits and valid tails; D1 gives
    LIMIT, certificate/width failure gives NOT_DETERMINED. Cost L^2 plus real transforms and
-   L(2NL+1)+2NR+1 real evaluations; charge polynomial sizes, tail searches and precision retries.
+   L(2NL+1)+2NR+1 evaluations at the working precision, charged with polynomial sizes, tail searches, retries.
+   The work cap bounds these units, not a clock: time <= cap * (cost of one evaluation at that precision,
+   which grows with the bits).
    NL/NR count lattice indices, not all terms; outputs must be distinct. */
 int adf_tensor_poisson(acb_t left, acb_t right, ulong *NL, ulong *NR,
     const adf_rfun_t phi, const adf_ffun_t f, slong bits, slong prec);

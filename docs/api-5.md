@@ -30,7 +30,8 @@ For _at calls, where may be NULL; failure writes v there, success leaves it unto
 no where: a spectral pole is not a failing place. They do not use gfunc's placewise merge machinery.
 
 First reject prec>ADF_REAL_PREC_MAX=2097152 with LIMIT, then size preflight, then INV, then domain.
-Working precision starts at max(2,prec); guards count against the precision cap. Nonfinite raw s, or
+Working precision starts at max(2,prec); guards count against the cap, except prec+32 inside the delegated
+local factor of the trivial calls, which is not itself capped. Nonfinite raw s, or
 alpha when used at p, is DOMAIN; a nonfinite computed value is NOT_DETERMINED. No nonfinite result is stored.
 Local factors use the "Characters, Gauss sums, local factors" row; global calls use "Integrals, Poisson
 summation" (conventions 3.2). Both use OK, DOMAIN, NOT_DETERMINED, LIMIT here. If a character dependency
