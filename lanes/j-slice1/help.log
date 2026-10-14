@@ -1,0 +1,423 @@
+==== help Libdl.dlopen (julia 1.12.5)
+```julia
+dlopen(f::Function, args...; kwargs...)
+```
+
+Wrapper for usage with `do` blocks to automatically close the dynamic library once control flow leaves the `do` block scope.
+
+# Examples
+
+```julia
+vendor = dlopen("libblas") do lib
+    if Libdl.dlsym(lib, :openblas_set_num_threads; throw_error=false) !== nothing
+        return :openblas
+    else
+        return :other
+    end
+end
+```
+
+```julia
+dlopen(libfile::AbstractString [, flags::Integer]; throw_error:Bool = true)
+```
+
+Load a shared library, returning an opaque handle.
+
+The extension given by the constant `dlext` (`.so`, `.dll`, or `.dylib`) can be omitted from the `libfile` string, as it is automatically appended if needed.   If `libfile` is not an absolute path name, then the paths in the array `DL_LOAD_PATH` are searched for `libfile`, followed by the system load path.
+
+The optional flags argument is a bitwise-or of zero or more of `RTLD_LOCAL`, `RTLD_GLOBAL`, `RTLD_LAZY`, `RTLD_NOW`, `RTLD_NODELETE`, `RTLD_NOLOAD`, `RTLD_DEEPBIND`, and `RTLD_FIRST`. These are converted to the corresponding flags of the POSIX (and/or GNU libc and/or MacOS) dlopen command, if possible, or are ignored if the specified functionality is not available on the current platform. The default flags are platform specific. On MacOS the default `dlopen` flags are `RTLD_LAZY|RTLD_DEEPBIND|RTLD_GLOBAL` while on other platforms the defaults are `RTLD_LAZY|RTLD_DEEPBIND|RTLD_LOCAL`. An important usage of these flags is to specify non default behavior for when the dynamic library loader binds library references to exported symbols and if the bound references are put into process local or global scope. For instance `RTLD_LAZY|RTLD_DEEPBIND|RTLD_GLOBAL` allows the library's symbols to be available for usage in other shared libraries, addressing situations where there are dependencies between shared libraries.
+
+If the library cannot be found, this method throws an error, unless the keyword argument `throw_error` is set to `false`, in which case this method returns `nothing`.
+
+!!! note
+    From Julia 1.6 on, this method replaces paths starting with `@executable_path/` with  the path to the Julia executable, allowing for relocatable relative-path loads. In  Julia 1.5 and earlier, this only worked on macOS.
+
+
+==== help Libdl.dlsym (julia 1.12.5)
+```julia
+dlsym(handle, sym; throw_error::Bool = true)
+```
+
+Look up a symbol from a shared library handle, return callable function pointer on success.
+
+If the symbol cannot be found, this method throws an error, unless the keyword argument `throw_error` is set to `false`, in which case this method returns `nothing`.
+
+==== help Libdl.RTLD_NOW (julia 1.12.5)
+```julia
+RTLD_DEEPBIND
+RTLD_FIRST
+RTLD_GLOBAL
+RTLD_LAZY
+RTLD_LOCAL
+RTLD_NODELETE
+RTLD_NOLOAD
+RTLD_NOW
+```
+
+Enum constant for [`dlopen`](@ref). See your platform man page for details, if applicable.
+
+==== help finalizer (julia 1.12.5)
+```julia
+finalizer(f, x)
+```
+
+Register a function `f(x)` to be called when there are no program-accessible references to `x`, and return `x`. The type of `x` must be a `mutable struct`, otherwise the function will throw.
+
+`f` must not cause a task switch, which excludes most I/O operations such as `println`. Using the `@async` macro (to defer context switching to outside of the finalizer) or `ccall` to directly invoke IO functions in C may be helpful for debugging purposes.
+
+Note that there is no guaranteed world age for the execution of `f`. It may be called in the world age in which the finalizer was registered or any later world age.
+
+# Examples
+
+```julia
+finalizer(my_mutable_struct) do x
+    @async println("Finalizing $x.")
+end
+
+finalizer(my_mutable_struct) do x
+    ccall(:jl_safe_printf, Cvoid, (Cstring, Cstring), "Finalizing %s.", repr(x))
+end
+```
+
+A finalizer may be registered at object construction. In the following example note that we implicitly rely on the finalizer returning the newly created mutable struct `x`.
+
+```julia
+mutable struct MyMutableStruct
+    bar
+    function MyMutableStruct(bar)
+        x = new(bar)
+        f(t) = @async println("Finalizing $t.")
+        finalizer(f, x)
+    end
+end
+```
+
+==== help #= none:3 =# GC.@preserve (julia 1.12.5)
+```julia
+GC.@preserve x1 x2 ... xn expr
+```
+
+Mark the objects `x1, x2, ...` as being *in use* during the evaluation of the expression `expr`. This is only required in unsafe code where `expr` *implicitly uses* memory or other resources owned by one of the `x`s.
+
+*Implicit use* of `x` covers any indirect use of resources logically owned by `x` which the compiler cannot see. Some examples:
+
+  * Accessing memory of an object directly via a `Ptr`
+  * Passing a pointer to `x` to `ccall`
+  * Using resources of `x` which would be cleaned up in the finalizer.
+
+`@preserve` should generally not have any performance impact in typical use cases where it briefly extends object lifetime. In implementation, `@preserve` has effects such as protecting dynamically allocated objects from garbage collection.
+
+# Examples
+
+When loading from a pointer with `unsafe_load`, the underlying object is implicitly used, for example `x` is implicitly used by `unsafe_load(p)` in the following:
+
+```jldoctest
+julia> let
+           x = Ref{Int}(101)
+           p = Base.unsafe_convert(Ptr{Int}, x)
+           GC.@preserve x unsafe_load(p)
+       end
+101
+```
+
+When passing pointers to `ccall`, the pointed-to object is implicitly used and should be preserved. (Note however that you should normally just pass `x` directly to `ccall` which counts as an explicit use.)
+
+```jldoctest
+julia> let
+           x = "Hello"
+           p = pointer(x)
+           Int(GC.@preserve x @ccall strlen(p::Cstring)::Csize_t)
+           # Preferred alternative
+           Int(@ccall strlen(x::Cstring)::Csize_t)
+       end
+5
+```
+
+==== help InvalidStateException (julia 1.12.5)
+No documentation found for public binding `Base.InvalidStateException`.
+
+# Summary
+
+```
+struct InvalidStateException
+```
+
+# Fields
+
+```
+msg   :: String
+state :: Symbol
+```
+
+# Supertype Hierarchy
+
+```
+InvalidStateException <: Exception <: Any
+```
+
+==== help #= none:3 =# Base.@atomicreplace (julia 1.12.5)
+```julia
+@atomicreplace a.b.x expected => desired
+@atomicreplace :sequentially_consistent a.b.x expected => desired
+@atomicreplace :sequentially_consistent :monotonic a.b.x expected => desired
+@atomicreplace m[idx] expected => desired
+@atomicreplace :sequentially_consistent m[idx] expected => desired
+@atomicreplace :sequentially_consistent :monotonic m[idx] expected => desired
+```
+
+Perform the conditional replacement expressed by the pair atomically, returning the values `(old, success::Bool)`. Where `success` indicates whether the replacement was completed.
+
+This operation translates to a `replaceproperty!(a.b, :x, expected, desired)` or, in case of reference, to a `replaceindex_atomic!(mem, success_order, fail_order, expected, desired, idx)` call, with both orders defaulting to `:sequentially_consistent`.
+
+See [Per-field atomics](@ref man-atomics) section in the manual for more details.
+
+# Examples
+
+```jldoctest
+julia> mutable struct Atomic{T}; @atomic x::T; end
+
+julia> a = Atomic(1)
+Atomic{Int64}(1)
+
+julia> @atomicreplace a.x 1 => 2 # replace field x of a with 2 if it was 1, with sequential consistency
+(old = 1, success = true)
+
+julia> @atomic a.x # fetch field x of a, with sequential consistency
+2
+
+julia> @atomicreplace a.x 1 => 3 # replace field x of a with 2 if it was 1, with sequential consistency
+(old = 2, success = false)
+
+julia> xchg = 2 => 0; # replace field x of a with 0 if it was 2, with sequential consistency
+
+julia> @atomicreplace a.x xchg
+(old = 2, success = true)
+
+julia> @atomic a.x # fetch field x of a, with sequential consistency
+0
+```
+
+```jldoctest
+julia> mem = AtomicMemory{Int}(undef, 2);
+
+julia> @atomic mem[1] = 1;
+
+julia> @atomicreplace mem[1] 1 => 2 # replace the first value of mem with 2 if it was 1, with sequential consistency
+(old = 1, success = true)
+
+julia> @atomic mem[1] # fetch the first value of mem, with sequential consistency
+2
+
+julia> @atomicreplace mem[1] 1 => 3 # replace field x of a with 2 if it was 1, with sequential consistency
+(old = 2, success = false)
+
+julia> xchg = 2 => 0; # replace field x of a with 0 if it was 2, with sequential consistency
+
+julia> @atomicreplace mem[1] xchg
+(old = 2, success = true)
+
+julia> @atomic mem[1] # fetch the first value of mem, with sequential consistency
+0
+```
+
+!!! compat "Julia 1.7"
+    Atomic fields functionality requires at least Julia 1.7.
+
+
+!!! compat "Julia 1.12"
+    Atomic reference functionality requires at least Julia 1.12.
+
+
+==== help Libc.malloc (julia 1.12.5)
+```julia
+malloc(size::Integer) -> Ptr{Cvoid}
+```
+
+Call `malloc` from the C standard library.
+
+==== help Libc.free (julia 1.12.5)
+```julia
+free(addr::Ptr)
+```
+
+Call `free` from the C standard library. Only use this on memory obtained from [`malloc`](@ref), not on pointers retrieved from other C libraries. [`Ptr`](@ref) objects obtained from C libraries should be freed by the free functions defined in that library, to avoid assertion failures if multiple `libc` libraries exist on the system.
+
+==== help ncodeunits (julia 1.12.5)
+```julia
+ncodeunits(s::AbstractString) -> Int
+```
+
+Return the number of code units in a string. Indices that are in bounds to access this string must satisfy `1 ≤ i ≤ ncodeunits(s)`. Not all such indices are valid – they may not be the start of a character, but they will return a code unit value when calling `codeunit(s,i)`.
+
+# Examples
+
+```jldoctest
+julia> ncodeunits("The Julia Language")
+18
+
+julia> ncodeunits("∫eˣ")
+6
+
+julia> ncodeunits('∫'), ncodeunits('e'), ncodeunits('ˣ')
+(3, 1, 2)
+```
+
+See also [`codeunit`](@ref), [`checkbounds`](@ref), [`sizeof`](@ref), [`length`](@ref), [`lastindex`](@ref).
+
+```julia
+ncodeunits(c::Char) -> Int
+```
+
+Return the number of code units required to encode a character as UTF-8. This is the number of bytes which will be printed if the character is written to an output stream, or `ncodeunits(string(c))` but computed efficiently.
+
+!!! compat "Julia 1.1"
+    This method requires at least Julia 1.1. In Julia 1.0 consider using `ncodeunits(string(c))`.
+
+
+==== help unsafe_string (julia 1.12.5)
+```julia
+unsafe_string(p::Ptr{UInt8}, [length::Integer])
+```
+
+Copy a string from the address of a C-style (NUL-terminated) string encoded as UTF-8. (The pointer can be safely freed afterwards.) If `length` is specified (the length of the data in bytes), the string does not have to be NUL-terminated.
+
+This function is labeled "unsafe" because it will crash if `p` is not a valid memory address to data of the requested length.
+
+==== help Base.julia_cmd (julia 1.12.5)
+```julia
+Base.julia_cmd(juliapath=joinpath(Sys.BINDIR, julia_exename()); cpu_target::Union{Nothing,String}=nothing)
+```
+
+Return a julia command similar to the one of the running process. Propagates any of the `--cpu-target`, `--sysimage`, `--compile`, `--sysimage-native-code`, `--compiled-modules`, `--pkgimages`, `--inline`, `--check-bounds`, `--optimize`, `--min-optlevel`, `-g`, `--code-coverage`, `--track-allocation`, `--color`, `--startup-file`, and `--depwarn` command line arguments that are not at their default values.
+
+Among others, `--math-mode`, `--warn-overwrite`, and `--trace-compile` are notably not propagated currently.
+
+Unless set to `nothing`, the `cpu_target` keyword argument can be used to override the CPU target set for the running process.
+
+To get the julia command without propagated command line arguments, `julia_cmd()[1]` can be used.
+
+!!! compat "Julia 1.1"
+    Only the `--cpu-target`, `--sysimage`, `--depwarn`, `--compile` and `--check-bounds` flags were propagated before Julia 1.1.
+
+
+!!! compat "Julia 1.5"
+    The flags `--color` and `--startup-file` were added in Julia 1.5.
+
+
+!!! compat "Julia 1.9"
+    The keyword argument `cpu_target` was added in 1.9. The flag `--pkgimages` was added in Julia 1.9.
+
+
+==== help pipeline (julia 1.12.5)
+```julia
+pipeline(from, to, ...)
+```
+
+Create a pipeline from a data source to a destination. The source and destination can be commands, I/O streams, strings, or results of other `pipeline` calls. At least one argument must be a command. Strings refer to filenames. When called with more than two arguments, they are chained together from left to right. For example, `pipeline(a,b,c)` is equivalent to `pipeline(pipeline(a,b),c)`. This provides a more concise way to specify multi-stage pipelines.
+
+**Examples**:
+
+```julia
+run(pipeline(`ls`, `grep xyz`))
+run(pipeline(`ls`, "out.txt"))
+run(pipeline("out.txt", `grep xyz`))
+```
+
+```julia
+pipeline(command; stdin, stdout, stderr, append=false)
+```
+
+Redirect I/O to or from the given `command`. Keyword arguments specify which of the command's streams should be redirected. `append` controls whether file output appends to the file. This is a more general version of the 2-argument `pipeline` function. `pipeline(from, to)` is equivalent to `pipeline(from, stdout=to)` when `from` is a command, and to `pipeline(to, stdin=from)` when `from` is another kind of data source.
+
+**Examples**:
+
+```julia
+run(pipeline(`dothings`, stdout="out.txt", stderr="errs.txt"))
+run(pipeline(`update`, stdout="log.txt", append=true))
+```
+
+==== help OutOfMemoryError (julia 1.12.5)
+```julia
+OutOfMemoryError()
+```
+
+An operation allocated too much memory for either the system or the garbage collector to handle properly.
+
+==== help Threads.Atomic (julia 1.12.5)
+```julia
+Threads.Atomic{T}
+```
+
+Holds a reference to an object of type `T`, ensuring that it is only accessed atomically, i.e. in a thread-safe manner.
+
+Only certain "simple" types can be used atomically, namely the primitive boolean, integer, and float-point types. These are `Bool`, `Int8`...`Int128`, `UInt8`...`UInt128`, and `Float16`...`Float64`.
+
+New atomic objects can be created from a non-atomic values; if none is specified, the atomic object is initialized with zero.
+
+Atomic objects can be accessed using the `[]` notation:
+
+# Examples
+
+```jldoctest
+julia> x = Threads.Atomic{Int}(3)
+Base.Threads.Atomic{Int64}(3)
+
+julia> x[] = 1
+1
+
+julia> x[]
+1
+```
+
+Atomic operations use an `atomic_` prefix, such as [`atomic_add!`](@ref), [`atomic_xchg!`](@ref), etc.
+
+==== help Base.Checked.checked_add (julia 1.12.5)
+```julia
+Base.checked_add(x, y)
+```
+
+Calculates `x+y`, checking for overflow errors where applicable.
+
+The overflow protection may impose a perceptible performance penalty.
+
+==== help __init__ (julia 1.12.5)
+```julia
+__init__
+```
+
+The `__init__()` function in a module executes immediately *after* the module is loaded at runtime for the first time. It is called once, after all other statements in the module have been executed. Because it is called after fully importing the module, `__init__` functions of submodules will be executed first. Two typical uses of `__init__` are calling runtime initialization functions of external C libraries and initializing global constants that involve pointers returned by external libraries. See the [manual section about modules](@ref modules) for more details.
+
+See also: [`OncePerProcess`](@ref).
+
+# Examples
+
+```julia
+const foo_data_ptr = Ref{Ptr{Cvoid}}(0)
+function __init__()
+    ccall((:foo_init, :libfoo), Cvoid, ())
+    foo_data_ptr[] = ccall((:foo_data, :libfoo), Ptr{Cvoid}, ())
+    nothing
+end
+```
+
+==== help Base.hash (julia 1.12.5)
+```julia
+hash(x[, h::UInt]) -> UInt
+```
+
+Compute an integer hash code such that `isequal(x,y)` implies `hash(x)==hash(y)`. The optional second argument `h` is another hash code to be mixed with the result.
+
+New types should implement the 2-argument form, typically by calling the 2-argument `hash` method recursively in order to mix hashes of the contents with each other (and with `h`). Typically, any type that implements `hash` should also implement its own [`==`](@ref) (hence [`isequal`](@ref)) to guarantee the property mentioned above.
+
+The hash value may change when a new Julia process is started.
+
+```jldoctest
+julia> a = hash(10)
+0x95ea2955abd45275
+
+julia> hash(10, a) # only use the output of another hash function as the second argument
+0xd42bad54a8575b16
+```
+
+See also: [`objectid`](@ref), [`Dict`](@ref), [`Set`](@ref).
+

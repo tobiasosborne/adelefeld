@@ -1,0 +1,977 @@
+    Updating `~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice1/lanes/j-slice1/tmp/jl_52gdw1/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice1/lanes/j-slice1/tmp/jl_52gdw1/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=auto --check-bounds=yes --warn-overwrite=yes --depwarn=yes --inline=yes --startup-file=no --track-allocation=none
+    786.8 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 1 seconds. 8 already precompiled.
+     Testing Running tests...
+WARNING: Imported binding Adelefeld.OK was undeclared at import time during import to Main.
+WARNING: Imported binding Adelefeld.DOMAIN was undeclared at import time during import to Main.
+WARNING: Imported binding Adelefeld.NOT_UNIT was undeclared at import time during import to Main.
+WARNING: Imported binding Adelefeld.PARSE was undeclared at import time during import to Main.
+WARNING: Imported binding Adelefeld.LIMIT was undeclared at import time during import to Main.
+load gates passed: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+  Got exception outside of a @test
+  UndefVarError: `diagnostics` not defined in `Adelefeld`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] getproperty(x::Module, f::Symbol)
+      @ Base ./Base_compiler.jl:47
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:23 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:23 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+statuses and results: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:43
+  Got exception outside of a @test
+  UndefVarError: `try_rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:44 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:44 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+den = 0 is DOMAIN, division by zero is NOT_UNIT: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:70
+  Test threw exception
+  Expression: (try_rat(5, 0)).status === DOMAIN
+  UndefVarError: `try_rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:70 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:70 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+den = 0 is DOMAIN, division by zero is NOT_UNIT: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:71
+  Test threw exception
+  Expression: (try_rat(0, 0)).status === DOMAIN
+  UndefVarError: `try_rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:70 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:71 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+den = 0 is DOMAIN, division by zero is NOT_UNIT: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:72
+  Test threw exception
+  Expression: (try_rat(1 // 0)).status === DOMAIN
+  UndefVarError: `try_rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:70 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:72 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+den = 0 is DOMAIN, division by zero is NOT_UNIT: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:73
+  Test threw exception
+  Expression: (try_parse(Rat, "5/0")).status === DOMAIN
+  UndefVarError: `try_parse` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:70 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:73 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+den = 0 is DOMAIN, division by zero is NOT_UNIT: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:68
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:70 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:74 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90
+  Test threw exception
+  Expression: (try_parse(Rat, "")).status === PARSE
+  UndefVarError: `try_parse` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:91
+  Test threw exception
+  Expression: (try_parse(Rat, "1/")).status === PARSE
+  UndefVarError: `try_parse` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:91 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:92
+  Test threw exception
+  Expression: (try_parse(Rat, "1/-2")).status === PARSE
+  UndefVarError: `try_parse` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:92 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:93
+  Test threw exception
+  Expression: (try_parse(Rat, "abc")).status === PARSE
+  UndefVarError: `try_parse` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:93 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:94
+  Test threw exception
+  Expression: (try_parse(Rat, "1\0")).status === PARSE
+  UndefVarError: `try_parse` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:94 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:95
+  Test threw exception
+  Expression: (try_parse(Rat, "é")).status === PARSE
+  UndefVarError: `try_parse` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:95 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:96
+  Test threw exception
+  Expression: (try_parse(Rat, "1234"; limits = TextLimits(max_len = 3))).status === LIMIT
+  UndefVarError: `TextLimits` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:96 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:97
+  Test threw exception
+  Expression: (try_parse(Rat, "123"; limits = TextLimits(max_len = 3))).status === OK
+  UndefVarError: `TextLimits` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:97 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:99
+  Test threw exception
+  Expression: (try_parse(Rat, "é1"; limits = TextLimits(max_len = 2))).status === LIMIT
+  UndefVarError: `TextLimits` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:99 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:100
+  Test threw exception
+  Expression: string(parse(Rat, "-0")) == "0"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:100 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:101
+  Test threw exception
+  Expression: string(parse(Rat, "0010/0004")) == "5/2"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:101 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:102
+  Test threw exception
+  Expression: string(parse(Rat, SubString("x7/21", 2))) == "1/3"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:102 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+parser statuses: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:88
+  Got exception outside of a @test
+  UndefVarError: `AdfError` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:103 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:776 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+  
+  caused by: UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:90 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:103 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:774 [inlined]
+    [7] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:103 [inlined]
+    [8] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [9] top-level scope
+      @ none:6
+   [10] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [11] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [12] _start()
+      @ Base ./client.jl:550
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110
+  Test threw exception
+  Expression: string(Rat(0)) == "0"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:111
+  Test threw exception
+  Expression: string(Rat(-7)) == "-7"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:111 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:112
+  Test threw exception
+  Expression: string(Rat(typemin(Int64))) == string(typemin(Int64))
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:112 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:113
+  Test threw exception
+  Expression: string(Rat(typemax(UInt64))) == string(typemax(UInt64))
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:113 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:114
+  Test threw exception
+  Expression: string(Rat(big(2) ^ 200)) == string(big(2) ^ 200)
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:114 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:115
+  Test threw exception
+  Expression: string(Rat(3, -6)) == "-1/2"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:115 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:116
+  Test threw exception
+  Expression: string(Rat(-3, -6)) == "1/2"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:116 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:117
+  Test threw exception
+  Expression: string(Rat(4, 2)) == "2"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:117 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:118
+  Test threw exception
+  Expression: string(Rat(2 // 6)) == "1/3"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:118 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:119
+  Test threw exception
+  Expression: string(Rat(-(big(2) ^ 130) // 3)) == oracle_text(-(big(2) ^ 130) // 3)
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+ERROR: LoadError: Some tests did not pass: 0 passed, 0 failed, 43 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:20
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:119 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:120
+  Test threw exception
+  Expression: string(Rat(true)) == "1"
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:120 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:121
+  Test threw exception
+  Expression: Rat(3, 1) == Rat(3)
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:121 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:123
+  Test threw exception
+  Expression: (try_rat(big_n; limits = TextLimits(max_len = 100))).status === LIMIT
+  UndefVarError: `TextLimits` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:123 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+constructors: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:124
+  Test threw exception
+  Expression: string(Rat(big_n)) == string(big_n)
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+   [2] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [3] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:110 [inlined]
+   [4] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [5] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:124 [inlined]
+   [6] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+Rat 1/3 stays exact: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:127
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:128 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:128 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+SPEC 4.3 arithmetic rows, rational centres: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:137
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:141 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:141 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+arithmetic against Rational{BigInt}: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:156
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:157 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:160 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+mixed arithmetic with Integer and Rational: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:174
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:175 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:175 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+inputs unchanged by every operation: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:209
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:210 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:210 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+copies, identity, close: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:229
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:230 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:230 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+string round trip: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:253
+  Got exception outside of a @test
+  UndefVarError: `Rat` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:254 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:255 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+10^4 handles, forced GC, live count returns: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:265
+  Got exception outside of a @test
+  UndefVarError: `diagnostics` not defined in `Adelefeld`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] getproperty(x::Module, f::Symbol)
+      @ Base ./Base_compiler.jl:47
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:266 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:267 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+load rejection in separate processes: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:284
+  Got exception outside of a @test
+  UndefVarError: `diagnostics` not defined in `Adelefeld`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] getproperty(x::Module, f::Symbol)
+      @ Base ./Base_compiler.jl:47
+    [2] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:22
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:285 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice1/julia/Adelefeld/test/runtests.jl:285 [inlined]
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+Test Summary:                                     | Error  Total  Time
+Adelefeld step J-a.1                              |    43     43  5.9s
+  load gates passed                               |     1      1  4.3s
+  statuses and results                            |     1      1  0.0s
+  den = 0 is DOMAIN, division by zero is NOT_UNIT |     5      5  0.4s
+  parser statuses                                 |    13     13  0.1s
+  constructors                                    |    14     14  0.1s
+  Rat 1/3 stays exact                             |     1      1  0.0s
+  SPEC 4.3 arithmetic rows, rational centres      |     1      1  0.0s
+  arithmetic against Rational{BigInt}             |     1      1  0.5s
+  mixed arithmetic with Integer and Rational      |     1      1  0.0s
+  inputs unchanged by every operation             |     1      1  0.0s
+  copies, identity, close                         |     1      1  0.0s
+  string round trip                               |     1      1  0.1s
+  10^4 handles, forced GC, live count returns     |     1      1  0.4s
+  load rejection in separate processes            |     1      1  0.0s
+RNG of the outermost testset: Random.Xoshiro(0xf8db8503cb176c31, 0xe68c7a6e465826a1, 0x975095bd53e6df38, 0x4c03e5cb24882bb7, 0xb52f298f415b6e2d)
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool)
+    @ Pkg.Operations ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550
