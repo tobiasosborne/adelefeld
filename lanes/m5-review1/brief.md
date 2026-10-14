@@ -13,9 +13,9 @@ survivors):
 | 5d | `src/tate.c`: `adf_tate_continue`, `adf_tate_completed`; driver `tate_continue`, `tate_completed` | t5-slice4, Opus, `lanes/t5-slice4/result.md` |
 | 5e | `tools/adf/adf.c`: `tate_fe` (two guarded calls and the root number; no library code) | t5-slice5, Opus, `lanes/t5-slice5/result.md` |
 
-Four of the five authors are of your own model family; the design oracle is codex's. So: derive every sign
-and formula yourself from the proofs and the sources BEFORE reading the lanes' texts, and build your own
-models. Contracts: `docs/api-5.md` (sections 1 to 9; decisions D1 to D4 taken as `docs/SPEC.md` 15.4 N-D24;
+You run as a codex lane (gpt-6.1-sol xhigh). Four of the five authors are Claude Opus, the fifth (5a) is codex,
+and the design oracle is codex's. So: derive every sign and formula yourself from the proofs and the sources
+BEFORE reading the lanes' texts, and build your own models. Contracts: `docs/api-5.md` (sections 1 to 9; decisions D1 to D4 taken as `docs/SPEC.md` 15.4 N-D24;
 N-D23 on input radii), the statements the lanes wrote in `docs/api-5a.md` (slices 5a, 5b) and `docs/api-5b.md`
 (5c: S1 to S8; 5d: S9 to S14; 5e: S15 to S20), `docs/SPEC.md` 8 (470-502), 9.3.7, `docs/conventions.md` 6.1
 to 6.5 (signs: the additive character, the Gauss sum, `G_minus` with the NEGATIVE kernel, the root number
@@ -88,7 +88,9 @@ lanes/m5-review1/build/libadelefeld.a`, and once with `SAN=1 INV=1` into `lanes/
 programs against them (`-Iinclude -lflint -lgmp -lm`). Do not run the repository's suites as a whole. Every
 program under `timeout`, none over 170 s. Leave no files in `/tmp` and none outside your lane directory.
 Another lane (t5-repair1) appends tests to `tests/test_tate*.c` and `tests/test_localfactor.c` in another
-worktree: the versions you see are the ones to plant faults against.
+worktree: the versions you see are the ones to plant faults against. Your worktree is `../adelefeld-wt/m5-review1`
+on branch `lane/m5-review1`; `refs/src` is a symlink to the repository's copy. Slice 5e (`tate_fe`) is merged and
+is in your tree.
 
 Severity BLOCKER: a true value outside a returned enclosure; a wrong sign (the character, the Gauss sum, `W`,
 `i^e`, the pole terms); a bound below the truth in a certificate; a memory error, leak or undefined behaviour;
@@ -97,7 +99,7 @@ an output written on a failure status; `OK` with a coordinate diameter above `2^
 where `LIMIT` is promised; a fault the lanes' tests pass when it loses enclosure or a sign; a false step in S9
 or S12. MINOR: everything else true.
 
-Report: `lanes/m5-review1/result.md` (a Claude subagent cannot write `report.md`), written once, at the end,
+Report: `lanes/m5-review1/report.md`, written once, at the end,
 and the same text as your final message; notes in `lanes/m5-review1/progress.md` as you go. For each finding:
 severity, the exact input, what the code returns, what is true and the sentence (file and line) that says so,
 the command that reproduces it. Then what you attacked without result, with counts and what would have made a

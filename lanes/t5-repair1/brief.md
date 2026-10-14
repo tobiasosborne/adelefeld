@@ -56,8 +56,9 @@ sections); `tools/mutate/README.md`; `docs/api-5b.md` (decisions 5, 7, the hooks
 **You own:** `tests/test_tate.c`, `tests/test_tate_continue.c`, `tests/test_tate_gamma.c`,
 `tests/test_tate_local.c`, `tests/test_localfactor.c` (append tests; do not weaken or remove any),
 `tests/ref/vectors/t5-repair1/`, `lanes/t5-repair1/`. Everything else is read-only. No git command that
-changes state, no `bd`. Lane t5-slice5 writes `tools/adf/adf.c`, `tests/test_tate_fe.c`, `docs/api-5b.md` and
-the Julia files in another worktree: you do not touch those.
+changes state, no `bd`. Lane t5-slice5 (slice 5e, `tools/adf/adf.c`, `tests/test_tate_fe.c`) is merged and in
+your tree; you do not touch those files. The review lane m5-review1 reads the tree in another worktree; it does
+not write to yours.
 
 **Checks at the end** (commands and numbers; at most 2 jobs; every program under `timeout`; valgrind runs
 excepted from the 3-minute rule but under `timeout 900` each): every test program you changed under plain,
