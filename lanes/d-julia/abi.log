@@ -1,0 +1,21 @@
+rat size=16 align=8
+fball size=48 align=8
+adele size=96 align=8
+cadele size=144 align=8
+scaled size=40 align=8
+place size=8 align=8
+text_limits size=32 align=8
+ctx_desc size=24 align=8
+text_kind size=4 align=4
+lball size=48 align=8
+sball size=120 align=8
+ucoset size=16 align=8
+idele size=80 align=8
+idclass size=64 align=8
+qclass size=24 align=8
+char size=120 align=8
+ffun size=24 align=8
+rfun size=16 align=8
+rterm size=312 align=8
+rows=19 size_align_comparisons=38 status_names=11 invalid_statuses=2 version_checks=1
+effective_status_count=11 exported_macro_accessor=absent

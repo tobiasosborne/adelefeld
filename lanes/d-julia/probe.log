@@ -1,0 +1,16 @@
+batch=1 init=10000 clear=10000 free=10000
+batch=2 init=20000 clear=20000 free=20000
+batch=3 init=30000 clear=30000 free=30000
+batch=4 init=40000 clear=40000 free=40000
+batch=5 init=50000 clear=50000 free=50000
+batch=6 init=60000 clear=60000 free=60000
+batch=7 init=70000 clear=70000 free=70000
+batch=8 init=80000 clear=80000 free=80000
+batch=9 init=90000 clear=90000 free=90000
+batch=10 init=100000 clear=100000 free=100000
+Julia=1.12.5 sizeof=16 alignof=8
+init=100000 clear=100000 malloc=100000 free=100000
+live_handles=0 live_buffers=0
+aligned=100000 arithmetic_calls=200000 canonical_checks=100000
+oracle_equalities=100000 strings=100000 string_frees=100000
+gc_calls=40 repeated_finalize_checks=10 elapsed_seconds=7.271

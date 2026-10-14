@@ -1,0 +1,39 @@
+
+[4] signal 15: Terminated
+in expression starting at none:1
+epoll_pwait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+uv__io_poll at /workspace/srcdir/libuv/src/unix/linux.c:1404
+uv_run at /workspace/srcdir/libuv/src/unix/core.c:430
+ijl_task_get_next at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/scheduler.c:457
+poptask at ./task.jl:1216
+wait at ./task.jl:1228
+task_done_hook at ./task.jl:868
+jfptr_task_done_hook_60124.1 at /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so (unknown line)
+jl_apply at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+jl_finish_task at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/task.c:341
+start_task at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/task.c:1263
+unknown function (ip: (nil)) at (unknown file)
+Allocations: 1 (Pool: 1; Big: 0); GC: 0
+Precompiling packages...
+   1215.6 ms  ✓ Unicode
+   1208.9 ms  ✓ Zlib_jll
+   1455.3 ms  ✓ CompilerSupportLibraries_jll
+   1462.4 ms  ✓ Logging
+   1489.1 ms  ✓ MozillaCACerts_jll
+   1625.4 ms  ✓ OpenSSL_jll
+   1689.4 ms  ✓ UUIDs
+   1811.6 ms  ✓ nghttp2_jll
+   1875.5 ms  ✓ NetworkOptions
+    838.0 ms  ✓ LibSSH2_jll
+   2469.6 ms  ✓ Base64
+   1504.0 ms  ✓ Printf
+   1411.3 ms  ✓ p7zip_jll
+    900.2 ms  ✓ LibCURL_jll
+   1186.9 ms  ✓ LibGit2_jll
+   1446.6 ms  ✓ LibCURL
+   5556.3 ms  ✓ ArgTools
+   1371.0 ms  ✓ Tar
+   7041.5 ms  ✓ LibGit2
+   9363.5 ms  ✓ Dates
+   1529.4 ms  ✓ TOML
+  11176.1 ms  ✓ Downloads
