@@ -1,0 +1,18 @@
+ERROR: LoadError: Some tests did not pass: 35 passed, 1 failed, 0 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-wt/t5-repair1/lanes/t5-repair1/jl/tate_gamma_wrong.jl:40
+local gamma and epsilon: Test Failed at /home/tobias/Projects/adelefeld-wt/t5-repair1/lanes/t5-repair1/jl/tate_gamma_wrong.jl:56
+  Expression: contains(z, ref)
+   Evaluated: contains(Ptr{Nothing}(0x000000003e0eb2a0), Ptr{Nothing}(0x000000003dd68bb0))
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/t5-repair1/lanes/t5-repair1/jl/tate_gamma_wrong.jl:56 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] top-level scope
+   @ ~/Projects/adelefeld-wt/t5-repair1/lanes/t5-repair1/jl/tate_gamma_wrong.jl:41
+Test Summary:           | Pass  Fail  Total  Time
+local gamma and epsilon |   35     1     36  2.7s
+RNG of the outermost testset: Random.Xoshiro(0xe215092a688c7843, 0xd532a1a89a1daf7c, 0x0ca431ca72fe9bb1, 0x82898a7377f08e92, 0x32a4b040bd72772a)

@@ -657,6 +657,72 @@ static void widths(void)
     adf_char_clear(chi); acb_clear(s); acb_clear(z); acb_clear(w); mag_clear(prev); mag_clear(m);
 }
 
+/* ------------------------------------------------------------------ L14's second branch (lane t5-repair1) */
+/* The cutoffs, panel degrees, work and the bound added to both radii (api-5.md:218) against an evaluation of one
+   attempt written for lane t5-repair1 (lanes/t5-repair1/gen_vectors.py, mpmath at 60 digits, from L6
+   analysis.md:215-221, L14 :630-639, P15 :652-661, api-5.md:196-220 and api-5b.md decision 5), for zeta (C = 1,
+   e = 0, mode Lambda) at s = 41/2, 9, -39/2, -8, 2 and bits 4, 20, 53, 80. With the sentinel bit 1 the forward
+   side is the exact 10^6 before the error is added, so its radii are the bound itself (rounded up to a mag).
+   Why the second branch of L14 (analysis.md:630-639) is the one taken: b = lower(pi/C) < 3.15 for C = 1, and
+   the first branch needs b >= 2 rplus/R. At s = 41/2, r1 = Re(z) - 1 = 41/4 - 1 = 37/4 > 0, so 2 rplus = 37/2;
+   every step of the N search has R = 1 and b R < 3.15 < 37/2, and the R search steps R = 1, 2, 4 have
+   b R < 12.6 < 37/2: J_bound(r1, b, R) is (R0 - R) t*^r exp(-b t*) + 2 R0^r exp(-b R0)/b there. At s = -39/2 the
+   dual exponent z' = (1 - s)/2 = 41/4 gives r2 = 37/4, the same. At s = 9 (r1 = 7/2) and s = -8 (r2 = 7/2),
+   2 rplus = 7 > b R for R = 1, 2. The generator records the branch of every step (nbranches, rbranches) and
+   asserts every comparison with a relative margin of 10^-9. Lane t5-slice4's survivor 247 (exp(-(R0 - R)) for
+   exp(-b R0)) and lane t5-slice2's survivor 551 (r2 = -1) each change N, R, a degree, the work or the bound by
+   more than 10^-6 relative in the records whose "kills" names them (the generator evaluates both mutants). */
+#define JVEC "tests/ref/vectors/t5-repair1/jbound.jsonl"
+static void jbound(void)
+{
+    jsonl_file *file; jsonl_error_t err; size_t i, n, j, k, m247 = 0, m551 = 0, second = 0;
+    adf_char_t chi; acb_t s, lam, fwd; fmpq_t q; arb_t b, lo, hi; arf_t r;
+    adf_char_init(chi); acb_init(s); acb_init(lam); acb_init(fwd); fmpq_init(q);
+    arb_init(b); arb_init(lo); arb_init(hi); arf_init(r);
+    CHECK(jsonl_open(JVEC, &file, &err));
+    n = jsonl_count(file);
+    CHECK(n == 20);
+    for (i = 0; i < n; i++) {
+        const jsonl_value *rec = jsonl_record(file, i), *dg = field(rec, "degrees"), *kl = field(rec, "kills");
+        ulong N, R, K, deg[128], work; slong bits = number(field(rec, "bits")); int c;
+        CHECK(!strcmp(str(field(rec, "kind")), "jbound"));
+        char_of(chi, rec);
+        q_of(q, str(field(rec, "s"))); acb_zero(s); arb_set_fmpq(acb_realref(s), q, 4 * RP);
+        CHECK(acb_is_exact(s));
+        CHECK(adf_tate_trace(&N, &R, &K, deg, &work, lam, fwd, NULL, chi, s, bits, bits + 64, 1, 1) == ADF_OK);
+        CHECK(N == (ulong) number(field(rec, "N")) && R == (ulong) number(field(rec, "R")));
+        CHECK(K == (ulong) number(field(rec, "K")));
+        CHECK(jsonl_size(at(dg, 0)) == K && jsonl_size(at(dg, 1)) == K);
+        for (k = 0; k < 2; k++)
+            for (j = 0; j < K; j++)
+                CHECK(deg[k * K + j] == (ulong) number(at(at(dg, k), j)));
+        CHECK(work == (ulong) number(field(rec, "work")));
+        /* the radii of the sentinel side are the bound E_n + E_t + both remainders, within 10^-6 relative */
+        CHECK(arf_cmp_si(arb_midref(acb_realref(fwd)), 1000000) == 0 && arf_is_zero(arb_midref(acb_imagref(fwd))));
+        CHECK(arb_set_str(b, str(field(rec, "bound")), 128) == 0);
+        arb_mul_ui(lo, b, 999999, 128); arb_div_ui(lo, lo, 1000000, 128);
+        arb_mul_ui(hi, b, 1000001, 128); arb_div_ui(hi, hi, 1000000, 128);
+        for (c = 0; c < 2; c++) {
+            arf_set_mag(r, arb_radref(c ? acb_imagref(fwd) : acb_realref(fwd)));
+            CHECK(arf_cmp(r, arb_midref(lo)) > 0 && arf_cmp(r, arb_midref(hi)) < 0);
+        }
+        for (j = 0; j < jsonl_size(kl); j++) {
+            m247 += !strcmp(str(at(kl, j)), "m247");
+            m551 += !strcmp(str(at(kl, j)), "m551");
+        }
+        {   /* the second branch is recorded at the last N step for s = 41/2, 9, -39/2, -8 */
+            const jsonl_value *nb = field(rec, "nbranches"), *last = at(nb, jsonl_size(nb) - 1);
+            second += number(at(last, 0)) == 2 || number(at(last, 1)) == 2;
+        }
+    }
+    jsonl_close(file);
+    CHECK(m247 == 10 && m551 == 13 && second == 16);
+    printf("jbound: %lu records (cutoffs, degrees, work and the radius bound; %lu tell m247, %lu tell m551)\n",
+           (unsigned long) n, (unsigned long) m247, (unsigned long) m551);
+    adf_char_clear(chi); acb_clear(s); acb_clear(lam); acb_clear(fwd); fmpq_clear(q);
+    arb_clear(b); arb_clear(lo); arb_clear(hi); arf_clear(r);
+}
+
 /* ------------------------------------------------------------------ INV: preconditions */
 static void debug(void)
 {
@@ -700,6 +766,7 @@ int main(int argc, char **argv)
     if (section("overlap")) overlap();
     if (section("widths")) widths();
     vectors();
+    if (section("jbound")) jbound();
     if (section("debug")) debug();
     printf("tate_continue: %lu checks\n", checks);
     flint_cleanup();

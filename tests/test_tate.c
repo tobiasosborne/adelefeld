@@ -646,6 +646,41 @@ static void debug(void)
 #endif
 }
 
+/* The exact work of one attempt (lane t5-repair1): the count rule of docs/api-5b.md decision 5 (:146-148), "C
+   (vector entries) + C^2 + 2 L^2 - L + 1 (L = e + 1; the two transforms) + one per Lemma 6 step (prefix
+   included) + one per N or R search step + 2N (coefficient entries) + (J + 1) per nonzero coefficient and
+   panel", for zeta (C = 1, e = 0, L = 1) at s = 2, bits 4, through adf_tate_cutoffs (decision 7). By hand:
+   epsilon = 2^-4 (C^-z = 1), the search target epsilon/32 = 2^-9 = 0.00195; a0 = pi, z = 1, z' = -1/2, so the
+   L14 exponents are r1 = 0, r2 = -3/2, both in L14's first branch (b R >= 0 = 2 max(r, 0)), J_bound(r, pi, R) =
+   2 R^r exp(-pi R)/pi (analysis.md:630-639). Lemma 6 (analysis.md:215-221) with j = 0, c = pi: rho_0(pi, K) =
+   exp(-pi (2K + 1)) <= exp(-3 pi) < 1/2 at K = T + 1 already, so every series call is one step.
+   N search: N = 0: exp(pi) S_0(pi, 0) = 1/(1 - exp(-3 pi)) = 1.00008, E_n = 1.00008 (2 + 2) exp(-pi)/pi = 0.0550
+   > 0.00195; N = 1: exp(pi) S_0(pi, 1) = exp(-3 pi)/(1 - exp(-5 pi)) = 8.07e-5, E_n = 4.44e-6 <= 0.00195. Two
+   search steps, two series steps: 4. The R search: one series call S_0(pi, 0) (1 step); R = 1: E_t = 0.0550;
+   R = 2: E_t = 1.00008 (2 exp(-2 pi)/pi + 2 2^-3/2 exp(-2 pi)/pi) = 0.00161 <= 0.00195. Two steps: 2.
+   2N = 2. One panel [1, 2] (R = 2): h = 1/2, m = 3/2, m - d = 3/4, m + d = 9/4, target 2^-4/64 = 2^-10, one
+   coefficient on each side (nonzero). Forward, r = 0: B = exp(-3 pi/4) = 0.0948, panel error 6 h B (2/3)^(J+1)
+   = 0.1896 (2/3)^J <= 2^-10 first at J = 13 ((2/3)^13 = 0.005138 <= 0.005151 < (2/3)^12); dual, r = -3/2:
+   B = exp(-3 pi/4) (3/4)^-3/2 = 0.1460, 0.2919 (2/3)^J <= 2^-10 first at J = 15 ((2/3)^15 = 0.00228 <=
+   0.00335 < (2/3)^14 = 0.00514). Panels: (13 + 1) + (15 + 1) = 30.
+   Total: 1 + (1 + 2 - 1 + 1) + 4 + 1 + 2 + 2 + 30 = 43. A Lemma 6 step charged 0 (lane t5-slice4's survivor
+   161) gives 40; lanes/t5-repair1/gen_vectors.py computes the same 43 from the rule. */
+static void work_count(void)
+{
+    adf_char_t z1; acb_t s; ulong N, R, K, deg[128], work;
+    adf_char_init(z1); acb_init(s);
+    acb_set_ui(s, 2);
+    CHECK(adf_tate_cutoffs(&N, &R, &K, deg, &work, z1, s, 4, 68) == ADF_OK);
+    CHECK(N == 1 && R == 2 && K == 1 && deg[0] == 13 && deg[1] == 15);
+    CHECK(work == 43);
+    /* the same rule again at s = 2 + 2^-10 i: nothing in the count depends on the small imaginary part */
+    arb_set_ui(acb_imagref(s), 1); arb_mul_2exp_si(acb_imagref(s), acb_imagref(s), -10);
+    CHECK(adf_tate_cutoffs(&N, &R, &K, deg, &work, z1, s, 4, 68) == ADF_OK);
+    CHECK(N == 1 && R == 2 && K == 1 && work == 15 + deg[0] + deg[1]);
+    printf("work: zeta at s = 2, bits 4: 43 units (N = 1, R = 2, J = 13, 15)\n");
+    adf_char_clear(z1); acb_clear(s);
+}
+
 int main(void)
 {
     vector_statuses();
@@ -655,6 +690,7 @@ int main(void)
     theta();
     boundary();
     vectors();
+    work_count();
     debug();
     printf("tate: %lu checks\n", checks);
     flint_cleanup();

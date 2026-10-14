@@ -1,0 +1,35 @@
+test_tate_continue: forbidden path reached: acb_dirichlet_zeta
+test_tate_continue: forbidden path reached: acb_dirichlet_l
+test_tate_continue: forbidden path reached: acb_dirichlet_xi
+test_tate_continue: forbidden path reached: acb_dirichlet_hurwitz
+adelefeld: ADF_CHECK_INVARIANTS: tt_run: argument chi is not a canonical adf_char
+forbidden: 4 wrapped FLINT L/zeta/xi/Hurwitz calls abort
+work cap (continue): bits 2^21 and C = 1021 LIMIT in 3.57 s
+work cap (completed): bits 2^21 and C = 1021 LIMIT in 4.20 s
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 11.57 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+adelefeld: ADF_CHECK_INVARIANTS: tt_run: argument chi is not a canonical adf_char
+forbidden: 4 wrapped FLINT L/zeta/xi/Hurwitz calls abort
+work cap (continue): bits 2^21 and C = 1021 LIMIT in 3.57 s
+work cap (completed): bits 2^21 and C = 1021 LIMIT in 4.20 s
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 11.57 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+adelefeld: ADF_CHECK_INVARIANTS: tt_run: argument z is not a canonical output distinct from chi->s
+forbidden: 4 wrapped FLINT L/zeta/xi/Hurwitz calls abort
+work cap (continue): bits 2^21 and C = 1021 LIMIT in 3.57 s
+work cap (completed): bits 2^21 and C = 1021 LIMIT in 4.20 s
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 11.57 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+adelefeld: ADF_CHECK_INVARIANTS: tt_run: argument chi is not a canonical adf_char
+forbidden: 4 wrapped FLINT L/zeta/xi/Hurwitz calls abort
+work cap (continue): bits 2^21 and C = 1021 LIMIT in 3.57 s
+work cap (completed): bits 2^21 and C = 1021 LIMIT in 4.20 s
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 11.57 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+forbidden: 4 wrapped FLINT L/zeta/xi/Hurwitz calls abort
+work cap (continue): bits 2^21 and C = 1021 LIMIT in 3.57 s
+work cap (completed): bits 2^21 and C = 1021 LIMIT in 4.20 s
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 11.57 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+INV: 4 precondition aborts
+tate_continue: 25810 checks

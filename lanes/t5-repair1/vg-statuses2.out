@@ -1,0 +1,4 @@
+work cap (continue): bits 2^21 and C = 1021 LIMIT in 294.58 s
+work cap (completed): bits 2^21 and C = 1021 LIMIT in 414.59 s
+vectors: 0 OK calls (0 reference points inside, 0 trivial zeros), 0 balls, 0 pole statuses, 0 residues, 0 cutoff records, 0 side records in 0.25 s
+tate_continue: 762 checks

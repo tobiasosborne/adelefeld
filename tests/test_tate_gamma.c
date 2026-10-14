@@ -566,6 +566,11 @@ ADF_TEST(statuses_precision_and_aliases)
             ADF_CHECK(call(fns[f], ref, s, place(2), a, chi, 128) == ADF_OK);
             ADF_CHECK(fns[f](s, NULL, s, place(2), s, chi, 128) == ADF_OK);
             ADF_CHECK(acb_equal(s, ref));
+            /* lane t5-repair1: s now holds the struct of the function's own temporary, whose inactive mantissa
+               limbs FLINT leaves unwritten; arf_set copies them whole, so the byte comparison of call() on the
+               next failing call read them (valgrind: 18 errors from 6 contexts). A fresh s keeps every byte
+               defined. */
+            acb_clear(s); initialized_acb(s);
         }
         /* the precision cap: OK at the cap (cheap cardinal-phase case), LIMIT one above, decided first */
         ADF_CHECK(adf_char_set_conrey(chi, 4, 3) == ADF_OK);

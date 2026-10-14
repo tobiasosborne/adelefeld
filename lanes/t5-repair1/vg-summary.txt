@@ -1,0 +1,7 @@
+gamma exit 9 in 99 s
+values exit 0 in 868 s
+statuses exit 1 in 298 s
+widths exit 0 in 346 s
+jbound exit 0 in 5 s
+statuses2 (timing checks removed in a scratch copy) exit 0 in 758 s
+gamma2 (after the test fix) exit 0 in 149 s

@@ -1199,3 +1199,82 @@ ADF_TEST(debug_entry_check)
     }
 }
 #endif
+
+/* ---- lane t5-repair1: the derivative certificate of the real place ----
+
+   tests/ref/vectors/t5-repair1/gamma_bound.jsonl (lanes/t5-repair1/gen_lf_vectors.py, mpmath at 60 digits, no
+   FLINT Gamma): eight exact dyadic boxes at the real place, each at prec 24, 53 and 120. Every one of the 25 grid
+   points of a box (corners and edge midpoints included) must lie in the result: the boxes are those on which a
+   weakened derivative bound (Y16, docs/api-1f9.md:442-444 and :476-483; src/localfactor.c real_derivative_bound)
+   makes the midpoint enlargement too small, so that the intersection with the candidate cuts off true values
+   (lanes/t5-repair1/probe2.log): c = ceil(max Re(s/2 + n)) = 1 with the real part exact, where M1 = 1/A^2 + c!
+   needs its 1/A^2 (J(1) > 1 = c!, Y16 step 5); c = 5 at s = 9 + 6i, where M1 needs its c!; the representation
+   guard of Y16 step 7 (the previous ball) on the same boxes. The width records ask, in each component, that the
+   result lie in ym +/- (R Bsmall) up to 10^-5 relative and the final rounding to prec: the midpoint value enlarged
+   by R Bsmall is what Y16 step 7 intersects with the candidate, and on these boxes the candidate is wider, so a
+   looser bound (M0 with c! for (c - 1)!, M1 with 2/A for 1/A^2, Bsmall not halved) gives a wider result. */
+#define LF_VEC_T5R1 "tests/ref/vectors/t5-repair1/gamma_bound.jsonl"
+ADF_TEST(real_derivative_bound_boxes)
+{
+    jsonl_file *f;
+    jsonl_error_t err;
+    adf_place_t inf = adf_place_inf();
+    acb_t s, y, ref;
+    mag_t e;
+    size_t nrec, samples = 0, widths = 0;
+    ADF_CHECK(jsonl_open(LF_VEC_T5R1, &f, &err));
+    if (f == NULL) return;
+    acb_init(s);
+    acb_init(y);
+    acb_init(ref);
+    mag_init(e);
+    nrec = jsonl_count(f);
+    ADF_CHECK(nrec == 8);
+    for (size_t i = 0; i < nrec; i++)
+    {
+        const jsonl_value *r = jsonl_record(f, i), *pr = sub_field(r, "precs"), *sm = sub_field(r, "samples");
+        const jsonl_value *ym = sub_field(r, "ym");
+        int width = strcmp(str_field(r, "width"), "1") == 0;
+        double rb = strtod(str_field(r, "rb"), NULL);
+        double yc[2] = { strtod(at_str(ym, 0), NULL), strtod(at_str(ym, 1), NULL) };
+        double ya = (yc[0] < 0 ? -yc[0] : yc[0]) + (yc[1] < 0 ? -yc[1] : yc[1]);      /* >= |ym| */
+        row_input(s, sub_field(r, "s"), sub_field(r, "rad"));
+        for (size_t k = 0; k < jsonl_size(pr); k++)
+        {
+            jsonl_error_t e2;
+            slong prec = strtol(jsonl_int_text(jsonl_at(pr, k, &e2), &e2), NULL, 10);
+            ADF_CHECK_MSG(call(y, s, inf, prec) == ADF_OK, "box %zu prec %ld", i, (long) prec);
+            for (size_t j = 0; j < jsonl_size(sm); j++)
+            {
+                const jsonl_value *pt = jsonl_at(sm, j, &err), *v = sub_field(pt, "v");
+                ADF_CHECK(arb_set_str(acb_realref(ref), at_str(v, 0), 256) == 0);
+                ADF_CHECK(arb_set_str(acb_imagref(ref), at_str(v, 1), 256) == 0);
+                mag_set_d(e, 1e-50 * (ya > 1 ? 4 * ya : 4));
+                acb_add_error_mag(ref, e);
+                ADF_CHECK_MSG(acb_contains(y, ref), "box %zu prec %ld sample %zu outside", i, (long) prec, j);
+                samples++;
+            }
+            if (width)
+            {
+                double slack;
+                mag_set_ui_2exp_si(e, 1, 2 - prec);
+                slack = (ya > 1 ? ya : 1) * mag_get_d(e);      /* the final outward rounding to prec */
+                for (int c = 0; c < 2; c++)
+                {
+                    const arb_struct *yy = c ? acb_imagref(y) : acb_realref(y);
+                    double d = arf_get_d(arb_midref(yy), ARF_RND_NEAR) - yc[c];
+                    d = (d < 0 ? -d : d) + mag_get_d(arb_radref(yy));
+                    ADF_CHECK_MSG(d <= rb * (1 + 1e-5) + slack,
+                                  "box %zu prec %ld component %d: %.9g > R Bsmall %.9g", i, (long) prec, c, d, rb);
+                }
+                widths++;
+            }
+        }
+    }
+    ADF_CHECK(samples == 8 * 3 * 25 && widths == 4 * 3);
+    jsonl_close(f);
+    acb_clear(s);
+    acb_clear(y);
+    acb_clear(ref);
+    mag_clear(e);
+}

@@ -1,0 +1,78 @@
+mkdir -p lanes/t5-repair1/build-vg
+mkdir -p lanes/t5-repair1/build-vg/support
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/adele.c -o lanes/t5-repair1/build-vg/adele.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/cap.c -o lanes/t5-repair1/build-vg/cap.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/catalogue.c -o lanes/t5-repair1/build-vg/catalogue.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/char.c -o lanes/t5-repair1/build-vg/char.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/common.c -o lanes/t5-repair1/build-vg/common.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/dump.c -o lanes/t5-repair1/build-vg/dump.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/fball.c -o lanes/t5-repair1/build-vg/fball.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/fball_local.c -o lanes/t5-repair1/build-vg/fball_local.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/ffun.c -o lanes/t5-repair1/build-vg/ffun.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/gfunc.c -o lanes/t5-repair1/build-vg/gfunc.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/gfunc_log.c -o lanes/t5-repair1/build-vg/gfunc_log.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/idclass.c -o lanes/t5-repair1/build-vg/idclass.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/idele.c -o lanes/t5-repair1/build-vg/idele.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/idmap.c -o lanes/t5-repair1/build-vg/idmap.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/idpow.c -o lanes/t5-repair1/build-vg/idpow.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/inlines.c -o lanes/t5-repair1/build-vg/inlines.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/lball.c -o lanes/t5-repair1/build-vg/lball.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/lball_decomp.c -o lanes/t5-repair1/build-vg/lball_decomp.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/lfunc.c -o lanes/t5-repair1/build-vg/lfunc.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/linsolve.c -o lanes/t5-repair1/build-vg/linsolve.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/localfactor.c -o lanes/t5-repair1/build-vg/localfactor.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/lpow.c -o lanes/t5-repair1/build-vg/lpow.o
+In function ‘via_pow_si’,
+    inlined from ‘adf_lball_powunit’ at src/lpow.c:307:14:
+src/lpow.c:259:10: warning: ‘k’ may be used uninitialized [-Wmaybe-uninitialized]
+  259 |     st = adf_lball_pow_si(P, u, k);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/lpow.c: In function ‘adf_lball_powunit’:
+src/lpow.c:280:46: note: ‘k’ was declared here
+  280 |     slong A, B, beta, Nc = clamp(N), w0 = 1, k;
+      |                                              ^
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/lroot.c -o lanes/t5-repair1/build-vg/lroot.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/modctx.c -o lanes/t5-repair1/build-vg/modctx.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/place.c -o lanes/t5-repair1/build-vg/place.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/poisson.c -o lanes/t5-repair1/build-vg/poisson.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/psi.c -o lanes/t5-repair1/build-vg/psi.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/qclass.c -o lanes/t5-repair1/build-vg/qclass.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/qclass_arith.c -o lanes/t5-repair1/build-vg/qclass_arith.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/qclass_sets.c -o lanes/t5-repair1/build-vg/qclass_sets.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/rat.c -o lanes/t5-repair1/build-vg/rat.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/recon.c -o lanes/t5-repair1/build-vg/recon.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/resid.c -o lanes/t5-repair1/build-vg/resid.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/rfun.c -o lanes/t5-repair1/build-vg/rfun.o
+src/rfun.c: In function ‘adf_rfun_translate_rat’:
+src/rfun.c:339:29: warning: ‘rf_rat_ok’ reading 16 bytes from a region of size 8 [-Wstringop-overread]
+  339 |     if (!rf_input_ok(x) || !rf_rat_ok(q->q))
+      |                             ^~~~~~~~~~~~~~~
+src/rfun.c:339:29: note: referencing argument 1 of type ‘const fmpq[1]’
+src/rfun.c:144:1: note: in a call to function ‘rf_rat_ok’
+  144 | rf_rat_ok(const fmpq_t q)
+      | ^~~~~~~~~
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/rfunc.c -o lanes/t5-repair1/build-vg/rfunc.o
+src/rfun.c: In function ‘adf_rfun_dilate_rat’:
+src/rfun.c:424:29: warning: ‘rf_rat_ok’ reading 16 bytes from a region of size 8 [-Wstringop-overread]
+  424 |     if (!rf_input_ok(x) || !rf_rat_ok(h->q))
+      |                             ^~~~~~~~~~~~~~~
+src/rfun.c:424:29: note: referencing argument 1 of type ‘const fmpq[1]’
+src/rfun.c:144:1: note: in a call to function ‘rf_rat_ok’
+  144 | rf_rat_ok(const fmpq_t q)
+      | ^~~~~~~~~
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/roots.c -o lanes/t5-repair1/build-vg/roots.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/roots_real.c -o lanes/t5-repair1/build-vg/roots_real.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/sball.c -o lanes/t5-repair1/build-vg/sball.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/scaled.c -o lanes/t5-repair1/build-vg/scaled.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/status.c -o lanes/t5-repair1/build-vg/status.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/symbol.c -o lanes/t5-repair1/build-vg/symbol.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/tate.c -o lanes/t5-repair1/build-vg/tate.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/tensor.c -o lanes/t5-repair1/build-vg/tensor.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/text.c -o lanes/t5-repair1/build-vg/text.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/text_idele.c -o lanes/t5-repair1/build-vg/text_idele.o
+cc -Iinclude -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c src/ucoset.c -o lanes/t5-repair1/build-vg/ucoset.o
+cc -Iinclude -Itests -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c tests/support/golden.c -o lanes/t5-repair1/build-vg/support/golden.o
+cc -Iinclude -Itests -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP -c tests/support/jsonl.c -o lanes/t5-repair1/build-vg/support/jsonl.o
+ar rcs lanes/t5-repair1/build-vg/libadelefeld.a lanes/t5-repair1/build-vg/adele.o lanes/t5-repair1/build-vg/cap.o lanes/t5-repair1/build-vg/catalogue.o lanes/t5-repair1/build-vg/char.o lanes/t5-repair1/build-vg/common.o lanes/t5-repair1/build-vg/dump.o lanes/t5-repair1/build-vg/fball.o lanes/t5-repair1/build-vg/fball_local.o lanes/t5-repair1/build-vg/ffun.o lanes/t5-repair1/build-vg/gfunc.o lanes/t5-repair1/build-vg/gfunc_log.o lanes/t5-repair1/build-vg/idclass.o lanes/t5-repair1/build-vg/idele.o lanes/t5-repair1/build-vg/idmap.o lanes/t5-repair1/build-vg/idpow.o lanes/t5-repair1/build-vg/inlines.o lanes/t5-repair1/build-vg/lball.o lanes/t5-repair1/build-vg/lball_decomp.o lanes/t5-repair1/build-vg/lfunc.o lanes/t5-repair1/build-vg/linsolve.o lanes/t5-repair1/build-vg/localfactor.o lanes/t5-repair1/build-vg/lpow.o lanes/t5-repair1/build-vg/lroot.o lanes/t5-repair1/build-vg/modctx.o lanes/t5-repair1/build-vg/place.o lanes/t5-repair1/build-vg/poisson.o lanes/t5-repair1/build-vg/psi.o lanes/t5-repair1/build-vg/qclass.o lanes/t5-repair1/build-vg/qclass_arith.o lanes/t5-repair1/build-vg/qclass_sets.o lanes/t5-repair1/build-vg/rat.o lanes/t5-repair1/build-vg/recon.o lanes/t5-repair1/build-vg/resid.o lanes/t5-repair1/build-vg/rfun.o lanes/t5-repair1/build-vg/rfunc.o lanes/t5-repair1/build-vg/roots.o lanes/t5-repair1/build-vg/roots_real.o lanes/t5-repair1/build-vg/sball.o lanes/t5-repair1/build-vg/scaled.o lanes/t5-repair1/build-vg/status.o lanes/t5-repair1/build-vg/symbol.o lanes/t5-repair1/build-vg/tate.o lanes/t5-repair1/build-vg/tensor.o lanes/t5-repair1/build-vg/text.o lanes/t5-repair1/build-vg/text_idele.o lanes/t5-repair1/build-vg/ucoset.o
+cc -Iinclude -Itests -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP  tests/test_tate_continue.c lanes/t5-repair1/build-vg/support/golden.o lanes/t5-repair1/build-vg/support/jsonl.o lanes/t5-repair1/build-vg/libadelefeld.a -lflint -lgmp -lm -o lanes/t5-repair1/build-vg/test_tate_continue
+cc -Iinclude -Itests -std=c11 -O1 -g -Wall -Wextra -Wpedantic -Werror -Wno-error=maybe-uninitialized -Wno-error=stringop-overread -MMD -MP  tests/test_tate_gamma.c lanes/t5-repair1/build-vg/support/golden.o lanes/t5-repair1/build-vg/support/jsonl.o lanes/t5-repair1/build-vg/libadelefeld.a -lflint -lgmp -lm -o lanes/t5-repair1/build-vg/test_tate_gamma

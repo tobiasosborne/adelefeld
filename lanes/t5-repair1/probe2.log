@@ -1,0 +1,89 @@
+original: 3267 calls, 3024 OK, 0 with a missed sample
+mutant 217: 60 missed boxes, 3 wider, 957 narrower, 0 other status, 227 other bits, 0 above prec
+    miss (0, '10', '2 0 0 0.5 p24')
+    miss (1, '10', '2 0 0 0.5 p53')
+    miss (2, '10', '2 0 0 0.5 p120')
+    miss (3, '10', '2 0 0 0.125 p24')
+    miss (4, '10', '2 0 0 0.125 p53')
+    miss (5, '10', '2 0 0 0.125 p120')
+mutant 221: 0 missed boxes, 382 wider, 0 narrower, 0 other status, 67 other bits, 0 above prec
+    wider (3183, '2.67', '2 6 4 4 p24')
+    wider (3184, '2.67', '2 6 4 4 p53')
+    wider (3185, '2.67', '2 6 4 4 p120')
+    wider (1344, '2.41', '-2 0.125 0.000976562 0.000976562 p24')
+    wider (1345, '2.41', '-2 0.125 0.000976562 0.000976562 p53')
+    wider (1346, '2.41', '-2 0.125 0.000976562 0.000976562 p120')
+mutant 222d: 243 missed boxes, 0 wider, 1091 narrower, 0 other status, 463 other bits, 0 above prec
+    miss (141, '20', '0 0.125 0 0.015625 p24')
+    miss (142, '20', '0 0.125 0 0.015625 p53')
+    miss (143, '20', '0 0.125 0 0.015625 p120')
+    miss (144, '20', '0 0.125 0 0.000976562 p24')
+    miss (145, '20', '0 0.125 0 0.000976562 p53')
+    miss (146, '20', '0 0.125 0 0.000976562 p120')
+mutant 223: 0 missed boxes, 674 wider, 4 narrower, 0 other status, 45 other bits, 0 above prec
+    wider (67, '1.67', '2 3 0 0.015625 p53')
+    wider (68, '1.67', '2 3 0 0.015625 p120')
+    wider (3, '1.5', '2 0 0 0.125 p24')
+    wider (4, '1.5', '2 0 0 0.125 p53')
+    wider (5, '1.5', '2 0 0 0.125 p120')
+    wider (6, '1.5', '2 0 0 0.015625 p24')
+mutant 225d: 903 missed boxes, 0 wider, 1731 narrower, 0 other status, 869 other bits, 0 above prec
+    miss (0, '10', '2 0 0 0.5 p24')
+    miss (1, '10', '2 0 0 0.5 p53')
+    miss (2, '10', '2 0 0 0.5 p120')
+    miss (3, '10', '2 0 0 0.125 p24')
+    miss (4, '10', '2 0 0 0.125 p53')
+    miss (5, '10', '2 0 0 0.125 p120')
+mutant 237: 441 missed boxes, 241 wider, 795 narrower, 0 other status, 588 other bits, 0 above prec
+    miss (423, '5', '-4 3 0 0.125 p24')
+    miss (424, '5', '-4 3 0 0.125 p53')
+    miss (425, '5', '-4 3 0 0.125 p120')
+    miss (426, '10', '-4 3 0 0.015625 p24')
+    miss (427, '10', '-4 3 0 0.015625 p53')
+    miss (428, '10', '-4 3 0 0.015625 p120')
+mutant 238: 117 missed boxes, 264 wider, 489 narrower, 0 other status, 346 other bits, 0 above prec
+    miss (141, '20', '0 0.125 0 0.015625 p24')
+    miss (142, '20', '0 0.125 0 0.015625 p53')
+    miss (143, '20', '0 0.125 0 0.015625 p120')
+    miss (144, '20', '0 0.125 0 0.000976562 p24')
+    miss (145, '20', '0 0.125 0 0.000976562 p53')
+    miss (146, '20', '0 0.125 0 0.000976562 p120')
+mutant 244: 123 missed boxes, 0 wider, 861 narrower, 0 other status, 319 other bits, 0 above prec
+    miss (141, '20', '0 0.125 0 0.015625 p24')
+    miss (142, '20', '0 0.125 0 0.015625 p53')
+    miss (143, '20', '0 0.125 0 0.015625 p120')
+    miss (144, '20', '0 0.125 0 0.000976562 p24')
+    miss (145, '20', '0 0.125 0 0.000976562 p53')
+    miss (146, '20', '0 0.125 0 0.000976562 p120')
+mutant 247: 0 missed boxes, 0 wider, 297 narrower, 0 other status, 35 other bits, 0 above prec
+mutant 248: 1491 missed boxes, 0 wider, 2214 narrower, 0 other status, 1243 other bits, 0 above prec
+    miss (0, '20', '2 0 0 0.5 p24')
+    miss (1, '20', '2 0 0 0.5 p53')
+    miss (2, '20', '2 0 0 0.5 p120')
+    miss (3, '20', '2 0 0 0.125 p24')
+    miss (4, '20', '2 0 0 0.125 p53')
+    miss (5, '20', '2 0 0 0.125 p120')
+mutant 250: 0 missed boxes, 0 wider, 0 narrower, 0 other status, 0 other bits, 0 above prec
+mutant 252d: 0 missed boxes, 0 wider, 702 narrower, 0 other status, 173 other bits, 0 above prec
+mutant 253d: 1146 missed boxes, 0 wider, 1963 narrower, 0 other status, 1053 other bits, 0 above prec
+    miss (0, '20', '2 0 0 0.5 p24')
+    miss (1, '20', '2 0 0 0.5 p53')
+    miss (2, '20', '2 0 0 0.5 p120')
+    miss (3, '20', '2 0 0 0.125 p24')
+    miss (4, '20', '2 0 0 0.125 p53')
+    miss (5, '20', '2 0 0 0.125 p120')
+mutant 255: 0 missed boxes, 686 wider, 2 narrower, 0 other status, 116 other bits, 0 above prec
+    wider (19, '2.14', '2 0.125 0 0.125 p53')
+    wider (20, '2.14', '2 0.125 0 0.125 p120')
+    wider (30, '2.14', '2 0.5 0 0.5 p24')
+    wider (32, '2.14', '2 0.5 0 0.5 p120')
+    wider (64, '2.08', '2 3 0 0.125 p53')
+    wider (3, '2', '2 0 0 0.125 p24')
+mutant 344: 0 missed boxes, 0 wider, 48 narrower, 0 other status, 27 other bits, 0 above prec
+mutant 367: 0 missed boxes, 28 wider, 471 narrower, 0 other status, 2054 other bits, 2054 above prec
+    wider (3, '2.14', '2 0 0 0.125 p24')
+    wider (4, '2.14', '2 0 0 0.125 p53')
+    wider (5, '2.14', '2 0 0 0.125 p120')
+    wider (6, '2.14', '2 0 0 0.015625 p24')
+    wider (7, '2.14', '2 0 0 0.015625 p53')
+    wider (8, '2.14', '2 0 0 0.015625 p120')
