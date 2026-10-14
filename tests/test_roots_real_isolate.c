@@ -1303,3 +1303,93 @@ ADF_TEST(count_guided_regions)
     }
     fmpz_poly_clear(f); adf_rootlist_clear(L);
 }
+
+#ifdef ADF_CHECK_INVARIANTS
+int adf_roots_real_isolate_cost(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count,
+                               slong * exact_evaluations);
+
+/* A count, not a time bound: near-root cancellation must not send every high-precision
+   QIR sign and secant back to homogeneous integer Horner (design section 10). */
+ADF_TEST(high_precision_filter_exact_evaluation_count)
+{
+    fmpz_poly_t f;
+    arb_ptr out = _arb_vec_init(50);
+    slong m = -1, values = -1, i;
+    fmpz_poly_init(f);
+    fmpz_poly_set_coeff_si(f, 50, 1);
+    fmpz_poly_set_coeff_si(f, 0, -2);
+    ADF_CHECK(adf_roots_real_isolate_cost(out, &m, f, 16384, 2, &values) == ADF_OK);
+    printf("   X^50 - 2 at 16384: %ld exact refinement evaluations\n", (long) values);
+    ADF_CHECK(m == 2);
+    ADF_CHECK_MSG(values <= 16, "%ld exact evaluations, expected at most 16", (long) values);
+    ADF_CHECK(balls_true(f, out, m, 16384, "X^50 - 2 filter cost"));
+    for (i = 0; i < m; i++)
+        ADF_CHECK(arb_rel_accuracy_bits(out + i) >= 16384);
+    fmpz_poly_clear(f);
+    _arb_vec_clear(out, 50);
+}
+#endif
+
+/* Twelve planted dyadic roots force more than four pending nodes. Dropping the
+   stack reallocation is a heap overflow under SAN=1 (lane r-cost1's focused red probe). */
+ADF_TEST(pending_stack_growth_with_planted_roots)
+{
+    static const slong numerators[] = { 32, 36, 80, 84, 104, 108, 116, 118, 122, 123, 125, 126 };
+    adf_rootlist_t L;
+    fmpz_poly_t f;
+    fmpz_t a, b;
+    fmpq_t r;
+    slong i;
+    adf_rootlist_init(L); fmpz_poly_init(f); fmpz_poly_one(f);
+    fmpz_init_set_ui(a, 2); fmpz_init(b); fmpq_init(r);
+    for (i = 0; i < 12; i++)
+    {
+        fmpz_set_si(b, numerators[i]); poly_mul_lin(f, a, b);
+    }
+    ADF_CHECK(adf_roots_real(L, f, 53) == ADF_OK);
+    ADF_CHECK(L->n == 12);
+    ADF_CHECK(list_true(L, f, 53, "pending stack growth"));
+    for (i = 0; i < L->n; i++)
+    {
+        fmpq_set_si(r, numerators[i], 2);
+        ADF_CHECK(arb_contains_fmpq(L->ball + i, r));
+    }
+    fmpq_clear(r); fmpz_clear(a); fmpz_clear(b);
+    fmpz_poly_clear(f); adf_rootlist_clear(L);
+}
+
+#ifdef ADF_CHECK_INVARIANTS
+int adf_roots_real_test_bound(slong * K, const fmpz_poly_t h);
+int adf_roots_real_test_store_bound(slong * K, const fmpz_poly_t h, slong hi);
+int adf_roots_real_test_product(slong * result, slong x, slong y);
+
+/* R1: for 2^t X +/- 1 the strict least power-of-two bound is 2^(1-t).
+   S-D18: word-sized exponent products must be refused before any power is formed. */
+ADF_TEST(minimum_bounds_and_exponent_overflow)
+{
+    static const slong exponents[] = { 0, 1, 10, 500 };
+    fmpz_poly_t h;
+    fmpz_t a;
+    slong K, product = 123, i, sign;
+    fmpz_poly_init(h); fmpz_init(a);
+    for (i = 0; i < 4; i++)
+        for (sign = -1; sign <= 1; sign += 2)
+        {
+            fmpz_one(a); fmpz_mul_2exp(a, a, (ulong) exponents[i]);
+            fmpz_poly_set_coeff_fmpz(h, 1, a); fmpz_poly_set_coeff_si(h, 0, sign);
+            K = 123;
+            ADF_CHECK(adf_roots_real_test_bound(&K, h));
+            ADF_CHECK(K == 1 - exponents[i]);
+        }
+    ADF_CHECK(adf_roots_real_test_product(&product, 0, WORD_MAX) && product == 0);
+    ADF_CHECK(adf_roots_real_test_product(&product, 1, WORD_MAX) && product == WORD_MAX);
+    ADF_CHECK(adf_roots_real_test_product(&product, WORD_MAX, 1) && product == WORD_MAX);
+    ADF_CHECK(adf_roots_real_test_product(&product, WORD_MAX / 2, 2) && product == WORD_MAX - 1);
+    ADF_CHECK(!adf_roots_real_test_product(&product, WORD_MAX, 2));
+    ADF_CHECK(!adf_roots_real_test_product(&product, WORD_MAX / 2 + 1, 2));
+    fmpz_poly_zero(h); fmpz_poly_set_coeff_si(h, 0, -1); fmpz_poly_set_coeff_si(h, 2, 1);
+    ADF_CHECK(!adf_roots_real_test_store_bound(&K, h, WORD_MAX));
+    ADF_CHECK(!adf_roots_real_test_store_bound(&K, h, WORD_MAX / 2 + 1));
+    fmpz_clear(a); fmpz_poly_clear(h);
+}
+#endif

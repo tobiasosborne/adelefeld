@@ -1,0 +1,28 @@
+--- a/src/roots.c
++++ b/src/roots.c
+@@ -1719,10 +1719,10 @@
+         fmpq_canonicalise(center);
+     }
+     translate = d >= 5 && !fmpq_is_zero(center) &&
+-        fmpz_bits(fmpq_numref(center)) + fmpz_bits(fmpq_denref(center)) <= 16;
++        fmpz_bits(fmpq_numref(center)) + fmpz_bits(fmpq_denref(center)) <= 512;
+     if (!fmpz_is_zero(g->coeffs))
+         scale = ((slong) fmpz_bits(g->coeffs) - (slong) fmpz_bits(g->coeffs + d)) / d;
+-    if (!translate && scale >= -32)
++    if (!translate && scale >= -32 && scale <= 32)
+     {
+         fmpq_clear(center);
+         return fmpz_poly_num_real_roots(g);
+@@ -1744,7 +1744,11 @@
+             scale = 0;
+     }
+     _fmpz_poly_scale_2exp(h->coeffs, d + 1, scale);
+-    count = fmpz_poly_num_real_roots(h);
++    /* docs/design/real-roots.md:366-384 (R9): equivalence for either scaling direction. */
++    if (FLINT_ABS(fmpz_poly_max_bits(h)) < FLINT_ABS(fmpz_poly_max_bits(g)))
++        count = fmpz_poly_num_real_roots(h);
++    else
++        count = fmpz_poly_num_real_roots(g);
+     fmpz_poly_clear(h); fmpz_clear(power); fmpq_clear(center);
+     return count;
+ }

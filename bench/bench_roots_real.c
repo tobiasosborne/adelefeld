@@ -17,6 +17,8 @@
                      midpoint, the correction, the number of isolated roots. Stops at the first precision
                      with all roots isolated and accurate to prec, or above 2^22 bits.
              count   fmpz_poly_num_real_roots(g)
+             countscale count after the dyadic scale heuristic of R9 (either sign)
+             countmean count after translation by the exact mean, then that scale
              eval    one exact sign of g at the dyadic point m 2^-k nearest to the largest root bound, k = prec
                      (the unit of the lower bound), by the homogeneous Horner rule of src/roots.c:1262 to 1298
              adf     adf_roots_real(L, g, prec)
@@ -27,6 +29,12 @@
              small   prod_(i = 1..d) (X - i)                               degree d, small roots (e ignored)
              thirds  (3X - 3 2^e - 1)(3X - 3 2^e - 2)                      roots 2^e + 1/3, 2^e + 2/3
              sqrt2   X^2 - 2                                               e and d ignored (high prec)
+             xn2     X^d - 2                                               e ignored (high prec)
+             random  dense degree d, e-bit coefficients, seed (1, 2), leading coefficient 3
+             scaled  prod_(i=1..d) (X - i 2^e)
+             tiny    prod_(i=1..d) (2^e X - i)
+             cluster prod_(i=1..d) (3 2^e X - (2^e + i))
+             wilkinson prod_(i=1..d) (X - i) + 1                            e ignored
              x5      X^5 - X - 1                                           e and d ignored (high prec)
              mignotte X^d - 2 (2^e X - 1)^2                                two roots very close to 2^-e
              positive X^d + 2 (2^e X - 1)^2                                no real roots for even d
@@ -36,6 +44,8 @@
    Lane r-slice1 added the last four families, the modes below and --run:
              eval2   the exact signs at the 2 n end points of the balls that adf_roots_real returns, by the rule
                      above: the unit of the lower bound of docs/PERF.md (the certificate needs these signs)
+             cand_eval2 the same endpoint workload on exact candidates, skipping the final certificate
+                     during setup; a reference when the candidates are accepted unchanged (R5)
    bench_roots_real --run   the table of lanes/r-slice1/result.md: mode adf and mode eval2 on a fixed list of
                      inputs, the median of 5 runs of each (so that `make -C bench run` runs this file too). */
 
@@ -47,6 +57,7 @@
 #include <math.h>
 #include <flint/flint.h>
 #include <flint/fmpz.h>
+#include <flint/fmpq.h>
 #include <flint/fmpz_poly.h>
 #include <flint/arb.h>
 #include <flint/acb.h>
@@ -114,10 +125,41 @@ family(fmpz_poly_t g, const char * name, ulong e, slong d)
         fmpz_one(b); fmpz_mul_2exp(b, b, e); fmpz_mul_ui(b, b, 3); fmpz_add_ui(b, b, 1); mul_linear(g, a, b);
         fmpz_add_ui(b, b, 1); mul_linear(g, a, b);
     }
-    else if (!strcmp(name, "sqrt2"))
+    else if (!strcmp(name, "random"))
+    {
+        flint_rand_t state;
+        flint_randinit(state);
+        flint_randseed(state, 1, 2);
+        fmpz_poly_randtest(g, state, d + 1, (flint_bitcnt_t) e);
+        fmpz_poly_set_coeff_si(g, d, 3);
+        flint_randclear(state);
+    }
+    else if (!strcmp(name, "scaled") || !strcmp(name, "tiny") || !strcmp(name, "cluster"))
+    {
+        if (strcmp(name, "scaled"))
+            fmpz_mul_2exp(a, a, e);
+        if (!strcmp(name, "cluster"))
+            fmpz_mul_ui(a, a, 3);
+        for (i = 1; i <= d; i++)
+        {
+            fmpz_set_ui(b, (ulong) i);
+            if (!strcmp(name, "scaled"))
+                fmpz_mul_2exp(b, b, e);
+            else if (!strcmp(name, "cluster"))
+            {
+                fmpz_t offset;
+                fmpz_init_set_ui(offset, 1);
+                fmpz_mul_2exp(offset, offset, e);
+                fmpz_add(b, b, offset);
+                fmpz_clear(offset);
+            }
+            mul_linear(g, a, b);
+        }
+    }
+    else if (!strcmp(name, "sqrt2") || !strcmp(name, "xn2"))
     {
         fmpz_poly_zero(g);                      /* X^2 - 2 */
-        fmpz_poly_set_coeff_si(g, 2, 1);
+        fmpz_poly_set_coeff_si(g, !strcmp(name, "sqrt2") ? 2 : d, 1);
         fmpz_poly_set_coeff_si(g, 0, -2);
     }
     else if (!strcmp(name, "x5"))
@@ -167,7 +209,7 @@ family(fmpz_poly_t g, const char * name, ulong e, slong d)
         }
         fmpz_poly_clear(t);
     }
-    else if (!strcmp(name, "deg") || !strcmp(name, "small"))
+    else if (!strcmp(name, "deg") || !strcmp(name, "small") || !strcmp(name, "wilkinson"))
     {
         for (i = 1; i <= d; i++)
         {
@@ -177,6 +219,8 @@ family(fmpz_poly_t g, const char * name, ulong e, slong d)
             fmpz_add_ui(b, b, (ulong) i);
             mul_linear(g, a, b);
         }
+        if (!strcmp(name, "wilkinson"))
+            fmpz_add_ui(g->coeffs, g->coeffs, 1);
     }
     else
         ok = 0;
@@ -420,6 +464,57 @@ run_eval2(const fmpz_poly_t g, slong prec, slong * signs)
     return (t1 - t0) / (double) rep;
 }
 
+int adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count);
+
+/* R5, docs/design/real-roots.md:210-222: exact candidates pass the unchanged certificate.
+   The measured families are squarefree. Count is independently recomputed for this setup. */
+static double
+run_candidate_eval2(const fmpz_poly_t g, slong prec, slong * signs)
+{
+    fmpz_poly_t h;
+    arb_ptr balls = _arb_vec_init(fmpz_poly_degree(g));
+    fmpz_t a, b, e;
+    slong n, i, rep = 0, count;
+    double t0, t1, result = 0;
+    int st, sum = 0;
+    fmpz_poly_init(h);
+    fmpz_poly_primitive_part(h, g);
+    if (fmpz_sgn(h->coeffs + fmpz_poly_degree(h)) < 0)
+        fmpz_poly_neg(h, h);
+    count = fmpz_poly_num_real_roots(h);
+    fmpz_init(a); fmpz_init(b); fmpz_init(e);
+    st = adf_roots_real_isolate_counted(balls, &n, h, prec, count);
+    if (st != ADF_OK)
+    {
+        fprintf(stderr, "candidate status %d\n", st);
+        flint_abort();
+    }
+    *signs = 0;
+    if (n > 0)
+    {
+        t0 = now();
+        do
+        {
+            for (i = 0; i < n; i++)
+            {
+                arb_get_interval_fmpz_2exp(a, b, e, balls + i);
+                sum += pair_signs(h, a, b, e);
+                if (rep == 0)
+                    *signs += fmpz_equal(a, b) ? 1 : 2;
+            }
+            rep++;
+            t1 = now();
+        }
+        while (t1 - t0 < 0.2);
+        result = (t1 - t0) / (double) rep;
+    }
+    (void) sum;
+    fmpz_clear(a); fmpz_clear(b); fmpz_clear(e);
+    _arb_vec_clear(balls, fmpz_poly_degree(g));
+    fmpz_poly_clear(h);
+    return result;
+}
+
 static int
 cmp_double(const void * x, const void * y)
 {
@@ -482,7 +577,8 @@ main(int argc, char ** argv)
 #endif
     if (argc != 6)
     {
-        fprintf(stderr, "usage: %s flint|trace|count|eval|eval2|adf FAMILY e d prec   or   %s --run\n", argv[0],
+        fprintf(stderr, "usage: %s flint|trace|count|countscale|countmean|eval|eval2|cand_eval2|adf FAMILY e d prec"
+                "   or   %s --run\n", argv[0],
                 argv[0]);
         return 2;
     }
@@ -518,10 +614,39 @@ main(int argc, char ** argv)
     }
     else if (!strcmp(argv[1], "trace"))
         trace(g, prec);
-    else if (!strcmp(argv[1], "count"))
+    else if (!strcmp(argv[1], "count") || !strcmp(argv[1], "countscale") ||
+             !strcmp(argv[1], "countmean"))
     {
         slong n;
         t0 = now();
+        if (strcmp(argv[1], "count") && deg > 0)
+        {
+            slong scale;
+            /* R9, docs/design/real-roots.md:366-384: affine bijections and
+               positive content removal preserve the distinct real-root count. */
+            if (!strcmp(argv[1], "countmean"))
+            {
+                fmpq_t center;
+                fmpz_t power;
+                fmpq_init(center); fmpz_init_set_ui(power, 1);
+                fmpz_neg(fmpq_numref(center), g->coeffs + deg - 1);
+                fmpz_mul_ui(fmpq_denref(center), g->coeffs + deg, (ulong) deg);
+                fmpq_canonicalise(center);
+                for (i = deg - 1; i >= 0; i--)
+                {
+                    fmpz_mul(power, power, fmpq_denref(center));
+                    fmpz_mul(g->coeffs + i, g->coeffs + i, power);
+                }
+                _fmpz_poly_taylor_shift(g->coeffs, fmpq_numref(center), deg + 1);
+                fmpz_poly_primitive_part(g, g);
+                fmpz_clear(power); fmpq_clear(center);
+            }
+            scale = fmpz_is_zero(g->coeffs) ? 0 :
+                ((slong) fmpz_bits(g->coeffs) - (slong) fmpz_bits(g->coeffs + deg)) / deg;
+            _fmpz_poly_scale_2exp(g->coeffs, deg + 1, scale);
+            printf("equivalent scale %ld coefficient bits %ld\n", (long) scale,
+                   (long) FLINT_ABS(fmpz_poly_max_bits(g)));
+        }
         n = fmpz_poly_num_real_roots(g);
         t1 = now();
         printf("count: %.6f s, n = %ld\n", t1 - t0, (long) n);
@@ -547,7 +672,7 @@ main(int argc, char ** argv)
                (t1 - t0) / (double) rep, (long) rep, (long) fmpz_bits(m), s);
         fmpz_clear(m);
     }
-    else if (!strcmp(argv[1], "adf") || !strcmp(argv[1], "eval2"))
+    else if (!strcmp(argv[1], "adf") || !strcmp(argv[1], "eval2") || !strcmp(argv[1], "cand_eval2"))
     {
 #ifndef NO_ADF
         slong bits = 0, balls = 0, signs = 0;
@@ -560,7 +685,8 @@ main(int argc, char ** argv)
         }
         else
         {
-            t1 = run_eval2(g, prec, &signs);
+            t1 = !strcmp(argv[1], "cand_eval2") ? run_candidate_eval2(g, prec, &signs) :
+                run_eval2(g, prec, &signs);
             printf("eval2: %.9f s for the %ld exact signs at the end points of the balls\n", t1, (long) signs);
         }
         (void) i;

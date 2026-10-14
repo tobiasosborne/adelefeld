@@ -1,0 +1,143 @@
+mutate: src/roots_real.c: 842 mutants
+mutate: 842 mutants, 60 of them run (--limit 60, --seed 20261015)
+mutate: every mutant is built and run by the --make command, which sets SAN itself
+mutate: the baseline passes (24.0 s)
+
+SURVIVED src/roots_real.c:500:13 drop_call: 'fmpz_poly_shift_right(right, right, 1);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -498,5 +498,5 @@
+               items_push(it, c, k - 1, 1);
+               fmpz_sub_ui(c, c, 1);
+  -            fmpz_poly_shift_right(right, right, 1);
+  +            
+               _fmpz_poly_div_root(left->coeffs, left->coeffs, len, one);
+               _fmpz_poly_set_length(left, len - 1);
+
+
+TIMED OUT src/roots_real.c:603:17 zero_one: '1' -> '0'
+  the tests did not finish in 170 s
+
+NOT COMPILED src/roots_real.c:564:5 drop_call: 'fmpz_init_set_si(e, k);' -> '' (the statement is removed)
+  src/roots_real.c:557:29: error: unused parameter ‘k’ [-Werror=unused-parameter]
+
+SURVIVED src/roots_real.c:289:30 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -287,5 +287,5 @@
+           fmpz_add(rhs, rhs, t);
+       }
+  -    r = fmpz_cmp(lhs, rhs) > 0;
+  +    r = fmpz_cmp(lhs, rhs) > 1;
+       fmpz_clear(lhs);
+       fmpz_clear(rhs);
+
+
+SURVIVED src/roots_real.c:63:16 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -61,5 +61,5 @@
+   {
+       if (x != 0 && y > WORD_MAX / x)
+  -        return 0;
+  +        return 1;
+       *r = x * y;
+       return 1;
+
+
+SURVIVED src/roots_real.c:977:9 drop_call: 'fmpz_zero(c);' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -975,5 +975,5 @@
+       if (fmpz_is_zero(g->coeffs + 0))
+       {
+  -        fmpz_zero(c);
+  +        
+           items_push(&it, c, 0, 1);
+           fmpz_poly_shift_right(h, h, 1);
+
+
+TIMED OUT src/roots_real.c:880:5 drop_call: '_fmpz_poly_scale_2exp(f.q->coeffs, fmpz_poly_length(f.q), *k);' -> '' (the statement is removed)
+  the tests did not finish in 170 s
+
+TIMED OUT src/roots_real.c:338:5 drop_call: '_fmpz_poly_taylor_shift(tmp, one, n);' -> '' (the statement is removed)
+  the tests did not finish in 170 s
+
+TIMED OUT src/roots_real.c:136:40 op: '+' -> '-'
+  the tests did not finish in 170 s
+
+SURVIVED src/roots_real.c:208:57 cmp: '>' -> '>='
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -206,5 +206,5 @@
+       depth = e < 0 && g->scale > WORD_MAX + e ? WORD_MAX : g->scale - e;
+       depth = FLINT_MAX(depth, jj);
+  -    prec = g->coefficient_bits > WORD_MAX - 64 || depth > WORD_MAX - 64 - g->coefficient_bits ?
+  +    prec = g->coefficient_bits > WORD_MAX - 64 || depth >= WORD_MAX - 64 - g->coefficient_bits ?
+           WORD_MAX : depth + g->coefficient_bits + 64;
+       if (fmpz_poly_degree(g->q) < 8)
+
+
+TIMED OUT src/roots_real.c:666:21 zero_one: '1' -> '0'
+  the tests did not finish in 170 s
+
+SURVIVED src/roots_real.c:523:21 drop_assign: 'st = flint_realloc(st, na * sizeof(dnode));' -> '' (the statement is removed)
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -521,5 +521,5 @@
+                   {
+                       slong j, na = 2 * alloc;
+  -                    st = flint_realloc(st, na * sizeof(dnode));
+  +                    
+                       for (j = alloc; j < na; j++)
+                       {
+
+
+SURVIVED src/roots_real.c:276:17 zero_one: '1' -> '0'
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -274,5 +274,5 @@
+   
+       if (!mul_checked_nonneg(&s, a, n))
+  -        return -1;
+  +        return -0;
+       fmpz_init(lhs);
+       fmpz_init(rhs);
+
+
+SURVIVED src/roots_real.c:318:30 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -316,5 +316,5 @@
+               lo = mid;
+       }
+  -    if (bound_holds(h, hi) < 0)
+  +    if (bound_holds(h, hi) < 1)
+           return 0;                               /* the product hi n is formed by the caller: it must fit */
+       *K = hi;
+
+
+SURVIVED src/roots_real.c:130:17 zero_one: '0' -> '1'
+  the tests pass with the mutant
+  --- a/src/roots_real.c
+  +++ b/src/roots_real.c
+  @@ -128,5 +128,5 @@
+       {
+           t = -e;
+  -        if (d > 0 && (ulong) d > (ulong) WORD_MAX / (ulong) t)
+  +        if (d > 1 && (ulong) d > (ulong) WORD_MAX / (ulong) t)
+               flint_abort();                      /* t d bits: no polynomial of that size can exist */
+           fmpz_set(r, g->coeffs + d);
+
+
+TIMED OUT src/roots_real.c:307:15 op: '-' -> '+'
+  the tests did not finish in 170 s
+mutate: stopped by signal 15: 2 running command(s) killed, scratch removed

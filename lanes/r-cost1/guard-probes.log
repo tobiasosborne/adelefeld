@@ -1,0 +1,11 @@
+bound exit 1 X - 1 bound: returned 1, K 2, expected 1
+WORD_MAX times 2: returned 0, expected refusal
+degree-two shift overflow: returned -1, expected -1
+1 failed checks
+overflow exit 1 X - 1 bound: returned 1, K 1, expected 1
+WORD_MAX times 2: returned 1, expected refusal
+1 failed checks
+bound_status exit 1 X - 1 bound: returned 1, K 1, expected 1
+WORD_MAX times 2: returned 0, expected refusal
+degree-two shift overflow: returned 0, expected -1
+1 failed checks

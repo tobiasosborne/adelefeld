@@ -1,0 +1,7 @@
+family wilkinson e 0 degree 50 prec 20000 coefficient bits 218
+section count 0.010496
+detail tree 0.008163 shift 0.001748 secant 0.466070 sign 0.003351 exact 0.000000 values 0 qir 738 signs 492 fallback 0
+section isolate_refine 1.157222
+section certificate 15.477677
+section verifier 7.528973 result 1
+adf: 16.645619 s, status 0, balls 50, largest mantissa 34822 bits

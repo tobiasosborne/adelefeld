@@ -1,0 +1,7 @@
+family random e 10000 degree 50 prec 2 coefficient bits 9965
+section count 20.135522
+detail tree 1.593338 shift 0.010459 secant 0.000873 sign 0.013383 exact 0.013141 values 31 qir 21 signs 124 fallback 29
+section isolate_refine 1.619963
+section certificate 0.019296
+section verifier 23.194535 result 1
+adf: 21.776284 s, status 0, balls 12, largest mantissa 4 bits

@@ -1,0 +1,1324 @@
++             wilkinson prod_(i=1..d) (X - i) + 1                            e ignored
+              x5      X^5 - X - 1                                           e and d ignored (high prec)
+              mignotte X^d - 2 (2^e X - 1)^2                                two roots very close to 2^-e
+              positive X^d + 2 (2^e X - 1)^2                                no real roots for even d
+@@ -36,6 +44,8 @@
+    Lane r-slice1 added the last four families, the modes below and --run:
+              eval2   the exact signs at the 2 n end points of the balls that adf_roots_real returns, by the rule
+                      above: the unit of the lower bound of docs/PERF.md (the certificate needs these signs)
++             cand_eval2 the same endpoint workload on exact candidates, skipping the final certificate
++                     during setup; a reference when the candidates are accepted unchanged (R5)
+    bench_roots_real --run   the table of lanes/r-slice1/result.md: mode adf and mode eval2 on a fixed list of
+                      inputs, the median of 5 runs of each (so that `make -C bench run` runs this file too). */
+ 
+@@ -47,6 +57,7 @@
+ #include <math.h>
+ #include <flint/flint.h>
+ #include <flint/fmpz.h>
++#include <flint/fmpq.h>
+ #include <flint/fmpz_poly.h>
+ #include <flint/arb.h>
+ #include <flint/acb.h>
+@@ -114,10 +125,41 @@
+         fmpz_one(b); fmpz_mul_2exp(b, b, e); fmpz_mul_ui(b, b, 3); fmpz_add_ui(b, b, 1); mul_linear(g, a, b);
+         fmpz_add_ui(b, b, 1); mul_linear(g, a, b);
+     }
+-    else if (!strcmp(name, "sqrt2"))
++    else if (!strcmp(name, "random"))
++    {
++        flint_rand_t state;
++        flint_randinit(state);
++        flint_randseed(state, 1, 2);
++        fmpz_poly_randtest(g, state, d + 1, (flint_bitcnt_t) e);
++        fmpz_poly_set_coeff_si(g, d, 3);
++        flint_randclear(state);
++    }
++    else if (!strcmp(name, "scaled") || !strcmp(name, "tiny") || !strcmp(name, "cluster"))
++    {
++        if (strcmp(name, "scaled"))
++            fmpz_mul_2exp(a, a, e);
++        if (!strcmp(name, "cluster"))
++            fmpz_mul_ui(a, a, 3);
++        for (i = 1; i <= d; i++)
++        {
++            fmpz_set_ui(b, (ulong) i);
++            if (!strcmp(name, "scaled"))
++                fmpz_mul_2exp(b, b, e);
++            else if (!strcmp(name, "cluster"))
++            {
++                fmpz_t offset;
++                fmpz_init_set_ui(offset, 1);
++                fmpz_mul_2exp(offset, offset, e);
++                fmpz_add(b, b, offset);
++                fmpz_clear(offset);
++            }
++            mul_linear(g, a, b);
++        }
++    }
++    else if (!strcmp(name, "sqrt2") || !strcmp(name, "xn2"))
+     {
+         fmpz_poly_zero(g);                      /* X^2 - 2 */
+-        fmpz_poly_set_coeff_si(g, 2, 1);
++        fmpz_poly_set_coeff_si(g, !strcmp(name, "sqrt2") ? 2 : d, 1);
+         fmpz_poly_set_coeff_si(g, 0, -2);
+     }
+     else if (!strcmp(name, "x5"))
+@@ -167,7 +209,7 @@
+         }
+         fmpz_poly_clear(t);
+     }
+-    else if (!strcmp(name, "deg") || !strcmp(name, "small"))
++    else if (!strcmp(name, "deg") || !strcmp(name, "small") || !strcmp(name, "wilkinson"))
+     {
+         for (i = 1; i <= d; i++)
+         {
+@@ -177,6 +219,8 @@
+             fmpz_add_ui(b, b, (ulong) i);
+             mul_linear(g, a, b);
+         }
++        if (!strcmp(name, "wilkinson"))
++            fmpz_add_ui(g->coeffs, g->coeffs, 1);
+     }
+     else
+         ok = 0;
+@@ -420,6 +464,57 @@
+     return (t1 - t0) / (double) rep;
+ }
+ 
++int adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count);
++
++/* R5, docs/design/real-roots.md:210-222: exact candidates pass the unchanged certificate.
++   The measured families are squarefree. Count is independently recomputed for this setup. */
++static double
++run_candidate_eval2(const fmpz_poly_t g, slong prec, slong * signs)
++{
++    fmpz_poly_t h;
++    arb_ptr balls = _arb_vec_init(fmpz_poly_degree(g));
++    fmpz_t a, b, e;
++    slong n, i, rep = 0, count;
++    double t0, t1, result = 0;
++    int st, sum = 0;
++    fmpz_poly_init(h);
++    fmpz_poly_primitive_part(h, g);
++    if (fmpz_sgn(h->coeffs + fmpz_poly_degree(h)) < 0)
++        fmpz_poly_neg(h, h);
++    count = fmpz_poly_num_real_roots(h);
++    fmpz_init(a); fmpz_init(b); fmpz_init(e);
++    st = adf_roots_real_isolate_counted(balls, &n, h, prec, count);
++    if (st != ADF_OK)
++    {
++        fprintf(stderr, "candidate status %d\n", st);
++        flint_abort();
++    }
++    *signs = 0;
++    if (n > 0)
++    {
++        t0 = now();
++        do
++        {
++            for (i = 0; i < n; i++)
++            {
++                arb_get_interval_fmpz_2exp(a, b, e, balls + i);
++                sum += pair_signs(h, a, b, e);
++                if (rep == 0)
++                    *signs += fmpz_equal(a, b) ? 1 : 2;
++            }
++            rep++;
++            t1 = now();
++        }
++        while (t1 - t0 < 0.2);
++        result = (t1 - t0) / (double) rep;
++    }
++    (void) sum;
++    fmpz_clear(a); fmpz_clear(b); fmpz_clear(e);
++    _arb_vec_clear(balls, fmpz_poly_degree(g));
++    fmpz_poly_clear(h);
++    return result;
++}
++
+ static int
+ cmp_double(const void * x, const void * y)
+ {
+@@ -482,7 +577,8 @@
+ #endif
+     if (argc != 6)
+     {
+-        fprintf(stderr, "usage: %s flint|trace|count|eval|eval2|adf FAMILY e d prec   or   %s --run\n", argv[0],
++        fprintf(stderr, "usage: %s flint|trace|count|countscale|countmean|eval|eval2|cand_eval2|adf FAMILY e d prec"
++                "   or   %s --run\n", argv[0],
+                 argv[0]);
+         return 2;
+     }
+@@ -518,10 +614,39 @@
+     }
+     else if (!strcmp(argv[1], "trace"))
+         trace(g, prec);
+-    else if (!strcmp(argv[1], "count"))
++    else if (!strcmp(argv[1], "count") || !strcmp(argv[1], "countscale") ||
++             !strcmp(argv[1], "countmean"))
+     {
+         slong n;
+         t0 = now();
++        if (strcmp(argv[1], "count") && deg > 0)
++        {
++            slong scale;
++            /* R9, docs/design/real-roots.md:366-384: affine bijections and
++               positive content removal preserve the distinct real-root count. */
++            if (!strcmp(argv[1], "countmean"))
++            {
++                fmpq_t center;
++                fmpz_t power;
++                fmpq_init(center); fmpz_init_set_ui(power, 1);
++                fmpz_neg(fmpq_numref(center), g->coeffs + deg - 1);
++                fmpz_mul_ui(fmpq_denref(center), g->coeffs + deg, (ulong) deg);
++                fmpq_canonicalise(center);
++                for (i = deg - 1; i >= 0; i--)
++                {
++                    fmpz_mul(power, power, fmpq_denref(center));
++                    fmpz_mul(g->coeffs + i, g->coeffs + i, power);
++                }
++                _fmpz_poly_taylor_shift(g->coeffs, fmpq_numref(center), deg + 1);
++                fmpz_poly_primitive_part(g, g);
++                fmpz_clear(power); fmpq_clear(center);
++            }
++            scale = fmpz_is_zero(g->coeffs) ? 0 :
++                ((slong) fmpz_bits(g->coeffs) - (slong) fmpz_bits(g->coeffs + deg)) / deg;
++            _fmpz_poly_scale_2exp(g->coeffs, deg + 1, scale);
++            printf("equivalent scale %ld coefficient bits %ld\n", (long) scale,
++                   (long) FLINT_ABS(fmpz_poly_max_bits(g)));
++        }
+         n = fmpz_poly_num_real_roots(g);
+         t1 = now();
+         printf("count: %.6f s, n = %ld\n", t1 - t0, (long) n);
+@@ -547,7 +672,7 @@
+                (t1 - t0) / (double) rep, (long) rep, (long) fmpz_bits(m), s);
+         fmpz_clear(m);
+     }
+-    else if (!strcmp(argv[1], "adf") || !strcmp(argv[1], "eval2"))
++    else if (!strcmp(argv[1], "adf") || !strcmp(argv[1], "eval2") || !strcmp(argv[1], "cand_eval2"))
+     {
+ #ifndef NO_ADF
+         slong bits = 0, balls = 0, signs = 0;
+@@ -560,7 +685,8 @@
+         }
+         else
+         {
+-            t1 = run_eval2(g, prec, &signs);
++            t1 = !strcmp(argv[1], "cand_eval2") ? run_candidate_eval2(g, prec, &signs) :
++                run_eval2(g, prec, &signs);
+             printf("eval2: %.9f s for the %ld exact signs at the end points of the balls\n", t1, (long) signs);
+         }
+         (void) i;
+diff --git a/docs/design/real-roots.md b/docs/design/real-roots.md
+index 40d6024a9e101c19b17872096cd1fc0bf6aaecc0..478eaff91aa13f8592ea4185f32cc4e8e10e7a23
+--- a/docs/design/real-roots.md
++++ b/docs/design/real-roots.md
+@@ -388,3 +388,79 @@
+ 
+ Inherited pending sources remain Sturm's theorem, (IVT), and the eventual quadratic convergence analysis of Eqir.
+ The bijection, contraction and local-coordinate arguments above need no additional source.
++
++## 10. Remaining count and refinement costs (lane r-cost1)
++
++The lane measured Algorithm RR before changing the refinement. QIR already doubles j after a success.
++The fixed local polynomial is shifted once per initial cell. Neither a linear number of QIR successes nor
++a repeated Taylor shift explains the high-precision cost on the measured inputs.
++
++For X^50 - 2 at prec 16384, the invariant-build counter saw 98 exact refinement evaluations in 34 QIR
++attempts. At prec 262144, a scratch profile saw 130 exact values in 42 attempts. The latter call spent
++25.729195 s in isolation/refinement, 13.582454 s in the unchanged certificate, and 0.000007 s in the count.
++The one-time coordinate shifts cost 0.000511 s. These are single profile runs, not benchmark medians.
++
++The old secant filter worked at j + 64 bits. Its endpoint values lose accuracy as the old cell shrinks.
++The old sign filter used 64 bits at every refinement depth. Both therefore fell back to integer Horner
++near roots. Integer Horner forms degree times the endpoint precision bits, even though the QIR step
++count grows slowly on these inputs.
++
++The change keeps the same coordinates, grid, steps and stopping rule. Write depth = scale - e and
++tau = bits of the largest coefficient of the fixed local polynomial. The secant filter uses
++max(depth, j) + tau + 64 bits. A sign filter first tries 64 bits; if uncertain it tries depth + tau + 64.
++All additions used to choose this precision saturate at WORD_MAX. An uncertain sign or grid integer
++still falls back to exactly the same integer calculation. tau is computed once for each local polynomial.
++It covers cancellation caused by the local shift; using depth + 64 alone left 64 exact evaluations
++on the regression input. This is a precision heuristic, not a new worst-case complexity theorem.
++
++Equivalence proof, step by step:
++
++1. The polynomial and affine coordinate are unchanged. R8 gives q(X) = C g((origin + X) 2^scale), C > 0.
++   All points evaluated have e <= scale, as before.
++2. Rounded input conversion and the ball Horner operations enclose the exact value at every precision.
++   Sources: refs/src/flint-3.0.1/arb.rst:155-165, :639-650, and :735-737.
++3. A strictly positive or negative enclosing ball has the sign of that exact value. If neither sign is
++   certified, the original exact integer sign is used. A true zero can never get a nonzero certified sign.
++4. The secant ratio is formed from enclosing balls of the same exact endpoint values. Its denominator
++   is the sum of their absolute values. The endpoints of a QIR cell have opposite nonzero signs.
++   Ball floor encloses the exact floor, and a unique enclosing integer must be that floor.
++   Sources: refs/src/flint-3.0.1/arb.rst:531-553. If uniqueness fails, the original exact ratio is used.
++5. Thus every sign and grid integer agrees with the previous exact algorithm. Induction over the steps
++   gives the same visited cells and returned balls. R4, R5, nesting and the dyadic-root argument still apply.
++6. The certificate remains the independent exact endpoint test in roots.c. It reads no filter result or
++   counter. The complete verifier still recounts from the original normalised input (S-D17).
++
++The regression bounds exact refinement evaluations by 16 at degree 50 and prec 16384. It failed with 98
++before the change and passed with 0 afterwards. It also checks the balls with the independent rational
++Sturm oracle. The public degree-50 test checks five precisions and four nested pairs, including 8192/8193.
++A scratch comparison with the saved pre-change code found 0 differences in 36 runs and 1232 balls.
++
++Count experiments confirm that R9 is useful in both directions. For roots i 2^150, i=1..50, positive
++scaling before FLINT's count took a median 0.068015 s in five runs. Translating the rational cluster
++prod (3 2^190 X - (2^190 + i)), i=1..50, by its exact mean and then scaling took median 0.043665 s.
++The mean has numerator-plus-denominator size 385 bits, beyond the current 16-bit preprocessing cutoff.
++These benchmark modes include transformation and content-removal time. They do not change production
++counting. Its helper real_count is in roots.c, outside this lane's original ownership.
++
++The count bijection requires no new equivalence: R9:366-384 already proves rational translation,
++dyadic scaling of either sign, and positive content removal. The inverse maps take every transformed
++real root back to exactly one real root of g, including a root at zero.
++
++DESIGN-FINDING: Descartes gives an independent upper bound U on real roots by adding the sign variations
++of g(X) and g(-X), and one if g(0) = 0 (squarefree g). The source for the positive-root bound is
++refs/src/sagraloff-mehlhorn/tex/arxivfinal.tex:547-553. If m certified disjoint balls have m = U, P3.8(1)
++gives m <= N <= U = m, hence N = m and P3.8(2) proves completeness. No stored count is needed in this
++argument. P3.13(5), however, names a recomputed count from P3.9(1) or Sturm; it does not name this bound.
++The lane leaves that verifier unchanged and records this as a design proposal.
++
++HEADER-FINDING: the unchanged certificate alone exceeded 10 s at prec 262144 in the profile above.
++Wilkinson 50 plus 1 at prec 20000 spent 36.908765 s in isolation/refinement and 22.281253 s in the
++unchanged certificate. The requested 10 s and 5 s total targets therefore cannot follow merely from
++precision doubling or better refinement filters on that run. The header's precision limit is unchanged.
++
++The bounded mutation run also exposed test gaps outside the filter change. In invariant builds, hidden
++test entries now check minimum root bounds and word-sized exponent products. The final bound-storage
++check is extracted without changing its logic, so a degree-two polynomial and hi = WORD_MAX reach its
++overflow refusal without allocating huge coefficients. A twelve-root fixture forces the pending-node
++stack past its initial allocation of four nodes. Removing its reallocation produced an address-sanitizer
++heap overflow in the focused red check. The ordinary and invariant suites accept the unmutated fixture.
+diff --git a/lanes/r-cost1/certificate_probe.c b/lanes/r-cost1/certificate_probe.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..1b0149680adcf990fefe1016b206af88faa50d1b
+--- /dev/null
++++ b/lanes/r-cost1/certificate_probe.c
+@@ -0,0 +1,42 @@
++/* Only the unchanged certificate, with independently generated root candidates.
++   arb_root_ui: refs/src/flint-3.0.1/arb.rst:979-991 (enclosure of the n-th root).
++   Acceptance still uses roots.c's exact endpoint tests, solvers P3.8. */
++#define _POSIX_C_SOURCE 200809L
++#include <adelefeld.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <time.h>
++
++int adf_roots_real_finish(adf_rootlist_t L, const fmpz_poly_t f, slong count,
++                          arb_srcptr in, slong m, slong prec);
++
++static double now(void)
++{
++    struct timespec t;
++    clock_gettime(CLOCK_MONOTONIC_RAW, &t);
++    return t.tv_sec + 1e-9 * t.tv_nsec;
++}
++
++int main(int argc, char ** argv)
++{
++    slong prec = argc > 1 ? atol(argv[1]) : 2097152;
++    fmpz_poly_t f;
++    adf_rootlist_t L;
++    arb_ptr b = _arb_vec_init(2);
++    double t;
++    int st;
++    fmpz_poly_init(f); adf_rootlist_init(L);
++    fmpz_poly_set_coeff_si(f, 50, 1); fmpz_poly_set_coeff_si(f, 0, -2);
++    arb_set_ui(b + 1, 2);
++    arb_root_ui(b + 1, b + 1, 50, prec + 64);
++    arb_neg(b, b + 1);
++    printf("candidate bits %ld accuracy %ld\n", (long) arb_bits(b),
++           (long) arb_rel_accuracy_bits(b));
++    fflush(stdout);
++    t = now();
++    st = adf_roots_real_finish(L, f, 2, b, 2, prec);
++    printf("certificate %.6f s status %d roots %ld\n", now() - t, st, (long) L->n);
++    _arb_vec_clear(b, 2); adf_rootlist_clear(L); fmpz_poly_clear(f);
++    flint_cleanup();
++    return st != ADF_OK;
++}
+diff --git a/lanes/r-cost1/compare_candidates.c b/lanes/r-cost1/compare_candidates.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..7e40439250b9f572615cfeb3bffeb0ae5e2ec71f
+--- /dev/null
++++ b/lanes/r-cost1/compare_candidates.c
+@@ -0,0 +1,46 @@
++/* Exact comparison with the saved pre-change isolation/refinement code. */
++#define main benchmark_main
++#include "../../bench/bench_roots_real.c"
++#undef main
++
++int adf_roots_real_isolate_counted(arb_ptr b, slong * m, const fmpz_poly_t g, slong prec, slong count);
++int adf_roots_real_isolate_counted_before(arb_ptr b, slong * m, const fmpz_poly_t g,
++                                        slong prec, slong count);
++
++int main(void)
++{
++    static const struct { const char * name; ulong e; slong d, count; } cases[] = {
++        { "xn2", 0, 50, 2 }, { "wilkinson", 0, 50, 50 }, { "cluster", 190, 50, 50 },
++        { "scaled", 150, 50, 50 }, { "tiny", 150, 50, 50 }, { "mignotte", 100, 20, 4 },
++        { "thirds", 3000, 2, 2 }, { "deg", 190, 50, 50 }, { "small", 0, 50, 50 }
++    };
++    static const slong precisions[] = { 2, 53, 1000, 4096 };
++    fmpz_poly_t g;
++    arb_ptr before = _arb_vec_init(50), after = _arb_vec_init(50);
++    slong i, j, k, n_before, n_after, runs = 0, balls = 0, differences = 0;
++    int st_before, st_after;
++    fmpz_poly_init(g);
++    for (i = 0; i < (slong) (sizeof(cases) / sizeof(cases[0])); i++)
++    {
++        family(g, cases[i].name, cases[i].e, cases[i].d);
++        for (j = 0; j < 4; j++)
++        {
++            st_before = adf_roots_real_isolate_counted_before(before, &n_before, g,
++                                                              precisions[j], cases[i].count);
++            st_after = adf_roots_real_isolate_counted(after, &n_after, g,
++                                                       precisions[j], cases[i].count);
++            runs++;
++            if (st_before != st_after || st_before != ADF_OK || n_before != n_after)
++                differences++;
++            else
++                for (k = 0; k < n_after; k++)
++                {
++                    balls++;
++                    differences += !arb_equal(before + k, after + k);
++                }
++        }
++    }
++    printf("%ld runs, %ld balls, %ld differences\n", (long) runs, (long) balls, (long) differences);
++    fmpz_poly_clear(g); _arb_vec_clear(before, 50); _arb_vec_clear(after, 50); flint_cleanup();
++    return differences != 0;
++}
+diff --git a/lanes/r-cost1/count-proposal.patch b/lanes/r-cost1/count-proposal.patch
+index 478360c3a6ae26698a7ebfce5f55c7f43f35b980..4c2aa06499145182879daa13ca8757f35c4da1ed
+--- a/lanes/r-cost1/count-proposal.patch
++++ b/lanes/r-cost1/count-proposal.patch
+@@ -18,7 +18,7 @@
+      }
+      _fmpz_poly_scale_2exp(h->coeffs, d + 1, scale);
+ -    count = fmpz_poly_num_real_roots(h);
+-+    /* R9:366-384 proves equivalence for either scaling direction. */
+++    /* docs/design/real-roots.md:366-384 (R9): equivalence for either scaling direction. */
+ +    if (FLINT_ABS(fmpz_poly_max_bits(h)) < FLINT_ABS(fmpz_poly_max_bits(g)))
+ +        count = fmpz_poly_num_real_roots(h);
+ +    else
+diff --git a/lanes/r-cost1/exact_high.c b/lanes/r-cost1/exact_high.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..c44cb3b8de303be29e46924ad10f83617dad2d24
+--- /dev/null
++++ b/lanes/r-cost1/exact_high.c
+@@ -0,0 +1,108 @@
++/* Independent exact signs: power for X^50 - 2, balanced factor product for Wilkinson + 1.
++   fmpz_pow_ui: refs/src/flint-3.0.1/fmpz.rst:913-917.
++   The identities are algebraic: clear the positive dyadic denominator from each expression.
++   Count two: evenness and strict monotonicity of x^50 on x > 0, with signs at 1 and 2.
++   Count fifty: exact opposite signs at i +/- 1/4, fifty disjoint intervals, degree fifty.
++   The existence inference uses the same pending IVT source as solvers P3.8. */
++#define _POSIX_C_SOURCE 200809L
++#include <adelefeld.h>
++#include <flint/fmpz_vec.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++int adf_roots_real_isolate_counted(arb_ptr b, slong * m, const fmpz_poly_t g, slong prec, slong count);
++
++static int sign_value(const fmpz_t m, slong e, int wilkinson)
++{
++    fmpz_t den, power, value;
++    fmpz * factors;
++    slong i, n, j;
++    int sign;
++    if (e >= 0 || e == WORD_MIN || (ulong) (-e) > ((ulong) WORD_MAX - 1) / 50)
++        flint_abort();
++    fmpz_init_set_ui(den, 1); fmpz_init_set_ui(power, 1); fmpz_init(value);
++    fmpz_mul_2exp(den, den, (ulong) (-e));
++    fmpz_mul_2exp(power, power, 50 * (ulong) (-e) + (wilkinson ? 0 : 1));
++    if (!wilkinson)
++    {
++        fmpz_pow_ui(value, m, 50);
++        fmpz_sub(value, value, power);
++    }
++    else
++    {
++        factors = _fmpz_vec_init(50);
++        for (i = 0; i < 50; i++)
++        {
++            fmpz_mul_ui(value, den, (ulong) i + 1);
++            fmpz_sub(factors + i, m, value);
++        }
++        for (n = 50; n > 1; n = (n + 1) / 2)
++        {
++            for (j = 0; j < n / 2; j++)
++                fmpz_mul(factors + j, factors + 2 * j, factors + 2 * j + 1);
++            if (n % 2)
++                fmpz_set(factors + n / 2, factors + n - 1);
++        }
++        fmpz_add(value, factors, power);
++        _fmpz_vec_clear(factors, 50);
++    }
++    sign = fmpz_sgn(value);
++    fmpz_clear(den); fmpz_clear(power); fmpz_clear(value);
++    return sign;
++}
++
++int main(int argc, char ** argv)
++{
++    int wilkinson = argc > 1 && !strcmp(argv[1], "wilkinson"), st, failures = 0;
++    slong prec = argc > 2 ? atol(argv[2]) : 2097152, n = wilkinson ? 50 : 2, m, i, exponent;
++    arb_ptr balls = _arb_vec_init(n);
++    fmpz_poly_t f, linear;
++    fmpz_t a, b, e, width, midpoint, bound;
++    fmpz_poly_init(f); fmpz_poly_init(linear);
++    fmpz_init(a); fmpz_init(b); fmpz_init(e);
++    fmpz_init(width); fmpz_init(midpoint); fmpz_init(bound);
++    if (wilkinson)
++    {
++        fmpz_poly_one(f);
++        for (i = 1; i <= 50; i++)
++        {
++            fmpz_poly_set_coeff_si(linear, 1, 1); fmpz_poly_set_coeff_si(linear, 0, -i);
++            fmpz_poly_mul(f, f, linear);
++            fmpz_set_si(a, 4 * i - 1); fmpz_set_si(b, 4 * i + 1);
++            failures += sign_value(a, -2, 1) * sign_value(b, -2, 1) >= 0;
++        }
++        fmpz_add_ui(f->coeffs, f->coeffs, 1);
++    }
++    else
++    {
++        fmpz_poly_set_coeff_si(f, 50, 1); fmpz_poly_set_coeff_si(f, 0, -2);
++    }
++    st = adf_roots_real_isolate_counted(balls, &m, f, prec, n);
++    failures += st != ADF_OK || m != n;
++    for (i = 0; st == ADF_OK && i < m; i++)
++    {
++        arb_get_interval_fmpz_2exp(a, b, e, balls + i); exponent = fmpz_get_si(e);
++        failures += fmpz_cmp(a, b) >= 0 || sign_value(a, exponent, wilkinson) *
++                    sign_value(b, exponent, wilkinson) >= 0;
++        fmpz_sub(width, b, a); fmpz_mul_2exp(width, width, (ulong) prec);
++        fmpz_add(midpoint, a, b); fmpz_abs(midpoint, midpoint);
++        failures += fmpz_cmp(width, midpoint) > 0;
++        if (wilkinson)
++        {
++            fmpz_one(bound); fmpz_mul_2exp(bound, bound, (ulong) (-exponent));
++            fmpz_mul_ui(midpoint, bound, (ulong) (4 * (i + 1) - 1));
++            fmpz_mul_2exp(width, a, 2); failures += fmpz_cmp(width, midpoint) < 0;
++            fmpz_mul_ui(midpoint, bound, (ulong) (4 * (i + 1) + 1));
++            fmpz_mul_2exp(width, b, 2); failures += fmpz_cmp(width, midpoint) > 0;
++        }
++        else
++            failures += i == 0 ? fmpz_sgn(b) >= 0 : fmpz_sgn(a) <= 0;
++    }
++    printf("%s prec %ld status %d roots %ld independent-sign failures %d\n",
++           wilkinson ? "wilkinson+1" : "X^50-2", (long) prec, st, (long) m, failures);
++    fmpz_clear(a); fmpz_clear(b); fmpz_clear(e); fmpz_clear(width);
++    fmpz_clear(midpoint); fmpz_clear(bound);
++    _arb_vec_clear(balls, n); fmpz_poly_clear(f); fmpz_poly_clear(linear); flint_cleanup();
++    return failures != 0;
++}
+diff --git a/lanes/r-cost1/guard_probe.c b/lanes/r-cost1/guard_probe.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..98679e88114e4b69eccd3c4906066bd321f4c4e0
+--- /dev/null
++++ b/lanes/r-cost1/guard_probe.c
+@@ -0,0 +1,28 @@
++/* Focused red checks for the sampled overflow and minimum-bound survivors. */
++#include "roots_guard_probe.c"
++#include <stdio.h>
++
++int main(void)
++{
++    fmpz_poly_t h;
++    slong K, product = 123;
++    int failures = 0, ok;
++    fmpz_poly_init(h);
++    fmpz_poly_set_coeff_si(h, 1, 1); fmpz_poly_set_coeff_si(h, 0, -1);
++    ok = root_bound_exp(&K, h);
++    failures += !ok || K != 1;
++    printf("X - 1 bound: returned %d, K %ld, expected 1\n", ok, (long) K);
++    ok = mul_checked_nonneg(&product, WORD_MAX, 2);
++    failures += ok != 0;
++    printf("WORD_MAX times 2: returned %d, expected refusal\n", ok);
++    if (ok == 0)
++    {
++        fmpz_poly_set_coeff_si(h, 1, 0); fmpz_poly_set_coeff_si(h, 2, 1);
++        ok = bound_holds(h, WORD_MAX);
++        failures += ok != -1;
++        printf("degree-two shift overflow: returned %d, expected -1\n", ok);
++    }
++    fmpz_poly_clear(h); flint_cleanup();
++    printf("%d failed checks\n", failures);
++    return failures != 0;
++}
+diff --git a/lanes/r-cost1/guard_probes.py b/lanes/r-cost1/guard_probes.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..dc50fcd5abf9b8ffa7654dbcdf94e21eab4ef217
+--- /dev/null
++++ b/lanes/r-cost1/guard_probes.py
+@@ -0,0 +1,25 @@
++"""Run two sampled survivors against focused arithmetic checks, within the mutation window."""
++import subprocess
++from pathlib import Path
++
++lane = Path("lanes/r-cost1")
++source = Path("src/roots_real.c").read_text()
++changes = [("bound", "r = fmpz_cmp(lhs, rhs) > 0;", "r = fmpz_cmp(lhs, rhs) > 1;"),
++           ("overflow", "if (x != 0 && y > WORD_MAX / x)\n        return 0;",
++            "if (x != 0 && y > WORD_MAX / x)\n        return 1;"),
++           ("bound_status", "if (!mul_checked_nonneg(&s, a, n))\n        return -1;",
++            "if (!mul_checked_nonneg(&s, a, n))\n        return 0;")]
++for name, old, new in changes:
++    assert source.count(old) == 1
++    (lane / "roots_guard_probe.c").write_text(source.replace(old, new))
++    command = ["timeout", "170", "taskset", "-c", "2,3", "cc", "-std=c11", "-O2", "-Iinclude",
++               str(lane / "guard_probe.c"), "-lflint", "-lgmp", "-lm", "-o",
++               str(lane / "build-mutcache/guard-probe")]
++    result = subprocess.run(command, capture_output=True, text=True)
++    if result.returncode:
++        raise RuntimeError(result.stderr)
++    result = subprocess.run(["timeout", "170", "taskset", "-c", "2,3",
++                             str(lane / "build-mutcache/guard-probe")], capture_output=True, text=True)
++    (lane / f"guard-{name}-red.log").write_text(result.stdout + result.stderr)
++    print(name, "exit", result.returncode, result.stdout.strip(), flush=True)
++    assert result.returncode == 1
+diff --git a/lanes/r-cost1/measure.py b/lanes/r-cost1/measure.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d2a555e5c3cf037e1332629d7c213c37c296d104
+--- /dev/null
++++ b/lanes/r-cost1/measure.py
+@@ -0,0 +1,21 @@
++"""One bounded batch of the real-root benchmark, pinned to CPU 2."""
++import json
++import re
++import subprocess
++import sys
++import time
++
++binary, output, mode, family, e, degree, prec, repetitions = sys.argv[1:]
++for repetition in range(int(repetitions)):
++    command = ["timeout", "170", "taskset", "-c", "2", binary, mode, family, e, degree, prec]
++    start = time.time()
++    result = subprocess.run(command, capture_output=True, text=True)
++    row = dict(command=command, repetition=repetition, exit=result.returncode,
++               stdout=result.stdout, stderr=result.stderr, start=start, end=time.time())
++    with open(output, "a") as stream:
++        stream.write(json.dumps(row) + "\n")
++    seconds = re.findall(r"(?:adf|count|eval2): ([0-9.]+)", result.stdout)
++    print(f"{mode} {family} {e} {degree} {prec} run {repetition}: exit {result.returncode}, {seconds}",
++          flush=True)
++    if result.returncode:
++        break
+diff --git a/lanes/r-cost1/measurements.md b/lanes/r-cost1/measurements.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..17f7249af92c80d4148fc0fc362c1e63343e5909
+--- /dev/null
++++ b/lanes/r-cost1/measurements.md
+@@ -0,0 +1,37 @@
++# Measurements before changes
++
++All benchmark commands use `timeout 170 taskset -c 2`. Times are wall seconds.
++The table is incremental. Completed medians use five serial runs on CPU 2.
++Raw runs are in before.jsonl. The first random run overlapped a profiling run.
++The early sqrt2, xn2 at 16384, and first xn2 at 65536 overlapped the last cluster runs.
++Those rows are excluded from final comparisons and will be repeated serially.
++
++| Input | prec | Before median s | Runs |
++| --- | ---: | ---: | ---: |
++| dense random, degree 50, 10000 bits, seed (1,2) | 2 | 18.647433 | 5 |
++| prod (X - 2^190 - i), i=1..50 | 2 | 0.070947 | 5 |
++| prod (X - i), i=1..50 | 2 | 0.014045 | 5 |
++| prod (X - i 2^150), i=1..50 | 2 | 2.962556 | 5 |
++| prod (2^150 X - i), i=1..50 | 2 | 0.110470 | 5 |
++
++One preliminary scratch profile of X^50 - 2 at 16384 bits (overlapped; no timing comparison):
++34 QIR attempts, 98 exact value evaluations, 76 sign calls, 52 exact sign fallbacks.
++The refinement already doubles the QIR exponent after a success.
++This count suggests measuring filter cancellation before changing the refinement sequence.
++
++Serial scratch profiles (one run each; times are not five-run medians):
++
++| Input | prec | Count s | Isolation/refinement s | Certificate s | Complete verifier s |
++| --- | ---: | ---: | ---: | ---: | ---: |
++| cluster, e=190, d=50 | 2 | 11.885964 | 0.151242 | 0.014082 | 13.916625 |
++| random, bits=10000, d=50 | 2 | 20.135522 | 1.619963 | 0.019296 | 23.194535 |
++| X^50 - 2 | 262144 | 0.000007 | 25.729195 | 13.582454 | 6.749715 |
++
++X^50 - 2 at 262144 used 42 QIR attempts, 130 exact values, and 68 exact sign fallbacks.
++The coefficient translation cost 0.000511 s; it is done once per initial cell.
++The endpoint certificate already exceeds 10 s here. It is unchanged by this lane.
++
++Red regression: `timeout 170 taskset -c 3 lanes/r-cost1/build-red/test_roots_real_isolate`.
++15 tests, 19244 checks, 1 failed check. The new test saw 98 exact evaluations against a bound of 16.
++The exact ball oracle passed. The shell command also printed the log tail, so the shell's final status
++was 0; the test program's own summary records the assertion failure.
+diff --git a/lanes/r-cost1/oracle_cases.c b/lanes/r-cost1/oracle_cases.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..a3755facf25e41c87e23fb87b627779181eb13c0
+--- /dev/null
++++ b/lanes/r-cost1/oracle_cases.c
+@@ -0,0 +1,32 @@
++/* Run benchmark cases through the test's independent rational Sturm oracle. */
++#define ADF_TEST_NO_MAIN
++#include "../../tests/test_roots_real_isolate.c"
++#define main benchmark_main
++#define now benchmark_now
++#define sign_at benchmark_sign_at
++#define family benchmark_family
++#include "../../bench/bench_roots_real.c"
++#undef sign_at
++#undef family
++#undef now
++#undef main
++
++int main(int argc, char ** argv)
++{
++    fmpz_poly_t f;
++    adf_rootlist_t L;
++    slong prec;
++    int st, truth;
++    if (argc != 5)
++        return 2;
++    prec = atol(argv[4]);
++    fmpz_poly_init(f); adf_rootlist_init(L);
++    if (!benchmark_family(f, argv[1], strtoul(argv[2], NULL, 10), atol(argv[3])))
++        return 2;
++    st = adf_roots_real(L, f, prec);
++    truth = st == ADF_OK && balls_true(L->g, L->ball, L->n, prec, argv[1]);
++    printf("%s prec %ld status %d roots %ld oracle %d checks %lu failures %lu\n",
++           argv[1], (long) prec, st, (long) L->n, truth, adf_test_checks, adf_test_failures);
++    adf_rootlist_clear(L); fmpz_poly_clear(f); flint_cleanup();
++    return !truth || adf_test_failures != 0;
++}
+diff --git a/lanes/r-cost1/paired.py b/lanes/r-cost1/paired.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..796525664b19ea93b39af45dc64259d68daae805
+--- /dev/null
++++ b/lanes/r-cost1/paired.py
+@@ -0,0 +1,23 @@
++"""Five interleaved before/after calls on one CPU, bounded individually."""
++import json
++import re
++import subprocess
++import sys
++import time
++from pathlib import Path
++
++family, e, degree, prec = sys.argv[1:5]
++repetitions = int(sys.argv[5]) if len(sys.argv) > 5 else 5
++lane = Path("lanes/r-cost1")
++for repetition in range(repetitions):
++    for phase in ("before", "after"):
++        binary = lane / f"build-{phase}/bench_roots_real"
++        command = ["timeout", "170", "taskset", "-c", "2", str(binary), "adf", family, e, degree, prec]
++        start = time.time()
++        result = subprocess.run(command, capture_output=True, text=True)
++        row = dict(command=command, repetition=repetition, exit=result.returncode,
++                   stdout=result.stdout, stderr=result.stderr, start=start, end=time.time())
++        with (lane / "paired.jsonl").open("a") as stream:
++            stream.write(json.dumps(row) + "\n")
++        times = re.findall(r"adf: ([0-9.]+)", result.stdout)
++        print(phase, family, prec, repetition, "exit", result.returncode, times, flush=True)
+diff --git a/lanes/r-cost1/prepare_checks.py b/lanes/r-cost1/prepare_checks.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8d77b2e870338774c4bd66b2097c3df605d9399f
+--- /dev/null
++++ b/lanes/r-cost1/prepare_checks.py
+@@ -0,0 +1,31 @@
++"""Read-only mirrors for driver and mutation tools with fixed build destinations."""
++from pathlib import Path
++
++root = Path.cwd()
++lane = root / "lanes/r-cost1"
++
++driver = lane / "build-driver-root"
++driver.mkdir(exist_ok=True)
++for name in ("Makefile", "include", "src", "tests"):
++    path = driver / name
++    if not path.exists():
++        path.symlink_to(root / name)
++tools = driver / "tools/adf"
++tools.mkdir(parents=True, exist_ok=True)
++for name in ("Makefile", "adf.c"):
++    path = tools / name
++    if not path.exists():
++        path.symlink_to(root / "tools/adf" / name)
++
++# The mutation tool copies lanes recursively. Its scratch must be outside its input
++# root, and only the cache this lane needs is included in the mirror's lanes.
++mutation = lane / "build-mutation-root"
++mutation.mkdir(exist_ok=True)
++for name in ("Makefile", "include", "src", "tests"):
++    path = mutation / name
++    if not path.exists():
++        path.symlink_to(root / name)
++cache = mutation / "lanes/r-cost1/build-mutcache"
++cache.parent.mkdir(parents=True, exist_ok=True)
++if not cache.exists():
++    cache.symlink_to(lane / "build-mutcache")
+diff --git a/lanes/r-cost1/profile.py b/lanes/r-cost1/profile.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..6f08f032a33e8da47e42d0a25851b642d7f30423
+--- /dev/null
++++ b/lanes/r-cost1/profile.py
+@@ -0,0 +1,103 @@
++"""Make clock-instrumented copies. Originals are never changed."""
++from pathlib import Path
++import sys
++
++lane = Path(sys.argv[1] if len(sys.argv) > 1 else "lanes/r-cost1")
++lane.mkdir(parents=True, exist_ok=True)
++clock = '''
++#include <stdio.h>
++#include <time.h>
++static double cost_now(void)
++{
++    struct timespec t;
++    clock_gettime(CLOCK_MONOTONIC_RAW, &t);
++    return t.tv_sec + 1e-9 * t.tv_nsec;
++}
++'''
++s = Path("src/roots.c").read_text()
++s = "#define _POSIX_C_SOURCE 200809L\n" + clock + s
++s = s.replace("count = real_count(g);", '''double cost_t = cost_now();
++        count = real_count(g);
++        fprintf(stderr, "section count %.6f\\n", cost_now() - cost_t);''')
++s = s.replace("st = adf_roots_real_isolate_counted(cand, &m, g, prec, count);", '''cost_t = cost_now();
++        st = adf_roots_real_isolate_counted(cand, &m, g, prec, count);
++        fprintf(stderr, "section isolate_refine %.6f\\n", cost_now() - cost_t);''')
++# Count and isolation are inside the degree block; finish is outside it.
++needle = "st = real_finish(out, g, count, cand, m, prec);"
++s = s.replace(needle, '''{
++        double cost_t = cost_now();
++        ''' + needle + '''
++        fprintf(stderr, "section certificate %.6f\\n", cost_now() - cost_t);
++    }''')
++lane.joinpath("roots_profile.c").write_text(s)
++s = Path("src/roots_real.c").read_text()
++s = "#define _POSIX_C_SOURCE 200809L\n" + clock + '''
++static double cost_exact, cost_secant, cost_sign, cost_shift, cost_isolate;
++static long cost_values, cost_qir, cost_signs, cost_fallback;
++''' + s
++s = s.replace("slong i, d = fmpz_poly_degree(g), t;",
++              "double cost_t = cost_now();\n    slong i, d = fmpz_poly_degree(g), t;")
++s = s.replace("    fmpz_clear(x);\n}\n\n/* Values", '''    fmpz_clear(x);
++    cost_exact += cost_now() - cost_t; cost_values++;
++}
++
++/* Values''')
++s = s.replace("    arb_t fa, fb, r;", "    double cost_t = cost_now();\n    arb_t fa, fb, r;")
++s = s.replace("    return ok;\n}\n\nstatic int\nsign_2exp", '''    cost_secant += cost_now() - cost_t;
++    return ok;
++}
++
++static int
++sign_2exp''')
++s = s.replace("    fmpz_t r;\n    arb_t ball;", "    double cost_t = cost_now();\n    fmpz_t r;\n    arb_t ball;")
++s = s.replace("        if (s != 0)\n            return s;", '''        if (s != 0)
++        {
++            cost_sign += cost_now() - cost_t; cost_signs++;
++            return s;
++        }''')
++s = s.replace("    fmpz_clear(r);\n    return s;", '''    fmpz_clear(r);
++    cost_sign += cost_now() - cost_t; cost_signs++; cost_fallback++;
++    return s;''')
++s = s.replace("                if (s != 0)\n                    return s;", '''                if (s != 0)
++                {
++                    cost_sign += cost_now() - cost_t; cost_signs++;
++                    return s;
++                }''')
++s = s.replace("    slong e = *k - jj;", "    slong e = *k - jj;\n    cost_qir++;")
++s = s.replace("    st = refine_local(c, k, point, &f, &df, floor, has_floor, need);", '''    cost_shift += cost_now() - cost_t;
++    st = refine_local(c, k, point, &f, &df, floor, has_floor, need);''')
++s = s.replace("    local_eval f, df;", "    double cost_t = cost_now();\n    local_eval f, df;")
++s = s.replace("    *m = 0;\n    if (d < 1", '''    double cost_t = cost_now();
++    cost_exact = cost_secant = cost_sign = cost_shift = 0;
++    cost_values = cost_qir = cost_signs = cost_fallback = 0;
++    *m = 0;
++    if (d < 1''')
++s = s.replace("        items_sort(&it);", "        cost_isolate = cost_now() - cost_t;\n        items_sort(&it);")
++s = s.replace("    items_clear(&it);\n    arf_clear(floor);", '''    fprintf(stderr, "detail tree %.6f shift %.6f secant %.6f sign %.6f exact %.6f "
++            "values %ld qir %ld signs %ld fallback %ld\\n", cost_isolate, cost_shift, cost_secant,
++            cost_sign, cost_exact, cost_values, cost_qir, cost_signs, cost_fallback);
++    items_clear(&it);
++    arf_clear(floor);''')
++lane.joinpath("refine_profile.c").write_text(s)
++s = Path("bench/bench_roots_real.c").read_text()
++s = s.replace("    adf_rootlist_clear(L);\n    return t1 - t0;", '''    double v0 = now();
++    int verified = adf_rootlist_verify_complete(L, g, 0);
++    fprintf(stderr, "section verifier %.6f result %d\\n", now() - v0, verified);
++    adf_rootlist_clear(L);
++    return t1 - t0;''')
++lane.joinpath("bench_profile.c").write_text(s)
++s = Path("refs/src/flint-src-3.0.1/fmpz_poly/num_real_roots_sturm.c").read_text()
++s = "#define _POSIX_C_SOURCE 200809L\n" + clock + s
++s = s.replace("    fmpz_t a, b, g, h;", '''    double total_t = cost_now(), rem_time = 0, div_time = 0, t;
++    long remainders = 0;
++    fmpz_t a, b, g, h;''')
++s = s.replace("        _fmpz_poly_pseudo_rem_cohen(A, A, lenA, B, lenB);", '''        t = cost_now();
++        _fmpz_poly_pseudo_rem_cohen(A, A, lenA, B, lenB);
++        rem_time += cost_now() - t; remainders++;''')
++s = s.replace("            _fmpz_vec_scalar_divexact_fmpz(B, B, lenB, b);", '''            t = cost_now();
++            _fmpz_vec_scalar_divexact_fmpz(B, B, lenB, b);
++            div_time += cost_now() - t;''')
++s = s.replace("    _fmpz_vec_clear(W, 2*len - 1);", '''    _fmpz_vec_clear(W, 2*len - 1);
++    fprintf(stderr, "sturm total %.6f remainder %.6f division %.6f steps %ld\\n",
++            cost_now() - total_t, rem_time, div_time, remainders);''')
++lane.joinpath("sturm_profile.c").write_text(s)
+diff --git a/lanes/r-cost1/stack_probe.c b/lanes/r-cost1/stack_probe.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..222c56b6872237156973996e3d6ddd7309179e49
+--- /dev/null
++++ b/lanes/r-cost1/stack_probe.c
+@@ -0,0 +1,23 @@
++#include "roots_stack_probe.c"
++#include <stdio.h>
++
++int main(void)
++{
++    static const slong numerators[] = { 32, 36, 80, 84, 104, 108, 116, 118, 122, 123, 125, 126 };
++    fmpz_poly_t f, linear;
++    arb_ptr b = _arb_vec_init(12);
++    slong i, m;
++    int st;
++    fmpz_poly_init(f); fmpz_poly_init(linear); fmpz_poly_one(f);
++    for (i = 0; i < 12; i++)
++    {
++        fmpz_poly_set_coeff_si(linear, 1, 2);
++        fmpz_poly_set_coeff_si(linear, 0, -numerators[i]);
++        fmpz_poly_mul(f, f, linear);
++    }
++    fmpz_poly_primitive_part(f, f);
++    st = adf_roots_real_isolate_counted(b, &m, f, 2, 12);
++    printf("stack fixture status %d roots %ld\n", st, (long) m);
++    _arb_vec_clear(b, 12); fmpz_poly_clear(f); fmpz_poly_clear(linear); flint_cleanup();
++    return st != ADF_OK || m != 12;
++}
+diff --git a/lanes/r-cost1/tables.py b/lanes/r-cost1/tables.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..43b581d77ccc73aa724df79896f2f45f323abb39
+--- /dev/null
++++ b/lanes/r-cost1/tables.py
+@@ -0,0 +1,54 @@
++"""Summarise raw bounded benchmark runs; keep exclusions explicit."""
++import collections
++import json
++import re
++import statistics
++from pathlib import Path
++
++lane = Path("lanes/r-cost1")
++groups = collections.defaultdict(list)
++for name in ("before.jsonl", "before-serial.jsonl", "counts.jsonl", "after.jsonl", "paired.jsonl",
++             "references.jsonl"):
++    path = lane / name
++    if not path.exists():
++        continue
++    for index, line in enumerate(path.read_text().splitlines()):
++        row = json.loads(line)
++        command = row["command"]
++        binary, mode, family, e, degree, prec = command[-6:]
++        if name == "before.jsonl":
++            if family == "random" and index == 0:
++                continue
++            if family in ("cluster", "sqrt2", "xn2") and prec != "262144":
++                continue
++            if family == "xn2" and prec == "262144":
++                # These three serial runs were before the repeat batch.
++                pass
++        phase = "after" if "build-after" in binary else "before"
++        if name == "paired.jsonl":
++            phase = "paired " + phase
++        if name == "counts.jsonl":
++            phase = "count experiment"
++        if name == "references.jsonl":
++            phase = "reference"
++        match = re.search(r"(?:adf|count|eval2): ([0-9.]+)", row["stdout"])
++        seconds = float(match.group(1)) if match else None
++        groups[(phase, mode, family, e, degree, prec)].append((seconds, row["exit"]))
++
++lines = ["| Phase | Mode/input | e | d | prec | Completed/attempts | Median s | Range s |",
++         "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |"]
++for key, rows in groups.items():
++    phase, mode, family, e, degree, prec = key
++    times = [t for t, exit_code in rows if t is not None and exit_code == 0]
++    if phase.startswith("paired") or phase == "reference":
++        times = times[-5:]
++    if times:
++        median = f"{statistics.median(times):.9f}"
++        span = f"{min(times):.6f} to {max(times):.6f}"
++    else:
++        median = ">170 (censored)" if all(code == 124 for _, code in rows) else "unavailable"
++        span = "-"
++    lines.append(f"| {phase} | {mode}/{family} | {e} | {degree} | {prec} | "
++                 f"{len(times)}/{len(rows)} | {median} | {span} |")
++lane.joinpath("tables.md").write_text("\n".join(lines) + "\n")
++print("\n".join(lines))
+diff --git a/src/roots_real.c b/src/roots_real.c
+index a990ee7199928550be108a06343c1db0185af9ed..59a2be39f78147917f6a879e24ebbe9a6b82e758
+--- a/src/roots_real.c
++++ b/src/roots_real.c
+@@ -30,8 +30,9 @@
+           mag.rst:149 to 151 (an upper bound of 1 2^y, exact since 1 fits the mantissa); mag_zero, mag.rst:87.
+ 
+    Every decision is an exact sign, an exact grid integer or a comparison of exact dyadic numbers.
+-   Arb filters certify the same sign or grid integer; uncertainty falls back to integer arithmetic. Exponents are slong; the
+-   products that give shifts are checked (S-D18). A cell is (c, k): the open interval (c 2^k, (c + 1) 2^k); a
++   Arb filters certify the same sign or grid integer; uncertainty falls back to integer arithmetic.
++   Exponents are slong; the products that give shifts are checked (S-D18).
++   A cell is (c, k): the open interval (c 2^k, (c + 1) 2^k); a
+    point is (c, k): the number c 2^k. No cell with k < 2 - ADF_ROOTS_BITS_MAX is formed: the function returns
+    ADF_LIMIT instead (then the ball of the cell, of radius 2^(k-1), would not be of admissible size). */
+ 
+@@ -148,6 +149,8 @@
+     fmpz_poly_t q;
+     fmpz_t origin;
+     slong scale;
++    slong coefficient_bits;
++    slong * exact_evaluations;  /* per-call test counter; no shared state */
+ } local_eval;
+ 
+ static void
+@@ -157,6 +160,10 @@
+     fmpz_init(x);
+     fmpz_mul_2exp(x, g->origin, (ulong) (g->scale - e));
+     fmpz_sub(x, m, x);
++#ifdef ADF_CHECK_INVARIANTS
++    if (g->exact_evaluations != NULL)
++        (*g->exact_evaluations)++;
++#endif
+     poly_value_2exp(r, g->q, x, e - g->scale);
+     fmpz_clear(x);
+ }
+@@ -191,7 +198,15 @@
+ {
+     arb_t fa, fb, r;
+     int ok;
+-    slong prec = jj <= WORD_MAX - 64 ? jj + 64 : WORD_MAX;
++    slong depth, prec;
++    /* The values shrink with the old cell's width as well as the new grid width.
++       Include all bits refined since the fixed local coordinate was formed.
++       This only changes the filter precision; its unique integer is still the exact
++       Eqir grid integer (design R8 and section 10; [KS]:288). */
++    depth = e < 0 && g->scale > WORD_MAX + e ? WORD_MAX : g->scale - e;
++    depth = FLINT_MAX(depth, jj);
++    prec = g->coefficient_bits > WORD_MAX - 64 || depth > WORD_MAX - 64 - g->coefficient_bits ?
++        WORD_MAX : depth + g->coefficient_bits + 64;
+     if (fmpz_poly_degree(g->q) < 8)
+         return 0;
+     arb_init(fa); arb_init(fb); arb_init(r);
+@@ -221,6 +236,24 @@
+         arb_clear(ball);
+         if (s != 0)
+             return s;
++        /* Near a root, a fixed 64-bit enclosure usually straddles zero.
++           Retry with the accumulated refinement depth before exact Horner.
++           A certified sign is the same exact sign (R8); zero or uncertainty
++           still uses integer evaluation, including exact dyadic roots. */
++        {
++            slong depth = e < 0 && g->scale > WORD_MAX + e ? WORD_MAX : g->scale - e;
++            slong prec = g->coefficient_bits > WORD_MAX - 64 || depth > WORD_MAX - 64 - g->coefficient_bits ?
++                WORD_MAX : depth + g->coefficient_bits + 64;
++            if (prec > 64)
++            {
++                arb_init(ball);
++                local_ball(ball, g, m, e, prec);
++                s = arb_is_positive(ball) ? 1 : arb_is_negative(ball) ? -1 : 0;
++                arb_clear(ball);
++                if (s != 0)
++                    return s;
++            }
++        }
+     }
+     fmpz_init(r);
+     value_2exp(r, g, m, e);
+@@ -260,6 +293,17 @@
+     return r;
+ }
+ 
++/* Record a chosen bound only if its exponent product can be formed (R1, S-D18).
++   Kept separate so invariant tests can reach word-sized bounds without allocating huge coefficients. */
++static int
++store_bound(slong * K, const fmpz_poly_t h, slong hi)
++{
++    if (bound_holds(h, hi) < 0)
++        return 0;
++    *K = hi;
++    return 1;
++}
++
+ /* *K = the least integer with bound_holds (design Lemma R1), for h of degree n >= 1 with h(0) != 0. The test
+    fails at -bits(h_n) and holds at bits(max_(i<n) |h_i|) + 1, and it is monotone in K; bisection between the
+    two. 0 if a shift overflows (then the caller returns ADF_LIMIT). */
+@@ -282,10 +326,7 @@
+         else
+             lo = mid;
+     }
+-    if (bound_holds(h, hi) < 0)
+-        return 0;                               /* the product hi n is formed by the caller: it must fit */
+-    *K = hi;
+-    return 1;
++    return store_bound(K, h, hi);
+ }
+ 
+ /* ---- Algorithm D: bisection with Descartes' rule of signs ---- */
+@@ -831,7 +872,7 @@
+ /* Keep the original cell and stop coordinates. Only evaluation is translated. */
+ static int
+ refine_cell(fmpz_t c, slong * k, int * point, const fmpz_poly_t g, const fmpz_poly_t dg,
+-            const arf_t floor, int has_floor, slong need)
++            const arf_t floor, int has_floor, slong need, slong * exact_evaluations)
+ {
+     local_eval f, df;
+     int st;
+@@ -842,11 +883,14 @@
+         fmpz_set(f.origin, c);
+     fmpz_set(df.origin, f.origin);
+     f.scale = df.scale = *k;
++    f.exact_evaluations = df.exact_evaluations = exact_evaluations;
+     fmpz_poly_set(f.q, g);
+     _fmpz_poly_scale_2exp(f.q->coeffs, fmpz_poly_length(f.q), *k);
+     _fmpz_poly_taylor_shift(f.q->coeffs, f.origin, fmpz_poly_length(f.q));
+     _fmpz_poly_remove_content_2exp(f.q->coeffs, fmpz_poly_length(f.q));
+     fmpz_poly_derivative(df.q, f.q);
++    f.coefficient_bits = FLINT_ABS(fmpz_poly_max_bits(f.q));
++    df.coefficient_bits = FLINT_ABS(fmpz_poly_max_bits(df.q));
+     st = refine_local(c, k, point, &f, &df, floor, has_floor, need);
+     fmpz_clear(f.origin); fmpz_clear(df.origin);
+     fmpz_poly_clear(f.q); fmpz_poly_clear(df.q);
+@@ -914,8 +958,9 @@
+    lo_(i+1); every real root of g in one of them; arb_rel_accuracy_bits >= prec or exact (design Proposition
+    R5). The balls may be of any size: the caller tests their admissible size. ADF_LIMIT: a cell below KMIN,
+    or an overflow of an exponent; *m and cand are then of no use (cand stays initialised). */
+-int
+-adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count)
++static int
++isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count,
++                slong * exact_evaluations)
+ {
+     slong d = fmpz_poly_degree(g), i, k, need = FLINT_MAX(prec, 2);
+     fmpz_poly_t h, dg;
+@@ -973,7 +1018,7 @@
+                     item_right(floor, &it, i - 1);
+                 fmpz_set(c, it.c + i);
+                 k = it.k[i];
+-                st = refine_cell(c, &k, &point, g, dg, floor, i > 0, need);
++                st = refine_cell(c, &k, &point, g, dg, floor, i > 0, need, exact_evaluations);
+                 if (st != ADF_OK)
+                     break;
+             }
+@@ -1011,6 +1056,24 @@
+     return st;
+ }
+ 
++int
++adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count)
++{
++    return isolate_counted(cand, m, g, prec, count, NULL);
++}
++
++#ifdef ADF_CHECK_INVARIANTS
++/* Test-only count of the exact value evaluations used by refinement (design section 10).
++   The caller owns the counter. The endpoint certificate in roots.c is independent of it. */
++ADF_ROOTS_HIDDEN int
++adf_roots_real_isolate_cost(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count,
++                           slong * exact_evaluations)
++{
++    *exact_evaluations = 0;
++    return isolate_counted(cand, m, g, prec, count, exact_evaluations);
++}
++#endif
++
+ /* Compatibility entry for the direct candidate tests. The public caller passes its
+    already computed trusted count to the counted entry (docs/design/real-roots.md:319, R7). */
+ int
+@@ -1019,3 +1082,23 @@
+     slong count = fmpz_poly_degree(g) > 0 ? fmpz_poly_num_real_roots(g) : 0;
+     return adf_roots_real_isolate_counted(cand, m, g, prec, count);
+ }
++
++#ifdef ADF_CHECK_INVARIANTS
++ADF_ROOTS_HIDDEN int
++adf_roots_real_test_bound(slong * K, const fmpz_poly_t h)
++{
++    return root_bound_exp(K, h);
++}
++
++ADF_ROOTS_HIDDEN int
++adf_roots_real_test_store_bound(slong * K, const fmpz_poly_t h, slong hi)
++{
++    return store_bound(K, h, hi);
++}
++
++ADF_ROOTS_HIDDEN int
++adf_roots_real_test_product(slong * result, slong x, slong y)
++{
++    return mul_checked_nonneg(result, x, y);
++}
++#endif
+diff --git a/tests/test_roots_real.c b/tests/test_roots_real.c
+index 97950624f91b213fba4b9f0148a741305342b622..abb366663e1afb3c5cc6d9db97beed671f48b1e9
+--- a/tests/test_roots_real.c
++++ b/tests/test_roots_real.c
+@@ -608,6 +608,36 @@
+     adf_rootlist_clear(L);
+ }
+ 
++/* The depth-dependent filters must preserve the exact signs, certificate and
++   nested cell sequence at high degree (design R8 and section 10). */
++ADF_TEST(degree_fifty_high_precision_filter_nesting)
++{
++    static const slong precs[] = { 64, 256, 4096, 8192, 8193 };
++    fmpz_poly_t f;
++    adf_rootlist_t L, previous;
++    fmpq_t lo, hi, old_lo, old_hi;
++    slong i, j;
++    fmpz_poly_init(f); adf_rootlist_init(L); adf_rootlist_init(previous);
++    fmpq_init(lo); fmpq_init(hi); fmpq_init(old_lo); fmpq_init(old_hi);
++    fmpz_poly_set_coeff_si(f, 50, 1); fmpz_poly_set_coeff_si(f, 0, -2);
++    for (i = 0; i < 5; i++)
++    {
++        ADF_CHECK(adf_roots_real(L, f, precs[i]) == ADF_OK);
++        ADF_CHECK(list_is_true(L, f, precs[i], "degree fifty filter"));
++        ADF_CHECK(L->n == 2);
++        if (i > 0)
++            for (j = 0; j < L->n; j++)
++            {
++                ends_q(lo, hi, L->ball + j);
++                ends_q(old_lo, old_hi, previous->ball + j);
++                ADF_CHECK(fmpq_cmp(old_lo, lo) <= 0 && fmpq_cmp(hi, old_hi) <= 0);
++            }
++        adf_rootlist_swap(L, previous);
++    }
++    fmpq_clear(lo); fmpq_clear(hi); fmpq_clear(old_lo); fmpq_clear(old_hi);
++    adf_rootlist_clear(L); adf_rootlist_clear(previous); fmpz_poly_clear(f);
++}
++
+ /* ---- 2. planted roots (check_s2_real_planted, proto/solvers_checks.py:2716) ---- */
+ 
+ /* f = lead * prod (den X - num)^mult * extra; checks that the list is true and that every planted root lies in
+diff --git a/tests/test_roots_real_isolate.c b/tests/test_roots_real_isolate.c
+index dc92c6dcfda4140283a2fee4d12a474c4fe384e8..e51f050d2e9e50eb4da68e6ed07a56212cf65b3a
+--- a/tests/test_roots_real_isolate.c
++++ b/tests/test_roots_real_isolate.c
+@@ -1303,3 +1303,93 @@
+     }
+     fmpz_poly_clear(f); adf_rootlist_clear(L);
+ }
++
++#ifdef ADF_CHECK_INVARIANTS
++int adf_roots_real_isolate_cost(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count,
++                               slong * exact_evaluations);
++
++/* A count, not a time bound: near-root cancellation must not send every high-precision
++   QIR sign and secant back to homogeneous integer Horner (design section 10). */
++ADF_TEST(high_precision_filter_exact_evaluation_count)
++{
++    fmpz_poly_t f;
++    arb_ptr out = _arb_vec_init(50);
++    slong m = -1, values = -1, i;
++    fmpz_poly_init(f);
++    fmpz_poly_set_coeff_si(f, 50, 1);
++    fmpz_poly_set_coeff_si(f, 0, -2);
++    ADF_CHECK(adf_roots_real_isolate_cost(out, &m, f, 16384, 2, &values) == ADF_OK);
++    printf("   X^50 - 2 at 16384: %ld exact refinement evaluations\n", (long) values);
++    ADF_CHECK(m == 2);
++    ADF_CHECK_MSG(values <= 16, "%ld exact evaluations, expected at most 16", (long) values);
++    ADF_CHECK(balls_true(f, out, m, 16384, "X^50 - 2 filter cost"));
++    for (i = 0; i < m; i++)
++        ADF_CHECK(arb_rel_accuracy_bits(out + i) >= 16384);
++    fmpz_poly_clear(f);
++    _arb_vec_clear(out, 50);
++}
++#endif
++
++/* Twelve planted dyadic roots force more than four pending nodes. Dropping the
++   stack reallocation is a heap overflow under SAN=1 (lane r-cost1's focused red probe). */
++ADF_TEST(pending_stack_growth_with_planted_roots)
++{
++    static const slong numerators[] = { 32, 36, 80, 84, 104, 108, 116, 118, 122, 123, 125, 126 };
++    adf_rootlist_t L;
++    fmpz_poly_t f;
++    fmpz_t a, b;
++    fmpq_t r;
++    slong i;
++    adf_rootlist_init(L); fmpz_poly_init(f); fmpz_poly_one(f);
++    fmpz_init_set_ui(a, 2); fmpz_init(b); fmpq_init(r);
++    for (i = 0; i < 12; i++)
++    {
++        fmpz_set_si(b, numerators[i]); poly_mul_lin(f, a, b);
++    }
++    ADF_CHECK(adf_roots_real(L, f, 53) == ADF_OK);
++    ADF_CHECK(L->n == 12);
++    ADF_CHECK(list_true(L, f, 53, "pending stack growth"));
++    for (i = 0; i < L->n; i++)
++    {
++        fmpq_set_si(r, numerators[i], 2);
++        ADF_CHECK(arb_contains_fmpq(L->ball + i, r));
++    }
++    fmpq_clear(r); fmpz_clear(a); fmpz_clear(b);
++    fmpz_poly_clear(f); adf_rootlist_clear(L);
++}
++
++#ifdef ADF_CHECK_INVARIANTS
++int adf_roots_real_test_bound(slong * K, const fmpz_poly_t h);
++int adf_roots_real_test_store_bound(slong * K, const fmpz_poly_t h, slong hi);
++int adf_roots_real_test_product(slong * result, slong x, slong y);
++
++/* R1: for 2^t X +/- 1 the strict least power-of-two bound is 2^(1-t).
++   S-D18: word-sized exponent products must be refused before any power is formed. */
++ADF_TEST(minimum_bounds_and_exponent_overflow)
++{
++    static const slong exponents[] = { 0, 1, 10, 500 };
++    fmpz_poly_t h;
++    fmpz_t a;
++    slong K, product = 123, i, sign;
++    fmpz_poly_init(h); fmpz_init(a);
++    for (i = 0; i < 4; i++)
++        for (sign = -1; sign <= 1; sign += 2)
++        {
++            fmpz_one(a); fmpz_mul_2exp(a, a, (ulong) exponents[i]);
++            fmpz_poly_set_coeff_fmpz(h, 1, a); fmpz_poly_set_coeff_si(h, 0, sign);
++            K = 123;
++            ADF_CHECK(adf_roots_real_test_bound(&K, h));
++            ADF_CHECK(K == 1 - exponents[i]);
++        }
++    ADF_CHECK(adf_roots_real_test_product(&product, 0, WORD_MAX) && product == 0);
++    ADF_CHECK(adf_roots_real_test_product(&product, 1, WORD_MAX) && product == WORD_MAX);
++    ADF_CHECK(adf_roots_real_test_product(&product, WORD_MAX, 1) && product == WORD_MAX);
++    ADF_CHECK(adf_roots_real_test_product(&product, WORD_MAX / 2, 2) && product == WORD_MAX - 1);
++    ADF_CHECK(!adf_roots_real_test_product(&product, WORD_MAX, 2));
++    ADF_CHECK(!adf_roots_real_test_product(&product, WORD_MAX / 2 + 1, 2));
++    fmpz_poly_zero(h); fmpz_poly_set_coeff_si(h, 0, -1); fmpz_poly_set_coeff_si(h, 2, 1);
++    ADF_CHECK(!adf_roots_real_test_store_bound(&K, h, WORD_MAX));
++    ADF_CHECK(!adf_roots_real_test_store_bound(&K, h, WORD_MAX / 2 + 1));
++    fmpz_clear(a); fmpz_poly_clear(h);
++}
++#endif
+
+exec
+/bin/bash -lc "timeout 170 python3 lanes/r-cost1/tables.py > lanes/r-cost1/tables-print.log; timeout 170 python3 lanes/r-cost1/finalize.py; timeout 170 python3 - <<'PY'
+from pathlib import Path
+lane = Path('lanes/r-cost1')
+large = []
+long = []
+no_newline = []
+for p in lane.rglob('*'):
+    if p.is_file():
+        data = p.read_bytes()
+        if len(data) > 100000:
+            large.append((str(p), len(data)))
+        if data and not data.endswith(b'\\n'):
+            no_newline.append(str(p))
+        if p.suffix in ('.md', '.py', '.c', '.patch'):
+            long += [(str(p), i + 1, len(s)) for i, s in enumerate(data.decode().splitlines()) if len(s) > 116]
+print('large', large)
+print('no newline', no_newline)
+print('long', long[:30], 'total', len(long))
+print('build trees', list(lane.glob('build*')))
+print('report bytes', (lane / 'report.md').stat().st_size)
+PY
+git diff --check -- src/roots_real.c bench/bench_roots_real.c tests/test_roots_real.c tests/test_roots_real_isolate.c docs/design/real-roots.md; git status --short -- src/roots.c include docs/proofs docs/SPEC.md" in /home/tobias/Projects/adelefeld-wt/r-cost1

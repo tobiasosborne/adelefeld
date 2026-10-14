@@ -1472,3 +1472,35 @@ ADF_TEST(vectors_s2_slice3_every_line)
     fmpz_poly_clear(g);
     adf_rootlist_clear(L);
 }
+
+/* The depth-dependent filters must preserve the exact signs, certificate and
+   nested cell sequence at high degree (design R8 and section 10). */
+ADF_TEST(degree_fifty_high_precision_filter_nesting)
+{
+    static const slong precs[] = { 64, 256, 4096, 8192, 8193 };
+    fmpz_poly_t f;
+    adf_rootlist_t L;
+    arb_ptr previous = _arb_vec_init(2);
+    fmpq_t lo, hi, old_lo, old_hi;
+    slong i, j;
+    fmpz_poly_init(f); adf_rootlist_init(L);
+    fmpq_init(lo); fmpq_init(hi); fmpq_init(old_lo); fmpq_init(old_hi);
+    fmpz_poly_set_coeff_si(f, 50, 1); fmpz_poly_set_coeff_si(f, 0, -2);
+    for (i = 0; i < 5; i++)
+    {
+        ADF_CHECK(adf_roots_real(L, f, precs[i]) == ADF_OK);
+        ADF_CHECK(list_is_true(L, f, precs[i], "degree fifty filter"));
+        ADF_CHECK(L->n == 2);
+        if (i > 0)
+            for (j = 0; j < L->n; j++)
+            {
+                ends_q(lo, hi, L->ball + j);
+                ends_q(old_lo, old_hi, previous + j);
+                ADF_CHECK(fmpq_cmp(old_lo, lo) <= 0 && fmpq_cmp(hi, old_hi) <= 0);
+            }
+        for (j = 0; j < L->n; j++)
+            arb_set(previous + j, L->ball + j);
+    }
+    fmpq_clear(lo); fmpq_clear(hi); fmpq_clear(old_lo); fmpq_clear(old_hi);
+    adf_rootlist_clear(L); _arb_vec_clear(previous, 2); fmpz_poly_clear(f);
+}
