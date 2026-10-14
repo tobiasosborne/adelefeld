@@ -25,8 +25,9 @@ evaluation near roots (`X^50 - 2` at `2^21`: over 170 s to 92 s). Record: `docs/
 Julia with `Pkg.test` 904 and 1015; both self-tests). On `8f9af07` (after t5-repair2) at 03:45: all, clang,
 inv, headers passed; san failed three TIMING checks (`test_lball` 3.5 s bounds, `test_lfunc` 5 s bound) under
 a host load of 10 to 17 from two peer sessions; both tests pass alone under the sanitizer in 16 s (04:00).
-Lanes merged after that (j-slice3, r-cost2) are listed in the worklog with their own checks; rerun the suites
-first thing.
+All five suites passed on `22702a6` (after j-slice3 and r-cost2) at 04:35 to 04:48: 107 programs; driver 100
+cases; exports 625 of 625; Julia with `Pkg.test` 904, 1015 and 1649; both self-tests; san included. Lanes merged
+after that (j-slice4 if it landed) are in the worklog; rerun the suites first thing.
 
 **Rules of TJO for this session** (23:52): orchestrate; monitor the quota app for Claude and Codex, work at
 pace for both; no Fable subagents (an occasional one to equalise Fable use, told about the quota app); Opus for
