@@ -67,6 +67,19 @@ adf_status_str(int status)
     }
 }
 
+/* adf_status_count()
+   Returns ADF_STATUS_COUNT, the number of status codes (11); the valid codes are 0 to
+   adf_status_count() - 1, and adf_status_str returns "UNKNOWN" for every other int. A binding that
+   cannot read the macro checks its own transcription of the list against this value at load time
+   (docs/api-j.md:72-76, prerequisite J-status).
+   Convention: conventions 3.1 (the list). Aliasing: none. Status: none. Cost: constant.
+   Header-inline and exported (conventions 12.1). */
+ADF_INLINE int
+adf_status_count(void)
+{
+    return ADF_STATUS_COUNT;
+}
+
 #ifdef __cplusplus
 }
 #endif

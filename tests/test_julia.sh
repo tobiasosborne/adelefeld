@@ -497,6 +497,18 @@ else
 fi
 rm -f "$qclass_text_output"
 
+# The package julia/Adelefeld, step 1 of J-a (lane j-slice1; docs/api-j.md section 9 gate): Pkg.test through
+# the package's launcher, which sets the system libgmp preload before Julia starts (docs/api-j.md:85-87),
+# so this block needs no retry. One Julia thread, one precompile task. Julia absent: skipped above. Pkg.test
+# needs a writable depot (JULIA_DEPOT_PATH is passed through) and writes julia/Adelefeld/Manifest.toml.
+echo "== julia/Adelefeld: Pkg.test"
+if ! JULIA="$(command -v "$JULIA")" JULIA_NUM_THREADS=1 JULIA_NUM_PRECOMPILE_TASKS=1 timeout 180 \
+        sh julia/Adelefeld/bin/adelefeld-julia --startup-file=no --project=julia/Adelefeld \
+        -e 'using Pkg; Pkg.test()'; then
+    echo "test_julia: julia/Adelefeld Pkg.test FAILED" >&2
+    exit 1
+fi
+
 run_output=$(mktemp)
 if "$JULIA" --startup-file=no tests/julia/smoke.jl "$so" > "$run_output" 2>&1; then
     cat "$run_output"

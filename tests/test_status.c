@@ -85,3 +85,13 @@ ADF_TEST(the_name_of_a_code_is_stable)
     ADF_CHECK(adf_status_str(ADF_LIMIT) == adf_status_str(ADF_LIMIT));
     ADF_CHECK(strcmp(adf_status_str(ADF_LIMIT), "LIMIT") == 0);
 }
+
+ADF_TEST(the_status_count_accessor_returns_the_macro)
+{
+    /* docs/api-j.md:72-76 (prerequisite J-status): a binding reads the count through an exported
+       function, because the macro ADF_STATUS_COUNT is not visible to it. conventions 3.1 lists 11 codes. */
+    ADF_CHECK(adf_status_count() == 11);
+    ADF_CHECK(adf_status_count() == ADF_STATUS_COUNT);
+    ADF_CHECK(strcmp(adf_status_str(adf_status_count() - 1), "LIMIT") == 0);
+    ADF_CHECK(strcmp(adf_status_str(adf_status_count()), "UNKNOWN") == 0);
+}

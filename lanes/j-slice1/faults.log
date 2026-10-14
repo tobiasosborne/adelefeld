@@ -1,0 +1,10 @@
+F1 byte count by characters -> caught: 870 passed, 1 failed, 0 errored
+F2 release without the claim (double clear) -> caught: exit 1,     @ Base ./client.jl:283 /  [12] _start() /     @ Base ./client.jl:550
+F3 free the adjusted pointer -> NOT CAUGHT: all tests passed
+F4 ignore the status of div -> caught: 857 passed, 14 failed, 0 errored
+F5 return the output on failure -> caught: 869 passed, 0 failed, 2 errored
+F6 layout gate checks size only -> caught: 863 passed, 8 failed, 0 errored
+F7 status gate skips the count -> caught: 864 passed, 7 failed, 0 errored
+F8 negative denominator not normalized -> caught: 869 passed, 0 failed, 2 errored
+F9 closed handle not checked -> caught: exit 1,     @ Base ./client.jl:283 /  [12] _start() /     @ Base ./client.jl:550
+F10 status name gate skipped -> caught: 864 passed, 7 failed, 0 errored
