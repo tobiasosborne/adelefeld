@@ -1,0 +1,34 @@
+{
+  "plain": {
+    "test_tate_local": 22807,
+    "test_tate_gamma": 47998,
+    "test_localfactor": 309581,
+    "test_tate": 22909,
+    "test_tate_continue": 25800,
+    "test_tate_fe": 19126
+  },
+  "san": {
+    "test_tate_local": 22807,
+    "test_tate_gamma": 47998,
+    "test_localfactor": 309581,
+    "test_tate": 22909,
+    "test_tate_continue": 25800,
+    "test_tate_fe": 19126
+  },
+  "inv": {
+    "test_tate_local": 22822,
+    "test_tate_gamma": 48028,
+    "test_localfactor": 309600,
+    "test_tate": 22919,
+    "test_tate_continue": 25810,
+    "test_tate_fe": 19126
+  },
+  "clang": {
+    "test_tate_local": 22807,
+    "test_tate_gamma": 47998,
+    "test_localfactor": 309581,
+    "test_tate": 22909,
+    "test_tate_continue": 25800,
+    "test_tate_fe": 19126
+  }
+}

@@ -1,0 +1,10 @@
+goldens: 17 root numbers overlap the golden W; (8,7) lowers to (4,3)
+statuses: bits -1, 2^21 + 1, WORD_MAX DOMAIN at A; prec cap and C = 1031 LIMIT at A
+poles: C = 1 at 0, 1 DOMAIN on both sides; balls meeting a pole NOT_DETERMINED on both; C = 4 at 0, 1 OK
+hand: Lambda_zeta(-1) = Lambda_zeta(2) = pi/6 on both sides; at 1/2 R = 1 * B, B not A
+guard: 4 radii with A OK and the failure named B (bits 20, B at 24)
+independence: 4 characters, each sentinel moves its own side only
+widths: bits 20, 53, 80 from prec 2, both sides narrow and shrinking (3 characters)
+values: 280 functional-equation cases OK, 1680 references inside, 46 at a trivial zero; largest diameter/2^-bits: A 0.0936, R 0.00606 (9.4 s)
+balls: 17 radius 2^-60, every corner inside
+tate_fe: 19126 checks

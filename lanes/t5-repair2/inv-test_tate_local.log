@@ -1,0 +1,50 @@
+vectors: 394; certified samples: 1861
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+vectors: 394; certified samples: 1861
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+vectors: 394; certified samples: 1861
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+vectors: 394; certified samples: 1861
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+vectors: 394; certified samples: 1861
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+vectors: 394; certified samples: 1861
+ok   oracle_vectors
+ok   delegation_examples_and_precision
+ok   raw_domains_extremes_and_double_alias
+ok   odd_exact_large_poles
+ok   closed_pole_boundaries_and_caps
+ok   nonreal_inverse_vector
+ok   invariant_entry_aborts
+ok   review_real_width
+8 tests, 22822 checks, 0 failed checks, 0 failed tests
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument v is not a canonical adf_place_t
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument eta0 is not a canonical adf_char
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument raw arguments is not a canonical independent acb input/output
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument raw arguments is not a canonical independent acb input/output
+adelefeld: ADF_CHECK_INVARIANTS: adf_local_tate_at: argument raw arguments is not a canonical independent acb input/output

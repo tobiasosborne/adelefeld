@@ -1,0 +1,8 @@
+{"command": ["timeout", "170", "lanes/t5-repair2/build-inv/test_tate_continue"], "exit": 0, "seconds": 25.00178318399412, "log": "lanes/t5-repair2/inv-test_tate_continue.log"}
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+INV: 4 precondition aborts
+tate_continue: 25810 checks
+{"command": ["timeout", "170", "lanes/t5-repair2/build-inv/test_tate_fe"], "exit": 0, "seconds": 6.629809284997464, "log": "lanes/t5-repair2/inv-test_tate_fe.log"}
+values: 280 functional-equation cases OK, 1680 references inside, 46 at a trivial zero; largest diameter/2^-bits: A 0.0936, R 0.00606 (5.3 s)
+balls: 17 radius 2^-60, every corner inside
+tate_fe: 19126 checks

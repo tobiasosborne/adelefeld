@@ -1,0 +1,4 @@
+{"command": ["timeout", "170", "lanes/t5-repair2/build-plain/test_tate_fe"], "exit": 0, "seconds": 7.766071016005299, "log": "lanes/t5-repair2/plain-test_tate_fe.log"}
+values: 280 functional-equation cases OK, 1680 references inside, 46 at a trivial zero; largest diameter/2^-bits: A 0.0936, R 0.00606 (6.4 s)
+balls: 17 radius 2^-60, every corner inside
+tate_fe: 19126 checks

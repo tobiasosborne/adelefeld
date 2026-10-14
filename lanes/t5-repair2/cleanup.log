@@ -1,0 +1,10 @@
+Deleted 8 lane build directories:
+build-clang
+build-driver
+build-inv
+build-mutation
+build-mutation-root
+build-plain
+build-san
+build-san-inv
+0 build directories remain.

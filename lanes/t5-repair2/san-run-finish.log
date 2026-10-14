@@ -1,0 +1,8 @@
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_continue"], "exit": 0, "seconds": 16.02190201399935, "log": "lanes/t5-repair2/san-test_tate_continue.log"}
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 5.61 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+tate_continue: 25800 checks
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_fe"], "exit": 0, "seconds": 7.1299570400005905, "log": "lanes/t5-repair2/san-test_tate_fe.log"}
+values: 280 functional-equation cases OK, 1680 references inside, 46 at a trivial zero; largest diameter/2^-bits: A 0.0936, R 0.00606 (5.8 s)
+balls: 17 radius 2^-60, every corner inside
+tate_fe: 19126 checks

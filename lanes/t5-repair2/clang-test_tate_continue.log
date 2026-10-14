@@ -1,0 +1,10 @@
+forbidden: 4 wrapped FLINT L/zeta/xi/Hurwitz calls abort
+work cap (continue): bits 2^21 and C = 1021 LIMIT in 3.68 s
+work cap (completed): bits 2^21 and C = 1021 LIMIT in 3.79 s
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 14.03 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+tate_continue: 25800 checks
+test_tate_continue: forbidden path reached: acb_dirichlet_zeta
+test_tate_continue: forbidden path reached: acb_dirichlet_l
+test_tate_continue: forbidden path reached: acb_dirichlet_xi
+test_tate_continue: forbidden path reached: acb_dirichlet_hurwitz

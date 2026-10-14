@@ -55,7 +55,8 @@ S2. The value and the split. For `Re(s) > 1`, P11 gives `I_chi(s) = pi^-z Gamma(
     + delta [1/(s-1) - 1/s]`, `V_chi(t) = sum_(n>=1) chi(n) n^e exp(-pi n^2 t/C)`, `z' = (1 - s + e)/2`,
     `delta = [C = 1]`. The code returns `C^-z` times an enclosure of this `Lambda` (`C^-z = exp(-z log C)`, an acb
     ball containing it for every `z` of the ball). The domain gate restricts the call to `Re(s) > 1`, where the
-    value is the defining adelic integral (P11); the split itself is entire (P13) and is the 5d path.
+    value is the defining adelic integral (P11); the split is entire for `C > 1` and has simple
+    poles at 0 and 1 for `C = 1` (P13). It is the 5d path.
 
 S3. The dual coefficients from the transforms (design `:133-138`; P13 step 5). The code builds the balanced vector
     with the same setters: `f` as in S1 and the real term `x^e exp(-pi x^2/C)` (`A = 1/C`, a ball at the working
@@ -248,13 +249,16 @@ S11. Near a pole (T4, `api-5.md:302-312`). The two reciprocal terms are computed
     rectangle that excludes 1 while its disk does not: NOT_DETERMINED by the width, not DOMAIN).
 
 S12. The trivial zeros. At `s0 = -e - 2k` (`k >= 0`; `s0 != 0` for `C = 1`) the split S9 is evaluated as it stands:
-    it contains no Gamma factor, so `Lambda(s0)` is the finite value of an entire function (P13), and `I(s0) =
-    C^(-z0) Lambda(s0)` is finite. The quotient formula `Gamma(z) L(s)` would be infinity times 0 there.
+    it contains no Gamma factor and is regular at the permitted `s0`. For `C > 1` it is entire; for `C = 1`
+    its only poles are 0 and 1 (P13, analysis.md:576-577). Thus `Lambda(s0)` and `I(s0) = C^(-z0) Lambda(s0)`
+    are finite by S9's local regularity. The quotient formula `Gamma(z) L(s)` would be infinity times 0 there.
+    By api-5.md:124-126, `Lambda = (pi/C)^(-z) Gamma(z) L(s)`, with `z0 = -k`. Gamma's residue gives
+    `Gamma(z(s)) ~ 2 (-1)^k/(k! (s-s0))`; hence the limit is `2 (-1)^k (pi/C)^k L'(s0)/k!`.
     Nonvanishing at `s0` is not used by the code; the tests check that the 40 enclosures of the vectors exclude 0.
     Check: `values` (40 trivial zeros: Lambda narrow, finite and not containing 0, and `I` overlapping `C^(-z0)`
-    times Lambda; the references by the limit `2 (-1)^k L'(s0)/k!` (mpmath) and by the functional equation with
-    FLINT's L at `1 - s0`, asserted equal by the generator), the driver lines for zeta at -2, `chi_4` at -1, `(5,4)`
-    at 0.
+    times Lambda; the references by the limit `2 (-1)^k (pi/C)^k L'(s0)/k!` (mpmath) and by the functional equation
+    with FLINT's L at `1 - s0`, asserted equal by the generator), the driver lines for zeta at -2, `chi_4` at -1,
+    `(5,4)` at 0.
 
 S13. The completed function. `adf_tate_completed` runs the same attempt with the budget `epsilon = 2^-bits` for the
     cutoffs and panels (design `:205`) and without the factor `C^-z`; the width `2^-bits` is checked on `Lambda`
@@ -398,7 +402,9 @@ S20. Independence. The sides share no evaluator: `A` is one call, and `R` is for
     bit those of the real run. If `B`'s evaluator is replaced by `-10^6 i`, then `A` stays bit for bit the real one,
     and `R` moves to `W` times the sentinel (design `:350-352`). A side copied from the other passes every value
     check (it is the right number). Only this test and the check `R != A` at zeta `1/2` detect it.
-    Check: `independence` (C = 1, 4, 5, 13 at `3/8 + 3i/4`), `hand`.
+    Check: `independence` (C = 1, 4, 5, 13 at `3/8 + 3i/4`) and `hand` check the caller's `fe_sides`.
+    `tests/driver/tate-fe.cmd` and `.out` check the production handler: at zeta `1/2`, A's imaginary radius
+    prints as `2.1e-26` and R's as `1.5e-27`; replacing the product by a copy of A fails the driver fixture.
 
 ## Decisions where the design is silent (slice 5e)
 

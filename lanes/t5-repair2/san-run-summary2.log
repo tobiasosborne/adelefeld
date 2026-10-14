@@ -1,0 +1,24 @@
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_local"], "exit": 0, "seconds": 10.102112219996343, "log": "lanes/t5-repair2/san-test_tate_local.log"}
+ok   nonreal_inverse_vector
+ok   review_real_width
+7 tests, 22807 checks, 0 failed checks, 0 failed tests
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_gamma"], "exit": 0, "seconds": 5.723806494999735, "log": "lanes/t5-repair2/san-test_tate_gamma.log"}
+ok   duality_identity
+ok   statuses_precision_and_aliases
+8 tests, 47955 checks, 0 failed checks, 0 failed tests
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_localfactor"], "exit": 0, "seconds": 12.93993249200139, "log": "lanes/t5-repair2/san-test_localfactor.log"}
+ok   real_certified_near_poles
+ok   real_derivative_bound_boxes
+14 tests, 309581 checks, 0 failed checks, 0 failed tests
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate"], "exit": 0, "seconds": 18.658637366999756, "log": "lanes/t5-repair2/san-test_tate.log"}
+vectors: 18 vectors, 144 value records (256 calls OK, 1024 reference points inside), 1 witness, 18 T3 pieces (12 need the remainder), 57 cutoff records in 4.39 s
+work: zeta at s = 2, bits 4: 43 units (N = 1, R = 2, J = 13, 15)
+tate: 22909 checks
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_continue"], "exit": 0, "seconds": 21.37919180699828, "log": "lanes/t5-repair2/san-test_tate_continue.log"}
+vectors: 788 OK calls (1576 reference points inside, 40 trivial zeros), 8 balls, 45 pole statuses, 6 residues, 27 cutoff records, 6 side records in 7.61 s
+jbound: 20 records (cutoffs, degrees, work and the radius bound; 10 tell m247, 13 tell m551)
+tate_continue: 25800 checks
+{"command": ["timeout", "170", "lanes/t5-repair2/build-san/test_tate_fe"], "exit": 0, "seconds": 9.664001958000881, "log": "lanes/t5-repair2/san-test_tate_fe.log"}
+values: 280 functional-equation cases OK, 1680 references inside, 46 at a trivial zero; largest diameter/2^-bits: A 0.0936, R 0.00606 (8.4 s)
+balls: 17 radius 2^-60, every corner inside
+tate_fe: 19126 checks

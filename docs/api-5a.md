@@ -247,3 +247,43 @@ Check: the duality gamma(alpha, eta0, s) gamma(alpha^-1, eta0^-1, 1-s) = eta0(-1
 cases, with its hand derivation in the test; precision 2, 53, the cap and one above; the conductor cap;
 INV aborts.
 Check: tests/driver/tate-gamma.cmd; tests/julia/tate_gamma.jl.
+
+## Closure of m5-review1
+
+F1 is closed in the shared real factor. For z = (s+e)/2, choose n from the outward lower real endpoint
+so that Re(z+n) >= 1. When 0 < n <= ADF_LOCAL_ZETA_SHIFT_MAX, form the recurrence product as a loop
+of ball multiplications and intersect direct Gamma(z) with Gamma(z+n)/product_(j=0..n-1)(z+j).
+Gamma(z+1) = z Gamma(z) is refs/src/tate-poonen/notes.txt:61; acb_gamma is
+refs/src/flint-3.0.1/acb.rst:893-896. A product containing zero cannot certify division. A finite direct
+candidate is retained in that case. The existing exact and mixed pole tests still run first.
+Above the shift cap a finite direct value remains usable; a failed direct value still gives LIMIT.
+
+The recurrence alone does not meet this fixture target on FLINT 3.0.1. The midpoint certificate is also
+sharpened by the following bound. No input radius is discarded.
+
+1. On the pole-free rectangle, differentiate L(s) = pi^(-s/2) Gamma(s/2). The product and chain rules give
+   L'(s) = L(s) (digamma(s/2) - log(pi))/2. Digamma is Gamma'/Gamma by
+   refs/src/flint-3.0.1/acb.rst:916-918.
+2. The candidate ball encloses L on the entire rectangle. Its magnitude, multiplied by the magnitude
+   of the second factor and divided by 2, bounds |L'| there. Every magnitude operation rounds outward.
+3. The smaller of this bound and Z6's bound is still an upper bound. If digamma is nonfinite, Z6 remains.
+4. Integrate L' along the segment from the midpoint to any point of the convex rectangle. Its length is
+   at most the Euclidean input radius R. Enlarging the midpoint value by R times this bound encloses L.
+   Intersection with the recurrence candidate and outward rounding preserve enclosure.
+
+The real fixture width remains `64*sampled_width_lower + 2^(-prec+8)*image_bound` per coordinate.
+It applies to the two review inputs eta0 = (1,1) and (5,4), alpha = 1, prec = 160, and
+S = -3/4 +/- 2^-12 + i (0 +/- 2^-12). Both characters are even; here z = s/2 is centred at -3/8.
+The certified sampled lower width is 0.00010116010017604849 and image_bound is 20.
+The centre and all four corners are included. This remains a fixture target, not an API width promise.
+
+Check: `test_tate_local` appends `review_real_width`; its 60 checks pass after four width checks failed
+on the unchanged implementation. All 394 slice 5a vectors and 1861 samples still run.
+Check: `test_tate_gamma` still runs all 721 slice 5b vectors and 1950 samples.
+Check: `lanes/m5-review1/extra_checks.py real`, linked to the repaired archive, exits 0 with
+2594 checks, 160 inputs, 480 calls and 0 failures.
+
+The bounded mutation run exposed a missing inclusive character-cap test. `test_tate_gamma` appends
+`inclusive_character_cap`: the primitive even character (65536,5) at infinity and s = 1/2 has gamma
+and epsilon containing 1. Changing gamma's conductor test from `>` to `>=` fails this test; the live
+code passes it. No conductor limit or header changed.

@@ -1,0 +1,32 @@
+cc -Iinclude -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP -c src/localfactor.c -o lanes/t5-repair2/build-plain/localfactor.o
+src/localfactor.c: In function ‘real_factor’:
+src/localfactor.c:313:5: error: ‘arb_get_lbound_arf’ reading 48 bytes from a region of size 32 [-Werror=stringop-overread]
+  313 |     arb_get_lbound_arf(lo, acb_realref(s), w);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/localfactor.c:313:5: note: referencing argument 2 of type ‘const arb_struct[1]’
+In file included from include/adelefeld/adele.h:36,
+                 from include/adelefeld.h:55,
+                 from src/localfactor.c:18:
+/usr/include/flint/arb.h:280:6: note: in a call to function ‘arb_get_lbound_arf’
+  280 | void arb_get_lbound_arf(arf_t u, const arb_t x, slong prec);
+      |      ^~~~~~~~~~~~~~~~~~
+src/localfactor.c:314:5: error: ‘arb_get_ubound_arf’ reading 48 bytes from a region of size 32 [-Werror=stringop-overread]
+  314 |     arb_get_ubound_arf(hi, acb_realref(s), w);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/localfactor.c:314:5: note: referencing argument 2 of type ‘const arb_struct[1]’
+/usr/include/flint/arb.h:279:6: note: in a call to function ‘arb_get_ubound_arf’
+  279 | void arb_get_ubound_arf(arf_t u, const arb_t x, slong prec);
+      |      ^~~~~~~~~~~~~~~~~~
+In file included from include/adelefeld/adele.h:37:
+In function ‘acb_mul_2exp_si’,
+    inlined from ‘real_factor’ at src/localfactor.c:331:5:
+/usr/include/flint/acb.h:519:5: error: ‘arb_mul_2exp_si’ reading 48 bytes from a region of size 32 [-Werror=stringop-overread]
+  519 |     arb_mul_2exp_si(acb_realref(z), acb_realref(x), e);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/flint/acb.h:519:5: note: referencing argument 2 of type ‘const arb_struct[1]’
+/usr/include/flint/arb.h: In function ‘real_factor’:
+/usr/include/flint/arb.h:215:6: note: in a call to function ‘arb_mul_2exp_si’
+  215 | void arb_mul_2exp_si(arb_t y, const arb_t x, slong e);
+      |      ^~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make: *** [Makefile:90: lanes/t5-repair2/build-plain/localfactor.o] Error 1

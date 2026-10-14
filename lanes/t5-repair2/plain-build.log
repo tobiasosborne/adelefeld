@@ -1,0 +1,6 @@
+make: 'lanes/t5-repair2/build-plain/test_tate_local' is up to date.
+cc -Iinclude -Itests -std=c11 -O2 -g -Wall -Wextra -Wpedantic -Werror -MMD -MP  tests/test_tate_gamma.c lanes/t5-repair2/build-plain/support/golden.o lanes/t5-repair2/build-plain/support/jsonl.o lanes/t5-repair2/build-plain/libadelefeld.a -lflint -lgmp -lm -o lanes/t5-repair2/build-plain/test_tate_gamma
+make: 'lanes/t5-repair2/build-plain/test_localfactor' is up to date.
+make: 'lanes/t5-repair2/build-plain/test_tate' is up to date.
+make: 'lanes/t5-repair2/build-plain/test_tate_continue' is up to date.
+make: 'lanes/t5-repair2/build-plain/test_tate_fe' is up to date.
