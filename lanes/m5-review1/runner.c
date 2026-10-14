@@ -1,0 +1,15 @@
+#include <adelefeld.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int adf_tate_trace(ulong*,ulong*,ulong*,ulong*,ulong*,acb_t,acb_t,acb_t,const adf_char_t,const acb_t,slong,slong,int,int);
+static void pr(const arb_t x){char *a=arb_dump_str(x);printf("%s",a);flint_free(a);}
+static void pc(const acb_t z){pr(acb_realref(z));printf(";");pr(acb_imagref(z));}
+static void ball(acb_t z,double x,double y,long r){arb_set_d(acb_realref(z),x);arb_set_d(acb_imagref(z),y);if(r!=9999){mag_set_ui_2exp_si(arb_radref(acb_realref(z)),1,r);mag_set_ui_2exp_si(arb_radref(acb_imagref(z)),1,r);}}
+int main(void){int id,kind;unsigned long q,n,p;double sx,sy,ax,ay;long sr,ar,bits,prec;adf_char_t chi;adf_place_t v,where;acb_t s,a,z,saved,fwd,dual;adf_char_init(chi);acb_init(s);acb_init(a);acb_init(z);acb_init(saved);acb_init(fwd);acb_init(dual);
+while(scanf("%d %d %lu %lu %lu %lf %lf %ld %lf %lf %ld %ld %ld",&id,&kind,&q,&n,&p,&sx,&sy,&sr,&ax,&ay,&ar,&bits,&prec)==13){int cs=adf_char_set_conrey(chi,q,n);printf("%d %d",id,cs);if(cs!=ADF_OK){puts("");fflush(stdout);continue;}printf(" %lu %lu %d",chi->q,chi->n,chi->parity);ball(s,sx,sy,sr);ball(a,ax,ay,ar);v=adf_place_inf();if(p)adf_place_prime(&v,p);
+if(kind==2){ulong N=0,R=0,K=0,work=0,deg[128]={0};acb_set_si_si(z,123,-456);int st=adf_tate_trace(&N,&R,&K,deg,&work,z,fwd,dual,chi,s,bits,prec,1,0);printf(" | %d %lu %lu %lu %lu | ",st,N,R,K,work);pc(z);printf(" | ");pc(fwd);printf(" | ");pc(dual);printf(" | ");for(ulong j=0;j<2*K;j++)printf("%lu,",deg[j]);}
+else if(kind==3){if(ax==0)acb_set_si_si(chi->s,5,7);adf_rfun_t phi;adf_ffun_t f;adf_rfun_init(phi);adf_ffun_init(f);int st=adf_tate_vector(phi,f,chi,prec);printf(" | %d",st);if(st==ADF_OK){int shape=phi->len==1 && acb_is_one(phi->term[0].A) && acb_is_zero(phi->term[0].B) && acb_is_zero(phi->term[0].C) && acb_poly_length(phi->term[0].P)==chi->parity+1; acb_poly_get_coeff_acb(z,phi->term[0].P,chi->parity);shape &= acb_is_one(z);if(chi->parity){acb_poly_get_coeff_acb(z,phi->term[0].P,0);shape &= acb_is_zero(z);}printf(" %lu %lu %ld %d",f->D,f->M,phi->len,shape);for(ulong j=0;j<f->D*f->M;j++){printf(" | ");pc(f->f+j);}}adf_rfun_clear(phi);adf_ffun_clear(f);}
+else{for(int fn=0;fn<(kind==4?1:3);fn++){unsigned char before[sizeof z];acb_clear(z);memset(z,0,sizeof z);acb_init(z);acb_set_si_si(z,123,-456);memcpy(before,z,sizeof z);adf_place_prime(&where,17);int st;if(kind==0){if(fn==0)st=adf_local_tate_at(z,&where,s,v,a,chi,prec);else if(fn==1)st=adf_local_gamma_at(z,&where,s,v,a,chi,prec);else st=adf_local_epsilon_at(z,&where,s,v,a,chi,prec);}else{if(kind==4)st=adf_tate_completed(z,chi,s,bits,prec);else if(fn==0)st=adf_tate_integral(z,chi,s,bits,prec);else if(fn==1)st=adf_tate_continue(z,chi,s,bits,prec);else st=adf_tate_completed(z,chi,s,bits,prec);}printf(" | %d %d %d ",st,st ? memcmp(before,z,sizeof z)==0 : 0,adf_place_equal(where,v));pc(z);}}
+puts("");fflush(stdout);}
+adf_char_clear(chi);acb_clear(s);acb_clear(a);acb_clear(z);acb_clear(saved);acb_clear(fwd);acb_clear(dual);flint_cleanup();return 0;}
