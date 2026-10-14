@@ -1,0 +1,229 @@
+    Updating `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_olEVNJ/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_olEVNJ/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=no --check-bounds=yes --warn-overwrite=yes --depwarn=yes
+ --inline=yes --startup-file=no --track-allocation=none
+   2365.4 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 2 seconds. 8 already precompiled.
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  26.2s
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.2 | 1015   1015  11.4s
+types and layout rows: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:879
+  Expression: (:adele, 96, 8) in rows
+   Evaluated: (:adele, 96, 8) in [(:rat, 16, 8), (:text_limits, 32, 8), (:fball, 48, 8), (:cadele, 144, 8)]
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:879 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:878 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1334
+  Expression: occursin("layout", text)
+   Evaluated: occursin("layout", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_sfvIHf/fault_adele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1334 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1315 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1336
+  Expression: occursin(query * suffix, text)
+   Evaluated: occursin("adf_sizeof_adele", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_sfvIHf/fault_adele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1336 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1315 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1337
+  Expression: occursin(string(observed), text)
+   Evaluated: occursin("104", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_sfvIHf/fault_adele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1337 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1315 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1334
+  Expression: occursin("layout", text)
+   Evaluated: occursin("layout", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_sfvIHf/fault_adele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1334 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1315 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1336
+  Expression: occursin(query * suffix, text)
+   Evaluated: occursin("adf_alignof_adele", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library
+ /home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_sfvIHf/fault_adele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1336 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1315 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1337
+  Expression: occursin(string(observed), text)
+   Evaluated: occursin("16", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_sfvIHf/fault_adele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1337 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:1315 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:877
+Test Summary:                                                   | Pass  Fail  Total   Time
+Adelefeld step J-a.3                                            | 1638     7   1645  32.6s
+  types and layout rows                                         |    6     1      7   4.8s
+  constructors, copies and numerical frame inverse              |   37           37   1.8s
+  SPEC 4.3 rows through Adele at prec 64                        |   19           19   0.5s
+  header precision rules and exactness                          |   71           71   0.9s
+  numerical arithmetic: 50 random pairs at BigFloat 256 bits    |  750          750   1.6s
+  scalar matrix, embedding, inputs unchanged and failure status |  179          179   4.1s
+  refusals and argument bounds before C                         |  195          195   3.3s
+  text statuses and 30 adele/complex round trips                |  214          214   0.4s
+  closed owners, projections survive and GC                     |  145          145   6.8s
+  adele layout rejection in separate processes                  |   22     6     28   8.5s
+RNG of the outermost testset: Random.Xoshiro(0xcc22f45abb468cee, 0x5733fd9404b575af, 0x7b9ecf6e25d35506, 
+0x5c87bcff693db97f, 0xc38f25396737a992)
+ERROR: LoadError: Some tests did not pass: 1638 passed, 7 failed, 0 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/scratch/Adelefeld/test/runtests.jl:874
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, 
+test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool)
+    @ Pkg.Operations 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, 
+test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, 
+mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550

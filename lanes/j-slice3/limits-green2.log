@@ -1,0 +1,32 @@
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_EYBcxA/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_EYBcxA/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  50.4s
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.2 | 1015   1015  18.6s
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+ERRORS=24 LIMIT_CALLS=0 LIVE=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.3 | 1649   1649  42.7s
+     Testing Adelefeld tests passed 

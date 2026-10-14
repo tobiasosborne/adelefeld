@@ -1,0 +1,653 @@
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_JQwaS6/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_JQwaS6/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  30.5s
+Test Summary:        | Pass  Total  Time
+Adelefeld step J-a.2 | 1015   1015  9.6s
+types and layout rows: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:874
+  Expression: (:adele, 96, 8) in rows
+   Evaluated: (:adele, 96, 8) in [(:rat, 16, 8), (:text_limits, 32, 8), (:fball, 48, 8)]
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:874 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:873 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+types and layout rows: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:875
+  Expression: (:cadele, 144, 8) in rows
+   Evaluated: (:cadele, 144, 8) in [(:rat, 16, 8), (:text_limits, 32, 8), (:fball, 48, 8)]
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:875 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:873 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+types and layout rows: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:876
+  Test threw exception
+  Expression: Adele <: Number
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+   [2] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:876 [inlined]
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:873 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+types and layout rows: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:877
+  Test threw exception
+  Expression: CAdele <: Number
+  UndefVarError: `CAdele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+   [2] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:877 [inlined]
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:873 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+types and layout rows: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:878
+  Test threw exception
+  Expression: RealBall !== Adele
+  UndefVarError: `RealBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+   [2] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:878 [inlined]
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:873 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+types and layout rows: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:879
+  Test threw exception
+  Expression: ComplexBall !== CAdele
+  UndefVarError: `ComplexBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+   [1] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:677 [inlined]
+   [2] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:879 [inlined]
+   [3] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [4] macro expansion
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:873 [inlined]
+   [5] macro expansion
+     @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+   [6] top-level scope
+     @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+constructors, copies and numerical frame inverse: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:932
+  Got exception outside of a @test
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:933 [inlined]
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:933 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+SPEC 4.3 rows through Adele at prec 64: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:983
+  Got exception outside of a @test
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] (::var"#207#208")(c::Int64, s::String)
+      @ Main ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:984
+    [2] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:985 [inlined]
+    [3] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:984 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [7] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [8] top-level scope
+      @ none:6
+    [9] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [10] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [11] _start()
+      @ Base ./client.jl:550
+header precision rules and exactness: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1004
+  Got exception outside of a @test
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1005 [inlined]
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1005 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+numerical arithmetic: 50 random pairs at BigFloat 256 bits: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1047
+  Got exception outside of a @test
+  UndefVarError: `RealBall` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] (::var"#209#210"{var"#exact_zero_fin#exact_zero_fin##0", var"#ball_contains#ball_contains##0", 
+var"#num_contains#num_contains##0", Lcg})()
+      @ Main ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1053
+    [2] setprecision(f::var"#209#210"{var"#exact_zero_fin#exact_zero_fin##0", var"#ball_contains#ball_contains##0", 
+var"#num_contains#num_contains##0", Lcg}, ::Type{BigFloat}, prec::Int64; base::Int64)
+      @ Base.MPFR ./mpfr.jl:1211
+    [3] setprecision(f::Function, ::Type{BigFloat}, prec::Int64)
+      @ Base.MPFR ./mpfr.jl:1210
+    [4] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1049 [inlined]
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1048 [inlined]
+    [7] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [8] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [9] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+   [10] top-level scope
+      @ none:6
+   [11] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [12] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [13] _start()
+      @ Base ./client.jl:550
+scalar matrix, embedding, inputs unchanged and failure status: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1075
+  Got exception outside of a @test
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1076 [inlined]
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1076 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+refusals and argument bounds before C: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1115
+  Got exception outside of a @test
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1116 [inlined]
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1116 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+text statuses and 30 adele/complex round trips: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1165
+  Got exception outside of a @test
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1167 [inlined]
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1166 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+closed owners, projections survive and GC: Error During Test at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1192
+  Got exception outside of a @test
+  UndefVarError: `Adele` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1193 [inlined]
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1193 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258
+  Expression: occursin("layout", text)
+   Evaluated: occursin("layout", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_adele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260
+  Expression: occursin(query * suffix, text)
+   Evaluated: occursin("adf_sizeof_adele", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_adele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261
+  Expression: occursin(string(observed), text)
+   Evaluated: occursin("104", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_adele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258
+  Expression: occursin("layout", text)
+   Evaluated: occursin("layout", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_adele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260
+  Expression: occursin(query * suffix, text)
+   Evaluated: occursin("adf_alignof_adele", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library
+ /home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_adele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261
+  Expression: occursin(string(observed), text)
+   Evaluated: occursin("16", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_adele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258
+  Expression: occursin("layout", text)
+   Evaluated: occursin("layout", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_cadele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260
+  Expression: occursin(query * suffix, text)
+   Evaluated: occursin("adf_sizeof_cadele", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library
+ /home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_cadele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261
+  Expression: occursin(string(observed), text)
+   Evaluated: occursin("152", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_cadele_size.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258
+  Expression: occursin("layout", text)
+   Evaluated: occursin("layout", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_cadele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1258 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260
+  Expression: occursin(query * suffix, text)
+   Evaluated: occursin("adf_alignof_cadele", "ERROR=InitError: Adelefeld load gate \"status name\" failed for 
+library /home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_cadele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1260 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+adele layout rejection in separate processes: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261
+  Expression: occursin(string(observed), text)
+   Evaluated: occursin("16", "ERROR=InitError: Adelefeld load gate \"status name\" failed for library 
+/home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_uH6CJR/fault_cadele_align.so: expected 
+adf_status_str(7) == \"DOMAIN\"; observed \"DOMAIN_ERROR\". | during initialization of module 
+Adelefeld\nLOADED=false\nAFTER=module not bound\nINIT_CALLS=0\n")
+
+Stacktrace:
+ [1] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+ [2] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1261 [inlined]
+ [3] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [4] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:1239 [inlined]
+ [5] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [6] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:872
+Test Summary:                                                   | Pass  Fail  Error  Total   Time
+Adelefeld step J-a.3                                            |   17    14     12     43  13.5s
+  types and layout rows                                         |    1     2      4      7   5.3s
+  constructors, copies and numerical frame inverse              |                 1      1   0.2s
+  SPEC 4.3 rows through Adele at prec 64                        |                 1      1   0.1s
+  header precision rules and exactness                          |                 1      1   0.0s
+  numerical arithmetic: 50 random pairs at BigFloat 256 bits    |                 1      1   0.7s
+  scalar matrix, embedding, inputs unchanged and failure status |                 1      1   0.0s
+  refusals and argument bounds before C                         |                 1      1   0.0s
+  text statuses and 30 adele/complex round trips                |                 1      1   0.0s
+ERROR: LoadError: Some tests did not pass: 17 passed, 14 failed, 12 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:870
+  closed owners, projections survive and GC                     |                 1      1   0.0s
+  adele layout rejection in separate processes                  |   16    12            28   7.4s
+RNG of the outermost testset: Random.Xoshiro(0x42d77256567f5d6c, 0x0f04da95bc5c3586, 0xed085b2e668ae7d0, 
+0x0714ab23275e5aa4, 0x42a077f59fdeff8a)
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, 
+test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool)
+    @ Pkg.Operations 
+~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, 
+test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, 
+allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, 
+mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550

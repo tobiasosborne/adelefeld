@@ -1,0 +1,12 @@
+F1 carrier frame removed by wrong width: exit 1; caught=1; J-a.3 1548/9/0/1557
+F2 ring operation precision replaced by 64: exit 1; caught=1; J-a.3 1545/12/0/1557
+F3 set_adele embedding skipped: exit 1; caught=1; J-a.3 1550/7/0/1557
+F4 carrier finite-zero assertion omitted: exit 1; caught=1; J-a.3 1643/2/0/1645
+F5 numerical arb address read outside preserve: exit 0; caught=0; J-a.3 1645/0/0/1645
+F6 div_rat status ignored: exit 1; caught=1; J-a.3 1605/40/0/1645
+F7 adele layout row not gated: exit 1; caught=1; J-a.3 1638/7/0/1645
+F8 real getter called at a finite place: exit 1; caught=1; J-a.3 1408/237/0/1645
+F9 all numerical binary operations routed to add: exit 1; caught=1; J-a.3 1445/200/0/1645
+F10 two-ball complex constructor loses imaginary part: exit 1; caught=1; J-a.3 1594/51/0/1645
+F11 Adele/CAdele limit default evaluated before prec: exit 1; caught=1; J-a.3 1648/1/0/1649
+F12 carrier limit default evaluated before prec: exit 1; caught=1; J-a.3 1648/1/0/1649

@@ -13,11 +13,14 @@ export try_add, try_sub, try_mul, try_neg, try_div, try_inv
 export add, sub, mul, neg, divexact, identical
 export FBall, try_fball, PointComparison, equal_set, overlaps, inside, compare_points, center, radius
 export is_canonical
+export Adele, CAdele, RealBall, ComplexBall, finitepart, realpart, complexpart
 
 include("status.jl")
 include("load.jl")
 include("handle.jl")
 include("rat.jl")
 include("fball.jl")
+include("adele.jl")
+include("carrier.jl")
 
 end

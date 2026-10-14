@@ -78,3 +78,36 @@ size_t adf_alignof_rat(void) { return 8; }
 size_t adf_sizeof_text_limits(void) { return 32; }
 size_t adf_alignof_text_limits(void) { return 8; }
 #endif
+
+/* Step J-a.3: compile with FAULT_NAME as well. The layout gate precedes the status-name gate,
+   so the extra name fault is unreachable. This keeps the earlier fixture branches unchanged. */
+#ifdef FAULT_ADELE_SIZE
+size_t adf_sizeof_adele(void) { return 104; }
+#endif
+#ifdef FAULT_ADELE_ALIGN
+size_t adf_alignof_adele(void) { return 16; }
+#endif
+#ifdef FAULT_CADELE_SIZE
+size_t adf_sizeof_cadele(void) { return 152; }
+#endif
+#ifdef FAULT_CADELE_ALIGN
+size_t adf_alignof_cadele(void) { return 16; }
+#endif
+
+/* Link FAULT_MISSING against the core for this counting fixture. Its names are correct, and
+   the dependency supplies adf_status_count and the later symbols. No production glue.
+   Literal defaults: include/adelefeld/text.h:80-84,105-114; fixed eight-byte word layout:89-90. */
+#ifdef COUNT_LIMITS
+static int fixture_limits = 0;
+int fixture_limits_calls(void) { return fixture_limits; }
+void adf_text_limits_default(void * lim)
+{
+    size_t * w = (size_t *) lim;
+
+    fixture_limits++;
+    w[0] = 1048576;
+    w[1] = 100000;
+    w[2] = 100000;
+    w[3] = 1048576;
+}
+#endif

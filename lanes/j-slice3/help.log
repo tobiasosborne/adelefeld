@@ -1,0 +1,344 @@
+Julia 1.12.5
+
+--- #= none:2 =# GC.@preserve
+  GC.@preserve x1 x2 ... xn expr
+
+  Mark the objects x1, x2, ... as being in use during the evaluation of the
+  expression expr. This is only required in unsafe code where expr implicitly
+  uses memory or other resources owned by one of the xs.
+
+  Implicit use of x covers any indirect use of resources logically owned by x
+  which the compiler cannot see. Some examples:
+
+    •  Accessing memory of an object directly via a Ptr
+    •  Passing a pointer to x to ccall
+    •  Using resources of x which would be cleaned up in the finalizer.
+
+  @preserve should generally not have any performance impact in typical use
+  cases where it briefly extends object lifetime. In implementation, @preserve
+  has effects such as protecting dynamically allocated objects from garbage
+  collection.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  When loading from a pointer with unsafe_load, the underlying object is
+  implicitly used, for example x is implicitly used by unsafe_load(p) in the
+  following:
+
+  julia> let
+             x = Ref{Int}(101)
+             p = Base.unsafe_convert(Ptr{Int}, x)
+             GC.@preserve x unsafe_load(p)
+         end
+  101
+
+  When passing pointers to ccall, the pointed-to object is implicitly used and
+  should be preserved. (Note however that you should normally just pass x
+  directly to ccall which counts as an explicit use.)
+
+  julia> let
+             x = "Hello"
+             p = pointer(x)
+             Int(GC.@preserve x @ccall strlen(p::Cstring)::Csize_t)
+             # Preferred alternative
+             Int(@ccall strlen(x::Cstring)::Csize_t)
+         end
+  5
+
+--- finalizer
+  finalizer(f, x)
+
+  Register a function f(x) to be called when there are no program-accessible
+  references to x, and return x. The type of x must be a mutable struct,
+  otherwise the function will throw.
+
+  f must not cause a task switch, which excludes most I/O operations such as
+  println. Using the @async macro (to defer context switching to outside of
+  the finalizer) or ccall to directly invoke IO functions in C may be helpful
+  for debugging purposes.
+
+  Note that there is no guaranteed world age for the execution of f. It may be
+  called in the world age in which the finalizer was registered or any later
+  world age.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  finalizer(my_mutable_struct) do x
+      @async println("Finalizing $x.")
+  end
+  
+  finalizer(my_mutable_struct) do x
+      ccall(:jl_safe_printf, Cvoid, (Cstring, Cstring), "Finalizing %s.", repr(x))
+  end
+
+  A finalizer may be registered at object construction. In the following
+  example note that we implicitly rely on the finalizer returning the newly
+  created mutable struct x.
+
+  mutable struct MyMutableStruct
+      bar
+      function MyMutableStruct(bar)
+          x = new(bar)
+          f(t) = @async println("Finalizing $t.")
+          finalizer(f, x)
+      end
+  end
+
+--- setprecision
+  setprecision(f::Function, [T=BigFloat,] precision::Integer; base=2)
+
+  Change the T arithmetic precision (in the given base) for the duration of f.
+  It is logically equivalent to:
+
+  old = precision(BigFloat)
+  setprecision(BigFloat, precision)
+  f()
+  setprecision(BigFloat, old)
+
+  Often used as setprecision(T, precision) do ... end
+
+  Note: nextfloat(), prevfloat() do not use the precision mentioned by
+  setprecision.
+
+  │ Warning
+  │
+  │  There is a fallback implementation of this method that calls
+  │  precision and setprecision, but it should no longer be relied on.
+  │  Instead, you should define the 3-argument form directly in a way
+  │  that uses ScopedValue, or recommend that callers use ScopedValue
+  │  and @with themselves.
+
+  │ Julia 1.8
+  │
+  │  The base keyword requires at least Julia 1.8.
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  setprecision([T=BigFloat,] precision::Int; base=2)
+
+  Set the precision (in bits, by default) to be used for T arithmetic. If base
+  is specified, then the precision is the minimum required to give at least
+  precision digits in the given base.
+
+  │ Warning
+  │
+  │  This function is not thread-safe. It will affect code running on
+  │  all threads, but its behavior is undefined if called concurrently
+  │  with computations that use the setting.
+
+  │ Julia 1.8
+  │
+  │  The base keyword requires at least Julia 1.8.
+
+--- BigFloat
+  BigFloat(x::Union{Real, AbstractString} [, rounding::RoundingMode=rounding(BigFloat)]; 
+[precision::Integer=precision(BigFloat)])
+
+  Create an arbitrary precision floating point number from x, with precision
+  precision. The rounding argument specifies the direction in which the result
+  should be rounded if the conversion cannot be done exactly. If not provided,
+  these are set by the current global values.
+
+  BigFloat(x::Real) is the same as convert(BigFloat,x), except if x itself is
+  already BigFloat, in which case it will return a value with the precision
+  set to the current global precision; convert will always return x.
+
+  BigFloat(x::AbstractString) is identical to parse. This is provided for
+  convenience since decimal literals are converted to Float64 when parsed, so
+  BigFloat(2.1) may not yield what you expect.
+
+  See also:
+
+    •  @big_str
+    •  rounding and setrounding
+    •  precision and setprecision
+
+  │ Julia 1.1
+  │
+  │  precision as a keyword argument requires at least Julia 1.1. In
+  │  Julia 1.0 precision is the second positional argument (BigFloat(x,
+  │  precision)).
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> BigFloat(2.1) # 2.1 here is a Float64
+  2.100000000000000088817841970012523233890533447265625
+  
+  julia> BigFloat("2.1") # the closest BigFloat to 2.1
+  2.099999999999999999999999999999999999999999999999999999999999999999999999999986
+  
+  julia> BigFloat("2.1", RoundUp)
+  2.100000000000000000000000000000000000000000000000000000000000000000000000000021
+  
+  julia> BigFloat("2.1", RoundUp, precision=128)
+  2.100000000000000000000000000000000000007
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  BigFloat <: AbstractFloat
+
+  Arbitrary precision floating point number type.
+
+--- parse
+  parse(type, str; base)
+
+  Parse a string as a number. For Integer types, a base can be specified (the
+  default is 10). For floating-point types, the string is parsed as a decimal
+  floating-point number. Complex types are parsed from decimal strings of the
+  form "R±Iim" as a Complex(R,I) of the requested type; "i" or "j" can also be
+  used instead of "im", and "R" or "Iim" are also permitted. If the string
+  does not contain a valid number, an error is raised.
+
+  │ Julia 1.1
+  │
+  │  parse(Bool, str) requires at least Julia 1.1.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> parse(Int, "1234")
+  1234
+  
+  julia> parse(Int, "1234", base = 5)
+  194
+  
+  julia> parse(Int, "afc", base = 16)
+  2812
+  
+  julia> parse(Float64, "1.2e-3")
+  0.0012
+  
+  julia> parse(Complex{Float64}, "3.2e-1 + 4.5im")
+  0.32 + 4.5im
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  parse(::Type{Platform}, triplet::AbstractString)
+
+  Parses a string platform triplet back into a Platform object.
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  parse(::Type{SimpleColor}, rgb::String)
+
+  An analogue of tryparse(SimpleColor, rgb::String) (which see), that raises
+  an error instead of returning nothing.
+
+--- ^
+  ^(s::Regex, n::Integer) -> Regex
+
+  Repeat a regex n times.
+
+  │ Julia 1.3
+  │
+  │  This method requires at least Julia 1.3.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> r"Test "^2
+  r"(?:Test ){2}"
+  
+  julia> match(r"Test "^2, "Test Test ")
+  RegexMatch("Test Test ")
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  ^(s::Union{AbstractString,AbstractChar}, n::Integer) -> AbstractString
+
+  Repeat a string or character n times. This can also be written as repeat(s,
+  n).
+
+  See also repeat.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> "Test "^3
+  "Test Test Test "
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  ^(x, y)
+
+  Exponentiation operator.
+
+  If x and y are integers, the result may overflow. To enter numbers in
+  scientific notation, use Float64 literals such as 1.2e3 rather than 1.2 *
+  10^3.
+
+  If y is an Int literal (e.g. 2 in x^2 or -3 in x^-3), the Julia code x^y is
+  transformed by the compiler to Base.literal_pow(^, x, Val(y)), to enable
+  compile-time specialization on the value of the exponent. (As a default
+  fallback we have Base.literal_pow(^, x, Val(y)) = ^(x,y), where usually ^ ==
+  Base.^ unless ^ has been defined in the calling namespace.) If y is a
+  negative integer literal, then Base.literal_pow transforms the operation to
+  inv(x)^-y by default, where -y is positive.
+
+  See also exp2, <<.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> 3^5
+  243
+  
+  julia> 3^-1  # uses Base.literal_pow
+  0.3333333333333333
+  
+  julia> p = -1;
+  
+  julia> 3^p
+  ERROR: DomainError with -1:
+  Cannot raise an integer x to a negative power -1.
+  [...]
+  
+  julia> 3.0^p
+  0.3333333333333333
+  
+  julia> 10^19 > 0  # integer overflow
+  false
+  
+  julia> big(10)^19 == 1e19
+  true
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  ^(A::AbstractMatrix, p::Number)
+
+  Matrix power, equivalent to \exp(p\log(A))
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> [1 2; 0 3]^3
+  2×2 Matrix{Int64}:
+   1  26
+   0  27
+
+  ────────────────────────────────────────────────────────────────────────────
+
+  ^(b::Number, A::AbstractMatrix)
+
+  Matrix exponential, equivalent to \exp(\log(b)A).
+
+  │ Julia 1.1
+  │
+  │  Support for raising Irrational numbers (like ℯ) to a matrix was
+  │  added in Julia 1.1.
+
+  Examples
+  ≡≡≡≡≡≡≡≡
+
+  julia> 2^[1 2; 0 3]
+  2×2 Matrix{Float64}:
+   2.0  6.0
+   0.0  8.0
+  
+  julia> ℯ^[1 2; 0 3]
+  2×2 Matrix{Float64}:
+   2.71828  17.3673
+   0.0      20.0855

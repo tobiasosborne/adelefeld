@@ -1,0 +1,30 @@
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_m6FVac/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/tmp/jl_m6FVac/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice3/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=no --check-bounds=yes --warn-overwrite=yes --depwarn=yes
+ --inline=yes --startup-file=no --track-allocation=none
+   5558.7 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 6 seconds. 8 already precompiled.
+     Testing Running tests...
+
+[46] signal 15: Terminated
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice3/julia/Adelefeld/test/runtests.jl:874
+epoll_pwait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+uv__io_poll at /workspace/srcdir/libuv/src/unix/linux.c:1404
+uv_run at /workspace/srcdir/libuv/src/unix/core.c:430
+ijl_task_get_next at /cache/build/builder-amdci5-3/julialang/julia-release-1-dot-12/src/scheduler.c:457

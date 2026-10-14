@@ -1,0 +1,84 @@
+ERROR: LoadError: Some tests did not pass: 9 passed, 6 failed, 0 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:2
+all integer literal powers are refused: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/powers_test.jl:7
+  Expression: e isa ArgumentError && occursin("pow", sprint(showerror, e))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:3
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:7 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+all integer literal powers are refused: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/powers_test.jl:7
+  Expression: e isa ArgumentError && occursin("pow", sprint(showerror, e))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:3
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:7 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+all integer literal powers are refused: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/powers_test.jl:7
+  Expression: e isa ArgumentError && occursin("pow", sprint(showerror, e))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:3
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:7 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+all integer literal powers are refused: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/powers_test.jl:7
+  Expression: e isa ArgumentError && occursin("pow", sprint(showerror, e))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:3
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:7 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+all integer literal powers are refused: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/powers_test.jl:7
+  Expression: e isa ArgumentError && occursin("pow", sprint(showerror, e))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:3
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:7 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+all integer literal powers are refused: Test Failed at /home/tobias/Projects/adelefeld-
+wt/j-slice3/lanes/j-slice3/powers_test.jl:7
+  Expression: e isa ArgumentError && occursin("pow", sprint(showerror, e))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:3
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice3/lanes/j-slice3/powers_test.jl:7 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+Test Summary:                          | Pass  Fail  Total  Time
+all integer literal powers are refused |    9     6     15  4.1s
+RNG of the outermost testset: Random.Xoshiro(0xcf5dc362bc4e18c3, 0x7062cd149599222d, 0xc14b2cff93b04d5e, 
+0x7a7b28fe6ab179dc, 0x405c2a934a655724)

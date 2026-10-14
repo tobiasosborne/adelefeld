@@ -385,3 +385,7 @@ Base.isequal(x::FBall, y::FBall) = x === y
 Base.isequal(x::FBall, y::BallScalar) = false
 Base.isequal(x::BallScalar, y::FBall) = false
 Base.hash(x::FBall, h::UInt) = hash(objectid(x), h)
+
+# Orchestrator resolution of api-ja.md finding 19: no generic independent-ball power.
+Base.:^(x::FBall, n::Integer) =
+    throw(ArgumentError("^ is refused for FBall; use future pow when it lands"))

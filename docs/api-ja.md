@@ -256,6 +256,9 @@ glibc's bytes in use (`mallinfo2`, `uordblks + hblkhd`) by less than 4 MB (obser
     point (`(1 mod 2)^2` prints `(* ; 1 mod 2)`, while every odd square is 1 mod 8). The design names `pow(x, k;
     tight=false)` for a later step (`docs/api-j.md:296`). This step neither defines nor refuses `^`; a refusing
     method until `pow` lands is for the orchestrator to decide.
+    Resolution from the orchestrator, step J-a.3: refuse `^` on FBall, Adele and CAdele until `pow` lands.
+    Each type has one method for an Integer exponent, throwing ArgumentError and naming the future `pow`.
+    One shared literal_pow method forwards literal powers to ^; otherwise negative literals call inv first.
 20. `PointComparison` has no load-time name check: the C library has no name function for the `ADF_CMP_*` values.
     The numbers are transcribed from `status.h:35-37`; a raw value outside 0..2 is `AdfAbiError`. Likewise the int
     of every FBall predicate must be 0 or 1 (`fball.h:234-237`), else `AdfAbiError` (the Rat predicates of step
@@ -271,3 +274,154 @@ The installed help of Julia 1.12.5 for `isequal`, `hash`, `==`, `in`, `objectid`
 of isequal calls ==" (26-27) and "isequal(x,y) must imply that hash(x) == hash(y)" (29-30); `in` "in the sense
 that it is == to one of the values", Sets use `isequal` (151-166); `objectid` "Get a hash value for x based on
 object identity" (231-237). The other Julia facts used are those of step J-a.1 (`lanes/j-slice1/help.log`).
+
+# Step J-a.3: Adele, CAdele and numerical carriers
+
+This step builds the third item of J-a in docs/api-j.md section 9. The earlier 21 DESIGN-FINDINGs are kept.
+Finding 19 is resolved by the orchestrator's refusal of ^ until pow lands. No context, place type, dump
+form or text classification is added. The specification and design are unchanged.
+
+## What was built
+
+- src/adele.jl: owning Adele/CAdele handles, literal layout rows 96/8 and 144/8, init, cached clear,
+  finalizers, close, copy, identical and is_canonical. Constructors from Rat, Integer and Rational; exact
+  embedding of Adele into CAdele; typed value parsers with prec and TextLimits; C printers with digits,
+  checked NUL and adf_str_free in a finally; finitepart copies.
+- src/carrier.jl: RealBall and ComplexBall own an initialized private Adele/CAdele with exact finite 0.
+  Numerical addresses are borrowed inside preserve only. Constructors from Rat, Integer and Rational at
+  prec; parsers with the fixed frame; an exact two-RealBall complex constructor; realpart and complexpart;
+  copy, close, show, and numerical +, -, *, unary -. Every returned carrier checks its finite coordinate.
+- Adelically typed +, -, *, unary -, and division by Rat. Rat mixed arithmetic uses C *_rat functions;
+  subtraction uses exact negation and add_rat because the header offers no sub_rat. Integer and Rational
+  scalars convert explicitly to Rat. Adele mixed with CAdele embeds through set_adele. Named/try forms take
+  prec=64; operators use 64. Failures retain C statuses, and temporary owners are cleared on failure.
+- load.jl: 42 new required symbols (41 core functions and one FLINT numerical copy from the core handle's
+  dependency), for 89 total, and two layout rows, for five total. No new dlopen. Adelefeld.jl exports seven
+  new names and includes both source files. fball.jl has only the ^ refusal added.
+- test/runtests.jl: one appended testset, "Adelefeld step J-a.3". Four layout fault functions are appended
+  to test/fixtures/fault.c. Their fixture builds also define FAULT_NAME; the layout gate rejects them
+  before the unreachable status-name fault.
+
+## Statements checked
+
+S21. Layout and lifecycle. Both literal rows are gated for size and alignment. Four fixture libraries are
+rejected before any counted Rat init. copy calls typed C set into fresh storage. Repeated close and later
+finalize are no-ops. Closed accepted inputs are refused before C and before result allocation.
+
+S22. Coordinates. finitepart returns an independent FBall. realpart uses adf_adele_get_real; complexpart
+uses adf_cadele_get_complex. Each numerical getter copies into the first member of a fresh initialized
+carrier whose finite coordinate remains exact 0. Projections survive closing their source. Constructors
+from numerical and finite coordinates preserve both inputs and retain DOMAIN for non-finite numerical
+data. CAdele(Adele(q)) preserves the real ball and finite data exactly, and its imaginary ball is exact 0.
+
+S23. Precision. prec must be an Integer in the Int64 range before any C call or owning allocation.
+Representable negative/zero precisions are passed unchanged: C clamps below 2 (adele.h:21-23). Constructors,
+parsers, ring and scalar arithmetic all pass prec; tests distinguish 16/64 from 128 bits and compare
+below-2 calls with 2. The finite coordinate is independent of prec. Negation is exact and has no prec
+keyword. A dyadic with enough precision is exact, including a 91-bit odd integer at prec 128; 1/3 at
+prec 64 has positive numerical radius and exact finite coordinate 1/3. The text reader's dyadic midpoint
+and dyadic radius rule is checked with 1.5 +/- 1/1024. Adele implements only SPEC 4.4's tight policy:
+(1 mod 2) times 1/2 has finite part 1/2 mod 1, and never the excluding fixed radius 2.
+
+S24. Arithmetic. All five SPEC 4.3 rows run through Adele at prec 64. Their finite coordinates are equal_set
+to the specified balls; actual numerical coordinates contain the exact rational result. x-x has finite
+radius 12 for x=(3 ; 3 mod 12), while its real coordinate contains 0. Rat on either side has the specified
+sign and exact finite data. Both embedding orders run through set_adele. Division by exact 0 returns
+NOT_UNIT and value=nothing, or throws AdfError with NOT_UNIT; its output is cleared immediately.
+Inputs stay identical after accepted and failing operations.
+
+S25. Numerical arithmetic and text. Fifty random real and complex pairs run through +, -, *, unary -
+against BigFloat at 256 bits. Their dyadic coordinates and reference results are exactly representable at
+that precision. Test-only FLINT queries check containment in the actual stored ball, rather than its
+potentially wider printed text. Every result has exact finite 0. The frame inverse is checked for both
+carriers. Thirty real and thirty complex adele value round trips preserve finite sets and enclose the
+original numerical balls; no fixed-point decimal text promise is made.
+
+S26. Refusals. Unsupported adelic pairs with FBall, Float64, BigFloat and Complex raise ArgumentError on
+both sides of +, -, *. Division by an adelic value or finite ball raises ArgumentError. Carriers have
+only same-type arithmetic and are not Number subtypes; mixing them with FBall, adeles or scalars raises
+MethodError. Adelically typed ==, including scalar comparisons, raises ArgumentError naming the finite
+set predicates. isequal/hash use ownership identity. ^ with an Integer exponent is refused on FBall,
+Adele and CAdele, with ArgumentError naming future pow. Test.detect_ambiguities(Adelefeld) is empty.
+
+S27. GC. A fresh Julia subprocess has 0 live owners initially. For each of Adele, CAdele, RealBall and
+ComplexBall it runs 10000 iterations making an input, copy, sum and negative, then four collections.
+Every type ends with 0 live handles and 0 finalizer errors. The wrapper has no additional finalizer;
+its initialized carrier clears exactly once. This is a bounded ownership smoke test, not a FLINT leak proof.
+The final gate prints all four LIVE=0 ERRORS=0 child counters into lanes/j-slice3/limits-green2.log.
+
+The gate, red-green runs, planted faults and session are recorded in lanes/j-slice3/report.md and
+redgreen.md. The earlier gate count is 1919. The first green J-a.3 count is 1557, for 3476 total.
+Further closed-input, NULL-printer and negative-literal checks bring J-a.3 to 1645, for 3564 total.
+The default-limit counting fixture brings the final J-a.3 count to 1649, for 3568 total.
+The parent testset freezes automatic GC for exact live-count comparisons and restores it in a finally;
+the separate GC acceptance process runs with automatic GC enabled.
+
+## DESIGN-FINDINGs
+
+22. Accessor names. The design names only finitepart. This step names realpart and complexpart after
+    adf_adele_get_real (adele.h:119-121) and adf_cadele_get_complex (:200). The convenience real getter exists,
+    so no Place type or adf_place_inf wrapper is needed.
+
+23. Real text grammar. The brief gives "1.5 +/- 2^-10", but conventions 9.1-9.2 admits decimal udec for
+    the radius, not powers. C returns PARSE for that example. This step uses "1.5 +/- 0.0009765625".
+    The package delegates the grammar to the C reader.
+
+24. FBall injection. The brief's session calls Adele(f::FBall; prec). Neither the design nor the header
+    gives a one-FBall adele constructor. This explicit constructor copies f with numerical exact 0,
+    through set_arb_fball; it does not interpret the stored finite centre as a real value. prec is
+    validated, and cannot affect exact numerical 0. FBall mixed arithmetic is still refused.
+
+25. Two-ball complex copy. No adf constructor takes two arb inputs. ComplexBall(re, im) calls documented
+    FLINT acb_set_arb_arb (refs/src/flint-3.0.1/acb.rst:124-126), resolved and cached from the same
+    libadelefeld handle's dependency. Both source owners and the whole output carrier are preserved.
+    This uses no raw FLINT init/clear and no additional library. Tests compare both stored balls
+    identically at 192 bits; decimal reframing could not provide that copy contract.
+
+26. Mixed pair refusals. Explicit unsupported Number-family operator methods raise ArgumentError, since
+    Base's promotion fallback can raise ErrorException (finding 21). Unsupported try_ pairs have no
+    applicable methods and raise MethodError. Carriers are separate types with same-type methods only;
+    no Number subtype or scalar promotion is supplied for them in this step.
+
+27. Precision validation. The header allows every slong, clamping below 2. This step checks Julia Integer
+    and Int64 representability, without inventing a positive minimum or another upper bound. The C
+    printer's digits precondition is checked as 1..1000000 (text.h:54-57). No keyword is silently ignored.
+
+28. Carrier text. Exactly six ASCII characters are removed: one leading "(" and the five-character
+    suffix " ; 0)". Parsing adds exactly those characters back. Internal parentheses of complex text
+    are retained. TextLimits bounds the whole framed C input, including those six bytes.
+
+29. ^ resolution. Finding 19 now has the orchestrator's resolution beside its original statement.
+    Each of FBall, Adele and CAdele has one refusing method for an Integer exponent. Base.literal_pow
+    uses ^ by default (installed Julia 1.12.5 help in lanes/j-slice3/help.log), so x^2 is refused too.
+
+30. Numerical pointer fault. A planted arb address read before preserve is not caught by the bounded
+    suite. The owner stays rooted in the observed calling frame, and there is no forced collection at
+    that pointer read. Test success cannot establish the preserve discipline. Production code makes
+    early lifecycle checks without producing pointers, and borrows every numerical address inside
+    preserve. This remains a review obligation, as in finding 14.
+
+31. Negative literal powers. Installed Julia 1.12.5 rewrites negative literal exponents through inv
+    before calling ^ (help.log:272-279). The initial one-method-per-type refusal therefore gave the
+    wrong error for x^-1 and x^-2. A separate red-green test had 9 pass and 6 fail, then 15/15 after
+    one shared literal_pow method forwarded all three ball families to their existing ^ refusals.
+    There remains exactly one ^ method per type; zero, positive and negative literals name future pow.
+
+32. Default text limits and precision. A keyword default limits=TextLimits() invokes C before the parser
+    body validates prec. A counting fixture observed 24 default C calls on 24 invalid-precision inputs.
+    Parsers now use a nothing sentinel and obtain C defaults only after the precision guard. Explicit
+    limits=nothing also selects the C defaults. A dedicated subprocess checks 24 ArgumentErrors,
+    0 default-limit calls and 0 live handles. C defaults are still queried, not copied into production.
+
+## Julia sources
+
+Installed Julia 1.12.5 help is captured with @doc and text/plain display in lanes/j-slice3/help.log.
+Earlier lifetime, atomic, string and identity documentation remains in the first two lanes.
+The preserve help includes "Passing a pointer to x to ccall" (14) and resources cleaned by a finalizer (15).
+Finalizer callbacks "must not cause a task switch" (56). setprecision changes arithmetic precision for the
+duration of its function (90-101). The ^ help gives Base.literal_pow's default fallback to ^ (272-275).
+No additional package was installed. Numerical copy and containment conventions are quoted from
+refs/src/flint-3.0.1/{arb,acb}.rst at the lines cited in the source and tests.
+
+Findings against the specification: none. Sources pending: none new; earlier pending glibc dlsym
+search-order documentation still applies to fixture libraries and dependency symbol lookup.
