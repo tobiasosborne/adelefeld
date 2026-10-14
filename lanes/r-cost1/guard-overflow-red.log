@@ -1,0 +1,3 @@
+X - 1 bound: returned 1, K 1, expected 1
+WORD_MAX times 2: returned 1, expected refusal
+1 failed checks

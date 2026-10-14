@@ -1,0 +1,7 @@
+family cluster e 190 degree 50 prec 2 coefficient bits 9598
+section count 11.885964
+detail tree 0.138346 shift 0.011340 secant 0.000205 sign 0.001031 exact 0.000166 values 66 qir 16 signs 221 fallback 66
+section isolate_refine 0.151242
+section certificate 0.014082
+section verifier 13.916625 result 1
+adf: 12.058830 s, status 0, balls 50, largest mantissa 194 bits

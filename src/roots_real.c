@@ -30,8 +30,9 @@
           mag.rst:149 to 151 (an upper bound of 1 2^y, exact since 1 fits the mantissa); mag_zero, mag.rst:87.
 
    Every decision is an exact sign, an exact grid integer or a comparison of exact dyadic numbers.
-   Arb filters certify the same sign or grid integer; uncertainty falls back to integer arithmetic. Exponents are slong; the
-   products that give shifts are checked (S-D18). A cell is (c, k): the open interval (c 2^k, (c + 1) 2^k); a
+   Arb filters certify the same sign or grid integer; uncertainty falls back to integer arithmetic.
+   Exponents are slong; the products that give shifts are checked (S-D18).
+   A cell is (c, k): the open interval (c 2^k, (c + 1) 2^k); a
    point is (c, k): the number c 2^k. No cell with k < 2 - ADF_ROOTS_BITS_MAX is formed: the function returns
    ADF_LIMIT instead (then the ball of the cell, of radius 2^(k-1), would not be of admissible size). */
 
@@ -148,6 +149,8 @@ typedef struct
     fmpz_poly_t q;
     fmpz_t origin;
     slong scale;
+    slong coefficient_bits;
+    slong * exact_evaluations;  /* per-call test counter; no shared state */
 } local_eval;
 
 static void
@@ -157,6 +160,10 @@ value_2exp(fmpz_t r, const local_eval * g, const fmpz_t m, slong e)
     fmpz_init(x);
     fmpz_mul_2exp(x, g->origin, (ulong) (g->scale - e));
     fmpz_sub(x, m, x);
+#ifdef ADF_CHECK_INVARIANTS
+    if (g->exact_evaluations != NULL)
+        (*g->exact_evaluations)++;
+#endif
     poly_value_2exp(r, g->q, x, e - g->scale);
     fmpz_clear(x);
 }
@@ -191,7 +198,15 @@ secant_grid(fmpz_t t, const local_eval * g, const fmpz_t a, const fmpz_t b, slon
 {
     arb_t fa, fb, r;
     int ok;
-    slong prec = jj <= WORD_MAX - 64 ? jj + 64 : WORD_MAX;
+    slong depth, prec;
+    /* The values shrink with the old cell's width as well as the new grid width.
+       Include all bits refined since the fixed local coordinate was formed.
+       This only changes the filter precision; its unique integer is still the exact
+       Eqir grid integer (design R8 and section 10; [KS]:288). */
+    depth = e < 0 && g->scale > WORD_MAX + e ? WORD_MAX : g->scale - e;
+    depth = FLINT_MAX(depth, jj);
+    prec = g->coefficient_bits > WORD_MAX - 64 || depth > WORD_MAX - 64 - g->coefficient_bits ?
+        WORD_MAX : depth + g->coefficient_bits + 64;
     if (fmpz_poly_degree(g->q) < 8)
         return 0;
     arb_init(fa); arb_init(fb); arb_init(r);
@@ -221,6 +236,24 @@ sign_2exp(const local_eval * g, const fmpz_t m, slong e)
         arb_clear(ball);
         if (s != 0)
             return s;
+        /* Near a root, a fixed 64-bit enclosure usually straddles zero.
+           Retry with the accumulated refinement depth before exact Horner.
+           A certified sign is the same exact sign (R8); zero or uncertainty
+           still uses integer evaluation, including exact dyadic roots. */
+        {
+            slong depth = e < 0 && g->scale > WORD_MAX + e ? WORD_MAX : g->scale - e;
+            slong prec = g->coefficient_bits > WORD_MAX - 64 || depth > WORD_MAX - 64 - g->coefficient_bits ?
+                WORD_MAX : depth + g->coefficient_bits + 64;
+            if (prec > 64)
+            {
+                arb_init(ball);
+                local_ball(ball, g, m, e, prec);
+                s = arb_is_positive(ball) ? 1 : arb_is_negative(ball) ? -1 : 0;
+                arb_clear(ball);
+                if (s != 0)
+                    return s;
+            }
+        }
     }
     fmpz_init(r);
     value_2exp(r, g, m, e);
@@ -260,6 +293,17 @@ bound_holds(const fmpz_poly_t h, slong K)
     return r;
 }
 
+/* Record a chosen bound only if its exponent product can be formed (R1, S-D18).
+   Kept separate so invariant tests can reach word-sized bounds without allocating huge coefficients. */
+static int
+store_bound(slong * K, const fmpz_poly_t h, slong hi)
+{
+    if (bound_holds(h, hi) < 0)
+        return 0;
+    *K = hi;
+    return 1;
+}
+
 /* *K = the least integer with bound_holds (design Lemma R1), for h of degree n >= 1 with h(0) != 0. The test
    fails at -bits(h_n) and holds at bits(max_(i<n) |h_i|) + 1, and it is monotone in K; bisection between the
    two. 0 if a shift overflows (then the caller returns ADF_LIMIT). */
@@ -282,10 +326,7 @@ root_bound_exp(slong * K, const fmpz_poly_t h)
         else
             lo = mid;
     }
-    if (bound_holds(h, hi) < 0)
-        return 0;                               /* the product hi n is formed by the caller: it must fit */
-    *K = hi;
-    return 1;
+    return store_bound(K, h, hi);
 }
 
 /* ---- Algorithm D: bisection with Descartes' rule of signs ---- */
@@ -831,7 +872,7 @@ refine_local(fmpz_t c, slong * k, int * point, const local_eval * g, const local
 /* Keep the original cell and stop coordinates. Only evaluation is translated. */
 static int
 refine_cell(fmpz_t c, slong * k, int * point, const fmpz_poly_t g, const fmpz_poly_t dg,
-            const arf_t floor, int has_floor, slong need)
+            const arf_t floor, int has_floor, slong need, slong * exact_evaluations)
 {
     local_eval f, df;
     int st;
@@ -842,11 +883,14 @@ refine_cell(fmpz_t c, slong * k, int * point, const fmpz_poly_t g, const fmpz_po
         fmpz_set(f.origin, c);
     fmpz_set(df.origin, f.origin);
     f.scale = df.scale = *k;
+    f.exact_evaluations = df.exact_evaluations = exact_evaluations;
     fmpz_poly_set(f.q, g);
     _fmpz_poly_scale_2exp(f.q->coeffs, fmpz_poly_length(f.q), *k);
     _fmpz_poly_taylor_shift(f.q->coeffs, f.origin, fmpz_poly_length(f.q));
     _fmpz_poly_remove_content_2exp(f.q->coeffs, fmpz_poly_length(f.q));
     fmpz_poly_derivative(df.q, f.q);
+    f.coefficient_bits = FLINT_ABS(fmpz_poly_max_bits(f.q));
+    df.coefficient_bits = FLINT_ABS(fmpz_poly_max_bits(df.q));
     st = refine_local(c, k, point, &f, &df, floor, has_floor, need);
     fmpz_clear(f.origin); fmpz_clear(df.origin);
     fmpz_poly_clear(f.q); fmpz_poly_clear(df.q);
@@ -914,8 +958,9 @@ items_sort(items_t * it)
    lo_(i+1); every real root of g in one of them; arb_rel_accuracy_bits >= prec or exact (design Proposition
    R5). The balls may be of any size: the caller tests their admissible size. ADF_LIMIT: a cell below KMIN,
    or an overflow of an exponent; *m and cand are then of no use (cand stays initialised). */
-int
-adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count)
+static int
+isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count,
+                slong * exact_evaluations)
 {
     slong d = fmpz_poly_degree(g), i, k, need = FLINT_MAX(prec, 2);
     fmpz_poly_t h, dg;
@@ -973,7 +1018,7 @@ adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slo
                     item_right(floor, &it, i - 1);
                 fmpz_set(c, it.c + i);
                 k = it.k[i];
-                st = refine_cell(c, &k, &point, g, dg, floor, i > 0, need);
+                st = refine_cell(c, &k, &point, g, dg, floor, i > 0, need, exact_evaluations);
                 if (st != ADF_OK)
                     break;
             }
@@ -1011,6 +1056,24 @@ adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slo
     return st;
 }
 
+int
+adf_roots_real_isolate_counted(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count)
+{
+    return isolate_counted(cand, m, g, prec, count, NULL);
+}
+
+#ifdef ADF_CHECK_INVARIANTS
+/* Test-only count of the exact value evaluations used by refinement (design section 10).
+   The caller owns the counter. The endpoint certificate in roots.c is independent of it. */
+ADF_ROOTS_HIDDEN int
+adf_roots_real_isolate_cost(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec, slong count,
+                           slong * exact_evaluations)
+{
+    *exact_evaluations = 0;
+    return isolate_counted(cand, m, g, prec, count, exact_evaluations);
+}
+#endif
+
 /* Compatibility entry for the direct candidate tests. The public caller passes its
    already computed trusted count to the counted entry (docs/design/real-roots.md:319, R7). */
 int
@@ -1019,3 +1082,23 @@ adf_roots_real_isolate(arb_ptr cand, slong * m, const fmpz_poly_t g, slong prec)
     slong count = fmpz_poly_degree(g) > 0 ? fmpz_poly_num_real_roots(g) : 0;
     return adf_roots_real_isolate_counted(cand, m, g, prec, count);
 }
+
+#ifdef ADF_CHECK_INVARIANTS
+ADF_ROOTS_HIDDEN int
+adf_roots_real_test_bound(slong * K, const fmpz_poly_t h)
+{
+    return root_bound_exp(K, h);
+}
+
+ADF_ROOTS_HIDDEN int
+adf_roots_real_test_store_bound(slong * K, const fmpz_poly_t h, slong hi)
+{
+    return store_bound(K, h, hi);
+}
+
+ADF_ROOTS_HIDDEN int
+adf_roots_real_test_product(slong * result, slong x, slong y)
+{
+    return mul_checked_nonneg(result, x, y);
+}
+#endif

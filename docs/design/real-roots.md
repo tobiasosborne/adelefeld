@@ -388,3 +388,97 @@ So do H and any positive multiple of `H(2^t X)`.
 
 Inherited pending sources remain Sturm's theorem, (IVT), and the eventual quadratic convergence analysis of Eqir.
 The bijection, contraction and local-coordinate arguments above need no additional source.
+
+## 10. Remaining count and refinement costs (lane r-cost1)
+
+The lane measured Algorithm RR before changing the refinement. QIR already doubles j after a success.
+The fixed local polynomial is shifted once per initial cell. Neither a linear number of QIR successes nor
+a repeated Taylor shift explains the high-precision cost on the measured inputs.
+
+For X^50 - 2 at prec 16384, the invariant-build counter saw 98 exact refinement evaluations in 34 QIR
+attempts. At prec 262144, a scratch profile saw 130 exact values in 42 attempts. The latter call spent
+25.729195 s in isolation/refinement, 13.582454 s in the unchanged certificate, and 0.000007 s in the count.
+The one-time coordinate shifts cost 0.000511 s. These are single profile runs, not benchmark medians.
+
+The old secant filter worked at j + 64 bits. Its endpoint values lose accuracy as the old cell shrinks.
+The old sign filter used 64 bits at every refinement depth. Both therefore fell back to integer Horner
+near roots. Integer Horner forms degree times the endpoint precision bits, even though the QIR step
+count grows slowly on these inputs.
+
+The change keeps the same coordinates, grid, steps and stopping rule. Write depth = scale - e and
+tau = bits of the largest coefficient of the fixed local polynomial. The secant filter uses
+max(depth, j) + tau + 64 bits. A sign filter first tries 64 bits; if uncertain it tries depth + tau + 64.
+All additions used to choose this precision saturate at WORD_MAX. An uncertain sign or grid integer
+still falls back to exactly the same integer calculation. tau is computed once for each local polynomial.
+It covers cancellation caused by the local shift; using depth + 64 alone left 64 exact evaluations
+on the regression input. This is a precision heuristic, not a new worst-case complexity theorem.
+
+Equivalence proof, step by step:
+
+1. The polynomial and affine coordinate are unchanged. R8 gives q(X) = C g((origin + X) 2^scale), C > 0.
+   All points evaluated have e <= scale, as before.
+2. Rounded input conversion and the ball Horner operations enclose the exact value at every precision.
+   Sources: refs/src/flint-3.0.1/arb.rst:155-165, :639-650, and :735-737.
+3. A strictly positive or negative enclosing ball has the sign of that exact value. If neither sign is
+   certified, the original exact integer sign is used. A true zero can never get a nonzero certified sign.
+4. The secant ratio is formed from enclosing balls of the same exact endpoint values. Its denominator
+   is the sum of their absolute values. The endpoints of a QIR cell have opposite nonzero signs.
+   Ball floor encloses the exact floor, and a unique enclosing integer must be that floor.
+   Sources: refs/src/flint-3.0.1/arb.rst:531-553. If uniqueness fails, the original exact ratio is used.
+5. Thus every sign and grid integer agrees with the previous exact algorithm. Induction over the steps
+   gives the same visited cells and returned balls. R4, R5, nesting and the dyadic-root argument still apply.
+6. The certificate remains the independent exact endpoint test in roots.c. It reads no filter result or
+   counter. The complete verifier still recounts from the original normalised input (S-D17).
+
+The regression bounds exact refinement evaluations by 16 at degree 50 and prec 16384. It failed with 98
+before the change and passed with 0 afterwards. It also checks the balls with the independent rational
+Sturm oracle. The public degree-50 test checks five precisions and four nested pairs, including 8192/8193.
+A scratch comparison with the saved pre-change code found 0 differences in 36 runs and 1232 balls.
+
+Count experiments confirm that R9 is useful in both directions. For roots i 2^150, i=1..50, positive
+scaling before FLINT's count took a median 0.068015 s in five runs. Translating the rational cluster
+prod (3 2^190 X - (2^190 + i)), i=1..50, by its exact mean and then scaling took median 0.043665 s.
+The mean has numerator-plus-denominator size 385 bits, beyond the current 16-bit preprocessing cutoff.
+These benchmark modes include transformation and content-removal time. They do not change production
+counting. Its helper real_count is in roots.c, outside this lane's original ownership.
+
+The count bijection requires no new equivalence: R9:366-384 already proves rational translation,
+dyadic scaling of either sign, and positive content removal. The inverse maps take every transformed
+real root back to exactly one real root of g, including a root at zero.
+
+DESIGN-FINDING: Descartes gives an independent upper bound U on real roots by adding the sign variations
+of g(X) and g(-X), and one if g(0) = 0 (squarefree g). The source for the positive-root bound is
+refs/src/sagraloff-mehlhorn/tex/arxivfinal.tex:547-553. If m certified disjoint balls have m = U, P3.8(1)
+gives m <= N <= U = m, hence N = m and P3.8(2) proves completeness. No stored count is needed in this
+argument. P3.13(5), however, names a recomputed count from P3.9(1) or Sturm; it does not name this bound.
+The lane leaves that verifier unchanged and records this as a design proposal.
+
+HEADER-FINDING: the unchanged certificate alone exceeded 10 s at prec 262144 in the profile above.
+Wilkinson 50 plus 1 at prec 20000 spent 36.908765 s in isolation/refinement and 22.281253 s in the
+unchanged certificate. The requested 10 s and 5 s total targets therefore cannot follow merely from
+precision doubling or better refinement filters on that run. The header's precision limit is unchanged.
+
+The bounded mutation run also exposed test gaps outside the filter change. In invariant builds, hidden
+test entries now check minimum root bounds and word-sized exponent products. The final bound-storage
+check is extracted without changing its logic, so a degree-two polynomial and hi = WORD_MAX reach its
+overflow refusal without allocating huge coefficients. A twelve-root fixture forces the pending-node
+stack past its initial allocation of four nodes. Removing its reallocation produced an address-sanitizer
+heap overflow in the focused red check. The ordinary and invariant suites accept the unmutated fixture.
+
+Final five-run medians, pinned to CPU 2:
+
+| Input (family, e, d) | prec | Before s | After s | eval2 s |
+| --- | ---: | ---: | ---: | ---: |
+| deg, 190, 50 | 2 | 0.092760 | 0.047105 | 0.001389324 |
+| small, 0, 50 | 2 | 0.014002 | 0.017048 | 0.000081663 |
+| small, 0, 50 | 20000 | 0.014223 | 0.014871 | 0.000137792 |
+| scaled, 150, 50 | 2 | 2.175044 | 2.103012 | 0.000969679 |
+| tiny, 150, 50 | 2 | 0.075460 | 0.076687 | 0.000873327 |
+| cluster, 190, 50 | 2 | 10.802954 | 10.694166 | 0.004278207 |
+| random, 10000, 50 | 2 | 14.127581 | 12.252622 | 0.005342488 |
+| sqrt2, 0, 2 | 2097152 | 0.940909 | 0.921131 | 0.088264061 |
+| xn2, 0, 50 | 16384 | 1.174218 | 0.391825 | 0.078687633 |
+| xn2, 0, 50 | 65536 | 4.976292 | 2.005763 | 0.620194271 |
+| xn2, 0, 50 | 262144 | 20.433207 | 7.151269 | 4.546090339 |
+| xn2, 0, 50 | 2097152 | >170 (0/5) | 91.769871 | 35.982333616 |
+| wilkinson, 0, 50 | 20000 | 37.977476 | 16.611681 | 7.107090958 |

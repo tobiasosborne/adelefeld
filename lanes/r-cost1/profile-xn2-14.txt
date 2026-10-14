@@ -1,0 +1,6 @@
+family xn2 e 0 degree 50 prec 16384 coefficient bits 2
+section count 0.000006
+detail tree 0.000023 shift 0.000373 secant 0.003560 sign 0.447446 exact 0.889447 values 98 qir 34 signs 76 fallback 52
+section isolate_refine 0.899423
+section verifier 0.180338 result 1
+adf: 1.253956 s, status 0, balls 2, largest mantissa 16392 bits

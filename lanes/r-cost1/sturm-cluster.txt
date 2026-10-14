@@ -1,0 +1,3 @@
+family cluster e 190 degree 50 prec 2 coefficient bits 9598
+sturm total 7.766114 remainder 7.286650 division 0.413298 steps 49
+count: 7.766153 s, n = 50
