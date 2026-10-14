@@ -202,6 +202,19 @@ arxiv_tex() { # arxiv_tex ID KEY -- the e-print of arXiv (a gzipped tar), unpack
 arxiv_tex 1308.4088v2 sagraloff-mehlhorn
 arxiv_tex 1104.1362v3 kerber-sagraloff
 
+# ================================================================ FLINT 3.0.1 dirichlet module (lane c-sources1)
+# The documentation and the C sources of the Dirichlet characters of FLINT 3.0.1 (tag v3.0.1): the exponent
+# of dirichlet_chi, the Conrey pairing, dirichlet_char_exp against _dirichlet_char_exp, dirichlet_group_init.
+get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/doc/source/dirichlet.rst" src/flint-3.0.1/dirichlet.rst
+FLINTSRC_DIR="dirichlet.h dirichlet/chi.c dirichlet/pairing.c dirichlet/pairing_char.c dirichlet/char_exp.c
+dirichlet/char_log.c dirichlet/char_index.c dirichlet/index_char.c dirichlet/group_init.c
+dirichlet/group_clear.c dirichlet/group_dlog_precompute.c dirichlet/char.c dirichlet/char_mul.c
+dirichlet/char_pow.c dirichlet/char_one.c dirichlet/char_order.c dirichlet/inlines.c"
+# shellcheck disable=SC2086
+for f in $FLINTSRC_DIR; do
+  get "https://raw.githubusercontent.com/flintlib/flint/v3.0.1/src/$f" "src/flint-src-3.0.1/$f"
+done
+
 # ---------------------------------------------------------------- text extractions
 if command -v pdftotext >/dev/null 2>&1; then
   # the trailing slash matters: refs/src is a symlink on some worktrees, and find does not
