@@ -1,6 +1,7 @@
 /* Slice a, docs/api-3c.md 1-4, P3/P4. Only s is owned; groups are call-local.
    FLINT declarations: /usr/include/flint/dirichlet.h:51,68-70,90-91,110-136,139,162.
-   The universal pairing identification remains source pending, as api-3c P3.5 states. */
+   The pairing identification is sourced and proved: api-3c P3.5 to P3.7 (flint-src-3.0.1:dirichlet/
+   pairing_char.c:23, group_init.c:88, char_pow.c:19-20). */
 #include "adelefeld/char.h"
 #include "invariants.h"
 #include <flint/dirichlet.h>
@@ -46,7 +47,9 @@ int adf_char_is_canonical(const adf_char_t x)
         (x->parity != 0 && x->parity != 1) || !acb_is_finite(x->s)) return 0;
     if (x->q == 1) return x->n == 1 && x->parity == 0;
     /* HEADER-FINDING: api-3c 1 forbids abort and resource-false, but supplies no error result.
-       Until group-init failure semantics are sourced, fail-stop rather than report predicate false.
+       Group init returns 0 only for an odd prime factor above 10^16 (flint-3.0.1:dirichlet.rst:71-74;
+       group_init.c:115-127), unreachable under ADF_CHAR_MOD_MAX = 65536 (char.h:15); this predicate applies
+       no cap, so keep the fail-stop rather than report predicate false.
        D1 is NOT tested here. */
     if (!dirichlet_group_init(G, x->q)) flint_abort();
     dirichlet_char_init(c, G); dirichlet_char_log(c, G, x->n);
@@ -122,7 +125,8 @@ int adf_char_get_order(ulong *order, const adf_char_t x)
 
 /* api-3c 3/F1; header:51 "exponent = largest order in G", :139 NULL, :162 chi.
    k/G->expo is corroborated by the independent oracle and the 3.0.1 adapter.
-   [source pending: FLINT 3.0.1 dirichlet_chi implementation under refs/]. */
+   Sourced: flint-3.0.1:dirichlet.rst:257, 261 and flint-src-3.0.1:dirichlet/chi.c:28, pairing_char.c:20, 23 give
+   chi(n) = exp(2 pi i k / G->expo); null is DIRICHLET_CHI_NULL for gcd(q, n) > 1 (chi.c:17, 19). */
 static void char_phase(int *zero, fmpq_t theta, const dirichlet_group_t G,
                        const dirichlet_char_t c, ulong a)
 {
@@ -320,7 +324,8 @@ int adf_char_eval_ucoset_strict(acb_t z, const adf_char_t chi, const adf_ucoset_
 
 /* api-3c P3.4: inversion negates cyclic exponents. Header:84 states
    "s.t. prod generators[k]^log[k] = number"; :36 stores component phi, :123 rebuilds n.
-   [source pending: FLINT pairing identification]. The brief requires this fallback.
+   The identification is sourced (api-3c P3.5 to P3.7: pairing_char.c:23, group_init.c:88, char_pow.c:19-20) and
+   the conjugate label by negation is proved unconditionally. The brief requires this fallback.
    HEADER-FINDING: the fallback costs D(q), not only extended gcd; the void ABI has no
    recoverable setup-failure result. No D1 cutoff is imposed on this exact operation. */
 void adf_char_conj(adf_char_t y, const adf_char_t x)

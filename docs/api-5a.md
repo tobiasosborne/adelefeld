@@ -124,7 +124,8 @@ The requested production G_minus faults, and the conductor-a=1 gamma fault, do n
 1. They remain meaningful oracle witnesses for 5.1 as a whole and production faults for 5b.
 A place outside Q cannot be constructed with place.h; forged handles violate a precondition and abort
 under INV. They are not valid DOMAIN requests for this signature. No header change is needed for either point.
-[source pending: universal FLINT Conrey pairing identification, inherited from api-3d:283-290]
+The FLINT Conrey pairing identification is closed (api-3c P3.5 to P3.7, from flint-src-3.0.1:dirichlet/
+pairing_char.c:23 and char_pow.c:19-20; the conjugate label by exponent negation is proved unconditionally).
 No new dependence on it is introduced into numerical evaluation, which reads only conductor and parity.
 
 # Slice 5b
