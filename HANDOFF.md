@@ -2,6 +2,70 @@
 
 # HANDOFF: adelefeld
 
+## Session 2026-10-14 23:30 to about 04:30 on 2026-10-15 (UTC+11, AEDT; orchestrator Claude Fable on the laptop; codex, Opus and Sonnet lanes): START HERE
+
+**One line.** Milestone 5 is COMPLETE and its epic adf-fsy closed: the remote session's slices 5b, 5d, 5e were
+found on the remote branch `ccr-b2c9ca5b-ywi6wg` and fast-forwarded into master; the one review (m5-review1,
+codex: 0 BLOCKER, 2 MAJOR, 3 MINOR over about 450000 checks, `docs/reviews/m5/review-m5.md`) and its closure
+(t5-repair2) are merged; the test gaps of 5a to 5d are closed (t5-repair1). The ten open decisions of the
+milestone 3, 4 and 5 reviews are taken and recorded as N-D25 (`docs/SPEC.md` 15.4). The Julia binding is
+designed (`docs/api-j.md`, lane d-julia) and built through three steps of J-a (`julia/Adelefeld/`: load gates,
+`Rat`, `FBall`, `Adele`, `CAdele`, `RealBall`, `ComplexBall`; 3568 tests through `Pkg.test`, run by
+`tests/test_julia.sh`); `adf_status_count` added (625 exports). FLINT's Dirichlet sources are on disk and the
+character slices' source-pending marks are closed. The real-roots refinement no longer falls back to exact
+evaluation near roots (`X^50 - 2` at `2^21`: over 170 s to 92 s). Record: `docs/worklog/2026-10-15-night.md`.
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
+    ~/Projects/quota-app/target/release/quota; date   # rebuild with cargo build --release if missing
+
+**Master.** All five suites passed on `4d98560` at 03:35 (107 programs; driver 100 cases; exports 625 of 625;
+Julia with `Pkg.test` 904 and 1015; both self-tests). On `8f9af07` (after t5-repair2) at 03:45: all, clang,
+inv, headers passed; san failed three TIMING checks (`test_lball` 3.5 s bounds, `test_lfunc` 5 s bound) under
+a host load of 10 to 17 from two peer sessions; both tests pass alone under the sanitizer in 16 s (04:00).
+Lanes merged after that (j-slice3, r-cost2) are listed in the worklog with their own checks; rerun the suites
+first thing.
+
+**Rules of TJO for this session** (23:52): orchestrate; monitor the quota app for Claude and Codex, work at
+pace for both; no Fable subagents (an occasional one to equalise Fable use, told about the quota app); Opus for
+coding, Sonnet for busywork, code queries and research; codex `gpt-6.1-sol` xhigh (computer use, review,
+coding), `gpt-6-astra` for hard cognition; 2 to 3 subagents concurrently; keep working while under pace; two
+other Claude sessions share the machine and the quotas: coordinate; "for any open question for me: just decide
+it and proceed and record the decision". Done so: SendMessage with `initech-os-a8` and `resourceq-c1` (loads,
+every codex start, suite bursts announced); Claude reached pace at about 03:00 and every new lane from 02:07
+went to codex (quota table in the worklog). Decisions taken: N-D25 (ten items); the review on codex (authors of
+another family); the Julia binding as the next epic with J1 to J3 (`lanes/d-julia/brief.md`); `^` refused on
+balls until `pow`; F4 of the review a cost item (adf-m3bw); the Descartes completeness criterion a design item
+(adf-z45q).
+
+**The next steps**, in this order:
+1. Rerun the five suites on the current master.
+2. Milestone J (epic adf-c5e, design `docs/api-j.md` section 9): J-a step 4 (lane j-slice4, brief committed;
+   running or landed: see the worklog), then J-b (contexts, places, `Scaled`, local balls), J-c, J-d, J-e, J-S.
+   One review when J-a to J-d have landed. The statements are in `docs/api-ja.md` (32 DESIGN-FINDINGs so far;
+   finding 30: a missing `GC.@preserve` cannot be caught by a test and is a review obligation).
+3. Real roots: the count proposal (lane r-cost2, running or landed); then the Descartes completeness criterion
+   for `adf_rootlist_verify_complete` (adf-z45q: a proof change of P3.13 and S-D17 before code).
+4. `docs/api-5a.md` and `5b.md` merged into one statements file (adf-82bj, Sonnet, when Claude is under pace).
+5. The gcc 13.3.0 `-O1` warnings in `src/lpow.c:259` and `src/rfun.c:339, 424` (adf-3rl).
+6. The UX epic adf-zaf (`docs/ux/`: four visions) after the Julia binding has its first slices.
+
+**Waits for TJO.** Nothing blocks. Decided without asking and open to reversal: N-D25 (ten items); the Julia
+decisions J1 to J3; `^` refused; F4 as a cost item. New open items: the Descartes criterion (adf-z45q); the
+timing checks of `test_lball` and `test_lfunc` under load (tighten the machine or loosen the bounds?).
+
+**Things to know.**
+- `wt_lane.sh` codex lanes write `report.md`; Opus lanes `result.md`. Codex lanes do not notify: a Monitor on
+  `report.md` or `lane.log` DONE (30 minutes, re-armed) and a `until grep DONE` wait before committing (the
+  process may run after the report is written).
+- Julia: `Pkg.test` needs `JULIA_DEPOT_PATH=<lane>/depot:$HOME/.julia:` with the TRAILING COLON,
+  `JULIA_PKG_OFFLINE=true`, one thread, one precompile task, and the libgmp preload before `julia` starts
+  (`julia/Adelefeld/bin/adelefeld-julia`); it writes `julia/Adelefeld/Manifest.toml` (gitignored).
+- The quota binary was missing; `cargo build --release` in `~/Projects/quota-app` restores it (memory updated).
+- My own orchestration moves the Claude and Fable weekly windows by about one point per 25 to 45 minutes.
+
 ## Session 2026-10-07 23:11 to 08:05 on 2026-10-08 (UTC+8; orchestrator Claude Fable on the laptop; Opus and codex lanes): START HERE
 
 **One line.** Milestone 3 is complete (WP 3.1 and 3.2 reviewed by m3-review1: no blocker, no major; WP 3.3 and
