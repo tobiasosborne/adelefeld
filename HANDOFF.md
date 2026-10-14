@@ -9,9 +9,9 @@ found on the remote branch `ccr-b2c9ca5b-ywi6wg` and fast-forwarded into master;
 codex: 0 BLOCKER, 2 MAJOR, 3 MINOR over about 450000 checks, `docs/reviews/m5/review-m5.md`) and its closure
 (t5-repair2) are merged; the test gaps of 5a to 5d are closed (t5-repair1). The ten open decisions of the
 milestone 3, 4 and 5 reviews are taken and recorded as N-D25 (`docs/SPEC.md` 15.4). The Julia binding is
-designed (`docs/api-j.md`, lane d-julia) and built through three steps of J-a (`julia/Adelefeld/`: load gates,
-`Rat`, `FBall`, `Adele`, `CAdele`, `RealBall`, `ComplexBall`; 3568 tests through `Pkg.test`, run by
-`tests/test_julia.sh`); `adf_status_count` added (625 exports). FLINT's Dirichlet sources are on disk and the
+designed (`docs/api-j.md`, lane d-julia) and built through ALL FOUR steps of J-a (`julia/Adelefeld/`: load
+gates, `Rat`, `FBall`, `Adele`, `CAdele`, `RealBall`, `ComplexBall`, `readvalue`, dump forms, `reconstruct`;
+4881 tests through `Pkg.test`, run by `tests/test_julia.sh`); `adf_status_count` added (625 exports). FLINT's Dirichlet sources are on disk and the
 character slices' source-pending marks are closed. The real-roots refinement no longer falls back to exact
 evaluation near roots (`X^50 - 2` at `2^21`: over 170 s to 92 s). Record: `docs/worklog/2026-10-15-night.md`.
 
@@ -26,8 +26,9 @@ Julia with `Pkg.test` 904 and 1015; both self-tests). On `8f9af07` (after t5-rep
 inv, headers passed; san failed three TIMING checks (`test_lball` 3.5 s bounds, `test_lfunc` 5 s bound) under
 a host load of 10 to 17 from two peer sessions; both tests pass alone under the sanitizer in 16 s (04:00).
 All five suites passed on `22702a6` (after j-slice3 and r-cost2) at 04:35 to 04:48: 107 programs; driver 100
-cases; exports 625 of 625; Julia with `Pkg.test` 904, 1015 and 1649; both self-tests; san included. Lanes merged
-after that (j-slice4 if it landed) are in the worklog; rerun the suites first thing.
+cases; exports 625 of 625; Julia with `Pkg.test` 904, 1015 and 1649; both self-tests; san included. The final
+master `3ab7e76` adds j-slice4 (Julia only; its gate rerun by the orchestrator: 4881 of 4881); the suite run on
+it started at 05:00 (result below if it ended before the session closed). Rerun the suites first thing.
 
 **Rules of TJO for this session** (23:52): orchestrate; monitor the quota app for Claude and Codex, work at
 pace for both; no Fable subagents (an occasional one to equalise Fable use, told about the quota app); Opus for
@@ -43,11 +44,11 @@ balls until `pow`; F4 of the review a cost item (adf-m3bw); the Descartes comple
 
 **The next steps**, in this order:
 1. Rerun the five suites on the current master.
-2. Milestone J (epic adf-c5e, design `docs/api-j.md` section 9): J-a step 4 (lane j-slice4, brief committed;
-   running or landed: see the worklog), then J-b (contexts, places, `Scaled`, local balls), J-c, J-d, J-e, J-S.
-   One review when J-a to J-d have landed. The statements are in `docs/api-ja.md` (32 DESIGN-FINDINGs so far;
+2. Milestone J (epic adf-c5e, design `docs/api-j.md` section 9): J-a is complete (four steps, lanes j-slice1
+   to j-slice4); next J-b (contexts, places, `Scaled`, local balls), then J-c, J-d, J-e, J-S.
+   One review when J-a to J-d have landed. The statements are in `docs/api-ja.md` (39 DESIGN-FINDINGs so far;
    finding 30: a missing `GC.@preserve` cannot be caught by a test and is a review obligation).
-3. Real roots: the count proposal (lane r-cost2, running or landed); then the Descartes completeness criterion
+3. Real roots: the count is applied (lane r-cost2, merged); next the Descartes completeness criterion
    for `adf_rootlist_verify_complete` (adf-z45q: a proof change of P3.13 and S-D17 before code).
 4. `docs/api-5a.md` and `5b.md` merged into one statements file (adf-82bj, Sonnet, when Claude is under pace).
 5. The gcc 13.3.0 `-O1` warnings in `src/lpow.c:259` and `src/rfun.c:339, 424` (adf-3rl).
