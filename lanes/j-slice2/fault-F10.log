@@ -1,0 +1,433 @@
+    Updating `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/tmp/jl_nLTQoN/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/tmp/jl_nLTQoN/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=auto --check-bounds=yes --warn-overwrite=yes --depwarn=yes --inline=yes --startup-file=no --track-allocation=none
+   1698.0 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 2 seconds. 8 already precompiled.
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  22.2s
+fball layout row, types, ambiguities: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:413
+  Expression: (:fball, 48, 8) in [(r.suffix, r.size, r.align) for r = Adelefeld.LAYOUT_ROWS]
+   Evaluated: (:fball, 48, 8) in [(:rat, 16, 8), (:text_limits, 32, 8)]
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:413 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:413 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:837
+  Expression: occursin("LOADED=false", text)
+   Evaluated: occursin("LOADED=false", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:837 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("layout", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("adf_sizeof_fball", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("48", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("56", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:841
+  Expression: occursin("docs/api-m1.md:36,45", text)
+   Evaluated: occursin("docs/api-m1.md:36,45", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:841 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:842
+  Expression: occursin("INIT_CALLS=0", text)
+   Evaluated: occursin("INIT_CALLS=0", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:842 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_SIZE: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:843
+  Expression: !(occursin("AFTER=allocated", text))
+   Evaluated: !(occursin("AFTER=allocated", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n"))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:843 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:837
+  Expression: occursin("LOADED=false", text)
+   Evaluated: occursin("LOADED=false", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:837 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("layout", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("adf_alignof_fball", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("8", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839
+  Expression: occursin(w, text)
+   Evaluated: occursin("16", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:839 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:841
+  Expression: occursin("docs/api-m1.md:36,45", text)
+   Evaluated: occursin("docs/api-m1.md:36,45", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:841 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:842
+  Expression: occursin("INIT_CALLS=0", text)
+   Evaluated: occursin("INIT_CALLS=0", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:842 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+FAULT_FBALL_ALIGN: Test Failed at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:843
+  Expression: !(occursin("AFTER=allocated", text))
+   Evaluated: !(occursin("AFTER=allocated", "LOADED=true\nAFTER=allocated\nINIT_CALLS=1\n"))
+
+Stacktrace:
+ [1] top-level scope
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:411
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:816 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:836 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [7] macro expansion
+   @ ~/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:843 [inlined]
+ [8] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+Test Summary:                                                              | Pass  Fail  Total   Time
+Adelefeld step J-a.2                                                       |  998    17   1015  17.2s
+  fball layout row, types, ambiguities                                     |    7     1      8   4.6s
+  SPEC 4.3 rows exactly (docs/SPEC.md:244-248)                             |   21           21   0.6s
+  the session line (docs/api-j.md:313-314, 418)                            |    5            5   0.1s
+  fractional and zero radii                                                |   16           16   0.2s
+  constructors                                                             |   17           17   0.0s
+  parser: both forms, statuses, limits                                     |   46           46   0.3s
+  q - x against x - q                                                      |   13           13   0.3s
+  x - x is a ball around 0 (independent inputs, SPEC 4.3)                  |    8            8   0.1s
+  division by zero is NOT_UNIT, den = 0 is DOMAIN                          |   15           15   0.1s
+  set predicates and point comparison                                      |   28           28   0.0s
+  no == on balls, identity isequal and hash, no ordering, no ball division |   23           23   0.7s
+  mixed-scalar matrix                                                      |  360          360   1.9s
+  inputs unchanged by every operation                                      |  108          108   0.6s
+  copies, identity, close                                                  |   32           32   0.3s
+  text round trip of 50 random balls                                       |  290          290   0.2s
+  10^4 FBall handles, forced GC, live count returns                        |    3            3   1.3s
+  printer text is freed (glibc mallinfo2)                                  |    2            2   3.0s
+  fball layout rejection and the session through the launcher              |    4    16     20   2.9s
+    FAULT_FBALL_SIZE                                                       |    1     8      9   0.0s
+    FAULT_FBALL_ALIGN                                                      |    1     8      9   0.0s
+    launcher session                                                       |    2            2   0.0s
+RNG of the outermost testset: Random.Xoshiro(0xea71cb87051a32e0, 0x54f84ff81fdbca4b, 0x8ddf0f3f0a35b1bb, 0xe5f9cdf877af23a6, 0xf88aa975dd8403f2)
+ERROR: LoadError: Some tests did not pass: 998 passed, 17 failed, 0 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice2/lanes/j-slice2/scratch/Adelefeld/test/runtests.jl:409
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool)
+    @ Pkg.Operations ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550

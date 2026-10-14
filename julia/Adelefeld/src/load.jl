@@ -41,10 +41,18 @@ const REQUIRED = (
     :adf_version_check, :adf_flint_version_compiled,
     :adf_sizeof_rat, :adf_alignof_rat, :adf_sizeof_text_limits, :adf_alignof_text_limits,
     :adf_status_str, :adf_status_count,
+    # Step J-a.2: after adf_status_count, so that the library before J-status still reports that symbol.
+    :adf_sizeof_fball, :adf_alignof_fball,
     :adf_text_limits_default, :adf_str_free,
     :adf_rat_init, :adf_rat_clear, :adf_rat_set, :adf_rat_set_si, :adf_rat_set_str, :adf_rat_get_str,
     :adf_rat_add, :adf_rat_sub, :adf_rat_mul, :adf_rat_neg, :adf_rat_div, :adf_rat_inv,
     :adf_rat_equal, :adf_rat_identical,
+    # Step J-a.2, the FBall handle (include/adelefeld/fball.h; text.h:156-165).
+    :adf_fball_init, :adf_fball_clear, :adf_fball_set, :adf_fball_is_canonical, :adf_fball_identical,
+    :adf_fball_set_rat, :adf_fball_set_center_radius, :adf_fball_get_center, :adf_fball_get_radius,
+    :adf_fball_add, :adf_fball_sub, :adf_fball_neg, :adf_fball_mul, :adf_fball_mul_rat, :adf_fball_div_rat,
+    :adf_fball_equal_set, :adf_fball_overlaps, :adf_fball_contains, :adf_fball_compare,
+    :adf_fball_set_str, :adf_fball_get_str,
 )
 
 # One Ref per symbol, named p_<symbol>, filled by __init__ (never at precompile time).
@@ -57,13 +65,17 @@ end
 #   rat:         docs/api-m1.md:35 (16 bytes), :45 (alignment 8); include/adelefeld/rat.h:28.
 #   text_limits: docs/api-m1.md:41, :45; include/adelefeld/text.h:89-90. Passed by pointer to every parser
 #                of this step, so it is gated too (not named by the brief; see docs/api-ja.md).
+#   fball:       docs/api-m1.md:36 (48 bytes), :45 (alignment 8); include/adelefeld/fball.h:53-54 (step J-a.2).
 const LAYOUT_ROWS = (
     (suffix = :rat, size = 16, align = 8, source = "docs/api-m1.md:35,45"),
     (suffix = :text_limits, size = 32, align = 8, source = "docs/api-m1.md:41,45"),
+    (suffix = :fball, size = 48, align = 8, source = "docs/api-m1.md:36,45"),
 )
 
 const RAT_SIZE = 16
 const RAT_ALIGN = 8
+const FBALL_SIZE = 48
+const FBALL_ALIGN = 8
 
 const LOAD_STATE = Ref{Symbol}(:not_loaded)   # :not_loaded, :ok or :failed
 const LOAD_ERROR = Ref{String}("")
