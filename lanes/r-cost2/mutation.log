@@ -1,0 +1,35 @@
+mutate: src/roots.c: 1208 mutants
+mutate: 1208 mutants, 30 of them run (--limit 30, --seed 20261015)
+mutate: every mutant is built and run with SAN=1
+mutate: the baseline passes (67.9 s)
+
+NOT COMPILED src/roots.c:695:53 logic: '||' -> '&&'
+  src/roots.c:695:53: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+
+NOT COMPILED src/roots.c:454:5 drop_call: 'eval_mod(D, d, a, pk);' -> '' (the statement is removed)
+  src/roots.c:426:73: error: unused parameter ‘d’ [-Werror=unused-parameter]
+
+NOT COMPILED src/roots.c:860:11 op: '*' -> '+'
+  src/roots.c:860:11: error: expected identifier or ‘(’ before ‘+’ token
+
+SURVIVED src/roots.c:1681:30 logic: '||' -> '&&'
+  the tests pass with the mutant
+  --- a/src/roots.c
+  +++ b/src/roots.c
+  @@ -1679,5 +1679,5 @@
+       int reduced, st;
+
+  -    if (fmpz_poly_is_zero(f) || m < 0)
+  +    if (fmpz_poly_is_zero(f) && m < 0)
+           return ADF_DOMAIN;
+       if (prec < 2)
+
+
+NOT COMPILED src/roots.c:1781:5 drop_assign: 'd = fmpz_poly_degree(g);' -> '' (the statement is removed)
+  src/roots.c:1782:8: error: ‘d’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+NOT COMPILED src/roots.c:859:11 op: '*' -> '+'
+  src/roots.c:859:11: error: expected identifier or ‘(’ before ‘+’ token
+
+mutate: 30 mutants in 685.5 s: 24 killed, 1 survived, 5 not compiled, 0 timed out, 0 excused
+mutate: FAILED: 1 mutant(s) survived; each one is a claim the tests do not check

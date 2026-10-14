@@ -1,0 +1,4 @@
+src/roots.c:1681:30 logic: '||' -> '&&'
+status: killed
+detail: FAIL tests/test_roots_real.c:1607: finish_rejects_zero_polynomial_and_negative_length: check failed:
+adf_roots_real_finish(L, zero, 0, NULL, 0, 2) == ADF_DOMAIN

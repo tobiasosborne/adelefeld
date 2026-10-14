@@ -1504,3 +1504,109 @@ ADF_TEST(degree_fifty_high_precision_filter_nesting)
     fmpq_clear(lo); fmpq_clear(hi); fmpq_clear(old_lo); fmpq_clear(old_hi);
     adf_rootlist_clear(L); _arb_vec_clear(previous, 2); fmpz_poly_clear(f);
 }
+
+/* R9 count regressions (lane r-cost2). Keep the benchmark constructions exact.
+   CLOCK_MONOTONIC is the clock of test_roots_real_isolate.c:39-45. */
+#include <time.h>
+
+/* The preceding strict-C11 includes have already selected glibc's feature set.
+   Supply the Linux POSIX clock declaration here so this addition stays append-only. */
+#if defined(__linux__) && !defined(CLOCK_MONOTONIC)
+#define CLOCK_MONOTONIC 1
+extern int clock_gettime(int clock_id, struct timespec * tp);
+#endif
+
+static double
+count_now(void)
+{
+    struct timespec t;
+    int st = clock_gettime(CLOCK_MONOTONIC, &t);
+    ADF_CHECK(st == 0);
+    return (double) t.tv_sec + 1e-9 * (double) t.tv_nsec;
+}
+
+/* family 0: prod (3 2^190 X - (2^190 + i)); family 1: prod (X - i 2^150), i=1..50. */
+static void
+count_cost_family(fmpz_poly_t f, int family)
+{
+    fmpz_poly_t linear;
+    fmpz_t a, b, offset;
+    slong i;
+    fmpz_poly_init(linear);
+    fmpz_init_set_ui(a, 1); fmpz_init(b); fmpz_init_set_ui(offset, 1);
+    fmpz_mul_2exp(offset, offset, family == 0 ? 190 : 150);
+    if (family == 0)
+        fmpz_mul_ui(a, offset, 3);
+    fmpz_poly_one(f);
+    for (i = 1; i <= 50; i++)
+    {
+        if (family == 0)
+            fmpz_add_ui(b, offset, (ulong) i);
+        else
+            fmpz_mul_ui(b, offset, (ulong) i);
+        fmpz_neg(b, b);
+        fmpz_poly_set_coeff_fmpz(linear, 0, b);
+        fmpz_poly_set_coeff_fmpz(linear, 1, a);
+        fmpz_poly_mul(f, f, linear);
+    }
+    fmpz_clear(a); fmpz_clear(b); fmpz_clear(offset); fmpz_poly_clear(linear);
+}
+
+ADF_TEST(equivalent_count_structured_cost)
+{
+    fmpz_poly_t f;
+    adf_rootlist_t L;
+    double t;
+    int family, st;
+    fmpz_poly_init(f); adf_rootlist_init(L);
+    for (family = 0; family < 2; family++)
+    {
+        count_cost_family(f, family);
+        t = count_now(); st = adf_roots_real(L, f, 2); t = count_now() - t;
+        printf("   count family %s: %.6f s, status %d, roots %ld, complete %d\n",
+               family == 0 ? "cluster" : "scaled", t, st, (long) L->n, L->complete);
+        ADF_CHECK(st == ADF_OK);
+        ADF_CHECK(L->n == 50 && L->count == 50 && L->complete == 1);
+        if (family == 0)
+            ADF_CHECK_MSG(t < 2.0, "cluster: %.6f s >= 2.0 s", t);
+    }
+    adf_rootlist_clear(L); fmpz_poly_clear(f);
+}
+
+/* Same random construction as the benchmark, at degree 20 so the plain oracle
+   fits the small-test budget. The benchmark still measures degree 50. */
+ADF_TEST(equivalent_count_dense_random)
+{
+    flint_rand_t state;
+    fmpz_poly_t f;
+    adf_rootlist_t L;
+    slong count;
+    double t;
+    int st;
+    flint_randinit(state); flint_randseed(state, 1, 2);
+    fmpz_poly_init(f); adf_rootlist_init(L);
+    fmpz_poly_randtest(f, state, 21, 10000);
+    fmpz_poly_set_coeff_si(f, 20, 3);
+    t = count_now(); count = fmpz_poly_num_real_roots(f); t = count_now() - t;
+    printf("   random degree 20 plain oracle: %.6f s, count %ld\n", t, (long) count);
+    st = adf_roots_real(L, f, 2);
+    ADF_CHECK(st == ADF_OK);
+    ADF_CHECK(L->n == count && L->count == count && L->complete == 1);
+    adf_rootlist_clear(L); fmpz_poly_clear(f); flint_randclear(state);
+}
+
+/* The file-wide mutation sample exposed the untested argument guard of the
+   test-only finish entry point. DOMAIN must precede normalization and allocation. */
+ADF_TEST(finish_rejects_zero_polynomial_and_negative_length)
+{
+    fmpz_poly_t f, zero;
+    adf_rootlist_t L;
+    fmpz_poly_init(f); fmpz_poly_init(zero); adf_rootlist_init(L);
+    fmpz_poly_set_coeff_si(f, 1, 1); fmpz_poly_set_coeff_si(f, 0, -1);
+    ADF_CHECK(adf_roots_real(L, f, 2) == ADF_OK && L->n == 1);
+    ADF_CHECK(adf_roots_real_finish(L, zero, 0, NULL, 0, 2) == ADF_DOMAIN);
+    ADF_CHECK(L->n == 1 && L->count == 1 && L->complete == 1 && fmpz_poly_equal(L->g, f));
+    ADF_CHECK(adf_roots_real_finish(L, f, 0, NULL, -1, 2) == ADF_DOMAIN);
+    ADF_CHECK(L->n == 1 && L->count == 1 && L->complete == 1 && fmpz_poly_equal(L->g, f));
+    adf_rootlist_clear(L); fmpz_poly_clear(f); fmpz_poly_clear(zero);
+}

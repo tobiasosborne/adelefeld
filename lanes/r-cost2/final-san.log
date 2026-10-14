@@ -1,0 +1,10 @@
+san test_roots_real exit 0
+   random degree 20 plain oracle: 0.655827 s, count 6
+ok   equivalent_count_dense_random
+ok   finish_rejects_zero_polynomial_and_negative_length
+12 tests, 10885 checks, 0 failed checks, 0 failed tests
+san test_roots_real_isolate exit 0
+ok   planted_roots_near_minimum_scale
+ok   count_guided_regions
+ok   pending_stack_growth_with_planted_roots
+15 tests, 19320 checks, 0 failed checks, 0 failed tests

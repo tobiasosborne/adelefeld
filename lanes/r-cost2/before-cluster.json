@@ -1,0 +1,232 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 10.478735,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "adf: 10.478735 s, status 0, balls 50, largest mantissa 194 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 9.221567,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "adf: 9.221567 s, status 0, balls 50, largest mantissa 194 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 10.356333,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "adf: 10.356333 s, status 0, balls 50, largest mantissa 194 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 10.573604,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "adf: 10.573604 s, status 0, balls 50, largest mantissa 194 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "adf",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 10.420865,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "adf: 10.420865 s, status 0, balls 50, largest mantissa 194 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 13.948791,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "count: 13.948791 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 15.370256,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "count: 15.370256 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 14.385575,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "count: 14.385575 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 13.776263,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "count: 13.776263 s, n = 50"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-before/bench_roots_real",
+      "count",
+      "cluster",
+      "190",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 17.819409,
+    "stdout": [
+      "family cluster e 190 degree 50 prec 2 coefficient bits 9598",
+      "count: 17.819409 s, n = 50"
+    ],
+    "stderr": []
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 0,
+    "exit": 0,
+    "seconds": 16.036433,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "adf: 16.036433 s, status 0, balls 12, largest mantissa 4 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 1,
+    "exit": 0,
+    "seconds": 17.272934,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "adf: 17.272934 s, status 0, balls 12, largest mantissa 4 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 2,
+    "exit": 0,
+    "seconds": 9.466,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "adf: 9.466000 s, status 0, balls 12, largest mantissa 4 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 3,
+    "exit": 0,
+    "seconds": 9.14353,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "adf: 9.143530 s, status 0, balls 12, largest mantissa 4 bits"
+    ],
+    "stderr": []
+  },
+  {
+    "command": [
+      "timeout",
+      "170",
+      "taskset",
+      "-c",
+      "2",
+      "lanes/r-cost2/build-after/bench_roots_real",
+      "adf",
+      "random",
+      "10000",
+      "50",
+      "2"
+    ],
+    "repeat": 4,
+    "exit": 0,
+    "seconds": 16.862977,
+    "stdout": [
+      "family random e 10000 degree 50 prec 2 coefficient bits 9965",
+      "adf: 16.862977 s, status 0, balls 12, largest mantissa 4 bits"
+    ],
+    "stderr": []
+  }
+]

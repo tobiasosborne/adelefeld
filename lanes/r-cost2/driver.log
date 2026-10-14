@@ -1,0 +1,3 @@
+s-realroots: exit 1, expected 1, 10 equal lines
+s-hostile: exit 1, expected 1, 19 equal lines
+driver: 2 cases, 29 expected lines, 0 differences

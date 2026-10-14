@@ -1718,11 +1718,13 @@ real_count(const fmpz_poly_t g)
         fmpz_mul_ui(fmpq_denref(center), g->coeffs + d, (ulong) d);
         fmpq_canonicalise(center);
     }
+    /* 512 bits admits the 385-bit cluster mean; its degree-50 Taylor shift took a
+       median 0.001754 s (docs/design/real-roots.md, section 10, r-cost2). */
     translate = d >= 5 && !fmpq_is_zero(center) &&
-        fmpz_bits(fmpq_numref(center)) + fmpz_bits(fmpq_denref(center)) <= 16;
+        fmpz_bits(fmpq_numref(center)) + fmpz_bits(fmpq_denref(center)) <= 512;
     if (!fmpz_is_zero(g->coeffs))
         scale = ((slong) fmpz_bits(g->coeffs) - (slong) fmpz_bits(g->coeffs + d)) / d;
-    if (!translate && scale >= -32)
+    if (!translate && scale >= -32 && scale <= 32)
     {
         fmpq_clear(center);
         return fmpz_poly_num_real_roots(g);
@@ -1743,8 +1745,16 @@ real_count(const fmpz_poly_t g)
         else
             scale = 0;
     }
+    /* R9, docs/design/real-roots.md:366-384, applies in both directions:
+       scale > 0 gives h(2^scale X); scale < 0 gives a positive multiple of it.
+       refs/src/flint-3.0.1/fmpz_poly.rst:578-582 and
+       refs/src/flint-src-3.0.1/fmpz_poly/scale_2exp.c:23-61 specify these signs. */
     _fmpz_poly_scale_2exp(h->coeffs, d + 1, scale);
-    count = fmpz_poly_num_real_roots(h);
+    /* Pay for the transform and height check, but count g if height did not shrink. */
+    if (FLINT_ABS(fmpz_poly_max_bits(h)) < FLINT_ABS(fmpz_poly_max_bits(g)))
+        count = fmpz_poly_num_real_roots(h);
+    else
+        count = fmpz_poly_num_real_roots(g);
     fmpz_poly_clear(h); fmpz_clear(power); fmpq_clear(center);
     return count;
 }

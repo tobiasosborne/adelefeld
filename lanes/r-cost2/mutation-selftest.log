@@ -1,0 +1,4 @@
+/tmp/tmp4yn6wnze/equivalent.txt:1: not an entry (expected FILE | KIND | LINE | 'old' -> 'new'):
+src/example.c:43:swap_args
+/tmp/tmp4yn6wnze/equivalent.txt:1: not an entry (expected FILE | KIND | LINE | 'old' -> 'new'):
+src/example.c:43:swap_args

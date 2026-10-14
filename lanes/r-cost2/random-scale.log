@@ -1,0 +1,3 @@
+family random e 10000 degree 50 prec 2 coefficient bits 9965
+equivalent scale 48 coefficient bits 11471
+count: 11.756066 s, n = 12

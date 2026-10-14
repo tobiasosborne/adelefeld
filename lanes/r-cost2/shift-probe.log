@@ -1,0 +1,6 @@
+mean bits 385
+run 0 shift 0.001926436 s, rational transform 0.002743635 s, height 212
+run 1 shift 0.001776599 s, rational transform 0.002492042 s, height 212
+run 2 shift 0.001737090 s, rational transform 0.002491193 s, height 212
+run 3 shift 0.001739915 s, rational transform 0.002430521 s, height 212
+run 4 shift 0.001753936 s, rational transform 0.002442401 s, height 212

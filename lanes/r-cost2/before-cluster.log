@@ -1,0 +1,12 @@
+before cluster adf 0 0 10.478735
+before cluster adf 1 0 9.221567
+before cluster adf 2 0 10.356333
+before cluster adf 3 0 10.573604
+before cluster adf 4 0 10.420865
+median before cluster adf 10.420865
+before cluster count 0 0 13.948791
+before cluster count 1 0 15.370256
+before cluster count 2 0 14.385575
+before cluster count 3 0 13.776263
+before cluster count 4 0 17.819409
+median before cluster count 14.385575
