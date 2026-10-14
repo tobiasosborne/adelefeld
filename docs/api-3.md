@@ -520,7 +520,9 @@ binary bits of `(l+h)/2`. Put d = max(m-l,h-m). If d = 0 use radius 0.
 Otherwise let u be the least 30-bit binary number >= d and let rho be its least 30-bit successor.
 Store `[m-rho,m+rho]`. It encloses `[l,h]`, has midpoint in `[0,1]`, and, writing
 eta = abs(m-(l+h)/2), each endpoint excess is at most `2 eta + 2^-28 d`.
-The statement and its excess bound use only `l <= m <= h`, so they hold unchanged for
+The statement and its excess bound are argued with `l <= m <= h`, which a rounded midpoint need not satisfy
+(`l = h = 1/3`, p = 2 gives `m = 3/8`); the argument without that hypothesis is in `docs/api-3b.md`,
+section "Coordinate rounding and excess". The statement is unchanged. It holds for
 `-1 <= l <= h <= 1`; only the claim about the midpoint needs `h <= 1`. Section 3.3 uses the second
 form, for which the midpoint is unrestricted. The hypothesis of the first form is unchanged.
 
