@@ -1,0 +1,43 @@
+[
+ {
+  "id": "F1",
+  "state": "pattern",
+  "column": "(x^2 - 13)(x^2 - 17)(x^2 - 221)",
+  "text": "A root at every swept place, and no rational root.",
+  "rule": {
+   "places": "all",
+   "then": {
+    "count_min": 1
+   },
+   "checks": {
+    "q13": {
+     "status": "DOMAIN"
+    },
+    "q17": {
+     "status": "DOMAIN"
+    },
+    "q221": {
+     "status": "DOMAIN"
+    }
+   }
+  },
+  "checks_shown": [
+   "q13",
+   "q17",
+   "q221"
+  ],
+  "evidence": [
+   "The three factor columns show which factor has the root at each place. A rational root of",
+   "this monic integer polynomial is a rational square root of 13, 17 or 221; `root n with 2`",
+   "gives DOMAIN for a rational with no rational root (tools/adf/README.md:573)."
+  ],
+  "argument": [
+   "At a prime p that does not divide 2 * 13 * 17, if neither 13 nor 17 is a square mod p then",
+   "221 = 13 * 17 is, because the Legendre symbol is multiplicative",
+   "(refs/src/shoup-ntb/ntb-v2.txt:15014, Theorem 12.1 (ii)), and a unit that is a square mod",
+   "an odd p is a square in Q_p (refs/src/conrad-hensel/hensel.txt:160-170). So only R, 2, 13",
+   "and 17 need a computation, and the wall has them. docs/SPEC.md:541-542 states the fact as",
+   "proved (docs/proofs/quotient.md, Proposition 12)."
+  ]
+ }
+]

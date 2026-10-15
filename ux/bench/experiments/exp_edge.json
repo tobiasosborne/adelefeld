@@ -1,0 +1,12 @@
+{
+ "name": "exp_edge",
+ "question": "Where does exp converge? exp of five inputs at the real place and the first primes, under a budget",
+ "cell": "exp_at x with the place: the value as a partial ball, or the status",
+ "operation": "exp",
+ "inputs": [{"value": "2"}, {"value": "4"}, {"value": "6"}, {"value": "15"}, {"value": "(* ; 0 mod 5)"}],
+ "places": ["R", "primes below 30"],
+ "precision": {"R": 64, "p": 6},
+ "digits": 10,
+ "budget": {"max_cells": 40, "timeout": 30},
+ "regroup": [3, 4]
+}

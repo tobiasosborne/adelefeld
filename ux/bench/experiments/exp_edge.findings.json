@@ -1,0 +1,73 @@
+[
+ {
+  "id": "F1",
+  "state": "pattern",
+  "column": "15",
+  "text": "A value exactly at 3 and 5, the primes dividing 15; DOMAIN at every other swept prime.",
+  "rule": {
+   "places": "primes",
+   "when": {
+    "places": [
+     3,
+     5
+    ]
+   },
+   "then": {
+    "status": "OK"
+   },
+   "else": {
+    "status": "DOMAIN"
+   }
+  }
+ },
+ {
+  "id": "F2",
+  "state": "pattern",
+  "column": "(* ; 0 mod 5)",
+  "text": [
+   "A finite ball says nothing outside its modulus: a value at 5, NOT_DETERMINED at every",
+   "other swept prime."
+  ],
+  "rule": {
+   "places": "primes",
+   "when": {
+    "places": [
+     5
+    ]
+   },
+   "then": {
+    "status": "OK"
+   },
+   "else": {
+    "status": "NOT_DETERMINED"
+   }
+  },
+  "evidence": [
+   "At R the driver gives DOMAIN: a finite ball has no real coordinate",
+   "(tools/adf/README.md:227-228)."
+  ]
+ },
+ {
+  "id": "F3",
+  "state": "open",
+  "column": "4",
+  "text": [
+   "Is 2 the only swept prime with a value for 4? The budget stopped the sweep: see the stop",
+   "line."
+  ],
+  "rule": {
+   "places": "primes",
+   "when": {
+    "places": [
+     2
+    ]
+   },
+   "then": {
+    "status": "OK"
+   },
+   "else": {
+    "status": "DOMAIN"
+   }
+  }
+ }
+]

@@ -1,0 +1,21 @@
+{
+ "name": "local_global",
+ "question": "Does (x^2 - 13)(x^2 - 17)(x^2 - 221) have a root at every place, and a rational root?",
+ "cell": "the roots of the polynomial at the place: roots POLY with p with 8 at a prime, realroots POLY at R",
+ "operation": "roots",
+ "inputs": [
+  {"label": "(x^2 - 13)(x^2 - 17)(x^2 - 221)", "poly": "-48841 0 6851 0 -251 0 1"},
+  {"label": "x^2 - 13", "poly": "-13 0 1"},
+  {"label": "x^2 - 17", "poly": "-17 0 1"},
+  {"label": "x^2 - 221", "poly": "-221 0 1"}
+ ],
+ "places": ["R", "primes below 50"],
+ "precision": {"R": 64, "p": 8},
+ "budget": {"max_cells": 100, "timeout": 60},
+ "checks": [
+  {"id": "q13", "line": "root 13 with 2"},
+  {"id": "q17", "line": "root 17 with 2"},
+  {"id": "q221", "line": "root 221 with 2"}
+ ],
+ "regroup": [4, 8, 13, 17]
+}
