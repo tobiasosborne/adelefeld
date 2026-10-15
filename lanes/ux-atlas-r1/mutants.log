@@ -1,0 +1,18 @@
+M01 atlas.js   killed {'python': 1, 'node': 1}  'Math.floor(GEOMETRY.treeWidth / (2 * GEOMETRY.litRadius))'
+M02 atlas.js   killed {'python': 0, 'node': 1}  'if (tree.prime > MAX_PRIME + 4) {'
+M03 atlas.js   killed {'python': 0, 'node': 1}  'if (widest >= rowCapacity()) {'
+M04 atlas.js   killed {'python': 0, 'node': 1}  'node.exponent = node.depth;'
+M05 atlas.js   killed {'python': 0, 'node': 1}  '{ y: (1 - top) * step, label'
+M06 atlas.js   killed {'python': 0, 'node': 1}  "return ['Reported failing place: ' + (result.failing_place ?"
+M07 atlas.js   killed {'python': 0, 'node': 1}  'return scene.lens;'
+M08 scene.py   killed {'python': 1, 'node': 0}  'if p > 2 * MAX_PRIME:'
+M09 scene.py   killed {'python': 1, 'node': 0}  'parser.exit(1, f"scene: {refusal}\\n")'
+M10 scene.py   killed {'python': 1, 'node': 0}  'if widest >= ROW_CAPACITY:'
+M11 scene.py   SURVIVED {'python': 0, 'node': 0}  ''
+M12 scene.py   SURVIVED {'python': 0, 'node': 0}  ')'
+M13 scene.py   killed {'python': 1, 'node': 0}  'if True else'
+M14 scene.py   killed {'python': 1, 'node': 0}  'fog["source_record"] = real_projection'
+M15 scene.py   killed {'python': 1, 'node': 0}  '"solved_polynomial": polynomial'
+M16 atlas.html killed {'python': 0, 'node': 0, 'page': 1}  "text(65, 115, 'Reported failing place: not given');"
+M17 atlas.html killed {'python': 0, 'node': 0, 'page': 1}  'G.treeWidth, G.treeHeight)'
+15 of 17 killed

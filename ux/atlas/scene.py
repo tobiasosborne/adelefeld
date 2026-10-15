@@ -10,6 +10,11 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 RAT = r"-?\d+(?:/\d+)?"
+# The drawing limits of atlas.js GEOMETRY (test_scene.py checks that the two agree through node):
+# a tree row holds ROW_CAPACITY circles; MAX_PRIME is the largest prime p with 2p <= ROW_CAPACITY.
+ROW_CAPACITY = 27
+MAX_PRIME = 13
+MISSING_REAL = "no real coordinate in the input"
 STATUS_CLASSES = {
     "OK": "ok",
     "NOT_DETERMINED": "open", "UNIT_NOT_CERTIFIED": "open",
@@ -17,6 +22,10 @@ STATUS_CLASSES = {
     "DOMAIN": "proved no", "NO_SOLUTION": "proved no", "NOT_UNIT": "proved no",
     "LIMIT": "budget", "PARSE": "not mathematics", "UNSUPPORTED": "not mathematics",
 }
+
+
+class Refusal(ValueError):
+    """An input outside what this slice can draw; scene.py exits 2."""
 
 
 def parse_value(text):
@@ -58,6 +67,36 @@ def fog_count(value, drawn):
             "undrawn_modulus_primes_below_1000": support,
             "undrawn_modulus_prime_count_below_1000": len(support),
             "scope": "input modulus support below 1000; larger factors not examined"}
+
+
+def row_sizes(paths, p):
+    """The number of circles in each row of a tree, as chooseNodes in atlas.js draws them."""
+    rows = {0: {()}}
+    for path in paths:
+        for i in range(len(path)):
+            children = range(p) if i < 6 else [path[i]]
+            rows.setdefault(i + 1, set()).update(tuple(path[:i]) + (d,) for d in children)
+    return [len(rows[k]) for k in range(len(rows))]
+
+
+def check_rows(paths, p, where=""):
+    widest = max(row_sizes(paths, p))
+    if widest > ROW_CAPACITY:
+        raise Refusal(f"a row of {widest} circles{where} exceeds the capacity {ROW_CAPACITY} of a tree row "
+                      "in atlas.js")
+
+
+def polynomial_text(coefficients):
+    """Integer coefficients, constant first, as the driver's roots command takes them, written X^n first."""
+    terms = []
+    for k, c in reversed(list(enumerate(int(c) for c in coefficients.split()))):
+        if c:
+            monomial = "" if k == 0 else "X" if k == 1 else f"X^{k}"
+            terms.append(("-" if c < 0 else "+", (str(abs(c)) if k == 0 or abs(c) != 1 else "") + monomial))
+    if not terms:
+        return "0"
+    text = ("-" if terms[0][0] == "-" else "") + terms[0][1]
+    return text + "".join(f" {sign} {body}" for sign, body in terms[1:])
 
 
 def valuation(q, p):
@@ -246,13 +285,33 @@ def node_balls(paths, p):
     return nodes
 
 
+DERIVED = {
+    "rule": "D-UX5 as amended 2026-10-16: these numbers are computed in scene.py by a finite computation "
+            "from a printed driver line, and each names that line by its index in provenance.records",
+    "digits": "trees[].depths[].paths[]: digits, digit_string, nodes and end_exponent are the base-p digits "
+              "(digit_path) of centre, printed in provenance.records[source_record].output",
+    "node_balls": "trees[].depths[].node_balls: the drawn sibling balls, from the digits of the paths of the "
+                  "same depth; source provenance.records[paths[].source_record]",
+    "counts": "trees[].depths[]: branch_count and lit_path_count count the balls of "
+              "provenance.records[record].output and their distinct digit paths",
+    "fog": "fog: the primes below 1000 dividing the modulus printed in provenance.records[fog.source_record]"
+           ".output, and their count",
+    "modular_digits": "modular_solutions[].digits: the first digits of the components printed in "
+                      "provenance.records[records[3]].output",
+}
+
+
 def build_scene(value_text, lens, primes, d_min, d_max, driver, polynomial=None, modular=None):
     value = parse_value(value_text)
     primes = sorted(primes)
     if not 1 <= len(primes) <= 4 or len(set(primes)) != len(primes):
         raise ValueError("choose one to four distinct primes")
-    if any(p not in set(prime_list(1000)) for p in primes):
-        raise ValueError("this slice draws primes below 1000")
+    if any(p < 2 or any(p % d == 0 for d in range(2, int(p ** 0.5) + 1)) for p in primes):
+        raise ValueError("each place must be a prime")
+    for p in primes:
+        if p > MAX_PRIME:
+            raise Refusal(f"prime {p} is above the drawing limit {MAX_PRIME} of this slice: a tree row in "
+                          f"atlas.js holds {ROW_CAPACITY} circles and two branches put 2p in one row")
     if not 1 <= d_min <= d_max <= 5:
         raise ValueError("depth range must satisfy 1 <= min <= max <= 5")
     if lens not in ("identity", "exp", "log") and not re.fullmatch(r"roots [1-9]\d*", lens):
@@ -325,6 +384,8 @@ def build_scene(value_text, lens, primes, d_min, d_max, driver, polynomial=None,
             if seeds is not None:
                 seeds["record"] = seed_record
             depths[str(depth)] = decorate(parse_output(session.output(record), p), p, depth, record, seeds)
+            check_rows([path["digits"] for path in depths[str(depth)]["paths"]], p,
+                       f" at prime {p}, depth {depth}")
         trees.append({"prime": p, "depths": depths})
     real_line = session.output(real_record)
     if real_line.startswith("error: "):
@@ -336,6 +397,11 @@ def build_scene(value_text, lens, primes, d_min, d_max, driver, polynomial=None,
         real = {"status": "OK", "status_class": "ok", "printed": real_line,
                 "balls": [] if text == "none" else [parse_real(t) for t in text.split("; ")]}
     real.update(record=real_record, failing_place="not given", coordinate="real")
+    # docs/conventions.md:1183, fball_v = "(" "*" ";" fin ")": a printed "(* ; ...)" has no real coordinate.
+    # The reason is given only when the driver also refused the input's own projection to the real place.
+    if (real["status"] != "OK" and session.output(canonical).startswith("(* ;")
+            and session.output(real_projection).startswith("error: ")):
+        real.update(reason=MISSING_REAL, reason_records=[canonical, real_projection])
     threads = []
     if value["kind"] == "rational" and lens == "identity":
         thread_records = [canonical]
@@ -365,14 +431,18 @@ def build_scene(value_text, lens, primes, d_min, d_max, driver, polynomial=None,
         modular_solutions.append({"residue": e_text, "digits": residues,
                                   "square": session.output(square), "contains": session.output(contains),
                                   "records": [show, square, contains, project]})
+    fog = fog_count(parse_value(session.output(canonical)), primes)
+    fog["source_record"] = canonical
     return {"schema": "adelefeld-place-atlas-1", "value": session.output(canonical), "lens": lens,
-            "polynomial": polynomial, "places": ["real"] + primes,
+            "polynomial": polynomial, "solved_polynomial": polynomial_text(polynomial) if polynomial else None,
+            "places": ["real"] + primes,
             "depth_range": [d_min, d_max], "trees": trees, "ruler": real, "threads": threads,
-            "fog": fog_count(value, primes), "modulus": modular, "modular_solutions": modular_solutions,
+            "fog": fog, "modulus": modular, "modular_solutions": modular_solutions,
             "projection": {"finite_record": projection, "real_record": real_projection},
             "notes": ["Low digit at the root; certificates may be deeper than the requested drawing.",
                       "Seed not given means the polynomial solver printed no branch identifier.",
                       "Depth handles select stored results. The viewer performs no arithmetic on values."],
+            "derived": DERIVED,
             "provenance": provenance}
 
 
@@ -393,6 +463,8 @@ def main():
                             args.driver.resolve(), args.polynomial, args.modular)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(scene, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    except Refusal as refusal:
+        parser.exit(2, f"scene: {refusal}\n")
     except (ValueError, OSError, RuntimeError, subprocess.TimeoutExpired, ZeroDivisionError) as error:
         parser.exit(1, f"scene: {error}\n")
 

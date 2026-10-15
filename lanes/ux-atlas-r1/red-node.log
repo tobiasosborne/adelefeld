@@ -1,0 +1,9 @@
+✖ failing tests:
+✖ idempotents30: item 1, no two circles of one row overlap at any stored depth (0.327822ms)
+✖ item 1: primes 2 to the limit, depth 1, all siblings lit: centre distance >= 2 r (0.929712ms)
+✖ item 1: the limits are computed from the tree geometry (0.344957ms)
+✖ item 1: the viewer refuses a prime above the limit and a row above the capacity (0.242508ms)
+✖ item 2: the lens title and the map label name the polynomial actually solved (1.352803ms)
+✖ item 3: gate lines carry the reason and keep the failing place not given (0.093572ms)
+✖ item 4: 1/5 at 5 has its root one level above the Z_5 baseline, with an exponent scale (0.146499ms)
+✖ sqrt9: item 1, no two circles of one row overlap at any stored depth (0.579786ms)
