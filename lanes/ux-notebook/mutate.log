@@ -1,0 +1,14 @@
+mutant  1 digits.jl: killed: 'x = div(x + dg * d, p)'
+mutant  2 digits.jl: killed: 'pre = vcat(pre, zeros(Int, e.v))'
+mutant  3 digits.jl: SURVIVED: 'v = (a == 0 || vp(a, p) > k) ? k : vp(a, p)'
+mutant  4 digits.jl: killed: '    lo = v\n'
+mutant  5 digits.jl: killed: 'for p in SMALL_PRIMES[2:end]'
+mutant  6 valuetext.jl: killed: 'const RE_URAT = r"^-?[0-9]+(/[0-9]+)?$"'
+mutant  7 valuetext.jl: SURVIVED: 'nothing'
+mutant  8 strip.jl: killed: '[numerator(N), denominator(N)]'
+mutant  9 notebook.jl: killed: 'nothing'
+mutant 10 driver.jl: SURVIVED: 's = s'
+7 of 10 killed
+mutant  7 valuetext.jl: killed: 'nothing'
+mutant 10 driver.jl: killed: 's = s'
+2 of 10 killed
