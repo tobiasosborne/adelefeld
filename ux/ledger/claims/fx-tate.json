@@ -1,9 +1,9 @@
 {
  "id": "fx-tate",
- "statement": "Slice 5c (lane t5-slice2): docs/api-5.md 3 and 8 item 3; docs/api-5b.md \"Slice 5c\"; SPEC 8. Expected lines",
+ "statement": "Slice 5c (lane t5-slice2): docs/api-5.md 3 and 8 item 3; docs/api-5s.md \"Slice 5c\"; SPEC 8. Expected lines",
  "script": [
   "#!exit 1",
-  "# Slice 5c (lane t5-slice2): docs/api-5.md 3 and 8 item 3; docs/api-5b.md \"Slice 5c\"; SPEC 8. Expected lines",
+  "# Slice 5c (lane t5-slice2): docs/api-5.md 3 and 8 item 3; docs/api-5s.md \"Slice 5c\"; SPEC 8. Expected lines",
   "# derived by hand before the run (lanes/t5-slice2/derive_fixture.py: conventions 9.5 printing on exact rationals).",
   "# tate_vector: conventions 6.5, f[j] = chi(j) (exact phases: zeta 1; chi_4 = (4,3): 0, 1, 0, -1; (5,2): phases",
   "# 0, 1/4, 3/4, 1/2 at 1, 2, 3, 4, so 0, 1, i, -i, -1); P = x^e (e = 0, 1, 1), A = 1, B = C = 0, all exact.",
