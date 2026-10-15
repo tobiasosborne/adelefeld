@@ -1,0 +1,1065 @@
+{
+  "schema": "adelefeld-place-atlas-1",
+  "value": "2",
+  "lens": "roots 2",
+  "polynomial": "-2 0 1",
+  "places": [
+    "real",
+    2,
+    3,
+    5,
+    7
+  ],
+  "depth_range": [
+    1,
+    5
+  ],
+  "trees": [
+    {
+      "prime": 2,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 6,
+          "requested_depth": 1,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 14,
+          "requested_depth": 2,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 22,
+          "requested_depth": 3,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 30,
+          "requested_depth": 4,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 38,
+          "requested_depth": 5,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 3,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 8,
+          "requested_depth": 1,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 16,
+          "requested_depth": 2,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 24,
+          "requested_depth": 3,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 32,
+          "requested_depth": 4,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 40,
+          "requested_depth": 5,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 5,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 10,
+          "requested_depth": 1,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 18,
+          "requested_depth": 2,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 26,
+          "requested_depth": 3,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 34,
+          "requested_depth": 4,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "none",
+          "failing_place": "not given",
+          "record": 42,
+          "requested_depth": 5,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 7,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 7^1; 4 mod 7^1",
+          "failing_place": "not given",
+          "record": 12,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 7^1",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                3
+              ],
+              "digit_string": "3",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                }
+              ],
+              "certificate_precision": 1,
+              "seed_source_record": 13,
+              "source_record": 12
+            },
+            {
+              "centre": "4",
+              "seed": "4",
+              "printed": "4 mod 7^1",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                4
+              ],
+              "digit_string": "4",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                }
+              ],
+              "certificate_precision": 1,
+              "seed_source_record": 13,
+              "source_record": 12
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "10 mod 7^2; 39 mod 7^2",
+          "failing_place": "not given",
+          "record": 20,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "10",
+              "seed": "3",
+              "printed": "10 mod 7^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                3,
+                1
+              ],
+              "digit_string": "3 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "10",
+                  "value_form": "[p=7: 10 + O(7^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 21,
+              "source_record": 20
+            },
+            {
+              "centre": "39",
+              "seed": "4",
+              "printed": "39 mod 7^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                4,
+                5
+              ],
+              "digit_string": "4 5",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "39",
+                  "value_form": "[p=7: 39 + O(7^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 21,
+              "source_record": 20
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "108 mod 7^3; 235 mod 7^3",
+          "failing_place": "not given",
+          "record": 28,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "108",
+              "seed": "3",
+              "printed": "108 mod 7^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                3,
+                1,
+                2
+              ],
+              "digit_string": "3 1 2",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "10",
+                  "value_form": "[p=7: 10 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "108",
+                  "value_form": "[p=7: 108 + O(7^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 29,
+              "source_record": 28
+            },
+            {
+              "centre": "235",
+              "seed": "4",
+              "printed": "235 mod 7^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                4,
+                5,
+                4
+              ],
+              "digit_string": "4 5 4",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "39",
+                  "value_form": "[p=7: 39 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "235",
+                  "value_form": "[p=7: 235 + O(7^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 29,
+              "source_record": 28
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "3.1.0": "[p=7: 10 + O(7^3)]",
+            "3.1.1": "[p=7: 59 + O(7^3)]",
+            "3.1.2": "[p=7: 108 + O(7^3)]",
+            "3.1.3": "[p=7: 157 + O(7^3)]",
+            "3.1.4": "[p=7: 206 + O(7^3)]",
+            "3.1.5": "[p=7: 255 + O(7^3)]",
+            "3.1.6": "[p=7: 304 + O(7^3)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]",
+            "4.5.0": "[p=7: 39 + O(7^3)]",
+            "4.5.1": "[p=7: 88 + O(7^3)]",
+            "4.5.2": "[p=7: 137 + O(7^3)]",
+            "4.5.3": "[p=7: 186 + O(7^3)]",
+            "4.5.4": "[p=7: 235 + O(7^3)]",
+            "4.5.5": "[p=7: 284 + O(7^3)]",
+            "4.5.6": "[p=7: 333 + O(7^3)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "235 mod 7^4; 2166 mod 7^4",
+          "failing_place": "not given",
+          "record": 36,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "235",
+              "seed": "4",
+              "printed": "235 mod 7^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                4,
+                5,
+                4,
+                0
+              ],
+              "digit_string": "4 5 4 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "39",
+                  "value_form": "[p=7: 39 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "235",
+                  "value_form": "[p=7: 235 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "235",
+                  "value_form": "[p=7: 235 + O(7^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 37,
+              "source_record": 36
+            },
+            {
+              "centre": "2166",
+              "seed": "3",
+              "printed": "2166 mod 7^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                3,
+                1,
+                2,
+                6
+              ],
+              "digit_string": "3 1 2 6",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "10",
+                  "value_form": "[p=7: 10 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "108",
+                  "value_form": "[p=7: 108 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "2166",
+                  "value_form": "[p=7: 2166 + O(7^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 37,
+              "source_record": 36
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]",
+            "4.5.0": "[p=7: 39 + O(7^3)]",
+            "4.5.1": "[p=7: 88 + O(7^3)]",
+            "4.5.2": "[p=7: 137 + O(7^3)]",
+            "4.5.3": "[p=7: 186 + O(7^3)]",
+            "4.5.4": "[p=7: 235 + O(7^3)]",
+            "4.5.5": "[p=7: 284 + O(7^3)]",
+            "4.5.6": "[p=7: 333 + O(7^3)]",
+            "4.5.4.0": "[p=7: 235 + O(7^4)]",
+            "4.5.4.1": "[p=7: 578 + O(7^4)]",
+            "4.5.4.2": "[p=7: 921 + O(7^4)]",
+            "4.5.4.3": "[p=7: 1264 + O(7^4)]",
+            "4.5.4.4": "[p=7: 1607 + O(7^4)]",
+            "4.5.4.5": "[p=7: 1950 + O(7^4)]",
+            "4.5.4.6": "[p=7: 2293 + O(7^4)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "3.1.0": "[p=7: 10 + O(7^3)]",
+            "3.1.1": "[p=7: 59 + O(7^3)]",
+            "3.1.2": "[p=7: 108 + O(7^3)]",
+            "3.1.3": "[p=7: 157 + O(7^3)]",
+            "3.1.4": "[p=7: 206 + O(7^3)]",
+            "3.1.5": "[p=7: 255 + O(7^3)]",
+            "3.1.6": "[p=7: 304 + O(7^3)]",
+            "3.1.2.0": "[p=7: 108 + O(7^4)]",
+            "3.1.2.1": "[p=7: 451 + O(7^4)]",
+            "3.1.2.2": "[p=7: 794 + O(7^4)]",
+            "3.1.2.3": "[p=7: 1137 + O(7^4)]",
+            "3.1.2.4": "[p=7: 1480 + O(7^4)]",
+            "3.1.2.5": "[p=7: 1823 + O(7^4)]",
+            "3.1.2.6": "[p=7: 2166 + O(7^4)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "4567 mod 7^5; 12240 mod 7^5",
+          "failing_place": "not given",
+          "record": 44,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "4567",
+              "seed": "3",
+              "printed": "4567 mod 7^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                3,
+                1,
+                2,
+                6,
+                1
+              ],
+              "digit_string": "3 1 2 6 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "10",
+                  "value_form": "[p=7: 10 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "108",
+                  "value_form": "[p=7: 108 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "2166",
+                  "value_form": "[p=7: 2166 + O(7^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "4567",
+                  "value_form": "[p=7: 4567 + O(7^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 45,
+              "source_record": 44
+            },
+            {
+              "centre": "12240",
+              "seed": "4",
+              "printed": "12240 mod 7^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                4,
+                5,
+                4,
+                0,
+                5
+              ],
+              "digit_string": "4 5 4 0 5",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "39",
+                  "value_form": "[p=7: 39 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "235",
+                  "value_form": "[p=7: 235 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "235",
+                  "value_form": "[p=7: 235 + O(7^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "12240",
+                  "value_form": "[p=7: 12240 + O(7^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 45,
+              "source_record": 44
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "3.1.0": "[p=7: 10 + O(7^3)]",
+            "3.1.1": "[p=7: 59 + O(7^3)]",
+            "3.1.2": "[p=7: 108 + O(7^3)]",
+            "3.1.3": "[p=7: 157 + O(7^3)]",
+            "3.1.4": "[p=7: 206 + O(7^3)]",
+            "3.1.5": "[p=7: 255 + O(7^3)]",
+            "3.1.6": "[p=7: 304 + O(7^3)]",
+            "3.1.2.0": "[p=7: 108 + O(7^4)]",
+            "3.1.2.1": "[p=7: 451 + O(7^4)]",
+            "3.1.2.2": "[p=7: 794 + O(7^4)]",
+            "3.1.2.3": "[p=7: 1137 + O(7^4)]",
+            "3.1.2.4": "[p=7: 1480 + O(7^4)]",
+            "3.1.2.5": "[p=7: 1823 + O(7^4)]",
+            "3.1.2.6": "[p=7: 2166 + O(7^4)]",
+            "3.1.2.6.0": "[p=7: 2166 + O(7^5)]",
+            "3.1.2.6.1": "[p=7: 4567 + O(7^5)]",
+            "3.1.2.6.2": "[p=7: 6968 + O(7^5)]",
+            "3.1.2.6.3": "[p=7: 9369 + O(7^5)]",
+            "3.1.2.6.4": "[p=7: 11770 + O(7^5)]",
+            "3.1.2.6.5": "[p=7: 14171 + O(7^5)]",
+            "3.1.2.6.6": "[p=7: 16572 + O(7^5)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]",
+            "4.5.0": "[p=7: 39 + O(7^3)]",
+            "4.5.1": "[p=7: 88 + O(7^3)]",
+            "4.5.2": "[p=7: 137 + O(7^3)]",
+            "4.5.3": "[p=7: 186 + O(7^3)]",
+            "4.5.4": "[p=7: 235 + O(7^3)]",
+            "4.5.5": "[p=7: 284 + O(7^3)]",
+            "4.5.6": "[p=7: 333 + O(7^3)]",
+            "4.5.4.0": "[p=7: 235 + O(7^4)]",
+            "4.5.4.1": "[p=7: 578 + O(7^4)]",
+            "4.5.4.2": "[p=7: 921 + O(7^4)]",
+            "4.5.4.3": "[p=7: 1264 + O(7^4)]",
+            "4.5.4.4": "[p=7: 1607 + O(7^4)]",
+            "4.5.4.5": "[p=7: 1950 + O(7^4)]",
+            "4.5.4.6": "[p=7: 2293 + O(7^4)]",
+            "4.5.4.0.0": "[p=7: 235 + O(7^5)]",
+            "4.5.4.0.1": "[p=7: 2636 + O(7^5)]",
+            "4.5.4.0.2": "[p=7: 5037 + O(7^5)]",
+            "4.5.4.0.3": "[p=7: 7438 + O(7^5)]",
+            "4.5.4.0.4": "[p=7: 9839 + O(7^5)]",
+            "4.5.4.0.5": "[p=7: 12240 + O(7^5)]",
+            "4.5.4.0.6": "[p=7: 14641 + O(7^5)]"
+          }
+        }
+      }
+    }
+  ],
+  "ruler": {
+    "status": "OK",
+    "status_class": "ok",
+    "printed": "-1.4142135623730950488 +/- 1.7e-21; 1.4142135623730950488 +/- 1.7e-21",
+    "balls": [
+      {
+        "printed": "-1.4142135623730950488 +/- 1.7e-21",
+        "midpoint_printed": "-1.4142135623730950488",
+        "radius_printed": "1.7e-21",
+        "dyadic_endpoints": "not given",
+        "exact_point": null
+      },
+      {
+        "printed": "1.4142135623730950488 +/- 1.7e-21",
+        "midpoint_printed": "1.4142135623730950488",
+        "radius_printed": "1.7e-21",
+        "dyadic_endpoints": "not given",
+        "exact_point": null
+      }
+    ],
+    "record": 3,
+    "failing_place": "not given",
+    "coordinate": "real"
+  },
+  "threads": [],
+  "fog": {
+    "count": "infinitely many",
+    "label": "infinitely many undrawn primes",
+    "scope": "input value; no lens computation at undrawn places"
+  },
+  "modulus": null,
+  "modular_solutions": [],
+  "projection": {
+    "finite_record": 1,
+    "real_record": 2
+  },
+  "notes": [
+    "Low digit at the root; certificates may be deeper than the requested drawing.",
+    "Seed not given means the polynomial solver printed no branch identifier.",
+    "Depth handles select stored results. The viewer performs no arithmetic on values."
+  ],
+  "provenance": {
+    "stdin": "prec 64\ndigits 20\nshow 2\nproject 2 with 2 3 5 7\nproject 2 with real\nrealroots -2 0 1\nroot 2 with 2 with 1\nroot 2 with 2 with -1\nprec 1\nroots -2 0 1 with 2 with 1\nroots_at 2 with 2 with 2\nroots -2 0 1 with 3 with 1\nroots_at 2 with 3 with 2\nroots -2 0 1 with 5 with 1\nroots_at 2 with 5 with 2\nroots -2 0 1 with 7 with 1\nroots_at 2 with 7 with 2\nprec 2\nroots -2 0 1 with 2 with 2\nroots_at 2 with 2 with 2\nroots -2 0 1 with 3 with 2\nroots_at 2 with 3 with 2\nroots -2 0 1 with 5 with 2\nroots_at 2 with 5 with 2\nroots -2 0 1 with 7 with 2\nroots_at 2 with 7 with 2\nprec 3\nroots -2 0 1 with 2 with 3\nroots_at 2 with 2 with 2\nroots -2 0 1 with 3 with 3\nroots_at 2 with 3 with 2\nroots -2 0 1 with 5 with 3\nroots_at 2 with 5 with 2\nroots -2 0 1 with 7 with 3\nroots_at 2 with 7 with 2\nprec 4\nroots -2 0 1 with 2 with 4\nroots_at 2 with 2 with 2\nroots -2 0 1 with 3 with 4\nroots_at 2 with 3 with 2\nroots -2 0 1 with 5 with 4\nroots_at 2 with 5 with 2\nroots -2 0 1 with 7 with 4\nroots_at 2 with 7 with 2\nprec 5\nroots -2 0 1 with 2 with 5\nroots_at 2 with 2 with 2\nroots -2 0 1 with 3 with 5\nroots_at 2 with 3 with 2\nroots -2 0 1 with 5 with 5\nroots_at 2 with 5 with 2\nroots -2 0 1 with 7 with 5\nroots_at 2 with 7 with 2\n",
+    "stdout": "2\n2: 2; 3: 2; 5: 2; 7: 2\nreal: 2\n-1.4142135623730950488 +/- 1.7e-21; 1.4142135623730950488 +/- 1.7e-21\nerror: DOMAIN\nerror: DOMAIN\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\n3 mod 7^1; 4 mod 7^1\n7 [3]: 3 + O(7^1); 7 [4]: 4 + O(7^1)\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\n10 mod 7^2; 39 mod 7^2\n7 [3]: 10 + O(7^2); 7 [4]: 39 + O(7^2)\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\n108 mod 7^3; 235 mod 7^3\n7 [3]: 108 + O(7^3); 7 [4]: 235 + O(7^3)\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\n235 mod 7^4; 2166 mod 7^4\n7 [3]: 2166 + O(7^4); 7 [4]: 235 + O(7^4)\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\nnone\nerror: DOMAIN\n4567 mod 7^5; 12240 mod 7^5\n7 [3]: 4567 + O(7^5); 7 [4]: 12240 + O(7^5)\n",
+    "stderr": "",
+    "exit_code": 1,
+    "records": [
+      {
+        "command": "show 2",
+        "output": "2"
+      },
+      {
+        "command": "project 2 with 2 3 5 7",
+        "output": "2: 2; 3: 2; 5: 2; 7: 2"
+      },
+      {
+        "command": "project 2 with real",
+        "output": "real: 2"
+      },
+      {
+        "command": "realroots -2 0 1",
+        "output": "-1.4142135623730950488 +/- 1.7e-21; 1.4142135623730950488 +/- 1.7e-21"
+      },
+      {
+        "command": "root 2 with 2 with 1",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "root 2 with 2 with -1",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 2 with 1",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 2 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 3 with 1",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 3 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 5 with 1",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 5 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 7 with 1",
+        "output": "3 mod 7^1; 4 mod 7^1"
+      },
+      {
+        "command": "roots_at 2 with 7 with 2",
+        "output": "7 [3]: 3 + O(7^1); 7 [4]: 4 + O(7^1)"
+      },
+      {
+        "command": "roots -2 0 1 with 2 with 2",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 2 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 3 with 2",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 3 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 5 with 2",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 5 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 7 with 2",
+        "output": "10 mod 7^2; 39 mod 7^2"
+      },
+      {
+        "command": "roots_at 2 with 7 with 2",
+        "output": "7 [3]: 10 + O(7^2); 7 [4]: 39 + O(7^2)"
+      },
+      {
+        "command": "roots -2 0 1 with 2 with 3",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 2 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 3 with 3",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 3 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 5 with 3",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 5 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 7 with 3",
+        "output": "108 mod 7^3; 235 mod 7^3"
+      },
+      {
+        "command": "roots_at 2 with 7 with 2",
+        "output": "7 [3]: 108 + O(7^3); 7 [4]: 235 + O(7^3)"
+      },
+      {
+        "command": "roots -2 0 1 with 2 with 4",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 2 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 3 with 4",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 3 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 5 with 4",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 5 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 7 with 4",
+        "output": "235 mod 7^4; 2166 mod 7^4"
+      },
+      {
+        "command": "roots_at 2 with 7 with 2",
+        "output": "7 [3]: 2166 + O(7^4); 7 [4]: 235 + O(7^4)"
+      },
+      {
+        "command": "roots -2 0 1 with 2 with 5",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 2 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 3 with 5",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 3 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 5 with 5",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 2 with 5 with 2",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "roots -2 0 1 with 7 with 5",
+        "output": "4567 mod 7^5; 12240 mod 7^5"
+      },
+      {
+        "command": "roots_at 2 with 7 with 2",
+        "output": "7 [3]: 4567 + O(7^5); 7 [4]: 12240 + O(7^5)"
+      }
+    ],
+    "driver_source": "tools/adf/adf.c",
+    "driver_source_sha256": "5923ad97b4295051e9a933cba415e05f3ae6a66997c8a1d29e6c8bae8a06c53d",
+    "build_stamp": "not given"
+  }
+}

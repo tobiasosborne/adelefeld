@@ -1,0 +1,3417 @@
+{
+  "schema": "adelefeld-place-atlas-1",
+  "value": "9",
+  "lens": "roots 2",
+  "polynomial": "-9 0 1",
+  "places": [
+    "real",
+    2,
+    3,
+    5,
+    7
+  ],
+  "depth_range": [
+    1,
+    5
+  ],
+  "trees": [
+    {
+      "prime": 2,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "1 mod 2^2; 3 mod 2^2",
+          "failing_place": "not given",
+          "record": 6,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "1",
+              "seed": "+1",
+              "printed": "1 mod 2^2",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                1
+              ],
+              "digit_string": "1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 7,
+              "source_record": 6
+            },
+            {
+              "centre": "3",
+              "seed": "-1",
+              "printed": "3 mod 2^2",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                1
+              ],
+              "digit_string": "1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 7,
+              "source_record": 6
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]",
+            "0": "[p=2: 0 + O(2^1)]",
+            "1": "[p=2: 1 + O(2^1)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "1 mod 2^2; 3 mod 2^2",
+          "failing_place": "not given",
+          "record": 14,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "1",
+              "seed": "+1",
+              "printed": "1 mod 2^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                1,
+                0
+              ],
+              "digit_string": "1 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 15,
+              "source_record": 14
+            },
+            {
+              "centre": "3",
+              "seed": "-1",
+              "printed": "3 mod 2^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                1,
+                1
+              ],
+              "digit_string": "1 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 15,
+              "source_record": 14
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]",
+            "0": "[p=2: 0 + O(2^1)]",
+            "1": "[p=2: 1 + O(2^1)]",
+            "1.0": "[p=2: 1 + O(2^2)]",
+            "1.1": "[p=2: 3 + O(2^2)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 2^3; 5 mod 2^3",
+          "failing_place": "not given",
+          "record": 22,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "-1",
+              "printed": "3 mod 2^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                1,
+                1,
+                0
+              ],
+              "digit_string": "1 1 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 23,
+              "source_record": 22
+            },
+            {
+              "centre": "5",
+              "seed": "+1",
+              "printed": "5 mod 2^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                1,
+                0,
+                1
+              ],
+              "digit_string": "1 0 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "5",
+                  "value_form": "[p=2: 5 + O(2^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 23,
+              "source_record": 22
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]",
+            "0": "[p=2: 0 + O(2^1)]",
+            "1": "[p=2: 1 + O(2^1)]",
+            "1.0": "[p=2: 1 + O(2^2)]",
+            "1.1": "[p=2: 3 + O(2^2)]",
+            "1.1.0": "[p=2: 3 + O(2^3)]",
+            "1.1.1": "[p=2: 7 + O(2^3)]",
+            "1.0.0": "[p=2: 1 + O(2^3)]",
+            "1.0.1": "[p=2: 5 + O(2^3)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 2^4; 13 mod 2^4",
+          "failing_place": "not given",
+          "record": 30,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "-1",
+              "printed": "3 mod 2^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                1,
+                1,
+                0,
+                0
+              ],
+              "digit_string": "1 1 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 31,
+              "source_record": 30
+            },
+            {
+              "centre": "13",
+              "seed": "+1",
+              "printed": "13 mod 2^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                1,
+                0,
+                1,
+                1
+              ],
+              "digit_string": "1 0 1 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "5",
+                  "value_form": "[p=2: 5 + O(2^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "13",
+                  "value_form": "[p=2: 13 + O(2^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 31,
+              "source_record": 30
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]",
+            "0": "[p=2: 0 + O(2^1)]",
+            "1": "[p=2: 1 + O(2^1)]",
+            "1.0": "[p=2: 1 + O(2^2)]",
+            "1.1": "[p=2: 3 + O(2^2)]",
+            "1.1.0": "[p=2: 3 + O(2^3)]",
+            "1.1.1": "[p=2: 7 + O(2^3)]",
+            "1.1.0.0": "[p=2: 3 + O(2^4)]",
+            "1.1.0.1": "[p=2: 11 + O(2^4)]",
+            "1.0.0": "[p=2: 1 + O(2^3)]",
+            "1.0.1": "[p=2: 5 + O(2^3)]",
+            "1.0.1.0": "[p=2: 5 + O(2^4)]",
+            "1.0.1.1": "[p=2: 13 + O(2^4)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 2^5; 29 mod 2^5",
+          "failing_place": "not given",
+          "record": 38,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "-1",
+              "printed": "3 mod 2^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                1,
+                1,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "1 1 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "3",
+                  "value_form": "[p=2: 3 + O(2^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 39,
+              "source_record": 38
+            },
+            {
+              "centre": "29",
+              "seed": "+1",
+              "printed": "29 mod 2^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                1,
+                0,
+                1,
+                1,
+                1
+              ],
+              "digit_string": "1 0 1 1 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1",
+                  "value_form": "[p=2: 1 + O(2^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "5",
+                  "value_form": "[p=2: 5 + O(2^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "13",
+                  "value_form": "[p=2: 13 + O(2^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "29",
+                  "value_form": "[p=2: 29 + O(2^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 39,
+              "source_record": 38
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]",
+            "0": "[p=2: 0 + O(2^1)]",
+            "1": "[p=2: 1 + O(2^1)]",
+            "1.0": "[p=2: 1 + O(2^2)]",
+            "1.1": "[p=2: 3 + O(2^2)]",
+            "1.1.0": "[p=2: 3 + O(2^3)]",
+            "1.1.1": "[p=2: 7 + O(2^3)]",
+            "1.1.0.0": "[p=2: 3 + O(2^4)]",
+            "1.1.0.1": "[p=2: 11 + O(2^4)]",
+            "1.1.0.0.0": "[p=2: 3 + O(2^5)]",
+            "1.1.0.0.1": "[p=2: 19 + O(2^5)]",
+            "1.0.0": "[p=2: 1 + O(2^3)]",
+            "1.0.1": "[p=2: 5 + O(2^3)]",
+            "1.0.1.0": "[p=2: 5 + O(2^4)]",
+            "1.0.1.1": "[p=2: 13 + O(2^4)]",
+            "1.0.1.1.0": "[p=2: 13 + O(2^5)]",
+            "1.0.1.1.1": "[p=2: 29 + O(2^5)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 3,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 3^2; 6 mod 3^2",
+          "failing_place": "not given",
+          "record": 8,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "1",
+              "printed": "3 mod 3^2",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                0
+              ],
+              "digit_string": "0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 9,
+              "source_record": 8
+            },
+            {
+              "centre": "6",
+              "seed": "2",
+              "printed": "6 mod 3^2",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                0
+              ],
+              "digit_string": "0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 9,
+              "source_record": 8
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]",
+            "0": "[p=3: 0 + O(3^1)]",
+            "1": "[p=3: 1 + O(3^1)]",
+            "2": "[p=3: 2 + O(3^1)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 3^2; 6 mod 3^2",
+          "failing_place": "not given",
+          "record": 16,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "1",
+              "printed": "3 mod 3^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                0,
+                1
+              ],
+              "digit_string": "0 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 17,
+              "source_record": 16
+            },
+            {
+              "centre": "6",
+              "seed": "2",
+              "printed": "6 mod 3^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                0,
+                2
+              ],
+              "digit_string": "0 2",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=3: 6 + O(3^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 17,
+              "source_record": 16
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]",
+            "0": "[p=3: 0 + O(3^1)]",
+            "1": "[p=3: 1 + O(3^1)]",
+            "2": "[p=3: 2 + O(3^1)]",
+            "0.0": "[p=3: 0 + O(3^2)]",
+            "0.1": "[p=3: 3 + O(3^2)]",
+            "0.2": "[p=3: 6 + O(3^2)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 3^3; 24 mod 3^3",
+          "failing_place": "not given",
+          "record": 24,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "1",
+              "printed": "3 mod 3^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                0,
+                1,
+                0
+              ],
+              "digit_string": "0 1 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 25,
+              "source_record": 24
+            },
+            {
+              "centre": "24",
+              "seed": "2",
+              "printed": "24 mod 3^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                0,
+                2,
+                2
+              ],
+              "digit_string": "0 2 2",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=3: 6 + O(3^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "24",
+                  "value_form": "[p=3: 24 + O(3^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 25,
+              "source_record": 24
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]",
+            "0": "[p=3: 0 + O(3^1)]",
+            "1": "[p=3: 1 + O(3^1)]",
+            "2": "[p=3: 2 + O(3^1)]",
+            "0.0": "[p=3: 0 + O(3^2)]",
+            "0.1": "[p=3: 3 + O(3^2)]",
+            "0.2": "[p=3: 6 + O(3^2)]",
+            "0.1.0": "[p=3: 3 + O(3^3)]",
+            "0.1.1": "[p=3: 12 + O(3^3)]",
+            "0.1.2": "[p=3: 21 + O(3^3)]",
+            "0.2.0": "[p=3: 6 + O(3^3)]",
+            "0.2.1": "[p=3: 15 + O(3^3)]",
+            "0.2.2": "[p=3: 24 + O(3^3)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 3^4; 78 mod 3^4",
+          "failing_place": "not given",
+          "record": 32,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "1",
+              "printed": "3 mod 3^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "digit_string": "0 1 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 33,
+              "source_record": 32
+            },
+            {
+              "centre": "78",
+              "seed": "2",
+              "printed": "78 mod 3^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                0,
+                2,
+                2,
+                2
+              ],
+              "digit_string": "0 2 2 2",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=3: 6 + O(3^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "24",
+                  "value_form": "[p=3: 24 + O(3^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "78",
+                  "value_form": "[p=3: 78 + O(3^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 33,
+              "source_record": 32
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]",
+            "0": "[p=3: 0 + O(3^1)]",
+            "1": "[p=3: 1 + O(3^1)]",
+            "2": "[p=3: 2 + O(3^1)]",
+            "0.0": "[p=3: 0 + O(3^2)]",
+            "0.1": "[p=3: 3 + O(3^2)]",
+            "0.2": "[p=3: 6 + O(3^2)]",
+            "0.1.0": "[p=3: 3 + O(3^3)]",
+            "0.1.1": "[p=3: 12 + O(3^3)]",
+            "0.1.2": "[p=3: 21 + O(3^3)]",
+            "0.1.0.0": "[p=3: 3 + O(3^4)]",
+            "0.1.0.1": "[p=3: 30 + O(3^4)]",
+            "0.1.0.2": "[p=3: 57 + O(3^4)]",
+            "0.2.0": "[p=3: 6 + O(3^3)]",
+            "0.2.1": "[p=3: 15 + O(3^3)]",
+            "0.2.2": "[p=3: 24 + O(3^3)]",
+            "0.2.2.0": "[p=3: 24 + O(3^4)]",
+            "0.2.2.1": "[p=3: 51 + O(3^4)]",
+            "0.2.2.2": "[p=3: 78 + O(3^4)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 3^5; 240 mod 3^5",
+          "failing_place": "not given",
+          "record": 40,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "1",
+              "printed": "3 mod 3^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                0,
+                1,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "0 1 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "3",
+                  "value_form": "[p=3: 3 + O(3^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 41,
+              "source_record": 40
+            },
+            {
+              "centre": "240",
+              "seed": "2",
+              "printed": "240 mod 3^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                0,
+                2,
+                2,
+                2,
+                2
+              ],
+              "digit_string": "0 2 2 2 2",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "0",
+                  "value_form": "[p=3: 0 + O(3^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=3: 6 + O(3^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "24",
+                  "value_form": "[p=3: 24 + O(3^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "78",
+                  "value_form": "[p=3: 78 + O(3^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "240",
+                  "value_form": "[p=3: 240 + O(3^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 41,
+              "source_record": 40
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]",
+            "0": "[p=3: 0 + O(3^1)]",
+            "1": "[p=3: 1 + O(3^1)]",
+            "2": "[p=3: 2 + O(3^1)]",
+            "0.0": "[p=3: 0 + O(3^2)]",
+            "0.1": "[p=3: 3 + O(3^2)]",
+            "0.2": "[p=3: 6 + O(3^2)]",
+            "0.1.0": "[p=3: 3 + O(3^3)]",
+            "0.1.1": "[p=3: 12 + O(3^3)]",
+            "0.1.2": "[p=3: 21 + O(3^3)]",
+            "0.1.0.0": "[p=3: 3 + O(3^4)]",
+            "0.1.0.1": "[p=3: 30 + O(3^4)]",
+            "0.1.0.2": "[p=3: 57 + O(3^4)]",
+            "0.1.0.0.0": "[p=3: 3 + O(3^5)]",
+            "0.1.0.0.1": "[p=3: 84 + O(3^5)]",
+            "0.1.0.0.2": "[p=3: 165 + O(3^5)]",
+            "0.2.0": "[p=3: 6 + O(3^3)]",
+            "0.2.1": "[p=3: 15 + O(3^3)]",
+            "0.2.2": "[p=3: 24 + O(3^3)]",
+            "0.2.2.0": "[p=3: 24 + O(3^4)]",
+            "0.2.2.1": "[p=3: 51 + O(3^4)]",
+            "0.2.2.2": "[p=3: 78 + O(3^4)]",
+            "0.2.2.2.0": "[p=3: 78 + O(3^5)]",
+            "0.2.2.2.1": "[p=3: 159 + O(3^5)]",
+            "0.2.2.2.2": "[p=3: 240 + O(3^5)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 5,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "2 mod 5^1; 3 mod 5^1",
+          "failing_place": "not given",
+          "record": 10,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "2",
+              "seed": "2",
+              "printed": "2 mod 5^1",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                2
+              ],
+              "digit_string": "2",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "2",
+                  "value_form": "[p=5: 2 + O(5^1)]"
+                }
+              ],
+              "certificate_precision": 1,
+              "seed_source_record": 11,
+              "source_record": 10
+            },
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 5^1",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                3
+              ],
+              "digit_string": "3",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^1)]"
+                }
+              ],
+              "certificate_precision": 1,
+              "seed_source_record": 11,
+              "source_record": 10
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 5^2; 22 mod 5^2",
+          "failing_place": "not given",
+          "record": 18,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 5^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                3,
+                0
+              ],
+              "digit_string": "3 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 19,
+              "source_record": 18
+            },
+            {
+              "centre": "22",
+              "seed": "2",
+              "printed": "22 mod 5^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                2,
+                4
+              ],
+              "digit_string": "2 4",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "2",
+                  "value_form": "[p=5: 2 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "22",
+                  "value_form": "[p=5: 22 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 19,
+              "source_record": 18
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "3.0": "[p=5: 3 + O(5^2)]",
+            "3.1": "[p=5: 8 + O(5^2)]",
+            "3.2": "[p=5: 13 + O(5^2)]",
+            "3.3": "[p=5: 18 + O(5^2)]",
+            "3.4": "[p=5: 23 + O(5^2)]",
+            "2.0": "[p=5: 2 + O(5^2)]",
+            "2.1": "[p=5: 7 + O(5^2)]",
+            "2.2": "[p=5: 12 + O(5^2)]",
+            "2.3": "[p=5: 17 + O(5^2)]",
+            "2.4": "[p=5: 22 + O(5^2)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 5^3; 122 mod 5^3",
+          "failing_place": "not given",
+          "record": 26,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 5^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                3,
+                0,
+                0
+              ],
+              "digit_string": "3 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 27,
+              "source_record": 26
+            },
+            {
+              "centre": "122",
+              "seed": "2",
+              "printed": "122 mod 5^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                2,
+                4,
+                4
+              ],
+              "digit_string": "2 4 4",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "2",
+                  "value_form": "[p=5: 2 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "22",
+                  "value_form": "[p=5: 22 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "122",
+                  "value_form": "[p=5: 122 + O(5^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 27,
+              "source_record": 26
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "3.0": "[p=5: 3 + O(5^2)]",
+            "3.1": "[p=5: 8 + O(5^2)]",
+            "3.2": "[p=5: 13 + O(5^2)]",
+            "3.3": "[p=5: 18 + O(5^2)]",
+            "3.4": "[p=5: 23 + O(5^2)]",
+            "3.0.0": "[p=5: 3 + O(5^3)]",
+            "3.0.1": "[p=5: 28 + O(5^3)]",
+            "3.0.2": "[p=5: 53 + O(5^3)]",
+            "3.0.3": "[p=5: 78 + O(5^3)]",
+            "3.0.4": "[p=5: 103 + O(5^3)]",
+            "2.0": "[p=5: 2 + O(5^2)]",
+            "2.1": "[p=5: 7 + O(5^2)]",
+            "2.2": "[p=5: 12 + O(5^2)]",
+            "2.3": "[p=5: 17 + O(5^2)]",
+            "2.4": "[p=5: 22 + O(5^2)]",
+            "2.4.0": "[p=5: 22 + O(5^3)]",
+            "2.4.1": "[p=5: 47 + O(5^3)]",
+            "2.4.2": "[p=5: 72 + O(5^3)]",
+            "2.4.3": "[p=5: 97 + O(5^3)]",
+            "2.4.4": "[p=5: 122 + O(5^3)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 5^4; 622 mod 5^4",
+          "failing_place": "not given",
+          "record": 34,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 5^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                3,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "3 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 35,
+              "source_record": 34
+            },
+            {
+              "centre": "622",
+              "seed": "2",
+              "printed": "622 mod 5^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                2,
+                4,
+                4,
+                4
+              ],
+              "digit_string": "2 4 4 4",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "2",
+                  "value_form": "[p=5: 2 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "22",
+                  "value_form": "[p=5: 22 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "122",
+                  "value_form": "[p=5: 122 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "622",
+                  "value_form": "[p=5: 622 + O(5^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 35,
+              "source_record": 34
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "3.0": "[p=5: 3 + O(5^2)]",
+            "3.1": "[p=5: 8 + O(5^2)]",
+            "3.2": "[p=5: 13 + O(5^2)]",
+            "3.3": "[p=5: 18 + O(5^2)]",
+            "3.4": "[p=5: 23 + O(5^2)]",
+            "3.0.0": "[p=5: 3 + O(5^3)]",
+            "3.0.1": "[p=5: 28 + O(5^3)]",
+            "3.0.2": "[p=5: 53 + O(5^3)]",
+            "3.0.3": "[p=5: 78 + O(5^3)]",
+            "3.0.4": "[p=5: 103 + O(5^3)]",
+            "3.0.0.0": "[p=5: 3 + O(5^4)]",
+            "3.0.0.1": "[p=5: 128 + O(5^4)]",
+            "3.0.0.2": "[p=5: 253 + O(5^4)]",
+            "3.0.0.3": "[p=5: 378 + O(5^4)]",
+            "3.0.0.4": "[p=5: 503 + O(5^4)]",
+            "2.0": "[p=5: 2 + O(5^2)]",
+            "2.1": "[p=5: 7 + O(5^2)]",
+            "2.2": "[p=5: 12 + O(5^2)]",
+            "2.3": "[p=5: 17 + O(5^2)]",
+            "2.4": "[p=5: 22 + O(5^2)]",
+            "2.4.0": "[p=5: 22 + O(5^3)]",
+            "2.4.1": "[p=5: 47 + O(5^3)]",
+            "2.4.2": "[p=5: 72 + O(5^3)]",
+            "2.4.3": "[p=5: 97 + O(5^3)]",
+            "2.4.4": "[p=5: 122 + O(5^3)]",
+            "2.4.4.0": "[p=5: 122 + O(5^4)]",
+            "2.4.4.1": "[p=5: 247 + O(5^4)]",
+            "2.4.4.2": "[p=5: 372 + O(5^4)]",
+            "2.4.4.3": "[p=5: 497 + O(5^4)]",
+            "2.4.4.4": "[p=5: 622 + O(5^4)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 5^5; 3122 mod 5^5",
+          "failing_place": "not given",
+          "record": 42,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 5^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                3,
+                0,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "3 0 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "3",
+                  "value_form": "[p=5: 3 + O(5^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 43,
+              "source_record": 42
+            },
+            {
+              "centre": "3122",
+              "seed": "2",
+              "printed": "3122 mod 5^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                2,
+                4,
+                4,
+                4,
+                4
+              ],
+              "digit_string": "2 4 4 4 4",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "2",
+                  "value_form": "[p=5: 2 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "22",
+                  "value_form": "[p=5: 22 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "122",
+                  "value_form": "[p=5: 122 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "622",
+                  "value_form": "[p=5: 622 + O(5^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "3122",
+                  "value_form": "[p=5: 3122 + O(5^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 43,
+              "source_record": 42
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "3.0": "[p=5: 3 + O(5^2)]",
+            "3.1": "[p=5: 8 + O(5^2)]",
+            "3.2": "[p=5: 13 + O(5^2)]",
+            "3.3": "[p=5: 18 + O(5^2)]",
+            "3.4": "[p=5: 23 + O(5^2)]",
+            "3.0.0": "[p=5: 3 + O(5^3)]",
+            "3.0.1": "[p=5: 28 + O(5^3)]",
+            "3.0.2": "[p=5: 53 + O(5^3)]",
+            "3.0.3": "[p=5: 78 + O(5^3)]",
+            "3.0.4": "[p=5: 103 + O(5^3)]",
+            "3.0.0.0": "[p=5: 3 + O(5^4)]",
+            "3.0.0.1": "[p=5: 128 + O(5^4)]",
+            "3.0.0.2": "[p=5: 253 + O(5^4)]",
+            "3.0.0.3": "[p=5: 378 + O(5^4)]",
+            "3.0.0.4": "[p=5: 503 + O(5^4)]",
+            "3.0.0.0.0": "[p=5: 3 + O(5^5)]",
+            "3.0.0.0.1": "[p=5: 628 + O(5^5)]",
+            "3.0.0.0.2": "[p=5: 1253 + O(5^5)]",
+            "3.0.0.0.3": "[p=5: 1878 + O(5^5)]",
+            "3.0.0.0.4": "[p=5: 2503 + O(5^5)]",
+            "2.0": "[p=5: 2 + O(5^2)]",
+            "2.1": "[p=5: 7 + O(5^2)]",
+            "2.2": "[p=5: 12 + O(5^2)]",
+            "2.3": "[p=5: 17 + O(5^2)]",
+            "2.4": "[p=5: 22 + O(5^2)]",
+            "2.4.0": "[p=5: 22 + O(5^3)]",
+            "2.4.1": "[p=5: 47 + O(5^3)]",
+            "2.4.2": "[p=5: 72 + O(5^3)]",
+            "2.4.3": "[p=5: 97 + O(5^3)]",
+            "2.4.4": "[p=5: 122 + O(5^3)]",
+            "2.4.4.0": "[p=5: 122 + O(5^4)]",
+            "2.4.4.1": "[p=5: 247 + O(5^4)]",
+            "2.4.4.2": "[p=5: 372 + O(5^4)]",
+            "2.4.4.3": "[p=5: 497 + O(5^4)]",
+            "2.4.4.4": "[p=5: 622 + O(5^4)]",
+            "2.4.4.4.0": "[p=5: 622 + O(5^5)]",
+            "2.4.4.4.1": "[p=5: 1247 + O(5^5)]",
+            "2.4.4.4.2": "[p=5: 1872 + O(5^5)]",
+            "2.4.4.4.3": "[p=5: 2497 + O(5^5)]",
+            "2.4.4.4.4": "[p=5: 3122 + O(5^5)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 7,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 7^1; 4 mod 7^1",
+          "failing_place": "not given",
+          "record": 12,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 7^1",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                3
+              ],
+              "digit_string": "3",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                }
+              ],
+              "certificate_precision": 1,
+              "seed_source_record": 13,
+              "source_record": 12
+            },
+            {
+              "centre": "4",
+              "seed": "4",
+              "printed": "4 mod 7^1",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                4
+              ],
+              "digit_string": "4",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                }
+              ],
+              "certificate_precision": 1,
+              "seed_source_record": 13,
+              "source_record": 12
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 7^2; 46 mod 7^2",
+          "failing_place": "not given",
+          "record": 20,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 7^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                3,
+                0
+              ],
+              "digit_string": "3 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 21,
+              "source_record": 20
+            },
+            {
+              "centre": "46",
+              "seed": "4",
+              "printed": "46 mod 7^2",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                4,
+                6
+              ],
+              "digit_string": "4 6",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "46",
+                  "value_form": "[p=7: 46 + O(7^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "seed_source_record": 21,
+              "source_record": 20
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 7^3; 340 mod 7^3",
+          "failing_place": "not given",
+          "record": 28,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 7^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                3,
+                0,
+                0
+              ],
+              "digit_string": "3 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 29,
+              "source_record": 28
+            },
+            {
+              "centre": "340",
+              "seed": "4",
+              "printed": "340 mod 7^3",
+              "start_exponent": 0,
+              "end_exponent": 3,
+              "digits": [
+                4,
+                6,
+                6
+              ],
+              "digit_string": "4 6 6",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "46",
+                  "value_form": "[p=7: 46 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "340",
+                  "value_form": "[p=7: 340 + O(7^3)]"
+                }
+              ],
+              "certificate_precision": 3,
+              "seed_source_record": 29,
+              "source_record": 28
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "3.0.0": "[p=7: 3 + O(7^3)]",
+            "3.0.1": "[p=7: 52 + O(7^3)]",
+            "3.0.2": "[p=7: 101 + O(7^3)]",
+            "3.0.3": "[p=7: 150 + O(7^3)]",
+            "3.0.4": "[p=7: 199 + O(7^3)]",
+            "3.0.5": "[p=7: 248 + O(7^3)]",
+            "3.0.6": "[p=7: 297 + O(7^3)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]",
+            "4.6.0": "[p=7: 46 + O(7^3)]",
+            "4.6.1": "[p=7: 95 + O(7^3)]",
+            "4.6.2": "[p=7: 144 + O(7^3)]",
+            "4.6.3": "[p=7: 193 + O(7^3)]",
+            "4.6.4": "[p=7: 242 + O(7^3)]",
+            "4.6.5": "[p=7: 291 + O(7^3)]",
+            "4.6.6": "[p=7: 340 + O(7^3)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 7^4; 2398 mod 7^4",
+          "failing_place": "not given",
+          "record": 36,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 7^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                3,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "3 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 37,
+              "source_record": 36
+            },
+            {
+              "centre": "2398",
+              "seed": "4",
+              "printed": "2398 mod 7^4",
+              "start_exponent": 0,
+              "end_exponent": 4,
+              "digits": [
+                4,
+                6,
+                6,
+                6
+              ],
+              "digit_string": "4 6 6 6",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "46",
+                  "value_form": "[p=7: 46 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "340",
+                  "value_form": "[p=7: 340 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "2398",
+                  "value_form": "[p=7: 2398 + O(7^4)]"
+                }
+              ],
+              "certificate_precision": 4,
+              "seed_source_record": 37,
+              "source_record": 36
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "3.0.0": "[p=7: 3 + O(7^3)]",
+            "3.0.1": "[p=7: 52 + O(7^3)]",
+            "3.0.2": "[p=7: 101 + O(7^3)]",
+            "3.0.3": "[p=7: 150 + O(7^3)]",
+            "3.0.4": "[p=7: 199 + O(7^3)]",
+            "3.0.5": "[p=7: 248 + O(7^3)]",
+            "3.0.6": "[p=7: 297 + O(7^3)]",
+            "3.0.0.0": "[p=7: 3 + O(7^4)]",
+            "3.0.0.1": "[p=7: 346 + O(7^4)]",
+            "3.0.0.2": "[p=7: 689 + O(7^4)]",
+            "3.0.0.3": "[p=7: 1032 + O(7^4)]",
+            "3.0.0.4": "[p=7: 1375 + O(7^4)]",
+            "3.0.0.5": "[p=7: 1718 + O(7^4)]",
+            "3.0.0.6": "[p=7: 2061 + O(7^4)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]",
+            "4.6.0": "[p=7: 46 + O(7^3)]",
+            "4.6.1": "[p=7: 95 + O(7^3)]",
+            "4.6.2": "[p=7: 144 + O(7^3)]",
+            "4.6.3": "[p=7: 193 + O(7^3)]",
+            "4.6.4": "[p=7: 242 + O(7^3)]",
+            "4.6.5": "[p=7: 291 + O(7^3)]",
+            "4.6.6": "[p=7: 340 + O(7^3)]",
+            "4.6.6.0": "[p=7: 340 + O(7^4)]",
+            "4.6.6.1": "[p=7: 683 + O(7^4)]",
+            "4.6.6.2": "[p=7: 1026 + O(7^4)]",
+            "4.6.6.3": "[p=7: 1369 + O(7^4)]",
+            "4.6.6.4": "[p=7: 1712 + O(7^4)]",
+            "4.6.6.5": "[p=7: 2055 + O(7^4)]",
+            "4.6.6.6": "[p=7: 2398 + O(7^4)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3 mod 7^5; 16804 mod 7^5",
+          "failing_place": "not given",
+          "record": 44,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "3",
+              "seed": "3",
+              "printed": "3 mod 7^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                3,
+                0,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "3 0 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "3",
+                  "value_form": "[p=7: 3 + O(7^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 45,
+              "source_record": 44
+            },
+            {
+              "centre": "16804",
+              "seed": "4",
+              "printed": "16804 mod 7^5",
+              "start_exponent": 0,
+              "end_exponent": 5,
+              "digits": [
+                4,
+                6,
+                6,
+                6,
+                6
+              ],
+              "digit_string": "4 6 6 6 6",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "4",
+                  "value_form": "[p=7: 4 + O(7^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "46",
+                  "value_form": "[p=7: 46 + O(7^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "340",
+                  "value_form": "[p=7: 340 + O(7^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "2398",
+                  "value_form": "[p=7: 2398 + O(7^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "16804",
+                  "value_form": "[p=7: 16804 + O(7^5)]"
+                }
+              ],
+              "certificate_precision": 5,
+              "seed_source_record": 45,
+              "source_record": 44
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=7: 0 + O(7^0)]",
+            "0": "[p=7: 0 + O(7^1)]",
+            "1": "[p=7: 1 + O(7^1)]",
+            "2": "[p=7: 2 + O(7^1)]",
+            "3": "[p=7: 3 + O(7^1)]",
+            "4": "[p=7: 4 + O(7^1)]",
+            "5": "[p=7: 5 + O(7^1)]",
+            "6": "[p=7: 6 + O(7^1)]",
+            "3.0": "[p=7: 3 + O(7^2)]",
+            "3.1": "[p=7: 10 + O(7^2)]",
+            "3.2": "[p=7: 17 + O(7^2)]",
+            "3.3": "[p=7: 24 + O(7^2)]",
+            "3.4": "[p=7: 31 + O(7^2)]",
+            "3.5": "[p=7: 38 + O(7^2)]",
+            "3.6": "[p=7: 45 + O(7^2)]",
+            "3.0.0": "[p=7: 3 + O(7^3)]",
+            "3.0.1": "[p=7: 52 + O(7^3)]",
+            "3.0.2": "[p=7: 101 + O(7^3)]",
+            "3.0.3": "[p=7: 150 + O(7^3)]",
+            "3.0.4": "[p=7: 199 + O(7^3)]",
+            "3.0.5": "[p=7: 248 + O(7^3)]",
+            "3.0.6": "[p=7: 297 + O(7^3)]",
+            "3.0.0.0": "[p=7: 3 + O(7^4)]",
+            "3.0.0.1": "[p=7: 346 + O(7^4)]",
+            "3.0.0.2": "[p=7: 689 + O(7^4)]",
+            "3.0.0.3": "[p=7: 1032 + O(7^4)]",
+            "3.0.0.4": "[p=7: 1375 + O(7^4)]",
+            "3.0.0.5": "[p=7: 1718 + O(7^4)]",
+            "3.0.0.6": "[p=7: 2061 + O(7^4)]",
+            "3.0.0.0.0": "[p=7: 3 + O(7^5)]",
+            "3.0.0.0.1": "[p=7: 2404 + O(7^5)]",
+            "3.0.0.0.2": "[p=7: 4805 + O(7^5)]",
+            "3.0.0.0.3": "[p=7: 7206 + O(7^5)]",
+            "3.0.0.0.4": "[p=7: 9607 + O(7^5)]",
+            "3.0.0.0.5": "[p=7: 12008 + O(7^5)]",
+            "3.0.0.0.6": "[p=7: 14409 + O(7^5)]",
+            "4.0": "[p=7: 4 + O(7^2)]",
+            "4.1": "[p=7: 11 + O(7^2)]",
+            "4.2": "[p=7: 18 + O(7^2)]",
+            "4.3": "[p=7: 25 + O(7^2)]",
+            "4.4": "[p=7: 32 + O(7^2)]",
+            "4.5": "[p=7: 39 + O(7^2)]",
+            "4.6": "[p=7: 46 + O(7^2)]",
+            "4.6.0": "[p=7: 46 + O(7^3)]",
+            "4.6.1": "[p=7: 95 + O(7^3)]",
+            "4.6.2": "[p=7: 144 + O(7^3)]",
+            "4.6.3": "[p=7: 193 + O(7^3)]",
+            "4.6.4": "[p=7: 242 + O(7^3)]",
+            "4.6.5": "[p=7: 291 + O(7^3)]",
+            "4.6.6": "[p=7: 340 + O(7^3)]",
+            "4.6.6.0": "[p=7: 340 + O(7^4)]",
+            "4.6.6.1": "[p=7: 683 + O(7^4)]",
+            "4.6.6.2": "[p=7: 1026 + O(7^4)]",
+            "4.6.6.3": "[p=7: 1369 + O(7^4)]",
+            "4.6.6.4": "[p=7: 1712 + O(7^4)]",
+            "4.6.6.5": "[p=7: 2055 + O(7^4)]",
+            "4.6.6.6": "[p=7: 2398 + O(7^4)]",
+            "4.6.6.6.0": "[p=7: 2398 + O(7^5)]",
+            "4.6.6.6.1": "[p=7: 4799 + O(7^5)]",
+            "4.6.6.6.2": "[p=7: 7200 + O(7^5)]",
+            "4.6.6.6.3": "[p=7: 9601 + O(7^5)]",
+            "4.6.6.6.4": "[p=7: 12002 + O(7^5)]",
+            "4.6.6.6.5": "[p=7: 14403 + O(7^5)]",
+            "4.6.6.6.6": "[p=7: 16804 + O(7^5)]"
+          }
+        }
+      }
+    }
+  ],
+  "ruler": {
+    "status": "OK",
+    "status_class": "ok",
+    "printed": "-3; 3",
+    "balls": [
+      {
+        "printed": "-3",
+        "midpoint_printed": "-3",
+        "radius_printed": "0",
+        "dyadic_endpoints": [
+          "-3",
+          "-3"
+        ],
+        "exact_point": "-3"
+      },
+      {
+        "printed": "3",
+        "midpoint_printed": "3",
+        "radius_printed": "0",
+        "dyadic_endpoints": [
+          "3",
+          "3"
+        ],
+        "exact_point": "3"
+      }
+    ],
+    "record": 3,
+    "failing_place": "not given",
+    "coordinate": "real"
+  },
+  "threads": [
+    {
+      "value": "3",
+      "record": 4,
+      "real_point": "3",
+      "places": {
+        "2": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              1
+            ],
+            "digit_string": "1",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              1,
+              1
+            ],
+            "digit_string": "1 1",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              1,
+              1,
+              0
+            ],
+            "digit_string": "1 1 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              1,
+              1,
+              0,
+              0
+            ],
+            "digit_string": "1 1 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "1 1 0 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "3",
+                "value_form": "[p=2: 3 + O(2^5)]"
+              }
+            ]
+          }
+        },
+        "3": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              0
+            ],
+            "digit_string": "0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              0,
+              1
+            ],
+            "digit_string": "0 1",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              0,
+              1,
+              0
+            ],
+            "digit_string": "0 1 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "digit_string": "0 1 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "0 1 0 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "3",
+                "value_form": "[p=3: 3 + O(3^5)]"
+              }
+            ]
+          }
+        },
+        "5": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              3
+            ],
+            "digit_string": "3",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              3,
+              0
+            ],
+            "digit_string": "3 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              3,
+              0,
+              0
+            ],
+            "digit_string": "3 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              3,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "3 0 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "3 0 0 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "3",
+                "value_form": "[p=5: 3 + O(5^5)]"
+              }
+            ]
+          }
+        },
+        "7": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              3
+            ],
+            "digit_string": "3",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              3,
+              0
+            ],
+            "digit_string": "3 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              3,
+              0,
+              0
+            ],
+            "digit_string": "3 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              3,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "3 0 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "3 0 0 0 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "3",
+                "value_form": "[p=7: 3 + O(7^5)]"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "value": "-3",
+      "record": 5,
+      "real_point": "-3",
+      "places": {
+        "2": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              1
+            ],
+            "digit_string": "1",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              1,
+              0
+            ],
+            "digit_string": "1 0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              1,
+              0,
+              1
+            ],
+            "digit_string": "1 0 1",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "5",
+                "value_form": "[p=2: 5 + O(2^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              1,
+              0,
+              1,
+              1
+            ],
+            "digit_string": "1 0 1 1",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "5",
+                "value_form": "[p=2: 5 + O(2^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "13",
+                "value_form": "[p=2: 13 + O(2^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              1,
+              0,
+              1,
+              1,
+              1
+            ],
+            "digit_string": "1 0 1 1 1",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1",
+                "value_form": "[p=2: 1 + O(2^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "5",
+                "value_form": "[p=2: 5 + O(2^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "13",
+                "value_form": "[p=2: 13 + O(2^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "29",
+                "value_form": "[p=2: 29 + O(2^5)]"
+              }
+            ]
+          }
+        },
+        "3": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              0
+            ],
+            "digit_string": "0",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              0,
+              2
+            ],
+            "digit_string": "0 2",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "6",
+                "value_form": "[p=3: 6 + O(3^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              0,
+              2,
+              2
+            ],
+            "digit_string": "0 2 2",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "6",
+                "value_form": "[p=3: 6 + O(3^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "24",
+                "value_form": "[p=3: 24 + O(3^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              0,
+              2,
+              2,
+              2
+            ],
+            "digit_string": "0 2 2 2",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "6",
+                "value_form": "[p=3: 6 + O(3^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "24",
+                "value_form": "[p=3: 24 + O(3^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "78",
+                "value_form": "[p=3: 78 + O(3^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              0,
+              2,
+              2,
+              2,
+              2
+            ],
+            "digit_string": "0 2 2 2 2",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "0",
+                "value_form": "[p=3: 0 + O(3^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "6",
+                "value_form": "[p=3: 6 + O(3^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "24",
+                "value_form": "[p=3: 24 + O(3^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "78",
+                "value_form": "[p=3: 78 + O(3^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "240",
+                "value_form": "[p=3: 240 + O(3^5)]"
+              }
+            ]
+          }
+        },
+        "5": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              2
+            ],
+            "digit_string": "2",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "2",
+                "value_form": "[p=5: 2 + O(5^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              2,
+              4
+            ],
+            "digit_string": "2 4",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "2",
+                "value_form": "[p=5: 2 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "22",
+                "value_form": "[p=5: 22 + O(5^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              2,
+              4,
+              4
+            ],
+            "digit_string": "2 4 4",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "2",
+                "value_form": "[p=5: 2 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "22",
+                "value_form": "[p=5: 22 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "122",
+                "value_form": "[p=5: 122 + O(5^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              2,
+              4,
+              4,
+              4
+            ],
+            "digit_string": "2 4 4 4",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "2",
+                "value_form": "[p=5: 2 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "22",
+                "value_form": "[p=5: 22 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "122",
+                "value_form": "[p=5: 122 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "622",
+                "value_form": "[p=5: 622 + O(5^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              2,
+              4,
+              4,
+              4,
+              4
+            ],
+            "digit_string": "2 4 4 4 4",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "2",
+                "value_form": "[p=5: 2 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "22",
+                "value_form": "[p=5: 22 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "122",
+                "value_form": "[p=5: 122 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "622",
+                "value_form": "[p=5: 622 + O(5^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "3122",
+                "value_form": "[p=5: 3122 + O(5^5)]"
+              }
+            ]
+          }
+        },
+        "7": {
+          "1": {
+            "start_exponent": 0,
+            "end_exponent": 1,
+            "digits": [
+              4
+            ],
+            "digit_string": "4",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "4",
+                "value_form": "[p=7: 4 + O(7^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": 0,
+            "end_exponent": 2,
+            "digits": [
+              4,
+              6
+            ],
+            "digit_string": "4 6",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "4",
+                "value_form": "[p=7: 4 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "46",
+                "value_form": "[p=7: 46 + O(7^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": 0,
+            "end_exponent": 3,
+            "digits": [
+              4,
+              6,
+              6
+            ],
+            "digit_string": "4 6 6",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "4",
+                "value_form": "[p=7: 4 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "46",
+                "value_form": "[p=7: 46 + O(7^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "340",
+                "value_form": "[p=7: 340 + O(7^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": 0,
+            "end_exponent": 4,
+            "digits": [
+              4,
+              6,
+              6,
+              6
+            ],
+            "digit_string": "4 6 6 6",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "4",
+                "value_form": "[p=7: 4 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "46",
+                "value_form": "[p=7: 46 + O(7^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "340",
+                "value_form": "[p=7: 340 + O(7^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "2398",
+                "value_form": "[p=7: 2398 + O(7^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": 0,
+            "end_exponent": 5,
+            "digits": [
+              4,
+              6,
+              6,
+              6,
+              6
+            ],
+            "digit_string": "4 6 6 6 6",
+            "nodes": [
+              {
+                "exponent": 1,
+                "centre": "4",
+                "value_form": "[p=7: 4 + O(7^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "46",
+                "value_form": "[p=7: 46 + O(7^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "340",
+                "value_form": "[p=7: 340 + O(7^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "2398",
+                "value_form": "[p=7: 2398 + O(7^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "16804",
+                "value_form": "[p=7: 16804 + O(7^5)]"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "fog": {
+    "count": "infinitely many",
+    "label": "infinitely many undrawn primes",
+    "scope": "input value; no lens computation at undrawn places"
+  },
+  "modulus": null,
+  "modular_solutions": [],
+  "projection": {
+    "finite_record": 1,
+    "real_record": 2
+  },
+  "notes": [
+    "Low digit at the root; certificates may be deeper than the requested drawing.",
+    "Seed not given means the polynomial solver printed no branch identifier.",
+    "Depth handles select stored results. The viewer performs no arithmetic on values."
+  ],
+  "provenance": {
+    "stdin": "prec 64\ndigits 20\nshow 9\nproject 9 with 2 3 5 7\nproject 9 with real\nrealroots -9 0 1\nroot 9 with 2 with 1\nroot 9 with 2 with -1\nprec 1\nroots -9 0 1 with 2 with 1\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 1\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 1\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 1\nroots_at 9 with 7 with 2\nprec 2\nroots -9 0 1 with 2 with 2\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 2\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 2\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 2\nroots_at 9 with 7 with 2\nprec 3\nroots -9 0 1 with 2 with 3\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 3\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 3\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 3\nroots_at 9 with 7 with 2\nprec 4\nroots -9 0 1 with 2 with 4\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 4\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 4\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 4\nroots_at 9 with 7 with 2\nprec 5\nroots -9 0 1 with 2 with 5\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 5\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 5\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 5\nroots_at 9 with 7 with 2\n",
+    "stdout": "9\n2: 9; 3: 9; 5: 9; 7: 9\nreal: 9\n-3; 3\n3\n-3\n1 mod 2^2; 3 mod 2^2\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^2; 6 mod 3^2\n3 [1]: 3; 3 [2]: -3\n2 mod 5^1; 3 mod 5^1\n5 [2]: -3; 5 [3]: 3\n3 mod 7^1; 4 mod 7^1\n7 [3]: 3; 7 [4]: -3\n1 mod 2^2; 3 mod 2^2\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^2; 6 mod 3^2\n3 [1]: 3; 3 [2]: -3\n3 mod 5^2; 22 mod 5^2\n5 [2]: -3; 5 [3]: 3\n3 mod 7^2; 46 mod 7^2\n7 [3]: 3; 7 [4]: -3\n3 mod 2^3; 5 mod 2^3\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^3; 24 mod 3^3\n3 [1]: 3; 3 [2]: -3\n3 mod 5^3; 122 mod 5^3\n5 [2]: -3; 5 [3]: 3\n3 mod 7^3; 340 mod 7^3\n7 [3]: 3; 7 [4]: -3\n3 mod 2^4; 13 mod 2^4\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^4; 78 mod 3^4\n3 [1]: 3; 3 [2]: -3\n3 mod 5^4; 622 mod 5^4\n5 [2]: -3; 5 [3]: 3\n3 mod 7^4; 2398 mod 7^4\n7 [3]: 3; 7 [4]: -3\n3 mod 2^5; 29 mod 2^5\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^5; 240 mod 3^5\n3 [1]: 3; 3 [2]: -3\n3 mod 5^5; 3122 mod 5^5\n5 [2]: -3; 5 [3]: 3\n3 mod 7^5; 16804 mod 7^5\n7 [3]: 3; 7 [4]: -3\n",
+    "stderr": "",
+    "exit_code": 0,
+    "records": [
+      {
+        "command": "show 9",
+        "output": "9"
+      },
+      {
+        "command": "project 9 with 2 3 5 7",
+        "output": "2: 9; 3: 9; 5: 9; 7: 9"
+      },
+      {
+        "command": "project 9 with real",
+        "output": "real: 9"
+      },
+      {
+        "command": "realroots -9 0 1",
+        "output": "-3; 3"
+      },
+      {
+        "command": "root 9 with 2 with 1",
+        "output": "3"
+      },
+      {
+        "command": "root 9 with 2 with -1",
+        "output": "-3"
+      },
+      {
+        "command": "roots -9 0 1 with 2 with 1",
+        "output": "1 mod 2^2; 3 mod 2^2"
+      },
+      {
+        "command": "roots_at 9 with 2 with 2",
+        "output": "2 [+1]: -3; 2 [-1]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 3 with 1",
+        "output": "3 mod 3^2; 6 mod 3^2"
+      },
+      {
+        "command": "roots_at 9 with 3 with 2",
+        "output": "3 [1]: 3; 3 [2]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 5 with 1",
+        "output": "2 mod 5^1; 3 mod 5^1"
+      },
+      {
+        "command": "roots_at 9 with 5 with 2",
+        "output": "5 [2]: -3; 5 [3]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 7 with 1",
+        "output": "3 mod 7^1; 4 mod 7^1"
+      },
+      {
+        "command": "roots_at 9 with 7 with 2",
+        "output": "7 [3]: 3; 7 [4]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 2 with 2",
+        "output": "1 mod 2^2; 3 mod 2^2"
+      },
+      {
+        "command": "roots_at 9 with 2 with 2",
+        "output": "2 [+1]: -3; 2 [-1]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 3 with 2",
+        "output": "3 mod 3^2; 6 mod 3^2"
+      },
+      {
+        "command": "roots_at 9 with 3 with 2",
+        "output": "3 [1]: 3; 3 [2]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 5 with 2",
+        "output": "3 mod 5^2; 22 mod 5^2"
+      },
+      {
+        "command": "roots_at 9 with 5 with 2",
+        "output": "5 [2]: -3; 5 [3]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 7 with 2",
+        "output": "3 mod 7^2; 46 mod 7^2"
+      },
+      {
+        "command": "roots_at 9 with 7 with 2",
+        "output": "7 [3]: 3; 7 [4]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 2 with 3",
+        "output": "3 mod 2^3; 5 mod 2^3"
+      },
+      {
+        "command": "roots_at 9 with 2 with 2",
+        "output": "2 [+1]: -3; 2 [-1]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 3 with 3",
+        "output": "3 mod 3^3; 24 mod 3^3"
+      },
+      {
+        "command": "roots_at 9 with 3 with 2",
+        "output": "3 [1]: 3; 3 [2]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 5 with 3",
+        "output": "3 mod 5^3; 122 mod 5^3"
+      },
+      {
+        "command": "roots_at 9 with 5 with 2",
+        "output": "5 [2]: -3; 5 [3]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 7 with 3",
+        "output": "3 mod 7^3; 340 mod 7^3"
+      },
+      {
+        "command": "roots_at 9 with 7 with 2",
+        "output": "7 [3]: 3; 7 [4]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 2 with 4",
+        "output": "3 mod 2^4; 13 mod 2^4"
+      },
+      {
+        "command": "roots_at 9 with 2 with 2",
+        "output": "2 [+1]: -3; 2 [-1]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 3 with 4",
+        "output": "3 mod 3^4; 78 mod 3^4"
+      },
+      {
+        "command": "roots_at 9 with 3 with 2",
+        "output": "3 [1]: 3; 3 [2]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 5 with 4",
+        "output": "3 mod 5^4; 622 mod 5^4"
+      },
+      {
+        "command": "roots_at 9 with 5 with 2",
+        "output": "5 [2]: -3; 5 [3]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 7 with 4",
+        "output": "3 mod 7^4; 2398 mod 7^4"
+      },
+      {
+        "command": "roots_at 9 with 7 with 2",
+        "output": "7 [3]: 3; 7 [4]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 2 with 5",
+        "output": "3 mod 2^5; 29 mod 2^5"
+      },
+      {
+        "command": "roots_at 9 with 2 with 2",
+        "output": "2 [+1]: -3; 2 [-1]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 3 with 5",
+        "output": "3 mod 3^5; 240 mod 3^5"
+      },
+      {
+        "command": "roots_at 9 with 3 with 2",
+        "output": "3 [1]: 3; 3 [2]: -3"
+      },
+      {
+        "command": "roots -9 0 1 with 5 with 5",
+        "output": "3 mod 5^5; 3122 mod 5^5"
+      },
+      {
+        "command": "roots_at 9 with 5 with 2",
+        "output": "5 [2]: -3; 5 [3]: 3"
+      },
+      {
+        "command": "roots -9 0 1 with 7 with 5",
+        "output": "3 mod 7^5; 16804 mod 7^5"
+      },
+      {
+        "command": "roots_at 9 with 7 with 2",
+        "output": "7 [3]: 3; 7 [4]: -3"
+      }
+    ],
+    "driver_source": "tools/adf/adf.c",
+    "driver_source_sha256": "5923ad97b4295051e9a933cba415e05f3ae6a66997c8a1d29e6c8bae8a06c53d",
+    "build_stamp": "not given"
+  }
+}
