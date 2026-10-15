@@ -23,6 +23,7 @@
 #include <flint/fmpq.h>
 #include <flint/fmpz.h>
 #include "support/jsonl.h"
+#include "support/timing.h"
 #include "test_runner.h"
 
 #ifdef ADF_CHECK_INVARIANTS
@@ -1721,13 +1722,15 @@ ADF_TEST(set_fball_limit_is_decided_without_the_full_valuation)
     st = adf_lball_set_fball(x, place_of(3), f);
     t0 = now_s() - t0;
     ADF_CHECK_MSG(st == ADF_LIMIT && adf_lball_identical(x, s), "p = 3: status %s", adf_status_str(st));
-    ADF_CHECK_MSG(t0 < 3.5, "p = 3: LIMIT took %.1f s (bound 3.5 s)", t0);
+    ADF_CHECK_MSG(t0 < 3.5 * ADF_TIMING_FACTOR, "p = 3: LIMIT took %.1f s (bound %.1f s)", t0,
+                  3.5 * ADF_TIMING_FACTOR);
     /* p = 2 and p = 5 are as before: LIMIT at 2 (2^k, k = 2^25 + 1, has 2^26 + 2 bits), OK at 5 (the ball around 0) */
     t0 = now_s();
     ADF_CHECK(adf_lball_set_fball(x, place_of(2), f) == ADF_LIMIT && adf_lball_identical(x, s));
     ADF_CHECK(adf_lball_set_fball(x, place_of(5), f) == ADF_OK && !x->exact && x->N == 0 && fmpq_is_zero(x->u));
     t0 = now_s() - t0;
-    ADF_CHECK_MSG(t0 < 3.5, "p = 2 and 5 took %.1f s (bound 3.5 s)", t0);
+    ADF_CHECK_MSG(t0 < 3.5 * ADF_TIMING_FACTOR, "p = 2 and 5 took %.1f s (bound %.1f s)", t0,
+                  3.5 * ADF_TIMING_FACTOR);
     fmpz_clear(A);
     fmpz_clear(H);
     fmpz_clear(d);
@@ -1898,7 +1901,8 @@ ADF_TEST(set_fball_limit_when_the_numerator_alone_is_above_the_bound)
     st = adf_lball_set_fball(x, place_of(3), f);
     t0 = now_s() - t0;
     ADF_CHECK_MSG(st == ADF_LIMIT && adf_lball_identical(x, s), "p = 3: status %s", adf_status_str(st));
-    ADF_CHECK_MSG(t0 < 3.5, "p = 3: LIMIT took %.1f s (bound 3.5 s)", t0);
+    ADF_CHECK_MSG(t0 < 3.5 * ADF_TIMING_FACTOR, "p = 3: LIMIT took %.1f s (bound %.1f s)", t0,
+                  3.5 * ADF_TIMING_FACTOR);
     fmpz_clear(A);
     fmpz_clear(H);
     fmpz_clear(d);

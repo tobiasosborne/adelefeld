@@ -23,6 +23,7 @@
 #define _POSIX_C_SOURCE 200809L
 
 #include <limits.h>
+#include "support/timing.h"
 #include <signal.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -330,7 +331,7 @@ ADF_TEST(review_R1_five_seconds)
         {
             adf_lball_t x, y;
             int st;
-            alarm(5);
+            alarm(5 * ADF_TIMING_FACTOR);
             adf_lball_init(x); adf_lball_init(y); x->p = BIGP;
             fmpz_set_ui(fmpq_numref(x->u), i == 0 ? BIGP : 2);
             if (i == 0) fmpz_add_ui(fmpq_numref(x->u), fmpq_numref(x->u), 1);
@@ -343,7 +344,8 @@ ADF_TEST(review_R1_five_seconds)
         {
             ADF_CHECK(waitpid(child, &status, 0) == child);
             ADF_CHECK_MSG(WIFEXITED(status) && WEXITSTATUS(status) == 0,
-                          "R1 input %d exceeded 5 seconds or failed: wait status %d", i+1, status);
+                          "R1 input %d exceeded %d seconds or failed: wait status %d", i+1,
+                          5 * ADF_TIMING_FACTOR, status);
         }
     }
 }
