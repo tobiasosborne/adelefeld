@@ -1,0 +1,2 @@
+{"file": "ux/bench/out/local_global.records.jsonl", "records": 67, "replayed": 67, "driver_exit": 1, "status_counts": {"OK": 64, "DOMAIN": 3}, "existence_checks": 64, "finite_roots_checked": 68, "real_intervals_checked": 12}
+{"file": "lanes/ux-drive-bench/out/brief_b_2000.records.jsonl", "records": 1219, "replayed": 1219, "driver_exit": 1, "status_counts": {"OK": 1216, "DOMAIN": 3}, "existence_checks": 1216, "finite_roots_checked": 1780, "real_intervals_checked": 12}

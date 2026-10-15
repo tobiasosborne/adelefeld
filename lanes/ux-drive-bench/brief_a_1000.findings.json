@@ -1,0 +1,70 @@
+[
+  {
+    "id": "F1",
+    "state": "pattern",
+    "column": "2",
+    "text": "Two roots exactly when p = 1 or 7 mod 8 (p odd); DOMAIN at every other odd prime.",
+    "rule": {
+      "places": "odd primes",
+      "when": {
+        "mod": 8,
+        "residues": [
+          1,
+          7
+        ]
+      },
+      "then": {
+        "count": 2
+      },
+      "else": {
+        "status": "DOMAIN"
+      }
+    },
+    "evidence": "At 2 the driver gives DOMAIN; this grid contains no real place."
+  },
+  {
+    "id": "F3",
+    "state": "sourced",
+    "column": "2",
+    "text": "For every odd prime p: 2 is a square in Q_p exactly when p = 1 or 7 mod 8.",
+    "rule": {
+      "places": "odd primes",
+      "when": {
+        "mod": 8,
+        "residues": [
+          1,
+          7
+        ]
+      },
+      "then": {
+        "count": 2
+      },
+      "else": {
+        "status": "DOMAIN"
+      }
+    },
+    "argument": [
+      "2 is a unit at an odd p, so it is a square in Q_p exactly when it is a square mod p",
+      "(Conrad, Example 2.9); 2 is a square mod p exactly when p = 1 or 7 mod 8 (Shoup, Theorem",
+      "12.1 (iv), recast after it). This covers the odd primes below the stop line too."
+    ],
+    "sources": [
+      {
+        "file": "refs/src/shoup-ntb/ntb-v2.txt",
+        "lines": "15032-15034",
+        "says": [
+          "Theorem 12.1 (iv) recast: 2 is a quadratic residue modulo p if and only if p = +-1 (mod",
+          "8)."
+        ]
+      },
+      {
+        "file": "refs/src/conrad-hensel/hensel.txt",
+        "lines": "160-170",
+        "says": [
+          "Example 2.9: for odd p the units that are squares in Q_p are those that reduce to squares",
+          "mod p."
+        ]
+      }
+    ]
+  }
+]

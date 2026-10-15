@@ -1,0 +1,2 @@
+exp_edge: 5 inputs x 11 places = 55 cells, 55 driver calls; budget 40 cells, 30 s
+exp_edge: 55 records, 40 calls answered in 0.005 s; stop line at 19; timeout False

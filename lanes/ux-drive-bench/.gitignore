@@ -1,0 +1,6 @@
+/out/
+/firefox-profile/
+__pycache__/
+/family.replay.cmd
+/family.replay.out
+/stdout.log

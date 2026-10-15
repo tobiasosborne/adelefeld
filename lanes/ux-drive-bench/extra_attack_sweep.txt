@@ -1,0 +1,2 @@
+attack: 7 inputs x 16 places = 112 cells, 112 driver calls; budget 200 cells, 60 s
+attack: 112 records, 112 calls answered in 0.006 s; stop line after the last row; timeout False

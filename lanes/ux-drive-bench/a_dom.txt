@@ -1,0 +1,3 @@
+{"file":"ux/bench/out/squares.html","rows":26,"wells":104,"records_checked":104,"findings":4,"regroup_checks":4,"stop":" p >= 101: not swept.  Nothing below this line is computed. A finding may cover it only by an argument. ","hash_path":"#mod8"}
+{"file":"lanes/ux-drive-bench/out/brief_a.html","rows":16,"wells":112,"records_checked":112,"findings":4,"regroup_checks":4,"stop":" p >= 53: not swept.  Nothing below this line is computed. A finding may cover it only by an argument. ","hash_path":"#mod8"}
+{"file":"lanes/ux-drive-bench/out/brief_a_1000.html","rows":168,"wells":168,"records_checked":168,"findings":2,"regroup_checks":4,"stop":" p >= 1009: not swept.  Nothing below this line is computed. A finding may cover it only by an argument. ","hash_path":"#mod8"}

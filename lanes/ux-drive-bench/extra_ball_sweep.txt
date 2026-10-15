@@ -1,0 +1,2 @@
+finite_ball: 1 inputs x 6 places = 6 cells, 5 driver calls; budget 10 cells, 30 s
+finite_ball: 6 records, 5 calls answered in 0.005 s; stop line after the last row; timeout False

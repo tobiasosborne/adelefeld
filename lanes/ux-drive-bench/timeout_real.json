@@ -1,0 +1,28 @@
+{
+  "name": "timeout_real",
+  "question": "Force a bounded real-driver timeout.",
+  "operation": "roots 2",
+  "inputs": [
+    {
+      "value": "2"
+    }
+  ],
+  "places": [
+    "R",
+    3,
+    7,
+    17
+  ],
+  "precision": {
+    "R": 64,
+    "3": 8,
+    "p": 20000
+  },
+  "budget": {
+    "max_cells": 10,
+    "timeout": 4
+  },
+  "regroup": [
+    8
+  ]
+}

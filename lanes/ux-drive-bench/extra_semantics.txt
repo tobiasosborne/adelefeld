@@ -1,0 +1,3 @@
+finite ball: 1 omitted real cell, 4 open cells, 2 roots verified modulo 15625
+budget: 40 answers, 15 omitted cells at 19, 23, 29; 0 drawn below stop line
+attack: 8 correct counterexamples; badge remains pattern: seen in the swept rows, not proved

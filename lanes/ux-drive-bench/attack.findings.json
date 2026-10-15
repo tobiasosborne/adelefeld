@@ -1,0 +1,14 @@
+[
+  {
+    "id": "FALSE",
+    "state": "pattern",
+    "column": "2",
+    "text": "Conjecture: 2 has two roots at every odd prime.",
+    "rule": {
+      "places": "odd primes",
+      "then": {
+        "count": 2
+      }
+    }
+  }
+]

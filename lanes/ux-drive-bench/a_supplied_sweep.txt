@@ -1,0 +1,2 @@
+squares: 4 inputs x 26 places = 104 cells, 104 driver calls; budget 200 cells, 60 s
+squares: 104 records, 104 calls answered in 0.007 s; stop line after the last row; timeout False

@@ -1,0 +1,28 @@
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+F
+======================================================================
+FAIL: test_count_min_is_inclusive (test_bench.RenderTest.test_count_min_is_inclusive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-bench/ux/bench/test_bench.py", line 269, in test_count_min_is_inclusive
+    self.assertEqual(render.check_rule(f, e, recs), (3, [2]))
+AssertionError: Tuples differ: (3, ['R', 2, 7]) != (3, [2])
+
+First differing element 1:
+['R', 2, 7]
+[2]
+
+- (3, ['R', 2, 7])
++ (3, [2])
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+mutation: 1 baseline pass; 1 count_min mutant killed by assertion; original bytes unchanged
+metadata: driver SHA256 matches; 112 cell times and 112 answers
+timeout: 2 answers, 2 omitted cells, skipped prime 2 disclosed, 0 remaining build/adf processes

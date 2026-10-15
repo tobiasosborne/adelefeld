@@ -1,0 +1,4 @@
+D1: custom-output footer lists 2 nonexistent paths: ['ux/bench/out/brief_a.records.jsonl', 'ux/bench/experiments/brief_a.findings.json.']
+D2: 8 counterexamples coexist with the badge pattern: seen in the swept rows, not proved
+D3: measured wrapper seconds 4.069 recorded process_time_s 0.004311
+0 returned mathematical numbers or statuses found wrong; 3 display/metadata defects reproduced

@@ -1,0 +1,1 @@
+{"records": 46512, "replayed": 46512, "count_checks": 46512, "prime_count": 303, "last_prime": 1999, "pairs": 153, "survivors": [[2, 17], [5, 29], [10, 26], [13, 17], [13, 29], [17, 19], [17, 26]], "failing_pairs": 146, "finite_roots_checked": 134456, "real_intervals_checked": 918}
