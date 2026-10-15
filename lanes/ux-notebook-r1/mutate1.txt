@@ -1,0 +1,4 @@
+mutant 1 cards.jl: killed (exit 1) 248     5    253  33.9s
+mutant 2 cards.jl: killed (exit 1) 248     5    253  34.2s
+mutant 3 notebook.jl: killed (exit 1) 252     1    253  28.1s
+mutant 4 driver.jl: killed (exit 1) 251    13      1    265  27.6s

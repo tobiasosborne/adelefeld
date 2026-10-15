@@ -1,0 +1,10 @@
+cell 1: same: 6/35
+cell 2: same: 0
+cell 3: unchecked: a Julia error: no value and no driver line
+cell 4: same: 1009
+cell 5: same: (* ; 1 mod 1022117)
+cell 6: same: 5 [2]: 79753541295807 + O(5^20); 5 [3]: 15613890344818 + O(5^20)
+cell 7: same: 5 [2]: -3; 5 [3]: 3
+cell 8: same: error: DOMAIN
+cell 9: unchecked: a Julia error: no value and no driver line
+replay: 7 same, 0 differs, 2 unchecked

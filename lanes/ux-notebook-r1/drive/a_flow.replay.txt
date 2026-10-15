@@ -1,0 +1,5 @@
+cell 1: same: 5 [2]: 280182 + O(5^8)
+cell 2: same: 5 [2]: 79753541295807 + O(5^20)
+cell 3: unchecked: a Julia error: no value and no driver line
+cell 4: unchecked: a Julia error: no value and no driver line
+replay: 2 same, 0 differs, 2 unchecked

@@ -1,0 +1,2 @@
+mutant 11 notebook.jl: killed (exit 1) 252     3    255  26.8s
+mutant 12 notebook.jl: killed (exit 1) 249     2    251  29.5s

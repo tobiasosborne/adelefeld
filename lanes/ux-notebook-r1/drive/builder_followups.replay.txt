@@ -1,0 +1,11 @@
+cell 1: same: (* ; 1 mod 8176936) (not checked: the input)
+cell 2: same: error: NOT_UNIT
+cell 3: same: error: NOT_DETERMINED
+cell 4: same: 101 [10]: 3156215819652023 + O(101^8)
+cell 5: unchecked: a Julia error: no value and no driver line
+cell 6: unchecked: a Julia error: no value and no driver line
+cell 7: same: (0.99 +/- 0.01 ; 0 mod 1)
+cell 8: same: (0.99 +/- 0.01 ; 0 mod 1) (not checked: the dump (the driver prints the real ball as an enclosure, docs/conventions.md 9.6); the input operand x (a variable of the notebook))
+cell 9: unchecked: not reproducible by the driver: computed value. Its printed real ball may be wider than the ball (docs/conventions.md 9.6) and the driver reads no dump as an operand, so the package computed it
+cell 10: unchecked: not reproducible by the driver: computed value. Its printed real ball may be wider than the ball (docs/conventions.md 9.6) and the driver reads no dump as an operand, so the package computed it
+replay: 6 same, 0 differs, 4 unchecked

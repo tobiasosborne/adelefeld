@@ -1,0 +1,18 @@
+Precompiling packages...
+   1838.0 ms  ✓ Adelica (serial)
+  1 dependency successfully precompiled in 2 seconds
+Test Summary:                                                                         | Pass  Total   Time
+Adelica                                                                               |  253    253  19.3s
+  value-text parser on the five rows of SPEC 4.3                                      |   45     45   0.8s
+  p-adic digits of exact rationals                                                    |   11     11   0.3s
+  digits of a ball                                                                    |    6      6   0.1s
+  places of a value (trial division below 1000)                                       |   20     20   2.1s
+  branch fans through the driver                                                      |   13     13   0.7s
+  status classes (D-UX4)                                                              |   12     12   0.0s
+  notebooks: page, records, replay                                                    |   22     22   5.2s
+  repair 1: the README's example runs, the README names what is not done              |   11     11   0.3s
+  repair 2 (D3): the DOMAIN card names possible causes, not one action                |   24     24   0.2s
+  repair 3 (D4): above 97 the refinement is a control that works like the fog         |    4      4   0.0s
+  repair 4 (D1): replay compares status, dump, digits and input, and counts unchecked |   18     18   8.8s
+  repair 5 (D2): a computed value is never sent to the driver as its widened text     |   23     23   0.6s
+  repair 6: a dump or its reason on every record, versions, the set on hover          |   44     44   0.1s

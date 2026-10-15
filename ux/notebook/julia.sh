@@ -3,7 +3,7 @@
 # The package is the project (julia/Adelefeld); Adelica is found by push!(LOAD_PATH, "ux/notebook/src")
 # in the scripts. The libgmp preload is done by julia/Adelefeld/bin/adelefeld-julia.
 set -eu
-D=lanes/ux-notebook
+D=${ADELICA_LANE:-lanes/ux-notebook}   # the depot and TMPDIR live under $D (not committed)
 mkdir -p "$PWD/$D/tmp"
 exec timeout "${ADELICA_TIMEOUT:-300}" env JULIA_NUM_THREADS=1 JULIA_NUM_PRECOMPILE_TASKS=1 \
     JULIA_DEPOT_PATH="$PWD/$D/depot:$HOME/.julia:" JULIA_PKG_OFFLINE=true TMPDIR="$PWD/$D/tmp" \

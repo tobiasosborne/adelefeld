@@ -6,6 +6,13 @@ push!(LOAD_PATH, joinpath(ROOT, "ux", "notebook", "src"))
 using Adelefeld
 using Adelica
 const A = Adelica
+const ADF = joinpath(ROOT, "build", "adf")
+_cellout(cells) = (m = A.new_notebook_module(); [A.evaluate(m, c, "c$(i)") for (i, c) in enumerate(cells)])
+function _run(cells)
+    out = joinpath(mktempdir(), "nb")
+    Adelica.run(cells, out)
+    return out, A.read_records(out * ".records.jsonl")
+end
 
 @testset "Adelica" verbose = true begin
 
@@ -156,7 +163,7 @@ end
 end
 
 @testset "notebooks: page, records, replay" begin
-    tmp = mktempdir(joinpath(ROOT, "lanes", "ux-notebook", "tmp"))
+    tmp = mktempdir()   # under TMPDIR, which julia.sh sets to the lane directory
     cells = ["roots(9, 2; at = 5)", "x = Rat(6, 35)", "roots(2, 2; at = 5)", "x + Rat(1, 35)", "x / 0"]
     out = joinpath(tmp, "t")
     Adelica.run(cells, out)
@@ -198,6 +205,173 @@ end
         @test A.replay(rec, joinpath(ROOT, "build", "adf"); io = buf) == 0
         @test count("same", String(take!(buf))) == length(cells)
     end
+end
+
+# ---- The repair after the test drive (lanes/ux-notebook-r1/brief.md, items 1 to 6) ----
+
+
+@testset "repair 1: the README's example runs, the README names what is not done" begin
+    readme = read(joinpath(ROOT, "ux", "notebook", "README.md"), String)
+    ls = split(chomp(readme), '\n')
+    @test length(ls) < 80
+    @test !occursin("FBall(c, N)", readme)                 # the drive's MethodError path (FBall(0, 25))
+    # The example notebook of the README: the indented block that begins with an indented `# %%` line.
+    i = findfirst(l -> startswith(l, "    # %%"), ls)
+    @test i !== nothing
+    ex = String[]
+    if i !== nothing
+        for l in ls[i:end]
+            startswith(l, "    ") || break
+            push!(ex, l[5:end])
+        end
+    end
+    f = joinpath(mktempdir(), "readme.jl")
+    write(f, join(ex, "\n") * "\n")
+    cells = A.read_cells(f)
+    @test length(cells) >= 3
+    outs = Adelica.run_file(f, joinpath(dirname(f), "readme"))
+    @test all(o -> o.kind != "julia_error", outs)
+    @test any(o -> o.kind == "fball", outs)
+    for w in ("not do", "equal", "compare", "teichmuller", "certificate")
+        @test occursin(w, readme)
+    end
+end
+
+@testset "repair 2 (D3): the DOMAIN card names possible causes, not one action" begin
+    o = _cellout(["root(9, 2; at = 4, seed = 3)", "roots(9, 2; at = 4)", "root(9, 2; at = 5, seed = 4)",
+                  "roots(2, 2; at = 5)"])
+    @test all(x -> x.status == "DOMAIN", o)
+    for x in o
+        @test !occursin("another seed", x.html)
+        @test !occursin("a seed that roots(x, n; at) lists", x.html)
+    end
+    # The place 4 is composite: the slice checks it in Julia and says so.
+    for x in o[1:2]
+        @test occursin("the place 4 is not prime", x.html)
+        @test occursin("checked in Julia", x.html)
+    end
+    # At the prime 5 the driver gives no sub-code: the card lists the causes and recommends none of them.
+    for x in o[3:4]
+        @test !occursin("not prime", x.html)
+        @test occursin("possible causes", x.html)
+        @test occursin("existence criterion", x.html)
+        @test occursin("the driver does not say which", x.html)
+    end
+    @test occursin("seed", o[3].html) && occursin("degree", o[3].html)
+    _, recs = _run(["root(9, 2; at = 4, seed = 3)"])
+    @test occursin("the place 4 is not prime", recs[1]["reason"])
+    @test recs[1]["actions"] isa Vector
+end
+
+@testset "repair 3 (D4): above 97 the refinement is a control that works like the fog" begin
+    o = _cellout(["root(-1, 2; at = 101, seed = 10, prec = 8)", "root(-1, 2; at = 5, seed = 2)"])
+    h = o[1].html
+    @test occursin("data-rewrite=\"root(-1, 2; at = 101, seed = 10, prec = 20)\"", h)
+    @test !occursin("click the fog", h)
+    @test occursin("data-rewrite=\"root(-1, 2; at = 5, seed = 2, prec = 20)\"", o[2].html)
+    # Every instruction to click the fog stands next to a fog that is a control.
+    for x in o
+        occursin("click the fog", x.html) && @test occursin("class=\"fog\" data-cell=", x.html)
+    end
+end
+
+@testset "repair 4 (D1): replay compares status, dump, digits and input, and counts unchecked" begin
+    src = joinpath(ROOT, "ux", "notebook", "scenarios", "b_which_rational.jl")
+    out = joinpath(mktempdir(), "b")
+    Adelica.run_file(src, out)
+    rec = out * ".records.jsonl"
+    s = A.replay_summary(rec, ADF; io = devnull)
+    @test (s.same, s.differs, s.unchecked) == (8, 0, 0)
+    lines = readlines(rec)
+    variants = ["\"status\":\"OK\"" => "\"status\":\"NO_SOLUTION\"",
+                "\"dump\":\"adf1 Q rat 16 7\"" => "\"dump\":\"adf1 Q rat 17 7\"",
+                "\"digits\":\"(011)1010\"" => "\"digits\":\"(0)0\"",
+                "recover(c; num = 30, den = 15)" => "recover(c; num = 0, den = 1)"]
+    for v in variants
+        l2 = copy(lines)
+        @test occursin(v.first, l2[2])
+        l2[2] = replace(l2[2], v)
+        f = out * ".variant.jsonl"
+        write(f, join(l2, "\n") * "\n")
+        buf = IOBuffer()
+        s = A.replay_summary(f, ADF; io = buf)
+        txt = String(take!(buf))
+        @test (s.same, s.differs, s.unchecked) == (7, 1, 0)
+        @test occursin("cell 2: differs", txt)
+    end
+    # The drive's a_flow notebook: two cells without a driver line are unchecked, not the same.
+    out2, recs = _run(["root(-1, 2; at = 5, seed = 2)", "root(-1, 2; at = 5, seed = 2, prec = 20)",
+        "equal(teichmuller(2; at = 5), root(-1, 2; at = 5, seed = 2, prec = 20))",
+        "compare(teichmuller(2; at = 5), root(-1, 2; at = 5, seed = 2, prec = 20))"])
+    s = A.replay_summary(out2 * ".records.jsonl", ADF; io = devnull)
+    @test (s.same, s.differs, s.unchecked) == (2, 0, 2)
+    @test A.replay_sentence(s) == "replay: 2 same, 0 differs, 2 unchecked"
+    @test !occursin("every record", A.replay_sentence(s))
+    p = pipeline(Cmd(`sh ux/notebook/replay.sh $(out2 * ".records.jsonl")`; dir = ROOT, ignorestatus = true))
+    r = read(p, String)
+    @test endswith(chomp(r), "replay: 2 same, 0 differs, 2 unchecked")
+    pr = run(Cmd(`sh ux/notebook/replay.sh $(out * ".variant.jsonl")`; dir = ROOT, ignorestatus = true),
+             devnull, devnull, devnull)
+    @test pr.exitcode == 1
+end
+
+@testset "repair 5 (D2): a computed value is never sent to the driver as its widened text" begin
+    lit = "(0.99 +/- 0.0099 ; 0 mod 1)"
+    out, recs = _run(["x = adf\"$(lit)\"", "y = x + Rat(0)", "project(y, :real)", "reconstruct(y)",
+                      "z = y * y", "w = adf\"(3.14 +/- 0.01 ; 9 mod 625)\" + Rat(0)", "roots(w, 2; at = 5)",
+                      "project(w, :real, 5)"])
+    # The package's answer on the stored enclosure [0.9801, 0.9999], which holds no integer.
+    @test recs[4]["status"] == "NO_SOLUTION"
+    @test recs[4]["driver"] === nothing
+    @test occursin("package", recs[4]["computed_by"])
+    @test occursin("computed value", recs[4]["unchecked"])
+    # The real component of y is the stored one: the driver's projection of the literal itself.
+    @test recs[3]["value"] == A.driver_line(["prec 64", "project $(lit) with real"])
+    @test recs[3]["driver"] === nothing && occursin("realpart", recs[3]["computed_by"])
+    @test recs[5]["driver"] === nothing && occursin("computed value", recs[5]["unchecked"])
+    # At a prime only the finite part counts (tools/adf/README.md:488): its text is exact.
+    @test recs[7]["driver"] == ["prec 8", "roots_at (* ; 9 mod 625) with 5 with 2"]     # the finite part of w
+    @test recs[6]["driver"] == ["add (3.14 +/- 0.01 ; 9 mod 625) with 0"]                # an inline literal
+    @test recs[7]["value"] == A.driver_line(["prec 8", "roots_at (3.14 +/- 0.01 ; 9 mod 625) with 5 with 2"])
+    @test recs[8]["value"] == A.driver_line(["prec 64", "project (3.14 +/- 0.01 ; 9 mod 625) with real 5"])
+    # No driver line holds the printed, widened text of a computed real ball.
+    for r in recs, l in something(r["driver"], String[])
+        @test !occursin("0.99 +/- 0.01 ", l) && !occursin("0.99 +/- 0.01;", l)
+        @test !occursin("3.14 +/- 0.011", l)
+    end
+    s = A.replay_summary(out * ".records.jsonl", ADF; io = devnull)
+    @test s.differs == 0
+    @test s.unchecked == 4
+end
+
+@testset "repair 6: a dump or its reason on every record, versions, the set on hover" begin
+    for name in ("a_roots", "b_which_rational")
+        src = joinpath(ROOT, "ux", "notebook", "scenarios", name * ".jl")
+        out = joinpath(mktempdir(), name)
+        Adelica.run_file(src, out)
+        recs = A.read_records(out * ".records.jsonl")
+        for r in recs
+            @test r["dump"] !== nothing || (get(r, "dump_reason", nothing) isa String)
+            @test haskey(r, "stamp") && occursin("Adelefeld.jl", r["stamp"])
+            if r["kind"] in ("fan", "branch")
+                for b in r["branches"]
+                    @test startswith(b["dump"], "adf1 Q lball 5 ")
+                end
+            end
+        end
+        page = read(out * ".html", String)
+        @test occursin("Adelefeld.jl " * string(pkgversion(Adelefeld)), page)
+        @test occursin("not exposed by the package", page)
+        @test occursin("commit ", page)
+        nchips = count("class=\"chip", page)
+        @test count(r"class=\"chip[^\"]*\"[^>]*title=\"the set ", page) == nchips
+        @test count("<details class=\"dump\">", page) >= count(r -> r["status"] == "OK", recs)
+    end
+    # The branch dump is the driver's dump of the local ball, which load reads back to the same ball.
+    _, recs = _run(["root(-1, 2; at = 5, seed = 2)"])
+    b = recs[1]["branches"][1]
+    @test A.driver_line(["load " * b["dump"]]) == "[p=5: " * b["value"] * "]"
+    @test recs[1]["dump"] == b["dump"]
 end
 
 end

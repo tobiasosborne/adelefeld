@@ -73,6 +73,9 @@ body { background: var(--paper); color: var(--ink); font-family: var(--f-ui); fo
 .dig .fog[data-rewrite] { cursor: pointer; }
 .dig .fog[data-rewrite]:hover, .dig .fog[data-rewrite]:focus-visible { outline: 2px solid var(--accent); }
 .dig .ell { color: var(--ink-3); letter-spacing: 0; }
+.refine { font: inherit; font-size: 12px; border: 1px solid var(--rule); background: var(--sheet);
+  color: var(--ink); border-radius: 4px; padding: 1px 8px; cursor: pointer; justify-self: start; }
+.refine:hover, .refine:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent-soft); }
 .fan { display: flex; flex-wrap: wrap; gap: 10px; }
 .chip { border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; display: grid; gap: 2px; min-width: 0;
   background: var(--sheet); text-align: left; color: var(--ink); font: inherit; }
@@ -101,6 +104,8 @@ button.chip:hover, button.chip:focus-visible { border-color: var(--accent); outl
 .note { font-size: 13px; color: var(--ink-2); margin: 8px 0 0; }
 .dump { margin-top: 6px; font-size: 12px; color: var(--ink-3); }
 .dump code { font-family: var(--f-code); overflow-wrap: anywhere; }
+.foot { max-width: 1180px; margin: 28px auto 0; padding-top: 10px; border-top: 1px solid var(--rule);
+  font-size: 12px; color: var(--ink-3); }
 pre.plain, pre.jerr { margin: 0; font-family: var(--f-code); font-size: 13px; white-space: pre-wrap; }
 pre.jerr { color: var(--open); }
 .margin { min-width: 0; display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: var(--ink-2); }
@@ -125,43 +130,44 @@ code { font-family: var(--f-code); font-size: 12.5px; }
 <p class="step">Step 1: the square roots of 9 at 5. A fan of two chips, labelled by the seed (the residue mod 5).</p>
 <div class="lbl">In [1]</div><div class="in">roots(9, 2; at = 5)</div>
 <div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
-<div class="lbl out">Out[1]</div><div class="out"><div class="fanhead"><b>2 branches</b> at 5 · degree 2 · every branch, as the driver's roots_at lists them · click a branch to pin its seed in the cell</div><div class="fan"><button class="chip" type="button" data-cell="c1" data-rewrite="root(9, 2; at = 5, seed = 2)"><span class="seed">5 [2]</span><span class="v">-3</span><span class="dig"><span class="ell">…</span><span class="per">4</span>442</span></button><button class="chip" type="button" data-cell="c1" data-rewrite="root(9, 2; at = 5, seed = 3)"><span class="seed">5 [3]</span><span class="v">3</span><span class="dig"><span class="ell">…</span><span class="per">0</span>003</span></button></div></div>
+<div class="lbl out">Out[1]</div><div class="out"><div class="fanhead"><b>2 branches</b> at 5 · degree 2 · every branch, as the driver's roots_at lists them · click a branch to pin its seed in the cell</div><div class="fan"><button class="chip" type="button" title="the set {-3}: one point of Q_5, exact" data-cell="c1" data-rewrite="root(9, 2; at = 5, seed = 2)"><span class="seed">5 [2]</span><span class="v">-3</span><span class="dig"><span class="ell">…</span><span class="per">4</span>442</span></button><button class="chip" type="button" title="the set {3}: one point of Q_5, exact" data-cell="c1" data-rewrite="root(9, 2; at = 5, seed = 3)"><span class="seed">5 [3]</span><span class="v">3</span><span class="dig"><span class="ell">…</span><span class="per">0</span>003</span></button></div><details class="dump"><summary>dump</summary><div>5 [2]: <code>adf1 Q lball 5 x -3 1 0</code></div><div>5 [3]: <code>adf1 Q lball 5 x 3 1 0</code></div></details></div>
 </section>
 <section class="cell" id="c2" aria-label="Cell 2">
 <p class="step">Step 2: what a click on the chip [3] of In [1] writes. The branch is in the code, not in a mode.</p>
 <div class="lbl">In [2]</div><div class="in">root(9, 2; at = 5, seed = 3)</div>
 <div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
-<div class="lbl out">Out[2]</div><div class="out"><div class="fan"><div class="chip picked"><span class="seed">5 [3] · exact</span><span class="dig"><span class="ell">…</span><span class="per">0</span>003</span><span class="v">3</span></div></div></div>
+<div class="lbl out">Out[2]</div><div class="out"><div class="fan"><div class="chip picked" title="the set {3}: one point of Q_5, exact"><span class="seed">5 [3] · exact</span><span class="dig"><span class="ell">…</span><span class="per">0</span>003</span><span class="v">3</span></div></div><details class="dump"><summary>dump</summary><div>5 [3]: <code>adf1 Q lball 5 x 3 1 0</code></div></details></div>
 </section>
 <section class="cell" id="c3" aria-label="Cell 3">
 <p class="step">Step 3: -1 instead of 9. The roots are irrational; 8 digits at the default precision, fog above 5^8.</p>
 <div class="lbl">In [3]</div><div class="in">roots(-1, 2; at = 5)</div>
 <div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
-<div class="lbl out">Out[3]</div><div class="out"><div class="fanhead"><b>2 branches</b> at 5 · degree 2 · every branch, as the driver's roots_at lists them · click a branch to pin its seed in the cell</div><div class="fan"><button class="chip" type="button" data-cell="c3" data-rewrite="root(-1, 2; at = 5, seed = 2)"><span class="seed">5 [2]</span><span class="v">280182 + O(5^8)</span><span class="dig"><span class="fog" role="img" aria-label="digits not known"></span>32431212</span></button><button class="chip" type="button" data-cell="c3" data-rewrite="root(-1, 2; at = 5, seed = 3)"><span class="seed">5 [3]</span><span class="v">110443 + O(5^8)</span><span class="dig"><span class="fog" role="img" aria-label="digits not known"></span>12013233</span></button></div></div>
+<div class="lbl out">Out[3]</div><div class="out"><div class="fanhead"><b>2 branches</b> at 5 · degree 2 · every branch, as the driver's roots_at lists them · click a branch to pin its seed in the cell</div><div class="fan"><button class="chip" type="button" title="the set 280182 + 5^8 Z_5: a ball of Q_5, the digits from 5^8 on not known" data-cell="c3" data-rewrite="root(-1, 2; at = 5, seed = 2)"><span class="seed">5 [2]</span><span class="v">280182 + O(5^8)</span><span class="dig"><span class="fog" role="img" aria-label="digits not known"></span>32431212</span></button><button class="chip" type="button" title="the set 110443 + 5^8 Z_5: a ball of Q_5, the digits from 5^8 on not known" data-cell="c3" data-rewrite="root(-1, 2; at = 5, seed = 3)"><span class="seed">5 [3]</span><span class="v">110443 + O(5^8)</span><span class="dig"><span class="fog" role="img" aria-label="digits not known"></span>12013233</span></button></div><details class="dump"><summary>dump</summary><div>5 [2]: <code>adf1 Q lball 5 b 44676 0 8</code></div><div>5 [3]: <code>adf1 Q lball 5 b 1af6b 0 8</code></div></details></div>
 </section>
 <section class="cell" id="c4" aria-label="Cell 4">
 <p class="step">Step 4: the branch [2] with twelve more digits (what a click on the chip and then the fog writes).</p>
 <div class="lbl">In [4]</div><div class="in">root(-1, 2; at = 5, seed = 2, prec = 20)</div>
 <div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
-<div class="lbl out">Out[4]</div><div class="out"><div class="fan"><div class="chip picked"><span class="seed">5 [2] · 20 digits known</span><span class="dig"><span class="fog" data-cell="c4" data-rewrite="root(-1, 2; at = 5, seed = 2, prec = 32)" tabindex="0" role="button" aria-label="12 more digits" title="12 more digits: root(-1, 2; at = 5, seed = 2, prec = 32)"></span>40423140223032431212</span><span class="v">79753541295807 + O(5^20)</span></div></div><p class="note">fog: the digits from 5<sup>20</sup> on are not known · click the fog for 12 more digits (prec = 32)</p></div>
+<div class="lbl out">Out[4]</div><div class="out"><div class="fan"><div class="chip picked" title="the set 79753541295807 + 5^20 Z_5: a ball of Q_5, the digits from 5^20 on not known"><span class="seed">5 [2] · 20 digits known</span><span class="dig"><span class="fog" data-cell="c4" data-rewrite="root(-1, 2; at = 5, seed = 2, prec = 32)" tabindex="0" role="button" aria-label="12 more digits" title="12 more digits: root(-1, 2; at = 5, seed = 2, prec = 32)"></span>40423140223032431212</span><span class="v">79753541295807 + O(5^20)</span></div></div><p class="note">fog: the digits from 5<sup>20</sup> on are not known · click the fog for 12 more digits (prec = 32)</p><details class="dump"><summary>dump</summary><div>5 [2]: <code>adf1 Q lball 5 b 4889117f9ebf 0 14</code></div></details></div>
 </section>
 <section class="cell" id="c5" aria-label="Cell 5">
 <p class="step">Step 5: 2 is not a square mod 5, so no branch exists: a status card, not an empty fan.</p>
 <div class="lbl">In [5]</div><div class="in">roots(2, 2; at = 5)</div>
 <div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
-<div class="lbl out">Out[5]</div><div class="out"><div class="status s-solid" role="status"><span class="nm">DOMAIN · proved no</span><span class="meta">solid border · place: not given · from: driver roots_at</span><span class="why">no branch: the existence criterion fails on the whole ball, or the degree is 0 (tools/adf/README.md:509-510)</span><div class="acts"><span class="act">another prime or another degree</span></div></div></div>
+<div class="lbl out">Out[5]</div><div class="out"><div class="status s-solid" role="status"><span class="nm">DOMAIN · proved no</span><span class="meta">solid border · place: not given · from: driver roots_at</span><span class="why">the driver gives no reason code. The possible causes (tools/adf/README.md:509-510): the existence criterion fails on the whole ball; the degree is 0. Checked in Julia by this slice: the place 5 is prime, the degree is 2</span><div class="acts"><span class="act">no single action: the driver does not say which cause holds</span><span class="act">roots(x, n; at = p) lists the branches that exist</span></div></div></div>
 </section>
 </main>
 <aside class="margin" aria-label="How to read this page">
 <h2>How to read</h2>
 <p>A value is a strip: the real place R, one column per prime below 1000 that divides its modulus or denominator (valuation v, |x|<sub>p</sub>, the p-adic digits with the low digit on the right, the period overlined), and one column for every other prime.</p>
-<p>A fan shows every branch of a root; a click on a chip writes its seed into the cell. A click on the fog of a single root asks for 12 more digits. Both edit the cell text only.</p>
+<p>A fan shows every branch of a root; a click on a chip writes its seed into the cell. A click on the fog of a single root (above 97: on <i>12 more digits</i>) asks for 12 more digits. Both edit the cell text only. Hover a strip or a chip for its set in words.</p>
 <h2>Statuses</h2>
 <div class="legend" aria-label="Status classes"><span><span class="sw d"></span>open: more work may help: <code>NOT_DETERMINED UNIT_NOT_CERTIFIED NEEDS_SPLIT NOT_UNIQUE</code></span><span><span class="sw s"></span>proved: the answer is no: <code>NO_SOLUTION NOT_UNIT DOMAIN</code></span><span><span class="sw o"></span>budget: a limit was hit: <code>LIMIT</code></span><span><span class="sw p"></span>not a question of mathematics: <code>UNSUPPORTED PARSE</code></span><span>OK: a value, a fan or a strip; no card</span><span><span class="sw fogsw"></span>fog: digits not known, or no information at a place</span></div>
 <h2>Agent window</h2>
-<p><code>a_roots.records.jsonl</code>: one record per output, with the value text, the status, the dump and the driver line that reproduces it.</p>
+<p><code>a_roots.records.jsonl</code>: one record per output, with the value text, the status, the dump (or why there is none), what computed it, and the driver line that reproduces it (or why there is none).</p>
 </aside>
 </div>
+<footer class="foot">Made by Adelefeld.jl 0.1.0; library sources (src, include, tools/adf) at commit 26989c4; library and FLINT versions: not exposed by the package. The package's load gate checks that the run-time FLINT agrees in major and minor version with the one the library was compiled against (julia/Adelefeld/src/load.jl:159-166).</footer>
 <script>(function () {
   function rewrite(el) {
     var cell = document.getElementById(el.getAttribute('data-cell'));

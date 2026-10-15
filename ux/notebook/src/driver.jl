@@ -20,7 +20,9 @@ struct DriverError <: Exception
     op::String
     status::Adelefeld.AdfStatus
     lines::Vector{String}
+    args::Dict{Symbol,Any}      # what the call asked for (:at, :n, :seed), for the card's reason
 end
+DriverError(op, status, lines) = DriverError(op, status, lines, Dict{Symbol,Any}())
 Base.showerror(io::IO, e::DriverError) = print(io, "DriverError: ", e.op, " answered error: ", e.status)
 
 """
@@ -46,9 +48,9 @@ function _status_of(line::AbstractString)
     error("not a status name: " * repr(line))
 end
 
-function _call(op::String, lines::Vector{String})
+function _call(op::String, lines::Vector{String}; args = Dict{Symbol,Any}())
     out = driver_line(lines)
-    startswith(out, "error: ") && throw(DriverError(op, _status_of(out), lines))
+    startswith(out, "error: ") && throw(DriverError(op, _status_of(out), lines, args))
     return out
 end
 
@@ -85,6 +87,49 @@ struct Fan
     branches::Vector{Branch}
     lines::Vector{String}
     line::String
+    computed_by::String
+end
+
+# ---- Driver operands (repair D2 of the test drive) ----
+# The driver reads no dump as an operand (`project adf1 Q rat 1 1 with real` is error: PARSE), and a printed
+# real ball read again may be wider than the ball printed (docs/conventions.md 9.6, :1331-1340). So a value is
+# sent to the driver only as a text that denotes exactly that value: the text of a Rat or an FBall (exact),
+# the source text of a literal (CURRENT_PROV, set by `evaluate`), or a value text that reads back to the same
+# dump. A computed adele whose text widens has no such operand: `lossless_operand` gives `nothing`.
+
+const CURRENT_PROV = Ref{Union{Nothing,IdDict{Any,String}}}(nothing)
+
+function lossless_operand(x)
+    prov = CURRENT_PROV[]
+    prov !== nothing && haskey(prov, x) && return prov[x]
+    x isa Union{Integer,Rational,Rat,FBall} && return _operand(x)
+    x isa ADELIC || return _operand(x)
+    t = value_text(x)
+    y = try readvalue(t) catch; nothing end
+    return (y isa typeof(x) && dump_text(y) == dump_text(x)) ? t : nothing
+end
+
+const FINITE_PART_NOTE = "on the exact finite part of a computed adele: at a prime only the finite part " *
+    "counts (tools/adf/README.md:485, the commands project to the named prime)"
+
+# The operand of a command at a prime: the value itself if it has a lossless text, else its finite part.
+function local_operand(x)
+    t = lossless_operand(x)
+    t !== nothing && return t, ""
+    x isa Union{Adele,CAdele} && return value_text(finitepart(x)), " " * FINITE_PART_NOTE
+    throw(ArgumentError("no exact driver operand for a value of type $(typeof(x))"))
+end
+
+"""
+    local_dump(p, value) -> (dump, reason)
+
+The driver's dump (conventions 10.1, body lball) of the local ball `[p=P: value]` that a branch or a
+component at a prime prints (`value` is a rational or `C + O(p^N)`, exact data: the dump is lossless).
+"""
+function local_dump(p::Integer, value::AbstractString; adf::AbstractString = driver_path())
+    d = driver_line(["dump [p=$(p): $(value)]"]; adf)
+    startswith(d, "error: ") && return nothing, "the driver's dump of [p=$(p): $(value)] answered " * d
+    return d, nothing
 end
 
 function _branches(line::AbstractString)
@@ -104,9 +149,10 @@ The roots of degree n of x at the prime `at`: every branch, as the driver's `roo
 `prec` is the absolute p-adic precision of an irrational root (the driver's setting `prec`).
 """
 function roots(x, n::Integer; at::Integer, prec::Integer = 8)
-    lines = ["prec $(prec)", "roots_at $(_operand(x)) with $(at) with $(n)"]
-    out = _call("roots_at", lines)
-    return Fan(_operand(x), n, at, prec, false, _branches(out), lines, out)
+    t, note = local_operand(x)
+    lines = ["prec $(prec)", "roots_at $(t) with $(at) with $(n)"]
+    out = _call("roots_at", lines; args = Dict{Symbol,Any}(:at => at, :n => n))
+    return Fan(t, n, at, prec, false, _branches(out), lines, out, "driver roots_at" * note)
 end
 
 """
@@ -118,9 +164,10 @@ The one branch of `roots(x, n; at)` with the identifier `seed` (driver `root_at`
 function root(x, n::Integer; at::Integer, seed, prec::Integer = 8)
     s = string(seed)
     s = s == "+1" ? "1" : s
-    lines = ["prec $(prec)", "root_at $(_operand(x)) with $(at) with $(n) with $(s)"]
-    out = _call("root_at", lines)
-    return Fan(_operand(x), n, at, prec, true, _branches(out), lines, out)
+    t, note = local_operand(x)
+    lines = ["prec $(prec)", "root_at $(t) with $(at) with $(n) with $(s)"]
+    out = _call("root_at", lines; args = Dict{Symbol,Any}(:at => at, :n => n, :seed => s))
+    return Fan(t, n, at, prec, true, _branches(out), lines, out, "driver root_at" * note)
 end
 
 "The rewrite of a chip: the seed that `root` accepts for an identifier printed by the driver."
@@ -173,25 +220,54 @@ driver, not a value form) and its entries `(place, text)`.
 """
 struct Projection
     entries::Vector{Tuple{String,String}}
-    lines::Vector{String}
+    lines::Union{Nothing,Vector{String}}   # nothing: no driver line reproduces the whole line
     line::String
+    computed_by::String
 end
 
-"""
-    project(x, places...; prec = 64) -> Projection
-
-The partial ball of x over the places (`:real` or a prime), through the driver's `project`.
-"""
-function project(x, places...; prec::Integer = 64)
-    ps = join((_place(p) for p in places), " ")
-    lines = ["prec $(prec)", "project $(_operand(x)) with $(ps)"]
-    out = _call("project", lines)
+function _entries(out::AbstractString)
     es = Tuple{String,String}[]
     for part in split(out, "; ")
         i = findfirst(": ", part)
         push!(es, (part[1:i.start-1], part[i.stop+1:end]))
     end
-    return Projection(es, lines, out)
+    return es
+end
+
+"""
+    project(x, places...; prec = 64) -> Projection
+
+The partial ball of x over the places (`:real` or a prime), through the driver's `project`. A computed adele
+whose printed text would widen (no `lossless_operand`) is not sent as that text: its real component is the
+package's `realpart` (the stored ball, at the precision of the value, so only `prec = 64` is accepted), and its
+components at the primes are the driver's projection of its exact finite part (tools/adf/README.md:485).
+"""
+function project(x, places...; prec::Integer = 64)
+    pls = [_place(p) for p in places]
+    t = lossless_operand(x)
+    if t !== nothing
+        lines = ["prec $(prec)", "project $(t) with $(join(pls, " "))"]
+        out = _call("project", lines)
+        return Projection(_entries(out), lines, out, "driver project")
+    end
+    x isa Adele || throw(ArgumentError("project of a computed $(typeof(x)): no exact driver operand"))
+    prec == 64 || throw(ArgumentError("project of a computed adele: the real component is the stored ball at " *
+                                      "64 bits; prec = $(prec) is not applied by this slice"))
+    allunique(pls) || throw(ArgumentError("a place is named twice"))
+    es = Tuple{String,String}[]
+    if "real" in pls
+        rb = realpart(x)
+        push!(es, ("real", value_text(rb)))
+        close(rb)
+    end
+    primes = filter(!=("real"), pls)
+    if !isempty(primes)
+        lines = ["prec $(prec)", "project $(value_text(finitepart(x))) with $(join(primes, " "))"]
+        append!(es, _entries(_call("project", lines)))
+    end
+    by = "package realpart for the real place" *
+         (isempty(primes) ? "" : "; driver project " * FINITE_PART_NOTE * ": " * lines[end])
+    return Projection(es, nothing, join(("$(p): $(v)" for (p, v) in es), "; "), by)
 end
 
 """
