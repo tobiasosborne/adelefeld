@@ -1,0 +1,30 @@
+c1 c = adf"146 mod 1000" controls 0
+Step 1: the residue of a long computation, as a finite ball: 146 + 1000 Zhat. In [1] c = adf"146 mod 1000" edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[1] R * no real coordinate 2 v = 1 |x| 2 = 1/2 010 146 + O(2 3 ) 5 v = 0 |x| 5 = 1 041 146 + O(5 3 ) every other p Z p no information · infinitely many primes dump adf1 Q fball g 92 3e8 1
+c2 r = recover(c; num = 30, den = 15) controls 0
+Step 2: the rational n/d with n = 146 d mod 1000, |n| <= 30, 0 < d <= 15 (SPEC 9.2, partial data). In [2] r = recover(c; num = 30, den = 15) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[2] R 3.142857142857142857 +/- 2.4e-19 exact: 22/7 2 v = 1 |x| 2 = 1/2 … 011 1010 exact 7 v = -1 |x| 7 = 7 … 0 03 . 1 exact 11 v = 1 |x| 11 = 1/11 … 4 7 9 5 0 exact every other p unit |x| p = 1 · infinitely many primes dump adf1 Q rat 16 7
+c3 x = adf"(3.14 +/- 0.01 ; 1/7 mod 1)" controls 0
+Step 3: the full adelic ball from the real estimate 3.14 +/- 0.01 and the finite part 1/7 + Zhat. In [3] x = adf"(3.14 +/- 0.01 ; 1/7 mod 1)" edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[3] R 3.14 +/- 0.011 a ball 7 v = -1 |x| 7 = 7 . 1 1/7 + O(7 0 ) every other p Z p no information · infinitely many primes dump adf1 Q adele 1 647ae147ae147ae1 -3d 28f5c29 -20 g 1 7 7
+c4 reconstruct(x) controls 0
+Step 4: reconstruction from the full ball (SPEC 9.2, first item): 1/7 + k meets [3.13, 3.15] at k = 3. In [4] reconstruct(x) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[4] R 3.142857142857142857 +/- 2.4e-19 exact: 22/7 2 v = 1 |x| 2 = 1/2 … 011 1010 exact 7 v = -1 |x| 7 = 7 … 0 03 . 1 exact 11 v = 1 |x| 11 = 1/11 … 4 7 9 5 0 exact every other p unit |x| p = 1 · infinitely many primes dump adf1 Q rat 16 7
+c5 recover(c; num = 40, den = 30) controls 0
+Step 5: wider bounds, 2 * 40 * 30 = 2400 > 1000: the set is still decided, by the Euclidean rows. In [5] recover(c; num = 40, den = 30) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[5] R 3.142857142857142857 +/- 2.4e-19 exact: 22/7 2 v = 1 |x| 2 = 1/2 … 011 1010 exact 7 v = -1 |x| 7 = 7 … 0 03 . 1 exact 11 v = 1 |x| 11 = 1/11 … 4 7 9 5 0 exact every other p unit |x| p = 1 · infinitely many primes dump adf1 Q rat 16 7
+c6 recover(c; num = 400, den = 300) controls 0
+Step 6: bounds so wide that two fractions fit the box: an open status, with what can change it. In [6] recover(c; num = 400, den = 300) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[6] NOT_UNIQUE · open dashed border · place: not given · from: driver recover at least two reduced fractions n/d with n = c d mod m lie in the box |n| <= num, 0 < d <= den (SPEC 9.2; tools/adf/README.md:190-191) tighter bounds: 2 num den < m is sufficient for uniqueness (SPEC 9.2)
+c7 recover(adf"1 mod 2003"; num = 3, den = 1001) controls 0
+Step 7: a residue mod the prime 2003 whose search is cut short by the driver's search limit 1000. In [7] recover(adf"1 mod 2003"; num = 3, den = 1001) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[7] NOT_DETERMINED · open dashed border · place: not given · from: driver recover uniqueness not certified: the search limit 1000 of the driver ended the search before the set of solutions was decided (tools/adf/README.md:191-192) a larger search limit (fixed at 1000 in the driver: not reachable from this notebook) tighter bounds: 2 num den < m is sufficient for uniqueness (SPEC 9.2)
+c8 project(r, :real, 2, 7) controls 0
+Step 8: the answer 22/7 at the real place and at 2 and 7, as the driver's partial ball. In [8] project(r, :real, 2, 7) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[8] R 3.142857142857142857 +/- 2.4e-19 the driver's real-ball text 2 22/7 … 011 1010 7 22/7 … 0 03 . 1 every other place not in the partial ball project keeps only the places asked for
+PASS 8 cells are present in HTML
+PASS No remote script or stylesheet
+PASS Legend contains OK
+PASS Legend contains NOT_DETERMINED
+PASS Legend contains UNIT_NOT_CERTIFIED
+PASS Legend contains NEEDS_SPLIT
+PASS Legend contains NOT_UNIQUE
+PASS Legend contains NO_SOLUTION
+PASS Legend contains NOT_UNIT
+PASS Legend contains DOMAIN
+PASS Legend contains UNSUPPORTED
+PASS Legend contains PARSE
+PASS Legend contains LIMIT
+PASS 13 checks; this is HTML and mock DOM inspection, not a rendered screenshot.

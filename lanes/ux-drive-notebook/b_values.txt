@@ -1,0 +1,63 @@
+PASS cell 1 driver value (* ; 146 mod 1000)
+PASS cell 1 exit 0
+PASS cell 1 dump loads to same text
+PASS cell 1 p=2: finite expansion ~010 = 2
+PASS cell 1 p=2: valuation 1
+PASS cell 1 p=5: finite expansion ~041 = 21
+PASS cell 1 p=5: valuation 0
+PASS cell 2 driver value 22/7
+PASS cell 2 exit 0
+PASS cell 2 dump loads to same text
+PASS cell 2 p=2: exact expansion (011)1010 = 22/7
+PASS cell 2 p=2: valuation 1
+PASS cell 2 p=7: exact expansion (0)3.1 = 22/7
+PASS cell 2 p=7: valuation -1
+PASS cell 2 p=11: exact expansion (4 7 9) 5 0 = 22/7
+PASS cell 2 p=11: valuation 1
+PASS cell 2: real printed interval contains 22/7
+PASS cell 3 driver value (3.14 +/- 0.011 ; 1/7 mod 1)
+PASS cell 3 exit 0
+PASS cell 3 dump loads to same text
+PASS cell 3 p=7: finite expansion ~.1 = 1/7
+PASS cell 3 p=7: valuation -1
+PASS cell 4 driver value 22/7
+PASS cell 4 exit 0
+PASS cell 4 dump loads to same text
+PASS cell 4 p=2: exact expansion (011)1010 = 22/7
+PASS cell 4 p=2: valuation 1
+PASS cell 4 p=7: exact expansion (0)3.1 = 22/7
+PASS cell 4 p=7: valuation -1
+PASS cell 4 p=11: exact expansion (4 7 9) 5 0 = 22/7
+PASS cell 4 p=11: valuation 1
+PASS cell 4: real printed interval contains 22/7
+PASS cell 5 driver value 22/7
+PASS cell 5 exit 0
+PASS cell 5 dump loads to same text
+PASS cell 5 p=2: exact expansion (011)1010 = 22/7
+PASS cell 5 p=2: valuation 1
+PASS cell 5 p=7: exact expansion (0)3.1 = 22/7
+PASS cell 5 p=7: valuation -1
+PASS cell 5 p=11: exact expansion (4 7 9) 5 0 = 22/7
+PASS cell 5 p=11: valuation 1
+PASS cell 5: real printed interval contains 22/7
+PASS cell 6 driver value error: NOT_UNIQUE
+PASS cell 6 exit 1
+PASS cell 7 driver value error: NOT_DETERMINED
+PASS cell 7 exit 1
+PASS cell 8 driver value real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+PASS cell 8 exit 0
+Enumeration (30, 15, 1000, 146) count 1 values 22/7
+PASS complete enumeration A=30, B=15, m=1000
+Enumeration (40, 30, 1000, 146) count 1 values 22/7
+PASS complete enumeration A=40, B=30, m=1000
+Enumeration (400, 300, 1000, 146) count 82 values 146, 22/7, 314/9, -394/11, -102/13, -226/19, 358/23, -58/27, 234/29, -182/33, -14/41, 278/43, -138/47, -262/53, 322/57, -386/59, -94/61, -218/67, 74/69, 366/71, -342/73, 118/83, -298/87, -6/89, 162/97, -254/101, 38/103, -378/107, -86/109, 206/111, 82/117, -334/121, -166/129, 126/131, 2/137, 294/139, -122/143, -246/149, 46/151, 338/153, -78/157, 214/159, -202/163, 382/167, -326/169, -34/171, 258/173, -158/177, 134/179, 302/187, -114/191, 178/193, -238/197, 54/199, 346/201, -362/203, -194/211, 98/213, -318/217, -26/219, 266/221, 142/227, -274/231, 18/233, -398/237, -106/239, 186/241, 62/247, -354/251, -62/253, -186/259, 106/261, 398/263, 274/269, -142/273, -266/279, 26/281, 318/283, 194/289, -222/293, 362/297, -346/299
+PASS complete enumeration A=400, B=300, m=1000
+Enumeration (3, 1001, 2003, 1) count 1 values 1
+PASS complete enumeration A=3, B=1001, m=2003
+PASS 7*146 = 1022 = 22 mod 1000
+PASS both uniqueness-bound products
+PASS only k=3 meets [3.13,3.15]
+PASS printed real ball contains 22/7
+PASS no certificate field in any of 8 records
+PASS no author or acceptance state in 8 records
+PASS 58 checks

@@ -1,0 +1,292 @@
+[
+  {
+    "name": "setup_make",
+    "time": "2026-10-16T00:48:44+11:00",
+    "expected": "Static library builds; exit 0.",
+    "cwd": "work",
+    "command": "timeout 600 make -j2",
+    "exit": 0,
+    "seconds": 11.144,
+    "output": "setup_make.txt"
+  },
+  {
+    "name": "setup_driver",
+    "time": "2026-10-16T00:49:00+11:00",
+    "expected": "Driver builds; exit 0.",
+    "cwd": "work",
+    "command": "timeout 600 make -C tools/adf",
+    "exit": 0,
+    "seconds": 11.656,
+    "output": "setup_driver.txt"
+  },
+  {
+    "name": "setup_readme",
+    "time": "2026-10-16T00:49:12+11:00",
+    "expected": "Both scenario pages and records generated; exit 0.",
+    "cwd": "work",
+    "command": "timeout 180 sh ux/notebook/run.sh",
+    "exit": 0,
+    "seconds": 15.291,
+    "output": "setup_readme.txt"
+  },
+  {
+    "name": "a_firefox",
+    "time": "2026-10-16T00:49:44+11:00",
+    "expected": "Firefox creates a screenshot of scenario A.",
+    "cwd": "work",
+    "command": "timeout 30 firefox --headless --profile \"$(timeout 5 mktemp -d ../firefox-a.XXXXXX)\" --window-size 1400,2400 --screenshot \"$PWD/../a_roots.png\" \"file://$PWD/ux/notebook/out/a_roots.html\"",
+    "exit": -11,
+    "seconds": 0.199,
+    "output": "a_firefox.txt"
+  },
+  {
+    "name": "a_values",
+    "time": "2026-10-16T00:51:03+11:00",
+    "expected": "All 5 driver results and exact root digits agree.",
+    "cwd": "work",
+    "command": "timeout 20 python3 ../a_check.py",
+    "exit": 0,
+    "seconds": 0.038,
+    "output": "a_values.txt"
+  },
+  {
+    "name": "a_dom",
+    "time": "2026-10-16T00:51:03+11:00",
+    "expected": "Scenario A DOM, seed rewrite and fog suggestion work.",
+    "cwd": "work",
+    "command": "timeout 20 node ../dom_check.js",
+    "exit": 0,
+    "seconds": 0.024,
+    "output": "a_dom.txt"
+  },
+  {
+    "name": "firefox_control",
+    "time": "2026-10-16T00:51:14+11:00",
+    "expected": "Blank-page control distinguishes browser failure from page failure.",
+    "cwd": "work",
+    "command": "timeout 15 firefox --headless --profile \"$(timeout 5 mktemp -d ../firefox-control.XXXXXX)\" --screenshot \"$PWD/../blank.png\" about:blank",
+    "exit": -11,
+    "seconds": 0.204,
+    "output": "firefox_control.txt"
+  },
+  {
+    "name": "a_flow",
+    "time": "2026-10-16T00:51:13+11:00",
+    "expected": "Copied seed and precision calls evaluate; comparison capability is exposed or refuses honestly.",
+    "cwd": "work",
+    "command": "timeout 60 sh ux/notebook/julia.sh -e 'push!(LOAD_PATH, \"ux/notebook/src\"); using Adelica; Adelica.run_file(\"../a_flow.jl\", \"../a_flow\")'",
+    "exit": 0,
+    "seconds": 3.041,
+    "output": "a_flow.txt"
+  },
+  {
+    "name": "b_dom",
+    "time": "2026-10-16T00:51:48+11:00",
+    "expected": "All eight scenario B cells and their controls can be inspected.",
+    "cwd": "work",
+    "command": "timeout 20 node ../dom_check.js work/ux/notebook/out/b_which_rational.html",
+    "exit": 0,
+    "seconds": 0.025,
+    "output": "b_dom.txt"
+  },
+  {
+    "name": "b_firefox",
+    "time": "2026-10-16T00:51:48+11:00",
+    "expected": "Attempt the required scenario B screenshot.",
+    "cwd": "work",
+    "command": "timeout 15 firefox --headless --profile \"$(timeout 5 mktemp -d ../firefox-b.XXXXXX)\" --window-size 1400,3000 --screenshot \"$PWD/../b_which_rational.png\" \"file://$PWD/ux/notebook/out/b_which_rational.html\"",
+    "exit": -11,
+    "seconds": 0.182,
+    "output": "b_firefox.txt"
+  },
+  {
+    "name": "b_values",
+    "time": "2026-10-16T00:52:48+11:00",
+    "expected": "All B outputs, valuations, digits and reconstruction candidates agree independently.",
+    "cwd": "work",
+    "command": "timeout 30 python3 ../b_check.py",
+    "exit": 0,
+    "seconds": 0.077,
+    "output": "b_values.txt"
+  },
+  {
+    "name": "extras_run",
+    "time": "2026-10-16T00:53:42+11:00",
+    "expected": "Three promised interactions remain mathematically honest on additional inputs.",
+    "cwd": "work",
+    "command": "timeout 60 sh ux/notebook/julia.sh -e 'push!(LOAD_PATH, \"ux/notebook/src\"); using Adelica; Adelica.run_file(\"../extras.jl\", \"../extras\")'",
+    "exit": 0,
+    "seconds": 4.319,
+    "output": "extras_run.txt"
+  },
+  {
+    "name": "extras_dom",
+    "time": "2026-10-16T00:54:00+11:00",
+    "expected": "Inspect additional strip, cofactor, branch and status HTML.",
+    "cwd": "work",
+    "command": "timeout 20 node ../dom_check.js extras.html",
+    "exit": 0,
+    "seconds": 0.026,
+    "output": "extras_dom.txt"
+  },
+  {
+    "name": "replay_probe",
+    "time": "2026-10-16T00:54:18+11:00",
+    "expected": "Unchanged records pass; changed result data is reported, never silently called the same.",
+    "cwd": "work",
+    "command": "timeout 120 python3 ../replay_probe.py",
+    "exit": 0,
+    "seconds": 6.026,
+    "output": "replay_probe.txt"
+  },
+  {
+    "name": "extras_values",
+    "time": "2026-10-16T00:55:34+11:00",
+    "expected": "Additional numbers, digits, cofactors and branch suggestions are reproducible.",
+    "cwd": "work",
+    "command": "timeout 20 python3 ../extras_check.py",
+    "exit": 0,
+    "seconds": 0.042,
+    "output": "extras_values.txt"
+  },
+  {
+    "name": "builder_node",
+    "time": "2026-10-16T00:55:56+11:00",
+    "expected": "Builder claims 3 passing click-script tests.",
+    "cwd": "work",
+    "command": "timeout 30 node --test ux/notebook/test/page.test.js",
+    "exit": 0,
+    "seconds": 0.154,
+    "output": "builder_node.txt"
+  },
+  {
+    "name": "builder_julia",
+    "time": "2026-10-16T00:55:56+11:00",
+    "expected": "Builder claims 129 passing Julia checks.",
+    "cwd": "work",
+    "command": "timeout 120 sh ux/notebook/test.sh",
+    "exit": 0,
+    "seconds": 10.961,
+    "output": "builder_julia.txt"
+  },
+  {
+    "name": "builder_node_clean",
+    "time": "2026-10-16T00:56:47+11:00",
+    "expected": "Clean environment reports the three named Node tests.",
+    "cwd": "work",
+    "command": "timeout 30 env -i HOME=\"$HOME\" PATH=\"$PATH\" node --test ux/notebook/test/page.test.js",
+    "exit": 0,
+    "seconds": 0.154,
+    "output": "builder_node_clean.txt"
+  },
+  {
+    "name": "builder_regenerate",
+    "time": "2026-10-16T00:56:47+11:00",
+    "expected": "Clean-shell generation reproduces all four committed output files byte for byte.",
+    "cwd": "work",
+    "command": "timeout 60 env -i HOME=\"$HOME\" PATH=\"$PATH\" sh ux/notebook/run.sh\n timeout 10 diff -r ../../../ux/notebook/out ux/notebook/out",
+    "exit": 0,
+    "seconds": 7.208,
+    "output": "builder_regenerate.txt"
+  },
+  {
+    "name": "builder_demands",
+    "time": "2026-10-16T00:57:13+11:00",
+    "expected": "Probe all eight library-demand claims through available driver commands.",
+    "cwd": "work",
+    "command": "timeout 20 build/adf -v ../demands.cmd",
+    "exit": 1,
+    "seconds": 0.009,
+    "output": "builder_demands.txt"
+  },
+  {
+    "name": "builder_mutation",
+    "time": "2026-10-16T00:57:13+11:00",
+    "expected": "Rerun one of the claimed killed mutants in the isolated copy.",
+    "cwd": "work",
+    "command": "timeout 120 python3 ../../../lanes/ux-notebook/mutate.py 1",
+    "exit": 0,
+    "seconds": 20.055,
+    "output": "builder_mutation.txt"
+  },
+  {
+    "name": "builder_node_direct",
+    "time": "2026-10-16T00:57:34+11:00",
+    "expected": "Direct execution resolves whether the three named tests run in this Node environment.",
+    "cwd": "work",
+    "command": "timeout 30 node ux/notebook/test/page.test.js",
+    "exit": 0,
+    "seconds": 0.058,
+    "output": "builder_node_direct.txt"
+  },
+  {
+    "name": "builder_replay_a",
+    "time": "2026-10-16T00:57:35+11:00",
+    "expected": "Builder claims all five A records replay unchanged.",
+    "cwd": "work",
+    "command": "timeout 30 sh ux/notebook/replay.sh ux/notebook/out/a_roots.records.jsonl",
+    "exit": 0,
+    "seconds": 3.567,
+    "output": "builder_replay_a.txt"
+  },
+  {
+    "name": "builder_followups",
+    "time": "2026-10-16T00:58:34+11:00",
+    "expected": "Check builder suggestions, missing wrappers, and its disclosed computed-adele widening.",
+    "cwd": "work",
+    "command": "timeout 60 sh ux/notebook/julia.sh -e 'push!(LOAD_PATH, \"ux/notebook/src\"); using Adelica; Adelica.run_file(\"../builder_followups.jl\", \"../builder_followups\")'",
+    "exit": 0,
+    "seconds": 5.608,
+    "output": "builder_followups.txt"
+  },
+  {
+    "name": "replay_skipped",
+    "time": "2026-10-16T00:59:10+11:00",
+    "expected": "Replay must distinguish unchecked Julia errors from matching records.",
+    "cwd": "work",
+    "command": "timeout 30 sh ux/notebook/replay.sh ../a_flow.records.jsonl",
+    "exit": 0,
+    "seconds": 1.214,
+    "output": "replay_skipped.txt"
+  },
+  {
+    "name": "replay_computed",
+    "time": "2026-10-16T00:59:44+11:00",
+    "expected": "A fresh computed-adele notebook should replay without differences.",
+    "cwd": "work",
+    "command": "timeout 30 sh ux/notebook/replay.sh ../builder_followups.records.jsonl",
+    "exit": 1,
+    "seconds": 0.947,
+    "output": "replay_computed.txt"
+  },
+  {
+    "name": "followups_dom",
+    "time": "2026-10-16T00:59:45+11:00",
+    "expected": "Inspect builder-suggested pages and the computed projection.",
+    "cwd": "work",
+    "command": "timeout 20 node ../dom_check.js builder_followups.html",
+    "exit": 0,
+    "seconds": 0.03,
+    "output": "followups_dom.txt"
+  },
+  {
+    "name": "builder_audit",
+    "time": "2026-10-16T00:59:45+11:00",
+    "expected": "Verify regeneration, restored source, line lengths, tooltips, dump controls and missing fields.",
+    "cwd": "work",
+    "command": "timeout 20 python3 ../audit.py",
+    "exit": 0,
+    "seconds": 0.038,
+    "output": "builder_audit.txt"
+  },
+  {
+    "name": "followups_values",
+    "time": "2026-10-16T01:01:05+11:00",
+    "expected": "Verify all new numbers and reproduce the projection/replay and absent-fog defects.",
+    "cwd": "work",
+    "command": "timeout 20 python3 ../followups_check.py",
+    "exit": 0,
+    "seconds": 0.106,
+    "output": "followups_values.txt"
+  }
+]

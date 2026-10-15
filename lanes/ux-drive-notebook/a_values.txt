@@ -1,0 +1,12 @@
+cell 1 driver: '5 [2]: -3; 5 [3]: 3' exit 0
+ exact -3 digits (4)2
+ exact 3 digits (0)3
+cell 2 driver: '5 [3]: 3' exit 0
+ exact 3 digits (0)3
+cell 3 driver: '5 [2]: 280182 + O(5^8); 5 [3]: 110443 + O(5^8)' exit 0
+ root 280182 modulus 390625 square+1 quotient 200965 digits 32431212
+ root 110443 modulus 390625 square+1 quotient 31226 digits 12013233
+cell 4 driver: '5 [2]: 79753541295807 + O(5^20)' exit 0
+ root 79753541295807 modulus 95367431640625 square+1 quotient 66696011833378 digits 40423140223032431212
+cell 5 driver: 'error: DOMAIN' exit 1
+PASS 26 checks. Square residues mod 5: 0,1,4; 2 is absent.

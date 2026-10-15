@@ -1,0 +1,12 @@
+slice files compared 24 different 0 []
+lines above 116 57 in 4 files
+long-line files ['out/a_roots.html', 'out/a_roots.records.jsonl', 'out/b_which_rational.html', 'out/b_which_rational.records.jsonl']
+longest line ('out/b_which_rational.html', 134, 1429)
+README lines 66
+a_roots records 5 dump missing 5 version fields 0 dump controls 0 strip tooltips 0
+status 5 DOMAIN place not given
+b_which_rational records 8 dump missing 3 version fields 0 dump controls 5 strip tooltips 5
+status 6 NOT_UNIQUE place not given
+status 7 NOT_DETERMINED place not given
+No screenshots: True
+END_TIME 2026-10-16T00:59:45+11:00

@@ -1,0 +1,40 @@
+adf: line 2: roots_at: DOMAIN
+adf: line 3: root_at: DOMAIN
+adf: line 4: recover: OK
+adf: line 6: exp_at: PARSE
+adf: line 7: exp_at: DOMAIN
+adf: line 9: project: OK
+adf: line 10: show: OK
+adf: line 11: show: OK
+adf: line 12: dump: OK
+adf: line 13: dump: OK
+adf: line 14: dump: OK
+adf: line 15: dump: OK
+adf: line 16: dump: OK
+adf: line 18: padic_digits: PARSE
+adf: line 19: places: PARSE
+adf: line 20: version: PARSE
+adf: line 21: teichmuller: PARSE
+adf: line 23: equal: OK
+adf: line 24: compare: OK
+adf: line 26: recover: OK
+error: DOMAIN
+error: DOMAIN
+22/7
+error: PARSE
+error: DOMAIN
+real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+[p=5: 3 + O(5^4)]
+{inf: 1.5; p=2: 1 + O(2^3)}
+adf1 Q lball 5 b 3 0 4
+adf1 Q sball r 3 -1 0 0 1 2 b 1 0 3
+adf1 Q ucoset 5 6
+adf1 Q idele 1 1 0 0 0 1 1 1 0
+adf1 Q idclass 1 0 0 0 1 0
+error: PARSE
+error: PARSE
+error: PARSE
+error: PARSE
+true
+undecided
+22/7

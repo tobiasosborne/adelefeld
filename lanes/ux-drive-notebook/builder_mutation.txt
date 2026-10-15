@@ -1,0 +1,2 @@
+mutant  1 digits.jl: killed: 'x = div(x + dg * d, p)'
+1 of 10 killed

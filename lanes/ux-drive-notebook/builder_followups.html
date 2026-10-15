@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adelica builder_followups</title>
+<style>:root {
+  --paper: #f4f6f8; --sheet: #ffffff; --ink: #18212d; --ink-2: #4a5566; --ink-3: #6b7584; --rule: #dde2e8;
+  --accent: #245a8c; --accent-soft: #e4edf6; --open: #9a5d08; --open-soft: #fbf2e3;
+  --proved: #3f5a52; --proved-soft: #e8f0ed; --budget: #6a4c9c; --budget-soft: #f1ecf8;
+  --fog-a: #d9dee5; --fog-b: #f6f7f9; --stale: #9a5d08;
+  --f-ui: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --f-code: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-math: "STIX Two Text", Cambria, Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11151b; --sheet: #171c24; --ink: #e4e8ee; --ink-2: #aab3c0; --ink-3: #8a93a2; --rule: #2a313c;
+    --accent: #8cb5df; --accent-soft: #1d2a38; --open: #e2a64e; --open-soft: #2c2214;
+    --proved: #9cc3b6; --proved-soft: #1a2824; --budget: #b8a0e4; --budget-soft: #241e33;
+    --fog-a: #2e3642; --fog-b: #1a1f27; --stale: #e2a64e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11151b; --sheet: #171c24; --ink: #e4e8ee; --ink-2: #aab3c0; --ink-3: #8a93a2; --rule: #2a313c;
+  --accent: #8cb5df; --accent-soft: #1d2a38; --open: #e2a64e; --open-soft: #2c2214;
+  --proved: #9cc3b6; --proved-soft: #1a2824; --budget: #b8a0e4; --budget-soft: #241e33;
+  --fog-a: #2e3642; --fog-b: #1a1f27; --stale: #e2a64e; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-ui); font-size: 15px; line-height: 1.5;
+  margin: 0; padding: 0 16px 48px; }
+.top { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px;
+  padding: 18px 0 14px; border-bottom: 1px solid var(--rule); }
+.top h1 { font-size: 17px; font-weight: 700; margin: 0; }
+.top .file { font-family: var(--f-code); font-size: 13px; color: var(--ink-2); }
+.top .kernel { margin-left: auto; font-size: 12px; color: var(--ink-3); font-family: var(--f-code); }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px;
+  padding-top: 22px; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+.col { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.cell { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px 14px;
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 10px; }
+.cell.stale { border: 1.5px dashed var(--stale); }
+.step { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--ink-2); }
+.lbl { font-family: var(--f-code); font-size: 12px; color: var(--ink-3); padding-top: 2px; }
+.lbl.out { color: var(--accent); }
+.in { font-family: var(--f-code); font-size: 14px; overflow-x: auto; white-space: pre; min-width: 0; }
+.stalemark { grid-column: 2; font-size: 12.5px; color: var(--stale); }
+.stalemark button { font: inherit; font-size: 12px; border: 1px solid var(--rule); background: var(--sheet);
+  color: var(--ink); border-radius: 4px; padding: 0 6px; cursor: pointer; }
+.out { min-width: 0; }
+.scroll { overflow-x: auto; }
+.strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(104px, auto);
+  border: 1px solid var(--rule);
+  border-radius: 4px; width: max-content; min-width: 100%; }
+.pl { padding: 8px 12px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; gap: 2px;
+  max-width: 240px; }
+.pl:last-child { border-right: 0; }
+.pl .name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3);
+  font-weight: 600; }
+.pl .val { font-family: var(--f-math); font-size: 17px; }
+.pl .sub { font-family: var(--f-code); font-size: 12px; color: var(--ink-2); }
+.pl.rest, .pl.nofo, .pl.cof {
+  background: repeating-linear-gradient(135deg, var(--fog-a) 0 6px, var(--fog-b) 6px 12px); }
+.pl.rest .val, .pl.cof .val { font-family: var(--f-ui); font-size: 14px; color: var(--ink-2); }
+.dig { font-family: var(--f-code); font-size: 15px; letter-spacing: 0.12em; white-space: nowrap; }
+.dig .per { text-decoration: overline; text-decoration-thickness: 1.5px; }
+.dig .fog { display: inline-block; width: 74px; height: 1.05em; vertical-align: -2px; margin-right: 4px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(135deg, var(--fog-a) 0 4px,
+      var(--fog-b) 4px 8px); border: 1px solid var(--rule); }
+.dig .fog[data-rewrite] { cursor: pointer; }
+.dig .fog[data-rewrite]:hover, .dig .fog[data-rewrite]:focus-visible { outline: 2px solid var(--accent); }
+.dig .ell { color: var(--ink-3); letter-spacing: 0; }
+.fan { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; display: grid; gap: 2px; min-width: 0;
+  background: var(--sheet); text-align: left; color: var(--ink); font: inherit; }
+button.chip { cursor: pointer; }
+button.chip:hover, button.chip:focus-visible { border-color: var(--accent); outline: none;
+  box-shadow: 0 0 0 2px var(--accent-soft); }
+.chip .seed { font-family: var(--f-code); font-size: 12px; color: var(--accent); }
+.chip .v { font-family: var(--f-math); font-size: 18px; overflow-wrap: anywhere; }
+.chip.picked { border-color: var(--accent); background: var(--accent-soft); }
+.fanhead { font-size: 12px; color: var(--ink-3); margin-bottom: 8px; }
+.fanhead b { color: var(--ink-2); font-weight: 600; }
+.status { border-radius: 6px; padding: 10px 14px; display: grid; gap: 6px; }
+.status .nm { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; }
+.status .meta { font-family: var(--f-code); font-size: 12px; color: var(--ink-2); }
+.status .why { font-family: var(--f-math); font-size: 15px; }
+.s-dashed { border: 1.5px dashed var(--open); background: var(--open-soft); }
+.s-dashed .nm { color: var(--open); }
+.s-solid { border: 1.5px solid var(--proved); background: var(--proved-soft); }
+.s-solid .nm { color: var(--proved); }
+.s-dotted { border: 2px dotted var(--budget); background: var(--budget-soft); }
+.s-dotted .nm { color: var(--budget); }
+.s-plain { border: 1px solid var(--rule); background: var(--sheet); }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.act { font-family: var(--f-code); font-size: 12.5px; border: 1px solid var(--rule); background: var(--sheet);
+  border-radius: 4px; padding: 3px 8px; }
+.note { font-size: 13px; color: var(--ink-2); margin: 8px 0 0; }
+.dump { margin-top: 6px; font-size: 12px; color: var(--ink-3); }
+.dump code { font-family: var(--f-code); overflow-wrap: anywhere; }
+pre.plain, pre.jerr { margin: 0; font-family: var(--f-code); font-size: 13px; white-space: pre-wrap; }
+pre.jerr { color: var(--open); }
+.margin { min-width: 0; display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: var(--ink-2); }
+.margin h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0; color: var(--ink-3); }
+.margin p { margin: 0; }
+.legend { display: grid; gap: 6px; }
+.sw { display: inline-block; width: 26px; height: 12px; vertical-align: -1px; margin-right: 8px;
+  border-radius: 2px; }
+.sw.fogsw { background: repeating-linear-gradient(135deg, var(--fog-a) 0 4px, var(--fog-b) 4px 8px);
+  border: 1px solid var(--rule); }
+.sw.d { border: 1.5px dashed var(--open); } .sw.s { border: 1.5px solid var(--proved); }
+.sw.o { border: 2px dotted var(--budget); } .sw.p { border: 1px solid var(--rule); }
+code { font-family: var(--f-code); font-size: 12.5px; }
+@media (max-width: 520px) { .cell { grid-template-columns: minmax(0, 1fr); } .stalemark { grid-column: 1; } }
+</style>
+</head>
+<body>
+<header class="top"><h1>Adelica</h1><span class="file">../builder_followups.jl</span><span class="kernel">values: julia/Adelefeld · roots, root, recover, project: build/adf · a static page: it cannot compute</span></header>
+<div class="wrap">
+<main class="col" aria-label="Notebook cells">
+<section class="cell" id="c1" aria-label="Cell 1">
+<p class="step">Builder's suggested ball constructor; the earlier integer-argument path stays unfixed.</p>
+<div class="lbl">In [1]</div><div class="in">FBall(Rat(1), Rat(8 * 1009 * 1013))</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[1]</div><div class="out"><div class="scroll"><div class="strip" role="table" title="finite part: the set 1 + 8176936 Zhat; no real coordinate"><div class="pl real nofo"><span class="name">R</span><span class="val">*</span><span class="sub">no real coordinate</span></div><div class="pl"><span class="name">2</span><span class="val">v = 0</span><span class="sub">|x|<sub>2</sub> = 1</span><span class="dig"><span class="fog" role="img" aria-label="digits not known"></span>001</span><span class="sub">1 + O(2<sup>3</sup>)</span></div><div class="pl cof"><span class="name">cofactor 1022117</span><span class="val">not factored</span><span class="sub">no prime factor below 1000; 7 digits</span></div><div class="pl rest" title="Z_p (no information), at infinitely many primes; the primes of the cofactor are not known"><span class="name">every other p</span><span class="val">Z<sub>p</sub></span><span class="sub">no information · and the primes of the cofactor: not known</span></div></div></div><details class="dump"><summary>dump</summary><code>adf1 Q fball g 1 7cc528 1</code></details></div>
+</section>
+<section class="cell" id="c2" aria-label="Cell 2">
+<p class="step">Builder's suggested division by zero.</p>
+<div class="lbl">In [2]</div><div class="in">Rat(1) / Rat(0)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[2]</div><div class="out"><div class="status s-solid" role="status"><span class="nm">NOT_UNIT · proved no</span><span class="meta">solid border · place: not given · from: package div</span><span class="why">proved: the value is not invertible</span><div class="acts"><span class="act">none: the answer is proved; for an adele, unitof(y) certifies a unit (SPEC 4.5)</span></div></div></div>
+</section>
+<section class="cell" id="c3" aria-label="Cell 3">
+<p class="step">Builder's suggested uncertain root.</p>
+<div class="lbl">In [3]</div><div class="in">roots(adf&quot;(* ; 1 mod 4)&quot;, 2; at = 2)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[3]</div><div class="out"><div class="status s-dashed" role="status"><span class="nm">NOT_DETERMINED · open</span><span class="meta">dashed border · place: not given · from: driver roots_at</span><span class="why">the ball is outside the guard of SPEC 9.3.3, or contains 0 (tools/adf/README.md:507-508)</span><div class="acts"><span class="act">refine the input at the prime</span><span class="act">split the ball</span></div></div></div>
+</section>
+<section class="cell" id="c4" aria-label="Cell 4">
+<p class="step">Residue form beyond 97.</p>
+<div class="lbl">In [4]</div><div class="in">root(-1, 2; at = 101, seed = 10, prec = 8)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[4]</div><div class="out"><div class="fan"><div class="chip picked"><span class="seed">101 [10] · 8 digits known</span><span class="dig"></span><span class="v">3156215819652023 + O(101^8)</span></div></div><p class="note">fog: the digits from 101<sup>8</sup> on are not known · click the fog for 12 more digits (prec = 20)</p></div>
+</section>
+<section class="cell" id="c5" aria-label="Cell 5">
+<p class="step">Missing local-ball wrapper named by the report.</p>
+<div class="lbl">In [5]</div><div class="in">LBall</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[5]</div><div class="out"><pre class="jerr">UndefVarError: `LBall` not defined in `Main.Notebook`</pre></div>
+</section>
+<section class="cell" id="c6" aria-label="Cell 6">
+<p class="step">Missing idele wrapper named by the report.</p>
+<div class="lbl">In [6]</div><div class="in">Idele</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[6]</div><div class="out"><pre class="jerr">UndefVarError: `Idele` not defined in `Main.Notebook`</pre></div>
+</section>
+<section class="cell" id="c7" aria-label="Cell 7">
+<p class="step">Literal whose outward printed enclosure touches 1 but the stored upper endpoint does not.</p>
+<div class="lbl">In [7]</div><div class="in">x = adf&quot;(0.99 +/- 0.0099 ; 0 mod 1)&quot;</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[7]</div><div class="out"><div class="scroll"><div class="strip" role="table" title="real coordinate 0.99 +/- 0.01; finite part: the set 0 + 1 Zhat"><div class="pl real" title="the real ball as the package prints it, 20 digits"><span class="name">R</span><span class="val">0.99 +/- 0.01</span><span class="sub">a ball</span></div><div class="pl rest" title="Z_p (no information), at infinitely many primes"><span class="name">every other p</span><span class="val">Z<sub>p</sub></span><span class="sub">no information · infinitely many primes</span></div></div></div><details class="dump"><summary>dump</summary><code>adf1 Q adele 1 fd70a3d70a3d70a3 -40 a2339c1 -22 g 0 1 1</code></details></div>
+</section>
+<section class="cell" id="c8" aria-label="Cell 8">
+<p class="step">An exact addition leaves the set, but its source is no longer a literal.</p>
+<div class="lbl">In [8]</div><div class="in">y = x + Rat(0)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[8]</div><div class="out"><div class="scroll"><div class="strip" role="table" title="real coordinate 0.99 +/- 0.01; finite part: the set 0 + 1 Zhat"><div class="pl real" title="the real ball as the package prints it, 20 digits"><span class="name">R</span><span class="val">0.99 +/- 0.01</span><span class="sub">a ball</span></div><div class="pl rest" title="Z_p (no information), at infinitely many primes"><span class="name">every other p</span><span class="val">Z<sub>p</sub></span><span class="sub">no information · infinitely many primes</span></div></div></div><details class="dump"><summary>dump</summary><code>adf1 Q adele 1 fd70a3d70a3d70a3 -40 a2339c1 -22 g 0 1 1</code></details></div>
+</section>
+<section class="cell" id="c9" aria-label="Cell 9">
+<p class="step">Project should keep the stored real coordinate.</p>
+<div class="lbl">In [9]</div><div class="in">project(y, :real)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[9]</div><div class="out"><div class="scroll"><div class="strip" role="table"><div class="pl real"><span class="name">R</span><span class="val">0.99 +/- 0.011</span><span class="sub">the driver's real-ball text</span></div><div class="pl rest"><span class="name">every other place</span><span class="val">not in the partial ball</span><span class="sub">project keeps only the places asked for</span></div></div></div></div>
+</section>
+<section class="cell" id="c10" aria-label="Cell 10">
+<p class="step">The stored interval is below 1 and above 0; its finite progression is the integers.</p>
+<div class="lbl">In [10]</div><div class="in">reconstruct(y)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[10]</div><div class="out"><div class="status s-solid" role="status"><span class="nm">NO_SOLUTION · proved no</span><span class="meta">solid border · place: not given · from: package reconstruct</span><span class="why">proved: no value satisfies the problem</span><div class="acts"><span class="act">none: the answer is proved</span></div></div></div>
+</section>
+</main>
+<aside class="margin" aria-label="How to read this page">
+<h2>How to read</h2>
+<p>A value is a strip: the real place R, one column per prime below 1000 that divides its modulus or denominator (valuation v, |x|<sub>p</sub>, the p-adic digits with the low digit on the right, the period overlined), and one column for every other prime.</p>
+<p>A fan shows every branch of a root; a click on a chip writes its seed into the cell. A click on the fog of a single root asks for 12 more digits. Both edit the cell text only.</p>
+<h2>Statuses</h2>
+<div class="legend" aria-label="Status classes"><span><span class="sw d"></span>open: more work may help: <code>NOT_DETERMINED UNIT_NOT_CERTIFIED NEEDS_SPLIT NOT_UNIQUE</code></span><span><span class="sw s"></span>proved: the answer is no: <code>NO_SOLUTION NOT_UNIT DOMAIN</code></span><span><span class="sw o"></span>budget: a limit was hit: <code>LIMIT</code></span><span><span class="sw p"></span>not a question of mathematics: <code>UNSUPPORTED PARSE</code></span><span>OK: a value, a fan or a strip; no card</span><span><span class="sw fogsw"></span>fog: digits not known, or no information at a place</span></div>
+<h2>Agent window</h2>
+<p><code>builder_followups.records.jsonl</code>: one record per output, with the value text, the status, the dump and the driver line that reproduces it.</p>
+</aside>
+</div>
+<script>(function () {
+  function rewrite(el) {
+    var cell = document.getElementById(el.getAttribute('data-cell'));
+    if (!cell) return;
+    var inp = cell.querySelector('.in');
+    if (!inp.hasAttribute('data-original')) inp.setAttribute('data-original', inp.textContent);
+    inp.textContent = el.getAttribute('data-rewrite');
+    cell.classList.add('stale');
+    cell.querySelector('.stalemark').hidden = false;
+    cell.querySelectorAll('button.chip').forEach(function (c) { c.classList.toggle('picked', c === el); });
+  }
+  function restore(cell) {
+    var inp = cell.querySelector('.in');
+    if (inp.hasAttribute('data-original')) inp.textContent = inp.getAttribute('data-original');
+    cell.classList.remove('stale');
+    cell.querySelector('.stalemark').hidden = true;
+    cell.querySelectorAll('button.chip').forEach(function (c) { c.classList.remove('picked'); });
+  }
+  document.addEventListener('click', function (ev) {
+    var r = ev.target.closest('[data-restore]');
+    if (r) { restore(r.closest('.cell')); return; }
+    var el = ev.target.closest('[data-rewrite]');
+    if (el) rewrite(el);
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    var el = ev.target.closest('[data-rewrite]');
+    if (el && el.tagName !== 'BUTTON') { ev.preventDefault(); rewrite(el); }
+  });
+})();
+</script>
+</body>
+</html>

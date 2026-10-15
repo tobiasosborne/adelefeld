@@ -1,0 +1,9 @@
+Precompiling packages...
+   1794.5 ms  ✓ Adelica (serial)
+  1 dependency successfully precompiled in 2 seconds
+cell 1: same: 5 [2]: -3; 5 [3]: 3
+cell 2: same: 5 [3]: 3
+cell 3: same: 5 [2]: 280182 + O(5^8); 5 [3]: 110443 + O(5^8)
+cell 4: same: 5 [2]: 79753541295807 + O(5^20)
+cell 5: same: error: DOMAIN
+replay: every record is the same

@@ -1,0 +1,4 @@
+drive.md lines 569 lines above 116: 0
+report.md lines 499 lines above 116: 0
+4 observed files match retained slice hashes; 29 command outputs exist
+0 temporary work trees; 0 Firefox profiles

@@ -1,0 +1,60 @@
+unchanged exit 0
+cell 1: same: (* ; 146 mod 1000)
+cell 2: same: 22/7
+cell 3: same: (3.14 +/- 0.011 ; 1/7 mod 1)
+cell 4: same: 22/7
+cell 5: same: 22/7
+cell 6: same: error: NOT_UNIQUE
+cell 7: same: error: NOT_DETERMINED
+cell 8: same: real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+replay: every record is the same
+wrong_value exit 1
+cell 1: same: (* ; 146 mod 1000)
+cell 2: differs: record "23/7", driver "22/7"
+cell 3: same: (3.14 +/- 0.011 ; 1/7 mod 1)
+cell 4: same: 22/7
+cell 5: same: 22/7
+cell 6: same: error: NOT_UNIQUE
+cell 7: same: error: NOT_DETERMINED
+cell 8: same: real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+replay: 1 records differ
+wrong_status exit 0
+cell 1: same: (* ; 146 mod 1000)
+cell 2: same: 22/7
+cell 3: same: (3.14 +/- 0.011 ; 1/7 mod 1)
+cell 4: same: 22/7
+cell 5: same: 22/7
+cell 6: same: error: NOT_UNIQUE
+cell 7: same: error: NOT_DETERMINED
+cell 8: same: real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+replay: every record is the same
+wrong_dump exit 0
+cell 1: same: (* ; 146 mod 1000)
+cell 2: same: 22/7
+cell 3: same: (3.14 +/- 0.011 ; 1/7 mod 1)
+cell 4: same: 22/7
+cell 5: same: 22/7
+cell 6: same: error: NOT_UNIQUE
+cell 7: same: error: NOT_DETERMINED
+cell 8: same: real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+replay: every record is the same
+wrong_digit exit 0
+cell 1: same: (* ; 146 mod 1000)
+cell 2: same: 22/7
+cell 3: same: (3.14 +/- 0.011 ; 1/7 mod 1)
+cell 4: same: 22/7
+cell 5: same: 22/7
+cell 6: same: error: NOT_UNIQUE
+cell 7: same: error: NOT_DETERMINED
+cell 8: same: real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+replay: every record is the same
+wrong_input exit 0
+cell 1: same: (* ; 146 mod 1000)
+cell 2: same: 22/7
+cell 3: same: (3.14 +/- 0.011 ; 1/7 mod 1)
+cell 4: same: 22/7
+cell 5: same: 22/7
+cell 6: same: error: NOT_UNIQUE
+cell 7: same: error: NOT_DETERMINED
+cell 8: same: real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7
+replay: every record is the same

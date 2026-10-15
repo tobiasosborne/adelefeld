@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adelica a_flow</title>
+<style>:root {
+  --paper: #f4f6f8; --sheet: #ffffff; --ink: #18212d; --ink-2: #4a5566; --ink-3: #6b7584; --rule: #dde2e8;
+  --accent: #245a8c; --accent-soft: #e4edf6; --open: #9a5d08; --open-soft: #fbf2e3;
+  --proved: #3f5a52; --proved-soft: #e8f0ed; --budget: #6a4c9c; --budget-soft: #f1ecf8;
+  --fog-a: #d9dee5; --fog-b: #f6f7f9; --stale: #9a5d08;
+  --f-ui: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --f-code: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-math: "STIX Two Text", Cambria, Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11151b; --sheet: #171c24; --ink: #e4e8ee; --ink-2: #aab3c0; --ink-3: #8a93a2; --rule: #2a313c;
+    --accent: #8cb5df; --accent-soft: #1d2a38; --open: #e2a64e; --open-soft: #2c2214;
+    --proved: #9cc3b6; --proved-soft: #1a2824; --budget: #b8a0e4; --budget-soft: #241e33;
+    --fog-a: #2e3642; --fog-b: #1a1f27; --stale: #e2a64e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11151b; --sheet: #171c24; --ink: #e4e8ee; --ink-2: #aab3c0; --ink-3: #8a93a2; --rule: #2a313c;
+  --accent: #8cb5df; --accent-soft: #1d2a38; --open: #e2a64e; --open-soft: #2c2214;
+  --proved: #9cc3b6; --proved-soft: #1a2824; --budget: #b8a0e4; --budget-soft: #241e33;
+  --fog-a: #2e3642; --fog-b: #1a1f27; --stale: #e2a64e; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-ui); font-size: 15px; line-height: 1.5;
+  margin: 0; padding: 0 16px 48px; }
+.top { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px;
+  padding: 18px 0 14px; border-bottom: 1px solid var(--rule); }
+.top h1 { font-size: 17px; font-weight: 700; margin: 0; }
+.top .file { font-family: var(--f-code); font-size: 13px; color: var(--ink-2); }
+.top .kernel { margin-left: auto; font-size: 12px; color: var(--ink-3); font-family: var(--f-code); }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px;
+  padding-top: 22px; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } }
+.col { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.cell { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px 14px;
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 10px; }
+.cell.stale { border: 1.5px dashed var(--stale); }
+.step { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--ink-2); }
+.lbl { font-family: var(--f-code); font-size: 12px; color: var(--ink-3); padding-top: 2px; }
+.lbl.out { color: var(--accent); }
+.in { font-family: var(--f-code); font-size: 14px; overflow-x: auto; white-space: pre; min-width: 0; }
+.stalemark { grid-column: 2; font-size: 12.5px; color: var(--stale); }
+.stalemark button { font: inherit; font-size: 12px; border: 1px solid var(--rule); background: var(--sheet);
+  color: var(--ink); border-radius: 4px; padding: 0 6px; cursor: pointer; }
+.out { min-width: 0; }
+.scroll { overflow-x: auto; }
+.strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(104px, auto);
+  border: 1px solid var(--rule);
+  border-radius: 4px; width: max-content; min-width: 100%; }
+.pl { padding: 8px 12px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; gap: 2px;
+  max-width: 240px; }
+.pl:last-child { border-right: 0; }
+.pl .name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3);
+  font-weight: 600; }
+.pl .val { font-family: var(--f-math); font-size: 17px; }
+.pl .sub { font-family: var(--f-code); font-size: 12px; color: var(--ink-2); }
+.pl.rest, .pl.nofo, .pl.cof {
+  background: repeating-linear-gradient(135deg, var(--fog-a) 0 6px, var(--fog-b) 6px 12px); }
+.pl.rest .val, .pl.cof .val { font-family: var(--f-ui); font-size: 14px; color: var(--ink-2); }
+.dig { font-family: var(--f-code); font-size: 15px; letter-spacing: 0.12em; white-space: nowrap; }
+.dig .per { text-decoration: overline; text-decoration-thickness: 1.5px; }
+.dig .fog { display: inline-block; width: 74px; height: 1.05em; vertical-align: -2px; margin-right: 4px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(135deg, var(--fog-a) 0 4px,
+      var(--fog-b) 4px 8px); border: 1px solid var(--rule); }
+.dig .fog[data-rewrite] { cursor: pointer; }
+.dig .fog[data-rewrite]:hover, .dig .fog[data-rewrite]:focus-visible { outline: 2px solid var(--accent); }
+.dig .ell { color: var(--ink-3); letter-spacing: 0; }
+.fan { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; display: grid; gap: 2px; min-width: 0;
+  background: var(--sheet); text-align: left; color: var(--ink); font: inherit; }
+button.chip { cursor: pointer; }
+button.chip:hover, button.chip:focus-visible { border-color: var(--accent); outline: none;
+  box-shadow: 0 0 0 2px var(--accent-soft); }
+.chip .seed { font-family: var(--f-code); font-size: 12px; color: var(--accent); }
+.chip .v { font-family: var(--f-math); font-size: 18px; overflow-wrap: anywhere; }
+.chip.picked { border-color: var(--accent); background: var(--accent-soft); }
+.fanhead { font-size: 12px; color: var(--ink-3); margin-bottom: 8px; }
+.fanhead b { color: var(--ink-2); font-weight: 600; }
+.status { border-radius: 6px; padding: 10px 14px; display: grid; gap: 6px; }
+.status .nm { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; }
+.status .meta { font-family: var(--f-code); font-size: 12px; color: var(--ink-2); }
+.status .why { font-family: var(--f-math); font-size: 15px; }
+.s-dashed { border: 1.5px dashed var(--open); background: var(--open-soft); }
+.s-dashed .nm { color: var(--open); }
+.s-solid { border: 1.5px solid var(--proved); background: var(--proved-soft); }
+.s-solid .nm { color: var(--proved); }
+.s-dotted { border: 2px dotted var(--budget); background: var(--budget-soft); }
+.s-dotted .nm { color: var(--budget); }
+.s-plain { border: 1px solid var(--rule); background: var(--sheet); }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.act { font-family: var(--f-code); font-size: 12.5px; border: 1px solid var(--rule); background: var(--sheet);
+  border-radius: 4px; padding: 3px 8px; }
+.note { font-size: 13px; color: var(--ink-2); margin: 8px 0 0; }
+.dump { margin-top: 6px; font-size: 12px; color: var(--ink-3); }
+.dump code { font-family: var(--f-code); overflow-wrap: anywhere; }
+pre.plain, pre.jerr { margin: 0; font-family: var(--f-code); font-size: 13px; white-space: pre-wrap; }
+pre.jerr { color: var(--open); }
+.margin { min-width: 0; display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: var(--ink-2); }
+.margin h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0; color: var(--ink-3); }
+.margin p { margin: 0; }
+.legend { display: grid; gap: 6px; }
+.sw { display: inline-block; width: 26px; height: 12px; vertical-align: -1px; margin-right: 8px;
+  border-radius: 2px; }
+.sw.fogsw { background: repeating-linear-gradient(135deg, var(--fog-a) 0 4px, var(--fog-b) 4px 8px);
+  border: 1px solid var(--rule); }
+.sw.d { border: 1.5px dashed var(--open); } .sw.s { border: 1.5px solid var(--proved); }
+.sw.o { border: 2px dotted var(--budget); } .sw.p { border: 1px solid var(--rule); }
+code { font-family: var(--f-code); font-size: 12.5px; }
+@media (max-width: 520px) { .cell { grid-template-columns: minmax(0, 1fr); } .stalemark { grid-column: 1; } }
+</style>
+</head>
+<body>
+<header class="top"><h1>Adelica</h1><span class="file">../a_flow.jl</span><span class="kernel">values: julia/Adelefeld · roots, root, recover, project: build/adf · a static page: it cannot compute</span></header>
+<div class="wrap">
+<main class="col" aria-label="Notebook cells">
+<section class="cell" id="c1" aria-label="Cell 1">
+<p class="step">Copy the chip suggestion, evaluate it, then use its fog suggestion.</p>
+<div class="lbl">In [1]</div><div class="in">root(-1, 2; at = 5, seed = 2)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[1]</div><div class="out"><div class="fan"><div class="chip picked"><span class="seed">5 [2] · 8 digits known</span><span class="dig"><span class="fog" data-cell="c1" data-rewrite="root(-1, 2; at = 5, seed = 2, prec = 20)" tabindex="0" role="button" aria-label="12 more digits" title="12 more digits: root(-1, 2; at = 5, seed = 2, prec = 20)"></span>32431212</span><span class="v">280182 + O(5^8)</span></div></div><p class="note">fog: the digits from 5<sup>8</sup> on are not known · click the fog for 12 more digits (prec = 20)</p></div>
+</section>
+<section class="cell" id="c2" aria-label="Cell 2">
+<p class="step">Copy the fog suggestion into the notebook and evaluate again.</p>
+<div class="lbl">In [2]</div><div class="in">root(-1, 2; at = 5, seed = 2, prec = 20)</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[2]</div><div class="out"><div class="fan"><div class="chip picked"><span class="seed">5 [2] · 20 digits known</span><span class="dig"><span class="fog" data-cell="c2" data-rewrite="root(-1, 2; at = 5, seed = 2, prec = 32)" tabindex="0" role="button" aria-label="12 more digits" title="12 more digits: root(-1, 2; at = 5, seed = 2, prec = 32)"></span>40423140223032431212</span><span class="v">79753541295807 + O(5^20)</span></div></div><p class="note">fog: the digits from 5<sup>20</sup> on are not known · click the fog for 12 more digits (prec = 32)</p></div>
+</section>
+<section class="cell" id="c3" aria-label="Cell 3">
+<p class="step">Scenario A step 5 as written in the brief.</p>
+<div class="lbl">In [3]</div><div class="in">equal(teichmuller(2; at = 5), root(-1, 2; at = 5, seed = 2, prec = 20))</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[3]</div><div class="out"><pre class="jerr">UndefVarError: `equal` not defined in `Main.Notebook`</pre></div>
+</section>
+<section class="cell" id="c4" aria-label="Cell 4">
+<p class="step">The comparison that the brief asks to show in the same weight.</p>
+<div class="lbl">In [4]</div><div class="in">compare(teichmuller(2; at = 5), root(-1, 2; at = 5, seed = 2, prec = 20))</div>
+<div class="stalemark" hidden>edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run <code>sh ux/notebook/run.sh</code>. <button type="button" data-restore>restore</button></div>
+<div class="lbl out">Out[4]</div><div class="out"><pre class="jerr">UndefVarError: `compare` not defined in `Main.Notebook`</pre></div>
+</section>
+</main>
+<aside class="margin" aria-label="How to read this page">
+<h2>How to read</h2>
+<p>A value is a strip: the real place R, one column per prime below 1000 that divides its modulus or denominator (valuation v, |x|<sub>p</sub>, the p-adic digits with the low digit on the right, the period overlined), and one column for every other prime.</p>
+<p>A fan shows every branch of a root; a click on a chip writes its seed into the cell. A click on the fog of a single root asks for 12 more digits. Both edit the cell text only.</p>
+<h2>Statuses</h2>
+<div class="legend" aria-label="Status classes"><span><span class="sw d"></span>open: more work may help: <code>NOT_DETERMINED UNIT_NOT_CERTIFIED NEEDS_SPLIT NOT_UNIQUE</code></span><span><span class="sw s"></span>proved: the answer is no: <code>NO_SOLUTION NOT_UNIT DOMAIN</code></span><span><span class="sw o"></span>budget: a limit was hit: <code>LIMIT</code></span><span><span class="sw p"></span>not a question of mathematics: <code>UNSUPPORTED PARSE</code></span><span>OK: a value, a fan or a strip; no card</span><span><span class="sw fogsw"></span>fog: digits not known, or no information at a place</span></div>
+<h2>Agent window</h2>
+<p><code>a_flow.records.jsonl</code>: one record per output, with the value text, the status, the dump and the driver line that reproduces it.</p>
+</aside>
+</div>
+<script>(function () {
+  function rewrite(el) {
+    var cell = document.getElementById(el.getAttribute('data-cell'));
+    if (!cell) return;
+    var inp = cell.querySelector('.in');
+    if (!inp.hasAttribute('data-original')) inp.setAttribute('data-original', inp.textContent);
+    inp.textContent = el.getAttribute('data-rewrite');
+    cell.classList.add('stale');
+    cell.querySelector('.stalemark').hidden = false;
+    cell.querySelectorAll('button.chip').forEach(function (c) { c.classList.toggle('picked', c === el); });
+  }
+  function restore(cell) {
+    var inp = cell.querySelector('.in');
+    if (inp.hasAttribute('data-original')) inp.textContent = inp.getAttribute('data-original');
+    cell.classList.remove('stale');
+    cell.querySelector('.stalemark').hidden = true;
+    cell.querySelectorAll('button.chip').forEach(function (c) { c.classList.remove('picked'); });
+  }
+  document.addEventListener('click', function (ev) {
+    var r = ev.target.closest('[data-restore]');
+    if (r) { restore(r.closest('.cell')); return; }
+    var el = ev.target.closest('[data-rewrite]');
+    if (el) rewrite(el);
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    var el = ev.target.closest('[data-rewrite]');
+    if (el && el.tagName !== 'BUTTON') { ev.preventDefault(); rewrite(el); }
+  });
+})();
+</script>
+</body>
+</html>
