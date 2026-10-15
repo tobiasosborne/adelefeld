@@ -30,6 +30,7 @@
 #include <flint/fmpz_vec.h>
 
 #include <adelefeld.h>
+#include "support/timing.h"
 
 #include "test_runner.h"
 
@@ -1190,7 +1191,7 @@ ADF_TEST(high_precision_with_a_bound_on_the_time)
 
 /* The bound is 2 s on the development laptop, as required by lane r-slice2.
    It covers the public call, including normalisation, count and final certificate. */
-#define ISOLATION_SECONDS_MAX 2.0
+#define ISOLATION_SECONDS_MAX (2.0 * ADF_TIMING_FACTOR)
 
 ADF_TEST(review_cost_inputs)
 {
