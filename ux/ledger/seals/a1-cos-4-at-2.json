@@ -1,0 +1,24 @@
+{
+ "id": "a1-cos-4-at-2",
+ "verdict": "refuted",
+ "run_verdict": "refuted",
+ "actual": [
+  "2: 9 + O(2^4)"
+ ],
+ "exit": 0,
+ "script_line": [
+  2
+ ],
+ "note": "",
+ "date": "2026-10-15T13:04:16Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "bb9b044d049a2ea98507247d42878c3c3a6e03179efae52be6e1fe52dd0d1e75",
+ "claim_content_sha256": "c8dcdab74cdb9fd44b3d90afc21274f5628b779a8b98999ed763fe0673dcf572",
+ "reopened": null
+}

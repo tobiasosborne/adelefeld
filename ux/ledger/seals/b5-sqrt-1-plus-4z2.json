@@ -1,0 +1,24 @@
+{
+ "id": "b5-sqrt-1-plus-4z2",
+ "verdict": "open",
+ "run_verdict": "open",
+ "actual": [
+  "error: NOT_DETERMINED"
+ ],
+ "exit": 1,
+ "script_line": [
+  2
+ ],
+ "note": "",
+ "date": "2026-10-15T13:04:16Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "d0c0e088f94c73e57e9aa275834edef7594a0b969761971d8b11e6d5d9b90580",
+ "claim_content_sha256": "7b125d168ba608d4f1e041f76fddb509b592cd974cbe84ae94d1a12794618c36",
+ "reopened": null
+}

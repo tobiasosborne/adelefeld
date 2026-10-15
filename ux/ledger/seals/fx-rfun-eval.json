@@ -1,0 +1,34 @@
+{
+ "id": "fx-rfun-eval",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "(1) + (0)*i",
+  "(0.45594 +/- 1.9e-6) + (0)*i",
+  "(0.043214 +/- 8.2e-8) + (0)*i",
+  "error: PARSE",
+  "error: LIMIT",
+  "error: DOMAIN"
+ ],
+ "exit": 1,
+ "script_line": [
+  7,
+  8,
+  11,
+  12,
+  13,
+  14
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "996ba4037956a6869be424622c65c319e1bf111629b6c770cc070b95f8d7e200",
+ "claim_content_sha256": "1ecef3e21533396cd0e98b208cc2f9b47861730999d17fa7b5950fbd5619a8db",
+ "reopened": null
+}

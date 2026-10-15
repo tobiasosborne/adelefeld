@@ -1,0 +1,15 @@
+{
+ "id": "a6-flint-equal-ignores-precision",
+ "statement": "FLINT's padic equality test says that exp(3) and exp(12) are equal in Q_3 at precision 8, because it ignores precision.",
+ "script": [],
+ "expect": [],
+ "places": [
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "docs/SPEC.md:605-608 records this as checked by a probe in a review. The driver calls the library and never FLINT's padic functions, so no driver line can express the claim; it stays proposed. A note for a referee of a paper that used FLINT (brief 3, scenario A, step 4).",
+ "proposer": "the ledger (note on a3)",
+ "state": "proposed",
+ "question": "Scenario A: a referee checks a table of 2-adic and 3-adic values (docs/ux/brief-3-claim-ledger.md)",
+ "parent": "a3-exp-3-exp-12-mod-3-8"
+}

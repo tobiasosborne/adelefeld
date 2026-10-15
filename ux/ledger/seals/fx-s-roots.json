@@ -1,0 +1,40 @@
+{
+ "id": "fx-s-roots",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "4567 mod 7^5; 12240 mod 7^5",
+  "none",
+  "0 mod 3^5",
+  "1 mod 7^5; 16805 mod 7^5",
+  "1 mod 2^5; 31 mod 2^5",
+  "1 mod 7^5; 16805 mod 7^5",
+  "3 mod 18446744073709551557^3; 5 mod 18446744073709551557^3; 7 mod 18446744073709551557^3",
+  "none",
+  "error: DOMAIN"
+ ],
+ "exit": 1,
+ "script_line": [
+  18,
+  21,
+  24,
+  29,
+  34,
+  38,
+  47,
+  50,
+  53
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "230467c278b367ff352f2af47d5a281bec093e27dccb7f84d2eb01ec14d0f157",
+ "claim_content_sha256": "6db012d390737bc75a871693e681d7523eea3ff04c8263638bff953462a1d89f",
+ "reopened": null
+}

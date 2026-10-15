@@ -1,0 +1,30 @@
+{
+ "id": "a5-exp-3-exp-12-distance",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "3: 4 + O(3^2)",
+  "3: 4 + O(3^2)",
+  "3: 13 + O(3^3)",
+  "3: 22 + O(3^3)"
+ ],
+ "exit": 0,
+ "script_line": [
+  2,
+  3,
+  5,
+  6
+ ],
+ "note": "",
+ "date": "2026-10-15T13:04:16Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "c4301dfceefbd4df29fb2e55d73a2a170938c53a44a1d074009c199aea67bdad",
+ "claim_content_sha256": "5e42f354761bf545b872f5e83e95bc73f0f4bd06cd906581146b82936d2005ec",
+ "reopened": null
+}

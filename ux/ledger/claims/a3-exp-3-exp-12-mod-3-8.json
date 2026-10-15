@@ -1,0 +1,22 @@
+{
+ "id": "a3-exp-3-exp-12-mod-3-8",
+ "statement": "exp(3) = exp(12) mod 3^8 in Z_3 (line 3 of the manuscript's table).",
+ "script": [
+  "prec 8",
+  "exp_at 3 with 3",
+  "exp_at 12 with 3"
+ ],
+ "expect": [
+  "3: 958 + O(3^8)",
+  "3: 958 + O(3^8)"
+ ],
+ "expect_exit": 0,
+ "places": [
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "Two values equal modulo 3^8 print the same line at prec 8. The centre 958 of exp(3) modulo 3^8 was computed in exact rationals by ux/ledger/oracle.py (`python3 ux/ledger/oracle.py 3 3 8`), not read from the driver; the claim is that exp(12) prints the same line. Claim a5 explains the result, and claim a6 records FLINT's own equality test (docs/SPEC.md:605-608).",
+ "proposer": "referee (from the manuscript)",
+ "state": "proposed",
+ "question": "Scenario A: a referee checks a table of 2-adic and 3-adic values (docs/ux/brief-3-claim-ledger.md)"
+}

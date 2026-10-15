@@ -1,0 +1,26 @@
+{
+ "id": "b1-exp-log-5-is-1",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "5: 0",
+  "5: 1"
+ ],
+ "exit": 0,
+ "script_line": [
+  2,
+  3
+ ],
+ "note": "",
+ "date": "2026-10-15T13:04:16Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "45ee6c5f9d9af3230dea1d8e0d887b71b2c268bc637ac5576e08ca02d4f30958",
+ "claim_content_sha256": "05655135285aaa9d3fc44417827276cf037f9252a965c6ff3a17d0930f6d19d9",
+ "reopened": null
+}

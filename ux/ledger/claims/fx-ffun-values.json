@@ -1,0 +1,32 @@
+{
+ "id": "fx-ffun-values",
+ "statement": "Slice 4a, conventions 9.4/11.3. Hand-derived canonical and rejected values.",
+ "script": [
+  "#!exit 1",
+  "# Slice 4a, conventions 9.4/11.3. Hand-derived canonical and rejected values.",
+  "ffun ffun(D=01, M=1; (0.50) + (0)*i)",
+  "ffun ffun(D=2, M=3; (1) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i)",
+  "ffun ffun(D=1, M=1; (0.5 +/- 0.25) + (-1)*i)",
+  "ffun ffun(D=0, M=1; (0) + (0)*i)",
+  "ffun ffun(D=1, M=1; 0)",
+  "ffun ffun(D=1048577, M=1; (0) + (0)*i)",
+  "ffun 1"
+ ],
+ "expect": [
+  "ffun(D=1, M=1; (0.5) + (0)*i)",
+  "ffun(D=2, M=3; (1) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i)",
+  "ffun(D=1, M=1; (0.5 +/- 0.25) + (-1)*i)",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: LIMIT",
+  "error: DOMAIN"
+ ],
+ "expect_exit": 1,
+ "places": [],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/ffun-values.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/ffun-values.cmd"
+}

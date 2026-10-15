@@ -1,0 +1,35 @@
+{
+ "id": "fx-qclass-text",
+ "statement": "CV-45, conventions 9.3/9.4. Exact dyadic cases; expectations written before running.",
+ "script": [
+  "#!exit 1",
+  "# CV-45, conventions 9.3/9.4. Exact dyadic cases; expectations written before running.",
+  "print union((0.5 ; 7)) + Q",
+  "print union((0.75 ; 1 mod 3), (0.25 ; -1 mod 2), (0.25 ; 1 mod 2)) + Q",
+  "print (0.5 ; 1/3 mod 2) + Q",
+  "type union((0.5 ; 7)) + Q",
+  "print union((1.5 ; 0)) + Q",
+  "print union((0.5 ; 1/2)) + Q",
+  "print union() + Q"
+ ],
+ "expect": [
+  "union((0.5 ; 7)) + Q",
+  "union((0.25 ; 1 mod 2), (0.75 ; 1 mod 3)) + Q",
+  "(0.5 ; 1/3 mod 2) + Q",
+  "qclass",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: PARSE"
+ ],
+ "expect_exit": 1,
+ "places": [
+  2,
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/qclass-text.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/qclass-text.cmd"
+}

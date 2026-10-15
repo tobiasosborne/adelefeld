@@ -1,0 +1,44 @@
+{
+ "id": "fx-gfunc-log-refine-values",
+ "statement": "IL5, IL8 integer CRT. Log(1)=log_abs(-1)=0. All expected lines written before the run.",
+ "script": [
+  "# IL5, IL8 integer CRT. Log(1)=log_abs(-1)=0. All expected lines written before the run.",
+  "prec 5",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 3",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 2 3",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 3 5",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 5 3 2",
+  "log_abs_refine (-1 ; 4 * [1 mod 9]) with 3",
+  "logabs_refine (-1 ; 4 * [1 mod 9]) with 3",
+  "Log_refine (1 ; 4 * [5 mod 6]) with 2 3 5",
+  "Log_refine (1 ; 1 * [-1]) with 2 3",
+  "Log_refine (1 ; 1 * [1]) with 3",
+  "Log_refine (1 ; 4 * [1 mod 9]) with none",
+  "prec 1",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 2 3"
+ ],
+ "expect": [
+  "(0 ; 12 mod 36)",
+  "(0 ; 12 mod 36)",
+  "(0 ; 120 mod 180)",
+  "(0 ; 120 mod 180)",
+  "(0 ; 12 mod 36)",
+  "(0 ; 12 mod 36)",
+  "(0 ; 0 mod 60)",
+  "(0 ; 0 mod 7776)",
+  "(0 ; 0 mod 972)",
+  "(0 ; 0 mod 4)",
+  "(0 ; 0 mod 12)"
+ ],
+ "expect_exit": 0,
+ "places": [
+  2,
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/gfunc-log-refine-values.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/gfunc-log-refine-values.cmd"
+}

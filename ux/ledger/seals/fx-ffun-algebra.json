@@ -1,0 +1,50 @@
+{
+ "id": "fx-ffun-algebra",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "ffun(D=2, M=2; (3) + (0)*i, (0) + (0)*i, (4) + (0)*i, (0) + (0)*i)",
+  "ffun(D=2, M=1; (1) + (0)*i, (0) + (0)*i)",
+  "ffun(D=3, M=1; (0) + (0)*i, (1) + (0)*i, (0) + (0)*i)",
+  "ffun(D=4, M=1; (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (1) + (0)*i)",
+  "ffun(D=4, M=3; (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (1) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (0) + (0)*i, (1) + (0)*i, (0) + (0)*i, (0) + (0)*i)",
+  "ffun(D=2, M=1; (0) + (0)*i, (1) + (0)*i)",
+  "error: DOMAIN",
+  "error: NOT_DETERMINED",
+  "ffun(D=1, M=2; (1) + (0)*i, (2) + (0)*i)",
+  "ffun(D=1, M=3; (1) + (0)*i, (0) + (0)*i, (0) + (0)*i)",
+  "ffun(D=2, M=1; (1) + (-2)*i, (-3) + (-4)*i)",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN"
+ ],
+ "exit": 1,
+ "script_line": [
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "44fccd6293adae6b14757e8b1f42ffd3ce3f044d6d4d3173a3ae6865999b34dc",
+ "claim_content_sha256": "1116659dfa5ae73c837fbd1806a833eba2a592b566fd52462d385e6687527bd2",
+ "reopened": null
+}

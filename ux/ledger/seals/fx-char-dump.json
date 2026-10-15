@@ -1,0 +1,46 @@
+{
+ "id": "fx-char-dump",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "adf1 Q char 5 2 0 0 0 0 0 0 0 0",
+  "adf1 Q char 4 3 -3 -2 0 0 1 -1 0 0",
+  "char(q=5, n=2, s=(0) + (0)*i)",
+  "char(q=4, n=3, s=(-0.75) + (0.5)*i)",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: LIMIT",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: PARSE",
+  "error: UNSUPPORTED"
+ ],
+ "exit": 1,
+ "script_line": [
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "40fa574d810790fceb89a2d03e7815f432e892c89665f0ed3fc93b411bb3526b",
+ "claim_content_sha256": "8a3c3137fa75c26a40564e220270f69b720974dcf7546268fe01bd250cb8c173",
+ "reopened": null
+}

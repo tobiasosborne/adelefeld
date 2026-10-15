@@ -1,0 +1,34 @@
+{
+ "id": "fx-gfunc-log-refine-status",
+ "statement": "Primes-only shape and established real domain; space grammar matches project.",
+ "script": [
+  "#!exit 1",
+  "# Primes-only shape and established real domain; space grammar matches project.",
+  "Log_refine (-1 ; 4 * [1 mod 9]) with 3",
+  "Log_refine (1 ; 4 * [1 mod 9]) with real",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 5 3 5 3",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 3,5",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 3  5",
+  "Log_refine 1 with 3",
+  "Log_refine (1 ; 4 * [1 mod 9]) with 4"
+ ],
+ "expect": [
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: PARSE",
+  "error: DOMAIN",
+  "error: DOMAIN"
+ ],
+ "expect_exit": 1,
+ "places": [
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/gfunc-log-refine-status.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/gfunc-log-refine-status.cmd"
+}

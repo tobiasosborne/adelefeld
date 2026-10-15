@@ -1,0 +1,21 @@
+{
+ "id": "b5-2-sqrt-5-plus-8z2",
+ "statement": "On 5 + 8 Z_2 there is no square root (all branches).",
+ "script": [
+  "prec 8",
+  "roots_at (* ; 5 mod 8) with 2 with 2"
+ ],
+ "expect": [
+  "error: DOMAIN"
+ ],
+ "expect_exit": 1,
+ "places": [
+  2
+ ],
+ "tail": "nothing said",
+ "argument": "An odd square is 1 mod 8: (2k + 1)^2 = 4 k (k + 1) + 1 and k (k + 1) is even. So no point of 5 + 8 Z_2 is a square, and a failed existence criterion on the whole ball is DOMAIN (tools/adf/README.md:509). Child of b5.",
+ "proposer": "agent (overnight batch)",
+ "state": "proposed",
+ "question": "Scenario B: an overnight agent batch on Log, exp and square roots at small primes (brief 3)",
+ "parent": "b5-sqrt-1-plus-4z2"
+}

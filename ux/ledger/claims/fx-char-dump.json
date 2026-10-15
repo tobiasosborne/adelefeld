@@ -1,0 +1,42 @@
+{
+ "id": "fx-char-dump",
+ "statement": "Conventions 10.1:1414 and 10.2. Hexadecimal q,n and exact dyadic s, by hand.",
+ "script": [
+  "#!exit 1",
+  "# Conventions 10.1:1414 and 10.2. Hexadecimal q,n and exact dyadic s, by hand.",
+  "dump char(q=5, n=2, s=(0) + (0)*i)",
+  "dump char(q=8, n=7, s=(-0.75) + (0.5)*i)",
+  "load adf1 Q char 5 2 0 0 0 0 0 0 0 0",
+  "load adf1 Q char 4 3 -3 -2 0 0 1 -1 0 0",
+  "load adf1 Q char 8 1 0 0 0 0 0 0 0 0",
+  "load adf1 Q char 10 9 0 0 0 0 0 0 0 0",
+  "load adf1 Q char 0 1 0 0 0 0 0 0 0 0",
+  "load adf1 Q char 10001 3 0 0 0 0 0 0 0 0",
+  "load adf1 Q char ffffffffffffffff 1 0 0 0 0 0 0 0 0",
+  "load adf1 Q char 5 z 0 0 0 0 0 0 0 0",
+  "load adf1 Q char 5 2 0 0 0 0 0 0 0",
+  "mul char(q=5, n=2, s=(0) + (0)*i) with char(q=5, n=2, s=(0) + (0)*i)"
+ ],
+ "expect": [
+  "adf1 Q char 5 2 0 0 0 0 0 0 0 0",
+  "adf1 Q char 4 3 -3 -2 0 0 1 -1 0 0",
+  "char(q=5, n=2, s=(0) + (0)*i)",
+  "char(q=4, n=3, s=(-0.75) + (0.5)*i)",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: LIMIT",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: PARSE",
+  "error: UNSUPPORTED"
+ ],
+ "expect_exit": 1,
+ "places": [],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/char-dump.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/char-dump.cmd"
+}
