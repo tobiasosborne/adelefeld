@@ -1,0 +1,12 @@
+{
+ "name": "hilbert",
+ "question": "The Hilbert symbol (a, -1) at every place up to 47, and its product over the places",
+ "cell": "hilbert_at a with -1 with v (tools/adf/README.md:668-672): 1 or -1",
+ "operation": "hilbert -1",
+ "inputs": [{"value": "-1"}, {"value": "2"}, {"value": "3"}, {"value": "5"}, {"value": "6"}, {"value": "7"},
+            {"value": "-3"}],
+ "places": ["R", "primes below 50"],
+ "precision": {"R": 64, "p": 8},
+ "budget": {"max_cells": 200, "timeout": 60},
+ "regroup": [4, 8]
+}

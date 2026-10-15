@@ -1,0 +1,25 @@
+exp_edge: 5 inputs x 11 places = 55 cells, 55 driver calls; budget 40 cells, 30 s
+exp_edge: 55 records, 40 calls answered, the last at 0.004 s; the driver process lived 0.004 s; stop line at 19; timeout False
+exp_edge: 55 wells, 3 findings -> /tmp/tmp.Ki32s57WSo/exp_edge.html
+check exp_edge.records.jsonl: identical
+check exp_edge.html: identical
+hilbert: 7 inputs x 16 places = 112 cells, 112 driver calls; budget 200 cells, 60 s
+hilbert: 112 records, 112 calls answered, the last at 0.003 s; the driver process lived 0.004 s; stop line after the last row; timeout False
+hilbert: 112 wells, 0 findings -> /tmp/tmp.Ki32s57WSo/hilbert.html
+check hilbert.records.jsonl: identical
+check hilbert.html: identical
+local_global: 4 inputs x 16 places = 64 cells, 64 driver calls; budget 100 cells, 60 s
+local_global: 67 records, 64 calls answered, the last at 0.005 s; the driver process lived 0.005 s; stop line after the last row; timeout False
+local_global: 64 wells, 1 findings -> /tmp/tmp.Ki32s57WSo/local_global.html
+check local_global.records.jsonl: identical
+check local_global.html: identical
+squares: 4 inputs x 26 places = 104 cells, 104 driver calls; budget 200 cells, 60 s
+squares: 104 records, 104 calls answered, the last at 0.005 s; the driver process lived 0.005 s; stop line after the last row; timeout False
+squares: 104 wells, 4 findings -> /tmp/tmp.Ki32s57WSo/squares.html
+check squares.records.jsonl: identical
+check squares.html: identical
+symbols: 4 inputs x 25 places = 100 cells, 100 driver calls; budget 100 cells, 60 s
+symbols: 100 records, 100 calls answered, the last at 0.003 s; the driver process lived 0.004 s; stop line after the last row; timeout False
+symbols: 100 wells, 0 findings -> /tmp/tmp.Ki32s57WSo/symbols.html
+check symbols.records.jsonl: identical
+check symbols.html: identical

@@ -333,5 +333,248 @@ class FixtureTest(unittest.TestCase):
         self.assertEqual(checks, {'q13': 'error: DOMAIN', 'q17': 'error: DOMAIN', 'q221': 'error: DOMAIN'})
 
 
+DRIVE = ROOT / 'lanes' / 'ux-drive-bench'      # the experiment files of the test drive (read only)
+
+
+def quiet(fn, *args):
+    """Call a main() without its printed lines."""
+    import contextlib
+    import io
+    with contextlib.redirect_stdout(io.StringIO()):
+        return fn(*args)
+
+
+def well_text(page, wid):
+    """The visible text of the table cell that holds the well `wid`: tags and title attributes removed."""
+    m = re.search(r'<td>(<span class="w[^"]*" id="%s".*?)</td>' % re.escape(wid), page, re.S)
+    if not m:
+        return None
+    return re.sub(r'<[^>]*>', ' ', re.sub(r' title="[^"]*"', '', m.group(1))).split()
+
+
+def card(page, fid):
+    """The html of the finding card whose id line starts with `fid`."""
+    m = re.search(r'<div class="find"[^>]*>\s*<span class="id">%s ·.*?</div>' % re.escape(fid), page, re.S)
+    return m.group(0) if m else ''
+
+
+class SymbolTest(unittest.TestCase):
+    """Repair item 1: the symbol commands of tools/adf/README.md as sweep operations."""
+
+    def test_lines(self):
+        x = {'value': '2'}
+        self.assertEqual(sweep.command_for('legendre', 7, x), ('legendre 2 with 7', None))
+        self.assertEqual(sweep.command_for('jacobi', 7, x)[0], 'jacobi 2 with 7')
+        self.assertEqual(sweep.command_for('kronecker', 2, {'value': '3'})[0], 'kronecker 3 with 2')
+        for op in ('legendre', 'jacobi', 'kronecker'):
+            line, reason = sweep.command_for(op, 'R', x)
+            self.assertIsNone(line)
+            self.assertIn('tools/adf/README.md', reason)
+        self.assertEqual(sweep.command_for('hilbert 3', 'R', {'value': '3'})[0], 'hilbert_at 3 with 3 with real')
+        self.assertEqual(sweep.command_for('hilbert -1/2', 2, {'value': '3'})[0], 'hilbert_at 3 with -1/2 with 2')
+
+    def test_validate(self):
+        for op in ('legendre', 'jacobi', 'kronecker', 'hilbert 3', 'hilbert -1/2'):
+            sweep.validate(dict(name='s', question='q', operation=op, inputs=[{'value': '2'}], places=[3],
+                                precision={'p': 8}, budget={'max_cells': 1, 'timeout': 5}))
+        for op in ('hilbert', 'hilbert x', 'legendre 2'):
+            with self.assertRaises(ValueError):
+                sweep.validate(dict(name='s', question='q', operation=op, inputs=[{'value': '2'}], places=[3],
+                                    precision={'p': 8}, budget={'max_cells': 1, 'timeout': 5}))
+
+    def test_parse(self):
+        for line in ('1', '-1', '0'):
+            r = sweep.parse_output('legendre', line)
+            self.assertEqual((r['status'], r['class'], r['count'], r['value']), ('OK', 'ok', None, line))
+        self.assertEqual(sweep.parse_output('hilbert 3', '-1')['value'], '-1')
+        self.assertEqual(sweep.parse_output('kronecker', 'error: NOT_DETERMINED')['class'], 'open')
+        with self.assertRaises(ValueError):
+            sweep.parse_output('legendre', '2')
+
+    def test_value_well(self):
+        e = sweep.validate(dict(name='s', question='q', operation='legendre', inputs=[{'value': '2'}],
+                                places=[7], precision={'p': 8}, budget={'max_cells': 1, 'timeout': 5}))
+        page = render.render(e, sweep.records_from_outputs(e, {(7, 0): '1'}), [])
+        self.assertEqual(well_text(page, 'w-7-0'), ['1'])
+        self.assertIn('class="w ok val" id="w-7-0"', page)
+
+    def test_readme_cites_the_symbol_commands(self):
+        readme = (HERE / 'README.md').read_text()
+        self.assertNotIn('Tier A', readme)
+        adf = (ROOT / 'tools' / 'adf' / 'README.md').read_text().splitlines()
+        cites = re.findall(r'tools/adf/README\.md:(\d+)-(\d+)', readme)
+        cited = '\n'.join('\n'.join(adf[int(a) - 1:int(b)]) for a, b in cites)
+        for name in ('legendre X with P', 'jacobi X with B', 'kronecker X with B',
+                     'hilbert_at X with Y with PLACE'):
+            self.assertIn(name, cited)
+            self.assertIn(name.split()[0], readme)
+
+    def test_symbols_wall_agrees_with_squares_wall(self):
+        """Place by place: Legendre 1 where x^2 - n has two roots, -1 where DOMAIN at an odd p not dividing n,
+        0 where p divides n (and the squares wall says DOMAIN: v_p(n) = 1 is odd). At 2 the Legendre symbol is
+        not defined (the driver says DOMAIN), and the squares wall says DOMAIN for 2, -1, 3, 5 for another
+        reason (2 has odd valuation; -1, 3, 5 are not 1 mod 8)."""
+        e = sweep.load_experiment(HERE / 'experiments' / 'symbols.json')
+        self.assertEqual(e['operation'], 'legendre')
+        self.assertEqual(e['labels'], ['2', '-1', '3', '5'])
+        self.assertEqual(e['rows'], sweep.primes_below(100))
+        sym = {(r['row'], r['input']): r for r in render.read_jsonl(HERE / 'out' / 'symbols.records.jsonl')}
+        sq = {(r['row'], r['input']): r for r in render.read_jsonl(HERE / 'out' / 'squares.records.jsonl')
+              if r['kind'] == 'well' and r['row'] != 'R'}
+        self.assertEqual(set(sym), set(sq))
+        self.assertEqual(len(sym), 100)
+        kinds = {'1': 0, '-1': 0, '0': 0}
+        for (p, n), s in sym.items():
+            q = sq[(p, n)]
+            if p == 2:
+                self.assertEqual((s['status'], q['status']), ('DOMAIN', 'DOMAIN'))
+                continue
+            self.assertEqual(s['status'], 'OK')
+            kinds[s['value']] += 1
+            if int(n) % p == 0:
+                self.assertEqual((s['value'], q['status']), ('0', 'DOMAIN'))
+            elif q['status'] == 'OK':
+                self.assertEqual((s['value'], q['count']), ('1', 2))
+            else:
+                self.assertEqual((s['value'], q['status']), ('-1', 'DOMAIN'))
+        self.assertEqual(sum(kinds.values()), 96)
+        self.assertEqual(kinds['0'], 2)                          # 3 at 3, 5 at 5
+
+    def test_hilbert_product_formula(self):
+        """The product of (a, b)_v over R and every prime is 1; the rows hold R and every prime dividing 2ab."""
+        e = sweep.load_experiment(HERE / 'experiments' / 'hilbert.json')
+        b = int(e['operation'].split()[1])
+        recs = [r for r in render.read_jsonl(HERE / 'out' / 'hilbert.records.jsonl') if r['kind'] == 'well']
+        for j, inp in enumerate(e['inputs']):
+            a = int(inp['value'])
+            col = [r for r in recs if r['column'] == j]
+            self.assertTrue(all(r['status'] == 'OK' for r in col))
+            bad = [p for p in sweep.primes_below(10 ** 4) if (2 * a * b) % p == 0]
+            self.assertTrue(set(bad) <= {r['row'] for r in col})
+            prod = 1
+            for r in col:
+                prod *= int(r['value'])
+            self.assertEqual(prod, 1, 'column %d' % a)
+
+
+class ProvenanceTest(unittest.TestCase):
+    """Repair item 2 (D1): the footer names the files that were read."""
+
+    def test_footer_without_findings_file(self):
+        e, recs = RenderTest().records()
+        page = render.render(e, recs, [], records_path='x/tiny.records.jsonl', findings_path=None)
+        foot = re.search(r'<p class="foot">(.*?)</p>', page, re.S).group(1)
+        self.assertIn('x/tiny.records.jsonl', foot)
+        self.assertIn('no findings file', foot)
+
+    @unittest.skipUnless(DRIVER.exists() and (DRIVE / 'brief_a.json').exists(), 'driver or drive files missing')
+    def test_custom_out_footer_paths_exist(self):
+        with tempfile.TemporaryDirectory() as d:
+            quiet(sweep.main, [str(DRIVE / 'brief_a.json'), '--driver', str(DRIVER), '--out', d])
+            quiet(render.main, [str(DRIVE / 'brief_a.json'), '--out', d])
+            page = (Path(d) / 'brief_a.html').read_text()
+            foot = re.search(r'<p class="foot">(.*?)</p>', page, re.S).group(1)
+            named = re.findall(r'<code>([^<]+)</code>', foot)
+            self.assertEqual(len(named), 2)
+            for path in named:
+                full = Path(path) if os.path.isabs(path) else ROOT / path
+                self.assertTrue(full.is_file(), path)
+            self.assertEqual(Path(named[0]).resolve(), (Path(d) / 'brief_a.records.jsonl').resolve())
+            self.assertEqual((ROOT / named[1]).resolve(), (DRIVE / 'brief_a.findings.json').resolve())
+
+
+class PrecisionTest(unittest.TestCase):
+    """Repair item 3: the requested precision is labelled, a smaller printed O(p^k) is shown in the well."""
+
+    def test_well_shows_smaller_precision(self):
+        e = small_experiment(operation='roots 2', inputs=[{'value': '(* ; 9 mod 15625)'}], places=[5, 7],
+                             precision={'p': 8}, budget={'max_cells': 2, 'timeout': 5})
+        recs = sweep.records_from_outputs(e, {(5, 0): '5 [2]: 15622 + O(5^6); 5 [3]: 3 + O(5^6)',
+                                              (7, 0): '7 [3]: 1802916 + O(7^8); 7 [4]: 3961885 + O(7^8)'})
+        page = render.render(e, recs, [])
+        self.assertEqual(well_text(page, 'w-5-0'), ['2', 'O(5^6)'])
+        self.assertEqual(well_text(page, 'w-7-0'), ['2'])          # O(7^8) is the requested 8: no label
+        self.assertIn('<span class="m8">requested prec 8</span>', page)
+
+    def test_smallest_printed_precision(self):
+        e = small_experiment(operation='roots 2', inputs=[{'value': '9'}], places=[5], precision={'p': 8},
+                             budget={'max_cells': 1, 'timeout': 5})
+        recs = sweep.records_from_outputs(e, {(5, 0): '5 [2]: 15622 + O(5^6); 5 [3]: 3 + O(5^8)'})
+        self.assertEqual(well_text(render.render(e, recs, []), 'w-5-0'), ['2', 'O(5^6)'])
+
+    @unittest.skipUnless(DRIVER.exists() and (DRIVE / 'finite_ball.json').exists(),
+                         'driver or drive files missing')
+    def test_finite_ball(self):
+        with tempfile.TemporaryDirectory() as d:
+            quiet(sweep.main, [str(DRIVE / 'finite_ball.json'), '--driver', str(DRIVER), '--out', d])
+            quiet(render.main, [str(DRIVE / 'finite_ball.json'), '--out', d])
+            page = (Path(d) / 'finite_ball.html').read_text()
+        self.assertEqual(well_text(page, 'w-5-0'), ['2', 'O(5^6)'])
+        self.assertEqual(page.count('<span class="m8">requested prec 8</span>'), 5)
+
+
+class RefutedTest(unittest.TestCase):
+    """Repair item 4 (D2): a finding contradicted by the records is drawn refuted, whatever its file says."""
+
+    def test_pattern_contradicted_is_drawn_refuted(self):
+        e, recs = RenderTest().records()
+        f = {'id': 'F2', 'state': 'pattern', 'column': '2', 'text': 't',
+             'rule': {'places': 'all', 'then': {'count_min': 1}}}
+        c = card(render.render(e, recs, [f]), 'F2')
+        self.assertIn('badge st-refuted', c)
+        self.assertNotIn('st-pattern', c)
+        self.assertIn('written as pattern, refuted by the records at 2', c)
+        self.assertEqual(f['state'], 'pattern')
+
+    def test_refuted_covers_nothing_below_the_stop_line(self):
+        e, recs = RenderTest().records()
+        f = {'id': 'F6', 'state': 'pattern', 'column': '2', 'text': 't', 'argument': 'an argument',
+             'rule': {'places': 'all', 'then': {'count_min': 1}}}
+        page = render.render(e, recs, [f])
+        self.assertNotIn('class="argband"', page)
+        self.assertIn('Below the stop line: nothing: the records refute it.', card(page, 'F6'))
+        f['rule'] = {'places': [7], 'then': {'count': 2}}
+        self.assertIn('class="argband"', render.render(e, recs, [f]))
+
+    @unittest.skipUnless(DRIVER.exists() and (DRIVE / 'attack.json').exists(), 'driver or drive files missing')
+    def test_attack(self):
+        fpath = DRIVE / 'attack.findings.json'
+        before = fpath.read_text()
+        with tempfile.TemporaryDirectory() as d:
+            quiet(sweep.main, [str(DRIVE / 'attack.json'), '--driver', str(DRIVER), '--out', d])
+            quiet(render.main, [str(DRIVE / 'attack.json'), '--out', d])
+            page = (Path(d) / 'attack.html').read_text()
+        c = card(page, 'FALSE')
+        self.assertIn('badge st-refuted', c)
+        self.assertIn('refuted: a well contradicts it', c)
+        self.assertNotIn('st-pattern', c)
+        self.assertNotIn('seen in the swept rows', c)
+        self.assertIn('written as pattern, refuted by the records at 3, 5, 11, 13, 19, 29, 37, 43.', c)
+        cells = re.search(r'data-cells="([^"]*)"', c).group(1).split()
+        self.assertEqual(cells, ['w-%d-1' % p for p in (3, 5, 11, 13, 19, 29, 37, 43)])
+        self.assertEqual(fpath.read_text(), before)
+        self.assertEqual(json.loads(before)[0]['state'], 'pattern')
+
+
+class LifetimeTest(unittest.TestCase):
+    """Repair item 5 (D3): process_time_s is the lifetime of the driver process; last_answer_s the last line."""
+
+    @unittest.skipUnless((DRIVE / 'timeout_real.json').exists(), 'drive files missing')
+    def test_timeout_real_recipe(self):
+        e = sweep.load_experiment(DRIVE / 'timeout_real.json')
+        self.assertEqual(e['budget']['timeout'], 4)
+        with tempfile.TemporaryDirectory() as d:
+            fake = Path(d) / 'fake_adf'
+            fake.write_text('#!/bin/sh\ncat > /dev/null\necho "error: DOMAIN"\necho "error: DOMAIN"\nsleep 30\n')
+            fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+            records, run = sweep.sweep(e, fake)
+        self.assertTrue(run['timed_out'])
+        self.assertEqual(run['answered'], 2)
+        self.assertLess(run['last_answer_s'], 1.0)
+        self.assertGreaterEqual(run['process_time_s'], 4.0)
+        self.assertLess(run['process_time_s'], 5.0)
+        readme = (HERE / 'README.md').read_text()
+        self.assertIn('last_answer_s', readme)
+
 if __name__ == '__main__':
     unittest.main()

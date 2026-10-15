@@ -1,0 +1,140 @@
+............E.....FFFEFF.............EEEFEEE
+======================================================================
+ERROR: test_timeout_real_recipe (test_bench.LifetimeTest.test_timeout_real_recipe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 557, in test_timeout_real_recipe
+    self.assertLess(run['last_answer_s'], 1.0)
+                    ~~~^^^^^^^^^^^^^^^^^
+KeyError: 'last_answer_s'
+
+======================================================================
+ERROR: test_footer_without_findings_file (test_bench.ProvenanceTest.test_footer_without_findings_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 465, in test_footer_without_findings_file
+    page = render.render(e, recs, [], records_path='x/tiny.records.jsonl', findings_path=None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: render() got an unexpected keyword argument 'records_path'
+
+======================================================================
+ERROR: test_hilbert_product_formula (test_bench.SymbolTest.test_hilbert_product_formula)
+The product of (a, b)_v over R and every prime is 1; the rows hold R and every prime dividing 2ab.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 445, in test_hilbert_product_formula
+    e = sweep.load_experiment(HERE / 'experiments' / 'hilbert.json')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/sweep.py", line 394, in load_experiment
+    with open(path, encoding='utf-8') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/experiments/hilbert.json'
+
+======================================================================
+ERROR: test_lines (test_bench.SymbolTest.test_lines)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 366, in test_lines
+    self.assertEqual(sweep.command_for('legendre', 7, x), ('legendre 2 with 7', None))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/sweep.py", line 154, in command_for
+    raise ValueError('unknown operation %r' % op)
+ValueError: unknown operation 'legendre'
+
+======================================================================
+ERROR: test_parse (test_bench.SymbolTest.test_parse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 387, in test_parse
+    r = sweep.parse_output('legendre', line)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/sweep.py", line 203, in parse_output
+    raise ValueError('not a line of a command at a place: %r' % line)
+ValueError: not a line of a command at a place: '1'
+
+======================================================================
+ERROR: test_symbols_wall_agrees_with_squares_wall (test_bench.SymbolTest.test_symbols_wall_agrees_with_squares_wall)
+Place by place: Legendre 1 where x^2 - n has two roots, -1 where DOMAIN at an odd p not dividing n,
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 417, in test_symbols_wall_agrees_with_squares_wall
+    e = sweep.load_experiment(HERE / 'experiments' / 'symbols.json')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/sweep.py", line 394, in load_experiment
+    with open(path, encoding='utf-8') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/experiments/symbols.json'
+
+======================================================================
+ERROR: test_validate (test_bench.SymbolTest.test_validate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 378, in test_validate
+    sweep.validate(dict(name='s', question='q', operation=op, inputs=[{'value': '2'}], places=[3],
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/sweep.py", line 118, in validate
+    raise ValueError('unknown operation %r' % e['operation'])
+ValueError: unknown operation 'legendre'
+
+======================================================================
+ERROR: test_value_well (test_bench.SymbolTest.test_value_well)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 395, in test_value_well
+    e = sweep.validate(dict(name='s', question='q', operation='legendre', inputs=[{'value': '2'}],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/sweep.py", line 118, in validate
+    raise ValueError('unknown operation %r' % e['operation'])
+ValueError: unknown operation 'legendre'
+
+======================================================================
+FAIL: test_finite_ball (test_bench.PrecisionTest.test_finite_ball)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 506, in test_finite_ball
+    self.assertEqual(well_text(page, 'w-5-0'), ['2', 'O(5^6)'])
+AssertionError: None != ['2', 'O(5^6)']
+
+======================================================================
+FAIL: test_well_shows_smaller_precision (test_bench.PrecisionTest.test_well_shows_smaller_precision)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 495, in test_well_shows_smaller_precision
+    self.assertEqual(well_text(page, 'w-5-0'), ['2', 'O(5^6)'])
+AssertionError: None != ['2', 'O(5^6)']
+
+======================================================================
+FAIL: test_custom_out_footer_paths_exist (test_bench.ProvenanceTest.test_custom_out_footer_paths_exist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 478, in test_custom_out_footer_paths_exist
+    self.assertEqual(len(named), 2)
+AssertionError: 0 != 2
+
+======================================================================
+FAIL: test_attack (test_bench.RefutedTest.test_attack)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 532, in test_attack
+    self.assertIn('badge st-refuted', c)
+AssertionError: 'badge st-refuted' not found in '<div class="find" tabindex="0" data-cells="w-3-1 w-5-1 w-7-1 w-11-1 w-13-1 w-17-1 w-19-1 w-23-1 w-29-1 w-31-1 w-37-1 w-41-1 w-43-1 w-47-1">\n<span class="id">FALSE · column 2</span>\n<span class="t">Conjecture: 2 has two roots at every odd prime.</span>\n<span class="ev">Computed at 14 places: 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47.</span>\n<span class="bad">Warning: the records contradict this finding at 3, 5, 11, 13, 19, 29, 37, 43.</span>\n<span class="ev">Below the stop line: nothing said.</span>\n<span class="badge st-pattern">pattern: seen in the swept rows, not proved</span>\n</div>'
+
+======================================================================
+FAIL: test_pattern_contradicted_is_drawn_refuted (test_bench.RefutedTest.test_pattern_contradicted_is_drawn_refuted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 518, in test_pattern_contradicted_is_drawn_refuted
+    self.assertIn('badge st-refuted', c)
+AssertionError: 'badge st-refuted' not found in '<div class="find" tabindex="0" data-cells="w-R-0 w-2-0 w-7-0">\n<span class="id">F2 · column 2</span>\n<span class="t">t</span>\n<span class="ev">Computed at 3 places: R, 2, 7.</span>\n<span class="bad">Warning: the records contradict this finding at 2.</span>\n<span class="ev">Below the stop line: nothing said.</span>\n<span class="badge st-pattern">pattern: seen in the swept rows, not proved</span>\n</div>'
+
+======================================================================
+FAIL: test_readme_cites_the_symbol_commands (test_bench.SymbolTest.test_readme_cites_the_symbol_commands)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-bench-r1/ux/bench/test_bench.py", line 409, in test_readme_cites_the_symbol_commands
+    self.assertIn(name, cited)
+AssertionError: 'legendre X with P' not found in ''
+
+----------------------------------------------------------------------
+Ran 44 tests in 5.110s
+
+FAILED (failures=6, errors=8)

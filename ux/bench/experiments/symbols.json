@@ -1,0 +1,11 @@
+{
+ "name": "symbols",
+ "question": "For which primes below 100 is n a square mod p? The Legendre symbol (n/p)",
+ "cell": "the Legendre symbol: legendre n with p (tools/adf/README.md:655-665); 1, -1, or 0 when p divides n",
+ "operation": "legendre",
+ "inputs": [{"value": "2"}, {"value": "-1"}, {"value": "3"}, {"value": "5"}],
+ "places": ["primes below 100"],
+ "precision": {"p": 8},
+ "budget": {"max_cells": 100, "timeout": 60},
+ "regroup": [4, 8, 12, 5]
+}

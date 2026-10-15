@@ -63,7 +63,13 @@ BRANCH_RE = re.compile(r'^(\d+) \[([+-]?\d+)\]: (.+)$')
 COMPONENT_RE = re.compile(r'^(real|\d+): (.+)$')
 ERROR_RE = re.compile(r'^error: ([A-Z_]+)$')
 
-OP_RE = re.compile(r'^(?:roots [1-9]\d*|roots|realroots|exp|log|project|powrat -?\d+(?:/\d+)? -?\d+)$')
+OP_RE = re.compile(r'^(?:roots [1-9]\d*|roots|realroots|exp|log|project|powrat -?\d+(?:/\d+)? -?\d+'
+                   r'|legendre|jacobi|kronecker|hilbert -?\d+(?:/\d+)?)$')
+# The residue symbols and the Hilbert symbol of the driver (tools/adf/README.md:655-672): `legendre X with P`,
+# `jacobi X with B`, `kronecker X with B` (the row prime as P or B), `hilbert_at X with Y with PLACE`. The line is
+# -1, 0 or 1, or `error: STATUS`.
+SYMBOL_OPS = ('legendre', 'jacobi', 'kronecker')
+SYMBOL_RE = re.compile(r'^(?:-1|0|1)$')
 LIST_OPS = ('roots', 'realroots')     # and `roots n`: the output is a list, the well shows its length
 PREC_MAX = 100000                     # ADF_PRINT_EXP_MAX: a `prec` setting above it is error: LIMIT
                                       # (tools/adf/README.md:417-424); the runner refuses it before the run
@@ -173,6 +179,13 @@ def command_for(op, place, inp, prec=None):
             return 'realroots %s' % inp['poly'], None
         return None, 'realroots is a command of the real place only'
     x = inp['value']
+    if op in SYMBOL_OPS:
+        if place == 'R':
+            return None, ('%s X with P takes an integer P (tools/adf/README.md:655-665); the real place has no '
+                          'such command' % op)
+        return '%s %s with %d' % (op, x, place), None
+    if op.startswith('hilbert '):
+        return 'hilbert_at %s with %s with %s' % (x, op.split()[1], at), None
     if op in ('exp', 'log'):
         return '%s_at %s with %s' % (op, x, at), None
     if op == 'project':
@@ -192,6 +205,10 @@ def parse_output(op, line):
         if name not in STATUS_CLASS:
             raise ValueError('a status that include/adelefeld/status.h does not have: %r' % name)
         return {'status': name, 'class': STATUS_CLASS[name], 'count': None, 'value': None}
+    if op in SYMBOL_OPS or op.startswith('hilbert '):
+        if not SYMBOL_RE.match(line):
+            raise ValueError('not a symbol (-1, 0 or 1): %r' % line)
+        return {'status': 'OK', 'class': 'ok', 'count': None, 'value': line}
     if op.startswith('roots') or op == 'realroots':
         entries = [] if line == 'none' else line.split('; ')
         for entry in entries:
@@ -294,7 +311,8 @@ def driver_script(e, cells):
 
 
 def run_driver(lines, ncommands, driver, timeout):
-    """Run the driver on the lines; return (outputs, arrival times in s, timed_out, exit status, stderr).
+    """Run the driver on the lines; return (outputs, arrival times in s, timed_out, exit status, stderr,
+    lifetime in s). The lifetime is from the start of the process to its exit or to the return of the kill.
 
     The driver reads all its input before it runs (tools/adf/adf.c: fread to the end), so the lines are written and
     stdin is closed; stdout is made line buffered by stdbuf, so every output line arrives when its command is done,
@@ -324,29 +342,31 @@ def run_driver(lines, ncommands, driver, timeout):
             outputs.append(line.decode())
             times.append(time.perf_counter() - t0)
     status = proc.wait()
+    lifetime = time.perf_counter() - t0
     err = proc.stderr.read().decode()
     proc.stdout.close()
     proc.stderr.close()
     if not timed_out and len(outputs) != ncommands:
         raise RuntimeError('the driver wrote %d lines for %d commands (exit %d): %s'
                            % (len(outputs), ncommands, status, err.strip()))
-    return outputs, times, timed_out, status, err
+    return outputs, times, timed_out, status, err, lifetime
 
 
 def sweep(e, driver):
     """Run an experiment; return (records, run), run holding the times and the facts of the process."""
     cells = [c for c in plan(e) if c['run'] and c['line'] is not None]
     lines = driver_script(e, cells)
-    outputs, times, timed_out, status, err = ([], [], False, None, '')
+    outputs, times, timed_out, status, err, lifetime = ([], [], False, None, '', 0.0)
     if cells:
-        outputs, times, timed_out, status, err = run_driver(lines, len(cells), driver, e['budget']['timeout'])
+        outputs, times, timed_out, status, err, lifetime = run_driver(lines, len(cells), driver,
+                                                                      e['budget']['timeout'])
     answered = {(c['row'], c['column']): o for c, o in zip(cells, outputs)}
     cut = 'budget: timeout of %s s of the driver process' % e['budget']['timeout'] if timed_out else None
     records = records_from_outputs(e, answered, cut)
     checks = e.get('checks', [])
-    check_out, check_times = [], []
+    check_out, check_life = [], 0.0
     if checks:
-        check_out, check_times, check_to, _, _ = run_driver([c['line'] for c in checks], len(checks), driver,
+        check_out, _, _, _, _, check_life = run_driver([c['line'] for c in checks], len(checks), driver,
                                                             e['budget']['timeout'])
         for c, o in zip(checks, check_out):
             rec = {'experiment': e['name'], 'kind': 'check', 'id': c['id'], 'line': c['line'], 'output': o}
@@ -363,10 +383,13 @@ def sweep(e, driver):
         prev = t
     run = {'experiment': e['name'], 'timed_out': timed_out, 'exit_status': status, 'stderr': err,
            'calls': len(cells), 'answered': len(outputs),
-           'process_time_s': round(times[-1], 6) if times else 0.0,
+           'process_time_s': round(lifetime, 6),
+           'last_answer_s': round(times[-1], 6) if times else 0.0,
+           'time_note': 'process_time_s: the lifetime of the driver process, start to exit or kill; '
+                        'last_answer_s: the time of its last output line (the sum of the cell times)',
            'cell_times': cell_times,
            'cell_time_note': 'time between two output lines; the first includes the start of the process',
-           'checks': len(checks), 'checks_time_s': round(check_times[-1], 6) if check_times else 0.0}
+           'checks': len(checks), 'checks_process_time_s': round(check_life, 6)}
     return records, run
 
 
@@ -417,8 +440,8 @@ def main(argv=None):
         json.dump(run, f, indent=1, sort_keys=True)
         f.write('\n')
     s = stop_line(records)
-    print('%s: %d records, %d calls answered in %.3f s; stop line %s; timeout %s'
-          % (e['name'], len(records), run['answered'], run['process_time_s'],
+    print('%s: %d records, %d calls answered, the last at %.3f s; the driver process lived %.3f s; stop line %s; '
+          'timeout %s' % (e['name'], len(records), run['answered'], run['last_answer_s'], run['process_time_s'],
              'after the last row' if s['row'] is None else 'at ' + str(s['row']), run['timed_out']))
 
 
