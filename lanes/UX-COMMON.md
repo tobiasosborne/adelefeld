@@ -20,7 +20,11 @@ brief), one lane each, under a new top-level directory `ux/`. Decisions of the o
   `UNSUPPORTED`). The status names are those of `include/adelefeld/status.h`; read it and list every name
   in your class table, with `OK` as its own class.
 - D-UX5. Every number shown on a screen was computed by the driver or the Julia package in the lane, never
-  typed from memory; the fixture files that produced it are committed next to the page.
+  typed from memory; the fixture files that produced it are committed next to the page. Amended 2026-10-16
+  after the atlas drive (H1): a number DERIVED from the driver's output by a finite computation written in
+  the slice (base-p digits of a printed centre, a count, a residue) is allowed when the page or its README
+  says so and the driver line it came from is kept with it; a number the driver could print but the slice
+  computes instead is a library demand to list under D-UX3.
 - D-UX6. A test drive by another model follows each slice (codex `gpt-6-astra`, acting as a user of the
   brief's two scenarios, without your report). So the slice must be usable from its own `README.md`
   alone: how to build, how to run each command, what each screen shows, in under 80 lines.
