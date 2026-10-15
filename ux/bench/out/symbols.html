@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bench symbols</title>
+<style>
+:root {
+  --bg: #e9edf1; --plate: #f8fafb; --well-bg: #dfe5eb; --ink: #17212b; --ink-2: #4b5967; --ink-3: #7d8a97;
+  --rule: #cbd3dc; --ok: #1d6b86; --ok-ink: #ffffff; --no: #6c7a88; --nd: #a3680c; --arg: #5b4f94;
+  --stop: #17212b; --bad: #b3261e; --lit: #f2c94c;
+  --f-label: "Barlow Semi Condensed", "Arial Narrow", "Liberation Sans Narrow", sans-serif;
+  --f-mono: "Roboto Mono", "DejaVu Sans Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --plate: #1a2129; --well-bg: #252e38; --ink: #e2e8ee; --ink-2: #a6b2be; --ink-3: #74818e;
+    --rule: #2f3943; --ok: #5cb6d4; --ok-ink: #0e1a21; --no: #8d9aa7; --nd: #e5ab4f; --arg: #ab9fe6;
+    --stop: #e2e8ee; --bad: #f2867e; --lit: #8a6d12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --plate: #1a2129; --well-bg: #252e38; --ink: #e2e8ee; --ink-2: #a6b2be; --ink-3: #74818e;
+  --rule: #2f3943; --ok: #5cb6d4; --ok-ink: #0e1a21; --no: #8d9aa7; --nd: #e5ab4f; --arg: #ab9fe6;
+  --stop: #e2e8ee; --bad: #f2867e; --lit: #8a6d12; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-label); font-size: 15px; line-height: 1.45;
+  padding-inline: 16px; padding-block: 0 40px; margin: 0; }
+.wrap { max-width: 1260px; margin: 0 auto; }
+.q { padding-block: 18px 6px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; }
+.q .lab { font-weight: 700; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-3); }
+.q h1 { margin: 0; font-size: 22px; font-weight: 600; }
+.q .cost { margin-left: auto; font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); }
+.team { font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); background: var(--plate);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 12px; margin-bottom: 14px; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
+@media (max-width: 1000px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.plate { background: var(--plate); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 12px 14px;
+  min-width: 0; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; font-size: 13px;
+  color: var(--ink-2); }
+.tools select { font: 600 13px var(--f-label); }
+.scroll { overflow-x: auto; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; }
+thead th { font-weight: 600; font-size: 13px; color: var(--ink-2); padding: 4px 6px 8px; text-align: center;
+  vertical-align: bottom; border-bottom: 1px solid var(--rule); }
+thead th .in { font-family: var(--f-mono); font-size: 13px; color: var(--ink); display: block; }
+thead th .fp { font-size: 11px; color: var(--ink-3); display: block; font-weight: 500; }
+thead th.first { text-align: left; }
+tbody th { text-align: left; font-family: var(--f-mono); font-weight: 500; font-size: 13.5px;
+  padding: 3px 10px 3px 4px; white-space: nowrap; }
+tbody th .m8 { font-family: var(--f-label); font-size: 11px; color: var(--ink-3); margin-left: 8px;
+  font-weight: 400; }
+tbody tr.arch th { color: var(--ok); }
+tbody tr.arch td, tbody tr.arch th { border-bottom: 1px dashed var(--rule); }
+td { text-align: center; padding: 3px 4px; white-space: nowrap; }
+.w { display: inline-grid; place-items: center; min-width: 24px; height: 24px; border-radius: 12px;
+  font: 600 12px var(--f-mono); vertical-align: middle; cursor: default; }
+.w.ok { background: var(--ok); color: var(--ok-ink); padding: 0 4px; }
+.w.ok.zero { background: transparent; color: var(--ok); border: 2px solid var(--ok); width: 24px; }
+.w.ok.val { border-radius: 6px; font-weight: 500; font-size: 11px; padding: 0 6px; }
+.w.no { width: 24px; border: 1.5px solid var(--no); position: relative; }
+.w.no::after { content: ""; position: absolute; width: 2px; height: 24px; background: var(--no);
+  transform: rotate(45deg); top: -1.5px; left: 9.5px; }
+.w.nd { width: 24px; border: 1.8px dashed var(--nd); color: var(--nd); background: transparent; }
+.w.lim { width: 22px; height: 22px; border: 2px dotted var(--ink-2); border-radius: 0; color: var(--ink-2); }
+.w.pl { color: var(--ink-2); border-radius: 0; font-weight: 700; }
+.w.na { color: var(--ink-3); border-radius: 0; }
+.got { font: 500 10.5px var(--f-mono); color: var(--ink-2); }
+.w.lit { outline: 3px solid var(--lit); outline-offset: 1px; }
+tr.grp th { font: 700 11px var(--f-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+  padding-top: 10px; text-align: left; }
+.stop { border-top: 3px solid var(--stop); padding: 8px 4px 0; display: flex; flex-wrap: wrap; gap: 6px 16px;
+  align-items: baseline; }
+.stop b { font-size: 14px; }
+.stop span { font-size: 13px; color: var(--ink-2); }
+.argband { margin-top: 8px; border: 1.5px solid var(--arg); border-radius: 4px; padding: 6px 10px;
+  font-size: 13.5px;
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--arg) 12%, transparent) 0 6px,
+  transparent 6px 12px); }
+.argband b { color: var(--arg); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 13px; color: var(--ink-2);
+  align-items: center; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.rail { display: grid; gap: 10px; min-width: 0; }
+.rail h2 { margin: 0; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+  font-weight: 700; }
+.find { background: var(--plate); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px;
+  display: grid; gap: 4px; min-width: 0; }
+.find:hover, .find:focus-within { border-color: var(--lit); }
+.find .id { font-family: var(--f-mono); font-size: 11.5px; color: var(--ink-3); }
+.find .t { font-size: 15px; font-weight: 500; }
+.find .ev { font-size: 13px; color: var(--ink-2); }
+.find .ev code, .find .src code { font-family: var(--f-mono); font-size: 12px; }
+.find .src { font-size: 12.5px; color: var(--ink-2); border-left: 3px double var(--ink-3); padding-left: 8px; }
+.find .bad { font-size: 13px; color: var(--bad); font-weight: 600; }
+.badge { justify-self: start; font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1px 8px; }
+.st-pattern { color: var(--ok); border: 1.5px solid currentColor; border-radius: 10px; }
+.st-sourced { color: var(--arg); border: 4px double currentColor; border-radius: 0; }
+.st-refuted { color: var(--bad); border: 1.5px solid currentColor; border-radius: 0;
+  text-decoration: line-through; }
+.st-open { color: var(--nd); border: 1.5px dashed currentColor; border-radius: 3px; }
+.checks { margin-top: 14px; font-size: 13px; }
+.checks code { font-family: var(--f-mono); font-size: 12px; }
+.foot { margin-top: 20px; font-size: 12px; color: var(--ink-3); }
+</style></head><body>
+<div class="wrap">
+<header class="q"><span class="lab">Question</span><h1>For which primes below 100 is n a square mod p? The Legendre symbol (n/p)</h1>
+<span class="cost">4 inputs × 25 places = 100 cells · operation legendre · budget 100 cells, 60 s per process</span></header>
+<div class="team">sweeper: 100 calls, 100 done, 0 below the stop line</div>
+<div class="main"><section class="plate" aria-label="Wall of places">
+<div class="tools"><label>rows <select id="order"><option value="0">by place</option>
+<option value="4">by p mod 4</option>
+<option value="8">by p mod 8</option>
+<option value="12">by p mod 12</option>
+<option value="5">by p mod 5</option>
+</select></label><span>cell: the Legendre symbol: legendre n with p (tools/adf/README.md:655-665); 1, -1, or 0 when p divides n</span></div>
+<div class="scroll"><table><thead><tr><th class="first">place</th>
+<th><span class="in">2</span><span class="fp">a rational: exact at every place</span></th>
+<th><span class="in">-1</span><span class="fp">a rational: exact at every place</span></th>
+<th><span class="in">3</span><span class="fp">a rational: exact at every place</span></th>
+<th><span class="in">5</span><span class="fp">a rational: exact at every place</span></th>
+</tr></thead><tbody id="wall">
+<tr data-p="2"><th scope="row">2<span class="m8">requested prec 8</span></th><td><span class="w no" id="w-2-0" title="place 2, input 2
+line: legendre 2 with 2
+requested prec 8
+output: error: DOMAIN
+status: DOMAIN (class no)"></span></td><td><span class="w no" id="w-2-1" title="place 2, input -1
+line: legendre -1 with 2
+requested prec 8
+output: error: DOMAIN
+status: DOMAIN (class no)"></span></td><td><span class="w no" id="w-2-2" title="place 2, input 3
+line: legendre 3 with 2
+requested prec 8
+output: error: DOMAIN
+status: DOMAIN (class no)"></span></td><td><span class="w no" id="w-2-3" title="place 2, input 5
+line: legendre 5 with 2
+requested prec 8
+output: error: DOMAIN
+status: DOMAIN (class no)"></span></td></tr>
+<tr data-p="3"><th scope="row">3<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-3-0" title="place 3, input 2
+line: legendre 2 with 3
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-3-1" title="place 3, input -1
+line: legendre -1 with 3
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-3-2" title="place 3, input 3
+line: legendre 3 with 3
+requested prec 8
+output: 0
+status: OK (class ok)">0</span></td><td><span class="w ok val" id="w-3-3" title="place 3, input 5
+line: legendre 5 with 3
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="5"><th scope="row">5<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-5-0" title="place 5, input 2
+line: legendre 2 with 5
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-5-1" title="place 5, input -1
+line: legendre -1 with 5
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-5-2" title="place 5, input 3
+line: legendre 3 with 5
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-5-3" title="place 5, input 5
+line: legendre 5 with 5
+requested prec 8
+output: 0
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="7"><th scope="row">7<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-7-0" title="place 7, input 2
+line: legendre 2 with 7
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-7-1" title="place 7, input -1
+line: legendre -1 with 7
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-7-2" title="place 7, input 3
+line: legendre 3 with 7
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-7-3" title="place 7, input 5
+line: legendre 5 with 7
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="11"><th scope="row">11<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-11-0" title="place 11, input 2
+line: legendre 2 with 11
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-11-1" title="place 11, input -1
+line: legendre -1 with 11
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-11-2" title="place 11, input 3
+line: legendre 3 with 11
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-11-3" title="place 11, input 5
+line: legendre 5 with 11
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="13"><th scope="row">13<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-13-0" title="place 13, input 2
+line: legendre 2 with 13
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-13-1" title="place 13, input -1
+line: legendre -1 with 13
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-13-2" title="place 13, input 3
+line: legendre 3 with 13
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-13-3" title="place 13, input 5
+line: legendre 5 with 13
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="17"><th scope="row">17<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-17-0" title="place 17, input 2
+line: legendre 2 with 17
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-17-1" title="place 17, input -1
+line: legendre -1 with 17
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-17-2" title="place 17, input 3
+line: legendre 3 with 17
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-17-3" title="place 17, input 5
+line: legendre 5 with 17
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="19"><th scope="row">19<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-19-0" title="place 19, input 2
+line: legendre 2 with 19
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-19-1" title="place 19, input -1
+line: legendre -1 with 19
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-19-2" title="place 19, input 3
+line: legendre 3 with 19
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-19-3" title="place 19, input 5
+line: legendre 5 with 19
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="23"><th scope="row">23<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-23-0" title="place 23, input 2
+line: legendre 2 with 23
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-23-1" title="place 23, input -1
+line: legendre -1 with 23
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-23-2" title="place 23, input 3
+line: legendre 3 with 23
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-23-3" title="place 23, input 5
+line: legendre 5 with 23
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="29"><th scope="row">29<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-29-0" title="place 29, input 2
+line: legendre 2 with 29
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-29-1" title="place 29, input -1
+line: legendre -1 with 29
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-29-2" title="place 29, input 3
+line: legendre 3 with 29
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-29-3" title="place 29, input 5
+line: legendre 5 with 29
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="31"><th scope="row">31<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-31-0" title="place 31, input 2
+line: legendre 2 with 31
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-31-1" title="place 31, input -1
+line: legendre -1 with 31
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-31-2" title="place 31, input 3
+line: legendre 3 with 31
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-31-3" title="place 31, input 5
+line: legendre 5 with 31
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="37"><th scope="row">37<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-37-0" title="place 37, input 2
+line: legendre 2 with 37
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-37-1" title="place 37, input -1
+line: legendre -1 with 37
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-37-2" title="place 37, input 3
+line: legendre 3 with 37
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-37-3" title="place 37, input 5
+line: legendre 5 with 37
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="41"><th scope="row">41<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-41-0" title="place 41, input 2
+line: legendre 2 with 41
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-41-1" title="place 41, input -1
+line: legendre -1 with 41
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-41-2" title="place 41, input 3
+line: legendre 3 with 41
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-41-3" title="place 41, input 5
+line: legendre 5 with 41
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="43"><th scope="row">43<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-43-0" title="place 43, input 2
+line: legendre 2 with 43
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-43-1" title="place 43, input -1
+line: legendre -1 with 43
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-43-2" title="place 43, input 3
+line: legendre 3 with 43
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-43-3" title="place 43, input 5
+line: legendre 5 with 43
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="47"><th scope="row">47<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-47-0" title="place 47, input 2
+line: legendre 2 with 47
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-47-1" title="place 47, input -1
+line: legendre -1 with 47
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-47-2" title="place 47, input 3
+line: legendre 3 with 47
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-47-3" title="place 47, input 5
+line: legendre 5 with 47
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="53"><th scope="row">53<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-53-0" title="place 53, input 2
+line: legendre 2 with 53
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-53-1" title="place 53, input -1
+line: legendre -1 with 53
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-53-2" title="place 53, input 3
+line: legendre 3 with 53
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-53-3" title="place 53, input 5
+line: legendre 5 with 53
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="59"><th scope="row">59<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-59-0" title="place 59, input 2
+line: legendre 2 with 59
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-59-1" title="place 59, input -1
+line: legendre -1 with 59
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-59-2" title="place 59, input 3
+line: legendre 3 with 59
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-59-3" title="place 59, input 5
+line: legendre 5 with 59
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="61"><th scope="row">61<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-61-0" title="place 61, input 2
+line: legendre 2 with 61
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-61-1" title="place 61, input -1
+line: legendre -1 with 61
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-61-2" title="place 61, input 3
+line: legendre 3 with 61
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-61-3" title="place 61, input 5
+line: legendre 5 with 61
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="67"><th scope="row">67<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-67-0" title="place 67, input 2
+line: legendre 2 with 67
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-67-1" title="place 67, input -1
+line: legendre -1 with 67
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-67-2" title="place 67, input 3
+line: legendre 3 with 67
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-67-3" title="place 67, input 5
+line: legendre 5 with 67
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="71"><th scope="row">71<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-71-0" title="place 71, input 2
+line: legendre 2 with 71
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-71-1" title="place 71, input -1
+line: legendre -1 with 71
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-71-2" title="place 71, input 3
+line: legendre 3 with 71
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-71-3" title="place 71, input 5
+line: legendre 5 with 71
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="73"><th scope="row">73<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-73-0" title="place 73, input 2
+line: legendre 2 with 73
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-73-1" title="place 73, input -1
+line: legendre -1 with 73
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-73-2" title="place 73, input 3
+line: legendre 3 with 73
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-73-3" title="place 73, input 5
+line: legendre 5 with 73
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="79"><th scope="row">79<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-79-0" title="place 79, input 2
+line: legendre 2 with 79
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-79-1" title="place 79, input -1
+line: legendre -1 with 79
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-79-2" title="place 79, input 3
+line: legendre 3 with 79
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-79-3" title="place 79, input 5
+line: legendre 5 with 79
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="83"><th scope="row">83<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-83-0" title="place 83, input 2
+line: legendre 2 with 83
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-83-1" title="place 83, input -1
+line: legendre -1 with 83
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-83-2" title="place 83, input 3
+line: legendre 3 with 83
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-83-3" title="place 83, input 5
+line: legendre 5 with 83
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+<tr data-p="89"><th scope="row">89<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-89-0" title="place 89, input 2
+line: legendre 2 with 89
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-89-1" title="place 89, input -1
+line: legendre -1 with 89
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-89-2" title="place 89, input 3
+line: legendre 3 with 89
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td><td><span class="w ok val" id="w-89-3" title="place 89, input 5
+line: legendre 5 with 89
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td></tr>
+<tr data-p="97"><th scope="row">97<span class="m8">requested prec 8</span></th><td><span class="w ok val" id="w-97-0" title="place 97, input 2
+line: legendre 2 with 97
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-97-1" title="place 97, input -1
+line: legendre -1 with 97
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-97-2" title="place 97, input 3
+line: legendre 3 with 97
+requested prec 8
+output: 1
+status: OK (class ok)">1</span></td><td><span class="w ok val" id="w-97-3" title="place 97, input 5
+line: legendre 5 with 97
+requested prec 8
+output: -1
+status: OK (class ok)">-1</span></td></tr>
+</tbody></table></div>
+<div class="stop"><b>p &gt;= 101: not swept.</b><span>Nothing below this line is computed. A finding may cover it only by an argument.</span></div>
+<div class="legend" aria-label="Legend">
+<span><span class="w ok">2</span> OK: the count of the list, or the value</span>
+<span><span class="w ok zero">0</span> OK, the complete list is empty (none)</span>
+<span><span class="w no"></span> proved no: DOMAIN, NO_SOLUTION, NOT_UNIT (solid)</span>
+<span><span class="w nd">?</span> open: NOT_DETERMINED, UNIT_NOT_CERTIFIED, NEEDS_SPLIT, NOT_UNIQUE (dashed)</span>
+<span><span class="w lim">L</span> budget: LIMIT (dotted)</span>
+<span><span class="w pl">!</span> not mathematics: PARSE, UNSUPPORTED (plain)</span>
+<span><span class="w na">—</span> no command of the driver at this place</span>
+<span><span class="got">O(5^6)</span> next to a count: the printed precision, below the requested prec of the row</span>
+</div>
+</section><aside class="rail" aria-label="Findings"><h2>Findings</h2>
+<div class="find"><span class="ev">No findings.</span></div>
+</aside></div>
+<p class="foot">Bench slice (ux/bench). Every well is one record of <code>ux/bench/out/symbols.records.jsonl</code>; hover a well for its record, a finding for the wells it rests on. There is no findings file (symbols.findings.json next to the experiment is read).</p>
+</div><script>
+(function () {
+  var tbody = document.getElementById('wall');
+  var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr[data-p]'));
+  var sel = document.getElementById('order');
+  function regroup() {
+    Array.prototype.slice.call(tbody.querySelectorAll('tr.grp')).forEach(function (r) { r.remove(); });
+    var m = parseInt(sel.value, 10);
+    if (!m) { rows.forEach(function (r) { tbody.appendChild(r); }); return; }
+    var groups = {}, keys = [];
+    rows.forEach(function (r) {
+      var p = parseInt(r.getAttribute('data-p'), 10);
+      var k = (p === 0 || m % p === 0) ? 'R and p dividing ' + m : 'p = ' + (p % m) + ' mod ' + m;
+      if (!(k in groups)) { groups[k] = []; keys.push(k); }
+      groups[k].push(r);
+    });
+    keys.sort(function (a, b) {
+      function key(k) { return k.charAt(0) === 'R' ? -1 : parseInt(k.slice(4), 10); }
+      return key(a) - key(b);
+    });
+    keys.forEach(function (k) {
+      var h = document.createElement('tr'); h.className = 'grp';
+      var th = document.createElement('th'); th.colSpan = 99; th.textContent = k + ' (' + groups[k].length + ')';
+      h.appendChild(th); tbody.appendChild(h);
+      groups[k].forEach(function (r) { tbody.appendChild(r); });
+    });
+  }
+  sel.addEventListener('change', regroup);
+  var m = /^#mod(\d+)$/.exec(location.hash);
+  if (m && sel.querySelector('option[value="' + m[1] + '"]')) { sel.value = m[1]; regroup(); }
+  Array.prototype.slice.call(document.querySelectorAll('.find[data-cells]')).forEach(function (f) {
+    var ids = f.getAttribute('data-cells').split(' ').filter(Boolean);
+    function set(on) {
+      ids.forEach(function (id) { var w = document.getElementById(id); if (w) w.classList.toggle('lit', on); });
+    }
+    f.addEventListener('mouseenter', function () { set(true); });
+    f.addEventListener('mouseleave', function () { set(false); });
+    f.addEventListener('focusin', function () { set(true); });
+    f.addEventListener('focusout', function () { set(false); });
+  });
+})();
+</script></body></html>

@@ -103,6 +103,7 @@ td { text-align: center; padding: 3px 4px; white-space: nowrap; }
 .w.lim { width: 22px; height: 22px; border: 2px dotted var(--ink-2); border-radius: 0; color: var(--ink-2); }
 .w.pl { color: var(--ink-2); border-radius: 0; font-weight: 700; }
 .w.na { color: var(--ink-3); border-radius: 0; }
+.got { font: 500 10.5px var(--f-mono); color: var(--ink-2); }
 .w.lit { outline: 3px solid var(--lit); outline-offset: 1px; }
 tr.grp th { font: 700 11px var(--f-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
   padding-top: 10px; text-align: left; }
@@ -209,13 +210,29 @@ def shorten(text, width=12):
     return (head + ' ' + tail).strip()
 
 
+O_RE = re.compile(r'O\((\d+)\^(-?\d+)\)')
+
+
+def got_html(r):
+    """The printed precision of a list well when it is below the requested one: the smallest k of the terms
+    O(p^k) in the driver's output, read off the output line (kept in the record and the tooltip)."""
+    if r['row'] == 'R' or not r.get('output'):
+        return ''
+    terms = [(int(k), p) for p, k in O_RE.findall(r['output'])]
+    if not terms or min(terms)[0] >= r['prec']:
+        return ''
+    k, p = min(terms)
+    return (' <span class="got" title="printed precision, read off the output; requested prec %d">O(%s^%d)</span>'
+            % (r['prec'], p, k))
+
+
 def well_html(r):
     """One well: its shape is the class (D-UX4); its label the count or the shortened value; the record on hover."""
     cls = r['class']
     tip = ['place %s, input %s' % (place_text(r['row']), r['input'])]
     if r.get('line'):
         tip.append('line: ' + r['line'])
-    tip.append('prec %d' % r['prec'])
+    tip.append('requested prec %d' % r['prec'])
     if 'output' in r and r['output'] is not None:
         tip.append('output: ' + r['output'])
     tip.append('status: %s (class %s)' % (r['status'], cls))
@@ -226,7 +243,8 @@ def well_html(r):
     if cls == 'ok':
         if r['count'] is not None:
             zero = ' zero' if r['count'] == 0 else ''
-            return '<span class="w ok%s" id="%s" title="%s">%d</span>' % (zero, cell_id(r), title, r['count'])
+            return '<span class="w ok%s" id="%s" title="%s">%d</span>%s' % (zero, cell_id(r), title, r['count'],
+                                                                           got_html(r))
         return '<span class="w ok val" id="%s" title="%s">%s</span>' % (cell_id(r), title, E(shorten(r['value'])))
     return '<span class="w %s" id="%s" title="%s">%s</span>' % (css, cell_id(r), title, E(glyph))
 
@@ -371,21 +389,26 @@ def finding_html(f, e, records):
                and in_places((f.get('rule') or {}).get('places', 'all'), r['row'])]
     places = [place_text(r['row']) for r in covered if r['column'] == (col if col is not None else r['column'])]
     places = list(dict.fromkeys(places))
-    out = ['<div class="find" tabindex="0" data-cells="%s">' % ' '.join(cell_id(r) for r in covered)]
+    result = check_rule(f, e, records)
+    exc = result[1] if result is not None else []
+    state = 'refuted' if exc else f['state']        # the state drawn: the records overrule the file's state
+    lit = covered
+    if exc and col is not None:                      # a refuted card lights its witnesses
+        lit = [r for r in covered if r['row'] in exc]
+    out = ['<div class="find" tabindex="0" data-state="%s" data-cells="%s">'
+           % (state, ' '.join(cell_id(r) for r in lit))]
     out.append('<span class="id">%s · %s</span>' % (E(f['id']), E('column ' + f['column'] if col is not None
                                                                      else 'whole wall')))
     out.append('<span class="t">%s</span>' % E(f['text']))
     if places:
         out.append('<span class="ev">Computed at %d places: %s.</span>'
                    % (len(places), E(', '.join(places))))
-    result = check_rule(f, e, records)
     if result is not None:
-        n, exc = result
+        n = result[0]
         word = 'place' if n == 1 else 'places'
         if exc:
-            out.append('<span class="bad">%s the records contradict this finding at %s.</span>'
-                       % ('Counterexample:' if f['state'] == 'refuted' else 'Warning:',
-                          E(', '.join(map(str, exc)))))
+            out.append('<span class="bad">Counterexample: the records contradict this finding at %s.</span>'
+                       % E(', '.join(map(str, exc))))
         else:
             nchk = len(f['rule'].get('checks', {}))
             out.append('<span class="ev">Rule checked by the renderer on %d %s%s: no exception.</span>'
@@ -401,15 +424,37 @@ def finding_html(f, e, records):
                    % (E(src['file']), E(str(src['lines'])), E(src.get('says', ''))))
     if f.get('argument'):
         out.append('<span class="ev"><b>Argument</b> (words, not computed): %s</span>' % E(f['argument']))
-    below = 'Below the stop line: ' + ('covered by the argument and its source.' if f['state'] == 'sourced' else
+    below = 'Below the stop line: ' + ('nothing: the records refute it.' if state == 'refuted' else
+                                      'covered by the argument and its source.' if state == 'sourced' else
                                       'argued in words only.' if f.get('argument') else 'nothing said.')
     out.append('<span class="ev">%s</span>' % below)
-    out.append('<span class="badge st-%s">%s</span>' % (f['state'], E(STATE_WORDS[f['state']])))
+    out.append('<span class="badge st-%s">%s</span>' % (state, E(STATE_WORDS[state])))
+    if state != f['state']:
+        out.append('<span class="bad">State in the findings file: written as %s, refuted by the records at %s.'
+                   '</span>' % (E(f['state']), E(', '.join(map(str, exc)))))
     out.append('</div>')
     return '\n'.join(out)
 
 
-def render(e, records, findings):
+_DEFAULT = object()
+
+
+def shown_path(path):
+    """A path as the footer names it: relative to the repository root when it is inside it, else absolute."""
+    full = Path(path).resolve()
+    try:
+        return str(full.relative_to(ROOT))
+    except ValueError:
+        return str(full)
+
+
+def render(e, records, findings, records_path=_DEFAULT, findings_path=_DEFAULT):
+    """The page. records_path and findings_path are the files read (named in the footer); by default those of
+    ux/bench/out/ and ux/bench/experiments/; findings_path None: no findings file was read."""
+    if records_path is _DEFAULT:
+        records_path = 'ux/bench/out/%s.records.jsonl' % e['name']
+    if findings_path is _DEFAULT:
+        findings_path = 'ux/bench/experiments/%s.findings.json' % e['name']
     ws = wells(records)
     s = sweep.stop_line(records)
     calls = sum(1 for r in ws if r['line'] is not None)
@@ -438,11 +483,14 @@ def render(e, records, findings):
         p = 0 if place == 'R' else place
         h.append('<tr data-p="%d"%s><th scope="row">%s<span class="m8">%s</span></th>%s</tr>'
                  % (p, ' class="arch"' if place == 'R' else '', place_text(place),
-                    '' if place == 'R' else 'prec %d' % row[0]['prec'] if row else '',
+                    '' if place == 'R' else 'requested prec %d' % row[0]['prec'] if row else '',
                     ''.join('<td>%s</td>' % well_html(r) for r in row)))
     h.append('</tbody></table></div>')
     h.append(stop_text(e, records))
     for f in findings:
+        result = check_rule(f, e, records)
+        if result is not None and result[1]:
+            continue                                 # a refuted finding covers nothing below the stop line
         if f.get('argument') or f['state'] == 'sourced':
             what = joined(f.get('argument') or f['text'])
             h.append('<div class="argband"><b>%s %s, below the stop line:</b> %s</div>'
@@ -452,6 +500,8 @@ def render(e, records, findings):
         css, glyph, words = WELL[cls]
         h.append('<span><span class="w %s">%s</span> %s</span>' % (css, E(glyph if glyph is not None else '2'),
                                                                      E(words)))
+    h.append('<span><span class="got">O(5^6)</span> next to a count: the printed precision, below the requested '
+             'prec of the row</span>')
     h.append('</div>')
     checks = [r for r in records if r['kind'] == 'check']
     if checks:
@@ -466,10 +516,12 @@ def render(e, records, findings):
     for f in findings:
         h.append(finding_html(f, e, records))
     h.append('</aside></div>')
-    h.append('<p class="foot">Bench slice (ux/bench). Every well is one record of %s; hover a well for its record, '
-             'a finding for the wells it rests on. Findings are written by hand in %s.</p>'
-             % (E('ux/bench/out/%s.records.jsonl' % e['name']), E('ux/bench/experiments/%s.findings.json'
-                                                                  % e['name'])))
+    if findings_path is not None:
+        fnd = 'Findings are written by hand in <code>%s</code>.' % E(str(findings_path))
+    else:
+        fnd = 'There is no findings file (%s.findings.json next to the experiment is read).' % E(e['name'])
+    h.append('<p class="foot">Bench slice (ux/bench). Every well is one record of <code>%s</code>; hover a well '
+             'for its record, a finding for the wells it rests on. %s</p>' % (E(str(records_path)), fnd))
     h.append('</div><script>%s</script></body></html>' % JS)
     return '\n'.join(h) + '\n'
 
@@ -485,10 +537,12 @@ def main(argv=None):
     ap.add_argument('--out', default=str(HERE / 'out'))
     a = ap.parse_args(argv)
     e = sweep.load_experiment(a.experiment)
-    records = read_jsonl(os.path.join(a.out, e['name'] + '.records.jsonl'))
+    rpath = os.path.join(a.out, e['name'] + '.records.jsonl')
+    records = read_jsonl(rpath)
     fpath = Path(a.experiment).with_name(e['name'] + '.findings.json')
     findings = json.loads(fpath.read_text(encoding='utf-8')) if fpath.exists() else []
-    page = render(e, records, findings)
+    page = render(e, records, findings, records_path=shown_path(rpath),
+                  findings_path=shown_path(fpath) if fpath.exists() else None)
     target = os.path.join(a.out, e['name'] + '.html')
     with open(target, 'w', encoding='utf-8') as f:
         f.write(page)

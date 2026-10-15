@@ -1,0 +1,17 @@
+mutant  1 sweep.py  SymbolTest      killed
+mutant  2 sweep.py  SymbolTest      killed
+mutant  3 sweep.py  SymbolTest      killed
+mutant  4 sweep.py  LifetimeTest    killed
+mutant  5 sweep.py  LifetimeTest    killed
+mutant  6 render.py PrecisionTest   killed
+mutant  7 render.py PrecisionTest   killed
+mutant  8 render.py PrecisionTest   killed
+mutant  9 render.py PrecisionTest   killed
+mutant 10 render.py RefutedTest     killed
+mutant 11 render.py RefutedTest     killed
+mutant 12 render.py RefutedTest     killed
+mutant 13 render.py RefutedTest     killed
+mutant 14 render.py ProvenanceTest  killed
+mutant 15 render.py ProvenanceTest  killed
+mutant 16 render.py ProvenanceTest  killed
+16 of 16 mutants killed; files restored
