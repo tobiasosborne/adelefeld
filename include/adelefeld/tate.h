@@ -4,7 +4,7 @@
    decision D4), section 6 (T1 to T5); docs/SPEC.md 8 and 15.4 N-D24; docs/conventions.md 6.5 (the test vector).
    Proofs: docs/proofs/analysis.md Propositions 11 (:452-495), 12 (:496-563), 13 (:564-626), Lemma 14 (:627-651),
    Proposition 15 (:652-732), Lemma 6 (:213-259). Statements, proofs and decisions where the design is silent:
-   docs/api-5b.md "Slice 5c". Code: src/tate.c.
+   docs/api-5s.md "Slice 5c". Code: src/tate.c.
 
    Common contract (api-5.md section 1). Inputs and outputs are initialized; a canonical chi is a precondition,
    checked under ADF_CHECK_INVARIANTS (INV) after the precision and size preflight. Only the finite character of
@@ -64,7 +64,7 @@ int adf_tate_vector(adf_rfun_t phi, adf_ffun_t f, const adf_char_t chi, slong pr
    LIMIT: more than ADF_TATE_WORK_MAX work units in all. The working precision starts at max(prec, 2) and is
    doubled up to ADF_REAL_PREC_MAX while the width 2^-bits is not met; NOT_DETERMINED once a doubling from a
    precision >= 64 does not halve the largest diameter (fixed input radii can hold the width, SPEC 15.4 N-D23),
-   or at the cap. Statements and the soundness argument: docs/api-5b.md "Slice 5c". */
+   or at the cap. Statements and the soundness argument: docs/api-5s.md "Slice 5c". */
 int adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec);
 
 /* Meromorphic I_chi on S, all-plane version of adf_tate_integral, same finite-character semantics,
@@ -82,7 +82,7 @@ int adf_tate_integral(acb_t z, const adf_char_t chi, const acb_t s, slong bits, 
    For C > 1 there is no pole test: the local Gamma poles s = -e - 2k cancel against the trivial zeros of L
    (P13: the completed function is entire) and Gamma(z) L(s, chi) is never formed. A pole-free rectangle near
    0 or 1 uses the reciprocal terms 1/(s-1), 1/s at the exact midpoint with the T4 bound (api-5.md:302-312); a
-   wide image is NOT_DETERMINED (T4.3, SPEC 15.4 N-D23). Statements: docs/api-5b.md "Slice 5d". */
+   wide image is NOT_DETERMINED (T4.3, SPEC 15.4 N-D23). Statements: docs/api-5s.md "Slice 5d". */
 int adf_tate_continue(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec);
 
 /* Lambda_chi=C^((s+e)/2) I_chi, same continuation/status/width/alias/cost contract.
@@ -90,7 +90,7 @@ int adf_tate_continue(acb_t z, const adf_char_t chi, const acb_t s, slong bits, 
    rechecking width. C=1 has the same poles; C>1 entire. No new result object.
    (api-5.md:244-247, slice 5d.) Lambda by analysis P13 step 3 with the budget epsilon = 2^-bits for the cutoffs
    and the panels (api-5.md:205) and no factor C^-z; the width 2^-bits is checked on Lambda itself. Statuses,
-   order of the checks and the pole geometry as adf_tate_continue. Statements: docs/api-5b.md "Slice 5d". */
+   order of the checks and the pole geometry as adf_tate_continue. Statements: docs/api-5s.md "Slice 5d". */
 int adf_tate_completed(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec);
 
 #ifdef __cplusplus

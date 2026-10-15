@@ -1,5 +1,5 @@
 #!exit 1
-# Slice 5e (lane t5-slice5): docs/api-5.md 5 and 8 item 5; docs/api-5b.md "Slice 5e"; SPEC 8; analysis P13
+# Slice 5e (lane t5-slice5): docs/api-5.md 5 and 8 item 5; docs/api-5s.md "Slice 5e"; SPEC 8; analysis P13
 # (Lambda(s, chi) = W_chi Lambda(1 - s, conj(chi)), docs/proofs/analysis.md:574). tate_fe CHI with S with BITS
 # prints "A | R | overlap=yes|no | s=S": A = adf_tate_completed(chi, s, BITS), R = W * adf_tate_completed(conj(chi),
 # 1 - s, BITS + 4), W = adf_char_root_number(chi). Expected lines derived before the run by

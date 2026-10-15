@@ -570,9 +570,9 @@ done:
 }
 
 /* Slice 5b: the local gamma and epsilon factors, docs/api-5.md:48-119 (design section 2), :84-98 (poles and
-   certificates); docs/proofs/analysis.md P9:331-400, P10:401-451; conventions 6.4; statements docs/api-5a.md
+   certificates); docs/proofs/analysis.md P9:331-400, P10:401-451; conventions 6.4; statements docs/api-5s.md
    "Slice 5b". The entry checks, the conductor validation and the alpha checks are those of adf_local_tate_at
-   above, in the same order (api-5.md:26-37; api-5a.md "Status, atomicity and resources"). */
+   above, in the same order (api-5.md:26-37; api-5s.md "Status, atomicity and resources"). */
 #ifdef ADF_CHECK_INVARIANTS
 #define ADF_INV_CONSTANT(z, s, alpha, eta0) do { \
     if (!adf_char_is_canonical(eta0)) adf_inv_fail(__func__, "eta0", "adf_char"); \

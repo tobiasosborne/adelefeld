@@ -3477,7 +3477,7 @@ done:
     return status;
 }
 
-/* Slice 5c (lane t5-slice2; docs/api-5.md 3 and 8 item 3; docs/api-5b.md "Slice 5c"; include/adelefeld/tate.h).
+/* Slice 5c (lane t5-slice2; docs/api-5.md 3 and 8 item 3; docs/api-5s.md "Slice 5c"; include/adelefeld/tate.h).
      tate_vector CHI                 adf_tate_vector at the setting prec: one line "PHI | F", the real factor as
                                      rfun prints it and the finite factor as ffun prints it;
      tate_integral CHI with S with BITS   adf_tate_integral at the setting prec: one line
@@ -3486,7 +3486,7 @@ done:
    local_zeta_factor_at), BITS an integer (a rational with denominator 1, else DOMAIN; outside slong DOMAIN, as the
    call gives for bits outside [0, 2^21]). Another kind of operand is DOMAIN. Steps as for every command: the
    syntax of each operand, then its kind, then the values, then the operation, then the printer (NULL: LIMIT).
-   Slice 5d (lane t5-slice4; docs/api-5.md 4 and 8 item 4; docs/api-5b.md "Slice 5d"):
+   Slice 5d (lane t5-slice4; docs/api-5.md 4 and 8 item 4; docs/api-5s.md "Slice 5d"):
      tate_continue CHI with S with BITS    adf_tate_continue: "VALUE | continuation | s=S" (I_chi on the plane);
      tate_completed CHI with S with BITS   adf_tate_completed: "VALUE | completed | s=S" (Lambda_chi);
    the operands as for tate_integral. */
@@ -3539,7 +3539,7 @@ done:
     return status;
 }
 
-/* Slice 5e (lane t5-slice5; docs/api-5.md 5 (:250-260) and 8 item 5; docs/api-5b.md "Slice 5e"):
+/* Slice 5e (lane t5-slice5; docs/api-5.md 5 (:250-260) and 8 item 5; docs/api-5s.md "Slice 5e"):
      tate_fe CHI with S with BITS   the caller-computed functional equation of analysis P13
                                     (docs/proofs/analysis.md:574, step 4 :613-614), Lambda(s, chi) = W_chi
                                     Lambda(1 - s, conj(chi)), W_chi = tau/(i^e sqrt(C)) (:569):
@@ -3799,7 +3799,7 @@ done:
     acb_clear(tau); acb_clear(W); return status;
 }
 
-/* Slice 5b (lane t5-slice3; docs/api-5.md section 2 and 8 item 2; docs/api-5a.md "Slice 5b"):
+/* Slice 5b (lane t5-slice3; docs/api-5.md section 2 and 8 item 2; docs/api-5s.md "Slice 5b"):
      tate_gamma S with PLACE with ALPHA with CHI     adf_local_gamma_at
      tate_epsilon S with PLACE with ALPHA with CHI   adf_local_epsilon_at
    The grammar, the order of the checks and the printing of tate_local (adf_drv_tate_local above): S and ALPHA

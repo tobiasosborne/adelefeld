@@ -1,5 +1,5 @@
 #!exit 1
-# Slice 5d (lane t5-slice4): docs/api-5.md 4 and 8 item 4; docs/api-5b.md "Slice 5d"; SPEC 8. Expected lines
+# Slice 5d (lane t5-slice4): docs/api-5.md 4 and 8 item 4; docs/api-5s.md "Slice 5d"; SPEC 8. Expected lines
 # derived by hand before the run (lanes/t5-slice4/derive_fixture.py: conventions 9.5 printing on exact rationals,
 # mpmath midpoints at 60 digits, the oracle's tail and quadrature bound for the imaginary radius).
 prec 160

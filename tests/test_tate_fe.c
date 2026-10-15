@@ -1,5 +1,5 @@
 /* tests/test_tate_fe.c: slice 5e of docs/api-5.md, the caller-computed functional equation (design section 5,
-   :250-260; statements in docs/api-5b.md "Slice 5e"). There is no library function under test that returns an
+   :250-260; statements in docs/api-5s.md "Slice 5e"). There is no library function under test that returns an
    equation: the side evaluation fe_sides below is the caller's computation of design section 5, the same steps as
    the driver command `tate_fe` (tools/adf/adf.c, adf_drv_tate_fe):
 
@@ -213,7 +213,7 @@ static double ratio(const acb_t z, slong bits)
 }
 
 /* One acceptance case: both sides OK, finite, A narrow at bits, R narrow at bits + 2 (the guard targets make
-   R's diameter about sqrt(2) 2^-(bits+4), docs/api-5b.md S16), overlapping each other, each containing both
+   R's diameter about sqrt(2) 2^-(bits+4), docs/api-5s.md S16), overlapping each other, each containing both
    references of Lambda(s, chi); B containing both references of Lambda(1 - s, conj(chi)); W overlapping the
    golden W. */
 static void fe_case(const adf_char_t chi, const acb_t s, slong bits, const jsonl_value *rec, const acb_t Wg)

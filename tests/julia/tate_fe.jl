@@ -2,7 +2,7 @@
 # twice and adf_char_root_number once, with the ABI of tests/julia/tate_continue.jl:
 # ccall((:adf_tate_completed,lib),Cint,(P,P,P,L,L),z,chi,s,bits,160), ccall((:adf_char_root_number,lib),Cint,
 # (P,P,L),W,chi,wp). A = Lambda(s, chi) at bits 80; B = Lambda(1 - s, conj(chi)) at bits 84 (adf_char_conj);
-# R = W B at wp = 160 = max(prec, bits + m + 16) for |B| < 2^64 (docs/api-5b.md "Slice 5e"). Checks: both OK,
+# R = W B at wp = 160 = max(prec, bits + m + 16) for |B| < 2^64 (docs/api-5s.md "Slice 5e"). Checks: both OK,
 # finite, the radius bound of acb_get_rad_ubound_arf at most 2^-81 (acb.rst:285-288), A and R overlapping, and the
 # texts derived before the run (lanes/t5-slice5/derive_fixture.py; conventions 9.5 at digits 5): (5,2) at
 # 3/8 + 3i/4: Lambda = 1.3464768750563704 + 0.37182350223562676 i, both sides print alike; chi_4 at its trivial zero
