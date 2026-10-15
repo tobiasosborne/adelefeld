@@ -1,0 +1,3 @@
+lanes/ux-drive-atlas/onefifth.json
+{"branch_count": 10, "digit_paths": 20, "digit_strings": 20, "hover_text": 70, "lit_count": 10, "node_centres": 70, "record_outputs": 1, "result_output": 10, "sibling_hover": 140, "status": 10, "thread_real": 1, "thread_source": 1, "transcript": 3}
+checks=366 failures=0 records_replayed=13

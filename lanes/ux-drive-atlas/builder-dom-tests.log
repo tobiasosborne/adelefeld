@@ -1,0 +1,13 @@
+✔ Scenario A loads four trees, two real points and changes stored depth (20.753954ms)
+✔ Scenario B has three controls and all eight checked rows (5.860997ms)
+✔ file protocol uses the picker and never fetches a query (7.776361ms)
+✔ served query fetches and loads one scene (9.722909ms)
+✔ a driver status becomes a gate at the named call (6.149155ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62.215666

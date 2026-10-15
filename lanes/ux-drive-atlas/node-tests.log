@@ -1,0 +1,17 @@
+✔ only the lit parents grow p children (1.2471ms)
+✔ two branches share their prefixes (0.15903ms)
+✔ siblings stop above depth six (0.2541ms)
+✔ layout puts root at the top, keeps row order, and supplies parent edges (0.272424ms)
+✔ every named status belongs to the shared shape language (0.138036ms)
+✔ a depth handle reads the exact precomputed object (0.324941ms)
+✔ scene validation rejects missing depths and too many trees (0.221923ms)
+✔ sqrt9: every displayed sibling has builder-supplied ball text (2.485297ms)
+✔ idempotents30: every displayed sibling has builder-supplied ball text (0.925425ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21.082568

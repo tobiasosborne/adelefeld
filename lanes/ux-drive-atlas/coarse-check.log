@@ -1,0 +1,3 @@
+lanes/ux-drive-atlas/coarse.json
+{"branch_count": 15, "digit_paths": 15, "digit_strings": 15, "lit_count": 15, "record_outputs": 1, "result_output": 15, "sibling_hover": 15, "status": 15, "transcript": 3}
+checks=109 failures=0 records_replayed=18
