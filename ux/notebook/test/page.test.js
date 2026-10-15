@@ -1,5 +1,5 @@
 // ux/notebook/test/page.test.js: the inline script of a generated page, run against a minimal DOM stub.
-// Run from the repository root: node --test ux/notebook/test/
+// Run from the repository root: node ux/notebook/test/page.test.js
 // It checks the two edits a page can make: a chip click writes its root(...) call into the cell and marks
 // the cell; restore puts the original text back. The attributes are read from ux/notebook/out/a_roots.html.
 'use strict';
@@ -43,7 +43,8 @@ function el(tag, attrs, parent) {
 
 // Cell 1 of the page: its input text and its two chips, as the page holds them.
 const cellText = page.match(/<section class="cell" id="c1"[\s\S]*?<div class="in">([^<]*)<\/div>/)[1];
-const rewrites = [...page.matchAll(/<button class="chip" type="button" data-cell="c1" data-rewrite="([^"]*)"/g)]
+const rewrites = [...page.matchAll(
+  /<button class="chip" type="button" title="the set [^"]*" data-cell="c1" data-rewrite="([^"]*)"/g)]
   .map((m) => m[1]);
 
 test('the page has two chips in cell 1 with root(...) rewrites', () => {
@@ -77,4 +78,23 @@ test('a chip click rewrites the cell text and marks it; restore undoes it', () =
 test('the fog of the single root in cell 4 asks for prec = 32', () => {
   const m = page.match(/<span class="fog" data-cell="c4" data-rewrite="([^"]*)"/);
   assert.strictEqual(m[1], 'root(-1, 2; at = 5, seed = 2, prec = 32)');
+});
+
+test('above 97 the refine button rewrites the cell like the fog does (repair D4)', () => {
+  const handlers = {};
+  const cell = el('SECTION', { id: 'c4' }, null); cell.classes.add('cell');
+  const inp = el('DIV', {}, cell); inp.classes.add('in');
+  inp.textContent = 'root(-1, 2; at = 101, seed = 10, prec = 8)';
+  const mark = el('DIV', {}, cell); mark.classes.add('stalemark'); mark.hidden = true;
+  // The attributes that notebook.jl writes on the button (checked in runtests.jl, repair 3).
+  const btn = el('BUTTON', { 'data-cell': 'c4', 'data-rewrite': 'root(-1, 2; at = 101, seed = 10, prec = 20)' },
+    cell);
+  btn.classes.add('refine');
+  const document = { addEventListener: (k, f) => { handlers[k] = f; },
+    getElementById: (id) => (id === 'c4' ? cell : null) };
+  new Function('document', script)(document);
+  handlers.click({ target: btn });
+  assert.strictEqual(inp.textContent, 'root(-1, 2; at = 101, seed = 10, prec = 20)');
+  assert.ok(cell.classes.has('stale'));
+  assert.strictEqual(mark.hidden, false);
 });

@@ -72,6 +72,9 @@ body { background: var(--paper); color: var(--ink); font-family: var(--f-ui); fo
 .dig .fog[data-rewrite] { cursor: pointer; }
 .dig .fog[data-rewrite]:hover, .dig .fog[data-rewrite]:focus-visible { outline: 2px solid var(--accent); }
 .dig .ell { color: var(--ink-3); letter-spacing: 0; }
+.refine { font: inherit; font-size: 12px; border: 1px solid var(--rule); background: var(--sheet);
+  color: var(--ink); border-radius: 4px; padding: 1px 8px; cursor: pointer; justify-self: start; }
+.refine:hover, .refine:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent-soft); }
 .fan { display: flex; flex-wrap: wrap; gap: 10px; }
 .chip { border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px; display: grid; gap: 2px; min-width: 0;
   background: var(--sheet); text-align: left; color: var(--ink); font: inherit; }
@@ -100,6 +103,8 @@ button.chip:hover, button.chip:focus-visible { border-color: var(--accent); outl
 .note { font-size: 13px; color: var(--ink-2); margin: 8px 0 0; }
 .dump { margin-top: 6px; font-size: 12px; color: var(--ink-3); }
 .dump code { font-family: var(--f-code); overflow-wrap: anywhere; }
+.foot { max-width: 1180px; margin: 28px auto 0; padding-top: 10px; border-top: 1px solid var(--rule);
+  font-size: 12px; color: var(--ink-3); }
 pre.plain, pre.jerr { margin: 0; font-family: var(--f-code); font-size: 13px; white-space: pre-wrap; }
 pre.jerr { color: var(--open); }
 .margin { min-width: 0; display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: var(--ink-2); }
@@ -167,7 +172,7 @@ function legend_html()
     return String(take!(io))
 end
 
-function page_html(cells, outs, name; notes = nothing, source = nothing)
+function page_html(cells, outs, name; notes = nothing, source = nothing, stamp = stamp_text())
     io = IOBuffer()
     print(io, "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n",
           "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n",
@@ -196,11 +201,15 @@ function page_html(cells, outs, name; notes = nothing, source = nothing)
           "digit on ",
           "the right, the period overlined), and one column for every other prime.</p>\n",
           "<p>A fan shows every branch of a root; a click on a chip writes its seed into the cell. ",
-          "A click on the fog ",
-          "of a single root asks for 12 more digits. Both edit the cell text only.</p>\n",
+          "A click on the fog of a single root (above 97: on <i>12 more digits</i>) asks for 12 more digits. ",
+          "Both edit the cell text only. Hover a strip or a chip for its set in words.</p>\n",
           "<h2>Statuses</h2>\n", legend_html(), "\n",
           "<h2>Agent window</h2>\n<p><code>", esc(name), ".records.jsonl</code>: one record per output, with the ",
-          "value text, the status, the dump and the driver line that reproduces it.</p>\n</aside>\n</div>\n")
+          "value text, the status, the dump (or why there is none), what computed it, and the driver line that ",
+          "reproduces it (or why there is none).</p>\n</aside>\n</div>\n")
+    print(io, "<footer class=\"foot\">Made by ", esc(stamp), ". The package's load gate checks that the ",
+          "run-time FLINT agrees in major and minor version with the one the library was compiled against ",
+          "(julia/Adelefeld/src/load.jl:159-166).</footer>\n")
     print(io, "<script>", JS, "</script>\n</body>\n</html>\n")
     return String(take!(io))
 end

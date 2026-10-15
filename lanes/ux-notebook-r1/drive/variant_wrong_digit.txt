@@ -1,0 +1,9 @@
+cell 1: same: (* ; 146 mod 1000)
+cell 2: differs: places: record Any[Dict{String, Any}("v" => 1, "k" => nothing, "digits" => "(0)0", "p" => 2), Dict{String, Any}("v" => -1, "k" => nothing, "digits" => "(0)3.1", "p" => 7), Dict{String, Any}("v" => 1, "k" => nothing, "digits" => "(4 7 9) 5 0", "p" => 11)], from the driver Dict{String, Any}[Dict("v" => 1, "k" => nothing, "digits" => "(011)1010", "p" => 2), Dict("v" => -1, "k" => nothing, "digits" => "(0)3.1", "p" => 7), Dict("v" => 1, "k" => nothing, "digits" => "(4 7 9) 5 0", "p" => 11)]
+cell 3: same: (3.14 +/- 0.011 ; 1/7 mod 1)
+cell 4: same: 22/7 (not checked: the input operand x (a variable of the notebook))
+cell 5: same: 22/7 (not checked: the input operand c (a variable of the notebook))
+cell 6: same: error: NOT_UNIQUE (not checked: the input operand c (a variable of the notebook))
+cell 7: same: error: NOT_DETERMINED
+cell 8: same: real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 7: 22/7 (not checked: the input operand r (a variable of the notebook))
+replay: 7 same, 1 differs, 0 unchecked
