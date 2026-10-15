@@ -23,16 +23,19 @@ mutable struct FBall <: Number
     base::Ptr{Cvoid}
     data::Ptr{Cvoid}
     @atomic state::Int
+    roots::CtxRoots      # contexts this value holds tokens on (context.jl; docs/api-j.md:126-141)
     function FBall(::_Raw)
         require_loaded()
         base, data = aligned_alloc(FBALL_SIZE, FBALL_ALIGN)
-        return new(base, data, STATE_NEW)
+        return new(base, data, STATE_NEW, nothing)
     end
 end
 
 # A fresh, initialized FBall: the exact 0, global (fball.h:79-81). adf init runs once, then the finalizer is
 # registered; if registration fails the value is cleared and freed at once (docs/api-j.md:103).
-function _new_fball()
+# srcs: the inputs (and explicit contexts) of the C call that will write it; their context roots are leased
+# before that call (context.jl, steps 2-3), since a result may borrow an input's context (fball.h:16-20).
+function _new_fball(srcs...)
     x = FBall(_Raw())
     GC.@preserve x ccall(p_adf_fball_init[], Cvoid, (P,), x.data)
     @atomic x.state = STATE_LIVE
@@ -43,6 +46,7 @@ function _new_fball()
         _release!(x)
         rethrow()
     end
+    isempty(srcs) || _lease!(x, srcs...)
     return x
 end
 
@@ -57,6 +61,7 @@ function _release!(x::FBall)
         x.base = C_NULL
         x.data = C_NULL
         Threads.atomic_sub!(LIVE_HANDLES, 1)
+        _drop_roots!(x)    # after the whole clear (context proof step 4)
     catch
         Threads.atomic_add!(FINALIZER_ERRORS, 1)
     end
@@ -184,7 +189,7 @@ A fresh owner set by `adf_fball_set` (fball.h:86-88), with its own storage and i
 """
 function Base.copy(x::FBall)
     px = _ptr(x)
-    z = _new_fball()
+    z = _new_fball(x)
     GC.@preserve z x ccall(p_adf_fball_set[], Cvoid, (P, P), _ptr(z), px)
     return z
 end
@@ -283,7 +288,7 @@ for (name, cfun) in ((:try_add, :p_adf_fball_add), (:try_sub, :p_adf_fball_sub),
     @eval function $name(x::FBall, y::FBall)
         px = _ptr(x)
         py = _ptr(y)
-        z = _new_fball()
+        z = _new_fball(x, y)
         GC.@preserve z x y ccall($cfun[], Cvoid, (P, P, P), _ptr(z), px, py)
         return AdfResult{FBall}(OK, z)
     end
@@ -291,7 +296,7 @@ end
 
 function try_neg(x::FBall)
     px = _ptr(x)
-    z = _new_fball()
+    z = _new_fball(x)
     GC.@preserve z x ccall(p_adf_fball_neg[], Cvoid, (P, P), _ptr(z), px)
     return AdfResult{FBall}(OK, z)
 end
@@ -313,7 +318,7 @@ end
 function try_mul(x::FBall, q::Rat)
     px = _ptr(x)
     pq = _ptr(q)
-    z = _new_fball()
+    z = _new_fball(x)
     GC.@preserve z x q ccall(p_adf_fball_mul_rat[], Cvoid, (P, P, P), _ptr(z), px, pq)
     return AdfResult{FBall}(OK, z)
 end
@@ -329,7 +334,7 @@ There is no division by a ball (docs/api-j.md:216-217).
 function try_div(x::FBall, q::Rat)
     px = _ptr(x)
     pq = _ptr(q)
-    z = _new_fball()
+    z = _new_fball(x)
     raw = GC.@preserve z x q ccall(p_adf_fball_div_rat[], Cint, (P, P, P), _ptr(z), px, pq)
     return _result(z, raw, :div)
 end

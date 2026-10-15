@@ -70,6 +70,11 @@ const REQUIRED = (
     :adf_rat_dump_str, :adf_rat_load_str, :adf_fball_dump_str, :adf_fball_load_str,
     :adf_adele_dump_str, :adf_adele_load_str, :adf_cadele_dump_str, :adf_cadele_load_str,
     :adf_fball_reconstruct, :adf_adele_reconstruct,
+    # J-b.1: modctx.h:57-112 (constructors, free, accessors), 145-174 (local conversions of adf_fball).
+    :adf_modctx_new_blocks, :adf_modctx_new_prime_powers, :adf_modctx_new_fmpz, :adf_modctx_new_factorial,
+    :adf_modctx_new_primorial_pow, :adf_modctx_free, :adf_modctx_get_modulus, :adf_modctx_nblocks,
+    :adf_modctx_block, :adf_fball_set_local, :adf_fball_set_local_enclose, :adf_fball_set_global,
+    :adf_fball_is_local, :adf_fball_context,
 )
 
 # One Ref per symbol, named p_<symbol>, filled by __init__ (never at precompile time).

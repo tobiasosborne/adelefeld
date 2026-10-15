@@ -41,7 +41,8 @@ end
     Adelefeld.diagnostics()
 
 The load state, the library path, the number of live handles (adf inits minus clears) and the number of
-unexpected exceptions caught in a release (a leak; docs/api-j.md:111-112).
+unexpected exceptions caught in a release (a leak; docs/api-j.md:111-112), the number of live modulus
+contexts (constructed minus freed) and the number of `adf_modctx_free` calls (context.jl).
 """
 diagnostics() = (state = LOAD_STATE[], library = LIBPATH[], live = LIVE_HANDLES[],
-                 finalizer_errors = FINALIZER_ERRORS[])
+                 finalizer_errors = FINALIZER_ERRORS[], contexts = CTX_LIVE[], context_frees = CTX_FREES[])

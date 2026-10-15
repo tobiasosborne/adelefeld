@@ -1,0 +1,16 @@
+F1 ASSERTION EXIT=-11 CRASH=1 FAILED=8 ERRORED=7 no completed J-b.1 summary
+F2 ASSERTION EXIT=1 CRASH=0 FAILED=30 ERRORED=0 Adelefeld step J-b.1                                                        |  458    30    488  7.2s
+F3 ASSERTION EXIT=-6 CRASH=1 FAILED=6 ERRORED=0 no completed J-b.1 summary
+F4 ASSERTION EXIT=-6 CRASH=1 FAILED=2 ERRORED=0 no completed J-b.1 summary
+F5 ASSERTION EXIT=1 CRASH=0 FAILED=3 ERRORED=0 Adelefeld step J-b.1                                                        |  485     3    488  6.6s
+F6 ASSERTION EXIT=1 CRASH=0 FAILED=7 ERRORED=0 Adelefeld step J-b.1                                                        |  481     7    488  8.4s
+F7 ASSERTION EXIT=-6 CRASH=1 FAILED=34 ERRORED=14 no completed J-b.1 summary
+F8 NOT-CAUGHT EXIT=0 CRASH=0 FAILED=0 ERRORED=0 Adelefeld step J-b.1 |  488    488  5.9s
+F9 ASSERTION EXIT=1 CRASH=0 FAILED=6 ERRORED=0 Adelefeld step J-b.1                                                        |  482     6    488  8.3s
+F10 ASSERTION EXIT=1 CRASH=0 FAILED=1 ERRORED=1 Adelefeld step J-b.1                                                        |  486     1      1    488  8.8s
+F11 ASSERTION EXIT=1 CRASH=0 FAILED=6 ERRORED=1 Adelefeld step J-b.1                                                        |  481     6      1    488  11.9s
+F12 NOT-CAUGHT EXIT=0 CRASH=0 FAILED=0 ERRORED=0 Adelefeld step J-b.1 |  488    488  5.8s
+F13 ASSERTION EXIT=1 CRASH=0 FAILED=14 ERRORED=0 Adelefeld step J-b.1                                                        |  474    14    488  7.8s
+F14 ASSERTION EXIT=1 CRASH=0 FAILED=8 ERRORED=0 Adelefeld step J-b.1                                                        |  480     8    488  8.2s
+F15 ASSERTION EXIT=1 CRASH=0 FAILED=1 ERRORED=1 Adelefeld step J-b.1                                                        |  486     1      1    488  7.8s
+F16 ASSERTION EXIT=1 CRASH=0 FAILED=8 ERRORED=0 Adelefeld step J-b.1                                                        |  480     8    488  8.4s

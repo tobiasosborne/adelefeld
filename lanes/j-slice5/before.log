@@ -1,0 +1,54 @@
+    Updating `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/Project.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+    Updating `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/Manifest.toml`
+  [8f399da3] ~ Libdl ⇒ v1.11.0
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/tmp/jl_A0Ntil/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/tmp/jl_A0Ntil/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+Precompiling for configuration --code-coverage=none --color=auto --check-bounds=yes --warn-overwrite=yes --depwarn=yes --inline=yes --startup-file=no --track-allocation=none
+   1277.7 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 1 seconds. 8 already precompiled.
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  14.2s
+Test Summary:        | Pass  Total  Time
+Adelefeld step J-a.2 | 1015   1015  6.8s
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+ERRORS=24 LIMIT_CALLS=0 LIVE=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.3 | 1649   1649  23.2s
+DUMPS=16 FREES=16
+CONTEXTS=0
+DIGIT_ERRORS=64 PRINT_CALLS=0
+PREC_ERRORS=5 LIMIT_CALLS=0 CLASSIFY_CALLS=0
+LIVE=0
+Test Summary:   | Pass  Total  Time
+C call counters |   43     43  1.7s
+BASELINE=0
+ROUNDTRIPS=10000 LIVE=0 ERRORS=0
+Test Summary:        | Pass  Total  Time
+Adelefeld step J-a.4 | 1313   1313  6.6s
+     Testing Adelefeld tests passed 
+
+real	1m22,607s
+user	1m31,701s
+sys	0m3,429s

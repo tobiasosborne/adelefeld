@@ -1,0 +1,122 @@
+Precompiling packages...
+   1427.3 ms  ✓ Adelefeld (serial)
+  1 dependency successfully precompiled in 1 seconds
+ERROR: LoadError: Some tests did not pass: 482 passed, 6 failed, 0 errored, 0 broken.
+in expression starting at runtests.jl(J-b.1):9
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/jb1_only.jl:9
+construction refusals (modctx.h:11-35, 57-87): Test Failed at runtests.jl(J-b.1):94
+  Expression: try_modctx(blocks = [8], modulus = 8)
+    Expected: ArgumentError
+  No exception thrown
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):90 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):94 [inlined]
+construction refusals (modctx.h:11-35, 57-87): Test Failed at runtests.jl(J-b.1):95
+  Expression: ModCtx(factorial = 3, primorial_power = (3, 1))
+    Expected: ArgumentError
+  No exception thrown
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):90 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):95 [inlined]
+construction refusals (modctx.h:11-35, 57-87): Test Failed at runtests.jl(J-b.1):96
+  Expression: try_modctx(blocks = [8], prime_powers = [2 => 3], modulus = 8, factorial = 4, primorial_power = (3, 1))
+    Expected: ArgumentError
+  No exception thrown
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):90 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):96 [inlined]
+construction refusals (modctx.h:11-35, 57-87): Test Failed at runtests.jl(J-b.1):108
+  Expression: ctx_live() == n0
+   Evaluated: 35 == 32
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):90 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):108 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+construction refusals (modctx.h:11-35, 57-87): Test Failed at runtests.jl(J-b.1):145
+  Expression: ctx_live() == n0
+   Evaluated: 35 == 32
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):90 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):145 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+construction refusals (modctx.h:11-35, 57-87): Test Failed at runtests.jl(J-b.1):151
+  Expression: ctx_live() == n0
+   Evaluated: 35 == 32
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):90 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):151 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+BASELINE=0 CTX=0
+ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0
+KEPT=true
+AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0
+Test Summary:                                                               | Pass  Fail  Total  Time
+Adelefeld step J-b.1                                                        |  482     6    488  8.3s
+  construction families on valid input (modctx.h:57-87, 105-112)            |   54           54  1.5s
+  construction refusals (modctx.h:11-35, 57-87)                             |   68     6     74  2.4s
+  lease basics, before any later use of the value (context proof steps 1-5) |   12           12  0.3s
+  SPEC 4.3 rows to local and back (modctx.h:145-169)                        |  212          212  0.3s
+  lost: the enclosing variant (modctx.h:155-164)                            |   37           37  0.0s
+  same modulus, distinct contexts (SPEC 184-214, 285-298; conventions 4.6)  |   17           17  0.0s
+  leases: tokens, roots and failure paths (docs/api-j.md:126-141)           |   49           49  1.1s
+  context finalized before and after its values (docs/api-j.md:126-141)     |   23           23  0.0s
+  GC: both orders, 10^4 round trips, zero contexts and owners               |    4            4  2.4s
+  local dumps and the session line                                          |    6            6  0.3s
+RNG of the outermost testset: Random.Xoshiro(0x5a4bfcd995b0e7b5, 0x7f59e3ac2bee8901, 0x7da5e95cdc9a1c6f, 0xde70c01d78e5374d, 0x61ac777cb6c393fe)

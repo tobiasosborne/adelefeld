@@ -37,14 +37,16 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
             base::Ptr{Cvoid}
             data::Ptr{Cvoid}
             @atomic state::Int
+            roots::CtxRoots  # contexts of a local finite coordinate (context.jl; adele.h:85, 130-131)
             function $T(::_Raw)
                 require_loaded()
                 base, data = aligned_alloc($n, $a)
-                return new(base, data, STATE_NEW)
+                return new(base, data, STATE_NEW, nothing)
             end
         end
 
-        function $newfun()
+        # srcs: inputs of the C call that writes the value; their context roots are leased first.
+        function $newfun(srcs...)
             x = $T(_Raw())
             GC.@preserve x ccall($init[], Cvoid, (P,), x.data)
             @atomic x.state = STATE_LIVE
@@ -55,6 +57,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
                 _release!(x)
                 rethrow()
             end
+            isempty(srcs) || _lease!(x, srcs...)
             return x
         end
 
@@ -67,6 +70,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
                 x.base = C_NULL
                 x.data = C_NULL
                 Threads.atomic_sub!(LIVE_HANDLES, 1)
+                _drop_roots!(x)    # after the whole clear (context proof step 4)
             catch
                 Threads.atomic_add!(FINALIZER_ERRORS, 1)
             end
@@ -107,7 +111,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
 
         function Base.copy(x::$T)
             _check_live(x)
-            z = $newfun()
+            z = $newfun(x)
             GC.@preserve z x ccall($set[], Cvoid, (P, P), _ptr(z), _ptr(x))
             return z
         end
@@ -119,7 +123,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
         # Fresh copy: never independently finalize a pointer into x (adele.h:129-131,200).
         function finitepart(x::$T)
             _check_live(x)
-            z = _new_fball()
+            z = _new_fball(x)
             GC.@preserve z x ccall($getfin[], Cvoid, (P, P), _ptr(z), _ptr(x))
             return z
         end
@@ -169,7 +173,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
         @eval function $name(x::$T, y::$T; prec=64)
             p = _checked_prec(prec)
             _check_live(x); _check_live(y)
-            z = $newfun()
+            z = $newfun(x, y)
             GC.@preserve z x y ccall($cfun[], Cvoid, (P, P, P, Int64),
                                     _ptr(z), _ptr(x), _ptr(y), p)
             return AdfResult{$T}(OK, z)
@@ -178,7 +182,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
     cneg = Symbol(:p_adf_, prefix, :_neg)
     @eval function try_neg(x::$T)
         _check_live(x)
-        z = $newfun()
+        z = $newfun(x)
         GC.@preserve z x ccall($cneg[], Cvoid, (P, P), _ptr(z), _ptr(x))
         return AdfResult{$T}(OK, z)
     end
@@ -188,7 +192,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
             @eval function try_div(x::$T, q::Rat; prec=64)
                 p = _checked_prec(prec)
                 _check_live(x); _check_live(q)
-                z = $newfun()
+                z = $newfun(x)
                 raw = GC.@preserve z x q ccall($cfun[], Cint, (P, P, P, Int64),
                                               _ptr(z), _ptr(x), _ptr(q), p)
                 return _result(z, raw, :div)
@@ -197,7 +201,7 @@ for (T, prefix, n, a) in ((:Adele, :adele, 96, 8), (:CAdele, :cadele, 144, 8))
             @eval function $name(x::$T, q::Rat; prec=64)
                 p = _checked_prec(prec)
                 _check_live(x); _check_live(q)
-                z = $newfun()
+                z = $newfun(x)
                 GC.@preserve z x q ccall($cfun[], Cvoid, (P, P, P, Int64),
                                         _ptr(z), _ptr(x), _ptr(q), p)
                 return AdfResult{$T}(OK, z)
@@ -274,7 +278,7 @@ end
 # Exact embedding, not a text conversion (adele.h:187-188).
 function CAdele(x::Adele)
     _check_live(x)
-    z = _new_cadele()
+    z = _new_cadele(x)
     GC.@preserve z x ccall(p_adf_cadele_set_adele[], Cvoid, (P, P), _ptr(z), _ptr(x))
     return z
 end

@@ -1,0 +1,139 @@
+ERROR: LoadError: Some tests did not pass: 481 passed, 7 failed, 0 errored, 0 broken.
+in expression starting at runtests.jl(J-b.1):9
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/jb1_only.jl:9
+SPEC 4.3 rows to local and back (modctx.h:145-169): Test Failed at runtests.jl(J-b.1):235
+  Expression: r.details == NamedTuple()
+   Evaluated: (lost = true,) == NamedTuple()
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):186 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):235 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+SPEC 4.3 rows to local and back (modctx.h:145-169): Test Failed at runtests.jl(J-b.1):235
+  Expression: r.details == NamedTuple()
+   Evaluated: (lost = true,) == NamedTuple()
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):186 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):235 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+SPEC 4.3 rows to local and back (modctx.h:145-169): Test Failed at runtests.jl(J-b.1):235
+  Expression: r.details == NamedTuple()
+   Evaluated: (lost = true,) == NamedTuple()
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):186 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):235 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lost: the enclosing variant (modctx.h:155-164): Test Failed at runtests.jl(J-b.1):267
+  Expression: r.details == NamedTuple()
+   Evaluated: (lost = true,) == NamedTuple()
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):244 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):267 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lost: the enclosing variant (modctx.h:155-164): Test Failed at runtests.jl(J-b.1):267
+  Expression: r.details == NamedTuple()
+   Evaluated: (lost = true,) == NamedTuple()
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):244 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):267 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lost: the enclosing variant (modctx.h:155-164): Test Failed at runtests.jl(J-b.1):267
+  Expression: r.details == NamedTuple()
+   Evaluated: (lost = true,) == NamedTuple()
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):244 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):267 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lost: the enclosing variant (modctx.h:155-164): Test Failed at runtests.jl(J-b.1):267
+  Expression: r.details == NamedTuple()
+   Evaluated: (lost = true,) == NamedTuple()
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):244 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):267 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+BASELINE=0 CTX=0
+ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0
+KEPT=true
+AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0
+Test Summary:                                                               | Pass  Fail  Total  Time
+Adelefeld step J-b.1                                                        |  481     7    488  8.4s
+  construction families on valid input (modctx.h:57-87, 105-112)            |   54           54  1.8s
+  construction refusals (modctx.h:11-35, 57-87)                             |   74           74  1.2s
+  lease basics, before any later use of the value (context proof steps 1-5) |   12           12  0.2s
+  SPEC 4.3 rows to local and back (modctx.h:145-169)                        |  209     3    212  1.7s
+  lost: the enclosing variant (modctx.h:155-164)                            |   33     4     37  0.0s
+  same modulus, distinct contexts (SPEC 184-214, 285-298; conventions 4.6)  |   17           17  0.0s
+  leases: tokens, roots and failure paths (docs/api-j.md:126-141)           |   49           49  0.8s
+  context finalized before and after its values (docs/api-j.md:126-141)     |   23           23  0.0s
+  GC: both orders, 10^4 round trips, zero contexts and owners               |    4            4  2.3s
+  local dumps and the session line                                          |    6            6  0.3s
+RNG of the outermost testset: Random.Xoshiro(0xc9ccfe87c7ad1ebc, 0x9417b39c0388eb1a, 0x10d554f7835176e2, 0x4f0beb2ca8d91f8c, 0x0392306a00cf0f48)

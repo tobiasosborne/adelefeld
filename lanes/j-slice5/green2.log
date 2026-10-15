@@ -1,0 +1,53 @@
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/tmp/jl_BCLTAF/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/tmp/jl_BCLTAF/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+     Testing Running tests...
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  15.4s
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.2 | 1015   1015  13.5s
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+ERRORS=24 LIMIT_CALLS=0 LIVE=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.3 | 1649   1649  18.6s
+DUMPS=16 FREES=16
+CONTEXTS=0
+DIGIT_ERRORS=64 PRINT_CALLS=0
+PREC_ERRORS=5 LIMIT_CALLS=0 CLASSIFY_CALLS=0
+LIVE=0
+Test Summary:   | Pass  Total  Time
+C call counters |   43     43  4.2s
+BASELINE=0
+ROUNDTRIPS=10000 LIVE=0 ERRORS=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.4 | 1313   1313  12.0s
+BASELINE=0 CTX=0
+ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0
+KEPT=true
+AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0
+Test Summary:        | Pass  Total  Time
+Adelefeld step J-b.1 |  476    476  7.4s
+     Testing Adelefeld tests passed 
+
+real	1m36,606s
+user	1m45,144s
+sys	0m4,003s

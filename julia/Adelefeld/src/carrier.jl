@@ -136,7 +136,7 @@ end
 # Independent output storage obeys adele.h:112-117,190-196. C's DOMAIN is retained, never synthesized OK.
 function Adele(r::RealBall, f::FBall)
     _check_live(r); _check_live(f)
-    z = _new_adele()
+    z = _new_adele(r._carrier, f)
     raw = GC.@preserve z r f ccall(p_adf_adele_set_arb_fball[], Cint, (P, P, P),
                                   _ptr(z), _ptr(r._carrier), _ptr(f))
     return _unwrap(_result(z, raw, :adele), :adele)
@@ -144,7 +144,7 @@ end
 
 function CAdele(r::ComplexBall, f::FBall)
     _check_live(r); _check_live(f)
-    z = _new_cadele()
+    z = _new_cadele(r._carrier, f)
     raw = GC.@preserve z r f ccall(p_adf_cadele_set_acb_fball[], Cint, (P, P, P),
                                   _ptr(z), _ptr(r._carrier), _ptr(f))
     return _unwrap(_result(z, raw, :cadele), :cadele)

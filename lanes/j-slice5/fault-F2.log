@@ -1,0 +1,525 @@
+ERROR: LoadError: Some tests did not pass: 458 passed, 30 failed, 0 errored, 0 broken.
+in expression starting at runtests.jl(J-b.1):9
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/jb1_only.jl:9
+lease basics, before any later use of the value (context proof steps 1-5): Test Failed at runtests.jl(J-b.1):163
+  Expression: tokens(ctx) == 2
+   Evaluated: 3 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):155 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):163 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lease basics, before any later use of the value (context proof steps 1-5): Test Failed at runtests.jl(J-b.1):166
+  Expression: tokens(ctx) == 1
+   Evaluated: 2 == 1
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):155 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):166 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lease basics, before any later use of the value (context proof steps 1-5): Test Failed at runtests.jl(J-b.1):174
+  Expression: tokens(ctx) == 0
+   Evaluated: 2 == 0
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):155 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):174 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lease basics, before any later use of the value (context proof steps 1-5): Test Failed at runtests.jl(J-b.1):175
+  Expression: (Adelefeld.diagnostics()).context_frees == f0 + 1
+   Evaluated: 0 == 1
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):155 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):175 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+lease basics, before any later use of the value (context proof steps 1-5): Test Failed at runtests.jl(J-b.1):176
+  Expression: ctx_live() == n0
+   Evaluated: 33 == 32
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):155 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):176 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):323
+  Expression: tokens(ctx) == 2
+   Evaluated: 3 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):323 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):326
+  Expression: is_local(s) && tokens(ctx) == 3
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):326 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):333
+  Expression: tokens(ctx) == 2
+   Evaluated: 12 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):333 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):336
+  Expression: !(is_local(g)) && tokens(ctx) == 3
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):336 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):338
+  Expression: tokens(ctx) == 2
+   Evaluated: 13 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):338 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):341
+  Expression: tokens(ctx) == 3
+   Evaluated: 14 == 3
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):341 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):343
+  Expression: identical(f, y) && (context(f) === ctx && tokens(ctx) == 4)
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):343 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):362
+  Expression: tokens(ctx) == t0
+   Evaluated: 22 == 21
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):362 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):365
+  Expression: tokens(ctx) == t0
+   Evaluated: 24 == 21
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):365 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):374
+  Expression: tokens(ctx) == t0
+   Evaluated: 24 == 21
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):374 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):379
+  Expression: tokens(ctx) == 2
+   Evaluated: 19 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):379 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):384
+  Expression: tokens(ctx) == 2
+   Evaluated: 22 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):384 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):386
+  Expression: tokens(ctx) == 1
+   Evaluated: 22 == 1
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):386 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):414
+  Expression: tokens(ctx) == 1
+   Evaluated: 2 == 1
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):414 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):417
+  Expression: tokens(ctx) == 2
+   Evaluated: 3 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):417 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):420
+  Expression: tokens(ctx) == 0
+   Evaluated: 3 == 0
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):420 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):421
+  Expression: ctx_live() == n0
+   Evaluated: 45 == 44
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):421 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):422
+  Expression: (Adelefeld.diagnostics()).context_frees == f0 + 1
+   Evaluated: 0 == 1
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):422 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):424
+  Expression: (Adelefeld.diagnostics()).context_frees == f0 + 1
+   Evaluated: 0 == 1
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):424 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):429
+  Expression: tokens(ctx) == 1 && ctx_live() == n0 + 1
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):429 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):431
+  Expression: tokens(ctx) == 0 && ctx_live() == n0
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):431 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):432
+  Expression: (Adelefeld.diagnostics()).context_frees == f0 + 2
+   Evaluated: 0 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):432 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+BASELINE=0 CTX=0
+ROUNDTRIPS=10000 LIVE=0 CONTEXTS=10000 FREES=0 ERRORS=0
+KEPT=false
+AFTER LIVE=0 CONTEXTS=10001 FREES=0 ERRORS=0
+GC: both orders, 10^4 round trips, zero contexts and owners: Test Failed at runtests.jl(J-b.1):475
+  Expression: occursin("ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0", out)
+   Evaluated: occursin("ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0", "BASELINE=0 CTX=0\nROUNDTRIPS=10000 LIVE=0 CONTEXTS=10000 FREES=0 ERRORS=0\nKEPT=false\nAFTER LIVE=0 CONTEXTS=10001 FREES=0 ERRORS=0\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):437 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):475 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+GC: both orders, 10^4 round trips, zero contexts and owners: Test Failed at runtests.jl(J-b.1):476
+  Expression: occursin("KEPT=true", out)
+   Evaluated: occursin("KEPT=true", "BASELINE=0 CTX=0\nROUNDTRIPS=10000 LIVE=0 CONTEXTS=10000 FREES=0 ERRORS=0\nKEPT=false\nAFTER LIVE=0 CONTEXTS=10001 FREES=0 ERRORS=0\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):437 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):476 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+GC: both orders, 10^4 round trips, zero contexts and owners: Test Failed at runtests.jl(J-b.1):477
+  Expression: occursin("AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0", out)
+   Evaluated: occursin("AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0", "BASELINE=0 CTX=0\nROUNDTRIPS=10000 LIVE=0 CONTEXTS=10000 FREES=0 ERRORS=0\nKEPT=false\nAFTER LIVE=0 CONTEXTS=10001 FREES=0 ERRORS=0\n")
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):437 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):477 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+Test Summary:                                                               | Pass  Fail  Total  Time
+Adelefeld step J-b.1                                                        |  458    30    488  7.2s
+  construction families on valid input (modctx.h:57-87, 105-112)            |   54           54  1.6s
+  construction refusals (modctx.h:11-35, 57-87)                             |   74           74  0.9s
+  lease basics, before any later use of the value (context proof steps 1-5) |    7     5     12  1.7s
+  SPEC 4.3 rows to local and back (modctx.h:145-169)                        |  212          212  0.3s
+  lost: the enclosing variant (modctx.h:155-164)                            |   37           37  0.0s
+  same modulus, distinct contexts (SPEC 184-214, 285-298; conventions 4.6)  |   17           17  0.0s
+  leases: tokens, roots and failure paths (docs/api-j.md:126-141)           |   36    13     49  0.7s
+  context finalized before and after its values (docs/api-j.md:126-141)     |   14     9     23  0.0s
+  GC: both orders, 10^4 round trips, zero contexts and owners               |    1     3      4  1.6s
+  local dumps and the session line                                          |    6            6  0.4s
+RNG of the outermost testset: Random.Xoshiro(0x8cfb565ede5712f9, 0x2e07ebd40b88fca3, 0x30ab34751f007b6e, 0x5a7276960e4b7d7e, 0x838c5e3f0004e07a)
