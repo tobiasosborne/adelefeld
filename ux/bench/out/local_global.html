@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bench local_global</title>
+<style>
+:root {
+  --bg: #e9edf1; --plate: #f8fafb; --well-bg: #dfe5eb; --ink: #17212b; --ink-2: #4b5967; --ink-3: #7d8a97;
+  --rule: #cbd3dc; --ok: #1d6b86; --ok-ink: #ffffff; --no: #6c7a88; --nd: #a3680c; --arg: #5b4f94;
+  --stop: #17212b; --bad: #b3261e; --lit: #f2c94c;
+  --f-label: "Barlow Semi Condensed", "Arial Narrow", "Liberation Sans Narrow", sans-serif;
+  --f-mono: "Roboto Mono", "DejaVu Sans Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --plate: #1a2129; --well-bg: #252e38; --ink: #e2e8ee; --ink-2: #a6b2be; --ink-3: #74818e;
+    --rule: #2f3943; --ok: #5cb6d4; --ok-ink: #0e1a21; --no: #8d9aa7; --nd: #e5ab4f; --arg: #ab9fe6;
+    --stop: #e2e8ee; --bad: #f2867e; --lit: #8a6d12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --plate: #1a2129; --well-bg: #252e38; --ink: #e2e8ee; --ink-2: #a6b2be; --ink-3: #74818e;
+  --rule: #2f3943; --ok: #5cb6d4; --ok-ink: #0e1a21; --no: #8d9aa7; --nd: #e5ab4f; --arg: #ab9fe6;
+  --stop: #e2e8ee; --bad: #f2867e; --lit: #8a6d12; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-label); font-size: 15px; line-height: 1.45;
+  padding-inline: 16px; padding-block: 0 40px; margin: 0; }
+.wrap { max-width: 1260px; margin: 0 auto; }
+.q { padding-block: 18px 6px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; }
+.q .lab { font-weight: 700; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-3); }
+.q h1 { margin: 0; font-size: 22px; font-weight: 600; }
+.q .cost { margin-left: auto; font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); }
+.team { font-family: var(--f-mono); font-size: 13px; color: var(--ink-2); background: var(--plate);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 12px; margin-bottom: 14px; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
+@media (max-width: 1000px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.plate { background: var(--plate); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 12px 14px;
+  min-width: 0; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; font-size: 13px;
+  color: var(--ink-2); }
+.tools select { font: 600 13px var(--f-label); }
+.scroll { overflow-x: auto; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; }
+thead th { font-weight: 600; font-size: 13px; color: var(--ink-2); padding: 4px 6px 8px; text-align: center;
+  vertical-align: bottom; border-bottom: 1px solid var(--rule); }
+thead th .in { font-family: var(--f-mono); font-size: 13px; color: var(--ink); display: block; }
+thead th .fp { font-size: 11px; color: var(--ink-3); display: block; font-weight: 500; }
+thead th.first { text-align: left; }
+tbody th { text-align: left; font-family: var(--f-mono); font-weight: 500; font-size: 13.5px;
+  padding: 3px 10px 3px 4px; white-space: nowrap; }
+tbody th .m8 { font-family: var(--f-label); font-size: 11px; color: var(--ink-3); margin-left: 8px;
+  font-weight: 400; }
+tbody tr.arch th { color: var(--ok); }
+tbody tr.arch td, tbody tr.arch th { border-bottom: 1px dashed var(--rule); }
+td { text-align: center; padding: 3px 4px; white-space: nowrap; }
+.w { display: inline-grid; place-items: center; min-width: 24px; height: 24px; border-radius: 12px;
+  font: 600 12px var(--f-mono); vertical-align: middle; cursor: default; }
+.w.ok { background: var(--ok); color: var(--ok-ink); padding: 0 4px; }
+.w.ok.zero { background: transparent; color: var(--ok); border: 2px solid var(--ok); width: 24px; }
+.w.ok.val { border-radius: 6px; font-weight: 500; font-size: 11px; padding: 0 6px; }
+.w.no { width: 24px; border: 1.5px solid var(--no); position: relative; }
+.w.no::after { content: ""; position: absolute; width: 2px; height: 24px; background: var(--no);
+  transform: rotate(45deg); top: -1.5px; left: 9.5px; }
+.w.nd { width: 24px; border: 1.8px dashed var(--nd); color: var(--nd); background: transparent; }
+.w.lim { width: 22px; height: 22px; border: 2px dotted var(--ink-2); border-radius: 0; color: var(--ink-2); }
+.w.pl { color: var(--ink-2); border-radius: 0; font-weight: 700; }
+.w.na { color: var(--ink-3); border-radius: 0; }
+.w.lit { outline: 3px solid var(--lit); outline-offset: 1px; }
+tr.grp th { font: 700 11px var(--f-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+  padding-top: 10px; text-align: left; }
+.stop { border-top: 3px solid var(--stop); padding: 8px 4px 0; display: flex; flex-wrap: wrap; gap: 6px 16px;
+  align-items: baseline; }
+.stop b { font-size: 14px; }
+.stop span { font-size: 13px; color: var(--ink-2); }
+.argband { margin-top: 8px; border: 1.5px solid var(--arg); border-radius: 4px; padding: 6px 10px;
+  font-size: 13.5px;
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--arg) 12%, transparent) 0 6px,
+  transparent 6px 12px); }
+.argband b { color: var(--arg); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 13px; color: var(--ink-2);
+  align-items: center; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.rail { display: grid; gap: 10px; min-width: 0; }
+.rail h2 { margin: 0; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+  font-weight: 700; }
+.find { background: var(--plate); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px;
+  display: grid; gap: 4px; min-width: 0; }
+.find:hover, .find:focus-within { border-color: var(--lit); }
+.find .id { font-family: var(--f-mono); font-size: 11.5px; color: var(--ink-3); }
+.find .t { font-size: 15px; font-weight: 500; }
+.find .ev { font-size: 13px; color: var(--ink-2); }
+.find .ev code, .find .src code { font-family: var(--f-mono); font-size: 12px; }
+.find .src { font-size: 12.5px; color: var(--ink-2); border-left: 3px double var(--ink-3); padding-left: 8px; }
+.find .bad { font-size: 13px; color: var(--bad); font-weight: 600; }
+.badge { justify-self: start; font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1px 8px; }
+.st-pattern { color: var(--ok); border: 1.5px solid currentColor; border-radius: 10px; }
+.st-sourced { color: var(--arg); border: 4px double currentColor; border-radius: 0; }
+.st-refuted { color: var(--bad); border: 1.5px solid currentColor; border-radius: 0;
+  text-decoration: line-through; }
+.st-open { color: var(--nd); border: 1.5px dashed currentColor; border-radius: 3px; }
+.checks { margin-top: 14px; font-size: 13px; }
+.checks code { font-family: var(--f-mono); font-size: 12px; }
+.foot { margin-top: 20px; font-size: 12px; color: var(--ink-3); }
+</style></head><body>
+<div class="wrap">
+<header class="q"><span class="lab">Question</span><h1>Does (x^2 - 13)(x^2 - 17)(x^2 - 221) have a root at every place, and a rational root?</h1>
+<span class="cost">4 inputs × 16 places = 64 cells · operation roots · budget 100 cells, 60 s per process</span></header>
+<div class="team">sweeper: 64 calls, 64 done, 0 below the stop line</div>
+<div class="main"><section class="plate" aria-label="Wall of places">
+<div class="tools"><label>rows <select id="order"><option value="0">by place</option>
+<option value="4">by p mod 4</option>
+<option value="8">by p mod 8</option>
+<option value="13">by p mod 13</option>
+<option value="17">by p mod 17</option>
+</select></label><span>cell: the roots of the polynomial at the place: roots POLY with p with 8 at a prime, realroots POLY at R</span></div>
+<div class="scroll"><table><thead><tr><th class="first">place</th>
+<th><span class="in">(x^2 - 13)(x^2 - 17)(x^2 - 221)</span><span class="fp">polynomial, coefficients from the constant: -48841 0 6851 0 -251 0 1</span></th>
+<th><span class="in">x^2 - 13</span><span class="fp">polynomial, coefficients from the constant: -13 0 1</span></th>
+<th><span class="in">x^2 - 17</span><span class="fp">polynomial, coefficients from the constant: -17 0 1</span></th>
+<th><span class="in">x^2 - 221</span><span class="fp">polynomial, coefficients from the constant: -221 0 1</span></th>
+</tr></thead><tbody id="wall">
+<tr data-p="0" class="arch"><th scope="row">R<span class="m8"></span></th><td><span class="w ok" id="w-R-0" title="place R, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: realroots -48841 0 6851 0 -251 0 1
+prec 64
+output: -14.866068747318505523 +/- 3.9e-19; -4.1231056256176605498 +/- 6.9e-20; -3.6055512754639892931 +/- 2.8e-20; 3.6055512754639892931 +/- 2.8e-20; 4.1231056256176605498 +/- 6.9e-20; 14.866068747318505523 +/- 3.9e-19
+status: OK (class ok)">6</span></td><td><span class="w ok" id="w-R-1" title="place R, input x^2 - 13
+line: realroots -13 0 1
+prec 64
+output: -3.6055512754639892931 +/- 2e-20; 3.6055512754639892931 +/- 2e-20
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-R-2" title="place R, input x^2 - 17
+line: realroots -17 0 1
+prec 64
+output: -4.1231056256176605498 +/- 2.2e-20; 4.1231056256176605498 +/- 2.2e-20
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-R-3" title="place R, input x^2 - 221
+line: realroots -221 0 1
+prec 64
+output: -14.866068747318505523 +/- 3.9e-19; 14.866068747318505523 +/- 3.9e-19
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="2"><th scope="row">2<span class="m8">prec 8</span></th><td><span class="w ok" id="w-2-0" title="place 2, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 2 with 8
+prec 8
+output: 23 mod 2^8; 233 mod 2^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-2-1" title="place 2, input x^2 - 13
+line: roots -13 0 1 with 2 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-2-2" title="place 2, input x^2 - 17
+line: roots -17 0 1 with 2 with 8
+prec 8
+output: 23 mod 2^8; 233 mod 2^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-2-3" title="place 2, input x^2 - 221
+line: roots -221 0 1 with 2 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="3"><th scope="row">3<span class="m8">prec 8</span></th><td><span class="w ok" id="w-3-0" title="place 3, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 3 with 8
+prec 8
+output: 2657 mod 3^8; 3904 mod 3^8
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-3-1" title="place 3, input x^2 - 13
+line: roots -13 0 1 with 3 with 8
+prec 8
+output: 2657 mod 3^8; 3904 mod 3^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-3-2" title="place 3, input x^2 - 17
+line: roots -17 0 1 with 3 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-3-3" title="place 3, input x^2 - 221
+line: roots -221 0 1 with 3 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="5"><th scope="row">5<span class="m8">prec 8</span></th><td><span class="w ok" id="w-5-0" title="place 5, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 5 with 8
+prec 8
+output: 118564 mod 5^8; 272061 mod 5^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-5-1" title="place 5, input x^2 - 13
+line: roots -13 0 1 with 5 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-5-2" title="place 5, input x^2 - 17
+line: roots -17 0 1 with 5 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-5-3" title="place 5, input x^2 - 221
+line: roots -221 0 1 with 5 with 8
+prec 8
+output: 118564 mod 5^8; 272061 mod 5^8
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="7"><th scope="row">7<span class="m8">prec 8</span></th><td><span class="w ok" id="w-7-0" title="place 7, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 7 with 8
+prec 8
+output: 1621660 mod 7^8; 4143141 mod 7^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-7-1" title="place 7, input x^2 - 13
+line: roots -13 0 1 with 7 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-7-2" title="place 7, input x^2 - 17
+line: roots -17 0 1 with 7 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-7-3" title="place 7, input x^2 - 221
+line: roots -221 0 1 with 7 with 8
+prec 8
+output: 1621660 mod 7^8; 4143141 mod 7^8
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="11"><th scope="row">11<span class="m8">prec 8</span></th><td><span class="w ok" id="w-11-0" title="place 11, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 11 with 8
+prec 8
+output: 44758253 mod 11^8; 169600628 mod 11^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-11-1" title="place 11, input x^2 - 13
+line: roots -13 0 1 with 11 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-11-2" title="place 11, input x^2 - 17
+line: roots -17 0 1 with 11 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-11-3" title="place 11, input x^2 - 221
+line: roots -221 0 1 with 11 with 8
+prec 8
+output: 44758253 mod 11^8; 169600628 mod 11^8
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="13"><th scope="row">13<span class="m8">prec 8</span></th><td><span class="w ok" id="w-13-0" title="place 13, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 13 with 8
+prec 8
+output: 57200717 mod 13^8; 758530004 mod 13^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-13-1" title="place 13, input x^2 - 13
+line: roots -13 0 1 with 13 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-13-2" title="place 13, input x^2 - 17
+line: roots -17 0 1 with 13 with 8
+prec 8
+output: 57200717 mod 13^8; 758530004 mod 13^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-13-3" title="place 13, input x^2 - 221
+line: roots -221 0 1 with 13 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="17"><th scope="row">17<span class="m8">prec 8</span></th><td><span class="w ok" id="w-17-0" title="place 17, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 17 with 8
+prec 8
+output: 1507388394 mod 17^8; 5468369047 mod 17^8
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-17-1" title="place 17, input x^2 - 13
+line: roots -13 0 1 with 17 with 8
+prec 8
+output: 1507388394 mod 17^8; 5468369047 mod 17^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-17-2" title="place 17, input x^2 - 17
+line: roots -17 0 1 with 17 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-17-3" title="place 17, input x^2 - 221
+line: roots -221 0 1 with 17 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="19"><th scope="row">19<span class="m8">prec 8</span></th><td><span class="w ok" id="w-19-0" title="place 19, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 19 with 8
+prec 8
+output: 1337368757 mod 19^8; 15646194284 mod 19^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-19-1" title="place 19, input x^2 - 13
+line: roots -13 0 1 with 19 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-19-2" title="place 19, input x^2 - 17
+line: roots -17 0 1 with 19 with 8
+prec 8
+output: 1337368757 mod 19^8; 15646194284 mod 19^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-19-3" title="place 19, input x^2 - 221
+line: roots -221 0 1 with 19 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="23"><th scope="row">23<span class="m8">prec 8</span></th><td><span class="w ok" id="w-23-0" title="place 23, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 23 with 8
+prec 8
+output: 15678886094 mod 23^8; 62632099187 mod 23^8
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-23-1" title="place 23, input x^2 - 13
+line: roots -13 0 1 with 23 with 8
+prec 8
+output: 15678886094 mod 23^8; 62632099187 mod 23^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-23-2" title="place 23, input x^2 - 17
+line: roots -17 0 1 with 23 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-23-3" title="place 23, input x^2 - 221
+line: roots -221 0 1 with 23 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="29"><th scope="row">29<span class="m8">prec 8</span></th><td><span class="w ok" id="w-29-0" title="place 29, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 29 with 8
+prec 8
+output: 783935086 mod 29^8; 499462477875 mod 29^8
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-29-1" title="place 29, input x^2 - 13
+line: roots -13 0 1 with 29 with 8
+prec 8
+output: 783935086 mod 29^8; 499462477875 mod 29^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-29-2" title="place 29, input x^2 - 17
+line: roots -17 0 1 with 29 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-29-3" title="place 29, input x^2 - 221
+line: roots -221 0 1 with 29 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+<tr data-p="31"><th scope="row">31<span class="m8">prec 8</span></th><td><span class="w ok" id="w-31-0" title="place 31, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 31 with 8
+prec 8
+output: 399460368015 mod 31^8; 453430669426 mod 31^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-31-1" title="place 31, input x^2 - 13
+line: roots -13 0 1 with 31 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-31-2" title="place 31, input x^2 - 17
+line: roots -17 0 1 with 31 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-31-3" title="place 31, input x^2 - 221
+line: roots -221 0 1 with 31 with 8
+prec 8
+output: 399460368015 mod 31^8; 453430669426 mod 31^8
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="37"><th scope="row">37<span class="m8">prec 8</span></th><td><span class="w ok" id="w-37-0" title="place 37, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 37 with 8
+prec 8
+output: 174714750181 mod 37^8; 3337764703740 mod 37^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-37-1" title="place 37, input x^2 - 13
+line: roots -13 0 1 with 37 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-37-2" title="place 37, input x^2 - 17
+line: roots -17 0 1 with 37 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-37-3" title="place 37, input x^2 - 221
+line: roots -221 0 1 with 37 with 8
+prec 8
+output: 174714750181 mod 37^8; 3337764703740 mod 37^8
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="41"><th scope="row">41<span class="m8">prec 8</span></th><td><span class="w ok" id="w-41-0" title="place 41, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 41 with 8
+prec 8
+output: 1686699607665 mod 41^8; 6298225621456 mod 41^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-41-1" title="place 41, input x^2 - 13
+line: roots -13 0 1 with 41 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok zero" id="w-41-2" title="place 41, input x^2 - 17
+line: roots -17 0 1 with 41 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-41-3" title="place 41, input x^2 - 221
+line: roots -221 0 1 with 41 with 8
+prec 8
+output: 1686699607665 mod 41^8; 6298225621456 mod 41^8
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="43"><th scope="row">43<span class="m8">prec 8</span></th><td><span class="w ok" id="w-43-0" title="place 43, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 43 with 8
+prec 8
+output: 255084932113 mod 43^8; 1124986344683 mod 43^8; 3923634440874 mod 43^8; 7764565836727 mod 43^8; 10563213932918 mod 43^8; 11433115345488 mod 43^8
+status: OK (class ok)">6</span></td><td><span class="w ok" id="w-43-1" title="place 43, input x^2 - 13
+line: roots -13 0 1 with 43 with 8
+prec 8
+output: 3923634440874 mod 43^8; 7764565836727 mod 43^8
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-43-2" title="place 43, input x^2 - 17
+line: roots -17 0 1 with 43 with 8
+prec 8
+output: 255084932113 mod 43^8; 11433115345488 mod 43^8
+status: OK (class ok)">2</span></td><td><span class="w ok" id="w-43-3" title="place 43, input x^2 - 221
+line: roots -221 0 1 with 43 with 8
+prec 8
+output: 1124986344683 mod 43^8; 10563213932918 mod 43^8
+status: OK (class ok)">2</span></td></tr>
+<tr data-p="47"><th scope="row">47<span class="m8">prec 8</span></th><td><span class="w ok" id="w-47-0" title="place 47, input (x^2 - 13)(x^2 - 17)(x^2 - 221)
+line: roots -48841 0 6851 0 -251 0 1 with 47 with 8
+prec 8
+output: 8184056086966 mod 47^8; 15627230574795 mod 47^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-47-1" title="place 47, input x^2 - 13
+line: roots -13 0 1 with 47 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td><td><span class="w ok" id="w-47-2" title="place 47, input x^2 - 17
+line: roots -17 0 1 with 47 with 8
+prec 8
+output: 8184056086966 mod 47^8; 15627230574795 mod 47^8
+status: OK (class ok)">2</span></td><td><span class="w ok zero" id="w-47-3" title="place 47, input x^2 - 221
+line: roots -221 0 1 with 47 with 8
+prec 8
+output: none
+status: OK (class ok)">0</span></td></tr>
+</tbody></table></div>
+<div class="stop"><b>p &gt;= 53: not swept.</b><span>Nothing below this line is computed. A finding may cover it only by an argument.</span></div>
+<div class="argband"><b>F1 argued, not computed, below the stop line:</b> At a prime p that does not divide 2 * 13 * 17, if neither 13 nor 17 is a square mod p then 221 = 13 * 17 is, because the Legendre symbol is multiplicative (refs/src/shoup-ntb/ntb-v2.txt:15014, Theorem 12.1 (ii)), and a unit that is a square mod an odd p is a square in Q_p (refs/src/conrad-hensel/hensel.txt:160-170). So only R, 2, 13 and 17 need a computation, and the wall has them. docs/SPEC.md:541-542 states the fact as proved (docs/proofs/quotient.md, Proposition 12).</div>
+<div class="legend" aria-label="Legend">
+<span><span class="w ok">2</span> OK: the count of the list, or the value</span>
+<span><span class="w ok zero">0</span> OK, the complete list is empty (none)</span>
+<span><span class="w no"></span> proved no: DOMAIN, NO_SOLUTION, NOT_UNIT (solid)</span>
+<span><span class="w nd">?</span> open: NOT_DETERMINED, UNIT_NOT_CERTIFIED, NEEDS_SPLIT, NOT_UNIQUE (dashed)</span>
+<span><span class="w lim">L</span> budget: LIMIT (dotted)</span>
+<span><span class="w pl">!</span> not mathematics: PARSE, UNSUPPORTED (plain)</span>
+<span><span class="w na">—</span> no command of the driver at this place</span>
+</div>
+<div class="checks"><b>Checks</b> (driver lines outside the wall):<ul>
+<li><code>root 13 with 2</code> gives <code>error: DOMAIN</code> (DOMAIN)</li>
+<li><code>root 17 with 2</code> gives <code>error: DOMAIN</code> (DOMAIN)</li>
+<li><code>root 221 with 2</code> gives <code>error: DOMAIN</code> (DOMAIN)</li>
+</ul></div>
+</section><aside class="rail" aria-label="Findings"><h2>Findings</h2>
+<div class="find" tabindex="0" data-cells="w-R-0 w-2-0 w-3-0 w-5-0 w-7-0 w-11-0 w-13-0 w-17-0 w-19-0 w-23-0 w-29-0 w-31-0 w-37-0 w-41-0 w-43-0 w-47-0">
+<span class="id">F1 · column (x^2 - 13)(x^2 - 17)(x^2 - 221)</span>
+<span class="t">A root at every swept place, and no rational root.</span>
+<span class="ev">Computed at 16 places: R, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47.</span>
+<span class="ev">Rule checked by the renderer on 16 places and 3 checks: no exception.</span>
+<span class="ev">The three factor columns show which factor has the root at each place. A rational root of this monic integer polynomial is a rational square root of 13, 17 or 221; `root n with 2` gives DOMAIN for a rational with no rational root (tools/adf/README.md:573).</span>
+<span class="ev"><code>root 13 with 2</code> gives <code>error: DOMAIN</code></span>
+<span class="ev"><code>root 17 with 2</code> gives <code>error: DOMAIN</code></span>
+<span class="ev"><code>root 221 with 2</code> gives <code>error: DOMAIN</code></span>
+<span class="ev"><b>Argument</b> (words, not computed): At a prime p that does not divide 2 * 13 * 17, if neither 13 nor 17 is a square mod p then 221 = 13 * 17 is, because the Legendre symbol is multiplicative (refs/src/shoup-ntb/ntb-v2.txt:15014, Theorem 12.1 (ii)), and a unit that is a square mod an odd p is a square in Q_p (refs/src/conrad-hensel/hensel.txt:160-170). So only R, 2, 13 and 17 need a computation, and the wall has them. docs/SPEC.md:541-542 states the fact as proved (docs/proofs/quotient.md, Proposition 12).</span>
+<span class="ev">Below the stop line: argued in words only.</span>
+<span class="badge st-pattern">pattern: seen in the swept rows, not proved</span>
+</div>
+</aside></div>
+<p class="foot">Bench slice (ux/bench). Every well is one record of ux/bench/out/local_global.records.jsonl; hover a well for its record, a finding for the wells it rests on. Findings are written by hand in ux/bench/experiments/local_global.findings.json.</p>
+</div><script>
+(function () {
+  var tbody = document.getElementById('wall');
+  var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr[data-p]'));
+  var sel = document.getElementById('order');
+  function regroup() {
+    Array.prototype.slice.call(tbody.querySelectorAll('tr.grp')).forEach(function (r) { r.remove(); });
+    var m = parseInt(sel.value, 10);
+    if (!m) { rows.forEach(function (r) { tbody.appendChild(r); }); return; }
+    var groups = {}, keys = [];
+    rows.forEach(function (r) {
+      var p = parseInt(r.getAttribute('data-p'), 10);
+      var k = (p === 0 || m % p === 0) ? 'R and p dividing ' + m : 'p = ' + (p % m) + ' mod ' + m;
+      if (!(k in groups)) { groups[k] = []; keys.push(k); }
+      groups[k].push(r);
+    });
+    keys.sort(function (a, b) {
+      function key(k) { return k.charAt(0) === 'R' ? -1 : parseInt(k.slice(4), 10); }
+      return key(a) - key(b);
+    });
+    keys.forEach(function (k) {
+      var h = document.createElement('tr'); h.className = 'grp';
+      var th = document.createElement('th'); th.colSpan = 99; th.textContent = k + ' (' + groups[k].length + ')';
+      h.appendChild(th); tbody.appendChild(h);
+      groups[k].forEach(function (r) { tbody.appendChild(r); });
+    });
+  }
+  sel.addEventListener('change', regroup);
+  var m = /^#mod(\d+)$/.exec(location.hash);
+  if (m && sel.querySelector('option[value="' + m[1] + '"]')) { sel.value = m[1]; regroup(); }
+  Array.prototype.slice.call(document.querySelectorAll('.find[data-cells]')).forEach(function (f) {
+    var ids = f.getAttribute('data-cells').split(' ').filter(Boolean);
+    function set(on) {
+      ids.forEach(function (id) { var w = document.getElementById(id); if (w) w.classList.toggle('lit', on); });
+    }
+    f.addEventListener('mouseenter', function () { set(true); });
+    f.addEventListener('mouseleave', function () { set(false); });
+    f.addEventListener('focusin', function () { set(true); });
+    f.addEventListener('focusout', function () { set(false); });
+  });
+})();
+</script></body></html>
