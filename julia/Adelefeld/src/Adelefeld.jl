@@ -2,6 +2,7 @@
 # package skeleton, load gates (section 2), statuses (section 4), the Rat handle (sections 3 and 4); step 2
 # of J-a: the FBall handle and the scalar mixed arithmetic (sections 3 and 4).
 # Steps 3 and 4 add Adele/CAdele, numerical carriers, text dispatch, global dumps and reconstruction.
+# Step 1 of J-b adds modulus contexts, leases (context.jl) and the local backend of FBall (modctx.jl).
 # A wrapper of the C contracts, not a second arithmetic implementation (docs/api-j.md:3): every value is
 # computed by the C library through ccall; Julia code only checks arguments, owns storage and copies text.
 module Adelefeld
@@ -17,16 +18,20 @@ export is_canonical
 export Adele, CAdele, RealBall, ComplexBall, finitepart, realpart, complexpart
 export TextKind, try_readvalue, readvalue, try_dump_text, dump_text, try_load_dump, load_dump
 export try_reconstruct, reconstruct
+export ModCtx, try_modctx, modulus, nblocks, blocks, try_to_local, to_local, try_enclose_local, enclose_local
+export try_to_global, to_global, is_local, context
 
 include("status.jl")
 include("load.jl")
 include("handle.jl")
 include("rat.jl")
+include("context.jl")
 include("fball.jl")
 include("adele.jl")
 include("carrier.jl")
 include("text.jl")
 include("dump.jl")
 include("recon.jl")
+include("modctx.jl")
 
 end

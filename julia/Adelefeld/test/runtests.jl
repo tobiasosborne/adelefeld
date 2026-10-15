@@ -1854,3 +1854,503 @@ finally
     GC.enable(previous_gc4)
     GC.gc()
 end
+
+# ---- Step J-b.1: contexts, leases and the local backend (docs/api-j.md:126-141, 242-260) ----
+# Contracts: include/adelefeld/modctx.h:11-35 (constructor rules), 57-101 (constructors, free), 105-112
+# (accessors), 145-174 (local conversions); fball.h:13-21, 102-106, 196-197; docs/conventions.md:342-397;
+# docs/SPEC.md:184-214 (different context pointers fall back to global), 285-298.
+# Exact live and token counts: automatic GC is frozen here, as in J-a.3/J-a.4; the GC acceptance runs
+# in a separate process with automatic GC enabled.
+using Adelefeld: UNSUPPORTED, NOT_UNIT
+previous_gc5 = GC.enable(false)
+try
+@testset "Adelefeld step J-b.1" begin
+
+ctx_live() = Adelefeld.diagnostics().contexts
+tokens(c) = Adelefeld.ctx_tokens(c)
+# The C context pointer of a value, read through adf_fball_context (modctx.h:171-174).
+cptr(x::FBall) = Adelefeld.context_pointer(x)
+# The first n primes, by a sieve (65537 primes are below 821648, modctx.h:45-49).
+function first_primes(n)
+    lim = 821_700
+    sieve = trues(lim)
+    sieve[1] = false
+    for i in 2:isqrt(lim)
+        sieve[i] && (sieve[i*i:i:lim] .= false)
+    end
+    return UInt64.(findall(sieve)[1:n])
+end
+
+@testset "construction families on valid input (modctx.h:57-87, 105-112)" begin
+    c = ModCtx(blocks=[8, 9])
+    @test c isa ModCtx
+    @test modulus(c) isa Rat
+    @test modulus(c) == 72
+    @test nblocks(c) == 2
+    @test blocks(c) == UInt64[8, 9]
+    r = try_modctx(blocks=[8, 9])
+    @test r isa AdfResult{ModCtx}
+    @test r.status === OK
+    @test r.details.family === :blocks
+    # The modulus from the accessor equals the product of the blocks, computed in Julia with BigInt.
+    for b in ([8, 9], [16, 27, 5], [7], [2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
+              [typemax(UInt64), big(2)^61 - 1], UInt64[2^32 + 15, 2^31 - 1])
+        c = ModCtx(blocks=b)
+        @test modulus(c) == prod(BigInt.(b))
+        @test blocks(c) == UInt64.(b)
+        @test nblocks(c) == length(b)
+    end
+    # k = 0 is a context of modulus 1 without blocks (modctx.h:57-58).
+    c = ModCtx(blocks=Int[])
+    @test nblocks(c) == 0 && blocks(c) == UInt64[] && modulus(c) == 1
+    # prime powers, in the order supplied (modctx.h:64-68).
+    c = ModCtx(prime_powers=[2 => 3, 3 => 2])
+    @test blocks(c) == UInt64[8, 9] && modulus(c) == 72
+    @test blocks(ModCtx(prime_powers=[3 => 2, 2 => 3])) == UInt64[9, 8]
+    @test blocks(ModCtx(prime_powers=[2 => 63])) == UInt64[UInt64(1) << 63]
+    @test try_modctx(prime_powers=[2 => 3]).details.family === :prime_powers
+    # modulus K: one block if 2 <= K < 2^64, none if K = 1 or K >= 2^64 (modctx.h:71-74).
+    @test blocks(ModCtx(modulus=72)) == UInt64[72]
+    @test blocks(ModCtx(modulus=big(2)^64 - 1)) == [typemax(UInt64)]
+    for K in (1, big(2)^64, big(10)^30)
+        c = ModCtx(modulus=K)
+        @test nblocks(c) == 0
+        @test modulus(c) == K
+    end
+    @test modulus(ModCtx(modulus=big(10)^30)) == big(10)^30
+    # factorial n: the prime powers of n! in increasing order; n = 0, 1 without blocks (modctx.h:76-81).
+    c = ModCtx(factorial=5)
+    @test blocks(c) == UInt64[8, 3, 5] && modulus(c) == 120
+    @test nblocks(ModCtx(factorial=0)) == 0 && nblocks(ModCtx(factorial=1)) == 0
+    c = ModCtx(factorial=65)          # v_2(65!) = 63: every block fits a word
+    @test modulus(c) == factorial(big(65))
+    @test prod(BigInt.(blocks(c))) == factorial(big(65))
+    # primorial power (n, e): blocks p^e, p <= n increasing (modctx.h:83-87).
+    c = ModCtx(primorial_power=(5, 2))
+    @test blocks(c) == UInt64[4, 9, 25] && modulus(c) == 900
+    @test blocks(ModCtx(primorial_power=(2, 63))) == UInt64[UInt64(1) << 63]
+    @test nblocks(ModCtx(primorial_power=(1, 3))) == 0
+    @test nblocks(ModCtx(primorial_power=(5, 0))) == 0
+    @test try_modctx(primorial_power=(5, 2)).details.family === :primorial_power
+    @test try_modctx(factorial=5).details.family === :factorial
+    @test try_modctx(modulus=6).details.family === :modulus
+    # Input arrays are copied (modctx.h:20) and unchanged.
+    b = [8, 9]
+    c = ModCtx(blocks=b)
+    @test b == [8, 9]
+    b[1] = 5
+    @test blocks(c) == UInt64[8, 9]
+    @test sprint(show, ModCtx(blocks=[8, 9])) == "ModCtx(modulus=72, blocks=[8, 9])"
+end
+
+@testset "construction refusals (modctx.h:11-35, 57-87)" begin
+    n0 = ctx_live()
+    # Exactly one construction family (docs/api-j.md:255): ArgumentError before C.
+    @test_throws ArgumentError try_modctx()
+    @test_throws ArgumentError ModCtx()
+    @test_throws ArgumentError try_modctx(blocks=[8], modulus=8)
+    @test_throws ArgumentError ModCtx(factorial=3, primorial_power=(3, 1))
+    @test_throws ArgumentError try_modctx(blocks=[8], prime_powers=[2 => 3], modulus=8, factorial=4,
+                                          primorial_power=(3, 1))
+    # Words: a block must fit ulong (modctx.h:62); never a wrapped word (docs/api-j.md:154-155).
+    @test_throws ArgumentError try_modctx(blocks=[big(2)^64])
+    @test_throws ArgumentError try_modctx(blocks=[-1])
+    @test_throws ArgumentError try_modctx(blocks=[1.5])
+    @test_throws ArgumentError try_modctx(prime_powers=[2 => -1])
+    @test_throws ArgumentError try_modctx(prime_powers=[(2, 3)])
+    @test_throws ArgumentError try_modctx(factorial=-1)
+    @test_throws ArgumentError try_modctx(primorial_power=5)
+    @test_throws ArgumentError try_modctx(primorial_power=(5, -1))
+    @test_throws ArgumentError try_modctx(modulus=1.0)
+    @test ctx_live() == n0
+    # DOMAIN: a block below 2, blocks not pairwise coprime (modctx.h:58-59).
+    for b in ([1], [0], [6, 4], [8, 8], [8, 9, 1], [35, 77])
+        r = try_modctx(blocks=b)
+        @test r.status === DOMAIN
+        @test r.value === nothing
+        @test r.details == (family = :blocks,)
+    end
+    # DOMAIN: not prime, repeated prime, exponent 0; UNSUPPORTED: p^e >= 2^64 (modctx.h:64-68);
+    # DOMAIN first, then UNSUPPORTED (modctx.h:31-32): a composite with an oversized power is DOMAIN.
+    for (pp, st) in (([4 => 1], DOMAIN), ([2 => 0], DOMAIN), ([2 => 1, 2 => 2], DOMAIN), ([1 => 1], DOMAIN),
+                     ([2 => 64], UNSUPPORTED), ([3 => 41], UNSUPPORTED), ([4 => 64], DOMAIN),
+                     ([2 => 64, 4 => 1], DOMAIN))
+        r = try_modctx(prime_powers=pp)
+        @test r.status === st
+        @test r.value === nothing
+        @test r.details == (family = :prime_powers,)
+    end
+    # modulus K < 1 is DOMAIN (modctx.h:73).
+    for K in (0, -5, -big(2)^70)
+        @test try_modctx(modulus=K).status === DOMAIN
+    end
+    # factorial: UNSUPPORTED from n = 66 on (v_2(66!) = 64; modctx.h:78-80).
+    @test try_modctx(factorial=66).status === UNSUPPORTED
+    @test try_modctx(factorial=10^6).status === UNSUPPORTED
+    @test try_modctx(factorial=typemax(UInt64)).status === UNSUPPORTED
+    # primorial power: UNSUPPORTED if some p^e >= 2^64 (modctx.h:86), or more than 65536 blocks
+    # (n >= ADF_MODCTX_MAX_PRIME = 821647, modctx.h:26-28, 45-49).
+    @test try_modctx(primorial_power=(2, 64)).status === UNSUPPORTED
+    @test try_modctx(primorial_power=(3, 41)).status === UNSUPPORTED
+    @test try_modctx(primorial_power=(821647, 1)).status === UNSUPPORTED
+    # More than ADF_MODCTX_MAX_BLOCKS = 65536 blocks is UNSUPPORTED (modctx.h:23-28, 48).
+    ps = first_primes(65537)
+    @test ps[end] == 821647
+    @test try_modctx(blocks=ps).status === UNSUPPORTED
+    @test try_modctx(prime_powers=[p => 1 for p in ps]).status === UNSUPPORTED
+    # No constructor names LIMIT (modctx.h:57-87): none of the cases above is LIMIT; no context made.
+    @test ctx_live() == n0
+    # The throwing form carries the status and the whole result (decision J5).
+    err = try ModCtx(blocks=[1]); nothing; catch e; e; end
+    @test err isa AdfError
+    @test err.status === DOMAIN
+    @test err.result.details == (family = :blocks,)
+    @test ctx_live() == n0
+end
+
+@testset "lease basics, before any later use of the value (context proof steps 1-5)" begin
+    n0 = ctx_live()
+    f0 = Adelefeld.diagnostics().context_frees
+    ctx = ModCtx(blocks=[8, 9])
+    @test tokens(ctx) == 1                                    # step 1: the owner token
+    y = to_local(parse(FBall, "5 mod 72"), ctx)
+    @test tokens(ctx) == 2                                    # step 2: one token for the value
+    r = try_to_local(FBall(Rat(1)), ctx)                      # a failing call: its temporary's token returns
+    @test r.status === DOMAIN
+    @test tokens(ctx) == 2
+    @test Adelefeld.diagnostics().context_frees == f0
+    finalize(ctx)                                             # step 4: the owner token only
+    @test tokens(ctx) == 1
+    @test ctx_live() == n0 + 1
+    @test Adelefeld.diagnostics().context_frees == f0         # step 5: no free while y lives
+    # y is used only while its context has not been freed, so that a broken lease is reported by the
+    # assertions above instead of a use after free; on a correct package the branch always runs.
+    if Adelefeld.diagnostics().context_frees == f0
+        @test value_text(y) == "(* ; 5 mod 72)"
+        close(y)
+        @test tokens(ctx) == 0
+        @test Adelefeld.diagnostics().context_frees == f0 + 1   # exactly one free, at the last token
+        @test ctx_live() == n0
+    end
+end
+
+# A context in which all nine inexact balls of SPEC 4.3 are local values: c + R Zhat is local in K
+# exactly when K/R and c K/R are integers (modctx.h:145-148). K = 2160 = 16 * 27 * 5.
+ROWS_INEXACT = ["3 mod 12", "5 mod 18", "2 mod 6", "3 mod 6", "60 mod 216", "5/3 mod 6",
+                      "1/2 mod 8", "2/3 mod 9", "0 mod 1/6"]
+
+@testset "SPEC 4.3 rows to local and back (modctx.h:145-169)" begin
+    ctx = ModCtx(blocks=[16, 27, 5])
+    for s in ROWS_INEXACT
+        x = parse(FBall, s)
+        x0 = copy(x)
+        r = try_to_local(x, ctx)
+        @test r.status === OK
+        @test r.details == (lost = false,)
+        y = r.value
+        @test is_local(y)
+        @test !is_local(x)
+        @test context(y) === ctx
+        @test context(x) === nothing
+        @test cptr(y) == Adelefeld.ctx_pointer(ctx)
+        @test equal_set(x, y)
+        @test !identical(x, y)                     # the backend differs (fball.h:102-106)
+        @test is_canonical(y)
+        # The value form does not record the backend (conventions 9.8 A11; text.h:37-38).
+        @test value_text(y) == value_text(x) == "(* ; " * s * ")"
+        g = to_global(y)
+        @test !is_local(g)
+        @test identical(g, x)                      # exact: to_global(to_local(x)) is x
+        @test identical(x, x0)                     # input unchanged
+        # The enclosing variant on a value that is local already: lost false, the same value.
+        e = try_enclose_local(x, ctx)
+        @test e.status === OK
+        @test e.details == (lost = false,)
+        @test identical(e.value, y)
+        @test identical(to_local(x, ctx), y)
+        @test identical(enclose_local(x, ctx), y)
+    end
+    # The five rows computed on local operands; sums of one context stay local (fball.h:196-197).
+    L(s) = to_local(parse(FBall, s), ctx)
+    rows = [(L("3 mod 12") + L("5 mod 18"), "2 mod 6"), (L("3 mod 12") * L("5 mod 18"), "3 mod 6"),
+            (12 * L("5 mod 18"), "60 mod 216"), (Rat(1, 3) * L("5 mod 18"), "5/3 mod 6"),
+            (L("1/2 mod 8") * L("2/3 mod 9"), "0 mod 1/6")]
+    for (z, want) in rows
+        w = parse(FBall, want)
+        @test equal_set(z, w)
+        @test value_text(z) == "(* ; " * want * ")"
+        @test identical(to_global(z), w)
+    end
+    @test is_local(rows[1][1])
+    @test context(rows[1][1]) === ctx
+    # Exact values are never local (modctx.h:149-150, 159-160): DOMAIN, no value, empty details.
+    for q in (Rat(12), Rat(1, 3), Rat(0))
+        x = FBall(q)
+        for r in (try_to_local(x, ctx), try_enclose_local(x, ctx))
+            @test r.status === DOMAIN
+            @test r.value === nothing
+            @test r.details == NamedTuple()
+        end
+        @test_throws AdfError to_local(x, ctx)
+        @test_throws AdfError enclose_local(x, ctx)
+    end
+end
+
+@testset "lost: the enclosing variant (modctx.h:155-164)" begin
+    # K = 1080 = 8 * 27 * 5: 1/2 mod 8 is not local (K/R = 135, c K/R = 135/2).
+    ctx = ModCtx(blocks=[8, 27, 5])
+    x = parse(FBall, "1/2 mod 8")
+    r = try_to_local(x, ctx)
+    @test r.status === DOMAIN && r.value === nothing && r.details == NamedTuple()
+    e = try_enclose_local(x, ctx)
+    @test e.status === OK
+    @test e.details == (lost = true,)
+    @test e.details.lost isa Bool
+    y = e.value
+    # d0 = lcm(135, 2) = 270; y = (135 + 1080 Zhat)/270 = 1/2 + 4 Zhat.
+    @test is_local(y) && context(y) === ctx
+    @test inside(x, y)                         # an enclosure of x
+    @test !equal_set(x, y)
+    @test equal_set(y, parse(FBall, "1/2 mod 4"))
+    @test value_text(y) == "(* ; 1/2 mod 4)"
+    @test identical(to_global(y), parse(FBall, "1/2 mod 4"))
+    @test enclose_local(x, ctx) isa FBall
+    @test_throws AdfError to_local(x, ctx)
+    # A context without blocks serves only the scaled policy: UNSUPPORTED (modctx.h:151, 160).
+    for c in (ModCtx(blocks=Int[]), ModCtx(modulus=1), ModCtx(modulus=big(2)^64), ModCtx(factorial=1))
+        for r in (try_to_local(parse(FBall, "3 mod 12"), c), try_enclose_local(parse(FBall, "3 mod 12"), c))
+            @test r.status === UNSUPPORTED
+            @test r.value === nothing
+            @test r.details == NamedTuple()
+        end
+    end
+    # A one-block modulus context of 2^64 - 1 is an ordinary local context.
+    c = ModCtx(modulus=big(2)^64 - 1)
+    y = to_local(parse(FBall, "1 mod 3"), c)
+    @test is_local(y) && value_text(y) == "(* ; 1 mod 3)"
+end
+
+@testset "same modulus, distinct contexts (SPEC 184-214, 285-298; conventions 4.6)" begin
+    c1 = ModCtx(blocks=[8, 9])
+    c2 = ModCtx(blocks=[8, 9])
+    c3 = ModCtx(prime_powers=[2 => 3, 3 => 2])
+    @test c1 !== c2
+    @test modulus(c1) == modulus(c2) == modulus(c3)
+    @test blocks(c1) == blocks(c2) == blocks(c3)
+    @test Adelefeld.ctx_pointer(c1) != Adelefeld.ctx_pointer(c2)
+    @test Adelefeld.ctx_pointer(c1) != Adelefeld.ctx_pointer(c3)
+    x = parse(FBall, "5 mod 72")
+    a = to_local(x, c1)
+    b = to_local(x, c2)
+    @test context(a) === c1 && context(b) === c2
+    @test cptr(a) == Adelefeld.ctx_pointer(c1)
+    @test cptr(b) == Adelefeld.ctx_pointer(c2)
+    @test cptr(a) != cptr(b)
+    # A value made in one is not a value of the other: a different context pointer, not identical,
+    # although the sets are equal (fball.h:102-106; adf_fball_context, modctx.h:171-174).
+    @test !identical(a, b)
+    @test equal_set(a, b)
+    # Two different context pointers: the finite operation falls back to global (fball.h:17-20).
+    s = a + b
+    @test !is_local(s)
+    @test context(s) === nothing
+    @test equal_set(s, x + x)
+    @test identical(s, x + x)
+    # One context pointer: local, in that context.
+    a2 = to_local(parse(FBall, "7 mod 36"), c1)
+    t = a + a2
+    @test is_local(t) && context(t) === c1
+    @test identical(to_global(t), x + parse(FBall, "7 mod 36"))
+end
+
+@testset "leases: tokens, roots and failure paths (docs/api-j.md:126-141)" begin
+    n0 = ctx_live()
+    ctx = ModCtx(blocks=[8, 9])
+    @test ctx_live() == n0 + 1
+    @test tokens(ctx) == 1                       # the owner token
+    x = parse(FBall, "5 mod 72")
+    y = to_local(x, ctx)
+    @test tokens(ctx) == 2
+    @test Adelefeld.roots(y) == [ctx]
+    @test Adelefeld.roots(x) == ModCtx[]
+    yc = copy(y)                                  # same context pointer (fball.h:86-88)
+    @test identical(yc, y) && context(yc) === ctx
+    @test tokens(ctx) == 3
+    close(yc)
+    @test tokens(ctx) == 2
+    # One token per distinct context state: y + y holds one token, not two.
+    s = y + y
+    @test is_local(s) && tokens(ctx) == 3
+    @test Adelefeld.roots(s) == [ctx]
+    for z in (-y, y - y, y * y, y * Rat(3), Rat(2) * y, y + Rat(1), y / Rat(1, 4), y + 2)
+        @test ctx in Adelefeld.roots(z)
+        close(z)
+    end
+    close(s)
+    @test tokens(ctx) == 2
+    # to_global keeps a conservative root (docs/api-j.md:133-134): a token until it is cleared.
+    g = to_global(y)
+    @test !is_local(g) && tokens(ctx) == 3
+    close(g)
+    @test tokens(ctx) == 2
+    # Values containing a local finite ball (adele.h:85, 112-117, 130-131, 187-188).
+    A = Adele(RealBall(1), y)
+    @test tokens(ctx) == 3
+    f = finitepart(A)
+    @test identical(f, y) && context(f) === ctx && tokens(ctx) == 4
+    C = CAdele(A)
+    fC = finitepart(C)
+    @test identical(fC, y)
+    close(fC)
+    A2 = A + A
+    fA2 = finitepart(A2)
+    @test is_local(fA2)
+    close(fA2)
+    Ac = copy(A)
+    for v in (A, f, C, A2, Ac)
+        @test ctx in Adelefeld.roots(v)
+    end
+    CB = CAdele(ComplexBall(Rat(1)), y)
+    @test ctx in Adelefeld.roots(CB)
+    # A failing C call releases its reserved tokens with its temporary (docs/api-j.md:130).
+    t0 = tokens(ctx)
+    @test try_div(y, Rat(0)).status === NOT_UNIT
+    @test try_div(A, Rat(0)).status === NOT_UNIT
+    @test tokens(ctx) == t0
+    @test try_to_local(FBall(Rat(1)), ctx).status === DOMAIN
+    @test try_to_local(parse(FBall, "1/2 mod 8"), ctx).status === DOMAIN
+    @test tokens(ctx) == t0
+    # Closed inputs are refused before C, with no token and no allocation.
+    xc = parse(FBall, "1 mod 8")
+    close(xc)
+    live1 = Adelefeld.diagnostics().live
+    @test_throws InvalidStateException try_to_local(xc, ctx)
+    @test_throws InvalidStateException try_enclose_local(xc, ctx)
+    @test_throws InvalidStateException to_global(xc)
+    @test_throws InvalidStateException is_local(xc)
+    @test tokens(ctx) == t0
+    @test Adelefeld.diagnostics().live == live1
+    for v in (A, f, C, A2, Ac, CB)
+        close(v)
+    end
+    @test tokens(ctx) == 2
+    # Inputs unchanged by the conversions.
+    x0 = copy(x)
+    close(to_local(x, ctx)); close(enclose_local(x, ctx)); close(to_global(y))
+    @test identical(x, x0)
+    @test tokens(ctx) == 2
+    close(y)
+    @test tokens(ctx) == 1
+    @test ctx_live() == n0 + 1
+    @test Adelefeld.diagnostics().finalizer_errors == 0
+end
+
+@testset "context finalized before and after its values (docs/api-j.md:126-141)" begin
+    n0 = ctx_live()
+    f0 = Adelefeld.diagnostics().context_frees
+    # Order 1: the context's owner token is dropped first; the value keeps the C context alive.
+    ctx = ModCtx(blocks=[8, 9])
+    y = to_local(parse(FBall, "5 mod 72"), ctx)
+    finalize(ctx)
+    @test tokens(ctx) == 1
+    @test ctx_live() == n0 + 1
+    @test Adelefeld.diagnostics().context_frees == f0
+    @test value_text(y) == "(* ; 5 mod 72)"
+    @test is_local(y) && context(y) === ctx
+    z = y + y
+    @test tokens(ctx) == 2
+    close(z)
+    # A finalized context is refused as an explicit argument (docs/api-j.md:127).
+    @test_throws InvalidStateException try_to_local(parse(FBall, "1 mod 8"), ctx)
+    @test_throws InvalidStateException try_enclose_local(parse(FBall, "1 mod 8"), ctx)
+    @test_throws InvalidStateException modulus(ctx)
+    @test_throws InvalidStateException blocks(ctx)
+    @test_throws InvalidStateException nblocks(ctx)
+    @test sprint(show, ctx) == "ModCtx(finalized)"
+    finalize(ctx)                                 # repeated finalize: a no-op
+    @test tokens(ctx) == 1
+    g = to_global(y)                              # a conservative root: one more token
+    @test identical(g, parse(FBall, "5 mod 72"))
+    @test tokens(ctx) == 2
+    close(g)
+    close(y)                                      # the last token: exactly one free
+    @test tokens(ctx) == 0
+    @test ctx_live() == n0
+    @test Adelefeld.diagnostics().context_frees == f0 + 1
+    close(y); finalize(y); finalize(ctx)          # repeated close/finalize: no-ops
+    @test Adelefeld.diagnostics().context_frees == f0 + 1
+    # Order 2: the value is cleared first, then the context's owner token.
+    ctx = ModCtx(blocks=[8, 9])
+    y = to_local(parse(FBall, "5 mod 72"), ctx)
+    close(y)
+    @test tokens(ctx) == 1 && ctx_live() == n0 + 1
+    finalize(ctx)
+    @test tokens(ctx) == 0 && ctx_live() == n0
+    @test Adelefeld.diagnostics().context_frees == f0 + 2
+    @test Adelefeld.diagnostics().finalizer_errors == 0
+end
+
+@testset "GC: both orders, 10^4 round trips, zero contexts and owners" begin
+    code = """
+        using Adelefeld
+        function churn()
+            x = parse(FBall, "5 mod 72")
+            for i in 1:10_000
+                ctx = ModCtx(blocks=[8, 9])
+                y = to_local(x, ctx)
+                identical(to_global(y), x) || error("round trip failed")
+                if i % 3 == 0
+                    finalize(ctx)                 # the context first, the value later by GC
+                elseif i % 3 == 1
+                    close(y); finalize(ctx)       # the value first, then the context
+                end                               # else both are left to the collector
+            end
+        end
+        function kept()
+            # The only reference to the context is the value's root: forced GC must not free it.
+            y = to_local(parse(FBall, "1 mod 8"), ModCtx(blocks=[8]))
+            GC.gc(); GC.gc()
+            ok = Adelefeld.diagnostics().contexts == 1 && value_text(y) == "(* ; 1 mod 8)"
+            return ok
+        end
+        println("BASELINE=", Adelefeld.diagnostics().live, " CTX=", Adelefeld.diagnostics().contexts)
+        churn()
+        GC.gc(); GC.gc(); GC.gc(); GC.gc()
+        d = Adelefeld.diagnostics()
+        println("ROUNDTRIPS=10000 LIVE=", d.live, " CONTEXTS=", d.contexts, " FREES=", d.context_frees,
+                " ERRORS=", d.finalizer_errors)
+        println("KEPT=", kept())
+        GC.gc(); GC.gc(); GC.gc(); GC.gc()
+        d = Adelefeld.diagnostics()
+        println("AFTER LIVE=", d.live, " CONTEXTS=", d.contexts, " FREES=", d.context_frees,
+                " ERRORS=", d.finalizer_errors)
+        """
+    julia = Base.julia_cmd()
+    out = read(`timeout 150 $julia --startup-file=no --project=$PKG -e $code`, String)
+    print(out)
+    @test occursin("BASELINE=0 CTX=0", out)
+    @test occursin("ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0", out)
+    @test occursin("KEPT=true", out)
+    @test occursin("AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0", out)
+end
+
+@testset "local dumps and the session line" begin
+    ctx = ModCtx(blocks=[8, 9])
+    y = to_local(FBall(Rat(5), Rat(72)), ctx)
+    @test value_text(y) == "(* ; 5 mod 72)"
+    @test sprint(show, y) == "(* ; 5 mod 72)"
+    # The dump records the backend (conventions 9.8 A11); the NULL-context loader refuses it with
+    # DOMAIN (dump.h:41-42), and constructs no context.
+    n0 = ctx_live()
+    d = dump_text(y)
+    @test d != dump_text(FBall(Rat(5), Rat(72)))
+    @test try_load_dump(FBall, d).status === DOMAIN
+    @test ctx_live() == n0
+    @test isempty(Test.detect_ambiguities(Adelefeld))
+end
+
+end
+finally
+    GC.enable(previous_gc5)
+    GC.gc()
+end

@@ -1,0 +1,70 @@
+ERROR: LoadError: Some tests did not pass: 485 passed, 3 failed, 0 errored, 0 broken.
+in expression starting at runtests.jl(J-b.1):9
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/jb1_only.jl:9
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):326
+  Expression: is_local(s) && tokens(ctx) == 3
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):326 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):327
+  Expression: Adelefeld.roots(s) == [ctx]
+   Evaluated: ModCtx[ModCtx(modulus=72, blocks=[8, 9]), ModCtx(modulus=72, blocks=[8, 9])] == ModCtx[ModCtx(modulus=72, blocks=[8, 9])]
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):310 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):327 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+context finalized before and after its values (docs/api-j.md:126-141): Test Failed at runtests.jl(J-b.1):404
+  Expression: tokens(ctx) == 2
+   Evaluated: 3 == 2
+
+Stacktrace:
+ [1] top-level scope
+   @ runtests.jl(J-b.1):12
+ [2] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [3] macro expansion
+   @ runtests.jl(J-b.1):392 [inlined]
+ [4] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+ [5] macro expansion
+   @ runtests.jl(J-b.1):404 [inlined]
+ [6] macro expansion
+   @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:680 [inlined]
+BASELINE=0 CTX=0
+ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0
+KEPT=true
+AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0
+Test Summary:                                                               | Pass  Fail  Total  Time
+Adelefeld step J-b.1                                                        |  485     3    488  6.6s
+  construction families on valid input (modctx.h:57-87, 105-112)            |   54           54  1.2s
+  construction refusals (modctx.h:11-35, 57-87)                             |   74           74  1.0s
+  lease basics, before any later use of the value (context proof steps 1-5) |   12           12  0.4s
+  SPEC 4.3 rows to local and back (modctx.h:145-169)                        |  212          212  0.3s
+  lost: the enclosing variant (modctx.h:155-164)                            |   37           37  0.0s
+  same modulus, distinct contexts (SPEC 184-214, 285-298; conventions 4.6)  |   17           17  0.0s
+  leases: tokens, roots and failure paths (docs/api-j.md:126-141)           |   47     2     49  1.8s
+  context finalized before and after its values (docs/api-j.md:126-141)     |   22     1     23  0.0s
+  GC: both orders, 10^4 round trips, zero contexts and owners               |    4            4  1.6s
+  local dumps and the session line                                          |    6            6  0.2s
+RNG of the outermost testset: Random.Xoshiro(0xda763f57478cd56c, 0x4b0aea64327a2caa, 0xd8f9e89576eb64a3, 0xafa49d34fa98236a, 0xc5f8d5e20bbd4a7f)

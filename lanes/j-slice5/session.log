@@ -1,0 +1,5 @@
+(* ; 5 mod 72)
+
+ctx: ModCtx(modulus=72, blocks=[8, 9])
+is_local=true context(y)===ctx: true modulus=72
+to_global: (* ; 5 mod 72) identical to the global input: true

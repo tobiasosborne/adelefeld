@@ -1,0 +1,9 @@
+Precompiling packages...
+   1371.4 ms  ✓ Adelefeld
+  1 dependency successfully precompiled in 1 seconds
+BASELINE=0 CTX=0
+ROUNDTRIPS=10000 LIVE=0 CONTEXTS=0 FREES=10000 ERRORS=0
+KEPT=true
+AFTER LIVE=0 CONTEXTS=0 FREES=10001 ERRORS=0
+Test Summary:        | Pass  Total  Time
+Adelefeld step J-b.1 |  488    488  5.2s

@@ -1,0 +1,370 @@
+     Testing Adelefeld
+      Status `~/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/tmp/jl_MAtiMt/Project.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld`
+  [8f399da3] Libdl v1.11.0
+  [8dfed614] Test v1.11.0
+      Status `~/Projects/adelefeld-wt/j-slice5/lanes/j-slice5/tmp/jl_MAtiMt/Manifest.toml`
+  [f544f23f] Adelefeld v0.1.0 `~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld`
+  [2a0f44e3] Base64 v1.11.0
+  [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
+  [8f399da3] Libdl v1.11.0
+  [56ddb016] Logging v1.11.0
+  [d6f4376e] Markdown v1.11.0
+  [9a3f8284] Random v1.11.0
+  [ea8e919c] SHA v0.7.0
+  [9e88b42a] Serialization v1.11.0
+  [f489334b] StyledStrings v1.11.0
+  [8dfed614] Test v1.11.0
+     Testing Running tests...
+ERROR: FieldError: type NamedTuple has no field `contexts`, available fields: `state`, `library`, `live`, `finalizer_errors`
+Stacktrace:
+ [1] getproperty(x::@NamedTuple{state::Symbol, library::String, live::Int64, finalizer_errors::Int64}, f::Symbol)
+   @ Base ./Base_compiler.jl:54
+ [2] top-level scope
+   @ none:22
+ [3] eval(m::Module, e::Any)
+   @ Core ./boot.jl:489
+ [4] exec_options(opts::Base.JLOptions)
+   @ Base ./client.jl:283
+ [5] _start()
+   @ Base ./client.jl:550
+ERROR: LoadError: Some tests did not pass: 0 passed, 0 failed, 9 errored, 0 broken.
+in expression starting at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1865
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.1 |  904    904  17.2s
+Test Summary:        | Pass  Total  Time
+Adelefeld step J-a.2 | 1015   1015  9.6s
+BASELINE=0
+Adele LIVE=0 ERRORS=0
+CAdele LIVE=0 ERRORS=0
+RealBall LIVE=0 ERRORS=0
+ComplexBall LIVE=0 ERRORS=0
+ERRORS=24 LIMIT_CALLS=0 LIVE=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.3 | 1649   1649  23.0s
+DUMPS=16 FREES=16
+CONTEXTS=0
+DIGIT_ERRORS=64 PRINT_CALLS=0
+PREC_ERRORS=5 LIMIT_CALLS=0 CLASSIFY_CALLS=0
+LIVE=0
+Test Summary:   | Pass  Total  Time
+C call counters |   43     43  2.9s
+BASELINE=0
+ROUNDTRIPS=10000 LIVE=0 ERRORS=0
+Test Summary:        | Pass  Total   Time
+Adelefeld step J-a.4 | 1313   1313  12.8s
+construction families on valid input (modctx.h:57-87, 105-112): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1883
+  Got exception outside of a @test
+  UndefVarError: `ModCtx` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1884 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1884 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+construction refusals (modctx.h:11-35, 57-87): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1945
+  Got exception outside of a @test
+  FieldError: type NamedTuple has no field `contexts`, available fields: `state`, `library`, `live`, `finalizer_errors`
+  Stacktrace:
+    [1] getproperty
+      @ ./Base_compiler.jl:54 [inlined]
+    [2] (::var"#ctx_live#ctx_live##0")()
+      @ Main ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [3] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1946 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [7] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1946 [inlined]
+    [8] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [9] top-level scope
+      @ none:6
+   [10] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [11] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [12] _start()
+      @ Base ./client.jl:550
+SPEC 4.3 rows to local and back (modctx.h:145-169): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2015
+  Got exception outside of a @test
+  UndefVarError: `ModCtx` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2016 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2016 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+lost: the enclosing variant (modctx.h:155-164): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2072
+  Got exception outside of a @test
+  UndefVarError: `ModCtx` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2074 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2074 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+same modulus, distinct contexts (SPEC 184-214, 285-298; conventions 4.6): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2106
+  Got exception outside of a @test
+  UndefVarError: `ModCtx` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2107 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2107 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+leases: tokens, roots and failure paths (docs/api-j.md:126-141): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2139
+  Got exception outside of a @test
+  FieldError: type NamedTuple has no field `contexts`, available fields: `state`, `library`, `live`, `finalizer_errors`
+  Stacktrace:
+    [1] getproperty
+      @ ./Base_compiler.jl:54 [inlined]
+    [2] (::var"#ctx_live#ctx_live##0")()
+      @ Main ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [3] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2140 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [7] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2140 [inlined]
+    [8] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [9] top-level scope
+      @ none:6
+   [10] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [11] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [12] _start()
+      @ Base ./client.jl:550
+context finalized before and after its values (docs/api-j.md:126-141): Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2221
+  Got exception outside of a @test
+  FieldError: type NamedTuple has no field `contexts`, available fields: `state`, `library`, `live`, `finalizer_errors`
+  Stacktrace:
+    [1] getproperty
+      @ ./Base_compiler.jl:54 [inlined]
+    [2] (::var"#ctx_live#ctx_live##0")()
+      @ Main ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [3] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2222 [inlined]
+    [6] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [7] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2222 [inlined]
+    [8] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [9] top-level scope
+      @ none:6
+   [10] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [11] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [12] _start()
+      @ Base ./client.jl:550
+GC: both orders, 10^4 round trips, zero contexts and owners: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2266
+  Got exception outside of a @test
+  failed process: Process(`timeout 150 /home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/bin/julia -C native -J/home/tobias/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/lib/julia/sys.so --depwarn=yes --check-bounds=yes -g1 --startup-file=no --startup-file=no --project=/home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/ -e "using Adelefeld
+  function churn()
+      x = parse(FBall, \"5 mod 72\")
+      for i in 1:10_000
+          ctx = ModCtx(blocks=[8, 9])
+          y = to_local(x, ctx)
+          identical(to_global(y), x) || error(\"round trip failed\")
+          if i % 3 == 0
+              finalize(ctx)                 # the context first, the value later by GC
+          elseif i % 3 == 1
+              close(y); finalize(ctx)       # the value first, then the context
+          end                               # else both are left to the collector
+      end
+  end
+  function kept()
+      # The only reference to the context is the value's root: forced GC must not free it.
+      y = to_local(parse(FBall, \"1 mod 8\"), ModCtx(blocks=[8]))
+      GC.gc(); GC.gc()
+      ok = Adelefeld.diagnostics().contexts == 1 && value_text(y) == \"(* ; 1 mod 8)\"
+      return ok
+  end
+  println(\"BASELINE=\", Adelefeld.diagnostics().live, \" CTX=\", Adelefeld.diagnostics().contexts)
+  churn()
+  GC.gc(); GC.gc(); GC.gc(); GC.gc()
+  d = Adelefeld.diagnostics()
+  println(\"ROUNDTRIPS=10000 LIVE=\", d.live, \" CONTEXTS=\", d.contexts, \" FREES=\", d.context_frees,
+          \" ERRORS=\", d.finalizer_errors)
+  println(\"KEPT=\", kept())
+  GC.gc(); GC.gc(); GC.gc(); GC.gc()
+  d = Adelefeld.diagnostics()
+  println(\"AFTER LIVE=\", d.live, \" CONTEXTS=\", d.contexts, \" FREES=\", d.context_frees,
+          \" ERRORS=\", d.finalizer_errors)
+  "`, ProcessExited(1)) [1]
+  
+  Stacktrace:
+    [1] pipeline_error
+      @ ./process.jl:597 [inlined]
+    [2] read(cmd::Cmd)
+      @ Base ./process.jl:481
+    [3] read(cmd::Cmd, ::Type{String})
+      @ Base ./process.jl:490
+    [4] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [5] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [6] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2267 [inlined]
+    [7] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [8] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2302 [inlined]
+    [9] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+   [10] top-level scope
+      @ none:6
+   [11] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+   [12] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [13] _start()
+      @ Base ./client.jl:550
+local dumps and the session line: Error During Test at /home/tobias/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2310
+  Got exception outside of a @test
+  UndefVarError: `ModCtx` not defined in `Main`
+  Suggestion: check for spelling errors or missing imports.
+  Stacktrace:
+    [1] top-level scope
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:1868
+    [2] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [3] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2311 [inlined]
+    [4] macro expansion
+      @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Test/src/Test.jl:1776 [inlined]
+    [5] macro expansion
+      @ ~/Projects/adelefeld-wt/j-slice5/julia/Adelefeld/test/runtests.jl:2311 [inlined]
+    [6] include(mapexpr::Function, mod::Module, _path::String)
+      @ Base ./Base.jl:307
+    [7] top-level scope
+      @ none:6
+    [8] eval(m::Module, e::Any)
+      @ Core ./boot.jl:489
+    [9] exec_options(opts::Base.JLOptions)
+      @ Base ./client.jl:283
+   [10] _start()
+      @ Base ./client.jl:550
+Test Summary:                                                              | Error  Total  Time
+Adelefeld step J-b.1                                                       |     9      9  5.9s
+  construction families on valid input (modctx.h:57-87, 105-112)           |     1      1  2.1s
+  construction refusals (modctx.h:11-35, 57-87)                            |     1      1  0.6s
+  SPEC 4.3 rows to local and back (modctx.h:145-169)                       |     1      1  0.0s
+  lost: the enclosing variant (modctx.h:155-164)                           |     1      1  0.0s
+  same modulus, distinct contexts (SPEC 184-214, 285-298; conventions 4.6) |     1      1  0.0s
+  leases: tokens, roots and failure paths (docs/api-j.md:126-141)          |     1      1  0.0s
+  context finalized before and after its values (docs/api-j.md:126-141)    |     1      1  0.0s
+  GC: both orders, 10^4 round trips, zero contexts and owners              |     1      1  3.2s
+  local dumps and the session line                                         |     1      1  0.0s
+RNG of the outermost testset: Random.Xoshiro(0x94614873c2de6b07, 0xa247736b7066cb90, 0xd44433ff0e48d17c, 0xc592949ac57a9792, 0x078eb6ecc1d90a21)
+ERROR: Package Adelefeld errored during testing
+Stacktrace:
+  [1] pkgerror(msg::String)
+    @ Pkg.Types ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Types.jl:68
+  [2] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, julia_args::Cmd, test_args::Cmd, test_fn::Nothing, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool)
+    @ Pkg.Operations ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2535
+  [3] test
+    @ ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/Operations.jl:2384 [inlined]
+  [4] test(ctx::Pkg.Types.Context, pkgs::Vector{PackageSpec}; coverage::Bool, test_fn::Nothing, julia_args::Cmd, test_args::Cmd, force_latest_compatible_version::Bool, allow_earlier_backwards_compatible_versions::Bool, allow_reresolve::Bool, kwargs::@Kwargs{io::IOContext{IO}})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:538
+  [5] test(pkgs::Vector{PackageSpec}; io::IOContext{IO}, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:169
+  [6] test(pkgs::Vector{PackageSpec})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:158
+  [7] test(; name::Nothing, uuid::Nothing, version::Nothing, url::Nothing, rev::Nothing, path::Nothing, mode::PackageMode, subdir::Nothing, kwargs::@Kwargs{})
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:186
+  [8] test()
+    @ Pkg.API ~/.julia/juliaup/julia-1.12.5+0.x64.linux.gnu/share/julia/stdlib/v1.12/Pkg/src/API.jl:175
+  [9] top-level scope
+    @ none:1
+ [10] eval(m::Module, e::Any)
+    @ Core ./boot.jl:489
+ [11] exec_options(opts::Base.JLOptions)
+    @ Base ./client.jl:283
+ [12] _start()
+    @ Base ./client.jl:550
+
+real	1m44,489s
+user	1m52,340s
+sys	0m4,210s
