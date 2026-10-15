@@ -1,0 +1,20 @@
+{
+ "id": "b5-sqrt-1-plus-4z2",
+ "statement": "The square roots of 1 + 4 Z_2 are determined to 2 digits (all branches).",
+ "script": [
+  "prec 8",
+  "roots_at (* ; 1 mod 4) with 2 with 2"
+ ],
+ "expect": [
+  "2 [+1]: 1 + O(2^2); 2 [-1]: 3 + O(2^2)"
+ ],
+ "expect_exit": 0,
+ "places": [
+  2
+ ],
+ "tail": "nothing said",
+ "argument": "Not true as stated: 1 + 4 Z_2 is the union of 1 + 8 Z_2, where there are two roots, and 5 + 8 Z_2, where there is none. The ball is outside the guard N - m >= c + v(n) of docs/SPEC.md:633-634 (N - m = 2, c + v(2) = 3), so the expected answer is NOT_DETERMINED. Split into b5-1 and b5-2.",
+ "proposer": "agent (overnight batch)",
+ "state": "proposed",
+ "question": "Scenario B: an overnight agent batch on Log, exp and square roots at small primes (brief 3)"
+}

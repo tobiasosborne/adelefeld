@@ -1,0 +1,20 @@
+{
+ "id": "a2-v2-log-3",
+ "statement": "v_2(log 3) = 2 in Q_2.",
+ "script": [
+  "prec 3",
+  "log_at 3 with 2"
+ ],
+ "expect": [
+  "2: 4 + O(2^3)"
+ ],
+ "expect_exit": 0,
+ "places": [
+  2
+ ],
+ "tail": "nothing said",
+ "argument": "v_2(x) = 2 exactly when x = 4 u with u odd, that is when x = 4 mod 8 (4 u = 4 mod 8 for odd u, and x = 4 mod 8 gives x = 4 (1 + 2 k)). So the claim is the line `2: 4 + O(2^3)` at prec 3. It is a checked test vector of docs/SPEC.md:587.",
+ "proposer": "referee (from the manuscript)",
+ "state": "proposed",
+ "question": "Scenario A: a referee checks a table of 2-adic and 3-adic values (docs/ux/brief-3-claim-ledger.md)"
+}

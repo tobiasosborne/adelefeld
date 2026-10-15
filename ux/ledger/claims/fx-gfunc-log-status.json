@@ -1,0 +1,34 @@
+{
+ "id": "fx-gfunc-log-status",
+ "statement": "Real domain, explicit unsupported local log_abs, operand kind and place grammar.",
+ "script": [
+  "#!exit 1",
+  "# Real domain, explicit unsupported local log_abs, operand kind and place grammar.",
+  "Log (-1 ; 4 * [1 mod 9])",
+  "Log_at (-1 ; 4 * [1 mod 9]) with real",
+  "log_abs_at (1 ; 4 * [1 mod 9]) with 3",
+  "Log 1",
+  "Log_at (1 ; 4 * [1 mod 9]) with 3 5",
+  "Log_at (1 ; 4 * [1 mod 9]) with 4",
+  "Log_at (1 ; 4 * [1 mod 9]) with 03"
+ ],
+ "expect": [
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: UNSUPPORTED",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: DOMAIN",
+  "error: PARSE"
+ ],
+ "expect_exit": 1,
+ "places": [
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/gfunc-log-status.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/gfunc-log-status.cmd"
+}

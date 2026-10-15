@@ -1,0 +1,36 @@
+{
+ "id": "fx-rfun-dump",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "adf1 Q rfun 0",
+  "adf1 Q rfun 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+  "rfun()",
+  "rfun(term(P=[], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: PARSE"
+ ],
+ "exit": 1,
+ "script_line": [
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "75d5125db3e0729b63f297a8f24fcdbafafd785fad48ab6cfc26ec7d2bb3faa1",
+ "claim_content_sha256": "1289dc186568a86f181ac10563c2aa58860ba2543a21fc469ae4a54d6ca13a51",
+ "reopened": null
+}

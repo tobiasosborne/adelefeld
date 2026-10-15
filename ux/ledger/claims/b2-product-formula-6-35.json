@@ -1,0 +1,36 @@
+{
+ "id": "b2-product-formula-6-35",
+ "statement": "The absolute values of 6/35 multiply to 1 over all places: |6/35|_inf |6/35|_2 |6/35|_3 |6/35|_5 |6/35|_7 = 1, and |6/35|_p = 1 at every other prime.",
+ "script": [
+  "abs (1 ; 6/35 * [1]) with 2",
+  "abs (1 ; 6/35 * [1]) with 3",
+  "abs (1 ; 6/35 * [1]) with 5",
+  "abs (1 ; 6/35 * [1]) with 7",
+  "abs (1 ; 6/35 * [1]) with 11",
+  "prec 128",
+  "digits 10",
+  "norm (0.171428571428571428571428571 +/- 1e-27 ; 6/35 * [1])"
+ ],
+ "expect": [
+  "1/2",
+  "1/3",
+  "5",
+  "7",
+  "1",
+  "1 +/- 8.4e-27"
+ ],
+ "expect_exit": 0,
+ "places": [
+  "R",
+  2,
+  3,
+  5,
+  7,
+  11
+ ],
+ "tail": "argued",
+ "argument": "At a prime, `abs X with p` is |r|_p for the idele (x ; r * u) (tools/adf/README.md:367), so the real coordinate does not matter there and is 1. 6/35 = 2 * 3 / (5 * 7) gives 1/2, 1/3, 5, 7, and |6/35|_p = 1 for every prime p > 7, since v_p(6/35) = 0 (argued; 11 is computed as a sample). The real coordinate of the idele of 6/35 cannot be typed: a real part is a decimal ball (docs/conventions.md 9.1-9.2), so the last line uses the ball 0.171428571428571428571428571 +/- 1e-27, which contains 6/35. Its norm is |x_inf| / r (tools/adf/README.md:362), a ball that contains (6/35)/(6/35) = 1, the product of the absolute values over all places. The expected text `1 +/- 8.4e-27` was PROMOTED FROM THE SCRATCHPAD (the driver's own output): this line seals that the build reproduces it, and a reader checks that the ball contains 1; the driver has no set predicate for real balls that could decide \"contains 1\".",
+ "proposer": "agent (overnight batch)",
+ "state": "proposed",
+ "question": "Scenario B: an overnight agent batch on Log, exp and square roots at small primes (brief 3)"
+}

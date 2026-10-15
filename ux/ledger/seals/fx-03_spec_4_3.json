@@ -1,0 +1,32 @@
+{
+ "id": "fx-03_spec_4_3",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "(* ; 2 mod 6)",
+  "(* ; 3 mod 6)",
+  "(* ; 60 mod 216)",
+  "(* ; 5/3 mod 6)",
+  "(* ; 0 mod 1/6)"
+ ],
+ "exit": 0,
+ "script_line": [
+  4,
+  6,
+  8,
+  10,
+  12
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "14ce92c230cf3f4cfbce5e23b1e7e258cf191002177a23e9188fcb2a641e9ea3",
+ "claim_content_sha256": "5b25533f6ccae85514627bb440419f20f60680806571807f134e45509c41776c",
+ "reopened": null
+}

@@ -1,0 +1,28 @@
+{
+ "id": "a5-exp-3-exp-12-distance",
+ "statement": "exp(3) and exp(12) agree modulo 9 and not modulo 27 in Z_3, because exp preserves distances on 3 Z_3 and v_3(12 - 3) = 2.",
+ "script": [
+  "prec 2",
+  "exp_at 3 with 3",
+  "exp_at 12 with 3",
+  "prec 3",
+  "exp_at 3 with 3",
+  "exp_at 12 with 3"
+ ],
+ "expect": [
+  "3: 4 + O(3^2)",
+  "3: 4 + O(3^2)",
+  "3: 13 + O(3^3)",
+  "3: 22 + O(3^3)"
+ ],
+ "expect_exit": 0,
+ "places": [
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "docs/SPEC.md:581: exp on p^c Z_p preserves distances, so v_3(exp 3 - exp 12) = v_3(3 - 12) = v_3(9) = 2. The centres 4, 13 and 22 were computed in exact rationals by ux/ledger/oracle.py (`python3 ux/ledger/oracle.py 3 3 2`, `... 3 3 3`, `... 12 3 3`): equal lines at prec 2, different lines at prec 3. The automatic second claim of a3.",
+ "proposer": "the ledger (second claim to a3)",
+ "state": "proposed",
+ "question": "Scenario A: a referee checks a table of 2-adic and 3-adic values (docs/ux/brief-3-claim-ledger.md)",
+ "parent": "a3-exp-3-exp-12-mod-3-8"
+}

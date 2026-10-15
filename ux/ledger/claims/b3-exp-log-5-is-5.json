@@ -1,0 +1,22 @@
+{
+ "id": "b3-exp-log-5-is-5",
+ "statement": "exp(Log 5) = 5 at 5. Deliberately wrong expectation: the agent's first guess that exp undoes Log at 5, kept as a refuted claim.",
+ "script": [
+  "prec 8",
+  "Log_at (5 ; 5 * [1]) with 5",
+  "exp_at 0 with 5"
+ ],
+ "expect": [
+  "5: 0",
+  "5: 5"
+ ],
+ "expect_exit": 0,
+ "places": [
+  5
+ ],
+ "tail": "nothing said",
+ "argument": "Wrong by construction. Log forgets the power of p: Log(p^m w u) = log u (docs/SPEC.md:584), so exp(Log 5) = 1, not 5; docs/PLAN.md:276 (WP 1F.6) tests \"exp(Log p) = 1 is not p\". A refuted claim is information and stays in the ledger.",
+ "proposer": "agent (overnight batch)",
+ "state": "proposed",
+ "question": "Scenario B: an overnight agent batch on Log, exp and square roots at small primes (brief 3)"
+}

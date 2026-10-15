@@ -1,0 +1,45 @@
+{
+ "id": "fx-char-eval",
+ "statement": "SPEC 5, api-3c P1/P2/F2. Radius RU30 successor of 1 prints upward to two digits: 1.1.",
+ "script": [
+  "#!exit 1",
+  "# SPEC 5, api-3c P1/P2/F2. Radius RU30 successor of 1 prints upward to two digits: 1.1.",
+  "char_unit char(q=5, n=2, s=(7) + (3)*i) with [1 mod 1]",
+  "char_unit_strict char(q=5, n=2, s=(0) + (0)*i) with [1 mod 1]",
+  "char_unit char(q=3, n=2, s=(0) + (0)*i) with [3 mod 4]",
+  "char_unit_strict char(q=3, n=2, s=(0) + (0)*i) with [-1]",
+  "char_unit char(q=5, n=2, s=(0) + (0)*i) with [2 mod 5]",
+  "char_unit_strict char(q=5, n=2, s=(0) + (0)*i) with [2 mod 5]",
+  "char_conj char(q=5, n=2, s=(1) + (-2)*i)",
+  "char_conj char(q=1, n=1, s=(0) + (3)*i)",
+  "char_unit 1 with [1]",
+  "char_unit char(q=5, n=2, s=(0) + (0)*i) with 1",
+  "char_unit char(q=5, n=2, s=(0) + (0)*i)",
+  "prec 2097153"
+ ],
+ "expect": [
+  "(0 +/- 1.1) + (0 +/- 1.1)*i",
+  "error: NOT_DETERMINED",
+  "(0 +/- 1.1) + (0)*i",
+  "(-1) + (0)*i",
+  "(0) + (1)*i",
+  "(0) + (1)*i",
+  "char(q=5, n=3, s=(1) + (2)*i)",
+  "char(q=1, n=1, s=(0) + (-3)*i)",
+  "error: UNSUPPORTED",
+  "error: UNSUPPORTED",
+  "error: PARSE",
+  "error: LIMIT"
+ ],
+ "expect_exit": 1,
+ "places": [
+  2,
+  5
+ ],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/char-eval.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/char-eval.cmd"
+}

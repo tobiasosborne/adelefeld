@@ -1,0 +1,34 @@
+{
+ "id": "fx-ffun-dump",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "adf1 Q ffun 1 1 1 -1 0 0 -3 -2 0 0",
+  "ffun(D=1, M=1; (0.5) + (-0.75)*i)",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: DOMAIN",
+  "error: PARSE"
+ ],
+ "exit": 1,
+ "script_line": [
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "47225777315ea8e821b9d2be3ae555fcc3e7041045f68dfa2e50b8f16118ea6e",
+ "claim_content_sha256": "2954c0ca413bd77dcb7c6128be6ad4975125b71f4735905cf29171127595179f",
+ "reopened": null
+}

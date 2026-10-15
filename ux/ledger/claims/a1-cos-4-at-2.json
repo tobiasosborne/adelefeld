@@ -1,0 +1,20 @@
+{
+ "id": "a1-cos-4-at-2",
+ "statement": "cos(4) = 1 mod 16 in Z_2 (line 1 of the manuscript's table).",
+ "script": [
+  "prec 4",
+  "cos_at 4 with 2"
+ ],
+ "expect": [
+  "2: 1 + O(2^4)"
+ ],
+ "expect_exit": 0,
+ "places": [
+  2
+ ],
+ "tail": "nothing said",
+ "argument": "The manuscript's value. At a prime the setting prec is the absolute p-adic precision N (tools/adf/README.md:249-251), so \"cos(4) = 1 mod 16\" is the line `2: 1 + O(2^4)` at prec 4. The series of cos converges on 4 Z_2 (tools/adf/README.md:468-469). docs/SPEC.md:587 records the checked vector cos 4 = 9 mod 16, so the manuscript's line is expected to fail.",
+ "proposer": "referee (from the manuscript)",
+ "state": "proposed",
+ "question": "Scenario A: a referee checks a table of 2-adic and 3-adic values (docs/ux/brief-3-claim-ledger.md)"
+}

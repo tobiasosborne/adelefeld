@@ -1,0 +1,24 @@
+{
+ "id": "a2-v2-log-3",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "2: 4 + O(2^3)"
+ ],
+ "exit": 0,
+ "script_line": [
+  2
+ ],
+ "note": "",
+ "date": "2026-10-15T13:04:16Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "328b18b8024db24decb2afebe1c09405fac361e131b4ad2e64c7bf1bc71d9780",
+ "claim_content_sha256": "70b2e7ff251d556fa2d60e94d1ea6ca04b7b2172c059e26ea27915ae02cea45f",
+ "reopened": null
+}

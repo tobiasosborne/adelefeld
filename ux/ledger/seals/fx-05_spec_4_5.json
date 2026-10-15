@@ -1,0 +1,48 @@
+{
+ "id": "fx-05_spec_4_5",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "1/4",
+  "(* ; 15 mod 54)",
+  "(0.5 ; 1/2)",
+  "((0.5) + (1)*i ; 5/2 mod 9)",
+  "error: NOT_UNIT",
+  "error: NOT_UNIT",
+  "error: NOT_UNIT",
+  "error: NOT_UNIT"
+ ],
+ "exit": 1,
+ "script_line": [
+  4,
+  5,
+  9,
+  10,
+  11,
+  13,
+  14,
+  15,
+  16,
+  18,
+  19,
+  20,
+  21
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "3b9c4bb008fb80227bf9f8676687b906806d7b0d6a5708babec6e9afa00103ac",
+ "claim_content_sha256": "97001f97fe76dbe2c32e00e749e0c1e57903d64cc140ee62980dbaca7a141992",
+ "reopened": null
+}

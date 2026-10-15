@@ -1,0 +1,41 @@
+{
+ "id": "fx-10_line_language",
+ "statement": "The line language of the driver: comments, empty lines, whitespace, separators.",
+ "script": [
+  "# The line language of the driver: comments, empty lines, whitespace, separators.",
+  "#!exit 0",
+  "# a comment line",
+  "# an empty line follows this one",
+  "",
+  "show 7/3",
+  "   # an indented comment line",
+  "   show 7/3",
+  "",
+  "# a line of whitespace only",
+  "\t ",
+  "",
+  "show 7/3",
+  "# a tab between the operation and the operand",
+  "show\t7/3",
+  "# trailing whitespace after the operand",
+  "show 7/3   ",
+  "# the separator is the word \"with\" between spaces (README of tools/adf)",
+  "add 7/3 with 1/3"
+ ],
+ "expect": [
+  "7/3",
+  "7/3",
+  "7/3",
+  "7/3",
+  "7/3",
+  "8/3"
+ ],
+ "expect_exit": 0,
+ "places": [],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/10_line_language.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/10_line_language.cmd"
+}

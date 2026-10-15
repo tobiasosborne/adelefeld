@@ -1,0 +1,36 @@
+{
+ "id": "fx-catalogue-volume",
+ "statement": "Fixture catalogue-volume.",
+ "script": [
+  "#!exit 1",
+  "haar_volume 0 mod 8",
+  "haar_volume 2 mod 3",
+  "haar_volume 1/2 mod 8/3",
+  "haar_volume 3",
+  "haar_volume 1/2",
+  "haar_volume [2 mod 3]",
+  "haar_volume 0 mod 8 with 1",
+  "haar_volume"
+ ],
+ "expect": [
+  "1/8",
+  "1/3",
+  "3/8",
+  "0",
+  "0",
+  "error: UNSUPPORTED",
+  "error: PARSE",
+  "error: PARSE"
+ ],
+ "expect_exit": 1,
+ "places": [
+  2,
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "Imported from tests/driver/catalogue-volume.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
+ "proposer": "tests/driver (imported by import_fixtures.py)",
+ "state": "proposed",
+ "question": "The driver fixtures: tests/driver/*.cmd with their expected lines, as claims",
+ "source": "tests/driver/catalogue-volume.cmd"
+}

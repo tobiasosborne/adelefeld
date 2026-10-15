@@ -1,0 +1,38 @@
+{
+ "id": "fx-catalogue-volume",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "1/8",
+  "1/3",
+  "3/8",
+  "0",
+  "0",
+  "error: UNSUPPORTED",
+  "error: PARSE",
+  "error: PARSE"
+ ],
+ "exit": 1,
+ "script_line": [
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "6fcb1d81c4be26258095c94c905e3c84d31458f62d04af756c18ae12fbc7c3a7",
+ "claim_content_sha256": "da299cf066ca3779962aa271582781ad01febff13eeb039a6aaecd15b88d4c78",
+ "reopened": null
+}

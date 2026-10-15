@@ -1,0 +1,20 @@
+{
+ "id": "a4-sin-3-at-3",
+ "statement": "sin(3) = 3 mod 9 in Z_3.",
+ "script": [
+  "prec 2",
+  "sin_at 3 with 3"
+ ],
+ "expect": [
+  "3: 3 + O(3^2)"
+ ],
+ "expect_exit": 0,
+ "places": [
+  3
+ ],
+ "tail": "nothing said",
+ "argument": "A test vector of the project: docs/PLAN.md:277 (WP 1F.7), \"sin 3 = 3 mod 9\".",
+ "proposer": "referee (from the manuscript)",
+ "state": "proposed",
+ "question": "Scenario A: a referee checks a table of 2-adic and 3-adic values (docs/ux/brief-3-claim-ledger.md)"
+}
