@@ -962,7 +962,7 @@ radius holds the width above `2^-BITS` at every precision (the witness `c exp(-p
 
 ### The Tate vector and the global Tate integral (slice 5c of `docs/api-5.md`, lane t5-slice2)
 
-`tate_vector CHI` (statements in `docs/api-5b.md`, "Slice 5c"; `CHI` a `char` text, its `s` ignored) calls
+`tate_vector CHI` (statements in `docs/api-5s.md`, "Slice 5c"; `CHI` a `char` text, its `s` ignored) calls
 `adf_tate_vector` at the `prec` setting and prints one line `PHI | F`: the real factor `x^e exp(-pi x^2)` as `rfun`
 prints it and the finite factor `f[j] = chi(j)` on `Zhat` (`D = 1`, `M = C`) as `ffun` prints it (conventions 6.5).
 `tate_integral CHI with S with BITS` (`S` a complex adele text whose finite coordinate is ignored, as for
@@ -1007,7 +1007,7 @@ Tests: `tests/driver/tate-local.cmd`, `tests/julia/tate_local.jl`.
 # Local gamma and epsilon factors (slice 5b)
 
 `tate_gamma S with PLACE with ALPHA with CHI` calls `adf_local_gamma_at`, and `tate_epsilon S with PLACE with ALPHA
-with CHI` calls `adf_local_epsilon_at` (statements in `docs/api-5a.md`, "Slice 5b"). The operands, the order of the
+with CHI` calls `adf_local_epsilon_at` (statements in `docs/api-5s.md`, "Slice 5b"). The operands, the order of the
 checks and the printed line are those of `tate_local`: numerical lines begin `continuation S=<supplied S>:`.
 gamma is the factor of the local functional equation `Z(F f, eta^-1, 1-s) = gamma(s, eta) Z(f, eta, s)`: at a
 prime with conductor 1, `(1-alpha*p^(-s))/(1-alpha^(-1)*p^(s-1))`; with conductor `p^a > 1`,
@@ -1023,7 +1023,7 @@ s=(0) + (0)*i)` prints `(-0.75 +/- 3e-39) + (0)*i` after the prefix (`-3/4`); at
 
 ### The continuation and the completed function (slice 5d of `docs/api-5.md`, lane t5-slice4)
 
-`tate_continue CHI with S with BITS` and `tate_completed CHI with S with BITS` (statements in `docs/api-5b.md`,
+`tate_continue CHI with S with BITS` and `tate_completed CHI with S with BITS` (statements in `docs/api-5s.md`,
 "Slice 5d"; the operands as for `tate_integral`) call `adf_tate_continue` and `adf_tate_completed` at the `prec`
 setting and print `VALUE | continuation | s=S` and `VALUE | completed | s=S`: an enclosure of `I_chi(s)` and of
 `Lambda_chi(s) = C^((s+e)/2) I_chi(s)` for every `s` of the ball, on the whole plane, each coordinate diameter at
@@ -1036,7 +1036,7 @@ above 1024 or the total work cap is `LIMIT`. Fixture: `tests/driver/tate-continu
 
 ### The functional equation (slice 5e of `docs/api-5.md`, lane t5-slice5)
 
-`tate_fe CHI with S with BITS` (statements in `docs/api-5b.md`, "Slice 5e"; the operands, their order of checks and
+`tate_fe CHI with S with BITS` (statements in `docs/api-5s.md`, "Slice 5e"; the operands, their order of checks and
 the integer `BITS` as for `tate_completed`) is the caller's computation of design section 5 for analysis P13,
 `Lambda(s, chi) = W_chi Lambda(1 - s, conj(chi))`: `A = adf_tate_completed(chi, s, BITS)`, `B =
 adf_tate_completed(conj(chi), 1 - s, BITS + 4)`, `W = adf_char_root_number(chi)` at `wp = max(prec, BITS + m + 16)`

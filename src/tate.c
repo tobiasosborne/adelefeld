@@ -1,6 +1,6 @@
 /* src/tate.c: the global Tate test vector and the global Tate integral in Re(s) > 1, slice 5c of docs/api-5.md
-   (include/adelefeld/tate.h; statements, proofs and decisions in docs/api-5b.md "Slice 5c"); the continuation
-   adf_tate_continue and the completed function adf_tate_completed, slice 5d (docs/api-5b.md "Slice 5d"), which
+   (include/adelefeld/tate.h; statements, proofs and decisions in docs/api-5s.md "Slice 5c"); the continuation
+   adf_tate_continue and the completed function adf_tate_completed, slice 5d (docs/api-5s.md "Slice 5d"), which
    share the attempt tt_attempt and the body tt_run with adf_tate_integral (a mode: half-plane gate, continuation
    of I, Lambda).
    Sources of slice 5d, read before the code: docs/api-5.md:167-249 (section 4: the split for every s, "Section 4
@@ -895,7 +895,7 @@ tt_domain(const adf_char_t chi, const acb_t s, int mode)
 
 /* The shared body of the three calls: the checks in the order of tate.h, then the attempts at the working precision
    max(prec, 2), doubled up to ADF_REAL_PREC_MAX while the width is not met; the retry rule of api-5.md:223-226
-   (docs/api-5b.md S6). The width is checked on the returned quantity itself: on I for TT_HALF and TT_CONT, on
+   (docs/api-5s.md S6). The width is checked on the returned quantity itself: on I for TT_HALF and TT_CONT, on
    Lambda for TT_COMP (computed directly, not as C^z times a width-limited I, api-5.md:245-246). */
 static int
 tt_run(acb_t z, const adf_char_t chi, const acb_t s, slong bits, slong prec, int mode)

@@ -1,5 +1,5 @@
 /* tests/test_tate.c: slice 5c of docs/api-5.md, the Tate test vector and the global Tate integral in Re(s) > 1
-   (include/adelefeld/tate.h: adf_tate_vector, adf_tate_integral; statements in docs/api-5b.md "Slice 5c").
+   (include/adelefeld/tate.h: adf_tate_vector, adf_tate_integral; statements in docs/api-5s.md "Slice 5c").
    Contract: docs/api-5.md section 1 (statuses, order of checks, D2), section 3 (:121-165, the two comment blocks),
    section 4 (P15 cutoffs, T3), section 7 (acceptance); docs/SPEC.md 8 (:470-502: FLINT's values completed by
    hand; the width shrinks with precision); analysis P11, P13 (docs/proofs/analysis.md:452-626).
@@ -646,7 +646,7 @@ static void debug(void)
 #endif
 }
 
-/* The exact work of one attempt (lane t5-repair1): the count rule of docs/api-5b.md decision 5 (:146-148), "C
+/* The exact work of one attempt (lane t5-repair1): the count rule of docs/api-5s.md decision 5 of "Slice 5c" (:460-462), "C
    (vector entries) + C^2 + 2 L^2 - L + 1 (L = e + 1; the two transforms) + one per Lemma 6 step (prefix
    included) + one per N or R search step + 2N (coefficient entries) + (J + 1) per nonzero coefficient and
    panel", for zeta (C = 1, e = 0, L = 1) at s = 2, bits 4, through adf_tate_cutoffs (decision 7). By hand:

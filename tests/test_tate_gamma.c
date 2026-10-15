@@ -1,4 +1,4 @@
-/* Slice 5b, docs/api-5.md:48-118 (section 2), :327-336 (5.1 acceptance); docs/api-5a.md "Slice 5b".
+/* Slice 5b, docs/api-5.md:48-118 (section 2), :327-336 (5.1 acceptance); docs/api-5s.md "Slice 5b".
    adf_local_gamma_at and adf_local_epsilon_at: P9 (analysis.md:331-400) and P10 (:401-451);
    conventions 6.4 (local constants, the negative kernel G_minus, the real place).
    Every row of tests/ref/vectors/t5-slice3/gamma.jsonl and every certified sample enclosure is read

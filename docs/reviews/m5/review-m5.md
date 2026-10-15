@@ -15,7 +15,7 @@ The coordinate diameter sampled at the centre and four corners is 0.000101160100
 The output/sample ratio is 77.1210414191. The factor-64 target is 0.00647424641126710381,
 with negligible arithmetic slack at prec=160.
 
-The target was fixed before this grid ran. It is the rule described at docs/api-5a.md:101-104.
+The target was fixed before this grid ran. It is the rule described at docs/api-5s.md:123-126.
 That paragraph explicitly separates the fixture target from the API enclosure contract.
 This finding concerns tightness. No sampled value is outside the ball. It is not a violation of
 SPEC's local enclosure contract or of the global 2^-bits rule.
@@ -32,14 +32,14 @@ Result: exit 1, 2594 checks, 2 tightness failures on 480 calls. The test was not
 
 ### F2. MAJOR: S12 uses a false entire-function justification and omits a reference factor
 
-docs/api-5b.md:250-252 includes conductor 1 but calls Lambda an entire function.
+docs/api-5s.md:561-563 includes conductor 1 but calls Lambda an entire function.
 For conductor 1, Lambda has poles at 0 and 1; analysis.md:576-577 states them.
 The conclusion at s0=-2,-4,... is finite, but the justification must be local regularity from S9.
-The similar wording at docs/api-5b.md:58 also needs the conductor-1 qualification.
+The similar wording at docs/api-5s.md:369 also needs the conductor-1 qualification.
 
 At s0=-e-2k, the completed limit is
 2*(-1)^k*(pi/C)^k*L'(s0)/k!, not the naked 2*(-1)^k*L'(s0)/k! quoted in the reference
-description at docs/api-5b.md:255.
+description at docs/api-5s.md:566.
 For chi=(1,1), s0=-2, the latter is 0.0608969141167865415605030609423.
 The true completed value is 0.1913132980155851711250765701204, which is pi times that number.
 The code returns the latter with OK at bits 80. The generator applies the factor correctly at
@@ -62,7 +62,7 @@ The mutated driver prints overlap=yes with A and R copied bit for bit.
 Its imaginary radius for R is 2.1e-26; the live driver prints 1.5e-27.
 The numeric value remains correct, so this does not lose enclosure or a sign.
 
-docs/api-5b.md:396-401 requires independent sides. The named independence and hand tests exercise
+docs/api-5s.md:707-712 requires independent sides. The named independence and hand tests exercise
 fe_sides, a separate implementation, rather than adf_drv_tate_fe.
 The existing driver fixture can detect the printed-radius difference; the five C tests cannot.
 Reproduce: `taskset -c 0,1 timeout 170 python3 -B lanes/m5-review1/faults.py 11`.
@@ -230,11 +230,11 @@ Fault 11 survives the C tests; the driver radius distinction is F3.
 ## Check-line audit
 
 The 30 Check lines were read against the named test bodies and the targeted baseline runs.
-api-5a line numbers: 50, 51, 52, 73, 109, 111, 236, 239, 242, 245, 248.
-api-5b line numbers: 48, 73, 88, 103, 118, 125, 136, 213, 229, 244, 254, 263, 269,
-335, 352, 365, 385, 394, 401.
+api-5s line numbers (old first file, plus 22): 72, 73, 74, 95, 131, 133, 258, 261, 264, 267, 270.
+api-5s line numbers (old second file, plus 311): 359, 384, 399, 414, 429, 436, 447, 524, 540, 555,
+565, 574, 580, 646, 663, 676, 696, 705, 712.
 
-The production independence claim attached to api-5b:401 is not checked by independence or hand:
+The production independence claim attached to api-5s:712 is not checked by independence or hand:
 those functions call fe_sides rather than the production handler, as demonstrated by fault 11.
 The other 29 lines have their named checks; no missing invocation was found.
 Cutoff equality is not a direct test of the truth of L14's second branch. Its absence from the
@@ -315,7 +315,7 @@ Ground truth read on disk: refs/src/tate-poonen/notes.txt:53-65, 693-700, 733-74
 acb.rst:6-17, 893-902; dirichlet.rst:15-31, 45-65; the generator setup at
 refs/src/flint-src-3.0.1/dirichlet/group_init.c:17-64.
 Project contracts read: CLAUDE.md; SPEC 8, 9.3.7, N-D23/N-D24; PLAN milestone 5;
-api-5 sections 1-9; api-5a and api-5b; conventions 6.1-6.5 and rows 223/225;
+api-5 sections 1-9; api-5s (the merged api-5a and api-5b); conventions 6.1-6.5 and rows 223/225;
 analysis P3/P4, L6/L8/L14 and P9-P15; design/local-zeta.md; all five slice reports.
 
 [source pending: universal Conrey generator/label identification beyond the finite comparisons]

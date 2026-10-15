@@ -1,5 +1,5 @@
 /* tests/test_tate_continue.c: slice 5d of docs/api-5.md, the all-plane continuation adf_tate_continue and the
-   completed function adf_tate_completed (include/adelefeld/tate.h; statements in docs/api-5b.md "Slice 5d").
+   completed function adf_tate_completed (include/adelefeld/tate.h; statements in docs/api-5s.md "Slice 5d").
    Contract: docs/api-5.md section 1 (statuses, order of checks, D2), section 4 (:167-249: P12/P13's split on the
    whole plane, the pole geometry, T4 near a pole, the two comment blocks), section 6 (T4), section 7 (acceptance,
    the link-wrap, the independence test); docs/SPEC.md 8 (:470-502: FLINT's values completed by hand; the width
@@ -660,7 +660,7 @@ static void widths(void)
 /* ------------------------------------------------------------------ L14's second branch (lane t5-repair1) */
 /* The cutoffs, panel degrees, work and the bound added to both radii (api-5.md:218) against an evaluation of one
    attempt written for lane t5-repair1 (lanes/t5-repair1/gen_vectors.py, mpmath at 60 digits, from L6
-   analysis.md:215-221, L14 :630-639, P15 :652-661, api-5.md:196-220 and api-5b.md decision 5), for zeta (C = 1,
+   analysis.md:215-221, L14 :630-639, P15 :652-661, api-5.md:196-220 and api-5s.md "Slice 5c" decision 5), for zeta (C = 1,
    e = 0, mode Lambda) at s = 41/2, 9, -39/2, -8, 2 and bits 4, 20, 53, 80. With the sentinel bit 1 the forward
    side is the exact 10^6 before the error is added, so its radii are the bound itself (rounded up to a mag).
    Why the second branch of L14 (analysis.md:630-639) is the one taken: b = lower(pi/C) < 3.15 for C = 1, and
