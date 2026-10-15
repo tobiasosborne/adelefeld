@@ -32,8 +32,10 @@
  ],
  "expect_exit": 0,
  "places": [
+  "R",
   2,
-  3
+  3,
+  5
  ],
  "tail": "nothing said",
  "argument": "Imported from tests/driver/gfunc-log-refine-values.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",

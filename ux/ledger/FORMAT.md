@@ -10,8 +10,11 @@ A claim is one file `claims/<id>.json`, UTF-8 JSON, one object. Its fields:
 | `expect` | list of strings | the exact output lines, one per printing script line; a valid setting prints none |
 | `expect_exit` | integer, optional | the exit status of the driver (0 or 1); when absent it is not compared |
 | `places` | list | the footprint: `"R"`, primes as integers, `"cofactor <n>"` for a factor not split below 1000 |
+| `branch` | string | required when the script calls `root`, `root_at`, `roots_at` or `powrat_at`: a seed (one |
+| | | branch; every root line uses it, none is `roots_at`) or `"all"` (every branch the lines print) |
 | `tail` | string | `"nothing said"` or `"argued"`: what the claim says about every place not in `places` |
 | `argument` | string | prose for what the driver does not compute, with sources by file and line; may be empty |
+| | | (an argued tail is ratified only with a source `refs/src/<path>:<lines>` or `docs/<path>:<lines>` on disk) |
 | `proposer` | string | who wrote the claim, a free string |
 | `state` | string | `"proposed"` when the claim is written; only a person may change it to `"ratified"` |
 | `question` | string, optional | the question of the ledger the claim belongs to; the page groups by it |
@@ -36,16 +39,31 @@ Older seals of a claim are kept as `seals/history/<id>.<date>.json`.
 
 ## The states
 
-- `proposed`: written, not sealed: no seal, an empty script, or a seal of an earlier text of the claim.
+- `proposed`: written, not sealed: no seal, an empty script, a seal of an earlier text of the claim, or a script
+  with a root command and no valid `branch` (the sealer refuses it and prints why).
 - `sealed`: the driver wrote exactly the expected lines (and the expected exit status, when given).
 - `refuted`: the driver wrote a value or a status that contradicts the expectation: another value, a status of
   the classes "proved no" (`DOMAIN`, `NO_SOLUTION`, `NOT_UNIT`) or "not mathematics" (`PARSE`, `UNSUPPORTED`)
   where something else was expected, a missing or extra line, another exit status, a crash.
 - `open`: no line contradicts, and at least one line is a status of the open class (`NOT_DETERMINED`,
   `UNIT_NOT_CERTIFIED`, `NEEDS_SPLIT`, `NOT_UNIQUE`) or the budget class (`LIMIT`, or the timeout of 60 s) where
-  something else was expected. Also `open`: a later build, or a second run of the same build, wrote other lines
+  something else was expected. A status line is `error: S` or `<prefix>: error: S` (the Tate commands print
+  `continuation S=...: error: NOT_DETERMINED`); a line of several `; ` items is a value line.
+  Also `open`: a later build, or a second run of the same build, wrote other lines
   than the earlier seal; both builds are named in `reopened`.
-- `ratified`: the claim file says `ratified` and its seal is `sealed`. No command of the slice sets this state.
+- `ratified`: the claim file says `ratified`, its seal is `sealed`, and, when its tail is `argued`, its argument
+  cites a source by file and line that exists. Otherwise the ratification is void: a refuted claim stays refuted;
+  a sealed claim with an argued tail and no source shows "ratification refused: no source". No command of the
+  slice sets this state.
 
 An agreeing later build leaves the seal as it is: a seal names the first build that gave its lines.
 A seal says "this build of the library computed this", not "this is true".
+
+## The footprint
+
+A place is computed when a script line that printed (by the seal's `script_line`) names it: the place operand of a
+command that takes one (`exp_at X with P`, `roots_at X with P with D`, `hilbert_at X with Y with P`,
+`project X with PLACES`, ...; the table `PLACE_OPERAND` of `ledger.py`, read from tools/adf/README.md), or, for any
+other command, the moduli of `p=<n>` and `mod <n>` (trial division below 1000) and R for `real` or a real
+coordinate. The page draws a computed place filled, a place of `places` without such a line outlined. The importer
+writes the places of a fixture by the same rule.

@@ -1,0 +1,38 @@
+test_compare_prefixed (test_ledger.TestPrefixedStatus.test_compare_prefixed) ... FAIL
+test_drive_prefixed_open (test_ledger.TestPrefixedStatus.test_drive_prefixed_open) ... FAIL
+test_tate_fixture_cards_show_every_status_class (test_ledger.TestPrefixedStatus.test_tate_fixture_cards_show_every_status_class) ... FAIL
+
+======================================================================
+FAIL: test_compare_prefixed (test_ledger.TestPrefixedStatus.test_compare_prefixed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 405, in test_compare_prefixed
+    self.assertEqual(ledger.line_status(PREFIXED), 'NOT_DETERMINED')
+AssertionError: 'OK' != 'NOT_DETERMINED'
+- OK
++ NOT_DETERMINED
+
+
+======================================================================
+FAIL: test_drive_prefixed_open (test_ledger.TestPrefixedStatus.test_drive_prefixed_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 428, in test_drive_prefixed_open
+    self.assertEqual(s['verdict'], 'open')
+AssertionError: 'refuted' != 'open'
+- refuted
++ open
+
+
+======================================================================
+FAIL: test_tate_fixture_cards_show_every_status_class (test_ledger.TestPrefixedStatus.test_tate_fixture_cards_show_every_status_class)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 445, in test_tate_fixture_cards_show_every_status_class
+    self.assertEqual(len(re.findall(r'<span class="cls cls-', c)), n_status, cid)
+AssertionError: 0 != 2 : fx-tate-gamma
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.039s
+
+FAILED (failures=3)

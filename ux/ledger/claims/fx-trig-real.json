@@ -33,7 +33,7 @@
  ],
  "expect_exit": 1,
  "places": [
-  5
+  "R"
  ],
  "tail": "nothing said",
  "argument": "Imported from tests/driver/trig-real.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",

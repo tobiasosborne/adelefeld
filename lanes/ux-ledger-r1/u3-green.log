@@ -1,0 +1,9 @@
+test_all_branches_and_seeds_seal (test_ledger.TestBranch.test_all_branches_and_seeds_seal) ... ok
+test_ledger_claims_with_root_commands_name_a_branch (test_ledger.TestBranch.test_ledger_claims_with_root_commands_name_a_branch) ... ok
+test_seed_must_match_the_script (test_ledger.TestBranch.test_seed_must_match_the_script) ... ok
+test_seedless_is_refused (test_ledger.TestBranch.test_seedless_is_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.108s
+
+OK

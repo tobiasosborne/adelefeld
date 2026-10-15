@@ -72,6 +72,7 @@
  ],
  "expect_exit": 1,
  "places": [
+  "R",
   2,
   3
  ],

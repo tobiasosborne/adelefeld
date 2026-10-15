@@ -1,0 +1,8 @@
+test_compare_prefixed (test_ledger.TestPrefixedStatus.test_compare_prefixed) ... ok
+test_drive_prefixed_open (test_ledger.TestPrefixedStatus.test_drive_prefixed_open) ... ok
+test_tate_fixture_cards_show_every_status_class (test_ledger.TestPrefixedStatus.test_tate_fixture_cards_show_every_status_class) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.045s
+
+OK

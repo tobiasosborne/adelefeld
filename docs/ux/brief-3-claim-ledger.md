@@ -192,3 +192,11 @@ Two weeks, almost all of it on what exists.
 3. A static HTML renderer of a directory of claims: the ledger list with states and footprints, one card per claim.
 4. The first ledger: the driver's own cases (`tests/driver/*.cmd`) imported as claims, plus the ten claims of the
    two scenarios above. An agent's first job is to write the next ten as files.
+
+## Note of 2026-10-16 (lane ux-ledger-r1): Scenario A, step 4, and FLINT's equality test
+
+The sentence of Scenario A, step 4, that FLINT's own equality test says "equal" for exp(3) and exp(12) is
+contradicted by a probe (`ux/ledger/probes/flint-equality.c`, from the test drive of the Ledger): at precision 8
+FLINT 3.0.1 gives the centres 958 and 5125 and `padic_equal` returns 0. `padic_equal` compares unit and valuation
+(`refs/src/flint-3.0.1/padic.rst:263-266`); it ignores precision, but these centres differ by 4167 = 9 * 463, so
+they agree modulo 9 and not modulo 27, and the test says "not equal". Claim a6 of the Ledger now says this.

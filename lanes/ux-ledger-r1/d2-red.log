@@ -1,0 +1,48 @@
+test_drive_footprint (test_ledger.TestFootprint.test_drive_footprint) ... FAIL
+test_imported_footprints (test_ledger.TestFootprint.test_imported_footprints) ... FAIL
+test_operand_places (test_ledger.TestFootprint.test_operand_places) ... FAIL
+
+======================================================================
+FAIL: test_drive_footprint (test_ledger.TestFootprint.test_drive_footprint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 494, in test_drive_footprint
+    self.assertEqual((m.group(1), m.group(3)), ('21', '97'))
+AssertionError: Tuples differ: ('22', '101') != ('21', '97')
+
+First differing element 0:
+'22'
+'21'
+
+- ('22', '101')
++ ('21', '97')
+
+======================================================================
+FAIL: test_imported_footprints (test_ledger.TestFootprint.test_imported_footprints)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 476, in test_imported_footprints
+    self.assertEqual(len(real), 20)
+AssertionError: 19 != 20
+
+======================================================================
+FAIL: test_operand_places (test_ledger.TestFootprint.test_operand_places)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 457, in test_operand_places
+    self.assertEqual(fp('exp_at 4 with 2\n'), [2])
+AssertionError: Lists differ: [] != [2]
+
+Second list contains 1 additional elements.
+First extra element 0:
+2
+
+- []
++ [2]
+?  +
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.049s
+
+FAILED (failures=3)

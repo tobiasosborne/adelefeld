@@ -1,0 +1,30 @@
+test_probe_prints_what_the_argument_quotes (test_ledger.TestClaimA6.test_probe_prints_what_the_argument_quotes) ... FAIL
+test_statement_says_what_is_true (test_ledger.TestClaimA6.test_statement_says_what_is_true) ... FAIL
+
+======================================================================
+FAIL: test_probe_prints_what_the_argument_quotes (test_ledger.TestClaimA6.test_probe_prints_what_the_argument_quotes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 393, in test_probe_prints_what_the_argument_quotes
+    self.assertEqual(quoted, ['exp(3): 958', 'exp(12): 5125', 'precision: 8 8', 'padic_equal: 0'])
+AssertionError: Lists differ: [] != ['exp(3): 958', 'exp(12): 5125', 'precision: 8 8', 'padic_equal: 0']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'exp(3): 958'
+
+- []
++ ['exp(3): 958', 'exp(12): 5125', 'precision: 8 8', 'padic_equal: 0']
+
+======================================================================
+FAIL: test_statement_says_what_is_true (test_ledger.TestClaimA6.test_statement_says_what_is_true)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 368, in test_statement_says_what_is_true
+    self.assertNotIn('are equal', st)
+AssertionError: 'are equal' unexpectedly found in "FLINT's padic equality test says that exp(3) and exp(12) are equal in Q_3 at precision 8, because it ignores precision."
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.084s
+
+FAILED (failures=2)

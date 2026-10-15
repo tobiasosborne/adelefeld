@@ -55,6 +55,7 @@
  ],
  "expect_exit": 1,
  "places": [
+  "R",
   3
  ],
  "tail": "nothing said",

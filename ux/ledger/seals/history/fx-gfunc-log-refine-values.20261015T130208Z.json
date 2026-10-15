@@ -1,0 +1,44 @@
+{
+ "id": "fx-gfunc-log-refine-values",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "(0 ; 12 mod 36)",
+  "(0 ; 12 mod 36)",
+  "(0 ; 120 mod 180)",
+  "(0 ; 120 mod 180)",
+  "(0 ; 12 mod 36)",
+  "(0 ; 12 mod 36)",
+  "(0 ; 0 mod 60)",
+  "(0 ; 0 mod 7776)",
+  "(0 ; 0 mod 972)",
+  "(0 ; 0 mod 4)",
+  "(0 ; 0 mod 12)"
+ ],
+ "exit": 0,
+ "script_line": [
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  14
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "f09d9a1f7128df1a800d6c4aec74aa7c519b30276ca7aaf5ab5cf24440ac993e",
+ "claim_content_sha256": "694cd7c049ac375021967f80c9e34abc4d8acccef6b74878ed6468fab7243621",
+ "reopened": null
+}
