@@ -1,0 +1,75 @@
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/import_fixtures.py --out /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/ledger/claims
+exit= 0 tail= import: 86 claims written to lanes/ux-drive-ledger/ledger/claims
+
+PASS: repeat-import exit
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/ledger
+exit= 1 tail= e6c6306
+fx-tate-gamma                sealed    unchanged; confirmed by build 22ccde6c6306
+fx-tate-local                sealed    unchanged; confirmed by build 22ccde6c6306
+fx-tensor-eval               sealed    unchanged; confirmed by build 22ccde6c6306
+fx-trig-hostile              sealed    unchanged; confirmed by build 22ccde6c6306
+fx-trig-prime                sealed    unchanged; confirmed by build 22ccde6c6306
+fx-trig-real                 sealed    unchanged; confirmed by build 22ccde6c6306
+fx-u-dump-local              sealed    unchanged; confirmed by build 22ccde6c6306
+fx-u-dump-units              sealed    unchanged; confirmed by build 22ccde6c6306
+seal: 100 claims; proposed 1, sealed 94, refuted 4, open 1, ratified 0; 0.4 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+
+PASS: repeat-seal exit
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/render.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/ledger
+exit= 0 tail= render: lanes/ux-drive-ledger/ledger/ledger.html, 873531 bytes
+
+PASS: repeat-render exit
+PASS: 200 claim/seal/page files byte-identical after repeat
+PASS: 200 generated files equal committed original
+COMMAND: node --check /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/page-script.js
+exit= 0 tail= 
+PASS: node-syntax exit
+PASS: 0 source/README lines over 116
+PASS: README has 73 lines
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/oracle.py 3 3 8
+exit= 0 tail= 3: 958 + O(3^8)
+
+PASS: oracle-3-8 exit
+PASS: oracle centre matches independent driver run
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/oracle.py 12 3 8
+exit= 0 tail= 3: 5125 + O(3^8)
+
+PASS: oracle-12-8 exit
+PASS: oracle centre matches independent driver run
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/oracle.py 3 3 2
+exit= 0 tail= 3: 4 + O(3^2)
+
+PASS: oracle-3-2 exit
+PASS: oracle centre matches independent driver run
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/oracle.py 12 3 2
+exit= 0 tail= 3: 4 + O(3^2)
+
+PASS: oracle-12-2 exit
+PASS: oracle centre matches independent driver run
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/oracle.py 3 3 3
+exit= 0 tail= 3: 13 + O(3^3)
+
+PASS: oracle-3-3 exit
+PASS: oracle centre matches independent driver run
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/oracle.py 12 3 3
+exit= 0 tail= 3: 22 + O(3^3)
+
+PASS: oracle-12-3 exit
+PASS: oracle centre matches independent driver run
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/reopened-ledger
+exit= 1 tail= a2-v2-log-3                  open      REOPENED (a later build wrote other lines than the earlier seal)
+seal: 1 claims; proposed 0, sealed 0, refuted 0, open 1, ratified 0; 0.0 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+
+PASS: reopen-seal exit
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/render.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/reopened-ledger
+exit= 0 tail= render: lanes/ux-drive-ledger/reopened-ledger/ledger.html, 18328 bytes
+
+PASS: reopen-render exit
+PASS: reopened verdict open, current run sealed
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/builder-checks.py", line 66, in <module>
+    check(len(list((reopened/'seals/history').glob('*.json')))==1,'one historical seal')
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/builder-checks.py", line 19, in check
+    assert value, label
+           ^^^^^
+AssertionError: one historical seal

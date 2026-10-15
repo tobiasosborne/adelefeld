@@ -1,0 +1,11 @@
+DOM state counts: {"refuted":4,"sealed":94,"proposed":1,"open":1}
+a1-cos-4-at-2: card text and all script/expect/actual lines checked.
+a2-v2-log-3: card text and all script/expect/actual lines checked.
+a3-exp-3-exp-12-mod-3-8: card text and all script/expect/actual lines checked.
+a4-sin-3-at-3: card text and all script/expect/actual lines checked.
+a5-exp-3-exp-12-distance: card text and all script/expect/actual lines checked.
+a6-flint-equal-ignores-precision: card text and all script/expect/actual lines checked.
+Controls: <button type="button" data-filter="all" aria-pressed="true"> <button type="button" data-filter="proposed" aria-pressed="false"> <button type="button" data-filter="sealed" aria-pressed="false"> <button type="button" data-filter="refuted" aria-pressed="false"> <button type="button" data-filter="open" aria-pressed="false"> <button type="button" data-filter="ratified" aria-pressed="false"> <select id="qsel">
+No claim entry, comment, ratify, retract, cite, split or report export control found.
+DOM assertions: 63
+The JS run used lightweight element stubs; no pixel or layout verification is claimed.

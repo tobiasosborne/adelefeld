@@ -1,0 +1,33 @@
+DOM state counts: {"refuted":4,"sealed":94,"proposed":1,"open":1}
+a1-cos-4-at-2: card text and all script/expect/actual lines checked.
+a2-v2-log-3: card text and all script/expect/actual lines checked.
+a3-exp-3-exp-12-mod-3-8: card text and all script/expect/actual lines checked.
+a4-sin-3-at-3: card text and all script/expect/actual lines checked.
+a5-exp-3-exp-12-distance: card text and all script/expect/actual lines checked.
+a6-flint-equal-ignores-precision: card text and all script/expect/actual lines checked.
+Controls: <button type="button" data-filter="all" aria-pressed="true"> <button type="button" data-filter="proposed" aria-pressed="false"> <button type="button" data-filter="sealed" aria-pressed="false"> <button type="button" data-filter="refuted" aria-pressed="false"> <button type="button" data-filter="open" aria-pressed="false"> <button type="button" data-filter="ratified" aria-pressed="false"> <select id="qsel">
+No claim entry, comment, ratify, retract, cite, split or report export control found.
+node:internal/assert/utils:77
+    throw err;
+    ^
+
+AssertionError [ERR_ASSERTION]: status legend STATUS_COUNT
+    at check (/home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/dom-check.js:11:45)
+    at Object.<anonymous> (/home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/dom-check.js:78:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.11.1

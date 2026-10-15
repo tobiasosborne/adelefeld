@@ -1,0 +1,13 @@
+DOM state counts: {"refuted":4,"sealed":94,"proposed":1,"open":1}
+b1-exp-log-5-is-1: card text and all script/expect/actual lines checked.
+b2-product-formula-6-35: card text and all script/expect/actual lines checked.
+b3-exp-log-5-is-5: card text and all script/expect/actual lines checked.
+b4-x2-plus-1-root-in-z2: card text and all script/expect/actual lines checked.
+b5-1-sqrt-1-plus-8z2: card text and all script/expect/actual lines checked.
+b5-2-sqrt-5-plus-8z2: card text and all script/expect/actual lines checked.
+b5-sqrt-1-plus-4z2: card text and all script/expect/actual lines checked.
+b6-two-square-family: card text and all script/expect/actual lines checked.
+Controls: <button type="button" data-filter="all" aria-pressed="true"> <button type="button" data-filter="proposed" aria-pressed="false"> <button type="button" data-filter="sealed" aria-pressed="false"> <button type="button" data-filter="refuted" aria-pressed="false"> <button type="button" data-filter="open" aria-pressed="false"> <button type="button" data-filter="ratified" aria-pressed="false"> <select id="qsel">
+No claim entry, comment, ratify, retract, cite, split or report export control found.
+DOM assertions: 149
+The JS run used lightweight element stubs; no pixel or layout verification is claimed.

@@ -1,0 +1,21 @@
+test_compare_rules (test_ledger.TestCompare.test_compare_rules) ... ok
+test_status_classes_cover_status_h (test_ledger.TestCompare.test_status_classes_cover_status_h) ... ok
+test_footprint_rule (test_ledger.TestImporter.test_footprint_rule) ... ok
+test_two_fixtures (test_ledger.TestImporter.test_two_fixtures) ... ok
+test_exp_matches_driver_readme (test_ledger.TestOracle.test_exp_matches_driver_readme) ... ok
+test_digit_difference (test_ledger.TestRenderer.test_digit_difference) ... ok
+test_page_holds_every_id (test_ledger.TestRenderer.test_page_holds_every_id) ... ok
+test_build_identity (test_ledger.TestSealer.test_build_identity) ... ok
+test_changed_claim_is_resealed_not_reopened (test_ledger.TestSealer.test_changed_claim_is_resealed_not_reopened) ... ok
+test_dry_run_runs_nothing (test_ledger.TestSealer.test_dry_run_runs_nothing) ... ok
+test_failing_setting_prints_a_line (test_ledger.TestSealer.test_failing_setting_prints_a_line) ... ok
+test_only_and_exit_zero (test_ledger.TestSealer.test_only_and_exit_zero) ... ok
+test_other_build_same_lines_keeps_seal (test_ledger.TestSealer.test_other_build_same_lines_keeps_seal) ... ok
+test_reopen_on_other_build (test_ledger.TestSealer.test_reopen_on_other_build) ... ok
+test_reseal_same_result_keeps_file (test_ledger.TestSealer.test_reseal_same_result_keeps_file) ... ok
+test_verdicts (test_ledger.TestSealer.test_verdicts) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.642s
+
+OK

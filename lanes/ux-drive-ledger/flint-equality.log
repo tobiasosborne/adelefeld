@@ -1,0 +1,5 @@
+exp success: 1 1
+exp(3): 958
+exp(12): 5125
+precision: 8 8
+padic_equal: 0

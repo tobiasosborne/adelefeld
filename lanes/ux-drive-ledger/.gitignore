@@ -1,0 +1,12 @@
+/build/
+/ledger/
+/extra-ledger/
+/status-ledger/
+/invalid-ledger/
+/void-ratification/
+/reopened-*/
+/firefox*/
+/tmp/
+/flint-equality
+*.stdout
+__pycache__/
