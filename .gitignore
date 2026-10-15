@@ -34,3 +34,4 @@ bench/bench_*
 .claude/worktrees/
 a.out
 julia/Adelefeld/Manifest.toml
+lanes/*/launch.log

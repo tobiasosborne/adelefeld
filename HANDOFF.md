@@ -2,6 +2,79 @@
 
 # HANDOFF: adelefeld
 
+## Session 2026-10-15 23:17 to about 02:10 on 2026-10-16 (UTC+11, AEDT; orchestrator Claude Fable on the laptop; Opus, Sonnet, codex sol and astra lanes): START HERE
+
+**One line.** The four UX visions of `docs/ux/` are BUILT as their first buildable slices under `ux/notebook`,
+`ux/atlas`, `ux/ledger`, `ux/bench`, each TEST-DRIVEN by codex `gpt-6-astra` as a user of its brief's two
+scenarios (`lanes/ux-drive-*/report.md`: 12 defects in all, every one repaired by an Opus lane, `lanes/ux-*-r1/`),
+with the decisions D-UX0 to D-UX6 (`docs/ux/README.md`, `lanes/UX-COMMON.md`, `lanes/UX-DRIVE.md`). Also
+landed: the Julia binding's J-b step 1 (`ModCtx`, leases, the local conversions; 5369 tests), one statements file
+of milestone 5 (`docs/api-5s.md`, adf-82bj), the sanitizer timing factor (adf-mis2), the `-O1` warnings
+(adf-3rl, lane c-warn1). Record: `docs/worklog/2026-10-16-night.md`.
+
+**First commands.**
+
+    cd ~/Projects/adelefeld && git pull && bd ready | head -20
+    tools/orch/suites.sh -j 2          # all, san, clang, inv, headers; NOTE "-j 2" with a space
+    ~/Projects/quota-app/target/release/quota; date; df -h /   # the disk filled once tonight
+
+**Master.** ALL FIVE SUITES GREEN on `a9a3bf4` at 01:53 to 02:03 on 2026-10-16 (`tools/orch/suites.sh -j 2`:
+107 programs; driver 100 cases, 101691 lines; exports 625 of 625; Julia with `Pkg.test` 5369; both self-tests; san
+included, with the new timing factor, at a host load of 4 to 6). The first run of the session on `59dc810` at
+23:40 had four of five green and san red on one timing check (2.16 s against 2.0 s at load 6.6), the cause of
+adf-mis2. Rerun the suites first thing anyway.
+
+**Rules of TJO for this session** (23:30): as on 2026-10-14, plus "work up to 10 to 20 percent over pace for
+both Claude and Codex", and "Build the four UX visions and trial run them with astra as a testdriver". With the
+two peer sessions: an aggregate stop line of +12 percent ahead on either weekly window, checked before every
+dispatch; codex runs announce-only (start and end with pid) after three sessions' codex execs coexisted
+without a kill; suite bursts announced and held during initech-os's certificates. Quota at the end: Claude
+Weekly 38 percent used, +10.1 ahead; Codex Weekly 14 percent, +9.7 ahead (the four astra drives cost about
+one point each).
+
+**What the drives say about the visions** (the VISION paragraphs of the four reports): the atlas makes the
+case for comparing local branches and digits on one map, not yet for braids or a resumed tour (next: branch
+selection saved as a partial-product scene); the ledger makes the case for reproducible claim files and visible
+refutations, not yet for a human review queue (next: ratify, comment, export); the bench makes the finite
+evidence legible and its records withstand the full scenarios (next: a family fold with each pair's first
+failing place; a cost preview); the notebook makes the case for place strips with correct digits, explicit
+branches and readable status data, not yet for an agent notebook with certificates (next: A5's comparison and
+B's certificates). Library demands that every slice hit: no failing place or reason code under a status
+(`DOMAIN` for a composite place and for a failed criterion is the same line); the driver reads no dump as an
+operand and has no variables, so a computed value cannot be sent back losslessly; no version stamp from the
+driver or the package; `project` prints its own text, not the value form. The driver DOES have `legendre`,
+`jacobi`, `kronecker`, `hilbert_at` (README 655-672) and dump forms for every type.
+
+**The next steps**, in this order:
+1. Rerun the five suites on the current master.
+2. The UX second slices, one per vision, as the drives' item lists say (above); before them, decide the three
+   questions for the owner in `docs/ux/README.md` (who is the first user; what is kept; how much geometry), or
+   let the four slices answer them: TJO's call.
+3. The library demands of the UX (a C design before code): a result record with the failing place and a reason
+   code; a `version` command and `adf_version_str`; a dump as an operand of the driver (or variables); the value
+   form in `project`. Each is a thin slice of milestone 1F or a driver work package.
+4. Milestone J: J-b steps 2 to 4 (`Scaled`/`cap`; `Place`/`LBall`; `SBall`/`project`/local text and dumps), then
+   J-c, J-d, J-e, J-S; one review when J-a to J-d have landed (51 DESIGN-FINDINGs so far; the two uncaught faults
+   of j-slice5, F8 and F12, need `INV=1` under ASan).
+5. Real roots: the Descartes completeness criterion (adf-z45q, a proof change before code; astra).
+6. The UX epic's housekeeping: Firefox headless exits by signal 11 on this machine (about:blank too), so no
+   slice has a screenshot; a working browser run is owed before any layout claim.
+
+**Waits for TJO.** Nothing blocks. Decided without asking and open to reversal: D-UX0 to D-UX6 (including the
+amended D-UX5); the timing factor 4 under the sanitizer; the `-O1` warnings repaired in the sources rather than
+the runner's flags. Open: the three UX questions above; the beads of milestone epics 1, 1F, 2, 3, 4 and R/S are
+still open although the work is complete and reviewed (close them, or keep them as the index of their WPs).
+
+**Things to know.**
+- Codex lanes write `report.md`, Claude lanes `result.md`; wait for `DONE` in `lane.log` before reading a codex
+  report. `wt_lane.sh` worktrees under `../adelefeld-wt/<lane>`; delete their `build/` after the merge (they
+  took 4 GB of the full disk tonight), and keep `df -h /` in view: core dumps of a crashing Julia fault run are
+  1.4 GB each under systemd-coredump unless `/proc/self/coredump_filter` is 0 (`lanes/j-slice5/faults.py`).
+- The UX slices: `ux/<name>/README.md` is the whole user manual (under 80 lines each); every slice regenerates
+  its fixtures with an empty diff (`run.sh`, `run.sh --check`, `build_scenes.sh`, `seal.py`/`render.py`).
+- Julia as before (the launcher, the depot with the trailing colon, offline, one thread); the notebook's
+  `julia.sh` takes `ADELICA_LANE` for its depot.
+
 ## Session 2026-10-14 23:30 to about 04:30 on 2026-10-15 (UTC+11, AEDT; orchestrator Claude Fable on the laptop; codex, Opus and Sonnet lanes): START HERE
 
 **One line.** Milestone 5 is COMPLETE and its epic adf-fsy closed: the remote session's slices 5b, 5d, 5e were
