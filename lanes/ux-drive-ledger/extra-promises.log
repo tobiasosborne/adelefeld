@@ -1,0 +1,25 @@
+CLAIM drive-branch places= [5] state= proposed script lines= 2
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/extra-ledger --only drive-branch
+drive-branch                 sealed    first seal
+seal: 1 claims; proposed 0, sealed 1, refuted 0, open 0, ratified 0; 0.0 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+  exit= 0
+CLAIM drive-citation places= [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97] state= ratified script lines= 24
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/extra-ledger --only drive-citation
+drive-citation               ratified  first seal
+seal: 1 claims; proposed 0, sealed 0, refuted 0, open 0, ratified 1; 0.0 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+  exit= 0
+CLAIM drive-footprint places= [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101] state= proposed script lines= 24
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/extra-ledger --only drive-footprint
+drive-footprint              sealed    first seal
+seal: 1 claims; proposed 0, sealed 1, refuted 0, open 0, ratified 0; 0.0 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+  exit= 0
+COMMAND: python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/render.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/extra-ledger
+render: lanes/ux-drive-ledger/extra-ledger/ledger.html, 32076 bytes
+  exit= 0
+drive-branch verdict= sealed actual= ['5 [2]: 2 + O(5^1); 5 [3]: 3 + O(5^1)']
+PROMISE RESULT: FAILED: ambiguous singular branch claim accepted
+drive-citation verdict= sealed actual= ['-1', '-1', '1', '-1', '-1', '1', '-1', '1', '-1', '1', '-1', '1', '-1', '1', '-1', '-1', '-1', '-1', '1', '1', '1', '-1', '1', '1']
+PROMISE RESULT: FAILED: missing-source claim displayed RATIFIED
+drive-footprint verdict= sealed actual= ['-1', '-1', '1', '-1', '-1', '1', '-1', '1', '-1', '1', '-1', '1', '-1', '1', '-1', '-1', '-1', '-1', '1', '1', '1', '-1', '1', '1']
+PROMISE RESULT: 101 not displayed computed
+Three extra promises tried. Each result is printed above; no slice files changed.

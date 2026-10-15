@@ -1,0 +1,38 @@
+adf: line 1: prec: OK
+adf: line 2: roots_at: NOT_DETERMINED
+adf: line 3: recover: OK
+adf: line 4: roots: OK
+adf: line 5: root_at: OK
+adf: line 6: equal: DOMAIN
+adf: line 7: contains: DOMAIN
+adf: line 8: contains: DOMAIN
+adf: line 9: equal: DOMAIN
+adf: line 10: dump: OK
+adf: line 11: dump: OK
+adf: line 12: dump: OK
+adf: line 13: dump: OK
+adf: line 14: dump: OK
+adf: line 15: version: PARSE
+adf: line 16: adf_version_check: PARSE
+adf: line 17: recon_cert_check: PARSE
+adf: line 18: prec: OK
+adf: line 19: idele: OK
+adf: line 20: show: PARSE
+error: NOT_DETERMINED
+22/7
+235 mod 7^4; 2166 mod 7^4
+5 [2]: 280182 + O(5^8)
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+error: DOMAIN
+adf1 Q ucoset 5 6
+adf1 Q idele 1 1 0 0 0 1 1 1 0
+adf1 Q idclass 1 0 0 0 1 0
+adf1 Q lball 3 b 1 0 2
+adf1 Q sball n 1 3 b 1 0 2
+error: PARSE
+error: PARSE
+error: PARSE
+(0.17142857142857142857 +/- 1.5e-21 ; 6/35 * [1])
+error: PARSE

@@ -1,0 +1,161 @@
+
+b1-exp-log-5-is-1: exp(Log 5) = 1 at 5, written as two lines: Log 5 = 0 at 5, then exp(0) = 1 at 5.
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b1-exp-log-5-is-1.cmd
+Input:
+prec 8
+Log_at (5 ; 5 * [1]) with 5
+exp_at 0 with 5
+Output:
+5: 0
+5: 1
+exit=0
+
+b2-product-formula-6-35: The absolute values of 6/35 multiply to 1 over all places: |6/35|_inf |6/35|_2 |6/35|_3 |6/35|_5 |6/35|_7 = 1, and |6/35|_p = 1 at every other prime.
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b2-product-formula-6-35.cmd
+Input:
+abs (1 ; 6/35 * [1]) with 2
+abs (1 ; 6/35 * [1]) with 3
+abs (1 ; 6/35 * [1]) with 5
+abs (1 ; 6/35 * [1]) with 7
+abs (1 ; 6/35 * [1]) with 11
+prec 128
+digits 10
+norm (0.171428571428571428571428571 +/- 1e-27 ; 6/35 * [1])
+Output:
+1/2
+1/3
+5
+7
+1
+1 +/- 8.4e-27
+exit=0
+
+b3-exp-log-5-is-5: exp(Log 5) = 5 at 5. Deliberately wrong expectation: the agent's first guess that exp undoes Log at 5, kept as a refuted claim.
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b3-exp-log-5-is-5.cmd
+Input:
+prec 8
+Log_at (5 ; 5 * [1]) with 5
+exp_at 0 with 5
+Output:
+5: 0
+5: 1
+exit=0
+
+b4-x2-plus-1-root-in-z2: x^2 + 1 has a root in Z_2 (the agent's guess: the root 1 mod 2 lifts).
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b4-x2-plus-1-root-in-z2.cmd
+Input:
+roots 1 0 1 with 2 with 8
+Output:
+none
+exit=0
+
+b5-1-sqrt-1-plus-8z2: On 1 + 8 Z_2 the square roots are 1 + O(2^2) and 3 + O(2^2) (all branches).
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b5-1-sqrt-1-plus-8z2.cmd
+Input:
+prec 8
+roots_at (* ; 1 mod 8) with 2 with 2
+Output:
+2 [+1]: 1 + O(2^2); 2 [-1]: 3 + O(2^2)
+exit=0
+
+b5-2-sqrt-5-plus-8z2: On 5 + 8 Z_2 there is no square root (all branches).
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b5-2-sqrt-5-plus-8z2.cmd
+Input:
+prec 8
+roots_at (* ; 5 mod 8) with 2 with 2
+Output:
+error: DOMAIN
+exit=1
+
+b5-sqrt-1-plus-4z2: The square roots of 1 + 4 Z_2 are determined to 2 digits (all branches).
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b5-sqrt-1-plus-4z2.cmd
+Input:
+prec 8
+roots_at (* ; 1 mod 4) with 2 with 2
+Output:
+error: NOT_DETERMINED
+exit=1
+
+b6-two-square-family: 2 is a square in Q_p exactly when p = 1 or 7 mod 8 (p odd); computed for the odd primes 3 to 97, argued for every larger p.
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/b6-two-square-family.cmd
+Input:
+legendre 2 with 3
+legendre 2 with 5
+legendre 2 with 7
+legendre 2 with 11
+legendre 2 with 13
+legendre 2 with 17
+legendre 2 with 19
+legendre 2 with 23
+legendre 2 with 29
+legendre 2 with 31
+legendre 2 with 37
+legendre 2 with 41
+legendre 2 with 43
+legendre 2 with 47
+legendre 2 with 53
+legendre 2 with 59
+legendre 2 with 61
+legendre 2 with 67
+legendre 2 with 71
+legendre 2 with 73
+legendre 2 with 79
+legendre 2 with 83
+legendre 2 with 89
+legendre 2 with 97
+Output:
+-1
+-1
+1
+-1
+-1
+1
+-1
+1
+-1
+1
+-1
+1
+-1
+1
+-1
+-1
+-1
+-1
+1
+1
+1
+-1
+1
+1
+exit=0
+p=3, roots modulo p=[], sign=-1
+p=5, roots modulo p=[], sign=-1
+p=7, roots modulo p=[3, 4], sign=1
+p=11, roots modulo p=[], sign=-1
+p=13, roots modulo p=[], sign=-1
+p=17, roots modulo p=[6, 11], sign=1
+p=19, roots modulo p=[], sign=-1
+p=23, roots modulo p=[5, 18], sign=1
+p=29, roots modulo p=[], sign=-1
+p=31, roots modulo p=[8, 23], sign=1
+p=37, roots modulo p=[], sign=-1
+p=41, roots modulo p=[17, 24], sign=1
+p=43, roots modulo p=[], sign=-1
+p=47, roots modulo p=[7, 40], sign=1
+p=53, roots modulo p=[], sign=-1
+p=59, roots modulo p=[], sign=-1
+p=61, roots modulo p=[], sign=-1
+p=67, roots modulo p=[], sign=-1
+p=71, roots modulo p=[12, 59], sign=1
+p=73, roots modulo p=[32, 41], sign=1
+p=79, roots modulo p=[9, 70], sign=1
+p=83, roots modulo p=[], sign=-1
+p=89, roots modulo p=[25, 64], sign=1
+p=97, roots modulo p=[14, 83], sign=1
+Squares modulo 8: [0, 1, 4] ; 5 is absent. Odd squares are 1 mod 8.
+6/35 = 2*3/(5*7); the only prime factors are 2, 3, 5, 7.
+Exact product: 1 ; input-centre error: -3/7000000000000000000000000000
+Norm interval fits in 1 +/- 8.4e-27. This is an enclosure, not a computed exact equality.
+
+Independent assertions: 59

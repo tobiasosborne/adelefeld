@@ -1,0 +1,64 @@
+
+a1-cos-4-at-2: cos(4) = 1 mod 16 in Z_2 (line 1 of the manuscript's table).
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/a1-cos-4-at-2.cmd
+Input:
+prec 4
+cos_at 4 with 2
+Output:
+2: 9 + O(2^4)
+exit=0
+
+a2-v2-log-3: v_2(log 3) = 2 in Q_2.
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/a2-v2-log-3.cmd
+Input:
+prec 3
+log_at 3 with 2
+Output:
+2: 4 + O(2^3)
+exit=0
+
+a3-exp-3-exp-12-mod-3-8: exp(3) = exp(12) mod 3^8 in Z_3 (line 3 of the manuscript's table).
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/a3-exp-3-exp-12-mod-3-8.cmd
+Input:
+prec 8
+exp_at 3 with 3
+exp_at 12 with 3
+Output:
+3: 958 + O(3^8)
+3: 5125 + O(3^8)
+exit=0
+
+a4-sin-3-at-3: sin(3) = 3 mod 9 in Z_3.
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/a4-sin-3-at-3.cmd
+Input:
+prec 2
+sin_at 3 with 3
+Output:
+3: 3 + O(3^2)
+exit=0
+
+a5-exp-3-exp-12-distance: exp(3) and exp(12) agree modulo 9 and not modulo 27 in Z_3, because exp preserves distances on 3 Z_3 and v_3(12 - 3) = 2.
+Command: timeout 20 /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/build/adf /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/a5-exp-3-exp-12-distance.cmd
+Input:
+prec 2
+exp_at 3 with 3
+exp_at 12 with 3
+prec 3
+exp_at 3 with 3
+exp_at 12 with 3
+Output:
+3: 4 + O(3^2)
+3: 4 + O(3^2)
+3: 13 + O(3^3)
+3: 22 + O(3^3)
+exit=0
+
+a6-flint-equal-ignores-precision: FLINT's padic equality test says that exp(3) and exp(12) are equal in Q_3 at precision 8, because it ignores precision.
+No script: cannot reproduce FLINT equality through this driver. Proposed, not evidence.
+Every x in 4 + 8 Z_2 is 4(1 + 2k); its unit factor is odd, hence v_2(x) = 2.
+Exponential centres: [958, 5125] difference: 4167
+Base-3 digits: 958 01022111
+Base-3 digits: 5125 21000211
+13 % 9 = 22 % 9 = 4; 22 - 13 = 9. The 3^2 digit is the first difference.
+
+Independent assertions: 21

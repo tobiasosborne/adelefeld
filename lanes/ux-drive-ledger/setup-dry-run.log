@@ -1,0 +1,7 @@
+== a1-cos-4-at-2: cos(4) = 1 mod 16 in Z_2 (line 1 of the manuscript's table).
+   driver lines:
+     prec 4
+     cos_at 4 with 2
+   expected lines:
+     2: 1 + O(2^4)
+   expected exit status: 0

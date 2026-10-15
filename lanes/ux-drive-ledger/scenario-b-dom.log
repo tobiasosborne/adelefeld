@@ -1,0 +1,35 @@
+DOM state counts: {"refuted":4,"sealed":94,"proposed":1,"open":1}
+b1-exp-log-5-is-1: card text and all script/expect/actual lines checked.
+b2-product-formula-6-35: card text and all script/expect/actual lines checked.
+b3-exp-log-5-is-5: card text and all script/expect/actual lines checked.
+b4-x2-plus-1-root-in-z2: card text and all script/expect/actual lines checked.
+b5-1-sqrt-1-plus-8z2: card text and all script/expect/actual lines checked.
+b5-2-sqrt-5-plus-8z2: card text and all script/expect/actual lines checked.
+b5-sqrt-1-plus-4z2: card text and all script/expect/actual lines checked.
+b6-two-square-family: card text and all script/expect/actual lines checked.
+Controls: <button type="button" data-filter="all" aria-pressed="true"> <button type="button" data-filter="proposed" aria-pressed="false"> <button type="button" data-filter="sealed" aria-pressed="false"> <button type="button" data-filter="refuted" aria-pressed="false"> <button type="button" data-filter="open" aria-pressed="false"> <button type="button" data-filter="ratified" aria-pressed="false"> <select id="qsel">
+No claim entry, comment, ratify, retract, cite, split or report export control found.
+node:internal/assert/utils:77
+    throw err;
+    ^
+
+AssertionError [ERR_ASSERTION]: status legend STATUS_COUNT
+    at check (/home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/dom-check.js:11:45)
+    at Object.<anonymous> (/home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/dom-check.js:78:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.11.1

@@ -1,0 +1,30 @@
+render: lanes/ux-drive-ledger/status-ledger/ledger.html, 25490 bytes
+COMMAND: timeout 30 python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/status-ledger --only drive-prefixed-open 
+drive-prefixed-open          refuted   first seal
+seal: 1 claims; proposed 0, sealed 0, refuted 1, open 0, ratified 0; 0.0 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+ exit= 1
+actual= ['continuation S=((1 +/- 0.001) + (0)*i ; 0): error: NOT_DETERMINED'] expected verdict= open observed verdict= refuted
+DEFECT: status is misclassified
+COMMAND: timeout 30 python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/status-ledger --only drive-limit 
+drive-limit                  open      first seal
+seal: 1 claims; proposed 0, sealed 0, refuted 0, open 1, ratified 0; 0.0 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+ exit= 1
+actual= ['error: LIMIT'] expected verdict= open observed verdict= open
+COMMAND: timeout 30 python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/status-ledger --only drive-parse 
+drive-parse                  refuted   first seal
+seal: 1 claims; proposed 0, sealed 0, refuted 1, open 0, ratified 0; 0.0 s; build adf 22ccde6c6306, FLINT 3.0.1, commit 8cb2ec2c71ac
+ exit= 1
+actual= ['error: PARSE'] expected verdict= refuted observed verdict= refuted
+Prefixed NOT_DETERMINED status badge present: False
+Prefixed card displays REFUTED: True
+COMMAND: timeout 30 python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/seal.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/invalid-ledger 
+seal: missing-expect.json: no field expect
+ exit= 2
+COMMAND: timeout 30 python3 -B /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/ux/ledger/render.py --ledger /home/tobias/Projects/adelefeld-wt/ux-drive-ledger/lanes/ux-drive-ledger/void-ratification 
+render: lanes/ux-drive-ledger/void-ratification/ledger.html, 18285 bytes
+ exit= 0
+Ratifying a refuted claim remains REFUTED and says ratification is void.
+False computed footprint: <span class="c wide" title="22 primes: 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101">11 ... 101</span>
+Imported empty footprints: 29 ['fx-rfun-eval', 'fx-s-roots', 'fx-qclass-dump', 'fx-ffun-fourier', 'fx-tate-local', 'fx-09_settings', 'fx-poisson', 'fx-11_guard', 'fx-ffun-add', 'fx-localfactor-status', 'fx-char-values', 'fx-tate', 'fx-ffun-values', 'fx-tate-continue', 'fx-rfun-dump', 'fx-tate-fe', 'fx-rfun-text', 'fx-rfun-algebra', 'fx-f-places-1000', 'fx-char-dump', 'fx-trig-hostile', 'fx-ffun-dump', 'fx-ffun-algebra', 'fx-rfun-fourier', 'fx-s-realroots', 'fx-tate-gamma', 'fx-psi-status', 'fx-10_line_language', 'fx-s-hostile']
+Imported claims with "with real": 20 ; R represented: 0
+Status controls verified: raw LIMIT open, raw PARSE refuted, missing field exit 2, void ratification.
