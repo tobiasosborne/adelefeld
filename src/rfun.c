@@ -141,10 +141,10 @@ rf_input_ok(const adf_rfun_t x)
 
 /* D1: an exact rational whose numerator and denominator can be squared within ADF_RFUN_BITS_MAX bits. */
 static int
-rf_rat_ok(const fmpq_t q)
+rf_rat_ok(const fmpz * num, const fmpz * den)
 {
-    return 2 * (slong) fmpz_bits(fmpq_numref(q)) <= ADF_RFUN_BITS_MAX
-           && 2 * (slong) fmpz_bits(fmpq_denref(q)) <= ADF_RFUN_BITS_MAX;
+    return 2 * (slong) fmpz_bits(num) <= ADF_RFUN_BITS_MAX
+           && 2 * (slong) fmpz_bits(den) <= ADF_RFUN_BITS_MAX;
 }
 
 /* ------------------------------------------------------------------ lifecycle */
@@ -336,7 +336,7 @@ adf_rfun_translate_rat(adf_rfun_t y, const adf_rfun_t x, const adf_rat_t q, slon
         return ADF_LIMIT;
     ADF_INV_RFUN(x);
     ADF_INV_RAT(q);
-    if (!rf_input_ok(x) || !rf_rat_ok(q->q))
+    if (!rf_input_ok(x) || !rf_rat_ok(fmpq_numref(q->q), fmpq_denref(q->q)))
         return ADF_LIMIT;
     for (i = 0; i < x->len; i++)
     {
@@ -421,7 +421,7 @@ adf_rfun_dilate_rat(adf_rfun_t y, const adf_rfun_t x, const adf_rat_t h, slong p
         return ADF_LIMIT;
     ADF_INV_RFUN(x);
     ADF_INV_RAT(h);
-    if (!rf_input_ok(x) || !rf_rat_ok(h->q))
+    if (!rf_input_ok(x) || !rf_rat_ok(fmpq_numref(h->q), fmpq_denref(h->q)))
         return ADF_LIMIT;
     if (fmpz_is_zero(num))
         return ADF_DOMAIN;

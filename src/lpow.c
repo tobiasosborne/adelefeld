@@ -277,7 +277,7 @@ int adf_lball_powunit(adf_lball_t y, const adf_lball_t u, const adf_lball_t s, s
     adf_lball_t D1, Zp, res;
     fmpz_t r;
     ulong p;
-    slong A, B, beta, Nc = clamp(N), w0 = 1, k;
+    slong A, B, beta, Nc = clamp(N), w0 = 1, k = 0;
     int du, ds, st = ADF_OK, par, par_known, sign_known;
     check_input(u, __func__, "u");
     check_input(s, __func__, "s");
