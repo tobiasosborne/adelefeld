@@ -1,0 +1,3 @@
+lanes/ux-drive-atlas/idempotents36.json
+{"branch_count": 4, "digit_paths": 8, "digit_strings": 8, "hover_text": 12, "lit_count": 4, "modular_complete": 1, "modular_contains": 4, "modular_digits": 4, "node_centres": 12, "polynomial_residue": 8, "real_endpoints": 2, "real_exact": 2, "real_polynomial": 2, "record_outputs": 1, "result_output": 4, "sibling_hover": 24, "status": 4, "transcript": 3}
+checks=107 failures=0 records_replayed=24

@@ -1,0 +1,3 @@
+lanes/ux-drive-atlas/log1.json
+{"branch_count": 15, "digit_paths": 30, "digit_strings": 30, "hover_text": 90, "lit_count": 15, "node_centres": 90, "real_endpoints": 1, "real_exact": 1, "record_outputs": 1, "result_output": 15, "sibling_hover": 165, "status": 15, "thread_real": 1, "thread_source": 1, "transcript": 3}
+checks=473 failures=0 records_replayed=19

@@ -1,0 +1,777 @@
+{
+  "scene": "lanes/ux-drive-atlas/exp5.json",
+  "sliders": 3,
+  "depth_changes": 15,
+  "svg_elements": 101,
+  "focus_checks": 11,
+  "finite_coordinates": true,
+  "text": {
+    "value": "(* ; 5 mod 25)",
+    "lens": "exp",
+    "places": "places: real · 2 · 3 · 5 · fog",
+    "picker": "",
+    "loadhelp": "From file:// use the picker; choose a file under scenes/.",
+    "message": "Scene loaded. Depth handles read stored driver results.",
+    "mapwrap": "",
+    "empty": "",
+    "map": "  R exp_at (* ; 5 mod 25) with real    DOMAIN Reported failing place: not given  2 depth 5 · 0 branches  NOT_DETERMINED Reported failing place: not given  3 depth 5 · 0 branches  NOT_DETERMINED Reported failing place: not given  5 depth 5 · 1 branches                    [p=5: 0 + O(5^0)]  [p=5: 0 + O(5^1)]  0 [p=5: 1 + O(5^1)]  1 [p=5: 2 + O(5^1)]  2 [p=5: 3 + O(5^1)]  3 [p=5: 4 + O(5^1)]  4 [p=5: 1 + O(5^2)]  0 [p=5: 6 + O(5^2)]  1 [p=5: 11 + O(5^2)]  2 [p=5: 16 + O(5^2)]  3 [p=5: 21 + O(5^2)]  4 1 distinct lit paths · low digit first  Fog bank every other p 0 undrawn factors of the modulus below 1000 Input footprint only Lens not computed here No paths drawn",
+    "hover": "[p=5: 21 + O(5^2)]",
+    "controls": "Prime 2 Depth 5 NOT_DETERMINED · 0 branches · 0 lit paths  Prime 3 Depth 5 NOT_DETERMINED · 0 branches · 0 lit paths  Prime 5 Depth 5 OK · 1 branches · 1 lit paths 5: 6 + O(5^2) digits (low first): 1 1 seed: not given · certificate N: 2",
+    "information": "",
+    "reading-title": "",
+    "reading": "The identity or series lens uses the projected input at each named place. No rational thread is certified by this scene. Drag each depth handle independently. Coarse branches may share one path. The shaded cones stand for continuations that are not individually drawn.",
+    "evidence": "input modulus support below 1000; larger factors not examined An inexact real ball has a plain marker: exact dyadic endpoints are not given by the driver. The printed midpoint and radius remain in its label and transcript. Gates use the named call’s place. The driver’s reported failing place is not given. An OK empty polynomial list means no roots in Z_p or on the real line. Only the precomputed depths are available. Branch selection, braids, tours and folding are outside this slice.",
+    "provenance": "",
+    "stdin": "prec 64\ndigits 20\nshow (* ; 5 mod 25)\nproject (* ; 5 mod 25) with 2 3 5\nproject (* ; 5 mod 25) with real\nexp_at (* ; 5 mod 25) with real\nprec 1\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 2\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 3\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 4\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 5\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\n",
+    "stdout": "(* ; 5 mod 25)\n2: 0 + O(2^0); 3: 0 + O(3^0); 5: 5 + O(5^2)\nerror: DOMAIN\nerror: DOMAIN\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 1 + O(5^1)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\n"
+  },
+  "elements": [
+    {
+      "tag": "div",
+      "viewBox": "0 0 1230 650",
+      "aria-label": "exp of (* ; 5 mod 25) at real, 2, 3, 5",
+      "text": ""
+    },
+    {
+      "tag": "defs",
+      "text": ""
+    },
+    {
+      "tag": "pattern",
+      "id": "fogp",
+      "width": "8",
+      "height": "8",
+      "patternUnits": "userSpaceOnUse",
+      "patternTransform": "rotate(45)",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "width": "8",
+      "height": "8",
+      "class": "fogbg",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "width": "3",
+      "height": "8",
+      "class": "fogst",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "24",
+      "y": "29",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "R"
+    },
+    {
+      "tag": "text",
+      "x": "48",
+      "y": "29",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "exp_at (* ; 5 mod 25) with real"
+    },
+    {
+      "tag": "line",
+      "x1": "45",
+      "y1": "86",
+      "x2": "1195",
+      "y2": "86",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "aria-label": "DOMAIN · proved no",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "x": "65",
+      "y": "62",
+      "width": "28",
+      "height": "24",
+      "class": "gate-shape",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "65",
+      "y1": "74",
+      "x2": "93",
+      "y2": "74",
+      "class": "gate-shape",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "103",
+      "y": "78",
+      "class": "gate-text",
+      "text-anchor": "start",
+      "text": "DOMAIN"
+    },
+    {
+      "tag": "text",
+      "x": "65",
+      "y": "115",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Reported failing place: not given"
+    },
+    {
+      "tag": "rect",
+      "x": "20",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "34",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "2"
+    },
+    {
+      "tag": "text",
+      "x": "64",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 0 branches"
+    },
+    {
+      "tag": "g",
+      "aria-label": "NOT_DETERMINED · open",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "x": "42",
+      "y": "242",
+      "width": "28",
+      "height": "24",
+      "rx": "12",
+      "class": "gate-shape",
+      "stroke-dasharray": "5 4",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "80",
+      "y": "258",
+      "class": "gate-text",
+      "text-anchor": "start",
+      "text": "NOT_DETERMINED"
+    },
+    {
+      "tag": "text",
+      "x": "42",
+      "y": "290",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Reported failing place: not given"
+    },
+    {
+      "tag": "rect",
+      "x": "350",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "364",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "3"
+    },
+    {
+      "tag": "text",
+      "x": "394",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 0 branches"
+    },
+    {
+      "tag": "g",
+      "aria-label": "NOT_DETERMINED · open",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "x": "372",
+      "y": "242",
+      "width": "28",
+      "height": "24",
+      "rx": "12",
+      "class": "gate-shape",
+      "stroke-dasharray": "5 4",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "410",
+      "y": "258",
+      "class": "gate-text",
+      "text-anchor": "start",
+      "text": "NOT_DETERMINED"
+    },
+    {
+      "tag": "text",
+      "x": "372",
+      "y": "290",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Reported failing place: not given"
+    },
+    {
+      "tag": "rect",
+      "x": "680",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "694",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "5"
+    },
+    {
+      "tag": "text",
+      "x": "724",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 1 branches"
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "741.6666666666666",
+      "y2": "391",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 741.6666666666666 394 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "788.3333333333334",
+      "y2": "391",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "835",
+      "y2": "391",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 835 394 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "881.6666666666666",
+      "y2": "391",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 881.6666666666666 394 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "928.3333333333334",
+      "y2": "391",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 928.3333333333334 394 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "788.3333333333334",
+      "y1": "391",
+      "x2": "741.6666666666666",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 741.6666666666666 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "788.3333333333334",
+      "y1": "391",
+      "x2": "788.3333333333334",
+      "y2": "566",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 788.3333333333334 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "788.3333333333334",
+      "y1": "391",
+      "x2": "835",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 835 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "788.3333333333334",
+      "y1": "391",
+      "x2": "881.6666666666666",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 881.6666666666666 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "788.3333333333334",
+      "y1": "391",
+      "x2": "928.3333333333334",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 928.3333333333334 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 0 + O(5^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 0 + O(5^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "835",
+      "cy": "216",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 0 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 0 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "741.6666666666666",
+      "cy": "391",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "741.6666666666666",
+      "y": "382",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 1 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 1 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "788.3333333333334",
+      "cy": "391",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "788.3333333333334",
+      "y": "382",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 2 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 2 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "835",
+      "cy": "391",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "835",
+      "y": "382",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 3 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 3 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "881.6666666666666",
+      "cy": "391",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "881.6666666666666",
+      "y": "382",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 4 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 4 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "928.3333333333334",
+      "cy": "391",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "928.3333333333334",
+      "y": "382",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 1 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 1 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "741.6666666666666",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "741.6666666666666",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 6 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 6 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "788.3333333333334",
+      "cy": "566",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "788.3333333333334",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 11 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 11 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "835",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "835",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 16 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 16 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "881.6666666666666",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "881.6666666666666",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 21 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 21 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "928.3333333333334",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "928.3333333333334",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "text",
+      "x": "695",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "1 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "1020",
+      "y": "150",
+      "width": "190",
+      "height": "480",
+      "rx": "6",
+      "fill": "url(#fogp)",
+      "stroke": "var(--line)",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "178",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "Fog bank"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "216",
+      "class": "tlab",
+      "text-anchor": "start",
+      "text": "every other p"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "250",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "0 undrawn factors"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "270",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "of the modulus below 1000"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "316",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Input footprint only"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "338",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Lens not computed here"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "380",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "No paths drawn"
+    }
+  ]
+}

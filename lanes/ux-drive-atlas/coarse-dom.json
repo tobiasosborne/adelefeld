@@ -1,0 +1,371 @@
+{
+  "scene": "lanes/ux-drive-atlas/coarse.json",
+  "sliders": 3,
+  "depth_changes": 15,
+  "svg_elements": 45,
+  "focus_checks": 3,
+  "finite_coordinates": true,
+  "text": {
+    "value": "(* ; 0 mod 1)",
+    "lens": "identity",
+    "places": "places: real · 2 · 3 · 5 · fog",
+    "picker": "",
+    "loadhelp": "From file:// use the picker; choose a file under scenes/.",
+    "message": "Scene loaded. Depth handles read stored driver results.",
+    "mapwrap": "",
+    "empty": "",
+    "map": "  R project 0 mod 1 with real    DOMAIN Reported failing place: not given  2 depth 5 · 1 branches  [p=2: 0 + O(2^0)]  1 distinct lit paths · low digit first  3 depth 5 · 1 branches  [p=3: 0 + O(3^0)]  1 distinct lit paths · low digit first  5 depth 5 · 1 branches  [p=5: 0 + O(5^0)]  1 distinct lit paths · low digit first  Fog bank every other p 0 undrawn factors of the modulus below 1000 Input footprint only Lens not computed here No paths drawn",
+    "hover": "[p=5: 0 + O(5^0)]",
+    "controls": "Prime 2 Depth 5 OK · 1 branches · 1 lit paths 2: 0 + O(2^0) digits (low first): none at this precision seed: not given · certificate N: 0 Prime 3 Depth 5 OK · 1 branches · 1 lit paths 3: 0 + O(3^0) digits (low first): none at this precision seed: not given · certificate N: 0 Prime 5 Depth 5 OK · 1 branches · 1 lit paths 5: 0 + O(5^0) digits (low first): none at this precision seed: not given · certificate N: 0",
+    "information": "",
+    "reading-title": "",
+    "reading": "The identity or series lens uses the projected input at each named place. No rational thread is certified by this scene. Drag each depth handle independently. Coarse branches may share one path. The shaded cones stand for continuations that are not individually drawn.",
+    "evidence": "input modulus support below 1000; larger factors not examined An inexact real ball has a plain marker: exact dyadic endpoints are not given by the driver. The printed midpoint and radius remain in its label and transcript. Gates use the named call’s place. The driver’s reported failing place is not given. An OK empty polynomial list means no roots in Z_p or on the real line. Only the precomputed depths are available. Branch selection, braids, tours and folding are outside this slice.",
+    "provenance": "",
+    "stdin": "prec 64\ndigits 20\nshow 0 mod 1\nproject 0 mod 1 with 2 3 5\nproject 0 mod 1 with real\nprec 1\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 2\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 3\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 4\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 5\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\n",
+    "stdout": "(* ; 0 mod 1)\n2: 0 + O(2^0); 3: 0 + O(3^0); 5: 0 + O(5^0)\nerror: DOMAIN\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n"
+  },
+  "elements": [
+    {
+      "tag": "div",
+      "viewBox": "0 0 1230 650",
+      "aria-label": "identity of (* ; 0 mod 1) at real, 2, 3, 5",
+      "text": ""
+    },
+    {
+      "tag": "defs",
+      "text": ""
+    },
+    {
+      "tag": "pattern",
+      "id": "fogp",
+      "width": "8",
+      "height": "8",
+      "patternUnits": "userSpaceOnUse",
+      "patternTransform": "rotate(45)",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "width": "8",
+      "height": "8",
+      "class": "fogbg",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "width": "3",
+      "height": "8",
+      "class": "fogst",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "24",
+      "y": "29",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "R"
+    },
+    {
+      "tag": "text",
+      "x": "48",
+      "y": "29",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "project 0 mod 1 with real"
+    },
+    {
+      "tag": "line",
+      "x1": "45",
+      "y1": "86",
+      "x2": "1195",
+      "y2": "86",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "aria-label": "DOMAIN · proved no",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "x": "65",
+      "y": "62",
+      "width": "28",
+      "height": "24",
+      "class": "gate-shape",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "65",
+      "y1": "74",
+      "x2": "93",
+      "y2": "74",
+      "class": "gate-shape",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "103",
+      "y": "78",
+      "class": "gate-text",
+      "text-anchor": "start",
+      "text": "DOMAIN"
+    },
+    {
+      "tag": "text",
+      "x": "65",
+      "y": "115",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Reported failing place: not given"
+    },
+    {
+      "tag": "rect",
+      "x": "20",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "34",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "2"
+    },
+    {
+      "tag": "text",
+      "x": "64",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 1 branches"
+    },
+    {
+      "tag": "path",
+      "d": "M 175 219 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 0 + O(2^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 0 + O(2^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "175",
+      "cy": "216",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "35",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "1 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "350",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "364",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "3"
+    },
+    {
+      "tag": "text",
+      "x": "394",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 1 branches"
+    },
+    {
+      "tag": "path",
+      "d": "M 505 219 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 0 + O(3^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 0 + O(3^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "505",
+      "cy": "216",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "365",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "1 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "680",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "694",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "5"
+    },
+    {
+      "tag": "text",
+      "x": "724",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 1 branches"
+    },
+    {
+      "tag": "path",
+      "d": "M 835 219 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 0 + O(5^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 0 + O(5^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "835",
+      "cy": "216",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "695",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "1 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "1020",
+      "y": "150",
+      "width": "190",
+      "height": "480",
+      "rx": "6",
+      "fill": "url(#fogp)",
+      "stroke": "var(--line)",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "178",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "Fog bank"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "216",
+      "class": "tlab",
+      "text-anchor": "start",
+      "text": "every other p"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "250",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "0 undrawn factors"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "270",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "of the modulus below 1000"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "316",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Input footprint only"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "338",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Lens not computed here"
+    },
+    {
+      "tag": "text",
+      "x": "1034",
+      "y": "380",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "No paths drawn"
+    }
+  ]
+}

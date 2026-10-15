@@ -1,0 +1,3 @@
+lanes/ux-drive-atlas/exp5.json
+{"branch_count": 15, "digit_paths": 5, "digit_strings": 5, "hover_text": 9, "lit_count": 15, "node_centres": 9, "record_outputs": 1, "result_output": 15, "sibling_hover": 60, "status": 15, "transcript": 3}
+checks=152 failures=0 records_replayed=19

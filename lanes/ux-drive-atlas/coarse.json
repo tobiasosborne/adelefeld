@@ -1,0 +1,549 @@
+{
+  "schema": "adelefeld-place-atlas-1",
+  "value": "(* ; 0 mod 1)",
+  "lens": "identity",
+  "polynomial": null,
+  "places": [
+    "real",
+    2,
+    3,
+    5
+  ],
+  "depth_range": [
+    1,
+    5
+  ],
+  "trees": [
+    {
+      "prime": 2,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "2: 0 + O(2^0)",
+          "failing_place": "not given",
+          "record": 3,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "2: 0 + O(2^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 3
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "2: 0 + O(2^0)",
+          "failing_place": "not given",
+          "record": 6,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "2: 0 + O(2^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 6
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "2: 0 + O(2^0)",
+          "failing_place": "not given",
+          "record": 9,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "2: 0 + O(2^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 9
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "2: 0 + O(2^0)",
+          "failing_place": "not given",
+          "record": 12,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "2: 0 + O(2^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 12
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "2: 0 + O(2^0)",
+          "failing_place": "not given",
+          "record": 15,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "2: 0 + O(2^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 15
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 3,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3: 0 + O(3^0)",
+          "failing_place": "not given",
+          "record": 4,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "3: 0 + O(3^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 4
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3: 0 + O(3^0)",
+          "failing_place": "not given",
+          "record": 7,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "3: 0 + O(3^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 7
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3: 0 + O(3^0)",
+          "failing_place": "not given",
+          "record": 10,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "3: 0 + O(3^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 10
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3: 0 + O(3^0)",
+          "failing_place": "not given",
+          "record": 13,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "3: 0 + O(3^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 13
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "3: 0 + O(3^0)",
+          "failing_place": "not given",
+          "record": 16,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "3: 0 + O(3^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 16
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 5,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 0 + O(5^0)",
+          "failing_place": "not given",
+          "record": 5,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "5: 0 + O(5^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 5
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 0 + O(5^0)",
+          "failing_place": "not given",
+          "record": 8,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "5: 0 + O(5^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 8
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 0 + O(5^0)",
+          "failing_place": "not given",
+          "record": 11,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "5: 0 + O(5^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 11
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 0 + O(5^0)",
+          "failing_place": "not given",
+          "record": 14,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "5: 0 + O(5^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 14
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 0 + O(5^0)",
+          "failing_place": "not given",
+          "record": 17,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "0",
+              "seed": "not given",
+              "printed": "5: 0 + O(5^0)",
+              "start_exponent": 0,
+              "end_exponent": 0,
+              "digits": [],
+              "digit_string": "",
+              "nodes": [],
+              "certificate_precision": 0,
+              "source_record": 17
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]"
+          }
+        }
+      }
+    }
+  ],
+  "ruler": {
+    "status": "DOMAIN",
+    "status_class": "proved no",
+    "printed": "error: DOMAIN",
+    "failing_place": "not given",
+    "balls": [],
+    "record": 2,
+    "coordinate": "real"
+  },
+  "threads": [],
+  "fog": {
+    "count": "every other p",
+    "label": "every other p",
+    "undrawn_modulus_primes_below_1000": [],
+    "undrawn_modulus_prime_count_below_1000": 0,
+    "scope": "input modulus support below 1000; larger factors not examined"
+  },
+  "modulus": null,
+  "modular_solutions": [],
+  "projection": {
+    "finite_record": 1,
+    "real_record": 2
+  },
+  "notes": [
+    "Low digit at the root; certificates may be deeper than the requested drawing.",
+    "Seed not given means the polynomial solver printed no branch identifier.",
+    "Depth handles select stored results. The viewer performs no arithmetic on values."
+  ],
+  "provenance": {
+    "stdin": "prec 64\ndigits 20\nshow 0 mod 1\nproject 0 mod 1 with 2 3 5\nproject 0 mod 1 with real\nprec 1\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 2\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 3\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 4\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\nprec 5\nproject 0 mod 1 with 2\nproject 0 mod 1 with 3\nproject 0 mod 1 with 5\n",
+    "stdout": "(* ; 0 mod 1)\n2: 0 + O(2^0); 3: 0 + O(3^0); 5: 0 + O(5^0)\nerror: DOMAIN\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n2: 0 + O(2^0)\n3: 0 + O(3^0)\n5: 0 + O(5^0)\n",
+    "stderr": "",
+    "exit_code": 1,
+    "records": [
+      {
+        "command": "show 0 mod 1",
+        "output": "(* ; 0 mod 1)"
+      },
+      {
+        "command": "project 0 mod 1 with 2 3 5",
+        "output": "2: 0 + O(2^0); 3: 0 + O(3^0); 5: 0 + O(5^0)"
+      },
+      {
+        "command": "project 0 mod 1 with real",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "project 0 mod 1 with 2",
+        "output": "2: 0 + O(2^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 3",
+        "output": "3: 0 + O(3^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 5",
+        "output": "5: 0 + O(5^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 2",
+        "output": "2: 0 + O(2^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 3",
+        "output": "3: 0 + O(3^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 5",
+        "output": "5: 0 + O(5^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 2",
+        "output": "2: 0 + O(2^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 3",
+        "output": "3: 0 + O(3^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 5",
+        "output": "5: 0 + O(5^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 2",
+        "output": "2: 0 + O(2^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 3",
+        "output": "3: 0 + O(3^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 5",
+        "output": "5: 0 + O(5^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 2",
+        "output": "2: 0 + O(2^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 3",
+        "output": "3: 0 + O(3^0)"
+      },
+      {
+        "command": "project 0 mod 1 with 5",
+        "output": "5: 0 + O(5^0)"
+      }
+    ],
+    "driver_source": "tools/adf/adf.c",
+    "driver_source_sha256": "5923ad97b4295051e9a933cba415e05f3ae6a66997c8a1d29e6c8bae8a06c53d",
+    "build_stamp": "not given"
+  }
+}

@@ -1,0 +1,1126 @@
+{
+  "schema": "adelefeld-place-atlas-1",
+  "value": "1/25",
+  "lens": "roots 2",
+  "polynomial": "-1 0 25",
+  "places": [
+    "real",
+    5
+  ],
+  "depth_range": [
+    1,
+    5
+  ],
+  "trees": [
+    {
+      "prime": 5,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5 [1]: 1/5; 5 [4]: -1/5",
+          "failing_place": "not given",
+          "record": 7,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "1/5",
+              "seed": "1",
+              "printed": "5 [1]: 1/5",
+              "start_exponent": -1,
+              "end_exponent": 1,
+              "digits": [
+                1,
+                0
+              ],
+              "digit_string": "1 0",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^1)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 7,
+              "source_record": 7
+            },
+            {
+              "centre": "-1/5",
+              "seed": "4",
+              "printed": "5 [4]: -1/5",
+              "start_exponent": -1,
+              "end_exponent": 1,
+              "digits": [
+                4,
+                4
+              ],
+              "digit_string": "4 4",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "4/5",
+                  "value_form": "[p=5: 4/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "24/5",
+                  "value_form": "[p=5: 24/5 + O(5^1)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 7,
+              "source_record": 7
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^-1)]",
+            "0": "[p=5: 0 + O(5^0)]",
+            "1": "[p=5: 1/5 + O(5^0)]",
+            "2": "[p=5: 2/5 + O(5^0)]",
+            "3": "[p=5: 3/5 + O(5^0)]",
+            "4": "[p=5: 4/5 + O(5^0)]",
+            "1.0": "[p=5: 1/5 + O(5^1)]",
+            "1.1": "[p=5: 6/5 + O(5^1)]",
+            "1.2": "[p=5: 11/5 + O(5^1)]",
+            "1.3": "[p=5: 16/5 + O(5^1)]",
+            "1.4": "[p=5: 21/5 + O(5^1)]",
+            "4.0": "[p=5: 4/5 + O(5^1)]",
+            "4.1": "[p=5: 9/5 + O(5^1)]",
+            "4.2": "[p=5: 14/5 + O(5^1)]",
+            "4.3": "[p=5: 19/5 + O(5^1)]",
+            "4.4": "[p=5: 24/5 + O(5^1)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5 [1]: 1/5; 5 [4]: -1/5",
+          "failing_place": "not given",
+          "record": 9,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "1/5",
+              "seed": "1",
+              "printed": "5 [1]: 1/5",
+              "start_exponent": -1,
+              "end_exponent": 2,
+              "digits": [
+                1,
+                0,
+                0
+              ],
+              "digit_string": "1 0 0",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 9,
+              "source_record": 9
+            },
+            {
+              "centre": "-1/5",
+              "seed": "4",
+              "printed": "5 [4]: -1/5",
+              "start_exponent": -1,
+              "end_exponent": 2,
+              "digits": [
+                4,
+                4,
+                4
+              ],
+              "digit_string": "4 4 4",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "4/5",
+                  "value_form": "[p=5: 4/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "24/5",
+                  "value_form": "[p=5: 24/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "124/5",
+                  "value_form": "[p=5: 124/5 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 9,
+              "source_record": 9
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^-1)]",
+            "0": "[p=5: 0 + O(5^0)]",
+            "1": "[p=5: 1/5 + O(5^0)]",
+            "2": "[p=5: 2/5 + O(5^0)]",
+            "3": "[p=5: 3/5 + O(5^0)]",
+            "4": "[p=5: 4/5 + O(5^0)]",
+            "1.0": "[p=5: 1/5 + O(5^1)]",
+            "1.1": "[p=5: 6/5 + O(5^1)]",
+            "1.2": "[p=5: 11/5 + O(5^1)]",
+            "1.3": "[p=5: 16/5 + O(5^1)]",
+            "1.4": "[p=5: 21/5 + O(5^1)]",
+            "1.0.0": "[p=5: 1/5 + O(5^2)]",
+            "1.0.1": "[p=5: 26/5 + O(5^2)]",
+            "1.0.2": "[p=5: 51/5 + O(5^2)]",
+            "1.0.3": "[p=5: 76/5 + O(5^2)]",
+            "1.0.4": "[p=5: 101/5 + O(5^2)]",
+            "4.0": "[p=5: 4/5 + O(5^1)]",
+            "4.1": "[p=5: 9/5 + O(5^1)]",
+            "4.2": "[p=5: 14/5 + O(5^1)]",
+            "4.3": "[p=5: 19/5 + O(5^1)]",
+            "4.4": "[p=5: 24/5 + O(5^1)]",
+            "4.4.0": "[p=5: 24/5 + O(5^2)]",
+            "4.4.1": "[p=5: 49/5 + O(5^2)]",
+            "4.4.2": "[p=5: 74/5 + O(5^2)]",
+            "4.4.3": "[p=5: 99/5 + O(5^2)]",
+            "4.4.4": "[p=5: 124/5 + O(5^2)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5 [1]: 1/5; 5 [4]: -1/5",
+          "failing_place": "not given",
+          "record": 11,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "1/5",
+              "seed": "1",
+              "printed": "5 [1]: 1/5",
+              "start_exponent": -1,
+              "end_exponent": 3,
+              "digits": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "1 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^3)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 11,
+              "source_record": 11
+            },
+            {
+              "centre": "-1/5",
+              "seed": "4",
+              "printed": "5 [4]: -1/5",
+              "start_exponent": -1,
+              "end_exponent": 3,
+              "digits": [
+                4,
+                4,
+                4,
+                4
+              ],
+              "digit_string": "4 4 4 4",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "4/5",
+                  "value_form": "[p=5: 4/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "24/5",
+                  "value_form": "[p=5: 24/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "124/5",
+                  "value_form": "[p=5: 124/5 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "624/5",
+                  "value_form": "[p=5: 624/5 + O(5^3)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 11,
+              "source_record": 11
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^-1)]",
+            "0": "[p=5: 0 + O(5^0)]",
+            "1": "[p=5: 1/5 + O(5^0)]",
+            "2": "[p=5: 2/5 + O(5^0)]",
+            "3": "[p=5: 3/5 + O(5^0)]",
+            "4": "[p=5: 4/5 + O(5^0)]",
+            "1.0": "[p=5: 1/5 + O(5^1)]",
+            "1.1": "[p=5: 6/5 + O(5^1)]",
+            "1.2": "[p=5: 11/5 + O(5^1)]",
+            "1.3": "[p=5: 16/5 + O(5^1)]",
+            "1.4": "[p=5: 21/5 + O(5^1)]",
+            "1.0.0": "[p=5: 1/5 + O(5^2)]",
+            "1.0.1": "[p=5: 26/5 + O(5^2)]",
+            "1.0.2": "[p=5: 51/5 + O(5^2)]",
+            "1.0.3": "[p=5: 76/5 + O(5^2)]",
+            "1.0.4": "[p=5: 101/5 + O(5^2)]",
+            "1.0.0.0": "[p=5: 1/5 + O(5^3)]",
+            "1.0.0.1": "[p=5: 126/5 + O(5^3)]",
+            "1.0.0.2": "[p=5: 251/5 + O(5^3)]",
+            "1.0.0.3": "[p=5: 376/5 + O(5^3)]",
+            "1.0.0.4": "[p=5: 501/5 + O(5^3)]",
+            "4.0": "[p=5: 4/5 + O(5^1)]",
+            "4.1": "[p=5: 9/5 + O(5^1)]",
+            "4.2": "[p=5: 14/5 + O(5^1)]",
+            "4.3": "[p=5: 19/5 + O(5^1)]",
+            "4.4": "[p=5: 24/5 + O(5^1)]",
+            "4.4.0": "[p=5: 24/5 + O(5^2)]",
+            "4.4.1": "[p=5: 49/5 + O(5^2)]",
+            "4.4.2": "[p=5: 74/5 + O(5^2)]",
+            "4.4.3": "[p=5: 99/5 + O(5^2)]",
+            "4.4.4": "[p=5: 124/5 + O(5^2)]",
+            "4.4.4.0": "[p=5: 124/5 + O(5^3)]",
+            "4.4.4.1": "[p=5: 249/5 + O(5^3)]",
+            "4.4.4.2": "[p=5: 374/5 + O(5^3)]",
+            "4.4.4.3": "[p=5: 499/5 + O(5^3)]",
+            "4.4.4.4": "[p=5: 624/5 + O(5^3)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5 [1]: 1/5; 5 [4]: -1/5",
+          "failing_place": "not given",
+          "record": 13,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "1/5",
+              "seed": "1",
+              "printed": "5 [1]: 1/5",
+              "start_exponent": -1,
+              "end_exponent": 4,
+              "digits": [
+                1,
+                0,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "1 0 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^4)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 13,
+              "source_record": 13
+            },
+            {
+              "centre": "-1/5",
+              "seed": "4",
+              "printed": "5 [4]: -1/5",
+              "start_exponent": -1,
+              "end_exponent": 4,
+              "digits": [
+                4,
+                4,
+                4,
+                4,
+                4
+              ],
+              "digit_string": "4 4 4 4 4",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "4/5",
+                  "value_form": "[p=5: 4/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "24/5",
+                  "value_form": "[p=5: 24/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "124/5",
+                  "value_form": "[p=5: 124/5 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "624/5",
+                  "value_form": "[p=5: 624/5 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3124/5",
+                  "value_form": "[p=5: 3124/5 + O(5^4)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 13,
+              "source_record": 13
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^-1)]",
+            "0": "[p=5: 0 + O(5^0)]",
+            "1": "[p=5: 1/5 + O(5^0)]",
+            "2": "[p=5: 2/5 + O(5^0)]",
+            "3": "[p=5: 3/5 + O(5^0)]",
+            "4": "[p=5: 4/5 + O(5^0)]",
+            "1.0": "[p=5: 1/5 + O(5^1)]",
+            "1.1": "[p=5: 6/5 + O(5^1)]",
+            "1.2": "[p=5: 11/5 + O(5^1)]",
+            "1.3": "[p=5: 16/5 + O(5^1)]",
+            "1.4": "[p=5: 21/5 + O(5^1)]",
+            "1.0.0": "[p=5: 1/5 + O(5^2)]",
+            "1.0.1": "[p=5: 26/5 + O(5^2)]",
+            "1.0.2": "[p=5: 51/5 + O(5^2)]",
+            "1.0.3": "[p=5: 76/5 + O(5^2)]",
+            "1.0.4": "[p=5: 101/5 + O(5^2)]",
+            "1.0.0.0": "[p=5: 1/5 + O(5^3)]",
+            "1.0.0.1": "[p=5: 126/5 + O(5^3)]",
+            "1.0.0.2": "[p=5: 251/5 + O(5^3)]",
+            "1.0.0.3": "[p=5: 376/5 + O(5^3)]",
+            "1.0.0.4": "[p=5: 501/5 + O(5^3)]",
+            "1.0.0.0.0": "[p=5: 1/5 + O(5^4)]",
+            "1.0.0.0.1": "[p=5: 626/5 + O(5^4)]",
+            "1.0.0.0.2": "[p=5: 1251/5 + O(5^4)]",
+            "1.0.0.0.3": "[p=5: 1876/5 + O(5^4)]",
+            "1.0.0.0.4": "[p=5: 2501/5 + O(5^4)]",
+            "4.0": "[p=5: 4/5 + O(5^1)]",
+            "4.1": "[p=5: 9/5 + O(5^1)]",
+            "4.2": "[p=5: 14/5 + O(5^1)]",
+            "4.3": "[p=5: 19/5 + O(5^1)]",
+            "4.4": "[p=5: 24/5 + O(5^1)]",
+            "4.4.0": "[p=5: 24/5 + O(5^2)]",
+            "4.4.1": "[p=5: 49/5 + O(5^2)]",
+            "4.4.2": "[p=5: 74/5 + O(5^2)]",
+            "4.4.3": "[p=5: 99/5 + O(5^2)]",
+            "4.4.4": "[p=5: 124/5 + O(5^2)]",
+            "4.4.4.0": "[p=5: 124/5 + O(5^3)]",
+            "4.4.4.1": "[p=5: 249/5 + O(5^3)]",
+            "4.4.4.2": "[p=5: 374/5 + O(5^3)]",
+            "4.4.4.3": "[p=5: 499/5 + O(5^3)]",
+            "4.4.4.4": "[p=5: 624/5 + O(5^3)]",
+            "4.4.4.4.0": "[p=5: 624/5 + O(5^4)]",
+            "4.4.4.4.1": "[p=5: 1249/5 + O(5^4)]",
+            "4.4.4.4.2": "[p=5: 1874/5 + O(5^4)]",
+            "4.4.4.4.3": "[p=5: 2499/5 + O(5^4)]",
+            "4.4.4.4.4": "[p=5: 3124/5 + O(5^4)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5 [1]: 1/5; 5 [4]: -1/5",
+          "failing_place": "not given",
+          "record": 15,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "1/5",
+              "seed": "1",
+              "printed": "5 [1]: 1/5",
+              "start_exponent": -1,
+              "end_exponent": 5,
+              "digits": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "digit_string": "1 0 0 0 0 0",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "1/5",
+                  "value_form": "[p=5: 1/5 + O(5^5)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 15,
+              "source_record": 15
+            },
+            {
+              "centre": "-1/5",
+              "seed": "4",
+              "printed": "5 [4]: -1/5",
+              "start_exponent": -1,
+              "end_exponent": 5,
+              "digits": [
+                4,
+                4,
+                4,
+                4,
+                4,
+                4
+              ],
+              "digit_string": "4 4 4 4 4 4",
+              "nodes": [
+                {
+                  "exponent": 0,
+                  "centre": "4/5",
+                  "value_form": "[p=5: 4/5 + O(5^0)]"
+                },
+                {
+                  "exponent": 1,
+                  "centre": "24/5",
+                  "value_form": "[p=5: 24/5 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "124/5",
+                  "value_form": "[p=5: 124/5 + O(5^2)]"
+                },
+                {
+                  "exponent": 3,
+                  "centre": "624/5",
+                  "value_form": "[p=5: 624/5 + O(5^3)]"
+                },
+                {
+                  "exponent": 4,
+                  "centre": "3124/5",
+                  "value_form": "[p=5: 3124/5 + O(5^4)]"
+                },
+                {
+                  "exponent": 5,
+                  "centre": "15624/5",
+                  "value_form": "[p=5: 15624/5 + O(5^5)]"
+                }
+              ],
+              "certificate_precision": null,
+              "seed_source_record": 15,
+              "source_record": 15
+            }
+          ],
+          "branch_count": 2,
+          "lit_path_count": 2,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^-1)]",
+            "0": "[p=5: 0 + O(5^0)]",
+            "1": "[p=5: 1/5 + O(5^0)]",
+            "2": "[p=5: 2/5 + O(5^0)]",
+            "3": "[p=5: 3/5 + O(5^0)]",
+            "4": "[p=5: 4/5 + O(5^0)]",
+            "1.0": "[p=5: 1/5 + O(5^1)]",
+            "1.1": "[p=5: 6/5 + O(5^1)]",
+            "1.2": "[p=5: 11/5 + O(5^1)]",
+            "1.3": "[p=5: 16/5 + O(5^1)]",
+            "1.4": "[p=5: 21/5 + O(5^1)]",
+            "1.0.0": "[p=5: 1/5 + O(5^2)]",
+            "1.0.1": "[p=5: 26/5 + O(5^2)]",
+            "1.0.2": "[p=5: 51/5 + O(5^2)]",
+            "1.0.3": "[p=5: 76/5 + O(5^2)]",
+            "1.0.4": "[p=5: 101/5 + O(5^2)]",
+            "1.0.0.0": "[p=5: 1/5 + O(5^3)]",
+            "1.0.0.1": "[p=5: 126/5 + O(5^3)]",
+            "1.0.0.2": "[p=5: 251/5 + O(5^3)]",
+            "1.0.0.3": "[p=5: 376/5 + O(5^3)]",
+            "1.0.0.4": "[p=5: 501/5 + O(5^3)]",
+            "1.0.0.0.0": "[p=5: 1/5 + O(5^4)]",
+            "1.0.0.0.1": "[p=5: 626/5 + O(5^4)]",
+            "1.0.0.0.2": "[p=5: 1251/5 + O(5^4)]",
+            "1.0.0.0.3": "[p=5: 1876/5 + O(5^4)]",
+            "1.0.0.0.4": "[p=5: 2501/5 + O(5^4)]",
+            "1.0.0.0.0.0": "[p=5: 1/5 + O(5^5)]",
+            "1.0.0.0.0.1": "[p=5: 3126/5 + O(5^5)]",
+            "1.0.0.0.0.2": "[p=5: 6251/5 + O(5^5)]",
+            "1.0.0.0.0.3": "[p=5: 9376/5 + O(5^5)]",
+            "1.0.0.0.0.4": "[p=5: 12501/5 + O(5^5)]",
+            "4.0": "[p=5: 4/5 + O(5^1)]",
+            "4.1": "[p=5: 9/5 + O(5^1)]",
+            "4.2": "[p=5: 14/5 + O(5^1)]",
+            "4.3": "[p=5: 19/5 + O(5^1)]",
+            "4.4": "[p=5: 24/5 + O(5^1)]",
+            "4.4.0": "[p=5: 24/5 + O(5^2)]",
+            "4.4.1": "[p=5: 49/5 + O(5^2)]",
+            "4.4.2": "[p=5: 74/5 + O(5^2)]",
+            "4.4.3": "[p=5: 99/5 + O(5^2)]",
+            "4.4.4": "[p=5: 124/5 + O(5^2)]",
+            "4.4.4.0": "[p=5: 124/5 + O(5^3)]",
+            "4.4.4.1": "[p=5: 249/5 + O(5^3)]",
+            "4.4.4.2": "[p=5: 374/5 + O(5^3)]",
+            "4.4.4.3": "[p=5: 499/5 + O(5^3)]",
+            "4.4.4.4": "[p=5: 624/5 + O(5^3)]",
+            "4.4.4.4.0": "[p=5: 624/5 + O(5^4)]",
+            "4.4.4.4.1": "[p=5: 1249/5 + O(5^4)]",
+            "4.4.4.4.2": "[p=5: 1874/5 + O(5^4)]",
+            "4.4.4.4.3": "[p=5: 2499/5 + O(5^4)]",
+            "4.4.4.4.4": "[p=5: 3124/5 + O(5^4)]",
+            "4.4.4.4.4.0": "[p=5: 3124/5 + O(5^5)]",
+            "4.4.4.4.4.1": "[p=5: 6249/5 + O(5^5)]",
+            "4.4.4.4.4.2": "[p=5: 9374/5 + O(5^5)]",
+            "4.4.4.4.4.3": "[p=5: 12499/5 + O(5^5)]",
+            "4.4.4.4.4.4": "[p=5: 15624/5 + O(5^5)]"
+          }
+        }
+      }
+    }
+  ],
+  "ruler": {
+    "status": "OK",
+    "status_class": "ok",
+    "printed": "-0.2 +/- 8.9e-40; 0.2 +/- 8.9e-40",
+    "balls": [
+      {
+        "printed": "-0.2 +/- 8.9e-40",
+        "midpoint_printed": "-0.2",
+        "radius_printed": "8.9e-40",
+        "dyadic_endpoints": "not given",
+        "exact_point": null
+      },
+      {
+        "printed": "0.2 +/- 8.9e-40",
+        "midpoint_printed": "0.2",
+        "radius_printed": "8.9e-40",
+        "dyadic_endpoints": "not given",
+        "exact_point": null
+      }
+    ],
+    "record": 3,
+    "failing_place": "not given",
+    "coordinate": "real"
+  },
+  "threads": [
+    {
+      "value": "1/5",
+      "record": 4,
+      "real_point": "1/5",
+      "places": {
+        "5": {
+          "1": {
+            "start_exponent": -1,
+            "end_exponent": 1,
+            "digits": [
+              1,
+              0
+            ],
+            "digit_string": "1 0",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": -1,
+            "end_exponent": 2,
+            "digits": [
+              1,
+              0,
+              0
+            ],
+            "digit_string": "1 0 0",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": -1,
+            "end_exponent": 3,
+            "digits": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "1 0 0 0",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": -1,
+            "end_exponent": 4,
+            "digits": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "1 0 0 0 0",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": -1,
+            "end_exponent": 5,
+            "digits": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "digit_string": "1 0 0 0 0 0",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "1/5",
+                "value_form": "[p=5: 1/5 + O(5^5)]"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "value": "-1/5",
+      "record": 5,
+      "real_point": "-1/5",
+      "places": {
+        "5": {
+          "1": {
+            "start_exponent": -1,
+            "end_exponent": 1,
+            "digits": [
+              4,
+              4
+            ],
+            "digit_string": "4 4",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "4/5",
+                "value_form": "[p=5: 4/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "24/5",
+                "value_form": "[p=5: 24/5 + O(5^1)]"
+              }
+            ]
+          },
+          "2": {
+            "start_exponent": -1,
+            "end_exponent": 2,
+            "digits": [
+              4,
+              4,
+              4
+            ],
+            "digit_string": "4 4 4",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "4/5",
+                "value_form": "[p=5: 4/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "24/5",
+                "value_form": "[p=5: 24/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "124/5",
+                "value_form": "[p=5: 124/5 + O(5^2)]"
+              }
+            ]
+          },
+          "3": {
+            "start_exponent": -1,
+            "end_exponent": 3,
+            "digits": [
+              4,
+              4,
+              4,
+              4
+            ],
+            "digit_string": "4 4 4 4",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "4/5",
+                "value_form": "[p=5: 4/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "24/5",
+                "value_form": "[p=5: 24/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "124/5",
+                "value_form": "[p=5: 124/5 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "624/5",
+                "value_form": "[p=5: 624/5 + O(5^3)]"
+              }
+            ]
+          },
+          "4": {
+            "start_exponent": -1,
+            "end_exponent": 4,
+            "digits": [
+              4,
+              4,
+              4,
+              4,
+              4
+            ],
+            "digit_string": "4 4 4 4 4",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "4/5",
+                "value_form": "[p=5: 4/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "24/5",
+                "value_form": "[p=5: 24/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "124/5",
+                "value_form": "[p=5: 124/5 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "624/5",
+                "value_form": "[p=5: 624/5 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3124/5",
+                "value_form": "[p=5: 3124/5 + O(5^4)]"
+              }
+            ]
+          },
+          "5": {
+            "start_exponent": -1,
+            "end_exponent": 5,
+            "digits": [
+              4,
+              4,
+              4,
+              4,
+              4,
+              4
+            ],
+            "digit_string": "4 4 4 4 4 4",
+            "nodes": [
+              {
+                "exponent": 0,
+                "centre": "4/5",
+                "value_form": "[p=5: 4/5 + O(5^0)]"
+              },
+              {
+                "exponent": 1,
+                "centre": "24/5",
+                "value_form": "[p=5: 24/5 + O(5^1)]"
+              },
+              {
+                "exponent": 2,
+                "centre": "124/5",
+                "value_form": "[p=5: 124/5 + O(5^2)]"
+              },
+              {
+                "exponent": 3,
+                "centre": "624/5",
+                "value_form": "[p=5: 624/5 + O(5^3)]"
+              },
+              {
+                "exponent": 4,
+                "centre": "3124/5",
+                "value_form": "[p=5: 3124/5 + O(5^4)]"
+              },
+              {
+                "exponent": 5,
+                "centre": "15624/5",
+                "value_form": "[p=5: 15624/5 + O(5^5)]"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "fog": {
+    "count": "infinitely many",
+    "label": "infinitely many undrawn primes",
+    "scope": "input value; no lens computation at undrawn places"
+  },
+  "modulus": null,
+  "modular_solutions": [],
+  "projection": {
+    "finite_record": 1,
+    "real_record": 2
+  },
+  "notes": [
+    "Low digit at the root; certificates may be deeper than the requested drawing.",
+    "Seed not given means the polynomial solver printed no branch identifier.",
+    "Depth handles select stored results. The viewer performs no arithmetic on values."
+  ],
+  "provenance": {
+    "stdin": "prec 64\ndigits 20\nshow 1/25\nproject 1/25 with 5\nproject 1/25 with real\nrealroots -1 0 25\nroot 1/25 with 2 with 1\nroot 1/25 with 2 with -1\nprec 1\nroots -1 0 25 with 5 with 1\nroots_at 1/25 with 5 with 2\nprec 2\nroots -1 0 25 with 5 with 2\nroots_at 1/25 with 5 with 2\nprec 3\nroots -1 0 25 with 5 with 3\nroots_at 1/25 with 5 with 2\nprec 4\nroots -1 0 25 with 5 with 4\nroots_at 1/25 with 5 with 2\nprec 5\nroots -1 0 25 with 5 with 5\nroots_at 1/25 with 5 with 2\n",
+    "stdout": "1/25\n5: 1/25\nreal: 0.039999999999999999999 +/- 3.6e-21\n-0.2 +/- 8.9e-40; 0.2 +/- 8.9e-40\n1/5\n-1/5\nnone\n5 [1]: 1/5; 5 [4]: -1/5\nnone\n5 [1]: 1/5; 5 [4]: -1/5\nnone\n5 [1]: 1/5; 5 [4]: -1/5\nnone\n5 [1]: 1/5; 5 [4]: -1/5\nnone\n5 [1]: 1/5; 5 [4]: -1/5\n",
+    "stderr": "",
+    "exit_code": 0,
+    "records": [
+      {
+        "command": "show 1/25",
+        "output": "1/25"
+      },
+      {
+        "command": "project 1/25 with 5",
+        "output": "5: 1/25"
+      },
+      {
+        "command": "project 1/25 with real",
+        "output": "real: 0.039999999999999999999 +/- 3.6e-21"
+      },
+      {
+        "command": "realroots -1 0 25",
+        "output": "-0.2 +/- 8.9e-40; 0.2 +/- 8.9e-40"
+      },
+      {
+        "command": "root 1/25 with 2 with 1",
+        "output": "1/5"
+      },
+      {
+        "command": "root 1/25 with 2 with -1",
+        "output": "-1/5"
+      },
+      {
+        "command": "roots -1 0 25 with 5 with 1",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 1/25 with 5 with 2",
+        "output": "5 [1]: 1/5; 5 [4]: -1/5"
+      },
+      {
+        "command": "roots -1 0 25 with 5 with 2",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 1/25 with 5 with 2",
+        "output": "5 [1]: 1/5; 5 [4]: -1/5"
+      },
+      {
+        "command": "roots -1 0 25 with 5 with 3",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 1/25 with 5 with 2",
+        "output": "5 [1]: 1/5; 5 [4]: -1/5"
+      },
+      {
+        "command": "roots -1 0 25 with 5 with 4",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 1/25 with 5 with 2",
+        "output": "5 [1]: 1/5; 5 [4]: -1/5"
+      },
+      {
+        "command": "roots -1 0 25 with 5 with 5",
+        "output": "none"
+      },
+      {
+        "command": "roots_at 1/25 with 5 with 2",
+        "output": "5 [1]: 1/5; 5 [4]: -1/5"
+      }
+    ],
+    "driver_source": "tools/adf/adf.c",
+    "driver_source_sha256": "5923ad97b4295051e9a933cba415e05f3ae6a66997c8a1d29e6c8bae8a06c53d",
+    "build_stamp": "not given"
+  }
+}

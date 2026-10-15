@@ -1,0 +1,532 @@
+{
+  "schema": "adelefeld-place-atlas-1",
+  "value": "(* ; 5 mod 25)",
+  "lens": "exp",
+  "polynomial": null,
+  "places": [
+    "real",
+    2,
+    3,
+    5
+  ],
+  "depth_range": [
+    1,
+    5
+  ],
+  "trees": [
+    {
+      "prime": 2,
+      "depths": {
+        "1": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 4,
+          "requested_depth": 1,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "2": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 7,
+          "requested_depth": 2,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "3": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 10,
+          "requested_depth": 3,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "4": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 13,
+          "requested_depth": 4,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        },
+        "5": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 16,
+          "requested_depth": 5,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=2: 0 + O(2^0)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 3,
+      "depths": {
+        "1": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 5,
+          "requested_depth": 1,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "2": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 8,
+          "requested_depth": 2,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "3": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 11,
+          "requested_depth": 3,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "4": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 14,
+          "requested_depth": 4,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        },
+        "5": {
+          "status": "NOT_DETERMINED",
+          "status_class": "open",
+          "printed": "error: NOT_DETERMINED",
+          "failing_place": "not given",
+          "record": 17,
+          "requested_depth": 5,
+          "paths": [],
+          "branch_count": 0,
+          "lit_path_count": 0,
+          "node_balls": {
+            "": "[p=3: 0 + O(3^0)]"
+          }
+        }
+      }
+    },
+    {
+      "prime": 5,
+      "depths": {
+        "1": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 1 + O(5^1)",
+          "failing_place": "not given",
+          "record": 6,
+          "requested_depth": 1,
+          "paths": [
+            {
+              "centre": "1",
+              "seed": "not given",
+              "printed": "5: 1 + O(5^1)",
+              "start_exponent": 0,
+              "end_exponent": 1,
+              "digits": [
+                1
+              ],
+              "digit_string": "1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=5: 1 + O(5^1)]"
+                }
+              ],
+              "certificate_precision": 1,
+              "source_record": 6
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]"
+          }
+        },
+        "2": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 6 + O(5^2)",
+          "failing_place": "not given",
+          "record": 9,
+          "requested_depth": 2,
+          "paths": [
+            {
+              "centre": "6",
+              "seed": "not given",
+              "printed": "5: 6 + O(5^2)",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                1,
+                1
+              ],
+              "digit_string": "1 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=5: 1 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=5: 6 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "source_record": 9
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "1.0": "[p=5: 1 + O(5^2)]",
+            "1.1": "[p=5: 6 + O(5^2)]",
+            "1.2": "[p=5: 11 + O(5^2)]",
+            "1.3": "[p=5: 16 + O(5^2)]",
+            "1.4": "[p=5: 21 + O(5^2)]"
+          }
+        },
+        "3": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 6 + O(5^2)",
+          "failing_place": "not given",
+          "record": 12,
+          "requested_depth": 3,
+          "paths": [
+            {
+              "centre": "6",
+              "seed": "not given",
+              "printed": "5: 6 + O(5^2)",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                1,
+                1
+              ],
+              "digit_string": "1 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=5: 1 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=5: 6 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "source_record": 12
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "1.0": "[p=5: 1 + O(5^2)]",
+            "1.1": "[p=5: 6 + O(5^2)]",
+            "1.2": "[p=5: 11 + O(5^2)]",
+            "1.3": "[p=5: 16 + O(5^2)]",
+            "1.4": "[p=5: 21 + O(5^2)]"
+          }
+        },
+        "4": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 6 + O(5^2)",
+          "failing_place": "not given",
+          "record": 15,
+          "requested_depth": 4,
+          "paths": [
+            {
+              "centre": "6",
+              "seed": "not given",
+              "printed": "5: 6 + O(5^2)",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                1,
+                1
+              ],
+              "digit_string": "1 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=5: 1 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=5: 6 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "source_record": 15
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "1.0": "[p=5: 1 + O(5^2)]",
+            "1.1": "[p=5: 6 + O(5^2)]",
+            "1.2": "[p=5: 11 + O(5^2)]",
+            "1.3": "[p=5: 16 + O(5^2)]",
+            "1.4": "[p=5: 21 + O(5^2)]"
+          }
+        },
+        "5": {
+          "status": "OK",
+          "status_class": "ok",
+          "printed": "5: 6 + O(5^2)",
+          "failing_place": "not given",
+          "record": 18,
+          "requested_depth": 5,
+          "paths": [
+            {
+              "centre": "6",
+              "seed": "not given",
+              "printed": "5: 6 + O(5^2)",
+              "start_exponent": 0,
+              "end_exponent": 2,
+              "digits": [
+                1,
+                1
+              ],
+              "digit_string": "1 1",
+              "nodes": [
+                {
+                  "exponent": 1,
+                  "centre": "1",
+                  "value_form": "[p=5: 1 + O(5^1)]"
+                },
+                {
+                  "exponent": 2,
+                  "centre": "6",
+                  "value_form": "[p=5: 6 + O(5^2)]"
+                }
+              ],
+              "certificate_precision": 2,
+              "source_record": 18
+            }
+          ],
+          "branch_count": 1,
+          "lit_path_count": 1,
+          "node_balls": {
+            "": "[p=5: 0 + O(5^0)]",
+            "0": "[p=5: 0 + O(5^1)]",
+            "1": "[p=5: 1 + O(5^1)]",
+            "2": "[p=5: 2 + O(5^1)]",
+            "3": "[p=5: 3 + O(5^1)]",
+            "4": "[p=5: 4 + O(5^1)]",
+            "1.0": "[p=5: 1 + O(5^2)]",
+            "1.1": "[p=5: 6 + O(5^2)]",
+            "1.2": "[p=5: 11 + O(5^2)]",
+            "1.3": "[p=5: 16 + O(5^2)]",
+            "1.4": "[p=5: 21 + O(5^2)]"
+          }
+        }
+      }
+    }
+  ],
+  "ruler": {
+    "status": "DOMAIN",
+    "status_class": "proved no",
+    "printed": "error: DOMAIN",
+    "failing_place": "not given",
+    "balls": [],
+    "record": 3,
+    "coordinate": "real"
+  },
+  "threads": [],
+  "fog": {
+    "count": "every other p",
+    "label": "every other p",
+    "undrawn_modulus_primes_below_1000": [],
+    "undrawn_modulus_prime_count_below_1000": 0,
+    "scope": "input modulus support below 1000; larger factors not examined"
+  },
+  "modulus": null,
+  "modular_solutions": [],
+  "projection": {
+    "finite_record": 1,
+    "real_record": 2
+  },
+  "notes": [
+    "Low digit at the root; certificates may be deeper than the requested drawing.",
+    "Seed not given means the polynomial solver printed no branch identifier.",
+    "Depth handles select stored results. The viewer performs no arithmetic on values."
+  ],
+  "provenance": {
+    "stdin": "prec 64\ndigits 20\nshow (* ; 5 mod 25)\nproject (* ; 5 mod 25) with 2 3 5\nproject (* ; 5 mod 25) with real\nexp_at (* ; 5 mod 25) with real\nprec 1\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 2\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 3\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 4\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\nprec 5\nexp_at (* ; 5 mod 25) with 2\nexp_at (* ; 5 mod 25) with 3\nexp_at (* ; 5 mod 25) with 5\n",
+    "stdout": "(* ; 5 mod 25)\n2: 0 + O(2^0); 3: 0 + O(3^0); 5: 5 + O(5^2)\nerror: DOMAIN\nerror: DOMAIN\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 1 + O(5^1)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\nerror: NOT_DETERMINED\nerror: NOT_DETERMINED\n5: 6 + O(5^2)\n",
+    "stderr": "",
+    "exit_code": 1,
+    "records": [
+      {
+        "command": "show (* ; 5 mod 25)",
+        "output": "(* ; 5 mod 25)"
+      },
+      {
+        "command": "project (* ; 5 mod 25) with 2 3 5",
+        "output": "2: 0 + O(2^0); 3: 0 + O(3^0); 5: 5 + O(5^2)"
+      },
+      {
+        "command": "project (* ; 5 mod 25) with real",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with real",
+        "output": "error: DOMAIN"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 2",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 3",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 5",
+        "output": "5: 1 + O(5^1)"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 2",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 3",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 5",
+        "output": "5: 6 + O(5^2)"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 2",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 3",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 5",
+        "output": "5: 6 + O(5^2)"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 2",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 3",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 5",
+        "output": "5: 6 + O(5^2)"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 2",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 3",
+        "output": "error: NOT_DETERMINED"
+      },
+      {
+        "command": "exp_at (* ; 5 mod 25) with 5",
+        "output": "5: 6 + O(5^2)"
+      }
+    ],
+    "driver_source": "tools/adf/adf.c",
+    "driver_source_sha256": "5923ad97b4295051e9a933cba415e05f3ae6a66997c8a1d29e6c8bae8a06c53d",
+    "build_stamp": "not given"
+  }
+}

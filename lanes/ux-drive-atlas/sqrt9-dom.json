@@ -1,0 +1,6521 @@
+{
+  "scene": "ux/atlas/scenes/sqrt9.json",
+  "sliders": 4,
+  "depth_changes": 20,
+  "svg_elements": 918,
+  "focus_checks": 152,
+  "finite_coordinates": true,
+  "text": {
+    "value": "9",
+    "lens": "roots 2",
+    "places": "places: real · 2 · 3 · 5 · 7 · fog",
+    "picker": "",
+    "loadhelp": "From file:// use the picker; choose a file under scenes/.",
+    "message": "Scene loaded. Depth handles read stored driver results.",
+    "mapwrap": "",
+    "empty": "",
+    "map": "  R realroots -9 0 1      -3     3          2 depth 5 · 2 branches                          [p=2: 0 + O(2^0)]  [p=2: 0 + O(2^1)]  0 [p=2: 1 + O(2^1)]  1 [p=2: 1 + O(2^2)]  0 [p=2: 3 + O(2^2)]  1 [p=2: 1 + O(2^3)]  0 [p=2: 5 + O(2^3)]  1 [p=2: 3 + O(2^3)]  0 [p=2: 7 + O(2^3)]  1 [p=2: 5 + O(2^4)]  0 [p=2: 13 + O(2^4)]  1 [p=2: 3 + O(2^4)]  0 [p=2: 11 + O(2^4)]  1 [p=2: 13 + O(2^5)]  0 [p=2: 29 + O(2^5)]  1 [p=2: 3 + O(2^5)]  0 [p=2: 19 + O(2^5)]  1 2 distinct lit paths · low digit first  3 depth 5 · 2 branches                                          [p=3: 0 + O(3^0)]  [p=3: 0 + O(3^1)]  0 [p=3: 1 + O(3^1)]  1 [p=3: 2 + O(3^1)]  2 [p=3: 0 + O(3^2)]  0 [p=3: 3 + O(3^2)]  1 [p=3: 6 + O(3^2)]  2 [p=3: 3 + O(3^3)]  0 [p=3: 12 + O(3^3)]  1 [p=3: 21 + O(3^3)]  2 [p=3: 6 + O(3^3)]  0 [p=3: 15 + O(3^3)]  1 [p=3: 24 + O(3^3)]  2 [p=3: 3 + O(3^4)]  0 [p=3: 30 + O(3^4)]  1 [p=3: 57 + O(3^4)]  2 [p=3: 24 + O(3^4)]  0 [p=3: 51 + O(3^4)]  1 [p=3: 78 + O(3^4)]  2 [p=3: 3 + O(3^5)]  0 [p=3: 84 + O(3^5)]  1 [p=3: 165 + O(3^5)]  2 [p=3: 78 + O(3^5)]  0 [p=3: 159 + O(3^5)]  1 [p=3: 240 + O(3^5)]  2 2 distinct lit paths · low digit first  5 depth 5 · 2 branches                                                                                   [p=5: 0 + O(5^0)]  [p=5: 0 + O(5^1)]  0 [p=5: 1 + O(5^1)]  1 [p=5: 2 + O(5^1)]  2 [p=5: 3 + O(5^1)]  3 [p=5: 4 + O(5^1)]  4 [p=5: 2 + O(5^2)]  0 [p=5: 7 + O(5^2)]  1 [p=5: 12 + O(5^2)]  2 [p=5: 17 + O(5^2)]  3 [p=5: 22 + O(5^2)]  4 [p=5: 3 + O(5^2)]  0 [p=5: 8 + O(5^2)]  1 [p=5: 13 + O(5^2)]  2 [p=5: 18 + O(5^2)]  3 [p=5: 23 + O(5^2)]  4 [p=5: 22 + O(5^3)]  0 [p=5: 47 + O(5^3)]  1 [p=5: 72 + O(5^3)]  2 [p=5: 97 + O(5^3)]  3 [p=5: 122 + O(5^3)]  4 [p=5: 3 + O(5^3)]  0 [p=5: 28 + O(5^3)]  1 [p=5: 53 + O(5^3)]  2 [p=5: 78 + O(5^3)]  3 [p=5: 103 + O(5^3)]  4 [p=5: 122 + O(5^4)]  0 [p=5: 247 + O(5^4)]  1 [p=5: 372 + O(5^4)]  2 [p=5: 497 + O(5^4)]  3 [p=5: 622 + O(5^4)]  4 [p=5: 3 + O(5^4)]  0 [p=5: 128 + O(5^4)]  1 [p=5: 253 + O(5^4)]  2 [p=5: 378 + O(5^4)]  3 [p=5: 503 + O(5^4)]  4 [p=5: 622 + O(5^5)]  0 [p=5: 1247 + O(5^5)]  1 [p=5: 1872 + O(5^5)]  2 [p=5: 2497 + O(5^5)]  3 [p=5: 3122 + O(5^5)]  4 [p=5: 3 + O(5^5)]  0 [p=5: 628 + O(5^5)]  1 [p=5: 1253 + O(5^5)]  2 [p=5: 1878 + O(5^5)]  3 [p=5: 2503 + O(5^5)]  4 2 distinct lit paths · low digit first  7 depth 5 · 2 branches                                                                                                                       [p=7: 0 + O(7^0)]  [p=7: 0 + O(7^1)]  0 [p=7: 1 + O(7^1)]  1 [p=7: 2 + O(7^1)]  2 [p=7: 3 + O(7^1)]  3 [p=7: 4 + O(7^1)]  4 [p=7: 5 + O(7^1)]  5 [p=7: 6 + O(7^1)]  6 [p=7: 3 + O(7^2)]  0 [p=7: 10 + O(7^2)]  1 [p=7: 17 + O(7^2)]  2 [p=7: 24 + O(7^2)]  3 [p=7: 31 + O(7^2)]  4 [p=7: 38 + O(7^2)]  5 [p=7: 45 + O(7^2)]  6 [p=7: 4 + O(7^2)]  0 [p=7: 11 + O(7^2)]  1 [p=7: 18 + O(7^2)]  2 [p=7: 25 + O(7^2)]  3 [p=7: 32 + O(7^2)]  4 [p=7: 39 + O(7^2)]  5 [p=7: 46 + O(7^2)]  6 [p=7: 3 + O(7^3)]  0 [p=7: 52 + O(7^3)]  1 [p=7: 101 + O(7^3)]  2 [p=7: 150 + O(7^3)]  3 [p=7: 199 + O(7^3)]  4 [p=7: 248 + O(7^3)]  5 [p=7: 297 + O(7^3)]  6 [p=7: 46 + O(7^3)]  0 [p=7: 95 + O(7^3)]  1 [p=7: 144 + O(7^3)]  2 [p=7: 193 + O(7^3)]  3 [p=7: 242 + O(7^3)]  4 [p=7: 291 + O(7^3)]  5 [p=7: 340 + O(7^3)]  6 [p=7: 3 + O(7^4)]  0 [p=7: 346 + O(7^4)]  1 [p=7: 689 + O(7^4)]  2 [p=7: 1032 + O(7^4)]  3 [p=7: 1375 + O(7^4)]  4 [p=7: 1718 + O(7^4)]  5 [p=7: 2061 + O(7^4)]  6 [p=7: 340 + O(7^4)]  0 [p=7: 683 + O(7^4)]  1 [p=7: 1026 + O(7^4)]  2 [p=7: 1369 + O(7^4)]  3 [p=7: 1712 + O(7^4)]  4 [p=7: 2055 + O(7^4)]  5 [p=7: 2398 + O(7^4)]  6 [p=7: 3 + O(7^5)]  0 [p=7: 2404 + O(7^5)]  1 [p=7: 4805 + O(7^5)]  2 [p=7: 7206 + O(7^5)]  3 [p=7: 9607 + O(7^5)]  4 [p=7: 12008 + O(7^5)]  5 [p=7: 14409 + O(7^5)]  6 [p=7: 2398 + O(7^5)]  0 [p=7: 4799 + O(7^5)]  1 [p=7: 7200 + O(7^5)]  2 [p=7: 9601 + O(7^5)]  3 [p=7: 12002 + O(7^5)]  4 [p=7: 14403 + O(7^5)]  5 [p=7: 16804 + O(7^5)]  6 2 distinct lit paths · low digit first  Fog bank infinitely many Input footprint only Lens not computed here No paths drawn",
+    "hover": "[p=7: 16804 + O(7^5)]",
+    "controls": "Prime 2 Depth 5 OK · 2 branches · 2 lit paths 3 mod 2^5 digits (low first): 1 1 0 0 0 seed: -1 · certificate N: 5 29 mod 2^5 digits (low first): 1 0 1 1 1 seed: +1 · certificate N: 5 Prime 3 Depth 5 OK · 2 branches · 2 lit paths 3 mod 3^5 digits (low first): 0 1 0 0 0 seed: 1 · certificate N: 5 240 mod 3^5 digits (low first): 0 2 2 2 2 seed: 2 · certificate N: 5 Prime 5 Depth 5 OK · 2 branches · 2 lit paths 3 mod 5^5 digits (low first): 3 0 0 0 0 seed: 3 · certificate N: 5 3122 mod 5^5 digits (low first): 2 4 4 4 4 seed: 2 · certificate N: 5 Prime 7 Depth 5 OK · 2 branches · 2 lit paths 3 mod 7^5 digits (low first): 3 0 0 0 0 seed: 3 · certificate N: 5 16804 mod 7^5 digits (low first): 4 6 6 6 6 seed: 4 · certificate N: 5",
+    "information": "",
+    "reading-title": "",
+    "reading": "Polynomial coefficients, constant first: -9 0 1 Rational threads: 3, -3 Drag each depth handle independently. Coarse branches may share one path. The shaded cones stand for continuations that are not individually drawn.",
+    "evidence": "input value; no lens computation at undrawn places An inexact real ball has a plain marker: exact dyadic endpoints are not given by the driver. The printed midpoint and radius remain in its label and transcript. Gates use the named call’s place. The driver’s reported failing place is not given. An OK empty polynomial list means no roots in Z_p or on the real line. Only the precomputed depths are available. Branch selection, braids, tours and folding are outside this slice.",
+    "provenance": "",
+    "stdin": "prec 64\ndigits 20\nshow 9\nproject 9 with 2 3 5 7\nproject 9 with real\nrealroots -9 0 1\nroot 9 with 2 with 1\nroot 9 with 2 with -1\nprec 1\nroots -9 0 1 with 2 with 1\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 1\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 1\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 1\nroots_at 9 with 7 with 2\nprec 2\nroots -9 0 1 with 2 with 2\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 2\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 2\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 2\nroots_at 9 with 7 with 2\nprec 3\nroots -9 0 1 with 2 with 3\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 3\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 3\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 3\nroots_at 9 with 7 with 2\nprec 4\nroots -9 0 1 with 2 with 4\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 4\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 4\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 4\nroots_at 9 with 7 with 2\nprec 5\nroots -9 0 1 with 2 with 5\nroots_at 9 with 2 with 2\nroots -9 0 1 with 3 with 5\nroots_at 9 with 3 with 2\nroots -9 0 1 with 5 with 5\nroots_at 9 with 5 with 2\nroots -9 0 1 with 7 with 5\nroots_at 9 with 7 with 2\n",
+    "stdout": "9\n2: 9; 3: 9; 5: 9; 7: 9\nreal: 9\n-3; 3\n3\n-3\n1 mod 2^2; 3 mod 2^2\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^2; 6 mod 3^2\n3 [1]: 3; 3 [2]: -3\n2 mod 5^1; 3 mod 5^1\n5 [2]: -3; 5 [3]: 3\n3 mod 7^1; 4 mod 7^1\n7 [3]: 3; 7 [4]: -3\n1 mod 2^2; 3 mod 2^2\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^2; 6 mod 3^2\n3 [1]: 3; 3 [2]: -3\n3 mod 5^2; 22 mod 5^2\n5 [2]: -3; 5 [3]: 3\n3 mod 7^2; 46 mod 7^2\n7 [3]: 3; 7 [4]: -3\n3 mod 2^3; 5 mod 2^3\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^3; 24 mod 3^3\n3 [1]: 3; 3 [2]: -3\n3 mod 5^3; 122 mod 5^3\n5 [2]: -3; 5 [3]: 3\n3 mod 7^3; 340 mod 7^3\n7 [3]: 3; 7 [4]: -3\n3 mod 2^4; 13 mod 2^4\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^4; 78 mod 3^4\n3 [1]: 3; 3 [2]: -3\n3 mod 5^4; 622 mod 5^4\n5 [2]: -3; 5 [3]: 3\n3 mod 7^4; 2398 mod 7^4\n7 [3]: 3; 7 [4]: -3\n3 mod 2^5; 29 mod 2^5\n2 [+1]: -3; 2 [-1]: 3\n3 mod 3^5; 240 mod 3^5\n3 [1]: 3; 3 [2]: -3\n3 mod 5^5; 3122 mod 5^5\n5 [2]: -3; 5 [3]: 3\n3 mod 7^5; 16804 mod 7^5\n7 [3]: 3; 7 [4]: -3\n"
+  },
+  "elements": [
+    {
+      "tag": "div",
+      "viewBox": "0 0 1560 650",
+      "aria-label": "roots 2 of 9 at real, 2, 3, 5, 7",
+      "text": ""
+    },
+    {
+      "tag": "defs",
+      "text": ""
+    },
+    {
+      "tag": "pattern",
+      "id": "fogp",
+      "width": "8",
+      "height": "8",
+      "patternUnits": "userSpaceOnUse",
+      "patternTransform": "rotate(45)",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "width": "8",
+      "height": "8",
+      "class": "fogbg",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "width": "3",
+      "height": "8",
+      "class": "fogst",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "24",
+      "y": "29",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "R"
+    },
+    {
+      "tag": "text",
+      "x": "48",
+      "y": "29",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "realroots -9 0 1"
+    },
+    {
+      "tag": "line",
+      "x1": "45",
+      "y1": "86",
+      "x2": "1525",
+      "y2": "86",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "366",
+      "y1": "86",
+      "x2": "366",
+      "y2": "86",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "364",
+      "y1": "77",
+      "x2": "364",
+      "y2": "95",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "368",
+      "y1": "77",
+      "x2": "368",
+      "y2": "95",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "circle",
+      "cx": "366",
+      "cy": "86",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "366",
+      "y": "59",
+      "class": "tlab",
+      "text-anchor": "middle",
+      "text": "-3"
+    },
+    {
+      "tag": "line",
+      "x1": "1194",
+      "y1": "86",
+      "x2": "1194",
+      "y2": "86",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1192",
+      "y1": "77",
+      "x2": "1192",
+      "y2": "95",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1196",
+      "y1": "77",
+      "x2": "1196",
+      "y2": "95",
+      "class": "axis",
+      "text": ""
+    },
+    {
+      "tag": "circle",
+      "cx": "1194",
+      "cy": "86",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1194",
+      "y": "59",
+      "class": "tlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "path",
+      "d": "M 1194 92 C 1194 128 175 128 175 216",
+      "class": "drop tAs",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1194 92 C 1194 128 505 128 505 216",
+      "class": "drop tAs",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1194 92 C 1194 128 835 128 835 216",
+      "class": "drop tAs",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1194 92 C 1194 128 1165 128 1165 216",
+      "class": "drop tAs",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 366 92 C 366 128 175 128 175 216",
+      "class": "drop tBs",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 366 92 C 366 128 505 128 505 216",
+      "class": "drop tBs",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 366 92 C 366 128 835 128 835 216",
+      "class": "drop tBs",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 366 92 C 366 128 1165 128 1165 216",
+      "class": "drop tBs",
+      "text": ""
+    },
+    {
+      "tag": "rect",
+      "x": "20",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "34",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "2"
+    },
+    {
+      "tag": "text",
+      "x": "64",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 2 branches"
+    },
+    {
+      "tag": "line",
+      "x1": "175",
+      "y1": "216",
+      "x2": "128.33333333333331",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 128.33333333333331 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "175",
+      "y1": "216",
+      "x2": "221.66666666666666",
+      "y2": "286",
+      "class": "edge lit tAB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "221.66666666666666",
+      "y1": "286",
+      "x2": "128.33333333333331",
+      "y2": "356",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "221.66666666666666",
+      "y1": "286",
+      "x2": "221.66666666666666",
+      "y2": "356",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "128.33333333333331",
+      "y1": "356",
+      "x2": "91",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 91 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "128.33333333333331",
+      "y1": "356",
+      "x2": "147",
+      "y2": "426",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "221.66666666666666",
+      "y1": "356",
+      "x2": "203",
+      "y2": "426",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "221.66666666666666",
+      "y1": "356",
+      "x2": "259",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 259 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "147",
+      "y1": "426",
+      "x2": "91",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 91 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "147",
+      "y1": "426",
+      "x2": "147",
+      "y2": "496",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "203",
+      "y1": "426",
+      "x2": "203",
+      "y2": "496",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "203",
+      "y1": "426",
+      "x2": "259",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 259 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "147",
+      "y1": "496",
+      "x2": "91",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 91 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "147",
+      "y1": "496",
+      "x2": "147",
+      "y2": "566",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 147 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "203",
+      "y1": "496",
+      "x2": "203",
+      "y2": "566",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 203 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "203",
+      "y1": "496",
+      "x2": "259",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 259 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 0 + O(2^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 0 + O(2^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "175",
+      "cy": "216",
+      "r": "5",
+      "class": "tAB bead",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 0 + O(2^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 0 + O(2^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "128.33333333333331",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "128.33333333333331",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 1 + O(2^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 1 + O(2^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "221.66666666666666",
+      "cy": "286",
+      "r": "5",
+      "class": "tAB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "221.66666666666666",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 1 + O(2^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 1 + O(2^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "128.33333333333331",
+      "cy": "356",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "128.33333333333331",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 3 + O(2^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 3 + O(2^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "221.66666666666666",
+      "cy": "356",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "221.66666666666666",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 1 + O(2^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 1 + O(2^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "91",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "91",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 5 + O(2^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 5 + O(2^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "147",
+      "cy": "426",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "147",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 3 + O(2^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 3 + O(2^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "203",
+      "cy": "426",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "203",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 7 + O(2^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 7 + O(2^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "259",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "259",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 5 + O(2^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 5 + O(2^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "91",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "91",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 13 + O(2^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 13 + O(2^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "147",
+      "cy": "496",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "147",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 3 + O(2^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 3 + O(2^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "203",
+      "cy": "496",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "203",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 11 + O(2^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 11 + O(2^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "259",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "259",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 13 + O(2^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 13 + O(2^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "91",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "91",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 29 + O(2^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 29 + O(2^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "147",
+      "cy": "566",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "147",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 3 + O(2^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 3 + O(2^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "203",
+      "cy": "566",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "203",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=2: 19 + O(2^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=2: 19 + O(2^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "259",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "259",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "text",
+      "x": "35",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "2 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "350",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "364",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "3"
+    },
+    {
+      "tag": "text",
+      "x": "394",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 2 branches"
+    },
+    {
+      "tag": "line",
+      "x1": "505",
+      "y1": "216",
+      "x2": "435",
+      "y2": "286",
+      "class": "edge lit tAB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "505",
+      "y1": "216",
+      "x2": "505",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 505 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "505",
+      "y1": "216",
+      "x2": "575",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 575 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "435",
+      "y1": "286",
+      "x2": "435",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 435 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "435",
+      "y1": "286",
+      "x2": "505",
+      "y2": "356",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "435",
+      "y1": "286",
+      "x2": "575",
+      "y2": "356",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "505",
+      "y1": "356",
+      "x2": "405",
+      "y2": "426",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "505",
+      "y1": "356",
+      "x2": "445",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 445 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "505",
+      "y1": "356",
+      "x2": "485",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 485 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "575",
+      "y1": "356",
+      "x2": "525",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 525 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "575",
+      "y1": "356",
+      "x2": "565",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 565 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "575",
+      "y1": "356",
+      "x2": "605",
+      "y2": "426",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "405",
+      "y1": "426",
+      "x2": "405",
+      "y2": "496",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "405",
+      "y1": "426",
+      "x2": "445",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 445 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "405",
+      "y1": "426",
+      "x2": "485",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 485 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "605",
+      "y1": "426",
+      "x2": "525",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 525 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "605",
+      "y1": "426",
+      "x2": "565",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 565 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "605",
+      "y1": "426",
+      "x2": "605",
+      "y2": "496",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "405",
+      "y1": "496",
+      "x2": "405",
+      "y2": "566",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 405 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "405",
+      "y1": "496",
+      "x2": "445",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 445 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "405",
+      "y1": "496",
+      "x2": "485",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 485 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "605",
+      "y1": "496",
+      "x2": "525",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 525 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "605",
+      "y1": "496",
+      "x2": "565",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 565 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "605",
+      "y1": "496",
+      "x2": "605",
+      "y2": "566",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 605 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 0 + O(3^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 0 + O(3^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "505",
+      "cy": "216",
+      "r": "5",
+      "class": "tAB bead",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 0 + O(3^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 0 + O(3^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "435",
+      "cy": "286",
+      "r": "5",
+      "class": "tAB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "435",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 1 + O(3^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 1 + O(3^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "505",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "505",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 2 + O(3^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 2 + O(3^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "575",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "575",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 0 + O(3^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 0 + O(3^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "435",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "435",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 3 + O(3^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 3 + O(3^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "505",
+      "cy": "356",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "505",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 6 + O(3^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 6 + O(3^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "575",
+      "cy": "356",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "575",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 3 + O(3^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 3 + O(3^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "405",
+      "cy": "426",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "405",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 12 + O(3^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 12 + O(3^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "445",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "445",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 21 + O(3^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 21 + O(3^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "485",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "485",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 6 + O(3^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 6 + O(3^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "525",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "525",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 15 + O(3^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 15 + O(3^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "565",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "565",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 24 + O(3^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 24 + O(3^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "605",
+      "cy": "426",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "605",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 3 + O(3^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 3 + O(3^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "405",
+      "cy": "496",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "405",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 30 + O(3^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 30 + O(3^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "445",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "445",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 57 + O(3^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 57 + O(3^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "485",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "485",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 24 + O(3^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 24 + O(3^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "525",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "525",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 51 + O(3^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 51 + O(3^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "565",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "565",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 78 + O(3^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 78 + O(3^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "605",
+      "cy": "496",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "605",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 3 + O(3^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 3 + O(3^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "405",
+      "cy": "566",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "405",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 84 + O(3^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 84 + O(3^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "445",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "445",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 165 + O(3^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 165 + O(3^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "485",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "485",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 78 + O(3^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 78 + O(3^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "525",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "525",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 159 + O(3^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 159 + O(3^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "565",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "565",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=3: 240 + O(3^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=3: 240 + O(3^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "605",
+      "cy": "566",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "605",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "text",
+      "x": "365",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "2 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "680",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "694",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "5"
+    },
+    {
+      "tag": "text",
+      "x": "724",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 2 branches"
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "741.6666666666666",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 741.6666666666666 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "788.3333333333334",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 788.3333333333334 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "835",
+      "y2": "286",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "881.6666666666666",
+      "y2": "286",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "216",
+      "x2": "928.3333333333334",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 928.3333333333334 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "286",
+      "x2": "720.4545454545455",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 720.4545454545455 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "286",
+      "x2": "745.9090909090909",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 745.9090909090909 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "286",
+      "x2": "771.3636363636364",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 771.3636363636364 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "286",
+      "x2": "796.8181818181818",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 796.8181818181818 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "835",
+      "y1": "286",
+      "x2": "822.2727272727273",
+      "y2": "356",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "881.6666666666666",
+      "y1": "286",
+      "x2": "847.7272727272727",
+      "y2": "356",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "881.6666666666666",
+      "y1": "286",
+      "x2": "873.1818181818182",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 873.1818181818182 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "881.6666666666666",
+      "y1": "286",
+      "x2": "898.6363636363636",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 898.6363636363636 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "881.6666666666666",
+      "y1": "286",
+      "x2": "924.0909090909091",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 924.0909090909091 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "881.6666666666666",
+      "y1": "286",
+      "x2": "949.5454545454545",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 949.5454545454545 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "356",
+      "x2": "720.4545454545455",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 720.4545454545455 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "356",
+      "x2": "745.9090909090909",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 745.9090909090909 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "356",
+      "x2": "771.3636363636364",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 771.3636363636364 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "356",
+      "x2": "796.8181818181818",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 796.8181818181818 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "356",
+      "x2": "822.2727272727273",
+      "y2": "426",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "356",
+      "x2": "847.7272727272727",
+      "y2": "426",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "356",
+      "x2": "873.1818181818182",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 873.1818181818182 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "356",
+      "x2": "898.6363636363636",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 898.6363636363636 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "356",
+      "x2": "924.0909090909091",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 924.0909090909091 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "356",
+      "x2": "949.5454545454545",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 949.5454545454545 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "426",
+      "x2": "720.4545454545455",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 720.4545454545455 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "426",
+      "x2": "745.9090909090909",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 745.9090909090909 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "426",
+      "x2": "771.3636363636364",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 771.3636363636364 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "426",
+      "x2": "796.8181818181818",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 796.8181818181818 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "426",
+      "x2": "822.2727272727273",
+      "y2": "496",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "426",
+      "x2": "847.7272727272727",
+      "y2": "496",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "426",
+      "x2": "873.1818181818182",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 873.1818181818182 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "426",
+      "x2": "898.6363636363636",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 898.6363636363636 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "426",
+      "x2": "924.0909090909091",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 924.0909090909091 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "426",
+      "x2": "949.5454545454545",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 949.5454545454545 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "496",
+      "x2": "720.4545454545455",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 720.4545454545455 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "496",
+      "x2": "745.9090909090909",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 745.9090909090909 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "496",
+      "x2": "771.3636363636364",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 771.3636363636364 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "496",
+      "x2": "796.8181818181818",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 796.8181818181818 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "822.2727272727273",
+      "y1": "496",
+      "x2": "822.2727272727273",
+      "y2": "566",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 822.2727272727273 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "496",
+      "x2": "847.7272727272727",
+      "y2": "566",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 847.7272727272727 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "496",
+      "x2": "873.1818181818182",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 873.1818181818182 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "496",
+      "x2": "898.6363636363636",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 898.6363636363636 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "496",
+      "x2": "924.0909090909091",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 924.0909090909091 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "847.7272727272727",
+      "y1": "496",
+      "x2": "949.5454545454545",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 949.5454545454545 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 0 + O(5^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 0 + O(5^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "835",
+      "cy": "216",
+      "r": "5",
+      "class": "tAB bead",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 0 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 0 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "741.6666666666666",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "741.6666666666666",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 1 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 1 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "788.3333333333334",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "788.3333333333334",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 2 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 2 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "835",
+      "cy": "286",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "835",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 3 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 3 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "881.6666666666666",
+      "cy": "286",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "881.6666666666666",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 4 + O(5^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 4 + O(5^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "928.3333333333334",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "928.3333333333334",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 2 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 2 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "720.4545454545455",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "720.4545454545455",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 7 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 7 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "745.9090909090909",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "745.9090909090909",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 12 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 12 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "771.3636363636364",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "771.3636363636364",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 17 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 17 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "796.8181818181818",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "796.8181818181818",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 22 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 22 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "822.2727272727273",
+      "cy": "356",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "822.2727272727273",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 3 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 3 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "847.7272727272727",
+      "cy": "356",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "847.7272727272727",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 8 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 8 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "873.1818181818182",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "873.1818181818182",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 13 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 13 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "898.6363636363636",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "898.6363636363636",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 18 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 18 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "924.0909090909091",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "924.0909090909091",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 23 + O(5^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 23 + O(5^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "949.5454545454545",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "949.5454545454545",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 22 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 22 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "720.4545454545455",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "720.4545454545455",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 47 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 47 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "745.9090909090909",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "745.9090909090909",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 72 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 72 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "771.3636363636364",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "771.3636363636364",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 97 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 97 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "796.8181818181818",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "796.8181818181818",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 122 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 122 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "822.2727272727273",
+      "cy": "426",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "822.2727272727273",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 3 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 3 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "847.7272727272727",
+      "cy": "426",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "847.7272727272727",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 28 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 28 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "873.1818181818182",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "873.1818181818182",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 53 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 53 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "898.6363636363636",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "898.6363636363636",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 78 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 78 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "924.0909090909091",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "924.0909090909091",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 103 + O(5^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 103 + O(5^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "949.5454545454545",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "949.5454545454545",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 122 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 122 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "720.4545454545455",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "720.4545454545455",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 247 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 247 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "745.9090909090909",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "745.9090909090909",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 372 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 372 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "771.3636363636364",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "771.3636363636364",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 497 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 497 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "796.8181818181818",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "796.8181818181818",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 622 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 622 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "822.2727272727273",
+      "cy": "496",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "822.2727272727273",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 3 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 3 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "847.7272727272727",
+      "cy": "496",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "847.7272727272727",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 128 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 128 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "873.1818181818182",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "873.1818181818182",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 253 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 253 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "898.6363636363636",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "898.6363636363636",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 378 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 378 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "924.0909090909091",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "924.0909090909091",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 503 + O(5^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 503 + O(5^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "949.5454545454545",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "949.5454545454545",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 622 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 622 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "720.4545454545455",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "720.4545454545455",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 1247 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 1247 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "745.9090909090909",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "745.9090909090909",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 1872 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 1872 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "771.3636363636364",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "771.3636363636364",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 2497 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 2497 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "796.8181818181818",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "796.8181818181818",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 3122 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 3122 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "822.2727272727273",
+      "cy": "566",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "822.2727272727273",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 3 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 3 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "847.7272727272727",
+      "cy": "566",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "847.7272727272727",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 628 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 628 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "873.1818181818182",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "873.1818181818182",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 1253 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 1253 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "898.6363636363636",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "898.6363636363636",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 1878 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 1878 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "924.0909090909091",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "924.0909090909091",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=5: 2503 + O(5^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=5: 2503 + O(5^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "949.5454545454545",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "949.5454545454545",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "text",
+      "x": "695",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "2 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "1010",
+      "y": "150",
+      "width": "310",
+      "height": "480",
+      "rx": "6",
+      "class": "panel",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1024",
+      "y": "176",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "7"
+    },
+    {
+      "tag": "text",
+      "x": "1054",
+      "y": "176",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "depth 5 · 2 branches"
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "216",
+      "x2": "1060",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1060 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "216",
+      "x2": "1095",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1095 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "216",
+      "x2": "1130",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1130 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "216",
+      "x2": "1165",
+      "y2": "286",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "216",
+      "x2": "1200",
+      "y2": "286",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "216",
+      "x2": "1235",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1235 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "216",
+      "x2": "1270",
+      "y2": "286",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1270 289 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "286",
+      "x2": "1043.6666666666667",
+      "y2": "356",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "286",
+      "x2": "1062.3333333333333",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1062.3333333333333 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "286",
+      "x2": "1081",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1081 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "286",
+      "x2": "1099.6666666666667",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1099.6666666666667 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "286",
+      "x2": "1118.3333333333333",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1118.3333333333333 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "286",
+      "x2": "1137",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1137 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1165",
+      "y1": "286",
+      "x2": "1155.6666666666667",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1155.6666666666667 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1200",
+      "y1": "286",
+      "x2": "1174.3333333333333",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1174.3333333333333 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1200",
+      "y1": "286",
+      "x2": "1193",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1193 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1200",
+      "y1": "286",
+      "x2": "1211.6666666666667",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1211.6666666666667 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1200",
+      "y1": "286",
+      "x2": "1230.3333333333333",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1230.3333333333333 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1200",
+      "y1": "286",
+      "x2": "1249",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1249 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1200",
+      "y1": "286",
+      "x2": "1267.6666666666667",
+      "y2": "356",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1267.6666666666667 359 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1200",
+      "y1": "286",
+      "x2": "1286.3333333333333",
+      "y2": "356",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "356",
+      "x2": "1043.6666666666667",
+      "y2": "426",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "356",
+      "x2": "1062.3333333333333",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1062.3333333333333 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "356",
+      "x2": "1081",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1081 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "356",
+      "x2": "1099.6666666666667",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1099.6666666666667 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "356",
+      "x2": "1118.3333333333333",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1118.3333333333333 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "356",
+      "x2": "1137",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1137 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "356",
+      "x2": "1155.6666666666667",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1155.6666666666667 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "356",
+      "x2": "1174.3333333333333",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1174.3333333333333 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "356",
+      "x2": "1193",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1193 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "356",
+      "x2": "1211.6666666666667",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1211.6666666666667 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "356",
+      "x2": "1230.3333333333333",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1230.3333333333333 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "356",
+      "x2": "1249",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1249 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "356",
+      "x2": "1267.6666666666667",
+      "y2": "426",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1267.6666666666667 429 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "356",
+      "x2": "1286.3333333333333",
+      "y2": "426",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "426",
+      "x2": "1043.6666666666667",
+      "y2": "496",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "426",
+      "x2": "1062.3333333333333",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1062.3333333333333 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "426",
+      "x2": "1081",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1081 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "426",
+      "x2": "1099.6666666666667",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1099.6666666666667 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "426",
+      "x2": "1118.3333333333333",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1118.3333333333333 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "426",
+      "x2": "1137",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1137 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "426",
+      "x2": "1155.6666666666667",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1155.6666666666667 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "426",
+      "x2": "1174.3333333333333",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1174.3333333333333 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "426",
+      "x2": "1193",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1193 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "426",
+      "x2": "1211.6666666666667",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1211.6666666666667 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "426",
+      "x2": "1230.3333333333333",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1230.3333333333333 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "426",
+      "x2": "1249",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1249 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "426",
+      "x2": "1267.6666666666667",
+      "y2": "496",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1267.6666666666667 499 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "426",
+      "x2": "1286.3333333333333",
+      "y2": "496",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "496",
+      "x2": "1043.6666666666667",
+      "y2": "566",
+      "class": "edge lit tA",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1043.6666666666667 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "496",
+      "x2": "1062.3333333333333",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1062.3333333333333 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "496",
+      "x2": "1081",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1081 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "496",
+      "x2": "1099.6666666666667",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1099.6666666666667 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "496",
+      "x2": "1118.3333333333333",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1118.3333333333333 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "496",
+      "x2": "1137",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1137 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1043.6666666666667",
+      "y1": "496",
+      "x2": "1155.6666666666667",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1155.6666666666667 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "496",
+      "x2": "1174.3333333333333",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1174.3333333333333 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "496",
+      "x2": "1193",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1193 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "496",
+      "x2": "1211.6666666666667",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1211.6666666666667 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "496",
+      "x2": "1230.3333333333333",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1230.3333333333333 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "496",
+      "x2": "1249",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1249 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "496",
+      "x2": "1267.6666666666667",
+      "y2": "566",
+      "class": "edge",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1267.6666666666667 569 l -5 20 h 10 Z",
+      "class": "cone",
+      "text": ""
+    },
+    {
+      "tag": "line",
+      "x1": "1286.3333333333333",
+      "y1": "496",
+      "x2": "1286.3333333333333",
+      "y2": "566",
+      "class": "edge lit tB",
+      "text": ""
+    },
+    {
+      "tag": "path",
+      "d": "M 1286.3333333333333 569 l -9 27 h 18 Z",
+      "class": "litcone",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 0 + O(7^0)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 0 + O(7^0)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1165",
+      "cy": "216",
+      "r": "5",
+      "class": "tAB bead",
+      "text": ""
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 0 + O(7^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 0 + O(7^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1060",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1060",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 1 + O(7^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 1 + O(7^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1095",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1095",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 2 + O(7^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 2 + O(7^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1130",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1130",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 3 + O(7^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 3 + O(7^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1165",
+      "cy": "286",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1165",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 4 + O(7^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 4 + O(7^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1200",
+      "cy": "286",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1200",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 5 + O(7^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 5 + O(7^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1235",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1235",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 6 + O(7^1)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 6 + O(7^1)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1270",
+      "cy": "286",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1270",
+      "y": "277",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 3 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 3 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1043.6666666666667",
+      "cy": "356",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1043.6666666666667",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 10 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 10 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1062.3333333333333",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1062.3333333333333",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 17 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 17 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1081",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1081",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 24 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 24 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1099.6666666666667",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1099.6666666666667",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 31 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 31 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1118.3333333333333",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1118.3333333333333",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 38 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 38 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1137",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1137",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 45 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 45 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1155.6666666666667",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1155.6666666666667",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 4 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 4 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1174.3333333333333",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1174.3333333333333",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 11 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 11 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1193",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1193",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 18 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 18 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1211.6666666666667",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1211.6666666666667",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 25 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 25 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1230.3333333333333",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1230.3333333333333",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 32 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 32 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1249",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1249",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 39 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 39 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1267.6666666666667",
+      "cy": "356",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1267.6666666666667",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 46 + O(7^2)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 46 + O(7^2)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1286.3333333333333",
+      "cy": "356",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1286.3333333333333",
+      "y": "347",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 3 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 3 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1043.6666666666667",
+      "cy": "426",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1043.6666666666667",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 52 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 52 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1062.3333333333333",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1062.3333333333333",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 101 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 101 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1081",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1081",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 150 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 150 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1099.6666666666667",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1099.6666666666667",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 199 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 199 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1118.3333333333333",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1118.3333333333333",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 248 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 248 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1137",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1137",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 297 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 297 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1155.6666666666667",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1155.6666666666667",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 46 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 46 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1174.3333333333333",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1174.3333333333333",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 95 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 95 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1193",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1193",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 144 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 144 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1211.6666666666667",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1211.6666666666667",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 193 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 193 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1230.3333333333333",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1230.3333333333333",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 242 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 242 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1249",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1249",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 291 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 291 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1267.6666666666667",
+      "cy": "426",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1267.6666666666667",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 340 + O(7^3)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 340 + O(7^3)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1286.3333333333333",
+      "cy": "426",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1286.3333333333333",
+      "y": "417",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 3 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 3 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1043.6666666666667",
+      "cy": "496",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1043.6666666666667",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 346 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 346 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1062.3333333333333",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1062.3333333333333",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 689 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 689 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1081",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1081",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 1032 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 1032 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1099.6666666666667",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1099.6666666666667",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 1375 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 1375 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1118.3333333333333",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1118.3333333333333",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 1718 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 1718 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1137",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1137",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 2061 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 2061 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1155.6666666666667",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1155.6666666666667",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 340 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 340 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1174.3333333333333",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1174.3333333333333",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 683 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 683 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1193",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1193",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 1026 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 1026 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1211.6666666666667",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1211.6666666666667",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 1369 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 1369 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1230.3333333333333",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1230.3333333333333",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 1712 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 1712 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1249",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1249",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 2055 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 2055 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1267.6666666666667",
+      "cy": "496",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1267.6666666666667",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 2398 + O(7^4)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 2398 + O(7^4)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1286.3333333333333",
+      "cy": "496",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1286.3333333333333",
+      "y": "487",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 3 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 3 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1043.6666666666667",
+      "cy": "566",
+      "r": "5",
+      "class": "tA bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1043.6666666666667",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 2404 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 2404 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1062.3333333333333",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1062.3333333333333",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 4805 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 4805 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1081",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1081",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 7206 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 7206 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1099.6666666666667",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1099.6666666666667",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 9607 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 9607 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1118.3333333333333",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1118.3333333333333",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 12008 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 12008 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1137",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1137",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 14409 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 14409 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1155.6666666666667",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1155.6666666666667",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 2398 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 2398 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1174.3333333333333",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1174.3333333333333",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "0"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 4799 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 4799 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1193",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1193",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "1"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 7200 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 7200 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1211.6666666666667",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1211.6666666666667",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "2"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 9601 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 9601 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1230.3333333333333",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1230.3333333333333",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "3"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 12002 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 12002 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1249",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1249",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "4"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 14403 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 14403 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1267.6666666666667",
+      "cy": "566",
+      "r": "2.2",
+      "class": "node",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1267.6666666666667",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "5"
+    },
+    {
+      "tag": "g",
+      "tabindex": "0",
+      "role": "img",
+      "aria-label": "[p=7: 16804 + O(7^5)]",
+      "text": ""
+    },
+    {
+      "tag": "title",
+      "text": "[p=7: 16804 + O(7^5)]"
+    },
+    {
+      "tag": "circle",
+      "cx": "1286.3333333333333",
+      "cy": "566",
+      "r": "5",
+      "class": "tB bead",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1286.3333333333333",
+      "y": "557",
+      "class": "dlab",
+      "text-anchor": "middle",
+      "text": "6"
+    },
+    {
+      "tag": "text",
+      "x": "1025",
+      "y": "608",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "2 distinct lit paths · low digit first"
+    },
+    {
+      "tag": "rect",
+      "x": "1350",
+      "y": "150",
+      "width": "190",
+      "height": "480",
+      "rx": "6",
+      "fill": "url(#fogp)",
+      "stroke": "var(--line)",
+      "text": ""
+    },
+    {
+      "tag": "text",
+      "x": "1364",
+      "y": "178",
+      "class": "plabel",
+      "text-anchor": "start",
+      "text": "Fog bank"
+    },
+    {
+      "tag": "text",
+      "x": "1364",
+      "y": "216",
+      "class": "tlab",
+      "text-anchor": "start",
+      "text": "infinitely many"
+    },
+    {
+      "tag": "text",
+      "x": "1364",
+      "y": "316",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Input footprint only"
+    },
+    {
+      "tag": "text",
+      "x": "1364",
+      "y": "338",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "Lens not computed here"
+    },
+    {
+      "tag": "text",
+      "x": "1364",
+      "y": "380",
+      "class": "psub",
+      "text-anchor": "start",
+      "text": "No paths drawn"
+    }
+  ]
+}

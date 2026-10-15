@@ -1,0 +1,3 @@
+ux/atlas/scenes/sqrt9.json
+{"branch_count": 20, "branch_seed": 40, "digit_paths": 80, "digit_strings": 80, "hover_text": 240, "lit_count": 20, "node_centres": 240, "polynomial_residue": 40, "rational_branch": 40, "real_endpoints": 2, "real_exact": 2, "real_polynomial": 2, "record_outputs": 1, "result_output": 20, "sibling_hover": 425, "status": 20, "thread_real": 2, "thread_source": 2, "transcript": 3}
+checks=1279 failures=0 records_replayed=46

@@ -1,0 +1,15 @@
+logminus1 records 19 real DOMAIN trees [(2, 'OK', 1), (3, 'DOMAIN', 0), (5, 'DOMAIN', 0)]
+checks=149 failures=0 records_replayed=19
+fractionroot records 16 real OK trees [(5, 'OK', 2)]
+checks=408 failures=0 records_replayed=16
+ballroot records 8 real DOMAIN trees [(2, 'OK', 2)]
+checks=127 failures=0 records_replayed=8
+coarse records 18 real DOMAIN trees [(2, 'OK', 1), (3, 'OK', 1), (5, 'OK', 1)]
+checks=109 failures=0 records_replayed=18
+sqrt2 records 46 real OK trees [(2, 'OK', 0), (3, 'OK', 0), (5, 'OK', 0), (7, 'OK', 2)]
+checks=369 failures=0 records_replayed=46
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-atlas/lanes/ux-drive-atlas/finish_checks.py", line 27, in <module>
+    assert check.returncode == 0, (name, check.stdout, check.stderr)
+           ^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('exp0', 'lanes/ux-drive-atlas/exp0.json\n{"branch_count": 15, "digit_paths": 30, "digit_strings": 30, "hover_text": 90, "lit_count": 15, "node_centres": 90, "real_endpoints": 1, "real_exact": 1, "record_outputs": 1, "result_output": 15, "sibling_hover": 165, "status": 15, "thread_real": 1, "thread_source": 1, "transcript": 3}\nchecks=473 failures=1 records_replayed=19\nthread_source: 1\n', '')

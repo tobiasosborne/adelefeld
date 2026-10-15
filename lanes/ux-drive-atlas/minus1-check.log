@@ -1,0 +1,3 @@
+lanes/ux-drive-atlas/minus1.json
+{"branch_count": 20, "digit_paths": 10, "digit_strings": 10, "hover_text": 30, "lit_count": 20, "node_centres": 30, "polynomial_residue": 10, "record_outputs": 1, "result_output": 20, "sibling_hover": 145, "status": 20, "transcript": 3}
+checks=319 failures=0 records_replayed=46
