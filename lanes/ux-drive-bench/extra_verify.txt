@@ -1,0 +1,2 @@
+{"file": "lanes/ux-drive-bench/out/finite_ball.records.jsonl", "records": 6, "replayed": 5, "driver_exit": 1, "status_counts": {"NOT_DETERMINED": 4, "OK": 1}, "existence_checks": 0, "finite_roots_checked": 0, "real_intervals_checked": 0}
+{"file": "lanes/ux-drive-bench/out/exp_edge.records.jsonl", "records": 55, "replayed": 40, "driver_exit": 1, "status_counts": {"OK": 9, "DOMAIN": 25, "NOT_DETERMINED": 6}, "existence_checks": 0, "finite_roots_checked": 0, "real_intervals_checked": 0}

@@ -1,0 +1,2 @@
+brief_b_2000: 4 inputs x 304 places = 1216 cells, 1216 driver calls; budget 2000 cells, 120 s
+brief_b_2000: 1219 records, 1216 calls answered in 0.023 s; stop line after the last row; timeout False

@@ -1,0 +1,2 @@
+brief_b_family: 153 inputs x 304 places = 46512 cells, 46512 driver calls; budget 100000 cells, 120 s
+brief_b_family: 46512 records, 46512 calls answered in 1.815 s; stop line after the last row; timeout False

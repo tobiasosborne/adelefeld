@@ -1,0 +1,47 @@
+{
+  "name": "attack",
+  "question": "Which small integers are squares at which primes?",
+  "cell": "the roots of x^2 - n at the place: roots_at n with p with 2 at a prime, realroots of x^2 - n at R",
+  "operation": "roots 2",
+  "inputs": [
+    {
+      "value": "-1"
+    },
+    {
+      "value": "2"
+    },
+    {
+      "value": "-2"
+    },
+    {
+      "value": "3"
+    },
+    {
+      "value": "5"
+    },
+    {
+      "value": "6"
+    },
+    {
+      "value": "7"
+    }
+  ],
+  "places": [
+    "R",
+    "primes below 48"
+  ],
+  "precision": {
+    "R": 64,
+    "p": 8
+  },
+  "budget": {
+    "max_cells": 200,
+    "timeout": 60
+  },
+  "regroup": [
+    4,
+    8,
+    12,
+    5
+  ]
+}

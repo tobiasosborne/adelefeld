@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-bench/ux/bench/render.py", line 499, in <module>
+    main()
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-bench/ux/bench/render.py", line 491, in main
+    page = render(e, records, findings)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-bench/ux/bench/render.py", line 467, in render
+    h.append(finding_html(f, e, records))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-bench/ux/bench/render.py", line 363, in finding_html
+    check_source(src)
+  File "/home/tobias/Projects/adelefeld-wt/ux-drive-bench/ux/bench/render.py", line 310, in check_source
+    raise ValueError('%s has %d lines, not %s' % (src['file'], count, src['lines']))
+ValueError: refs/src/shoup-ntb/ntb-v2.txt has 25298 lines, not 99999999-99999999

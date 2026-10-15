@@ -1,0 +1,31 @@
+{
+  "name": "finite_ball",
+  "question": "Where does this finite ball determine roots?",
+  "operation": "roots 2",
+  "cell": "square roots of 9 mod 5^6",
+  "inputs": [
+    {
+      "value": "(* ; 9 mod 15625)"
+    }
+  ],
+  "places": [
+    "R",
+    2,
+    3,
+    5,
+    7,
+    11
+  ],
+  "precision": {
+    "R": 64,
+    "p": 8
+  },
+  "budget": {
+    "max_cells": 10,
+    "timeout": 30
+  },
+  "regroup": [
+    5,
+    8
+  ]
+}

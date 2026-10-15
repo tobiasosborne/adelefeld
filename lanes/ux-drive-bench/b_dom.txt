@@ -1,0 +1,2 @@
+{"file":"ux/bench/out/local_global.html","rows":16,"wells":64,"records_checked":64,"findings":1,"regroup_checks":4,"stop":" p >= 53: not swept.  Nothing below this line is computed. A finding may cover it only by an argument. ","hash_path":"#mod8"}
+{"file":"lanes/ux-drive-bench/out/brief_b_2000.html","rows":304,"wells":1216,"records_checked":1216,"findings":1,"regroup_checks":4,"stop":" p >= 2003: not swept.  Nothing below this line is computed. A finding may cover it only by an argument. ","hash_path":"#mod8"}
