@@ -1,0 +1,31 @@
+c1 roots(9, 2; at = 5) controls 2
+Step 1: the square roots of 9 at 5. A fan of two chips, labelled by the seed (the residue mod 5). In [1] roots(9, 2; at = 5) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[1] 2 branches at 5 · degree 2 · every branch, as the driver's roots_at lists them · click a branch to pin its seed in the cell 5 [2] -3 … 4 442 5 [3] 3 … 0 003
+c2 root(9, 2; at = 5, seed = 3) controls 0
+Step 2: what a click on the chip [3] of In [1] writes. The branch is in the code, not in a mode. In [2] root(9, 2; at = 5, seed = 3) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[2] 5 [3] · exact … 0 003 3
+c3 roots(-1, 2; at = 5) controls 2
+Step 3: -1 instead of 9. The roots are irrational; 8 digits at the default precision, fog above 5^8. In [3] roots(-1, 2; at = 5) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[3] 2 branches at 5 · degree 2 · every branch, as the driver's roots_at lists them · click a branch to pin its seed in the cell 5 [2] 280182 + O(5^8) 32431212 5 [3] 110443 + O(5^8) 12013233
+c4 root(-1, 2; at = 5, seed = 2, prec = 20) controls 1
+Step 4: the branch [2] with twelve more digits (what a click on the chip and then the fog writes). In [4] root(-1, 2; at = 5, seed = 2, prec = 20) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[4] 5 [2] · 20 digits known 40423140223032431212 79753541295807 + O(5^20) fog: the digits from 5 20 on are not known · click the fog for 12 more digits (prec = 32)
+c5 roots(2, 2; at = 5) controls 0
+Step 5: 2 is not a square mod 5, so no branch exists: a status card, not an empty fan. In [5] roots(2, 2; at = 5) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[5] DOMAIN · proved no solid border · place: not given · from: driver roots_at no branch: the existence criterion fails on the whole ball, or the degree is 0 (tools/adf/README.md:509-510) another prime or another degree
+PASS 5 cells are present in HTML
+PASS No remote script or stylesheet
+PASS Legend contains OK
+PASS Legend contains NOT_DETERMINED
+PASS Legend contains UNIT_NOT_CERTIFIED
+PASS Legend contains NEEDS_SPLIT
+PASS Legend contains NOT_UNIQUE
+PASS Legend contains NO_SOLUTION
+PASS Legend contains NOT_UNIT
+PASS Legend contains DOMAIN
+PASS Legend contains UNSUPPORTED
+PASS Legend contains PARSE
+PASS Legend contains LIMIT
+PASS Chip [3] writes seed into code
+PASS Edited output marked stale
+PASS Restore returns original code
+PASS Fog requests 32 from 20
+PASS Alt-Up has no precision action
+PASS Fan has branch controls only; no fog refinement before rerun
+PASS Scenario A page omits Teichmueller comparison
+PASS 20 checks; this is HTML and mock DOM inspection, not a rendered screenshot.

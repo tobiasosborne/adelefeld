@@ -1,0 +1,34 @@
+c1 FBall(Rat(1), Rat(8 * 1009 * 1013)) controls 0
+Builder's suggested ball constructor; the earlier integer-argument path stays unfixed. In [1] FBall(Rat(1), Rat(8 * 1009 * 1013)) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[1] R * no real coordinate 2 v = 0 |x| 2 = 1 001 1 + O(2 3 ) cofactor 1022117 not factored no prime factor below 1000; 7 digits every other p Z p no information · and the primes of the cofactor: not known dump adf1 Q fball g 1 7cc528 1
+c2 Rat(1) / Rat(0) controls 0
+Builder's suggested division by zero. In [2] Rat(1) / Rat(0) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[2] NOT_UNIT · proved no solid border · place: not given · from: package div proved: the value is not invertible none: the answer is proved; for an adele, unitof(y) certifies a unit (SPEC 4.5)
+c3 roots(adf"(* ; 1 mod 4)", 2; at = 2) controls 0
+Builder's suggested uncertain root. In [3] roots(adf"(* ; 1 mod 4)", 2; at = 2) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[3] NOT_DETERMINED · open dashed border · place: not given · from: driver roots_at the ball is outside the guard of SPEC 9.3.3, or contains 0 (tools/adf/README.md:507-508) refine the input at the prime split the ball
+c4 root(-1, 2; at = 101, seed = 10, prec = 8) controls 0
+Residue form beyond 97. In [4] root(-1, 2; at = 101, seed = 10, prec = 8) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[4] 101 [10] · 8 digits known 3156215819652023 + O(101^8) fog: the digits from 101 8 on are not known · click the fog for 12 more digits (prec = 20)
+c5 LBall controls 0
+Missing local-ball wrapper named by the report. In [5] LBall edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[5] UndefVarError: `LBall` not defined in `Main.Notebook`
+c6 Idele controls 0
+Missing idele wrapper named by the report. In [6] Idele edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[6] UndefVarError: `Idele` not defined in `Main.Notebook`
+c7 x = adf"(0.99 +/- 0.0099 ; 0 mod 1)" controls 0
+Literal whose outward printed enclosure touches 1 but the stored upper endpoint does not. In [7] x = adf"(0.99 +/- 0.0099 ; 0 mod 1)" edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[7] R 0.99 +/- 0.01 a ball every other p Z p no information · infinitely many primes dump adf1 Q adele 1 fd70a3d70a3d70a3 -40 a2339c1 -22 g 0 1 1
+c8 y = x + Rat(0) controls 0
+An exact addition leaves the set, but its source is no longer a literal. In [8] y = x + Rat(0) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[8] R 0.99 +/- 0.01 a ball every other p Z p no information · infinitely many primes dump adf1 Q adele 1 fd70a3d70a3d70a3 -40 a2339c1 -22 g 0 1 1
+c9 project(y, :real) controls 0
+Project should keep the stored real coordinate. In [9] project(y, :real) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[9] R 0.99 +/- 0.011 the driver's real-ball text every other place not in the partial ball project keeps only the places asked for
+c10 reconstruct(y) controls 0
+The stored interval is below 1 and above 0; its finite progression is the integers. In [10] reconstruct(y) edited on this page: re-evaluate to keep. The page cannot compute; put this text into the notebook file and run sh ux/notebook/run.sh . restore Out[10] NO_SOLUTION · proved no solid border · place: not given · from: package reconstruct proved: no value satisfies the problem none: the answer is proved
+PASS 10 cells are present in HTML
+PASS No remote script or stylesheet
+PASS Legend contains OK
+PASS Legend contains NOT_DETERMINED
+PASS Legend contains UNIT_NOT_CERTIFIED
+PASS Legend contains NEEDS_SPLIT
+PASS Legend contains NOT_UNIQUE
+PASS Legend contains NO_SOLUTION
+PASS Legend contains NOT_UNIT
+PASS Legend contains DOMAIN
+PASS Legend contains UNSUPPORTED
+PASS Legend contains PARSE
+PASS Legend contains LIMIT
+PASS 13 checks; this is HTML and mock DOM inspection, not a rendered screenshot.

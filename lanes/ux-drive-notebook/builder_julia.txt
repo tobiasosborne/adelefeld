@@ -1,0 +1,9 @@
+Test Summary:                                    | Pass  Total  Time
+Adelica                                          |  129    129  9.2s
+  value-text parser on the five rows of SPEC 4.3 |   45     45  0.9s
+  p-adic digits of exact rationals               |   11     11  0.4s
+  digits of a ball                               |    6      6  0.1s
+  places of a value (trial division below 1000)  |   20     20  2.8s
+  branch fans through the driver                 |   13     13  0.8s
+  status classes (D-UX4)                         |   12     12  0.0s
+  notebooks: page, records, replay               |   22     22  4.2s

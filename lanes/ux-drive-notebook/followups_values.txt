@@ -1,0 +1,24 @@
+PASS cell 1 direct driver agrees
+PASS cell 2 direct driver agrees
+PASS cell 3 direct driver agrees
+PASS cell 4 direct driver agrees
+PASS cell 7 direct driver agrees
+PASS cell 8 direct driver agrees
+PASS cell 9 direct driver agrees
+PASS reproduced fresh-record status mismatch
+PASS ball modulus 8176936 and cofactor 1022117
+PASS 1 mod 8 has valuation 0 and digits 001
+PASS 101-adic square root has seed 10 at precision 8
+PASS adding exact zero preserves every stored bit
+PASS reproduced instruction to click absent fog control above p=97
+Driver inputs:
+project (0.99 +/- 0.0099 ; 0 mod 1) with real
+reconstruct (0.99 +/- 0.0099 ; 0 mod 1)
+reconstruct (0.99 +/- 0.01 ; 0 mod 1)
+Driver outputs:
+real: 0.99 +/- 0.01
+error: NO_SOLUTION
+1
+
+PASS literal interval rejects 1, reparsed printed interval admits 1
+PASS 14 checks

@@ -1,0 +1,5 @@
+cell 1: same: 5 [2]: 280182 + O(5^8)
+cell 2: same: 5 [2]: 79753541295807 + O(5^20)
+cell 3: no driver line
+cell 4: no driver line
+replay: every record is the same

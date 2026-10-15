@@ -1,0 +1,11 @@
+✔ the page has two chips in cell 1 with root(...) rewrites (1.932572ms)
+✔ a chip click rewrites the cell text and marks it; restore undoes it (1.133959ms)
+✔ the fog of the single root in cell 4 asks for prec = 32 (0.259276ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11.891517

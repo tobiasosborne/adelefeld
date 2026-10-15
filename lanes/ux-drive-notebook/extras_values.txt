@@ -1,0 +1,29 @@
+PASS cell 1 driver value 6/35
+PASS cell 2 driver value 0
+PASS cell 4 driver value 1009
+PASS cell 5 driver value (* ; 1 mod 1022117)
+PASS cell 6 driver value 5 [2]: 79753541295807 + O(5^20); 5 [3]: 15613890344818 + O(5^20)
+PASS cell 7 driver value 5 [2]: -3; 5 [3]: 3
+PASS cell 8 driver value error: DOMAIN
+PASS 6/35 base 2 exact periodic fraction = 6/35
+PASS 6/35 base 2 valuation 1
+PASS 6/35 base 3 exact periodic fraction = 6/35
+PASS 6/35 base 3 valuation 1
+PASS 6/35 base 5 exact periodic fraction = 6/35
+PASS 6/35 base 5 valuation -1
+PASS 6/35 base 7 exact periodic fraction = 6/35
+PASS 6/35 base 7 valuation -1
+PASS 6/35 product of absolute values = 1
+PASS zero is not called a unit
+PASS 1009 has no divisor 2..999; cofactor 1009 has 4 digits
+PASS 1022117 = 1009*1013 has no divisor 2..999; cofactor has 7 digits
+PASS 20-digit branch 2 is a root
+PASS 20-digit branch 2 digits agree
+PASS branch 2 keeps precision
+PASS 20-digit branch 3 is a root
+PASS 20-digit branch 3 digits agree
+PASS branch 3 keeps precision
+PASS branch 2 keeps name r
+PASS branch 3 keeps name r
+PASS composite place is rejected with DOMAIN
+PASS 28 checks

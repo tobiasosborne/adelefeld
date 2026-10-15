@@ -1,0 +1,11 @@
+cell 1: same: (* ; 1 mod 8176936)
+cell 2: same: error: NOT_UNIT
+cell 3: same: error: NOT_DETERMINED
+cell 4: same: 101 [10]: 3156215819652023 + O(101^8)
+cell 5: no driver line
+cell 6: no driver line
+cell 7: same: (0.99 +/- 0.01 ; 0 mod 1)
+cell 8: same: (0.99 +/- 0.01 ; 0 mod 1)
+cell 9: same: real: 0.99 +/- 0.011
+cell 10: differs: record "error: NO_SOLUTION", driver "1"
+replay: 1 records differ

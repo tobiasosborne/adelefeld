@@ -1,0 +1,6 @@
+/work/
+/firefox*/
+/depot/
+/tmp/
+__pycache__/
+/stdout.log
