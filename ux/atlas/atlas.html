@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Place Atlas · adelefeld</title>
+<style>
+/* Palette, SVG vocabulary, panels and fog pattern reused from docs/ux/mock-2-place-atlas.html.
+   Fonts use local fallbacks so this page needs no network. */
+:root {
+  --bg: #0e1522; --panel: #152033; --panel-2: #1b2940; --line: #2c3c57;
+  --fg: #e3e9f2; --fg-2: #a7b4c8; --fg-3: #74829a;
+  --thA: #f2b35b; --thB: #72c6e2; --both: #e3e9f2;
+  --fog-a: #1a2538; --fog-b: #223049; --gate: #c9837a;
+  --f-disp: "Chivo", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "Chivo Mono", ui-monospace, Menlo, monospace; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0 22px 32px; background: var(--bg); color: var(--fg);
+  font: 15px/1.5 var(--f-disp); }
+.bar, main, footer { max-width: 1640px; margin: auto; }
+.bar { padding: 20px 0 12px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+h1 { font-size: 20px; margin: 0; letter-spacing: .02em; }
+.addr, .lens { font: 14px var(--f-mono); border: 1px solid var(--line); padding: 5px 12px;
+  background: var(--panel); border-radius: 6px; }
+.lens { border-radius: 20px; color: var(--thA); }
+.places { margin-left: auto; color: var(--fg-3); font: 12px var(--f-mono); }
+.loadbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+button, .button { font: 13px var(--f-mono); color: var(--fg); background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+input[type=file] { max-width: 330px; font: 12px var(--f-mono); }
+a { color: var(--thB); }
+:focus-visible { outline: 2px solid var(--thB); outline-offset: 3px; }
+.note, .foot { color: var(--fg-2); font-size: 13px; }
+#message { min-height: 24px; }
+#message.error { color: var(--gate); }
+.mapwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--panel-2); }
+svg.atlas { display: block; width: 100%; height: auto; font-family: var(--f-mono); }
+.axis { stroke: var(--fg-2); stroke-width: 1.5; }
+.tick { stroke: var(--fg-3); stroke-width: 1; }
+.tlab { fill: var(--fg-2); font-size: 12px; }
+.plabel { fill: var(--fg); font-family: var(--f-disp); font-weight: 800; font-size: 17px; }
+.psub { fill: var(--fg-3); font-size: 11px; }
+.panel { fill: var(--panel); stroke: var(--line); stroke-width: 1; }
+.edge { stroke: var(--line); stroke-width: 1; fill: none; }
+.edge.lit { stroke-width: 2.6; }
+.node { fill: var(--fg-3); }
+.bead { stroke: var(--panel); stroke-width: 2; }
+.tA { fill: var(--thA); } .tB { fill: var(--thB); } .tAB { fill: var(--both); }
+.edge.tA, .tAs { stroke: var(--thA); }
+.edge.tB, .tBs { stroke: var(--thB); }
+.edge.tAB { stroke: var(--both); }
+.dlab { fill: var(--fg-2); font-size: 11px; }
+.tail { stroke-width: 2.6; stroke-dasharray: 2 4; fill: none; }
+.drop { stroke-width: 1.2; stroke-dasharray: 3 3; opacity: .46; fill: none; }
+.fogbg { fill: var(--fog-a); } .fogst { fill: var(--fog-b); }
+.cone { fill: var(--fg-3); opacity: .10; }
+.litcone { fill: var(--thA); opacity: .09; }
+.gate-shape { stroke: var(--gate); stroke-width: 2; fill: var(--panel); }
+.gate-text { fill: var(--gate); font-size: 11px; }
+.empty { padding: 90px 24px; text-align: center; color: var(--fg-2); }
+.controls { display: grid; gap: 12px; margin-top: 14px; }
+.place-card, .box { background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; min-width: 0; }
+h2 { font-size: 13px; margin: 0 0 8px; letter-spacing: .04em; }
+.place-card label { display: flex; align-items: center; gap: 10px; font: 12px var(--f-mono); }
+input[type=range] { width: 100%; accent-color: var(--thB); }
+.count, .path { font: 11px/1.6 var(--f-mono); overflow-wrap: anywhere; }
+.count { color: var(--fg-2); margin: 8px 0; }
+.path { margin: 6px 0; }
+.seed { color: var(--thA); }
+.below { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.5 var(--f-mono); }
+details { margin-top: 12px; }
+summary { cursor: pointer; color: var(--fg-2); }
+table { border-collapse: collapse; width: 100%; font: 12px/1.6 var(--f-mono); }
+th, td { text-align: left; padding: 4px 12px 4px 0; border-bottom: 1px solid var(--line); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--fg-2); }
+.swatch { display: inline-block; width: 22px; height: 12px; margin-right: 6px;
+  border: 2px solid var(--gate); vertical-align: middle; }
+.open { border-style: dashed; border-radius: 12px; }
+.budget { border-style: dotted; border-radius: 50%; }
+.plain { border: 0; border-bottom: 1px solid var(--gate); }
+#hover { font: 12px var(--f-mono); min-height: 30px; padding: 7px 0; color: var(--thB); }
+footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
+[hidden] { display: none !important; }
+@media (max-width: 900px) { .below { grid-template-columns: 1fr; } }
+</style>
+<header class="bar">
+  <h1>Place Atlas</h1><span class="addr" id="value">Choose a scene</span>
+  <span class="lens" id="lens">library results on a map</span><span class="places" id="places"></span>
+</header>
+<main>
+  <div class="loadbar">
+    <label class="button">Open scene JSON <input id="picker" type="file" accept=".json,application/json"></label>
+    <span class="note" id="loadhelp"></span>
+    <a href="?scene=scenes/sqrt9.json" class="sample">sqrt9</a>
+    <a href="?scene=scenes/idempotents30.json" class="sample">idempotents30</a>
+  </div>
+  <div id="message" class="note" role="status" aria-live="polite">No scene loaded.</div>
+  <div class="mapwrap" id="mapwrap">
+    <div class="empty" id="empty">Open a generated scene to place its real ruler and p-adic trees.</div>
+    <svg class="atlas" id="map" role="img" aria-label="Place Atlas scene" hidden></svg>
+  </div>
+  <div id="hover" role="status" aria-live="polite">Hover or focus a node to read its ball.</div>
+  <div class="legend" aria-label="Status shapes">
+    <span><i class="swatch open"></i>open · dashed</span>
+    <span><i class="swatch"></i>proved no · solid</span>
+    <span><i class="swatch budget"></i>budget · dotted</span>
+    <span><i class="swatch plain"></i>not mathematics · plain</span>
+    <span>OK · lit result</span>
+  </div>
+  <div class="controls" id="controls"></div>
+  <div class="below" id="information" hidden>
+    <section class="box"><h2 id="reading-title">Reading this scene</h2><div id="reading"></div></section>
+    <section class="box"><h2>Evidence and boundaries</h2><div id="evidence"></div></section>
+  </div>
+  <details id="provenance" hidden><summary>Driver transcript · exact input and output</summary>
+    <h2>Input</h2><pre id="stdin"></pre><h2>Output</h2><pre id="stdout"></pre>
+  </details>
+</main>
+<footer>adelefeld · static slice · digit paths computed by the builder from driver text
+  · no calls from this page</footer>
+<script src="atlas.js"></script>
+<script>
+'use strict';
+(() => {
+  const { layoutPaths, selectDepth, validateScene, statusClass } = window.AtlasGeometry;
+  const $ = id => document.getElementById(id);
+  const NS = 'http://www.w3.org/2000/svg';
+  let current = null;
+  const depths = new Map();
+  function svg(tag, attributes, parent = $('map'), text) {
+    const node = document.createElementNS(NS, tag);
+    for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
+    if (text !== undefined) node.textContent = text;
+    parent.appendChild(node);
+    return node;
+  }
+  function html(tag, text, parent, className) {
+    const node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    if (className) node.className = className;
+    parent.appendChild(node);
+    return node;
+  }
+  function line(x1, y1, x2, y2, cls, parent) {
+    return svg('line', { x1, y1, x2, y2, class: cls }, parent);
+  }
+  function text(x, y, value, cls = 'psub', anchor = 'start', parent) {
+    return svg('text', { x, y, class: cls, 'text-anchor': anchor }, parent, value);
+  }
+  function number(printed) {
+    const parts = String(printed).split('/');
+    return Number(parts[0]) / (parts.length > 1 ? Number(parts[1]) : 1);
+  }
+  function gate(x, y, status, parent) {
+    const cls = statusClass(status);
+    const g = svg('g', { 'aria-label': status + ' · ' + cls }, parent);
+    if (cls === 'open') {
+      svg('rect', { x, y, width: 28, height: 24, rx: 12, class: 'gate-shape',
+        'stroke-dasharray': '5 4' }, g);
+    } else if (cls === 'budget') {
+      svg('circle', { cx: x + 14, cy: y + 12, r: 13, class: 'gate-shape',
+        'stroke-dasharray': '1 4' }, g);
+    } else if (cls === 'proved no') {
+      svg('rect', { x, y, width: 28, height: 24, class: 'gate-shape' }, g);
+      line(x, y + 12, x + 28, y + 12, 'gate-shape', g);
+    } else {
+      line(x, y + 12, x + 28, y + 12, 'gate-shape', g);
+    }
+    text(x + 38, y + 16, status, 'gate-text', 'start', g);
+    return g;
+  }
+  function pattern() {
+    const defs = svg('defs', {});
+    const pat = svg('pattern', { id: 'fogp', width: 8, height: 8,
+      patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+    svg('rect', { width: 8, height: 8, class: 'fogbg' }, pat);
+    svg('rect', { width: 3, height: 8, class: 'fogst' }, pat);
+  }
+  function ruler(width) {
+    const real = current.ruler;
+    text(24, 29, 'R', 'plabel');
+    text(48, 29, current.provenance.records[real.record].command);
+    line(45, 86, width - 35, 86, 'axis');
+    const points = real.balls.map(b => number(b.midpoint_printed));
+    points.push(...current.threads.map(t => number(t.real_point)));
+    const finite = points.filter(Number.isFinite);
+    const lo = finite.length ? Math.min(...finite) : 0;
+    const hi = finite.length ? Math.max(...finite) : 0;
+    const span = Math.max(1, hi - lo);
+    const px = value => 90 + (number(value) - lo + span / 3) / (span * 5 / 3) * (width - 180);
+    if (real.status !== 'OK') {
+      gate(65, 62, real.status);
+      text(65, 115, 'Reported failing place: not given');
+    }
+    if (real.status === 'OK' && !real.balls.length) text(65, 65, 'No real roots · complete empty list');
+    for (const ball of real.balls) {
+      const x = px(ball.midpoint_printed);
+      if (!Number.isFinite(x)) continue;
+      const known = Array.isArray(ball.dyadic_endpoints);
+      if (known) {
+        const a = px(ball.dyadic_endpoints[0]), b = px(ball.dyadic_endpoints[1]);
+        line(a, 86, b, 86, 'axis');
+        line(a - 2, 77, a - 2, 95, 'axis');
+        line(b + 2, 77, b + 2, 95, 'axis');
+      } else {
+        line(x, 80, x, 92, 'tick');
+      }
+      const root = current.threads.findIndex(t => t.real_point === ball.exact_point);
+      if (root >= 0) svg('circle', { cx: x, cy: 86, r: 5, class: root % 2 ? 'tB bead' : 'tA bead' });
+      text(x, 59, ball.printed, 'tlab', 'middle');
+      if (!known) text(x, 112, 'dyadic endpoints: not given', 'psub', 'middle');
+    }
+    current.threads.forEach((thread, index) => {
+      const x = px(thread.real_point);
+      if (!Number.isFinite(x)) return;
+      const cls = index % 2 ? 'tBs' : 'tAs';
+      current.trees.forEach((tree, i) => {
+        const dest = 20 + i * 330 + 155;
+        svg('path', { d: `M ${x} 92 C ${x} 128 ${dest} 128 ${dest} 216`, class: 'drop ' + cls });
+      });
+    });
+  }
+  function drawTree(tree, index) {
+    const depth = depths.get(tree.prime), result = selectDepth(tree, depth);
+    const left = 20 + index * 330, top = 150;
+    svg('rect', { x: left, y: top, width: 310, height: 480, rx: 6, class: 'panel' });
+    text(left + 14, top + 26, tree.prime, 'plabel');
+    text(left + 44, top + 26, `depth ${depth} · ${result.branch_count} branches`);
+    if (result.status !== 'OK') {
+      gate(left + 22, top + 92, result.status);
+      text(left + 22, top + 140, 'Reported failing place: not given');
+      return;
+    }
+    if (!result.paths.length) {
+      text(left + 22, top + 100, 'No roots in Z_p');
+      text(left + 22, top + 122, 'complete empty list · OK');
+      return;
+    }
+    const paths = result.paths.map(path => path.digits);
+    const nodes = layoutPaths(paths, tree.prime, 280, 350);
+    const byKey = new Map(nodes.map(n => [n.key, n]));
+    const x = node => left + 15 + node.x, y = node => top + 66 + node.y;
+    const color = node => {
+      const threadIndices = [];
+      for (let i = 0; i < current.threads.length; i++) {
+        const path = current.threads[i].places[String(tree.prime)][String(depth)];
+        if (node.digits.every((digit, k) => path.digits[k] === digit)) threadIndices.push(i);
+      }
+      if (threadIndices.length > 1 || node.branches.length > 1) return 'tAB';
+      return (threadIndices[0] ?? node.branches[0] ?? 0) % 2 ? 'tB' : 'tA';
+    };
+    for (const node of nodes) {
+      if (node.depth) {
+        const parent = byKey.get(node.parent);
+        line(x(parent), y(parent), x(node), y(node), 'edge' + (node.lit ? ' lit ' + color(node) : ''));
+      }
+      if (!node.lit) {
+        svg('path', { d: `M ${x(node)} ${y(node) + 3} l -5 20 h 10 Z`, class: 'cone' });
+      } else if (!nodes.some(n => n.depth > node.depth && n.parent === node.key)) {
+        svg('path', { d: `M ${x(node)} ${y(node) + 3} l -9 27 h 18 Z`, class: 'litcone' });
+      }
+    }
+    for (const node of nodes) {
+      const ball = result.node_balls[node.key] || 'not given';
+      const group = svg('g', { tabindex: 0, role: 'img', 'aria-label': ball });
+      svg('title', {}, group, ball);
+      svg('circle', { cx: x(node), cy: y(node), r: node.lit ? 5 : 2.2,
+        class: node.lit ? color(node) + ' bead' : 'node' }, group);
+      if (node.depth) text(x(node), y(node) - 9, node.digits.at(-1), 'dlab', 'middle', group);
+      const announce = () => { $('hover').textContent = ball; };
+      group.addEventListener('pointerenter', announce);
+      group.addEventListener('focus', announce);
+    }
+    text(left + 15, top + 458, `${result.lit_path_count} distinct lit paths · low digit first`);
+  }
+  function fog(left) {
+    svg('rect', { x: left, y: 150, width: 190, height: 480, rx: 6,
+      fill: 'url(#fogp)', stroke: 'var(--line)' });
+    text(left + 14, 178, 'Fog bank', 'plabel');
+    text(left + 14, 216, current.fog.count, 'tlab');
+    if (current.fog.undrawn_modulus_prime_count_below_1000 !== undefined) {
+      text(left + 14, 250, `${current.fog.undrawn_modulus_prime_count_below_1000} undrawn factors`);
+      text(left + 14, 270, 'of the modulus below 1000');
+    }
+    text(left + 14, 316, 'Input footprint only');
+    text(left + 14, 338, 'Lens not computed here');
+    text(left + 14, 380, 'No paths drawn');
+  }
+  function draw() {
+    const width = 40 + current.trees.length * 330 + 200;
+    $('map').replaceChildren();
+    $('map').setAttribute('viewBox', `0 0 ${width} 650`);
+    $('map').style.minWidth = width + 'px';
+    $('map').setAttribute('aria-label', `${current.lens} of ${current.value} at ${current.places.join(', ')}`);
+    pattern(); ruler(width); current.trees.forEach(drawTree); fog(30 + current.trees.length * 330);
+  }
+  function control(tree) {
+    const card = html('section', undefined, $('controls'), 'place-card');
+    html('h2', 'Prime ' + tree.prime, card);
+    const label = html('label', 'Depth', card);
+    const slider = html('input', undefined, label);
+    slider.type = 'range'; slider.min = current.depth_range[0]; slider.max = current.depth_range[1];
+    slider.step = 1; slider.value = depths.get(tree.prime);
+    slider.setAttribute('aria-label', 'Depth at prime ' + tree.prime);
+    const output = html('output', slider.value, label);
+    const count = html('div', '', card, 'count');
+    const listing = html('div', undefined, card);
+    const update = () => {
+      const result = selectDepth(tree, depths.get(tree.prime));
+      output.textContent = slider.value;
+      count.textContent = `${result.status} · ${result.branch_count} branches · ${result.lit_path_count} lit paths`;
+      listing.replaceChildren();
+      result.paths.forEach(path => {
+        const entry = html('div', undefined, listing, 'path');
+        html('span', path.printed, entry);
+        html('div', 'digits (low first): ' + (path.digit_string || 'none at this precision'), entry);
+        html('div', 'seed: ' + path.seed + ' · certificate N: ' + (path.certificate_precision ?? 'exact'),
+          entry, 'seed');
+      });
+    };
+    slider.addEventListener('input', () => { depths.set(tree.prime, Number(slider.value)); update(); draw(); });
+    update();
+  }
+  function information() {
+    $('reading').replaceChildren(); $('evidence').replaceChildren();
+    const reading = $('reading'), evidence = $('evidence');
+    html('p', current.polynomial ? 'Polynomial coefficients, constant first: ' + current.polynomial :
+      'The identity or series lens uses the projected input at each named place.', reading, 'note');
+    if (current.modular_solutions.length) {
+      html('p', 'Each row chooses a lit first digit at each prime. These are residue classes, not rational roots.',
+        reading, 'note');
+      const table = html('table', undefined, reading);
+      const heading = html('tr', undefined, html('thead', undefined, table));
+      const headings = ['mod ' + current.modulus, ...current.trees.map(t => 'at ' + t.prime), 'e² in e + N Zhat'];
+      for (const label of headings) {
+        html('th', label, heading);
+      }
+      const body = html('tbody', undefined, table);
+      current.modular_solutions.forEach(solution => {
+        const row = html('tr', undefined, body);
+        for (const item of [solution.residue, ...solution.digits, solution.contains]) html('td', item, row);
+      });
+    } else {
+      html('p', current.threads.length ? 'Rational threads: ' + current.threads.map(t => t.value).join(', ') :
+        'No rational thread is certified by this scene.', reading, 'note');
+      html('p', 'Drag each depth handle independently. Coarse branches may share one path. '
+        + 'The shaded cones stand for continuations that are not individually drawn.', reading, 'note');
+    }
+    html('p', current.fog.scope, evidence, 'note');
+    html('p', 'An inexact real ball has a plain marker: exact dyadic endpoints are not given by the driver. '
+      + 'The printed midpoint and radius remain in its label and transcript.', evidence, 'note');
+    html('p', 'Gates use the named call’s place. The driver’s reported failing place is not given. '
+      + 'An OK empty polynomial list means no roots in Z_p or on the real line.', evidence, 'note');
+    html('p', 'Only the precomputed depths are available. Branch selection, braids, tours and folding '
+      + 'are outside this slice.', evidence, 'note');
+    $('stdin').textContent = current.provenance.stdin;
+    $('stdout').textContent = current.provenance.stdout;
+  }
+  function loadScene(scene) {
+    validateScene(scene);
+    current = scene; depths.clear();
+    scene.trees.forEach(tree => depths.set(tree.prime, scene.depth_range[1]));
+    $('value').textContent = scene.value; $('lens').textContent = scene.lens;
+    $('places').textContent = 'places: ' + scene.places.join(' · ') + ' · fog';
+    $('controls').replaceChildren();
+    $('controls').style.gridTemplateColumns = `repeat(${scene.trees.length}, minmax(0, 1fr))`;
+    scene.trees.forEach(control); information(); draw();
+    $('map').hidden = false; $('empty').hidden = true;
+    $('information').hidden = false; $('provenance').hidden = false;
+    $('message').className = 'note';
+    $('message').textContent = 'Scene loaded. Depth handles read stored driver results.';
+    $('hover').textContent = 'Hover or focus a node to read its ball.';
+  }
+  function error(reason) {
+    $('message').className = 'error';
+    $('message').textContent = 'Could not load scene: ' + reason.message;
+  }
+  $('picker').addEventListener('change', async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try { loadScene(JSON.parse(await file.text())); } catch (reason) { error(reason); }
+  });
+  const source = new URLSearchParams(location.search).get('scene');
+  if (location.protocol === 'file:') {
+    $('loadhelp').textContent = 'From file:// use the picker; choose a file under scenes/.';
+    document.querySelectorAll('.sample').forEach(link => { link.hidden = true; });
+    if (source) $('message').textContent = 'From file:// choose ' + source + ' with the picker.';
+  } else {
+    $('loadhelp').textContent = 'Choose a file or open a sample.';
+    if (source) fetch(source).then(response => {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    }).then(loadScene).catch(error);
+  }
+  window.PlaceAtlas = { loadScene, draw };
+})();
+</script>
+</html>
