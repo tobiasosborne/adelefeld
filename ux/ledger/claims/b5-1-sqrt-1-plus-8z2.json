@@ -12,6 +12,7 @@
  "places": [
   2
  ],
+ "branch": "all",
  "tail": "nothing said",
  "argument": "The image exponent of a square root of a ball a + 2^N Z_2 at b = 1 is N - v(2) - (2 - 1) v(b) = 3 - 1 - 0 = 2 (docs/SPEC.md:633-634); the branches are labelled by the sign of the unit (tools/adf/README.md:488-489). Child of b5.",
  "proposer": "agent (overnight batch)",

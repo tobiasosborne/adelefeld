@@ -109,8 +109,10 @@
  ],
  "expect_exit": 1,
  "places": [
+  "R",
   2
  ],
+ "branch": "all",
  "tail": "nothing said",
  "argument": "Imported from tests/driver/gfunc-root.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",
  "proposer": "tests/driver (imported by import_fixtures.py)",

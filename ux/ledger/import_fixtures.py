@@ -8,7 +8,7 @@
 One claim per fixture: id `fx-NAME`; statement the first comment line (not the `#!exit` line);
 script the lines of the .cmd as they are; expect the lines of the .out; expect_exit from the
 `#!exit N` line of the .cmd (0 without one, as tests/test_driver.sh reads it); places by the rule
-of lanes/ux-ledger/brief.md item 4(a), see `footprint`. Standard library only.
+of `ledger.line_places` (lanes/ux-ledger-r1/brief.md item 4), see `footprint`. Standard library only.
 """
 import argparse
 import os
@@ -24,37 +24,13 @@ import ledger  # noqa: E402
 if hasattr(sys, 'set_int_max_str_digits'):
     sys.set_int_max_str_digits(0)  # the hostile fixtures hold integers of 100000 digits
 
-SMALL_PRIMES = [p for p in range(2, 1000) if all(p % q for q in range(2, int(p ** 0.5) + 1))]
-TOKEN_RE = re.compile(r'(?:\bp=|\bmod\s+)(\d+)')
 QUESTION = 'The driver fixtures: tests/driver/*.cmd with their expected lines, as claims'
 
 
-def cofactor_text(n):
-    s = str(n)
-    if len(s) > 40:
-        s = '%s...%s (%d digits)' % (s[:12], s[-12:], len(s))
-    return 'cofactor ' + s
-
-
 def footprint(text):
-    """The places of a script: the primes below 1000 of every `p=<n>` and `mod <n>` token of the
-    lines that are not comments, by trial division; what is left of an n is shown as `cofactor n`."""
-    primes, cofactors = set(), set()
-    for line in text.split('\n'):
-        if line.lstrip(' \t').startswith('#'):
-            continue
-        for m in TOKEN_RE.finditer(line):
-            n = int(m.group(1))
-            if n < 2:
-                continue
-            for p in SMALL_PRIMES:
-                if n % p == 0:
-                    primes.add(p)
-                    while n % p == 0:
-                        n //= p
-            if n > 1:
-                cofactors.add(n)
-    return sorted(primes) + [cofactor_text(n) for n in sorted(cofactors)]
+    """The places of a script: ledger.script_places of its lines (the place operand of a command
+    that takes one; the moduli of `p=<n>` and `mod <n>`; R for `real` or a real coordinate)."""
+    return ledger.script_places(text.split('\n'))
 
 
 def claim_from_fixture(cmd_path):
@@ -78,13 +54,14 @@ def claim_from_fixture(cmd_path):
             break
     m = re.search(r'^#!exit ([0-9]+)$', text, re.M)
     rel = os.path.relpath(cmd_path, ROOT)
-    return {
+    c = {
         'id': 'fx-' + name.lower(),
         'statement': statement,
         'script': script,
         'expect': expect,
         'expect_exit': int(m.group(1)) if m else 0,
         'places': footprint(text),
+        'branch': None,
         'tail': 'nothing said',
         'argument': ('Imported from %s. The expected lines were written by hand from docs/SPEC.md and '
                      'docs/conventions.md before the driver existed (tests/driver/README.md).' % rel),
@@ -93,6 +70,14 @@ def claim_from_fixture(cmd_path):
         'question': QUESTION,
         'source': rel,
     }
+    # a fixture with root commands: its one seed, or `all` (each line prints its branch's identifier)
+    roots = ledger.root_lines(script)
+    seeds = set(seed for _, _, seed in roots)
+    if roots:
+        c['branch'] = seeds.pop() if len(seeds) == 1 and None not in seeds else 'all'
+    else:
+        del c['branch']
+    return c
 
 
 def main(argv=None):

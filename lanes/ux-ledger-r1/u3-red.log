@@ -1,0 +1,44 @@
+test_all_branches_and_seeds_seal (test_ledger.TestBranch.test_all_branches_and_seeds_seal) ... ok
+test_ledger_claims_with_root_commands_name_a_branch (test_ledger.TestBranch.test_ledger_claims_with_root_commands_name_a_branch) ... ERROR
+test_seed_must_match_the_script (test_ledger.TestBranch.test_seed_must_match_the_script) ... FAIL
+test_seedless_is_refused (test_ledger.TestBranch.test_seedless_is_refused) ... FAIL
+
+======================================================================
+ERROR: test_ledger_claims_with_root_commands_name_a_branch (test_ledger.TestBranch.test_ledger_claims_with_root_commands_name_a_branch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 554, in test_ledger_claims_with_root_commands_name_a_branch
+    need = sorted(c['id'] for c, _ in ledger.load_claims(HERE) if ledger.root_lines(c['script']))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 554, in <genexpr>
+    need = sorted(c['id'] for c, _ in ledger.load_claims(HERE) if ledger.root_lines(c['script']))
+                                                                  ^^^^^^^^^^^^^^^^^
+AttributeError: module 'ledger' has no attribute 'root_lines'
+
+======================================================================
+FAIL: test_seed_must_match_the_script (test_ledger.TestBranch.test_seed_must_match_the_script)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 546, in test_seed_must_match_the_script
+    self.assertEqual((status, sealed), (1, False))
+AssertionError: Tuples differ: (0, True) != (1, False)
+
+First differing element 0:
+0
+1
+
+- (0, True)
++ (1, False)
+
+======================================================================
+FAIL: test_seedless_is_refused (test_ledger.TestBranch.test_seedless_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 526, in test_seedless_is_refused
+    self.assertEqual(status, 1)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.093s
+
+FAILED (failures=2, errors=1)

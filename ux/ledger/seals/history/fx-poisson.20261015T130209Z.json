@@ -1,0 +1,44 @@
+{
+ "id": "fx-poisson",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "(1.086434811 +/- 2.2e-10) + (0 +/- 1.1e-12)*i | (1.086434811 +/- 2.2e-10) + (0 +/- 1.1e-12)*i | NL=2 NR=2",
+  "(1.086434811 +/- 2.2e-10) + (0 +/- 1.6e-34)*i | (1.086434811 +/- 2.2e-10) + (0 +/- 1.6e-34)*i | NL=4 NR=4",
+  "(1 +/- 0.087) + (0 +/- 0.087)*i | (1 +/- 0.087) + (0 +/- 0.087)*i | NL=0 NR=0",
+  "(1.08643481121330801457531612151 +/- 2.3e-31) + (0 +/- 1.6e-34)*i | (1.08643481121330801457531612151 +/- 2.3e-31) + (0 +/- 1.6e-34)*i | NL=4 NR=4",
+  "(1.0864 +/- 3.5e-5) + (0 +/- 1.1e-12)*i | (1.0864 +/- 3.5e-5) + (0 +/- 1.1e-12)*i | NL=2 NR=2",
+  "error: NOT_DETERMINED",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: LIMIT"
+ ],
+ "exit": 1,
+ "script_line": [
+  14,
+  17,
+  20,
+  24,
+  30,
+  34,
+  36,
+  37,
+  38,
+  39,
+  42
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "1d9a2513ae995238fff0c0f1242aa483bfc0ff96284ec2e91b439c100fe65242",
+ "claim_content_sha256": "1874d92f5973d00775c7a48b089ed53608d249c40a248e6b934231ebe92e1490",
+ "reopened": null
+}

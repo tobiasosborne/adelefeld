@@ -1,0 +1,42 @@
+{
+ "id": "fx-11_guard",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "(4.9950104650719225397e30102 +/- 2.1e30082 ; 0)",
+  "error: LIMIT",
+  "(0 +/- 5e30102 ; 0)",
+  "error: LIMIT",
+  "((0) + (4.9950104650719225397e30102 +/- 2.1e30082)*i ; 0)",
+  "error: LIMIT",
+  "(3.3867166513203326645e15352 +/- 3.6e15332 ; 0)",
+  "error: LIMIT",
+  "error: LIMIT",
+  "(0.33333333333333333333 +/- 3.4e-21 ; 0)"
+ ],
+ "exit": 1,
+ "script_line": [
+  18,
+  21,
+  24,
+  25,
+  28,
+  29,
+  37,
+  38,
+  44,
+  48
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "5283add568abd9e252126e52df9e3080c8dd3e075e7ad3359d4f59b3a1ce6317",
+ "claim_content_sha256": "e803bf4b08619473e549ba2cd6da22a18223adacc1b86e02396cf87aa36d9401",
+ "reopened": null
+}

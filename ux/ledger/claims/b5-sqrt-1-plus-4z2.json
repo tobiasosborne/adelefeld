@@ -12,6 +12,7 @@
  "places": [
   2
  ],
+ "branch": "all",
  "tail": "nothing said",
  "argument": "Not true as stated: 1 + 4 Z_2 is the union of 1 + 8 Z_2, where there are two roots, and 5 + 8 Z_2, where there is none. The ball is outside the guard N - m >= c + v(n) of docs/SPEC.md:633-634 (N - m = 2, c + v(2) = 3), so the expected answer is NOT_DETERMINED. Split into b5-1 and b5-2.",
  "proposer": "agent (overnight batch)",

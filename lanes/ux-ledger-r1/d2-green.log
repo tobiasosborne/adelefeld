@@ -1,0 +1,8 @@
+test_drive_footprint (test_ledger.TestFootprint.test_drive_footprint) ... ok
+test_imported_footprints (test_ledger.TestFootprint.test_imported_footprints) ... ok
+test_operand_places (test_ledger.TestFootprint.test_operand_places) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.229s
+
+OK

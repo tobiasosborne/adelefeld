@@ -120,6 +120,9 @@ def seal_claim(ledger_dir, claim, raw, adf, build):
     cid = claim['id']
     if not claim['script']:
         return 'proposed', 'no script; left proposed'
+    fault = ledger.branch_fault(claim)
+    if fault:
+        return 'proposed', fault
     actual, exit_status, mapping, note = run_driver(adf, claim['script'])
     verdict = run_verdict(claim, actual, exit_status, note)
     new = {'id': cid, 'verdict': verdict, 'run_verdict': verdict, 'actual': actual, 'exit': exit_status,
@@ -208,7 +211,11 @@ def main(argv=None):
     for claim, raw in claims:
         state, what = seal_claim(args.ledger, claim, raw, args.adf, build)
         if state == 'sealed' and claim['state'] == 'ratified':
-            state = 'ratified'
+            fault = ledger.ratification_fault(claim)
+            if fault:
+                what += '; ' + fault
+            else:
+                state = 'ratified'
         counts[state] = counts.get(state, 0) + 1
         print('%-28s %-9s %s' % (claim['id'], state, what))
     dt = time.monotonic() - t0

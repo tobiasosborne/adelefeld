@@ -1,13 +1,13 @@
 {
  "id": "a6-flint-equal-ignores-precision",
- "statement": "FLINT's padic equality test says that exp(3) and exp(12) are equal in Q_3 at precision 8, because it ignores precision.",
+ "statement": "FLINT's padic_equal says that exp(3) and exp(12) in Q_3 at precision 8 are not equal: their centres 958 and 5125 differ by 4167 = 9 * 463, so they agree modulo 9 and not modulo 27.",
  "script": [],
  "expect": [],
  "places": [
   3
  ],
  "tail": "nothing said",
- "argument": "docs/SPEC.md:605-608 records this as checked by a probe in a review. The driver calls the library and never FLINT's padic functions, so no driver line can express the claim; it stays proposed. A note for a referee of a paper that used FLINT (brief 3, scenario A, step 4).",
+ "argument": "Evidence: the probe ux/ledger/probes/flint-equality.c (a copy of the test drive's lanes/ux-drive-ledger/flint-equality.c), which prints `exp(3): 958`, `exp(12): 5125`, `precision: 8 8` and `padic_equal: 0` with FLINT 3.0.1. padic_equal compares the unit and the valuation, not the precision (refs/src/flint-3.0.1/padic.rst:263-266); here the units differ, so it returns 0. The centres are those of the library's lines in claim a3 and of ux/ledger/oracle.py (`python3 ux/ledger/oracle.py 3 3 8` and `... 12 3 8`). An earlier text of this claim said that the test returns equal; that sentence came from docs/ux/brief-3-claim-ledger.md (Scenario A, step 4) and the probe contradicts it (D4 of the drive). docs/SPEC.md:605-608 says only that FLINT's equality ignores precision. The driver calls the library and never FLINT's padic functions, so no driver line can express this claim; it stays proposed. A note for a referee of a paper that used FLINT (brief 3, scenario A, step 4).",
  "proposer": "the ledger (note on a3)",
  "state": "proposed",
  "question": "Scenario A: a referee checks a table of 2-adic and 3-adic values (docs/ux/brief-3-claim-ledger.md)",

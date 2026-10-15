@@ -1,0 +1,52 @@
+{
+ "id": "fx-root-status",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: NOT_DETERMINED",
+  "error: NOT_DETERMINED",
+  "error: NOT_DETERMINED",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: UNSUPPORTED",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: PARSE",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: PARSE"
+ ],
+ "exit": 1,
+ "script_line": [
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "3d9b6de04e2b790bfe37ef2679302e52c3c761b50c4b03934d7286e4ce327b37",
+ "claim_content_sha256": "3da91af7e0e07d8960a8fb59691482b764b0fefecbbf6d91ba310d5099945a0e",
+ "reopened": null
+}

@@ -1,0 +1,40 @@
+{
+ "id": "fx-psi-values",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "(-0.5) + (0.86603 +/- 4.6e-6)*i",
+  "(-0.5) + (-0.86603 +/- 4.6e-6)*i",
+  "(0) + (-1)*i",
+  "(0) + (1)*i",
+  "(-1) + (0)*i",
+  "(1) + (0)*i",
+  "(-0.5) + (0.86603 +/- 4.6e-6)*i",
+  "(0 +/- 1.1) + (0)*i",
+  "(0 +/- 1.1) + (0 +/- 1.1)*i"
+ ],
+ "exit": 0,
+ "script_line": [
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "0f326ec4f5e1bd9990612ab2f606a6aa01b3ecbae57b6054dbec2bf6d09f7bb4",
+ "claim_content_sha256": "c5d94cdf9c90c2740925671dbf6f0aa45c04727d0b2999cb26f51a6c712d1c00",
+ "reopened": null
+}

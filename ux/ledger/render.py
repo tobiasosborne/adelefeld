@@ -111,29 +111,35 @@ def open_reason(seal):
     return ''
 
 
-def footprint(claim, computed):
-    """The strip: R, 2, 3, 5, 7, the other primes of the claim, its cofactors, then the tail."""
-    places = claim['places']
-    named = set(p for p in places if p == 'R' or isinstance(p, int))
-    extra = sorted(p for p in places if isinstance(p, int) and p > 7)
-    cof = [p for p in places if isinstance(p, str) and p.startswith('cofactor ')]
-    k = 'c' if computed else 'n'
+def footprint(claim, seal):
+    """The strip: R, 2, 3, 5, 7, the other primes, the cofactors, then the tail. A filled box is a place at
+    which a script line that printed ran (ledger.computed_places; `seal` is None unless the seal is valid);
+    an outlined box is named in `places` without such a line; a pale box is neither."""
+    named = set(claim['places'])
+    computed = set(ledger.computed_places(claim, seal))
+    every = named | computed
 
-    def box(label, on, title=None, wide=False):
-        c = (k if on else '') + (' wide' if wide else '')
+    def kind(x):
+        return 'c' if x in computed else ('n' if x in named else '')
+
+    def box(label, k, title=None, wide=False):
+        c = (k + (' wide' if wide else '')).strip()
         t = ' title="%s"' % esc(title) if title else ''
-        return '<span class="%s"%s>%s</span>' % (c.strip(), t, esc(label))
+        return '<span%s%s>%s</span>' % (' class="%s"' % c if c else '', t, esc(label))
 
-    parts = [box(x, x in named) for x in ('R', 2, 3, 5, 7)]
-    if len(extra) > 4:
-        parts.append(box('%d ... %d' % (extra[0], extra[-1]), True,
-                         '%d primes: %s' % (len(extra), ' '.join(map(str, extra))), wide=True))
-    else:
-        parts.extend(box(x, True) for x in extra)
-    if len(cof) == 1:
-        parts.append(box('cof', True, cof[0]))
-    elif cof:
-        parts.append(box('cof x%d' % len(cof), True, '; '.join(cof), wide=True))
+    parts = [box(x, kind(x)) for x in ('R', 2, 3, 5, 7)]
+    for k in ('c', 'n'):
+        extra = sorted(p for p in every if isinstance(p, int) and p > 7 and kind(p) == k)
+        if len(extra) > 4:
+            parts.append(box('%d ... %d' % (extra[0], extra[-1]), k,
+                             '%d primes: %s' % (len(extra), ' '.join(map(str, extra))), wide=True))
+        else:
+            parts.extend(box(x, k) for x in extra)
+        cof = sorted(p for p in every if isinstance(p, str) and p.startswith('cofactor ') and kind(p) == k)
+        if len(cof) == 1:
+            parts.append(box('cof', k, cof[0]))
+        elif cof:
+            parts.append(box('cof x%d' % len(cof), k, '; '.join(cof), wide=True))
     if claim['tail'] == 'argued':
         parts.append('<span class="tail arg" title="argued for every other place">all</span>')
     else:
@@ -230,11 +236,15 @@ def card(claim, seal, history, state, note, children, qkey):
                    'status only, tools/adf/README.md:253). Dump of a result: <b>not given</b> (the driver has no '
                    'record mode).</p>')
     # footprint
-    computed = seal is not None and state not in ('proposed',)
-    out.append('<div class="sec"><span class="k">Footprint</span><div>%s</div><p class="small">%s; %s.</p></div>'
-               % (footprint(claim, computed),
+    valid = seal if seal is not None and state != 'proposed' else None
+    done = ledger.computed_places(claim, valid)
+    out.append('<div class="sec"><span class="k">Footprint</span><div>%s</div><p class="small">%s; %s; %s.</p>'
+               '</div>'
+               % (footprint(claim, valid),
                   ('places of the claim: ' + ', '.join(map(str, claim['places'])) if claim['places']
                    else 'no place named'),
+                  ('computed by a script line: ' + ', '.join(map(str, done)) if done
+                   else 'no place computed by a script line'),
                   ('every other place: argued' if claim['tail'] == 'argued'
                    else 'nothing said about any other place')))
     out.append('<div class="sec"><span class="k">Argument (argued, not computed)</span><p class="arg">%s</p></div>'
@@ -471,13 +481,14 @@ def render(ledger_dir):
                    '<td class="st"><a href="#claim-%s"><span class="cid">%s</span>%s</a></td>'
                    '<td class="by">%s</td></tr>'
                    % (esc(cid), st, qkey[c.get('question', '')],
-                      footprint(c, seal is not None and st != 'proposed'),
+                      footprint(c, seal if seal is not None and st != 'proposed' else None),
                       badge(st) + ('<span class="rs">%s</span>' % esc(reason) if reason else ''),
                       esc(cid), esc(cid), esc(c['statement']), esc(c['proposer'])))
     out.append('</tbody></table></div>')
-    out.append('<div class="legend"><span class="fp"><span class="c">5</span></span> computed at this place '
-               '<span class="fp"><span class="n">5</span></span> named, not computed yet '
-               '<span class="fp"><span>5</span></span> not named '
+    out.append('<div class="legend"><span class="fp"><span class="c">5</span></span> '
+               'computed: a script line ran at this place '
+               '<span class="fp"><span class="n">5</span></span> named, no script line computed it '
+               '<span class="fp"><span>5</span></span> neither '
                '<span class="fp"><span class="tail arg">all</span></span> argued for every other place '
                '<span class="fp"><span class="tail">...</span></span> nothing said about other places</div>')
     out.append('</section><section class="cards" aria-label="Claim card">')

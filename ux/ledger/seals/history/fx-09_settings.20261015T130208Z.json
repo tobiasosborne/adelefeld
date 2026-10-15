@@ -1,0 +1,44 @@
+{
+ "id": "fx-09_settings",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "(1.625 ; 1)",
+  "(1.5 +/- 0.13 ; 1)",
+  "(1.625 ; 1)",
+  "(2 +/- 0.5 ; 1)",
+  "(1.5 ; 1)",
+  "(2 +/- 0.63 ; 1)",
+  "(1.625 ; 1)",
+  "(1.625 ; 1)",
+  "error: LIMIT",
+  "error: DOMAIN",
+  "(1.625 ; 1)"
+ ],
+ "exit": 1,
+ "script_line": [
+  4,
+  14,
+  16,
+  20,
+  22,
+  26,
+  33,
+  41,
+  42,
+  43,
+  46
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:08Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "5403d3d76f0e6b1eaa5f59c90f424c5de3fa2461ab33dffb48f6da8831c8a0c4",
+ "claim_content_sha256": "efcd88e74ec4e9026f2dc6ba0fa160f82f668dd20cd6c81efb7445acc6d81f41",
+ "reopened": null
+}

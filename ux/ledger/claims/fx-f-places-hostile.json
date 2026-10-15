@@ -99,8 +99,11 @@
  ],
  "expect_exit": 1,
  "places": [
+  "R",
   2,
-  3
+  3,
+  5,
+  7
  ],
  "tail": "nothing said",
  "argument": "Imported from tests/driver/f-places-hostile.cmd. The expected lines were written by hand from docs/SPEC.md and docs/conventions.md before the driver existed (tests/driver/README.md).",

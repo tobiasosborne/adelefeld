@@ -1,0 +1,36 @@
+{
+ "id": "fx-rfun-algebra",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(2.0943951023931954923 +/- 8.5e-21) + (0)*i, C=(-0.34906585039886591538 +/- 4.8e-21) + (0)*i))",
+  "rfun(term(P=[(1) + (0)*i], A=(1) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))",
+  "rfun(term(P=[(0) + (0)*i, (1) + (0)*i], A=(1.5) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i), term(P=[(0) + (0)*i, (1) + (0)*i], A=(1.25) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i), term(P=[(2) + (0)*i], A=(2.5) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i), term(P=[(2) + (0)*i], A=(2.25) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))",
+  "rfun(term(P=[(0) + (0)*i, (1) + (0)*i], A=(1.5) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i), term(P=[(2) + (0)*i], A=(2.5) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i), term(P=[(0) + (0)*i, (1) + (0)*i], A=(1.25) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i), term(P=[(2) + (0)*i], A=(2.25) + (0)*i, B=(0) + (0)*i, C=(0) + (0)*i))",
+  "error: DOMAIN",
+  "error: PARSE",
+  "error: DOMAIN"
+ ],
+ "exit": 1,
+ "script_line": [
+  8,
+  10,
+  13,
+  15,
+  16,
+  17,
+  18
+ ],
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "e8c7039a9497f9c157d841a3822cf53fe2b9ad2a7eb1dcc500d68613acb21381",
+ "claim_content_sha256": "b9c03ae0cbc932e7cef628256c04591c259f51e9d3da46614f0bbdb8d5aa662f",
+ "reopened": null
+}

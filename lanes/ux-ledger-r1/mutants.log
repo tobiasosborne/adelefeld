@@ -1,0 +1,13 @@
+D3 prefix ignored                killed  FAILED (failures=5)
+D3 items not counted             killed  FAILED (failures=2)
+D3 depth ignored                 killed  FAILED (failures=5)
+D2 every named place computed    killed  FAILED (failures=3)
+D2 place operand index 0         killed  FAILED (failures=4)
+U6 no R for a real coordinate    killed  FAILED (failures=4)
+U6 star counts as real           killed  FAILED (failures=3)
+U3 branch not required           killed  FAILED (failures=3)
+U3 seed not compared             killed  FAILED (failures=3)
+U3 sealer ignores fault          killed  FAILED (failures=4)
+U2 any citation form             killed  FAILED (failures=3)
+U2 line range not checked        killed  FAILED (failures=3)
+mutants: 12, killed 12

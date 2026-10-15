@@ -1,0 +1,8 @@
+test_citation_of_a_missing_file_is_refused (test_ledger.TestRatification.test_citation_of_a_missing_file_is_refused) ... ok
+test_cited_source_ratifies (test_ledger.TestRatification.test_cited_source_ratifies) ... ok
+test_drive_citation_is_refused (test_ledger.TestRatification.test_drive_citation_is_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.093s
+
+OK

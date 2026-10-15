@@ -12,6 +12,7 @@
  "places": [
   2
  ],
+ "branch": "all",
  "tail": "nothing said",
  "argument": "An odd square is 1 mod 8: (2k + 1)^2 = 4 k (k + 1) + 1 and k (k + 1) is even. So no point of 5 + 8 Z_2 is a square, and a failed existence criterion on the whole ball is DOMAIN (tools/adf/README.md:509). Child of b5.",
  "proposer": "agent (overnight batch)",

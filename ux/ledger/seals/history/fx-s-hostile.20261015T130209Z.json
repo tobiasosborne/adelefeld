@@ -1,0 +1,40 @@
+{
+ "id": "fx-s-hostile",
+ "verdict": "sealed",
+ "run_verdict": "sealed",
+ "actual": [
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: DOMAIN",
+  "error: LIMIT",
+  "error: LIMIT",
+  "error: PARSE",
+  "error: PARSE",
+  "error: PARSE",
+  "error: PARSE",
+  "error: DOMAIN",
+  "error: LIMIT",
+  "none",
+  "none",
+  "7891 mod 7^5"
+ ],
+ "exit": 1,
+ "script_line": null,
+ "note": "",
+ "date": "2026-10-15T13:02:09Z",
+ "build": {
+  "commit": "5ab2418c225b178f070852f819927017209141ab",
+  "adf_sha256": "5f1a646aafbd377dde3e7bc09fe062432ee82c9a5f951756a711c29a6bfd528d",
+  "flint_version": "3.0.1",
+  "flint_header": "/usr/include/flint/flint.h",
+  "flint_library": "/usr/lib/x86_64-linux-gnu/libflint.so.18.0.1"
+ },
+ "claim_sha256": "79e675a90e6d73c5a21200a76219f7565d43ca79dde9059d988b12fd67fafd52",
+ "claim_content_sha256": "22251d46bf0eb98299d9fa46b294ae6deeed783c7bf0823ca9d806afad27bc48",
+ "reopened": null
+}

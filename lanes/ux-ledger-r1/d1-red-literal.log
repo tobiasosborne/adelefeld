@@ -1,0 +1,27 @@
+FF
+======================================================================
+FAIL: test_commands_are_fenced (test_ledger.TestReadme.test_commands_are_fenced)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 322, in test_commands_are_fenced
+    self.assertEqual(r.returncode, 0, '%s: %s' % (ln, r.stderr))
+AssertionError: 2 != 0 : python3 ux/ledger/import_fixtures.py       tests/driver/*.cmd with their .out as claims fx-NAME (86): bash: -c: line 1: syntax error near unexpected token `('
+bash: -c: line 1: `python3 ux/ledger/import_fixtures.py       tests/driver/*.cmd with their .out as claims fx-NAME (86)'
+
+
+======================================================================
+FAIL: test_commands_run_literally_in_a_fresh_shell (test_ledger.TestReadme.test_commands_run_literally_in_a_fresh_shell)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/ux/ledger/test_ledger.py", line 334, in test_commands_run_literally_in_a_fresh_shell
+    self.assertEqual(r.returncode, 0, '%s: %s' % (ln, r.stdout[-400:] + r.stderr[-400:]))
+AssertionError: 2 != 0 : timeout 600 make -j2 && timeout 600 make -C tools/adf     the library and the driver build/adf: make: Nothing to be done for 'all'.
+make: Entering directory '/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/tools/adf'
+make: Leaving directory '/home/tobias/Projects/adelefeld-wt/ux-ledger-r1/tools/adf'
+make: *** No rule to make target 'the'.  Stop.
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.040s
+
+FAILED (failures=2)
