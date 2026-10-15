@@ -58,6 +58,9 @@ svg.atlas { display: block; width: 100%; height: auto; font-family: var(--f-mono
 .litcone { fill: var(--thA); opacity: .09; }
 .gate-shape { stroke: var(--gate); stroke-width: 2; fill: var(--panel); }
 .gate-text { fill: var(--gate); font-size: 11px; }
+.scale { fill: var(--fg-3); font-size: 10px; }
+.baseline { stroke: var(--fg-2); stroke-width: 1; stroke-dasharray: 6 3; }
+.zlab { fill: var(--fg-2); font-size: 10px; font-weight: 700; }
 .empty { padding: 90px 24px; text-align: center; color: var(--fg-2); }
 .controls { display: grid; gap: 12px; margin-top: 14px; }
 .place-card, .box { background: var(--panel); border: 1px solid var(--line);
@@ -119,17 +122,20 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
     <h2>Input</h2><pre id="stdin"></pre><h2>Output</h2><pre id="stdout"></pre>
   </details>
 </main>
-<footer>adelefeld · static slice · digit paths computed by the builder from driver text
-  · no calls from this page</footer>
+<footer>adelefeld · static slice · no calls from this page. Derived in scene.py from printed driver lines
+  (D-UX5 as amended): digits, sibling hover balls, branch and path counts, fog counts, table digits. Each path
+  card names its driver record; the transcript lists every record in order.</footer>
 <script src="atlas.js"></script>
 <script>
 'use strict';
 (() => {
-  const { layoutPaths, selectDepth, validateScene, statusClass } = window.AtlasGeometry;
+  const { GEOMETRY: G, layoutTree, selectDepth, validateScene, statusClass, sceneTitle, mapLabel, gateLines }
+    = window.AtlasGeometry;
   const $ = id => document.getElementById(id);
   const NS = 'http://www.w3.org/2000/svg';
   let current = null;
   const depths = new Map();
+  let frame = null;
   function svg(tag, attributes, parent = $('map'), text) {
     const node = document.createElementNS(NS, tag);
     for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
@@ -193,7 +199,7 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
     const px = value => 90 + (number(value) - lo + span / 3) / (span * 5 / 3) * (width - 180);
     if (real.status !== 'OK') {
       gate(65, 62, real.status);
-      text(65, 115, 'Reported failing place: not given');
+      gateLines(real).forEach((line, i) => text(65, 115 + 16 * i, line));
     }
     if (real.status === 'OK' && !real.balls.length) text(65, 65, 'No real roots · complete empty list');
     for (const ball of real.balls) {
@@ -218,20 +224,22 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
       if (!Number.isFinite(x)) return;
       const cls = index % 2 ? 'tBs' : 'tAs';
       current.trees.forEach((tree, i) => {
-        const dest = 20 + i * 330 + 155;
-        svg('path', { d: `M ${x} 92 C ${x} 128 ${dest} 128 ${dest} 216`, class: 'drop ' + cls });
+        const dest = 20 + i * G.pitch + G.treeLeft + G.treeWidth / 2;
+        const layout = frame.layouts.get(tree.prime);
+        const end = 150 + G.treeTop + (layout ? layout.nodes[0].y : 0);
+        svg('path', { d: `M ${x} 92 C ${x} 128 ${dest} 128 ${dest} ${end}`, class: 'drop ' + cls });
       });
     });
   }
   function drawTree(tree, index) {
     const depth = depths.get(tree.prime), result = selectDepth(tree, depth);
-    const left = 20 + index * 330, top = 150;
-    svg('rect', { x: left, y: top, width: 310, height: 480, rx: 6, class: 'panel' });
+    const left = 20 + index * G.pitch, top = 150;
+    svg('rect', { x: left, y: top, width: G.panelWidth, height: 480, rx: 6, class: 'panel' });
     text(left + 14, top + 26, tree.prime, 'plabel');
     text(left + 44, top + 26, `depth ${depth} · ${result.branch_count} branches`);
     if (result.status !== 'OK') {
       gate(left + 22, top + 92, result.status);
-      text(left + 22, top + 140, 'Reported failing place: not given');
+      gateLines(result).forEach((line, i) => text(left + 22, top + 140 + 16 * i, line));
       return;
     }
     if (!result.paths.length) {
@@ -239,10 +247,18 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
       text(left + 22, top + 122, 'complete empty list · OK');
       return;
     }
-    const paths = result.paths.map(path => path.digits);
-    const nodes = layoutPaths(paths, tree.prime, 280, 350);
+    const layout = frame.layouts.get(tree.prime), nodes = layout.nodes;
     const byKey = new Map(nodes.map(n => [n.key, n]));
-    const x = node => left + 15 + node.x, y = node => top + 66 + node.y;
+    const x = node => left + G.treeLeft + node.x, y = node => top + G.treeTop + node.y;
+    // The exponent scale: level k holds the balls a + p^k Z_p; the dashed baseline is the level of Z_p.
+    for (const level of layout.levels) {
+      text(left + 6, top + G.treeTop + level.y + 4, level.label, 'scale', 'start');
+    }
+    if (layout.baseline) {
+      const by = top + G.treeTop + layout.baseline.y;
+      line(left + G.treeLeft - 4, by, left + G.panelWidth - 6, by, 'baseline');
+      text(left + 6, by + 16, layout.baseline.label, 'zlab', 'start');
+    }
     const color = node => {
       const threadIndices = [];
       for (let i = 0; i < current.threads.length; i++) {
@@ -267,7 +283,7 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
       const ball = result.node_balls[node.key] || 'not given';
       const group = svg('g', { tabindex: 0, role: 'img', 'aria-label': ball });
       svg('title', {}, group, ball);
-      svg('circle', { cx: x(node), cy: y(node), r: node.lit ? 5 : 2.2,
+      svg('circle', { cx: x(node), cy: y(node), r: node.lit ? G.litRadius : G.unlitRadius,
         class: node.lit ? color(node) + ' bead' : 'node' }, group);
       if (node.depth) text(x(node), y(node) - 9, node.digits.at(-1), 'dlab', 'middle', group);
       const announce = () => { $('hover').textContent = ball; };
@@ -289,13 +305,30 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
     text(left + 14, 338, 'Lens not computed here');
     text(left + 14, 380, 'No paths drawn');
   }
+  // One exponent axis for all trees, so the Z_p baselines line up and a negative valuation stands above them.
+  function layouts() {
+    const drawn = [];
+    for (const tree of current.trees) {
+      const result = selectDepth(tree, depths.get(tree.prime));
+      if (result.status !== 'OK' || !result.paths.length) continue;
+      const start = Math.min(...result.paths.map(path => path.start_exponent));
+      const bottom = start + Math.max(1, ...result.paths.map(path => path.digits.length));
+      drawn.push({ tree, result, start, bottom });
+    }
+    const topExponent = Math.min(0, ...drawn.map(d => d.start));
+    const bottomExponent = Math.max(topExponent + 1, ...drawn.map(d => d.bottom));
+    const map = new Map(drawn.map(d => [d.tree.prime, layoutTree(d.result.paths.map(path => path.digits),
+      d.tree.prime, d.start, G.treeWidth, G.treeHeight, { topExponent, bottomExponent })]));
+    return { layouts: map, topExponent, bottomExponent };
+  }
   function draw() {
-    const width = 40 + current.trees.length * 330 + 200;
+    const width = 40 + current.trees.length * G.pitch + 200;
+    frame = layouts();
     $('map').replaceChildren();
     $('map').setAttribute('viewBox', `0 0 ${width} 650`);
     $('map').style.minWidth = width + 'px';
-    $('map').setAttribute('aria-label', `${current.lens} of ${current.value} at ${current.places.join(', ')}`);
-    pattern(); ruler(width); current.trees.forEach(drawTree); fog(30 + current.trees.length * 330);
+    $('map').setAttribute('aria-label', mapLabel(current));
+    pattern(); ruler(width); current.trees.forEach(drawTree); fog(30 + current.trees.length * G.pitch);
   }
   function control(tree) {
     const card = html('section', undefined, $('controls'), 'place-card');
@@ -311,7 +344,8 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
     const update = () => {
       const result = selectDepth(tree, depths.get(tree.prime));
       output.textContent = slider.value;
-      count.textContent = `${result.status} · ${result.branch_count} branches · ${result.lit_path_count} lit paths`;
+      count.textContent =
+        `${result.status} · ${result.branch_count} branches · ${result.lit_path_count} lit paths`;
       listing.replaceChildren();
       result.paths.forEach(path => {
         const entry = html('div', undefined, listing, 'path');
@@ -319,6 +353,8 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
         html('div', 'digits (low first): ' + (path.digit_string || 'none at this precision'), entry);
         html('div', 'seed: ' + path.seed + ' · certificate N: ' + (path.certificate_precision ?? 'exact'),
           entry, 'seed');
+        const source = current.provenance.records[path.source_record];
+        html('div', `digits derived from record ${path.source_record}: ${source.command}`, entry);
       });
     };
     slider.addEventListener('input', () => { depths.set(tree.prime, Number(slider.value)); update(); draw(); });
@@ -327,6 +363,7 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
   function information() {
     $('reading').replaceChildren(); $('evidence').replaceChildren();
     const reading = $('reading'), evidence = $('evidence');
+    if (current.solved_polynomial) html('p', 'Solved: ' + current.solved_polynomial + ' = 0', reading, 'note');
     html('p', current.polynomial ? 'Polynomial coefficients, constant first: ' + current.polynomial :
       'The identity or series lens uses the projected input at each named place.', reading, 'note');
     if (current.modular_solutions.length) {
@@ -363,7 +400,8 @@ footer { margin-top: 20px; color: var(--fg-3); font-size: 12px; }
     validateScene(scene);
     current = scene; depths.clear();
     scene.trees.forEach(tree => depths.set(tree.prime, scene.depth_range[1]));
-    $('value').textContent = scene.value; $('lens').textContent = scene.lens;
+    $('value').textContent = scene.value; $('lens').textContent = sceneTitle(scene);
+    document.title = sceneTitle(scene) + ' · Place Atlas';
     $('places').textContent = 'places: ' + scene.places.join(' · ') + ' · fog';
     $('controls').replaceChildren();
     $('controls').style.gridTemplateColumns = `repeat(${scene.trees.length}, minmax(0, 1fr))`;

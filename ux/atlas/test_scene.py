@@ -2,9 +2,17 @@
 import unittest
 from fractions import Fraction
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
+import tempfile
 
+import scene as S
 from scene import digit_path, fog_count, parse_output, parse_real, parse_value, STATUS_CLASSES
+
+HERE = Path(__file__).resolve().parent
+DRIVER = Path(os.environ.get("ADF", S.ROOT / "build/adf")).resolve()
 
 
 class SceneTests(unittest.TestCase):
@@ -169,6 +177,120 @@ class FixtureTests(unittest.TestCase):
             self.assertEqual(solution["digits"], [e % p for p in (2, 3, 5)])
             self.assertEqual(int(solution["square"]), e * e)
             self.assertEqual(solution["contains"], "true")
+
+
+def fixtures():
+    return [json.loads((HERE / "scenes" / (name + ".json")).read_text()) for name in ("sqrt9", "idempotents30")]
+
+
+class RepairTests(unittest.TestCase):
+    """Lane ux-atlas-r1: items 1 to 5 of lanes/ux-atlas-r1/brief.md."""
+
+    def test_item1_prime_above_limit_is_refused_before_any_driver_call(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "p101.json"
+            run = subprocess.run([sys.executable, str(HERE / "scene.py"), "9", "--lens", "roots 2",
+                                  "--primes", "101", "--driver", str(Path(tmp) / "no-driver"),
+                                  "--output", str(out)], capture_output=True, text=True, timeout=60)
+            self.assertEqual(run.returncode, 2)
+            self.assertEqual(run.stdout, "")
+            lines = run.stderr.splitlines()
+            self.assertEqual(len(lines), 1, run.stderr)
+            self.assertRegex(lines[0], r"\b101\b")
+            self.assertRegex(lines[0], r"\b13\b")
+            self.assertFalse(out.exists())
+        with self.assertRaises(S.Refusal):
+            S.build_scene("9", "roots 2", [2, 17], 1, 5, Path("/nonexistent/adf"))
+        self.assertEqual(S.MAX_PRIME, 13)
+
+    def test_item1_limits_and_rows_agree_with_atlas_js(self):
+        cases = [([[0, 0], [1, 0]], 13), ([[0, 0], [1, 0], [2, 0]], 13), ([[0] * 8], 7), ([[1, 0, 1]], 2)]
+        script = ("const a = require(process.argv[1]); const cases = JSON.parse(process.argv[2]);"
+                  "console.log(JSON.stringify({limits: [a.MAX_PRIME, a.rowCapacity()], rows: cases.map("
+                  "([paths, p]) => { const n = a.chooseNodes(paths, p); const r = [];"
+                  "n.forEach(x => { r[x.depth] = (r[x.depth] || 0) + 1; }); return r; })}))")
+        run = subprocess.run(["timeout", "30", "node", "-e", script, str(HERE / "atlas.js"), json.dumps(cases)],
+                             capture_output=True, text=True, timeout=40, check=True)
+        result = json.loads(run.stdout)
+        self.assertEqual(result["limits"], [S.MAX_PRIME, S.ROW_CAPACITY])
+        self.assertEqual(result["rows"], [S.row_sizes(paths, p) for paths, p in cases])
+        self.assertEqual(S.row_sizes([[0, 0], [1, 0], [2, 0]], 13), [1, 13, 39])
+        S.check_rows([[0, 0], [1, 0]], 13)
+        S.check_rows([[a, b, 0] for a in range(3) for b in range(3)], 3)  # a row of exactly 27
+        with self.assertRaisesRegex(S.Refusal, r"39.*27"):
+            S.check_rows([[0, 0], [1, 0], [2, 0]], 13)
+
+    def test_item2_polynomial_text(self):
+        self.assertEqual(S.polynomial_text("0 -1 1"), "X^2 - X")
+        self.assertEqual(S.polynomial_text("-9 0 1"), "X^2 - 9")
+        self.assertEqual(S.polynomial_text("-1 0 2"), "2X^2 - 1")
+        self.assertEqual(S.polynomial_text("1 0 0 -1"), "-X^3 + 1")
+        self.assertEqual(S.polynomial_text("0 3"), "3X")
+        self.assertEqual(S.polynomial_text("5"), "5")
+
+    def test_item2_fixtures_carry_the_solved_polynomial(self):
+        sqrt9, idem = fixtures()
+        self.assertEqual(sqrt9["solved_polynomial"], "X^2 - 9")
+        self.assertEqual(idem["solved_polynomial"], "X^2 - X")
+        for scene in (sqrt9, idem):
+            commands = [r["command"] for r in scene["provenance"]["records"]]
+            self.assertIn("realroots " + scene["polynomial"], commands)
+            self.assertTrue(any(c.startswith(f"roots {scene['polynomial']} with ") for c in commands))
+
+    def test_item3_missing_real_coordinate_has_its_reason(self):
+        self.assertTrue(DRIVER.is_file(), f"driver missing: {DRIVER}; build it or set ADF")
+        scene = S.build_scene("(* ; 5 mod 25)", "exp", [2, 3, 5], 1, 5, DRIVER)
+        ruler, records = scene["ruler"], scene["provenance"]["records"]
+        self.assertEqual((ruler["status"], ruler["status_class"]), ("DOMAIN", "proved no"))
+        self.assertEqual(ruler["failing_place"], "not given")
+        self.assertEqual(ruler["reason"], "no real coordinate in the input")
+        show, project = (records[i] for i in ruler["reason_records"])
+        self.assertEqual(show, {"command": "show (* ; 5 mod 25)", "output": "(* ; 5 mod 25)"})
+        self.assertEqual(project, {"command": "project (* ; 5 mod 25) with real", "output": "error: DOMAIN"})
+        self.assertEqual(records[ruler["record"]]["output"], "error: DOMAIN")
+
+    def test_item3_a_real_domain_error_keeps_no_such_reason(self):
+        self.assertTrue(DRIVER.is_file(), f"driver missing: {DRIVER}; build it or set ADF")
+        scene = S.build_scene("-1", "log", [2, 3], 1, 2, DRIVER)
+        self.assertEqual(scene["ruler"]["status"], "DOMAIN")
+        self.assertNotIn("reason", scene["ruler"])
+        for scene in fixtures():
+            self.assertNotIn("reason", scene["ruler"])
+
+    def test_item5_derived_numbers_name_their_driver_lines(self):
+        for scene in fixtures():
+            derived, records = scene["derived"], scene["provenance"]["records"]
+            self.assertEqual(set(derived), {"rule", "digits", "node_balls", "counts", "fog", "modular_digits"})
+            self.assertIn("D-UX5", derived["rule"])
+            for key in ("digits", "node_balls", "counts", "fog", "modular_digits"):
+                self.assertIn("provenance.records[", derived[key])
+            source = records[scene["fog"]["source_record"]]
+            self.assertEqual(source["output"], scene["value"])
+            self.assertTrue(source["command"].startswith("show "))
+            for tree in scene["trees"]:
+                for result in tree["depths"].values():
+                    for path in result["paths"]:
+                        self.assertIn(path["printed"], records[path["source_record"]]["output"])
+            for solution in scene["modular_solutions"]:
+                self.assertTrue(records[solution["records"][3]]["command"].startswith("project "))
+
+    def test_fixtures_regenerate_identically(self):
+        self.assertTrue(DRIVER.is_file(), f"driver missing: {DRIVER}; build it or set ADF")
+        with tempfile.TemporaryDirectory() as tmp:
+            subprocess.run(["timeout", "170", "sh", str(HERE / "build_scenes.sh"), tmp], check=True,
+                           env=dict(os.environ, ADF=str(DRIVER)), capture_output=True, timeout=175)
+            for name in ("sqrt9", "idempotents30"):
+                self.assertEqual((Path(tmp) / (name + ".json")).read_text(),
+                                 (HERE / "scenes" / (name + ".json")).read_text(), name)
+
+    def test_items_1_and_5_readme_states_limit_and_derivation(self):
+        text = (HERE / "README.md").read_text()
+        lines = text.splitlines()
+        self.assertLess(len(lines), 80)
+        self.assertLessEqual(max(map(len, lines)), 116)
+        self.assertRegex(text, r"primes up to 13")
+        self.assertIn("D-UX5", text)
+        self.assertIn("source_record", text)
 
 
 if __name__ == "__main__":
