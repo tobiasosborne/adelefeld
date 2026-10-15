@@ -94,3 +94,18 @@ Gathered from the four briefs; each item is argued in at least two of them.
 3. **How much should the interface teach the geometry of the places?** The atlas (2) makes p-adic trees and
    local-global threads visible to students and readers of papers, at the highest build cost; the other three show
    places as text and tables. Is the picture part of the product, or a view to add later?
+
+## Decisions (orchestrator, 2026-10-15 23:50, under TJO's standing order "decide, proceed, record")
+
+TJO on 2026-10-15: "Build the four UX visions and trial run them with astra as a testdriver."
+
+- D-UX0. All four briefs are built as their "first buildable slice", one lane each, under `ux/notebook`,
+  `ux/atlas`, `ux/ledger`, `ux/bench` (lanes `ux-notebook`, `ux-atlas`, `ux-ledger`, `ux-bench`); each slice
+  is then test-driven by codex `gpt-6-astra` as a user of the brief's two scenarios (lanes `ux-drive-*`), and
+  the defects found are repaired by the builder's tier. The three questions for the owner above stay open;
+  the four slices are the material for answering them.
+- D-UX1 to D-UX6 are in `lanes/UX-COMMON.md`: static pages, no new dependencies, no C changes by a UX lane
+  (the driver's text is parsed and the unmet library demands are listed per slice), one status language with
+  shapes, every shown number computed in the lane, each slice usable from its README alone.
+- The notebook slice has no Pluto (not installed; Julia runs offline): a Julia module writes a static page
+  per notebook and the records sidecar; the chip click rewrites the shown cell text only.
