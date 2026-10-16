@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="389" viewBox="0 0 780 389" role="img" aria-labelledby="title desc">
+<title id="title">A session of the adelefeld driver build/adf</title>
+<desc id="desc">echo 'add (0 ; 0) with 22/7' | build/adf gives (3.142857142857142857 +/- 2.4e-19 ; 22/7); echo 'project 22/7 with real 2 3 5 7' | build/adf gives real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 3: 22/7; 5: 22/7; 7: 22/7; printf 'prec 6\nroots_at -1 with 5 with 2\n' | build/adf gives 5 [2]: 14557 + O(5^6); 5 [3]: 1068 + O(5^6); echo 'roots_at -1 with 3 with 2' | build/adf gives error: DOMAIN; echo 'mul (3.0 +/- 0.1 ; 146 mod 1000) with 7' | build/adf gives (21 +/- 0.71 ; 1022 mod 7000); echo 'sin_at (* ; 0 mod 2) with 2' | build/adf gives error: NOT_DETERMINED; echo 'recover 146 mod 1000 with 30 with 15' | build/adf gives 22/7</desc>
+<style>text{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'DejaVu Sans Mono','Liberation Mono',monospace;font-size:13px;white-space:pre}.ttl{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;fill:#8b949e}.pill{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:10.5px}.pr{fill:#7ee787}.cm{fill:#e6edf3}.out{fill:#a5d6ff}.cur{fill:#c9d1d9}.blink{animation:blink 1.06s steps(1,end) infinite}@keyframes blink{0%{opacity:1}50%{opacity:0}100%{opacity:1}}@keyframes p0{0%{opacity:0}1.427%{opacity:0}1.428%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.p0{animation:p0 28.025s linear infinite}@keyframes o0{0%{opacity:0}8.742%{opacity:0}8.743%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.o0{animation:o0 28.025s linear infinite}@keyframes c0{0%{transform:translateX(0px)}2.676%{transform:translateX(0px);animation-timing-function:steps(40,end)}7.136%{transform:translateX(312.0px)}8.742%{transform:translateX(312.0px)}8.743%{transform:translateX(780px)}100%{transform:translateX(780px)}}.c0{animation:c0 28.025s linear infinite}@keyframes k0{0%{opacity:0}1.427%{opacity:0}1.428%{opacity:1}8.742%{opacity:1}8.743%{opacity:0}100%{opacity:0}}.k0{animation:k0 28.025s linear infinite}@keyframes p1{0%{opacity:0}12.132%{opacity:0}12.133%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.p1{animation:p1 28.025s linear infinite}@keyframes o1{0%{opacity:0}20.450%{opacity:0}20.451%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.o1{animation:o1 28.025s linear infinite}@keyframes c1{0%{transform:translateX(0px)}13.381%{transform:translateX(0px);animation-timing-function:steps(49,end)}18.845%{transform:translateX(382.2px)}20.450%{transform:translateX(382.2px)}20.451%{transform:translateX(780px)}100%{transform:translateX(780px)}}.c1{animation:c1 28.025s linear infinite}@keyframes k1{0%{opacity:0}12.132%{opacity:0}12.133%{opacity:1}20.450%{opacity:1}20.451%{opacity:0}100%{opacity:0}}.k1{animation:k1 28.025s linear infinite}@keyframes p2{0%{opacity:0}23.840%{opacity:0}23.841%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.p2{animation:p2 28.025s linear infinite}@keyframes o2{0%{opacity:0}32.939%{opacity:0}32.940%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.o2{animation:o2 28.025s linear infinite}@keyframes c2{0%{transform:translateX(0px)}25.089%{transform:translateX(0px);animation-timing-function:steps(56,end)}31.334%{transform:translateX(436.8px)}32.939%{transform:translateX(436.8px)}32.940%{transform:translateX(780px)}100%{transform:translateX(780px)}}.c2{animation:c2 28.025s linear infinite}@keyframes k2{0%{opacity:0}23.840%{opacity:0}23.841%{opacity:1}32.939%{opacity:1}32.940%{opacity:0}100%{opacity:0}}.k2{animation:k2 28.025s linear infinite}@keyframes p3{0%{opacity:0}36.329%{opacity:0}36.330%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.p3{animation:p3 28.025s linear infinite}@keyframes o3{0%{opacity:0}44.090%{opacity:0}44.091%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.o3{animation:o3 28.025s linear infinite}@keyframes c3{0%{transform:translateX(0px)}37.578%{transform:translateX(0px);animation-timing-function:steps(44,end)}42.484%{transform:translateX(343.2px)}44.090%{transform:translateX(343.2px)}44.091%{transform:translateX(780px)}100%{transform:translateX(780px)}}.c3{animation:c3 28.025s linear infinite}@keyframes k3{0%{opacity:0}36.329%{opacity:0}36.330%{opacity:1}44.090%{opacity:1}44.091%{opacity:0}100%{opacity:0}}.k3{animation:k3 28.025s linear infinite}@keyframes p4{0%{opacity:0}47.480%{opacity:0}47.481%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.p4{animation:p4 28.025s linear infinite}@keyframes o4{0%{opacity:0}56.802%{opacity:0}56.803%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.o4{animation:o4 28.025s linear infinite}@keyframes c4{0%{transform:translateX(0px)}48.729%{transform:translateX(0px);animation-timing-function:steps(58,end)}55.196%{transform:translateX(452.4px)}56.802%{transform:translateX(452.4px)}56.803%{transform:translateX(780px)}100%{transform:translateX(780px)}}.c4{animation:c4 28.025s linear infinite}@keyframes k4{0%{opacity:0}47.480%{opacity:0}47.481%{opacity:1}56.802%{opacity:1}56.803%{opacity:0}100%{opacity:0}}.k4{animation:k4 28.025s linear infinite}@keyframes p5{0%{opacity:0}60.192%{opacity:0}60.193%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.p5{animation:p5 28.025s linear infinite}@keyframes o5{0%{opacity:0}68.176%{opacity:0}68.177%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.o5{animation:o5 28.025s linear infinite}@keyframes c5{0%{transform:translateX(0px)}61.441%{transform:translateX(0px);animation-timing-function:steps(46,end)}66.570%{transform:translateX(358.8px)}68.176%{transform:translateX(358.8px)}68.177%{transform:translateX(780px)}100%{transform:translateX(780px)}}.c5{animation:c5 28.025s linear infinite}@keyframes k5{0%{opacity:0}60.192%{opacity:0}60.193%{opacity:1}68.176%{opacity:1}68.177%{opacity:0}100%{opacity:0}}.k5{animation:k5 28.025s linear infinite}@keyframes p6{0%{opacity:0}71.566%{opacity:0}71.567%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.p6{animation:p6 28.025s linear infinite}@keyframes o6{0%{opacity:0}80.553%{opacity:0}80.554%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.o6{animation:o6 28.025s linear infinite}@keyframes c6{0%{transform:translateX(0px)}72.814%{transform:translateX(0px);animation-timing-function:steps(55,end)}78.947%{transform:translateX(429.0px)}80.553%{transform:translateX(429.0px)}80.554%{transform:translateX(780px)}100%{transform:translateX(780px)}}.c6{animation:c6 28.025s linear infinite}@keyframes k6{0%{opacity:0}71.566%{opacity:0}71.567%{opacity:1}80.553%{opacity:1}80.554%{opacity:0}100%{opacity:0}}.k6{animation:k6 28.025s linear infinite}@keyframes pf{0%{opacity:0}83.943%{opacity:0}83.944%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.pf{animation:pf 28.025s linear infinite}@keyframes fd{0%{opacity:1}98.216%{opacity:1}100%{opacity:0}}.fd{animation:fd 28.025s linear infinite}@media (prefers-reduced-motion: reduce){*{animation:none !important}}</style>
+<defs><filter id="sh" x="-5%" y="-5%" width="110%" height="120%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.35"/></filter><clipPath id="body"><rect x="11" y="43" width="758" height="333"/></clipPath></defs>
+<rect x="10" y="10" width="760" height="365" rx="10" fill="#0d1117" filter="url(#sh)"/>
+<rect x="10" y="10" width="760" height="365" rx="10" fill="#0d1117" stroke="#30363d"/>
+<path d="M10 42 V20 a10 10 0 0 1 10 -10 H760 a10 10 0 0 1 10 10 V42 Z" fill="#161b22"/>
+<line x1="10" y1="42.5" x2="770" y2="42.5" stroke="#30363d"/>
+<circle cx="32" cy="26" r="6" fill="#ff5f57"/>
+<circle cx="52" cy="26" r="6" fill="#febc2e"/>
+<circle cx="72" cy="26" r="6" fill="#28c840"/>
+<text x="390" y="30" class="ttl" text-anchor="middle">adelefeld: build/adf</text>
+<g clip-path="url(#body)">
+<g class="p0"><text x="30" y="72.0" class="pr" textLength="7.8">$</text></g>
+<g class="fd"><text x="45.6" y="72.0" class="cm" textLength="312.0" lengthAdjust="spacing">echo 'add (0 ; 0) with 22/7' | build/adf</text></g>
+<g class="c0" transform="translate(780,0)">
+<rect x="45.6" y="58.0" width="738.4" height="20.5" fill="#0d1117"/>
+<g class="k0" opacity="0"><rect class="cur blink" x="45.6" y="60.5" width="7.8" height="16.0"/></g>
+</g>
+<g class="o0">
+<text x="30" y="92.5" class="out" textLength="319.8" lengthAdjust="spacing">(3.142857142857142857 +/- 2.4e-19 ; 22/7)</text>
+</g>
+<g class="p1"><text x="30" y="113.0" class="pr" textLength="7.8">$</text></g>
+<g class="fd"><text x="45.6" y="113.0" class="cm" textLength="382.2" lengthAdjust="spacing">echo 'project 22/7 with real 2 3 5 7' | build/adf</text></g>
+<g class="c1" transform="translate(780,0)">
+<rect x="45.6" y="99.0" width="738.4" height="20.5" fill="#0d1117"/>
+<g class="k1" opacity="0"><rect class="cur blink" x="45.6" y="101.5" width="7.8" height="16.0"/></g>
+</g>
+<g class="o1">
+<text x="30" y="133.5" class="out" textLength="577.2" lengthAdjust="spacing">real: 3.142857142857142857 +/- 2.4e-19; 2: 22/7; 3: 22/7; 5: 22/7; 7: 22/7</text>
+</g>
+<g class="p2"><text x="30" y="154.0" class="pr" textLength="7.8">$</text></g>
+<g class="fd"><text x="45.6" y="154.0" class="cm" textLength="436.8" lengthAdjust="spacing">printf 'prec 6\nroots_at -1 with 5 with 2\n' | build/adf</text></g>
+<g class="c2" transform="translate(780,0)">
+<rect x="45.6" y="140.0" width="738.4" height="20.5" fill="#0d1117"/>
+<g class="k2" opacity="0"><rect class="cur blink" x="45.6" y="142.5" width="7.8" height="16.0"/></g>
+</g>
+<g class="o2">
+<text x="30" y="174.5" class="out" textLength="335.4" lengthAdjust="spacing">5 [2]: 14557 + O(5^6); 5 [3]: 1068 + O(5^6)</text>
+</g>
+<g class="p3"><text x="30" y="195.0" class="pr" textLength="7.8">$</text></g>
+<g class="fd"><text x="45.6" y="195.0" class="cm" textLength="343.2" lengthAdjust="spacing">echo 'roots_at -1 with 3 with 2' | build/adf</text></g>
+<g class="c3" transform="translate(780,0)">
+<rect x="45.6" y="181.0" width="738.4" height="20.5" fill="#0d1117"/>
+<g class="k3" opacity="0"><rect class="cur blink" x="45.6" y="183.5" width="7.8" height="16.0"/></g>
+</g>
+<g class="o3">
+<text x="30" y="215.5" class="out" style="fill:#ff7b72" textLength="101.4" lengthAdjust="spacing">error: DOMAIN</text>
+<rect x="147.4" y="203.0" width="69.0" height="16" rx="8" fill="none" stroke="#ff7b72" stroke-width="1.2"/>
+<text x="181.9" y="214.5" class="pill" fill="#ff7b72" text-anchor="middle">proved: no</text>
+</g>
+<g class="p4"><text x="30" y="236.0" class="pr" textLength="7.8">$</text></g>
+<g class="fd"><text x="45.6" y="236.0" class="cm" textLength="452.4" lengthAdjust="spacing">echo 'mul (3.0 +/- 0.1 ; 146 mod 1000) with 7' | build/adf</text></g>
+<g class="c4" transform="translate(780,0)">
+<rect x="45.6" y="222.0" width="738.4" height="20.5" fill="#0d1117"/>
+<g class="k4" opacity="0"><rect class="cur blink" x="45.6" y="224.5" width="7.8" height="16.0"/></g>
+</g>
+<g class="o4">
+<text x="30" y="256.5" class="out" textLength="226.2" lengthAdjust="spacing">(21 +/- 0.71 ; 1022 mod 7000)</text>
+</g>
+<g class="p5"><text x="30" y="277.0" class="pr" textLength="7.8">$</text></g>
+<g class="fd"><text x="45.6" y="277.0" class="cm" textLength="358.8" lengthAdjust="spacing">echo 'sin_at (* ; 0 mod 2) with 2' | build/adf</text></g>
+<g class="c5" transform="translate(780,0)">
+<rect x="45.6" y="263.0" width="738.4" height="20.5" fill="#0d1117"/>
+<g class="k5" opacity="0"><rect class="cur blink" x="45.6" y="265.5" width="7.8" height="16.0"/></g>
+</g>
+<g class="o5">
+<text x="30" y="297.5" class="out" style="fill:#e3b341" textLength="163.8" lengthAdjust="spacing">error: NOT_DETERMINED</text>
+<rect x="209.8" y="285.0" width="33.0" height="16" rx="8" fill="none" stroke="#e3b341" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="226.3" y="296.5" class="pill" fill="#e3b341" text-anchor="middle">open</text>
+</g>
+<g class="p6"><text x="30" y="318.0" class="pr" textLength="7.8">$</text></g>
+<g class="fd"><text x="45.6" y="318.0" class="cm" textLength="429.0" lengthAdjust="spacing">echo 'recover 146 mod 1000 with 30 with 15' | build/adf</text></g>
+<g class="c6" transform="translate(780,0)">
+<rect x="45.6" y="304.0" width="738.4" height="20.5" fill="#0d1117"/>
+<g class="k6" opacity="0"><rect class="cur blink" x="45.6" y="306.5" width="7.8" height="16.0"/></g>
+</g>
+<g class="o6">
+<text x="30" y="338.5" class="out" textLength="31.2" lengthAdjust="spacing">22/7</text>
+</g>
+<g class="pf"><text x="30" y="359.0" class="pr" textLength="7.8">$</text><rect class="cur blink" x="45.6" y="347.5" width="7.8" height="16.0"/></g>
+</g></svg>
