@@ -1,0 +1,240 @@
+#### block 1-rationals
+julia> using Adelefeld
+
+julia> Rat(6, 35) + Rat(1, 7)
+11/35
+
+julia> Rat(1) / 3
+1/3
+
+julia> Rat(2, -4)
+-1/2
+
+julia> Rat(1, 3) * 3 == 1
+true
+
+julia> Rat(6, 35) == 6//35
+true
+
+julia> Rat(1, 0)
+ERROR: AdfError: rat returned status DOMAIN
+
+#### block 2-finite-balls
+julia> x = FBall(Rat(146), Rat(1000))
+(* ; 146 mod 1000)
+
+julia> center(x), radius(x)
+(146, 1000)
+
+julia> parse(FBall, "3 mod 12") + parse(FBall, "5 mod 18")
+(* ; 2 mod 6)
+
+julia> x - x
+(* ; 0 mod 1000)
+
+julia> FBall(Rat(1, 3)) * 3
+(* ; 1)
+
+julia> a = parse(FBall, "1 mod 6"); b = parse(FBall, "1 mod 3");
+
+julia> inside(a, b), inside(b, a)
+(true, false)
+
+julia> overlaps(a, parse(FBall, "4 mod 9")), equal_set(a, parse(FBall, "7 mod 6"))
+(true, true)
+
+julia> compare_points(a, b)
+UNDECIDED::PointComparison = 2
+
+julia> compare_points(a, parse(FBall, "0 mod 2"))
+DIFFERENT::PointComparison = 1
+
+julia> compare_points(FBall(5), FBall(5))
+EQUAL::PointComparison = 0
+
+#### block 3-adeles
+julia> u = Adele(Rat(1, 3))
+(0.33333333333333333332 +/- 3.2e-20 ; 1/3)
+
+julia> realpart(u)
+0.33333333333333333332 +/- 3.2e-20
+
+julia> finitepart(u)
+(* ; 1/3)
+
+julia> v = parse(Adele, "(1.5 +/- 0.5 ; 0 mod 2)")
+(1.5 +/- 0.5 ; 0 mod 2)
+
+julia> u + v
+(1.83 +/- 0.51 ; 1/3 mod 2)
+
+julia> u * 3
+(0.99999999999999999995 +/- 8.6e-20 ; 1)
+
+julia> RealBall(Rat(1, 3); prec = 200)
+0.33333333333333333333 +/- 3.4e-21
+
+julia> z = parse(ComplexBall, "(1.5) + (-2)*i")
+(1.5) + (-2)*i
+
+julia> CAdele(z, FBall(Rat(1), Rat(4)))
+((1.5) + (-2)*i ; 1 mod 4)
+
+julia> CAdele(u) * Rat(2)
+((0.66666666666666666663 +/- 5.5e-20) + (0)*i ; 2/3)
+
+julia> Adele(RealBall(Rat(2)), parse(FBall, "1 mod 4"))
+(2 ; 1 mod 4)
+
+julia> parse(RealBall, "1.5 +/- 0.0009765625")
+1.5 +/- 0.00098
+
+#### block 4-reconstruction
+julia> reconstruct(parse(Adele, "(1.5 +/- 0.5 ; 0 mod 2)"))
+2
+
+julia> reconstruct(parse(FBall, "2 mod 101"), Rat(-50), Rat(50))
+2
+
+julia> reconstruct(parse(FBall, "52 mod 101"), Rat(-50), Rat(50))
+-49
+
+julia> try_reconstruct(parse(Adele, "(1.5 +/- 2 ; 0 mod 2)")).status
+NOT_UNIQUE::AdfStatus = 4
+
+julia> try_reconstruct(parse(Adele, "(1.5 +/- 0.25 ; 0 mod 2)")).status
+NO_SOLUTION::AdfStatus = 5
+
+julia> try_reconstruct(FBall(Rat(1, 3)), Rat(0), Rat(1)).value
+1/3
+
+#### block 5-statuses
+julia> r = try_div(Rat(1), Rat(0))
+AdfResult{Rat}(Adelefeld.NOT_UNIT, nothing, nothing, NamedTuple())
+
+julia> r.status, r.value
+(Adelefeld.NOT_UNIT, nothing)
+
+julia> unwrap(r)
+ERROR: AdfError: unwrap returned status NOT_UNIT
+
+julia> Rat(1) / 0
+ERROR: AdfError: div returned status NOT_UNIT
+
+julia> try_parse(Rat, "1/0").status, try_parse(Rat, "one").status
+(Adelefeld.DOMAIN, Adelefeld.PARSE)
+
+julia> try_fball(Rat(1), Rat(-2)).status
+DOMAIN::AdfStatus = 7
+
+julia> unwrap(try_rat(7, 21))
+1/3
+
+julia> collect(instances(AdfStatus))
+11-element Vector{AdfStatus}:
+ OK::AdfStatus = 0
+ NOT_DETERMINED::AdfStatus = 1
+ UNIT_NOT_CERTIFIED::AdfStatus = 2
+ NEEDS_SPLIT::AdfStatus = 3
+ NOT_UNIQUE::AdfStatus = 4
+ NO_SOLUTION::AdfStatus = 5
+ NOT_UNIT::AdfStatus = 6
+ DOMAIN::AdfStatus = 7
+ UNSUPPORTED::AdfStatus = 8
+ PARSE::AdfStatus = 9
+ LIMIT::AdfStatus = 10
+
+#### block 6-text-and-dumps
+julia> u = Adele(Rat(1, 3));
+
+julia> value_text(u; digits = 5)
+"(0.33333 +/- 3.4e-6 ; 1/3)"
+
+julia> show(IOContext(stdout, :adf_digits => 8), u)
+(0.33333333 +/- 3.4e-9 ; 1/3)
+
+julia> d = dump_text(u)
+"adf1 Q adele 1 5555555555555555 -40 1 -41 g 1 0 3"
+
+julia> w = load_dump(Adele, d); identical(u, w)
+true
+
+julia> s = value_text(u); identical(u, parse(Adele, s))
+false
+
+julia> dump_text(parse(Adele, s))
+"adf1 Q adele 1 5555555555555555 -40 56bdf97 -5b g 1 0 3"
+
+julia> readvalue("3 mod 12"), readvalue("7/3")
+((* ; 3 mod 12), 7/3)
+
+julia> try_readvalue("(1 ; 1/2 mod 3)").details
+(kind = Adelefeld.TEXT_ADELE,)
+
+julia> r = try_readvalue("[5 mod 6]"); r.status, r.details
+(Adelefeld.UNSUPPORTED, (kind = Adelefeld.TEXT_UCOSET,))
+
+julia> dump_text(parse(FBall, "3 mod 12"))
+"adf1 Q fball g 3 c 1"
+
+#### block 7-modctx
+julia> ModCtx(blocks = [8, 9, 5])
+ModCtx(modulus=360, blocks=[8, 9, 5])
+
+julia> ModCtx(prime_powers = [2 => 3, 3 => 2])
+ModCtx(modulus=72, blocks=[8, 9])
+
+julia> ModCtx(modulus = 360)
+ModCtx(modulus=360, blocks=[360])
+
+julia> ctx = ModCtx(factorial = 6)
+ModCtx(modulus=720, blocks=[16, 9, 5])
+
+julia> ModCtx(primorial_power = (7, 2))
+ModCtx(modulus=44100, blocks=[4, 9, 25, 49])
+
+julia> modulus(ctx), nblocks(ctx), Int.(blocks(ctx))
+(720, 3, [16, 9, 5])
+
+julia> y = to_local(parse(FBall, "1 mod 5"), ctx)
+(* ; 1 mod 5)
+
+julia> is_local(y), context(y) === ctx
+(true, true)
+
+julia> g = to_global(y); is_local(g), context(g)
+(false, nothing)
+
+julia> try_to_local(parse(FBall, "1 mod 7"), ctx).status
+DOMAIN::AdfStatus = 7
+
+julia> enclose_local(readvalue("1 mod 5"), ModCtx(blocks = [8, 9]))
+(* ; 0 mod 1)
+
+julia> r = try_enclose_local(parse(FBall, "1 mod 32"), ModCtx(blocks = [8, 9])); r.value, r.details
+((* ; 1 mod 8), (lost = true,))
+
+julia> try_modctx(blocks = [4, 6]).status
+DOMAIN::AdfStatus = 7
+
+#### block 8-housekeeping
+julia> t = Rat(5); close(t); close(t)
+
+julia> t + 1
+ERROR: InvalidStateException: the Rat handle is closed
+
+julia> Adelefeld.diagnostics().live >= 0, Adelefeld.diagnostics().finalizer_errors
+(true, 0)
+
+julia> keys(Adelefeld.diagnostics())
+(:state, :library, :live, :finalizer_errors, :contexts, :context_frees)
+
+julia> c5 = ModCtx(blocks = [5]); y5 = to_local(parse(FBall, "2 mod 5"), c5); finalize(c5); c5
+ModCtx(finalized)
+
+julia> y5 + 1
+(* ; 3 mod 5)
+
+julia> to_local(parse(FBall, "2 mod 5"), c5)
+ERROR: InvalidStateException: the ModCtx was finalized
+
