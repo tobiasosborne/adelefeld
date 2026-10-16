@@ -1,0 +1,8 @@
+1. REPL blocks: README 8, tutorial 8; 0 differ
+2. Pkg.test block: 13 lines, 0 not in pkgtest.log
+3. Exports: 63 names in the export lines (63 distinct), 63 rows in the API table; missing []; extra []
+   pending: docs/README.md -> GUIDE.md (written by lane docs-guide)
+4. Links: 90 relative links checked in 2 pages, 0 broken, 1 pending
+5. Widths: julia/Adelefeld/README.md: 0 prose lines over 116, 0 table or code lines over 116 []
+5. Widths: docs/README.md: 0 prose lines over 116, 0 table or code lines over 116 []
+check exit 0

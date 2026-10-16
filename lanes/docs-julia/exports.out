@@ -1,0 +1,64 @@
+exported: 63
+Adele	(none)
+AdfAbiError	A C function returned an int that is not a status of include/adelefeld/status.h. The raw value is kept;
+AdfError	Thrown by every throwing form on a status other than OK (decision J5, docs/api-j.md:24-25). It carries the
+AdfLoadError	A load gate failed. Fields: the gate, the expected and the observed value, the library path and a hint.
+AdfResult	The result of a `try_` method (docs/api-j.md:165-168). `status` always exists; `value` is a fresh owner
+AdfStatus	(none)
+CAdele	(none)
+ComplexBall	A numerical complex ball in a private initialized CAdele with finite coordinate exact 0.
+FBall	The finite ball `adf_fball`, the set `a + N Zhat` of finite adeles (include/adelefeld/fball.h:1-11; SPEC 4.1):
+ModCtx	A modulus context (include/adelefeld/modctx.h; conventions 5.14): an immutable C context made by one of the
+PointComparison	(none)
+Rat	(none)
+RealBall	A numerical real ball. Owns an initialized private Adele whose finite coordinate is exact 0.
+TextKind	(none)
+TextLimits	The limits of a parser (conventions 8.4; include/adelefeld/text.h:81-103): layout `adf_text_limits_t`,
+add	(none)
+blocks	The blocks q_1, ..., q_k in their order (`adf_modctx_block` for 0 <= i < k, modctx.h:111-112).
+center	The stored centre a = A/d of the canonical triple: in [0, N) for N > 0, the point itself for N = 0
+compare_points	`adf_fball_compare` (fball.h:258-265): the comparison of two unknown points, one in each ball. EQUAL if both
+complexpart	(none)
+context	The context a local value borrows, found by comparing `adf_fball_context(x)` (modctx.h:171-174) with the
+divexact	(none)
+dump_text	(none)
+enclose_local	(none)
+equal_set	`adf_fball_equal_set` (fball.h:239-242): the two sets are equal. An int 0/1 read as a Bool, never a status.
+finitepart	(none)
+identical	`adf_rat_identical` (rat.h:58-60): the same numerator and denominator; for this exact type the same as `==`.
+inside	True when the set `x` is inside the set `y`: FIRST INSIDE SECOND (SPEC 4.2; docs/api-j.md:222, 314).
+is_canonical	`adf_fball_is_canonical` (fball.h:93-100): predicate G or L holds. A Bool, never a status.
+is_local	`adf_fball_is_local` (modctx.h:171-173): the backend is ADF_LOCAL. Not part of the value text, which is the
+load_dump	(none)
+modulus	The modulus K of the context, through `adf_modctx_get_modulus` (modctx.h:105-106), as an exact integer
+mul	(none)
+nblocks	The number k >= 0 of word blocks (`adf_modctx_nblocks`, modctx.h:108-109).
+neg	(none)
+overlaps	`adf_fball_overlaps` (fball.h:244-245): the two sets meet. Not transitive (SPEC 4.2).
+radius	The radius N = H/d >= 0 in lowest terms, 0 for an exact value (`adf_fball_get_radius`, fball.h:168-170).
+readvalue	(none)
+realpart	(none)
+reconstruct	(none)
+sub	(none)
+to_global	(none)
+to_local	(none)
+try_add	(none)
+try_div	`adf_rat_div` (rat.h:109-113): OK, or NOT_UNIT when `q = 0`; the fresh output is cleared on failure.
+try_dump_text	Copy exactly the byte length of `adf_x_dump_str`, with `adf_str_free` in a finally (dump.h:49-52).
+try_enclose_local	The best enclosure of `x` among the local values of `ctx` (`adf_fball_set_local_enclose`,
+try_fball	The ball `c + N Zhat`, global and canonical (centre reduced into [0, N); N = 0 is the point c), through
+try_inv	`adf_rat_inv` (rat.h:115-116): OK, or NOT_UNIT when `q = 0`.
+try_load_dump	Strict typed C dump loader. Context is NULL; no bindings or working precision. The whole input is
+try_modctx	A new modulus context from EXACTLY ONE construction family (docs/api-j.md:255); none or two or more is an
+try_mul	(none)
+try_neg	(none)
+try_parse	Calls `adf_rat_set_str` on the bytes of `s` (`ncodeunits`, not characters). NUL and non-ASCII bytes go to C,
+try_rat	`n` alone, when it fits Int64, goes through `adf_rat_set_si` (statusless, OK is synthesized). Otherwise the
+try_readvalue	Classify with `adf_text_classify` (text.h:137-143). LIMIT on excess bytes precedes PARSE for forbidden
+try_reconstruct	`adf_fball_reconstruct` in the exact closed interval [lo, hi] (recon.h:49-52).
+try_sub	(none)
+try_to_global	`x` in the global backend (`adf_fball_set_global`, modctx.h:166-169): recombination by CRT and canonical
+try_to_local	The set of `x` as a local value of `ctx`, exactly (`adf_fball_set_local`, modctx.h:145-153): the ball
+try_value_text	`adf_rat_get_str`: "n" or "n/d" in lowest terms (conventions 9.4). Exactly `len` bytes are copied; the
+unwrap	Returns `r.value` on OK; throws `AdfError` on every other status (docs/api-j.md:172).
+value_text	(none)
