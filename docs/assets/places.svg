@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img" aria-labelledby="title desc">
+<title id="title">The rational 22/7 at the real place and at the primes 2, 3 and 5</title>
+<desc id="desc">real: 3.142857 +/- 1.5e-7. 2: 0 + O(2^1) then 2: 2 + O(2^2) then 2: 2 + O(2^3) then 2: 10 + O(2^4); 3: 1 + O(3^1) then 3: 7 + O(3^2) then 3: 7 + O(3^3) then 3: 61 + O(3^4); 5: 1 + O(5^1) then 5: 21 + O(5^2) then 5: 21 + O(5^3) then 5: 271 + O(5^4)</desc>
+<style>text{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'DejaVu Sans Mono',monospace}.h{font-size:17px;fill:#e6edf3;font-weight:600}.s{font-size:12.5px;fill:#8b949e}.tick{font-size:11px;fill:#8b949e}.dig{font-size:9.5px;fill:#8b949e}.digl{font-size:9.5px;fill:#0d1117;font-weight:700}.res{font-size:11px;fill:#f2cc60}.drv{font-size:12px;fill:#a5d6ff}.sum{font-size:11.5px;fill:#c9d1d9}.foot{font-size:12px;fill:#8b949e}.spark{animation:run 5s linear infinite}@keyframes run{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}.halo{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{0%{opacity:.15}50%{opacity:.7}100%{opacity:.15}}@media (prefers-reduced-motion: reduce){.spark{display:none}*{animation:none !important}}</style>
+<defs><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect x="0.5" y="0.5" width="799" height="559" rx="12" fill="#0d1117" stroke="#30363d"/>
+<text x="28" y="40" class="h">One rational, every place at once: 22/7</text>
+<text x="28" y="62" class="s">Top: the real line. Below: the p-adic integers for p = 2, 3, 5 as trees. A node at depth k is a ball a + p^k Z_p,</text>
+<text x="28" y="79" class="s">and its p children fix the next base-p digit. The gold thread is 22/7: one point of the real line, one path in every tree.</text>
+<text x="28" y="144" class="tick">R</text>
+<line x1="60" y1="140" x2="740" y2="140" stroke="#8b949e" stroke-width="1.5"/>
+<line x1="70.0" y1="134" x2="70.0" y2="146" stroke="#8b949e" stroke-width="1.2"/>
+<text x="70.0" y="161" class="tick" text-anchor="middle">0</text>
+<line x1="103.0" y1="137" x2="103.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="136.0" y1="137" x2="136.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="169.0" y1="137" x2="169.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="202.0" y1="134" x2="202.0" y2="146" stroke="#8b949e" stroke-width="1.2"/>
+<text x="202.0" y="161" class="tick" text-anchor="middle">1</text>
+<line x1="235.0" y1="137" x2="235.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="268.0" y1="137" x2="268.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="301.0" y1="137" x2="301.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="334.0" y1="134" x2="334.0" y2="146" stroke="#8b949e" stroke-width="1.2"/>
+<text x="334.0" y="161" class="tick" text-anchor="middle">2</text>
+<line x1="367.0" y1="137" x2="367.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="400.0" y1="137" x2="400.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="433.0" y1="137" x2="433.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="466.0" y1="134" x2="466.0" y2="146" stroke="#8b949e" stroke-width="1.2"/>
+<text x="466.0" y="161" class="tick" text-anchor="middle">3</text>
+<line x1="499.0" y1="137" x2="499.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="532.0" y1="137" x2="532.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="565.0" y1="137" x2="565.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="598.0" y1="134" x2="598.0" y2="146" stroke="#8b949e" stroke-width="1.2"/>
+<text x="598.0" y="161" class="tick" text-anchor="middle">4</text>
+<line x1="631.0" y1="137" x2="631.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="664.0" y1="137" x2="664.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="697.0" y1="137" x2="697.0" y2="143" stroke="#8b949e" stroke-width="0.8"/>
+<line x1="730.0" y1="134" x2="730.0" y2="146" stroke="#8b949e" stroke-width="1.2"/>
+<text x="730.0" y="161" class="tick" text-anchor="middle">5</text>
+<text x="484.9" y="124" class="mono res" text-anchor="middle">real: 3.142857 +/- 1.5e-7</text>
+<line x1="115.0" y1="222.0" x2="152.5" y2="276.0" stroke="#30363d" stroke-width="1"/>
+<line x1="77.5" y1="276.0" x2="77.5" y2="330.0" stroke="#30363d" stroke-width="1"/>
+<line x1="152.5" y1="330.0" x2="152.5" y2="384.0" stroke="#30363d" stroke-width="1"/>
+<line x1="77.5" y1="384.0" x2="77.5" y2="438.0" stroke="#30363d" stroke-width="1"/>
+<path d="M484.9 140 C484.9 190 115.0 172 115.0 222 L77.5 276.0 L152.5 330.0 L77.5 384.0 L152.5 438.0" fill="none" stroke="#f2cc60" stroke-width="2.2" opacity="0.9" filter="url(#glow)"/>
+<path class="spark" d="M484.9 140 C484.9 190 115.0 172 115.0 222 L77.5 276.0 L152.5 330.0 L77.5 384.0 L152.5 438.0" fill="none" stroke="#fff4c2" stroke-width="3.2" stroke-linecap="round" pathLength="100" stroke-dasharray="3 140" stroke-dashoffset="100"/>
+<rect x="90.0" y="211" width="50" height="22" rx="11" fill="#161b22" stroke="#f2cc60"/>
+<text x="115.0" y="226" text-anchor="middle" style="font-size:13px;fill:#e6edf3">Z<tspan dy="4" style="font-size:9.5px">2</tspan></text>
+<circle class="halo" cx="77.5" cy="276.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="77.5" cy="276.0" r="8.0" fill="#f2cc60"/>
+<text x="77.5" y="279.3" class="digl" text-anchor="middle">0</text>
+<circle cx="152.5" cy="276.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="152.5" y="279.3" class="dig" text-anchor="middle">1</text>
+<text x="202.0" y="280.0" class="res">0 mod 2</text>
+<circle cx="77.5" cy="330.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="77.5" y="333.3" class="dig" text-anchor="middle">0</text>
+<circle class="halo" cx="152.5" cy="330.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="152.5" cy="330.0" r="8.0" fill="#f2cc60"/>
+<text x="152.5" y="333.3" class="digl" text-anchor="middle">1</text>
+<text x="202.0" y="334.0" class="res">2 mod 4</text>
+<circle class="halo" cx="77.5" cy="384.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="77.5" cy="384.0" r="8.0" fill="#f2cc60"/>
+<text x="77.5" y="387.3" class="digl" text-anchor="middle">0</text>
+<circle cx="152.5" cy="384.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="152.5" y="387.3" class="dig" text-anchor="middle">1</text>
+<text x="202.0" y="388.0" class="res">2 mod 8</text>
+<circle cx="77.5" cy="438.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="77.5" y="441.3" class="dig" text-anchor="middle">0</text>
+<circle class="halo" cx="152.5" cy="438.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="152.5" cy="438.0" r="8.0" fill="#f2cc60"/>
+<text x="152.5" y="441.3" class="digl" text-anchor="middle">1</text>
+<text x="202.0" y="442.0" class="res">10 mod 16</text>
+<text x="140.0" y="480" class="mono drv" text-anchor="middle">2: 10 + O(2^4)</text>
+<text x="140.0" y="500" class="sum" text-anchor="middle">22/7 = 0 + 1·2 + 0·2² + 1·2³ + …</text>
+<line x1="365.0" y1="222.0" x2="315.0" y2="276.0" stroke="#30363d" stroke-width="1"/>
+<line x1="365.0" y1="222.0" x2="415.0" y2="276.0" stroke="#30363d" stroke-width="1"/>
+<line x1="365.0" y1="276.0" x2="315.0" y2="330.0" stroke="#30363d" stroke-width="1"/>
+<line x1="365.0" y1="276.0" x2="365.0" y2="330.0" stroke="#30363d" stroke-width="1"/>
+<line x1="415.0" y1="330.0" x2="365.0" y2="384.0" stroke="#30363d" stroke-width="1"/>
+<line x1="415.0" y1="330.0" x2="415.0" y2="384.0" stroke="#30363d" stroke-width="1"/>
+<line x1="315.0" y1="384.0" x2="315.0" y2="438.0" stroke="#30363d" stroke-width="1"/>
+<line x1="315.0" y1="384.0" x2="365.0" y2="438.0" stroke="#30363d" stroke-width="1"/>
+<path d="M484.9 140 C484.9 190 365.0 172 365.0 222 L365.0 276.0 L415.0 330.0 L315.0 384.0 L415.0 438.0" fill="none" stroke="#f2cc60" stroke-width="2.2" opacity="0.9" filter="url(#glow)"/>
+<path class="spark" d="M484.9 140 C484.9 190 365.0 172 365.0 222 L365.0 276.0 L415.0 330.0 L315.0 384.0 L415.0 438.0" fill="none" stroke="#fff4c2" stroke-width="3.2" stroke-linecap="round" pathLength="100" stroke-dasharray="3 140" stroke-dashoffset="100"/>
+<rect x="340.0" y="211" width="50" height="22" rx="11" fill="#161b22" stroke="#f2cc60"/>
+<text x="365.0" y="226" text-anchor="middle" style="font-size:13px;fill:#e6edf3">Z<tspan dy="4" style="font-size:9.5px">3</tspan></text>
+<circle cx="315.0" cy="276.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="315.0" y="279.3" class="dig" text-anchor="middle">0</text>
+<circle class="halo" cx="365.0" cy="276.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="365.0" cy="276.0" r="8.0" fill="#f2cc60"/>
+<text x="365.0" y="279.3" class="digl" text-anchor="middle">1</text>
+<circle cx="415.0" cy="276.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="415.0" y="279.3" class="dig" text-anchor="middle">2</text>
+<text x="452.0" y="280.0" class="res">1 mod 3</text>
+<circle cx="315.0" cy="330.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="315.0" y="333.3" class="dig" text-anchor="middle">0</text>
+<circle cx="365.0" cy="330.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="365.0" y="333.3" class="dig" text-anchor="middle">1</text>
+<circle class="halo" cx="415.0" cy="330.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="415.0" cy="330.0" r="8.0" fill="#f2cc60"/>
+<text x="415.0" y="333.3" class="digl" text-anchor="middle">2</text>
+<text x="452.0" y="334.0" class="res">7 mod 9</text>
+<circle class="halo" cx="315.0" cy="384.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="315.0" cy="384.0" r="8.0" fill="#f2cc60"/>
+<text x="315.0" y="387.3" class="digl" text-anchor="middle">0</text>
+<circle cx="365.0" cy="384.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="365.0" y="387.3" class="dig" text-anchor="middle">1</text>
+<circle cx="415.0" cy="384.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="415.0" y="387.3" class="dig" text-anchor="middle">2</text>
+<text x="452.0" y="388.0" class="res">7 mod 27</text>
+<circle cx="315.0" cy="438.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="315.0" y="441.3" class="dig" text-anchor="middle">0</text>
+<circle cx="365.0" cy="438.0" r="8.0" fill="#161b22" stroke="#484f58"/>
+<text x="365.0" y="441.3" class="dig" text-anchor="middle">1</text>
+<circle class="halo" cx="415.0" cy="438.0" r="13.0" fill="#f2cc60" opacity="0.3"/>
+<circle cx="415.0" cy="438.0" r="8.0" fill="#f2cc60"/>
+<text x="415.0" y="441.3" class="digl" text-anchor="middle">2</text>
+<text x="452.0" y="442.0" class="res">61 mod 81</text>
+<text x="390.0" y="480" class="mono drv" text-anchor="middle">3: 61 + O(3^4)</text>
+<text x="390.0" y="500" class="sum" text-anchor="middle">22/7 = 1 + 2·3 + 0·3² + 2·3³ + …</text>
+<line x1="615.0" y1="222.0" x2="555.0" y2="276.0" stroke="#30363d" stroke-width="1"/>
+<line x1="615.0" y1="222.0" x2="615.0" y2="276.0" stroke="#30363d" stroke-width="1"/>
+<line x1="615.0" y1="222.0" x2="645.0" y2="276.0" stroke="#30363d" stroke-width="1"/>
+<line x1="615.0" y1="222.0" x2="675.0" y2="276.0" stroke="#30363d" stroke-width="1"/>
+<line x1="585.0" y1="276.0" x2="555.0" y2="330.0" stroke="#30363d" stroke-width="1"/>
+<line x1="585.0" y1="276.0" x2="585.0" y2="330.0" stroke="#30363d" stroke-width="1"/>
+<line x1="585.0" y1="276.0" x2="615.0" y2="330.0" stroke="#30363d" stroke-width="1"/>
+<line x1="585.0" y1="276.0" x2="645.0" y2="330.0" stroke="#30363d" stroke-width="1"/>
+<line x1="675.0" y1="330.0" x2="585.0" y2="384.0" stroke="#30363d" stroke-width="1"/>
+<line x1="675.0" y1="330.0" x2="615.0" y2="384.0" stroke="#30363d" stroke-width="1"/>
+<line x1="675.0" y1="330.0" x2="645.0" y2="384.0" stroke="#30363d" stroke-width="1"/>
+<line x1="675.0" y1="330.0" x2="675.0" y2="384.0" stroke="#30363d" stroke-width="1"/>
+<line x1="555.0" y1="384.0" x2="555.0" y2="438.0" stroke="#30363d" stroke-width="1"/>
+<line x1="555.0" y1="384.0" x2="585.0" y2="438.0" stroke="#30363d" stroke-width="1"/>
+<line x1="555.0" y1="384.0" x2="645.0" y2="438.0" stroke="#30363d" stroke-width="1"/>
+<line x1="555.0" y1="384.0" x2="675.0" y2="438.0" stroke="#30363d" stroke-width="1"/>
+<path d="M484.9 140 C484.9 190 615.0 172 615.0 222 L585.0 276.0 L675.0 330.0 L555.0 384.0 L615.0 438.0" fill="none" stroke="#f2cc60" stroke-width="2.2" opacity="0.9" filter="url(#glow)"/>
+<path class="spark" d="M484.9 140 C484.9 190 615.0 172 615.0 222 L585.0 276.0 L675.0 330.0 L555.0 384.0 L615.0 438.0" fill="none" stroke="#fff4c2" stroke-width="3.2" stroke-linecap="round" pathLength="100" stroke-dasharray="3 140" stroke-dashoffset="100"/>
+<rect x="590.0" y="211" width="50" height="22" rx="11" fill="#161b22" stroke="#f2cc60"/>
+<text x="615.0" y="226" text-anchor="middle" style="font-size:13px;fill:#e6edf3">Z<tspan dy="4" style="font-size:9.5px">5</tspan></text>
+<circle cx="555.0" cy="276.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="555.0" y="279.3" class="dig" text-anchor="middle">0</text>
+<circle class="halo" cx="585.0" cy="276.0" r="11.5" fill="#f2cc60" opacity="0.3"/>
+<circle cx="585.0" cy="276.0" r="6.5" fill="#f2cc60"/>
+<text x="585.0" y="279.3" class="digl" text-anchor="middle">1</text>
+<circle cx="615.0" cy="276.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="615.0" y="279.3" class="dig" text-anchor="middle">2</text>
+<circle cx="645.0" cy="276.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="645.0" y="279.3" class="dig" text-anchor="middle">3</text>
+<circle cx="675.0" cy="276.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="675.0" y="279.3" class="dig" text-anchor="middle">4</text>
+<text x="702.0" y="280.0" class="res">1 mod 5</text>
+<circle cx="555.0" cy="330.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="555.0" y="333.3" class="dig" text-anchor="middle">0</text>
+<circle cx="585.0" cy="330.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="585.0" y="333.3" class="dig" text-anchor="middle">1</text>
+<circle cx="615.0" cy="330.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="615.0" y="333.3" class="dig" text-anchor="middle">2</text>
+<circle cx="645.0" cy="330.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="645.0" y="333.3" class="dig" text-anchor="middle">3</text>
+<circle class="halo" cx="675.0" cy="330.0" r="11.5" fill="#f2cc60" opacity="0.3"/>
+<circle cx="675.0" cy="330.0" r="6.5" fill="#f2cc60"/>
+<text x="675.0" y="333.3" class="digl" text-anchor="middle">4</text>
+<text x="702.0" y="334.0" class="res">21 mod 25</text>
+<circle class="halo" cx="555.0" cy="384.0" r="11.5" fill="#f2cc60" opacity="0.3"/>
+<circle cx="555.0" cy="384.0" r="6.5" fill="#f2cc60"/>
+<text x="555.0" y="387.3" class="digl" text-anchor="middle">0</text>
+<circle cx="585.0" cy="384.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="585.0" y="387.3" class="dig" text-anchor="middle">1</text>
+<circle cx="615.0" cy="384.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="615.0" y="387.3" class="dig" text-anchor="middle">2</text>
+<circle cx="645.0" cy="384.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="645.0" y="387.3" class="dig" text-anchor="middle">3</text>
+<circle cx="675.0" cy="384.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="675.0" y="387.3" class="dig" text-anchor="middle">4</text>
+<text x="702.0" y="388.0" class="res">21 mod 125</text>
+<circle cx="555.0" cy="438.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="555.0" y="441.3" class="dig" text-anchor="middle">0</text>
+<circle cx="585.0" cy="438.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="585.0" y="441.3" class="dig" text-anchor="middle">1</text>
+<circle class="halo" cx="615.0" cy="438.0" r="11.5" fill="#f2cc60" opacity="0.3"/>
+<circle cx="615.0" cy="438.0" r="6.5" fill="#f2cc60"/>
+<text x="615.0" y="441.3" class="digl" text-anchor="middle">2</text>
+<circle cx="645.0" cy="438.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="645.0" y="441.3" class="dig" text-anchor="middle">3</text>
+<circle cx="675.0" cy="438.0" r="6.5" fill="#161b22" stroke="#484f58"/>
+<text x="675.0" y="441.3" class="dig" text-anchor="middle">4</text>
+<text x="702.0" y="442.0" class="res">271 mod 625</text>
+<text x="640.0" y="480" class="mono drv" text-anchor="middle">5: 271 + O(5^4)</text>
+<text x="640.0" y="500" class="sum" text-anchor="middle">22/7 = 1 + 4·5 + 0·5² + 2·5³ + …</text>
+<text x="28" y="538" class="foot">Valuations from the driver: v_2 = 1, v_3 = 0, v_5 = 0, v_7 = -1 (22/7 is not in Z_7), v_11 = 1 (22 = 2·11); at every other prime 22/7 is a unit.</text>
+</svg>
